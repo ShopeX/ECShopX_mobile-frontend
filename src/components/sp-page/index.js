@@ -122,12 +122,12 @@ function SpPage (props, ref) {
 
       {/* 浮动 */}
       <View className='float-container'>
+        {renderFloat}
         {showToTop && scrollToTopBtn && (
           <SpFloatMenuItem onClick={scrollToTop}>
             <Text className='iconfont icon-arrow-up'></Text>
           </SpFloatMenuItem>
         )}
-        {renderFloat}
       </View>
     </View>
   )

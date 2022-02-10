@@ -1,0 +1,9 @@
+.sp-chat {
+  .btn-cantact {
+    background: transparent;
+    padding: 0;
+    &:after {
+      border-width: 0;
+    }
+  }
+}

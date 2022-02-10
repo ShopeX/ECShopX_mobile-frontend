@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpButton, SpLogin } from '@/components'
-import { classNames, navigateTo, showToast } from '@/utils'
+import { classNames, navigateTo, showToast, isWeb } from '@/utils'
 import { addCart } from '@/store/slices/cart'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
@@ -14,7 +14,9 @@ const BTNS = {
   SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
   ADD_CART: { title: '添加购物车', key: 'addcart', btnStatus: 'default' },
   FAST_BUY: { title: '立即购买', key: 'fastbuy', btnStatus: 'active' },
-  GIFT: { title: '赠品不可购买', key: 'gift', btnStatus: 'disabled' }
+  GIFT: { title: '赠品不可购买', key: 'gift', btnStatus: 'disabled' },
+  ACTIVITY_WILL_START: { title: '活动即将开始', key: 'activity_will_start', btnStatus: 'disabled' },
+  ACTIVITY_FAST_BUY: { title: '立即抢购', key: 'activity_fast_buy', btnStatus: 'active' }
 }
 
 function CompGoodsBuyToolbar (props) {
@@ -34,18 +36,39 @@ function CompGoodsBuyToolbar (props) {
     return null
   }
 
-  if (info.store == 0) {
-    if (info.subscribe) {
-      btns.push(BTNS.SUBSCRIBE)
-    } else {
-      btns.push(BTNS.NOTICE)
+  const RenderBtns = () => {
+    if (info.store == 0) {
+      if (info.subscribe) {
+        btns.push(BTNS.SUBSCRIBE)
+      } else {
+        btns.push(BTNS.NOTICE)
+      }
+      return
     }
-  } else if (info.isGift) {
-    btns.push(BTNS.GIFT)
-  } else {
+
+    if (info.isGift) {
+      btns.push(BTNS.GIFT)
+      return
+    }
+
+    if (info.activityInfo) {
+      if (info.activityType == 'seckill') {
+        // 活动即将开始
+        if (info.activityInfo.status === 'in_the_notice') {
+          btns.push(BTNS.ACTIVITY_WILL_START)
+        } else {
+          btns.push(BTNS.ACTIVITY_FAST_BUY)
+        }
+      } else {
+      }
+      return
+    }
+
     btns.push(BTNS.ADD_CART)
     btns.push(BTNS.FAST_BUY)
   }
+
+  RenderBtns()
 
   const onChangeLogin = async ({ key }) => {
     console.log('onChangeLogin:', key)
@@ -55,6 +78,12 @@ function CompGoodsBuyToolbar (props) {
     if (key == 'notice') {
       const { subscribe } = info
       if (subscribe) return false
+
+      if (isWeb) {
+        showToast('请在小程序完成商品到货通知')
+        return
+      }
+
       await api.user.subscribeGoods(info.itemId)
       const { template_id } = await api.user.newWxaMsgTmpl({
         temp_name: 'yykweishop',
@@ -114,16 +143,22 @@ function CompGoodsBuyToolbar (props) {
           'mutiplte-btn': btns.length > 1
         })}
       >
-        {btns.map((item) => {
+        {btns.map((item, index) => {
           if (item.btnStatus == 'disabled') {
             return (
-              <View className={classNames('btn-item', `btn-${item.btnStatus}`)}>{item.title}</View>
+              <View
+                className={classNames('btn-item', `btn-${item.btnStatus}`)}
+                key={`btn-item__${index}`}
+              >
+                {item.title}
+              </View>
             )
           } else {
             return (
               <SpLogin
                 className={classNames('btn-item', `btn-${item.btnStatus}`)}
                 onChange={onChangeLogin.bind(this, item)}
+                key={`btn-item__${index}`}
               >
                 <View className='btn-item-txt'>{item.title}</View>
               </SpLogin>

@@ -183,14 +183,19 @@
   &--txt {
     border-color: transparent;
   }
+  &--normal {
+    /* prettier-ignore */
+    border: 1PX solid #E5E5E5;
+    color: #444;
+  }
   &--default {
-    border-color: var(--color-primary);
-    color: var(--color-primary);
+    border-color: var(--color-primary) !important;
+    color: var(--color-primary) !important;
   }
   &--primary {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #fff;
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
   }
 }
 

@@ -36,6 +36,27 @@ export const PROMOTION_TAG = {
   member_preference: '会员限购'
 }
 
+export const ACTIVITY_LIST = {
+  group: '拼团',
+  seckill: '秒杀',
+  limited_time_sale: '限时特惠'
+}
+
+export const ACTIVITY_STATUS = {
+  seckill: {
+    in_the_notice: '距开始还剩',
+    in_sale: '距结束还剩'
+  },
+  limited_time_sale: {
+    in_the_notice: '距开始还剩',
+    in_sale: '距结束还剩'
+  },
+  group: {
+    nostart: '距开始还剩',
+    noend: '距结束还剩'
+  }
+}
+
 export const DEFAULT_POINT_NAME = '积分'
 
 export const DEFAULT_THEME = {

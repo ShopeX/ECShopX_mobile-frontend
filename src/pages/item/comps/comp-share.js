@@ -21,7 +21,7 @@ function CompShare (props) {
       open={open}
       hideClose
       renderFooter={
-        <AtButton className='at-button--txt' onClick={onClose}>
+        <AtButton circle className='at-button--txt' onClick={onClose}>
           取消
         </AtButton>
       }

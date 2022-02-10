@@ -122,7 +122,7 @@ function Home () {
     filterWgts = wgts
   }
   return (
-    <SpPage className='page-index' renderFloat={<CompFloatMenu />}>
+    <SpPage className='page-index' scrollToTopBtn renderFloat={<CompFloatMenu />}>
       {/* header-block */}
       <WgtHomeHeader>{searchComp && searchComp.config.fixTop && <SpSearch />}</WgtHomeHeader>
 

@@ -82,6 +82,8 @@ export const GOODS_INFO = {
   img: 'pics[0]',
   imgs: 'pics',
   companyId: 'company_id',
+  activityInfo: 'activity_info',
+  activityType: 'activity_type',
   price: ({ price }) => price / 100,
   memberPrice: ({ member_price }) => member_price / 100,
   marketPrice: ({ market_price }) => market_price / 100,
@@ -144,7 +146,13 @@ export const GOODS_INFO = {
     })
   },
   intro: 'intro',
-  distributorInfo: 'distributor_info',
+  distributorInfo: ({ distributor_info }) => {
+    return pickBy(distributor_info, {
+      distributorId: 'distributor_id',
+      logo: 'logo',
+      storeName: 'name'
+    })
+  },
   distributorId: 'distributor_id',
   video: 'videos'
 }

@@ -59,8 +59,11 @@ function SpSkuSelect (props) {
       skuDictRef.current[key] = item
     })
     // 默认选择
-    const defaultSpecItem = specItems.find((item) => item.store > 0) || {}
-    const selection = defaultSpecItem.specItem.map((item) => item.specId)
+    const defaultSpecItem = specItems.find((item) => item.store > 0)
+    let selection = Array(specItems.length).fill(null)
+    if (defaultSpecItem) {
+      selection = defaultSpecItem.specItem.map((item) => item.specId)
+    }
 
     calcDisabled(selection)
   }
@@ -191,13 +194,26 @@ function SpSkuSelect (props) {
   const renderFooter = () => {
     if (type == 'picker') {
       return (
-        <SpButton
-          resetText='加入购物车'
-          confirmText='立即购买'
-          onReset={addToCart}
-          onConfirm={fastBuy}
-        ></SpButton>
+        <AtButton circle type='primary' onClick={onClose}>
+          确定
+        </AtButton>
       )
+      // if (info.store == 0) {
+      //   return (
+      //     <AtButton circle onClick={onClose}>
+      //       取消
+      //     </AtButton>
+      //   )
+      // } else {
+      //   return (
+      //     <SpButton
+      //       resetText='加入购物车'
+      //       confirmText='立即购买'
+      //       onReset={addToCart}
+      //       onConfirm={fastBuy}
+      //     ></SpButton>
+      //   )
+      // }
     } else if (type == 'addcart') {
       return (
         <AtButton circle type='primary' onClick={addToCart}>
@@ -238,10 +254,10 @@ function SpSkuSelect (props) {
       </View>
       <View className='sku-list'>
         {skuList.map((item, index) => (
-          <View className='sku-group'>
+          <View className='sku-group' key={`sku-group__${index}`}>
             <View className='sku-name'>{item.skuName}</View>
             <View className='sku-values'>
-              {item.skuValue.map((spec) => (
+              {item.skuValue.map((spec, idx) => (
                 <View
                   className={classNames('sku-btn', {
                     'active': spec.specId == selection[index],
@@ -249,6 +265,7 @@ function SpSkuSelect (props) {
                     'sku-img': spec.specImgs.length > 0
                   })}
                   onClick={handleSelectSku.bind(this, spec, index)}
+                  key={`sku-values-item__${idx}`}
                 >
                   {spec.specImgs.length > 0 && (
                     <SpImage src={spec.specImgs[0]} width={214} height={214} />

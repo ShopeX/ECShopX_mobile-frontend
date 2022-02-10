@@ -17,7 +17,7 @@ function CompPromation (props) {
       <View className='gift-list'>
         <View className='gift-list-title'>【赠品】</View>
         {_gifts.map((item, index) => (
-          <View className='gift-item-wrap'>
+          <View className='gift-item-wrap' key={`gift-item-wrap-1__${index}`}>
             <SpGoodsCell info={item} />
           </View>
         ))}
@@ -31,7 +31,7 @@ function CompPromation (props) {
       <View className='gift-list'>
         <View className='gift-list-title'></View>
         {_plusItems.map((item, index) => (
-          <View className='gift-item-wrap'>
+          <View className='gift-item-wrap' key={`gift-item-wrap-2__${index}`}>
             <SpGoodsCell info={item} />
           </View>
         ))}

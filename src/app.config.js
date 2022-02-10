@@ -18,6 +18,7 @@ export default {
     'pages/member/item-fav', // 收藏页面
 
     'pages/custom/custom-page', // 自定义页面
+    'pages/chat/index', // 客服
     'pages/liveroom/index' // 直播间页面
   ],
   subPackages: [

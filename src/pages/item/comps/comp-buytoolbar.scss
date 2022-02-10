@@ -26,6 +26,10 @@
     &-txt {
       font-size: 24px;
       color: #222;
+      /* #ifdef  h5  */
+      position: relative;
+      top: -10px;
+      /* #endif */
     }
     .cart-count {
       position: absolute;
@@ -59,6 +63,7 @@
       .btn-item-txt {
         height: 80px;
         line-height: 80px;
+        font-size: 28px;
       }
       &.btn-active {
         /* prettier-ignore */

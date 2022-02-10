@@ -75,6 +75,7 @@ import SpFloatLayout from './sp-float-layout'
 import SpOrderItem from './sp-order-item'
 import SpSkuSelect from './sp-sku-select'
 import SpPoster from './sp-poster'
+import SpChat from './sp-chat'
 
 export default {}
 
@@ -155,5 +156,6 @@ export {
   SpFloatLayout,
   SpOrderItem,
   SpSkuSelect,
-  SpPoster
+  SpPoster,
+  SpChat
 }

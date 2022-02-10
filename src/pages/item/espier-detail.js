@@ -14,7 +14,9 @@ import {
   SpPage,
   SpSkuSelect,
   SpPoster,
-  SpLogin
+  SpLogin,
+  SpFloatMenuItem,
+  SpChat
 } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -27,6 +29,7 @@ import {
   buriedPoint,
   isAlipay,
   isWeixin,
+  isWeb,
   linkPage,
   pickBy,
   classNames,
@@ -38,6 +41,8 @@ import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
+import { ACTIVITY_LIST } from '@/consts'
+import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
 import CompStore from './comps/comp-store'
@@ -83,6 +88,7 @@ function EspierDetail (props) {
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
+  const { colorPrimary } = useSelector((state) => state.sys)
 
   const [state, setState] = useImmer(initialState)
   const {
@@ -127,14 +133,24 @@ function EspierDetail (props) {
   }, [id])
 
   useEffect(() => {
-    const video = Taro.createVideoContext('goods-video')
+    let video
+    if (isWeixin) {
+      video = Taro.createVideoContext('goods-video')
+    } else if (isWeb) {
+      video = document.getElementById('goods-video')
+    }
+
+    if (!video) {
+      return
+    }
+
     if (play) {
       setTimeout(() => {
         console.log('video:', video)
         video.play()
       }, 200)
     } else {
-      video.stop()
+      isWeixin ? video.stop() : video.pause()
     }
   }, [play])
 
@@ -206,6 +222,17 @@ function EspierDetail (props) {
     Taro.setNavigationBarTitle({
       title: data.itemName
     })
+    console.log(ACTIVITY_LIST[data.activityType])
+    if (ACTIVITY_LIST[data.activityType]) {
+      Taro.setNavigationBarColor({
+        frontColor: '#ffffff',
+        backgroundColor: colorPrimary,
+        animation: {
+          duration: 400,
+          timingFunc: 'easeIn'
+        }
+      })
+    }
     setState((draft) => {
       draft.info = {
         ...data,
@@ -258,6 +285,15 @@ function EspierDetail (props) {
   }
 
   const { windowWidth } = Taro.getSystemInfoSync()
+
+  let sessionFrom = {}
+  if (info) {
+    sessionFrom['商品'] = info.itemName
+    if (userInfo) {
+      sessionFrom['昵称'] = userInfo.username
+    }
+  }
+
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -265,6 +301,22 @@ function EspierDetail (props) {
       isDefault={isDefault}
       defaultMsg={defaultMsg}
       ref={pageRef}
+      renderFloat={
+        <View>
+          <SpFloatMenuItem
+            onClick={() => {
+              Taro.navigateTo({ url: '/pages/index' })
+            }}
+          >
+            <Text className='iconfont icon-home1'></Text>
+          </SpFloatMenuItem>
+          <SpChat sessionFrom={JSON.stringify(sessionFrom)}>
+            <SpFloatMenuItem>
+              <Text className='iconfont icon-headphones'></Text>
+            </SpFloatMenuItem>
+          </SpChat>
+        </View>
+      }
       renderFooter={
         <CompBuytoolbar
           info={info}
@@ -328,6 +380,14 @@ function EspierDetail (props) {
             )}
           </View>
 
+          <CompActivityBar
+            info={info.activityInfo}
+            type={info.activityType}
+            onTimeUp={() => {
+              fetch()
+            }}
+          />
+
           <View className='goods-info'>
             <View className='price-block'>
               <SpPrice className='goods-price' value={info.price}></SpPrice>
@@ -356,18 +416,20 @@ function EspierDetail (props) {
 
             <View className='goods-name-wrap'>
               <View className='goods-name'>{info.itemName}</View>
-              <SpLogin
-                onChange={() => {
-                  setState((draft) => {
-                    draft.sharePanelOpen = true
-                  })
-                }}
-              >
-                <View className='btn-share'>
-                  <Text className='iconfont icon-fenxiang-01'></Text>
-                  <Text className='share-txt'>分享</Text>
-                </View>
-              </SpLogin>
+              {isWeixin && (
+                <SpLogin
+                  onChange={() => {
+                    setState((draft) => {
+                      draft.sharePanelOpen = true
+                    })
+                  }}
+                >
+                  <View className='btn-share'>
+                    <Text className='iconfont icon-fenxiang-01'></Text>
+                    <Text className='share-txt'>分享</Text>
+                  </View>
+                </SpLogin>
+              )}
             </View>
           </View>
 
@@ -414,7 +476,9 @@ function EspierDetail (props) {
                 }}
               >
                 {promotionActivity.map((item, index) => (
-                  <View className='promotion-tag'>{item.promotionTag}</View>
+                  <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                    {item.promotionTag}
+                  </View>
                 ))}
               </SpCell>
             )}
@@ -445,7 +509,7 @@ function EspierDetail (props) {
             {isArray(info.intro) ? (
               <View>
                 {info.intro.map((item, idx) => (
-                  <View className='wgt-wrap' key={`${item.name}${idx}`}>
+                  <View className='wgt-wrap' key={`wgt-wrap__${idx}`}>
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
