@@ -3,9 +3,8 @@ import { payment_platform } from '@/utils/platform'
 import { isWxWeb } from '@/utils'
 import api from '@/api'
 
-export default async function getPaymentList () {
+export default async function getPaymentList (distributor_id) {
   let params = {}
-  const distributor_id = Taro.getStorageSync('payment_list_dtid')
   if (distributor_id) {
     params = {
       distributor_id,

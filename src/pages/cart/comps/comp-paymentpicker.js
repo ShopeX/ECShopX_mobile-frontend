@@ -13,6 +13,7 @@ function CompPaymentPicker (props) {
   const {
     // isOpened = false,
     type = '',
+    distributor_id,
     isShowDelivery = false,
     loading,
     // isPointitemGood = false,
@@ -39,7 +40,7 @@ function CompPaymentPicker (props) {
   }, [])
 
   const getFetch = async () => {
-    const { list } = await getPaymentList()
+    const { list } = await getPaymentList(distributor_id)
     setState((draft) => {
       draft.typeList = list
     })
