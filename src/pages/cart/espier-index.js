@@ -55,7 +55,7 @@ function CartIndex () {
   const [state, setState] = useImmer(initialState)
   const { current, recommendList, policyModal } = state
 
-  const { colorPrimary } = useSelector((state) => state.sys)
+  const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
 
   useDepChange(() => {
@@ -67,7 +67,9 @@ function CartIndex () {
   })
 
   const fetch = () => {
-    getRecommendList() // 猜你喜欢
+    if (openRecommend == 1) {
+      getRecommendList() // 猜你喜欢
+    }
     if (isLogin) {
       getCartList()
     }
@@ -161,7 +163,7 @@ function CartIndex () {
   const getRecommendList = async () => {
     const { list } = await api.cart.likeList({
       page: 1,
-      pageSize: 10
+      pageSize: 1000
     })
     setState((draft) => {
       draft.recommendList = list
