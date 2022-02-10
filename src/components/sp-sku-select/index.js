@@ -6,6 +6,7 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpFloatLayout, SpButton, SpImage, SpPrice, SpInputNumber } from '@/components'
 import { addCart, updateCount } from '@/store/slices/cart'
+import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, showToast } from '@/utils'
@@ -26,7 +27,8 @@ const initialState = {
   disabledSet: new Set(),
   curItem: null,
   skuText: '',
-  num: 1
+  num: 1,
+  loading: false
 }
 
 function SpSkuSelect (props) {
@@ -40,7 +42,7 @@ function SpSkuSelect (props) {
   } = props
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
-  const { selection, curImage, disabledSet, curItem, skuText, num } = state
+  const { selection, curImage, disabledSet, curItem, skuText, num, loading } = state
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
@@ -167,6 +169,7 @@ function SpSkuSelect (props) {
   const { skuList } = info
 
   const addToCart = async () => {
+    Taro.showLoading()
     await dispatch(
       addCart({
         item_id: curItem ? curItem.itemId : info.itemId,
@@ -176,54 +179,58 @@ function SpSkuSelect (props) {
       })
     )
     dispatch(updateCount({ shop_type: 'distributor' }))
+    Taro.hideLoading()
     showToast('成功加入购物车')
   }
 
   const fastBuy = async () => {
-    const { distributorId } = info
+    Taro.showLoading()
+    const { distributorId, activityType, activityInfo } = info
+    const itemId = curItem ? curItem.itemId : info.itemId
     await api.cart.fastBuy({
       item_id: curItem ? curItem.itemId : info.itemId,
       num,
       distributor_id: distributorId
     })
+    let url = `/pages/cart/espier-checkout?cart_type=fastbuy`
+    if (activityType == 'seckill' || activityType === 'limited_time_sale') {
+      const { seckill_id } = activityInfo
+      const { ticket } = await api.item.seckillCheck({
+        item_id: itemId,
+        seckill_id: seckill_id,
+        num
+      })
+      url += `&type=${activityType}&seckill_id=${seckill_id}&ticket=${ticket}`
+    }
+    Taro.hideLoading()
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout`
+      url
     })
   }
 
   const renderFooter = () => {
+    let btnTxt = ''
+    Object.keys(BUY_TOOL_BTNS).forEach((key) => {
+      if (BUY_TOOL_BTNS[key].key == type) {
+        btnTxt = BUY_TOOL_BTNS[key].title
+      }
+    })
     if (type == 'picker') {
       return (
         <AtButton circle type='primary' onClick={onClose}>
           确定
         </AtButton>
       )
-      // if (info.store == 0) {
-      //   return (
-      //     <AtButton circle onClick={onClose}>
-      //       取消
-      //     </AtButton>
-      //   )
-      // } else {
-      //   return (
-      //     <SpButton
-      //       resetText='加入购物车'
-      //       confirmText='立即购买'
-      //       onReset={addToCart}
-      //       onConfirm={fastBuy}
-      //     ></SpButton>
-      //   )
-      // }
     } else if (type == 'addcart') {
       return (
-        <AtButton circle type='primary' onClick={addToCart}>
-          确定
+        <AtButton circle loading={loading} type='primary' onClick={addToCart}>
+          {btnTxt}
         </AtButton>
       )
-    } else if (type == 'fastbuy') {
+    } else if (type == 'fastbuy' || type == 'activity_fast_buy') {
       return (
-        <AtButton circle type='primary' onClick={fastBuy}>
-          立即购买
+        <AtButton circle loading={loading} type='primary' onClick={fastBuy}>
+          {btnTxt}
         </AtButton>
       )
     }

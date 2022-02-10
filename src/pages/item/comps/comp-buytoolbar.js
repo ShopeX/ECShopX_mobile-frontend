@@ -5,19 +5,10 @@ import { View, Text } from '@tarojs/components'
 import { SpButton, SpLogin } from '@/components'
 import { classNames, navigateTo, showToast, isWeb } from '@/utils'
 import { addCart } from '@/store/slices/cart'
+import { BUY_TOOL_BTNS } from '@/consts'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
 import './comp-buytoolbar.scss'
-
-const BTNS = {
-  NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
-  SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
-  ADD_CART: { title: '添加购物车', key: 'addcart', btnStatus: 'default' },
-  FAST_BUY: { title: '立即购买', key: 'fastbuy', btnStatus: 'active' },
-  GIFT: { title: '赠品不可购买', key: 'gift', btnStatus: 'disabled' },
-  ACTIVITY_WILL_START: { title: '活动即将开始', key: 'activity_will_start', btnStatus: 'disabled' },
-  ACTIVITY_FAST_BUY: { title: '立即抢购', key: 'activity_fast_buy', btnStatus: 'active' }
-}
 
 function CompGoodsBuyToolbar (props) {
   const {
@@ -39,15 +30,15 @@ function CompGoodsBuyToolbar (props) {
   const RenderBtns = () => {
     if (info.store == 0) {
       if (info.subscribe) {
-        btns.push(BTNS.SUBSCRIBE)
+        btns.push(BUY_TOOL_BTNS.SUBSCRIBE)
       } else {
-        btns.push(BTNS.NOTICE)
+        btns.push(BUY_TOOL_BTNS.NOTICE)
       }
       return
     }
 
     if (info.isGift) {
-      btns.push(BTNS.GIFT)
+      btns.push(BUY_TOOL_BTNS.GIFT)
       return
     }
 
@@ -55,26 +46,23 @@ function CompGoodsBuyToolbar (props) {
       if (info.activityType == 'seckill') {
         // 活动即将开始
         if (info.activityInfo.status === 'in_the_notice') {
-          btns.push(BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
         } else {
-          btns.push(BTNS.ACTIVITY_FAST_BUY)
+          btns.push(BUY_TOOL_BTNS.ACTIVITY_FAST_BUY)
         }
       } else {
       }
       return
     }
 
-    btns.push(BTNS.ADD_CART)
-    btns.push(BTNS.FAST_BUY)
+    btns.push(BUY_TOOL_BTNS.ADD_CART)
+    btns.push(BUY_TOOL_BTNS.FAST_BUY)
   }
 
   RenderBtns()
 
   const onChangeLogin = async ({ key }) => {
     console.log('onChangeLogin:', key)
-    if (key == 'subscribe') {
-      return
-    }
     if (key == 'notice') {
       const { subscribe } = info
       if (subscribe) return false

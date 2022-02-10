@@ -16,7 +16,8 @@ import {
   SpPoster,
   SpLogin,
   SpFloatMenuItem,
-  SpChat
+  SpChat,
+  SpGoodsPrice
 } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -389,14 +390,18 @@ function EspierDetail (props) {
           />
 
           <View className='goods-info'>
-            <View className='price-block'>
+            <SpGoodsPrice info={info} />
+            {/* <View className='price-block'>
               <SpPrice className='goods-price' value={info.price}></SpPrice>
               {info.memberPrice > 0 && (
                 <View className='vip-price'>
                   会员<SpPrice value={info.memberPrice}></SpPrice>
                 </View>
               )}
-            </View>
+              {
+
+              }
+            </View> */}
 
             <CompVipGuide
               info={{

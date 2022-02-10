@@ -79,6 +79,16 @@ export const TABBAR_PATH = {
   allGoods: '/pages/item/list?isTabBar=true'
 }
 
+export const BUY_TOOL_BTNS = {
+  NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
+  SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
+  ADD_CART: { title: '加入购物车', key: 'addcart', btnStatus: 'default' },
+  FAST_BUY: { title: '立即购买', key: 'fastbuy', btnStatus: 'active' },
+  GIFT: { title: '赠品不可购买', key: 'gift', btnStatus: 'disabled' },
+  ACTIVITY_WILL_START: { title: '活动即将开始', key: 'activity_will_start', btnStatus: 'disabled' },
+  ACTIVITY_FAST_BUY: { title: '立即抢购', key: 'activity_fast_buy', btnStatus: 'active' }
+}
+
 export const PAYTYPE = {
   /** h5环境下 */
   WXH5: 'wxpayh5',

@@ -76,6 +76,7 @@ import SpOrderItem from './sp-order-item'
 import SpSkuSelect from './sp-sku-select'
 import SpPoster from './sp-poster'
 import SpChat from './sp-chat'
+import SpGoodsPrice from './sp-goods-price'
 
 export default {}
 
@@ -157,5 +158,6 @@ export {
   SpOrderItem,
   SpSkuSelect,
   SpPoster,
-  SpChat
+  SpChat,
+  SpGoodsPrice
 }
