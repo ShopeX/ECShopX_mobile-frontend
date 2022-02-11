@@ -28,3 +28,7 @@ export function getReceiveCardPackage (params) {
 export function getCurrentGradList () {
   return req.post('/user/currentGardCardPackage')
 }
+
+// export function getMemberCard(){
+//   return req.get('/membercard')
+// }

@@ -63,7 +63,11 @@ const initialConfigState = {
   infoUrlIsOpen: true,
   pointAppId: '',
   pointPage: '',
-  pointUrlIsOpen: true
+  pointUrlIsOpen: true,
+  memberConfig: {
+    defaultImg: false,
+    vipImg: false
+  }
 }
 
 const initialState = {
@@ -121,7 +125,7 @@ function MemberIndex (props) {
   })
 
   const getMemberCenterConfig = async () => {
-    const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
+    const [bannerRes, menuRes, redirectRes, pointShopRes, memberRes] = await Promise.all([
       // 会员中心banner
       await api.shop.getPageParamsConfig({
         page_name: 'member_center_setting'
@@ -135,7 +139,9 @@ function MemberIndex (props) {
         page_name: 'member_center_redirect_setting'
       }),
       // 积分商城
-      await api.pointitem.getPointitemSetting()
+      await api.pointitem.getPointitemSetting(),
+      //获取会员设置图片
+      await api.member.memberInfo()
     ])
     let banner,
       menu,
@@ -185,6 +191,11 @@ function MemberIndex (props) {
       draft.pointAppId = redirectInfo.point_app_id
       draft.pointPage = redirectInfo.point_page
       draft.pointUrlIsOpen = redirectInfo.point_url_is_open
+      draft.memberConfig = {
+        defaultImg: memberRes.cardInfo.background_pic_url,
+        vipImg: memberRes.vipgrade.background_pic_url,
+        backgroundImg: memberRes.memberInfo.gradeInfo.background_pic_url
+      }
     })
   }
 
@@ -305,12 +316,16 @@ function MemberIndex (props) {
 
   // console.log(`member page:`, state, config);
 
+  const { memberConfig } = config
+
   return (
     <SpPage className='pages-member-index'>
       <View
         className='header-block'
         style={styleNames({
-          'background-image': `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
+          'background-image': memberConfig.backgroundImg
+            ? `url(${memberConfig.backgroundImg})`
+            : `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
         })}
       >
         <View className='header-hd'>
@@ -365,6 +380,7 @@ function MemberIndex (props) {
               info={vipInfo}
               onLink={handleClickLink.bind(this, '/subpage/pages/vip/vipgrades')}
               userInfo={userInfo}
+              memberConfig={memberConfig}
             />
           )}
         </View>
