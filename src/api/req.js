@@ -117,7 +117,7 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      let url = isMerchantModule ? '/subpages/merchant/login' : '/pages/member/index'
+      let url = isMerchantModule ? '/subpages/merchant/login' : '/subpages/member/index'
       Taro.redirectTo({ url })
     }, 300)
   }

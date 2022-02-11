@@ -1,37 +1,51 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
-import { showToast, log, isArray } from '@/utils'
+import { showToast, log, isArray, isWeb } from '@/utils'
 
 const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
+const $instance = getCurrentInstance()
 class EntryLaunch {
   constructor () {
     this.init()
   }
 
-  init (params) {
-    const { query, scene } =
-      process.env.TARO_ENV == 'h5' ? { query: params } : Taro.getLaunchOptionsSync()
+  init () {
+    isWeb && this.initAMap()
+  }
 
+  /**
+   * @function 获取小程序路由参数
+   */
+  getRouteParams () {
+    const { params } = $instance.router
+    let options = {}
+    if (params.scene) {
+      options = {
+        ...qs.parse(decodeURIComponent(params.scene))
+      }
+    } else {
+      options = params
+    }
+    return options
+  }
+
+  /**
+   * @function 获取小程序启动参数
+   */
+  getLaunchParams () {
+    console.log(`app launch options:`, Taro.getLaunchOptionsSync())
+    const { query } = Taro.getLaunchOptionsSync()
     let options = {
       ...query
     }
-
-    if (scene) {
+    if (query.scene) {
       options = {
         ...options,
         ...qs.parse(decodeURIComponent(query.scene))
       }
     }
-
-    // Taro.setStorageSync("launch_params", options);
-    this.routeParams = options
-    process.env.TARO_ENV == 'h5' && this.initAMap()
     return options
-  }
-
-  getRouteParams () {
-    return this.routeParams
   }
 
   /**

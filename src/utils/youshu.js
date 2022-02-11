@@ -55,7 +55,7 @@ function TracksPayed (info, config, moduleName) {
 }
 
 function getYoushuAppid () {
-  const { appid } = getAppId()
+  const appid = getAppId()
   const {
     youshu: { weapp_app_id }
   } = Taro.getStorageSync('otherSetting')

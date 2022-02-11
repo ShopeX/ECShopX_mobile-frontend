@@ -21,6 +21,8 @@ function getToken () {
   return S.getAuthToken()
 }
 
+function getRedirectUrl () {}
+
 //设置token并跳转
 async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
   const hasToken = setToken(token)

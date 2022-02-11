@@ -36,7 +36,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const { appid } = getAppId()
+    const appid = getAppId()
     try {
       const { status } = await api.user.codeAuth({
         code,
@@ -63,7 +63,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const { appid } = getAppId()
+    const appid = getAppId()
     try {
       Taro.showLoading({
         title: '授权中'
