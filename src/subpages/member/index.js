@@ -132,8 +132,12 @@ function MemberIndex(props) {
   })
 
   const getCode = async (storageCode) => {
-    await api.purchase.purchaseBind({ code: storageCode })
-    Taro.removeStorageSync(SG_SHARE_CODE)
+    try {
+      await api.purchase.purchaseBind({ code: storageCode })
+      Taro.removeStorageSync(SG_SHARE_CODE)
+    } catch (error) {
+      Taro.removeStorageSync(SG_SHARE_CODE)
+    }
   }
 
   const getMemberCenterConfig = async () => {
