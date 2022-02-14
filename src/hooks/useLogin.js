@@ -105,11 +105,11 @@ export default (props = {}) => {
   /**
    * @function 获取用户信息授权（小程序）
    */
-  const getUserInfoAuth = () => {
+  const getUserInfoAuth = (validate = true) => {
     return new Promise((resolve, reject) => {
       console.log('getUserInfoAuth:获取用户信息授权（小程序）')
       const token = S.getAuthToken()
-      if (!token) {
+      if (!token && validate) {
         showToast('请先登录')
         return
         // reject()
