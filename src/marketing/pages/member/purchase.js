@@ -66,7 +66,8 @@ export default class myGroupList extends Component {
                   <View className='username'>
                     {info.username}
                   </View>
-                  <View className='userRole'>{info.user_type === 'dependents' ? '家属' : '员工'}</View>
+                  <View className='userRole'>{info.user_type === 'dependents' && '家属'}</View>
+                  <View className='userRole'>{info.user_type === 'employee' && '员工'}</View>
                 </View>
                 {info.user_type === 'employee' && <Button open-type='share' size='mini' className='shareBtn' disabled={info.surplus_share_limitnum == '0'}>
                   分享
