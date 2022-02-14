@@ -437,7 +437,7 @@ function EspierDetail (props) {
             </View>
           </View>
 
-          <CompGroup info={info.groupsList} />
+          <CompGroup info={info} />
 
           {!info.nospec && (
             <View className='sku-block'>
