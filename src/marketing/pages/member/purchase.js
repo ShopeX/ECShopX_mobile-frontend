@@ -80,15 +80,15 @@ export default class myGroupList extends Component {
               className='bd-item'
             >
               <View className='bd-item-label'>总额度</View>
-              <View className='bd-item-value'>{info.total_limitfee}</View>
+              <View className='bd-item-value'>{info.total_limitfee ? (info.total_limitfee / 100).toFixed(2) : '0.00'}</View>
             </View>
             <View className='bd-item border-item'>
               <View className='bd-item-label'>已使用额度</View>
-              <View className='bd-item-value'>{info.used_limitfee}</View>
+              <View className='bd-item-value'>{info.used_limitfee ? (info.used_limitfee / 100).toFixed(2) : '0.00'}</View>
             </View>
             <View className='bd-item'>
               <View className='bd-item-label'>剩余额度</View>
-              <View className='bd-item-value'>{info.surplus_limitfee}</View>
+              <View className='bd-item-value'>{info.surplus_limitfee ? (info.surplus_limitfee / 100).toFixed(2) : '0.00'}</View>
             </View>
           </View>
         </View>
@@ -114,7 +114,7 @@ export default class myGroupList extends Component {
                 </View>
                 <View>
                   <View>使用额度</View>
-                  <View className='list-item-count'>{item.used_limitfee}</View>
+                  <View className='list-item-count'>{item.used_limitfee ? (item.used_limitfee / 100).toFixed(2) : '0.00'}</View>
                 </View>
               </View>)
             })}
