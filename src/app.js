@@ -4,6 +4,8 @@ import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
 import api from '@/api'
+import LBS from '@/utils/lbs'
+import entryLaunch from '@/utils/entryLaunch'
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
 import { fetchUserFavs } from '@/store/slices/user'
@@ -22,6 +24,11 @@ const store = configStore()
 class App extends Component {
   componentWillMount () {
     this.getSystemConfig()
+    // H5定位
+    if (Taro.getEnv() === 'WEB') {
+      new LBS()
+      entryLaunch.initAMap()
+    }
     // if ( S.getAuthToken() ) {
     //   store.dispatch(fetchUserFavs());
     // }
