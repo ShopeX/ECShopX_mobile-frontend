@@ -11,7 +11,7 @@ import './item-params.scss'
 export default class ItemParams extends Component {
   $instance = getCurrentInstance()
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -19,24 +19,27 @@ export default class ItemParams extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$instance.router.params
-    const info = await api.item.detail(id)
-    const { item_params } = info
-    const itemParams = pickBy(item_params, {
-      label: 'attribute_name',
-      value: 'attribute_value_name'
-    })
-    this.setState({
-      list: itemParams
-    })
+    if (id) {
+      const info = await api.item.detail(id)
+      const { item_params } = info
+      const itemParams = pickBy(item_params, {
+        label: 'attribute_name',
+        value: 'attribute_value_name'
+      })
+      this.setState({
+        list: itemParams
+      })
+    }
+
   }
 
-  render () {
+  render() {
     const { list } = this.state
 
     return (
