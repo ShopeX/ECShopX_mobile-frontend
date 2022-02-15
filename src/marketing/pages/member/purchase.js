@@ -43,6 +43,14 @@ export default class myGroupList extends Component {
     })
   }
 
+  showInfo() {
+    const { info } = this.state
+    info.surplus_share_limitnum == '0' && Taro.showToast({
+      title: '分享次数为0',
+      icon: 'none'
+    })
+  }
+
   render() {
     const { info } = this.state
 
@@ -70,7 +78,7 @@ export default class myGroupList extends Component {
                   <View className='userRole'>{info.user_type === 'employee' && '员工'}</View>
                 </View>
                 {info.user_type === 'employee' && <Button open-type='share' size='mini' className='shareBtn' disabled={info.surplus_share_limitnum == '0'}>
-                  分享
+                  <Text onClick={this.showInfo.bind(this)}>分享</Text>
                 </Button>}
               </View>
             </View>
