@@ -43,13 +43,16 @@ function SpLogin(props) {
         purchanse_share_code: Taro.getStorageSync(SG_SHARE_CODE) || ''
       }
       Taro.showLoading()
-      const { token, is_new } = await api.wx.newlogin(params)
-      if (token) {
-        setToken(token)
+      try {
+        const { token, is_new } = await api.wx.newlogin(params)
+        if (token) {
+          setToken(token)
+          Taro.hideLoading();
+        }
+        showToast('恭喜您，注册成功')
+      } catch (error) {
+        Taro.hideLoading();
       }
-      showToast('恭喜您，注册成功')
-
-      // Taro.hideLoading();
     }
   }
 
