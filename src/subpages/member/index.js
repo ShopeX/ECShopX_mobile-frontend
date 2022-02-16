@@ -1,4 +1,4 @@
-import Taro, { useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
+import Taro, { useDidShow,useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { useSelector } from 'react-redux'
@@ -31,6 +31,7 @@ import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
+import { MERCHANT_TOKEN } from '@/consts'
 
 const initialConfigState = {
   banner: {
@@ -110,6 +111,12 @@ function MemberIndex (props) {
   useEffect(() => {
     getMemberCenterConfig()
   }, [])
+  
+  useDidShow(()=>{
+    if(S.get(MERCHANT_TOKEN,true)){
+      S.delete(MERCHANT_TOKEN,true)
+    }
+  })
 
   // 分享
   useShareAppMessage(async (res) => {
