@@ -11,7 +11,9 @@ class EntryLaunch {
   }
 
   init () {
-    isWeb && this.initAMap()
+    if (Taro.getEnv() == Taro.ENV_TYPE.WEB) {
+      this.initAMap()
+    }
   }
 
   /**
