@@ -1231,7 +1231,7 @@ export default class EspierDetail extends Component {
     }
     let { isNewGift } = this.$instance.router.params
 
-    console.log('==likeList==', likeList)
+    console.log('==likeList--desc====', desc)
 
     return (
       <SpPage className='page-goods-detail'>
@@ -1583,6 +1583,7 @@ export default class EspierDetail extends Component {
             </View>
           ) : (
             <View>
+              {vedioUrl && <Video src={vedioUrl} controls style='width:100%'></Video>}
               {desc && (
                 // <SpHtmlContent className="goods-detail__content" content={desc} />
                 <RichText nodes={desc} />
