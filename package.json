@@ -87,7 +87,8 @@
     "prettier-eslint": "^13.0.0",
     "prettier-eslint-cli": "^5.0.1",
     "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-dev-server": "^2.9.7"
+    "webpack-dev-server": "^2.9.7",
+    "webpack-s3-plugin": "^1.2.0-rc.0"
   },
   "lint-staged": {
     "src/**/*.{js,jsx}": [
