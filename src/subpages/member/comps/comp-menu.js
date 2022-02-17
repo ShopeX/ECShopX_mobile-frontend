@@ -91,7 +91,7 @@ function CompMenu(props) {
   if (!config.whitelist_status) {
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
-  menus = menus.concat(MENUS[MENUS.length - 1])
+  menus = menus.concat(MENUS[MENUS.length - 2]).concat(MENUS[MENUS.length - 1])
 
   return (
     <View className='comp-menu'>
