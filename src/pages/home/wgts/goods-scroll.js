@@ -185,7 +185,7 @@ export default class WgtGoodsScroll extends Component {
                 <Image src={base.backgroundImg} className='goods-img' lazyLoad />
               </View>
               <View className='text'>查看更多</View>
-              <View className='desc'>查看更多</View>
+              {/* <View className='desc'>查看更多</View> */}
             </View>
           </ScrollView>
         </View>
