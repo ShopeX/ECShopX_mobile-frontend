@@ -22,7 +22,7 @@ export default class Series extends Component {
     storeId: ''
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,7 +30,7 @@ export default class Series extends Component {
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -71,7 +71,7 @@ export default class Series extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, isChanged, pluralType, imgType, colors } = this.props
     const { currentIndex } = this.state
     if (!info) {
@@ -92,9 +92,7 @@ export default class Series extends Component {
                   currentIndex == index ? 'category-nav__content-checked' : null
                 )}
                 style={
-                  currentIndex == index
-                    ? `border-left: 7rpx solid ${colors.data[0].primary};`
-                    : null
+                  currentIndex == index ? `border-left: 7rpx solid var(--color-primary);` : null
                 }
                 key={`${item.name}${index}`}
                 onClick={this.handleClickCategoryNav.bind(this, index)}
