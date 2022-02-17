@@ -1,4 +1,5 @@
 export const SG_TOKEN = 'token'
+export const MERCHANT_TOKEN = 'merchant_token'
 export const SG_POLICY_UPDATETIME = 'policy_updatetime'
 export const SG_SHARER_UID = 'distribution_shop_id' // 推广用户uid
 export const SG_TRACK_PARAMS = 'trackParams'

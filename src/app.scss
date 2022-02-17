@@ -179,10 +179,16 @@ switch,
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .wgt-title {
-      color: #333;
-      font-weight: bold;
-      font-size: 32px;
+    .wgt-hd {
+      display: flex;
+      align-items: baseline;
+      flex: 1;
+      .wgt-title {
+        color: #333;
+        font-size: 36px;
+        font-weight: bold;
+        margin-right: 24px;
+      }
     }
     .wgt-subtitle {
       color: #999;
@@ -190,11 +196,33 @@ switch,
       margin-left: 8px;
     }
     .wgt-more {
-      font-size: 20px;
-      border-radius: 30px;
-      padding: 0 16px;
-      border: 1px solid var(--color-primary);
-      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 24px;
+      border-radius: 60px;
+      .three-dot {
+        position: relative;
+        width: 8px;
+        height: 8px;
+        background: #333;
+        border-radius: 50%;
+        &::before, &::after {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: #333;
+          border-radius: 50%;
+          content: "";
+        }
+        &::before {
+          transform: translateX(-160%);
+        }
+        &::after {
+          transform: translateX(160%);
+        }
+      }
     }
   }
 }
@@ -243,5 +271,25 @@ switch,
   .coupon-text {
     color: var(--color-primary);
     font-size: 22px;
+  }
+}
+
+.wgt-timer {
+  .at-countdown__time-box {
+    font-family: sans-serif;
+    background: var(--color-primary);
+    border-radius: 6px;
+    min-width: 38px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    padding: 0 2px;
+  }
+  .time-fonts {
+    display: inline-flex;
+    padding-top: 6px;
   }
 }

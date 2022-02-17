@@ -5,6 +5,12 @@
   margin-top: 28px;
   display: flex;
   padding: 20px 60px;
+  &.is-not-default{
+    margin:20px 25px 0 25px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    box-shadow: 0px 0px 10px 0px rgba(0,0,0,.1);
+  }
   .lf-con {
     flex: 1;
     position: relative;

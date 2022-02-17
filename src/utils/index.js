@@ -644,10 +644,10 @@ function isBase64 (str) {
 }
 
 //判断是否是商家入驻
-const isMerchantModule = (() => {
-  if (!isWeb) return false
-  return /\/subpages\/merchant/.test(location.pathname)
-})()
+const isMerchantModule = () => {
+  let pathname = isWeb ? location.pathname : getCurrentInstance().router.path
+  return /\/subpages\/merchant/.test(pathname)
+}
 
 function isUndefined (val) {
   return typeof val === 'undefined'

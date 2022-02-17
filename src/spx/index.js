@@ -1,7 +1,7 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
-import { isWeixin, isAlipay, log, isGoodsShelves, showToast } from '@/utils'
-import { SG_TOKEN, SG_USER_INFO } from '@/consts/localstorage'
+import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule } from '@/utils'
+import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
 import qs from 'qs'
 import configStore from '@/store'
 
@@ -18,25 +18,43 @@ class Spx {
   }
 
   getAuthToken () {
-    const authToken = Taro.getStorageSync(SG_TOKEN)
-    if (authToken && !this.get(SG_TOKEN)) {
-      this.set(SG_TOKEN, authToken)
+    let authToken
+    if (isMerchantModule()) {
+      authToken = Taro.getStorageSync(MERCHANT_TOKEN)
+      if (authToken && !this.get(MERCHANT_TOKEN)) {
+        this.set(MERCHANT_TOKEN, authToken)
+      }
+    } else {
+      authToken = Taro.getStorageSync(SG_TOKEN)
+      if (authToken && !this.get(SG_TOKEN)) {
+        this.set(SG_TOKEN, authToken)
+      }
     }
     return authToken
   }
 
   setAuthToken (token) {
-    this.set(SG_TOKEN, token)
-    Taro.setStorageSync(SG_TOKEN, token)
+    if (isMerchantModule()) {
+      this.set(MERCHANT_TOKEN, token)
+      Taro.setStorageSync(MERCHANT_TOKEN, token)
+    } else {
+      this.set(SG_TOKEN, token)
+      Taro.setStorageSync(SG_TOKEN, token)
+    }
   }
 
   logout () {
-    Taro.removeStorageSync(SG_TOKEN)
-    Taro.removeStorageSync(SG_USER_INFO)
-    store.dispatch({
-      type: 'user/clearUserInfo'
-    })
-    this.delete(SG_TOKEN, true)
+    if (isMerchantModule()) {
+      Taro.removeStorageSync(MERCHANT_TOKEN)
+      this.delete(MERCHANT_TOKEN, true)
+    } else {
+      Taro.removeStorageSync(SG_TOKEN)
+      Taro.removeStorageSync(SG_USER_INFO)
+      store.dispatch({
+        type: 'user/clearUserInfo'
+      })
+      this.delete(SG_TOKEN, true)
+    }
   }
 
   get (key, forceLocal) {

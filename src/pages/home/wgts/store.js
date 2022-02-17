@@ -50,8 +50,10 @@ export default class WgtStore extends Component {
         )} */}
         {base.title && (
           <View className='wgt-head'>
-            <Text className='wgt-title'>{base.title}</Text>
-            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            </View>
           </View>
         )}
         {data.map((item) => (

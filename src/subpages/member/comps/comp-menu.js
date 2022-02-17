@@ -49,7 +49,13 @@ const MENUS = [
     icon: 'm_menu_baoming.png',
     link: '/marketing/pages/member/item-activity'
   },
-  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' }
+  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' },
+  {
+    key: 'tenants',
+    name: '商家入驻',
+    icon: 'm_menu_merchat.png',
+    link: '/subpages/merchant/login'
+  }
   // {
   //   key: "complaint",
   //   name: "投诉记录",
@@ -63,11 +69,11 @@ function CompMenu (props) {
   if (!accessMenu) {
     return null
   }
-
   let menus = MENUS.filter((item) => accessMenu[item.key])
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
+  menus = menus.concat(MENUS[MENUS.length - 1]) 
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (

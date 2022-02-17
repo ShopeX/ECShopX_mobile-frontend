@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon, SpPage } from '@/components'
+import { SpToast, Loading, BackToTop, SpRecommend, SpCellCoupon, SpPage } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
@@ -32,7 +32,6 @@ import {
   WgtNearbyShop,
   WgtStore,
   WgtGoodsGridTab,
-  WgtGoodsFaverite,
   WgtHeadline,
   WgtFloorImg,
   WgtHotTopic
@@ -42,7 +41,8 @@ import CompHeader from './comps/comp-header'
 import './index.scss'
 
 @connect((store) => ({
-  store
+  store,
+  openRecommend: store.sys.openRecommend
 }))
 @withPager
 @withBackToTop
@@ -256,25 +256,14 @@ export default class StoreIndex extends Component {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
-
-    const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      title: 'itemName',
-      distributor_id: 'distributor_id',
-      origincountry_name: 'origincountry_name',
-      origincountry_img_url: 'origincountry_img_url',
-      promotion_activity_tag: 'promotion_activity',
-      type: 'type',
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      desc: 'brief'
-    })
-    this.setState({
-      likeList: [...this.state.likeList, ...nList]
-    })
+    let total = 0
+    if (this.props.openRecommend == 1) {
+      const { list, total_count } = await api.cart.likeList(query)
+      total = total_count
+      this.setState({
+        likeList: [...this.state.likeList, ...list]
+      })
+    }
 
     return {
       total
@@ -383,11 +372,12 @@ export default class StoreIndex extends Component {
                   )}
                   {item.name === 'showcase' && <WgtShowcase info={item} />}
                   {item.name === 'store' && <WgtStore info={item} />}
+                  {item.name === 'headline' && <WgtHeadline info={item} />}
                 </View>
               )
             })}
 
-            <WgtGoodsFaverite info={likeList} />
+            <SpRecommend className='recommend-block' info={likeList} />
           </View>
         </ScrollView>
 

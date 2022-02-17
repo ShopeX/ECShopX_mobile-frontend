@@ -40,8 +40,10 @@ export default class WgtGoodsFaverite extends Component {
     return (
       <View className='wgt_faverite'>
         <View className='wgt wgt-grid'>
-          <View className='wgt-grid__header'>
-            <Text className='wgt-grid__title'>猜你喜欢</Text>
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>猜你喜欢</Text>
+            </View>
           </View>
           <View className='wgt-body with-padding'>
             <View className='grid-goods out-padding grid-goods__type-grid'>

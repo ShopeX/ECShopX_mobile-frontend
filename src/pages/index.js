@@ -124,7 +124,9 @@ function Home () {
   return (
     <SpPage className='page-index' renderFloat={<CompFloatMenu />}>
       {/* header-block */}
-      <WgtHomeHeader>{searchComp && searchComp.config.fixTop && <SpSearch />}</WgtHomeHeader>
+      <WgtHomeHeader>
+        {searchComp && searchComp.config.fixTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
+      </WgtHomeHeader>
 
       <View className='home-body'>
         <HomeWgts wgts={filterWgts} />

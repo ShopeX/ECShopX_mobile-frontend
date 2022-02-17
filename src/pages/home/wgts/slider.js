@@ -77,7 +77,7 @@ export default class WgtSlider extends Component {
                     className={`slider-item ${config.rounded ? 'rounded' : null}`}
                   >
                     <View
-                      style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
+                      // style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
                       className='wrapper-img'
                       onClick={this.handleClickItem.bind(this, item)}
                     >
@@ -85,7 +85,8 @@ export default class WgtSlider extends Component {
                         img-class='slider-item__img'
                         src={item.imgUrl}
                         mode='widthFix'
-                        width='750'
+                        width='718'
+                        height='100%'
                         lazyLoad
                       />
                     </View>

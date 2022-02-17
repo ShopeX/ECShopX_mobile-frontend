@@ -65,11 +65,12 @@ import { getDtidIdUrl } from '@/utils/helper'
 import './espier-detail.scss'
 
 @connect(
-  ({ cart, user, colors }) => ({
+  ({ cart, user, colors, sys }) => ({
     cart,
     colors: colors.current,
     favs: user.favs,
-    showLikeList: cart.showLikeList
+    showLikeList: cart.showLikeList,
+    openRecommend: sys.openRecommend
   }),
   (dispatch) => ({
     onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
@@ -566,12 +567,13 @@ export default class EspierDetail extends Component {
 
   async goodLikeList (query) {
     const { id } = this.$instance.router.params
-    let info
+    let info = {}
     if (this.isPointitemGood()) {
       info = await api.pointitem.likeList({
         item_id: id
       })
-    } else {
+    }
+    if (this.props.openRecommend == 1) {
       info = await api.cart.likeList(query)
     }
     return info
@@ -584,7 +586,7 @@ export default class EspierDetail extends Component {
       pageSize
     }
 
-    const { list, total_count: total } = await this.goodLikeList(query)
+    const { list = [], total_count: total } = await this.goodLikeList(query)
 
     this.setState({
       likeList: [...this.state.likeList, ...list]

@@ -1,12 +1,12 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import { styleNames } from '@/utils'
+import { styleNames, classNames } from '@/utils'
 
 import './comp-vipcard.scss'
 
 function CompVipCard (props) {
-  const { info, onLink, userInfo } = props
-  console.log('vip-info==', info, userInfo)
+  const { info, onLink, userInfo, memberConfig } = props
+  console.log('vip-info==', info, userInfo, memberConfig)
   const { isVip, vipType, endTime } = info
   const { user_card_code } = userInfo
   const notVip = (
@@ -36,13 +36,34 @@ function CompVipCard (props) {
       <View className='expire-time'>{endTime}到期</View>
     </View>
   )
+  const renderBackgroundImage = () => {
+    const defaultImg = (index) => `url(${process.env.APP_IMAGE_CDN}/vip${index}.png)`
+    //背景图
+    let backgroundImg
+    //是否是系统默认图片
+    let isSystemDefaultImg = true
+    if (!isVip) {
+      isSystemDefaultImg = memberConfig.defaultImg === ''
+      backgroundImg = isSystemDefaultImg ? defaultImg(1) : `url(${memberConfig.defaultImg})`
+    } else {
+      isSystemDefaultImg = memberConfig.vipImg === ''
+      backgroundImg = isSystemDefaultImg
+        ? defaultImg(vipType == 'svip' ? 3 : 2)
+        : `url(${memberConfig.vipImg})`
+    }
+    return {
+      is_default: isSystemDefaultImg,
+      background: backgroundImg
+    }
+  }
+  const { is_default, background } = renderBackgroundImage()
   return (
     <View
-      className='comp-vipcard'
+      className={classNames('comp-vipcard', {
+        'is-not-default': !is_default
+      })}
       style={styleNames({
-        'background-image': `url(${process.env.APP_IMAGE_CDN}/vip${
-          !isVip ? 1 : vipType == 'svip' ? 3 : 2
-        }.png)`
+        'background-image': background
       })}
       onClick={onLink}
     >

@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
 import { isAlipay, isWeixin, isWeb, isMerchantModule, getExtConfigData } from '@/utils'
@@ -117,8 +117,8 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      let url = isMerchantModule ? '/subpages/merchant/login' : '/subpages/member/index'
-      Taro.redirectTo({ url })
+      let url = isMerchantModule() ? '/subpages/merchant/login' : '/subpages/member/index'
+      getCurrentInstance().router.path !== url && Taro.redirectTo({ url })
     }, 300)
   }
 
