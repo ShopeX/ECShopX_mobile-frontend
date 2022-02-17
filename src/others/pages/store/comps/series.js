@@ -92,9 +92,7 @@ export default class Series extends Component {
                   currentIndex == index ? 'category-nav__content-checked' : null
                 )}
                 style={
-                  currentIndex == index
-                    ? `border-left: 7rpx solid ${colors.data[0].primary};`
-                    : null
+                  currentIndex == index ? `border-left: 7rpx solid var(--color-primary);` : null
                 }
                 key={`${item.name}${index}`}
                 onClick={this.handleClickCategoryNav.bind(this, index)}

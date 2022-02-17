@@ -44,7 +44,7 @@ export default class AtTabslist extends Component {
             <View
               key={`${index}1`}
               className='tab_li'
-              style={current === index ? 'color:' + colors.data[0].primary : null}
+              style={current === index ? 'color:var(--color-primary)' : null}
               onClick={this.handleClick.bind(this, index)}
             >
               {item.tabTitle}

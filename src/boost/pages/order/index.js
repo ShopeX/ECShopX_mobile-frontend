@@ -138,7 +138,7 @@ export default class Order extends Component {
               <View className='foot'>
                 <View
                   className='check'
-                  style={`background: ${colors.data[0].primary}`}
+                  style='background: var(--color-primary)'
                   onClick={this.handleItem.bind(this, item)}
                 >
                   订单详情

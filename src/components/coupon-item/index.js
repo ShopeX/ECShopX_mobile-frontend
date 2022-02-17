@@ -338,7 +338,7 @@ export default class CouponItem extends Component {
                   'coupon-item__name',
                   info.status === '2' ? 'coupon-item__name-not' : null
                 )}
-                style={isDisabled ? `background: #d7d7d7` : `background: ${colors.data[0].primary}`}
+                style={isDisabled ? `background: #d7d7d7` : `background: var(--color-primary)`}
               >
                 <View className='coupon-item___number'>
                   <Text className='coupon-item___number_text'>会员折扣</Text>
