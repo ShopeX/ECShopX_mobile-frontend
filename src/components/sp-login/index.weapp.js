@@ -1,17 +1,17 @@
 import Taro from '@tarojs/taro'
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
-import { SG_SHARER_UID, SG_TRACK_PARAMS } from '@/consts'
+import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_SHARE_CODE } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
-function SpLogin (props) {
+function SpLogin(props) {
   const { children, className, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
     policyUpdateHook: () => {
@@ -39,7 +39,8 @@ function SpLogin (props) {
         iv,
         cloudID,
         user_type: 'wechat',
-        auth_type: 'wxapp'
+        auth_type: 'wxapp',
+        purchanse_share_code: Taro.getStorageSync(SG_SHARE_CODE) || ''
       }
       Taro.showLoading()
 
@@ -49,13 +50,16 @@ function SpLogin (props) {
         params['uid'] = uid
       }
 
-      const { token, is_new } = await api.wx.newlogin(params)
-      if (token) {
-        setToken(token)
+      try {
+        const { token, is_new } = await api.wx.newlogin(params)
+        if (token) {
+          setToken(token)
+          Taro.hideLoading()
+          showToast('恭喜您，注册成功')
+        }
+      } catch (error) {
+        Taro.hideLoading()
       }
-      showToast('恭喜您，注册成功')
-
-      // Taro.hideLoading();
     }
   }
 

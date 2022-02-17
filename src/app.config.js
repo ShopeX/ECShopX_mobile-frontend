@@ -104,7 +104,8 @@ export default {
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
         'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-        'pages/member/qrcode'
+        'pages/member/qrcode',
+        'pages/member/purchase' //员工内购
       ]
     },
     {

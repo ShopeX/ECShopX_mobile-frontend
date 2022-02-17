@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Button, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -16,7 +16,7 @@ const initState = {
   privacy: ''
 }
 
-function SpPrivacyModal (props) {
+function SpPrivacyModal(props) {
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
   const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
   const [info, setInfo] = useImmer(initState)

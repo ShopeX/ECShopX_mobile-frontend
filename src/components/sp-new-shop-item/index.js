@@ -1,4 +1,4 @@
-import { useMemo, memo, useState, useCallback, useEffect } from 'react'
+import React, { useMemo, memo, useState, useCallback, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'

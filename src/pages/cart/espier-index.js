@@ -42,7 +42,7 @@ const initialState = {
   policyModal: false // 隐私弹框
 }
 
-function CartIndex () {
+function CartIndex() {
   const { isLogin } = useLogin({
     autoLogin: true,
     policyUpdateHook: () => onPolicyChange(true)
@@ -438,7 +438,7 @@ function CartIndex () {
 
       {validCart.length == 0 && invalidCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
-          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index')}>
+          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
             去选购
           </AtButton>
         </SpDefault>

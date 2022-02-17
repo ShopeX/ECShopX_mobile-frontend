@@ -1,7 +1,9 @@
 import Taro from '@tarojs/taro'
+import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, isWeb } from '@/utils'
+import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
 
@@ -55,6 +57,12 @@ const MENUS = [
     name: '商家入驻',
     icon: 'm_menu_merchat.png',
     link: '/subpages/merchant/login'
+  },
+  {
+    key: 'purchase',
+    name: '内购',
+    icon: 'm_menu_tuangou.png',
+    link: '/marketing/pages/member/purchase'
   }
   // {
   //   key: "complaint",
@@ -64,8 +72,9 @@ const MENUS = [
   // },
 ]
 
-function CompMenu (props) {
+function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
+  const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null
   }
@@ -73,7 +82,10 @@ function CompMenu (props) {
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
-  menus = menus.concat(MENUS[MENUS.length - 1]) 
+  menus = menus.concat(MENUS[MENUS.length - 1])
+  if (!config.whitelist_status) {
+    menus = menus.filter((m_item) => m_item.key != 'purchase')
+  }
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (
