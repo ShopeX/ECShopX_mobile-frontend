@@ -1,9 +1,9 @@
 {
   "extEnable": true,
-  "extAppid": "wx4f25fb911393034b",
+  "extAppid": "{小程序APPID}",
   "ext": {
-    "company_id": "21",
-    "appid": "wx4f25fb911393034b",
+    "company_id": "1",
+    "appid": "{小程序APPID}",
     "wxa_name": "通用小程序",
     "ali_isvid":""
   },

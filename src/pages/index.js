@@ -25,7 +25,7 @@ const initState = {
   showBackToTop: false
 }
 
-function Home () {
+function Home() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
@@ -124,7 +124,9 @@ function Home () {
   return (
     <SpPage className='page-index' renderFloat={<CompFloatMenu />}>
       {/* header-block */}
-      <WgtHomeHeader>{searchComp && searchComp.config.fixTop && <SpSearch />}</WgtHomeHeader>
+      <WgtHomeHeader>
+        {searchComp && searchComp.config.fixTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
+      </WgtHomeHeader>
 
       <View className='home-body'>
         <HomeWgts wgts={filterWgts} />

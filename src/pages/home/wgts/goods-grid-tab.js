@@ -7,7 +7,7 @@ import { classNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
 import './goods-grid-tab.scss'
 
-function WgtGoodsGridTab (props) {
+function WgtGoodsGridTab(props) {
   const { info } = props
   if (!info) {
     return null
@@ -16,6 +16,15 @@ function WgtGoodsGridTab (props) {
   const [current, setCurrent] = useState(0)
 
   const { base, config, list } = info
+
+  const handleClickMore = () => {
+    const { moreLink } = info.config
+    if (moreLink) {
+      linkPage(moreLink)
+    } else {
+      this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
+    }
+  }
 
   return (
     <View
@@ -35,6 +44,11 @@ function WgtGoodsGridTab (props) {
             <Text className='wgt-title'>{base.title}</Text>
             <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
+          {config.moreLink.linkPage && (
+            <View className='wgt-more' onClick={handleClickMore}>
+              <View className='three-dot'></View>
+            </View>
+          )}
         </View>
       )}
       <View className='wgt-body'>

@@ -3,7 +3,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer, classNames, linkPage } from '@/utils'
-import { SpImg } from '@/components'
 import { getDistributorId } from '@/utils/helper'
 import { withLoadMore } from '@/hocs'
 
@@ -16,7 +15,7 @@ export default class WgtGoodsScroll extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +23,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  setTimer () {
+  setTimer() {
     const { info } = this.props
     const { config } = info
     if (config.lastSeconds) {
@@ -35,15 +34,15 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setTimer()
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id, goodsId } = item
     // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -79,7 +78,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null
@@ -97,7 +96,7 @@ export default class WgtGoodsScroll extends Component {
               {config.type === 'goods' ? (
                 <Text className='wgt-subtitle'>{base.subtitle}</Text>
               ) : (
-                <View>
+                <View className='wgt-timer'>
                   {timer && config.lastSeconds != 0 ? (
                     <View>
                       <AtCountdown
@@ -108,7 +107,9 @@ export default class WgtGoodsScroll extends Component {
                         minutes={timer.mm}
                         seconds={timer.ss}
                       />
-                      {config.status === 'in_the_notice' ? '后开始' : '后结束'}
+                      <Text className='time-fonts'>
+                        {config.status === 'in_the_notice' ? '后开始' : '后结束'}
+                      </Text>
                     </View>
                   ) : (
                     <View className='countdown__time'>活动已结束</View>
@@ -116,9 +117,11 @@ export default class WgtGoodsScroll extends Component {
                 </View>
               )}
             </View>
-            {/* <View className='wgt__more' onClick={this.handleClickMore}>
-              <View className='three-dot'></View>
-            </View> */}
+            {config.moreLink.linkPage && (
+              <View className='wgt-more' onClick={this.handleClickMore}>
+                <View className='three-dot'></View>
+              </View>
+            )}
           </View>
         )}
         <View className='wgt-body'>
@@ -153,13 +156,7 @@ export default class WgtGoodsScroll extends Component {
                     </View>
                   )}
                   <View className='thumbnail'>
-                    <SpImg
-                      img-class='goods-img'
-                      src={item.imgUrl}
-                      mode='aspectFill'
-                      width='240'
-                      lazyLoad
-                    />
+                    <Image src={item.imgUrl} className='goods-img' lazyLoad />
                   </View>
                   {item.type === '1' && (
                     <View className='nationalInfo'>
@@ -182,6 +179,14 @@ export default class WgtGoodsScroll extends Component {
                 </View>
               )
             })}
+
+            <View className='more_img' onClick={this.handleClickMore}>
+              <View className='img'>
+                <Image src={base.backgroundImg} className='goods-img' lazyLoad />
+              </View>
+              <View className='text'>查看更多</View>
+              {/* <View className='desc'>查看更多</View> */}
+            </View>
           </ScrollView>
         </View>
       </View>

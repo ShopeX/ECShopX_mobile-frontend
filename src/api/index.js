@@ -24,7 +24,7 @@ import * as pointitem from './pointitem'
 import * as liveroom from './liveroom'
 import * as wgts from './wgts'
 import * as merchant from './merchant'
-
+import * as purchase from './purchase'
 import * as guide from './guide'
 
 export default {
@@ -54,5 +54,6 @@ export default {
   alipay,
   liveroom,
   wgts,
-  merchant
+  merchant,
+  purchase
 }

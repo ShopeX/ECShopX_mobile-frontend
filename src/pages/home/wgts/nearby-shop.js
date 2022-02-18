@@ -14,7 +14,7 @@ const initialState = {
   scrollLeft: 0
 }
 
-function WgtNearbyShop (props) {
+function WgtNearbyShop(props) {
   const { info } = props
   if (!info) {
     return null
@@ -75,7 +75,7 @@ function WgtNearbyShop (props) {
               <Text className='wgt-title'>{base.title}</Text>
               <Text className='wgt-subtitle'>{base.subtitle}</Text>
             </View>
-            <Text className='wgt-more' onClick={showMore}>
+            <Text className='more' onClick={showMore}>
               查看更多
             </Text>
           </View>

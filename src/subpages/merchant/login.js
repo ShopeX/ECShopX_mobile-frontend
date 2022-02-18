@@ -104,7 +104,6 @@ const Login = () => {
       const { token } = await api.merchant.login({ mobile: form.mobile, vcode: form.vcode })
       if (token) {
         S.setAuthToken(token)
-
         const { step } = await api.merchant.getStep()
         const applyUrl = '/subpages/merchant/apply'
         const applyAudit = '/subpages/merchant/audit'

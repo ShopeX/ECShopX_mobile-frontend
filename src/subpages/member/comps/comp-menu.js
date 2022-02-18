@@ -1,7 +1,9 @@
 import Taro from '@tarojs/taro'
+import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, isWeb } from '@/utils'
+import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
 
@@ -49,7 +51,25 @@ const MENUS = [
     icon: 'm_menu_baoming.png',
     link: '/marketing/pages/member/item-activity'
   },
-  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' }
+  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' },
+  {
+    key: 'purchase',
+    name: '内购',
+    icon: 'm_menu_tuangou.png',
+    link: '/marketing/pages/member/purchase'
+  },
+  {
+    key: 'tenants',
+    name: '商家入驻',
+    icon: 'm_menu_merchat.png',
+    link: '/subpages/merchant/login'
+  },
+  {
+    key: 'purchase',
+    name: '内购',
+    icon: 'm_menu_tuangou.png',
+    link: '/marketing/pages/member/purchase'
+  }
   // {
   //   key: "complaint",
   //   name: "投诉记录",
@@ -58,16 +78,21 @@ const MENUS = [
   // },
 ]
 
-function CompMenu (props) {
+function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
+  const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null
   }
-
   let menus = MENUS.filter((item) => accessMenu[item.key])
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
+  if (!config.whitelist_status) {
+    menus = menus.filter((m_item) => m_item.key != 'purchase')
+  }
+  menus = menus.concat(MENUS[MENUS.length - 2]).concat(MENUS[MENUS.length - 1])
+
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (

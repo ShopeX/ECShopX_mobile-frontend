@@ -12,7 +12,7 @@ export default class WgtStore extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -30,7 +30,7 @@ export default class WgtStore extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null
@@ -50,8 +50,10 @@ export default class WgtStore extends Component {
         )} */}
         {base.title && (
           <View className='wgt-head'>
-            <Text className='wgt-title'>{base.title}</Text>
-            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            </View>
           </View>
         )}
         {data.map((item) => (

@@ -20,20 +20,20 @@ import './app.scss'
 
 const store = configStore()
 class App extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.getSystemConfig()
     // if ( S.getAuthToken() ) {
     //   store.dispatch(fetchUserFavs());
     // }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (isWeixin) {
       checkAppVersion()
     }
   }
 
-  componentDidShow (options) {
+  componentDidShow(options) {
     if (isNavbar()) {
       document.querySelector('title').addEventListener(
         'DOMSubtreeModified',
@@ -52,7 +52,7 @@ class App extends Component {
     }
   }
 
-  async getSystemConfig () {
+  async getSystemConfig() {
     const {
       echat = {},
       meiqia = {},
@@ -76,12 +76,12 @@ class App extends Component {
     // Taro.setStorageSync(SG_MEIQIA, meiqia);
     // // 一洽客服配置
     // Taro.setStorageSync(SG_YIQIA, echat);
-    // // 白名单配置、门店配置、图片存储信息
+    // 白名单配置、门店配置、图片存储信息
     // Taro.setStorageSync(SG_APP_CONFIG, {
-    //   whitelist_status,
-    //   nostores_status,
-    //   openStore: !nostores_status,
-    //   disk_driver
+    // whitelist_status,
+    // nostores_status,
+    // openStore: !nostores_status,
+    // disk_driver
     // })
     // 分享时是否携带参数
     Taro.setStorageSync('distributor_param_status', distributor_param_status)
@@ -124,9 +124,9 @@ class App extends Component {
     }
   }
 
-  componentDidCatchError () {}
+  componentDidCatchError() {}
 
-  render () {
+  render() {
     return <Provider store={store}>{this.props.children}</Provider>
   }
 }

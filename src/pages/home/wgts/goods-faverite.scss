@@ -5,20 +5,3 @@
   padding: 0 24px;
   box-sizing: border-box;
 }
-
-.wgt-grid {
-  &__header {
-    display: block !important;
-    text-align: center;
-    margin-bottom: 44px;
-  }
-  &__title {
-    text-align: center;
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: 28px;
-    padding: 56px 0 13px 28px;
-    border-bottom: 1px solid $color-brand-primary;
-    color: $color-brand-primary;
-  }
-}

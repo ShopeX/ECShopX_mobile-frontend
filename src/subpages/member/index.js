@@ -1,10 +1,16 @@
-import Taro, { useShareAppMessage, getCurrentPages, getCurrentInstance } from '@tarojs/taro'
+import Taro, {
+  useDidShow,
+  useShareAppMessage,
+  getCurrentPages,
+  getCurrentInstance
+} from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
+import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN } from '@/consts'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
+
 import {
-  TabBar,
   SpLogin,
   SpImage,
   SpPrice,
@@ -23,6 +29,7 @@ import {
   showToast,
   showModal,
   isWeixin,
+  normalizeQuerys,
   log
 } from '@/utils'
 import { useLogin } from '@/hooks'
@@ -32,6 +39,7 @@ import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
+import S from '@/spx'
 
 const initialConfigState = {
   banner: {
@@ -56,14 +64,20 @@ const initialConfigState = {
     recharge: false, // 储值
     ziti_order: false, // 自提
     share_enable: false, // 分享
-    memberinfo_enable: false // 个人信息
+    memberinfo_enable: false, // 个人信息
+    tenants: true, //商家入驻
+    purchase: true // 员工内购
   },
   infoAppId: '',
   infoPage: '',
   infoUrlIsOpen: true,
   pointAppId: '',
   pointPage: '',
-  pointUrlIsOpen: true
+  pointUrlIsOpen: true,
+  memberConfig: {
+    defaultImg: false,
+    vipImg: false
+  }
 }
 
 const initialState = {
@@ -81,7 +95,7 @@ const initialState = {
   zitiNum: 0
 }
 
-function MemberIndex (props) {
+function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const { isLogin, updatePolicyTime, getUserInfoAuth } = useLogin({
     autoLogin: true,
@@ -95,16 +109,37 @@ function MemberIndex (props) {
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
+  const instance = getCurrentInstance()
+  const code = instance.router.params.code
+  code && Taro.setStorageSync(SG_SHARE_CODE, code)
 
   useEffect(() => {
     if (isLogin) {
       getMemberCenterData()
+      setMemberBackground()
+      const storageCode = Taro.getStorageSync(SG_SHARE_CODE)
+      storageCode && getCode(storageCode)
     }
   }, [isLogin])
 
   useEffect(() => {
     getMemberCenterConfig()
+    getSettings()
   }, [])
+
+  useDidShow(() => {
+    if (S.get(MERCHANT_TOKEN, true)) {
+      S.delete(MERCHANT_TOKEN, true)
+    }
+  })
+
+  async function getSettings() {
+    const { whitelist_status = false } = await api.shop.homeSetting()
+    // 白名单配置
+    Taro.setStorageSync(SG_APP_CONFIG, {
+      whitelist_status
+    })
+  }
 
   // 分享
   useShareAppMessage(async (res) => {
@@ -119,6 +154,15 @@ function MemberIndex (props) {
       path: '/pages/index'
     }
   })
+
+  const getCode = async (storageCode) => {
+    try {
+      await api.purchase.purchaseBind({ code: storageCode })
+      Taro.removeStorageSync(SG_SHARE_CODE)
+    } catch (error) {
+      Taro.removeStorageSync(SG_SHARE_CODE)
+    }
+  }
 
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
@@ -140,6 +184,7 @@ function MemberIndex (props) {
     let banner,
       menu,
       redirectInfo = {}
+
     if (bannerRes.list.length > 0) {
       const { app_id, is_show, login_banner, no_login_banner, page, url_is_open } =
         bannerRes.list[0].params.data
@@ -153,7 +198,7 @@ function MemberIndex (props) {
       }
     }
     if (menuRes.list.length > 0) {
-      menu = menuRes.list[0].params.data
+      menu = { ...menuRes.list[0].params.data, purchase: true }
     }
     if (redirectRes.list.length > 0) {
       const {
@@ -185,6 +230,17 @@ function MemberIndex (props) {
       draft.pointAppId = redirectInfo.point_app_id
       draft.pointPage = redirectInfo.point_page
       draft.pointUrlIsOpen = redirectInfo.point_url_is_open
+    })
+  }
+
+  const setMemberBackground = async () => {
+    let memberRes = await api.member.memberInfo()
+    setConfig((draft) => {
+      draft.memberConfig = {
+        defaultImg: memberRes?.cardInfo?.background_pic_url,
+        vipImg: memberRes?.vipgrade?.background_pic_url,
+        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
+      }
     })
   }
 
@@ -236,7 +292,7 @@ function MemberIndex (props) {
 
   const handleClickService = async (item) => {
     const { link, key } = item
-    await getUserInfoAuth()
+    await getUserInfoAuth(key !== 'tenants')
     // 分销推广
     if (key == 'popularize') {
       // 已经是分销员
@@ -305,12 +361,18 @@ function MemberIndex (props) {
 
   // console.log(`member page:`, state, config);
 
+  const { memberConfig } = config
+
+  console.log('====config===', config.menu)
+
   return (
     <SpPage className='pages-member-index'>
       <View
         className='header-block'
         style={styleNames({
-          'background-image': `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
+          'background-image': memberConfig.backgroundImg
+            ? `url(${memberConfig.backgroundImg})`
+            : `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
         })}
       >
         <View className='header-hd'>
@@ -365,6 +427,7 @@ function MemberIndex (props) {
               info={vipInfo}
               onLink={handleClickLink.bind(this, '/subpage/pages/vip/vipgrades')}
               userInfo={userInfo}
+              memberConfig={memberConfig}
             />
           )}
         </View>
