@@ -1,19 +1,16 @@
 .sp-recommend {
   margin-top: 30px;
   &-hd {
-    padding: 0 24px;
-    margin-bottom: 10px;
+    padding: 10px 16px;
     display: flex;
-    justify-content: center;
-    .recommend-icon {
-      width: auto;
-      height: 50px;
-      /*  #ifdef  h5  */
-      img {
-        height: 50px;
-      }
-      /*  #endif  */
-    }
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-title {
+    color: #222;
+    font-size: 36px;
+    font-weight: bold;
+    margin-right: 24px;
   }
   &-bd {
     display: flex;
