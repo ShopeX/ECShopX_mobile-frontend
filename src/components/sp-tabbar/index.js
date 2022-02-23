@@ -8,12 +8,12 @@ import { classNames, styleNames, getCurrentRoute } from '@/utils'
 import './index.scss'
 
 function SpTabbar(props) {
-  const { tabbar } = useSelector((state) => state.sys)
+  const { tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { className } = props
 
-  const { color, backgroundColor, selectedColor } = tabbar.config
-  const tabList = tabbar.data.map((item) => {
+  const { color, backgroundColor, selectedColor } = tabbar?.config || {}
+  const tabList = tabbar?.data.map((item) => {
     return {
       title: item.text,
       name: item.name,
@@ -33,7 +33,7 @@ function SpTabbar(props) {
   const pages = Taro.getCurrentPages()
   if (pages.length > 0) {
     const currentPage = pages[pages.length - 1].route
-    currentIndex = tabList.findIndex((tab) => TABBAR_PATH[tab.name] == `/${currentPage}`)
+    currentIndex = tabList?.findIndex((tab) => TABBAR_PATH[tab.name] == `/${currentPage}`)
   }
 
   console.log('currentIndex:', currentIndex)
