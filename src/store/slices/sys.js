@@ -21,33 +21,34 @@ const initialState = {
         iconPath: '',
         name: 'home',
         pagePath: '/pages/index',
-        selectedIconPath: '',
+        selectedIconPath: 'home',
         text: '首页'
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'category',
         pagePath: '/pages/category/index',
-        selectedIconPath: '',
+        selectedIconPath: 'category',
         text: '分类'
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'cart',
         pagePath: '/pages/cart/espier-index',
-        selectedIconPath: '',
+        selectedIconPath: 'cart',
         text: '购物车',
         max: 99
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'member',
         pagePath: '/subpages/member/index',
-        selectedIconPath: '',
+        selectedIconPath: 'member',
         text: '我的'
       }
     ]
-  }
+  },
+  isCustomTabBar: false
 }
 
 const sysSlice = createSlice({
@@ -55,11 +56,12 @@ const sysSlice = createSlice({
   initialState,
   reducers: {
     setSysConfig: (state, { payload }) => {
-      const { colorPrimary } = payload
+      const { colorPrimary, tabbar } = payload
       const rgb = hex2rgb(colorPrimary ? colorPrimary : DEFAULT_THEME.colorPrimary).join(',')
       return {
         ...state,
         ...payload,
+        tabbar: tabbar ? tabbar : initialState.tabbar,
         rgb
       }
     },
@@ -68,6 +70,13 @@ const sysSlice = createSlice({
       return {
         ...state,
         pageTitle
+      }
+    },
+    updateIsCustomTabBar: (state, { payload }) => {
+      const { isCustomTabBar } = payload
+      return {
+        ...state,
+        isCustomTabBar
       }
     }
   }
