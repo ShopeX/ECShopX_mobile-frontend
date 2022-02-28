@@ -4,7 +4,7 @@ import { styleNames, classNames } from '@/utils'
 
 import './comp-vipcard.scss'
 
-function CompVipCard (props) {
+function CompVipCard(props) {
   const { info, onLink, userInfo, memberConfig } = props
   console.log('vip-info==', info, userInfo, memberConfig)
   const { isVip, vipType, endTime } = info

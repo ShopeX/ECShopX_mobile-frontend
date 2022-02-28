@@ -6,7 +6,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_SHARE_CODE, SG_APP_CONFIG , MERCHANT_TOKEN } from '@/consts'
+import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN } from '@/consts'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 

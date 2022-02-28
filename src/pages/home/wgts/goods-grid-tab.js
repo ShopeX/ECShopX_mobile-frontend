@@ -7,7 +7,7 @@ import { classNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
 import './goods-grid-tab.scss'
 
-function WgtGoodsGridTab (props) {
+function WgtGoodsGridTab(props) {
   const { info } = props
   if (!info) {
     return null

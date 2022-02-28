@@ -47,7 +47,7 @@ import './index.scss'
 @withPager
 @withBackToTop
 export default class StoreIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -86,7 +86,7 @@ export default class StoreIndex extends Component {
     this.$instance = getCurrentInstance()
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = await normalizeQuerys(this.$instance.router.params)
     this.setState(
       {
@@ -123,7 +123,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     if (res.from === 'button') {
       console.log(res.target)
     }
@@ -133,7 +133,7 @@ export default class StoreIndex extends Component {
     }
   }
 
-  async fetchIsValid () {
+  async fetchIsValid() {
     let isVaild = await merchantIsvaild({ distributor_id: this.state.dtid }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     // console.log('isVaild=========',isVaild);
     this.setState({
@@ -141,7 +141,7 @@ export default class StoreIndex extends Component {
     })
   }
 
-  async fetchCouponList () {
+  async fetchCouponList() {
     const params = {
       page_no: 1,
       page_size: 5,
@@ -154,7 +154,7 @@ export default class StoreIndex extends Component {
     })
   }
 
-  async fetchCouponList () {
+  async fetchCouponList() {
     const params = {
       page_no: 1,
       page_size: 5,
@@ -167,7 +167,7 @@ export default class StoreIndex extends Component {
     })
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const distributorId = this.state.dtid
     let id = ''
     let storeInfo = null
@@ -307,7 +307,7 @@ export default class StoreIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       wgts,
       storeInfo,

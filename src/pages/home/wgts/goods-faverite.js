@@ -20,7 +20,7 @@ export default class WgtGoodsFaverite extends Component {
     addGlobalClass: true
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -31,7 +31,7 @@ export default class WgtGoodsFaverite extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null

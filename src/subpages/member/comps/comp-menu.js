@@ -57,12 +57,6 @@ const MENUS = [
     name: '内购',
     icon: 'm_menu_tuangou.png',
     link: '/marketing/pages/member/purchase'
-  },
-  {
-    key: 'tenants',
-    name: '商家入驻',
-    icon: 'm_menu_merchat.png',
-    link: '/subpages/merchant/login'
   }
   // {
   //   key: "complaint",
@@ -72,8 +66,17 @@ const MENUS = [
   // },
 ]
 
+const MENUS_CONST = [
+  {
+    key: 'tenants',
+    name: '商家入驻',
+    icon: 'm_menu_merchat.png',
+    link: '/subpages/merchant/login'
+  }
+]
+
 function CompMenu(props) {
-  const { accessMenu, onLink = () => { }, isPromoter } = props
+  const { accessMenu, onLink = () => {}, isPromoter } = props
   const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null
@@ -85,7 +88,7 @@ function CompMenu(props) {
   if (!config.whitelist_status) {
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
-  menus = menus.concat(MENUS[MENUS.length - 1])
+  menus = menus.concat(MENUS_CONST)
 
   return (
     <View className='comp-menu'>

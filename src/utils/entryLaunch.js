@@ -6,11 +6,11 @@ import { showToast, log, isArray, isWeb } from '@/utils'
 const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
 const $instance = getCurrentInstance()
 class EntryLaunch {
-  constructor () {
+  constructor() {
     this.init()
   }
 
-  init () {
+  init() {
     if (Taro.getEnv() == Taro.ENV_TYPE.WEB) {
       this.initAMap()
     }
@@ -19,7 +19,7 @@ class EntryLaunch {
   /**
    * @function 获取小程序路由参数
    */
-  getRouteParams () {
+  getRouteParams() {
     const { params } = $instance.router
     let options = {}
     if (params.scene) {
@@ -35,7 +35,7 @@ class EntryLaunch {
   /**
    * @function 获取小程序启动参数
    */
-  getLaunchParams () {
+  getLaunchParams() {
     console.log(`app launch options:`, Taro.getLaunchOptionsSync())
     const { query } = Taro.getLaunchOptionsSync()
     let options = {
@@ -53,7 +53,7 @@ class EntryLaunch {
   /**
    * @function 初始化高德地图配置
    */
-  initAMap () {
+  initAMap() {
     AMap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
       this.geolocation = new AMap.Geolocation({
         enableHighAccuracy: true, //是否使用高精度定位，默认:true
@@ -71,7 +71,7 @@ class EntryLaunch {
   /**
    * @function 获取当前店铺
    */
-  async getCurrentStore () {
+  async getCurrentStore() {
     const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
@@ -117,7 +117,7 @@ class EntryLaunch {
   /**
    * @function 根据经纬度获取定位信息
    */
-  async getLocationInfo () {
+  async getLocationInfo() {
     if (process.env.TARO_ENV === 'weapp') {
       return new Promise((resolve, reject) => {
         Taro.getLocation({
@@ -153,7 +153,7 @@ class EntryLaunch {
     }
   }
 
-  async getCurrentAddressInfo () {
+  async getCurrentAddressInfo() {
     const { lng, lat } = await this.getLocationInfo()
     let res = {}
     if (lat) {
@@ -165,7 +165,7 @@ class EntryLaunch {
   /**
    * @function 根据地址解析经纬度
    */
-  async getLnglatByAddress (address) {
+  async getLnglatByAddress(address) {
     const res = await Taro.request({
       url: `${geocodeUrl}/geo`,
       data: {
@@ -200,7 +200,7 @@ class EntryLaunch {
    * @function 根据经纬度解析地址
    * @params lnglat Array
    */
-  getAddressByLnglat (lng, lat) {
+  getAddressByLnglat(lng, lat) {
     return new Promise((reslove, reject) => {
       this.geocoder.getAddress([lng, lat], function (status, result) {
         if (status === 'complete' && result.regeocode) {
@@ -212,7 +212,7 @@ class EntryLaunch {
     })
   }
 
-  async getAddressByLnglatWebAPI (lng, lat) {
+  async getAddressByLnglatWebAPI(lng, lat) {
     const res = await Taro.request({
       url: `${geocodeUrl}/regeo`,
       data: {
@@ -245,7 +245,7 @@ class EntryLaunch {
    * @returns Boolean
    * @description 标准版有门店，并且根据后台设置是否展示门店；平台版不显示门店
    */
-  isOpenStore () {
+  isOpenStore() {
     const { nostores_status } = Taro.getStorageSync('otherSetting')
     if (process.env.APP_PLATFORM === 'standard') {
       return !nostores_status
@@ -257,7 +257,7 @@ class EntryLaunch {
   /**
    * 判断是否开启定位，去获取经纬度，根据经纬度去获取地址
    */
-  async isOpenPosition (callback) {
+  async isOpenPosition(callback) {
     if (process.env.TARO_ENV === 'weapp') {
       const { authSetting } = await Taro.getSetting()
       if (!authSetting['scope.userLocation']) {

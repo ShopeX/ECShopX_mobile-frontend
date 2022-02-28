@@ -9,7 +9,7 @@ const store = configStore()
 
 const globalData = {}
 class Spx {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.hooks = []
     this.options = {
       autoRefreshToken: true,
@@ -17,7 +17,7 @@ class Spx {
     }
   }
 
-  getAuthToken () {
+  getAuthToken() {
     let authToken
     if (isMerchantModule()) {
       authToken = Taro.getStorageSync(MERCHANT_TOKEN)
@@ -33,7 +33,7 @@ class Spx {
     return authToken
   }
 
-  setAuthToken (token) {
+  setAuthToken(token) {
     if (isMerchantModule()) {
       this.set(MERCHANT_TOKEN, token)
       Taro.setStorageSync(MERCHANT_TOKEN, token)
@@ -43,7 +43,7 @@ class Spx {
     }
   }
 
-  logout () {
+  logout() {
     if (isMerchantModule()) {
       Taro.removeStorageSync(MERCHANT_TOKEN)
       this.delete(MERCHANT_TOKEN, true)
@@ -57,7 +57,7 @@ class Spx {
     }
   }
 
-  get (key, forceLocal) {
+  get(key, forceLocal) {
     let val = globalData[key]
     if (forceLocal) {
       val = Taro.getStorageSync(key)
@@ -66,24 +66,24 @@ class Spx {
     return val
   }
 
-  set (key, val, forceLocal) {
+  set(key, val, forceLocal) {
     globalData[key] = val
     if (forceLocal) {
       Taro.setStorageSync(key, val)
     }
   }
 
-  delete (key, forceLocal) {
+  delete(key, forceLocal) {
     delete globalData[key]
     if (forceLocal) {
       Taro.removeStorageSync(key)
     }
   }
-  hasHook (name) {
+  hasHook(name) {
     return this.hooks[name] !== undefined
   }
 
-  async trigger (name, ...args) {
+  async trigger(name, ...args) {
     const cbs = this.hooks[name]
     if (!cbs) return
 
@@ -98,20 +98,20 @@ class Spx {
     return ret
   }
 
-  bind (name, fn) {
+  bind(name, fn) {
     const fns = this.hooks[name] || []
     fns.push(fn)
     this.hooks[name] = fns
   }
 
-  unbind (name, fn) {
+  unbind(name, fn) {
     const fns = this.hooks[name]
     if (!fns) return
 
     remove(fns, fn)
   }
 
-  async OAuthWxUserProfile (fn, require) {
+  async OAuthWxUserProfile(fn, require) {
     if (!this.getAuthToken()) {
       showToast('请先登录')
       return
@@ -145,7 +145,7 @@ class Spx {
   }
 
   // 获取会员信息
-  async getMemberInfo () {
+  async getMemberInfo() {
     const userInfo = await api.member.memberInfo()
     store.dispatch({
       type: 'user/updateUserInfo',
@@ -164,7 +164,7 @@ class Spx {
     return userInfo
   }
 
-  async autoLogin (ctx, next) {
+  async autoLogin(ctx, next) {
     const IS_QW_GOODS_SHELVES = isGoodsShelves()
     try {
       await this.trigger('autoLogin', ctx)
@@ -193,7 +193,7 @@ class Spx {
     }
   }
 
-  async login (ctx, isRedirect = false) {
+  async login(ctx, isRedirect = false) {
     let code, token
     if (isWeixin) {
       let { update_time } = await api.wx.getPrivacyTime()
@@ -235,7 +235,7 @@ class Spx {
     // });
   }
 
-  async loginQW (ctx) {
+  async loginQW(ctx) {
     console.log('[loginQW] 企微登录 执行')
     let { code } = await this.getQyLoginCode()
     const QwUserInfo = await api.user.getQwUserInfo({
@@ -261,7 +261,7 @@ class Spx {
   //   this.trigger('logout')
   // }
 
-  globalData () {
+  globalData() {
     if (process.env.NODE_ENV === 'production') {
       return null
     } else {
@@ -269,7 +269,7 @@ class Spx {
     }
   }
   //获取企业微信code
-  getQyLoginCode () {
+  getQyLoginCode() {
     return new Promise((reslove, reject) => {
       wx.qy.login({
         success: (res) => {
@@ -282,7 +282,7 @@ class Spx {
     })
   }
 
-  setUvTimeStamp () {
+  setUvTimeStamp() {
     let uvstamp = Taro.getStorageSync('userVisitTime')
     let today = formatDateTime(new Date())
     if (!uvstamp || (uvstamp && new Date(today).getTime() > uvstamp)) {
@@ -292,11 +292,11 @@ class Spx {
     }
   }
 
-  toast (...args) {
+  toast(...args) {
     Taro.eventCenter.trigger.apply(Taro.eventCenter, ['sp-toast:show', ...args])
   }
 
-  closeToast () {
+  closeToast() {
     Taro.eventCenter.trigger('sp-toast:close')
   }
 }

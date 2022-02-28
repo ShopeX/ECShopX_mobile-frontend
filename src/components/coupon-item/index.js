@@ -23,7 +23,7 @@ export default class CouponItem extends Component {
     showDtName: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     //this.transitionCloseDetail=null;
     this.state = {
@@ -62,7 +62,7 @@ export default class CouponItem extends Component {
     })
   }
 
-  handleType (e) {
+  handleType(e) {
     let type = [
       {
         tag: '兑换券',
@@ -120,7 +120,7 @@ export default class CouponItem extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       info,
       isShowCheckout,

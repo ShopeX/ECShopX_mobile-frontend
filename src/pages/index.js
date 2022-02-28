@@ -25,7 +25,7 @@ const initState = {
   showBackToTop: false
 }
 
-function Home () {
+function Home() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({

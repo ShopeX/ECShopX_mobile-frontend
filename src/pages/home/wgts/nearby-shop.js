@@ -14,7 +14,7 @@ const initialState = {
   scrollLeft: 0
 }
 
-function WgtNearbyShop (props) {
+function WgtNearbyShop(props) {
   const { info } = props
   if (!info) {
     return null

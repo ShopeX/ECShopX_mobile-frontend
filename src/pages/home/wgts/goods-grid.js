@@ -9,7 +9,7 @@ import { withLoadMore } from '@/hocs'
 import doc from '@/doc'
 import './goods-grid.scss'
 
-function WgtGoodsGrid (props) {
+function WgtGoodsGrid(props) {
   const { info } = props
   if (!info) {
     return null

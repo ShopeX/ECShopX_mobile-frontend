@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Icon } from '@tarojs/components'
 import './index.scss'
 
-function SpSearch (props) {
+function SpSearch(props) {
   const { placeholder = '搜索', isFixTop } = props
 
   const handleClick = () => {

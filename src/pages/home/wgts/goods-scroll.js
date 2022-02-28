@@ -15,7 +15,7 @@ export default class WgtGoodsScroll extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -23,7 +23,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  setTimer () {
+  setTimer() {
     const { info } = this.props
     const { config } = info
     if (config.lastSeconds) {
@@ -34,15 +34,15 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setTimer()
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id, goodsId } = item
     // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -78,7 +78,7 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null
@@ -185,7 +185,7 @@ export default class WgtGoodsScroll extends Component {
                 <Image src={base.backgroundImg} className='goods-img' lazyLoad />
               </View>
               <View className='text'>查看更多</View>
-              <View className='desc'>查看更多</View>
+              {/* <View className='desc'>查看更多</View> */}
             </View>
           </ScrollView>
         </View>

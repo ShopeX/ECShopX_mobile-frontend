@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.4.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.3.3...v2.4.0) (2022-02-18)
+
+
+### Features
+
+* mege ([5627bc3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5627bc30f7ab59f6d17cfc5c228a28a4630a3900))
+
+### [2.3.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.4.0...v2.3.3) (2022-02-18)
+
+
+### Bug Fixes
+
+* 直播插件qs兼容问题 ([659ec7d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/659ec7d57f366279ff5c932cd6f3cf8d346ac64d))
+
 ### [2.3.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.3.0...v2.3.1) (2022-01-20)
 
 ## [2.3.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.2.0...v2.3.0) (2022-01-14)
