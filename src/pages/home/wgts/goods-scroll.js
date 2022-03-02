@@ -180,13 +180,14 @@ export default class WgtGoodsScroll extends Component {
               )
             })}
 
-            <View className='more_img' onClick={this.handleClickMore}>
-              <View className='img'>
-                <Image src={base.backgroundImg} className='goods-img' lazyLoad />
+            {config.moreLink.linkPage && (
+              <View className='more_img' onClick={this.handleClickMore}>
+                <View className='img'>
+                  <Image src={base.backgroundImg} className='goods-img' lazyLoad />
+                </View>
+                <View className='text'>查看更多</View>
               </View>
-              <View className='text'>查看更多</View>
-              {/* <View className='desc'>查看更多</View> */}
-            </View>
+            )}
           </ScrollView>
         </View>
       </View>

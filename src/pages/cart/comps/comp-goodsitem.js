@@ -57,7 +57,12 @@ function CompGoodsItem (props) {
           <View className='item-ft'>
             <SpPrice value={info.price / 100} />
             {isShowAddInput ? (
-              <SpInputNumber value={info.num} onChange={(e) => onChange(e)} />
+              <SpInputNumber
+                value={info.num}
+                max={info.store}
+                min={1}
+                onChange={(e) => onChange(e)}
+              />
             ) : (
               <Text className='item-num'>x {info.num}</Text>
             )}

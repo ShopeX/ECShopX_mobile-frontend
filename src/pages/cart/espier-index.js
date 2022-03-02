@@ -7,15 +7,9 @@ import { useImmer } from 'use-immer'
 import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
-import { navigateTo, pickBy } from '@/utils'
+import { navigateTo, pickBy, classNames } from '@/utils'
 import { useLogin, useDepChange } from '@/hooks'
-import {
-  fetchCartList,
-  deleteCartItem,
-  updateCartItemNum,
-  updateCartNum,
-  updateCount
-} from '@/store/slices/cart'
+import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
 import {
   SpPage,
   SpTabbar,
@@ -57,6 +51,7 @@ function CartIndex() {
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
+  const { tabbar = 1 } = router.params
 
   useDepChange(() => {
     fetch()
@@ -82,10 +77,7 @@ function CartIndex() {
       shop_type: type
     }
     await dispatch(fetchCartList(params))
-    const {
-      payload: { item_count }
-    } = await dispatch(updateCount(params)) // 获取购物车数量接口
-    await dispatch(updateCartNum(item_count)) // 更新购物车数量
+    await dispatch(updateCount(params))
     Taro.hideLoading()
   }
 
@@ -232,7 +224,7 @@ function CartIndex() {
   }
 
   const handleCheckout = (item) => {
-    const { type } = router.params
+    const { type = 'distributor' } = router.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',
@@ -257,7 +249,11 @@ function CartIndex() {
   console.log(groupsList, 'list')
 
   return (
-    <SpPage className='page-cart-index'>
+    <SpPage
+      className={classNames('page-cart-index', {
+        'has-tabbar': tabbar == 1
+      })}
+    >
       {!isLogin && (
         <View className='login-header'>
           <View className='login-txt'>授权登录后同步购物车的商品</View>
@@ -449,7 +445,7 @@ function CartIndex() {
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
 
-      <SpTabbar />
+      {tabbar == 1 && <SpTabbar />}
     </SpPage>
   )
 }

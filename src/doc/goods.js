@@ -1,3 +1,5 @@
+import { pickBy } from '@/utils'
+
 export const WGT_GOODS_GRID = {
   cross: {
     key: 'origincountry_img_url',
@@ -72,4 +74,111 @@ export const ITEM_LIST_GOODS = {
   marketPrice: 'market_price',
   // is_fav: ({ item_id }) => Boolean(favs[item_id]),
   store: 'store'
+}
+
+export const GOODS_INFO = {
+  itemId: 'item_id',
+  itemName: 'itemName',
+  img: 'pics[0]',
+  imgs: 'pics',
+  companyId: 'company_id',
+  activityInfo: 'activity_info',
+  activityType: 'activity_type',
+  price: ({ price }) => price / 100,
+  activityPrice: ({ act_price }) => act_price / 100,
+  memberPrice: ({ member_price }) => {
+    if (!member_price) {
+      return NaN
+    } else {
+      return member_price / 100
+    }
+  },
+  marketPrice: ({ market_price }) => market_price / 100,
+  nospec: 'nospec',
+  itemSpecDesc: 'item_spec_desc',
+  specText: '',
+  vipgradeGuideTitle: 'vipgrade_guide_title',
+  couponList: 'kaquan_list',
+  store: 'store',
+  limitNum: 'limit_num',
+  isGift: 'is_gift',
+  itemParams: 'item_params',
+  groupsList: 'groups_list',
+  promotionActivity: ({ promotion_activity }) => {
+    if (!promotion_activity) {
+      return []
+    } else {
+      return pickBy(promotion_activity, {
+        joinLimit: ({ join_limit }) => parseInt(join_limit),
+        promotionTag: 'promotion_tag',
+        marketingName: 'marketing_name',
+        marketingType: 'marketing_type',
+        marketingId: 'marketing_id',
+        endDate: 'end_date',
+        conditionRules: 'condition_rules',
+        gifts: 'gifts',
+        plusItems: 'plusitems'
+      })
+    }
+  },
+
+  skuList: ({ item_spec_desc }) => {
+    return pickBy(item_spec_desc, {
+      skuName: 'spec_name',
+      skuValue: ({ spec_values, spec_name }) => {
+        return pickBy(spec_values, {
+          specId: 'spec_value_id',
+          specName: ({ spec_custom_value_name, spec_value_name }) => {
+            return spec_custom_value_name || spec_value_name
+          },
+          specImgs: 'item_image_url'
+        })
+      }
+    })
+  },
+  specItems: ({ spec_items }) => {
+    return pickBy(spec_items, {
+      specItem: ({ item_spec }) => {
+        return pickBy(item_spec, {
+          specId: 'spec_value_id',
+          skuName: 'spec_name',
+          specName: ({ spec_custom_value_name, spec_value_name }) => {
+            return spec_custom_value_name || spec_value_name
+          },
+          specImgs: 'item_image_url'
+        })
+      },
+      itemId: 'item_id',
+      store: 'store',
+      limitNum: 'limit_num',
+      price: ({ price }) => price / 100,
+      marketPrice: ({ market_price }) => market_price / 100,
+      memberPrice: ({ member_price }) => {
+        if (!member_price) {
+          return NaN
+        } else {
+          return member_price / 100
+        }
+      },
+      activityPrice: ({ act_price }) => act_price / 100
+    })
+  },
+  intro: 'intro',
+  distributorInfo: ({ distributor_info }) => {
+    return pickBy(distributor_info, {
+      distributorId: 'distributor_id',
+      logo: 'logo',
+      storeName: 'name'
+    })
+  },
+  distributorId: 'distributor_id',
+  video: 'videos'
+}
+
+export const PACKGOODS_INFO = {
+  img: 'pics[0]',
+  itemName: 'itemName',
+  num: '',
+  price: ({ price }) => price / 100,
+  marketPrice: ({ market_price }) => market_price / 100
 }

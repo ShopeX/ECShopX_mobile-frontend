@@ -169,13 +169,15 @@ class API {
       config.data = qs.stringify(config.data)
     }
 
+    const { showError } = query
+    config['showError'] = showError
+
     return config
   }
 
   intereptorRes(res) {
     const { data, statusCode, config } = res
     const { showError = true } = config
-
     if (statusCode == HTTP_STATUS.SUCCESS) {
       const { status_code } = data.data
       if (!status_code) {
@@ -360,10 +362,6 @@ class API {
 if (process.env.NODE_ENV === 'production' && !isWeb) {
   Taro.addInterceptor(Taro.interceptors.logInterceptor)
 }
-
-console.log('===> process.env.APP_BASE_URL', process.env.APP_BASE_URL)
-
-console.log('===> process.env.APP_MAP_KEY', process.env.APP_MAP_KEY)
 
 export default new API({
   baseURL: process.env.APP_BASE_URL

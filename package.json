@@ -89,7 +89,7 @@
     "webpack-s3-plugin": "^1.2.0-rc.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "src/**/*.{js,jsx,scss}": [
       "prettier-eslint --write"
     ]
   }

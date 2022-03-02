@@ -32,8 +32,29 @@ export const PROMOTION_TAG = {
   full_gift: '满赠',
   normal: '秒杀',
   limited_time_sale: '限时特惠',
-  plus_price_buy: '换购',
+  plus_price_buy: '加价购',
   member_preference: '会员限购'
+}
+
+export const ACTIVITY_LIST = {
+  group: '拼团',
+  seckill: '秒杀',
+  limited_time_sale: '限时特惠'
+}
+
+export const ACTIVITY_STATUS = {
+  seckill: {
+    in_the_notice: '距开始还剩',
+    in_sale: '距结束还剩'
+  },
+  limited_time_sale: {
+    in_the_notice: '距开始还剩',
+    in_sale: '距结束还剩'
+  },
+  group: {
+    nostart: '距开始还剩',
+    noend: '距结束还剩'
+  }
 }
 
 export const DEFAULT_POINT_NAME = '积分'
@@ -56,6 +77,18 @@ export const TABBAR_PATH = {
   article: '/pages/recommend/list',
   liveroom: '/pages/liveroom/index',
   allGoods: '/pages/item/list?isTabBar=true'
+}
+
+export const BUY_TOOL_BTNS = {
+  NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
+  SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
+  ADD_CART: { title: '加入购物车', key: 'addcart', btnStatus: 'default' },
+  FAST_BUY: { title: '立即购买', key: 'fastbuy', btnStatus: 'active' },
+  GIFT: { title: '赠品不可购买', key: 'gift', btnStatus: 'disabled' },
+  ACTIVITY_WILL_START: { title: '活动即将开始', key: 'activity_will_start', btnStatus: 'disabled' },
+  ACTIVITY_FAST_BUY: { title: '立即抢购', key: 'activity_fast_buy', btnStatus: 'active' },
+  ACTIVITY_BUY: { title: '立即购买', key: 'activity_buy', btnStatus: 'active' },
+  ACTIVITY_GROUP_BUY: { title: '我要开团', key: 'activity_group_buy', btnStatus: 'active' }
 }
 
 export const PAYTYPE = {

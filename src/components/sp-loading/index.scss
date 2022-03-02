@@ -29,14 +29,14 @@
     height: 36px;
     border-radius: 50%;
     background: none;
-    background: linear-gradient(to right, #ccc 10%, rgba(255, 255, 255, 0) 42%);
+    background: linear-gradient(to right, var(--color-primary) 10%, rgba(255, 255, 255, 0) 42%);
     position: relative;
     animation: spin-loader 0.7s infinite linear;
     transform: translateZ(0);
     &:before {
       width: 50%;
       height: 50%;
-      background: #ccc;
+      background: var(--color-primary);
       border-radius: 100% 0 0 0;
       position: absolute;
       top: 0;

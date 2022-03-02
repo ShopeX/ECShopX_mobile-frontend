@@ -24,6 +24,7 @@ function SpLogin(props) {
   const handleClickLogin = async () => {
     try {
       await login()
+      onChange && onChange()
     } catch (e) {
       setIsNewUser(true)
     }

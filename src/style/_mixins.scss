@@ -1,13 +1,20 @@
-@import "variables";
+@import 'variables';
 
-@mixin text-overflow(){
+@mixin text-overflow() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-@mixin clearfix(){
-  &:after { content: "\0020"; display: block; height: 0; clear: both; visibility: hidden; overflow:hidden;}
+@mixin clearfix() {
+  &:after {
+    content: '\0020';
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+    overflow: hidden;
+  }
   overflow: hidden;
 }
 
@@ -21,7 +28,7 @@
   word-break: break-all;
 }
 
-@mixin arrow ($size:4px, $color: $color-border-gray) {
+@mixin arrow($size: 4px, $color: $color-border-gray) {
   content: '';
   border: $size solid $color;
   display: block;
@@ -78,7 +85,7 @@
   }
 }
 
-@mixin overlay ($zIndex: $z-index-modal) {
+@mixin overlay($zIndex: $z-index-modal) {
   position: absolute;
   top: 0;
   left: 0;
@@ -90,7 +97,7 @@
   transition: all 0.15s ease-in;
 }
 
-@mixin page-view ($animation: sp-anim-popup) {
+@mixin page-view($animation: sp-anim-popup) {
   $self: &;
   background: $color-bg-gray;
   position: absolute;
@@ -104,7 +111,7 @@
     @include overlay();
   }
   &__active {
-    animation: $animation .2s ease-in-out;
+    animation: $animation 0.2s ease-in-out;
     visibility: visible;
     #{$self}__overlay {
       opacity: 1;
@@ -112,7 +119,7 @@
   }
 }
 
-@mixin page-scroll ($padding-top: 0, $padding-bottom: 0, $z-index: 1) {
+@mixin page-scroll($padding-top: 0, $padding-bottom: 0, $z-index: 1) {
   position: absolute;
   left: 0;
   width: 100%;
@@ -123,16 +130,17 @@
   // transform: translate3d(0,0,0);
   z-index: 1;
   /*  #ifdef  weapp  */
-  transform: translate3d(0,0,0);
+  transform: translate3d(0, 0, 0);
   /*  #endif  */
-  > div, > view {
+  > div,
+  > view {
     /*  #ifdef  weapp  */
-    transform: translate3d(0,0,0);
+    transform: translate3d(0, 0, 0);
     /*  #endif  */
   }
 }
 
-@mixin iconfont-gradient ($background) {
+@mixin iconfont-gradient($background) {
   &:before {
     background: $background;
     -webkit-background-clip: text;
@@ -140,31 +148,46 @@
   }
 }
 
-@mixin flex-center{
+@mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-@mixin placeholder($color,$font-size){
+@mixin price($color, $symbol-size, $int-size, $decimal-size) {
+  .sp-price__symbol {
+    color: $color !important;
+    font-size: $symbol-size !important;
+  }
+  .sp-price__int {
+    color: $color !important;
+    font-size: $int-size !important;
+  }
+  .sp-price__decimal {
+    color: $color !important;
+    font-size: $decimal-size !important;
+  }
+}
+
+@mixin placeholder($color, $font-size) {
   ::-webkit-input-placeholder {
     /* WebKit browsers */
     color: $color;
-    font-size:$font-size;
+    font-size: $font-size;
   }
   :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: $color;
-    font-size:$font-size;
+    font-size: $font-size;
   }
   ::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: $color;
-    font-size:$font-size;
+    font-size: $font-size;
   }
   :-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: $color;
-    font-size:$font-size;
+    font-size: $font-size;
   }
 }

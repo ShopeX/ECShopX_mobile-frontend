@@ -50,62 +50,47 @@
   z-index: 1000;
 }
 
-.isHidden{
-
+.isHidden {
   &.searchInput {
     .at-input {
-      width:300px;
+      width: 300px;
     }
   }
-
 }
 
 .searchInput {
   .at-input {
-
-    width: 140rpx ;
+    width: 140rpx;
     height: 60rpx !important;
-    background: #FFFFFF !important;
+    background: #ffffff !important;
     border-radius: 30rpx !important;
-    border: 1px solid #DDDDDD !important;
+    border: 1px solid #dddddd !important;
     margin: 0 !important;
-    padding:0;
+    padding: 0;
     padding-left: 15rpx;
 
-    &__container{
-      height:100%;
+    &__container {
+      height: 100%;
     }
 
     &::after {
       border-color: transparent !important;
     }
-
   }
 }
 
-.active{
-  .search-icon{
+.active {
+  .search-icon {
     display: none;
   }
-  .at-input{
-    width: 716rpx!important;
-   
+  .at-input {
+    width: 716rpx !important;
   }
 }
 
-.searchInput-P{
-  .at-input{
-    transition: width 0.3s; 
-  }
- 
-}
-
-.at-button {
-  margin: 0;
-
-  &--primary {
-    font-size: $font-size;
-    background: $color-brand-primary;
+.searchInput-P {
+  .at-input {
+    transition: width 0.3s;
   }
 }
 
@@ -128,7 +113,8 @@
     line-height: 1;
   }
   .at-tab-bar__icon {
-    .iconfont, .icon {
+    .iconfont,
+    .icon {
       font-size: $at-tab-bar-icon-font-size;
     }
   }
@@ -163,13 +149,12 @@
   }
 }
 
-
 /*mod innisfree*/
 .at-tab-bar {
-  box-shadow: -20px 5px 15px rgba(#000, .1);
+  box-shadow: -20px 5px 15px rgba(#000, 0.1);
   height: $tabbar-height;
 
-  [class^="icon-"] {
+  [class^='icon-'] {
     font-size: $at-tab-bar-icon-font-size;
   }
 
@@ -180,7 +165,7 @@
 
 .at-button {
   &--secondary {
-    border: 1PX solid #c1c1c1;
+    border: 1px solid #c1c1c1;
     color: #fff;
     background: #c1c1c1;
   }
@@ -194,11 +179,23 @@
     .at-button__text {
       font-size: 22px;
     }
-
+  }
+  &--txt {
+    border-color: transparent;
+  }
+  &--normal {
+    /* prettier-ignore */
+    border: 1PX solid #E5E5E5;
+    color: #444;
+  }
+  &--default {
+    border-color: var(--color-primary) !important;
+    color: var(--color-primary) !important;
   }
   &--primary {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
   }
 }
 
@@ -208,8 +205,14 @@
   }
 }
 
+.at-badge {
+  &__num {
+    background-color: var(--color-primary);
+  }
+}
+
 /* TARO H5 */
-taro-button-core[type=primary]:not([disabled]):active {
+taro-button-core[type='primary']:not([disabled]):active {
   color: rgba(255, 255, 255, 0.6);
   background-color: transparent;
 }

@@ -6,7 +6,7 @@
     font-size: 22px;
     border-radius: 30px;
     padding: 2px 15px;
-    border: 1PX solid var(--color-primary);
+    border: 1px solid var(--color-primary);
     color: var(--color-primary);
   }
 
@@ -41,7 +41,7 @@
   .scroll-list {
     white-space: nowrap;
   }
-    
+
   .shop {
     width: 200px;
     height: 269px;
@@ -78,7 +78,7 @@
       }
     }
     .shop-info-block {
-      background: #F5F5F5;
+      background: #f5f5f5;
       overflow: hidden;
       padding-bottom: 20px;
     }
@@ -91,10 +91,10 @@
       padding: 0 10px;
     }
     .shop-ft {
-      height:40px;
+      height: 40px;
       margin-top: 10px 0 20px;
       text-align: center;
-    }    
+    }
   }
   .sp-nearby-shop-coupon {
     display: inline-block;

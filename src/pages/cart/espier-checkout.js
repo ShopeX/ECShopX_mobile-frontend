@@ -1703,11 +1703,10 @@ export default class CartCheckout extends Component {
       wxpayjs: '微信支付'
     }
 
-    const { coupon, colors } = this.props
+    const { coupon, colors, address } = this.props
     const {
       info,
       express,
-      address,
       total,
       showAddressPicker,
       showCheckoutItems,
