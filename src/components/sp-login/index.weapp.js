@@ -69,6 +69,7 @@ function SpLogin(props) {
           setToken(token)
           Taro.hideLoading()
           showToast('恭喜您，注册成功')
+          onChange && onChange()
         }
       } catch (error) {
         Taro.hideLoading()

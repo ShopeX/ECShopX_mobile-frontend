@@ -2,7 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_THEME, DEFAULT_POINT_NAME } from '@/consts'
 import { hex2rgb } from '@/utils'
 
+//没有则获取正确的颜色
+function getColor(field, value) {
+  return value ? value : DEFAULT_THEME[field]
+}
+
 const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME
+
 const initialState = {
   colorPrimary: colorPrimary,
   colorMarketing: colorMarketing,
@@ -56,11 +62,14 @@ const sysSlice = createSlice({
   initialState,
   reducers: {
     setSysConfig: (state, { payload }) => {
-      const { colorPrimary, tabbar } = payload
-      const rgb = hex2rgb(colorPrimary ? colorPrimary : DEFAULT_THEME.colorPrimary).join(',')
+      const { colorPrimary, tabbar, colorMarketing, colorAccent } = payload
+      const rgb = hex2rgb(getColor('colorPrimary', colorPrimary)).join(',')
       return {
         ...state,
         ...payload,
+        colorPrimary: getColor('colorPrimary', colorPrimary),
+        colorMarketing: getColor('colorMarketing', colorMarketing),
+        colorAccent: getColor('colorAccent', colorAccent),
         tabbar: tabbar ? tabbar : initialState.tabbar,
         rgb
       }
