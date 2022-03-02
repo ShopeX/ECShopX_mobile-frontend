@@ -1,7 +1,4 @@
 .wgt-navigation {
-  padding: 20px 16px;
-  background: #fff;
-  margin-bottom: 20px;
   .navigation {
     display: flex;
     justify-content: space-around;
@@ -13,5 +10,9 @@
   .nav-name {
     font-size: 26px;
     margin-top: 10px;
+  }
+  .cuscss-sp-image {
+    border-radius: 16px;
+    overflow: hidden;
   }
 }

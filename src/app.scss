@@ -175,7 +175,7 @@ switch,
 /* wgt common styles */
 .wgt {
   .wgt-head {
-    padding: 10px 16px;
+    padding: 0px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -188,12 +188,16 @@ switch,
         font-size: 36px;
         font-weight: bold;
         margin-right: 24px;
+        max-width: 30%;
+        @include multi-ellipsis(1);
       }
     }
     .wgt-subtitle {
       color: #999;
       font-size: 28px;
       margin-left: 8px;
+      max-width: 55%;
+      @include multi-ellipsis(1);
     }
     .wgt-more {
       display: flex;
@@ -225,6 +229,9 @@ switch,
         }
       }
     }
+  }
+  .wgt-body {
+    margin-top: 24px;
   }
 }
 
