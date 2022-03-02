@@ -11,6 +11,7 @@ import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {} } = props
   const [isLogin, setIsLogin] = useState(false)
+  const [isNewUser, setIsNewUser] = useState(false)
   const dispatch = useDispatch()
   const { userInfo } = useSelector((state) => state.user)
   // const policyTime = useRef(0)
@@ -38,9 +39,10 @@ export default (props = {}) => {
       if (checkResult) {
         const { code } = await Taro.login()
         try {
-          const { token } = await api.wx.login({ code })
+          const { token } = await api.wx.login({ code, showError: false })
           setToken(token)
         } catch (e) {
+          setIsNewUser(true)
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
@@ -140,6 +142,7 @@ export default (props = {}) => {
 
   return {
     isLogin,
+    isNewUser,
     login,
     updatePolicyTime,
     setToken,
