@@ -7,10 +7,11 @@
     padding: 0;
     background-color: transparent;
     display: initial;
+    font-size: inherit;
     &:after {
       border-width: 0;
     }
-  } 
+  }
   .ali-button {
     background: transparent;
   }
