@@ -57,7 +57,7 @@ export default class WgtSlider extends Component {
           </View>
         )}
         {config ? (
-          <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
+          <View className='slider-wrap'>
             {data[0] && (
               <Image mode='widthFix' className='scale-placeholder' lazyLoad src={data[0].imgUrl} />
             )}

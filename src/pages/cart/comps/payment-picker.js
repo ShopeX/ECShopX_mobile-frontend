@@ -19,7 +19,7 @@ export default class PaymentPicker extends Component {
     // onInitDefaultPayType: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class PaymentPicker extends Component {
       typeList: []
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
   componentWillReceiveProps = (nextProps) => {
@@ -41,7 +41,7 @@ export default class PaymentPicker extends Component {
   static options = {
     addGlobalClass: true
   }
-  async fetch () {
+  async fetch() {
     const { list } = await getPaymentList()
     const res = list
 
@@ -88,7 +88,7 @@ export default class PaymentPicker extends Component {
     this.props.onChange(type, channel)
   }
 
-  render () {
+  render() {
     const {
       isOpened,
       loading,
@@ -96,7 +96,8 @@ export default class PaymentPicker extends Component {
       colors,
       isShowPoint = true,
       isShowBalance = true,
-      isShowDelivery = true
+      isShowDelivery = true,
+      pointName
     } = this.props
     const { localType, typeList } = this.state
 
@@ -116,11 +117,11 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>{`${this.props.pointName}支付`}</Text>
+                  <Text className='payment-item__title'>{`${pointName}支付`}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['point']
                       ? disabledPayment['point']
-                      : `使用${this.props.pointName}支付`}
+                      : `使用${pointName}支付`}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
