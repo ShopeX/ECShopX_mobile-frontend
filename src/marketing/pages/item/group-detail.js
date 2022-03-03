@@ -295,11 +295,7 @@ export default class GroupDetail extends Component {
                 </AtButton>
               )}
               {!isLeader && isSelf && (
-                <AtButton
-                  type='primary'
-                  className='btn-submit'
-                  onClick={this.handleDetailClick.bind(this)}
-                >
+                <AtButton className='btn-submit' onClick={this.handleDetailClick.bind(this)}>
                   我也要开团
                 </AtButton>
               )}
@@ -307,11 +303,7 @@ export default class GroupDetail extends Component {
           ) : (
             <View>
               <View className='content-bottom-padded-b'>
-                <AtButton
-                  type='primary'
-                  className='btn-submit'
-                  onClick={this.handleDetailClick.bind(this)}
-                >
+                <AtButton className='btn-submit' onClick={this.handleDetailClick.bind(this)}>
                   {!isLeader ? '我也要开团' : '重新开团'}
                 </AtButton>
               </View>
