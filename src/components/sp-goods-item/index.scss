@@ -16,10 +16,11 @@
     }
     &__bd {
       border-radius: 0;
-      padding: 15px;
+      padding: 16px;
       .goods-title {
         font-size: 24px;
-        color: $color-primary-text;
+        color: #222;
+        font-weight: bold;
         @include multi-ellipsis(1);
         // padding: 15px;
       }
@@ -30,25 +31,40 @@
       }
 
       .goods-info {
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
 
-      .goods-price {
-        line-height: 26px;
-        margin-top: 10px;
+      .gd-price {
+        .sp-price {
+          font-size: 32px;
+          font-weight: bold;
+          color: #222;
+          &__symbol {
+            margin-right: 10px;
+          }
+        }
+      }
+      .mk-price {
+        .sp-price {
+          font-size: 24px;
+          color: #888;
+          text-decoration: line-through;
+          font-weight: normal;
+        }
       }
 
       .promotions {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 14px;
+        margin-top: 16px;
         .promotion-tag {
-          border: 1PX solid var(--color-primary);
+          border: 1px solid var(--color-primary);
           color: var(--color-primary);
           font-size: 22px;
-          border-radius: 4px;
-          padding: 0 4px;
-          line-height: 26px;
+          border-radius: 8px;
+          padding: 0 11px;
+          height: 32px;
+          line-height: 32px;
           margin-right: 10px;
         }
       }
@@ -57,7 +73,6 @@
         display: flex;
         justify-content: space-between;
         &-lf {
-
         }
         &-rg {
           .iconfont {

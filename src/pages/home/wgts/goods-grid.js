@@ -25,6 +25,17 @@ function WgtGoodsGrid(props) {
       this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
     }
   }
+
+  const leftFilterGoods = goods.filter((leftgoods, leftindex) => {
+    if (leftindex % 2 == 0) {
+      return leftgoods
+    }
+  })
+  const rightFilterGoods = goods.filter((rightgoods, rightindex) => {
+    if (rightindex % 2 == 1) {
+      return rightgoods
+    }
+  })
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -45,18 +56,27 @@ function WgtGoodsGrid(props) {
         </View>
       )}
       <View className='wgt-body'>
-        <View className='wgt-goods-grid-list'>
-          {goods.map((item, idx) => (
-            <View
-              className={classNames(
-                'goods-item-wrap ',
-                config.style === 'grids' ? 'three-inrow' : 'two-inrow'
-              )}
-              key={`goods-item-wrap__${idx}`}
-            >
-              <SpGoodsItem info={item} />
+        {config.style == 'grid' && (
+          <View className='container'>
+            <View className='goods-item-wrap two-inrow left-container'>
+              {leftFilterGoods.map((item, leftidx) => (
+                <SpGoodsItem info={item} key={`left_${leftidx}`} />
+              ))}
             </View>
-          ))}
+            <View className='goods-item-wrap two-inrow right-container'>
+              {rightFilterGoods.map((item, rightidx) => (
+                <SpGoodsItem info={item} key={`right_${rightidx}`} />
+              ))}
+            </View>
+          </View>
+        )}
+        <View className='wgt-goods-grid-list'>
+          {config.style === 'grids' &&
+            goods.map((item, idx) => (
+              <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
+                <SpGoodsItem info={item} />
+              </View>
+            ))}
         </View>
       </View>
     </View>

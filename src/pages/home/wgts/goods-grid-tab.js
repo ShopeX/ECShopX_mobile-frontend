@@ -68,26 +68,55 @@ function WgtGoodsGridTab(props) {
           ))}
         </ScrollView>
         <View className='tabs-container'>
-          {list.map(
-            (item, index) =>
+          {list.map((item, index) => {
+            const leftFilterGoods = item.goodsList.filter((leftgoods, leftindex) => {
+              if (leftindex % 2 == 0) {
+                return leftgoods
+              }
+            })
+            const rightFilterGoods = item.goodsList.filter((rightgoods, rightindex) => {
+              if (rightindex % 2 == 1) {
+                return rightgoods
+              }
+            })
+
+            return (
               current == index && (
                 <View className='tab-body' key={`tab-body__${index}`}>
-                  {item.goodsList.map((good, index) => {
-                    const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
-                    return (
-                      <View className='goodgrid-item' key={`goods-item__${index}`}>
-                        <SpGoodsItem info={data} />
-                        {config.brand && (
-                          <View className='brand-info'>
-                            <SpImage src={data.brand} />
-                          </View>
-                        )}
-                      </View>
-                    )
-                  })}
+                  <View className='left-container'>
+                    {leftFilterGoods.map((good, index) => {
+                      const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
+                      return (
+                        <View className='goodgrid-item' key={`goods-item__${index}`}>
+                          <SpGoodsItem info={data} />
+                          {config.brand && (
+                            <View className='brand-info'>
+                              <SpImage src={good.brand} />
+                            </View>
+                          )}
+                        </View>
+                      )
+                    })}
+                  </View>
+                  <View className='right-container'>
+                    {rightFilterGoods.map((good, index) => {
+                      const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
+                      return (
+                        <View className='goodgrid-item' key={`goods-item__${index}`}>
+                          <SpGoodsItem info={data} />
+                          {config.brand && (
+                            <View className='brand-info'>
+                              <SpImage src={good.brand} />
+                            </View>
+                          )}
+                        </View>
+                      )
+                    })}
+                  </View>
                 </View>
               )
-          )}
+            )
+          })}
         </View>
         {config.moreLink.id && (
           <View className='btn-more' onClick={() => linkPage(config.moreLink)}>

@@ -1,11 +1,25 @@
 .wgt-goods-grid {
   .wgt-goods-grid-list {
-    padding: 0 16px;
     display: flex;
     flex-wrap: wrap;
   }
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 24px;
+    .left-container {
+      width: 50%;
+      padding-left: 16px;
+    }
+    .right-container {
+      width: 50%;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
   .goods-item-wrap {
-    margin-bottom: 28px;
+    margin-bottom: 16px;
     box-sizing: border-box;
     &.two-inrow {
       width: 50%;
@@ -18,20 +32,27 @@
     }
     &.three-inrow {
       width: 33.3333%;
+      padding-left: 16px;
       &:nth-child(2n + 1) {
-        padding-right: 9px;
+        // 1 4 7 10
+        padding-left: 16px;
+        padding-right: 0px;
       }
-      &:nth-child(2n + 2) {
-        padding: 0 9px;
+      &:nth-child(3n - 1) {
+        // 2 5 8 11 14
+        padding-left: 16px;
+        padding-right: 0px;
       }
-      &:nth-child(2n + 3) {
-        padding-left: 9px;
+      &:nth-child(3n) {
+        // 3 6 9 11
+        padding: 0 16px;
       }
     }
 
     .sp-goods-item {
       border-radius: 16px;
       overflow: hidden;
+      margin-bottom: 16px;
     }
   }
 }

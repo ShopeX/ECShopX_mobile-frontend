@@ -1,35 +1,29 @@
 .wgt-hot-topic {
-  .title {
-    margin: 0 0 28px 20px;
-    font-size: 40px;
-    font-weight: 500;
-    color: #00081C;
-    line-height: 40px;
-    letter-spacing: 2px;
-    font-weight: 600;
-  }
-
-  .list {
+  .topic-list {
     display: flex;
     flex-wrap: wrap;
-    padding: 0 40px;
+    padding: 0 16px;
 
-    .gambit {
+    &-gambit {
+      max-width: 30%;
       flex-shrink: 0;
-      font-size: 20px;
-      padding: 20px;
-      color: #00081C;
-      border-radius: 4px;
-      border: 1PX solid #C7C7C7;
-      margin-right: 20px;
-      margin-bottom: 20px;
+      font-size: 24px;
+      height: 40px;
+      line-height: 40px;
+      padding: 10px 32px;
+      color: #222;
+      background: #f5f5f5;
+      border-radius: 30px;
+      border: 1px solid #bbbbbb;
+      margin-right: 24px;
+      margin-bottom: 24px;
+      @include multi-ellipsis(1);
     }
 
     .checked {
-      background: #00081C;
-      border: 1PX solid #00081C;
-      color: #fff;
+      background: #fff;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
     }
-
   }
 }

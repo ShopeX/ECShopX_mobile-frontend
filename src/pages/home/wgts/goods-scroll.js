@@ -20,6 +20,7 @@ export default class WgtGoodsScroll extends Component {
 
     this.state = {
       timer: null
+      // boxHeight: null
     }
   }
 
@@ -36,6 +37,7 @@ export default class WgtGoodsScroll extends Component {
 
   componentDidMount() {
     this.setTimer()
+    // if (this.props.info.data.length > 0) this.getDom()
   }
 
   navigateTo(url) {
@@ -78,6 +80,23 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
+  // getDom = () => {
+  //   let that = this
+  //   setTimeout(() => {
+  //     Taro.createSelectorQuery()
+  //       // .in(that)
+  //       .select('.scroll-goods')
+  //       .boundingClientRect(res => {
+  //         console.log(res, '-------')
+  //         // debugger
+  //         that.setState({
+  //           boxHeight: res.height
+  //         })
+  //       })
+  //       .exec()
+  //   }, 300)
+  // }
+
   render() {
     const { info } = this.props
     if (!info) {
@@ -85,10 +104,10 @@ export default class WgtGoodsScroll extends Component {
     }
 
     const { base, data, config, more } = info
-    const { timer } = this.state
+    const { timer, boxHeight } = this.state
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt page-goods-scroll ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
           <View className='wgt-head'>
             <View className='wgt-hd'>
@@ -158,6 +177,7 @@ export default class WgtGoodsScroll extends Component {
                   <View className='thumbnail'>
                     <Image src={item.imgUrl} className='goods-img' lazyLoad />
                   </View>
+                  {item.title && <View className='subscript-title'>{item.title}</View>}
                   {item.type === '1' && (
                     <View className='nationalInfo'>
                       <Image
@@ -170,10 +190,17 @@ export default class WgtGoodsScroll extends Component {
                     </View>
                   )}
                   {config.showPrice && (
-                    <View className='goods-price'>
-                      <Text className='cur'>¥</Text>
-                      {price}
-                      {marketPrice != 0 && <Text className='market-price'>{marketPrice}</Text>}
+                    <View className='subscript-price'>
+                      <View className='goods-price'>
+                        <Text className='cur'>¥</Text>
+                        {price}
+                      </View>
+                      {marketPrice != 0 && (
+                        <View className='market-price'>
+                          <Text className='cur'>¥</Text>
+                          {marketPrice}
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>
