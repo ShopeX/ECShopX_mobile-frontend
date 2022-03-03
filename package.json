@@ -21,6 +21,7 @@
     "dev:h5": "npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
     "release:h5": "RELEASE=h5 npm run build:h5",
+    "prepare": "husky install",
     "lint": "prettier-eslint 'src/**/*.{js,jsx}' --write"
   },
   "author": "",
@@ -79,6 +80,7 @@
     "eslint-plugin-taro": "3.3.14",
     "fs-extra": "^8.0.1",
     "glob": "^7.1.4",
+    "husky": "^6.0.0",
     "lint-staged": "^12.1.5",
     "lodash-webpack-plugin": "^0.11.5",
     "prettier": "^2.5.1",
