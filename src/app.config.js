@@ -24,21 +24,21 @@ export default {
   subPackages: [
     // 导购货架 guide
     {
-      root: "subpages/guide",
+      root: 'subpages/guide',
       pages: [
-        "index",
-        "category/index",          
-        "item/list",
-        "item/espier-detail",
-        "item/item-params",
-        "item/package-list",
-        "cart/espier-index",
-        "cart/espier-checkout",
-        "coupon-home/index",
-        "coupon-home/coupon-detail",
-        "recommend/list",
-        "recommend/detail",
-        "custom/custom-page"
+        'index',
+        'category/index',
+        'item/list',
+        'item/espier-detail',
+        'item/item-params',
+        'item/package-list',
+        'cart/espier-index',
+        'cart/espier-checkout',
+        'coupon-home/index',
+        'coupon-home/coupon-detail',
+        'recommend/list',
+        'recommend/detail',
+        'custom/custom-page'
       ]
     },
     {
@@ -58,24 +58,6 @@ export default {
       root: 'subpages/marketing',
       pages: [
         'package-list' // 组合优惠
-      ]
-    },
-    {
-      root: 'subpages/guide',
-      pages: [
-        'index',
-        'category/index',
-        'item/list',
-        'item/espier-detail',
-        'item/item-params',
-        'item/package-list',
-        'cart/espier-index',
-        'cart/espier-checkout',
-        'coupon-home/index',
-        'coupon-home/coupon-detail',
-        'recommend/list',
-        'recommend/detail',
-        'custom/custom-page'
       ]
     },
     {

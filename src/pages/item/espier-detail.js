@@ -310,7 +310,7 @@ function EspierDetail(props) {
         <View>
           <SpFloatMenuItem
             onClick={() => {
-              Taro.navigateTo({ url: '/pages/index' })
+              Taro.navigateTo({ url: '/subpages/member/index' })
             }}
           >
             <Text className='iconfont icon-home1'></Text>
