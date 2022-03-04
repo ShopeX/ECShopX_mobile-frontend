@@ -61,6 +61,24 @@ export default {
       ]
     },
     {
+      root: 'subpages/guide',
+      pages: [
+        'index',
+        'category/index',
+        'item/list',
+        'item/espier-detail',
+        'item/item-params',
+        'item/package-list',
+        'cart/espier-index',
+        'cart/espier-checkout',
+        'coupon-home/index',
+        'coupon-home/coupon-detail',
+        'recommend/list',
+        'recommend/detail',
+        'custom/custom-page'
+      ]
+    },
+    {
       root: 'marketing',
       pages: [
         'pages/distribution/index', // 推广管理首页
@@ -200,7 +218,7 @@ export default {
       root: 'pointitem',
       pages: ['pages/list']
     },
-    //商家入驻
+    // 商家入驻
     {
       root: 'subpages/merchant',
       pages: [
@@ -211,6 +229,7 @@ export default {
         'agreement' //协议页面
       ]
     },
+    // 授权
     {
       root: 'subpages/auth',
       pages: [
