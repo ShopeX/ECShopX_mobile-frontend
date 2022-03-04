@@ -157,11 +157,18 @@ export default class WgtCoupon extends Component {
                   </View>
                 ) : (
                   <View className='coupon-body'>
-                    <View className='coupon__amount'>
-                      <Text className='price'>{item.amount}</Text>
-                      <View className='coupon__amount-cur'>
-                        {item.type === 'cash' ? '元' : ''}
-                        {item.type === 'discount' ? '折' : ''}
+                    <View className='coupon-box'>
+                      <View className='coupon__amount'>
+                        <Text className='price'>{item.amount}</Text>
+                        <View className='coupon__amount-cur'>
+                          {item.type === 'cash' ? '元' : ''}
+                          {item.type === 'discount' ? '折' : ''}
+                        </View>
+                      </View>
+                      <View className='discount_type'>
+                        {(item.type == 'discount' && '折扣券') ||
+                          (item.type == 'cash' && '满减券') ||
+                          (item.type == 'new_gift' && '兑换券')}
                       </View>
                     </View>
                     <View className='coupon-caption'>
@@ -217,11 +224,18 @@ export default class WgtCoupon extends Component {
                     <SpImage img-class='coupon_img' src={item.imgUrl} mode='widthFix' width='750' />
                   ) : (
                     <View className='coupon-body'>
-                      <View className='coupon__amount'>
-                        <Text>{item.amount}</Text>
-                        <View className='coupon__amount-cur'>
-                          {item.type === 'cash' ? '元' : ''}
-                          {item.type === 'discount' ? '折' : ''}
+                      <View className='coupon-box'>
+                        <View className='coupon__amount'>
+                          <Text className='price'>{item.amount}</Text>
+                          <View className='coupon__amount-cur'>
+                            {item.type === 'cash' ? '元' : ''}
+                            {item.type === 'discount' ? '折' : ''}
+                          </View>
+                        </View>
+                        <View className='discount_type'>
+                          {(item.type == 'discount' && '折扣券') ||
+                            (item.type == 'cash' && '满减券') ||
+                            (item.type == 'new_gift' && '兑换券')}
                         </View>
                       </View>
                       <View className='coupon-caption'>

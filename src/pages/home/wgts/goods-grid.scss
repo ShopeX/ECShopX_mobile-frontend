@@ -1,6 +1,10 @@
 .wgt-goods-grid {
+  .wgt-body {
+    padding: 0px 16px;
+  }
   .wgt-goods-grid-list {
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
   .container {
@@ -9,16 +13,16 @@
     justify-content: space-between;
     padding-top: 0px 24px;
     .left-container {
-      width: 50%;
-      padding-left: 16px;
+      width: 49%;
+      // padding-left: 16px;
       .sp-goods-item:nth-last-child(1) {
         margin-bottom: 0px;
       }
     }
     .right-container {
-      width: 50%;
-      padding-left: 16px;
-      padding-right: 16px;
+      width: 49%;
+      // padding-left: 16px;
+      // padding-right: 16px;
       .sp-goods-item:nth-last-child(1) {
         margin-bottom: 0px;
       }
@@ -28,42 +32,41 @@
     margin-bottom: 16px;
     box-sizing: border-box;
     &.two-inrow {
-      width: 50%;
       margin-bottom: 0px;
-      &:nth-child(2n + 1) {
-        // 1 3 5 7
-        padding-right: 9px;
-      }
-      &:nth-child(2n) {
-        // 2 4 6 8
-        padding-left: 9px;
-      }
+      // &:nth-child(2n + 1) {
+      // 1 3 5 7
+      // padding-right: 9px;
+      // }
+      // &:nth-child(2n) {
+      // 2 4 6 8
+      // padding-left: 9px;
+      // }
     }
     &.three-inrow {
-      width: 30.75%;
-      margin-left: 16px;
+      width: 32%; // 331
+      // margin-left: 16px;
       margin-bottom: 0px;
-      &:nth-child(2n + 1) {
-        // 1 4 7 10
-        margin-left: 16px;
-        margin-right: 0px;
-      }
-      &:nth-child(3n - 1) {
-        // 2 5 8 11 14
-        margin-left: 16px;
-        margin-right: 0px;
-      }
-      &:nth-child(3n) {
-        // 3 6 9 11
-        margin: 0 16px;
-      }
+      // &:nth-child(2n + 1) {
+      //   // 1 4 7 10
+      //   margin-left: 16px;
+      //   margin-right: 0px;
+      // }
+      // &:nth-child(3n - 1) {
+      // 2 5 8 11 14
+      // margin-left: 16px;
+      // margin-right: 16px;
+      // }
+      // &:nth-child(3n) {
+      //   // 3 6 9 11
+      //   margin: 0 16px;
+      // }
 
       .goods-title {
         @include multi-ellipsis(2);
-        height: 66px;
+        height: 68px;
       }
       .bd-block {
-        height: 80px;
+        height: 82px;
       }
     }
 

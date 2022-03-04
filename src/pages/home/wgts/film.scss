@@ -2,9 +2,12 @@
   .flim-video {
     height: 100%;
     display: block;
+    width: 100%;
   }
   .slider-wrap {
     margin: 0px 16px;
     width: auto !important;
+    border-radius: 16px;
+    overflow: hidden;
   }
 }

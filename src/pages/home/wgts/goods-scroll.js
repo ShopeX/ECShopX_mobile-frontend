@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
-import { calcTimer, classNames, linkPage } from '@/utils'
+import { calcTimer, classNames, isWeb, linkPage } from '@/utils'
 import { getDistributorId } from '@/utils/helper'
 import { withLoadMore } from '@/hocs'
 
@@ -209,7 +209,7 @@ export default class WgtGoodsScroll extends Component {
 
             {config.moreLink.linkPage && (
               <View className='more_img' onClick={this.handleClickMore}>
-                <View className='img'>
+                <View className={`img ${isWeb ? 'h5-img' : ''}`}>
                   <Image src={base.backgroundImg} className='goods-img' lazyLoad />
                 </View>
                 <View className='text'>查看更多</View>
