@@ -22,6 +22,25 @@ export default {
     'pages/liveroom/index' // 直播间页面
   ],
   subPackages: [
+    // 导购货架 guide
+    {
+      root: "subpages/guide",
+      pages: [
+        "index",
+        "category/index",          
+        "item/list",
+        "item/espier-detail",
+        "item/item-params",
+        "item/package-list",
+        "cart/espier-index",
+        "cart/espier-checkout",
+        "coupon-home/index",
+        "coupon-home/coupon-detail",
+        "recommend/list",
+        "recommend/detail",
+        "custom/custom-page"
+      ]
+    },
     {
       root: 'subpages/ecshopx',
       pages: [

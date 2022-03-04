@@ -1,10 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Button } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, NavBar } from '@/components'
-import { connect } from '@tarojs/redux'
+// import { SpToast, Loading, BackToTop, NavBar } from '@/components'
+import { SpToast, Loading, BackToTop,  } from '@/components'
+import { connect } from 'react-redux'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { buriedPoint, platformTemplateName, transformPlatformUrl } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
 import { BaHomeWgts } from '../components'
@@ -30,7 +32,7 @@ export default class HomeIndex extends Component {
   }
 
   async componentDidMount() {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
 
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -60,7 +62,7 @@ export default class HomeIndex extends Component {
   }
 
   async fetchInfo() {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -82,7 +84,7 @@ export default class HomeIndex extends Component {
 
   async onShareAppMessage() {
     const { shareInfo } = this.state
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
     const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
     const gu = `${work_userid}_${shop_code}`
     // const gu_user_id = Taro.getStorageSync("work_userid");
@@ -100,7 +102,7 @@ export default class HomeIndex extends Component {
 
   onShareTimeline() {
     const { shareInfo } = this.state
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`
     return {
@@ -119,7 +121,7 @@ export default class HomeIndex extends Component {
 
     return (
       <View className='page-index-custom'>
-        <NavBar title='微商城' />
+        {/* <NavBar title='微商城' /> */}
         <ScrollView
           className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
           scrollTop={scrollTop}

@@ -1,16 +1,17 @@
-import Taro, { Component } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
+import { View, ScrollView } from '@tarojs/components'
+import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import api from '@/api'
-import { pickBy, styleNames, platformTemplateName } from '@/utils'
+import { styleNames, platformTemplateName } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import entry from '@/utils/entry'
 import { WgtSearchHome } from './components/wgts'
-import { BaHomeWgts, BaTabBar, BaStoreList, BaStore, BaNavBar, BaGoodsBuyPanel } from './components'
+import { BaHomeWgts, BaStoreList, BaStore, BaGoodsBuyPanel } from './components'
 
-import '../pages/home/index.scss'
+import '@/pages/home/index.scss'
 
 @connect(
   ({ guide }) => ({
@@ -54,13 +55,13 @@ export default class BaGuideHomeIndex extends Component {
   }
   componentDidShow() {}
   async componentWillMount() {
-    const options = this.$router.params
+    const options = getCurrentInstance().router.params
     const res = await entry.entryLaunch(options, false) // 不能开启定位，直接读取导购带过来的店铺信息
     console.log('[entry.entryLaunch]', res)
   }
   async componentDidMount() {
     await S.autoLogin(this)
-    const { version } = this.$router.params
+    const { version } = getCurrentInstance().router.params
     console.log('[挂件包] this.state.wgts', this.state.wgts)
     //设置导购信息
     this.guideInit(version)
@@ -75,87 +76,6 @@ export default class BaGuideHomeIndex extends Component {
       this.getStoreList()
     })
   }
-
-  // async isAppWxWork() {
-  //   let _this = this;
-  //   const chatId = await _this.getQyChatId();
-  //   console.log("获取群信息------0", chatId);
-  //   let entry_form = S.get("entry_form", true);
-  //   if (chatId) {
-  //     S.set("qw_chatId", chatId, true);
-  //   } else if (
-  //     entry_form &&
-  //     entry_form.entry === "group_chat_tools" &&
-  //     !chatId
-  //   ) {
-  //     let newchatId = await _this.getNewQyChatId();
-  //     S.set("qw_chatId", newchatId, true);
-  //   }
-
-  //   this.getStoreList();
-  // }
-
-  //客户群id
-  // async getQyChatId() {
-  //   let ground = null;
-  //   try {
-  //     const context = await new Promise((reslove, reject) => {
-  //       wx.qy.getContext({
-  //         success: res => {
-  //           reslove(res);
-  //         }
-  //       });
-  //     });
-  //     console.log("群=====", context);
-  //     S.set("entry_form", context, true);
-  //     if (context.entry === "group_chat_tools") {
-  //       ground = await new Promise((reslove, reject) => {
-  //         wx.qy.getCurExternalChat({
-  //           success: res => {
-  //             reslove(res);
-  //           }
-  //         });
-  //       });
-  //       return ground.chatId;
-  //     } else {
-  //       S.delete("qw_chatId", true);
-  //       if (
-  //         ["contact_profile", "single_chat_tools", "chat_attachment"].includes(
-  //           context.entry
-  //         )
-  //       ) {
-  //         wx.qy.getCurExternalContact({
-  //           success: function(res) {
-  //             S.set("chat_uid", res.userId, true);
-  //           }
-  //         });
-  //       }
-  //     }
-
-  //     return ground;
-  //   } catch (err) {
-  //     console.log("找不到函数---1", err);
-  //     S.delete("qw_chatId", true);
-  //     return false;
-  //   }
-  // }
-
-  // async getNewQyChatId() {
-  //   try {
-  //     let ground = await new Promise((reslove, reject) => {
-  //       wx.qy.getCurExternalChat({
-  //         success: res => {
-  //           reslove(res);
-  //         }
-  //       });
-  //     });
-  //     return ground.chatId;
-  //   } catch (err) {
-  //     console.log("再次获取群ID错误====", err);
-  //     S.delete("qw_chatId", true);
-  //     return false;
-  //   }
-  // }
 
   //初始化首页模版
   async fetchInfo(version = 'v1.0.1') {
@@ -255,7 +175,7 @@ export default class BaGuideHomeIndex extends Component {
     console.log('guideInfo0------->', guideInfo)
     return (
       <View style='padding-top:70rpx' className={!isLoading ? 'page-index' : ''}>
-        <BaNavBar title='导购商城' fixed icon='in-icon in-icon-backhome' />
+        {/* <BaNavBar title='导购商城' fixed icon='in-icon in-icon-backhome' /> */}
         <View>
           {guideInfo && (
             <BaStore
@@ -283,7 +203,7 @@ export default class BaGuideHomeIndex extends Component {
 
         {homesearchfocus && <WgtSearchHome isShow={homesearchfocus} />}
 
-        <BaTabBar />
+        {/* <BaTabBar /> */}
         {showBuyPanel && (
           <BaGoodsBuyPanel
             info={goodsSkuInfo}

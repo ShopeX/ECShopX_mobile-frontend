@@ -1,12 +1,13 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
-import { SpTabList, AvitivityGoodsItem } from '@/components'
+// import { SpTabList, AvitivityGoodsItem } from '@/components'
 import api from '@/api'
 import { pickBy, navigateTo } from '@/utils'
 
 import './activityZone.scss'
 
-export default class activityZone extends PureComponent {
+export default class activityZone extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -80,7 +81,7 @@ export default class activityZone extends PureComponent {
   }
 
   handleClickItem = (item, index) => {
-    navigateTo(`/guide/item/espier-detail?id=${item.item_id}`)
+    navigateTo(`/subpages/guide/item/espier-detail?id=${item.item_id}`)
   }
 
   handleSwiperChange = (e) => {
@@ -89,7 +90,7 @@ export default class activityZone extends PureComponent {
   }
 
   handleClickActivity = (activity_id) => {
-    navigateTo(`/guide/item/list?activity_id=${activity_id}`)
+    navigateTo(`/subpages/guide/item/list?activity_id=${activity_id}`)
   }
 
   render() {
@@ -118,7 +119,7 @@ export default class activityZone extends PureComponent {
           <View className='in-icon in-icon-sanjiaoxing02'></View>
         </View>
         <View className='category-tab'>
-          <SpTabList current={tabCurrentIndex} tabList={tabList} onClick={this.handleTabClick} />
+          {/* <SpTabList current={tabCurrentIndex} tabList={tabList} onClick={this.handleTabClick} /> */}
         </View>
         <View className='scroll-list'>
           <ScrollView scrollX className='list'>
@@ -126,14 +127,14 @@ export default class activityZone extends PureComponent {
               nList_f.map((item, index) => {
                 return (
                   <View className='list-item slider-item__mr'>
-                    <AvitivityGoodsItem
+                    {/* <AvitivityGoodsItem
                       showVipCard
                       isshowcart
                       isshowprice
                       info={item}
                       subtitle={base.subtitle}
                       onClick={() => this.handleClickItem(item, index)}
-                    />
+                    /> */}
                   </View>
                 )
               })}
@@ -143,12 +144,12 @@ export default class activityZone extends PureComponent {
               nList_s.map((item, index) => {
                 return (
                   <View className='list-item slider-item__mr'>
-                    <AvitivityGoodsItem
+                    {/* <AvitivityGoodsItem
                       showVipCard
                       info={item}
                       subtitle={base.subtitle}
                       onClick={() => this.handleClickItem(item, 4 + index)}
-                    />
+                    /> */}
                   </View>
                 )
               })}

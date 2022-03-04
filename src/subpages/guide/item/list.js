@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import {
@@ -15,16 +16,16 @@ import {
   TabBar
 } from '@/components'
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { Tracker } from '@/service'
 import { pickBy, classNames } from '@/utils'
-import entry from '../../utils/entry'
+import entry from '@/utils/entry'
 import { BaNavBar } from '../components'
 
 import './list.scss'
 
-@connect(({ member, guide }) => ({
-  favs: member.favs,
+@connect(({ user, guide }) => ({
+  favs: user.favs,
   storeInfo: guide.storeInfo
 }))
 @withPager
@@ -55,7 +56,7 @@ export default class List extends Component {
   }
 
   async componentDidMount() {
-    const { cat_id = null, main_cat_id = null, gu, sence } = this.$router.params
+    const { cat_id = null, main_cat_id = null, gu, sence } = getCurrentInstance().router.params
 
     this.firstStatus = true
     const isOpenStore = await entry.getStoreStatus()
@@ -68,7 +69,7 @@ export default class List extends Component {
     this.setState(
       {
         query: {
-          keywords: this.$router.params.keywords,
+          keywords: getCurrentInstance().router.params.keywords,
           item_type: 'normal',
           is_point: 'false',
           distributor_id: storeInfo && storeInfo.distributor_id,
@@ -77,7 +78,7 @@ export default class List extends Component {
           category: cat_id ? cat_id : '',
           main_category: main_cat_id ? main_cat_id : ''
         },
-        curTagId: this.$router.params.tag_id
+        curTagId: getCurrentInstance().router.params.tag_id
       },
       () => {
         this.nextPage()
@@ -111,7 +112,7 @@ export default class List extends Component {
 
   // onShareAppMessage() {
   //   const res = this.state.shareInfo
-  //   const { cat_id = '', main_cat_id = '' } = this.$router.params
+  //   const { cat_id = '', main_cat_id = '' } = getCurrentInstance().router.params
   //   const { userId } = Taro.getStorageSync('userinfo')
   //   const query = userId ? `?uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}` : `?cat_id=${cat_id}&main_cat_id=${main_cat_id}`
   //   return {
@@ -123,7 +124,7 @@ export default class List extends Component {
 
   onShareTimeline() {
     const res = this.state.shareInfo
-    const { cat_id = null, main_cat_id = null } = this.$router.params
+    const { cat_id = null, main_cat_id = null } = getCurrentInstance().router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId
       ? `uid=${userId}&cat_id=${cat_id}&main_cat_id=${main_cat_id}`
@@ -139,7 +140,7 @@ export default class List extends Component {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId, isOpenStore } = this.state
     //const { distributor_id,store_id } = Taro.getStorageSync('curStore')
-    const { cardId } = this.$router.params
+    const { cardId } = getCurrentInstance().router.params
     const query = {
       ...this.state.query,
       item_params: selectParams,
@@ -344,7 +345,7 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     })
-    const url = `/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const url = `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -532,7 +533,7 @@ export default class List extends Component {
       isShowSearch,
       query
     } = this.state
-    const { isTabBar = '' } = this.$router.params
+    const { isTabBar = '' } = getCurrentInstance().router.params
     const navbar_height = S.get('navbar_height', true)
     return (
       <View className='page-goods-list'>

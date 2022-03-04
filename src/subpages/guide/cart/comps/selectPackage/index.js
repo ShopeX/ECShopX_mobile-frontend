@@ -8,9 +8,10 @@
  * @LastEditors: Arvin
  * @LastEditTime: 2020-11-26 20:18:13
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 
 import { SpCheckbox, SpCell } from '@/components'
 import { AtActionSheet } from 'taro-ui'

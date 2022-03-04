@@ -1,10 +1,11 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView } from '@tarojs/components'
 import { withPager, withBackToTop } from '@/hocs'
 import { SearchBar, RecommendItem, SpNote } from '@/components'
 import { BaTabBar, BaNavBar } from '../components'
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { pickBy, styleNames } from '@/utils'
 import './list.scss'
 
@@ -129,7 +130,7 @@ export default class RecommendList extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/guide/recommend/detail?id=${item.item_id}`
+    const url = `/subpages/guide/recommend/detail?id=${item.item_id}`
     Taro.navigateTo({
       url
     })

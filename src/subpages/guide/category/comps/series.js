@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import { classNames } from '@/utils'
 
@@ -46,10 +47,10 @@ export default class Series extends Component {
     const { category_id, main_category_id } = item
     let url = ''
     if (category_id) {
-      url = `/guide/item/list?cat_id=${category_id || ''}`
+      url = `/subpages/guide/item/list?cat_id=${category_id || ''}`
     }
     if (main_category_id) {
-      url = `/guide/item/list?main_cat_id=${main_category_id || ''}`
+      url = `/subpages/guide/item/list?main_cat_id=${main_category_id || ''}`
     }
     if (url) {
       Taro.navigateTo({

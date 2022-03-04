@@ -1,7 +1,7 @@
 import { Spx } from '@/spx'
 import Taro from '@tarojs/taro'
 import api from '@/api'
-import pkg from '../../../package.json'
+import pkg from '../../../../package.json'
 import { log, isGoodsShelves } from '@/utils'
 import configStore from '@/store'
 
@@ -14,7 +14,7 @@ class QWSPX extends Spx {
     console.log('QWSPX:this', this)
     console.log('QWSPX:this.get', this.get)
     if (this.options.autoRefreshToken) {
-      this.startRefreshToken()
+      // this.startRefreshToken()
       this.refreshQwUserinfo()
     }
   }

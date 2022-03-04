@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Picker, Image } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtForm, AtInput, AtButton, AtIcon } from 'taro-ui'
 import { SpToast, Timer, NavBar } from '@/components'
 import { RGCheckbox } from './comps'
 import { classNames, styleNames, isString, tokenParse, getQueryVariable } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import api from '@/api'
 import './reg.scss'
 
@@ -101,7 +102,7 @@ export default class Reg extends Component {
   }
 
   handleSubmit = async (e) => {
-    const redirect = this.$router.params.redirect
+    const redirect = getCurrentInstance().router.params.redirect
     let redirect_url = decodeURIComponent(redirect)
     const { isChecked, isSubmit } = this.state
     const data = {
@@ -135,7 +136,7 @@ export default class Reg extends Component {
 
     try {
       if (isWeapp) {
-        const { union_id, open_id } = this.$router.params
+        const { union_id, open_id } = getCurrentInstance().router.params
         const track = Taro.getStorageSync('trackParams')
         let source_id = 0,
           monitor_id = 0
@@ -194,7 +195,7 @@ export default class Reg extends Component {
           })
         } else {
           Taro.redirectTo({
-            url: `/guide/index`
+            url: `/subpages/guide/index`
           })
         }
       }, 700)
@@ -325,7 +326,7 @@ export default class Reg extends Component {
   }
 
   handleGetPhoneNumber = async (e) => {
-    // let { code } = this.$router.params
+    // let { code } = getCurrentInstance().router.params
     // try {
     //   await Taro.checkSession()
     // } catch (e) {

@@ -1,13 +1,14 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import './index.scss'
 
 export default class BaNavBar extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+  // static options = {
+  //   addGlobalClass: true
+  // }
   static defaultProps = {
     onClick: () => {}
   }
@@ -55,7 +56,7 @@ export default class BaNavBar extends Component {
   //回首页
   navHome() {
     Taro.redirectTo({
-      url: '/guide/index'
+      url: '/subpages/guide/index'
     })
   }
 

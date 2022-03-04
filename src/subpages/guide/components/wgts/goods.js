@@ -1,17 +1,18 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
 
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 
 import './goods.scss'
 
 @connect(
-  ({ cart, member }) => ({
+  ({ cart, user }) => ({
     cart,
-    favs: member.favs
+    favs: user.favs
   }),
   (dispatch) => ({
     onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
@@ -42,7 +43,7 @@ export default class WgtGoods extends Component {
   handleClickItem = async (id) => {
     try {
       Taro.navigateTo({
-        url: `/guide/item/espier-detail?id=${id}`
+        url: `/subpages/guide/item/espier-detail?id=${id}`
       })
     } catch (error) {}
   }

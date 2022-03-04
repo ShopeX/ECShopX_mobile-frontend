@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 // import { getTotalCount } from '@/store/cart'
 
 @connect(({ tabBar, cart }) => ({
@@ -56,7 +57,7 @@ export default class TabBar extends Component {
         title: '首页',
         iconType: 'home',
         iconPrefixClass: 'icon',
-        url: '/guide/index',
+        url: '/subpages/guide/index',
         urlRedirect: true
       },
       {
@@ -115,7 +116,7 @@ export default class TabBar extends Component {
   updateCurTab() {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
-    const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+    const fullPath = getCurrentRoute(getCurrentInstance().router).fullPath.split('?')[0]
     if (tabList.length == 0) {
       return
     }
@@ -139,7 +140,7 @@ export default class TabBar extends Component {
       })
     }
 
-    const { path } = getCurrentRoute(this.$router)
+    const { path } = getCurrentRoute(getCurrentInstance().router)
     if (this.state.tabList[cartTabIdx] && path === this.state.tabList[cartTabIdx].url) {
       updateCartCount('')
       return
@@ -157,7 +158,7 @@ export default class TabBar extends Component {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
       console.log('tabbar-withLogin', url, withLogin)
-      const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(getCurrentInstance().router).fullPath.split('?')[0]
       // if (withLogin && !S.getAuthToken()) {
       //   return Taro.navigateTo({
       //     url: process.env.APP_AUTH_PAGE

@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image } from '@tarojs/components'
 import { navigateTo } from '@/utils'
 import { linkPage } from './helper'
@@ -36,7 +37,7 @@ export default class WgtShowCase extends Component {
               <Text>{base.title}</Text>
               <View className='wgt__subtitle'>{base.subtitle}</View>
             </View>
-            <View className='wgt__more' onClick={this.navigateTo.bind(this, '/guide/item/list')}>
+            <View className='wgt__more' onClick={this.navigateTo.bind(this, '/subpages/guide/item/list')}>
               <View className='three-dot'></View>
             </View>
           </View>

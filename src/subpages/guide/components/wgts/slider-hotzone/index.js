@@ -1,9 +1,10 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { linkPage } from '../helper'
 import SliderTypeOne from './slider-typeone'
 import SliderTypeTwo from './slider-typetwo'
@@ -18,7 +19,7 @@ import '../slider.scss'
     onSetGoodsSkuInfo: (item) => dispatch({ type: 'cart/setGoodsSkuInfo', payload: item })
   })
 )
-export default class WgtSliderHotzone extends PureComponent {
+export default class WgtSliderHotzone extends Component {
   static options = {
     addGlobalClass: true
   }
