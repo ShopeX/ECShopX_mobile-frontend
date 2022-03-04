@@ -36,6 +36,7 @@ function WgtGoodsGrid(props) {
       return rightgoods
     }
   })
+  console.log(config, 'config')
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -60,12 +61,12 @@ function WgtGoodsGrid(props) {
           <View className='container'>
             <View className='goods-item-wrap two-inrow left-container'>
               {leftFilterGoods.map((item, leftidx) => (
-                <SpGoodsItem info={item} key={`left_${leftidx}`} />
+                <SpGoodsItem showPrice={config.showPrice} info={item} key={`left_${leftidx}`} />
               ))}
             </View>
             <View className='goods-item-wrap two-inrow right-container'>
               {rightFilterGoods.map((item, rightidx) => (
-                <SpGoodsItem info={item} key={`right_${rightidx}`} />
+                <SpGoodsItem showPrice={config.showPrice} info={item} key={`right_${rightidx}`} />
               ))}
             </View>
           </View>
@@ -74,7 +75,7 @@ function WgtGoodsGrid(props) {
           {config.style === 'grids' &&
             goods.map((item, idx) => (
               <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
-                <SpGoodsItem info={item} />
+                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} />
               </View>
             ))}
         </View>

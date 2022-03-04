@@ -2,6 +2,7 @@
   background-color: #fff;
   border-radius: 16px;
   overflow: hidden;
+  padding-bottom: 24px;
   .goods-item {
     &__hd {
       padding-top: 100%;
@@ -16,7 +17,7 @@
     }
     &__bd {
       border-radius: 0;
-      padding: 16px;
+      padding: 0px 16px;
       .goods-title {
         font-size: 24px;
         color: #222;
@@ -30,9 +31,9 @@
         @include multi-ellipsis(2);
       }
 
-      .goods-info {
-        margin-bottom: 16px;
-      }
+      // .goods-info {
+      //   margin-bottom: 16px;
+      // }
 
       .gd-price {
         .sp-price {
@@ -72,6 +73,7 @@
       .bd-block {
         display: flex;
         justify-content: space-between;
+        padding-top: 16px;
         &-lf {
         }
         &-rg {
