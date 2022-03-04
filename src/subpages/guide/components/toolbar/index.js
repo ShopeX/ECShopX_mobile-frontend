@@ -1,11 +1,12 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import S from '@/subpages/guide/lib/Spx.js'
 
 import './index.scss'
 
-export default class SpToolbar extends PureComponent {
+export default class SpToolbar extends Component {
   static options = {
     addGlobalClass: true
   }

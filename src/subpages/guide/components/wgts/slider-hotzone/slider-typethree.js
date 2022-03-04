@@ -1,10 +1,11 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { styleNames } from '@/utils'
 
 import '../slider.scss'
 
-export default class SliderTypeThree extends PureComponent {
+export default class SliderTypeThree extends Component {
   static options = {
     addGlobalClass: true
   }

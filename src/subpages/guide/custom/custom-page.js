@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, ScrollView, Button } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, NavBar } from '@/components'
+// import { SpToast, Loading, BackToTop, NavBar } from '@/components'
+import { SpToast, Loading, BackToTop,  } from '@/components'
 import { connect } from 'react-redux'
 import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
@@ -120,7 +121,7 @@ export default class HomeIndex extends Component {
 
     return (
       <View className='page-index-custom'>
-        <NavBar title='微商城' />
+        {/* <NavBar title='微商城' /> */}
         <ScrollView
           className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
           scrollTop={scrollTop}

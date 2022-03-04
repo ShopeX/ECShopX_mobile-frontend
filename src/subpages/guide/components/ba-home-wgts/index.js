@@ -1,4 +1,5 @@
-import Taro, { PureComponent } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import {
   WgtFilm,
@@ -17,7 +18,7 @@ import {
 } from '../wgts'
 // import {  WgtSearchHome } from '@/pages/home/wgts'
 
-export default class HomeWgts extends PureComponent {
+export default class HomeWgts extends Component {
   state = {
     screenWidth: 375
   }

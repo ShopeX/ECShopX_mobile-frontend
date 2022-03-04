@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-import { NavBar } from '@/components'
+// import { NavBar } from '@/components'
 import { ParamsItem } from './comps'
 
 import './item-params.scss'
@@ -43,7 +43,7 @@ export default class ItemParams extends Component {
 
     return (
       <View className='goods-params-wrap'>
-        <NavBar title='商品参数' leftIconType='chevron-left' />
+        {/* <NavBar title='商品参数' leftIconType='chevron-left' /> */}
         <View className='goods-params'>
           {list.map((item) => {
             return <ParamsItem key={item.attribute_id} info={item} />
