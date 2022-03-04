@@ -81,9 +81,12 @@ function WgtNearbyShop(props) {
               <Text className='wgt-title'>{base.title}</Text>
               <Text className='wgt-subtitle'>{base.subtitle}</Text>
             </View>
-            <Text className='more' onClick={showMore}>
+            <View className='wgt-more' onClick={showMore}>
+              <View className='three-dot'></View>
+            </View>
+            {/* <Text className='more' onClick={showMore}>
               查看更多
-            </Text>
+            </Text> */}
           </View>
         )}
 
@@ -121,11 +124,7 @@ function WgtNearbyShop(props) {
                   />
                 </View>
                 <View className='shop-logo'>
-                  <SpImage
-                    src={item.logo || 'shop_default_logo.png'}
-                    // mode="aspectFill"
-                    width={74}
-                  />
+                  <SpImage src={item.logo || 'shop_default_logo.png'} mode='scaleToFill' />
                 </View>
                 <View className='shop-info-block'>
                   <View className='shop-name'>{item.name}</View>

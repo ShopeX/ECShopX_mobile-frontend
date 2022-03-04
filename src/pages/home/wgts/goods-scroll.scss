@@ -100,9 +100,10 @@
     display: inline-block;
     position: absolute;
     top: 0;
+    height: 100%;
     .img {
       width: 265px;
-      height: 265px;
+      height: 92%;
       position: relative;
       border-radius: 16px;
       overflow: hidden;

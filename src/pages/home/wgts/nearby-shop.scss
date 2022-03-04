@@ -3,13 +3,13 @@
   border-radius: 16px;
   margin: 0 16px;
   padding: 24px 0px;
-  .more {
-    font-size: 22px;
-    border-radius: 30px;
-    padding: 2px 15px;
-    border: 1px solid var(--color-primary);
-    color: var(--color-primary);
-  }
+  // .more {
+  //   font-size: 22px;
+  //   border-radius: 30px;
+  //   padding: 2px 15px;
+  //   border: 1px solid var(--color-primary);
+  //   color: var(--color-primary);
+  // }
 
   .nearby_shop_wrap {
     padding: 0 16px 0px 16px;
@@ -18,19 +18,22 @@
   .scroll-tab {
     white-space: nowrap;
     margin: 10px 0 20px;
+    :last-child {
+      margin-right: 0px;
+    }
   }
 
   .tag {
     display: inline-block;
     cursor: pointer;
-    margin-right: 20px;
-    padding: 0 12px;
-    background-color: #eee;
+    margin-right: 32px;
+    padding: 0 11px;
+    background-color: #f5f5f5;
     border-radius: 23px;
     height: 46px;
     line-height: 46px;
     min-width: 80px;
-    font-size: 26px;
+    font-size: 24px;
     color: #444;
     text-align: center;
     &.active {
@@ -71,17 +74,21 @@
       left: 50%;
       transform: translateX(-50%);
       .sp-image {
-        height: 74px;
-        margin: 4px;
+        height: 77px;
+        width: 77px;
+        margin: 0 auto;
+        border: 3px solid #ffffff;
       }
       .sp-image-img {
         border-radius: 40px;
+        width: 100%;
+        height: 100%;
       }
     }
     .shop-info-block {
       background: #f5f5f5;
       overflow: hidden;
-      padding-bottom: 20px;
+      padding-bottom: 13px;
     }
     .shop-name {
       margin-top: 40px;
@@ -89,11 +96,13 @@
       text-align: center;
       color: #000;
       @include text-overflow();
+      line-height: 40px;
       padding: 0 10px;
+      font-weight: 400;
     }
     .shop-ft {
       height: 40px;
-      margin-top: 10px 0 20px;
+      margin-top: 8px;
       text-align: center;
     }
   }
@@ -103,10 +112,10 @@
   .coupon-wrap {
     /* prettier-ignore */
     border: 1PX solid var(--color-primary);
-    border-radius: 6px;
-    height: 34px;
-    line-height: 34px;
-    padding: 0px 10px;
+    border-radius: 8px;
+    height: 30px;
+    line-height: 30px;
+    padding: 0px 16px;
   }
   .coupon-text {
     @include text-overflow();
