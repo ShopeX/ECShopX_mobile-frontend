@@ -195,7 +195,7 @@ export default class Reg extends Component {
           })
         } else {
           Taro.redirectTo({
-            url: `/guide/index`
+            url: `/subpages/guide/index`
           })
         }
       }, 700)

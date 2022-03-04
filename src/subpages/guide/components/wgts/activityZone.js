@@ -81,7 +81,7 @@ export default class activityZone extends Component {
   }
 
   handleClickItem = (item, index) => {
-    navigateTo(`/guide/item/espier-detail?id=${item.item_id}`)
+    navigateTo(`/subpages/guide/item/espier-detail?id=${item.item_id}`)
   }
 
   handleSwiperChange = (e) => {
@@ -90,7 +90,7 @@ export default class activityZone extends Component {
   }
 
   handleClickActivity = (activity_id) => {
-    navigateTo(`/guide/item/list?activity_id=${activity_id}`)
+    navigateTo(`/subpages/guide/item/list?activity_id=${activity_id}`)
   }
 
   render() {

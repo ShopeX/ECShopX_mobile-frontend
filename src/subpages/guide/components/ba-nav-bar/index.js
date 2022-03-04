@@ -6,9 +6,9 @@ import S from '@/subpages/guide/lib/Spx.js'
 import './index.scss'
 
 export default class BaNavBar extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+  // static options = {
+  //   addGlobalClass: true
+  // }
   static defaultProps = {
     onClick: () => {}
   }
@@ -56,7 +56,7 @@ export default class BaNavBar extends Component {
   //回首页
   navHome() {
     Taro.redirectTo({
-      url: '/guide/index'
+      url: '/subpages/guide/index'
     })
   }
 

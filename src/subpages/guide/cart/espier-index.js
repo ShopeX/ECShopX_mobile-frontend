@@ -101,7 +101,7 @@ export default class CartIndex extends Component {
   }
 
   handleClickItem = (item) => {
-    const url = `/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const url = `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -412,7 +412,7 @@ export default class CartIndex extends Component {
     }
     this.isTodetail = 1
     Taro.navigateTo({
-      url: `/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+      url: `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     })
   }
 
@@ -830,7 +830,7 @@ export default class CartIndex extends Component {
                 <AtButton
                   className='btn-rand'
                   type='primary'
-                  onClick={this.navigateTo.bind(this, '/guide/index', true)}
+                  onClick={this.navigateTo.bind(this, '/subpages/guide/index', true)}
                 >
                   随便逛逛
                 </AtButton>

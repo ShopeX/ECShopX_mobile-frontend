@@ -10,9 +10,9 @@ import S from '@/subpages/guide/lib/Spx.js'
 import './goods.scss'
 
 @connect(
-  ({ cart, member }) => ({
+  ({ cart, user }) => ({
     cart,
-    favs: member.favs
+    favs: user.favs
   }),
   (dispatch) => ({
     onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
@@ -43,7 +43,7 @@ export default class WgtGoods extends Component {
   handleClickItem = async (id) => {
     try {
       Taro.navigateTo({
-        url: `/guide/item/espier-detail?id=${id}`
+        url: `/subpages/guide/item/espier-detail?id=${id}`
       })
     } catch (error) {}
   }

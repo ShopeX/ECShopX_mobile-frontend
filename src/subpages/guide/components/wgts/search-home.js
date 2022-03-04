@@ -31,7 +31,7 @@ export default class WgtSearchHome extends Component {
 
   searchTap = () => {
     Taro.navigateTo({
-      url: `/guide/item/list`
+      url: `/subpages/guide/item/list`
     })
   }
 

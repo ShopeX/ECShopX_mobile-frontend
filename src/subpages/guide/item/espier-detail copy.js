@@ -51,10 +51,10 @@ import { BaGoodsBuyPanel, BaNavBar } from '../components'
 import './espier-detail.scss'
 
 @connect(
-  ({ cart, member, colors }) => ({
+  ({ cart, user, colors }) => ({
     cart,
     colors: colors.current,
-    favs: member.favs,
+    favs: user.favs,
     showLikeList: cart.showLikeList
   }),
   (dispatch) => ({

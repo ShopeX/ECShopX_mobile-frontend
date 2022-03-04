@@ -51,10 +51,10 @@ import { getDtidIdUrl } from '@/utils/helper'
 import './espier-detail.scss'
 
 @connect(
-  ({ cart, member, colors }) => ({
+  ({ cart, user, colors }) => ({
     cart,
     colors: colors.current,
-    favs: member.favs,
+    favs: user.favs,
     showLikeList: cart.showLikeList
   }),
   (dispatch) => ({
@@ -882,7 +882,7 @@ export default class Detail extends Component {
     const navbar_height = S.get('navbar_height', true)
     return (
       <View className='page-goods-detail' style={`padding-top:${navbar_height}PX`}>
-        <BaNavBar title='导购商城' fixed />
+        {/* <BaNavBar title='导购商城' fixed /> */}
         <View onClick={this.toCart} className='iconfont icon-cart toCart'></View>
         {/* <NavBar
           title={info.item_name}
@@ -1256,7 +1256,7 @@ export default class Detail extends Component {
           />
         </FloatMenus>
 
-        {info.distributor_sale_status && hasStock && startActivity && !info.is_gift ? (
+        {/* {info.distributor_sale_status && hasStock && startActivity && !info.is_gift ? (
           <GoodsBuyToolbar
             info={info}
             type={marketing}
@@ -1289,7 +1289,7 @@ export default class Detail extends Component {
               )}
             </View>
           </GoodsBuyToolbar>
-        )}
+        )} */}
 
         {info && (
           <BaGoodsBuyPanel

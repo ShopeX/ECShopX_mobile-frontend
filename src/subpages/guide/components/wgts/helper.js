@@ -9,13 +9,13 @@ export function linkPage(type, id, item) {
 
   switch (type) {
     case 'goods':
-      url = '/guide/item/espier-detail?id=' + id
+      url = '/subpages/guide/item/espier-detail?id=' + id
       break
     case 'category':
-      url = '/guide/item/list?cat_id=' + id
+      url = '/subpages/guide/item/list?cat_id=' + id
       break
     case 'planting':
-      url = '/guide/recommend/detail?id=' + id
+      url = '/subpages/guide/recommend/detail?id=' + id
       break
     case 'liverooms':
       url = `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${id}`

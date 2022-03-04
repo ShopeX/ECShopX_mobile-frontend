@@ -24,8 +24,8 @@ import { BaNavBar } from '../components'
 
 import './list.scss'
 
-@connect(({ member, guide }) => ({
-  favs: member.favs,
+@connect(({ user, guide }) => ({
+  favs: user.favs,
   storeInfo: guide.storeInfo
 }))
 @withPager
@@ -345,7 +345,7 @@ export default class List extends Component {
       price: price * 100,
       imgUrl: img
     })
-    const url = `/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const url = `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
