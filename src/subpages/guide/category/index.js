@@ -11,9 +11,9 @@ import Series from './comps/series'
 
 import './index.scss'
 
-@connect((store) => ({
-  store
-}))
+// @connect((store) => ({
+//   store
+// }))
 export default class BaCategory extends Component {
   constructor(props) {
     super(props)

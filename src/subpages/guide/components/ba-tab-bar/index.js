@@ -64,28 +64,28 @@ export default class TabBar extends Component {
         title: '分类',
         iconType: 'category',
         iconPrefixClass: 'icon',
-        url: '/guide/category/index',
+        url: '/subpages/guide/category/index',
         urlRedirect: true
       },
       {
         title: '优惠券',
         iconType: 'member',
         iconPrefixClass: 'icon',
-        url: '/guide/coupon-home/index',
+        url: '/subpages/guide/coupon-home/index',
         urlRedirect: true
       },
       {
         title: '种草',
         iconType: 'member',
         iconPrefixClass: 'icon',
-        url: '/guide/recommend/list',
+        url: '/subpages/guide/recommend/list',
         urlRedirect: true
       },
       {
         title: '购物车',
         iconType: 'cart',
         iconPrefixClass: 'icon',
-        url: '/guide/cart/espier-index',
+        url: '/subpages/guide/cart/espier-index',
         text: this.cartCount || '',
         max: '99',
         urlRedirect: true

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro';
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView,Button } from '@tarojs/components'
 import { Loading, SpNote, NavBar, SpToast, CouponItem } from '@/components'
 import { connect } from 'react-redux'
 import api from '@/api'

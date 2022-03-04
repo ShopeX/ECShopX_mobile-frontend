@@ -9,7 +9,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import S from '@/subpages/guide/lib/Spx.js'
 import entry from '@/utils/entry'
 import { WgtSearchHome } from './components/wgts'
-import { BaHomeWgts, BaStoreList, BaStore, BaGoodsBuyPanel } from './components'
+import { BaHomeWgts, BaStoreList, BaStore, BaGoodsBuyPanel ,BaTabBar,BaNavBar } from './components'
 
 import '@/pages/home/index.scss'
 
@@ -175,7 +175,7 @@ export default class BaGuideHomeIndex extends Component {
     console.log('guideInfo0------->', guideInfo)
     return (
       <View style='padding-top:70rpx' className={!isLoading ? 'page-index' : ''}>
-        {/* <BaNavBar title='导购商城' fixed icon='in-icon in-icon-backhome' /> */}
+        <BaNavBar title='导购商城' fixed icon='in-icon in-icon-backhome' />
         <View>
           {guideInfo && (
             <BaStore
@@ -203,7 +203,7 @@ export default class BaGuideHomeIndex extends Component {
 
         {homesearchfocus && <WgtSearchHome isShow={homesearchfocus} />}
 
-        {/* <BaTabBar /> */}
+        <BaTabBar />
         {showBuyPanel && (
           <BaGoodsBuyPanel
             info={goodsSkuInfo}
