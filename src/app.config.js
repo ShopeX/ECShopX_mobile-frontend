@@ -59,25 +59,7 @@ export default {
       pages: [
         'package-list' // 组合优惠
       ]
-    },
-    {
-      root: 'subpages/guide',
-      pages: [
-        'index',
-        'category/index',
-        'item/list',
-        'item/espier-detail',
-        'item/item-params',
-        'item/package-list',
-        'cart/espier-index',
-        'cart/espier-checkout',
-        'coupon-home/index',
-        'coupon-home/coupon-detail',
-        'recommend/list',
-        'recommend/detail',
-        'custom/custom-page'
-      ]
-    },
+    },    
     {
       root: 'marketing',
       pages: [

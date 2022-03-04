@@ -17,7 +17,7 @@ import './espier-index.scss'
 
 @connect(
   ({ cart, colors }) => ({
-    list: cart.list,
+    list: cart.list || [],
     cartIds: cart.cartIds,
     showLikeList: cart.showLikeList,
     colors: colors.current
@@ -596,7 +596,7 @@ export default class CartIndex extends Component {
           {remindInfo.is_open && (
             <View
               // className={`${!S.getAuthToken() && "paddingTop"}`}
-              style={`background: ${colors.data[0].primary}`}
+              // style={`background: ${colors.data[0].primary}`}
             >
               <AtNoticebar marquee icon='volume-plus' className='notice' single>
                 {remindInfo.remind_content}
@@ -799,7 +799,7 @@ export default class CartIndex extends Component {
                             type='primary'
                             className='btn-checkout'
                             // disabled={totalItems <= 0}
-                            style={`background: ${colors.data[0].primary}`}
+                            // style={`background: ${colors.data[0].primary}`}
                             onClick={this.handleCheckoutToGuide}
                           >
                             为顾客下单
@@ -830,7 +830,7 @@ export default class CartIndex extends Component {
                 <AtButton
                   className='btn-rand'
                   type='primary'
-                  onClick={this.navigateTo.bind(this, '/subpages/guide/index', true)}
+                  onClick={this.navigateTo.bind(this, '/guide/index', true)}
                 >
                   随便逛逛
                 </AtButton>
