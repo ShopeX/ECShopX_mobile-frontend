@@ -1,16 +1,17 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import api from '@/api'
 import { pickBy, styleNames, platformTemplateName } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import entry from '@/utils/entry'
 import { WgtSearchHome } from './components/wgts'
 import { BaHomeWgts, BaTabBar, BaStoreList, BaStore, BaNavBar, BaGoodsBuyPanel } from './components'
 
-import '../pages/home/index.scss'
+import '@/pages/home/index.scss'
 
 @connect(
   ({ guide }) => ({
@@ -54,13 +55,13 @@ export default class BaGuideHomeIndex extends Component {
   }
   componentDidShow() {}
   async componentWillMount() {
-    const options = this.$router.params
+    const options = getCurrentInstance().router.params
     const res = await entry.entryLaunch(options, false) // 不能开启定位，直接读取导购带过来的店铺信息
     console.log('[entry.entryLaunch]', res)
   }
   async componentDidMount() {
     await S.autoLogin(this)
-    const { version } = this.$router.params
+    const { version } = getCurrentInstance().router.params
     console.log('[挂件包] this.state.wgts', this.state.wgts)
     //设置导购信息
     this.guideInit(version)

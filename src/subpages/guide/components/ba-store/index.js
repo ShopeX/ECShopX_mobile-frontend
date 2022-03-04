@@ -8,10 +8,11 @@
  * @LastEditors: PrendsMoi
  * @LastEditTime: 2021-04-09 15:37:59
  */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components'
 import { navigateTo, classNames } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import './index.scss'
 
 export default class BaStore extends Component {

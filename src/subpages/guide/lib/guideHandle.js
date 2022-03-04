@@ -1,6 +1,7 @@
 // 三天时间戳
-import Taro, { Component } from '@tarojs/taro'
-import { normalizeQuerys } from '../../utils/index'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
+import { normalizeQuerys } from '@/utils/index'
 import S from '@/spx'
 import api from '@/api'
 

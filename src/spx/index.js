@@ -8,7 +8,7 @@ import configStore from '@/store'
 const store = configStore()
 
 const globalData = {}
-class Spx {
+export class Spx {
   constructor(options = {}) {
     this.hooks = []
     this.options = {

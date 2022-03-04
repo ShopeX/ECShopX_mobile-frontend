@@ -1,4 +1,5 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
@@ -25,7 +26,7 @@ export default class ItemParams extends Component {
   }
 
   async fetch() {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
     const info = await api.item.detail(id)
     const { item_params } = info
     const itemParams = pickBy(item_params, {

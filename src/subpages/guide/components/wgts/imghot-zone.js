@@ -1,8 +1,9 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Image } from '@tarojs/components'
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
-import { connect } from '@tarojs/redux'
+import S from '@/subpages/guide/lib/Spx.js'
+import { connect } from 'react-redux'
 import { linkPage } from './helper'
 
 import './imghot-zone.scss'

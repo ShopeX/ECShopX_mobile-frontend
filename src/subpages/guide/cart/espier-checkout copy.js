@@ -1,12 +1,13 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button, Image, Canvas } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtButton } from 'taro-ui'
 import { Price, SpCell, SpToast } from '@/components'
 import { Batoolbar, BaOrderItem } from '../components'
 
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { withLogin } from '@/hocs'
 import { pickBy, log, classNames, styleNames, returnFloat } from '@/utils'
 import { canvasExp } from './guideCanvasExp.js'
@@ -189,7 +190,7 @@ export default class EspireCheckout extends Component {
     Taro.hideLoading()
   }
   getParams() {
-    const { order_id } = this.$router.params
+    const { order_id } = getCurrentInstance().router.params
     const { payType: pay_type } = this.state
     const { freightCoupon } = this.props
 

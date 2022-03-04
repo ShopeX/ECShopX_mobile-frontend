@@ -1,7 +1,7 @@
 import Taro, { PureComponent } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 
 import './index.scss'
 

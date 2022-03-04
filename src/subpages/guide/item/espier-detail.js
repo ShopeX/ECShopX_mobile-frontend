@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-key */
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import {
   View,
   Text,
@@ -10,7 +11,7 @@ import {
   Video,
   Canvas
 } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import {
   Loading,
@@ -31,7 +32,7 @@ import req from '@/api/req'
 import { withPager, withBackToTop } from '@/hocs'
 import { log, calcTimer, isArray, pickBy, canvasExp, normalizeQuerys, paramsSplice } from '@/utils'
 import entry from '@/utils/entry'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { Tracker } from '@/service'
 import {
   GoodsBuyToolbar,
@@ -44,7 +45,7 @@ import {
   ParamsItem,
   GroupingItem
 } from './comps'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../pages/home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 import { BaGoodsBuyPanel, BaNavBar } from '../components'
 import { getDtidIdUrl } from '@/utils/helper'
 import './espier-detail.scss'
@@ -119,7 +120,7 @@ export default class Detail extends Component {
   }
 
   async componentWillMount() {
-    const options = this.$router.params
+    const options = getCurrentInstance().router.params
     const res = await entry.entryLaunch(options, false) //false 不可开启定位，直接读取导购带过来的店铺
     this.setState({ subtask_id: res.subtask_id })
     console.log('[商详截取：entry.entryLaunch-guide/item/espier-detail]', res)
@@ -127,7 +128,7 @@ export default class Detail extends Component {
 
   async componentDidMount() {
     await S.autoLogin(this)
-    const { id, subtask_id } = this.$router.params
+    const { id, subtask_id } = getCurrentInstance().router.params
     this.fetchInfo(id)
     console.log('subtask_id,subtask_id', subtask_id)
     if (subtask_id) {
@@ -146,7 +147,7 @@ export default class Detail extends Component {
   onShareAppMessage() {
     const { info } = this.state
     const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
-    const query = this.$router.params
+    const query = getCurrentInstance().router.params
     const gu = `${work_userid}_${shop_code}`
     // const gu_user_id = Taro.getStorageSync( "work_userid" )
     const sharePath = getDtidIdUrl(
@@ -164,7 +165,7 @@ export default class Detail extends Component {
   }
 
   async innitPageShareUrl() {
-    const query = await normalizeQuerys(this.$router.params)
+    const query = await normalizeQuerys(getCurrentInstance().router.params)
     const { entry_form, subtask_id } = this.state
     let gu = null
     let url = `/pages/item/espier-detail.html`
@@ -208,7 +209,7 @@ export default class Detail extends Component {
     const { list, total_count } = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
-      item_id: id || this.$router.params.id
+      item_id: id || getCurrentInstance().router.params.id
     })
     list.map((item) => {
       item.picList = item.rate_pic ? item.rate_pic.split(',') : []
@@ -228,7 +229,7 @@ export default class Detail extends Component {
     if (itemId) {
       id = itemId
     } else {
-      id = this.$router.params.id
+      id = getCurrentInstance().router.params.id
     }
 
     const param = { goods_id: goodsId }
@@ -239,10 +240,10 @@ export default class Detail extends Component {
     if (process.env.APP_PLATFORM === 'standard') {
       param.distributor_id = distributor_id
     } else {
-      if (this.$router.params.dtid) {
-        param.distributor_id = this.$router.params.dtid
+      if (getCurrentInstance().router.params.dtid) {
+        param.distributor_id = getCurrentInstance().router.params.dtid
       } else {
-        const options = this.$router.params
+        const options = getCurrentInstance().router.params
         if (options.scene) {
           const query = await normalizeQuerys(options)
           if (query.dtid) {
@@ -485,7 +486,7 @@ export default class Detail extends Component {
   }
 
   handleParamsClick = () => {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
 
     Taro.navigateTo({
       url: `/pages/item/item-params?id=${id}`
@@ -773,7 +774,7 @@ export default class Detail extends Component {
   }
   handleClickViewAllEvaluation() {
     Taro.navigateTo({
-      url: `/marketing/pages/item/espier-evaluation?id=${this.$router.params.id}`
+      url: `/marketing/pages/item/espier-evaluation?id=${getCurrentInstance().router.params.id}`
     })
   }
 
@@ -781,7 +782,7 @@ export default class Detail extends Component {
     const { evaluationTotal } = this.state
     if (evaluationTotal > 0) {
       Taro.navigateTo({
-        url: '/marketing/pages/item/espier-evaluation?id=' + this.$router.params.id
+        url: '/marketing/pages/item/espier-evaluation?id=' + getCurrentInstance().router.params.id
       })
     }
   }

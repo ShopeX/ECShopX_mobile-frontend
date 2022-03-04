@@ -1,9 +1,10 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View } from '@tarojs/components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { pickBy, styleNames, platformTemplateName } from '@/utils'
 import { BaTabBar, BaNavBar } from '../components'
 import Series from './comps/series'

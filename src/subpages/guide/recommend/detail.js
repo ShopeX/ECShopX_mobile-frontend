@@ -1,11 +1,12 @@
-import Taro, { Component } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
 import { View, Text, Button } from '@tarojs/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { BaNavBar } from '../components'
-import { connect } from '@tarojs/redux'
+import { connect } from 'react-redux'
 import { formatTime, log, buriedPoint } from '@/utils'
-import S from '@/guide/lib/Spx.js'
+import S from '@/subpages/guide/lib/Spx.js'
 import { Tracker } from '@/service'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
 import { getDtidIdUrl } from '@/utils/helper'
@@ -86,7 +87,7 @@ export default class recommendDetail extends Component {
   }
 
   async fetchContent() {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
 
     // 关注数加1
     const resFocus = await api.article.focus(id)
@@ -97,7 +98,7 @@ export default class recommendDetail extends Component {
   }
 
   handleClickGoods = () => {
-    const { id } = this.$router.params
+    const { id } = getCurrentInstance().router.params
     this.detailInfo(id)
   }
 

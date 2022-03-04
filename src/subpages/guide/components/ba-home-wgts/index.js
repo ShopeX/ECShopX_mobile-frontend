@@ -68,7 +68,7 @@ export default class HomeWgts extends PureComponent {
                 />
               )}
               {item.name === 'search' && (
-                <WgtSearchHome info={item} dis_id={this.$router.params.id} />
+                <WgtSearchHome info={item} dis_id={getCurrentInstance().router.params.id} />
               )}
               {item.name === 'slider-hotzone' && (
                 <WgtSliderHotzone source={source} componentIndex={idx} info={item} />
