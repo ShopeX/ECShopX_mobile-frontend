@@ -1,0 +1,28 @@
+.page-marketing-packagelist {
+  .package-item {
+    background: #fff;
+    padding: 20px;
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+    &-hd {
+      height: 80px;
+      line-height: 80px;
+      margin-bottom: 20px;
+      /* prettier-ignore */
+      border-bottom: 1PX solid #f5f5f5;
+      .package-item-title {
+        font-weight: bold;
+        color: #222;
+      }
+    }
+    &-bd {
+    }
+    &-ft {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+  }
+}

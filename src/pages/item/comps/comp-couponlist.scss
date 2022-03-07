@@ -1,0 +1,36 @@
+.comp-couponlist {
+  display: flex;
+  align-items: center;
+  margin-top: 32px;
+  .couponlist-hd {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+  .couponlist-ft {
+    width: 100px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    color: var(--color-primary);
+    .icon-qianwang-01 {
+      // font-size: 20px;
+      position: relative;
+      top: 2px;
+    }
+  }
+  .coupon-item {
+    height: 46px;
+    line-height: 46px;
+    padding: 0 10px;
+    background: rgba(var(--color-rgb), 0.2);
+    color: var(--color-primary);
+    display: inline-block;
+    font-size: 24px;
+    margin-right: 16px;
+  }
+  .coupons-block {
+    white-space: nowrap;
+  }
+}

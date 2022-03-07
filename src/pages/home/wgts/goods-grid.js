@@ -15,7 +15,6 @@ function WgtGoodsGrid(props) {
     return null
   }
   const { base, data, config } = info
-  console.log('info===========', info)
   const goods = pickBy(data, doc.goods.WGT_GOODS_GRID)
 
   const handleClickMore = () => {

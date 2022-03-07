@@ -15,33 +15,28 @@ function SpLogin (props) {
       setPolicyModal(true)
     }
   })
+  const $instance = getCurrentInstance()
   /**
    *
    */
-  const handleOAuthLogin = () => {
-    const $instance = getCurrentInstance()
-    const { path } = $instance.router
-    let url = `/subpages/auth/login?redirect=${encodeURIComponent(`${path}`)}`
+  const handleOAuthLogin = () => {}
 
-    Taro.navigateTo({
-      url
-    })
+  const handleOnChange = () => {
+    if (isLogin) {
+      onChange && onChange()
+    } else {
+      const { path } = $instance.router
+      let url = `/subpages/auth/login?redirect=${encodeURIComponent(`${path}`)}`
+
+      Taro.navigateTo({
+        url
+      })
+    }
   }
 
   return (
-    <View className={classNames('sp-login', className)}>
-      {isLogin && children}
-      {!isLogin && (
-        <Button
-          className='login-btn'
-          type='primary'
-          size={size}
-          circle={circle}
-          onClick={handleOAuthLogin}
-        >
-          {children}
-        </Button>
-      )}
+    <View className={classNames('sp-login', className)} onClick={handleOnChange}>
+      {children}
     </View>
   )
 }

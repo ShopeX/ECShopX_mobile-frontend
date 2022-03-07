@@ -50,12 +50,15 @@ class App extends Component {
         false
       )
     }
+
+    const deviceInfo = Taro.getSystemInfoSync()
+    console.log('deviceInfo:', deviceInfo)
   }
 
   async getSystemConfig() {
     const {
-      echat = {},
-      meiqia = {},
+      echat,
+      meiqia,
       disk_driver = 'qiniu',
       whitelist_status = false,
       nostores_status = false,
@@ -107,7 +110,9 @@ class App extends Component {
           openScanQrcode, // 扫码
           openLocation, // 定位
           openOfficialAccount, // 公众号组件
-          diskDriver: disk_driver
+          diskDriver: disk_driver,
+          echat,
+          meiqia
         }
       })
       // 兼容老的主题方式

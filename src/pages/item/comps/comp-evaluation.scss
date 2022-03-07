@@ -1,0 +1,52 @@
+.comp-evaluation {
+  margin: 0 16px;
+  background-color: #fff;
+  padding: 0 16px;
+  box-shadow: 0px 2px 10px 0px #eae7e0;
+  .evaluation-hd {
+    display: flex;
+    justify-content: space-between;
+    padding: 24px 0;
+    /* prettier-ignore */
+    border-bottom: 1PX solid #ddd;
+    .extra-more {
+      display: flex;
+      align-items: center;
+      color: var(--color-primary);
+      font-size: 24px;
+    }
+  }
+  .evaluation-bd {
+    padding: 24px 0;
+    .evaluation-item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 32px;
+      }
+    }
+  }
+  .evaluation-icon {
+    margin-right: 16px;
+    border-radius: 50px;
+    background-color: #f5f5f5;
+    .sp-image-img {
+      border-radius: 50px;
+    }
+  }
+  .evaluation-name {
+    font-size: 24px;
+    color: #777;
+  }
+  .item-hd {
+    display: flex;
+    align-items: center;
+  }
+  .evaluation-content {
+    margin-top: 16px;
+  }
+  .default-msg {
+    color: #999;
+    text-align: center;
+    margin: 20px 0;
+    font-size: 26px;
+  }
+}

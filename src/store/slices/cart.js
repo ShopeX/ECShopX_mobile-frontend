@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
+import { showToast } from '@/utils'
 import api from '@/api'
 
 const initialState = {
@@ -14,6 +15,11 @@ export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (param
     valid_cart,
     invalid_cart
   }
+})
+
+export const addCart = createAsyncThunk('cart/addCart', async (params) => {
+  await api.cart.add(params)
+  showToast('成功加入购物车')
 })
 
 export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (params) => {
@@ -37,7 +43,7 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    addCart: (state, { payload }) => {},
+    // addCart: (state, { payload }) => {},
     deleteCart: (state, { payload }) => {},
     updateCart: (state, { payload }) => {},
     changeCoupon: (state, { payload }) => {
@@ -65,9 +71,14 @@ const cartSlice = createSlice({
       state.validCart = valid_cart
       state.invalidCart = invalid_cart
     })
+
+    builder.addCase(updateCount.fulfilled, (state, action) => {
+      const { item_count, cart_count } = action.payload
+      state.cartCount = item_count
+    })
   }
 })
 
-export const { addCart, deleteCart, updateCart, updateCartNum } = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum } = cartSlice.actions
 
 export default cartSlice.reducer

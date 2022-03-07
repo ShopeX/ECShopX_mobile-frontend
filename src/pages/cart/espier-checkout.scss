@@ -2,7 +2,7 @@
   // padding: $edge-size $edge-margin $toolbar-height $edge-margin;
   box-sizing: border-box;
   overflow-y: auto;
-  .shopping-guide-header{
+  .shopping-guide-header {
     padding: 20px;
     text-align: center;
     color: $color-brand-accent;
@@ -11,8 +11,8 @@
     font-size: 24px;
   }
 
-  .last_price{
-    display: inline-block; 
+  .last_price {
+    display: inline-block;
   }
 
   .checkout__wrap {
@@ -20,20 +20,20 @@
     overflow: hidden;
   }
 
-  .invoice-title{
+  .invoice-title {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    .invoice-guanbi{
+    .invoice-guanbi {
       width: 28px;
       height: 28px;
       text-align: center;
       border-radius: 50%;
       // background: #000;
-      color:#000;
-      font-size:28px;
+      color: #000;
+      font-size: 28px;
       line-height: 30px;
-      margin-right:10px;
+      margin-right: 10px;
     }
   }
 
@@ -124,9 +124,9 @@
       align-items: center;
       justify-content: space-between;
     }
-     /* #ifdef h5 */
-     &__ft {
-      left:290px;
+    /* #ifdef h5 */
+    &__ft {
+      left: 290px;
     }
     /*  #endif  */
     &__num {
@@ -140,9 +140,9 @@
         font-size: $font-size-small;
       }
     }
-    &__plus{
+    &__plus {
       font-size: 24px;
-      color:$color-brand-accent;
+      color: $color-brand-accent;
     }
     &__desc {
       margin: 0 0 10px;
@@ -158,7 +158,12 @@
     }
   }
 
-  .trade-shipping, .trade-invoice, .trade-remark, .trade-point, .trade-sub-total, .trade-payment {
+  .trade-shipping,
+  .trade-invoice,
+  .trade-remark,
+  .trade-point,
+  .trade-sub-total,
+  .trade-payment {
     margin: 0 0 $edge-margin;
   }
 
@@ -201,7 +206,8 @@
     }
   }
 
-  .trade-invoice, .trade-payment {
+  .trade-invoice,
+  .trade-payment {
     .sp-cell__bd {
       display: flex;
       justify-content: flex-end;
@@ -317,7 +323,8 @@
     border-radius: 40px;
     font-weight: bold;
     font-size: $font-size;
-    &:before, &:after {
+    &:before,
+    &:after {
       border: none;
     }
   }

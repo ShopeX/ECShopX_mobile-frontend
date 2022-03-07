@@ -32,6 +32,7 @@ import SpPrivacyModal from './sp-privacy-modal'
 import SpLogin from './sp-login'
 import SpTabbar from './sp-tabbar'
 import SpGoodsItem from './sp-goods-item'
+import SpGoodsCell from './sp-goods-cell'
 import SpPrice from './sp-price'
 import SpPoint from './sp-point'
 import SpPage from './sp-page'
@@ -43,6 +44,7 @@ import SpRecommend from './sp-recommend'
 import SpTabs from './sp-tabs'
 import SpTimer from './sp-timer'
 import SpCell from './sp-cell'
+import SpHtml from './sp-html'
 import SpHtmlContent from './html-content'
 import SpNote from './sp-note'
 import SpSearch from './sp-search'
@@ -69,6 +71,12 @@ import SpFloatMenus from './sp-float-menus'
 import SpFloatMenuItem from './sp-float-menu-item'
 import SpFloatAd from './sp-float-ad'
 import SpCouponPackage from './sp-coupon-package'
+import SpFloatLayout from './sp-float-layout'
+import SpOrderItem from './sp-order-item'
+import SpSkuSelect from './sp-sku-select'
+import SpPoster from './sp-poster'
+import SpChat from './sp-chat'
+import SpGoodsPrice from './sp-goods-price'
 
 export default {}
 
@@ -107,6 +115,7 @@ export {
   SpLogin,
   SpTabbar,
   SpGoodsItem,
+  SpGoodsCell,
   SpPrice,
   SpPoint,
   SpPage,
@@ -118,6 +127,7 @@ export {
   SpTabs,
   SpTimer,
   SpCell,
+  SpHtml,
   SpHtmlContent,
   SpNote,
   SpSearch,
@@ -143,5 +153,11 @@ export {
   SpFloatMenus,
   SpFloatMenuItem,
   SpFloatAd,
-  SpCouponPackage
+  SpCouponPackage,
+  SpFloatLayout,
+  SpOrderItem,
+  SpSkuSelect,
+  SpPoster,
+  SpChat,
+  SpGoodsPrice
 }

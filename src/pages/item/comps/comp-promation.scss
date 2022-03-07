@@ -1,0 +1,61 @@
+.comp-promation {
+  .promation-list {
+    padding-bottom: 80px;
+  }
+  .promation-item {
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  .join-times {
+    font-size: 30px;
+    color: #666;
+    margin-bottom: 16px;
+  }
+  .promation {
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
+    .icon-qianwang-01 {
+      font-size: 24px;
+      color: #666;
+      margin-left: 6px;
+    }
+  }
+  .promation-tag {
+    height: 46px;
+    line-height: 46px;
+    padding: 0 10px;
+    background: rgba(var(--color-rgb), 0.2);
+    color: var(--color-primary);
+    display: inline-block;
+    font-size: 24px;
+    margin-right: 16px;
+  }
+  .promation-name {
+    font-size: 28px;
+    color: #222;
+  }
+  .promation-date,
+  .promation-rule {
+    font-size: 28px;
+    color: #666;
+    margin-left: 84px;
+  }
+
+  .gift-list {
+    margin-top: 38px;
+    &-title {
+      font-size: 30px;
+      color: var(--color-primary);
+    }
+    .gift-item-wrap {
+      padding: 8px 8px 8px 46px;
+      .sp-goods-cell {
+        &:not(:last-child) {
+          margin-bottom: 24px;
+        }
+      }
+    }
+  }
+}

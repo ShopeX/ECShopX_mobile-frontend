@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
-import { updateCartNum, updateCount } from '@/store/slices/cart'
+import { updateCount } from '@/store/slices/cart'
 import api from '@/api'
 import { isWeixin, showToast } from '@/utils'
 import S from '@/spx'
@@ -11,6 +11,7 @@ import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {} } = props
   const [isLogin, setIsLogin] = useState(false)
+  const [isNewUser, setIsNewUser] = useState(false)
   const dispatch = useDispatch()
   const { userInfo } = useSelector((state) => state.user)
   // const policyTime = useRef(0)
@@ -38,9 +39,10 @@ export default (props = {}) => {
       if (checkResult) {
         const { code } = await Taro.login()
         try {
-          const { token } = await api.wx.login({ code })
+          const { token } = await api.wx.login({ code, showError: false })
           setToken(token)
         } catch (e) {
+          setIsNewUser(true)
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
@@ -53,10 +55,7 @@ export default (props = {}) => {
     setIsLogin(true)
     getUserInfo()
     dispatch(fetchUserFavs())
-    const {
-      payload: { item_count }
-    } = await dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
-    await dispatch(updateCartNum(item_count)) // 更新购物车数量
+    dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
   }
 
   const getUserInfo = async (refresh) => {
@@ -143,6 +142,7 @@ export default (props = {}) => {
 
   return {
     isLogin,
+    isNewUser,
     login,
     updatePolicyTime,
     setToken,

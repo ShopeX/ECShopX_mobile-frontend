@@ -1,0 +1,19 @@
+.comp-packageitem {
+  .main-goods {
+    margin-bottom: 20px;
+  }
+  .select-goods {
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+  .makeup-goods-item {
+    display: flex;
+    align-items: center;
+    &:not(:last-child) {
+      margin-bottom: 20px;
+    }
+    .sp-goods-cell {
+      flex: 1;
+    }
+  }
+}

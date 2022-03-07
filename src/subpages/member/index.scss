@@ -23,9 +23,9 @@
     &__body {
       line-height: 40px;
       width: 80%;
-      /*  #ifdef  h5  */  
+      /*  #ifdef  h5  */
       margin-top: 20px;
-      /*  #endif  */  
+      /*  #endif  */
     }
     .username-wrap {
       display: flex;
@@ -76,7 +76,7 @@
     }
   }
   .header-ft {
-
+    height: 110px;
   }
 
   .body-block {
@@ -86,7 +86,7 @@
     }
   }
   .ziti-order {
-    background: #F5F5F5;
+    background: #f5f5f5;
     display: flex;
     align-items: center;
     padding: 20px 16px;
@@ -169,7 +169,6 @@
     &:after {
       border-width: 0;
     }
-
   }
 
   .dibiao-block {

@@ -1,7 +1,7 @@
 {
   "name": "ecshopx-vshop",
   "app_name": "ecshopx",
-  "version": "2.4.1",
+  "version": "2.4.2",
   "private": true,
   "description": "taro app for bbc",
   "scripts": {
@@ -89,7 +89,7 @@
     "webpack-s3-plugin": "^1.2.0-rc.0"
   },
   "lint-staged": {
-    "src/**/*.{js,jsx}": [
+    "src/**/*.{js,jsx,scss}": [
       "prettier-eslint --write"
     ]
   }

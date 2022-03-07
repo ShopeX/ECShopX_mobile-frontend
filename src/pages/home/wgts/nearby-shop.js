@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { SpNoShop, SpImage } from '@/components'
-import { classNames } from '@/utils'
+import { classNames, isEmpty } from '@/utils'
 import './nearby-shop.scss'
 
 const initialState = {
@@ -27,7 +27,13 @@ function WgtNearbyShop(props) {
 
   useEffect(() => {
     init()
-  }, [state.activeIndex, location])
+  }, [state.activeIndex])
+
+  useEffect(() => {
+    if (!isEmpty(location)) {
+      init()
+    }
+  }, [location])
 
   const init = async () => {
     const params = {

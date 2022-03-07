@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .coupon-wgt {
   position: relative;
@@ -10,7 +10,7 @@
     &.coupon-body::before,
     &.coupon-body::after {
       content: none;
-    } 
+    }
   }
   .coupon_img {
     width: 100%;
@@ -29,13 +29,9 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(
-        circle at left,
-        transparent 10px,
-        #f0f2f5 10px
-      );
+      background: radial-gradient(circle at left, transparent 10px, #f0f2f5 10px);
       background-size: 100% 30px;
-      content: "";
+      content: '';
       z-index: -1;
     }
     &::after {
@@ -45,13 +41,9 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(
-        circle at right,
-        transparent 10px,
-        #f0f2f5 10px
-      );
+      background: radial-gradient(circle at right, transparent 10px, #f0f2f5 10px);
       background-size: 100% 30px;
-      content: "";
+      content: '';
       z-index: -1;
     }
     .coupon__amount {

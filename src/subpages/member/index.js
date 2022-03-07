@@ -97,7 +97,7 @@ const initialState = {
 
 function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
-  const { isLogin, updatePolicyTime, getUserInfoAuth } = useLogin({
+  const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
     autoLogin: true,
     policyUpdateHook: () => {
       setPolicyModal(true)
@@ -348,7 +348,7 @@ function MemberIndex(props) {
       )
     } else {
       return (
-        <SpLogin>
+        <SpLogin newUser={isNewUser}>
           <Text className='join-us-txt'>加入我们?</Text>
         </SpLogin>
       )

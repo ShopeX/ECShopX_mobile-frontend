@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .payment-picker {
   &__hd {
@@ -10,24 +10,14 @@
     position: relative;
     font-weight: bold;
     @include hairline();
-    .at-icon-close {
+    .iconfont {
       font-size: 30px;
       color: #555;
       position: absolute;
       right: 20px;
-      top: 50%;
+      top: 5%;
       margin-top: -15px;
     }
-     /*  #ifdef  alipay  */
-    .icon-close {
-      font-size: 30px;
-      color: #555;
-      position: absolute;
-      right: 20px;
-      top: 50%;
-      margin-top: -15px;
-    }
-    /*  #endif  */
   }
   &__bd {
     min-height: 340px;
@@ -38,7 +28,7 @@
     display: flex;
     align-items: center;
     align-content: center;
-    padding: 28px 0;
+    padding: 20px 0px;
     margin: 0 40px;
     @include hairline();
     &.no-border {
@@ -62,7 +52,10 @@
     }
     &__desc {
       line-height: 1;
-      padding:0!important;
+      margin: 0px !important;
+      font-size: 26px;
+      padding-top: 10px;
+      display: inline-block;
     }
   }
   .btn-submit {

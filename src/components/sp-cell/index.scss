@@ -25,6 +25,11 @@ $cell-prefix:'sp-cell';
   }
   &__bd {
     flex: 1;
+    padding: 0 20px;
+    color: #666;
+  }
+  &__title {
+    color: #666;
   }
   &__ft {
     color: $font-size-small;

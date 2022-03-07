@@ -1,40 +1,44 @@
 .sp-price {
+  font-family: PingFangSC-Regular, PingFang SC;
   &.line-through {
     color: $color-hint-text;
     text-decoration: line-through;
-    .price__symbol {
+    .sp-price__symbol {
       font-size: 20px;
       color: $color-hint-text;
-      font-weight: normal;
     }
-    .price__int {
+    .sp-price__int {
       font-size: 24px;
       color: $color-hint-text;
-      font-weight: normal;
     }
-    .price__decimal {
+    .sp-price__decimal {
       font-size: 24px;
       color: $color-hint-text;
-      font-weight: normal;
     }
   }
 
-  .price {
-    &__symbol {
-      margin-right: 5px;
-      color: $color-primary-text;
-      font-size: 24px;
-      font-weight: bold;
+  &__symbol {
+    margin-right: 5px;
+    color: $color-primary-text;
+    font-size: 24px;
+  }
+  &__int {
+    color: $color-primary-text;
+    font-size: 32px;
+  }
+  &__decimal {
+    color: $color-primary-text;
+    font-size: 28px;
+  }
+  &__primary {
+    .sp-price__symbol {
+      color: var(--color-primary);
     }
-    &__int {
-      color: $color-primary-text;
-      font-size: 32px;
-      font-weight: bold;
+    .sp-price__int {
+      color: var(--color-primary);
     }
-    &__decimal {
-      color: $color-primary-text;
-      font-size: 28px;
-      font-weight: bold;
+    .sp-price__decimal {
+      color: var(--color-primary);
     }
   }
 }

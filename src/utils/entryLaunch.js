@@ -19,16 +19,27 @@ class EntryLaunch {
   /**
    * @function 获取小程序路由参数
    */
-  getRouteParams() {
+  async getRouteParams() {
     const { params } = $instance.router
     let options = {}
     if (params.scene) {
       options = {
         ...qs.parse(decodeURIComponent(params.scene))
       }
+
+      if (options.share_id) {
+        const res = await api.wx.getShareId({
+          share_id: options.share_id
+        })
+        options = {
+          ...options,
+          ...res
+        }
+      }
     } else {
       options = params
     }
+    console.log(`getRouteParams:`, options)
     return options
   }
 
