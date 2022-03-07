@@ -88,7 +88,10 @@ function CompMenu(props) {
   if (!config.whitelist_status) {
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
-  menus = menus.concat(MENUS_CONST)
+  //商家入驻是否开启
+  if (accessMenu.merchant_status) {
+    menus = menus.concat(MENUS_CONST)
+  }
 
   return (
     <View className='comp-menu'>
