@@ -1,0 +1,39 @@
+.home-header-shop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: $home-header-height;
+  padding: 0 20px;
+  background: #fff;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+
+  .shop-left {
+    display: flex;
+    align-items: center;
+  }
+  .shop-name {
+    font-size: 28px;
+    max-width: 160px;
+    @include text-overflow();
+  }
+  .children-block {
+    flex: 1;
+    padding: 0 10px;
+  }
+  .icon-qianwang-01 {
+    font-size: 24px;
+    color: #aaa;
+  }
+  .scancode {
+    .icon-scan {
+      color: var(--color-primary);
+      font-size: 42px;
+      margin-right: 6px;
+      position: relative;
+      top: 4px;
+    }
+  }
+}

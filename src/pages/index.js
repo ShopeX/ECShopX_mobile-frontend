@@ -111,12 +111,12 @@ function Home() {
 
   const fetchStoreInfo = async ({ lat, lng }) => {
     if (process.env.APP_PLATFORM === 'platform') return
-    let parmas = {}
+    let parmas = {
+      distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
+    }
     if (openLocation) {
       parmas.lat = lat
       parmas.lng = lng
-    } else {
-      parmas.distributor_id = getDistributorId()
     }
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
