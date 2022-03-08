@@ -14,7 +14,7 @@ const initialState = {
   lockStyle: {}
 }
 
-function SpPage (props, ref) {
+function SpPage(props, ref) {
   const { page, router } = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { lock, lockStyle } = state
