@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { AtButton, AtInput } from 'taro-ui'
+import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import { Loading, Price, SpCell, SpToast, SpPage, SpHtmlContent } from '@/components'
 import api from '@/api'
 import S from '@/spx'
@@ -147,7 +147,8 @@ export default class CartCheckout extends Component {
       pick: {},
       isOpenStore: null,
       channel: '',
-      headShop: {}
+      headShop: {},
+      remark: ''
     }
 
     // 路由参数缓存
@@ -615,7 +616,8 @@ export default class CartCheckout extends Component {
           : getShopId || (shop_id === 'undefined' ? 0 : shop_id)
         : getShopId || (shop_id === 'undefined' ? curStorageStore.distributor_id : shop_id),
       ...drugInfo,
-      point_use: point_use
+      point_use,
+      remark: this.state.remark
     }
     if (isNeedPackage) {
       params.pack = pack
@@ -1175,10 +1177,6 @@ export default class CartCheckout extends Component {
   }
 
   handlePay = async () => {
-    /* 大于50字提示  */
-    // if (this.params.remark && this.params.remark.length>50) {
-    //   return S.toast('请选择地址')
-    // }
     const { payType, total, identity, isOpenStore, curStore, receiptType, channel } = this.state
     const { type, goodType, cart_type } = this.$instance.router.params
 
@@ -1483,11 +1481,10 @@ export default class CartCheckout extends Component {
     // Taro.navigateTo({ url })
   }
 
-  handleRemarkChange = (val) => {
-    this.params = {
-      ...this.params,
-      remark: val
-    }
+  handleRemarkChange = (remark) => {
+    this.setState({
+      remark
+    })
   }
 
   handleCouponsClick = async () => {
@@ -1930,11 +1927,12 @@ export default class CartCheckout extends Component {
                   )}
                   <View className='sec cart-group__cont'>
                     <SpCell className='sec trade-remark' border={false}>
-                      <AtInput
+                      <AtTextarea
                         className='trade-remark__input'
                         placeholder='给商家留言：选填（50字以内）'
                         onChange={this.handleRemarkChange.bind(this)}
                         maxLength={50}
+                        value={this.state.remark}
                       />
                     </SpCell>
                   </View>
