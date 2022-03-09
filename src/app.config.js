@@ -19,7 +19,8 @@ export default {
 
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
-    'pages/liveroom/index' // 直播间页面
+    'pages/liveroom/index', // 直播间页面
+    'pages/store/list' // 选择店铺列表
   ],
   subPackages: [
     {

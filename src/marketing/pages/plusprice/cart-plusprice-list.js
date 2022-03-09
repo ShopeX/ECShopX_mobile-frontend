@@ -6,8 +6,7 @@ import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckboxNew } from '
 // import { AtCountdown } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { getDistributorId } from '@/utils/helper'
-import { pickBy, hasNavbar } from '@/utils'
+import { pickBy, hasNavbar, getDistributorId } from '@/utils'
 
 import './plusprice.scss'
 
@@ -18,7 +17,7 @@ import './plusprice.scss'
 @withBackToTop
 export default class DetailPluspriceList extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,11 +29,11 @@ export default class DetailPluspriceList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -55,7 +54,7 @@ export default class DetailPluspriceList extends Component {
     })
   }
 
-  async handleClickConfirm (type) {
+  async handleClickConfirm(type) {
     let { list } = this.state
     if (!list.length) return
     const selected = list.filter((v) => v.is_checked)
@@ -83,7 +82,7 @@ export default class DetailPluspriceList extends Component {
     }, 300)
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       marketing_id: this.$instance.router.params.marketing_id,
@@ -112,7 +111,7 @@ export default class DetailPluspriceList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { list, showBackToTop, scrollTop, page } = this.state
     return (

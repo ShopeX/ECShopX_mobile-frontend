@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import entry from '@/utils/entry'
-import { getDistributorId } from '@/utils/helper'
+import { getDistributorId } from '@/utils'
 import api from '@/api'
 
 import './goods.scss'
@@ -33,7 +33,7 @@ export default class WgtGoods extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -179,7 +179,7 @@ export default class WgtGoods extends Component {
       }
     }
   }
-  async fetchCartcount () {
+  async fetchCartcount() {
     try {
       const { item_count } = await api.cart.count({ shop_type: 'distributor' })
       this.props.onUpdateCartCount(item_count)
@@ -188,7 +188,7 @@ export default class WgtGoods extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx, is_fav } = this.state
     if (!info) {
