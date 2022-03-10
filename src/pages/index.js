@@ -4,7 +4,7 @@ import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar } from '@/components'
 import api from '@/api'
-import { isWeixin, getDistributorId, standardEnv } from '@/utils'
+import { isWeixin, getDistributorId, VERSION_STANDARD } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
@@ -110,7 +110,7 @@ function Home() {
   })
 
   const fetchStoreInfo = async ({ lat, lng }) => {
-    if (!standardEnv) return
+    if (!VERSION_STANDARD) return
     let parmas = {
       distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
     }
@@ -135,7 +135,7 @@ function Home() {
   return (
     <SpPage className='page-index' scrollToTopBtn renderFloat={<CompFloatMenu />}>
       {/* header-block */}
-      {standardEnv ? (
+      {VERSION_STANDARD ? (
         <WgtHomeHeaderShop>
           {searchComp && searchComp.config.fixTop && (
             <SpSearch isFixTop={searchComp.config.fixTop} />

@@ -6,7 +6,7 @@ import { connect } from 'react-redux'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import entry from '@/utils/entry'
-import { getDistributorId, standardEnv } from '@/utils'
+import { getDistributorId, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
 
 import './goods.scss'
@@ -159,7 +159,7 @@ export default class WgtGoods extends Component {
         const isOpenStore = await entry.getStoreStatus()
         const { distributor_id, store_id } = Taro.getStorageSync('curStore')
         let id = Number(item_data.distributor_id) || 0
-        // if (standardEnv && !id) {
+        // if (VERSION_STANDARD && !id) {
         //   id = isOpenStore ? store_id : distributor_id
         // }
 

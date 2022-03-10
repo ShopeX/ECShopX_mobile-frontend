@@ -17,7 +17,7 @@ import {
 
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, payTypeField, standardEnv } from '@/utils'
+import { pickBy, classNames, isArray, isAlipay, payTypeField, VERSION_STANDARD } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
@@ -419,7 +419,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (!standardEnv) {
+    // if (!VERSION_STANDARD) {
     //   curdis_id = 0
     // }
     return { distributor_id: curdis_id }
@@ -433,7 +433,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (!standardEnv || isAlipay) {
+    // if (!VERSION_STANDARD || isAlipay) {
     //   curdis_id = 0
     // }
 
@@ -697,7 +697,7 @@ export default class Home extends Component {
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版
-    const isStandard = true // standardEnv && !is_open_store_status
+    const isStandard = true // VERSION_STANDARD && !is_open_store_status
     // 否是fixed
     const isFixed = positionStatus
 

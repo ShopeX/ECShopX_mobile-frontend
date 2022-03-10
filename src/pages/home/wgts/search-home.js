@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Icon } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
-import { getQueryVariable, standardEnv } from '@/utils'
+import { getQueryVariable, VERSION_STANDARD } from '@/utils'
 import './search-home.scss'
 
 export default class WgtSearchHome extends Component {
@@ -65,7 +65,7 @@ export default class WgtSearchHome extends Component {
 
     const { base, config } = info
 
-    let isShowScan = true // Taro.getEnv() !== 'WEB' && config.scanCode && !standardEnv
+    let isShowScan = true // Taro.getEnv() !== 'WEB' && config.scanCode && !VERSION_STANDARD
     return (
       <View className={`wgt-search ${base.padded && config.fixTop ? 'cus_padding' : null}`}>
         <View

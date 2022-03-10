@@ -15,7 +15,7 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute, getBrowserEnv, standardEnv } from '@/utils'
+import { pickBy, classNames, getCurrentRoute, getBrowserEnv, VERSION_STANDARD } from '@/utils'
 
 import './list.scss'
 
@@ -147,7 +147,7 @@ export default class List extends Component {
       pageSize
     }
 
-    if (standardEnv) {
+    if (VERSION_STANDARD) {
       query.distributor_id = distributor_id
     }
 

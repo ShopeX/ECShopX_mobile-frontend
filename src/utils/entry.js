@@ -3,7 +3,7 @@ import api from '@/api'
 import req from '@/api/req'
 import S from '@/spx'
 import { getOpenId } from '@/utils/youshu'
-import { payTypeField, standardEnv } from '@/utils'
+import { payTypeField, VERSION_STANDARD } from '@/utils'
 import entryLaunchFun from '@/utils/entryLaunch'
 import qs from 'qs'
 
@@ -245,7 +245,7 @@ async function getLoc() {
       }
     )
   } else {
-    // if (standardEnv) {
+    // if (VERSION_STANDARD) {
     // return getWebLocal().catch(() => '定位错误')
     // } else {
     //   return null
@@ -255,7 +255,7 @@ async function getLoc() {
 
 async function getStoreStatus() {
   const { nostores_status } = Taro.getStorageSync('otherSetting')
-  // if (standardEnv) {
+  // if (VERSION_STANDARD) {
   if ('standard') {
     if (nostores_status === true) {
       return true

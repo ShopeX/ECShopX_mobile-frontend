@@ -46,7 +46,7 @@ import {
   isWeixin,
   linkPage,
   getAppId,
-  standardEnv
+  VERSION_STANDARD
 } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
@@ -155,7 +155,7 @@ export default class EspierDetail extends Component {
       },
       async () => {
         const { is_open_store_status } = this.state
-        if (standardEnv) {
+        if (VERSION_STANDARD) {
           // const { distributor_id } = Taro.getStorageSync('curStore')
           const curStore = Taro.getStorageSync('curStore')
           if (is_open_store_status) {
@@ -271,7 +271,7 @@ export default class EspierDetail extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
     const { is_open_store_status } = this.state
-    const id = standardEnv
+    const id = VERSION_STANDARD
       ? is_open_store_status
         ? curStore.store_id
         : curStore.distributor_id
@@ -292,7 +292,7 @@ export default class EspierDetail extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const { is_open_store_status } = this.state
     const infoId = info.distributor_id
-    const id = standardEnv
+    const id = VERSION_STANDARD
       ? is_open_store_status
         ? curStore.store_id
         : curStore.distributor_id
@@ -391,7 +391,7 @@ export default class EspierDetail extends Component {
       delete param.goods_id
     }
 
-    if (standardEnv) {
+    if (VERSION_STANDARD) {
       param.distributor_id = distributor_id
     } else {
       if (this.$instance.router.params.dtid) {
@@ -649,7 +649,7 @@ export default class EspierDetail extends Component {
     const { info, is_open_store_status } = this.state
     let { distributor_id } = info
     const curStore = Taro.getStorageSync('curStore')
-    if (standardEnv) {
+    if (VERSION_STANDARD) {
       //distributor_id = Taro.getStorageSync('curStore').distributor_id
       distributor_id = is_open_store_status ? curStore.store_id : curStore.distributor_id
     }
@@ -729,7 +729,7 @@ export default class EspierDetail extends Component {
 
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
-    const id = standardEnv ? (is_open_store_status ? store_id : distributor_id) : infoId
+    const id = VERSION_STANDARD ? (is_open_store_status ? store_id : distributor_id) : infoId
 
     const wxappCode = getDtidIdUrl(
       `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,
@@ -976,7 +976,7 @@ export default class EspierDetail extends Component {
   handleClickItem = (item) => {
     const curStore = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
-    const id = standardEnv
+    const id = VERSION_STANDARD
       ? is_open_store_status
         ? curStore.store_id
         : curStore.distributor_id
@@ -991,7 +991,7 @@ export default class EspierDetail extends Component {
     // const { distributor_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     let id = ''
-    if (standardEnv) {
+    if (VERSION_STANDARD) {
       const { distributor_id, store_id } = Taro.getStorageSync('curStore')
       id = is_open_store_status ? store_id : distributor_id
     } else {
@@ -1098,7 +1098,7 @@ export default class EspierDetail extends Component {
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { info, is_open_store_status } = this.state
     const { company_id, item_id } = info
-    const dtid = standardEnv
+    const dtid = VERSION_STANDARD
       ? is_open_store_status
         ? store_id
         : distributor_id
@@ -1485,7 +1485,7 @@ export default class EspierDetail extends Component {
             />
           )}
 
-          {!standardEnv && !isArray(info.distributor_info) && (
+          {!VERSION_STANDARD && !isArray(info.distributor_info) && (
             <StoreInfo info={info.distributor_info} />
           )}
 

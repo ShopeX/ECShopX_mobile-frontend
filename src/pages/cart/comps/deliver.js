@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AddressChoose } from '@/components'
-import { standardEnv } from '@/utils'
+import { VERSION_STANDARD } from '@/utils'
 
 import './deliver.scss'
 
@@ -108,7 +108,7 @@ export default class Deliver extends Component {
             <View className='addr-title'>{curStore.name}</View>
             <View className='addr-detail'>
               <View className='address'>{curStore.store_address}</View>
-              {isOpenStore && standardEnv ? (
+              {isOpenStore && VERSION_STANDARD ? (
                 <View
                   className='iconfont icon-edit'
                   onClick={this.handleEditZitiClick.bind(this, curStore.distributor_id)}

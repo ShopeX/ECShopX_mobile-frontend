@@ -70,7 +70,7 @@ export const isWeixin = Taro.getEnv() == Taro.ENV_TYPE.WEAPP
 /** 在H5平台 */
 export const isWeb = Taro.getEnv() == Taro.ENV_TYPE.WEB
 
-export const standardEnv = process.env.APP_PLATFORM == 'standard'
+export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent
@@ -474,7 +474,7 @@ export async function buriedPoint(data) {
   // 任务埋点
   if (subtask_id) {
     const { distributor_id: shopId } = Taro.getStorageSync('curStore')
-    if (standardEnv) {
+    if (VERSION_STANDARD) {
       dtid = shopId
     }
     const newData = {
@@ -690,7 +690,7 @@ const getDistributorId = (platform_id = 0) => {
   const {
     shopInfo: { distributor_id, store_id }
   } = shop
-  if (standardEnv) {
+  if (VERSION_STANDARD) {
     const standard_id = openStore ? distributor_id : store_id
     return standard_id
   } else {
