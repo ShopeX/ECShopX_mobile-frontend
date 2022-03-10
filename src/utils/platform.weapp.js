@@ -1,6 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
-export function setPageTitle (title) {
+export function setPageTitle(title) {
   Taro.setNavigationBarTitle({
     title
   })
@@ -16,3 +16,7 @@ export const transformPlatformUrl = (url) => {
 }
 
 export const createIntersectionObserver = Taro.createIntersectionObserver
+
+export function dealTextAreaValue(value) {
+  return value
+}

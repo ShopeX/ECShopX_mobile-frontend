@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { SpNoShop, SpImage } from '@/components'
-import { classNames } from '@/utils'
+import { classNames, isEmpty } from '@/utils'
 import './nearby-shop.scss'
 
 const initialState = {
@@ -14,7 +14,7 @@ const initialState = {
   scrollLeft: 0
 }
 
-function WgtNearbyShop (props) {
+function WgtNearbyShop(props) {
   const { info } = props
   if (!info) {
     return null
@@ -27,7 +27,13 @@ function WgtNearbyShop (props) {
 
   useEffect(() => {
     init()
-  }, [state.activeIndex, location])
+  }, [state.activeIndex])
+
+  useEffect(() => {
+    if (!isEmpty(location)) {
+      init()
+    }
+  }, [location])
 
   const init = async () => {
     const params = {
@@ -75,9 +81,12 @@ function WgtNearbyShop (props) {
               <Text className='wgt-title'>{base.title}</Text>
               <Text className='wgt-subtitle'>{base.subtitle}</Text>
             </View>
-            <Text className='wgt-more' onClick={showMore}>
+            <View className='wgt-more' onClick={showMore}>
+              <View className='three-dot'></View>
+            </View>
+            {/* <Text className='more' onClick={showMore}>
               查看更多
-            </Text>
+            </Text> */}
           </View>
         )}
 
@@ -115,11 +124,7 @@ function WgtNearbyShop (props) {
                   />
                 </View>
                 <View className='shop-logo'>
-                  <SpImage
-                    src={item.logo || 'shop_default_logo.png'}
-                    // mode="aspectFill"
-                    width={74}
-                  />
+                  <SpImage src={item.logo || 'shop_default_logo.png'} mode='scaleToFill' />
                 </View>
                 <View className='shop-info-block'>
                   <View className='shop-name'>{item.name}</View>

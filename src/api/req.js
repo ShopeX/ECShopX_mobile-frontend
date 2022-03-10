@@ -1,11 +1,11 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin, isWeb, isMerchantModule } from '@/utils'
+import { isAlipay, isWeixin, isWeb, isMerchantModule, getExtConfigData } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
-function addQuery (url, query) {
+function addQuery(url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
 }
 
@@ -35,21 +35,21 @@ const request = (() => {
   return Taro.request
 })()
 class RequestQueue {
-  constructor () {
+  constructor() {
     this.requestList = []
     this.isRunning = false
   }
 
-  push (req) {
+  push(req) {
     this.requestList.push(req)
   }
 
-  destroy () {
+  destroy() {
     this.isRunning = false
     this.requestList = []
   }
 
-  run () {
+  run() {
     this.isRunning = true
     const next = async () => {
       const req = this.requestList.shift()
@@ -67,13 +67,13 @@ class RequestQueue {
 }
 
 class API {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.setOptions(options)
     this.isRefreshingToken = false
     this.requestQueue = new RequestQueue()
   }
 
-  setOptions (opts) {
+  setOptions(opts) {
     let { baseURL = '/' } = opts
     if (!/\/$/.test(baseURL)) {
       baseURL = baseURL + '/'
@@ -84,9 +84,7 @@ class API {
       company_id: process.env.APP_COMPANY_ID
     }
     if (isWeixin || isAlipay) {
-      const extConfig = Taro.getExtConfigSync
-        ? Taro.getExtConfigSync()
-        : { appid: process.env.APP_ID }
+      const extConfig = getExtConfigData()
       options.appid = extConfig.appid
       if (extConfig.company_id) {
         options.company_id = extConfig.company_id
@@ -95,7 +93,7 @@ class API {
     this.options = options
   }
 
-  errorToast (data) {
+  errorToast(data) {
     let errMsg = data.message || (data.data && data.data.message) || '操作失败，请稍后重试'
 
     if (errMsg.length > 11) {
@@ -110,21 +108,21 @@ class API {
     }, 200)
   }
 
-  getReqUrl (url) {
+  getReqUrl(url) {
     return /^http/.test(url) ? url : `${this.baseURL}${url.replace(/^\//, '')}`
   }
 
-  handleLogout () {
+  handleLogout() {
     this.requestQueue.destroy()
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      let url = isMerchantModule ? '/subpages/merchant/login' : '/pages/member/index'
-      Taro.redirectTo({ url })
+      let url = isMerchantModule() ? '/subpages/merchant/login' : '/subpages/member/index'
+      getCurrentInstance().router.path !== url && Taro.redirectTo({ url })
     }, 300)
   }
 
-  intereptorReq (params) {
+  intereptorReq(params) {
     const { url, data, header = {}, method = 'GET' } = params
     const { company_id, appid } = this.options
     const methodIsGet = method.toLowerCase() === 'get'
@@ -171,13 +169,15 @@ class API {
       config.data = qs.stringify(config.data)
     }
 
+    const { showError } = query
+    config['showError'] = showError
+
     return config
   }
 
-  intereptorRes (res) {
+  intereptorRes(res) {
     const { data, statusCode, config } = res
     const { showError = true } = config
-
     if (statusCode == HTTP_STATUS.SUCCESS) {
       const { status_code } = data.data
       if (!status_code) {
@@ -214,7 +214,7 @@ class API {
     return Promise.reject(this.reqError(res, `API error: ${statusCode}`))
   }
 
-  async refreshToken () {
+  async refreshToken() {
     this.isRefreshingToken = true
     const token = S.getAuthToken()
     try {
@@ -256,7 +256,7 @@ class API {
    * @return {Object} 请求返回的数据
    * @memberof API
    */
-  async makeReq (config = {}, intereptorRes, intereptorReq) {
+  async makeReq(config = {}, intereptorRes, intereptorReq) {
     const { showLoading } = config
     const options = intereptorReq ? intereptorReq(config) : this.intereptorReq(config)
 
@@ -299,7 +299,7 @@ class API {
     return ret
   }
 
-  pendingReq (config, intereptorRes, intereptorReq, isSend) {
+  pendingReq(config, intereptorRes, intereptorReq, isSend) {
     return new Promise((resolve) => {
       const pendingReq = async () => {
         // 仅加入队列一次
@@ -315,7 +315,7 @@ class API {
     })
   }
 
-  get (url, data, config) {
+  get(url, data, config) {
     return this.makeReq({
       ...config,
       url,
@@ -324,14 +324,14 @@ class API {
     })
   }
 
-  reqError (res, msg = '') {
+  reqError(res, msg = '') {
     const errMsg = (res.data && res.data.message) || msg
     const err = new Error(errMsg)
     err.res = res
     return err
   }
 
-  post (url, data, config) {
+  post(url, data, config) {
     return this.makeReq({
       ...config,
       url,
@@ -340,7 +340,7 @@ class API {
     })
   }
 
-  put (url, data, config) {
+  put(url, data, config) {
     return this.makeReq({
       ...config,
       url,
@@ -349,7 +349,7 @@ class API {
     })
   }
 
-  delete (url, data, config) {
+  delete(url, data, config) {
     return this.makeReq({
       ...config,
       url,
@@ -362,10 +362,6 @@ class API {
 if (process.env.NODE_ENV === 'production' && !isWeb) {
   Taro.addInterceptor(Taro.interceptors.logInterceptor)
 }
-
-console.log('===> process.env.APP_BASE_URL', process.env.APP_BASE_URL)
-
-console.log('===> process.env.APP_MAP_KEY', process.env.APP_MAP_KEY)
 
 export default new API({
   baseURL: process.env.APP_BASE_URL

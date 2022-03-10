@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux'
 import Taro, { Component } from '@tarojs/taro'
+import React from 'react'
 import { View, Image } from '@tarojs/components'
 import { classNames, styleNames, isNumber, isBase64 } from '@/utils'
 import './index.scss'
 
-function SpImage (props) {
+function SpImage(props) {
   let {
     src,
     className,

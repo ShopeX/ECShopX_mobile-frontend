@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .status-icon {
   position: fixed;
@@ -27,7 +27,7 @@
     padding-right: 10px;
   }
   .at-countdown__time-box {
-    font-family: "Helvetica";
+    font-family: 'Helvetica';
     background: $color-brand-primary;
     border-radius: 6px;
     width: 50px;
@@ -168,6 +168,8 @@
 
   .btn-submit {
     background: $color-brand-primary;
+    border-radius: 6px;
+    text-align: center;
     color: #fff;
   }
 }
@@ -183,6 +185,7 @@
     background: $color-brand-primary;
     text-align: center;
     border-radius: 6px;
+    color: #fff;
   }
   .at-curtain__container {
     width: 100% !important;

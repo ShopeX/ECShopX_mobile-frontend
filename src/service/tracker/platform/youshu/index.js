@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import sr from 'sr-sdk-wxapp'
 import S from '@/spx'
-import { tokenParse } from '@/utils'
+import { tokenParse, getExtConfigData } from '@/utils'
 import Base from '../base'
 import actions from './actions'
 import config from './config'
@@ -9,15 +9,9 @@ import config from './config'
 export default class Youshu extends Base {
   name = 'youshu'
 
-  constructor (options = {}) {
+  constructor(options = {}) {
     super(options)
-    const extConfig = Taro.getExtConfigSync
-      ? Taro.getExtConfigSync()
-      : {
-          appid: process.env.APP_ID,
-          youshutoken: process.env.APP_YOUSHU_TOKEN
-        }
-
+    const extConfig = getExtConfigData()
     config.token = extConfig.youshutoken
     config.appid = extConfig.appid
     console.log('extConfig', config)
@@ -39,7 +33,7 @@ export default class Youshu extends Base {
     }
   }
 
-  trackEvent ({ category, action, label, value }) {
+  trackEvent({ category, action, label, value }) {
     action = category
 
     // const name = typeof label === "string" ? label : "";
@@ -48,7 +42,7 @@ export default class Youshu extends Base {
     sr.track(action, data)
   }
 
-  setVar (params) {
+  setVar(params) {
     sr.setUser({
       user_id: params.user_id,
       open_id: params.open_id,
@@ -56,19 +50,19 @@ export default class Youshu extends Base {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     sr.track('browse_wxapp_page')
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // sr.track("browse_wxapp_page");
   }
 
-  componentDidHide () {
+  componentDidHide() {
     sr.track('leave_wxapp_page')
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     sr.track('leave_wxapp_page')
   }
 }

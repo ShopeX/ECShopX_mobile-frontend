@@ -12,7 +12,7 @@ export default class WgtSlider extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,14 +27,14 @@ export default class WgtSlider extends Component {
 
   handleClickItem = linkPage
 
-  handleSwiperChange (e) {
+  handleSwiperChange(e) {
     const { current } = e.detail
     this.setState({
       curIdx: current
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx, index } = this.state
     if (!info) {
@@ -57,7 +57,7 @@ export default class WgtSlider extends Component {
           </View>
         )}
         {config ? (
-          <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
+          <View className='slider-wrap'>
             {data[0] && (
               <Image mode='widthFix' className='scale-placeholder' lazyLoad src={data[0].imgUrl} />
             )}
@@ -77,7 +77,7 @@ export default class WgtSlider extends Component {
                     className={`slider-item ${config.rounded ? 'rounded' : null}`}
                   >
                     <View
-                      style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
+                      // style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
                       className='wrapper-img'
                       onClick={this.handleClickItem.bind(this, item)}
                     >
@@ -85,7 +85,8 @@ export default class WgtSlider extends Component {
                         img-class='slider-item__img'
                         src={item.imgUrl}
                         mode='widthFix'
-                        width='750'
+                        width='718'
+                        height='100%'
                         lazyLoad
                       />
                     </View>

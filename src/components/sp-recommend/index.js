@@ -13,7 +13,7 @@ export default class SpRecommend extends Component {
     info: []
   }
 
-  render () {
+  render() {
     const { info, className } = this.props
     if (info.length === 0) {
       return null
@@ -55,7 +55,7 @@ export default class SpRecommend extends Component {
     return (
       <View className={classNames('sp-recommend', className)}>
         <View className='sp-recommend-hd'>
-          <SpImage className='recommend-icon' mode='heightFix' src='like_list.png' />
+          <Text className='sp-recommend-title'>热门推荐</Text>
         </View>
         <View className='sp-recommend-bd'>
           <View className='left-container'>
@@ -65,7 +65,7 @@ export default class SpRecommend extends Component {
               </View>
             ))}
           </View>
-          <View className='rigth-container'>
+          <View className='right-container'>
             {rightList.map((goods, index) => (
               <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>
                 <SpGoodsItem info={goods} />

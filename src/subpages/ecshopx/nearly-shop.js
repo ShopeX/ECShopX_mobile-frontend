@@ -25,7 +25,7 @@ const initialState = {
   search_type: undefined // 参数
 }
 
-function NearlyShop (props) {
+function NearlyShop(props) {
   const { isLogin, checkPolicyChange } = useLogin({
     autoLogin: false,
     policyUpdateHook: () => {
@@ -253,7 +253,6 @@ function NearlyShop (props) {
   const { province, city, district } = location
   const locationValue = province + city + district
 
-  console.log(areaArray, areaIndexArray, '----------')
   return (
     <SpPage className='page-ecshopx-nearlyshop'>
       <View className='search-block'>

@@ -1,8 +1,7 @@
 @import 'md-colors';
 
-$font-family: 'Hiragino Sans GB', '微软雅黑', 'Microsoft YaHei', -apple-system, BlinkMacSystemFont,
-  'Segoe UI', Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', Helvetica, Arial, sans-serif,
-  'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
+$font-family: PingFangSC-Regular, PingFang SC, '微软雅黑', 'Microsoft YaHei', Helvetica, Arial,
+  sans-serif;
 $font-size: 14px * 2 !default;
 
 $font-size-small: floor($font-size * 0.9) !default;
@@ -78,4 +77,3 @@ $z-index-tooltip: $z-index-level-3 !default;
 $z-index-dropdown: $z-index-level-3 !default;
 $z-index-modal: $z-index-level-5 !default;
 $z-index-toast: $z-index-level-6 !default;
-

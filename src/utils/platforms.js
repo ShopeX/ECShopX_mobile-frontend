@@ -1,8 +1,9 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { getExtConfigData } from '@/utils'
 
 /* 获取小程序 */
 export const getAppId = () => {
-  const { appid } = Taro.getExtConfigSync ? Taro.getExtConfigSync() : { appid: process.env.APP_ID }
+  const { appid } = getExtConfigData()
 
   return appid
 }
@@ -28,7 +29,7 @@ export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY
 // export const hideLoading = isAlipay ? my.hideLoading : Taro.hideLoading;
 
 //平台支付
-export async function payPlatform (order = {}) {
+export async function payPlatform(order = {}) {
   let payRes
   let payErr = null
   if (isAlipay) {

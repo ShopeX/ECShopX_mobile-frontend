@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { SpImg, SpToast, CouponModal } from '@/components'
+import { SpImage, SpToast, CouponModal } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { classNames } from '@/utils'
@@ -24,7 +24,7 @@ export default class WgtCoupon extends Component {
     visible: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -40,7 +40,7 @@ export default class WgtCoupon extends Component {
     S.toast('优惠券领取成功')
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
@@ -60,7 +60,7 @@ export default class WgtCoupon extends Component {
     })
   }
 
-  fetchCouponCardList () {
+  fetchCouponCardList() {
     api.vip.getShowCardPackage({ receive_type: 'template' }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -83,7 +83,7 @@ export default class WgtCoupon extends Component {
     this.setState({ visible })
   }
 
-  render () {
+  render() {
     const { info, dis_id = '' } = this.props
     const { visible, all_card_list } = this.state
     if (!info) {
@@ -112,14 +112,23 @@ export default class WgtCoupon extends Component {
               <View className={classNames('coupon-wgt', item.imgUrl && 'with-img')} key={`${idx}1`}>
                 {' '}
                 {item.imgUrl ? (
-                  <SpImg img-class='coupon_img' src={item.imgUrl} mode='widthFix' width='750' />
+                  <View onClick={this.handleClickNews.bind(this, item)}>
+                    <SpImage img-class='coupon_img' src={item.imgUrl} mode='widthFix' width='750' />
+                  </View>
                 ) : (
                   <View className='coupon-body'>
-                    <View className='coupon__amount'>
-                      <Text>{item.amount}</Text>
-                      <View className='coupon__amount-cur'>
-                        {item.type === 'cash' ? '元' : ''}
-                        {item.type === 'discount' ? '折' : ''}
+                    <View className='coupon-box'>
+                      <View className='coupon__amount'>
+                        <Text className='price'>{item.amount}</Text>
+                        <View className='coupon__amount-cur'>
+                          {item.type === 'cash' ? '元' : ''}
+                          {item.type === 'discount' ? '折' : ''}
+                        </View>
+                      </View>
+                      <View className='discount_type'>
+                        {(item.type == 'discount' && '折扣券') ||
+                          (item.type == 'cash' && '满减券') ||
+                          (item.type == 'new_gift' && '兑换券')}
                       </View>
                     </View>
                     <View className='coupon-caption'>
@@ -130,12 +139,14 @@ export default class WgtCoupon extends Component {
                     </View>
                   </View>
                 )}
-                <Button
-                  className='coupon-btn__getted'
-                  onClick={this.handleClickNews.bind(this, item)}
-                >
-                  领取
-                </Button>
+                {!item.imgUrl && (
+                  <Button
+                    className='coupon-btn__getted'
+                    onClick={this.handleClickNews.bind(this, item)}
+                  >
+                    领取
+                  </Button>
+                )}
               </View>
             )
           })}
@@ -148,16 +159,24 @@ export default class WgtCoupon extends Component {
                 >
                   {' '}
                   {item.imgUrl ? (
-                    <SpImg img-class='coupon_img' src={item.imgUrl} mode='widthFix' width='750' />
+                    <SpImage img-class='coupon_img' src={item.imgUrl} mode='widthFix' width='750' />
                   ) : (
                     <View className='coupon-body'>
-                      <View className='coupon__amount'>
-                        <Text>{item.amount}</Text>
-                        <View className='coupon__amount-cur'>
-                          {item.type === 'cash' ? '元' : ''}
-                          {item.type === 'discount' ? '折' : ''}
+                      <View className='coupon-box'>
+                        <View className='coupon__amount'>
+                          <Text className='price'>{item.amount}</Text>
+                          <View className='coupon__amount-cur'>
+                            {item.type === 'cash' ? '元' : ''}
+                            {item.type === 'discount' ? '折' : ''}
+                          </View>
+                        </View>
+                        <View className='discount_type'>
+                          {(item.type == 'discount' && '折扣券') ||
+                            (item.type == 'cash' && '满减券') ||
+                            (item.type == 'new_gift' && '兑换券')}
                         </View>
                       </View>
+                      <View className='discount_type'>kkkkk</View>
                       <View className='coupon-caption'>
                         <View className='coupon-content'>
                           <View className='coupon-content__brand-name'>{item.title}</View>

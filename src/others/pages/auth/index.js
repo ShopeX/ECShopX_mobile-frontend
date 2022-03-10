@@ -10,14 +10,14 @@ import './index.scss'
 
 export default class AuthLogin extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       showAuth: false
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (!S.getAuthToken()) {
       S.toast('请先登录')
       setTimeout(() => {
@@ -36,7 +36,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const { appid } = getAppId()
+    const appid = getAppId()
     try {
       const { status } = await api.user.codeAuth({
         code,
@@ -63,7 +63,7 @@ export default class AuthLogin extends Component {
       token = t
     }
     const { code } = await Taro.login()
-    const { appid } = getAppId()
+    const appid = getAppId()
     try {
       Taro.showLoading({
         title: '授权中'
@@ -99,7 +99,7 @@ export default class AuthLogin extends Component {
     }
   }
 
-  render () {
+  render() {
     const { showAuth } = this.state
     const user = Taro.getStorageSync('userinfo')
 

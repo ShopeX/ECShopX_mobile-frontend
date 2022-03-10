@@ -1,606 +1,398 @@
-import React, { Component } from 'react'
+import React, { useEffect, useCallback, useRef, useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, ScrollView, Picker, Input, Image } from '@tarojs/components'
-import { SpNavBar, Loading, SpPageNote, CusNoPosition } from '@/components'
+import { View, Text, Picker, Input, Image } from '@tarojs/components'
+import { useSelector, useDispatch } from 'react-redux'
+import { useImmer } from 'use-immer'
+import { SpPage, SpScrollView, SpLogin, SpPrivacyModal } from '@/components'
+import { updateLocation, updateChooseAddress } from '@/store/slices/user'
+import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import { connect } from 'react-redux'
-import { withPager, withBackToTop } from '@/hocs'
-import S from '@/spx'
-import entry from '@/utils/entry'
-import entryLaunchFun from '@/utils/entryLaunch'
-import { classNames, getThemeStyle, styleNames, pickBy } from '@/utils'
-import CusStoreListItem from './comps/cus-list-item'
+import CompShopItem from './comps/comp-shopitem'
+import { usePage, useLogin } from '@/hooks'
+import doc from '@/doc'
+import { entryLaunch, pickBy, classNames, showToast, log, isArray } from '@/utils'
 
 import './list.scss'
 
-@connect(({ colors, address }) => ({
-  colors: colors.current || { data: [{}] },
-  address: address.current
-}))
-@withPager
-@withBackToTop
-export default class StoreList extends Component {
-  $instance = getCurrentInstance()
-  constructor (props) {
-    super(props)
+const initialState = {
+  areaArray: [[], [], []],
+  areaIndexArray: [0, 0, 0],
+  areaData: [],
+  shopList: [],
+  locationIng: false,
+  chooseValue: ['北京市', '北京市', '昌平区'],
+  keyword: '', // 参数
+  type: 0, // 参数
+  search_type: undefined, // 参数
+  defaultShop: {},
+  logo: '',
+  isRecommend: false
+}
 
-    this.state = {
-      ...this.state,
-      query: {
-        name: '',
-        province: '',
-        city: '',
-        area: '',
-        lat: '',
-        lng: '',
-        type: 0
-      },
-      // 总店信息
-      headquarters: {},
-      // 默认店铺
-      defaultStore: null,
-      baseInfo: null,
-      // 当前位置
-      formattedAddress: '',
-      // 收货地址信息
-      deliveryInfo: {},
-      // 是否是推荐门店列表
-      isRecommedList: false,
-      // 门店列表
-      list: [],
-      // 是否需要定位
-      is_open_wechatapp_location: 0,
-      loading: false,
-      pageTitle: '选择门店',
-      areaList: [],
-      multiIndex: []
+function NearlyShop(props) {
+  const { isLogin, checkPolicyChange } = useLogin({
+    autoLogin: false,
+    policyUpdateHook: () => {
+      setPolicyModal(true)
+    }
+  })
+  const [state, setState] = useImmer(initialState)
+  const [policyModal, setPolicyModal] = useState(false)
+  const { location = {}, address } = useSelector((state) => state.user)
+  const shopRef = useRef()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    fetchAddressList()
+    fetchDefaultShop()
+    // onPickerClick()
+  }, [])
+
+  const fetchAddressList = async () => {
+    const areaList = await api.member.areaList()
+    setState((v) => {
+      v.areaData = areaList
+    })
+  }
+
+  const fetchDefaultShop = async () => {
+    const defaultShop = await api.shop.getDefaultShop()
+    const { logo } = await api.shop.getStoreBaseInfo()
+    setState((v) => {
+      v.defaultShop = defaultShop
+      v.logo = logo
+    })
+  }
+
+  const fetchShop = async (params) => {
+    const { pageIndex: page, pageSize } = params
+    const { keyword } = state
+    const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
+    const { province, city, district } = location
+    const query = {
+      page,
+      pageSize,
+      lat: location.lat,
+      lng: location.lng,
+      name: keyword,
+      province: province || chooseProvice,
+      city: city || chooseCity,
+      area: district || chooseDistrict,
+      type: location.lat ? state.type : 1,
+      search_type: state.search_type,
+      sort_type: 1
+    }
+    const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(query)
+
+    setState((v) => {
+      v.shopList = v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      v.chooseValue = [query.province, query.city, query.area]
+      v.isRecommend = is_recommend === 1
+    })
+
+    let format_address = !isArray(defualt_address) ? defualt_address : null
+    dispatch(updateChooseAddress(address || format_address))
+
+    return {
+      total
     }
   }
 
-  componentDidMount () {
-    const { pageTitle } = this.state
-    Taro.setNavigationBarTitle({
-      title: pageTitle
+  const onInputChange = ({ detail }) => {
+    setState((v) => {
+      v.keyword = detail.value
     })
-    Taro.setNavigationBarColor({
-      backgroundColor: '#F5F5F5'
-    })
-    this.init()
-    this.initAdress()
-    this.getHeadquarters()
   }
 
-  componentDidShow () {
-    this.init()
-  }
-
-  componentWillReceiveProps (nextProps) {
-    if (nextProps.address !== this.props.address) {
-      const { province, city, county, adrdetail } = nextProps.address
-      let addressdetail = province + city + county + adrdetail
-      this.setState({ deliveryInfo: { ...nextProps.address, addressdetail } }, () => {
-        this.init()
+  const onConfirmSearch = async ({ detail }) => {
+    const res = await entryLaunch.getLnglatByAddress(location.address)
+    const { lng, lat, error } = res
+    if (error) {
+      showToast(error)
+    } else {
+      dispatch(updateLocation(res))
+      await setState((v) => {
+        v.keyword = detail.value
+        v.shopList = []
+        v.type = 1
+        v.search_type = 2
       })
+      shopRef.current.reset()
     }
   }
 
-  config = {
-    navigationBarBackgroundColor: '#F5F5F5'
-  }
-
-  initAdress = async () => {
-    let res = await api.member.areaList()
-    const addList = pickBy(res, {
-      label: 'label',
-      children: 'children'
-    })
-    this.addList = addList
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-
-    addList.map((item, index) => {
-      arrProvice.push(item.label)
-      if (index === 0) {
+  const onPickerClick = () => {
+    const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
+    const p_label = chooseProvice
+    const c_label = chooseCity
+    const d_label = chooseDistrict
+    let chooseIndex = []
+    let proviceArr = []
+    let cityArr = []
+    let countyArr = []
+    state.areaData.map((item, index) => {
+      proviceArr.push(item.label)
+      if (item.label == p_label) {
+        chooseIndex.push(index)
         item.children.map((c_item, c_index) => {
-          arrCity.push(c_item.label)
-          if (c_index === 0) {
-            c_item.children.map((cny_item) => {
-              arrCounty.push(cny_item.label)
-            })
-          }
-        })
-      }
-    })
-    this.setState({
-      areaList: [arrProvice, arrCity, arrCounty]
-    })
-  }
-
-  init = async () => {
-    const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
-    const { query, deliveryInfo } = this.state
-    const lnglat = Taro.getStorageSync('lnglat') || {}
-
-    const addressdetail = lnglat.latitude ? lnglat.addressdetail : null
-    query.province = lnglat.province || ''
-    ;(query.city = Array.isArray(lnglat.city) ? lnglat.province : lnglat.city),
-      (query.area = lnglat.district || '')
-    if (query.type === 2) {
-      let adress_detail = !!this.props.address ? this.props.address : deliveryInfo
-      const { province = '', city = '', county = '' } = adress_detail
-      query.province = province
-      query.city = city
-      query.area = county
-    }
-
-    this.setState(
-      {
-        location: {
-          ...lnglat,
-          addressdetail
-        },
-        is_open_wechatapp_location,
-        query
-      },
-      () => {
-        this.resetPage(() => {
-          this.setState(
-            {
-              list: [],
-              loading: true
-            },
-            () => {
-              setTimeout(() => {
-                this.nextPage()
-              }, 0)
-            }
-          )
-        })
-      }
-    )
-  }
-
-  // 获取总店信息
-  getHeadquarters = async () => {
-    const data = await api.shop.getDefaultShop()
-    const baseInfo = await api.shop.getStoreBaseInfo()
-    this.setState({
-      defaultStore: data,
-      baseInfo
-    })
-  }
-
-  // 省市区选择器
-  regionChange = async (e) => {
-    const { query } = this.state
-    this.addList.map((item, index) => {
-      if (index === e.detail.value[0]) {
-        query.province = item.label
-        item.children.map((s_item, sIndex) => {
-          if (sIndex === e.detail.value[1]) {
-            query.city = s_item.label
-            s_item.children.map((th_item, thIndex) => {
-              if (thIndex === e.detail.value[2]) {
-                query.area = th_item.label
+          cityArr.push(c_item.label)
+          if (c_item.label == c_label) {
+            chooseIndex.push(c_index)
+            c_item.children.map((cny_item, cny_index) => {
+              countyArr.push(cny_item.label)
+              if (cny_item.label == d_label) {
+                chooseIndex.push(cny_index)
               }
             })
           }
         })
       }
     })
-    // query.type = 1
-    this.setState({
-      query
+    setState((v) => {
+      v.areaIndexArray = chooseIndex
+      v.areaArray = [proviceArr, cityArr, countyArr]
     })
   }
 
-  bindMultiPickerColumnChange = (e) => {
-    const { areaList, multiIndex } = this.state
-    if (e.detail.column === 0) {
-      this.setState({
-        multiIndex: [e.detail.value, 0, 0]
+  const onPickerChange = async ({ detail }) => {
+    const { value } = detail || {}
+    const [one, two, three] = areaArray
+    const chooseValue = [one[value[0]], two[value[1]], three[value[2]]]
+    setState((v) => {
+      v.areaIndexArray = value
+      v.chooseValue = chooseValue
+    })
+  }
+
+  const onColumnChange = ({ detail }) => {
+    const { column, value } = detail
+    let cityArr = []
+    let countyArr = []
+    if (column == 0) {
+      cityArr = state.areaData[value].children.map((item) => item.label)
+      countyArr = state.areaData[value].children[0].children.map((item) => item.label)
+      setState((v) => {
+        v.areaIndexArray[0] = value
+        v.areaIndexArray[1] = 0
+        v.areaIndexArray[2] = 0
+        v.areaArray[1] = cityArr
+        v.areaArray[2] = countyArr
       })
-      this.addList.map((item, index) => {
-        if (index === e.detail.value) {
-          let arrCity = []
-          let arrCounty = []
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if (c_index === 0) {
-              c_item.children.map((cny_item) => {
-                arrCounty.push(cny_item.label)
-              })
-            }
-          })
-          areaList[1] = arrCity
-          areaList[2] = arrCounty
-          this.setState({ areaList })
-        }
-      })
-    } else if (e.detail.column === 1) {
-      multiIndex[1] = e.detail.value
-      multiIndex[2] = 0
-      this.setState(
-        {
-          multiIndex
-        },
-        () => {
-          this.addList[multiIndex[0]].children.map((c_item, c_index) => {
-            if (c_index === e.detail.value) {
-              let arrCounty = []
-              c_item.children.map((cny_item) => {
-                arrCounty.push(cny_item.label)
-              })
-              areaList[2] = arrCounty
-              this.setState({ areaList })
-            }
-          })
-        }
+    } else if (column == 1) {
+      countyArr = state.areaData[state.areaIndexArray[0]].children[value].children.map(
+        (item) => item.label
       )
+      setState((v) => {
+        v.areaIndexArray[1] = value
+        v.areaIndexArray[2] = 0
+        v.areaArray[2] = countyArr
+      })
     } else {
-      multiIndex[2] = e.detail.value
-      this.setState({
-        multiIndex
+      setState((v) => {
+        v.areaIndexArray[2] = value
       })
     }
   }
 
-  // 搜索店铺名称
-  inputStoreName = (e) => {
-    const { detail } = e
-    const { query } = this.state
-    this.setState({
-      query: {
-        ...query,
-        name: detail.value,
-        type: 1,
-        search_type: 2
+  // 定位
+  const getLocationInfo = async () => {
+    setState((v) => {
+      v.locationIng = true
+    })
+    setPolicyModal(false)
+    await entryLaunch.isOpenPosition(async (res) => {
+      if (res.lat) {
+        dispatch(updateLocation(res))
+        await setState((v) => {
+          v.shopList = []
+          v.keyword = ''
+          v.name = ''
+          v.type = 0
+          v.search_type = undefined
+        })
+        shopRef.current.reset()
       }
     })
-  }
-
-  clearName = () => {
-    const { query } = this.state
-    query.type = 0
-    this.setState(
-      {
-        query: {
-          ...query,
-          name: ''
-        }
-      },
-      () => {
-        this.confirmSearch()
-      }
-    )
-  }
-
-  // 确认搜索
-  confirmSearch = (e) => {
-    const { query } = this.state
-    if (e && e.detail.value) {
-      query.name = e.detail.value
-      this.setState({
-        ...this.state.query,
-        query
-      })
-    }
-    this.resetPage(() => {
-      this.setState(
-        {
-          list: []
-        },
-        () => {
-          setTimeout(() => {
-            this.nextPage()
-          }, 0)
-        }
-      )
+    setState((v) => {
+      v.locationIng = false
     })
   }
 
-  async fetch (params) {
-    const { card_id = null } = this.$instance.router.params
-    const { query: searchParam, location } = this.state
-    const { latitude = '', longitude = '' } = location
-    const { page_no: page, page_size: pageSize } = params
-    const query = {
-      ...searchParam,
-      page,
-      pageSize,
-      lat: latitude,
-      lng: longitude,
-      card_id,
-      sort_type: 1
-    }
-    const {
-      list,
-      total_count: total,
-      defualt_address = {},
-      is_recommend
-    } = await api.shop.list(query)
-    const { province, city, county, adrdetail } = this.props.address || defualt_address
-    let addressdetail = province + city + county + adrdetail
-    this.setState({
-      query,
-      list: [...this.state.list, ...list],
-      deliveryInfo: !!this.props.address
-        ? { ...this.props.address, addressdetail }
-        : { ...defualt_address, addressdetail },
-      isRecommedList: is_recommend === 1,
-      loading: false
+  const onClearValueChange = async () => {
+    await setState((v) => {
+      v.shopList = []
+      v.keyword = ''
+      v.type = 0
+      v.search_type = undefined
     })
-    return {
-      total
-    }
+    shopRef.current.reset()
   }
 
-  // 选择门店
-  handleClickItem = (info) => {
-    Taro.navigateTo({ url: `/pages/store/index?id=${info.distributor_id}` })
-    // if (info) {
-    //   info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
-    // }
-    // Taro.setStorageSync('curStore', info)
-    // Taro.navigateBack()
+  const handleClickItem = () => {
+    Taro.navigateTo({ url: `/pages/store/index?id=${state.defaultShop.distributor_id}` })
   }
 
-  // 获取定位信息
-  getLocation = async (e) => {
-    // if (this.state.loading) {
-    //   return false
-    // }
-    // Taro.eventCenter.on('lnglat-success', () => {
-    //   console.log(Taro.getStorageSync('lnglat'))
-    //   })
-    await entryLaunchFun.isOpenPosition(() => {
-      const { query } = this.state
-      query.name = ''
-      query.type = 0
-      this.setState({ query }, () => {
-        this.init()
-      })
+  const handleClickShop = (info) => {
+    dispatch(updateShopInfo({ ...info, store_id: 0 })) //新增非门店自提，开启distributor_id 取值为store_id
+    Taro.navigateBack()
+  }
+
+  const onAddChange = () => {
+    if (!isLogin) return
+    Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })
+  }
+
+  const onChangeLoginSuccess = async () => {
+    await setState((v) => {
+      v.shopList = []
+      v.keyword = ''
+      v.type = 0
+      v.search_type = undefined
     })
+    shopRef.current.reset()
   }
 
   // 根据收货地址搜索
-  onLocationChange = async (info) => {
-    await entry.positiveAnalysisGaode(info)
-    if (info) {
-      info.store_id = 0 //新增非门店自提，开启distributor_id 取值为store_id
-    }
+  const onLocationChange = async (info) => {
+    let local = info.address || info.province + info.city + info.county + info.adrdetail
+    const res = await entryLaunch.getLnglatByAddress(local)
+    await dispatch(updateLocation(res))
     Taro.navigateBack()
-    // Taro.setStorageSync('curStore', info)
-    const { query } = this.state
-    query.name = ''
-    query.type = 2
-    this.setState({ query }, () => {
-      this.init()
-    })
   }
 
-  // 选定开户地区
-  handleClickPicker = () => {
-    let arrProvice = []
-    let arrCity = []
-    let arrCounty = []
-    if (this.addList) {
-      this.addList.map((item, index) => {
-        arrProvice.push(item.label)
-        if (index === 0) {
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if (c_index === 0) {
-              c_item.children.map((cny_item) => {
-                arrCounty.push(cny_item.label)
-              })
-            }
-          })
-        }
-      })
-      this.setState({
-        areaList: [arrProvice, arrCity, arrCounty],
-        multiIndex: [0, 0, 0]
-      })
+  const isPolicyTime = async () => {
+    const checkRes = await checkPolicyChange()
+    if (checkRes) {
+      getLocationInfo()
+    } else {
+      setPolicyModal(true)
     }
   }
 
-  render () {
-    const {
-      scrollTop,
-      query,
-      list,
-      location,
-      isRecommedList,
-      deliveryInfo,
-      page,
-      defaultStore,
-      baseInfo,
-      is_open_wechatapp_location,
-      pageTitle,
-      formattedAddress,
-      areaList,
-      multiIndex
-    } = this.state
-    const { province, city, area } = query
+  const { areaIndexArray, areaArray, chooseValue, defaultShop, logo, isRecommend } = state
 
-    let areaData = province + city + area
+  return (
+    <SpPage className='page-ecshopx-nearlyshop'>
+      <View className='search-block'>
+        <View className='search-bar'>
+          <View className='region-picker'>
+            <Picker
+              mode='multiSelector'
+              onClick={onPickerClick}
+              onChange={onPickerChange}
+              onColumnChange={onColumnChange}
+              value={areaIndexArray}
+              range={areaArray}
+              style={{ width: '100%' }}
+            >
+              <View className='pick-title' onClick={onPickerClick}>
+                <View className='iconfont icon-periscope'></View>
+                <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
+                <Text className='iconfont icon-arrowDown'></Text>
+              </View>
+            </Picker>
+          </View>
 
-    // if (query.type === 0 && location && !location.addressdetail && deliveryInfo && deliveryInfo.address_id) {
-    //   const { province: p = "", city: c = "", county: ct = "" } = deliveryInfo;
-    //   areaData = [p, c === "市辖区" || !c ? province : city, ct];
-    // }
-    // const  = defaultStore.is_valid === "true";
-    const lnglat = Taro.getStorageSync('lnglat') || {}
-
-    return lnglat.latitude ? (
-      <View className='page-store-list' style={styleNames(getThemeStyle())}>
-        <SpNavBar title={pageTitle} leftIconType='chevron-left' />
-        <View className='search-block'>
-          <View className='main'>
-            {/* <Picker mode='region' value={areaData} onChange={this.regionChange.bind(this)}>
-                <View className='filterArea'>
-                  <View className='areaName'>{areaData.join('') || '筛选地区'}</View>
-                  <View className='iconfont icon-arrowDown'></View>
-                </View>
-              </Picker> */}
-            <View className='filter-bar__item region-picker'>
-              <Picker
-                mode='multiSelector'
-                onClick={this.handleClickPicker}
-                onChange={this.regionChange}
-                onColumnChange={this.bindMultiPickerColumnChange}
-                value={multiIndex}
-                range={areaList}
-                style={{ width: '100%' }}
-              >
-                <View className='pick-title'>
-                  <View className='iconfont icon-periscope'></View>
-                  <Text className='texts'>{areaData || '地区'}</Text>
-                  <View className='iconfont icon-arrowDown'></View>
-                </View>
-              </Picker>
-            </View>
-
+          <View className='search-comp-wrap'>
+            <Text className='iconfont icon-sousuo-01'></Text>
             <Input
-              className='searchInput'
-              placeholder='输入收货地址寻找周边门店'
+              className='search-comp'
+              placeholder='请输入想搜索的店铺'
               confirmType='search'
-              value={query.name}
-              onInput={this.inputStoreName.bind(this)}
-              onConfirm={this.confirmSearch.bind(this)}
+              value={state.keyword}
+              disabled={!location.address}
+              onInput={onInputChange}
+              onConfirm={onConfirmSearch}
             />
-            {query.name && query.name.length > 0 && (
-              <View
-                className='iconfont icon-close close-css'
-                onClick={this.clearName.bind(this)}
-              ></View>
+            {state.keyword && state.keyword.length > 0 && (
+              <View className='iconfont icon-close' onClick={onClearValueChange}></View>
             )}
           </View>
         </View>
+      </View>
 
-        <View className='block-content'>
-          <View className='location'>
-            <View className='block-hd'>当前定位地址</View>
-            <View className='block-bd location-wrap'>
-              {query.type !== 2 && location && location.addressdetail && (
-                <View
-                  className='lngName'
-                  onClick={this.onLocationChange.bind(this, location)}
-                  style={{ width: '77%', fontWeight: 'bold' }}
-                >
-                  {location.addressdetail || '无法获取您的位置信息'}
-                </View>
-              )}
-              <View className="btn-location'" onClick={this.getLocation.bind(this)}>
-                <View className='iconfont icon-zhongxindingwei iconcss'></View>
-                重新定位
-              </View>
-              {/* )} */}
-            </View>
-          </View>
-          <View className='currentadress'>
-            <View className='block-hd flex-header'>
-              <View>我的收货地址</View>
-              {deliveryInfo && deliveryInfo.address_id && (
-                <View
-                  className='arrow'
-                  onClick={() =>
-                    Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
-                  }
-                >
-                  选择其他地址<View className='iconfont icon-qianwang-01'></View>
-                </View>
-              )}
-            </View>
-            {deliveryInfo && deliveryInfo.address_id && (
-              <View className='block-bd' onClick={this.onLocationChange.bind(this, deliveryInfo)}>
-                <View className='lngName'>
-                  {deliveryInfo.province}
-                  {deliveryInfo.city}
-                  {deliveryInfo.county}
-                  {deliveryInfo.adrdetail}
-                </View>
-              </View>
-            )}
-            {deliveryInfo && !deliveryInfo.address_id && (
-              <View
-                className='address-btn'
-                onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })}
-              >
-                添加新地址
-              </View>
-            )}
+      {isRecommend && !location.address && !address && (
+        <View className='shop-logo'>
+          <Image className='img' src={logo} mode='aspectFill' />
+          <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
+        </View>
+      )}
+
+      <View className='location-block'>
+        <View className='block-title'>当前定位地址</View>
+        <View className='location-wrap'>
+          <Text className='location-address' onClick={() => onLocationChange(location)}>
+            {location.address || '无法获取您的位置信息'}
+          </Text>
+          <View className='btn-location' onClick={isPolicyTime}>
+            <Text
+              className={classNames('iconfont icon-zhongxindingwei', {
+                active: state.locationIng
+              })}
+            ></Text>
+            {location.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
+      </View>
 
-        {isRecommedList && !deliveryInfo.address_id && !location.latitude && (
-          <View className='block-content'>
-            <Image className='img' src={baseInfo.logo} mode='aspectFill' />
-            <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
-          </View>
-        )}
-
-        <View
-          className={`list ${!deliveryInfo.address_id && 'noDelivery'} ${
-            isRecommedList && 'recommedList'
-          }`}
-        >
-          {!isRecommedList ? (
-            <View className='title'>
-              {(deliveryInfo && deliveryInfo.address_id) || (location && location.latitude)
-                ? '附近商家'
-                : '全部商家'}
-            </View>
-          ) : (
-            <View className='recommed'>
-              <View className='title'>推荐商家</View>
+      <View className='location-block'>
+        <View className='block-title block-flex'>
+          <View>按收货地址定位</View>
+          {address && (
+            <View
+              className='arrow'
+              onClick={() =>
+                Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
+              }
+            >
+              选择其他地址<View className='iconfont icon-qianwang-01'></View>
             </View>
           )}
-
-          <ScrollView
-            className={classNames('scroll store-scroll', {
-              'has-default-shop': defaultStore
-            })}
-            scrollY
-            scrollTop={scrollTop}
-            scrollWithAnimation
-            onScroll={this.handleScroll.bind(this)}
-            onScrollToLower={this.nextPage.bind(this)}
-          >
-            {list.map((item) => (
-              <CusStoreListItem
-                info={item}
-                key={item.distributor_id}
-                onClick={this.handleClickItem.bind(this, item)}
-              />
-            ))}
-            {/* {page.isLoading ? <Loading>正在加载...</Loading> : null}
-              {!page.isLoading && !list.length && (
-                <SpNote img="trades_empty.png">暂无数据~</SpNote>
-              )} */}
-            <SpPageNote info={page}></SpPageNote>
-          </ScrollView>
         </View>
+        <View className='receive-address'>
+          {!address && (
+            <SpLogin onChange={onChangeLoginSuccess}>
+              <View className='btn-add-address' onClick={onAddChange}>
+                添加新地址
+              </View>
+            </SpLogin>
+          )}
+          {address && (
+            <View
+              className='address'
+              onClick={() => onLocationChange(address)}
+            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
+          )}
+        </View>
+      </View>
 
-        {/* {defaultStore && (
-            <View className='bottom' onClick={this.handleClickItem.bind(this)}>
-              <Image className='img' src={baseInfo.logo} mode='aspectFill' />
-              {defaultStore.store_name}
-              <View className='iconfont icon-arrowRight'></View>
+      <View className='nearlyshop-list'>
+        <View className='list-title'>{location.address ? '附近门店' : '推荐门店'}</View>
+        <SpScrollView ref={shopRef} className='shoplist-block' fetch={fetchShop}>
+          {state.shopList.map((item, index) => (
+            <View
+              onClick={() => handleClickShop(item)}
+              className='shop-item-wrapper'
+              key={`shopitem-wrap__${index}`}
+            >
+              <CompShopItem info={item} />
             </View>
-          )} */}
+          ))}
+        </SpScrollView>
       </View>
-    ) : (
-      <View className='page-store-list' style={styleNames(getThemeStyle())}>
-        <CusNoPosition onClick={this.getLocation}>
-          <Image
-            className='position-imgs'
-            src={`${process.env.APP_IMAGE_CDN}/no-position-img.png`}
-          ></Image>
-        </CusNoPosition>
+
+      <View className='shop-bottom' onClick={handleClickItem}>
+        <Image className='img' src={logo} mode='aspectFill' />
+        {defaultShop.store_name}
+        <View className='iconfont icon-arrowRight' />
       </View>
-    )
-  }
+      <SpPrivacyModal
+        open={policyModal}
+        onCancel={() => setPolicyModal(false)}
+        onConfirm={getLocationInfo}
+      />
+    </SpPage>
+  )
 }
+
+export default NearlyShop

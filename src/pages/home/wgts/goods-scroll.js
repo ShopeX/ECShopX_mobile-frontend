@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
-import { calcTimer, classNames, linkPage } from '@/utils'
-import { SpImg } from '@/components'
-import { getDistributorId } from '@/utils/helper'
+import { calcTimer, classNames, isWeb, linkPage, getDistributorId } from '@/utils'
 import { withLoadMore } from '@/hocs'
 
 import './goods-scroll.scss'
@@ -16,15 +14,16 @@ export default class WgtGoodsScroll extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       timer: null
+      // boxHeight: null
     }
   }
 
-  setTimer () {
+  setTimer() {
     const { info } = this.props
     const { config } = info
     if (config.lastSeconds) {
@@ -35,15 +34,16 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.setTimer()
+    // if (this.props.info.data.length > 0) this.getDom()
   }
 
-  navigateTo (url) {
+  navigateTo(url) {
     Taro.navigateTo({ url })
   }
 
-  handleClickItem (item) {
+  handleClickItem(item) {
     const { distributor_id, goodsId } = item
     // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
@@ -79,17 +79,34 @@ export default class WgtGoodsScroll extends Component {
     }
   }
 
-  render () {
+  // getDom = () => {
+  //   let that = this
+  //   setTimeout(() => {
+  //     Taro.createSelectorQuery()
+  //       // .in(that)
+  //       .select('.scroll-goods')
+  //       .boundingClientRect(res => {
+  //         console.log(res, '-------')
+  //         // debugger
+  //         that.setState({
+  //           boxHeight: res.height
+  //         })
+  //       })
+  //       .exec()
+  //   }, 300)
+  // }
+
+  render() {
     const { info } = this.props
     if (!info) {
       return null
     }
 
     const { base, data, config, more } = info
-    const { timer } = this.state
+    const { timer, boxHeight } = this.state
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt page-goods-scroll ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
           <View className='wgt-head'>
             <View className='wgt-hd'>
@@ -97,7 +114,7 @@ export default class WgtGoodsScroll extends Component {
               {config.type === 'goods' ? (
                 <Text className='wgt-subtitle'>{base.subtitle}</Text>
               ) : (
-                <View>
+                <View className='wgt-timer'>
                   {timer && config.lastSeconds != 0 ? (
                     <View>
                       <AtCountdown
@@ -108,7 +125,9 @@ export default class WgtGoodsScroll extends Component {
                         minutes={timer.mm}
                         seconds={timer.ss}
                       />
-                      {config.status === 'in_the_notice' ? '后开始' : '后结束'}
+                      <Text className='time-fonts'>
+                        {config.status === 'in_the_notice' ? '后开始' : '后结束'}
+                      </Text>
                     </View>
                   ) : (
                     <View className='countdown__time'>活动已结束</View>
@@ -116,9 +135,11 @@ export default class WgtGoodsScroll extends Component {
                 </View>
               )}
             </View>
-            {/* <View className='wgt__more' onClick={this.handleClickMore}>
-              <View className='three-dot'></View>
-            </View> */}
+            {config.moreLink.linkPage && (
+              <View className='wgt-more' onClick={this.handleClickMore}>
+                <View className='three-dot'></View>
+              </View>
+            )}
           </View>
         )}
         <View className='wgt-body'>
@@ -153,14 +174,9 @@ export default class WgtGoodsScroll extends Component {
                     </View>
                   )}
                   <View className='thumbnail'>
-                    <SpImg
-                      img-class='goods-img'
-                      src={item.imgUrl}
-                      mode='aspectFill'
-                      width='240'
-                      lazyLoad
-                    />
+                    <Image src={item.imgUrl} className='goods-img' lazyLoad />
                   </View>
+                  {item.title && <View className='subscript-title'>{item.title}</View>}
                   {item.type === '1' && (
                     <View className='nationalInfo'>
                       <Image
@@ -173,15 +189,31 @@ export default class WgtGoodsScroll extends Component {
                     </View>
                   )}
                   {config.showPrice && (
-                    <View className='goods-price'>
-                      <Text className='cur'>¥</Text>
-                      {price}
-                      {marketPrice != 0 && <Text className='market-price'>{marketPrice}</Text>}
+                    <View className='subscript-price'>
+                      <View className='goods-price'>
+                        <Text className='cur'>¥</Text>
+                        {price}
+                      </View>
+                      {marketPrice != 0 && (
+                        <View className='market-price'>
+                          <Text className='cur'>¥</Text>
+                          {marketPrice}
+                        </View>
+                      )}
                     </View>
                   )}
                 </View>
               )
             })}
+
+            {config.moreLink.linkPage && (
+              <View className='more_img' onClick={this.handleClickMore}>
+                <View className={`img ${isWeb ? 'h5-img' : ''}`}>
+                  <Image src={base.backgroundImg} className='goods-img' lazyLoad />
+                </View>
+                <View className='text'>查看更多</View>
+              </View>
+            )}
           </ScrollView>
         </View>
       </View>

@@ -12,12 +12,12 @@ export default class WgtFloorImg extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
   onRoute = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
     if (!info) {
       return null
@@ -26,9 +26,11 @@ export default class WgtFloorImg extends Component {
 
     return (
       <View
-        className={classNames('wgt wgt-floor-img', {
-          wgt__padded: base.padded
+        className={classNames('wgt', {
+          floor__padded: base.padded,
+          wgt_floor_img: base.openBackImg
         })}
+        style={base && base.openBackImg ? `background: url(${base && base.backgroundImg});` : null}
       >
         {base.title && (
           <View className='wgt-head'>
@@ -38,18 +40,15 @@ export default class WgtFloorImg extends Component {
             </View>
           </View>
         )}
-        <View
-          className={classNames('exclusive_list_two', 'exclusive_list')}
-          style={
-            base && base.openBackImg ? `background: url(${base && base.backgroundImg});` : null
-          }
-        >
+        <View className={classNames('exclusive_list_two', 'exclusive_list')}>
           <ScrollView scrollX className='img_list'>
             {data &&
               data.map((item, idx) => {
                 return (
-                  <View className='lis' key={item.id} onClick={this.onRoute.bind(this, item)}>
-                    <Image lazyLoad className='img' src={item.imgUrl}></Image>
+                  <View className='lis'>
+                    <View className='imgbox' key={item.id} onClick={this.onRoute.bind(this, item)}>
+                      <Image lazyLoad className='img' src={item.imgUrl}></Image>
+                    </View>
                     <View className='title' style={'color:' + base && base.WordColor}>
                       {item.ImgTitle}
                     </View>

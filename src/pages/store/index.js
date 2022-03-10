@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, SpNewShopItem, SpCellCoupon, SpPage } from '@/components'
+import { SpToast, Loading, BackToTop, SpRecommend, SpCellCoupon, SpPage } from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
@@ -32,7 +32,6 @@ import {
   WgtNearbyShop,
   WgtStore,
   WgtGoodsGridTab,
-  WgtGoodsFaverite,
   WgtHeadline,
   WgtFloorImg,
   WgtHotTopic
@@ -42,12 +41,13 @@ import CompHeader from './comps/comp-header'
 import './index.scss'
 
 @connect((store) => ({
-  store
+  store,
+  openRecommend: store.sys.openRecommend
 }))
 @withPager
 @withBackToTop
 export default class StoreIndex extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -83,22 +83,21 @@ export default class StoreIndex extends Component {
       storeIsVaild: false,
       fav: undefined
     }
-    this.current = getCurrentInstance()
-    this.id = this.current.router.params.id
+    this.$instance = getCurrentInstance()
   }
 
-  async componentDidMount () {
-    // const current = getCurrentInstance()
-    // console.log('id==',current.router.params.id)
-    // const options = await normalizeQuerys(this.$router.params);
-    // const id = options.id || options.dtid;
-    // const id = current.router.params.id
-    const id = this.id
-    if (id) {
-      this.fetchInfo(id)
-      this.fetchCouponList(id)
-      this.fetchIsValid(id)
-    }
+  async componentDidMount() {
+    const options = await normalizeQuerys(this.$instance.router.params)
+    this.setState(
+      {
+        dtid: options.id || options.dtid
+      },
+      () => {
+        this.fetchInfo()
+        this.fetchCouponList()
+        this.fetchIsValid()
+      }
+    )
   }
 
   storeFav = async (id) => {
@@ -118,36 +117,36 @@ export default class StoreIndex extends Component {
           isShowAddTip: true
         })
       })
-    const id = this.id
+    const id = this.state.dtid
     if (id) {
       this.storeFav(id)
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     if (res.from === 'button') {
       console.log(res.target)
     }
     return {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
-      path: `/pages/store/index?id=${this.$router.params.id}`
+      path: `/pages/store/index?id=${this.state.dtid}`
     }
   }
 
-  async fetchIsValid (id) {
-    let isVaild = await merchantIsvaild({ distributor_id: id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
+  async fetchIsValid() {
+    let isVaild = await merchantIsvaild({ distributor_id: this.state.dtid }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     // console.log('isVaild=========',isVaild);
     this.setState({
       storeIsVaild: !isVaild
     })
   }
 
-  async fetchCouponList (id) {
+  async fetchCouponList() {
     const params = {
       page_no: 1,
       page_size: 5,
       end_date: 1,
-      distributor_id: id
+      distributor_id: this.state.dtid
     }
     const { list } = await api.member.homeCouponList(params)
     this.setState({
@@ -155,12 +154,12 @@ export default class StoreIndex extends Component {
     })
   }
 
-  async fetchCouponList (id) {
+  async fetchCouponList() {
     const params = {
       page_no: 1,
       page_size: 5,
       end_date: 1,
-      distributor_id: id
+      distributor_id: this.state.dtid
     }
     const { list } = await api.member.homeCouponList(params)
     this.setState({
@@ -168,7 +167,8 @@ export default class StoreIndex extends Component {
     })
   }
 
-  async fetchInfo (distributorId) {
+  async fetchInfo() {
+    const distributorId = this.state.dtid
     let id = ''
     let storeInfo = null
     if (distributorId) {
@@ -256,25 +256,14 @@ export default class StoreIndex extends Component {
       page,
       pageSize
     }
-    const { list, total_count: total } = await api.cart.likeList(query)
-
-    const nList = pickBy(list, {
-      img: 'pics[0]',
-      item_id: 'item_id',
-      title: 'itemName',
-      distributor_id: 'distributor_id',
-      origincountry_name: 'origincountry_name',
-      origincountry_img_url: 'origincountry_img_url',
-      promotion_activity_tag: 'promotion_activity',
-      type: 'type',
-      price: ({ price }) => (price / 100).toFixed(2),
-      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
-      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
-      desc: 'brief'
-    })
-    this.setState({
-      likeList: [...this.state.likeList, ...nList]
-    })
+    let total = 0
+    if (this.props.openRecommend == 1) {
+      const { list, total_count } = await api.cart.likeList(query)
+      total = total_count
+      this.setState({
+        likeList: [...this.state.likeList, ...list]
+      })
+    }
 
     return {
       total
@@ -300,7 +289,7 @@ export default class StoreIndex extends Component {
       const curTab = this.state.tabList[current]
       const { url } = curTab
       // const options = await normalizeQuerys(this.$router.params);
-      const id = this.id
+      const id = this.state.dtid
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
       const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
@@ -318,7 +307,7 @@ export default class StoreIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       wgts,
       storeInfo,
@@ -338,7 +327,7 @@ export default class StoreIndex extends Component {
     }
 
     console.log('===likeList==>', likeList)
-    const id = this.id
+    const id = this.state.dtid
     return (
       <SpPage
         className={classNames('page-store-index', {
@@ -383,11 +372,12 @@ export default class StoreIndex extends Component {
                   )}
                   {item.name === 'showcase' && <WgtShowcase info={item} />}
                   {item.name === 'store' && <WgtStore info={item} />}
+                  {item.name === 'headline' && <WgtHeadline info={item} />}
                 </View>
               )
             })}
 
-            <WgtGoodsFaverite info={likeList} />
+            <SpRecommend className='recommend-block' info={likeList} />
           </View>
         </ScrollView>
 

@@ -1,7 +1,7 @@
-@import "./style/theme.scss";
-@import "./style/variables.scss";
-@import "./style/layout.scss";
-@import "./style/iconfont.scss";
+@import './style/theme.scss';
+@import './style/variables.scss';
+@import './style/layout.scss';
+@import './style/iconfont.scss';
 
 $font-size-base: $font-size;
 $hd: 2 !default; // 基本单位
@@ -11,9 +11,9 @@ $color-brand-dark: $color-brand-accent-light;
 $color-text-base: $color-primary-text;
 $at-button-border-color-secondary: $color-border-gray;
 
-@import "~taro-ui/dist/style/index.scss";
-@import "./style/taro-ui-mod.scss";
-@import "./style/sp-comps.scss";
+@import '~taro-ui/dist/style/index.scss';
+@import './style/taro-ui-mod.scss';
+@import './style/sp-comps.scss';
 
 body,
 view {
@@ -175,28 +175,64 @@ switch,
 /* wgt common styles */
 .wgt {
   .wgt-head {
-    padding: 10px 16px;
+    padding: 0px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .wgt-title {
-      color: #333;
-      font-weight: bold;
-      font-size: 32px;
+    margin-bottom: 24px;
+    .wgt-hd {
+      display: flex;
+      align-items: baseline;
+      flex: 1;
+      .wgt-title {
+        color: #222;
+        font-size: 36px;
+        font-weight: bold;
+        margin-right: 16px;
+        max-width: 30%;
+        @include multi-ellipsis(1);
+      }
     }
     .wgt-subtitle {
       color: #999;
       font-size: 28px;
-      margin-left: 8px;
+      max-width: 55%;
+      @include multi-ellipsis(1);
     }
     .wgt-more {
-      font-size: 20px;
-      border-radius: 30px;
-      padding: 0 16px;
-      border: 1px solid var(--color-primary);
-      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 60px;
+      height: 24px;
+      border-radius: 60px;
+      .three-dot {
+        position: relative;
+        width: 8px;
+        height: 8px;
+        background: #333;
+        border-radius: 50%;
+        &::before,
+        &::after {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          background: #333;
+          border-radius: 50%;
+          content: '';
+        }
+        &::before {
+          transform: translateX(-160%);
+        }
+        &::after {
+          transform: translateX(160%);
+        }
+      }
     }
   }
+  // .wgt-body {
+  //   margin-top: 24px;
+  // }
 }
 
 /* coupon styles */
@@ -205,7 +241,7 @@ switch,
   overflow: hidden;
   display: inline-block;
   &::before {
-    content: "";
+    content: '';
     display: block;
     width: 22px;
     height: 22px;
@@ -219,7 +255,7 @@ switch,
     border: 1PX solid var(--color-primary);
   }
   &::after {
-    content: "";
+    content: '';
     display: block;
     width: 22px;
     height: 22px;
@@ -243,5 +279,25 @@ switch,
   .coupon-text {
     color: var(--color-primary);
     font-size: 22px;
+  }
+}
+
+.wgt-timer {
+  .at-countdown__time-box {
+    font-family: sans-serif;
+    background: var(--color-primary);
+    border-radius: 6px;
+    min-width: 38px;
+    height: 40px;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    padding: 0 2px;
+  }
+  .time-fonts {
+    display: inline-flex;
+    padding-top: 6px;
   }
 }

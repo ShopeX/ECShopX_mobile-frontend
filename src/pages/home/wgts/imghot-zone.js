@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImage } from '@/components'
 import { linkPage, classNames, styleNames } from '@/utils'
 
 import './imghot-zone.scss'
@@ -14,7 +14,7 @@ export default class WgtImgHotZone extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -24,7 +24,7 @@ export default class WgtImgHotZone extends Component {
 
   handleClickItem = linkPage
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx } = this.state
 
@@ -50,14 +50,8 @@ export default class WgtImgHotZone extends Component {
           </View>
         )}
 
-        <View className={`slider-wra img-hotzone ${config.padded ? 'padded' : ''}`}>
-          <SpImg
-            img-class='img-hotzone_img'
-            src={config.imgUrl}
-            mode='widthFix'
-            width='750'
-            lazyLoad
-          />
+        <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
+          <SpImage img-class='img-hotzone_img' src={config.imgUrl} width='718' lazyLoad />
           {data.map((item, index) => {
             return (
               <View

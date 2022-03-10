@@ -1,4 +1,4 @@
-@import "../../style/imports";
+@import '../../style/imports';
 
 .order-item {
   display: flex;
@@ -10,7 +10,7 @@
   &__bd {
     width: 50%;
     margin-bottom: 40px;
-    position: relative;  
+    position: relative;
   }
   &__ft {
     flex: 1;
@@ -18,24 +18,23 @@
     font-size: $font-size-small;
   }
   &__title {
-    font-size: floor(0.95 * $font-size);
-    @include multi-ellipsis(2);
+    // font-size: floor(0.95 * $font-size);
+    @include multi-ellipsis(1);
     line-height: 1.4;
-    margin: 0 0 15px;
-    &-tag{
+    // margin: 0 0 15px;
+    &-tag {
       display: inline-block;
       background: var(--color-primary);
       color: #fff;
       padding: 2px 8px;
       font-size: $font-size-small;
       margin-right: 10px;
-      
     }
   }
   &__desc {
     color: $color-gray;
     font-size: $font-size-small;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
   }
   &__spec {
     color: $color-gray;

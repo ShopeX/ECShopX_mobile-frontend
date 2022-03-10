@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .payment-picker {
   &__hd {
@@ -28,7 +28,7 @@
     display: flex;
     align-items: center;
     align-content: center;
-    padding: 28px 0;
+    padding: 20px 0px;
     margin: 0 40px;
     @include hairline();
     &.no-border {
@@ -52,7 +52,10 @@
     }
     &__desc {
       line-height: 1;
-      padding:0!important;
+      margin: 0px !important;
+      font-size: 26px;
+      padding-top: 10px;
+      display: inline-block;
     }
   }
   .btn-submit {

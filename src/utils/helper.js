@@ -11,12 +11,13 @@ export const transformTextByPoint = (isPoint = false, money, point) => {
   return ` ￥${money}`
 }
 
-export const getDistributorId = () => {
-  const { distributor_id, store_id } = Taro.getStorageSync('curStore') || {}
-  const otherSetting = Taro.getStorageSync('otherSetting') || {}
-  const id = otherSetting.nostores_status ? store_id : distributor_id
-  return id
-}
+// export const getDistributorId = () => {
+//   const { openStore } = store.getState().sys
+//   const { distributor_id, store_id } = Taro.getStorageSync('curStore') || {}
+//   // const otherSetting = Taro.getStorageSync('otherSetting') || {}
+//   const id = openStore ? distributor_id : store_id
+//   return id
+// }
 
 export const getDtidIdUrl = (url, distributor_id) => {
   if (url.indexOf('dtid=') > -1) {

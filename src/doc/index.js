@@ -4,6 +4,7 @@ import * as goods from './goods'
 import * as cart from './cart'
 import * as coupon from './coupon'
 import * as checkout from './checkout'
+import * as category from './category'
 
 export default {
   address,
@@ -11,5 +12,6 @@ export default {
   goods,
   cart,
   coupon,
-  checkout
+  checkout,
+  category
 }

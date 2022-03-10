@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCurtain } from 'taro-ui'
+import { linkPage } from '@/utils'
 import { SpImage, SpLogin, SpFloatMenuItem } from '@/components'
 import api from '@/api'
 import S from '@/spx'
@@ -14,7 +15,7 @@ const initialState = {
   adIndex: 0
 }
 
-function SpFloatAd (props) {
+function SpFloatAd(props) {
   const [state, setState] = useImmer(initialState)
   const { list, adIndex } = state
 
@@ -39,6 +40,10 @@ function SpFloatAd (props) {
     })
   }
 
+  const handleChange = (item) => {
+    item.id && linkPage(item.register_jump_path)
+  }
+
   if (S.getAuthToken()) {
     return null
   }
@@ -61,7 +66,7 @@ function SpFloatAd (props) {
           closeBtnPosition='top'
           key={`curtain-item__${index}`}
         >
-          <SpLogin>
+          <SpLogin onChange={handleChange.bind(this, item)}>
             <SpImage src={item.ad_pic} mode='widthFix' />
             <View className='ad-ft'>
               <Text className='ad-title'>{item.ad_title}</Text>

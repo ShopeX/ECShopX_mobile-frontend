@@ -3,10 +3,10 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import { getAppId } from '@/utils'
+import { getAppId, getExtConfigData } from '@/utils'
 import './pclogin.scss'
 
-function parseUrlStr (urlStr) {
+function parseUrlStr(urlStr) {
   var keyValuePairs = []
   if (urlStr) {
     for (var i = 0; i < urlStr.split('&').length; i++) {
@@ -27,7 +27,7 @@ export default class PcAuth extends Component {
     checkStatus: false
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     if (this.$instance.router.params.scene) {
       const query = decodeURIComponent(this.$instance.router.params.scene)
       const queryStr = decodeURIComponent(query)
@@ -36,7 +36,7 @@ export default class PcAuth extends Component {
     }
     setTimeout(async () => {
       if (this.query) {
-        const { appid } = getAppId()
+        const appid = getAppId()
         const { code } = await Taro.login()
         let check_params = {
           code: code,
@@ -52,7 +52,7 @@ export default class PcAuth extends Component {
   }
 
   handleLogin = async (val) => {
-    const { appid } = getAppId()
+    const appid = getAppId()
 
     try {
       if (this.state.checkStatus == true) {
@@ -85,12 +85,8 @@ export default class PcAuth extends Component {
     }
   }
 
-  render () {
-    const extConfig = Taro.getExtConfigSync
-      ? Taro.getExtConfigSync()
-      : {
-          wxa_name: process.env.APP_MAP_NAME
-        }
+  render() {
+    const extConfig = getExtConfigData()
 
     return (
       <View className='page-wxauth'>

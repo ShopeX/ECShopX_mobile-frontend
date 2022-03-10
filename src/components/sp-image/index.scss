@@ -3,5 +3,10 @@
     width: 100%;
     display: block;
     height: 100%;
+    /*  #ifdef  h5  */
+    img {
+      width: 100%;
+    }
+    /*  #endif  */
   }
 }

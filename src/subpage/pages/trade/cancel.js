@@ -1,27 +1,28 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { SpCell, SpToast, SpNavBar } from '@/components'
+import { SpCell, SpToast, SpPage } from '@/components'
 import { connect } from 'react-redux'
 import S from '@/spx'
 import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
 import { Tracker } from '@/service'
+import { dealTextAreaValue } from '@/utils/platform'
 
 import './cancel.scss'
 
+const TEXTCOUNT = 255
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class TradeCancel extends Component {
   $instance = getCurrentInstance()
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       reason: ['多买/错买', '不想要了', '买多了', '其他'],
       curReasonIdx: 0,
-      textCount: 255,
       otherReason: ''
     }
   }
@@ -35,10 +36,9 @@ export default class TradeCancel extends Component {
     }
   }
 
-  handleTextChange = (e) => {
-    const value = e
+  handleTextChange = (...args) => {
     this.setState({
-      otherReason: value
+      otherReason: dealTextAreaValue(...args)
     })
   }
 
@@ -70,14 +70,13 @@ export default class TradeCancel extends Component {
     }
   }
 
-  render () {
-    const { reason, curReasonIdx, otherReason, textCount } = this.state
+  render() {
+    const { reason, curReasonIdx, otherReason } = this.state
     const { colors } = this.props
+    console.log('==otherReason==', otherReason)
 
     return (
-      <View className='page-trade-cancel'>
-        <SpNavBar title='取消订单' leftIconType='chevron-left' fixed='true' />
-
+      <SpPage className='page-trade-cancel'>
         <View className='sec'>
           <SpCell title='请选择取消理由'>
             {reason.map((item, idx) => {
@@ -99,7 +98,7 @@ export default class TradeCancel extends Component {
               <AtTextarea
                 value={otherReason}
                 onChange={this.handleTextChange}
-                maxLength={textCount}
+                maxLength={TEXTCOUNT}
                 placeholder='请输入您的理由...'
               ></AtTextarea>
             </SpCell>
@@ -117,7 +116,7 @@ export default class TradeCancel extends Component {
         </View>
 
         <SpToast />
-      </View>
+      </SpPage>
     )
   }
 }

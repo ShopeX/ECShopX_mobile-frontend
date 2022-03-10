@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import { classNames, getThemeStyle, styleNames } from '@/utils'
 import './index.scss'
 
-function SpCheckboxNew (props) {
+function SpCheckboxNew(props) {
   const {
     className,
     children,
@@ -33,7 +33,6 @@ function SpCheckboxNew (props) {
         },
         className
       )}
-      style={styleNames(getThemeStyle())}
       onClick={onChangeCheckbox}
     >
       <Text

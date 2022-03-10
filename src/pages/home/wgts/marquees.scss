@@ -1,27 +1,33 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .marquees-label {
   .label-text {
-    padding: 0 15px;
-    border-right: 1px solid #333;
+    font-size: 28px;
+    padding: 0 16px;
+    font-weight: 400;
+    border-right: 1px solid rgba(0, 0, 0, 0.15);
   }
   .icon-sound {
-    padding: 0 15px;
+    font-size: 28px;
+    padding-right: 16px;
   }
 }
 
 .marquees-vertical {
   display: flex;
   align-items: center;
+  margin: 0px 16px;
+  border-radius: 16px;
   .marquees {
     flex: 1;
     height: 60px;
     .marquees-item {
-      padding: 0 30px;
+      padding-left: 16px;
+      padding-right: 16px;
       box-sizing: border-box;
       line-height: 60px;
       .item-text {
-        font-size: 28px;
+        font-size: 24px;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;

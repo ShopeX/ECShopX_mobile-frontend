@@ -1,29 +1,37 @@
 import Taro from '@tarojs/taro'
-import { useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { View, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, showToast } from '@/utils'
-import { SG_SHARER_UID, SG_TRACK_PARAMS } from '@/consts'
+import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
+import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_SHARE_CODE } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
-function SpLogin (props) {
-  const { children, className, onChange } = props
+function SpLogin(props) {
+  const { children, className, onChange, newUser = false } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
     policyUpdateHook: () => {
       setPolicyModal(true)
     }
   })
+
   const [isNewUser, setIsNewUser] = useState(false)
   const [policyModal, setPolicyModal] = useState(false)
+
+  useEffect(() => {
+    if (newUser) {
+      setIsNewUser(true)
+    }
+  }, [newUser])
 
   const handleClickLogin = async () => {
     try {
       await login()
+      onChange && onChange()
     } catch (e) {
       setIsNewUser(true)
     }
@@ -33,7 +41,7 @@ function SpLogin (props) {
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
       const { code } = await Taro.login()
-      const params = {
+      let params = {
         code,
         encryptedData,
         iv,
@@ -41,14 +49,31 @@ function SpLogin (props) {
         user_type: 'wechat',
         auth_type: 'wxapp'
       }
-      Taro.showLoading()
-      const { token, is_new } = await api.wx.newlogin(params)
-      if (token) {
-        setToken(token)
+      if (Taro.getStorageSync(SG_SHARE_CODE)) {
+        params = {
+          ...params,
+          purchanse_share_code: Taro.getStorageSync(SG_SHARE_CODE)
+        }
       }
-      showToast('恭喜您，注册成功')
+      Taro.showLoading()
 
-      // Taro.hideLoading();
+      const { uid } = entryLaunch.getLaunchParams()
+      if (uid) {
+        // 分销绑定
+        params['uid'] = uid
+      }
+
+      try {
+        const { token, is_new } = await api.wx.newlogin(params)
+        if (token) {
+          setToken(token)
+          Taro.hideLoading()
+          showToast('恭喜您，注册成功')
+          onChange && onChange()
+        }
+      } catch (error) {
+        Taro.hideLoading()
+      }
     }
   }
 
@@ -71,7 +96,7 @@ function SpLogin (props) {
     }
     setPolicyModal(false)
   }, [])
-
+  console.log('newUser:', newUser, isNewUser)
   return (
     <View className={classNames('sp-login', className)}>
       {isLogin && <View onClick={handleOnChange}>{children}</View>}

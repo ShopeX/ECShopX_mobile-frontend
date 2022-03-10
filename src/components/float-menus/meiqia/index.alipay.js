@@ -3,6 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 // import { Tracker } from '@/service'
 import api from '@/api'
+import { VERSION_STANDARD } from '@/utils'
 import './index.scss'
 
 export default class Meiqia extends Component {
@@ -16,7 +17,7 @@ export default class Meiqia extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +28,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       this.meiQiaInt()
@@ -42,7 +43,7 @@ export default class Meiqia extends Component {
     let id = info.distributor_id
     const { storeId } = this.props
     // 如果不是标准版
-    if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
+    if (!VERSION_STANDARD && (storeId || storeId === 0)) {
       id = storeId
     }
 
@@ -99,7 +100,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     const echat = Taro.getStorageSync('echat')

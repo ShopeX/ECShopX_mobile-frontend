@@ -1,0 +1,87 @@
+.sp-float-layout {
+  $self: &;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  transform: translate3D(0, 110%, 0);
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(#000, 0.3);
+    opacity: 1;
+    transition: all 0.15s ease-in;
+  }
+  &__body {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 16px 16px 0 0;
+    overflow: hidden;
+  }
+  &.active {
+    transform: translate3D(0, 0, 0);
+    #{$self}__overlay {
+      opacity: 1;
+    }
+    #{$self}__body {
+      opacity: 1;
+      visibility: visible;
+      transform: translate3D(0, 0, 0);
+      transition-delay: 0s;
+    }
+  }
+
+  .at-float-layout__container {
+    background-color: transparent;
+  }
+  .layout-body {
+    padding: 0;
+    background: #fff;
+    min-height: 600px;
+  }
+  .icon-guanbi {
+    float: right;
+    font-size: 38px;
+    color: #aaa;
+    position: absolute;
+    right: 20px;
+    top: 28px;
+    z-index: $z-index-level-3;
+  }
+  &-hd {
+    height: 100px;
+    background: #f5f5f5;
+    text-align: center;
+    line-height: 100px;
+    // border-radius: 16px 16px 0 0;
+    padding: 0 20px;
+    .layout-title {
+      color: #222;
+      font-size: 32px;
+    }
+  }
+  &-bd {
+    padding: 24px;
+    max-height: 1000px;
+    background: #fff;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  &-ft {
+    background: #fff;
+    padding: 20px;
+    /* prettier-ignore */
+    border-top: 1PX solid #f5f5f5;
+    // position: absolute;
+    // bottom: 0;
+    // left: 0;
+    // right: 0;
+  }
+}

@@ -17,7 +17,7 @@ import {
 
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, payTypeField } from '@/utils'
+import { pickBy, classNames, isArray, isAlipay, payTypeField, VERSION_STANDARD } from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
@@ -48,7 +48,7 @@ import './home/index.scss'
 @withPager
 // @withBackToTop
 export default class Home extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.autoCloseTipId = null
     this.currentLoadIndex = -1
@@ -88,7 +88,7 @@ export default class Home extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // // console.log('APP_NAME',APP_NAME)
     // console.log('process.env.APP_IMAGE_CDN',process.env.APP_IMAGE_CDN)
     // this.protocolUpdateTime();
@@ -98,7 +98,7 @@ export default class Home extends Component {
   }
 
   // 获取隐私政策时间
-  async protocolUpdateTime () {
+  async protocolUpdateTime() {
     const isLocal = await entry.getLocalSetting()
 
     const time = Taro.getStorageSync('policy_updatetime')
@@ -156,7 +156,7 @@ export default class Home extends Component {
   }
 
   // 检测收藏变化
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const likeList = this.state.likeList.map((item) => {
@@ -170,7 +170,7 @@ export default class Home extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.showInit()
     this.isShoppingGuide()
     this.getDistributionInfo()
@@ -234,7 +234,7 @@ export default class Home extends Component {
   }
 
   // 分享
-  onShareAppMessage (params) {
+  onShareAppMessage(params) {
     const shareInfo = this.shareInfo()
 
     return {
@@ -243,7 +243,7 @@ export default class Home extends Component {
   }
 
   // 分享朋友圈
-  onShareTimeline (params) {
+  onShareTimeline(params) {
     const shareInfo = this.shareInfo('time')
 
     return {
@@ -419,7 +419,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (process.env.APP_PLATFORM === 'platform') {
+    // if (!VERSION_STANDARD) {
     //   curdis_id = 0
     // }
     return { distributor_id: curdis_id }
@@ -433,7 +433,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (process.env.APP_PLATFORM === 'platform' || isAlipay) {
+    // if (!VERSION_STANDARD || isAlipay) {
     //   curdis_id = 0
     // }
 
@@ -537,7 +537,7 @@ export default class Home extends Component {
   }
 
   // 获取购物车数量
-  async fetchCartCount () {
+  async fetchCartCount() {
     if (!S.getAuthToken()) return
     try {
       const res = await api.cart.count({ shop_type: 'distributor' })
@@ -650,7 +650,7 @@ export default class Home extends Component {
     })
   }
 
-  fetchCouponCardList (receive_type) {
+  fetchCouponCardList(receive_type) {
     api.vip.getShowCardPackage({ receive_type }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -668,7 +668,7 @@ export default class Home extends Component {
     this.setState({ visible })
   }
 
-  render () {
+  render() {
     const {
       show_tabBar,
       isShowAddTip,
@@ -697,7 +697,7 @@ export default class Home extends Component {
     // 广告屏
     const { showAdv } = this.props
     // 是否是标准版
-    const isStandard = true // process.env.APP_PLATFORM === 'standard' && !is_open_store_status
+    const isStandard = true // VERSION_STANDARD && !is_open_store_status
     // 否是fixed
     const isFixed = positionStatus
 

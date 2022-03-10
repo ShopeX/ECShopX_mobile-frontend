@@ -4,13 +4,14 @@ import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar } from '@/components'
 import api from '@/api'
-import { isWeixin } from '@/utils'
+import { isWeixin, getDistributorId, VERSION_STANDARD } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
+import { updateShopInfo } from '@/store/slices/shop'
 import { useImmer } from 'use-immer'
 import { useLogin } from '@/hooks'
 import HomeWgts from './home/comps/home-wgts'
-import { WgtHomeHeader } from './home/wgts'
+import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
 
@@ -25,39 +26,32 @@ const initState = {
   showBackToTop: false
 }
 
-function Home () {
+function Home() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
+  const { openRecommend, openLocation } = useSelector((state) => state.sys)
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
     policyUpdateHook: () => {
-      setPolicyModal(true)
+      if (openLocation == 1) setPolicyModal(true)
     }
   })
 
   const [policyModal, setPolicyModal] = useState(false)
-  const sys = useSelector((state) => state.sys)
   const showAdv = useSelector((member) => member.user.showAdv)
+  const { location = {} } = useSelector((state) => state.user)
 
-  const { openRecommend } = sys
   const { wgts, shareInfo } = state
 
   const dispatch = useDispatch()
 
-  // useEffect( () => {
-  //   fetchWgts();
-  //   fetchLikeList();
-  //   fetchShareInfo()
-  // }, []);
-
   useDidShow(() => {
-    fetchWgts()
-    fetchLikeList()
+    fetchStoreInfo(location)
     fetchShareInfo()
   })
 
   const fetchWgts = async () => {
     const { config } = await api.shop.getShopTemplate({
-      distributor_id: 0 // 平台版固定值
+      distributor_id: getDistributorId()
     })
     setState((v) => {
       v.wgts = config
@@ -91,12 +85,12 @@ function Home () {
   const fetchLocation = async () => {
     const res = await entryLaunch.getCurrentAddressInfo()
     dispatch(updateLocation(res))
+    fetchStoreInfo(res)
   }
 
   const handleConfirmModal = useCallback(async () => {
-    // fetchLocation()
-    fetchWgts()
     setPolicyModal(false)
+    fetchStoreInfo(location)
   }, [])
 
   useShareAppMessage(async (res) => {
@@ -114,6 +108,27 @@ function Home () {
       query: '/pages/index'
     }
   })
+
+  const fetchStoreInfo = async ({ lat, lng }) => {
+    if (!VERSION_STANDARD) {
+      fetchWgts()
+      fetchLikeList()
+      return
+    }
+    let parmas = {
+      distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
+    }
+    if (openLocation) {
+      parmas.lat = lat
+      parmas.lng = lng
+    }
+    const res = await api.shop.getShop(parmas)
+    dispatch(updateShopInfo(res))
+
+    fetchWgts()
+    fetchLikeList()
+  }
+
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
@@ -122,16 +137,28 @@ function Home () {
     filterWgts = wgts
   }
   return (
-    <SpPage className='page-index' renderFloat={<CompFloatMenu />}>
+    <SpPage className='page-index' scrollToTopBtn renderFloat={<CompFloatMenu />}>
       {/* header-block */}
-      <WgtHomeHeader>{searchComp && searchComp.config.fixTop && <SpSearch />}</WgtHomeHeader>
+      {VERSION_STANDARD ? (
+        <WgtHomeHeaderShop>
+          {searchComp && searchComp.config.fixTop && (
+            <SpSearch isFixTop={searchComp.config.fixTop} />
+          )}
+        </WgtHomeHeaderShop>
+      ) : (
+        <WgtHomeHeader>
+          {searchComp && searchComp.config.fixTop && (
+            <SpSearch isFixTop={searchComp.config.fixTop} />
+          )}
+        </WgtHomeHeader>
+      )}
 
       <View className='home-body'>
         <HomeWgts wgts={filterWgts} />
       </View>
 
       {/* 猜你喜欢 */}
-      {<SpRecommend className='recommend-block' info={likeList} />}
+      <SpRecommend className='recommend-block' info={likeList} />
 
       {/* 小程序搜藏提示 */}
       {isWeixin && <MCompAddTip />}

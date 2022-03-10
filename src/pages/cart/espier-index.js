@@ -7,15 +7,9 @@ import { useImmer } from 'use-immer'
 import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
-import { navigateTo, pickBy } from '@/utils'
+import { navigateTo, pickBy, classNames } from '@/utils'
 import { useLogin, useDepChange } from '@/hooks'
-import {
-  fetchCartList,
-  deleteCartItem,
-  updateCartItemNum,
-  updateCartNum,
-  updateCount
-} from '@/store/slices/cart'
+import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
 import {
   SpPage,
   SpTabbar,
@@ -42,7 +36,7 @@ const initialState = {
   policyModal: false // 隐私弹框
 }
 
-function CartIndex () {
+function CartIndex() {
   const { isLogin } = useLogin({
     autoLogin: true,
     policyUpdateHook: () => onPolicyChange(true)
@@ -55,8 +49,9 @@ function CartIndex () {
   const [state, setState] = useImmer(initialState)
   const { current, recommendList, policyModal } = state
 
-  const { colorPrimary } = useSelector((state) => state.sys)
+  const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
+  const { tabbar = 1 } = router.params
 
   useDepChange(() => {
     fetch()
@@ -67,7 +62,9 @@ function CartIndex () {
   })
 
   const fetch = () => {
-    getRecommendList() // 猜你喜欢
+    if (openRecommend == 1) {
+      getRecommendList() // 猜你喜欢
+    }
     if (isLogin) {
       getCartList()
     }
@@ -80,10 +77,7 @@ function CartIndex () {
       shop_type: type
     }
     await dispatch(fetchCartList(params))
-    const {
-      payload: { item_count }
-    } = await dispatch(updateCount(params)) // 获取购物车数量接口
-    await dispatch(updateCartNum(item_count)) // 更新购物车数量
+    await dispatch(updateCount(params))
     Taro.hideLoading()
   }
 
@@ -161,7 +155,7 @@ function CartIndex () {
   const getRecommendList = async () => {
     const { list } = await api.cart.likeList({
       page: 1,
-      pageSize: 10
+      pageSize: 1000
     })
     setState((draft) => {
       draft.recommendList = list
@@ -255,7 +249,11 @@ function CartIndex () {
   console.log(groupsList, 'list')
 
   return (
-    <SpPage className='page-cart-index'>
+    <SpPage
+      className={classNames('page-cart-index', {
+        'has-tabbar': tabbar == 1
+      })}
+    >
       {!isLogin && (
         <View className='login-header'>
           <View className='login-txt'>授权登录后同步购物车的商品</View>
@@ -436,7 +434,7 @@ function CartIndex () {
 
       {validCart.length == 0 && invalidCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
-          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index')}>
+          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
             去选购
           </AtButton>
         </SpDefault>
@@ -447,7 +445,7 @@ function CartIndex () {
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
 
-      <SpTabbar />
+      {tabbar == 1 && <SpTabbar />}
     </SpPage>
   )
 }

@@ -2,31 +2,46 @@ $button-height: 80px;
 
 .sp-button {
   position: relative;
-  height: 80px;
-  border-radius: 40px;
-  /* prettier-ignore */
-  border: 1PX solid var(--color-primary);
-  overflow: hidden;
-  font-size: 28px;
-  position: relative;
+  // border-radius: 40px;
+  // overflow: hidden;
+
+  //   background: #FFFFFF;
+  // box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.1);
+  // border-radius: 40px;
+  // opacity: 0.4;
+  // border: 1px solid #444444;
 
   &__reset {
-    width: 34%;
+    width: 58%;
+    padding-right: 8%;
     color: var(--color-primary);
-    height: 100%;
-    line-height: $button-height;
-    @include flex-center();
+    height: 80px;
+    /* prettier-ignore */
+    border: 1PX solid #E5E5E5;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    border-radius: 40px;
+    color: #444;
+    text-align: center;
+    line-height: 80px;
+    box-sizing: border-box;
   }
 
   &__confirm {
-    width: 66%;
+    width: 58%;
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
     background: var(--color-primary);
+    height: 80px;
     border-radius: 40px;
     position: absolute;
     right: 0;
     top: 0;
     bottom: 0;
-    color: white;
-    @include flex-center();
+    color: #fff;
+    text-align: center;
+    line-height: 80px;
+    box-sizing: border-box;
   }
 }

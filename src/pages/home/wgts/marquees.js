@@ -14,7 +14,7 @@ export default class WgtMarquees extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,7 +22,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     const { config, data } = info
 
@@ -44,7 +44,7 @@ export default class WgtMarquees extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
 
     if (!info) {
@@ -65,10 +65,10 @@ export default class WgtMarquees extends Component {
         >
           {config.label ? (
             <Text className='label-text' style={`border-color:${config.labelcolor}`}>
+              <Text className='icon-sound'></Text>
               {config.label}
             </Text>
           ) : null}
-          <Text className='icon-sound'></Text>
         </View>
         {config.direction === 'vertical' ? (
           <Swiper

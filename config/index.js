@@ -1,63 +1,60 @@
-import path from "path";
-import pkg from "../package.json";
-const { getEnvs, getDefineConstants, getCacheIdentifier } = require("./utils");
+import path from 'path'
+import pkg from '../package.json'
+const { getEnvs, getDefineConstants, getCacheIdentifier } = require('./utils')
 
-require("dotenv-flow").config();
+require('dotenv-flow').config()
 
-const DIST_PATH = `dist/${process.env.TARO_ENV}`;
-const APP_ENVS = getEnvs();
+const DIST_PATH = `dist/${process.env.TARO_ENV}`
+const APP_ENVS = getEnvs()
 
 const CONST_ENVS = {
   APP_NAME: pkg.app_name,
   APP_AUTH_PAGE:
-    process.env.TARO_ENV == "h5"
-      ? "/subpage/pages/auth/login"
-      : "/subpage/pages/auth/wxauth",
+    process.env.TARO_ENV == 'h5' ? '/subpage/pages/auth/login' : '/subpage/pages/auth/wxauth',
   ...APP_ENVS
-};
+}
 
 // 是否为生产模式
-const IS_PROD = process.env.NODE_ENV === "production";
+const IS_PROD = process.env.NODE_ENV === 'production'
 
-const copyPatterns = [
-  { from: "src/assets", to: `${DIST_PATH}/assets` }
-];
-if (process.env.TARO_ENV != "h5") {
-  copyPatterns.push({ from: "src/ext.json", to: `${DIST_PATH}/ext.json` });
+const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
+if (process.env.TARO_ENV != 'h5') {
+  copyPatterns.push({ from: 'src/ext.json', to: `${DIST_PATH}/ext.json` })
 }
-if ( process.env.TARO_ENV == 'h5' ) {
-  copyPatterns.push({ from: "src/files", to: `${DIST_PATH}` });
+if (process.env.TARO_ENV == 'h5') {
+  copyPatterns.push({ from: 'src/files', to: `${DIST_PATH}` })
 }
 
 const config = {
   projectName: pkg.name,
-  date: "2021-11-22",
+  date: '2021-11-22',
   framework: 'react',
   designWidth: 750,
   deviceRatio: {
-    "640": 2.34 / 2,
-    "750": 1,
-    "828": 1.81 / 2
+    '640': 2.34 / 2,
+    '750': 1,
+    '828': 1.81 / 2
   },
   sourceRoot: 'src',
   outputRoot: DIST_PATH,
   sass: {
-    resource: path.resolve(__dirname, "..", "src/style/imports.scss"),
-    projectDirectory: path.resolve(__dirname, "..")
+    resource: path.resolve(__dirname, '..', 'src/style/imports.scss'),
+    projectDirectory: path.resolve(__dirname, '..')
   },
 
   defineConstants: getDefineConstants(CONST_ENVS),
   alias: {
-    "@": path.join(__dirname, "../src")
+    '@': path.join(__dirname, '../src')
   },
   copy: {
     patterns: copyPatterns
   },
-  plugins: [
-    '@shopex/taro-plugin-modules'
-  ],
+  plugins: ['@shopex/taro-plugin-modules'],
 
   mini: {
+    miniCssExtractPluginOption: {
+      ignoreOrder: true
+    },
     // 图片转换base64
     imageUrlLoaderOption: {
       limit: 0
@@ -79,18 +76,19 @@ const config = {
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
-          namingPattern: "module", // 转换模式，取值为 global/module
-          generateScopedName: "[name]__[local]___[hash:base64:5]"
+          namingPattern: 'module', // 转换模式，取值为 global/module
+          generateScopedName: '[name]__[local]___[hash:base64:5]'
         }
       }
     }
   },
 
   h5: {
-    publicPath: "/",
-    staticDirectory: "static",
+    publicPath: '/',
+    // publicPath: process.env.APP_PUBLIC_PATH || '/',
+    staticDirectory: 'static',
     router: {
-      mode: "browser"
+      mode: 'browser'
     },
     // devServer: {
     //   https: {
@@ -104,17 +102,17 @@ const config = {
       autoprefixer: {
         enable: true,
         config: {
-          browsers: ["last 3 versions", "Android >= 4.1", "ios >= 8"]
+          browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8']
         }
       }
     },
-    esnextModules: ["taro-ui"]
+    esnextModules: ['taro-ui']
   }
-};
+}
 
-module.exports = function(merge) {
+module.exports = function (merge) {
   if (!IS_PROD) {
-    return merge({}, config, require("./dev"));
+    return merge({}, config, require('./dev'))
   }
-  return merge({}, config, require("./prod"));
-};
+  return merge({}, config, require('./prod'))
+}

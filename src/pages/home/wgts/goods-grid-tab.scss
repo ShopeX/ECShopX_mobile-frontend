@@ -1,17 +1,4 @@
 .wgt-goods-grid-tab {
-  .wgt-head {
-    padding: 10px 16px;
-    .wgt-title {
-      color: #333;
-      font-weight: bold;
-      font-size: 32px;
-    }
-    .wgt-subtitle {
-      color: #999;
-      font-size: 28px;
-      margin-left: 8px;
-    }
-  }
   .scroll-tab {
     white-space: nowrap;
   }
@@ -19,13 +6,14 @@
     height: 40px;
     line-height: 40px;
     padding: 0 30px;
-    font-size: 32px;
-    // font-weight: bold;
+    font-size: 28px;
     display: inline-block;
     position: relative;
+    color: #999;
     &.active {
       color: var(--color-primary);
       font-weight: bold;
+      font-size: 36px;
     }
     &:not(:last-child) {
       &:after {
@@ -44,21 +32,22 @@
   }
   .tab-body {
     display: flex;
-    flex-wrap: wrap;
-    padding: 20px;
-    .goodgrid-item {
+    justify-content: space-between;
+    margin-top: 24px;
+    .left-container {
       width: 50%;
-      margin-bottom: 28px;
+      padding-left: 16px;
+    }
+    .right-container {
+      width: 50%;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .goodgrid-item {
+      margin-bottom: 16px;
       box-sizing: border-box;
       position: relative;
-      &:nth-child(2n + 1) {
-        padding-right: 9px;
-      }
-      &:nth-child(2n + 2) {
-        padding-left: 9px;
-      }
       .goods-item__hd {
-        // border-radius: 16px 16px 0 0;
         overflow: hidden;
       }
       .goods-item__bd {
@@ -72,7 +61,6 @@
   }
   .brand-info {
     background: #fff;
-    // padding: 0 20px 20px;
     border-radius: 0 0 16px 16px;
     overflow: hidden;
     position: absolute;

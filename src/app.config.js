@@ -12,20 +12,23 @@ export default {
 
     'pages/item/list', // 商品列表页面
     'pages/item/espier-detail', // 商品详情页面
-    'pages/item/item-params', // 商品参数详情页面
-    'pages/item/package-list', // 商品优惠组合详情页面
 
     'pages/article/index', // 文章页面
     'pages/recommend/list', // 推荐软文列表
     'pages/member/item-fav', // 收藏页面
 
     'pages/custom/custom-page', // 自定义页面
-    'pages/liveroom/index' // 直播间页面
+    'pages/chat/index', // 客服
+    'pages/liveroom/index', // 直播间页面
+    'pages/store/list' // 选择店铺列表
   ],
   subPackages: [
     {
       root: 'subpages/ecshopx',
-      pages: ['nearly-shop', 'shop-list']
+      pages: [
+        'nearly-shop', // 店铺选择
+        'shop-list' // 商家列表
+      ]
     },
     {
       root: 'subpages/member',
@@ -33,10 +36,12 @@ export default {
         'index' // 会员中心
       ]
     },
-    // {
-    //   root: "subpages/auth",
-    //   pages: ["login"],
-    // },
+    {
+      root: 'subpages/marketing',
+      pages: [
+        'package-list' // 组合优惠
+      ]
+    },
     {
       root: 'marketing',
       pages: [
@@ -104,7 +109,8 @@ export default {
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
         'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-        'pages/member/qrcode'
+        'pages/member/qrcode',
+        'pages/member/purchase' //员工内购
       ]
     },
     {
@@ -205,5 +211,8 @@ export default {
     'scope.userLocation': {
       desc: '您的位置信息将用于定位附近门店'
     }
+  },
+  usingComponents: {
+    'mp-html': './components/sp-html/mp-weixin/index'
   }
 }

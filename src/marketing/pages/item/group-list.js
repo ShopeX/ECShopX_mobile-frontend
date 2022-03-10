@@ -6,14 +6,13 @@ import { Loading, SpNote, Price, SpNavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { calcTimer, isNavbar, classNames } from '@/utils'
-import { getDistributorId } from '@/utils/helper'
+import { calcTimer, isNavbar, classNames, getDistributorId } from '@/utils'
 
 import './group-list.scss'
 
 @withPager
 export default class GroupList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +27,7 @@ export default class GroupList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
     api.wx.shareSetting({ shareindex: 'group' }).then((res) => {
       this.setState({
@@ -37,7 +36,7 @@ export default class GroupList extends Component {
     })
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { curTabIdx } = this.state
     const dtid = getDistributorId()
     params = _mapKeys(
@@ -98,7 +97,7 @@ export default class GroupList extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -109,7 +108,7 @@ export default class GroupList extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -120,7 +119,7 @@ export default class GroupList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (

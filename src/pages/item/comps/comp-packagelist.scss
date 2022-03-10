@@ -1,0 +1,36 @@
+.comp-packagelist {
+  font-size: 50px;
+  .flay-ft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .main-goods {
+    color: #666;
+    font-size: 30px;
+    padding: 12px 0;
+  }
+  .main-goods-list {
+    padding-left: 56px;
+  }
+  .main-goods-item {
+    display: flex;
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
+  }
+  .makeup-goods {
+    color: #666;
+    font-size: 30px;
+    padding: 12px 0;
+  }
+  .makeup-goods-item {
+    display: flex;
+    &:not(:last-child) {
+      margin-bottom: 24px;
+    }
+  }
+  .sp-goods-cell {
+    flex: 1;
+  }
+}

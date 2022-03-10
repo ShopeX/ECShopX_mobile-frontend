@@ -13,7 +13,7 @@ import { PROMOTION_TAG } from '@/consts'
 
 import './index.scss'
 
-function SpGoodsItem (props) {
+function SpGoodsItem(props) {
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const {
@@ -25,7 +25,9 @@ function SpGoodsItem (props) {
     noCurSymbol = false,
     info = null,
     isPointitem = false,
-    renderFooter = null
+    renderFooter = null,
+    showPromotion = true,
+    showPrice = true
   } = props
 
   const handleFavClick = async () => {
@@ -90,8 +92,8 @@ function SpGoodsItem (props) {
           <View className='goods-desc'>{info.brief}</View>
         </View>
 
-        <View className='bd-block'>
-          <View className='bd-block-lf'>
+        {(info.is_point || (!info.is_point && showPrice) || showFav) && (
+          <View className='bd-block'>
             {/* 商品价格、积分 */}
             {info.is_point && (
               <View className='goods-price'>
@@ -99,7 +101,7 @@ function SpGoodsItem (props) {
               </View>
             )}
 
-            {!info.is_point && (
+            {!info.is_point && showPrice && (
               <View className='goods-price'>
                 <View className='gd-price'>
                   <SpPrice value={info.price / 100}></SpPrice>
@@ -111,27 +113,27 @@ function SpGoodsItem (props) {
                 </View>
               </View>
             )}
+            {/* {
+                isOpenCollection && <View className='bd-block-rg'>
+                  <Text className='iconfont icon-shoucang-01'></Text>
+                </View>
+              } */}
+            {showFav && (
+              <View className='bd-block-rg'>
+                <Text
+                  className={classNames(
+                    'iconfont',
+                    isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
+                  )}
+                  onClick={handleFavClick}
+                />
+              </View>
+            )}
           </View>
-          {/* {
-            isOpenCollection && <View className='bd-block-rg'>
-              <Text className='iconfont icon-shoucang-01'></Text>
-            </View>
-          } */}
-          {showFav && (
-            <View className='bd-block-rg'>
-              <Text
-                className={classNames(
-                  'iconfont',
-                  isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
-                )}
-                onClick={handleFavClick}
-              />
-            </View>
-          )}
-        </View>
+        )}
 
         {/* 促销活动标签 */}
-        {info.promotion && info.promotion.length > 0 && (
+        {showPromotion && info.promotion && info.promotion.length > 0 && (
           <View className='promotions'>
             {info.promotion.map((item, index) => (
               <Text className='promotion-tag' key={`promotion-tag__${index}`}>

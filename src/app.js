@@ -20,20 +20,20 @@ import './app.scss'
 
 const store = configStore()
 class App extends Component {
-  componentWillMount () {
+  componentWillMount() {
     this.getSystemConfig()
     // if ( S.getAuthToken() ) {
     //   store.dispatch(fetchUserFavs());
     // }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (isWeixin) {
       checkAppVersion()
     }
   }
 
-  componentDidShow (options) {
+  componentDidShow(options) {
     if (isNavbar()) {
       document.querySelector('title').addEventListener(
         'DOMSubtreeModified',
@@ -50,12 +50,15 @@ class App extends Component {
         false
       )
     }
+
+    const deviceInfo = Taro.getSystemInfoSync()
+    console.log('deviceInfo:', deviceInfo)
   }
 
-  async getSystemConfig () {
+  async getSystemConfig() {
     const {
-      echat = {},
-      meiqia = {},
+      echat,
+      meiqia,
       disk_driver = 'qiniu',
       whitelist_status = false,
       nostores_status = false,
@@ -76,12 +79,12 @@ class App extends Component {
     // Taro.setStorageSync(SG_MEIQIA, meiqia);
     // // 一洽客服配置
     // Taro.setStorageSync(SG_YIQIA, echat);
-    // // 白名单配置、门店配置、图片存储信息
+    // 白名单配置、门店配置、图片存储信息
     // Taro.setStorageSync(SG_APP_CONFIG, {
-    //   whitelist_status,
-    //   nostores_status,
-    //   openStore: !nostores_status,
-    //   disk_driver
+    // whitelist_status,
+    // nostores_status,
+    // openStore: !nostores_status,
+    // disk_driver
     // })
     // 分享时是否携带参数
     Taro.setStorageSync('distributor_param_status', distributor_param_status)
@@ -103,11 +106,14 @@ class App extends Component {
           colorAccent: accent,
           pointName: point_rule_name,
           tabbar: tabBar,
-          openRecommend, // 猜你喜欢
-          openScanQrcode, // 扫码
-          openLocation, // 定位
-          openOfficialAccount, // 公众号组件
-          diskDriver: disk_driver
+          openRecommend, // 开启猜你喜欢 1开启 2关闭
+          openScanQrcode, // 开启扫码功能 1开启 2关闭
+          openLocation, // 开启小程序定位 1开启 2关闭
+          openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
+          diskDriver: disk_driver,
+          echat,
+          meiqia,
+          openStore: !nostores_status // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
         }
       })
       // 兼容老的主题方式
@@ -124,9 +130,9 @@ class App extends Component {
     }
   }
 
-  componentDidCatchError () {}
+  componentDidCatchError() {}
 
-  render () {
+  render() {
     return <Provider store={store}>{this.props.children}</Provider>
   }
 }

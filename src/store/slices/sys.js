@@ -2,7 +2,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { DEFAULT_THEME, DEFAULT_POINT_NAME } from '@/consts'
 import { hex2rgb } from '@/utils'
 
+//没有则获取正确的颜色
+function getColor(field, value) {
+  return value ? value : DEFAULT_THEME[field]
+}
+
 const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME
+
 const initialState = {
   colorPrimary: colorPrimary,
   colorMarketing: colorMarketing,
@@ -21,33 +27,38 @@ const initialState = {
         iconPath: '',
         name: 'home',
         pagePath: '/pages/index',
-        selectedIconPath: '',
+        selectedIconPath: 'home',
         text: '首页'
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'category',
         pagePath: '/pages/category/index',
-        selectedIconPath: '',
+        selectedIconPath: 'category',
         text: '分类'
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'cart',
         pagePath: '/pages/cart/espier-index',
-        selectedIconPath: '',
+        selectedIconPath: 'cart',
         text: '购物车',
         max: 99
       },
       {
         iconPath: '',
-        name: 'home',
+        name: 'member',
         pagePath: '/subpages/member/index',
-        selectedIconPath: '',
+        selectedIconPath: 'member',
         text: '我的'
       }
     ]
-  }
+  },
+  openStore: true,
+  openRecommend: 1,
+  openScanQrcode: 1,
+  openLocation: 1,
+  openOfficialAccount: 1
 }
 
 const sysSlice = createSlice({
@@ -55,11 +66,15 @@ const sysSlice = createSlice({
   initialState,
   reducers: {
     setSysConfig: (state, { payload }) => {
-      const { colorPrimary } = payload
-      const rgb = hex2rgb(colorPrimary).join(',')
+      const { colorPrimary, tabbar, colorMarketing, colorAccent } = payload
+      const rgb = hex2rgb(getColor('colorPrimary', colorPrimary)).join(',')
       return {
         ...state,
         ...payload,
+        colorPrimary: getColor('colorPrimary', colorPrimary),
+        colorMarketing: getColor('colorMarketing', colorMarketing),
+        colorAccent: getColor('colorAccent', colorAccent),
+        tabbar: tabbar ? tabbar : initialState.tabbar,
         rgb
       }
     },

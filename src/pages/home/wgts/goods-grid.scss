@@ -1,51 +1,82 @@
 .wgt-goods-grid {
-  .wgt-head {
-    padding: 10px 16px;
-    .wgt-title {
-      color: #333;
-      font-weight: bold;
-      font-size: 32px;
-    }
-    .wgt-subtitle {
-      color: #999;
-      font-size: 28px;
-      margin-left: 8px;
-    }
+  .wgt-body {
+    padding: 0px 16px;
   }
   .wgt-goods-grid-list {
-    padding: 0 16px;
     display: flex;
+    justify-content: space-between;
     flex-wrap: wrap;
   }
-  .goods-item-wrap {
-    margin-bottom: 28px;
-    box-sizing: border-box;
-    &.two-inrow{
-      width: 50%;
-      &:nth-child(2n + 1) {
-        padding-right: 9px;
-      }
-      &:nth-child(2n) {
-        padding-left: 9px;
+  .container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0px 24px;
+    .left-container {
+      width: 49%;
+      // padding-left: 16px;
+      .sp-goods-item:nth-last-child(1) {
+        margin-bottom: 0px;
       }
     }
-    &.three-inrow{
-      width: 33.3333%;
-      &:nth-child(2n+1) {
-        padding-right: 9px;
+    .right-container {
+      width: 49%;
+      // padding-left: 16px;
+      // padding-right: 16px;
+      .sp-goods-item:nth-last-child(1) {
+        margin-bottom: 0px;
       }
-      &:nth-child(2n+2) {
-        padding:0 9px;
-        
+    }
+  }
+  .goods-item-wrap {
+    margin-bottom: 16px;
+    box-sizing: border-box;
+    &.two-inrow {
+      margin-bottom: 0px;
+      // &:nth-child(2n + 1) {
+      // 1 3 5 7
+      // padding-right: 9px;
+      // }
+      // &:nth-child(2n) {
+      // 2 4 6 8
+      // padding-left: 9px;
+      // }
+    }
+    &.three-inrow {
+      width: 32%; // 331
+      // margin-left: 16px;
+      margin-bottom: 0px;
+      // &:nth-child(2n + 1) {
+      //   // 1 4 7 10
+      //   margin-left: 16px;
+      //   margin-right: 0px;
+      // }
+      // &:nth-child(3n - 1) {
+      // 2 5 8 11 14
+      // margin-left: 16px;
+      // margin-right: 16px;
+      // }
+      // &:nth-child(3n) {
+      //   // 3 6 9 11
+      //   margin: 0 16px;
+      // }
+
+      .goods-title {
+        @include multi-ellipsis(2);
+        height: 68px;
       }
-      &:nth-child(2n+3) {
-        padding-left: 9px;
+      .bd-block {
+        height: 82px;
       }
     }
 
     .sp-goods-item {
       border-radius: 16px;
       overflow: hidden;
+      margin-bottom: 16px;
+      .goods-item__bd {
+        padding-top: 16px;
+      }
     }
   }
 }

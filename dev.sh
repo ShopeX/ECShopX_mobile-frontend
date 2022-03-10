@@ -101,11 +101,12 @@ APP_CUSTOM_SERVER='${custom_server}'
 APP_HOME_PAGE='${home_page}'
 APP_TRACK=youshu
 APP_YOUSHU_TOKEN=bi281e87ab2424481a
-APP_ID=wx912913df9fef6ddd
-APP_MAP_KEY='${map_key}
+APP_ID='${appid}'
+APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
-APP_IMAGE_CDN='${image_cdn}
-' > ./.env
+APP_IMAGE_CDN='${image_cdn}''
+
+> ./.env
 
 
 echo "请选择编译方式"

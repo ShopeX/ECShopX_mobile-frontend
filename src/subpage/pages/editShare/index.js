@@ -31,7 +31,7 @@ const steps = [
 }))
 export default class EditShare extends Component {
   $instance = getCurrentInstance()
-  constructor (...props) {
+  constructor(...props) {
     super(...props)
 
     this.state = {
@@ -47,12 +47,12 @@ export default class EditShare extends Component {
     this.goodInfo = {}
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getShareSettingInfo()
   }
 
   // 获取分享信息
-  async getShareSettingInfo () {
+  async getShareSettingInfo() {
     Taro.showLoading()
     const { id, dtid, company_id } = this.$instance.router.params
     const data = await api.item.getShareSetting(id)
@@ -74,7 +74,7 @@ export default class EditShare extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
 
-    const { appid } = getAppId()
+    const appid = getAppId()
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
 
     this.goodInfo = data
@@ -233,7 +233,7 @@ export default class EditShare extends Component {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { insertData, info, selectPics, showPoster, showSuccess } = this.state
     const { colors } = this.props
 

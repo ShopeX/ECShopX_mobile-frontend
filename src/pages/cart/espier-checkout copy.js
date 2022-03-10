@@ -23,7 +23,8 @@ import {
   styleNames,
   getHeadShop,
   merchantIsvaild,
-  showToast
+  showToast,
+  VERSION_STANDARD
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -90,7 +91,7 @@ export default class CartCheckout extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -153,7 +154,7 @@ export default class CartCheckout extends Component {
     this.routerParams = {}
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     let params = this.$instance.router.params
     if (params) {
       const data = await normalizeQuerys(params)
@@ -262,7 +263,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const nextAddress = nextProps.address || {}
     const selfAddress = this.props.address || {}
     console.log('componentWillReceiveProps==>', nextAddress, selfAddress)
@@ -275,14 +276,14 @@ export default class CartCheckout extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     // teardown clean
     this.props.onClearCoupon()
     this.props.onClearDrugInfo()
     Taro.removeStorageSync('selectShop')
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.setState({
       isPaymentOpend: false,
       isDrugInfoOpend: false,
@@ -295,12 +296,12 @@ export default class CartCheckout extends Component {
     }
   }
 
-  isPointitemGood () {
+  isPointitemGood() {
     const options = this.$instance.router?.params
     return options?.type === 'pointitem'
   }
 
-  async fetchZiTiShop () {
+  async fetchZiTiShop() {
     const {
       shop_id,
       scene,
@@ -357,7 +358,7 @@ export default class CartCheckout extends Component {
         }
       }
     }
-    if (process.env.APP_PLATFORM === 'platform') {
+    if (!VERSION_STANDARD) {
       delete ztparams.isNostores
     }
     const shopInfo = await api.shop.getShop(ztparams)
@@ -374,7 +375,7 @@ export default class CartCheckout extends Component {
     )
   }
 
-  async fetchAddress (cb) {
+  async fetchAddress(cb) {
     const { receiptType, curStore, headShop } = this.state
     console.log('===fetchAddress===>', headShop)
     const query = {}
@@ -397,7 +398,7 @@ export default class CartCheckout extends Component {
   /**
    * 获取代下单导购
    * */
-  async getSalespersonNologin () {
+  async getSalespersonNologin() {
     const { source, scene } = this.$instance.router.params
     let salesperson_id = ''
     if (source === 'other_pay' || scene) {
@@ -426,7 +427,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async getShop () {
+  async getShop() {
     const { source, scene } = this.$instance.router.params
     let distributor_id = ''
     if (source === 'other_pay' || scene) {
@@ -448,7 +449,7 @@ export default class CartCheckout extends Component {
     this.setState({ shopData })
   }
 
-  async getShopId () {
+  async getShopId() {
     const { source, scene } = this.$instance.router.params
     if (source === 'other_pay' || scene) {
       let espierCheckoutData = {}
@@ -461,7 +462,7 @@ export default class CartCheckout extends Component {
     }
   }
 
-  changeSelection (params = {}) {
+  changeSelection(params = {}) {
     const { address_list } = this.state
     if (address_list.length === 0) {
       this.props.updateChooseAddress(null)
@@ -491,7 +492,7 @@ export default class CartCheckout extends Component {
     this.handleAddressChange(address)
   }
 
-  async getParams () {
+  async getParams() {
     let { isNeedPackage, pack } = this.state
 
     const {
@@ -640,7 +641,7 @@ export default class CartCheckout extends Component {
     if (payType === 'point') {
       delete params.point_use
     }
-    if (process.env.APP_PLATFORM === 'platform') {
+    if (!VERSION_STANDARD) {
       delete params.isNostores
     }
     if (coupon) {
@@ -671,7 +672,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async tradeSetting () {
+  async tradeSetting() {
     let res = await api.trade.tradeSetting()
     let { is_open, packName, packDes } = res
 
@@ -684,7 +685,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  async calcOrder () {
+  async calcOrder() {
     Taro.showLoading({
       title: '加载中',
       mask: true
@@ -829,7 +830,7 @@ export default class CartCheckout extends Component {
   }
 
   // 处理导购
-  dealGuidInfo (params) {
+  dealGuidInfo(params) {
     const work_userid = Taro.getStorageSync('work_userid')
     const chatId = Taro.getStorageSync('chatId')
     if (work_userid) {
@@ -916,7 +917,7 @@ export default class CartCheckout extends Component {
     console.log(type)
   }
 
-  handleClickItems (items) {
+  handleClickItems(items) {
     this.setState({
       curCheckoutItems: items
     })
@@ -972,7 +973,7 @@ export default class CartCheckout extends Component {
     )
   }
 
-  toggleCheckoutItems (isOpened) {
+  toggleCheckoutItems(isOpened) {
     if (isOpened === undefined) {
       isOpened = !this.state.showCheckoutItems
     }
@@ -981,7 +982,7 @@ export default class CartCheckout extends Component {
     this.setState({ showCheckoutItems: isOpened })
   }
 
-  toggleState (key, val) {
+  toggleState(key, val) {
     if (val === undefined) {
       val = !this.state[key]
     }
@@ -1010,7 +1011,7 @@ export default class CartCheckout extends Component {
     console.log(val)
   }
 
-  resolvePayError (e) {
+  resolvePayError(e) {
     const { payType, disabledPayment, defalutPaytype } = this.state
     if (payType === 'point' || payType === 'deposit') {
       const disabledPaymentMes = {}
@@ -1110,10 +1111,10 @@ export default class CartCheckout extends Component {
           if (tmlres.template_id && tmlres.template_id.length > 0) {
             wx.requestSubscribeMessage({
               tmplIds: tmlres.template_id,
-              success () {
+              success() {
                 _this.handlePay()
               },
-              fail () {
+              fail() {
                 _this.handlePay()
               }
             })
@@ -1130,7 +1131,7 @@ export default class CartCheckout extends Component {
     }
   }
 
-  async createByType (params) {
+  async createByType(params) {
     const { freight_type, freight_fee } = this.state.total
 
     const { payType } = this.state
@@ -1159,7 +1160,7 @@ export default class CartCheckout extends Component {
     return info
   }
 
-  async h5CreateByType (params) {
+  async h5CreateByType(params) {
     let info
     if (this.isPointitemGood()) {
       info = await api.trade.h5create({
@@ -1223,7 +1224,7 @@ export default class CartCheckout extends Component {
       let params = (await this.getParams()) || {}
       const getShopId = await this.getShopId()
 
-      if (process.env.APP_PLATFORM === 'standard' && cart_type !== 'cart') {
+      if (VERSION_STANDARD && cart_type !== 'cart') {
         const { distributor_id, store_id } = Taro.getStorageSync('curStore')
         params.distributor_id = isOpenStore
           ? receiptType === 'ziti'
@@ -1517,7 +1518,7 @@ export default class CartCheckout extends Component {
 
     // S.set('point_use',point_use)
     let id = ''
-    if (process.env.APP_PLATFORM === 'standard' && cart_type !== 'cart') {
+    if (VERSION_STANDARD && cart_type !== 'cart') {
       const { distributor_id } = Taro.getStorageSync('curStore')
       id = distributor_id
     } else {
@@ -1687,7 +1688,7 @@ export default class CartCheckout extends Component {
     })
   }
 
-  render () {
+  render() {
     // 支付方式文字
     const payTypeText = {
       point: `${this.props.pointName}支付`,
@@ -1971,7 +1972,7 @@ export default class CartCheckout extends Component {
           {goodType !== 'cross' &&
             !this.isPointitemGood() &&
             pointInfo.is_open_deduct_point &&
-            process.env.APP_PLATFORM !== 'platform' && (
+            VERSION_STANDARD && (
               <SpCell
                 isLink
                 className='trade-invoice'
@@ -1997,7 +1998,7 @@ export default class CartCheckout extends Component {
           {goodType !== 'cross' &&
             !this.isPointitemGood() &&
             pointInfo.is_open_deduct_point &&
-            process.env.APP_PLATFORM !== 'platform' && (
+            VERSION_STANDARD && (
               <SpCell
                 isLink
                 className='trade-invoice'
@@ -2059,13 +2060,11 @@ export default class CartCheckout extends Component {
               <SpCell className='trade-sub-total__item' title='优惠金额：'>
                 <Price unit='cent' value={total.discount_fee} />
               </SpCell>
-              {goodType !== 'cross' &&
-                pointInfo.is_open_deduct_point &&
-                process.env.APP_PLATFORM !== 'platform' && (
-                  <SpCell className='trade-sub-total__item' title={`${this.props.pointName}抵扣：`}>
-                    <Price unit='cent' value={total.point_fee} />
-                  </SpCell>
-                )}
+              {goodType !== 'cross' && pointInfo.is_open_deduct_point && VERSION_STANDARD && (
+                <SpCell className='trade-sub-total__item' title={`${this.props.pointName}抵扣：`}>
+                  <Price unit='cent' value={total.point_fee} />
+                </SpCell>
+              )}
               <SpCell className='trade-sub-total__item' title='运费：'>
                 <Price unit='cent' value={total.freight_fee} />
               </SpCell>

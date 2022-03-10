@@ -9,13 +9,13 @@
     flex: 1;
     position: relative;
     &:after {
-      content: " ";
+      content: ' ';
       position: absolute;
       /* prettier-ignore */
       width: 1PX;
       height: 60px;
       background: #d5d5d5;
-      top: 16px;
+      top: 12px;
       right: 30px;
     }
   }

@@ -1,4 +1,5 @@
 export const SG_TOKEN = 'token'
+export const MERCHANT_TOKEN = 'merchant_token'
 export const SG_POLICY_UPDATETIME = 'policy_updatetime'
 export const SG_SHARER_UID = 'distribution_shop_id' // 推广用户uid
 export const SG_TRACK_PARAMS = 'trackParams'
@@ -8,3 +9,4 @@ export const SG_MEIQIA = 'meiqia' // 客户美洽配置
 export const SG_YIQIA = 'echat' // 客户一洽配置
 export const SG_APP_CONFIG = 'settingInfo' // APP基础信息配置
 export const SG_SHOW_ADD_TIP = 'addTipIsShow' // 小程序添加指引
+export const SG_SHARE_CODE = 'shareCode' // 内购分享码

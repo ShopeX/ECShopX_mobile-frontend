@@ -16,14 +16,14 @@ export default class AtTabslist extends Component {
     tabList: [],
     onClick: () => {}
   }
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       current: 0
     }
   }
 
-  handleClick (value) {
+  handleClick(value) {
     this.setState(
       {
         current: value
@@ -34,7 +34,7 @@ export default class AtTabslist extends Component {
     )
   }
 
-  render () {
+  render() {
     const { current } = this.state
     const { tabList, colors } = this.props
     return (
@@ -44,7 +44,7 @@ export default class AtTabslist extends Component {
             <View
               key={`${index}1`}
               className='tab_li'
-              style={current === index ? 'color:' + colors.data[0].primary : null}
+              style={current === index ? 'color:var(--color-primary)' : null}
               onClick={this.handleClick.bind(this, index)}
             >
               {item.tabTitle}

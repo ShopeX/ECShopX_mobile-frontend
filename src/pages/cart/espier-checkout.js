@@ -21,7 +21,7 @@ import CompPaymentPicker from './comps/comp-paymentpicker'
 
 import './espier-checkout.scss'
 
-function CartCheckout (props) {
+function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const {
     type,
@@ -390,12 +390,8 @@ function CartCheckout (props) {
                   customFooter
                   renderFooter={
                     <View className='order-item__ft'>
-                      <SpPrice
-                        unit='cent'
-                        className='order-item__price'
-                        value={item.price || 100}
-                      />
-                      <Text className='order-item__num'>x {item.num || 1}</Text>
+                      <SpPrice unit='cent' className='order-item__price' value={item.price} />
+                      <Text className='order-item__num'>x {item.num}</Text>
                     </View>
                   }
                 />

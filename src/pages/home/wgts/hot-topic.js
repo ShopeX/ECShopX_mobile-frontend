@@ -10,7 +10,7 @@ export default class WgtHotTopic extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       current: '',
@@ -18,21 +18,21 @@ export default class WgtHotTopic extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { info } = this.props
     this.setState({
       list: info.data
     })
   }
 
-  handleClick (value, Page, id) {
+  handleClick(value, Page, id) {
     this.setState({
       current: value
     })
     linkPage(Page, id)
   }
 
-  render () {
+  render() {
     const { current, list } = this.state
     const { info } = this.props
     const { base } = info
@@ -50,12 +50,12 @@ export default class WgtHotTopic extends Component {
             </View>
           </View>
         )}
-        <View className='list'>
+        <View className='wgt-body topic-list'>
           {list.map((item, idx) => {
             return (
               <View
-                key={item.id}
-                className={classNames('gambit', idx === current ? 'checked' : '')}
+                key={`wgt-hot__${idx}`}
+                className={classNames('topic-list-gambit', idx === current ? 'checked' : '')}
                 onClick={this.handleClick.bind(this, idx, item)}
               >
                 {item.topic}

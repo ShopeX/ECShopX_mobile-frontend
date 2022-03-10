@@ -47,3 +47,13 @@ cicd test 3
 ## 代码prettier
 npm run prepare
 npx husky add .husky/pre-commit "npx lint-staged --allow-empty"
+
+## 如果用ASW打包上传cdn，需要增加以下配置,配置值根据实际情况调整
+APP_PUBLIC_PATH=https://CDN域名
+APP_CDN=aws
+APP_CDN_PATH=ecshopx-vshop/
+APP_CDN_KEY=
+APP_CDN_SCERET=
+APP_CDN_REGION=ap-southeast-2
+APP_CDN_BUCKET=unat-bucket
+
