@@ -31,9 +31,9 @@ function Home() {
   const [likeList, setLikeList] = useImmer([])
   const { openRecommend, openLocation } = useSelector((state) => state.sys)
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
-    policyUpdateHook: () => {
-      if (openLocation == 1) setPolicyModal(true)
-    }
+    // policyUpdateHook: () => { // 下面用了checkPolicyChange，不使用hook直接根据checkPolicyChange返回的值去判断是否更新
+    //   if (openLocation == 1) setPolicyModal(true)
+    // }
   })
 
   const [policyModal, setPolicyModal] = useState(false)
@@ -47,7 +47,16 @@ function Home() {
   useDidShow(() => {
     fetchStoreInfo(location)
     fetchShareInfo()
+    // 检查隐私协议是否变更或同意
+    getPolicyUpdate()
   })
+
+  const getPolicyUpdate = async () => {
+    const checkRes = await checkPolicyChange()
+    if (!checkRes && openLocation == 1) {
+      setPolicyModal(true)
+    }
+  }
 
   const fetchWgts = async () => {
     const { config } = await api.shop.getShopTemplate({
@@ -56,11 +65,6 @@ function Home() {
     setState((v) => {
       v.wgts = config
     })
-    // 检查隐私协议是否变更或同意
-    const checkRes = await checkPolicyChange()
-    if (checkRes) {
-      fetchLocation()
-    }
   }
 
   const fetchLikeList = async () => {
@@ -90,7 +94,8 @@ function Home() {
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
-    fetchStoreInfo(location)
+    fetchLocation()
+    // fetchStoreInfo(location)
   }, [])
 
   useShareAppMessage(async (res) => {
