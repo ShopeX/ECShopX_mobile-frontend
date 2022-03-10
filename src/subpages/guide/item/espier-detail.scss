@@ -29,9 +29,27 @@
     }
   }
   .icon-home1,
+  .icon-gouwuche,
   .icon-headphones {
     font-size: 38px;
     color: #fff;
+  }
+  .sp-float-menu-item {
+    position: relative;
+  }
+  .cart-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 15px;
+    background-color: var(--color-primary);
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
   .btn-video {
     position: absolute;

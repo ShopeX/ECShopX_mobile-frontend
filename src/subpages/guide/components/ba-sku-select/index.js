@@ -13,10 +13,10 @@ import {
   SpGoodsPrice
 } from '@/components'
 import { addCart, updateCount } from '@/store/slices/guide'
-import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, showToast } from '@/utils'
+import { BUY_TOOL_BTNS } from '@/consts'
 import './index.scss'
 
 // 数据类型
@@ -194,7 +194,7 @@ function BaSkuSelect(props) {
     Taro.hideLoading()
   }
 
-  const fastBuy = async () => {
+  const share = async () => {
     const { nospec } = info
     if (!nospec && !curItem) {
       showToast('请选择规格')
@@ -249,7 +249,7 @@ function BaSkuSelect(props) {
       )
     } else {
       return (
-        <AtButton circle loading={loading} type='primary' onClick={fastBuy}>
+        <AtButton circle loading={loading} type='primary' onClick={share}>
           {btnTxt}
         </AtButton>
       )

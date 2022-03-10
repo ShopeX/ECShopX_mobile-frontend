@@ -29,11 +29,7 @@ function CompGoodsBuyToolbar(props) {
 
   const RenderBtns = () => {
     if (info.store == 0) {
-      if (info.subscribe) {
-        btns.push(BUY_TOOL_BTNS.SUBSCRIBE)
-      } else {
-        btns.push(BUY_TOOL_BTNS.NOTICE)
-      }
+      btn.push(BUY_TOOL_BTNS.NO_STORE)
       return
     }
 
@@ -49,58 +45,33 @@ function CompGoodsBuyToolbar(props) {
         if (info.activityInfo.status === 'in_the_notice') {
           btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_FAST_BUY)
+          btns.push(BUY_TOOL_BTNS.SHARE)
         }
       } else if (info.activityType == 'limited_time_sale') {
         if (info.activityInfo.status === 'in_the_notice') {
           btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_BUY)
+          btns.push(BUY_TOOL_BTNS.SHARE)
         }
       } else if (info.activityType == 'group') {
         if (info.activityInfo.show_status === 'nostart') {
           btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_GROUP_BUY)
+          btns.push(BUY_TOOL_BTNS.SHARE)
         }
       }
       return
     }
 
     btns.push(BUY_TOOL_BTNS.ADD_CART)
-    btns.push(BUY_TOOL_BTNS.FAST_BUY)
+    btns.push(BUY_TOOL_BTNS.SHARE)
   }
 
   RenderBtns()
 
   const handleClickBtn = async ({ key }) => {
     console.log('handleClickBtn:', key)
-    if (key == 'notice') {
-      const { subscribe } = info
-      if (subscribe) return false
-
-      if (isWeb) {
-        showToast('请在小程序完成商品到货通知')
-        return
-      }
-
-      await api.user.subscribeGoods(info.itemId)
-      const { template_id } = await api.user.newWxaMsgTmpl({
-        temp_name: 'yykweishop',
-        source_type: 'goods'
-      })
-      Taro.requestSubscribeMessage({
-        tmplIds: template_id,
-        success: () => {
-          onSubscribe()
-        },
-        fail: () => {
-          onSubscribe()
-        }
-      })
-    } else {
-      onChange(key)
-    }
+    onChange(key)
   }
 
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1

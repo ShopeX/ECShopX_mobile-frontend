@@ -35,10 +35,6 @@ function CompShare(props) {
           <SpImage src='save.png' width={100} height={100} />
           <Text className='share-item-txt'>海报分享</Text>
         </View>
-        <View className='share-item' onClick={onShareEdit}>
-          <SpImage src='share_edit.png' width={100} height={100} />
-          <Text className='share-item-txt'>分享编辑</Text>
-        </View>
       </View>
     </SpFloatLayout>
   )

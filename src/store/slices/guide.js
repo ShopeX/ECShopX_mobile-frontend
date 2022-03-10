@@ -31,14 +31,13 @@ export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (param
 })
 
 export const addCart = createAsyncThunk('cart/addCart', async (params) => {
-  debugger
   await api.guide.cartdataadd(params)
   showToast('成功加入购物车')
 })
 
 export const updateCount = createAsyncThunk('cart/updateCount', async (params) => {
   // 获取购物车数量接口
-  const { item_count, cart_count } = await api.cart.count(params)
+  const { item_count, cart_count } = await api.guide.cartCount(params)
   return { item_count, cart_count }
 })
 

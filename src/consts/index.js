@@ -88,7 +88,9 @@ export const BUY_TOOL_BTNS = {
   ACTIVITY_WILL_START: { title: '活动即将开始', key: 'activity_will_start', btnStatus: 'disabled' },
   ACTIVITY_FAST_BUY: { title: '立即抢购', key: 'activity_fast_buy', btnStatus: 'active' },
   ACTIVITY_BUY: { title: '立即购买', key: 'activity_buy', btnStatus: 'active' },
-  ACTIVITY_GROUP_BUY: { title: '我要开团', key: 'activity_group_buy', btnStatus: 'active' }
+  ACTIVITY_GROUP_BUY: { title: '我要开团', key: 'activity_group_buy', btnStatus: 'active' },
+  SHARE: { title: '我要分享', key: 'share', btnStatus: 'active' },
+  NO_STORE: { title: '无货', key: 'nostore', btnStatus: 'disabled' }
 }
 
 export const PAYTYPE = {

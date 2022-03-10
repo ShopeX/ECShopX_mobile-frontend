@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro';
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtButton, AtActionSheet, AtActionSheetItem, AtNoticebar } from 'taro-ui'
-import { SpCheckbox, SpNote, TabBar, Loading, Price, NavBar, GoodsItem } from '@/components'
-import { log, navigateTo, pickBy, classNames } from '@/utils'
+import { SpCheckbox, SpNote, Loading, Price } from '@/components'
+import { log, navigateTo, pickBy, classNames, styleNames } from '@/utils'
 import debounce from 'lodash/debounce'
 import api from '@/api'
 import S from '@/subpages/guide/lib/Spx.js'
@@ -17,7 +17,7 @@ import './espier-index.scss'
 
 @connect(
   ({ cart, colors }) => ({
-    list: cart.list,
+    list: cart.list || [],
     cartIds: cart.cartIds,
     showLikeList: cart.showLikeList,
     colors: colors.current
@@ -59,17 +59,18 @@ export default class CartIndex extends Component {
     this.lastCartId = null
   }
 
-  componentDidMount() {
-    console.log(getCurrentInstance().router.params, 48)
-    if (getCurrentInstance().router.params && getCurrentInstance().router.params.path === 'qrcode') {
+  async componentDidMount() {
+    await S.autoLogin(this)
+    if (
+      getCurrentInstance().router.params &&
+      getCurrentInstance().router.params.path === 'qrcode'
+    ) {
       this.setState({
         isPathQrcode: true
       })
     }
     this.getRemind()
     this.nextPage()
-
-    if (!S.getAuthToken()) return
 
     this.fetchCart((list) => {
       const groups = this.resolveActivityGroup(list)
@@ -91,12 +92,6 @@ export default class CartIndex extends Component {
       nextProps.list !== this.props.list
     )
 
-    // if (nextProps.list !== this.props.list) {
-    // 	const groups = this.resolveActivityGroup(nextProps.list)
-    // 		this.setState({
-    // 			groups
-    // 		})
-    // }
     const groups = this.resolveActivityGroup(nextProps.list)
     this.setState({
       groups
@@ -108,12 +103,8 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  handleLoginClick = () => {
-    S.login(this, true)
-  }
-
   handleClickItem = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    const url = `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })
@@ -156,10 +147,8 @@ export default class CartIndex extends Component {
 
   // 活动分组
   resolveActivityGroup(cartList = []) {
-    console.log(cartList)
     const groups = cartList.map((shopCart) => {
       const { list, used_activity = [], plus_buy_activity = [] } = shopCart
-
       const tDict = list.reduce((acc, val) => {
         acc[val.cart_id] = val
         return acc
@@ -251,7 +240,11 @@ export default class CartIndex extends Component {
     }
     try {
       let res = await api.guide.cartdatalist(params)
-      res = await api.cart.get(params)
+      console.log('获取导购购物车列表-fetchCart-cartdatalist', res)
+      //设置购物车当前全选状态
+      let shopCart = res.valid_cart[0]
+      shopCart.checked_all = shopCart.cart_total_count == shopCart.list.length
+      //  res = await api.cart.get(params);
       if (!res.crossborder_show && cartTypeLocal !== 'normal') {
         Taro.setStorageSync('cartType', 'normal')
         this.fetchCart((list) => {
@@ -274,11 +267,11 @@ export default class CartIndex extends Component {
         error: e.message
       })
     }
-    const { item_count } = await api.cart.count({ shop_type: 'distributor' })
+    // const { item_count } = await api.cart.count({ shop_type: "distributor" });
     const list = this.processCart({
       valid_cart,
       invalid_cart,
-      item_count,
+      // item_count,
       cartType: cartTypeLocal,
       crossborder_show
     })
@@ -317,16 +310,27 @@ export default class CartIndex extends Component {
       remindInfo: res
     })
   }
-
-  async handleSelectionChange(shopIndex, cart_id, checked) {
-    await api.cart.select({
-      cart_id,
-      is_checked: checked
-    })
+  //购物车商品选中变更
+  async handleSelectionChange(type = 'item', item) {
+    let params = {
+      cart_id: (item && item.cart_id) || '',
+      is_checked: item && item.is_checked == '1' ? 'false' : 'true'
+    }
+    if (type == 'all') {
+      const { groups } = this.state,
+        shopCart = groups[0].shopInfo
+      console.log('购物车商品选中变更-handleSelectionChange-shopCart', shopCart)
+      params = {
+        cart_id: shopCart.list.map((d) => d.cart_id),
+        is_checked: !shopCart.checked_all
+      }
+    }
+    console.log('购物车商品选中变更-handleSelectionChange-params', params)
+    await api.guide.checkstatus(params)
     this.updateCart()
   }
-
-  handleDelect = async (cart_id) => {
+  //删除商品
+  handleDelect = async (cart_id, shopIndex, item) => {
     const res = await Taro.showModal({
       title: '提示',
       content: '将当前商品移出购物车?',
@@ -337,7 +341,12 @@ export default class CartIndex extends Component {
     })
     if (!res.confirm) return
 
-    await api.cart.del({ cart_id })
+    await api.guide.cartdataadd({
+      cart_id,
+      num: 0,
+      item_id: item.item_id,
+      is_accumulate: false
+    })
 
     const cartIds = this.props.cartIds.filter((t) => t !== cart_id)
 
@@ -358,24 +367,16 @@ export default class CartIndex extends Component {
     this.updateCart()
   }
 
-  async changeCartNum(shop_id, cart_id, num) {
-    const { type = 'distributor' } = getCurrentInstance().router.params
-    try {
-      const res = await api.cart.updateNum(shop_id, cart_id, num, type)
-      this.processCart(res)
-    } catch (e) {
-      Taro.showToast({
-        icon: 'none',
-        title: e.message,
-        duration: 5000
-      })
-    }
-    this.updateCart()
-  }
-
+  //购物车商品详情变更:数量、选中状态
   handleQuantityChange = async (shop_id, item, num, e) => {
     const { type = 'distributor' } = getCurrentInstance().router.params
-    await api.cart.updateNum(shop_id, item.cart_id, num, type)
+    await api.guide.cartdataadd({
+      shop_id,
+      item_id: item.item_id,
+      num,
+      type,
+      is_accumulate: false
+    })
     this.updateCart()
 
     // 购物车追加
@@ -387,13 +388,13 @@ export default class CartIndex extends Component {
       })
     }
   }
-
+  //购物车全选
   handleAllSelect = async (checked, shopIndex) => {
     const { cartIds } = this.props
 
     Taro.showLoading()
     try {
-      await api.cart.select({
+      await api.guide.cartdataadd({
         cart_id: cartIds[shopIndex],
         is_checked: checked
       })
@@ -414,7 +415,7 @@ export default class CartIndex extends Component {
     }
     this.isTodetail = 1
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+      url: `/subpages/guide/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     })
   }
 
@@ -439,7 +440,7 @@ export default class CartIndex extends Component {
       curPromotions: null
     })
   }
-
+  //结算
   handleCheckout = (shopCart) => {
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } =
       shopCart.shopInfo
@@ -456,7 +457,31 @@ export default class CartIndex extends Component {
       url: `/pages/cart/espier-checkout?cart_type=cart&type=${type}&shop_id=${shop_id}&is_delivery=${is_delivery}&is_ziti=${is_ziti}&name=${shop_name}&store_address=${address}&lat=${lat}&lng=${lng}&hour=${hour}&phone=${mobile}&goodType=${cartType}`
     })
   }
-
+  //为顾客下单
+  handleCheckoutToGuide = () => {
+    let shopCart = this.state.groups[0].shopInfo
+    let is_checkedType = false
+    shopCart.list.forEach((d) => {
+      is_checkedType = d.is_checked == 1 ? true : is_checkedType
+    })
+    if (!is_checkedType) {
+      Taro.showToast({
+        title: '当前未选中商品',
+        icon: 'none'
+      })
+      return
+    }
+    if (this.updating) {
+      Taro.showToast({
+        title: '正在计算价格，请稍后',
+        icon: 'none'
+      })
+      return
+    }
+    Taro.navigateTo({
+      url: '/guide/cart/espier-checkout?cart_type=cart'
+    })
+  }
   transformCartList(list) {
     return pickBy(list, {
       item_id: 'item_id',
@@ -529,228 +554,6 @@ export default class CartIndex extends Component {
       url: url
     })
   }
-  //创建导购分享海报
-  drawCanvas = async (params) => {
-    try {
-      const params = this.getParams()
-      params.receipt_type = 'logistics'
-      delete params.items
-      const ba_params = Taro.getStorageSync('ba_params')
-      const qw_chatId = S.get('qw_chatId', true)
-      let entry_form = S.get('entry_form', true)
-      const {
-        share_id,
-        wxshop_name,
-        item_nums: { item_total, gift_total }
-      } = await api.cart.getShareGoodsId({
-        guide_id: (ba_params.ba_info && ba_params.ba_info.guide_id) || '',
-        wxshop_id: ba_params.ba_store ? ba_params.ba_store.wxshop_id : '',
-        chatId: qw_chatId,
-        entrySource: entry_form.entry,
-        ...params
-      })
-      const extConfig = Taro.getExtConfigSync ? Taro.getExtConfigSync() : {}
-      const userinfo = Taro.getStorageSync('userinfo')
-      const url = `https://${API_HOST}/wechatAuth/wxapp/qrcode.png?appid=${extConfig.appid}&share_id=${share_id}&page=pages/cart/espier-checkout`
-      const { path: qrcode } = await Taro.getImageInfo({ src: url })
-      const { giftslist, total, ratio, canvasWidth, canvasHeight } = this.state
-      let avatar = null
-      if (userinfo.avatar) {
-        let avatarImgInfo = await Taro.getImageInfo({ src: userinfo.avatar })
-        avatar = avatarImgInfo.path
-      }
-
-      console.log('======qrcode===', qrcode)
-      console.log('======avatar===', avatar)
-      const ctx = Taro.createCanvasContext('myCanvas')
-
-      canvasExp.roundRect(ctx, 0, 0, canvasWidth, canvasHeight, 0)
-      ctx.save()
-
-      // 头部信息
-      if (avatar) {
-        canvasExp.imgCircleClip(ctx, avatar, 15 * ratio, 15 * ratio, 45 * ratio, 45 * ratio)
-      }
-
-      ctx.restore()
-
-      canvasExp.textFill(ctx, userinfo.username || '', 75 * ratio, 25 * ratio, 14, '#184337')
-      if (wxshop_name) {
-        canvasExp.textOverflowFill(
-          ctx,
-          wxshop_name,
-          75 * ratio,
-          42 * ratio,
-          160 * ratio,
-          12,
-          '#87C55C'
-        )
-        canvasExp.textFill(ctx, '为您推荐', 75 * ratio, 65 * ratio, 12, '#666')
-      } else {
-        canvasExp.textFill(ctx, '为您推荐', 75 * ratio, 45 * ratio, 12, '#666')
-      }
-      canvasExp.drawImageFill(
-        ctx,
-        'https://bbc-espier-images.amorepacific.com.cn/image/2/2021/02/28/c82701f15f42ee1743d3a779d6a38327Z4zMvCPbp2FhYwf4zzfLBmmaHSVOUqcD',
-        224 * ratio,
-        32 * ratio,
-        98 * ratio,
-        18 * ratio
-      )
-
-      // 总计
-      canvasExp.textFill(
-        ctx,
-        `共${item_total}件商品，${gift_total}件赠品`,
-        15 * ratio,
-        425 * ratio,
-        12,
-        '#101010'
-      )
-      canvasExp.textFill(ctx, '合计', 15 * ratio, 450 * ratio, 12, '#999')
-      canvasExp.textFill(
-        ctx,
-        `¥${returnFloat(total.item_fee / 100)}`,
-        64 * ratio,
-        450 * ratio,
-        12,
-        '#101010'
-      )
-      canvasExp.textFill(ctx, '为您省', 15 * ratio, 468 * ratio, 12, '#999')
-      canvasExp.textFill(
-        ctx,
-        `¥${returnFloat(total.discount_fee / 100)}`,
-        64 * ratio,
-        468 * ratio,
-        12,
-        '#101010'
-      )
-      canvasExp.textFill(ctx, '实付', 15 * ratio, 493 * ratio, 12, '#999')
-      canvasExp.textFill(
-        ctx,
-        `¥${returnFloat(total.total_fee / 100)}`,
-        64 * ratio,
-        493 * ratio,
-        14,
-        '#101010',
-        'blod'
-      )
-      canvasExp.drawImageFill(ctx, qrcode, 230 * ratio, 410 * ratio, 100 * ratio, 100 * ratio)
-      canvasExp.textFill(ctx, '长按识别下单', 248 * ratio, 525 * ratio, 12, '#999')
-      canvasExp.textFill(
-        ctx,
-        '长按图片可立即转发',
-        (canvasWidth / 2) * ratio,
-        535 * ratio,
-        12,
-        '#666',
-        '',
-        'center'
-      )
-
-      // 商品信息
-      canvasExp.roundRect(
-        ctx,
-        14 * ratio,
-        84 * ratio,
-        canvasWidth - 14 * ratio * 2,
-        310 * ratio,
-        5,
-        '#f5f5f5'
-      )
-      ctx.save()
-
-      ctx.setTextAlign('left')
-      canvasExp.textFill(ctx, '商品', 30 * ratio, 112 * ratio, 12, '#666')
-      canvasExp.textFill(ctx, '单价', 206 * ratio, 112 * ratio, 12, '#666')
-      canvasExp.textFill(ctx, '数量', 284 * ratio, 112 * ratio, 12, '#666')
-      for (let i = 0; i < total.goodsItems.length; i++) {
-        if (i > 5) {
-          canvasExp.textFill(ctx, '······', 30 * ratio, 290 * ratio, 12, '#101010')
-          break
-        }
-        let item = total.goodsItems[i]
-        canvasExp.textOverflowFill(
-          ctx,
-          item.item_name,
-          30 * ratio,
-          (120 + 24 * (i + 1)) * ratio,
-          184 * ratio,
-          12,
-          '#101010'
-        )
-        canvasExp.textFill(
-          ctx,
-          `${item.fee_symbol}${returnFloat(item.price / 100)}`,
-          206 * ratio,
-          (120 + 24 * (i + 1)) * ratio,
-          12,
-          '#101010'
-        )
-        canvasExp.textFill(
-          ctx,
-          `x ${item.num}`,
-          284 * ratio,
-          (120 + 24 * (i + 1)) * ratio,
-          12,
-          '#666'
-        )
-      }
-
-      // 分割线
-      ctx.beginPath()
-      ctx.setStrokeStyle('#ddd')
-      ctx.setLineWidth(1)
-
-      ctx.moveTo(30 * ratio, 305 * ratio)
-      ctx.lineTo(310 * ratio, 305 * ratio)
-      ctx.stroke()
-
-      // 赠品
-      ctx.beginPath()
-      for (let i = 0; i < giftslist.length; i++) {
-        if (i > 1) {
-          canvasExp.textFill(ctx, '······', 30 * ratio, 380 * ratio, 12, '#101010')
-          break
-        }
-        let item = giftslist[i]
-        canvasExp.textOverflowFill(
-          ctx,
-          '【赠品】 ' + item.title,
-          22 * ratio,
-          (310 + 24 * (i + 1)) * ratio,
-          220 * ratio,
-          12,
-          '#87C65C'
-        )
-        canvasExp.textFill(
-          ctx,
-          `x ${item.num}`,
-          284 * ratio,
-          (310 + 24 * (i + 1)) * ratio,
-          12,
-          '#666'
-        )
-      }
-
-      ctx.draw(false, async () => {
-        const res = await Taro.canvasToTempFilePath({
-          x: 0,
-          y: 0,
-          canvasId: 'myCanvas'
-        })
-        console.log('======canvasToTempFilePath====', res)
-        this.setState({
-          poster: res.tempFilePath,
-          isShowQrcode: true
-        })
-        Taro.hideLoading()
-      })
-    } catch (err) {
-      console.log(err)
-      Taro.hideLoading()
-    }
-  }
   render() {
     const {
       groups,
@@ -766,6 +569,7 @@ export default class CartIndex extends Component {
       remindInfo
     } = this.state
     const { list, showLikeList, colors } = this.props
+    const n_ht = S.get('navbar_height', true)
 
     if (loading) {
       return <Loading />
@@ -775,24 +579,9 @@ export default class CartIndex extends Component {
     const isEmpty = !list.length
     return (
       <View className={classNames('page-cart-index', isDrug && 'is-drug')}>
-        <BaNavBar title='购物车' fixed jumpType='home' />
-        {/* {isDrug && (
-          <NavBar title="购物车" leftIconType="chevron-left" fixed="true" />
-        )} */}
-        {!S.getAuthToken() ? (
-          <View className='login-header'>
-            <View>授权登录后同步购物车的商品</View>
-            <View
-              className='btn-login'
-              onClick={this.handleLoginClick.bind(this)}
-              style={`background: ${colors.data[0].primary}`}
-            >
-              授权登录
-            </View>
-          </View>
-        ) : null}
-
+        <BaNavBar title='购物车' fixed />
         <ScrollView
+          style={styleNames({ top: `${n_ht}px` })}
           className={`${isEmpty ? 'hidden-scroll' : 'cart-list__scroll'}`}
           onScrollToLower={this.nextPage}
           scrollY
@@ -808,10 +597,7 @@ export default class CartIndex extends Component {
             // )
           }
           {remindInfo.is_open && (
-            <View
-              className={`${!S.getAuthToken() && 'paddingTop'}`}
-              style={`background: ${colors.data[0].primary}`}
-            >
+            <View>
               <AtNoticebar marquee icon='volume-plus' className='notice' single>
                 {remindInfo.remind_content}
               </AtNoticebar>
@@ -904,24 +690,24 @@ export default class CartIndex extends Component {
                                       this,
                                       item.cart_id
                                     )}
-                                    onClickImgAndTitle={this.handleClickToDetail.bind(this, item)}
+                                    // onClickImgAndTitle={this.handleClickToDetail.bind(
+                                    //   this,
+                                    //   item
+                                    // )}
                                   >
                                     <View className='cart-item__act'>
                                       <SpCheckbox
                                         key={item.item_id}
-                                        checked={item.is_checked}
-                                        onChange={this.handleSelectionChange.bind(
-                                          this,
-                                          shopIndex,
-                                          item.cart_id
-                                        )}
+                                        checked={item.is_checked == '1'}
+                                        onChange={() => this.handleSelectionChange('item', item)}
                                       />
                                       <View
                                         className='icon-close'
                                         onClick={this.handleDelect.bind(
                                           this,
                                           item.cart_id,
-                                          shopIndex
+                                          shopIndex,
+                                          item
                                         )}
                                       />
                                     </View>
@@ -980,7 +766,9 @@ export default class CartIndex extends Component {
                         <SpCheckbox
                           // checked={this.isTotalChecked[shopIndex]}
                           checked={checked_all}
-                          onChange={this.handleAllSelect.bind(this, !checked_all, shopIndex)}
+                          onChange={() => {
+                            this.handleSelectionChange('all')
+                          }}
                         >
                           全选
                         </SpCheckbox>
@@ -1010,11 +798,11 @@ export default class CartIndex extends Component {
                           <Button
                             type='primary'
                             className='btn-checkout'
-                            style={`background: ${colors.data[0].primary}`}
-                            disabled={shopCart.shopInfo.cart_total_count <= 0}
-                            onClick={this.handleCheckout.bind(this, shopCart)}
+                            // disabled={totalItems <= 0}
+                            // style={`background: ${colors.data[0].primary}`}
+                            onClick={this.handleCheckoutToGuide}
                           >
-                            {isDrug ? '立即预约' : '结算'}
+                            为顾客下单
                           </Button>
                         </View>
                       ) : (
@@ -1042,7 +830,7 @@ export default class CartIndex extends Component {
                 <AtButton
                   className='btn-rand'
                   type='primary'
-                  onClick={this.navigateTo.bind(this, process.env.APP_HOME_PAGE, true)}
+                  onClick={this.navigateTo.bind(this, '/guide/index', true)}
                 >
                   随便逛逛
                 </AtButton>
@@ -1072,27 +860,6 @@ export default class CartIndex extends Component {
               </View>
             </View>
           )}
-
-          {/* {!isDrug && likeList.length && showLikeList ? (
-            <View className="cart-list cart-list__disabled">
-              <View className="cart-list__hd like__hd">
-                <Text className="cart-list__title">猜你喜欢</Text>
-              </View>
-              <View className="goods-list goods-list__type-grid">
-                {likeList.map(item => {
-                  return (
-                    <View className="goods-list__item" key={item.item_id}>
-                      <GoodsItem
-                        key={item.item_id}
-                        info={item}
-                        onClick={this.handleClickItem.bind(this, item)}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </View>
-          ) : null} */}
           {page.isLoading ? <Loading>正在加载...</Loading> : null}
         </ScrollView>
 

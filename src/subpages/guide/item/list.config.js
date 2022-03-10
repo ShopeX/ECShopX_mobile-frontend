@@ -1,4 +1,4 @@
 export default {
-  navigationStyle: 'custom',
+  // navigationStyle: 'custom',
   navigationBarTitleText: '导购商城'
 }

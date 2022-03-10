@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import Taro, {
+  getCurrentInstance,
+  useShareAppMessage,
+  useShareTimeline,
+  useDidShow
+} from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
@@ -62,6 +67,7 @@ const initialState = {
   type: null,
   dtid: null,
   info: null,
+  subtaskId: null,
   curImgIdx: 0,
   play: false,
   isDefault: false,
@@ -89,7 +95,7 @@ function EspierDetail(props) {
   // const { type, id, dtid } = $instance.router.params
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const pageRef = useRef()
-  // const { userInfo } = useSelector((state) => state.user)
+  const { userInfo, cartCount } = useSelector((state) => state.guide)
   const { colorPrimary } = useSelector((state) => state.sys)
 
   const [state, setState] = useImmer(initialState)
@@ -114,6 +120,7 @@ function EspierDetail(props) {
     id,
     type,
     dtid,
+    subtaskId,
     curItem
   } = state
 
@@ -134,6 +141,12 @@ function EspierDetail(props) {
       // getEvaluationList()
     }
   }, [id])
+
+  useDidShow(() => {
+    Taro.hideShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+  })
 
   useEffect(() => {
     let video
@@ -175,12 +188,13 @@ function EspierDetail(props) {
 
   const getAppShareInfo = () => {
     const { itemName, imgs } = info
+    const { salesperson_id, avatar, company_id, work_userid, shop_code } = userInfo
     const query = {
       id,
-      dtid
-    }
-    if (userInfo) {
-      query['uid'] = userInfo.uid
+      dtid,
+      smid: salesperson_id,
+      gu: `${work_userid}_${shop_code}`,
+      subtask_id: subtaskId
     }
     const path = `/pages/item/espier-detail?${qs.stringify(query)}`
     log.debug(`share path: ${path}`)
@@ -192,11 +206,12 @@ function EspierDetail(props) {
   }
 
   const init = async () => {
-    const { type, id, dtid } = await entryLaunch.getRouteParams()
+    const { type, id, dtid, subtask_id } = await entryLaunch.getRouteParams()
     setState((draft) => {
       draft.id = id
       draft.type = type
       draft.dtid = dtid
+      draft.subtaskId = subtask_id // 导购任务号
     })
   }
 
@@ -281,6 +296,12 @@ function EspierDetail(props) {
   }
 
   const onChangeToolBar = (key) => {
+    if (key == 'share') {
+      setState((draft) => {
+        draft.sharePanelOpen = true
+      })
+      return
+    }
     setState((draft) => {
       draft.skuPanelOpen = true
       draft.selectType = key
@@ -307,9 +328,10 @@ function EspierDetail(props) {
           </SpFloatMenuItem>
           <SpFloatMenuItem
             onClick={() => {
-              Taro.navigateTo({ url: '/subpages/guide/index' })
+              Taro.navigateTo({ url: '/subpages/guide/cart/espier-index' })
             }}
           >
+            <View className='cart-count'>{cartCount}</View>
             <Text className='iconfont icon-gouwuche'></Text>
           </SpFloatMenuItem>
         </View>
@@ -572,19 +594,16 @@ function EspierDetail(props) {
             draft.posterModalOpen = true
           })
         }}
-        onShareEdit={() => {
-          const { itemId, companyId, distributorId } = info
-          Taro.navigateTo({
-            url: `/subpage/pages/editShare/index?id=${itemId}&dtid=${distributorId}&company_id=${companyId}`
-          })
-        }}
       />
 
       {/* 海报 */}
       {posterModalOpen && (
         <SpPoster
-          info={info}
-          type='goodsDetial'
+          info={{
+            ...info,
+            subtaskId
+          }}
+          type='guideGoodsDetial'
           onClose={() => {
             setState((draft) => {
               draft.posterModalOpen = false
