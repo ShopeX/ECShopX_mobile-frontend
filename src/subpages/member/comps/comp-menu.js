@@ -73,7 +73,16 @@ const MENUS_CONST = [
     icon: 'm_menu_merchat.png',
     link: '/subpages/merchant/login'
   }
-]
+];
+
+const MENUS_DIANWU = [
+  {
+    key: 'dianwu',
+    name: '店务管理',
+    icon: 'm_menu_merchat.png',
+    link: '/subpages/dianwu/index'
+  }
+];
 
 function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
@@ -92,6 +101,8 @@ function CompMenu(props) {
   if (accessMenu.merchant_status) {
     menus = menus.concat(MENUS_CONST)
   }
+
+  menus=menus.concat(MENUS_DIANWU); 
 
   return (
     <View className='comp-menu'>

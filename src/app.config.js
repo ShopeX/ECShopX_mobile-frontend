@@ -42,6 +42,12 @@ export default {
       ]
     },
     {
+      root: 'subpages/dianwu',
+      pages: [
+        'index' // 店务端
+      ]
+    },
+    {
       root: 'marketing',
       pages: [
         'pages/distribution/index', // 推广管理首页
