@@ -4,7 +4,7 @@ import { SpImage } from '@/components'
 import { navigateTo, linkPage, classNames } from '@/utils'
 import './showcase.scss'
 
-function WgtShowCase (props) {
+function WgtShowCase(props) {
   const { info } = props
   const { base, data, config } = info
 
@@ -23,12 +23,22 @@ function WgtShowCase (props) {
         </View>
       )}
       <View className={`showcase-scheme showcase-scheme-${config.style}`}>
-        <View className='scheme-item'>
-          <SpImage src={data[0].imgUrl} onClick={linkPage.bind(this, data[0])} />
+        <View className='left-item'>
+          <SpImage src={data[0].imgUrl} mode='scaleToFill' onClick={linkPage.bind(this, data[0])} />
         </View>
-        <View className='scheme-item'>
-          <SpImage src={data[1].imgUrl} onClick={linkPage.bind(this, data[1])} />
-          <SpImage src={data[2].imgUrl} onClick={linkPage.bind(this, data[2])} />
+        <View className='right-item'>
+          <SpImage
+            src={data[1].imgUrl}
+            className='top-img'
+            mode='scaleToFill'
+            onClick={linkPage.bind(this, data[1])}
+          />
+          <SpImage
+            src={data[2].imgUrl}
+            className='bot-img'
+            mode='scaleToFill'
+            onClick={linkPage.bind(this, data[2])}
+          />
         </View>
       </View>
     </View>

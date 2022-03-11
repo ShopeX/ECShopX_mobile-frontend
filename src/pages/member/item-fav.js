@@ -17,7 +17,7 @@ import './item-fav.scss'
 @withPager
 @withBackToTop
 export default class ItemFav extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -32,7 +32,7 @@ export default class ItemFav extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.resetPage()
     this.setState(
       {
@@ -44,14 +44,17 @@ export default class ItemFav extends Component {
     )
   }
 
-  async fetch (params) {
+  hasFav = (item_id) => {
+    const { favs = [] } = this.props
+    return favs.findIndex((item) => item.item_id === item_id) > -1
+  }
+
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize
     }
-
-    const { favs = {} } = this.props
 
     const { list, total } = await (async () => {
       let list = []
@@ -71,9 +74,7 @@ export default class ItemFav extends Component {
             point: 'point',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price) / 100).toFixed(2),
-            is_fav: ({ item_id }) => {
-              return favs && Boolean(favs[item_id])
-            }
+            is_fav: ({ item_id }) => this.hasFav(item_id)
           })
           total = res.total_count
           break
@@ -179,7 +180,7 @@ export default class ItemFav extends Component {
     )
   }
 
-  render () {
+  render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
     return (
       <View className='page-goods-fav'>

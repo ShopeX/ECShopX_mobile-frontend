@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
-export function setPageTitle (title) {
+export function setPageTitle(title) {
   Taro.eventCenter.trigger('set-pagetitle', title)
   // document.title = title;
   // var mobile = navigator.userAgent.toLowerCase();
@@ -41,13 +41,13 @@ export const goToAuthPage = () => {
 }
 
 class CreateIntersectionObserver {
-  constructor (options) {
+  constructor(options) {
     this.options = options
     this['on-observer'] = () => {}
     this.init()
   }
 
-  init () {
+  init() {
     const { el } = this.options
     if (!el) {
       throw new Error('createIntersectionObserver options el is null')
@@ -68,7 +68,7 @@ class CreateIntersectionObserver {
     return this
   }
 
-  on (event, fn) {
+  on(event, fn) {
     this[event] = fn
   }
 }
@@ -91,4 +91,8 @@ export const createIntersectionObserver = (el) => {
     observer.observe(document.querySelector(el))
     this.observe = observer
   })
+}
+
+export function dealTextAreaValue(_, event) {
+  return event.detail.value
 }

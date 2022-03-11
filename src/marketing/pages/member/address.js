@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 // import AddressList from '@/components/new-address/address'
 import { connect } from 'react-redux'
@@ -23,7 +23,7 @@ const ADDRESS_ID = 'address_id'
 )
 export default class AddressIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -33,11 +33,11 @@ export default class AddressIndex extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
-  async fetch (isDelete = false) {
+  async fetch(isDelete = false) {
     const { isPicker, receipt_type = '', city = '' } = this.$instance.router.params
     if (isPicker) {
       this.setState({
@@ -129,7 +129,19 @@ export default class AddressIndex extends Component {
     })
   }
 
-  render () {
+  handleClickLeftIcon = () => {
+    let CHECKOUT_PAGE = '/pages/cart/espier-checkout'
+    const pages = getCurrentPages()
+    if (pages.length > 1) {
+      let { path } = pages[pages.length - 2]
+      if (CHECKOUT_PAGE == path.split('?')[0]) {
+        S.set('FROM_ADDRESS', true)
+      }
+    }
+    Taro.navigateBack()
+  }
+
+  render() {
     const { colors } = this.props
     const { selectedId, isPicker, list, is_open_crmAddress } = this.state
     return (
@@ -144,7 +156,12 @@ export default class AddressIndex extends Component {
               onClick={this.wxAddress.bind(this)}
             />
           ) : (
-            <SpNavBar title='收货地址' leftIconType='chevron-left' fixed='true' />
+            <SpNavBar
+              title='收货地址'
+              leftIconType='chevron-left'
+              fixed='true'
+              onClickLeftIcon={this.handleClickLeftIcon}
+            />
           )}
 
           <View className='member-address-list'>

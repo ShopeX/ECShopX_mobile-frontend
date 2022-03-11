@@ -5,6 +5,9 @@
     position: fixed;
     left: 0;
     top: 0;
+    /*  #ifdef  h5  */
+    top: $navigate-height;
+    /*  #endif  */
     z-index: 999;
     width: 100%;
   }
@@ -22,13 +25,21 @@
       }
     }
   }
+
   &.has-tagbar {
-    // @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, 0);
-  }
-  .item-list-scroll {
-    @include page-scroll($tabs-height + $navigate-height + 10, 0);
+    .item-list-scroll {
+      /*  #ifdef h5 */
+      @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height * 2+10, 0);
+      /*  #endif  */
+    }
   }
 
+  .item-list-scroll {
+    @include page-scroll($tabs-height + $navigate-height + 10, 0);
+    /*  #ifdef  h5  */
+    @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height + 10, 0);
+    /*  #endif  */
+  }
   .filter-btn {
     font-size: 28px;
     color: var(--color-primary);
@@ -36,7 +47,7 @@
     text-align: text;
     float: right;
     &:before {
-      content: "";
+      content: '';
       display: block;
       height: 40px;
       /* prettier-ignore */
@@ -75,7 +86,6 @@
       overflow: hidden;
     }
   }
-
 
   // .goods-tabs {
   //   background: #fff;

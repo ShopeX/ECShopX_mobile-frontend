@@ -1,58 +1,80 @@
 @import '@/style/imports';
-.wgt-store{
+.wgt-store {
   margin-bottom: 16px;
   .store-wrap {
-    margin: 20px 20px 0;
-    padding: 20px;
+    margin: 24px 16px 0;
+    padding: 24px 16px;
     background: #ffffff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    // box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    border-radius: 16px;
     .store-info {
       display: flex;
       align-items: center;
       .store-logo {
-        width: 80px;
-        height: 80px;
+        width: 100px;
+        height: 100px;
         border-radius: 15px;
+        border: 3px solid #ffffff;
+        background: #dddddd;
         box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
       }
       .store-title {
-        padding-left: 20px;
+        padding-left: 24px;
+        width: 80%;
         .store-name {
           font-size: 30px;
           font-weight: 600;
-          color: #333;
+          color: #111;
+          @include multi-ellipsis(1);
         }
         .store-tags {
+          margin-top: 6px;
           &-item {
-            margin-right: 20px;
-            color: #c3c3c3;
-            border: 1px solid #c3c3c3;
-            padding: 2px 6px;
-            border-radius: 5px;
+            margin-right: 10px;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            padding: 0px 11px;
+            border-radius: 8px;
+            line-height: 32px;
+            font-size: 22px;
           }
         }
       }
     }
     .store-banner {
       width: 100%;
-      padding-top: 15px;
+      margin-top: 15px;
+      display: block;
+      border-radius: 16px;
+      overflow: hidden;
     }
     .store-goods {
       white-space: nowrap;
-      margin-top: 20px;
+      margin-top: 24px;
+      :last-child {
+        margin-right: 0px;
+      }
       &__item {
         display: inline-block;
         margin-right: 19px;
         &-thumbnail {
+          width: 218px;
+          height: 218px;
+          border-radius: 16px;
+          overflow: hidden;
+          background: #ddd;
           border-width: 1px;
           border-style: solid;
-          width: 150px;
-          height: 150px;
         }
         &-price {
-          font-size: 24px;
-          color: $color-price;
+          font-weight: 600;
+          line-height: 33px;
+          font-size: 32px;
+          color: var(--color-primary);
+          .cur {
+            font-size: 24px;
+            margin-right: 10px;
+          }
         }
       }
     }

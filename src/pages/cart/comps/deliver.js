@@ -58,7 +58,7 @@ export default class Deliver extends Component {
     })
   }
 
-  render () {
+  render() {
     const { curStore, receiptType, address, isOpenStore, colors, headShop = {} } = this.props
     const { goodType, type } = this.$instance.router?.params || {}
     // 收货方式[快递，同城，自提]
@@ -83,16 +83,13 @@ export default class Deliver extends Component {
       }
     ]
     const showSwitchDeliver = deliveryList.filter((item) => item.isopen)
-
-    console.log('===headShop===>', headShop)
-
     return (
       <View className='deliver'>
         {showSwitchDeliver && showSwitchDeliver.length > 1 && (
           <View className='switch-tab'>
-            {showSwitchDeliver.map((item) => (
+            {showSwitchDeliver.map((item, index) => (
               <View
-                key={item.type}
+                key={index}
                 style={`background: ${
                   receiptType === item.type ? colors.data[0].primary : 'inherit'
                 }`}

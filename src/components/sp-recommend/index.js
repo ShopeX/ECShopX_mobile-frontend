@@ -65,7 +65,7 @@ export default class SpRecommend extends Component {
               </View>
             ))}
           </View>
-          <View className='rigth-container'>
+          <View className='right-container'>
             {rightList.map((goods, index) => (
               <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>
                 <SpGoodsItem info={goods} />

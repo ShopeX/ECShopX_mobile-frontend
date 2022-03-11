@@ -182,11 +182,12 @@ export default class PaymentPicker extends Component {
               </View>
             )}
 
-            {typeList.map((item) => {
+            {typeList.map((item, index) => {
               return (
                 <View
                   className='payment-item no-border'
                   onClick={this.handlePaymentChange.bind(this, item.pay_type_code)}
+                  key={index}
                 >
                   <View className='payment-item__bd'>
                     <Text className='payment-item__title'>{item.pay_type_name}</Text>

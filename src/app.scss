@@ -179,6 +179,7 @@ switch,
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 24px;
     .wgt-hd {
       display: flex;
       align-items: baseline;
@@ -187,7 +188,7 @@ switch,
         color: #222;
         font-size: 36px;
         font-weight: bold;
-        margin-right: 24px;
+        margin-right: 16px;
         max-width: 30%;
         @include multi-ellipsis(1);
       }
@@ -195,7 +196,6 @@ switch,
     .wgt-subtitle {
       color: #999;
       font-size: 28px;
-      margin-left: 8px;
       max-width: 55%;
       @include multi-ellipsis(1);
     }
@@ -230,9 +230,9 @@ switch,
       }
     }
   }
-  .wgt-body {
-    margin-top: 24px;
-  }
+  // .wgt-body {
+  //   margin-top: 24px;
+  // }
 }
 
 /* coupon styles */

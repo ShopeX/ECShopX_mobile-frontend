@@ -1,15 +1,25 @@
 @import '@/style/imports';
-
+.with-padding {
+  :last-child {
+    margin-bottom: 0px;
+  }
+}
 .coupon-wgt {
   position: relative;
-  padding: 25px 35px;
-  margin-bottom: 10px;
+  padding: 27px 16px;
+  margin: 24px 16px;
   z-index: 0;
+  // background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
   &.with-img {
     padding: 0;
     &.coupon-body::before,
     &.coupon-body::after {
       content: none;
+    }
+    .coupon-btn__getted {
+      background: #fff;
     }
   }
   .coupon_img {
@@ -19,6 +29,11 @@
   .coupon-body {
     display: flex;
     align-items: center;
+    .coupon-box {
+      max-width: 25%;
+      margin-left: 40px;
+      @include multi-ellipsis(1);
+    }
     &:last-child {
       margin-bottom: 0;
     }
@@ -29,8 +44,10 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(circle at left, transparent 10px, #f0f2f5 10px);
-      background-size: 100% 30px;
+      // background: var(--color-primary);
+      background: radial-gradient(circle at left, transparent 15px, var(--color-primary) 15px);
+      opacity: 0.2;
+      // background-size: 100% 30px;
       content: '';
       z-index: -1;
     }
@@ -41,43 +58,63 @@
       top: 0;
       width: 50%;
       height: 100%;
-      background: radial-gradient(circle at right, transparent 10px, #f0f2f5 10px);
-      background-size: 100% 30px;
+      background: var(--color-primary);
+      opacity: 0.2;
+      // background-size: 100% 30px;
       content: '';
       z-index: -1;
+    }
+    .discount_type {
+      text-align: center;
+      padding: 0px 44px;
+      color: #fff;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 30px;
+      background: var(--color-primary);
+      margin-top: 10px;
     }
     .coupon__amount {
       display: flex;
       align-items: flex-end;
-      font-size: 64px;
+      justify-content: center;
+      font-size: 50px;
       line-height: 0.8;
-      padding: 0 40px 0 20px;
+      // padding: 0 40px 0 35px;
+      .price {
+        text-align: center;
+        font-size: 80px;
+        font-weight: bold;
+        color: var(--color-primary);
+        width: 100%;
+        @include text-overflow();
+      }
       .coupon__amount-cur {
         padding-left: 4px;
-        font-size: 24px;
-        color: #999;
+        font-size: 26px;
+        font-weight: bold;
+        color: var(--color-primary);
         line-height: 1;
       }
     }
     .coupon-caption {
       flex: 1;
-      padding-right: 120px;
+      padding-right: 140px;
       overflow: hidden;
+      margin-left: 48px;
       .coupon-content {
         padding-top: 5px;
         .coupon-content__brand-name {
-          font-size: 28px;
+          color: var(--color-primary);
+          font-size: 30px;
           line-height: 1.5;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          @include text-overflow();
         }
         .coupon-content__coupon-desc {
-          font-size: 24px;
-          color: #999;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          color: var(--color-primary);
+          font-size: 26px;
+          @include text-overflow();
+          margin-top: 5px;
         }
       }
     }
@@ -86,9 +123,14 @@
     position: absolute;
     width: 120px;
     top: 50%;
-    right: 30px;
+    right: 24px;
     transform: translateY(-50%);
-    font-size: 26px;
-    background: #fff;
+    font-size: 28px;
+    height: 60px;
+    line-height: 60px;
+    border-radius: 16px;
+    border: 2px solid var(--color-primary);
+    background: none;
+    color: var(--color-primary);
   }
 }

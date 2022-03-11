@@ -49,7 +49,7 @@ const initialState = {
   show: false
 }
 
-function ItemList (props) {
+function ItemList(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const {
@@ -70,7 +70,7 @@ function ItemList (props) {
   useEffect(() => {}, [])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id } = $instance.router.params
+    const { cat_id, main_cat_id } = $instance.router.params
     let params = {
       page: pageIndex,
       pageSize,
@@ -156,8 +156,11 @@ function ItemList (props) {
     goodsRef.current.reset()
   }
 
-  const handleSearchOff = () => {
+  const handleSearchOff = async () => {
     setIsShowSearch(false)
+    await setState((v) => {
+      v.keywords = ''
+    })
   }
 
   const handleConfirm = async (val) => {

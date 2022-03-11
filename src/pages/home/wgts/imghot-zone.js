@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImage } from '@/components'
 import { linkPage, classNames, styleNames } from '@/utils'
 
 import './imghot-zone.scss'
@@ -51,13 +51,7 @@ export default class WgtImgHotZone extends Component {
         )}
 
         <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
-          <SpImg
-            img-class='img-hotzone_img'
-            src={config.imgUrl}
-            mode='widthFix'
-            width='750'
-            lazyLoad
-          />
+          <SpImage img-class='img-hotzone_img' src={config.imgUrl} width='718' lazyLoad />
           {data.map((item, index) => {
             return (
               <View

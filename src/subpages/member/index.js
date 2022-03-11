@@ -6,7 +6,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN } from '@/consts'
+import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 
@@ -131,6 +131,9 @@ function MemberIndex(props) {
     if (S.get(MERCHANT_TOKEN, true)) {
       S.delete(MERCHANT_TOKEN, true)
     }
+    if (S.get(SG_TOKEN)) {
+      setHeaderBlock()
+    }
   })
 
   async function getSettings() {
@@ -244,6 +247,16 @@ function MemberIndex(props) {
     })
   }
 
+  const setHeaderBlock = async () => {
+    const resAssets = await api.member.memberAssets()
+    const { discount_total_count, fav_total_count, point_total_count } = resAssets
+    setState((draft) => {
+      draft.favCount = fav_total_count
+      draft.point = point_total_count
+      draft.couponCount = discount_total_count
+    })
+  }
+
   const getMemberCenterData = async () => {
     const resSales = await api.member.getSalesperson()
     const resTrade = await api.trade.getCount()
@@ -252,7 +265,8 @@ function MemberIndex(props) {
     // 大转盘
     const resTurntable = await api.wheel.getTurntableconfig()
 
-    const { discount_total_count, fav_total_count, point_total_count } = resAssets
+    await setHeaderBlock()
+
     const {
       aftersales, // 待处理售后
       normal_notpay_notdelivery, // 未付款未发货
@@ -263,9 +277,6 @@ function MemberIndex(props) {
     } = resTrade
 
     setState((draft) => {
-      draft.favCount = fav_total_count
-      draft.point = point_total_count
-      draft.couponCount = discount_total_count
       draft.waitPayNum = normal_notpay_notdelivery
       draft.waitSendNum = normal_payed_daifahuo
       draft.waitRecevieNum = normal_payed_daishouhuo
