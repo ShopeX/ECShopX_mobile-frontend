@@ -24,7 +24,7 @@ const initialState = {
   keyword: '', // 参数
   type: 0, // 参数
   search_type: undefined, // 参数
-  defaultShop: {},
+  headquarters: {},
   logo: '',
   isRecommend: false
 }
@@ -56,10 +56,10 @@ function NearlyShop(props) {
   }
 
   const fetchDefaultShop = async () => {
-    const defaultShop = await api.shop.getDefaultShop()
+    const headquarters = await api.shop.getHeadquarters() // 总店
     const { logo } = await api.shop.getStoreBaseInfo()
     setState((v) => {
-      v.defaultShop = defaultShop
+      v.headquarters = headquarters
       v.logo = logo
     })
   }
@@ -229,7 +229,7 @@ function NearlyShop(props) {
   }
 
   const handleClickItem = () => {
-    Taro.navigateTo({ url: `/pages/store/index?id=${state.defaultShop.distributor_id}` })
+    Taro.navigateTo({ url: `/pages/store/index?id=${state.headquarters.distributor_id}` })
   }
 
   const handleClickShop = (info) => {
@@ -269,7 +269,7 @@ function NearlyShop(props) {
     }
   }
 
-  const { areaIndexArray, areaArray, chooseValue, defaultShop, logo, isRecommend } = state
+  const { areaIndexArray, areaArray, chooseValue, headquarters, logo, isRecommend } = state
 
   return (
     <SpPage className='page-ecshopx-nearlyshop'>
@@ -383,7 +383,7 @@ function NearlyShop(props) {
 
       <View className='shop-bottom' onClick={handleClickItem}>
         <Image className='img' src={logo} mode='aspectFill' />
-        {defaultShop.store_name}
+        {headquarters.store_name}
         <View className='iconfont icon-arrowRight' />
       </View>
       <SpPrivacyModal

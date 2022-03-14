@@ -30,7 +30,7 @@ const traverseData = (data) => {
 }))
 export default class AddressIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -44,7 +44,7 @@ export default class AddressIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetchAddressList()
     this.fetch()
   }
@@ -56,7 +56,7 @@ export default class AddressIndex extends Component {
     })
   }
 
-  async fetch () {
+  async fetch() {
     Taro.showLoading()
     const { list } = await api.member.addressList()
     this.setState({
@@ -251,7 +251,7 @@ export default class AddressIndex extends Component {
     Taro.hideLoading()
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, areaIndexArray, areaArray, chooseValue } = this.state
     return (
@@ -318,7 +318,7 @@ export default class AddressIndex extends Component {
                 type='primary'
                 // onClick={this.handleSubmit}
                 formType='submit'
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                style={`background: ${colors}; border-color: ${colors}`}
               >
                 提交
               </Button>
@@ -327,7 +327,7 @@ export default class AddressIndex extends Component {
                 type='primary'
                 // onClick={this.handleSubmit}
                 formType='submit'
-                style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                style={`background: ${colors}; border-color: ${colors}`}
               >
                 提交
               </Button>

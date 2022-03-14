@@ -15,19 +15,22 @@ import {
   merchantIsvaild,
   showToast,
   isWeb,
-  redirectUrl
+  redirectUrl,
+  VERSION_STANDARD
 } from '@/utils'
 import { useAsyncCallback } from '@/hooks'
 import { PAYTYPE } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
+import S from '@/spx'
 
 import { initialState } from './const'
 
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
 import CompPaymentPicker from './comps/comp-paymentpicker'
+import PointUse from './comps/point-use'
 
 import './espier-checkout.scss'
 
@@ -36,15 +39,16 @@ function CartCheckout(props) {
   const {
     type,
     order_type = 'normal',
-    shop_id: distributor_id,
+    shop_id: dtid,
     cart_type,
     seckill_id = null,
     ticket: seckill_ticket,
     pay_type,
-    source, // 不知道什么情况下会存在值
     bargain_id, // 砍价活动id
     team_id,
-    group_id // 团购id
+    group_id, // 团购id
+    source,
+    scene // 情景值
   } = $instance.router?.params || {}
 
   const [state, setState] = useAsyncCallback(initialState)
@@ -53,6 +57,7 @@ function CartCheckout(props) {
   const { address } = useSelector((state) => state.user)
   const { pointName } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
+  const shop = useSelector((state) => state.shop)
 
   const {
     detailInfo,
@@ -70,7 +75,11 @@ function CartCheckout(props) {
     disabledPayment,
     paramsInfo,
     couponInfo,
-    remark
+    remark,
+    defalutPaytype,
+    isPointOpenModal,
+    point_use,
+    pointInfo
   } = state
 
   useEffect(() => {
@@ -89,6 +98,16 @@ function CartCheckout(props) {
   }, [])
 
   useEffect(() => {
+    if (!S.getAuthToken()) {
+      let source = ''
+      if (scene) {
+        source = 'other_pay'
+      }
+      Taro.redirectTo({
+        url: `/subpage/pages/auth/wxauth?source=${source}&scene=${scene}`
+      })
+      return
+    }
     calcOrder()
   }, [address, coupon, payType])
 
@@ -106,9 +125,30 @@ function CartCheckout(props) {
     })
   }
 
+  const handlePointClick = () => {
+    setState((draft) => {
+      draft.isPointOpenModal = true
+    })
+  }
+
+  const resetPoint = (e) => {
+    e.stopPropagation()
+    setState((draft) => {
+      draft.point_use = 0
+      ;(draft.pointInfo = { ...pointInfo, point_use: 0 }), (draft.payType = defalutPaytype)
+    })
+  }
+
+  const handlePointUseChange = (point_use, payType) => {
+    setState((draft) => {
+      draft.point_use = point_use
+      ;(draft.payType = payType), (draft.isPointOpenModal = false)
+    })
+  }
+
   const onSubmitPayChange = async () => {
     if (submitLoading) return
-    let isValid = await merchantIsvaild({ distributor_id }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
+    let isValid = await merchantIsvaild({ distributor_id: dtid }) // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     if (!isValid) {
       showToast('该商品已下架')
       return
@@ -147,6 +187,32 @@ function CartCheckout(props) {
   }
 
   const handlePay = async () => {
+    if (payType === 'point' || payType === 'deposit') {
+      try {
+        const content =
+          payType === 'point'
+            ? `确认使用${totalInfo.point}${pointName}全额抵扣商品总价吗`
+            : '确认使用余额支付吗？'
+        const { confirm } = await Taro.showModal({
+          title: payType === 'point' ? `${pointName}支付` : '余额支付',
+          content,
+          confirmColor: '#0b4137',
+          confirmText: '确认使用',
+          cancelText: '取消'
+        })
+        if (!confirm) {
+          setState((draft) => {
+            draft.submitLoading = false
+          })
+          return
+        }
+      } catch (e) {
+        setState((draft) => {
+          draft.submitLoading = false
+        })
+        return
+      }
+    }
     Taro.showLoading({
       title: '正在提交',
       mask: true
@@ -158,7 +224,13 @@ function CartCheckout(props) {
     let payErr = ''
     try {
       let params = getParamsInfo()
-      if (isWeb) {
+      if (payType === 'point') {
+        // 积分不开票
+        delete params.invoice_type
+        delete params.invoice_content
+        delete params.point_use
+      }
+      if (isWeb && payType !== 'point' && payType !== 'deposit') {
         res_info = await api.trade.h5create({
           ...params,
           pay_type: payType === PAYTYPE.ALIH5 ? PAYTYPE.ALIH5 : 'wxpay'
@@ -231,10 +303,38 @@ function CartCheckout(props) {
   }
 
   const resolvePayError = (e) => {
+    if (payType === 'point' || payType === 'deposit') {
+      const disabledPaymentMes = {}
+      disabledPaymentMes[payType] = e.message
+      if (payType === 'deposit' && e.message === '当前余额不足以支付本次订单费用，请充值！') {
+        Taro.hideLoading()
+        Taro.showModal({
+          content: e.message,
+          confirmText: '去充值',
+          success: (res) => {
+            if (res.confirm) {
+              Taro.redirectTo({
+                url: '/others/pages/recharge/index'
+              })
+            } else {
+              setState((draft) => {
+                draft.disabledPayment = { ...disabledPayment, ...disabledPaymentMes }
+                draft.payType = defalutPaytype
+              })
+            }
+          }
+        })
+        return
+      }
+      setState((draft) => {
+        draft.disabledPayment = { ...disabledPayment, ...disabledPaymentMes }
+        draft.payType = ''
+      })
+    }
     if (e.res.data.data.status_code === 422) {
       setTimeout(() => {
         Taro.navigateBack()
-      }, 1000)
+      }, 500)
     }
     setState((draft) => {
       draft.submitLoading = false
@@ -245,7 +345,7 @@ function CartCheckout(props) {
     // 切换配送模式
     setState((draft) => {
       draft.receiptType = receipt_type
-      // draft.distributorInfo = distributorInfo
+      draft.distributorInfo = distributorInfo
     })
   }
 
@@ -264,7 +364,7 @@ function CartCheckout(props) {
           registration_number
         } = pickBy(res, doc.checkout.INVOICE_TITLE)
 
-        let params_info = {
+        let invoice_parmas = {
           invoice_type: 'normal',
           invoice_content: {
             title: type == 0 ? 'unit' : 'individual',
@@ -278,7 +378,7 @@ function CartCheckout(props) {
         }
         setState((draft) => {
           draft.invoiceTitle = content
-          draft.paramsInfo = { ...paramsInfo, ...params_info }
+          draft.paramsInfo = { ...paramsInfo, ...invoice_parmas }
         })
       }
     })
@@ -293,7 +393,7 @@ function CartCheckout(props) {
   }
 
   const handleCouponsClick = async () => {
-    const { cart_type, distributor_id: id } = paramsInfo
+    const { cart_type, shop_id: id } = paramsInfo
     let items_filter = detailInfo.filter((item) => item.order_item_type !== 'gift')
     items_filter = items_filter.map((item) => {
       const { item_id, num, total_fee: price } = item
@@ -306,8 +406,8 @@ function CartCheckout(props) {
     let cus_item = JSON.stringify(items_filter)
     Taro.navigateTo({
       url: `/others/pages/cart/coupon-picker?items=${cus_item}&is_checkout=true&cart_type=${cart_type}&distributor_id=${
-        distributor_id || id
-      }` // &source=${source}不确定要不要传
+        dtid || id
+      }&source=${source}`
     })
     dispatch(changeCoupon(couponInfo))
   }
@@ -317,6 +417,7 @@ function CartCheckout(props) {
     setState((draft) => {
       draft.payType = payType
       draft.payChannel = payChannel
+      draft.point_use = 0
     })
   }
 
@@ -332,7 +433,14 @@ function CartCheckout(props) {
       title: '加载中',
       mask: true
     })
-    const cus_parmas = getParamsInfo()
+    const cus_parmas = await getParamsInfo()
+
+    // let salesperson_id = Taro.getStorageSync('s_smid')
+    // if (salesperson_id) {
+    //   cus_parmas.salesperson_id = salesperson_id
+    //   cus_parmas.distributor_id = Taro.getStorageSync('s_dtid') || ''
+    // }
+
     let data
     try {
       data = await api.cart.total(cus_parmas)
@@ -351,10 +459,24 @@ function CartCheckout(props) {
       coupon_discount = 0,
       discount_fee,
       freight_fee = 0,
+      freight_type,
+      freight_point = 0,
       coupon_info = {},
       total_fee,
       invoice_status,
-      extraTips = ''
+      extraTips = '',
+      // 积分
+      deduction,
+      item_point,
+      point = 0,
+      remainpt,
+      point_fee = 0,
+      point_use,
+      user_point = 0,
+      max_point = 0,
+      is_open_deduct_point,
+      deduct_point_rule,
+      real_use_point
     } = data
 
     if (isObjectsValue(coupon_info)) {
@@ -375,23 +497,45 @@ function CartCheckout(props) {
       })
     }
 
-    const total = {
+    const total_info = {
       ...totalInfo,
       item_fee,
       discount_fee,
       member_discount,
       coupon_discount,
       freight_fee,
-      total_fee,
+      total_fee: cus_parmas.pay_type === 'point' ? 0 : total_fee,
       items_count,
-      invoice_status // 是否开启开发票
+      invoice_status, // 是否开启开发票
+      point,
+      freight_point,
+      remainpt, // 总积分
+      deduction, // 抵扣
+      point_fee, //积分抵扣金额,
+      item_point,
+      freight_type
     }
+
+    const point_info = {
+      ...pointInfo,
+      deduct_point_rule,
+      is_open_deduct_point,
+      user_point, //用户现有积分
+      max_point, //最大可使用积分
+      real_use_point,
+      point_use
+    }
+
+    if (real_use_point && real_use_point < point_use) {
+      S.toast(`${pointName}有调整`)
+    }
+
     Taro.hideLoading()
 
     setState((draft) => {
-      draft.totalInfo = total
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
-      draft.paramsInfo = { ...paramsInfo, ...cus_parmas }
+      draft.totalInfo = total_info
+      ;(draft.paramsInfo = { ...paramsInfo, ...cus_parmas }), (draft.pointInfo = point_info)
     })
     if (extraTips) {
       Taro.showModal({
@@ -402,8 +546,9 @@ function CartCheckout(props) {
     }
   }
 
-  const getParamsInfo = (submitLoading = false) => {
+  const getParamsInfo = async (submitLoading = false) => {
     const { value, activity } = getActivityValue() || {}
+    const { distributor_id: shop_id, store_id, openStore } = shop
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
       receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
@@ -414,14 +559,33 @@ function CartCheckout(props) {
       ...activity,
       ...receiver,
       receipt_type: receiptType,
-      distributor_id,
+      distributor_id: dtid,
       cart_type,
       order_type: bargain_id ? 'bargain' : value,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
-      not_use_coupon: 0
+      not_use_coupon: 0,
+      isNostores: openStore ? 1 : 0, // 这个传参需要和后端在确定一下
+      point_use,
+      pay_type,
+      pay_type: payType
     }
+
+    if (payType === 'point') {
+      delete cus_parmas.point_use
+    }
+
+    if (!VERSION_STANDARD) {
+      delete cus_parmas.isNostores
+    }
+
+    // if (openStore) {
+    //   if (receiptType == 'logistics') {
+
+    //   }
+    //   cus_parmas.distributor_id = getId || dtid || shop_id
+    // }
 
     if (coupon) {
       const { type, value } = coupon
@@ -437,7 +601,7 @@ function CartCheckout(props) {
     if (submitLoading) {
       // 提交时候获取参数 把留言信息传进去
       cus_parmas.remark = remark
-      cus_parmas.pay_type = payType
+      cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
       cus_parmas.pay_channel = payChannel
     }
 
@@ -475,7 +639,31 @@ function CartCheckout(props) {
         <View className='checkout-toolbar__total'>
           共<Text>{totalInfo.items_count}</Text>
           件商品　总计:
-          <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
+          {payType !== 'point' && !isPointitemGood ? (
+            <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
+          ) : (
+            totalInfo.point && (
+              <View class='last_price'>
+                <SpPrice
+                  className='primary-price'
+                  appendText={pointName}
+                  noSymbol
+                  noDecimal
+                  value={totalInfo.point}
+                />
+                {!totalInfo.freight_fee == 0 &&
+                  totalInfo.freight_type === 'cash' &&
+                  isPointitemGood && (
+                    <SpPrice
+                      unit='cent'
+                      className='primary-price'
+                      plus
+                      value={totalInfo.freight_fee}
+                    />
+                  )}
+              </View>
+            )
+          )}
         </View>
         <AtButton
           type='primary'
@@ -520,12 +708,18 @@ function CartCheckout(props) {
                   customFooter
                   renderFooter={
                     <View className='sp-order-item__ft'>
-                      <SpPrice
-                        unit='cent'
-                        className='sp-order-item__price'
-                        value={item.price || 100}
-                      />
-                      <Text className='sp-order-item__num'>x {item.num || 1}</Text>
+                      {isPointitemGood ? (
+                        <SpPrice
+                          className='sp-order-item__price'
+                          appendText={pointName}
+                          noSymbol
+                          noDecimal
+                          value={item.item_point}
+                        />
+                      ) : (
+                        <SpPrice unit='cent' className='sp-order-item__price' value={item.price} />
+                      )}
+                      <Text className='sp-order-item__num'>x {item.num}</Text>
                     </View>
                   }
                 />
@@ -565,7 +759,7 @@ function CartCheckout(props) {
       )}
       <View className='cart-checkout__address'>
         <CompDeliver
-          distributor_id={distributor_id}
+          distributor_id={dtid}
           address={address}
           onChangReceiptType={handleSwitchExpress}
         />
@@ -586,16 +780,20 @@ function CartCheckout(props) {
           </View>
         </SpCell>
       )}
-      {type !== 'group' && type !== 'seckill' && !bargain_id && !isPointitemGood && (
-        <SpCell
-          isLink
-          className='cart-checkout__coupons'
-          title='优惠券'
-          onClick={handleCouponsClick}
-          value={couponText || '请选择'}
-        />
-      )}
-      {packInfo.is_open && (
+      {type !== 'limited_time_sale' &&
+        type !== 'group' &&
+        type !== 'seckill' &&
+        !bargain_id &&
+        !isPointitemGood && (
+          <SpCell
+            isLink
+            className='cart-checkout__coupons'
+            title='优惠券'
+            onClick={handleCouponsClick}
+            value={couponText || '请选择'}
+          />
+        )}
+      {packInfo.is_open && ( // 打包
         <View className='cart-checkout__pack'>
           <CompSelectPackage
             isPointitemGood={isPointitemGood}
@@ -606,13 +804,49 @@ function CartCheckout(props) {
         </View>
       )}
 
+      {/* { */}
+      {/* !isPointitemGood && VERSION_STANDARD && pointInfo.is_open_deduct_point && */}
+      <SpCell
+        isLink
+        className='cart-checkout__invoice'
+        title={`${pointName}抵扣`}
+        onClick={handlePointClick}
+      >
+        <View className='invoice-title'>
+          {(pointInfo.point_use > 0 || payType === 'point') && (
+            <View className='icon-close invoice-close' onClick={(e) => resetPoint(e)}></View>
+          )}
+          {payType === 'point'
+            ? '全额抵扣'
+            : pointInfo.point_use > 0
+            ? `已使用${pointInfo.real_use_point}${pointName}`
+            : `使用${pointName}`}
+        </View>
+      </SpCell>
+      {/* } */}
+
+      <PointUse
+        isOpened={isPointOpenModal}
+        type={payType}
+        defalutPaytype={defalutPaytype}
+        info={pointInfo}
+        onClose={() => {
+          setState((draft) => {
+            draft.isPointOpenModal = false
+          })
+        }}
+        onChange={handlePointUseChange}
+      />
+
       <View className='cart-checkout__pay'>
         <CompPaymentPicker
           type={payType}
+          title='支付方式'
           isPointitemGood={isPointitemGood}
-          distributor_id={distributor_id}
+          distributor_id={dtid}
           disabledPayment={disabledPayment}
           onChange={handlePaymentChange}
+          totalInfo={totalInfo}
         />
       </View>
 
@@ -624,8 +858,40 @@ function CartCheckout(props) {
           <SpCell className='trade-sub__item' title='优惠金额：'>
             <SpPrice unit='cent' primary value={-1 * totalInfo.discount_fee} />
           </SpCell>
+          {pointInfo.is_open_deduct_point && VERSION_STANDARD && (
+            <SpCell className='trade-sub__item' title={`${pointName}抵扣：`}>
+              <SpPrice unit='cent' primary value={-1 * totalInfo.point_fee} />
+            </SpCell>
+          )}
           <SpCell className='trade-sub__item' title='运费：'>
             <SpPrice unit='cent' value={totalInfo.freight_fee} />
+          </SpCell>
+        </View>
+      )}
+
+      {isPointitemGood && (
+        <View className='cart-checkout__total'>
+          <SpCell className='trade-sub__item' title={`${pointName}消费：`}>
+            <SpPrice
+              className='sp-order-item__price'
+              appendText={pointName}
+              noSymbol
+              noDecimal
+              value={totalInfo.item_point}
+            />
+          </SpCell>
+          <SpCell className='trade-sub__item' title='运费：'>
+            {totalInfo.freight_type === 'point' ? (
+              <SpPrice
+                className='sp-order-item__price'
+                appendText={pointName}
+                noSymbol
+                noDecimal
+                value={totalInfo.freight_fee}
+              />
+            ) : (
+              <SpPrice unit='cent' value={totalInfo.freight_fee} />
+            )}
           </SpCell>
         </View>
       )}

@@ -15,6 +15,12 @@ $margin24: 24px;
       white-space: nowrap;
       flex: 1;
       margin-right: 0;
+      .last_price {
+        display: inline-block;
+        .sp-price__append {
+          color: var(--color-primary);
+        }
+      }
     }
     &__price {
       display: inline-block;
@@ -119,6 +125,7 @@ $margin24: 24px;
   .cart-checkout__coupons {
     .sp-cell__value {
       color: #222;
+      padding-right: 20px;
     }
   }
 
@@ -136,6 +143,13 @@ $margin24: 24px;
   .cart-checkout__pay {
     padding: 0px;
   }
+
+  // .cart-checkout__pay {
+  //   .pay__hint {
+  //     padding: 0 $edge-size;
+  //     color: $color-orange;
+  //   }
+  // }
 
   .sp-cell__bd {
     display: flex;

@@ -1,9 +1,12 @@
+import { isWeb, isWxWeb } from '@/utils'
+
 export const initialState = {
   detailInfo: [],
   submitLoading: false,
   btnIsDisabled: false,
   addressList: [],
   receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
+  defalutPaytype: isWxWeb ? 'wxpayjs' : isWeb ? 'wxpayh5' : 'wxpay', // 默认支付方式
   payType: 'wxpay', // wxpay 微信支付 point 积分支付 deposit 储值支付
   payChannel: '', // 支付渠道
   isPointitemGood: false, // 是否为积分商城的商品
@@ -29,7 +32,11 @@ export const initialState = {
   paramsInfo: {}, // 结算接口参数
   discountInfo: [],
   couponInfo: {}, // 优惠券信息
-  remark: '' // 备注
+  remark: '', // 备注
+  // 积分相关
+  isPointOpen: false,
+  point_use: 0,
+  pointInfo: {}
 }
 
 export const deliveryList = [
