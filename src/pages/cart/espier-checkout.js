@@ -7,6 +7,7 @@ import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
 import { View, Text } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
+import { changeZitiStore } from '@/store/slices/shop'
 import {
   isObjectsValue,
   isWeixin,
@@ -16,13 +17,16 @@ import {
   showToast,
   isWeb,
   redirectUrl,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  isAlipay,
+  log
 } from '@/utils'
 import { useAsyncCallback } from '@/hooks'
 import { PAYTYPE } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
+import qs from 'qs'
 import S from '@/spx'
 
 import { initialState } from './const'
@@ -48,14 +52,16 @@ function CartCheckout(props) {
     team_id,
     group_id, // 团购id
     source,
-    scene // 情景值
+    scene, // 情景值
+    goodType,
+    ticket = null
   } = $instance.router?.params || {}
 
   const [state, setState] = useAsyncCallback(initialState)
 
   const dispatch = useDispatch()
   const { address } = useSelector((state) => state.user)
-  const { pointName } = useSelector((state) => state.sys)
+  const { pointName, openStore } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
 
@@ -94,6 +100,7 @@ function CartCheckout(props) {
     return () => {
       dispatch(changeCoupon()) // 清空优惠券信息
       dispatch(updateChooseAddress(null)) // 清空地址信息
+      dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
     }
   }, [])
 
@@ -109,7 +116,7 @@ function CartCheckout(props) {
       return
     }
     calcOrder()
-  }, [address, coupon, payType])
+  }, [address, coupon, payType, shop.zitiShop])
 
   const getTradeSetting = async () => {
     let data = await api.trade.tradeSetting()
@@ -222,8 +229,21 @@ function CartCheckout(props) {
     let order_id = ''
     let res_info = {}
     let payErr = ''
+    const isPointPay =
+      payType === 'point' ||
+      (isPointitemGood &&
+        (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)))
     try {
-      let params = getParamsInfo()
+      let params = await getParamsInfo()
+      if (VERSION_STANDARD && cart_type !== 'cart') {
+        // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
+        let ziti_shopid
+        if (shop.zitiShop) {
+          const { distributor_id } = shop.zitiShop
+          ziti_shopid = distributor_id
+        }
+        params.distributor_id = receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+      }
       if (payType === 'point') {
         // 积分不开票
         delete params.invoice_type
@@ -233,7 +253,12 @@ function CartCheckout(props) {
       if (isWeb && payType !== 'point' && payType !== 'deposit') {
         res_info = await api.trade.h5create({
           ...params,
-          pay_type: payType === PAYTYPE.ALIH5 ? PAYTYPE.ALIH5 : 'wxpay'
+          pay_type:
+            totalInfo.freight_type === 'point'
+              ? 'point'
+              : payType === PAYTYPE.ALIH5
+              ? PAYTYPE.ALIH5
+              : 'wxpay'
         })
         redirectPath = `/subpage/pages/cashier/index?order_id=${res_info.order_id}`
         if (payType === PAYTYPE.WXH5 || payType === PAYTYPE.ALIH5) {
@@ -242,7 +267,17 @@ function CartCheckout(props) {
         redirectUrl(api, redirectPath)
         return
       } else {
-        res_info = await api.trade.create(params)
+        //alipaymini只是针对支付宝支付 积分支付不适用
+        if (isAlipay) {
+          params.pay_type = 'alipaymini'
+        }
+        if (isPointPay) {
+          params.pay_type = 'point'
+        }
+        res_info = await api.trade.create({
+          ...params,
+          pay_channel: payChannel
+        })
         order_id = res_info.trade_info.order_id
       }
       // tode 应该有埋点
@@ -264,16 +299,56 @@ function CartCheckout(props) {
     })
 
     payErr = null
-    let payRes
+    // 积分流程
+    const { freight_type, freight_fee } = totalInfo
+    const isExtraPoint = isPointitemGood && freight_type === 'point'
+
+    if (payType === 'point' || payType === 'deposit' || isExtraPoint || isPointPay) {
+      if (!payErr) {
+        Taro.showToast({
+          title: '支付成功',
+          icon: 'none'
+        })
+
+        if (type === 'group') {
+          const groupUrl = `/marketing/pages/item/group-detail?team_id=${res_info.team_id}`
+          Taro.redirectTo({
+            url: groupUrl
+          })
+          return
+        }
+
+        let url = `/subpage/pages/trade/detail?id=${order_id}`
+
+        if (isExtraPoint) {
+          url += '&type=pointitem'
+        }
+
+        Taro.redirectTo({
+          url
+        })
+      }
+      return
+    }
+
     try {
-      if (res_info.package) {
+      const notNeedPay = totalInfo.freight_type === 'cash' && !res_info.package
+      //需要使用支付宝支付
+      const isAlipayRequirePay = isAlipay && payType === 'wxpay'
+      let payRes
+      if (!notNeedPay || isAlipayRequirePay) {
         // tode 埋点
         console.log('我需要支付')
-        payRes = await Taro.requestPayment(res_info)
+        if (isAlipay) {
+          payRes = await my.tradePay({ tradeNO: res_info.trade_no })
+        } else {
+          payRes = await Taro.requestPayment(res_info)
+        }
       }
       if (!payRes.result) {
         urlLink = `/subpage/pages/trade/detail?id=${order_id}`
       }
+      log.debug(`[order pay]: `, payRes)
     } catch (e) {
       console.log('我发生错误', e)
     }
@@ -285,13 +360,20 @@ function CartCheckout(props) {
         icon: 'success'
       })
       if (type === 'group') {
+        if (isPointitemGood) {
+          urlLink = `/subpage/pages/trade/detail?id=${order_id}&type=pointitem`
+        }
+
         urlLink = `/marketing/pages/item/group-detail?team_id=${res_info.team_id}`
       }
-    }
-
-    if (payErr?.errMsg.indexOf('fail cancel') >= 0) {
-      // tode 取消埋点
-      urlLink = `/subpage/pages/trade/detail?id=${order_id}`
+    } else {
+      if (payErr?.errMsg.indexOf('fail cancel') >= 0) {
+        // tode 取消埋点
+        urlLink = `/subpage/pages/trade/detail?id=${order_id}`
+        if (isPointitemGood) {
+          urlLink += '&type=pointitem'
+        }
+      }
     }
 
     if (urlLink) {
@@ -349,11 +431,28 @@ function CartCheckout(props) {
     })
   }
 
+  const handleEditZitiClick = async (id) => {
+    const params = await getParamsInfo()
+    let query = {
+      shop_id: id,
+      cart_type,
+      order_type: params.order_type,
+      seckill_id,
+      ticket,
+      goodType,
+      bargain_id: params.bargain_id
+    }
+    Taro.navigateTo({
+      url: `/pages/store/ziti-list?${qs.stringify(query)}`
+    })
+  }
+
+  // 开发票
   const handleInvoiceClick = () => {
-    // 开发票
     authSetting('invoiceTitle', async () => {
       const res = await Taro.chooseInvoiceTitle()
       if (res.errMsg === 'chooseInvoiceTitle:ok') {
+        log.debug('[invoice] info:', res)
         const {
           type,
           content,
@@ -548,7 +647,13 @@ function CartCheckout(props) {
 
   const getParamsInfo = async (submitLoading = false) => {
     const { value, activity } = getActivityValue() || {}
-    const { distributor_id: shop_id, store_id, openStore } = shop
+    // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
+    let ziti_shopid
+    if (shop.zitiShop) {
+      const { distributor_id } = shop.zitiShop
+      ziti_shopid = distributor_id
+    }
+
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
       receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
@@ -559,33 +664,30 @@ function CartCheckout(props) {
       ...activity,
       ...receiver,
       receipt_type: receiptType,
-      distributor_id: dtid,
       cart_type,
       order_type: bargain_id ? 'bargain' : value,
       promotion: 'normal',
       member_discount: 0,
       coupon_discount: 0,
       not_use_coupon: 0,
-      isNostores: openStore ? 1 : 0, // 这个传参需要和后端在确定一下
+      isNostores: !openStore ? 1 : 0, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type,
-      pay_type: payType
+      pay_type: payType,
+      // distributor_id: openStore ? shop_id : (receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid),
+      distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
 
     if (payType === 'point') {
       delete cus_parmas.point_use
     }
 
+    if (isPointitemGood) {
+      cus_parmas.order_type = 'normal_pointsmall'
+    }
+
     if (!VERSION_STANDARD) {
       delete cus_parmas.isNostores
     }
-
-    // if (openStore) {
-    //   if (receiptType == 'logistics') {
-
-    //   }
-    //   cus_parmas.distributor_id = getId || dtid || shop_id
-    // }
 
     if (coupon) {
       const { type, value } = coupon
@@ -762,6 +864,7 @@ function CartCheckout(props) {
           distributor_id={dtid}
           address={address}
           onChangReceiptType={handleSwitchExpress}
+          onEidtZiti={handleEditZitiClick}
         />
       </View>
       {goodsComp()}
@@ -804,26 +907,25 @@ function CartCheckout(props) {
         </View>
       )}
 
-      {/* { */}
-      {/* !isPointitemGood && VERSION_STANDARD && pointInfo.is_open_deduct_point && */}
-      <SpCell
-        isLink
-        className='cart-checkout__invoice'
-        title={`${pointName}抵扣`}
-        onClick={handlePointClick}
-      >
-        <View className='invoice-title'>
-          {(pointInfo.point_use > 0 || payType === 'point') && (
-            <View className='icon-close invoice-close' onClick={(e) => resetPoint(e)}></View>
-          )}
-          {payType === 'point'
-            ? '全额抵扣'
-            : pointInfo.point_use > 0
-            ? `已使用${pointInfo.real_use_point}${pointName}`
-            : `使用${pointName}`}
-        </View>
-      </SpCell>
-      {/* } */}
+      {!isPointitemGood && VERSION_STANDARD && pointInfo.is_open_deduct_point && (
+        <SpCell
+          isLink
+          className='cart-checkout__invoice'
+          title={`${pointName}抵扣`}
+          onClick={handlePointClick}
+        >
+          <View className='invoice-title'>
+            {(pointInfo.point_use > 0 || payType === 'point') && (
+              <View className='icon-close invoice-close' onClick={(e) => resetPoint(e)}></View>
+            )}
+            {payType === 'point'
+              ? '全额抵扣'
+              : pointInfo.point_use > 0
+              ? `已使用${pointInfo.real_use_point}${pointName}`
+              : `使用${pointName}`}
+          </View>
+        </SpCell>
+      )}
 
       <PointUse
         isOpened={isPointOpenModal}

@@ -8,7 +8,7 @@ import './home-header-shop.scss'
 
 function WgtHomeHeaderShop(props) {
   const { children } = props
-  const { openScanQrcode } = useSelector((state) => state.sys)
+  const { openScanQrcode, openStore } = useSelector((state) => state.sys)
   const {
     shopInfo: { store_name }
   } = useSelector((state) => state.shop)
@@ -23,10 +23,12 @@ function WgtHomeHeaderShop(props) {
 
   return (
     <View className='home-header-shop'>
-      <View className='shop-left' onClick={handlePickStore}>
-        <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
-        <Text className='iconfont icon-qianwang-01'></Text>
-      </View>
+      {openStore && (
+        <View className='shop-left' onClick={handlePickStore}>
+          <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
+          <Text className='iconfont icon-qianwang-01'></Text>
+        </View>
+      )}
 
       <View className='children-block'>{children}</View>
 

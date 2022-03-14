@@ -1,7 +1,15 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Picker } from '@tarojs/components'
-import { SpToast, SearchBar, BackToTop, SpNavBar, SpCheckbox, SpNote } from '@/components'
+import {
+  SpToast,
+  SearchBar,
+  BackToTop,
+  SpNavBar,
+  SpCheckbox,
+  SpNote,
+  SpLoading
+} from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
@@ -16,14 +24,14 @@ import './ziti-list.scss'
     curZitiShop: cart.zitiShop
   }),
   (dispatch) => ({
-    onChangeZitiStore: (zitiShop) => dispatch({ type: 'cart/changeZitiStore', payload: zitiShop })
+    onChangeZitiStore: (zitiShop) => dispatch({ type: 'shop/changeZitiStore', payload: zitiShop })
   })
 )
 @withPager
 @withBackToTop
 export default class StoreZitiList extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -39,7 +47,7 @@ export default class StoreZitiList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const lnglat = Taro.getStorageSync('lnglat')
     const cityInfo = Taro.getStorageSync('selectShop')
     let query = {}
@@ -73,7 +81,7 @@ export default class StoreZitiList extends Component {
       this.handleGetLocation()
     }
   }
-  async fetch (params) {
+  async fetch(params) {
     const isOpenStore = await entry.getStoreStatus()
     const { page_no: page, page_size: pageSize } = params
     const { shop_id, order_type, cart_type, seckill_id, ticket, bargain_id } =
@@ -96,6 +104,7 @@ export default class StoreZitiList extends Component {
       store_address: 'store_address',
       hour: 'hour',
       mobile: 'mobile',
+      phone: 'phone',
       distributor_id: 'distributor_id',
       regions: 'regions',
       regions_id: 'regions_id',
@@ -392,7 +401,7 @@ export default class StoreZitiList extends Component {
     }, 300)
   }
 
-  render () {
+  render() {
     const {
       list,
       scrollTop,
@@ -499,7 +508,7 @@ export default class StoreZitiList extends Component {
               </View>
             )}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <SpLoading>正在加载...</SpLoading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}

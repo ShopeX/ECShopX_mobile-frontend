@@ -1,7 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
-  shopInfo: {}
+  shopInfo: {},
+  zitiShop: null
 }
 
 const shopSlice = createSlice({
@@ -10,10 +11,13 @@ const shopSlice = createSlice({
   reducers: {
     updateShopInfo: (state, { payload }) => {
       state.shopInfo = payload
+    },
+    changeZitiStore: (state, { payload }) => {
+      state.zitiShop = payload
     }
   }
 })
 
-export const { updateShopInfo } = shopSlice.actions
+export const { updateShopInfo, changeZitiStore } = shopSlice.actions
 
 export default shopSlice.reducer

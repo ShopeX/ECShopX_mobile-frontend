@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
 import { updateChooseAddress } from '@/store/slices/user'
-import { classNames } from '@/utils'
+import { classNames, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
 
 import { deliveryList } from '../const'
@@ -16,13 +16,19 @@ const initialState = {
   receiptType: 'logistics'
 }
 
-function CmopDeliver (props) {
-  const { address = {}, distributor_id, onChangReceiptType = () => {} } = props
+function CmopDeliver(props) {
+  const {
+    address = {},
+    distributor_id,
+    onChangReceiptType = () => {},
+    onEidtZiti = () => {}
+  } = props
 
   const dispatch = useDispatch()
 
   const { location = {} } = useSelector((state) => state.user)
-  const { rgb } = useSelector((state) => state.sys)
+  const { rgb, openStore } = useSelector((state) => state.sys)
+  const { zitiShop } = useSelector((state) => state.shop)
   const [state, setState] = useImmer(initialState)
   const { distributorInfo, receiptType } = state
 
@@ -82,6 +88,11 @@ function CmopDeliver (props) {
     })
   }
 
+  // 切换自提店铺
+  const handleEditZitiClick = (id = 0) => {
+    onEidtZiti(id)
+  }
+
   const handleChooseAddress = (choose) => {
     // 自定义选择店铺跳转事件
     let city = distributorInfo.city
@@ -89,6 +100,8 @@ function CmopDeliver (props) {
       url: `/marketing/pages/member/address?isPicker=${choose}&city=${city}&receipt_type=dada`
     })
   }
+
+  const zitiInfo = zitiShop && receiptType === 'ziti' ? zitiShop : distributorInfo
 
   return (
     <View className='page-comp-deliver'>
@@ -123,16 +136,23 @@ function CmopDeliver (props) {
       {/** 自提 */}
       {receiptType === 'ziti' && (
         <View className='address-module'>
-          <View className='address-title'>{distributorInfo.name}</View>
+          <View className='address-title'>{zitiInfo.name}</View>
           <View className='address-detail'>
-            <View className='address'>{distributorInfo.store_address}</View>
-            <View className='iconfont icon-periscope' onClick={() => handleMapClick()}></View>
+            <View className='address'>{zitiInfo.store_address}</View>
+            {!openStore && VERSION_STANDARD ? (
+              <View
+                className='iconfont icon-edit'
+                onClick={() => handleEditZitiClick(zitiInfo.distributor_id)}
+              ></View>
+            ) : (
+              <View className='iconfont icon-periscope' onClick={() => handleMapClick()}></View>
+            )}
           </View>
           <View className='other-info'>
-            <View className='text-muted light'>门店营业时间：{distributorInfo.hour}</View>
+            <View className='text-muted light'>门店营业时间：{zitiInfo.hour}</View>
             <View className='text-muted'>
               联系电话：
-              <Text className='phone'>{distributorInfo.phone}</Text>
+              <Text className='phone'>{zitiInfo.phone}</Text>
             </View>
           </View>
         </View>

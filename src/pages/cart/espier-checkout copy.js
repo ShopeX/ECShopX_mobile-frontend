@@ -81,7 +81,7 @@ const transformCartList = (list) => {
     updateChooseAddress: (address) =>
       dispatch({ type: 'user/updateChooseAddress', payload: address }),
     onChangeCoupon: (coupon) => dispatch({ type: 'cart/changeCoupon', payload: coupon }),
-    onChangeZitiStore: (zitiShop) => dispatch({ type: 'cart/changeZitiStore', payload: zitiShop })
+    onChangeZitiStore: (zitiShop) => dispatch({ type: 'shop/changeZitiStore', payload: zitiShop })
     //onChangeDrugInfo: (drugInfo) => dispatch({ type: 'cart/changeDrugInfo', payload: drugInfo })
   })
 )

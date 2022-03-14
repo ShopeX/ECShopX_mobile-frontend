@@ -48,6 +48,7 @@ function CompPaymentPicker(props) {
     })
     if (list[0]) {
       handlePaymentChange(list[0].pay_type_code, channel)
+      handleChange(list[0].pay_type_code)
       let channel = ''
       if (typeof list[0].pay_channel != 'undefined') {
         channel = list[0].pay_channel

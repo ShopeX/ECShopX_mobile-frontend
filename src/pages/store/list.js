@@ -232,8 +232,8 @@ function NearlyShop(props) {
     Taro.navigateTo({ url: `/pages/store/index?id=${state.headquarters.distributor_id}` })
   }
 
-  const handleClickShop = (info) => {
-    dispatch(updateShopInfo({ ...info, store_id: 0 })) //新增非门店自提，开启distributor_id 取值为store_id
+  const handleClickShop = async (info) => {
+    await dispatch(updateShopInfo(info)) //新增非门店自提，开启distributor_id 取值为store_id
     Taro.navigateBack()
   }
 

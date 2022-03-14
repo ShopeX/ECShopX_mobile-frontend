@@ -127,7 +127,7 @@ function Home() {
       parmas.lat = lat
       parmas.lng = lng
     }
-    if (parmas.lat) delete parmas.distributor_id
+    // if (parmas.lat) delete parmas.distributor_id
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
 
