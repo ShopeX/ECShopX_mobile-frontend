@@ -70,7 +70,7 @@ function ItemList(props) {
   useEffect(() => {}, [])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id } = $instance.router.params
+    const { cat_id, main_cat_id } = $instance.router.params
     let params = {
       page: pageIndex,
       pageSize,
