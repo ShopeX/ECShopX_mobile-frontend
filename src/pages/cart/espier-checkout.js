@@ -97,7 +97,7 @@ function CartCheckout(props) {
     getTradeSetting()
     // tode 此处应有埋点
     return () => {
-      dispatch(changeCoupon()) // 清空优惠券信息
+      dispatch(changeCoupon(null)) // 清空优惠券信息
       dispatch(updateChooseAddress(null)) // 清空地址信息
       dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
     }
