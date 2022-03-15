@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { classNames, formatPriceToHundred } from '@/utils'
-import { SpOrderItem , SpNewShopItem } from '@/components'
+import { SpOrderItem, SpNewShopItem } from '@/components'
 
 import './new-item.scss'
 
@@ -21,6 +21,7 @@ export default class TradeItem extends Component {
     payType: '',
     info: {},
     rateStatus: false,
+    isShowDistributorInfo: true,
     onClickBtn: () => {},
     onClick: () => {}
   }
@@ -76,7 +77,8 @@ export default class TradeItem extends Component {
       payType,
       showActions,
       colors,
-      rateStatus
+      rateStatus,
+      isShowDistributorInfo
     } = this.props
 
     if (!info) {
@@ -86,9 +88,11 @@ export default class TradeItem extends Component {
     //订单号 info.tid
     return (
       <View className='trade-item'>
-        <View className='trade-item__dist'>
-          <SpNewShopItem inOrderList info={info.distributor_info} canJump />
-        </View>
+        {isShowDistributorInfo && (
+          <View className='trade-item__dist'>
+            <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+          </View>
+        )}
         <View className='trade-item__msg'>
           <View className='item lineone'>订单编号：{info.tid}</View>
           <View className='item linetwo'>下单时间：{info.create_date}</View>
