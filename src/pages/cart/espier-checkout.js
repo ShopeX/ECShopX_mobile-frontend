@@ -74,7 +74,7 @@ function CartCheckout(props) {
     totalInfo,
     shoppingGuideData,
     receiptType,
-    // distributorInfo,
+    distributorInfo,
     invoiceTitle,
     packInfo,
     isNeedPackage,
@@ -237,15 +237,15 @@ function CartCheckout(props) {
         (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)))
     try {
       let params = await getParamsInfo()
-      if (VERSION_STANDARD && cart_type !== 'cart') {
-        // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
-        let ziti_shopid
-        if (shop.zitiShop) {
-          const { distributor_id } = shop.zitiShop
-          ziti_shopid = distributor_id
-        }
-        params.distributor_id = receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
-      }
+      // if (VERSION_STANDARD && cart_type !== 'cart') {
+      //   // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
+      //   let ziti_shopid
+      //   if (shop.zitiShop) {
+      //     const { distributor_id } = shop.zitiShop
+      //     ziti_shopid = distributor_id
+      //   }
+      //   params.distributor_id = receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+      // }
       if (isWeb && payType !== 'point' && payType !== 'deposit') {
         res_info = await api.trade.h5create({
           ...params,
@@ -654,16 +654,16 @@ function CartCheckout(props) {
 
   const getParamsInfo = async (submitLoading = false) => {
     const { value, activity } = getActivityValue() || {}
-    // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
-    let ziti_shopid
-    if (shop.zitiShop) {
-      const { distributor_id } = shop.zitiShop
-      ziti_shopid = distributor_id
-    }
 
+    let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
-      receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
+      receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
+      if (shop.zitiShop) {
+        const { distributor_id } = shop.zitiShop
+        ziti_shopid = distributor_id
+        receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
+      }
     }
 
     let cus_parmas = {
@@ -677,11 +677,14 @@ function CartCheckout(props) {
       member_discount: 0,
       coupon_discount: 0,
       not_use_coupon: 0,
-      isNostores: !openStore ? 1 : 0, // 这个传参需要和后端在确定一下
+      isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
       pay_type: payType,
-      // distributor_id: openStore ? shop_id : (receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid),
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+    }
+
+    if (receiptType === 'ziti') {
+      delete cus_parmas.receiver_zip
     }
 
     // 积分不开票

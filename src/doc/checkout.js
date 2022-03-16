@@ -37,6 +37,15 @@ export const RECEIVER_ADDRESS = {
   receiver_zip: 'postalCode'
 }
 
+export const ZITI_ADDRESS = {
+  receiver_name: 'name',
+  receiver_mobile: 'mobile',
+  receiver_state: 'province',
+  receiver_city: 'city',
+  receiver_district: 'area',
+  receiver_address: 'address'
+}
+
 export const GUIDE_CHECKOUT_GOODSITEM = {
   itemName: 'item_name',
   img: 'pics',

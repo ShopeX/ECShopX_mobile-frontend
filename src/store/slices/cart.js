@@ -57,11 +57,7 @@ const cartSlice = createSlice({
       state.coupon = null
     },
     changeZitiStore: (state, { payload }) => {
-      const zitiShop = payload
-      return {
-        ...state,
-        zitiShop
-      }
+      state.zitiShop = payload
     }
   },
   extraReducers: (builder) => {
