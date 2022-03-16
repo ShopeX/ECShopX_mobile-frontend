@@ -4,7 +4,7 @@ import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar } from '@/components'
 import api from '@/api'
-import { isWeixin, getDistributorId, VERSION_STANDARD } from '@/utils'
+import { isWeixin, getDistributorId, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
@@ -115,7 +115,7 @@ function Home() {
   })
 
   const fetchStoreInfo = async ({ lat, lng }) => {
-    if (!VERSION_STANDARD) {
+    if (VERSION_PLATFORM) {
       fetchWgts()
       fetchLikeList()
       return
@@ -127,7 +127,7 @@ function Home() {
       parmas.lat = lat
       parmas.lng = lng
     }
-    // if (parmas.lat) delete parmas.distributor_id
+    if (parmas.lat && parmas.distributor_id) delete parmas.distributor_id
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
 

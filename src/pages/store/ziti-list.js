@@ -20,8 +20,9 @@ import { connect } from 'react-redux'
 import './ziti-list.scss'
 
 @connect(
-  ({ cart }) => ({
-    curZitiShop: cart.zitiShop
+  ({ cart, sys }) => ({
+    curZitiShop: cart.zitiShop,
+    openStore: sys.openStore
   }),
   (dispatch) => ({
     onChangeZitiStore: (zitiShop) => dispatch({ type: 'shop/changeZitiStore', payload: zitiShop })
@@ -82,7 +83,7 @@ export default class StoreZitiList extends Component {
     }
   }
   async fetch(params) {
-    const isOpenStore = await entry.getStoreStatus()
+    const isOpenStore = this.props.openStore
     const { page_no: page, page_size: pageSize } = params
     const { shop_id, order_type, cart_type, seckill_id, ticket, bargain_id } =
       this.$instance.router.params
@@ -94,7 +95,7 @@ export default class StoreZitiList extends Component {
       order_type,
       seckill_id,
       seckill_ticket: ticket,
-      isNostores: isOpenStore ? 1 : 0,
+      isNostores: isOpenStore ? 0 : 1,
       bargain_id
     }
 
@@ -115,7 +116,10 @@ export default class StoreZitiList extends Component {
       distance: 'distance',
       distance_show: 'distance_show',
       distance_unit: 'distance_unit',
-      store_id: isOpenStore ? '' : 0
+      store_id: isOpenStore ? '' : 0,
+      province: 'province',
+      city: 'city',
+      area: 'area'
     })
     let res = await api.member.areaList()
     const nAreaList = pickBy(res, {

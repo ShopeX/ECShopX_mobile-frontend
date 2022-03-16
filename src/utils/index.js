@@ -72,6 +72,8 @@ export const isWeb = Taro.getEnv() == Taro.ENV_TYPE.WEB
 
 export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
 
+export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
+
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent
   // console.log( `user-agent:`, ua );

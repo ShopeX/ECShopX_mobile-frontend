@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { AtFloatLayout } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { isWeixin } from '@/utils'
+import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
 import { SpCheckbox, SpCell } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
@@ -123,7 +123,7 @@ function CompPaymentPicker(props) {
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{title}</Text>
-            <View className='iconfont icon-close'></View>
+            <View onClick={() => handlePaymentShow(false)} className='iconfont icon-close'></View>
           </View>
           <View className='payment-picker__bd'>
             {isPointitemGood && (
@@ -150,30 +150,30 @@ function CompPaymentPicker(props) {
                 </View>
               </View>
             )}
-            {isShowBalance && isWeixin && (
-              <View
-                className={`payment-item ${
-                  disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''
-                }`}
-                onClick={handlePaymentChange.bind(this, 'deposit')}
-              >
-                <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>余额支付</Text>
-                  <Text className='payment-item__desc'>
-                    {disabledPayment && disabledPayment['deposit']
-                      ? disabledPayment['deposit']
-                      : '使用余额支付'}
-                  </Text>
-                </View>
-                <View className='payment-item__ft'>
-                  <SpCheckbox
-                    disabled={disabledPayment && !!disabledPayment['deposit']}
-                    colors={colorPrimary}
-                    checked={localType === 'deposit'}
-                  ></SpCheckbox>
-                </View>
+            {/* {isShowBalance && VERSION_STANDARD && isWeixin && ( // 临时加的 后期需开启注释 */}
+            <View
+              className={`payment-item ${
+                disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''
+              }`}
+              onClick={handlePaymentChange.bind(this, 'deposit')}
+            >
+              <View className='payment-item__bd'>
+                <Text className='payment-item__title'>余额支付</Text>
+                <Text className='payment-item__desc'>
+                  {disabledPayment && disabledPayment['deposit']
+                    ? disabledPayment['deposit']
+                    : '使用余额支付'}
+                </Text>
               </View>
-            )}
+              <View className='payment-item__ft'>
+                <SpCheckbox
+                  disabled={disabledPayment && !!disabledPayment['deposit']}
+                  colors={colorPrimary}
+                  checked={localType === 'deposit'}
+                ></SpCheckbox>
+              </View>
+            </View>
+            {/* )} */}
             {isShowDelivery && (
               <View
                 className={`payment-item ${

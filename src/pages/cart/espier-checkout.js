@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
-import { useImmer } from 'use-immer'
 import { SpPage, SpPrice, SpCell, SpOrderItem } from '@/components'
 import { View, Text } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
@@ -17,9 +16,10 @@ import {
   showToast,
   isWeb,
   redirectUrl,
-  VERSION_STANDARD,
   isAlipay,
-  log
+  log,
+  VERSION_STANDARD,
+  VERSION_PLATFORM
 } from '@/utils'
 import { useAsyncCallback } from '@/hooks'
 import { PAYTYPE } from '@/consts'
@@ -34,7 +34,7 @@ import { initialState } from './const'
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
 import CompPaymentPicker from './comps/comp-paymentpicker'
-import PointUse from './comps/point-use'
+import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
@@ -74,7 +74,7 @@ function CartCheckout(props) {
     totalInfo,
     shoppingGuideData,
     receiptType,
-    // distributorInfo,
+    distributorInfo,
     invoiceTitle,
     packInfo,
     isNeedPackage,
@@ -116,7 +116,7 @@ function CartCheckout(props) {
       return
     }
     calcOrder()
-  }, [address, coupon, payType, shop.zitiShop])
+  }, [address, coupon, payType, shop.zitiShop, point_use])
 
   const getTradeSetting = async () => {
     let data = await api.trade.tradeSetting()
@@ -142,14 +142,16 @@ function CartCheckout(props) {
     e.stopPropagation()
     setState((draft) => {
       draft.point_use = 0
-      ;(draft.pointInfo = { ...pointInfo, point_use: 0 }), (draft.payType = defalutPaytype)
+      draft.pointInfo = { ...pointInfo, point_use: 0 }
+      draft.payType = defalutPaytype
     })
   }
 
   const handlePointUseChange = (point_use, payType) => {
     setState((draft) => {
       draft.point_use = point_use
-      ;(draft.payType = payType), (draft.isPointOpenModal = false)
+      draft.payType = payType
+      draft.isPointOpenModal = false
     })
   }
 
@@ -235,21 +237,15 @@ function CartCheckout(props) {
         (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)))
     try {
       let params = await getParamsInfo()
-      if (VERSION_STANDARD && cart_type !== 'cart') {
-        // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
-        let ziti_shopid
-        if (shop.zitiShop) {
-          const { distributor_id } = shop.zitiShop
-          ziti_shopid = distributor_id
-        }
-        params.distributor_id = receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
-      }
-      if (payType === 'point') {
-        // 积分不开票
-        delete params.invoice_type
-        delete params.invoice_content
-        delete params.point_use
-      }
+      // if (VERSION_STANDARD && cart_type !== 'cart') {
+      //   // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
+      //   let ziti_shopid
+      //   if (shop.zitiShop) {
+      //     const { distributor_id } = shop.zitiShop
+      //     ziti_shopid = distributor_id
+      //   }
+      //   params.distributor_id = receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+      // }
       if (isWeb && payType !== 'point' && payType !== 'deposit') {
         res_info = await api.trade.h5create({
           ...params,
@@ -350,6 +346,7 @@ function CartCheckout(props) {
       }
       log.debug(`[order pay]: `, payRes)
     } catch (e) {
+      payErr = e
       console.log('我发生错误', e)
     }
 
@@ -387,11 +384,14 @@ function CartCheckout(props) {
   const resolvePayError = (e) => {
     if (payType === 'point' || payType === 'deposit') {
       const disabledPaymentMes = {}
-      disabledPaymentMes[payType] = e.message
-      if (payType === 'deposit' && e.message === '当前余额不足以支付本次订单费用，请充值！') {
+      disabledPaymentMes[payType] = e.res.data.data.message
+      if (
+        payType === 'deposit' &&
+        e.res.data.data.message === '当前余额不足以支付本次订单费用，请充值！'
+      ) {
         Taro.hideLoading()
         Taro.showModal({
-          content: e.message,
+          content: e.res.data.data.message,
           confirmText: '去充值',
           success: (res) => {
             if (res.confirm) {
@@ -402,6 +402,7 @@ function CartCheckout(props) {
               setState((draft) => {
                 draft.disabledPayment = { ...disabledPayment, ...disabledPaymentMes }
                 draft.payType = defalutPaytype
+                draft.submitLoading = false
               })
             }
           }
@@ -411,7 +412,9 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.disabledPayment = { ...disabledPayment, ...disabledPaymentMes }
         draft.payType = ''
+        draft.submitLoading = false
       })
+      return
     }
     if (e.res.data.data.status_code === 422) {
       setTimeout(() => {
@@ -579,17 +582,21 @@ function CartCheckout(props) {
     } = data
 
     if (isObjectsValue(coupon_info)) {
-      setState((draft) => {
-        draft.couponInfo = {
-          type: 'coupon',
-          value: {
-            title: coupon_info.info,
-            card_id: coupon_info.id,
-            code: coupon_info.coupon_code,
-            discount: coupon_info.discount_fee
-          }
+      let info = {
+        type: 'coupon',
+        value: {
+          title: coupon_info.info,
+          card_id: coupon_info.id,
+          code: coupon_info.coupon_code,
+          discount: coupon_info.discount_fee
         }
+      }
+      setState((draft) => {
+        draft.couponInfo = info
       })
+      if (!coupon) {
+        dispatch(changeCoupon(info))
+      }
     } else {
       setState((draft) => {
         draft.couponInfo = {}
@@ -647,16 +654,16 @@ function CartCheckout(props) {
 
   const getParamsInfo = async (submitLoading = false) => {
     const { value, activity } = getActivityValue() || {}
-    // const { distributor_id: shop_id, store_id, status = true } = shop.shopInfo
-    let ziti_shopid
-    if (shop.zitiShop) {
-      const { distributor_id } = shop.zitiShop
-      ziti_shopid = distributor_id
-    }
 
+    let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
-      receiver = pickBy({}, doc.checkout.RECEIVER_ADDRESS)
+      receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
+      if (shop.zitiShop) {
+        const { distributor_id } = shop.zitiShop
+        ziti_shopid = distributor_id
+        receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
+      }
     }
 
     let cus_parmas = {
@@ -670,14 +677,20 @@ function CartCheckout(props) {
       member_discount: 0,
       coupon_discount: 0,
       not_use_coupon: 0,
-      isNostores: !openStore ? 1 : 0, // 这个传参需要和后端在确定一下
+      isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
       pay_type: payType,
-      // distributor_id: openStore ? shop_id : (receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid),
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
 
+    if (receiptType === 'ziti') {
+      delete cus_parmas.receiver_zip
+    }
+
+    // 积分不开票
     if (payType === 'point') {
+      delete cus_parmas.invoice_type
+      delete cus_parmas.invoice_content
       delete cus_parmas.point_use
     }
 
@@ -685,7 +698,7 @@ function CartCheckout(props) {
       cus_parmas.order_type = 'normal_pointsmall'
     }
 
-    if (!VERSION_STANDARD) {
+    if (VERSION_PLATFORM) {
       delete cus_parmas.isNostores
     }
 
@@ -868,6 +881,19 @@ function CartCheckout(props) {
         />
       </View>
       {goodsComp()}
+      {type !== 'limited_time_sale' &&
+        type !== 'group' &&
+        type !== 'seckill' &&
+        !bargain_id &&
+        !isPointitemGood && (
+          <SpCell
+            isLink
+            className='cart-checkout__coupons'
+            title='优惠券'
+            onClick={handleCouponsClick}
+            value={couponText || '请选择'}
+          />
+        )}
       {isWeixin && !isPointitemGood && !bargain_id && totalInfo.invoice_status && (
         <SpCell
           isLink
@@ -883,19 +909,6 @@ function CartCheckout(props) {
           </View>
         </SpCell>
       )}
-      {type !== 'limited_time_sale' &&
-        type !== 'group' &&
-        type !== 'seckill' &&
-        !bargain_id &&
-        !isPointitemGood && (
-          <SpCell
-            isLink
-            className='cart-checkout__coupons'
-            title='优惠券'
-            onClick={handleCouponsClick}
-            value={couponText || '请选择'}
-          />
-        )}
       {packInfo.is_open && ( // 打包
         <View className='cart-checkout__pack'>
           <CompSelectPackage
@@ -927,7 +940,7 @@ function CartCheckout(props) {
         </SpCell>
       )}
 
-      <PointUse
+      <CompPointUse
         isOpened={isPointOpenModal}
         type={payType}
         defalutPaytype={defalutPaytype}

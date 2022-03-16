@@ -5,7 +5,7 @@ import { SpImg, PointLine } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 
-import { isObject, classNames, isWeb, VERSION_STANDARD } from '@/utils'
+import { isObject, classNames, isWeb, VERSION_PLATFORM } from '@/utils'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 
 import './index.scss'
@@ -260,7 +260,7 @@ export default class GoodsItem extends Component {
               )}
             </View>
 
-            {!VERSION_STANDARD && info.distributor_info && !Array.isArray(info.distributor_info) && (
+            {VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info) && (
               <View className='goods-item__store' onClick={onStoreClick}>
                 {info.distributor_info.name}{' '}
                 <Text class='goods-item__store-entry'>

@@ -59,14 +59,14 @@ function CmopDeliver(props) {
     if (receiptType == 'dada') {
       query['city'] = distributorInfo.city
     }
-    if (receiptType !== 'ziti') {
-      // 非自提情况下，把地址存起来，否则清空地址
-      const { list } = await api.member.addressList(query)
-      const defaultAddress = list.find((item) => item.is_def) || list[0] || null
-      await dispatch(updateChooseAddress(defaultAddress))
-    } else {
-      await dispatch(updateChooseAddress({}))
-    }
+    // if (receiptType !== 'ziti') {
+    // 非自提情况下，把地址存起来，否则清空地址
+    const { list } = await api.member.addressList(query)
+    const defaultAddress = list.find((item) => item.is_def) || list[0] || null
+    await dispatch(updateChooseAddress(defaultAddress))
+    // } else {
+    //   await dispatch(updateChooseAddress({defaultAddress}))
+    // }
   }
 
   const handleSwitchExpress = async (receipt_type) => {

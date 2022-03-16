@@ -46,7 +46,8 @@ import {
   isWeixin,
   linkPage,
   getAppId,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  VERSION_PLATFORM
 } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
@@ -1485,7 +1486,7 @@ export default class EspierDetail extends Component {
             />
           )}
 
-          {!VERSION_STANDARD && !isArray(info.distributor_info) && (
+          {VERSION_PLATFORM && !isArray(info.distributor_info) && (
             <StoreInfo info={info.distributor_info} />
           )}
 

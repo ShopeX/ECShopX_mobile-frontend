@@ -17,7 +17,15 @@ import {
 
 import req from '@/api/req'
 import api from '@/api'
-import { pickBy, classNames, isArray, isAlipay, payTypeField, VERSION_STANDARD } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  isArray,
+  isAlipay,
+  payTypeField,
+  VERSION_STANDARD,
+  VERSION_PLATFORM
+} from '@/utils'
 import entry from '@/utils/entry'
 import { withPager, withBackToTop } from '@/hocs'
 import S from '@/spx'
@@ -419,7 +427,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (!VERSION_STANDARD) {
+    // if (VERSION_PLATFORM) {
     //   curdis_id = 0
     // }
     return { distributor_id: curdis_id }
@@ -433,7 +441,7 @@ export default class Home extends Component {
     if (!curStore.distributor_id && curStore.distributor_id !== 0) {
       return
     }
-    // if (!VERSION_STANDARD || isAlipay) {
+    // if (VERSION_PLATFORM || isAlipay) {
     //   curdis_id = 0
     // }
 

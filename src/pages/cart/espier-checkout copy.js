@@ -25,7 +25,8 @@ import {
   merchantIsvaild,
   debounce,
   showToast,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  VERSION_PLATFORM
 } from '@/utils'
 import { lockScreen } from '@/utils/dom'
 import { Tracker } from '@/service'
@@ -674,7 +675,7 @@ export default class CartCheckout extends Component {
     if (payType === 'point') {
       delete params.point_use
     }
-    if (!VERSION_STANDARD) {
+    if (VERSION_PLATFORM) {
       delete params.isNostores
     }
     if (coupon) {

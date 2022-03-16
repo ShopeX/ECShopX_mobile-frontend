@@ -54,15 +54,18 @@
       }
       &__desc {
         line-height: 1;
-        word-break:break-all
+        word-break: break-all;
       }
     }
-  
+
     .btn-submit {
       width: 100%;
       border-radius: 0;
       background: var(--color-primary);
       border: var(--color-primary);
+      position: fixed;
+      bottom: 0;
+      left: 0;
       &::after {
         content: none;
       }
