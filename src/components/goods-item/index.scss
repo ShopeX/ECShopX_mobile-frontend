@@ -15,10 +15,10 @@ $item-img-size: 240px !default;
 
 .goods-item {
   $self: &;
-	position: relative;
+  position: relative;
   border-radius: $item-border-radius;
   overflow: hidden;
-	box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 
   &__hd {
   }
@@ -31,7 +31,7 @@ $item-img-size: 240px !default;
     padding: 20px;
     position: relative;
     z-index: 99;
-    background: #FFFFFF;
+    background: #ffffff;
   }
 
   &__img {
@@ -41,16 +41,16 @@ $item-img-size: 240px !default;
     top: 0;
     width: 100%;
     height: 100%;
-    
+
     &-wrap {
       display: flex;
       position: relative;
       &::after {
         padding-top: 100%;
-        content: ""
+        content: '';
       }
       /*  #ifdef  alipay  */
-      .img-class{
+      .img-class {
         width: 100%;
         height: 100%;
       }
@@ -58,14 +58,12 @@ $item-img-size: 240px !default;
     }
   }
 
-  
-  &.cart{ 
+  &.cart {
     .goods-item__img {
       position: relative;
-    } 
-  } 
-  
-   
+    }
+  }
+
   &__caption {
     padding-bottom: 20px;
   }
@@ -93,13 +91,13 @@ $item-img-size: 240px !default;
   }
   &__group {
     border-radius: 4px;
-    background: #FF5000;
+    background: #ff5000;
     color: #fff;
   }
   &__title {
     margin: 0 0 5px;
     max-height: 80px;
-    @include multi-ellipsis(2);
+    @include multi-ellipsis(1);
     line-height: 1.3;
     font-size: 26px;
     color: #333;
@@ -108,7 +106,7 @@ $item-img-size: 240px !default;
   &__desc {
     margin: 0 0 15px;
     line-height: 1.3;
-    @include multi-ellipsis(2);
+    @include multi-ellipsis(1);
     color: $color-gray;
     font-size: $font-size-small;
   }
@@ -126,11 +124,11 @@ $item-img-size: 240px !default;
   }
   &__point {
     display: flex;
-    &-number{
+    &-number {
       font-weight: 500;
       font-size: 30rpx;
     }
-    &-text{
+    &-text {
       font-size: 22rpx;
       margin-left: 5rpx;
       margin-top: 6rpx;
@@ -177,14 +175,16 @@ $item-img-size: 240px !default;
     font-size: $font-size-small;
     text-align: right;
     font-size: 18px;
-    [class^="icon-"], .iconfont {
+    [class^='icon-'],
+    .iconfont {
       color: #d0d0d0;
       font-size: 46px;
       &:before {
         margin-left: 8px;
       }
     }
-    .icon-star-on, .icon-like-on {
+    .icon-star-on,
+    .icon-like-on {
       color: $color-brand-primary;
     }
   }
@@ -230,12 +230,12 @@ $item-img-size: 240px !default;
     margin: 30% auto 0;
     font-size: 30rpx;
     font-weight: 400;
-    color: #FFFFFF;
+    color: #ffffff;
     line-height: 140rpx;
     border-radius: 50%;
     text-align: center;
   }
   &__gray {
-    color: #BBBBBB !important;
+    color: #bbbbbb !important;
   }
 }
