@@ -102,7 +102,9 @@ function CompMenu(props) {
     menus = menus.concat(MENUS_CONST)
   }
 
-  menus=menus.concat(MENUS_DIANWU); 
+  if(accessMenu.dianwu){
+    menus=menus.concat(MENUS_DIANWU); 
+  } 
 
   return (
     <View className='comp-menu'>

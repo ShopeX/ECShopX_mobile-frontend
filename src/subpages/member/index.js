@@ -168,8 +168,30 @@ function MemberIndex(props) {
     }
   }
 
+  const setDianwu = async (menu) => {
+    const { result,status } = await api.dianwu.is_admin(); 
+    S.set('DIANWU_CONFIG',result,true)
+    setConfig((draft) => { 
+      draft.menu = {
+        ...menu, 
+        dianwu:status
+      } 
+    })
+  }
+
+  const setHeaderBlock = async () => {
+    const resAssets = await api.member.memberAssets()
+    const { discount_total_count, fav_total_count, point_total_count } = resAssets
+    setState((draft) => {
+      draft.favCount = fav_total_count
+      draft.point = point_total_count
+      draft.couponCount = discount_total_count
+    })
+  }
+
+
   const getMemberCenterConfig = async () => {
-    const [bannerRes, menuRes, redirectRes, pointShopRes,dianwuRes] = await Promise.all([
+    const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
       // 会员中心banner
       await api.shop.getPageParamsConfig({
         page_name: 'member_center_setting'
@@ -184,8 +206,7 @@ function MemberIndex(props) {
       }),
       // 积分商城
       await api.pointitem.getPointitemSetting(),
-      //店务
-      await api.dianwu.is_admin()
+     
     ])
     let banner,
       menu,
@@ -202,10 +223,12 @@ function MemberIndex(props) {
         urlOpen: url_is_open,
         appId: app_id
       }
-    }
-    console.log("==dianwuRes==",dianwuRes)
+    } 
     if (menuRes.list.length > 0) {
       menu = { ...menuRes.list[0].params.data, purchase: true }
+    } 
+    if (S.get(SG_TOKEN)) { 
+      setDianwu(menu);
     }
     if (redirectRes.list.length > 0) {
       const {
@@ -251,15 +274,7 @@ function MemberIndex(props) {
     })
   }
 
-  const setHeaderBlock = async () => {
-    const resAssets = await api.member.memberAssets()
-    const { discount_total_count, fav_total_count, point_total_count } = resAssets
-    setState((draft) => {
-      draft.favCount = fav_total_count
-      draft.point = point_total_count
-      draft.couponCount = discount_total_count
-    })
-  }
+  
 
   const getMemberCenterData = async () => {
     const resSales = await api.member.getSalesperson()
