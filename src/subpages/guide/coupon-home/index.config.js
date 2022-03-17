@@ -1,4 +1,4 @@
 export default {
   navigationStyle: 'custom',
-  navigationBarTitleText: '优惠券'
+  navigationBarTitleText: '导购货架'
 }
