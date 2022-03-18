@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { SpPage } from '@/components'
+import { SpPage, SpSearchBar } from '@/components'
 import {
   BaHomeWgts,
   BaStoreList,
