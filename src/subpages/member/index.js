@@ -67,7 +67,7 @@ const initialConfigState = {
     memberinfo_enable: false, // 个人信息
     tenants: true, //商家入驻
     purchase: true, // 员工内购
-    dianwu:true  // 店务
+    dianwu:false  // 店务
   },
   infoAppId: '',
   infoPage: '',
