@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText, getThemeStyle, styleNames, JumpGoodDetail } from '@/utils'
-import OrderItem from '../../../../components/orderItem/order-item'
+import { SpOrderItem } from '@/components'
 
 import './detail-item.scss'
 
@@ -62,7 +62,7 @@ export default class DetailItem extends Component {
     copyText(val)
     S.toast('复制成功')
   }
-  handleSelectionChange (item_id, checked) {
+  handleSelectionChange(item_id, checked) {
     //选择要申请售后的商品
     const { info } = this.props
     info.orders.map((item) => {
@@ -72,7 +72,7 @@ export default class DetailItem extends Component {
       info
     })
   }
-  handleQuantityChange (item, val) {
+  handleQuantityChange(item, val) {
     //改变售后商品的数量
     const { info } = this.props
     info.orders.map((v) => {
@@ -83,7 +83,7 @@ export default class DetailItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { customFooter, info, isPointitem, showType } = this.props
     return (
       <View className='detail-item' style={styleNames(getThemeStyle())}>
@@ -105,7 +105,7 @@ export default class DetailItem extends Component {
                   </View>
                 ) : null}
               </View>
-              <OrderItem
+              <SpOrderItem
                 key={`${idx}1`}
                 info={item}
                 isShowNational

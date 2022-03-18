@@ -1,48 +1,81 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
+import { updateChooseAddress } from '@/store/slices/user'
+import { classNames, VERSION_STANDARD } from '@/utils'
+import api from '@/api'
 
+import { deliveryList } from '../const'
 import './comp-deliver.scss'
-import classNames from 'classnames'
 
-function CmopDeliver (props) {
+const initialState = {
+  distributorInfo: {},
+  receiptType: 'logistics'
+}
+
+function CmopDeliver(props) {
   const {
-    currentStore = {},
     address = {},
-    receiptType = '', // 配送方式（logistics：普通快递  dada：同城配  ziti：自提）
-    headquartersStore = {}, // 总店自提点
-    onChangReceiptType = () => {}
+    distributor_id,
+    onChangReceiptType = () => {},
+    onEidtZiti = () => {}
   } = props
 
+  const dispatch = useDispatch()
+
   const { location = {} } = useSelector((state) => state.user)
-  const { rgb } = useSelector((state) => state.sys)
+  const { rgb, openStore } = useSelector((state) => state.sys)
+  const { zitiShop } = useSelector((state) => state.shop)
+  const [state, setState] = useImmer(initialState)
+  const { distributorInfo, receiptType } = state
 
-  const deliveryList = [
-    {
-      type: 'logistics',
-      name: '普通快递',
-      isopen: currentStore.is_delivery
-    },
-    {
-      type: 'dada',
-      name: '同城配',
-      isopen: headquartersStore.is_current ? headquartersStore.is_dada : currentStore.is_dada
-    },
-    {
-      type: 'ziti',
-      name: '自提',
-      isopen: headquartersStore.is_current ? headquartersStore.is_ziti : currentStore.is_ziti // type !== 'pointitem' && currentStore.is_ziti
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  useEffect(() => {
+    fetchAddress()
+  }, [receiptType])
+
+  const fetch = async () => {
+    let distributorInfo
+    if (distributor_id == 0) {
+      distributorInfo = await api.shop.getHeadquarters({ distributor_id })
+    } else {
+      distributorInfo = await api.shop.getShop({ distributor_id })
     }
-  ]
+    setState((draft) => {
+      draft.distributorInfo = distributorInfo
+    })
+  }
 
-  const showSwitchDeliver = deliveryList.filter((item) => item.isopen) || []
+  const fetchAddress = async () => {
+    let query = {
+      receipt_type: receiptType
+    }
+    if (receiptType == 'dada') {
+      query['city'] = distributorInfo.city
+    }
+    // if (receiptType !== 'ziti') {
+    // 非自提情况下，把地址存起来，否则清空地址
+    const { list } = await api.member.addressList(query)
+    const defaultAddress = list.find((item) => item.is_def) || list[0] || null
+    await dispatch(updateChooseAddress(defaultAddress))
+    // } else {
+    //   await dispatch(updateChooseAddress({defaultAddress}))
+    // }
+  }
 
-  const handleSwitchExpress = (type) => {
+  const handleSwitchExpress = async (receipt_type) => {
     // 切换配送方式
-    if (receiptType === type) return
-    onChangReceiptType(type)
+    if (receiptType === receipt_type) return
+    setState((draft) => {
+      draft.receiptType = receipt_type
+    })
+    onChangReceiptType({ receipt_type, distributorInfo })
   }
 
   const handleMapClick = () => {
@@ -55,67 +88,71 @@ function CmopDeliver (props) {
     })
   }
 
+  // 切换自提店铺
+  const handleEditZitiClick = (id = 0) => {
+    onEidtZiti(id)
+  }
+
   const handleChooseAddress = (choose) => {
     // 自定义选择店铺跳转事件
-    let city = headquartersStore.is_current ? headquartersStore.city : currentStore.city
-    let params = ''
-    if (receiptType === 'dada') {
-      params = `&city=${city}&receipt_type=dada`
-    }
+    let city = distributorInfo.city
     Taro.navigateTo({
-      url: `/marketing/pages/member/address?isPicker=${choose}${params}`
+      url: `/marketing/pages/member/address?isPicker=${choose}&city=${city}&receipt_type=dada`
     })
   }
 
-  const showSwitchDeliverComp = () => {
-    // 配送方式选择器
-    return (
-      <View className='switch-box'>
-        <View className={classNames(showSwitchDeliver.length > 0 && 'switch-tab')}>
-          {showSwitchDeliver.map((item) => (
-            <View
-              key={item.type}
-              className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
-              style={receiptType === item.type && { background: `rgb(${rgb}, 0.4)` }}
-              onClick={handleSwitchExpress.bind(this, item.type)}
-            >
-              {item.name}
-            </View>
-          ))}
-        </View>
-      </View>
-    )
-  }
+  const zitiInfo = zitiShop && receiptType === 'ziti' ? zitiShop : distributorInfo
 
   return (
     <View className='page-comp-deliver'>
-      {showSwitchDeliverComp()}
+      <View className='switch-box'>
+        <View className={classNames(deliveryList.length > 0 && 'switch-tab')}>
+          {deliveryList.map((item) => {
+            if (distributorInfo[item.key]) {
+              return (
+                <View
+                  key={item.type}
+                  className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
+                  onClick={() => {
+                    handleSwitchExpress(item.type)
+                  }}
+                >
+                  {item.name}
+                </View>
+              )
+            }
+          })}
+        </View>
+      </View>
       {/** 普通快递 */}
       {receiptType === 'logistics' && <AddressChoose isAddress={address} />}
       {/** 同城配 */}
       {receiptType === 'dada' && (
         <View className='store-module'>
-          <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress.bind(this)} />
-          <View className='store'>
-            配送门店: {headquartersStore.is_current ? headquartersStore.name : currentStore.name}
-          </View>
+          <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress} />
+          <View className='store'>配送门店: {distributorInfo.name}</View>
         </View>
       )}
       {/** 自提 */}
       {receiptType === 'ziti' && (
         <View className='address-module'>
-          <View className='address-title'>{currentStore.name}</View>
+          <View className='address-title'>{zitiInfo.name}</View>
           <View className='address-detail'>
-            <View className='address'>{currentStore.store_address}</View>
-            <View className='iconfont icon-periscope' onClick={handleMapClick.bind(this)}></View>
+            <View className='address'>{zitiInfo.store_address}</View>
+            {!openStore && VERSION_STANDARD ? (
+              <View
+                className='iconfont icon-edit'
+                onClick={() => handleEditZitiClick(zitiInfo.distributor_id)}
+              ></View>
+            ) : (
+              <View className='iconfont icon-periscope' onClick={() => handleMapClick()}></View>
+            )}
           </View>
           <View className='other-info'>
-            <View className='text-muted light'>门店营业时间：{currentStore.hour}</View>
+            <View className='text-muted light'>门店营业时间：{zitiInfo.hour}</View>
             <View className='text-muted'>
               联系电话：
-              <Text className='phone'>
-                {headquartersStore.is_current ? headquartersStore.phone : currentStore.phone}
-              </Text>
+              <Text className='phone'>{zitiInfo.phone}</Text>
             </View>
           </View>
         </View>

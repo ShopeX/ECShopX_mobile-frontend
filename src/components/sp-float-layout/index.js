@@ -6,7 +6,7 @@ import { AtFloatLayout } from 'taro-ui'
 import { classNames } from '@/utils'
 import './index.scss'
 
-function SpFloatLayout (props) {
+function SpFloatLayout(props) {
   const {
     title,
     children,

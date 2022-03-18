@@ -3,13 +3,13 @@ import api from '@/api'
 import req from '@/api/req'
 import S from '@/spx'
 import { getOpenId } from '@/utils/youshu'
-import { payTypeField } from '@/utils'
+import { payTypeField, VERSION_STANDARD } from '@/utils'
 import entryLaunchFun from '@/utils/entryLaunch'
 import qs from 'qs'
 
 // 请在onload 中调用此函数，保证千人千码跟踪记录正常
 // 用户分享和接受参数处理
-async function entryLaunch (data, isNeedLocate, privacy_time) {
+async function entryLaunch(data, isNeedLocate, privacy_time) {
   let options = null
   if (data.scene) {
     const scene = decodeURIComponent(data.scene)
@@ -141,7 +141,7 @@ async function entryLaunch (data, isNeedLocate, privacy_time) {
   return options
 }
 
-async function logScene (data) {
+async function logScene(data) {
   if (data.scene) {
     //扫码进来时
     let logParams = {}
@@ -172,7 +172,7 @@ async function logScene (data) {
   }
 }
 
-async function getLocalSetting () {
+async function getLocalSetting() {
   const paramsurl = qs.stringify(payTypeField)
   const url = `/pagestemplate/setInfo?${paramsurl}`
   const { is_open_wechatapp_location } = await req.get(url)
@@ -188,7 +188,7 @@ async function getLocalSetting () {
 //     distributor_id:0
 //   }
 //   Taro.setStorageSync('curStore', store)
-async function getLocal (isNeedLocate, privacy_time) {
+async function getLocal(isNeedLocate, privacy_time) {
   let store = null
   const positionStatus = await getLocalSetting()
   if (!positionStatus) {
@@ -232,7 +232,7 @@ async function getLocal (isNeedLocate, privacy_time) {
   return store
 }
 
-async function getLoc () {
+async function getLoc() {
   if (process.env.TARO_ENV === 'weapp' || process.env.TARO_ENV === 'alipay') {
     return await Taro.getLocation({ type: 'gcj02' }).then(
       async (locationData) => {
@@ -245,7 +245,7 @@ async function getLoc () {
       }
     )
   } else {
-    // if (process.env.APP_PLATFORM === 'standard') {
+    // if (VERSION_STANDARD) {
     // return getWebLocal().catch(() => '定位错误')
     // } else {
     //   return null
@@ -253,9 +253,9 @@ async function getLoc () {
   }
 }
 
-async function getStoreStatus () {
+async function getStoreStatus() {
   const { nostores_status } = Taro.getStorageSync('otherSetting')
-  // if (process.env.APP_PLATFORM === "standard") {
+  // if (VERSION_STANDARD) {
   if ('standard') {
     if (nostores_status === true) {
       return true
@@ -300,7 +300,7 @@ async function getStoreStatus () {
 //   })
 // }
 // 新增千人千码跟踪记录
-function trackViewNum (monitor_id, source_id) {
+function trackViewNum(monitor_id, source_id) {
   let _session = Taro.getStorageSync('_session')
   if (!_session) {
     return true
@@ -314,7 +314,7 @@ function trackViewNum (monitor_id, source_id) {
 }
 
 // distributorId 店铺ID
-async function handleDistributorId (distributorId) {
+async function handleDistributorId(distributorId) {
   const res = await api.shop.getShop({ distributor_id: distributorId })
   //const isOpenStore = await getStoreStatus()
   if (res.status === false) {
@@ -328,7 +328,7 @@ async function handleDistributorId (distributorId) {
 }
 
 // 格式化URL字符串
-function parseUrlStr (urlStr) {
+function parseUrlStr(urlStr) {
   var keyValuePairs = []
   if (urlStr) {
     for (var i = 0; i < urlStr.split('&').length; i++) {
@@ -358,7 +358,7 @@ function parseUrlStr (urlStr) {
 // }
 
 // 高德地图根据地址解析经纬度
-async function positiveAnalysisGaode (locationData) {
+async function positiveAnalysisGaode(locationData) {
   const { addressdetail: address } = locationData
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/geo`,
@@ -380,7 +380,7 @@ async function positiveAnalysisGaode (locationData) {
 }
 
 // 高德地图根据经纬度解析地址
-async function InverseAnalysisGaode (locationData) {
+async function InverseAnalysisGaode(locationData) {
   const { lat, lng } = locationData
   let cityInfo = await Taro.request({
     url: `https://restapi.amap.com/v3/geocode/regeo`,

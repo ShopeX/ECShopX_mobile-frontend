@@ -1,0 +1,56 @@
+.page-guide-cart-espiercheckout {
+  .checkout-toolbar {
+    display: flex;
+    height: 100%;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .toolbar-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .total-num {
+    font-size: 28px;
+  }
+  .total-info {
+    text-align: right;
+    margin-right: 20px;
+  }
+  .desc-txt {
+    color: #666;
+  }
+  .list-wrap {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    &.item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .checkitem-hd {
+    height: 60px;
+    line-height: 60px;
+  }
+  .goods-item-bd {
+    .item-bd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .item-num {
+      margin-top: 16px;
+    }
+  }
+  .checkout-info {
+    margin: 0 20px 20px;
+    .sp-cell__bd {
+      text-align: right;
+      padding-right: 0;
+    }
+  }
+}

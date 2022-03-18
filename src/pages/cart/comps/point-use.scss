@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .point-use {
   &__hd {
@@ -15,7 +15,7 @@
       color: #555;
       position: absolute;
       right: 20px;
-      top: 50%;
+      top: 15%;
       margin-top: -15px;
     }
     /*  #ifdef  alipay  */
@@ -24,7 +24,7 @@
       color: #555;
       position: absolute;
       right: 20px;
-      top: 50%;
+      top: 15%;
       margin-top: -15px;
     }
     /*  #endif  */

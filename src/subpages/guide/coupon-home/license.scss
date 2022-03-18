@@ -1,0 +1,23 @@
+@import '@/style/imports';
+
+.page-home-license {
+  background: #fff;
+  padding: 20px 0 20px;
+  .dl {
+    font-size: 24px;
+    color: #2d2d2d;
+    margin: 0 60px 50px;
+  }
+  .dt {
+    font-size: 22px;
+    color: #888;
+    margin: 0 0 13px;
+    display: block;
+    line-height: 1;
+  }
+  .dd {
+    line-height: 1.5;
+    display: block;
+    font-weight: bold;
+  }
+}

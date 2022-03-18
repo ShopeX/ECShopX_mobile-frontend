@@ -1,0 +1,10 @@
+.page-guide-coupon {
+  .coupon-list {
+    padding: 20px;
+    .coupon-item__wrap {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

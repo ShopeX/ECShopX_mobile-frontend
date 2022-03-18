@@ -5,9 +5,8 @@ import { SpToast, Loading, BackToTop, SpNavBar } from '@/components'
 import req from '@/api/req'
 import { withBackToTop } from '@/hocs'
 import S from '@/spx'
-import { buriedPoint } from '@/utils'
+import { buriedPoint, getDistributorId } from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
-import { getDistributorId } from '@/utils/helper'
 import HomeWgts from '../home/comps/home-wgts'
 import qs from 'qs'
 import './custom-page.scss'
@@ -15,7 +14,7 @@ import './custom-page.scss'
 @withBackToTop
 export default class HomeIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +26,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const { id } = this.$instance.router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
@@ -52,7 +51,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { id } = this.$instance.router.params
     const dtid = getDistributorId()
     const pathparams = qs.stringify({
@@ -75,7 +74,7 @@ export default class HomeIndex extends Component {
     })
   }
 
-  async onShareAppMessage () {
+  async onShareAppMessage() {
     const { shareInfo } = this.state
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -88,7 +87,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { shareInfo } = this.state
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -100,7 +99,7 @@ export default class HomeIndex extends Component {
     }
   }
 
-  render () {
+  render() {
     const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
 
     if (!wgts) {

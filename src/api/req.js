@@ -1,7 +1,14 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
 import S from '@/spx'
-import { isAlipay, isWeixin, isWeb, isMerchantModule, getExtConfigData } from '@/utils'
+import {
+  isAlipay,
+  isWeixin,
+  isWeb,
+  isMerchantModule,
+  isGoodsShelves,
+  getExtConfigData
+} from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
 
@@ -117,7 +124,14 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      let url = isMerchantModule() ? '/subpages/merchant/login' : '/subpages/member/index'
+      let url
+      if (isMerchantModule()) {
+        url = '/subpages/merchant/login'
+      } else if (isGoodsShelves()) {
+        url = '/subpages/guide/index'
+      } else {
+        url = '/subpages/member/index'
+      }
       getCurrentInstance().router.path !== url && Taro.redirectTo({ url })
     }, 300)
   }

@@ -20,12 +20,12 @@ const MENUS = [
     icon: 'm_menu_pintuan.png',
     link: '/marketing/pages/member/group-list'
   },
-  // {
-  //   key: "pointMenu",
-  //   name: "积分商城",
-  //   icon: "m_menu_poin.png",
-  //   link: "/pointitem/pages/list",
-  // },
+  {
+    key: 'pointMenu',
+    name: '积分商城',
+    icon: 'm_menu_poin.png',
+    link: '/pointitem/pages/list'
+  },
   // {
   //   key: "boost_activity",
   //   name: "助力活动",

@@ -15,7 +15,7 @@ import {
   SpNavBar
 } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, getCurrentRoute, getBrowserEnv } from '@/utils'
+import { pickBy, classNames, getCurrentRoute, getBrowserEnv, VERSION_STANDARD } from '@/utils'
 
 import './list.scss'
 
@@ -26,7 +26,7 @@ import './list.scss'
 @withBackToTop
 export default class List extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -70,7 +70,7 @@ export default class List extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { cat_id = null, main_cat_id = null } = this.$instance.router.params
     this.firstStatus = true
 
@@ -98,7 +98,7 @@ export default class List extends Component {
     )
   }
 
-  componentWillReceiveProps (next) {
+  componentWillReceiveProps(next) {
     if (Object.keys(this.props.favs).length !== Object.keys(next.favs).length) {
       setTimeout(() => {
         const list = this.state.list.map((item) => {
@@ -112,7 +112,7 @@ export default class List extends Component {
     }
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}` : ''
@@ -123,7 +123,7 @@ export default class List extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -134,7 +134,7 @@ export default class List extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { selectParams, tagsList, curTagId } = this.state
     const { distributor_id } = Taro.getStorageSync('curStore')
@@ -147,7 +147,7 @@ export default class List extends Component {
       pageSize
     }
 
-    if (process.env.APP_PLATFORM === 'standard') {
+    if (VERSION_STANDARD) {
       query.distributor_id = distributor_id
     }
 
@@ -475,7 +475,7 @@ export default class List extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       localCurrent,
       tabList,

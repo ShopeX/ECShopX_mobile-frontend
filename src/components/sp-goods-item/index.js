@@ -8,7 +8,7 @@ import qs from 'qs'
 import api from '@/api'
 import S from '@/spx'
 
-import { isObject, classNames, showToast } from '@/utils'
+import { isObject, classNames, showToast, VERSION_PLATFORM } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 
 import './index.scss'
@@ -17,7 +17,7 @@ function SpGoodsItem(props) {
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const {
-    onClick = () => {},
+    onClick,
     onStoreClick = () => {},
     showMarketPrice = true,
     showFav = false,
@@ -27,10 +27,12 @@ function SpGoodsItem(props) {
     isPointitem = false,
     renderFooter = null,
     showPromotion = true,
-    showPrice = true
+    showPrice = true,
+    hideStore = false
   } = props
 
-  const handleFavClick = async () => {
+  const handleFavClick = async (e) => {
+    e.stopPropagation()
     if (!S.getAuthToken()) {
       showToast('请先登录')
       return
@@ -49,6 +51,10 @@ function SpGoodsItem(props) {
 
   const handleClick = () => {
     const { itemId, distributorId } = info
+    if (onClick) {
+      onClick()
+      return
+    }
     let query = { id: itemId }
     if (distributorId) {
       query = {
@@ -69,8 +75,8 @@ function SpGoodsItem(props) {
   // console.log( "favs:", favs );
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   return (
-    <View className={classNames('sp-goods-item')}>
-      <View className='goods-item__hd' onClick={handleClick.bind(this)}>
+    <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
+      <View className='goods-item__hd'>
         <SpImage src={info.pic} mode='aspectFill' />
       </View>
       <View className='goods-item__bd'>
@@ -142,7 +148,7 @@ function SpGoodsItem(props) {
             ))}
           </View>
         )}
-        {info.distributor_info && !Array.isArray(info.distributor_info) && (
+        {VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info) && (
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}
             <Text className='goods__store-entry'>

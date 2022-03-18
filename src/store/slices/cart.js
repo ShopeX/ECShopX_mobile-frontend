@@ -54,15 +54,10 @@ const cartSlice = createSlice({
       state.cartCount = payload
     },
     clear: (state, { payload }) => {
-      // debugger
       state.coupon = null
     },
     changeZitiStore: (state, { payload }) => {
-      const zitiShop = payload
-      return {
-        ...state,
-        zitiShop
-      }
+      state.zitiShop = payload
     }
   },
   extraReducers: (builder) => {
@@ -79,6 +74,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum } = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum, changeCoupon } = cartSlice.actions
 
 export default cartSlice.reducer

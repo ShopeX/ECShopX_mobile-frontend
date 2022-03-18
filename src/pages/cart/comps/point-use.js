@@ -23,7 +23,7 @@ export default class PointUse extends Component {
     disabledPoint: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -97,7 +97,7 @@ export default class PointUse extends Component {
     this.props.onChange(point, pay_type)
   }
 
-  render () {
+  render() {
     const { info, isOpened, loading, colors, pointName } = this.props
     const { point, isOpenRule, disabledPoint, localType } = this.state
     if (!info) {
@@ -160,7 +160,7 @@ export default class PointUse extends Component {
             <Button
               type='primary'
               className='btn-submit'
-              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
+              style={`background: ${colors}; border-color: ${colors};`}
               loading={loading}
               onClick={this.handleChange.bind(this, point, localType)}
             >

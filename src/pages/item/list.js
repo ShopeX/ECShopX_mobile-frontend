@@ -26,7 +26,7 @@ import {
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, isWeb } from '@/utils'
+import { pickBy, classNames, isWeixin, getDistributorId } from '@/utils'
 import { Tracker } from '@/service'
 
 import './list.scss'
@@ -99,6 +99,8 @@ function ItemList(props) {
     if (cat_id) {
       params['category'] = cat_id
     }
+
+    params.distributor_id = getDistributorId()
 
     const {
       list,

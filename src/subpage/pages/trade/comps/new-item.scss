@@ -1,12 +1,12 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .trade-item {
   background: #fff;
   border-radius: $item-border-radius;
-  padding:24px 0 32px 0;
-  margin:0 16px; 
+  padding: 24px 0 32px 0;
+  margin: 0 16px;
   margin-bottom: 24px;
-  box-shadow: 0px 2px 10px 0px #EAE7E0;
+  box-shadow: 0px 2px 10px 0px #eae7e0;
 
   .icon-globe {
     font-size: 32px;
@@ -28,20 +28,24 @@
       align-items: center;
     }
   }
-  &__bd{
-      padding:0 16px;
+  &__bd {
+    padding: 0 16px;
   }
-  &__msg{
-      margin:24px 16px;
-    .item{
-        font-weight: 400; 
-        font-size: 24px;
+  &__dist {
+    margin-bottom: 24px;
+  }
+  &__msg {
+    margin: 24px 16px;
+    margin-top: 0px;
+    .item {
+      font-weight: 400;
+      font-size: 24px;
     }
-    .lineone{
-        color: #333333;
+    .lineone {
+      color: #333333;
     }
-    .linetwo{
-        color: #999999;
+    .linetwo {
+      color: #999999;
     }
   }
   &__total {
@@ -68,8 +72,8 @@
       }
     }
   }
-  &__ft{
-      margin:0 16px;
+  &__ft {
+    margin: 0 16px;
   }
   &__total {
     padding: 20px 24px;

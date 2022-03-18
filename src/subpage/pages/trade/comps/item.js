@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { classNames, formatPriceToHundred } from '@/utils'
-import OrderItem from '../../../../components/orderItem/order-item'
-import { SpNewShopItem } from '@/components'
+import { SpNewShopItem, SpOrderItem } from '@/components'
 import './item.scss'
 
 @connect(({ colors, sys }) => ({
@@ -29,12 +28,12 @@ export default class TradeItem extends Component {
     addGlobalClass: true
   }
 
-  handleClickBtn (type) {
+  handleClickBtn(type) {
     const { info } = this.props
     this.props.onClickBtn && this.props.onClickBtn(type, info)
   }
 
-  computeTotalPrice () {
+  computeTotalPrice() {
     let total
     const {
       info: { point, order_class, freight_fee, freight_type, total_fee, payment, receipt_type },
@@ -67,7 +66,7 @@ export default class TradeItem extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       customHeader,
       customFooter,
@@ -113,7 +112,7 @@ export default class TradeItem extends Component {
           {info &&
             info.order &&
             info.order.map((item, idx) => (
-              <OrderItem
+              <SpOrderItem
                 // isShowNational={isShowNational}
                 key={`${idx}1`}
                 info={item}

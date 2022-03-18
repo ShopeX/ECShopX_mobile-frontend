@@ -15,7 +15,7 @@ const initialState = {
 }
 
 function SpPage(props, ref) {
-  const { page, router } = getCurrentInstance()
+  const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { lock, lockStyle } = state
   // debugger
@@ -100,7 +100,9 @@ function SpPage(props, ref) {
     }
   }))
 
-  const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router.path.split('?')[0])
+  const fidx = Object.values(TABBAR_PATH).findIndex(
+    (v) => v == $instance.router?.path.split('?')[0]
+  )
   const isTabBarPage = fidx > -1
   return (
     <View

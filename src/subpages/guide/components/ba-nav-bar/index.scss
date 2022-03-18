@@ -1,0 +1,25 @@
+.ba-navbar {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  box-sizing: border-box;
+  .left-container,
+  .right-container {
+    width: 100px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title-container {
+    flex: 1;
+    height: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .icon-home1 {
+    font-size: 38px;
+  }
+}

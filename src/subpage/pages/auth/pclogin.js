@@ -6,7 +6,7 @@ import api from '@/api'
 import { getAppId, getExtConfigData } from '@/utils'
 import './pclogin.scss'
 
-function parseUrlStr (urlStr) {
+function parseUrlStr(urlStr) {
   var keyValuePairs = []
   if (urlStr) {
     for (var i = 0; i < urlStr.split('&').length; i++) {
@@ -27,7 +27,7 @@ export default class PcAuth extends Component {
     checkStatus: false
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     if (this.$instance.router.params.scene) {
       const query = decodeURIComponent(this.$instance.router.params.scene)
       const queryStr = decodeURIComponent(query)
@@ -85,7 +85,7 @@ export default class PcAuth extends Component {
     }
   }
 
-  render () {
+  render() {
     const extConfig = getExtConfigData()
 
     return (

@@ -10,7 +10,7 @@ import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
 import './comp-buytoolbar.scss'
 
-function CompGoodsBuyToolbar (props) {
+function CompGoodsBuyToolbar(props) {
   const {
     onAddCart = () => {},
     onFastBuy = () => {},

@@ -1,0 +1,31 @@
+//@import '@/style/imports';
+
+.rate-item {
+  margin: 0 $edge-size $edge-margin;
+  padding: 0 0 $edge-margin;
+  @include hairline();
+  &__hd {
+    color: $color-gray-light;
+    font-size: $font-size-small;
+    padding: 8px 0;
+    display: flex;
+  }
+  &__bd {
+    font-size: $font-size-small;
+  }
+  &__user {
+    &-name {
+      margin-right: 16px;
+    }
+  }
+  &__imgs {
+    display: flex;
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+  &__img {
+    width: 120px;
+    height: 120px;
+    margin: 16px;
+  }
+}

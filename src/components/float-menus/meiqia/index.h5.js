@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
+import { VERSION_PLATFORM } from '@/utils'
 // import { Tracker } from '@/service'
 import './index.scss'
 
@@ -11,7 +12,7 @@ export default class Meiqia extends Component {
     isFloat: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,7 +23,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const meiqia = Taro.getStorageSync('meiqia') || {}
     if (meiqia.is_open === 'true') {
       const { enterprise_id, group_id, persion_ids } = meiqia
@@ -30,7 +31,7 @@ export default class Meiqia extends Component {
       let id = info.distributor_id
       const { storeId } = this.props
       // 如果不是标准版
-      if (process.env.APP_PLATFORM !== 'standard' && (storeId || storeId === 0)) {
+      if (VERSION_PLATFORM && (storeId || storeId === 0)) {
         id = storeId
       }
       if (enterprise_id) {
@@ -124,7 +125,7 @@ export default class Meiqia extends Component {
     }
   }
 
-  render () {
+  render() {
     const { isFloat } = this.props
     const { meiqia_id } = this.state
     return meiqia_id ? (

@@ -112,7 +112,7 @@ export default class CouponPicker extends Component {
     const payload = value
       ? { type, value }
       : {
-          not_use_coupon: 1
+          not_use_coupon: 1 // 1是不用 0是用
         }
     this.props.onChangeCoupon(payload)
     setTimeout(() => {

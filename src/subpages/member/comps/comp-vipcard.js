@@ -10,7 +10,7 @@ function CompVipCard(props) {
   const { isVip, vipType, endTime } = info
   const { user_card_code } = userInfo
   const notVip = (
-    <View className='block'>
+    <View className='block normal-account'>
       <View className='lf-con'>
         <View className='vip-title'>
           开通VIP会员<Text className='iconfont icon-qianwang-01'></Text>

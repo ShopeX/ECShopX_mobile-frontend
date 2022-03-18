@@ -1,0 +1,33 @@
+.comp-store {
+  padding: 32px 24px;
+  margin: 24px 16px;
+  background-color: #fff;
+  box-shadow: 0px 2px 10px 0px #eae7e0;
+  .store-bd {
+    display: flex;
+    align-items: flex-start;
+  }
+  .store-icon {
+    margin-right: 24px;
+    border-radius: 16px;
+    /* prettier-ignore */
+    border: 1PX solid #ddd;
+    overflow: hidden;
+  }
+  .store-name {
+    margin-top: 20px;
+  }
+  .store-ft {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 40px;
+  }
+  .btn-wrap {
+    width: 180px;
+    margin: 0 12px;
+    .at-button {
+      font-size: 28px;
+    }
+  }
+}

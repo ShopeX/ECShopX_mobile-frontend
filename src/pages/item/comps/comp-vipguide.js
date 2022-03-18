@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { SpPrice, SpLogin } from '@/components'
 import './comp-vipguide.scss'
 
-function CompVipGuide (props) {
+function CompVipGuide(props) {
   const { info } = props
 
   const onChangeLogin = () => {

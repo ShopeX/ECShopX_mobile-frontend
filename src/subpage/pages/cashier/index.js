@@ -5,10 +5,10 @@ import { connect } from 'react-redux'
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { Loading, SpNavBar, SpToast } from '@/components'
-import { pickBy, browser } from '@/utils'
+import { pickBy, browser, getDistributorId } from '@/utils'
 import { withLogin } from '@/hocs'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
-// import { getPaymentList } from '@/utils/payment'
+import getPaymentList from '@/utils/payment'
 import { PAYTYPE } from '@/consts'
 import { deleteForm } from './util'
 
@@ -27,29 +27,30 @@ export default class Cashier extends Component {
     payType: PAYTYPE.WXH5
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
     deleteForm()
   }
 
-  async componentDidMount () {
-    // const { isHasAlipay } = await getPaymentList();
-    const isHasAlipay = []
+  async componentDidMount() {
+    const { isHasAlipay } = await getPaymentList(getDistributorId())
+    // const isHasAlipay = []
     this.setState({
       isHasAlipay
     })
   }
 
-  isPointitemGood () {
+  isPointitemGood() {
     const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
-  async fetch () {
-    const { order_id, pay_type, id } = this.$instance.router.params
+  async fetch() {
+    const { order_id, pay_type = PAYTYPE.WXH5, id } = this.$instance.router.params
 
     let env = ''
     if (browser.weixin) {
+      debugger
       env = 'WX'
     }
 
@@ -82,7 +83,7 @@ export default class Cashier extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, env, isHasAlipay, payType } = this.state
 
     if (!info) {

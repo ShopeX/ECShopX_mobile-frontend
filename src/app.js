@@ -106,13 +106,14 @@ class App extends Component {
           colorAccent: accent,
           pointName: point_rule_name,
           tabbar: tabBar,
-          openRecommend, // 猜你喜欢
-          openScanQrcode, // 扫码
-          openLocation, // 定位
-          openOfficialAccount, // 公众号组件
+          openRecommend, // 开启猜你喜欢 1开启 2关闭
+          openScanQrcode, // 开启扫码功能 1开启 2关闭
+          openLocation, // 开启小程序定位 1开启 2关闭
+          openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
           diskDriver: disk_driver,
           echat,
-          meiqia
+          meiqia,
+          openStore: !nostores_status // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
         }
       })
       // 兼容老的主题方式

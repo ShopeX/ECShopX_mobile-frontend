@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .category-list {
   height: 100%;
@@ -62,7 +62,7 @@
     color: #fff;
     font-size: 20px;
     &::after {
-      content: "热";
+      content: '热';
     }
   }
 }

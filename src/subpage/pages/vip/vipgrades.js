@@ -7,7 +7,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
 import { pickBy, classNames, hideLoading, isAlipay, isNavbar, redirectUrl } from '@/utils'
-import PaymentPicker from '@/pages/cart/comps/payment-picker'
+import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
 import userIcon from '@/assets/imgs/user-icon.png'
 // import { useDispatch } from 'react-redux'
 
@@ -231,12 +231,6 @@ export default class VipIndex extends Component {
     })
   }
 
-  handleLayoutClose = () => {
-    this.setState({
-      isPaymentOpend: false
-    })
-  }
-
   handlePaymentChange = async (payType) => {
     this.setState(
       {
@@ -350,17 +344,12 @@ export default class VipIndex extends Component {
                 })}
             </ScrollView>
 
-            <PaymentPicker
-              isOpened={isPaymentOpend}
+            <CompPaymentPicker
               type={payType}
-              isShowPoint={false}
-              isShowBalance={false}
-              isShowDelivery={false}
               // disabledPayment={disabledPayment}
-              onClose={this.handleLayoutClose}
               onChange={this.handlePaymentChange}
-            ></PaymentPicker>
-            {!isAlipay && (
+            />
+            {/* {!isAlipay && (
               <SpCell
                 isLink
                 border={false}
@@ -370,7 +359,7 @@ export default class VipIndex extends Component {
               >
                 <Text>{payTypeText[payType]}</Text>
               </SpCell>
-            )}
+            )} */}
             <View className='pay-btn' onClick={this.handleCharge}>
               立即支付
             </View>

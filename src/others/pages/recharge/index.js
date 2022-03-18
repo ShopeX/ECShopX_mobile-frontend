@@ -7,7 +7,7 @@ import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames } from '@/utils'
 import api from '@/api'
-import PaymentPicker from '../../../pages/cart/comps/payment-picker'
+import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
@@ -208,11 +208,6 @@ export default class Recharge extends Component {
       url: '/subpages/auth/reg-rule?type=1'
     })
   }
-  handleLayoutClose = () => {
-    this.setState({
-      isPaymentOpend: false
-    })
-  }
   handlePaymentChange = async (payType) => {
     this.setState(
       {
@@ -276,16 +271,11 @@ export default class Recharge extends Component {
         <SpCell isLink border={false} title='支付方式' onClick={this.handlePaymentShow}>
           <Text>{payTypeText[payType]}</Text>
         </SpCell>
-        <PaymentPicker
-          isOpened={isPaymentOpend}
+        <CompPaymentPicker
           type={payType}
-          isShowPoint={false}
-          isShowBalance={false}
-          isShowDelivery={false}
           // disabledPayment={disabledPayment}
-          onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
-        ></PaymentPicker>
+        />
         {/* 充值协议 */}
         <View className='balancePro'>
           <View className='price'>充值金额</View>

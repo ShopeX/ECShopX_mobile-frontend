@@ -1,0 +1,42 @@
+@import '@/style/imports';
+
+.wgt {
+  &__padded {
+    padding: 40px 0;
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    padding: 0 20px 10px 20px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: flex-end;
+    flex: 1;
+    font-size: 32px;
+  }
+
+  &__subtitle {
+    padding-left: 10px;
+    font-size: 24px;
+    color: #999;
+  }
+}
+.wgt-writing,
+.heading-view {
+  background: #ffffff;
+  padding: 0 30px;
+}
+
+.writing-view {
+  font-size: 26px;
+  line-height: 44px;
+  min-height: 30px;
+  color: #0d0d0d;
+  opacity: 0.9;
+}
+
+.goods-divider {
+  color: #bfbfbf;
+}

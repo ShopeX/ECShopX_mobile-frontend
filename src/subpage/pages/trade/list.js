@@ -14,7 +14,8 @@ import {
   getCurrentRoute,
   classNames,
   isNavbar,
-  getBrowserEnv
+  getBrowserEnv,
+  VERSION_PLATFORM
 } from '@/utils'
 import { Tracker } from '@/service'
 import TradeItem from './comps/new-item'
@@ -27,7 +28,7 @@ import './list.scss'
 @withPager
 export default class TradeList extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -45,7 +46,7 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const { status } = this.$instance.router.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
@@ -89,11 +90,11 @@ export default class TradeList extends Component {
     })
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.hideLayer()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { tabList, curTabIdx } = this.state
 
     params = _mapKeys(
@@ -292,7 +293,7 @@ export default class TradeList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { curTabIdx, curItemActionsId, tabList, list = [], page, rateStatus } = this.state
 
@@ -327,6 +328,7 @@ export default class TradeList extends Component {
                 key={item.tid}
                 rateStatus={rateStatus}
                 info={item}
+                isShowDistributorInfo={VERSION_PLATFORM}
                 showActions={curItemActionsId === item.tid}
                 onClick={this.handleClickItem.bind(this, item)}
                 onClickBtn={this.handleClickItemBtn.bind(this, item)}

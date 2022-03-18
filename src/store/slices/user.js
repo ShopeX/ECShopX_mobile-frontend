@@ -58,7 +58,6 @@ const userSlice = createSlice({
     updateChooseAddress: (state, { payload }) => {
       state.address = payload
     },
-
     updateLocation: (state, { payload }) => {
       state.location = payload
     },

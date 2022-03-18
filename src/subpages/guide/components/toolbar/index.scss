@@ -1,0 +1,30 @@
+.sp-toolbar {
+  &.spx-toolbar__inline {
+    .at-button,
+    at-button {
+      width: 100%;
+    }
+  }
+  &.is-ipx {
+    // height: $toolbar-height + $ipx-fix-height;
+    // @include fix-ipx(0);
+  }
+  background: #fff;
+  font-size: $font-size;
+  box-shadow: $toolbar-shadow;
+  box-sizing: border-box;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  align-items: center;
+  align-content: center;
+  justify-content: space-between;
+  z-index: $z-index-toolbar;
+  .at-button {
+    font-size: $font-size;
+  }
+  &-ft {
+    max-width: 120px;
+  }
+}

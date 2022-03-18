@@ -19,9 +19,29 @@ export default {
 
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
-    'pages/liveroom/index' // 直播间页面
+    'pages/liveroom/index', // 直播间页面
+    'pages/store/list', // 选择店铺列表
+    'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
+    // 导购货架 guide
+    {
+      root: 'subpages/guide',
+      pages: [
+        'index',
+        'category/index',
+        'item/list',
+        'item/espier-detail',
+        'item/package-list',
+        'cart/espier-index',
+        'cart/espier-checkout',
+        'coupon-home/index',
+        'coupon-home/coupon-detail',
+        'recommend/list',
+        'recommend/detail',
+        'custom/custom-page'
+      ]
+    },
     {
       root: 'subpages/ecshopx',
       pages: [
@@ -187,7 +207,7 @@ export default {
       root: 'pointitem',
       pages: ['pages/list']
     },
-    //商家入驻
+    // 商家入驻
     {
       root: 'subpages/merchant',
       pages: [
@@ -198,6 +218,7 @@ export default {
         'agreement' //协议页面
       ]
     },
+    // 授权
     {
       root: 'subpages/auth',
       pages: [

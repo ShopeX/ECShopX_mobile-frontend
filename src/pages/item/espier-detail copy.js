@@ -45,7 +45,9 @@ import {
   isAlipay,
   isWeixin,
   linkPage,
-  getAppId
+  getAppId,
+  VERSION_STANDARD,
+  VERSION_PLATFORM
 } from '@/utils'
 import { setPageTitle } from '@/utils/platform'
 import entry from '@/utils/entry'
@@ -88,7 +90,7 @@ import './espier-detail.scss'
 @withPointitem
 export default class EspierDetail extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -131,7 +133,7 @@ export default class EspierDetail extends Component {
     }
   }
 
-  async componentDidMount () {
+  async componentDidMount() {
     const options = await normalizeQuerys(this.$instance.router.params)
     // Taro.showLoading({
     //   mask: true
@@ -154,7 +156,7 @@ export default class EspierDetail extends Component {
       },
       async () => {
         const { is_open_store_status } = this.state
-        if (process.env.APP_PLATFORM === 'standard') {
+        if (VERSION_STANDARD) {
           // const { distributor_id } = Taro.getStorageSync('curStore')
           const curStore = Taro.getStorageSync('curStore')
           if (is_open_store_status) {
@@ -222,7 +224,7 @@ export default class EspierDetail extends Component {
     addGlobalClass: true
   }
 
-  async componentDidShow () {
+  async componentDidShow() {
     const userInfo = Taro.getStorageSync('userinfo')
     if (S.getAuthToken() && (!userInfo || !userInfo.userId)) {
       const res = await api.member.memberInfo()
@@ -240,7 +242,7 @@ export default class EspierDetail extends Component {
     this.fetchCartCount()
   }
 
-  async getEvaluationList (id) {
+  async getEvaluationList(id) {
     let params = {
       page: 1,
       pageSize: 2,
@@ -263,19 +265,18 @@ export default class EspierDetail extends Component {
     })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { from } = res
     const { info } = this.state
     const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const infoId = info.distributor_id
     const { is_open_store_status } = this.state
-    const id =
-      process.env.APP_PLATFORM === 'standard'
-        ? is_open_store_status
-          ? curStore.store_id
-          : curStore.distributor_id
-        : infoId
+    const id = VERSION_STANDARD
+      ? is_open_store_status
+        ? curStore.store_id
+        : curStore.distributor_id
+      : infoId
 
     console.log('我是好友分享', getDtidIdUrl('/pages/item/espier-detail?id=' + info.item_id, id))
 
@@ -286,18 +287,17 @@ export default class EspierDetail extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const { info } = this.state
     const curStore = Taro.getStorageSync('curStore')
     const { userId } = Taro.getStorageSync('userinfo')
     const { is_open_store_status } = this.state
     const infoId = info.distributor_id
-    const id =
-      process.env.APP_PLATFORM === 'standard'
-        ? is_open_store_status
-          ? curStore.store_id
-          : curStore.distributor_id
-        : infoId
+    const id = VERSION_STANDARD
+      ? is_open_store_status
+        ? curStore.store_id
+        : curStore.distributor_id
+      : infoId
 
     return {
       title: info.item_name,
@@ -306,7 +306,7 @@ export default class EspierDetail extends Component {
     }
   }
 
-  async fetchCartCount () {
+  async fetchCartCount() {
     const { info } = this.state
     if (!S.getAuthToken() || !info) return
     const { special_type } = info
@@ -328,7 +328,7 @@ export default class EspierDetail extends Component {
       console.log(e)
     }
   }
-  async checkWhite () {
+  async checkWhite() {
     const { status } = await api.wx.getWhiteList()
     if (status == true) {
       setTimeout(() => {
@@ -337,12 +337,12 @@ export default class EspierDetail extends Component {
     }
   }
 
-  isPointitemGood () {
+  isPointitemGood() {
     const options = this.$instance.router.params
     return options.type === 'pointitem'
   }
 
-  async goodInfo (id, param) {
+  async goodInfo(id, param) {
     let info
     if (this.isPointitemGood()) {
       info = await api.pointitem.detail(id, param)
@@ -364,7 +364,7 @@ export default class EspierDetail extends Component {
   //   }
   // }
 
-  async goodPackageList (id) {
+  async goodPackageList(id) {
     let info
     if (this.isPointitemGood()) {
       info = { list: [] }
@@ -374,7 +374,7 @@ export default class EspierDetail extends Component {
     return info
   }
 
-  async fetchInfo (itemId, goodsId) {
+  async fetchInfo(itemId, goodsId) {
     this.nextPage()
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
@@ -392,7 +392,7 @@ export default class EspierDetail extends Component {
       delete param.goods_id
     }
 
-    if (process.env.APP_PLATFORM === 'standard') {
+    if (VERSION_STANDARD) {
       param.distributor_id = distributor_id
     } else {
       if (this.$instance.router.params.dtid) {
@@ -534,7 +534,7 @@ export default class EspierDetail extends Component {
     log.debug('fetch: done', info)
   }
 
-  async goodLikeList (query) {
+  async goodLikeList(query) {
     const { id } = this.$instance.router.params
     let info
     if (this.isPointitemGood()) {
@@ -547,7 +547,7 @@ export default class EspierDetail extends Component {
     return info
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
@@ -565,7 +565,7 @@ export default class EspierDetail extends Component {
     }
   }
 
-  resolveSpecImgs (specs) {
+  resolveSpecImgs(specs) {
     const ret = {}
 
     //只有一个图片类型规格
@@ -650,7 +650,7 @@ export default class EspierDetail extends Component {
     const { info, is_open_store_status } = this.state
     let { distributor_id } = info
     const curStore = Taro.getStorageSync('curStore')
-    if (process.env.APP_PLATFORM === 'standard') {
+    if (VERSION_STANDARD) {
       //distributor_id = Taro.getStorageSync('curStore').distributor_id
       distributor_id = is_open_store_status ? curStore.store_id : curStore.distributor_id
     }
@@ -730,12 +730,7 @@ export default class EspierDetail extends Component {
 
     const pic = pics[0].replace('http:', 'https:')
     const infoId = info.distributor_id
-    const id =
-      process.env.APP_PLATFORM === 'standard'
-        ? is_open_store_status
-          ? store_id
-          : distributor_id
-        : infoId
+    const id = VERSION_STANDARD ? (is_open_store_status ? store_id : distributor_id) : infoId
 
     const wxappCode = getDtidIdUrl(
       `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${item_id}&uid=${userId}`,
@@ -907,7 +902,7 @@ export default class EspierDetail extends Component {
     })
   }
 
-  handleSavePoster () {
+  handleSavePoster() {
     const { poster } = this.state
     Taro.getSetting().then((res) => {
       if (!res.authSetting['scope.writePhotosAlbum']) {
@@ -982,12 +977,11 @@ export default class EspierDetail extends Component {
   handleClickItem = (item) => {
     const curStore = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
-    const id =
-      process.env.APP_PLATFORM === 'standard'
-        ? is_open_store_status
-          ? curStore.store_id
-          : curStore.distributor_id
-        : item.distributor_id
+    const id = VERSION_STANDARD
+      ? is_open_store_status
+        ? curStore.store_id
+        : curStore.distributor_id
+      : item.distributor_id
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${id}`
     Taro.navigateTo({
       url: this.transformUrl(url, this.isPointitem())
@@ -998,7 +992,7 @@ export default class EspierDetail extends Component {
     // const { distributor_id } = Taro.getStorageSync('curStore')
     const { is_open_store_status } = this.state
     let id = ''
-    if (process.env.APP_PLATFORM === 'standard') {
+    if (VERSION_STANDARD) {
       const { distributor_id, store_id } = Taro.getStorageSync('curStore')
       id = is_open_store_status ? store_id : distributor_id
     } else {
@@ -1010,7 +1004,7 @@ export default class EspierDetail extends Component {
       url: `/others/pages/home/coupon-home?item_id=${this.state.info.item_id}&distributor_id=${id}`
     })
   }
-  handleClickViewAllEvaluation () {
+  handleClickViewAllEvaluation() {
     let url = `/marketing/pages/item/espier-evaluation?id=${this.$instance.router.params.id}`
     if (this.isPointitemGood()) {
       url += `&order_type=pointsmall`
@@ -1105,12 +1099,11 @@ export default class EspierDetail extends Component {
     const { distributor_id, store_id } = Taro.getStorageSync('curStore')
     const { info, is_open_store_status } = this.state
     const { company_id, item_id } = info
-    const dtid =
-      process.env.APP_PLATFORM === 'standard'
-        ? is_open_store_status
-          ? store_id
-          : distributor_id
-        : info.distributor_id
+    const dtid = VERSION_STANDARD
+      ? is_open_store_status
+        ? store_id
+        : distributor_id
+      : info.distributor_id
     Taro.navigateTo({
       url: `/subpage/pages/editShare/index?id=${item_id}&dtid=${dtid}&company_id=${company_id}`
     })
@@ -1130,7 +1123,7 @@ export default class EspierDetail extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       info,
       sixSpecImgsDict,
@@ -1493,7 +1486,7 @@ export default class EspierDetail extends Component {
             />
           )}
 
-          {process.env.APP_PLATFORM !== 'standard' && !isArray(info.distributor_info) && (
+          {VERSION_PLATFORM && !isArray(info.distributor_info) && (
             <StoreInfo info={info.distributor_info} />
           )}
 

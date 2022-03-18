@@ -45,7 +45,7 @@ export default class WgtFloorImg extends Component {
             {data &&
               data.map((item, idx) => {
                 return (
-                  <View className='lis'>
+                  <View className='lis' key={idx}>
                     <View className='imgbox' key={item.id} onClick={this.onRoute.bind(this, item)}>
                       <Image lazyLoad className='img' src={item.imgUrl}></Image>
                     </View>

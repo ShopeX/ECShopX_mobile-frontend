@@ -5,7 +5,7 @@ import { View, WebView } from '@tarojs/components'
 import { SpPage } from '@/components'
 import './index.scss'
 
-function ChatIndex (props) {
+function ChatIndex(props) {
   const $instance = getCurrentInstance()
 
   const { url } = $instance.router.params

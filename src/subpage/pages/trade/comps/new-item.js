@@ -3,10 +3,9 @@ import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { classNames, formatPriceToHundred } from '@/utils'
-import OrderItem from '../../../../components/orderItem/order-item'
+import { SpOrderItem, SpNewShopItem } from '@/components'
 
 import './new-item.scss'
-import { SpNewShopItem } from '@/components'
 
 @connect(({ colors, sys }) => ({
   colors: colors.current,
@@ -22,6 +21,7 @@ export default class TradeItem extends Component {
     payType: '',
     info: {},
     rateStatus: false,
+    isShowDistributorInfo: true,
     onClickBtn: () => {},
     onClick: () => {}
   }
@@ -30,12 +30,12 @@ export default class TradeItem extends Component {
     addGlobalClass: true
   }
 
-  handleClickBtn (type) {
+  handleClickBtn(type) {
     const { info } = this.props
     this.props.onClickBtn && this.props.onClickBtn(type, info)
   }
 
-  computeTotalPrice () {
+  computeTotalPrice() {
     let total
     const {
       info: { point, order_class, freight_fee, freight_type, total_fee, payment, receipt_type },
@@ -69,7 +69,7 @@ export default class TradeItem extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       customFooter,
       onClick,
@@ -77,7 +77,8 @@ export default class TradeItem extends Component {
       payType,
       showActions,
       colors,
-      rateStatus
+      rateStatus,
+      isShowDistributorInfo
     } = this.props
 
     if (!info) {
@@ -87,9 +88,11 @@ export default class TradeItem extends Component {
     //订单号 info.tid
     return (
       <View className='trade-item'>
-        <View className='trade-item__dist'>
-          <SpNewShopItem inOrderList info={info.distributor_info} canJump />
-        </View>
+        {isShowDistributorInfo && (
+          <View className='trade-item__dist'>
+            <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+          </View>
+        )}
         <View className='trade-item__msg'>
           <View className='item lineone'>订单编号：{info.tid}</View>
           <View className='item linetwo'>下单时间：{info.create_date}</View>
@@ -98,7 +101,7 @@ export default class TradeItem extends Component {
           {info &&
             info.order &&
             info.order.map((item, idx) => (
-              <OrderItem
+              <SpOrderItem
                 key={`${idx}1`}
                 info={item}
                 payType={payType}

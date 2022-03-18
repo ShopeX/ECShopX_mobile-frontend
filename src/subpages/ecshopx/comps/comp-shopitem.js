@@ -4,23 +4,21 @@ import { SpImage } from '@/components'
 
 import './comp-shopitem.scss'
 
-function CompShopItem (props) {
+function CompShopItem(props) {
   const { info } = props
-
-  const handleClick = () => {}
 
   if (!info) {
     return null
   }
 
   return (
-    <View className='comp-shopitem' onClick={handleClick}>
+    <View className='comp-shopitem'>
       <View className='shopitem-hd'>
         <Image className='shop-image' src={info.logo}></Image>
       </View>
       <View className='shopitem-bd'>
         <View className='shop-info'>
-          <View className='name'>{info.name}</View>
+          <View className='name'>{info.store_name}</View>
           <View className='distance'>{info.distance || '100km'}</View>
         </View>
         <View className='business-hours'>
@@ -29,7 +27,7 @@ function CompShopItem (props) {
         </View>
         <View className='shop-address'>
           <Text className='iconfont icon-dizhiguanli-01' />
-          <Text>{info.address}</Text>
+          <Text>{info.store_address}</Text>
         </View>
 
         <View className='shop-tag'>

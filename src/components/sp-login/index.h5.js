@@ -7,7 +7,7 @@ import { useLogin } from '@/hooks'
 import qs from 'qs'
 import './index.scss'
 
-function SpLogin (props) {
+function SpLogin(props) {
   console.log('getCurrentInstance:', getCurrentInstance)
   const { className, children, size = 'normal', circle = false, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({

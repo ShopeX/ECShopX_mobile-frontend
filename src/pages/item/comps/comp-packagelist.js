@@ -7,7 +7,7 @@ import { SpLogin, SpPrice, SpFloatLayout, SpCheckboxNew, SpGoodsCell } from '@/c
 import api from '@/api'
 import './comp-packagelist.scss'
 
-function CompPackageList (props) {
+function CompPackageList(props) {
   const { open = false, info, onClose } = props
   if (!info) {
     return null

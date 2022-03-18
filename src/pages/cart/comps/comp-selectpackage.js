@@ -12,12 +12,12 @@ const initialState = {
   checkedRadio: false
 }
 
-function CompSelectPackage (props) {
+function CompSelectPackage(props) {
   const {
     isChecked = false,
     packInfo = {},
     isPointitemGood = false, // 是否为积分商品
-    onHanleChange = () => {}
+    onHandleChange = () => {}
   } = props
 
   const { colorPrimary } = useSelector((state) => state.sys)
@@ -51,7 +51,7 @@ function CompSelectPackage (props) {
     setState((draft) => {
       draft.isOpendActionSheet = false
     })
-    if (ischange) onHanleChange && onHanleChange(checkedRadio)
+    if (ischange) onHandleChange && onHandleChange(checkedRadio)
   }
 
   return (
@@ -66,7 +66,7 @@ function CompSelectPackage (props) {
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{packInfo.packName}</Text>
-            <View className='iconfont icon-close' onClick={onShowSheet}></View>
+            <View onClick={() => handleConfrim(false)} className='iconfont icon-close'></View>
           </View>
           <View className='payment-picker__bd'>
             <View className='payment-item no-border' onClick={handleChange.bind(this, false)}>

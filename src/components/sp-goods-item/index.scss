@@ -23,12 +23,13 @@
         color: #222;
         font-weight: bold;
         @include multi-ellipsis(1);
+        padding-top: 15px;
         // padding: 15px;
       }
       .goods-desc {
         font-size: 24px;
         color: $color-hint-text;
-        @include multi-ellipsis(2);
+        @include multi-ellipsis(1);
       }
 
       // .goods-info {

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { SpPage, SpPrice, SpImage, SpPoint } from '@/components'
 import './index.scss'
 
-function SpOrderItem (props) {
+function SpOrderItem(props) {
   const {
     payType = '',
     showExtra = true,
@@ -25,10 +25,12 @@ function SpOrderItem (props) {
   const showExtraComp = () => {
     if (showExtra) {
       return (
-        <View className='order-item__extra'>
-          <Text className='order-item__desc'>{info.goods_props}</Text>
-          {info.num && <Text className='order-item__num'>数量：{info.num}</Text>}
-          {info.item_spec_desc && <Text className='order-item__desc'>{info.item_spec_desc}</Text>}
+        <View className='sp-order-item__extra'>
+          <Text className='sp-order-item__desc'>{info.goods_props}</Text>
+          {info.num && <Text className='sp-order-item__num'>数量：{info.num}</Text>}
+          {info.item_spec_desc && (
+            <Text className='sp-order-item__desc'>{info.item_spec_desc}</Text>
+          )}
         </View>
       )
     }
@@ -37,20 +39,23 @@ function SpOrderItem (props) {
   const img = info.pic_path ? info.pic_path : Array.isArray(info.pics) ? info.pics[0] : info.pics
 
   return (
-    <View className='order-item' onClick={onClick}>
-      <View className='order-item__hd'>
+    <View className='sp-order-item' onClick={onClick}>
+      <View className='sp-order-item__hd'>
         <SpImage src={img} mode='aspectFill' width={170} height={170} />
       </View>
-      <View className='order-item__bd'>
+      <View className='sp-order-item__bd'>
         {isShowPointTag && <SpPoint />}
-        <View className='order-item__title'>
+        <View className='sp-order-item__title'>
           {info.order_item_type === 'plus_buy' && (
-            <Text className='order-item__title-tag'>换购</Text>
+            <Text className='sp-order-item__title-tag'>换购</Text>
+          )}
+          {info.order_item_type === 'gift' && (
+            <Text className='sp-order-item__title-tag'>赠品</Text>
           )}
           {info.title}
         </View>
         {showDesc && info.item_spec_desc && (
-          <Text className='order-item__spec'>{info.item_spec_desc}</Text>
+          <Text className='sp-order-item__spec'>{info.item_spec_desc}</Text>
         )}
         {renderDesc}
         {showExtraComp()}
@@ -58,17 +63,17 @@ function SpOrderItem (props) {
       {customFooter ? (
         renderFooter
       ) : (
-        <View className='order-item__ft'>
+        <View className='sp-order-item__ft'>
           {isPointitemGood ? (
             <SpPrice
-              className='order-item__price'
+              className='sp-order-item__price'
               appendText={pointName}
               noSymbol
               noDecimal
               value={info.item_point || info.point}
-            ></SpPrice>
+            />
           ) : (
-            <SpPrice className='order-item__price' unit='cent' value={info.price}></SpPrice>
+            <SpPrice className='sp-order-item__price' unit='cent' value={info.price}></SpPrice>
           )}
         </View>
       )}

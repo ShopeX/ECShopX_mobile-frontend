@@ -3,7 +3,7 @@ import api from '@/api'
 import { getAppId } from '@/utils'
 // import { Tracker } from "@/service";
 
-async function youshuLogin () {
+async function youshuLogin() {
   try {
     const { openid, unionid } = await getOpenId()
     if (openid) {
@@ -19,7 +19,7 @@ async function youshuLogin () {
 }
 
 /**获取openid以及 unionid*/
-export async function getOpenId () {
+export async function getOpenId() {
   let openid
   let unionid
   let code
@@ -37,7 +37,7 @@ export async function getOpenId () {
   }
 }
 
-function TracksPayed (info, config, moduleName) {
+function TracksPayed(info, config, moduleName) {
   let item_fee = info.item_fee
   let total_fee = info.item_fee
 
@@ -54,7 +54,7 @@ function TracksPayed (info, config, moduleName) {
   // });
 }
 
-function getYoushuAppid () {
+function getYoushuAppid() {
   const appid = getAppId()
   const {
     youshu: { weapp_app_id }

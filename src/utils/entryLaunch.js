@@ -1,7 +1,7 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
-import { showToast, log, isArray, isWeb } from '@/utils'
+import { showToast, log, isArray, VERSION_STANDARD } from '@/utils'
 
 const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
 const $instance = getCurrentInstance()
@@ -258,7 +258,7 @@ class EntryLaunch {
    */
   isOpenStore() {
     const { nostores_status } = Taro.getStorageSync('otherSetting')
-    if (process.env.APP_PLATFORM === 'standard') {
+    if (VERSION_STANDARD) {
       return !nostores_status
     } else {
       return false

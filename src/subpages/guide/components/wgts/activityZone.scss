@@ -1,0 +1,64 @@
+@import '@/style/imports';
+.activity-zone {
+  &__title {
+    display: flex;
+    padding: 39px 30px 20px;
+    font-family: SourceHanSansSC-Medium;
+  }
+  &__btitle {
+    height: 50px;
+    line-height: 50px;
+    font-size: 28px;
+    color: $color-brand-primary;
+    font-family: SourceHanSansSC-Medium;
+  }
+  &__subtitle {
+    padding: 0px 10px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 26px;
+    color: #ffffff;
+    background: $color-brand-primary;
+    border-top: 3px;
+    border-radius: 0px 15px 0 15px;
+    margin-left: 10px;
+    font-family: SourceHanSansSC-Medium;
+  }
+  .in-icon-sanjiaoxing02 {
+    font-size: 50px;
+    color: #0b4137;
+  }
+  .scroll-list {
+    margin-top: 26px;
+    .list {
+      width: 100%;
+      white-space: nowrap;
+      .list-item {
+        width: 210px;
+        margin-left: 20px;
+        display: inline-block;
+      }
+    }
+    .ac_list {
+      position: relative;
+      margin-top: 38px;
+      .slider-item__mr {
+        margin-right: 20px;
+      }
+    }
+    .ac_btn {
+      width: 100%;
+      .more {
+        width: 181px;
+        height: 61px;
+        line-height: 61px;
+        border-radius: 31px;
+        border: solid 2px #0b4137;
+        font-family: PingFang-SC-Medium;
+        font-size: 21px;
+        text-align: center;
+        margin: 30px auto 50px;
+      }
+    }
+  }
+}

@@ -1,5 +1,5 @@
-@import "../../style/imports";
-@import "../../style/animations";
+@import '../../style/imports';
+@import '../../style/animations';
 
 .sp-icon-weixin {
   color: $color-weixin;
@@ -9,7 +9,7 @@
   .address {
     display: flex;
     align-items: center;
-    padding: 20px 30px;
+    padding: 24px 16px;
   }
   // choose-address
   &__bd {
@@ -46,7 +46,7 @@
         align-items: center;
         .def {
           font-size: 20px;
-          color: #FFFFFF;
+          color: #ffffff;
           background: var(--color-primary);
           border-radius: 5px;
           padding: 2px 8px;
@@ -66,6 +66,6 @@
   }
   .icon-arrowRight {
     font-size: 40px;
-    color: rgba(170, 170, 170, 0.8)
+    color: rgba(170, 170, 170, 0.8);
   }
 }

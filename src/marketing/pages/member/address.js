@@ -12,9 +12,9 @@ import './address.scss'
 const ADDRESS_ID = 'address_id'
 
 @connect(
-  ({ user, colors }) => ({
+  ({ user, sys }) => ({
     address: user.address,
-    colors: colors.current
+    colors: sys
   }),
   (dispatch) => ({
     updateChooseAddress: (address) =>
@@ -179,12 +179,12 @@ export default class AddressIndex extends Component {
                       {item[ADDRESS_ID] === selectedId ? (
                         <Text
                           className='iconfont icon-check address-item__checked'
-                          style={{ color: colors.data[0].primary }}
+                          style={{ color: colors.colorPrimary }}
                         ></Text>
                       ) : (
                         <Text
                           className='address-item__unchecked'
-                          style={{ borderColor: colors.data[0].primary }}
+                          style={{ borderColor: colors.colorPrimary }}
                         >
                           {' '}
                         </Text>
@@ -211,7 +211,7 @@ export default class AddressIndex extends Component {
                         {item.is_def ? (
                           <Text
                             className='iconfont icon-check default__icon default__checked'
-                            style={{ color: colors.data[0].primary }}
+                            style={{ color: colors.colorPrimary }}
                           >
                             {' '}
                           </Text>
@@ -241,7 +241,7 @@ export default class AddressIndex extends Component {
           </View>
           <View
             className='member-address-add'
-            style={'background: ' + colors.data[0].primary}
+            style={'background: ' + colors.colorPrimary}
             onClick={this.handleClickToEdit.bind(this)}
           >
             添加新地址

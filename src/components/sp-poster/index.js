@@ -6,6 +6,8 @@ import { useImmer } from 'use-immer'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, authSetting, showToast } from '@/utils'
 import GoodsDetailPoster from './dw-goodsdetail'
+import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
+import GuideCheckout from './dw-guidecheckout'
 
 import './index.scss'
 
@@ -18,9 +20,10 @@ const initialState = {
   ctx: null
 }
 
-function SpPoster (props) {
+function SpPoster(props) {
   const { info, type, onClose = () => {} } = props
   const { userInfo } = useSelector((state) => state.user)
+  const { userInfo: guideInfo } = useSelector((state) => state.guide)
   const [state, setState] = useAsyncCallback(initialState)
 
   const { poster, pxWidth, pxHeight, eleId, ctx } = state
@@ -71,27 +74,44 @@ function SpPoster (props) {
           toPx,
           toRpx
         })
-        const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
-
-        setState(
-          (draft) => {
-            draft.pxWidth = canvasWidth
-            draft.pxHeight = canvasHeight
-            draft.ctx = ctx
-          },
-          async (_state) => {
-            await canvasObj.drawPoster()
-            const poster = await getPoster(_state)
-            Taro.hideLoading()
-            setState((draft) => {
-              draft.poster = poster
-            })
-          }
-        )
+        break
+      case 'guideGoodsDetial':
+        canvasObj = new GuideGoodsDetailPoster({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'guideCheckout':
+        canvasObj = new GuideCheckout({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
         break
       default:
         break
     }
+    const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
+    setState(
+      (draft) => {
+        draft.pxWidth = canvasWidth
+        draft.pxHeight = canvasHeight
+        draft.ctx = ctx
+      },
+      async (_state) => {
+        await canvasObj.drawPoster()
+        const poster = await getPoster(_state)
+        Taro.hideLoading()
+        setState((draft) => {
+          draft.poster = poster
+        })
+      }
+    )
   }
 
   const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {

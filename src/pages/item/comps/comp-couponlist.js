@@ -5,7 +5,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPrice, SpLogin } from '@/components'
 import './comp-couponlist.scss'
 
-function CompCouponList (props) {
+function CompCouponList(props) {
   const { info, onClick = () => {} } = props
   console.log(info)
   const onChangeLogin = () => {

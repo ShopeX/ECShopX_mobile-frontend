@@ -159,6 +159,7 @@ function CompPackageItem(props) {
         hideInputNumber
         open={skuPanelOpen}
         info={skuInfo}
+        type='picker'
         onClose={() => {
           setState((draft) => {
             draft.skuPanelOpen = false

@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
 import InputNumber from '@/components/input-number'
 import SpCheckbox from '@/components/checkbox'
-import OrderItem from '../../../../components/orderItem/order-item'
+import { SpOrderItem } from '@/components'
 
 import './detail-item.scss'
 
@@ -58,7 +58,7 @@ export default class AfterDetailItem extends Component {
     copyText(val)
     S.toast('复制成功')
   }
-  handleSelectionChange (item_id, checked) {
+  handleSelectionChange(item_id, checked) {
     //选择要申请售后的商品
     const { info, showType, onCheckChange } = this.props
     // info[showType].map(item=>{
@@ -74,7 +74,7 @@ export default class AfterDetailItem extends Component {
       onCheckChange(item_id, checked)
     }
   }
-  handleQuantityChange (item, val) {
+  handleQuantityChange(item, val) {
     //改变售后商品的数量
     const { info, showType, onInputNumberChange } = this.props
     // info[showType].map(v=>{
@@ -88,7 +88,7 @@ export default class AfterDetailItem extends Component {
     }
   }
 
-  render () {
+  render() {
     const { customHeader, customFooter, noHeader, onClick, info, showActions, showType } =
       this.props
 
@@ -124,7 +124,7 @@ export default class AfterDetailItem extends Component {
                 </View>
 
                 <View className='order-flex_goods'>
-                  <OrderItem key={`${idx}1`} info={item} isShowNational />
+                  <SpOrderItem key={`${idx}1`} info={item} isShowNational />
                 </View>
               </View>
 
@@ -133,7 +133,7 @@ export default class AfterDetailItem extends Component {
                 (info.status === 'TRADE_SUCCESS' ||
                   info.status === 'WAIT_BUYER_CONFIRM_GOODS' ||
                   info.status === 'WAIT_SELLER_SEND_GOODS') && (
-                  <View className='order-item__ft'>
+                  <View className='sp-order-item__ft'>
                     {info.delivery_type == 'old' &&
                       (info.delivery_code
                         ? null

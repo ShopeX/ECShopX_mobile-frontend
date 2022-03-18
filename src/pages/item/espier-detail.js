@@ -34,7 +34,8 @@ import {
   linkPage,
   pickBy,
   classNames,
-  navigateTo
+  navigateTo,
+  VERSION_PLATFORM
 } from '@/utils'
 
 import doc from '@/doc'
@@ -310,7 +311,7 @@ function EspierDetail(props) {
         <View>
           <SpFloatMenuItem
             onClick={() => {
-              Taro.navigateTo({ url: '/pages/index' })
+              Taro.navigateTo({ url: '/subpages/member/index' })
             }}
           >
             <Text className='iconfont icon-home1'></Text>
@@ -506,7 +507,7 @@ function EspierDetail(props) {
           <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>
 
           {/* 店铺 */}
-          <CompStore info={info.distributorInfo} />
+          {VERSION_PLATFORM && <CompStore info={info.distributorInfo} />}
 
           <View className='goods-desc'>
             <View className='desc-hd'>

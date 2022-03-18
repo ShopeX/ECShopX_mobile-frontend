@@ -1,6 +1,7 @@
 @import 'md-colors';
 
-$font-family: PingFangSC-Regular, PingFang SC, '微软雅黑', 'Microsoft YaHei', Helvetica, Arial, sans-serif;
+$font-family: PingFangSC-Regular, PingFang SC, '微软雅黑', 'Microsoft YaHei', Helvetica, Arial,
+  sans-serif;
 $font-size: 14px * 2 !default;
 
 $font-size-small: floor($font-size * 0.9) !default;
@@ -76,4 +77,3 @@ $z-index-tooltip: $z-index-level-3 !default;
 $z-index-dropdown: $z-index-level-3 !default;
 $z-index-modal: $z-index-level-5 !default;
 $z-index-toast: $z-index-level-6 !default;
-

@@ -30,7 +30,7 @@ import './package-list.scss'
 @withBackToTop
 export default class PackageList extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -40,11 +40,11 @@ export default class PackageList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { id } = this.$instance.router.params
     const { currentPackage } = this.state
@@ -84,7 +84,7 @@ export default class PackageList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { list, showBackToTop, scrollTop, page, currentPackage, buyPanelType } = this.state
     const { distributor_id } = this.$instance.router.params
     console.log('===================')

@@ -1,0 +1,13 @@
+@import '@/style/imports';
+
+.checkout-items {
+  display: flex;
+  flex-direction: column;
+  @include page-view();
+  &__scroll {
+    flex: 1;
+  }
+  &__list {
+    padding: $edge-margin $edge-size;
+  }
+}

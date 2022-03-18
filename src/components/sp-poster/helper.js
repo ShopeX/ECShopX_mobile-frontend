@@ -12,7 +12,7 @@
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function _drawRadiusRect (drawData, drawOptions) {
+export function _drawRadiusRect(drawData, drawOptions) {
   const { x, y, w, h, r } = drawData
   const {
     ctx,
@@ -41,7 +41,7 @@ export function _drawRadiusRect (drawData, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function _getTextWidth (text, drawOptions) {
+export function _getTextWidth(text, drawOptions) {
   const { ctx, toPx, toRpx } = drawOptions
   let texts = []
   if (Object.prototype.toString.call(text) === '[object Object]') {
@@ -82,7 +82,7 @@ export function _getTextWidth (text, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function _drawSingleText (drawData, drawOptions) {
+export function _drawSingleText(drawData, drawOptions) {
   const {
     x,
     y,
@@ -187,7 +187,7 @@ export function _drawSingleText (drawData, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function drawText (params, drawOptions) {
+export function drawText(params, drawOptions) {
   // const { ctx, toPx, toRpx } = drawOptions;
   const {
     x,
@@ -238,7 +238,7 @@ export function drawText (params, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function drawImage (data, drawOptions) {
+export function drawImage(data, drawOptions) {
   const { ctx, toPx } = drawOptions
   const {
     imgPath,
@@ -313,7 +313,7 @@ export function drawImage (data, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function drawLine (drawData, drawOptions) {
+export function drawLine(drawData, drawOptions) {
   const { startX, startY, endX, endY, color, width } = drawData
   const { ctx, toPx } = drawOptions
   ctx.save()
@@ -347,7 +347,7 @@ export function drawLine (drawData, drawOptions) {
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
-export function drawBlock (
+export function drawBlock(
   {
     text,
     width = 0,

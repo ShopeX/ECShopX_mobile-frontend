@@ -20,7 +20,7 @@ import './login.scss'
 )
 export default class Login extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -35,11 +35,11 @@ export default class Login extends Component {
     this.timer = null
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getImageVcode()
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const { redirect } = this.$instance.router.params
     if (S.getAuthToken()) {
       const url = redirect ? decodeURIComponent(redirect) : '/subpages/member/index'
@@ -72,9 +72,9 @@ export default class Login extends Component {
     }
   }
 
-  handleTimerStop () {}
+  handleTimerStop() {}
 
-  handleInputChange (name, val, error) {
+  handleInputChange(name, val, error) {
     const { info } = this.state
     info[name] = val
     if (name == 'mobile') {
@@ -105,7 +105,7 @@ export default class Login extends Component {
     })
   }
 
-  async handleSubmit () {
+  async handleSubmit() {
     const { redirect } = this.$instance.router.params
     const { loginType } = this.state
     const { mobile, password, vcode } = this.state.info
@@ -208,14 +208,14 @@ export default class Login extends Component {
     })
   }
 
-  getDevice () {
+  getDevice() {
     const ua = navigator.userAgent
     const ios = /iPad|iPhone|iPod/.test(ua)
     return ios
   }
 
   // 键盘挡输入框
-  getElementOffsetTop (el) {
+  getElementOffsetTop(el) {
     let top = el.offsetTop
     let cur = el.offsetParent
     while (cur != null) {
@@ -264,7 +264,7 @@ export default class Login extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, loginType, imgInfo, logoShow } = this.state
 
     const passwordLogin = loginType == 1

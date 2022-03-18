@@ -1,0 +1,154 @@
+@import '@/style/imports';
+
+$item-img-width: 200px !default;
+$item-img-height: 200px !default;
+
+.cart-item {
+  $self: &;
+  align-items: center;
+  background: #fff;
+  overflow: hidden;
+  padding: 0 0 30px;
+  position: relative;
+  &.is-disabled {
+    background: #fafafa;
+    opacity: 0.8;
+  }
+  &__ft {
+    position: absolute;
+    right: 20px;
+    bottom: 30px;
+  }
+  &__hd {
+    padding: 25px - 5px;
+  }
+  &__bd {
+    padding: 0 25px;
+    display: flex;
+    flex: 1;
+  }
+  &__cont {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex: 1;
+    overflow: hidden;
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      padding-bottom: 10px;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }
+    &-hd {
+      flex: 3;
+    }
+  }
+  &-prices {
+    flex: 1;
+  }
+  &__img {
+    width: $item-img-width;
+    height: $item-img-height;
+    border-radius: 6px;
+    overflow: hidden;
+    &-wrap {
+      width: $item-img-width;
+      height: $item-img-height;
+      display: block;
+      text-align: center;
+    }
+  }
+  &__title {
+    display: block;
+    @include text-overflow();
+    font-size: $font-size;
+    line-height: 1.4;
+    color: #333;
+    margin: 0 0 16px;
+  }
+  &__tag {
+    display: inline-block;
+    border: 1px solid $color-brand-primary;
+    color: $color-brand-primary;
+    padding: 3px 4px;
+    font-size: $font-size-small;
+    margin-right: 10px;
+  }
+  &__desc {
+    line-height: 1;
+    display: block;
+    @include text-overflow();
+    color: $color-gray;
+    font-size: $font-size-small;
+    margin: 0 0 16px;
+  }
+  &__promotion {
+    background: #f8f8f8;
+    @include text-overflow();
+    font-size: $font-size-small;
+    color: #333;
+    display: inline-block;
+    padding: 3px 10px;
+    @include hairline(#333, 0, top, right, bottom, left);
+  }
+  &__price {
+    font-size: 28px;
+    margin-right: 24px;
+    .price__symbol {
+      font-size: $font-size-small;
+    }
+  }
+  &__point {
+    color: $color-brand-primary;
+  }
+  &__price-market {
+    font-size: $font-size-small;
+    color: $color-gray;
+    text-decoration: line-through;
+  }
+
+  &__extra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  &__author {
+    font-size: $font-size-small;
+    color: #000;
+    &-avatar {
+      background: $color-bg-gray;
+      width: 50px;
+      height: 50px;
+      border-radius: 50px;
+      margin-right: 12px;
+      display: inline-block;
+      vertical-align: middle;
+      overflow: hidden;
+    }
+    &-name {
+      width: 140px;
+      display: inline-block;
+      vertical-align: middle;
+      @include text-overflow();
+    }
+  }
+  &__actions {
+    color: #d0d0d0;
+    font-size: $font-size-small;
+    [class^='icon-'] {
+      color: #d0d0d0;
+      font-size: $font-size-small;
+      &:before {
+        margin-right: 8px;
+      }
+    }
+  }
+}

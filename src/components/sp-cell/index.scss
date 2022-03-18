@@ -1,4 +1,4 @@
-$cell-prefix:'sp-cell';
+$cell-prefix: 'sp-cell';
 
 .sp-cell {
   background: #fff;
@@ -13,7 +13,7 @@ $cell-prefix:'sp-cell';
     position: absolute;
     left: 20px;
     right: 20px;
-    height: 1PX;
+    height: 1px;
     bottom: 0;
     background: #f4f4f4;
   }
@@ -50,21 +50,20 @@ $cell-prefix:'sp-cell';
     margin-left: -8px;
   }
 
-  &.commonStyle{
+  &.commonStyle {
+    @include hairline(#dddddd, 0, top, bottom);
 
-    @include hairline(#DDDDDD,0,top,bottom);
-
-    .#{$cell-prefix}__hd{
+    .#{$cell-prefix}__hd {
       width: 120px;
     }
-    .#{$cell-prefix}__bd{
-        overflow: hidden;
-        white-space: nowrap;
-        display: flex;
-        align-items: center;
+    .#{$cell-prefix}__bd {
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
     }
-    .#{$cell-prefix}__ft{
-        padding: 0 15rpx;
+    .#{$cell-prefix}__ft {
+      padding: 0 15rpx;
     }
   }
 }

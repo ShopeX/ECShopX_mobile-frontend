@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { isWeb } from '@/utils'
 
-function SpHtml (props) {
+function SpHtml(props) {
   const { content = '' } = props
   const _content = content
     .replace(/\s+style="[^"]*"/g, '')

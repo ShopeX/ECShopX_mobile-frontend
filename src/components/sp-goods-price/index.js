@@ -6,7 +6,7 @@ import { SpPrice } from '@/components'
 import { classNames } from '@/utils'
 import './index.scss'
 
-function SpGoodsPrice (props) {
+function SpGoodsPrice(props) {
   const { info } = props
   if (!info) {
     return null

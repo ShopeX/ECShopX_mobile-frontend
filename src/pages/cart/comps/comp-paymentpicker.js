@@ -2,23 +2,25 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { AtFloatLayout } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { isWeixin } from '@/utils'
+import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
 import { SpCheckbox, SpCell } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
 import './comp-paymentpicker.scss'
 
-function CompPaymentPicker (props) {
+function CompPaymentPicker(props) {
   const {
-    // isOpened = false,
     type = '',
+    distributor_id,
     isShowDelivery = false,
-    // isShowPoint = true,
     loading,
-    isPointitemGood,
+    isPointitemGood = false,
+    isShowBalance = true,
     disabledPayment = null,
-    onChange = () => {}
+    onChange = () => {},
+    title = '支付方式',
+    totalInfo
     // onInitDefaultPayType = () => {}
   } = props
 
@@ -40,12 +42,13 @@ function CompPaymentPicker (props) {
   }, [])
 
   const getFetch = async () => {
-    const { list } = await getPaymentList()
+    const { list } = await getPaymentList(distributor_id)
     setState((draft) => {
       draft.typeList = list
     })
     if (list[0]) {
       handlePaymentChange(list[0].pay_type_code, channel)
+      handleChange(list[0].pay_type_code)
       let channel = ''
       if (typeof list[0].pay_channel != 'undefined') {
         channel = list[0].pay_channel
@@ -84,33 +87,46 @@ function CompPaymentPicker (props) {
     hfpay: '微信支付',
     alipayh5: '支付宝支付',
     wxpayh5: '微信支付',
-    wxpayjs: '微信支付'
-    // deposit: '余额支付',
+    wxpayjs: '微信支付',
+    point: `${pointName}支付`,
+    deposit: '余额支付'
     // delivery: '货到付款',
-    // point: `${pointName}支付`
   }
 
   return (
     <View className='pages-comp-paymentpicker'>
-      {!isPointitemGood && (
+      <View>
         <SpCell
           isLink
           className='trade-invoice'
-          title='支付方式'
+          title={title}
           onClick={() => handlePaymentShow(true)}
         >
-          <View className='invoice-title'>{payTypeText[type]}</View>
+          {totalInfo.deduction && (
+            <Text>
+              {totalInfo.remainpt}
+              {`${pointName}可用`}
+            </Text>
+          )}
+          <Text className='invoice-title'>{payTypeText[type]}</Text>
         </SpCell>
-      )}
+        {totalInfo.deduction && (
+          <View>
+            可用{totalInfo.point}
+            {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
+            包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
+          </View>
+        )}
+      </View>
 
       <AtFloatLayout isOpened={isOpendActionSheet} onClose={() => handlePaymentShow(false)}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <Text>支付方式</Text>
-            <View className='iconfont icon-close' onClose={() => handlePaymentShow(false)}></View>
+            <Text>{title}</Text>
+            <View onClick={() => handlePaymentShow(false)} className='iconfont icon-close'></View>
           </View>
           <View className='payment-picker__bd'>
-            {/* {isShowPoint &&
+            {isPointitemGood && (
               <View
                 className={`payment-item ${
                   disabledPayment && disabledPayment['point'] ? 'is-disabled' : ''
@@ -133,7 +149,31 @@ function CompPaymentPicker (props) {
                   />
                 </View>
               </View>
-            } */}
+            )}
+            {/* {isShowBalance && VERSION_STANDARD && isWeixin && ( // 临时加的 后期需开启注释 */}
+            <View
+              className={`payment-item ${
+                disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''
+              }`}
+              onClick={handlePaymentChange.bind(this, 'deposit')}
+            >
+              <View className='payment-item__bd'>
+                <Text className='payment-item__title'>余额支付</Text>
+                <Text className='payment-item__desc'>
+                  {disabledPayment && disabledPayment['deposit']
+                    ? disabledPayment['deposit']
+                    : '使用余额支付'}
+                </Text>
+              </View>
+              <View className='payment-item__ft'>
+                <SpCheckbox
+                  disabled={disabledPayment && !!disabledPayment['deposit']}
+                  colors={colorPrimary}
+                  checked={localType === 'deposit'}
+                ></SpCheckbox>
+              </View>
+            </View>
+            {/* )} */}
             {isShowDelivery && (
               <View
                 className={`payment-item ${
@@ -159,9 +199,10 @@ function CompPaymentPicker (props) {
               </View>
             )}
 
-            {typeList.map((item) => {
+            {typeList.map((item, index) => {
               return (
                 <View
+                  key={index}
                   className='payment-item no-border'
                   onClick={handlePaymentChange.bind(this, item.pay_type_code)}
                 >

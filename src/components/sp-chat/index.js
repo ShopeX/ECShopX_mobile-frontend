@@ -11,7 +11,7 @@ const initialState = {
   isWeAppKefu: true
 }
 
-function SpChat (props) {
+function SpChat(props) {
   const { children, sessionFrom = '' } = props
   const [state, setState] = useImmer(initialState)
   const { isWeAppKefu } = state

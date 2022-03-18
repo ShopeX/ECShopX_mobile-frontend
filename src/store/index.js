@@ -22,7 +22,7 @@ const reducer = persistReducer(
   rootReducer
 )
 
-export default function configStore (preloadedState = {}) {
+export default function configStore(preloadedState = {}) {
   if (!store) {
     store = configureStore({
       // reducer: rootReducer,

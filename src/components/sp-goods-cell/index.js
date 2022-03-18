@@ -37,18 +37,20 @@ function SpGoodsCell(props) {
           <View className='goods-title'>{info.itemName}</View>
         </View>
         <View className='item-bd'>
-          {/* 多规格商品 */}
-          {!info.nospec && (
-            <View className='goods-sku' onClick={handleClick}>
-              {onSelectSku && (
-                <View className='spec-text'>
-                  {info.specText || '选择规格'}
-                  <Text className='iconfont icon-qianwang-01'></Text>
-                </View>
-              )}
-              {!onSelectSku && info.itemSpecDesc}
-            </View>
-          )}
+          <View>
+            {/* 多规格商品 */}
+            {!info.nospec && (
+              <View className='goods-sku' onClick={handleClick}>
+                {onSelectSku && (
+                  <View className='spec-text'>
+                    {info.specText || '选择规格'}
+                    <Text className='iconfont icon-qianwang-01'></Text>
+                  </View>
+                )}
+                {!onSelectSku && info.itemSpecDesc}
+              </View>
+            )}
+          </View>
           {info.num && <Text className='item-num'>x {info.num}</Text>}
         </View>
         <View className='item-ft'>
