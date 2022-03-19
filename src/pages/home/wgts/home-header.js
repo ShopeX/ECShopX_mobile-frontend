@@ -3,12 +3,12 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { toggleTouchMove } from '@/utils/dom'
-import { getQueryVariable, isWeixin } from '@/utils'
+import { VERSION_PLATFORM, classNames, isWeixin } from '@/utils'
 
 import './home-header.scss'
 
-function WgtHomeHeader (props) {
-  const { children } = props
+function WgtHomeHeader(props) {
+  const { children, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
   const sys = useSelector((state) => state.sys)
   const { openScanQrcode } = sys
@@ -22,11 +22,13 @@ function WgtHomeHeader (props) {
   const handleScanCode = () => {}
 
   return (
-    <View className='home-header'>
-      <View className='nearly-shop' onClick={handlePickStore}>
-        <View className='address'>{location.address || '北京市北京市昌平区'}</View>
-        <Text className='iconfont icon-qianwang-01'></Text>
-      </View>
+    <View className={classNames('home-header', !isSetHight && 'cus-home-header')}>
+      {VERSION_PLATFORM && (
+        <View className='nearly-shop' onClick={handlePickStore}>
+          <View className='address'>{location.address || '北京市北京市昌平区'}</View>
+          <Text className='iconfont icon-qianwang-01'></Text>
+        </View>
+      )}
 
       <View className='children-block'>{children}</View>
 

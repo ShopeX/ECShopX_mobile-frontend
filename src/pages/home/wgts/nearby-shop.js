@@ -27,13 +27,13 @@ function WgtNearbyShop(props) {
 
   useEffect(() => {
     init()
-  }, [state.activeIndex])
+  }, [state.activeIndex, location])
 
-  useEffect(() => {
-    if (!isEmpty(location)) {
-      init()
-    }
-  }, [location])
+  // useEffect(() => {
+  //   if (!isEmpty(location)) {
+  //     init()
+  //   }
+  // }, [location])
 
   const init = async () => {
     const params = {

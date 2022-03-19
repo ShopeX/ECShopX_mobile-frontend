@@ -4,7 +4,15 @@ import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar } from '@/components'
 import api from '@/api'
-import { isWeixin, getDistributorId, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
+import {
+  isWeixin,
+  getDistributorId,
+  VERSION_STANDARD,
+  VERSION_PLATFORM,
+  VERSION_IN_PURCHASE,
+  VERSION_B2C,
+  classNames
+} from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
@@ -39,6 +47,7 @@ function Home() {
   const [policyModal, setPolicyModal] = useState(false)
   const showAdv = useSelector((member) => member.user.showAdv)
   const { location = {} } = useSelector((state) => state.user)
+  const { openScanQrcode } = useSelector((state) => state.sys)
 
   const { wgts, shareInfo } = state
 
@@ -96,7 +105,7 @@ function Home() {
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
-    fetchLocation()
+    if (VERSION_PLATFORM || VERSION_STANDARD) fetchLocation()
     // fetchStoreInfo(location)
   }, [])
 
@@ -144,24 +153,27 @@ function Home() {
   } else {
     filterWgts = wgts
   }
+
+  const fixedTop = searchComp && searchComp.config.fixTop
+  const isSetHight =
+    VERSION_PLATFORM ||
+    (openScanQrcode == 1 && isWeixin) ||
+    (VERSION_IN_PURCHASE && fixedTop) ||
+    (VERSION_B2C && fixedTop)
   return (
     <SpPage className='page-index' scrollToTopBtn renderFloat={<CompFloatMenu />}>
       {/* header-block */}
       {VERSION_STANDARD ? (
         <WgtHomeHeaderShop>
-          {searchComp && searchComp.config.fixTop && (
-            <SpSearch isFixTop={searchComp.config.fixTop} />
-          )}
+          {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
         </WgtHomeHeaderShop>
       ) : (
-        <WgtHomeHeader>
-          {searchComp && searchComp.config.fixTop && (
-            <SpSearch isFixTop={searchComp.config.fixTop} />
-          )}
+        <WgtHomeHeader isSetHight={isSetHight}>
+          {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
         </WgtHomeHeader>
       )}
 
-      <View className='home-body'>
+      <View className={classNames(isSetHight ? 'home-body' : 'cus-home-body')}>
         <HomeWgts wgts={filterWgts} />
       </View>
 

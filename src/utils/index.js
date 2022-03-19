@@ -70,9 +70,12 @@ export const isWeixin = Taro.getEnv() == Taro.ENV_TYPE.WEAPP
 /** 在H5平台 */
 export const isWeb = Taro.getEnv() == Taro.ENV_TYPE.WEB
 
+// 云店
 export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
-
+// exc
 export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
+// 官方商城
+export const VERSION_B2C = process.env.APP_PLATFORM == 'b2c'
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent
