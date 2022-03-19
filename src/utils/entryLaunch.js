@@ -140,10 +140,12 @@ class EntryLaunch {
                 lat: res.latitude
               })
             } else {
+              resolve({})
               reject({ message: res.errMsg })
             }
           },
           fail: (error) => {
+            resolve({})
             reject({ message: error })
           }
         })

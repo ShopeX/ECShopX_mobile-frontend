@@ -45,7 +45,6 @@ function Home() {
   const dispatch = useDispatch()
 
   useDidShow(() => {
-    fetchStoreInfo(location)
     fetchShareInfo()
     // 检查隐私协议是否变更或同意
     getPolicyUpdate()
@@ -55,6 +54,9 @@ function Home() {
     const checkRes = await checkPolicyChange()
     if (!checkRes && openLocation == 1) {
       setPolicyModal(true)
+    }
+    if (checkRes) {
+      fetchStoreInfo(location)
     }
   }
 
@@ -177,6 +179,7 @@ function Home() {
         open={policyModal}
         onCancel={() => {
           setPolicyModal(false)
+          fetchStoreInfo(location)
         }}
         onConfirm={handleConfirmModal}
       />
