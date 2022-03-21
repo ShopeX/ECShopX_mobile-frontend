@@ -32,11 +32,9 @@ export default {
         'category/index',
         'item/list',
         'item/espier-detail',
-        'item/package-list',
         'cart/espier-index',
         'cart/espier-checkout',
         'coupon-home/index',
-        'coupon-home/coupon-detail',
         'recommend/list',
         'recommend/detail',
         'custom/custom-page'

@@ -253,6 +253,7 @@ function CartIndex() {
       className={classNames('page-cart-index', {
         'has-tabbar': tabbar == 1
       })}
+      renderFooter={tabbar == 1 && <SpTabbar />}
     >
       {!isLogin && (
         <View className='login-header'>
@@ -444,8 +445,6 @@ function CartIndex() {
       {<SpRecommend className='recommend-block' info={recommendList} />}
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
-
-      {tabbar == 1 && <SpTabbar />}
     </SpPage>
   )
 }

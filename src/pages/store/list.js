@@ -20,13 +20,14 @@ const initialState = {
   areaData: [],
   shopList: [],
   locationIng: false,
-  chooseValue: ['北京市', '北京市', '昌平区'],
+  chooseValue: [],
   keyword: '', // 参数
   type: 0, // 参数
   search_type: undefined, // 参数
   headquarters: {},
   logo: '',
-  isRecommend: false
+  isRecommend: false,
+  defualt_address: {}
 }
 
 function NearlyShop(props) {
@@ -87,7 +88,7 @@ function NearlyShop(props) {
     setState((v) => {
       v.shopList = v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
       v.chooseValue = [query.province, query.city, query.area]
-      v.isRecommend = is_recommend === 1
+      ;(v.isRecommend = is_recommend === 1), (v.defualt_address = defualt_address)
     })
 
     let format_address = !isArray(defualt_address) ? defualt_address : null
@@ -122,7 +123,8 @@ function NearlyShop(props) {
   }
 
   const onPickerClick = () => {
-    const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
+    const [chooseProvice = '北京市', chooseCity = '北京市', chooseDistrict = '昌平区'] =
+      state.chooseValue
     const p_label = chooseProvice
     const c_label = chooseCity
     const d_label = chooseDistrict
@@ -237,27 +239,36 @@ function NearlyShop(props) {
     Taro.navigateBack()
   }
 
-  const onAddChange = () => {
-    if (!isLogin) return
-    Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })
-  }
+  // const onAddChange = () => {
+  //   if (!isLogin) return
+  //   Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })
+  // }
 
-  const onChangeLoginSuccess = async () => {
+  // const onChangeLoginSuccess = async () => {
+  //   await setState((v) => {
+  //     v.shopList = []
+  //     v.keyword = ''
+  //     v.type = 0
+  //     v.search_type = undefined
+  //   })
+  //   shopRef.current.reset()
+  // }
+
+  // 根据收货地址搜索
+  const onLocationChange = async (info) => {
+    debugger
+    let local = info.address || info.province + info.city + info.county + info.adrdetail
+    const res = await entryLaunch.getLnglatByAddress(local)
+    await dispatch(updateLocation(res))
     await setState((v) => {
       v.shopList = []
       v.keyword = ''
+      v.name = ''
       v.type = 0
       v.search_type = undefined
     })
     shopRef.current.reset()
-  }
-
-  // 根据收货地址搜索
-  const onLocationChange = async (info) => {
-    let local = info.address || info.province + info.city + info.county + info.adrdetail
-    const res = await entryLaunch.getLnglatByAddress(local)
-    await dispatch(updateLocation(res))
-    Taro.navigateBack()
+    // Taro.navigateBack()
   }
 
   const isPolicyTime = async () => {
@@ -269,7 +280,15 @@ function NearlyShop(props) {
     }
   }
 
-  const { areaIndexArray, areaArray, chooseValue, headquarters, logo, isRecommend } = state
+  const {
+    areaIndexArray,
+    areaArray,
+    chooseValue,
+    headquarters,
+    logo,
+    isRecommend,
+    defualt_address
+  } = state
 
   return (
     <SpPage className='page-ecshopx-nearlyshop'>
@@ -321,9 +340,7 @@ function NearlyShop(props) {
       <View className='location-block'>
         <View className='block-title'>当前定位地址</View>
         <View className='location-wrap'>
-          <Text className='location-address' onClick={() => onLocationChange(location)}>
-            {location.address || '无法获取您的位置信息'}
-          </Text>
+          <Text className='location-address'>{location.address || '无法获取您的位置信息'}</Text>
           <View className='btn-location' onClick={isPolicyTime}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
@@ -335,36 +352,38 @@ function NearlyShop(props) {
         </View>
       </View>
 
-      <View className='location-block'>
-        <View className='block-title block-flex'>
-          <View>按收货地址定位</View>
-          {address && (
-            <View
-              className='arrow'
-              onClick={() =>
-                Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
-              }
-            >
-              选择其他地址<View className='iconfont icon-qianwang-01'></View>
-            </View>
-          )}
-        </View>
-        <View className='receive-address'>
-          {!address && (
-            <SpLogin onChange={onChangeLoginSuccess}>
-              <View className='btn-add-address' onClick={onAddChange}>
-                添加新地址
+      {defualt_address.address_id && (
+        <View className='location-block'>
+          <View className='block-title block-flex'>
+            <View>按收货地址定位</View>
+            {/* {address && (
+              <View
+                className='arrow'
+                onClick={() =>
+                  Taro.navigateTo({ url: '/marketing/pages/member/address?isPicker=choose' })
+                }
+              >
+                选择其他地址<View className='iconfont icon-qianwang-01'></View>
               </View>
-            </SpLogin>
-          )}
-          {address && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
-          )}
+            )} */}
+          </View>
+          <View className='receive-address'>
+            {/* {!address && (
+              <SpLogin onChange={onChangeLoginSuccess}>
+                <View className='btn-add-address' onClick={onAddChange}>
+                  添加新地址
+                </View>
+              </SpLogin>
+            )} */}
+            {address && (
+              <View
+                className='address'
+                onClick={() => onLocationChange(address)}
+              >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
+            )}
+          </View>
         </View>
-      </View>
+      )}
 
       <View className='nearlyshop-list'>
         <View className='list-title'>{location.address ? '附近门店' : '推荐门店'}</View>

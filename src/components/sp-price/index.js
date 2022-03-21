@@ -22,7 +22,7 @@ export default class SpPrice extends Component {
 
   static externalClasses = ['classes']
 
-  render () {
+  render() {
     const {
       value = '',
       noSymbol,
@@ -40,7 +40,7 @@ export default class SpPrice extends Component {
     }
     const [int, decimal] = (priceVal || '').split('.')
     const minus = value < 0
-    const symbol = this.props.symbol || '¥'
+    const symbol = this.props.symbol
 
     return (
       <Text
@@ -55,7 +55,7 @@ export default class SpPrice extends Component {
       >
         {minus && <Text>-</Text>}
         {plus && <Text>+</Text>}
-        {noSymbol ? null : <Text className='sp-price__symbol'>{symbol}</Text>}
+        {noSymbol ? null : <Text className='sp-price__symbol'>{symbol || '¥'}</Text>}
         <Text className='sp-price__int'>{int.indexOf('-') === 0 ? int.slice(1) : int}</Text>
         {decimal !== undefined && !noDecimal && (
           <Text className='sp-price__decimal'>.{decimal}</Text>

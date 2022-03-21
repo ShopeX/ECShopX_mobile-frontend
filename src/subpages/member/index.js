@@ -30,7 +30,8 @@ import {
   showModal,
   isWeixin,
   normalizeQuerys,
-  log
+  log,
+  VERSION_PLATFORM
 } from '@/utils'
 import { useLogin } from '@/hooks'
 import CompVipCard from './comps/comp-vipcard'
@@ -93,7 +94,8 @@ const initialState = {
   waitRecevieNum: 0,
   waitEvaluateNum: 0,
   afterSalesNum: 0,
-  zitiNum: 0
+  zitiNum: 0,
+  deposit: 0
 }
 
 function MemberIndex(props) {
@@ -272,6 +274,9 @@ function MemberIndex(props) {
         backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
       }
     })
+    setState((draft) => {
+      draft.deposit = memberRes.deposit
+    })
   }
 
   
@@ -396,7 +401,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='pages-member-index'>
+    <SpPage className='pages-member-index' renderFooter={<SpTabbar />}>
       <View
         className='header-block'
         style={styleNames({
@@ -439,12 +444,14 @@ function MemberIndex(props) {
             <View className='bd-item-label'>积分(分)</View>
             <View className='bd-item-value'>{state.point}</View>
           </View>
-          <View className='bd-item'>
-            <View className='bd-item-label'>储值(¥)</View>
-            <View className='bd-item-value'>
-              <SpPrice value={state.deposit} />
+          {VERSION_PLATFORM && (
+            <View className='bd-item deposit-item'>
+              <View className='bd-item-label'>储值(¥)</View>
+              <View className='bd-item-value'>
+                <SpPrice noDecimal noSymbol value={state.deposit} />
+              </View>
             </View>
-          </View>
+          )}
           <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>
@@ -573,8 +580,6 @@ function MemberIndex(props) {
           setPolicyModal(false)
         }}
       />
-
-      <SpTabbar />
     </SpPage>
   )
 }

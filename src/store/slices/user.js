@@ -38,7 +38,6 @@ const userSlice = createSlice({
   reducers: {
     updateUserInfo: (state, { payload }) => {
       const { memberInfo, cardInfo, vipgrade, is_open_popularize, is_promoter, favs } = payload
-      console.log(vipgrade)
       state.userInfo = {
         ...memberInfo,
         popularize: is_open_popularize,

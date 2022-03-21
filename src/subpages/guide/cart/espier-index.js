@@ -229,6 +229,7 @@ function CartIndex() {
       className={classNames('page-guide-cart-index', {
         'has-tabbar': tabbar == 1
       })}
+      renderFooter={tabbar == 1 && <BaTabBar />}
     >
       <View>
         {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}
@@ -402,8 +403,6 @@ function CartIndex() {
           </AtButton>
         </SpDefault>
       )}
-
-      {tabbar == 1 && <BaTabBar />}
     </SpPage>
   )
 }

@@ -95,7 +95,7 @@ const CategoryIndex = (props) => {
   }
 
   return (
-    <SpPage className='page-guide-category-index'>
+    <SpPage className='page-guide-category-index' renderFloat={<BaTabBar />}>
       <BaNavBar home title='导购商城' />
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
@@ -110,7 +110,6 @@ const CategoryIndex = (props) => {
       >
         <CompSeries info={currentList} fixTop={fixTop} />
       </View>
-      <BaTabBar />
     </SpPage>
   )
 }

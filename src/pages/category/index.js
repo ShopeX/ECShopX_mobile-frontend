@@ -89,7 +89,7 @@ const CategoryIndex = (props) => {
   console.log('==currentList==', currentList, tabList)
 
   return (
-    <SpPage className='page-category-index'>
+    <SpPage className='page-category-index' renderFooter={<SpTabbar />}>
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
@@ -102,7 +102,6 @@ const CategoryIndex = (props) => {
       >
         <CompSeries info={currentList} />
       </View>
-      <SpTabbar />
     </SpPage>
   )
 }

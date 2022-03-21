@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '导购商城'
+  navigationBarTitleText: '种草详情'
 }

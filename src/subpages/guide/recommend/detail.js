@@ -1,154 +1,113 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { useDidShow, useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
+import { View, Text, ScrollView, Button } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { SpPage } from '@/components'
 import api from '@/api'
-import { withPager } from '@/hocs'
-import { BaNavBar } from '../components'
-import { connect } from 'react-redux'
-import { formatTime, log, buriedPoint } from '@/utils'
-import S from '@/subpages/guide/lib/Spx.js'
-import { Tracker } from '@/service'
+import doc from '@/doc'
+import { pickBy, log } from '@/utils'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
-import { getDtidIdUrl } from '@/utils/helper'
 import './detail.scss'
+import { drawText } from '@/components/sp-poster/helper'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-export default class recommendDetail extends Component {
-  constructor(props) {
-    props = props || {}
-    props.pageSize = 50
-    super(props)
+const initialState = {
+  itemId: '',
+  title: '',
+  articleFocusNum: 0,
+  content: [],
+  updated: ''
+}
+function GuideRecommendDetail(props) {
+  const $instance = getCurrentInstance()
+  const [state, setState] = useImmer(initialState)
+  const { img, shareImageUrl, itemId, title, content, articleFocusNum, updated } = state
+  const { userInfo } = useSelector((state) => state.guide)
 
-    this.state = {
-      ...this.state,
-      info: null,
-      item_id_List: [],
-      screenWidth: 0
-    }
-  }
+  useEffect(() => {
+    fetch()
+  }, [])
 
-  async componentDidMount() {
-    await S.autoLogin(this)
-    Taro.getSystemInfo().then((res) => {
-      this.setState({
-        screenWidth: res.screenWidth
-      })
-    })
-    // 埋点处理
-    buriedPoint.call(this, {
-      event_type: 'activeSeedingDetail'
-    })
-  }
-
-  componentDidShow() {
+  useDidShow(() => {
     Taro.hideShareMenu({
       //禁用胶囊分享
       menus: ['shareAppMessage', 'shareTimeline']
     })
-    this.fetchContent()
-  }
+  })
 
-  config = {
-    navigationStyle: 'custom',
-    navigationBarTitleText: '种草详情'
-  }
-
-  onShareAppMessage() {
-    const { info } = this.state
-    const { salesperson_id, work_userid, distributor_id, shop_code } = S.get('GUIDE_INFO', true)
+  useShareAppMessage(async () => {
+    const { salesperson_id, work_userid, distributor_id, shop_code } = userInfo
     const gu = `${work_userid}_${shop_code}`
-    // const gu_user_id = Taro.getStorageSync("work_userid");
-    // Tracker.dispatch("GOODS_SHARE_TO_CHANNEL_CLICK", {
-    //   ...info,
-    //   shareType: "分享给好友"
-    // } );
-    const sharePath = getDtidIdUrl(
-      `/subpage/pages/recommend/detail?id=${info.article_id}&smid=${salesperson_id}&gu=${gu}`,
-      distributor_id
-    )
+    const sharePath = `/subpage/pages/recommend/detail?id=${itemId}&smid=${salesperson_id}&gu=${gu}&dtid=${distributor_id}`
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
-      title: info.title,
+      title: title,
       path: sharePath,
-      imageUrl: info.share_image_url || info.image_url
+      imageUrl: shareImageUrl || img
     }
-  }
+  })
 
-  // 拉取详情
-  detailInfo = async (id) => {
-    const info = await api.article.detail(id)
-    info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD')
-    this.setState({
-      info
+  const fetch = async () => {
+    const { id } = $instance.router.params
+    // 关注数加1
+    const resFocus = await api.article.focus(id)
+    const res = await api.article.detail(id)
+    const { itemId, title, articleFocusNum, content, updated } = pickBy(
+      res,
+      doc.article.ARTICLE_ITEM
+    )
+
+    setState((draft) => {
+      draft.itemId = itemId
+      draft.title = title
+      draft.articleFocusNum = articleFocusNum
+      draft.content = content
+      draft.updated = updated
     })
   }
 
-  async fetchContent() {
-    const { id } = getCurrentInstance().router.params
+  const handleClickGoods = async () => {}
 
-    // 关注数加1
-    const resFocus = await api.article.focus(id)
-
-    if (resFocus) {
-      this.detailInfo(id)
-    }
-  }
-
-  handleClickGoods = () => {
-    const { id } = getCurrentInstance().router.params
-    this.detailInfo(id)
-  }
-
-  render() {
-    const { colors } = this.props
-    const { info, screenWidth } = this.state
-    const navbar_height = S.get('navbar_height', true)
-
-    if (!info) {
-      return null
-    }
-
-    return (
-      <View className='guide-recommend-detail' style={`padding-top:${navbar_height}PX`}>
-        <BaNavBar title='种草详情' fixed />
-        <View className='recommend-detail__title'>{info.title}</View>
-        <View className='recommend-detail-info'>
-          <View className='recommend-detail-info__time'>
-            <Text className={`icon-time ${info.is_like ? '' : ''}`}> </Text>
-            {info.updated_str}
-          </View>
-          <View className='recommend-detail-info__time'>
-            <Text className={`icon-eye ${info.is_like ? '' : ''}`}> </Text>
-            {info.articleFocusNum.count ? info.articleFocusNum.count : 0}关注
-          </View>
-        </View>
-        <View className='recommend-detail__content' scrollY>
-          <View className='wgts-wrap__cont'>
-            {info.content.map((item, idx) => {
-              return (
-                <View className='wgt-wrap' key={`${item.name}${idx}`}>
-                  {item.name === 'film' && <WgtFilm info={item} />}
-                  {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
-                  {item.name === 'writing' && <WgtWriting info={item} />}
-                  {item.name === 'heading' && <WgtHeading info={item} />}
-                  {item.name === 'goods' && (
-                    <WgtGoods onClick={this.handleClickGoods.bind('goods')} info={item} />
-                  )}
-                </View>
-              )
-            })}
-          </View>
-        </View>
-
-        <View className='recommend-detail__bar'>
-          <Button openType='share' style={'background: ' + colors.data[0].primary}>
+  return (
+    <SpPage
+      className='guide-recommend-detail'
+      renderFooter={
+        <View className='btn-wrap'>
+          <AtButton circle className='btn-share' type='primary' openType='share'>
             分享给顾客
-          </Button>
+          </AtButton>
+        </View>
+      }
+    >
+      <View className='article-hd'>
+        <View className='article-title'>{title}</View>
+        <View className='article-info'>
+          <Text className='update-time'>{updated}</Text>
+          <Text className='focus-num'>{`${articleFocusNum}关注`}</Text>
         </View>
       </View>
-    )
-  }
+      <View className='article-bd'>
+        <View className='wgts-wrap__cont'>
+          {content.map((item, idx) => (
+            <View className='wgt-wrap' key={`${item.name}${idx}`}>
+              {item.name === 'film' && <WgtFilm info={item} />}
+              {item.name === 'slider' && <WgtSlider info={item} />}
+              {item.name === 'writing' && <WgtWriting info={item} />}
+              {item.name === 'heading' && <WgtHeading info={item} />}
+              {item.name === 'goods' && (
+                <WgtGoods onClick={handleClickGoods.bind(this, 'goods')} info={item} />
+              )}
+            </View>
+          ))}
+        </View>
+      </View>
+    </SpPage>
+  )
 }
+
+GuideRecommendDetail.options = {
+  addGlobalClass: true
+}
+
+export default GuideRecommendDetail

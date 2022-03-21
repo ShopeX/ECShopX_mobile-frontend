@@ -1,1 +1,3 @@
-export default {}
+export default {
+  navigationBarTitleText: '店铺列表'
+}

@@ -273,14 +273,14 @@ function ItemList(props) {
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((item, index) => (
-              <View className='goods-item-wrap' key={`goods-item__${index}`}>
+              <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
                 <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
               </View>
             ))}
           </View>
           <View className='right-container'>
             {rightList.map((item, index) => (
-              <View className='goods-item-wrap' key={`goods-item__${index}`}>
+              <View className='goods-item-wrap' key={`goods-item-r__${index}`}>
                 <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
               </View>
             ))}

@@ -98,7 +98,7 @@ function Home() {
   })
 
   return (
-    <SpPage className='page-index' scrollToTopBtn>
+    <SpPage className='page-index' scrollToTopBtn renderFooter={<BaTabBar />}>
       <BaNavBar home title='导购商城' />
 
       {userInfo && <BaStore guideInfo={userInfo} />}
@@ -106,8 +106,6 @@ function Home() {
       <View className='home-body'>
         <BaHomeWgts wgts={wgts} />
       </View>
-
-      <BaTabBar />
     </SpPage>
   )
 }

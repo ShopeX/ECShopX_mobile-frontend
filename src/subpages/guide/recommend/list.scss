@@ -1,104 +1,33 @@
-@import '@/style/imports.scss';
-
-.guide-recommend-list {
-  .recommend-list__search {
+.page-guide-recommendlist {
+  .search-wrap {
+    padding: 16px 28px;
     background-color: #fff;
-    height: 85rpx;
   }
 
-  .recommend-list {
-    &__toolbar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: $z-index-toolbar;
-      background: #fff;
-      box-shadow: $box-shadow;
-      padding-top: 10px;
-      .at-search-bar {
-        padding-right: 30px !important;
-      }
-      .search-input {
-        box-shadow: none;
-        &__focus {
-          .at-search-bar {
-            padding-right: 30px !important;
-          }
-        }
-      }
-      .at-search-bar__input {
-        height: $searchbar-height !important;
-      }
-      .at-search-bar__input-cnt {
-        flex: none;
-        border-radius: $searchbar-height;
-      }
-      .at-search-bar__clear {
-        height: $searchbar-height;
-      }
-      .at-search-bar__action {
-        display: none;
-      }
-      .filter-icon {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        width: 100px;
-        font-size: 20px;
-        .icon-list {
-          font-size: 55px;
-          line-height: 0.8;
-        }
-      }
-    }
-    &__tabs {
-      display: flex;
-      .filter-bar__item {
-        flex: 1;
-        justify-content: center;
-        text-align: center;
-        color: #666666;
-        font-size: 26px;
-        [class^='icon'] {
-          color: #ccc;
-          display: inline-block;
-        }
-        &.region-picker {
-          display: flex;
-          line-height: 75rpx;
-        }
-        .icon-close {
-          line-height: 75px;
-        }
-      }
-      .filter-bar__item-active {
-        color: $color-brand-primary;
-      }
-    }
-    &__scroll {
-      @include page-scroll(
-        $tabs-height + $searchbar-height + $navigate-height + 10,
-        $tabbar-height + floor($edge-margin / 2)
-      );
-    }
-    &__type-grid {
-      display: flex;
-      flex-wrap: wrap;
-      .recommend-list__item {
-        width: 50%;
-        padding: 10px;
-        box-sizing: border-box;
-      }
-    }
+  .item-list-scroll {
+    @include page-scroll(0, $tabbar-height);
   }
-  &__search {
-    position: relative;
-    &.on-search {
-      .at-search-bar {
-        padding-right: 0 !important;
-      }
+
+  .article-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-top: 20px;
+    .article-list-wrap {
+      width: 345px;
+      margin-bottom: 28px;
+    }
+    .left-container {
+      width: 50%;
+    }
+    .right-container {
+      width: 50%;
+      padding-left: 20px;
+    }
+    .article-item-wrap {
+      margin-bottom: 20px;
+      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
     }
   }
 }

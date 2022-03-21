@@ -83,7 +83,7 @@ function GuideCouponIndex(props) {
   }
   console.log('list:', list)
   return (
-    <SpPage className='page-guide-coupon'>
+    <SpPage className='page-guide-coupon' renderFooter={<BaTabBar />}>
       <BaNavBar home title='优惠券' />
       <SpScrollView className='coupon-list' fetch={fetch}>
         {list.map((item) => (
@@ -92,7 +92,6 @@ function GuideCouponIndex(props) {
           </View>
         ))}
       </SpScrollView>
-      <BaTabBar />
     </SpPage>
   )
 }

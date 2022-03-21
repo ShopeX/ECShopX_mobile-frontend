@@ -4,7 +4,23 @@
   }
 
   &.has-footer {
-    padding-bottom: $toolbar-height + 20;
+    padding-bottom: 120px;
+    &.ipx {
+      padding-bottom: 140px;
+    }
+  }
+
+  &.ipx {
+    padding-bottom: 20px;
+    .sp-page-footer {
+      height: 140px;
+    }
+    .sp-float-layout-ft {
+      padding-bottom: 40px;
+    }
+    .at-tab-bar {
+      height: 140px;
+    }
   }
 
   .float-container {
@@ -30,5 +46,6 @@
     right: 0;
     height: $toolbar-height + 20;
     z-index: $z-index-level-3;
+    background: #fff;
   }
 }

@@ -74,6 +74,8 @@ function SpGoodsItem(props) {
 
   // console.log( "favs:", favs );
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
+  const isShowStore =
+    !hideStore && VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info)
   return (
     <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
       <View className='goods-item__hd'>
@@ -148,7 +150,7 @@ function SpGoodsItem(props) {
             ))}
           </View>
         )}
-        {VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info) && (
+        {isShowStore && (
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}
             <Text className='goods__store-entry'>
