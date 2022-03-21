@@ -9,7 +9,6 @@ import {
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
-  VERSION_IN_PURCHASE,
   VERSION_B2C,
   classNames
 } from '@/utils'
@@ -159,10 +158,7 @@ function Home() {
 
   const fixedTop = searchComp && searchComp.config.fixTop
   const isSetHight =
-    VERSION_PLATFORM ||
-    (openScanQrcode == 1 && isWeixin) ||
-    (VERSION_IN_PURCHASE && fixedTop) ||
-    (VERSION_B2C && fixedTop)
+    VERSION_PLATFORM || (openScanQrcode == 1 && isWeixin) || (VERSION_B2C && fixedTop)
   return (
     <SpPage
       className='page-index'
