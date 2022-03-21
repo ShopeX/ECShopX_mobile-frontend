@@ -109,6 +109,7 @@ export function useArea () {
   }, [])
 
   const onColumnChange = (e) => {
+    console.log("===onColumnChange==",e)
     let selectColumn = e.detail.column
     let selectIndex = e.detail.value
 
@@ -129,7 +130,7 @@ export function useArea () {
           })
           areaList[1] = arrCity
           areaList[2] = arrCounty
-          setAreaList(areaList)
+          setAreaList([...areaList])
         }
       })
     } else if (selectColumn === 1) {
@@ -143,7 +144,7 @@ export function useArea () {
               arrCounty.push(cny_item.label)
             })
             areaList[2] = arrCounty
-            setAreaList(areaList)
+            setAreaList([...areaList])
           }
         })
       })
