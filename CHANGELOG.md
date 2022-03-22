@@ -2,6 +2,32 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.5.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.4.5...v2.5.0) (2022-03-21)
+
+
+### Features
+
+* 2.5.0 ([222585b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/222585be109664e0e4213bd5db9c1dd3e4ad2ee8))
+
+### [2.4.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.4.4...v2.4.5) (2022-03-21)
+
+
+### Bug Fixes
+
+* modify-taro.js ([e4691c6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e4691c65768738a7d1b25c13bf3f4b2fe19fd3af))
+* 修复分类、卡券、种草页访问 ([ca6e41c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ca6e41c0ec09f06d590b669adf338b2efc0272ae))
+* 修改基础语法问题、依赖路径修改； ([3c78d09](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3c78d09825880b7b667200495172375ee06ef20d))
+* 修改首页接口 ([c0dca5f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c0dca5f6644fcb94c6ab4a9ae7001eaa7e274c9d))
+* 导购 ([f3d6a68](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f3d6a688c726a162d4ce456e99673b52f364a1f1))
+* 组合商品无法加购 ([c04aadf](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c04aadfaf7e60b28ff50e2287fa4bb980aed1db3))
+* 货架 ([ecf1d7c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ecf1d7c2b45d66be4fb9c5f48564769e0771d6a1))
+* 货架 ([a82c9f1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a82c9f1f044f21eea37387ea8e238bad86edc51a))
+* 货架优化 ([64b5bec](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/64b5bec45c9851d122f5bc53cff00f9e30d2e30b))
+* 购物车 ([ae24d88](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ae24d885c34f405f4c55f35656b6b2f1a11863bd))
+* 购物车页可访问 ([0cadc66](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0cadc6693719ded89cd068ed982a89a759f29f57))
+* 迁移redux、修改部分组件异常、utils方法对齐； ([df03ec0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/df03ec08a801fff46c497410182cc421e679b03e))
+* 首页、商品详情、企微登录可以使用； ([22a0f39](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/22a0f395519c90f0488ee94123b1336111c39c93))
+
 ### [2.4.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.4.3...v2.4.4) (2022-03-17)
 
 ### [2.4.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.4.2...v2.4.3) (2022-03-10)
