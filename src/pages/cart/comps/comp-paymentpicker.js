@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { AtFloatLayout } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
-import { SpCheckbox, SpCell } from '@/components'
+import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
 import './comp-paymentpicker.scss'
@@ -119,11 +119,24 @@ function CompPaymentPicker(props) {
         )}
       </View>
 
-      <AtFloatLayout isOpened={isOpendActionSheet} onClose={() => handlePaymentShow(false)}>
+      <SpFloatLayout
+        open={isOpendActionSheet}
+        onClose={() => handlePaymentShow(false)}
+        renderFooter={
+          <AtButton
+            loading={loading}
+            circle
+            className='at-button--primary'
+            onClick={handleChange.bind(this, localType)}
+          >
+            确定
+          </AtButton>
+        }
+      >
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{title}</Text>
-            <View onClick={() => handlePaymentShow(false)} className='iconfont icon-close'></View>
+            {/* <View onClick={() => handlePaymentShow(false)} className='iconfont icon-close'></View> */}
           </View>
           <View className='payment-picker__bd'>
             {isPointitemGood && (
@@ -217,16 +230,16 @@ function CompPaymentPicker(props) {
               )
             })}
           </View>
-          <Button
+          {/* <Button
             type='primary'
             className='btn-submit'
             loading={loading}
             onClick={handleChange.bind(this, localType)}
           >
             确定
-          </Button>
+          </Button> */}
         </View>
-      </AtFloatLayout>
+      </SpFloatLayout>
     </View>
   )
 }

@@ -135,7 +135,7 @@ export default class TradeDetail extends Component {
       delivery_status: 'delivery_status',
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
-      price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+      price: 'item_fee',
       point: 'item_point',
       item_point: 'item_point',
       num: 'num',
@@ -906,13 +906,13 @@ export default class TradeDetail extends Component {
                 <View className='right'>{info.update_time_str}</View>
               </View>
             )}
-            {info.dada && info.dada.pickup_time && (
+            {info.dada && info.dada.pickup_time > 0 && (
               <View className='line'>
                 <View className='left'>取货时间</View>
                 <View className='right'>{formatDateTime(Number(info.dada.pickup_time))}</View>
               </View>
             )}
-            {info.dada && info.dada.delivered_time && (
+            {info.dada && info.dada.delivered_time > 0 && (
               <View className='line'>
                 <View className='left'>送达时间</View>
                 <View className='right'>{formatDateTime(Number(info.dada.delivered_time))}</View>

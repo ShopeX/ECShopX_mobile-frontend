@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { AtFloatLayout } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { SpCheckbox, SpCell } from '@/components'
-import { View, Text, Button } from '@tarojs/components'
+import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
+import { View, Text } from '@tarojs/components'
 
 import './comp-selectpackage.scss'
 
@@ -62,11 +62,19 @@ function CompSelectPackage(props) {
         </SpCell>
       )}
 
-      <AtFloatLayout isOpened={isOpendActionSheet} onClose={() => handleConfrim(false)}>
+      <SpFloatLayout
+        open={isOpendActionSheet}
+        onClose={() => handleConfrim(false)}
+        renderFooter={
+          <AtButton circle className='at-button--primary' onClick={() => handleConfrim(true)}>
+            确定
+          </AtButton>
+        }
+      >
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{packInfo.packName}</Text>
-            <View onClick={() => handleConfrim(false)} className='iconfont icon-close'></View>
+            {/* <View onClick={() => handleConfrim(false)} className='iconfont icon-close'></View> */}
           </View>
           <View className='payment-picker__bd'>
             <View className='payment-item no-border' onClick={handleChange.bind(this, false)}>
@@ -88,11 +96,8 @@ function CompSelectPackage(props) {
             </View>
             <View className='payment-item__desc'>包装说明：{packInfo.packDes}</View>
           </View>
-          <Button type='primary' className='btn-submit' onClick={() => handleConfrim(true)}>
-            确定
-          </Button>
         </View>
-      </AtFloatLayout>
+      </SpFloatLayout>
     </View>
   )
 }

@@ -1,15 +1,8 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import {
-  AtFloatLayout,
-  AtInput,
-  AtModal,
-  AtModalHeader,
-  AtModalContent,
-  AtModalAction
-} from 'taro-ui'
+import { AtInput, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { SpCheckbox } from '@/components'
+import { SpCheckbox, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
 import './comp-pointuse.scss'
@@ -87,7 +80,15 @@ function CompPointUse(props) {
   console.log(chenckColors, 'chenckColors')
   return (
     <View>
-      <AtFloatLayout isOpened={isOpened} onClose={handleCancel}>
+      <SpFloatLayout
+        open={isOpened}
+        onClose={handleCancel}
+        renderFooter={
+          <AtButton loading={loading} circle className='at-button--primary' onClick={handleChange}>
+            确定
+          </AtButton>
+        }
+      >
         <View className='comp-pointuse'>
           <View className='comp-pointuse__hd'>
             <Text>{pointName}</Text>
@@ -139,16 +140,8 @@ function CompPointUse(props) {
               </View>
             )}
           </View>
-          <Button
-            className='btn-submit'
-            style='background: var(--color-primary); border-color: var(--color-primary)'
-            loading={loading}
-            onClick={handleChange}
-          >
-            确定
-          </Button>
         </View>
-      </AtFloatLayout>
+      </SpFloatLayout>
       <AtModal isOpened={isOpenRule}>
         <AtModalHeader>积分使用规则</AtModalHeader>
         <AtModalContent>
