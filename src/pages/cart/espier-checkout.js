@@ -85,7 +85,9 @@ function CartCheckout(props) {
     defalutPaytype,
     isPointOpenModal,
     point_use,
-    pointInfo
+    pointInfo,
+    isPaymentOpend,
+    isPointOpen
   } = state
 
   useEffect(() => {
@@ -514,12 +516,32 @@ function CartCheckout(props) {
     dispatch(changeCoupon(couponInfo))
   }
 
+  const handlePaymentShow = () => {
+    setState((draft) => {
+      draft.isPaymentOpend = true
+    })
+  }
+
   const handlePaymentChange = async (payType, payChannel) => {
-    console.log(payType, payChannel)
     setState((draft) => {
       draft.payType = payType
       draft.payChannel = payChannel
       draft.point_use = 0
+      draft.isPaymentOpend = false
+    })
+  }
+
+  const initDefaultPaytype = (payType, payChannel) => {
+    setState((draft) => {
+      draft.defalutPaytype = payType
+      draft.payChannel = payChannel
+    })
+  }
+
+  const handleLayoutClose = () => {
+    setState((draft) => {
+      draft.isPaymentOpend = false
+      draft.isPointOpen = false
     })
   }
 
@@ -865,6 +887,17 @@ function CartCheckout(props) {
       ? couponInfo?.value?.title
       : ''
 
+  const payTypeText = {
+    wxpay: '微信支付',
+    hfpay: '微信支付',
+    alipayh5: '支付宝支付',
+    wxpayh5: '微信支付',
+    wxpayjs: '微信支付',
+    point: `${pointName}支付`,
+    deposit: '余额支付'
+    // delivery: '货到付款',
+  }
+
   return (
     <SpPage className='page-cart-checkout' renderFooter={renderFooter()}>
       {isObjectsValue(shoppingGuideData) && (
@@ -953,17 +986,31 @@ function CartCheckout(props) {
         onChange={handlePointUseChange}
       />
 
-      <View className='cart-checkout__pay'>
-        <CompPaymentPicker
-          type={payType}
-          title='支付方式'
-          isPointitemGood={isPointitemGood}
-          distributor_id={dtid}
-          disabledPayment={disabledPayment}
-          onChange={handlePaymentChange}
-          totalInfo={totalInfo}
-        />
-      </View>
+      {!bargain_id && !isPointitemGood && (
+        <View>
+          <SpCell
+            isLink
+            className='cart-checkout__pay'
+            title='支付方式'
+            onClick={handlePaymentShow}
+          >
+            {totalInfo.deduction && (
+              <Text>
+                {totalInfo.remainpt}
+                {`${pointName}可用`}
+              </Text>
+            )}
+            <Text className='invoice-title'>{payTypeText[payType]}</Text>
+          </SpCell>
+          {totalInfo.deduction && (
+            <View>
+              可用{totalInfo.point}
+              {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
+              包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
+            </View>
+          )}
+        </View>
+      )}
 
       {!isPointitemGood && (
         <View className='cart-checkout__total'>
@@ -1010,6 +1057,17 @@ function CartCheckout(props) {
           </SpCell>
         </View>
       )}
+      <CompPaymentPicker
+        isOpened={isPaymentOpend}
+        type={payType}
+        title='支付方式'
+        isPointitemGood={isPointitemGood}
+        distributor_id={dtid}
+        disabledPayment={disabledPayment}
+        onChange={handlePaymentChange}
+        onInitDefaultPayType={initDefaultPaytype}
+        onClose={handleLayoutClose}
+      />
     </SpPage>
   )
 }

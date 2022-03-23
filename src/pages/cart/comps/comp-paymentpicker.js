@@ -18,21 +18,21 @@ function CompPaymentPicker(props) {
     isPointitemGood = false,
     isShowBalance = true,
     disabledPayment = null,
-    onChange = () => {},
     title = '支付方式',
-    totalInfo
-    // onInitDefaultPayType = () => {}
+    isOpened = false,
+    onChange = () => {},
+    onClose = () => {},
+    onInitDefaultPayType = () => {}
   } = props
 
   const { colorPrimary, pointName } = useSelector((state) => state.sys)
 
   const [state, setState] = useImmer({
     localType: type,
-    typeList: [],
-    isOpendActionSheet: false
+    typeList: []
   })
 
-  const { localType, typeList, isOpendActionSheet } = state
+  const { localType, typeList } = state
 
   useEffect(() => {
     setState((draft) => {
@@ -53,7 +53,7 @@ function CompPaymentPicker(props) {
       if (typeof list[0].pay_channel != 'undefined') {
         channel = list[0].pay_channel
       }
-      // onInitDefaultPayType(res[0].pay_type_code, channel)
+      onInitDefaultPayType(res[0].pay_type_code, channel)
     }
   }
 
@@ -71,57 +71,20 @@ function CompPaymentPicker(props) {
       channel = payItem.pay_channel
     }
     onChange(type, channel)
-    setState((draft) => {
-      draft.isOpendActionSheet = false
-    })
   }
 
-  const handlePaymentShow = (isOpend) => {
+  const handleCancel = () => {
     setState((draft) => {
-      draft.isOpendActionSheet = isOpend
+      draft.localType = type
     })
-  }
-
-  const payTypeText = {
-    wxpay: '微信支付',
-    hfpay: '微信支付',
-    alipayh5: '支付宝支付',
-    wxpayh5: '微信支付',
-    wxpayjs: '微信支付',
-    point: `${pointName}支付`,
-    deposit: '余额支付'
-    // delivery: '货到付款',
+    onClose()
   }
 
   return (
     <View className='pages-comp-paymentpicker'>
-      <View>
-        <SpCell
-          isLink
-          className='trade-invoice'
-          title={title}
-          onClick={() => handlePaymentShow(true)}
-        >
-          {totalInfo.deduction && (
-            <Text>
-              {totalInfo.remainpt}
-              {`${pointName}可用`}
-            </Text>
-          )}
-          <Text className='invoice-title'>{payTypeText[type]}</Text>
-        </SpCell>
-        {totalInfo.deduction && (
-          <View>
-            可用{totalInfo.point}
-            {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
-            包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
-          </View>
-        )}
-      </View>
-
       <SpFloatLayout
-        open={isOpendActionSheet}
-        onClose={() => handlePaymentShow(false)}
+        open={isOpened}
+        onClose={handleCancel}
         renderFooter={
           <AtButton
             loading={loading}
@@ -136,7 +99,6 @@ function CompPaymentPicker(props) {
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
             <Text>{title}</Text>
-            {/* <View onClick={() => handlePaymentShow(false)} className='iconfont icon-close'></View> */}
           </View>
           <View className='payment-picker__bd'>
             {isPointitemGood && (
@@ -230,14 +192,6 @@ function CompPaymentPicker(props) {
               )
             })}
           </View>
-          {/* <Button
-            type='primary'
-            className='btn-submit'
-            loading={loading}
-            onClick={handleChange.bind(this, localType)}
-          >
-            确定
-          </Button> */}
         </View>
       </SpFloatLayout>
     </View>

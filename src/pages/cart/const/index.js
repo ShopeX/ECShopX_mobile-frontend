@@ -36,7 +36,9 @@ export const initialState = {
   // 积分相关
   isPointOpen: false,
   point_use: 0,
-  pointInfo: {}
+  pointInfo: {},
+  isPaymentOpend: false,
+  isPointOpen: false
 }
 
 export const deliveryList = [
