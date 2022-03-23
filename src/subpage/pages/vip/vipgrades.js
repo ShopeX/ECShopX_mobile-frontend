@@ -7,7 +7,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
 import { pickBy, classNames, hideLoading, isAlipay, isNavbar, redirectUrl } from '@/utils'
-import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
+import PaymentPicker from '@/pages/cart/comps/payment-picker'
 import userIcon from '@/assets/imgs/user-icon.png'
 // import { useDispatch } from 'react-redux'
 
@@ -26,7 +26,7 @@ import './vipgrades.scss'
 )
 export default class VipIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +46,7 @@ export default class VipIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -64,7 +64,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { cur, list } = await api.vip.getList()
     const { grade_name: name } = this.$instance.router.params
 
@@ -94,7 +94,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  onGetsBindCardList (item) {
+  onGetsBindCardList(item) {
     const { curTabIdx } = this.state
     api.vip
       .getBindCardList({
@@ -107,7 +107,7 @@ export default class VipIndex extends Component {
       })
   }
 
-  fetchCouponCardList () {
+  fetchCouponCardList() {
     api.vip.getShowCardPackage({ receive_type: 'vip_grade' }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -218,7 +218,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  async fetchUserVipInfo () {
+  async fetchUserVipInfo() {
     const userVipInfo = await api.vip.getUserVipInfo()
     this.setState({
       userVipInfo
@@ -228,6 +228,12 @@ export default class VipIndex extends Component {
   handlePaymentShow = () => {
     this.setState({
       isPaymentOpend: true
+    })
+  }
+
+  handleLayoutClose = () => {
+    this.setState({
+      isPaymentOpend: false
     })
   }
 
@@ -248,7 +254,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     let {
       userInfo,
@@ -344,12 +350,17 @@ export default class VipIndex extends Component {
                 })}
             </ScrollView>
 
-            <CompPaymentPicker
+            <PaymentPicker
+              isOpened={isPaymentOpend}
               type={payType}
+              isShowPoint={false}
+              isShowBalance={false}
+              isShowDelivery={false}
               // disabledPayment={disabledPayment}
+              onClose={this.handleLayoutClose}
               onChange={this.handlePaymentChange}
-            />
-            {/* {!isAlipay && (
+            ></PaymentPicker>
+            {!isAlipay && (
               <SpCell
                 isLink
                 border={false}
@@ -359,7 +370,7 @@ export default class VipIndex extends Component {
               >
                 <Text>{payTypeText[payType]}</Text>
               </SpCell>
-            )} */}
+            )}
             <View className='pay-btn' onClick={this.handleCharge}>
               立即支付
             </View>
