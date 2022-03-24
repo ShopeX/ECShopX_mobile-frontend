@@ -436,7 +436,11 @@ function CartCheckout(props) {
     }
     if (e.res.data.data.status_code === 422) {
       setTimeout(() => {
-        Taro.navigateBack()
+        let pages = Taro.getCurrentPages()
+        let curPages = pages[pages.length - 1].route
+        if (curPages.includes('espier-checkout')) {
+          Taro.navigateBack()
+        }
       }, 500)
     }
     setState((draft) => {
