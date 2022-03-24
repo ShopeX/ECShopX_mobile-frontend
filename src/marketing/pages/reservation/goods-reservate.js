@@ -6,7 +6,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtInput, AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
 import { SpToast, SpCheckbox } from '@/components'
 import api from '@/api'
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames, showToast } from '@/utils'
 import S from '@/spx'
 
 import './goods-reservate.scss'
@@ -18,7 +18,7 @@ import './goods-reservate.scss'
 @withBackToTop
 export default class GoodsReservate extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,16 +34,20 @@ export default class GoodsReservate extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.count = 0
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { activity_info } = await api.user.registrationActivity({
       activity_id: this.$instance.router.params.activity_id
     })
     if (!activity_info) {
+      showToast('您已经超出活动次数')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 700)
       this.setState({
         isHasActivityInfo: false
       })
@@ -51,8 +55,8 @@ export default class GoodsReservate extends Component {
       this.setState({
         cur_activity_info: activity_info
       })
+      this.getAreaData()
     }
-    this.getAreaData()
   }
 
   getAreaData = async () => {
@@ -220,10 +224,10 @@ export default class GoodsReservate extends Component {
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
-            success () {
+            success() {
               _this.handleSubmit()
             },
-            fail () {
+            fail() {
               _this.handleSubmit()
             }
           })
@@ -250,6 +254,10 @@ export default class GoodsReservate extends Component {
       if (new_subdata.formdata && new_subdata.formdata.content) {
         new_subdata.formdata.content = JSON.parse(new_subdata.formdata.content)
       }
+      S.toast('提交成功')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 700)
     } catch (e) {
       console.log(e, 53)
     }
@@ -300,10 +308,10 @@ export default class GoodsReservate extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
-      cur_activity_info,
+      cur_activity_info = {},
       isHasActivityInfo,
       option_list,
       showCheckboxPanel,
@@ -313,7 +321,9 @@ export default class GoodsReservate extends Component {
       isShowSubTips
     } = this.state
     // let new_activity_info = JSON.parse(cur_activity_info)
-    const { formdata } = cur_activity_info || {}
+    const { formdata } =
+      cur_activity_info &&
+      (typeof cur_activity_info == 'string' ? JSON.parse(cur_activity_info) : cur_activity_info)
 
     if (!formdata) {
       return null

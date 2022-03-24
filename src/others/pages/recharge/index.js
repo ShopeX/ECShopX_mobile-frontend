@@ -7,7 +7,7 @@ import { withLogin } from '@/hocs'
 import S from '@/spx'
 import { classNames } from '@/utils'
 import api from '@/api'
-import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
+import PaymentPicker from '@/pages/cart/comps/payment-picker'
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
@@ -18,7 +18,7 @@ import './index.scss'
 }))
 @withLogin()
 export default class Recharge extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     /**
      * @description: state字段说明
@@ -45,7 +45,7 @@ export default class Recharge extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getMemberInfo()
     // 获取充值金额列表
     api.member.getRechargeNumber().then((res) => {
@@ -59,12 +59,12 @@ export default class Recharge extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.setStore()
   }
 
   // 获取会员详情
-  getMemberInfo () {
+  getMemberInfo() {
     api.member.memberInfo().then((res) => {
       this.setState({
         deposit: res.deposit
@@ -208,6 +208,11 @@ export default class Recharge extends Component {
       url: '/subpages/auth/reg-rule?type=1'
     })
   }
+  handleLayoutClose = () => {
+    this.setState({
+      isPaymentOpend: false
+    })
+  }
   handlePaymentChange = async (payType) => {
     this.setState(
       {
@@ -237,7 +242,7 @@ export default class Recharge extends Component {
     })
   }
 
-  render () {
+  render() {
     const { currentShop, deposit, amounts, active, value, ruleValue, payType, isPaymentOpend } =
       this.state
     const { colors } = this.props
@@ -271,11 +276,16 @@ export default class Recharge extends Component {
         <SpCell isLink border={false} title='支付方式' onClick={this.handlePaymentShow}>
           <Text>{payTypeText[payType]}</Text>
         </SpCell>
-        <CompPaymentPicker
+        <PaymentPicker
+          isOpened={isPaymentOpend}
           type={payType}
+          isShowPoint={false}
+          isShowBalance={false}
+          isShowDelivery={false}
           // disabledPayment={disabledPayment}
+          onClose={this.handleLayoutClose}
           onChange={this.handlePaymentChange}
-        />
+        ></PaymentPicker>
         {/* 充值协议 */}
         <View className='balancePro'>
           <View className='price'>充值金额</View>

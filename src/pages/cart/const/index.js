@@ -25,7 +25,6 @@ export const initialState = {
   },
   distributorInfo: {}, // 店铺信息
   invoiceTitle: '', // 发票抬头
-  isNeedPackage: false, // 是否需要打包
   packInfo: {}, // 打包信息
   disabledPayment: {}, // 是否禁用支付
   channel: '',
@@ -36,7 +35,10 @@ export const initialState = {
   // 积分相关
   isPointOpen: false,
   point_use: 0,
-  pointInfo: {}
+  pointInfo: {},
+  isPaymentOpend: false,
+  isPackageOpend: false,
+  isNeedPackage: true // 是否需要打包
 }
 
 export const deliveryList = [

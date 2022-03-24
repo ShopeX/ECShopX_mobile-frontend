@@ -29,12 +29,12 @@ if (isAPP) {
 }
 
 class App extends Component {
-  componentWillMount() {
-    this.getSystemConfig()
-    // if ( S.getAuthToken() ) {
-    //   store.dispatch(fetchUserFavs());
-    // }
-  }
+  // componentWillMount() {
+  //   this.getSystemConfig()
+  //   // if ( S.getAuthToken() ) {
+  //   //   store.dispatch(fetchUserFavs());
+  //   // }
+  // }
 
   componentDidMount() {
     if (isWeixin) {
@@ -59,6 +59,7 @@ class App extends Component {
         false
       )
     }
+    this.getSystemConfig()
   }
 
   async getSystemConfig() {
