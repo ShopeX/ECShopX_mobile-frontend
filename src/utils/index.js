@@ -79,6 +79,8 @@ export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
 export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
 // 官方商城
 export const VERSION_B2C = process.env.APP_PLATFORM == 'b2c'
+// 内购
+export const VERSION_IN_PURCHASE = process.env.APP_PLATFORM == 'in_purchase'
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent

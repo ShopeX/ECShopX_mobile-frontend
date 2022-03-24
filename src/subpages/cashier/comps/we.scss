@@ -1,0 +1,12 @@
+@import '@/style/imports';
+
+.weapp-btn {
+  background: $color-brand-primary;
+  color: $color-brand-primary-text;
+  border-radius: 6px;
+  text-align: center;
+  padding: 0 32px;
+  height: 80px;
+  line-height: 80px;
+  margin-bottom: 20px;
+}

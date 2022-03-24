@@ -66,6 +66,13 @@ export default {
       ]
     },
     {
+      root: 'subpages/cashier',
+      pages: [
+        'index', //收银台页面
+        'cashier-result' //支付结果页面'
+      ]
+    },
+    {
       root: 'marketing',
       pages: [
         'pages/distribution/index', // 推广管理首页
@@ -154,8 +161,8 @@ export default {
         'pages/trade/refund-detail', //售后申请提交结果页面
         'pages/trade/refund-sendback', //售后填写物流公司页面
         'pages/trade/invoice-list', //发票管理
-        'pages/cashier/index', //收银台页面
-        'pages/cashier/cashier-result', //支付结果页面
+        // 'pages/cashier/index', //收银台页面
+        // 'pages/cashier/cashier-result', //支付结果页面
         'pages/qrcode-buy', //二维码购买页
         'pages/vip/vipgrades', //会员购买页面
         'pages/auth/pclogin', //pc登录页面

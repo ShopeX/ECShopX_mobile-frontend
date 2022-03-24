@@ -1,0 +1,20 @@
+@import '@/style/imports';
+
+.pay-mode {
+  background: $color-brand-primary;
+  color: $color-brand-primary-text;
+  border-radius: 6px;
+  text-align: center;
+  padding: 0 32px;
+  height: 80px;
+  line-height: 80px;
+  margin-bottom: 20px;
+}
+.content-simple {
+  width: 100%;
+}
+.at-modal__content {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}
