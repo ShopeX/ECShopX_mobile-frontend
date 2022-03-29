@@ -755,7 +755,9 @@ function CartCheckout(props) {
 
     const { packName, packDes } = packInfo
     cus_parmas.pack = isNeedPackage ? { packName, packDes } : undefined
-    cus_parmas.bargain_id = bargain_id || undefined
+    if (bargain_id) {
+      cus_parmas.bargain_id = bargain_id
+    }
 
     if (submitLoading) {
       // 提交时候获取参数 把留言信息传进去
@@ -771,7 +773,7 @@ function CartCheckout(props) {
     let value = ''
     let activity = {}
     switch (type) {
-      case 'groups':
+      case 'group':
         value = 'normal_groups'
         activity = Object.assign(activity, { bargain_id: group_id })
         if (team_id) {
