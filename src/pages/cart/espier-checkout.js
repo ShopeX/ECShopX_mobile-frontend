@@ -40,22 +40,6 @@ import './espier-checkout.scss'
 
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
-  const {
-    type,
-    order_type = 'normal',
-    shop_id: dtid,
-    cart_type,
-    seckill_id = null,
-    ticket: seckill_ticket,
-    pay_type,
-    bargain_id, // 砍价活动id
-    team_id,
-    group_id, // 团购id
-    source,
-    scene, // 情景值
-    goodType,
-    ticket = null
-  } = $instance.router?.params || {}
 
   const [state, setState] = useAsyncCallback(initialState)
 
@@ -90,6 +74,23 @@ function CartCheckout(props) {
     isPackageOpend,
     isPaymentOpend
   } = state
+
+  const {
+    type,
+    order_type = 'normal',
+    shop_id: dtid = paramsInfo.distributor_id,
+    cart_type = paramsInfo.cart_type,
+    seckill_id = null,
+    ticket: seckill_ticket,
+    pay_type,
+    bargain_id, // 砍价活动id
+    team_id,
+    group_id, // 团购id
+    source,
+    scene, // 情景值
+    goodType,
+    ticket = null
+  } = $instance.router?.params || {}
 
   useEffect(() => {
     setState((draft) => {
