@@ -401,7 +401,7 @@ export default class GoodsReservate extends Component {
                               >
                                 <View className='picker'>
                                   <View className='picker__title'>{i_data.field_title}</View>
-                                  {i_data.answer.length === 3 ? (
+                                  {i_data.answer && i_data.answer.length === 3 ? (
                                     <Text>
                                       {areaList[0][multiIndex[0]]}
                                       {areaList[1][multiIndex[1]]}

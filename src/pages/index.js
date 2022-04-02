@@ -37,7 +37,7 @@ const initState = {
 function Home() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
-  const { openRecommend, openLocation } = useSelector((state) => state.sys)
+  const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
     // policyUpdateHook: () => { // 下面用了checkPolicyChange，不使用hook直接根据checkPolicyChange返回的值去判断是否更新
     //   if (openLocation == 1) setPolicyModal(true)
@@ -168,7 +168,10 @@ function Home() {
 
   const fixedTop = searchComp && searchComp.config.fixTop
   const isSetHight =
-    VERSION_PLATFORM || (openScanQrcode == 1 && isWeixin) || (VERSION_B2C && fixedTop)
+    VERSION_PLATFORM ||
+    (openScanQrcode == 1 && isWeixin) ||
+    (openStore && openLocation == 1) ||
+    fixedTop
   return (
     <SpPage
       className='page-index'
@@ -179,7 +182,7 @@ function Home() {
     >
       {/* header-block */}
       {VERSION_STANDARD ? (
-        <WgtHomeHeaderShop>
+        <WgtHomeHeaderShop isSetHight={isSetHight}>
           {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
         </WgtHomeHeaderShop>
       ) : (
