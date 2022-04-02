@@ -5,9 +5,10 @@ import Taro, {
   getCurrentInstance
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 
 import {
@@ -115,6 +116,7 @@ function MemberIndex(props) {
   const instance = getCurrentInstance()
   const code = instance.router.params.code
   code && Taro.setStorageSync(SG_SHARE_CODE, code)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isLogin) {
@@ -279,6 +281,7 @@ function MemberIndex(props) {
     setState((draft) => {
       draft.deposit = memberRes.deposit
     })
+    dispatch(updateUserInfo(memberRes))
   }
 
   const getMemberCenterData = async () => {
