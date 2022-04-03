@@ -68,14 +68,48 @@
     padding: 0 12px;
     opacity: 0.5;
   }
-
-  .goods-info {
-    margin: 24px 16px;
-    background-color: #fff;
-    padding: 19px 16px;
-    box-shadow: 0px 2px 10px 0px #eae7e0;
+  .goods-contents {
+    .goods-info {
+      margin: 24px 16px;
+      background-color: #fff;
+      padding: 19px 16px;
+      box-shadow: 0px 2px 10px 0px #eae7e0;
+    }
+    .goods-desc {
+      margin: 24px 16px;
+      background-color: #fff;
+      box-shadow: 0px 2px 10px 0px #eae7e0;
+      .desc-hd {
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+      }
+      .desc-title {
+        color: #222;
+        position: relative;
+        &:before {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 16px;
+          height: 2px;
+          background: #222;
+          top: 20px;
+          left: -24px;
+        }
+        &:after {
+          content: '';
+          display: block;
+          position: absolute;
+          width: 18px;
+          height: 2px;
+          background: #222;
+          top: 20px;
+          right: -24px;
+        }
+      }
+    }
   }
-
   .goods-name {
     font-size: 32px;
     font-weight: 500;
@@ -111,6 +145,7 @@
       font-size: 22px;
     }
   }
+
   .sku-block {
     // padding: 16px;
     margin: 0px 16px 24px;
@@ -177,41 +212,6 @@
       color: #222;
       max-width: 500px;
       @include text-overflow();
-    }
-  }
-
-  .goods-desc {
-    margin: 24px 16px;
-    background-color: #fff;
-    box-shadow: 0px 2px 10px 0px #eae7e0;
-    .desc-hd {
-      height: 80px;
-      text-align: center;
-      line-height: 80px;
-    }
-    .desc-title {
-      color: #222;
-      position: relative;
-      &:before {
-        content: '';
-        display: block;
-        position: absolute;
-        width: 16px;
-        height: 2px;
-        background: #222;
-        top: 20px;
-        left: -24px;
-      }
-      &:after {
-        content: '';
-        display: block;
-        position: absolute;
-        width: 18px;
-        height: 2px;
-        background: #222;
-        top: 20px;
-        right: -24px;
-      }
     }
   }
 }
