@@ -26,6 +26,7 @@ function WgtNearbyShop(props) {
   const { base, seletedTags } = info
 
   useEffect(() => {
+    console.log(state.activeIndex, location)
     init()
   }, [state.activeIndex, location])
 

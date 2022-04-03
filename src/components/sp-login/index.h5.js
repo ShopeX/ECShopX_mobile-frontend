@@ -11,8 +11,8 @@ function SpLogin(props) {
   console.log('getCurrentInstance:', getCurrentInstance)
   const { className, children, size = 'normal', circle = false, onChange } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
-    policyUpdateHook: () => {
-      setPolicyModal(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
     }
   })
   const $instance = getCurrentInstance()

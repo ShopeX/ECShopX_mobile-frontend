@@ -1,0 +1,37 @@
+.page-cashier-result {
+  .trade-result {
+    background: #fff;
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .icon-roundcheckfill {
+    font-size: 40px;
+    color: var(--color-primary);
+  }
+  .trade-txt {
+    color: #333;
+  }
+  .trade-info {
+    background: #fff;
+    padding: 20px 40px;
+    margin-top: 20px;
+    line-height: 60px;
+    &-value {
+      color: #666;
+    }
+  }
+  .btn-block {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    .btn-wrap {
+      width: 500px;
+      &.cz-order {
+        width: 250px;
+      }
+    }
+  }
+}

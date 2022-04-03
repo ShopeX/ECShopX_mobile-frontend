@@ -82,14 +82,8 @@ export default (props = {}) => {
    */
   const checkPolicyChange = async () => {
     const { update_time } = await api.wx.getPrivacyTime()
-    // policyTime.current = update_time
-    // console.log( Taro.getStorageSync( SG_POLICY_UPDATETIME ) )
-    // console.log( update_time )
-    // console.log(Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time)
     const res = Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time
-    if (!res) {
-      policyUpdateHook()
-    }
+    policyUpdateHook(!res)
     return res
   }
 

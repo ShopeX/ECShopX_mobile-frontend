@@ -248,9 +248,9 @@ function EspierDetail(props) {
       draft.promotionActivity = data.promotionActivity
     })
 
-    if (isAPP && userInfo) {
+    if (isAPP() && userInfo) {
       try {
-        Taro.APP.SAPPShare.init({
+        Taro.SAPPShare.init({
           title: data.itemName,
           content: data.brief,
           pic: `${data.img}?time=${new Date().getTime()}`,
@@ -260,9 +260,9 @@ function EspierDetail(props) {
           weibo: false,
           miniApp: true
         })
-        console.log('app share init success...')
+        log.debug('app share init success...')
       } catch (e) {
-        console.log(e)
+        console.error(e)
       }
     }
   }
@@ -439,12 +439,15 @@ function EspierDetail(props) {
             />
 
             <View className='goods-name-wrap'>
-              <View className='goods-name'>{info.itemName}</View>
-              {(isWeixin || isAPP) && (
+              <View className='goods-name'>
+                <View className='title'>{info.itemName}</View>
+                <View className='brief'>{info.brief}</View>
+              </View>
+              {(isWeixin || isAPP()) && (
                 <SpLogin
                   onChange={() => {
-                    if (isAPP) {
-                      Taro.APP.SAPPShare.open()
+                    if (isAPP()) {
+                      Taro.SAPPShare.open()
                     } else {
                       setState((draft) => {
                         draft.sharePanelOpen = true

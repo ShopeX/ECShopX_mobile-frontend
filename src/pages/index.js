@@ -29,7 +29,6 @@ const MSpPrivacyModal = React.memo(SpPrivacyModal)
 
 const initState = {
   wgts: [],
-  shareInfo: {},
   showBackToTop: false,
   loading: true
 }
@@ -39,9 +38,13 @@ function Home() {
   const [likeList, setLikeList] = useImmer([])
   const { openRecommend, openLocation } = useSelector((state) => state.sys)
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
-    // policyUpdateHook: () => { // 下面用了checkPolicyChange，不使用hook直接根据checkPolicyChange返回的值去判断是否更新
-    //   if (openLocation == 1) setPolicyModal(true)
-    // }
+    policyUpdateHook: (isUpdate) => {
+      if (isUpdate) {
+        setPolicyModal(true)
+      } else {
+        fetchLocation()
+      }
+    }
   })
 
   const [policyModal, setPolicyModal] = useState(false)
@@ -49,14 +52,17 @@ function Home() {
   const { location = {} } = useSelector((state) => state.user)
   const { openScanQrcode } = useSelector((state) => state.sys)
 
-  const { wgts, shareInfo, loading } = state
+  const { wgts, loading } = state
 
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    fetchWgts()
+  }, [])
+
   useDidShow(() => {
-    fetchShareInfo()
     // 检查隐私协议是否变更或同意
-    getPolicyUpdate()
+    checkPolicyChange()
   })
 
   const getPolicyUpdate = async () => {
@@ -76,7 +82,6 @@ function Home() {
   }
 
   const fetchWgts = async () => {
-    // debugger
     const { config } = await api.shop.getShopTemplate({
       distributor_id: getDistributorId()
     })
@@ -91,71 +96,57 @@ function Home() {
     if (openRecommend == 1) {
       const query = {
         page: 1,
-        pageSize: 1000
+        pageSize: 30
       }
       const { list } = await api.cart.likeList(query)
       setLikeList(list)
     }
   }
 
-  const fetchShareInfo = async () => {
-    const res = await api.wx.shareSetting({ shareindex: 'index' })
-    setState((draft) => {
-      draft.shareInfo = res
-    })
-  }
-
   // 定位
   const fetchLocation = async () => {
     const res = await entryLaunch.getCurrentAddressInfo()
     dispatch(updateLocation(res))
-    fetchStoreInfo(res)
+    if (VERSION_STANDARD) {
+      fetchStoreInfo(res)
+    }
   }
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
-    if (openLocation == 1 && (VERSION_PLATFORM || VERSION_STANDARD)) {
+    if ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM) {
       fetchLocation()
-    } else {
-      fetchStoreInfo(location)
     }
   }, [])
 
   useShareAppMessage(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
+      title: title,
+      imageUrl: imageUrl,
       path: '/pages/index'
     }
   })
 
   useShareTimeline(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
+      title: title,
+      imageUrl: imageUrl,
       query: '/pages/index'
     }
   })
 
   const fetchStoreInfo = async ({ lat, lng }) => {
-    if (VERSION_PLATFORM) {
-      fetchWgts()
-      // fetchLikeList()
-      return
-    }
     let parmas = {
       distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
     }
-    if (openLocation) {
+    if (openLocation == 1) {
       parmas.lat = lat
       parmas.lng = lng
     }
-    // if (parmas.lat && parmas.distributor_id) delete parmas.distributor_id
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
-
-    fetchWgts()
-    // fetchLikeList()
   }
 
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
@@ -169,11 +160,12 @@ function Home() {
   const fixedTop = searchComp && searchComp.config.fixTop
   const isSetHight =
     VERSION_PLATFORM || (openScanQrcode == 1 && isWeixin) || (VERSION_B2C && fixedTop)
+
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
-      renderFloat={<CompFloatMenu />}
+      renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       loading={loading}
     >
@@ -206,7 +198,6 @@ function Home() {
         open={policyModal}
         onCancel={() => {
           setPolicyModal(false)
-          fetchStoreInfo(location)
         }}
         onConfirm={handleConfirmModal}
       />

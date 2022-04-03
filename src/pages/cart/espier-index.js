@@ -39,7 +39,9 @@ const initialState = {
 function CartIndex() {
   const { isLogin } = useLogin({
     autoLogin: true,
-    policyUpdateHook: () => onPolicyChange(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && onPolicyChange(true)
+    }
   })
 
   const dispatch = useDispatch()

@@ -130,7 +130,7 @@ function SpPage(props, ref) {
       style={styleNames({ ...pageTheme, ...lockStyle })}
       ref={wrapRef}
     >
-      {hasNavbar && !isTabBarPage && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
+      {hasNavbar && !isTabBarPage && navbar && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
 

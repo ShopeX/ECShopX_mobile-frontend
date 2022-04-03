@@ -77,10 +77,17 @@
   }
 
   .goods-name {
-    font-size: 32px;
-    font-weight: 500;
-    color: #222;
-    line-height: 48px;
+    .title {
+      font-size: 32px;
+      font-weight: 500;
+      color: #222;
+      // line-height: 48px;
+      @include text-overflow();
+    }
+    .brief {
+      font-size: 28px;
+      color: #666;
+    }
   }
 
   .goods-name-wrap {

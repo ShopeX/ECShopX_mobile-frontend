@@ -16,7 +16,7 @@ import './index.scss'
   colors: colors.current,
   pointName: sys.pointName
 }))
-@withLogin()
+// @withLogin()
 export default class Recharge extends Component {
   constructor(props) {
     super(props)
@@ -84,7 +84,7 @@ export default class Recharge extends Component {
         }
       })
     } else {
-      Taro.navigateTo({ url: '/pages/store/list' })
+      // Taro.navigateTo({ url: '/pages/store/list' })
     }
   }
 
@@ -256,7 +256,7 @@ export default class Recharge extends Component {
     }
     return (
       <View className='recharge'>
-        <SpNavBar title={this.config.navigationBarTitleText} leftIconType='chevron-left' />
+        {/* <SpNavBar title={this.config.navigationBarTitleText} leftIconType='chevron-left' /> */}
         {/* 当前门店 */}
         {currentShop && (
           <View className='shopName' onClick={this.setStore.bind(this, true)}>

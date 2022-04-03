@@ -1,3 +1,5 @@
+import { default as SAPPPay } from './MappPay'
+import { default as SAPPShare } from './MappShare'
 import log, { showToast } from './utils'
 
 class MAPP {
@@ -6,6 +8,7 @@ class MAPP {
       this.token = localStorage.getItem('auth_token')
       this._back_first = null
       this._events = {}
+      this.envType = 'SAPP'
       MAPP.instance = this
     }
     return MAPP.instance
@@ -29,6 +32,8 @@ class MAPP {
   }
 
   _initPlus() {
+    this.Taro['SAPPPay'] = SAPPPay
+    this.Taro['SAPPShare'] = SAPPShare
     const __SAPP_CONFIG = plus.storage.getItem('SAPP_CONFIG')
     try {
       this.SAPP_CONFIG = JSON.parse(__SAPP_CONFIG)
@@ -65,7 +70,8 @@ class MAPP {
 
     // plus.navigator.setStatusBarStyle("light")
 
-    // this.Taro.getEnv = this._getEnv.bind(this)
+    this.Taro.getEnv = this._getEnv.bind(this)
+    this.Taro.ENV_TYPE['APP'] = this.envType
     log.info(
       `sp-mui-app script load success, current webview is ${
         singleWebview ? 'single' : 'multiple'
@@ -239,7 +245,7 @@ class MAPP {
   }
 
   _getEnv() {
-    return 'SAPP'
+    return this.envType
   }
 
   _getPageURL(url) {

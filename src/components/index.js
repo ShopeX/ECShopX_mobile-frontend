@@ -78,6 +78,7 @@ import SpPoster from './sp-poster'
 import SpChat from './sp-chat'
 import SpGoodsPrice from './sp-goods-price'
 import SpRecommendItem from './sp-recommend-item'
+import SpCashier from './sp-cashier'
 
 export default {}
 
@@ -161,5 +162,6 @@ export {
   SpPoster,
   SpChat,
   SpGoodsPrice,
-  SpRecommendItem
+  SpRecommendItem,
+  SpCashier
 }

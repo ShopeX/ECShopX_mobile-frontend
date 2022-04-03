@@ -1,5 +1,5 @@
-.comp-selectpackage {
-  .package-item {
+.sp-cashier {
+  .payment-item {
     height: 90px;
     line-height: 90px;
     &:not(:last-child) {
@@ -10,10 +10,5 @@
   .sp-checkbox-new {
     flex-direction: row-reverse;
     justify-content: space-between;
-  }
-  .package-desc {
-    font-size: 26px;
-    color: #666;
-    padding: 0 16px;
   }
 }

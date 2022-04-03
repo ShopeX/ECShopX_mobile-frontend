@@ -8,87 +8,103 @@ import { View, Text } from '@tarojs/components'
 import './comp-selectpackage.scss'
 
 const initialState = {
-  checkedRadio: false
+  selectValue: false
 }
 
-function CompSelectPackage(props) {
-  const {
-    isChecked = true,
-    isOpened = false,
-    packInfo = {},
-    onChange = () => {},
-    onClose = () => {}
-  } = props
+const list = [
+  { label: '不需要', value: false },
+  { label: '需要', value: true }
+]
 
-  const { colorPrimary } = useSelector((state) => state.sys)
+function CompSelectPackage(props) {
+  const { value, isOpened = false, info, onChange = () => {}, onClose = () => {} } = props
+
   const [state, setState] = useImmer(initialState)
 
-  const { checkedRadio } = state
+  const { selectValue } = state
 
   useEffect(() => {
-    setState((draft) => {
-      draft.checkedRadio = isChecked
-    })
-  }, [])
+    if (!isOpened) {
+      setState((draft) => {
+        draft.selectValue = value
+      })
+    }
+  }, [value, isOpened])
 
-  // 更改选项
-  const handleChange = (isCheck) => {
-    if (checkedRadio === isCheck) return false
-    setState((draft) => {
-      draft.checkedRadio = isCheck
-    })
+  const onConfirm = () => {
+    onClose()
+    onChange(selectValue)
   }
 
-  // 触发props
-  const handleConfrim = () => {
-    onChange(checkedRadio)
-  }
-
-  const closePack = () => {
+  const onCloseFloatLayout = () => {
     setState((draft) => {
-      draft.checkedRadio = true
+      draft.selectValue = value
     })
     onClose()
   }
 
-  return (
-    <View className='pages-comp-selectpackage'>
-      <SpFloatLayout
-        open={isOpened}
-        onClose={closePack}
-        renderFooter={
-          <AtButton circle className='at-button--primary' onClick={handleConfrim}>
-            确定
-          </AtButton>
-        }
-      >
-        <View className='payment-picker'>
-          <View className='payment-picker__hd'>
-            <Text>{packInfo.packName}</Text>
-          </View>
-          <View className='payment-picker__bd'>
-            <View className='payment-item no-border' onClick={handleChange.bind(this, false)}>
-              <View className='payment-item__bd'>
-                <Text className='payment-item__title'>不需要</Text>
-              </View>
-              <View className='payment-item__ft'>
-                <SpCheckbox colors={colorPrimary} checked={!checkedRadio} />
-              </View>
-            </View>
+  const onChangePackage = ({ value }) => {
+    setState((draft) => {
+      draft.selectValue = value
+    })
+  }
 
-            <View className='payment-item no-border' onClick={handleChange.bind(this, true)}>
-              <View className='payment-item__bd'>
-                <Text className='payment-item__title'>需要</Text>
-              </View>
-              <View className='payment-item__ft'>
-                <SpCheckbox colors={colorPrimary} checked={checkedRadio} />
-              </View>
-            </View>
-            <View className='payment-item__desc'>包装说明：{packInfo.packDes}</View>
+  if (!info) {
+    return null
+  }
+
+  return (
+    <SpFloatLayout
+      className='comp-selectpackage'
+      title={info.packName}
+      open={isOpened}
+      onClose={onCloseFloatLayout}
+      renderFooter={
+        <AtButton circle type='primary' onClick={onConfirm}>
+          确定
+        </AtButton>
+      }
+    >
+      <View>
+        {list.map((item, index) => (
+          <View className='package-item' key={`package-item__${index}`}>
+            <SpCheckbox
+              checked={item.value == selectValue}
+              onChange={onChangePackage.bind(this, item)}
+            >
+              {item.label}
+            </SpCheckbox>
           </View>
+        ))}
+        <View className='package-desc'>包装说明：{info.packDes}</View>
+      </View>
+
+      {/* <View className='payment-picker'>
+        <View className='payment-picker__hd'>
+          <Text>{packInfo.packName}</Text>
         </View>
-      </SpFloatLayout>
-    </View>
+        <View className='payment-picker__bd'>
+          <View className='payment-item no-border' onClick={handleChange.bind(this, false)}>
+            <View className='payment-item__bd'>
+              <Text className='payment-item__title'>不需要</Text>
+            </View>
+            <View className='payment-item__ft'>
+              <SpCheckbox colors={colorPrimary} checked={!checkedRadio} />
+            </View>
+          </View>
+
+          <View className='payment-item no-border' onClick={handleChange.bind(this, true)}>
+            <View className='payment-item__bd'>
+              <Text className='payment-item__title'>需要</Text>
+            </View>
+            <View className='payment-item__ft'>
+              <SpCheckbox colors={colorPrimary} checked={checkedRadio} />
+            </View>
+          </View>
+          <View className='payment-item__desc'>包装说明：{packInfo.packDes}</View>
+        </View>
+      </View> */}
+    </SpFloatLayout>
   )
 }
 

@@ -6,6 +6,7 @@ import * as coupon from './coupon'
 import * as checkout from './checkout'
 import * as category from './category'
 import * as article from './article'
+import * as payment from './payment'
 
 export default {
   address,
@@ -15,5 +16,6 @@ export default {
   coupon,
   checkout,
   category,
-  article
+  article,
+  payment
 }

@@ -98,11 +98,13 @@ const config = {
   },
 
   h5: {
-    publicPath: (IS_APP && IS_PROD) ? './' : '/',
+    publicPath: IS_PROD ? './' : '/',
+    // publicPath: (IS_APP && IS_PROD) ? './' : '/',
     // publicPath: process.env.APP_PUBLIC_PATH || '/',
     staticDirectory: 'static',
     router: {
-      mode: IS_APP ? "hash" : "browser"
+      // mode: IS_APP ? "hash" : "browser"
+      mode: "browser"
     },
     // devServer: {
     //   https: {
