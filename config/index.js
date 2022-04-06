@@ -98,7 +98,8 @@ const config = {
   },
 
   h5: {
-    publicPath: IS_PROD ? './' : '/',
+    // publicPath: IS_PROD ? './' : '/',
+    publicPath: '/',
     // publicPath: (IS_APP && IS_PROD) ? './' : '/',
     // publicPath: process.env.APP_PUBLIC_PATH || '/',
     staticDirectory: 'static',
