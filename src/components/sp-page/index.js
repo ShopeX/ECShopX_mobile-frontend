@@ -65,7 +65,7 @@ function SpPage(props, ref) {
 
   useDidShow(() => {
     const { page } = getCurrentInstance()
-    const pageTitle = page.config?.navigationBarTitleText
+    const pageTitle = page?.config?.navigationBarTitleText
 
     const fidx = Object.values(TABBAR_PATH).findIndex(
       (v) => v == $instance.router?.path.split('?')[0]
@@ -132,7 +132,7 @@ function SpPage(props, ref) {
     ].includes(model) && isWeixin
 
   const { page } = getCurrentInstance()
-  const _pageTitle = page.config?.navigationBarTitleText
+  const _pageTitle = page?.config?.navigationBarTitleText
 
   return (
     <View

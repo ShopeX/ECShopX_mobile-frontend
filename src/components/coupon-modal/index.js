@@ -15,7 +15,7 @@ export default class CouponModal extends PureComponent {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { list, visible, onChange } = this.props
 
     return (
@@ -24,7 +24,7 @@ export default class CouponModal extends PureComponent {
           <View className='title'>
             福利专享券
             <View
-              className='icon-close poster-close-btn'
+              className='iconfont icon-close poster-close-btn'
               onClick={() => onChange(false, 'close')}
             ></View>
           </View>

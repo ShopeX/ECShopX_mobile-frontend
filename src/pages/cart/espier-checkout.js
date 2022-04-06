@@ -46,23 +46,6 @@ function CartCheckout(props) {
 
   const { cashierPayment } = usePayment()
 
-  const {
-    type,
-    order_type = 'normal',
-    shop_id: dtid,
-    cart_type,
-    seckill_id = null,
-    ticket: seckill_ticket,
-    pay_type,
-    bargain_id, // 砍价活动id
-    team_id,
-    group_id, // 团购id
-    source,
-    scene, // 情景值
-    goodType,
-    ticket = null
-  } = $instance.router?.params || {}
-
   const [state, setState] = useAsyncCallback(initialState)
 
   const dispatch = useDispatch()
@@ -96,6 +79,23 @@ function CartCheckout(props) {
     isPaymentOpend,
     openCashier
   } = state
+
+  const {
+    type,
+    order_type = 'normal',
+    shop_id: dtid = paramsInfo.distributor_id,
+    cart_type = paramsInfo.cart_type,
+    seckill_id = null,
+    ticket: seckill_ticket,
+    pay_type,
+    bargain_id, // 砍价活动id
+    team_id,
+    group_id, // 团购id
+    source,
+    scene, // 情景值
+    goodType,
+    ticket = null
+  } = $instance.router?.params || {}
 
   useEffect(() => {
     if (isLogin) {
@@ -705,7 +705,10 @@ function CartCheckout(props) {
         >
           <View className='invoice-title'>
             {invoiceTitle && (
-              <View onClick={(e) => resetInvoice(e)} className='icon-close invoice-close' />
+              <View
+                onClick={(e) => resetInvoice(e)}
+                className='iconfont icon-close invoice-close'
+              />
             )}
             {invoiceTitle || '否'}
           </View>
