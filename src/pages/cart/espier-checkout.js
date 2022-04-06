@@ -571,13 +571,12 @@ function CartCheckout(props) {
     if (bargain_id) {
       cus_parmas.bargain_id = bargain_id
     }
-
-    if (submitLoading) {
-      // 提交时候获取参数 把留言信息传进去
-      cus_parmas.remark = remark
-      cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
-      cus_parmas.pay_channel = payChannel
-    }
+    // if (submitLoading) {
+    // 提交时候获取参数 把留言信息传进去
+    cus_parmas.remark = remark
+    cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
+    cus_parmas.pay_channel = payChannel
+    // }
 
     return cus_parmas
   }
@@ -834,7 +833,8 @@ function CartCheckout(props) {
         onChange={(value) => {
           setState((draft) => {
             console.log(`SpCashier:`, value)
-            draft.payType = value
+            draft.payType = value.paymentCode
+            draft.payChannel = value.paymentChannel
           })
         }}
       />

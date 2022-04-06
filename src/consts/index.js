@@ -136,7 +136,8 @@ export const PAYMENT_TYPE = {
   wxpayjs: '微信支付',
   deposit: '余额支付',
   wxpayapp: '微信支付',
-  alipayapp: '支付宝支付'
+  alipayapp: '支付宝支付',
+  adapay: '微信支付'
 }
 
 export const TRANSFORM_PAYTYPE = {

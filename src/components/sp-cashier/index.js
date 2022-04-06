@@ -20,7 +20,8 @@ const paymentList = [
 
 const initialState = {
   list: [],
-  selectPayment: ''
+  selectPayment: '',
+  selectItem: null
 }
 
 function SpCashier(props) {
@@ -33,7 +34,7 @@ function SpCashier(props) {
   } = props
   const { userInfo } = useSelector((state) => state.user)
   const [state, setState] = useImmer(initialState)
-  const { list, selectPayment } = state
+  const { list, selectPayment, selectItem } = state
   console.log('isAPP:', isAPP(), Taro.getEnv(), Taro.ENV_TYPE.APP)
   const ENV = Taro.getEnv()
   useEffect(() => {
@@ -62,7 +63,7 @@ function SpCashier(props) {
     setState((draft) => {
       draft.list = list
     })
-    onChange(list[0].paymentCode)
+    onChange(list[0])
     // console.log('===list===', list)
     // const isHasAlipay = list.some((item) => item.pay_type_code === 'alipayh5')
     // return {
@@ -78,18 +79,19 @@ function SpCashier(props) {
     setState((draft) => {
       draft.list = list
     })
-    onChange(list[0].paymentCode)
+    onChange(list[0])
   }
 
-  const onChangePayment = ({ paymentCode }) => {
+  const onChangePayment = (item) => {
     setState((draft) => {
-      draft.selectPayment = paymentCode
+      draft.selectPayment = item.paymentCode
+      draft.selectItem = item
     })
   }
 
   const onConfirm = () => {
     onClose()
-    onChange(selectPayment)
+    onChange(selectItem)
   }
 
   const onCloseFloatLayout = () => {
@@ -97,15 +99,6 @@ function SpCashier(props) {
       draft.selectPayment = value
     })
     onClose()
-  }
-
-  const onDisabled = ({ paymentCode, paymentName }) => {
-    if (paymentCode == 'deposit') {
-      const deposit = userInfo.deposit || 0
-      return deposit < paymentAmount
-    } else {
-      return false
-    }
   }
 
   const renderPaymentName = ({ paymentCode, paymentName }) => {

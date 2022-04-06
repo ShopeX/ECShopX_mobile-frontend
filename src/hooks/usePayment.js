@@ -20,6 +20,7 @@ export default (props = {}) => {
     const { pay_type } = params
     switch (pay_type) {
       case 'wxpay':
+      case 'adapay':
         weappPay(params, orderInfo)
         break
       case 'wxpayh5':
