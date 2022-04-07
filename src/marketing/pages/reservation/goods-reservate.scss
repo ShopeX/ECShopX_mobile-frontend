@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .goods-reservate {
   &__tip {
@@ -139,5 +139,16 @@
   .at-textarea {
     width: auto;
     margin: 0 30px;
+  }
+  .address-picker {
+    .picker {
+      justify-content: flex-start;
+    }
+    .picker__text {
+      margin-left: 115px;
+    }
+  }
+  .gray {
+    color: #ccc;
   }
 }

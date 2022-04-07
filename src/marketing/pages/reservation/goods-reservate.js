@@ -116,31 +116,38 @@ export default class GoodsReservate extends Component {
     this.handleCell(name, selectd_area)
   }
 
-  bindMultiPickerColumnChange = (e) => {
+  bindMultiPickerColumnChange = ({ detail }) => {
+    const { column, value } = detail
     const { areaList, multiIndex } = this.state
-    if (e.detail.column === 0) {
-      this.setState({
-        multiIndex: [e.detail.value, 0, 0]
-      })
-      this.nList.map((item, index) => {
-        if (index === e.detail.value) {
-          let arrCity = []
-          let arrCounty = []
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if (c_index === 0) {
-              c_item.children.map((cny_item) => {
-                arrCounty.push(cny_item.label)
+    let arrCity = []
+    let arrCounty = []
+    let areaIndex = []
+    if (column === 0) {
+      this.setState(
+        {
+          multiIndex: [value, 0, 0]
+        },
+        () => {
+          this.nList.map((item, index) => {
+            if (index === value) {
+              item.children.map((c_item, c_index) => {
+                arrCity.push(c_item.label)
+                if (c_index === 0) {
+                  c_item.children.map((cny_item) => {
+                    arrCounty.push(cny_item.label)
+                  })
+                }
               })
+              areaList[1] = arrCity
+              areaList[2] = arrCounty
+              areaIndex = [areaList[0], arrCity, arrCounty]
+              this.setState({ areaList: areaIndex })
             }
           })
-          areaList[1] = arrCity
-          areaList[2] = arrCounty
-          this.setState({ areaList })
         }
-      })
-    } else if (e.detail.column === 1) {
-      multiIndex[1] = e.detail.value
+      )
+    } else if (column === 1) {
+      multiIndex[1] = value
       multiIndex[2] = 0
       this.setState(
         {
@@ -148,19 +155,18 @@ export default class GoodsReservate extends Component {
         },
         () => {
           this.nList[multiIndex[0]].children.map((c_item, c_index) => {
-            if (c_index === e.detail.value) {
-              let arrCounty = []
+            if (c_index === value) {
               c_item.children.map((cny_item) => {
                 arrCounty.push(cny_item.label)
               })
-              areaList[2] = arrCounty
-              this.setState({ areaList })
+              areaIndex = [areaList[0], areaList[1], arrCounty]
+              this.setState({ areaList: areaIndex })
             }
           })
         }
       )
     } else {
-      multiIndex[2] = e.detail.value
+      multiIndex[2] = value
       this.setState({
         multiIndex
       })
@@ -355,9 +361,11 @@ export default class GoodsReservate extends Component {
                                 <View className='picker'>
                                   <View className='picker__title'>
                                     <Text className='picker__title_name'>{i_data.field_title}</Text>
-                                    <Text className='picker__title_value'>
-                                      {i_data.answer ? i_data.answer : '请选择'}
-                                    </Text>
+                                    {i_data.answer ? (
+                                      <Text className='picker__title_value'>{i_data.answer}</Text>
+                                    ) : (
+                                      <Text className='picker__title_value gray'>请选择</Text>
+                                    )}
                                   </View>
                                   <View className='pick-value'>
                                     <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
@@ -381,9 +389,11 @@ export default class GoodsReservate extends Component {
                                 <View className='picker'>
                                   <View className='picker__title'>
                                     <Text className='picker__title_name'>{i_data.field_title}</Text>
-                                    <Text className='picker__title_value'>
-                                      {i_data.answer ? i_data.answer : '请选择'}
-                                    </Text>
+                                    {i_data.answer ? (
+                                      <Text className='picker__title_value'>{i_data.answer}</Text>
+                                    ) : (
+                                      <Text className='picker__title_value gray'>请选择</Text>
+                                    )}
                                   </View>
                                   <View className='pick-value'>
                                     <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
@@ -393,6 +403,7 @@ export default class GoodsReservate extends Component {
                             ) : null}
                             {i_data.form_element === 'area' ? (
                               <Picker
+                                className='address-picker'
                                 mode='multiSelector'
                                 onChange={this.bindMultiPickerChange.bind(this, i_data.field_name)}
                                 onColumnChange={this.bindMultiPickerColumnChange.bind(this)}
@@ -402,13 +413,13 @@ export default class GoodsReservate extends Component {
                                 <View className='picker'>
                                   <View className='picker__title'>{i_data.field_title}</View>
                                   {i_data.answer && i_data.answer.length === 3 ? (
-                                    <Text>
+                                    <Text className='picker__text'>
                                       {areaList[0][multiIndex[0]]}
                                       {areaList[1][multiIndex[1]]}
                                       {areaList[2][multiIndex[2]]}
                                     </Text>
                                   ) : (
-                                    ''
+                                    <Text className='picker__text gray'>请选择</Text>
                                   )}
                                 </View>
                               </Picker>
