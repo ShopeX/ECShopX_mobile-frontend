@@ -11,4 +11,3 @@ dist/
 .app_modules.*
 .husky
 .history
-.env
