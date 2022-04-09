@@ -85,24 +85,30 @@ export default class GroupDetail extends Component {
   }
 
   handleJoinClick = async () => {
-    if (!S.getAuthToken()) {
-      showToast('请先登录')
-      const { params, path } = this.$instance.router
-      setTimeout(() => {
-        let url = `/subpages/auth/login?redirect=${encodeURIComponent(
-          `${path}?${qs.stringify(params)}`
-        )}`
-        Taro.redirectTo({ url })
-      }, 2000)
-
-      return
-    }
-
-    const { detail } = this.state
     const {
       activity_info,
       team_info: { team_id }
-    } = detail
+    } = this.state.detail
+
+    if (!S.getAuthToken()) {
+      showToast('请先登录')
+      const { params, path } = this.$instance.router
+      let url = ''
+      if (isWeixin) {
+        url = `/subpages/member/index?redirect=${encodeURIComponent(
+          `${path}?${qs.stringify(params)}`
+        )}`
+      } else {
+        url = `/subpages/auth/login?redirect=${encodeURIComponent(
+          `${path}?${qs.stringify(params)}`
+        )}`
+      }
+      setTimeout(() => {
+        Taro.redirectTo({ url })
+      }, 2000)
+      return
+    }
+
     const { goods_id, distributor_id = 0, groups_activity_id } = activity_info || {}
     // const { distributor_id } = Taro.getStorageSync('curStore')
 
@@ -280,9 +286,9 @@ export default class GroupDetail extends Component {
           {team_info.team_status == 1 ? (
             <View>
               {!isLeader && !isSelf && (
-                <FormIdCollector sync onClick={this.handleJoinClick.bind(this)}>
-                  <View className='btn-submit'>我要参团</View>
-                </FormIdCollector>
+                <AtButton className='btn-submit' onClick={this.handleJoinClick.bind(this)}>
+                  我要参团
+                </AtButton>
               )}
               {isLeader && isWeixin && (
                 <AtButton className='btn-submit' openType='share'>

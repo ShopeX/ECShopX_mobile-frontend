@@ -39,7 +39,9 @@ const initialState = {
 function CartIndex() {
   const { isLogin } = useLogin({
     autoLogin: true,
-    policyUpdateHook: () => onPolicyChange(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && onPolicyChange(true)
+    }
   })
 
   const dispatch = useDispatch()
@@ -442,7 +444,7 @@ function CartIndex() {
       )}
 
       {/* 猜你喜欢 */}
-      {<SpRecommend className='recommend-block' info={recommendList} />}
+      <SpRecommend className='recommend-block' info={recommendList} />
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
     </SpPage>

@@ -8,7 +8,7 @@ import api from '@/api'
 // import { youshuLogin } from '@/utils/youshu'
 import { fetchUserFavs } from '@/store/slices/user'
 import { DEFAULT_TABS, DEFAULT_THEME, SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
-import { checkAppVersion, isWeixin, isNavbar } from '@/utils'
+import { checkAppVersion, isWeixin, isNavbar, log } from '@/utils'
 
 import './app.scss'
 
@@ -19,13 +19,21 @@ import './app.scss'
 // }
 
 const store = configStore()
+
+// 如果是app模式，注入SAPP
+if (process.env.APP_BUILD_TARGET == 'app') {
+  import('@/plugin/app/index').then(({ SAPP }) => {
+    SAPP.init(Taro, store)
+  })
+}
+
 class App extends Component {
-  componentWillMount() {
-    this.getSystemConfig()
-    // if ( S.getAuthToken() ) {
-    //   store.dispatch(fetchUserFavs());
-    // }
-  }
+  // componentWillMount() {
+  //   this.getSystemConfig()
+  //   // if ( S.getAuthToken() ) {
+  //   //   store.dispatch(fetchUserFavs());
+  //   // }
+  // }
 
   componentDidMount() {
     if (isWeixin) {
@@ -34,22 +42,23 @@ class App extends Component {
   }
 
   componentDidShow(options) {
-    if (isNavbar()) {
-      document.querySelector('title').addEventListener(
-        'DOMSubtreeModified',
-        () => {
-          const pageTitle = document.querySelector('title').innerHTML
-          console.log('document title:', pageTitle)
-          store.dispatch({
-            type: 'sys/updatePageTitle',
-            payload: {
-              pageTitle
-            }
-          })
-        },
-        false
-      )
-    }
+    // if (isNavbar()) {
+    //   document.querySelector('title').addEventListener(
+    //     'DOMSubtreeModified',
+    //     () => {
+    //       const pageTitle = document.querySelector('title').innerHTML
+    //       log.debug(`document title: ${pageTitle}, current env is ${Taro.getEnv()}`)
+    //       store.dispatch({
+    //         type: 'sys/updatePageTitle',
+    //         payload: {
+    //           pageTitle
+    //         }
+    //       })
+    //     },
+    //     false
+    //   )
+    // }
+    this.getSystemConfig()
   }
 
   async getSystemConfig() {

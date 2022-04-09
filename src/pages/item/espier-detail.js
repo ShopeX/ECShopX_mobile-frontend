@@ -35,7 +35,8 @@ import {
   pickBy,
   classNames,
   navigateTo,
-  VERSION_PLATFORM
+  VERSION_PLATFORM,
+  isAPP
 } from '@/utils'
 
 import doc from '@/doc'
@@ -43,6 +44,7 @@ import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
+import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
@@ -84,16 +86,19 @@ const initialState = {
   evaluationList: [],
   evaluationTotal: 0,
   // 多规格商品选中的规格
-  curItem: null
+  curItem: null,
+  recommendList: []
 }
 
 function EspierDetail(props) {
   const $instance = getCurrentInstance()
   // const { type, id, dtid } = $instance.router.params
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
+  const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
-  const { colorPrimary } = useSelector((state) => state.sys)
+  const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+  const { setNavigationBarTitle } = useNavigation()
 
   const [state, setState] = useImmer(initialState)
   const {
@@ -117,7 +122,8 @@ function EspierDetail(props) {
     id,
     type,
     dtid,
-    curItem
+    curItem,
+    recommendList
   } = state
 
   useEffect(() => {
@@ -225,9 +231,8 @@ function EspierDetail(props) {
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id)
 
-    Taro.setNavigationBarTitle({
-      title: data.itemName
-    })
+    setNavigationBarTitle(data.itemName)
+
     console.log(ACTIVITY_LIST[data.activityType])
     if (ACTIVITY_LIST[data.activityType]) {
       Taro.setNavigationBarColor({
@@ -245,6 +250,38 @@ function EspierDetail(props) {
         subscribe
       }
       draft.promotionActivity = data.promotionActivity
+    })
+
+    if (isAPP() && userInfo) {
+      try {
+        Taro.SAPPShare.init({
+          title: data.itemName,
+          content: data.brief,
+          pic: `${data.img}?time=${new Date().getTime()}`,
+          link: `${process.env.APP_CUSTOM_SERVER}/pages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
+          path: `/pages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
+          price: data.price,
+          weibo: false,
+          miniApp: true
+        })
+        log.debug('app share init success...')
+      } catch (e) {
+        console.error(e)
+      }
+    }
+
+    if (openRecommend == 1) {
+      getRecommendList() // 猜你喜欢
+    }
+  }
+
+  const getRecommendList = async () => {
+    const { list } = await api.cart.likeList({
+      page: 1,
+      pageSize: 30
+    })
+    setState((draft) => {
+      draft.recommendList = list
     })
   }
 
@@ -335,7 +372,7 @@ function EspierDetail(props) {
     >
       {!info && <SpLoading />}
       {info && (
-        <View>
+        <View className='goods-contents'>
           <View className='goods-pic-container'>
             <Swiper
               className='goods-swiper'
@@ -420,13 +457,21 @@ function EspierDetail(props) {
             />
 
             <View className='goods-name-wrap'>
-              <View className='goods-name'>{info.itemName}</View>
-              {isWeixin && (
+              <View className='goods-name'>
+                <View className='title'>{info.itemName}</View>
+                <View className='brief'>{info.brief}</View>
+              </View>
+              {(isWeixin || isAPP()) && (
                 <SpLogin
-                  onChange={() => {
-                    setState((draft) => {
-                      draft.sharePanelOpen = true
-                    })
+                  onChange={async () => {
+                    if (isAPP()) {
+                      Taro.SAPPShare.open()
+                    } else {
+                      await getUserInfoAuth()
+                      setState((draft) => {
+                        draft.sharePanelOpen = true
+                      })
+                    }
                   }}
                 >
                   <View className='btn-share'>
@@ -531,6 +576,8 @@ function EspierDetail(props) {
           </View>
         </View>
       )}
+
+      <SpRecommend info={recommendList} />
 
       {/* 优惠组合 */}
       <CompPackageList

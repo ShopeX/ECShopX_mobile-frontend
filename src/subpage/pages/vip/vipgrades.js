@@ -26,7 +26,7 @@ import './vipgrades.scss'
 )
 export default class VipIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -38,6 +38,7 @@ export default class VipIndex extends Component {
       list: [],
       cur: null,
       payType: '',
+      payChannel: '',
       isPaymentOpend: false,
       visible: false,
       total_count: 0,
@@ -46,7 +47,7 @@ export default class VipIndex extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -64,7 +65,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const { cur, list } = await api.vip.getList()
     const { grade_name: name } = this.$instance.router.params
 
@@ -94,7 +95,7 @@ export default class VipIndex extends Component {
     )
   }
 
-  onGetsBindCardList (item) {
+  onGetsBindCardList(item) {
     const { curTabIdx } = this.state
     api.vip
       .getBindCardList({
@@ -107,7 +108,7 @@ export default class VipIndex extends Component {
       })
   }
 
-  fetchCouponCardList () {
+  fetchCouponCardList() {
     api.vip.getShowCardPackage({ receive_type: 'vip_grade' }).then(({ all_card_list }) => {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
@@ -157,7 +158,7 @@ export default class VipIndex extends Component {
       return
     }
 
-    const { list, curTabIdx, curCellIdx, payType } = this.state
+    const { list, curTabIdx, curCellIdx, payType, payChannel } = this.state
 
     const vip_grade = list[curTabIdx]
 
@@ -167,7 +168,8 @@ export default class VipIndex extends Component {
       vip_grade_id: vip_grade.vip_grade_id,
       card_type: vip_grade.price_list[curCellIdx].name,
       distributor_id: Taro.getStorageSync('trackIdentity').distributor_id || '',
-      pay_type: env === 'h5' ? 'wxpayh5' : payType
+      pay_type: env === 'h5' ? 'wxpayh5' : payType,
+      pay_channel: payChannel
     }
 
     Taro.showLoading()
@@ -218,7 +220,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  async fetchUserVipInfo () {
+  async fetchUserVipInfo() {
     const userVipInfo = await api.vip.getUserVipInfo()
     this.setState({
       userVipInfo
@@ -231,14 +233,28 @@ export default class VipIndex extends Component {
     })
   }
 
-  handlePaymentChange = async (payType) => {
+  handleLayoutClose = () => {
+    this.setState({
+      isPaymentOpend: false
+    })
+  }
+
+  handlePaymentChange = async (payType, payChannel) => {
     this.setState(
       {
         payType,
+        payChannel,
         isPaymentOpend: false
       },
       () => {}
     )
+  }
+
+  initDefaultPaytype = (payType, payChannel) => {
+    this.setState({
+      payChannel,
+      payType
+    })
   }
 
   handleCouponBox = () => {
@@ -248,7 +264,7 @@ export default class VipIndex extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     let {
       userInfo,
@@ -270,7 +286,8 @@ export default class VipIndex extends Component {
       wxpay: process.env.TARO_ENV === 'weapp' ? '微信支付' : '现金支付',
       deposit: '余额支付',
       delivery: '货到付款',
-      hfpay: '微信支付'
+      hfpay: '微信支付',
+      adapay: '微信支付'
     }
     return (
       <SpPage>
@@ -345,11 +362,18 @@ export default class VipIndex extends Component {
             </ScrollView>
 
             <CompPaymentPicker
+              isOpened={isPaymentOpend}
               type={payType}
+              title='支付方式'
+              isPointitemGood={false}
+              isShowBalance={false}
+              isShowDelivery={false}
               // disabledPayment={disabledPayment}
+              onClose={this.handleLayoutClose}
               onChange={this.handlePaymentChange}
+              onInitDefaultPayType={this.initDefaultPaytype}
             />
-            {/* {!isAlipay && (
+            {!isAlipay && (
               <SpCell
                 isLink
                 border={false}
@@ -359,7 +383,7 @@ export default class VipIndex extends Component {
               >
                 <Text>{payTypeText[payType]}</Text>
               </SpCell>
-            )} */}
+            )}
             <View className='pay-btn' onClick={this.handleCharge}>
               立即支付
             </View>

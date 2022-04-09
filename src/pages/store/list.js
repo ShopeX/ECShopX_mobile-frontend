@@ -33,8 +33,8 @@ const initialState = {
 function NearlyShop(props) {
   const { isLogin, checkPolicyChange } = useLogin({
     autoLogin: false,
-    policyUpdateHook: () => {
-      setPolicyModal(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
     }
   })
   const [state, setState] = useImmer(initialState)

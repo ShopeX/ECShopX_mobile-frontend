@@ -1,5 +1,6 @@
 import path from 'path'
 import pkg from '../package.json'
+const chalk = require("chalk")
 const { getEnvs, getDefineConstants, getCacheIdentifier } = require('./utils')
 
 require('dotenv-flow').config()
@@ -7,15 +8,25 @@ require('dotenv-flow').config()
 const DIST_PATH = `dist/${process.env.TARO_ENV}`
 const APP_ENVS = getEnvs()
 
+// 是否为生产模式
+const IS_PROD = process.env.NODE_ENV === 'production'
+const BUILD_TARGET = IS_PROD ? process.env.target : process.env.npm_config_target
+
 const CONST_ENVS = {
   APP_NAME: pkg.app_name,
   APP_AUTH_PAGE:
     process.env.TARO_ENV == 'h5' ? '/subpage/pages/auth/login' : '/subpage/pages/auth/wxauth',
+  APP_BUILD_TARGET: BUILD_TARGET,
   ...APP_ENVS
 }
 
-// 是否为生产模式
-const IS_PROD = process.env.NODE_ENV === 'production'
+Object.keys(CONST_ENVS).forEach(key => {
+  console.log(chalk.green(`${key}=${CONST_ENVS[key]}`));
+})
+
+
+// 是否打包APP
+const IS_APP = BUILD_TARGET === 'app'
 
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
 if (process.env.TARO_ENV != 'h5') {
@@ -87,11 +98,14 @@ const config = {
   },
 
   h5: {
+    // publicPath: IS_PROD ? './' : '/',
     publicPath: '/',
+    // publicPath: (IS_APP && IS_PROD) ? './' : '/',
     // publicPath: process.env.APP_PUBLIC_PATH || '/',
     staticDirectory: 'static',
     router: {
-      mode: 'browser'
+      // mode: IS_APP ? "hash" : "browser"
+      mode: "browser"
     },
     // devServer: {
     //   https: {

@@ -7,7 +7,7 @@ export const initialState = {
   addressList: [],
   receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
   defalutPaytype: isWxWeb ? 'wxpayjs' : isWeb ? 'wxpayh5' : 'wxpay', // 默认支付方式
-  payType: 'wxpay', // wxpay 微信支付 point 积分支付 deposit 储值支付
+  payType: '', // wxpay 微信支付 point 积分支付 deposit 储值支付
   payChannel: '', // 支付渠道
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
@@ -25,7 +25,6 @@ export const initialState = {
   },
   distributorInfo: {}, // 店铺信息
   invoiceTitle: '', // 发票抬头
-  isNeedPackage: false, // 是否需要打包
   packInfo: {}, // 打包信息
   disabledPayment: {}, // 是否禁用支付
   channel: '',
@@ -36,7 +35,12 @@ export const initialState = {
   // 积分相关
   isPointOpen: false,
   point_use: 0,
-  pointInfo: {}
+  pointInfo: {},
+  isPaymentOpend: false,
+  isPackageOpend: false,
+  isNeedPackage: false, // 是否需要打包
+  openCashier: false,
+  calcing: false
 }
 
 export const deliveryList = [

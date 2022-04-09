@@ -4,6 +4,7 @@ export default {
     'pages/category/index', // 分类
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
+    'pages/cart/cashier-result', // 支付结果页面
     'pages/store/index', // 店铺首页
     'pages/store/brand-info', // 店铺品牌
 
@@ -28,16 +29,16 @@ export default {
     {
       root: 'subpages/guide',
       pages: [
-        'index',
-        'category/index',
-        'item/list',
-        'item/espier-detail',
-        'cart/espier-index',
-        'cart/espier-checkout',
-        'coupon-home/index',
-        'recommend/list',
-        'recommend/detail',
-        'custom/custom-page'
+        'index', // 货架首页
+        'category/index', // 分类页面
+        'item/list', // 商品列表
+        'item/espier-detail', // 商品详情
+        'cart/espier-index', // 购物车
+        'cart/espier-checkout', // 下单结算
+        'coupon-home/index', // 优惠券
+        'recommend/list', // 种草
+        'recommend/detail', // 种草详情
+        'custom/custom-page' // 自定义页面
       ]
     },
     {
@@ -154,8 +155,8 @@ export default {
         'pages/trade/refund-detail', //售后申请提交结果页面
         'pages/trade/refund-sendback', //售后填写物流公司页面
         'pages/trade/invoice-list', //发票管理
-        'pages/cashier/index', //收银台页面
-        'pages/cashier/cashier-result', //支付结果页面
+        // 'pages/cashier/index', //收银台页面
+        // 'pages/cashier/cashier-result', //支付结果页面
         'pages/qrcode-buy', //二维码购买页
         'pages/vip/vipgrades', //会员购买页面
         'pages/auth/pclogin', //pc登录页面
@@ -238,5 +239,11 @@ export default {
   },
   usingComponents: {
     'mp-html': './components/sp-html/mp-weixin/index'
+  },
+  window: {
+    'backgroundTextStyle': 'light',
+    'navigationBarBackgroundColor': '#fff',
+    'navigationBarTitleText': '微商城',
+    'navigationBarTextStyle': 'black'
   }
 }

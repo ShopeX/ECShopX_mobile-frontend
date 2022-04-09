@@ -44,6 +44,9 @@
     //z-index: 999;
   }
   .order-item__btn {
+    position: absolute;
+    right: 0;
+    top: 30%;
     display: flex;
     justify-content: flex-end;
     padding: 0 30px;

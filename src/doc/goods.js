@@ -79,6 +79,7 @@ export const ITEM_LIST_GOODS = {
 export const GOODS_INFO = {
   itemId: 'item_id',
   itemName: 'itemName',
+  brief: 'brief',
   img: 'pics[0]',
   imgs: 'pics',
   companyId: 'company_id',

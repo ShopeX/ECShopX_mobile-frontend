@@ -9,7 +9,6 @@ import {
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
-  VERSION_IN_PURCHASE,
   VERSION_B2C,
   classNames
 } from '@/utils'
@@ -30,7 +29,6 @@ const MSpPrivacyModal = React.memo(SpPrivacyModal)
 
 const initState = {
   wgts: [],
-  shareInfo: {},
   showBackToTop: false,
   loading: true
 }
@@ -38,11 +36,15 @@ const initState = {
 function Home() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
-  const { openRecommend, openLocation } = useSelector((state) => state.sys)
+  const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
   const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
-    // policyUpdateHook: () => { // 下面用了checkPolicyChange，不使用hook直接根据checkPolicyChange返回的值去判断是否更新
-    //   if (openLocation == 1) setPolicyModal(true)
-    // }
+    policyUpdateHook: (isUpdate) => {
+      if (isUpdate) {
+        setPolicyModal(true)
+      } else {
+        fetchLocation()
+      }
+    }
   })
 
   const [policyModal, setPolicyModal] = useState(false)
@@ -50,33 +52,34 @@ function Home() {
   const { location = {} } = useSelector((state) => state.user)
   const { openScanQrcode } = useSelector((state) => state.sys)
 
-  const { wgts, shareInfo, loading } = state
+  const { wgts, loading } = state
 
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    init()
+  }, [])
+
   useDidShow(() => {
-    fetchShareInfo()
     // 检查隐私协议是否变更或同意
-    getPolicyUpdate()
+    checkPolicyChange()
   })
 
-  const getPolicyUpdate = async () => {
-    const checkRes = await checkPolicyChange()
-    if (!checkRes && openLocation == 1) {
-      setPolicyModal(true)
-    }
-    if (checkRes) {
-      fetchStoreInfo(location)
+  const init = async () => {
+    if (VERSION_STANDARD) {
+      await fetchStoreInfo(location)
+    } else {
+      await fetchWgts()
     }
   }
 
   const fetchWgts = async () => {
-    // debugger
     const { config } = await api.shop.getShopTemplate({
       distributor_id: getDistributorId()
     })
     setState((draft) => {
-      ;(draft.wgts = config), (draft.loading = false)
+      draft.wgts = config
+      draft.loading = false
     })
     fetchLikeList()
   }
@@ -85,68 +88,59 @@ function Home() {
     if (openRecommend == 1) {
       const query = {
         page: 1,
-        pageSize: 1000
+        pageSize: 30
       }
       const { list } = await api.cart.likeList(query)
       setLikeList(list)
     }
   }
 
-  const fetchShareInfo = async () => {
-    const res = await api.wx.shareSetting({ shareindex: 'index' })
-    setState((draft) => {
-      draft.shareInfo = res
-    })
-  }
-
   // 定位
   const fetchLocation = async () => {
     const res = await entryLaunch.getCurrentAddressInfo()
     dispatch(updateLocation(res))
-    fetchStoreInfo(res)
+    if (VERSION_STANDARD) {
+      fetchStoreInfo(res)
+    }
   }
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
-    if (VERSION_PLATFORM || VERSION_STANDARD) fetchLocation()
-    // fetchStoreInfo(location)
+    if ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM) {
+      fetchLocation()
+    }
   }, [])
 
   useShareAppMessage(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
+      title: title,
+      imageUrl: imageUrl,
       path: '/pages/index'
     }
   })
 
   useShareTimeline(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
+      title: title,
+      imageUrl: imageUrl,
       query: '/pages/index'
     }
   })
 
   const fetchStoreInfo = async ({ lat, lng }) => {
-    if (VERSION_PLATFORM) {
-      fetchWgts()
-      // fetchLikeList()
-      return
-    }
     let parmas = {
       distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
     }
-    if (openLocation) {
+    if (openLocation == 1) {
       parmas.lat = lat
       parmas.lng = lng
+      parmas.distributor_id = undefined
     }
-    // if (parmas.lat && parmas.distributor_id) delete parmas.distributor_id
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
-
-    fetchWgts()
-    // fetchLikeList()
+    await fetchWgts()
   }
 
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
@@ -161,19 +155,19 @@ function Home() {
   const isSetHight =
     VERSION_PLATFORM ||
     (openScanQrcode == 1 && isWeixin) ||
-    (VERSION_IN_PURCHASE && fixedTop) ||
-    (VERSION_B2C && fixedTop)
+    (openStore && openLocation == 1) ||
+    fixedTop
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
-      renderFloat={<CompFloatMenu />}
+      renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       loading={loading}
     >
       {/* header-block */}
       {VERSION_STANDARD ? (
-        <WgtHomeHeaderShop>
+        <WgtHomeHeaderShop isSetHight={isSetHight}>
           {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
         </WgtHomeHeaderShop>
       ) : (
@@ -200,7 +194,6 @@ function Home() {
         open={policyModal}
         onCancel={() => {
           setPolicyModal(false)
-          fetchStoreInfo(location)
         }}
         onConfirm={handleConfirmModal}
       />

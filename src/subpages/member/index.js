@@ -5,9 +5,10 @@ import Taro, {
   getCurrentInstance
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
+import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 
 import {
@@ -68,7 +69,7 @@ const initialConfigState = {
     memberinfo_enable: false, // 个人信息
     tenants: true, //商家入驻
     purchase: true, // 员工内购
-    dianwu:false  // 店务
+    dianwu: false // 店务
   },
   infoAppId: '',
   infoPage: '',
@@ -102,8 +103,8 @@ function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
     autoLogin: true,
-    policyUpdateHook: () => {
-      setPolicyModal(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
     }
   })
   const [config, setConfig] = useImmer(initialConfigState)
@@ -115,6 +116,7 @@ function MemberIndex(props) {
   const instance = getCurrentInstance()
   const code = instance.router.params.code
   code && Taro.setStorageSync(SG_SHARE_CODE, code)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (isLogin) {
@@ -122,6 +124,10 @@ function MemberIndex(props) {
       setMemberBackground()
       const storageCode = Taro.getStorageSync(SG_SHARE_CODE)
       storageCode && getCode(storageCode)
+      const { redirect } = instance.router.params
+      if (redirect) {
+        Taro.redirectTo({ url: decodeURIComponent(redirect) })
+      }
     }
   }, [isLogin])
 
@@ -171,13 +177,13 @@ function MemberIndex(props) {
   }
 
   const setDianwu = async (menu) => {
-    const { result,status } = await api.dianwu.is_admin(); 
-    S.set('DIANWU_CONFIG',result,true)
-    setConfig((draft) => { 
+    const { result, status } = await api.dianwu.is_admin()
+    S.set('DIANWU_CONFIG', result, true)
+    setConfig((draft) => {
       draft.menu = {
-        ...menu, 
-        dianwu:status
-      } 
+        ...menu,
+        dianwu: status
+      }
     })
   }
 
@@ -190,7 +196,6 @@ function MemberIndex(props) {
       draft.couponCount = discount_total_count
     })
   }
-
 
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
@@ -207,8 +212,7 @@ function MemberIndex(props) {
         page_name: 'member_center_redirect_setting'
       }),
       // 积分商城
-      await api.pointitem.getPointitemSetting(),
-     
+      await api.pointitem.getPointitemSetting()
     ])
     let banner,
       menu,
@@ -225,12 +229,12 @@ function MemberIndex(props) {
         urlOpen: url_is_open,
         appId: app_id
       }
-    } 
+    }
     if (menuRes.list.length > 0) {
       menu = { ...menuRes.list[0].params.data, purchase: true }
-    } 
-    if (S.get(SG_TOKEN)) { 
-      setDianwu(menu);
+    }
+    if (S.get(SG_TOKEN)) {
+      setDianwu(menu)
     }
     if (redirectRes.list.length > 0) {
       const {
@@ -275,11 +279,10 @@ function MemberIndex(props) {
       }
     })
     setState((draft) => {
-      draft.deposit = memberRes.deposit
+      draft.deposit = memberRes.deposit / 100
     })
+    dispatch(updateUserInfo(memberRes))
   }
-
-  
 
   const getMemberCenterData = async () => {
     const resSales = await api.member.getSalesperson()
@@ -448,7 +451,7 @@ function MemberIndex(props) {
             <View className='bd-item deposit-item'>
               <View className='bd-item-label'>储值(¥)</View>
               <View className='bd-item-value'>
-                <SpPrice noDecimal noSymbol value={state.deposit} />
+                <SpPrice noSymbol value={state.deposit} />
               </View>
             </View>
           )}

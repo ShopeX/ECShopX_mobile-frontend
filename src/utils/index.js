@@ -70,12 +70,18 @@ export const isWeixin = Taro.getEnv() == Taro.ENV_TYPE.WEAPP
 /** 在H5平台 */
 export const isWeb = Taro.getEnv() == Taro.ENV_TYPE.WEB
 
+console.log('utils:', Taro.getEnv(), Taro.ENV_TYPE.APP)
+/** 在APP平台 */
+export const isAPP = () => Taro.getEnv() == Taro.ENV_TYPE.APP
+
 // 云店
 export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
 // exc
 export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
 // 官方商城
 export const VERSION_B2C = process.env.APP_PLATFORM == 'b2c'
+// 内购
+export const VERSION_IN_PURCHASE = process.env.APP_PLATFORM == 'in_purchase'
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent

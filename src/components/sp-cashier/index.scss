@@ -1,0 +1,14 @@
+.sp-cashier {
+  .payment-item {
+    height: 90px;
+    line-height: 90px;
+    &:not(:last-child) {
+      /* prettier-ignore */
+      // border-bottom: 1PX solid #f5f5f5;
+    }
+  }
+  .sp-checkbox-new {
+    flex-direction: row-reverse;
+    justify-content: space-between;
+  }
+}

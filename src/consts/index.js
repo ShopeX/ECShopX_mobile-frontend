@@ -128,6 +128,27 @@ export const PAYTYPE = {
   WXH5JS: 'wxpayjs'
 }
 
+export const PAYMENT_TYPE = {
+  wxpay: '微信支付',
+  hfpay: '微信支付',
+  alipayh5: '支付宝支付',
+  wxpayh5: '微信支付',
+  wxpayjs: '微信支付',
+  deposit: '余额支付',
+  wxpayapp: '微信支付',
+  alipayapp: '支付宝支付',
+  adapay: '微信支付'
+}
+
+export const TRANSFORM_PAYTYPE = {
+  'wxpayh5': 'wxpayh5',
+  'alipayh5': 'alipay',
+  'wxpayjs': 'wxpay',
+  'deposit': 'deposit',
+  'wxpayapp': 'wxpay',
+  'alipayapp': 'alipay'
+}
+
 export * from './localstorage'
 
 export default {}

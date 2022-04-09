@@ -9,7 +9,7 @@ import S from '@/spx'
 import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => {} } = props
+  const { autoLogin = false } = props
   const [isLogin, setIsLogin] = useState(false)
   const [isNewUser, setIsNewUser] = useState(false)
   const dispatch = useDispatch()

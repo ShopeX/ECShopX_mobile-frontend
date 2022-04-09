@@ -14,7 +14,7 @@ module.exports = {
     const envs = Object.keys(process.env).reduce((ret, key) => {
       const val = process.env[key];
       if ( key.indexOf( "APP_" ) >= 0 ) {
-        console.log(chalk.green(`${key}=${val}`));
+        // console.log(chalk.green(`${key}=${val}`));
         ret[key] = val;
       }
       return ret;

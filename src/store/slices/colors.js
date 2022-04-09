@@ -12,7 +12,9 @@ const colorsSlice = createSlice({
       state.current = {
         data: [
           {
-            ...payload
+            primary: payload.primary || '#d42f29',
+            marketing: payload.marketing || '#fba629',
+            accent: payload.accent || '#2e3030'
           }
         ]
       }

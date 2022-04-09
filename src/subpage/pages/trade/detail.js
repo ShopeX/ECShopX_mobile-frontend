@@ -17,7 +17,9 @@ import {
   isNavbar,
   isWeb,
   redirectUrl,
-  VERSION_PLATFORM
+  VERSION_PLATFORM,
+  isAPP,
+  isWxWeb
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { PAYTYPE } from '@/consts'
@@ -135,7 +137,7 @@ export default class TradeDetail extends Component {
       delivery_status: 'delivery_status',
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
-      price: ({ item_fee }) => (+item_fee / 100).toFixed(2),
+      price: 'item_fee',
       point: 'item_point',
       item_point: 'item_point',
       num: 'num',
@@ -306,7 +308,7 @@ export default class TradeDetail extends Component {
       order_type
     }
 
-    if (isWeb) {
+    if (isWeb && !isAPP()) {
       redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
       return
     }
@@ -327,12 +329,29 @@ export default class TradeDetail extends Component {
         timeStamp: config.order_info.create_time
       })
 
-      const resObj = await payPlatform(config)
-
-      payErr = resObj.payErr
-      // 支付上报
-
-      log.debug(`[order pay]: `, resObj.payRes)
+      if (isAPP()) {
+        const AppPayType = {
+          alipayapp: 'alipay',
+          wxpayapp: 'wxpay'
+        }
+        try {
+          debugger
+          await Taro.SAPPPay.payment({
+            id: AppPayType[pay_type],
+            order_params: config.config
+          })
+          debugger
+        } catch (e) {
+          console.error(e)
+          debugger
+          payErr = e
+        }
+      } else {
+        const resObj = await payPlatform(config)
+        payErr = resObj.payErr
+        // 支付上报
+        log.debug(`[order pay]: `, resObj.payRes)
+      }
     } catch (e) {
       payErr = e
       if (e.errMsg.indexOf('cancel') < 0) {
@@ -906,13 +925,13 @@ export default class TradeDetail extends Component {
                 <View className='right'>{info.update_time_str}</View>
               </View>
             )}
-            {info.dada && info.dada.pickup_time && (
+            {info.dada && info.dada.pickup_time > 0 && (
               <View className='line'>
                 <View className='left'>取货时间</View>
                 <View className='right'>{formatDateTime(Number(info.dada.pickup_time))}</View>
               </View>
             )}
-            {info.dada && info.dada.delivered_time && (
+            {info.dada && info.dada.delivered_time > 0 && (
               <View className='line'>
                 <View className='left'>送达时间</View>
                 <View className='right'>{formatDateTime(Number(info.dada.delivered_time))}</View>

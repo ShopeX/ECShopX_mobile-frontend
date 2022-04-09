@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { usePageScroll, getCurrentInstance } from '@tarojs/taro'
+import Taro, { useDidShow, usePageScroll, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote } from '@/components'
@@ -11,13 +11,15 @@ import './index.scss'
 
 const initialState = {
   lock: false,
-  lockStyle: {}
+  lockStyle: {},
+  pageTitle: '',
+  isTabBarPage: true
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle } = state
+  const { lock, lockStyle, pageTitle, isTabBarPage } = state
   // debugger
   const {
     className,
@@ -61,6 +63,20 @@ function SpPage(props, ref) {
     }
   }, [lock])
 
+  useDidShow(() => {
+    const { page } = getCurrentInstance()
+    const pageTitle = page?.config?.navigationBarTitleText
+
+    const fidx = Object.values(TABBAR_PATH).findIndex(
+      (v) => v == $instance.router?.path.split('?')[0]
+    )
+    const isTabBarPage = fidx > -1
+    setState((draft) => {
+      draft.pageTitle = pageTitle
+      draft.isTabBarPage = isTabBarPage
+    })
+  })
+
   usePageScroll((res) => {
     if (!lock) {
       scrollTopRef.current = res.scrollTop
@@ -101,11 +117,6 @@ function SpPage(props, ref) {
     }
   }))
 
-  const fidx = Object.values(TABBAR_PATH).findIndex(
-    (v) => v == $instance.router?.path.split('?')[0]
-  )
-  const isTabBarPage = fidx > -1
-
   const deviceInfo = Taro.getSystemInfoSync()
   // console.log('deviceInfo:', deviceInfo)
   const { model } = deviceInfo
@@ -120,6 +131,9 @@ function SpPage(props, ref) {
       'iPhone 12/13 Pro Max'
     ].includes(model) && isWeixin
 
+  const { page } = getCurrentInstance()
+  const _pageTitle = page?.config?.navigationBarTitleText
+
   return (
     <View
       className={classNames('sp-page', className, {
@@ -130,7 +144,9 @@ function SpPage(props, ref) {
       style={styleNames({ ...pageTheme, ...lockStyle })}
       ref={wrapRef}
     >
-      {hasNavbar && !isTabBarPage && <SpNavBar onClickLeftIcon={onClickLeftIcon} />}
+      {hasNavbar && !isTabBarPage && navbar && (
+        <SpNavBar title={pageTitle || _pageTitle} onClickLeftIcon={onClickLeftIcon} />
+      )}
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
 

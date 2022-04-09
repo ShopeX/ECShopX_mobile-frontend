@@ -6,7 +6,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtInput, AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
 import { SpToast, SpCheckbox } from '@/components'
 import api from '@/api'
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames, showToast } from '@/utils'
 import S from '@/spx'
 
 import './goods-reservate.scss'
@@ -18,7 +18,7 @@ import './goods-reservate.scss'
 @withBackToTop
 export default class GoodsReservate extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -34,16 +34,20 @@ export default class GoodsReservate extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.count = 0
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { activity_info } = await api.user.registrationActivity({
       activity_id: this.$instance.router.params.activity_id
     })
     if (!activity_info) {
+      showToast('您已经超出活动次数')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 700)
       this.setState({
         isHasActivityInfo: false
       })
@@ -51,8 +55,8 @@ export default class GoodsReservate extends Component {
       this.setState({
         cur_activity_info: activity_info
       })
+      this.getAreaData()
     }
-    this.getAreaData()
   }
 
   getAreaData = async () => {
@@ -112,31 +116,38 @@ export default class GoodsReservate extends Component {
     this.handleCell(name, selectd_area)
   }
 
-  bindMultiPickerColumnChange = (e) => {
+  bindMultiPickerColumnChange = ({ detail }) => {
+    const { column, value } = detail
     const { areaList, multiIndex } = this.state
-    if (e.detail.column === 0) {
-      this.setState({
-        multiIndex: [e.detail.value, 0, 0]
-      })
-      this.nList.map((item, index) => {
-        if (index === e.detail.value) {
-          let arrCity = []
-          let arrCounty = []
-          item.children.map((c_item, c_index) => {
-            arrCity.push(c_item.label)
-            if (c_index === 0) {
-              c_item.children.map((cny_item) => {
-                arrCounty.push(cny_item.label)
+    let arrCity = []
+    let arrCounty = []
+    let areaIndex = []
+    if (column === 0) {
+      this.setState(
+        {
+          multiIndex: [value, 0, 0]
+        },
+        () => {
+          this.nList.map((item, index) => {
+            if (index === value) {
+              item.children.map((c_item, c_index) => {
+                arrCity.push(c_item.label)
+                if (c_index === 0) {
+                  c_item.children.map((cny_item) => {
+                    arrCounty.push(cny_item.label)
+                  })
+                }
               })
+              areaList[1] = arrCity
+              areaList[2] = arrCounty
+              areaIndex = [areaList[0], arrCity, arrCounty]
+              this.setState({ areaList: areaIndex })
             }
           })
-          areaList[1] = arrCity
-          areaList[2] = arrCounty
-          this.setState({ areaList })
         }
-      })
-    } else if (e.detail.column === 1) {
-      multiIndex[1] = e.detail.value
+      )
+    } else if (column === 1) {
+      multiIndex[1] = value
       multiIndex[2] = 0
       this.setState(
         {
@@ -144,19 +155,18 @@ export default class GoodsReservate extends Component {
         },
         () => {
           this.nList[multiIndex[0]].children.map((c_item, c_index) => {
-            if (c_index === e.detail.value) {
-              let arrCounty = []
+            if (c_index === value) {
               c_item.children.map((cny_item) => {
                 arrCounty.push(cny_item.label)
               })
-              areaList[2] = arrCounty
-              this.setState({ areaList })
+              areaIndex = [areaList[0], areaList[1], arrCounty]
+              this.setState({ areaList: areaIndex })
             }
           })
         }
       )
     } else {
-      multiIndex[2] = e.detail.value
+      multiIndex[2] = value
       this.setState({
         multiIndex
       })
@@ -220,10 +230,10 @@ export default class GoodsReservate extends Component {
         if (tmlres.template_id && tmlres.template_id.length > 0) {
           wx.requestSubscribeMessage({
             tmplIds: tmlres.template_id,
-            success () {
+            success() {
               _this.handleSubmit()
             },
-            fail () {
+            fail() {
               _this.handleSubmit()
             }
           })
@@ -250,6 +260,10 @@ export default class GoodsReservate extends Component {
       if (new_subdata.formdata && new_subdata.formdata.content) {
         new_subdata.formdata.content = JSON.parse(new_subdata.formdata.content)
       }
+      S.toast('提交成功')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 700)
     } catch (e) {
       console.log(e, 53)
     }
@@ -300,10 +314,10 @@ export default class GoodsReservate extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const {
-      cur_activity_info,
+      cur_activity_info = {},
       isHasActivityInfo,
       option_list,
       showCheckboxPanel,
@@ -313,7 +327,9 @@ export default class GoodsReservate extends Component {
       isShowSubTips
     } = this.state
     // let new_activity_info = JSON.parse(cur_activity_info)
-    const { formdata } = cur_activity_info || {}
+    const { formdata } =
+      cur_activity_info &&
+      (typeof cur_activity_info == 'string' ? JSON.parse(cur_activity_info) : cur_activity_info)
 
     if (!formdata) {
       return null
@@ -345,9 +361,11 @@ export default class GoodsReservate extends Component {
                                 <View className='picker'>
                                   <View className='picker__title'>
                                     <Text className='picker__title_name'>{i_data.field_title}</Text>
-                                    <Text className='picker__title_value'>
-                                      {i_data.answer ? i_data.answer : '请选择'}
-                                    </Text>
+                                    {i_data.answer ? (
+                                      <Text className='picker__title_value'>{i_data.answer}</Text>
+                                    ) : (
+                                      <Text className='picker__title_value gray'>请选择</Text>
+                                    )}
                                   </View>
                                   <View className='pick-value'>
                                     <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
@@ -371,9 +389,11 @@ export default class GoodsReservate extends Component {
                                 <View className='picker'>
                                   <View className='picker__title'>
                                     <Text className='picker__title_name'>{i_data.field_title}</Text>
-                                    <Text className='picker__title_value'>
-                                      {i_data.answer ? i_data.answer : '请选择'}
-                                    </Text>
+                                    {i_data.answer ? (
+                                      <Text className='picker__title_value'>{i_data.answer}</Text>
+                                    ) : (
+                                      <Text className='picker__title_value gray'>请选择</Text>
+                                    )}
                                   </View>
                                   <View className='pick-value'>
                                     <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
@@ -383,6 +403,7 @@ export default class GoodsReservate extends Component {
                             ) : null}
                             {i_data.form_element === 'area' ? (
                               <Picker
+                                className='address-picker'
                                 mode='multiSelector'
                                 onChange={this.bindMultiPickerChange.bind(this, i_data.field_name)}
                                 onColumnChange={this.bindMultiPickerColumnChange.bind(this)}
@@ -391,14 +412,14 @@ export default class GoodsReservate extends Component {
                               >
                                 <View className='picker'>
                                   <View className='picker__title'>{i_data.field_title}</View>
-                                  {i_data.answer.length === 3 ? (
-                                    <Text>
+                                  {i_data.answer && i_data.answer.length === 3 ? (
+                                    <Text className='picker__text'>
                                       {areaList[0][multiIndex[0]]}
                                       {areaList[1][multiIndex[1]]}
                                       {areaList[2][multiIndex[2]]}
                                     </Text>
                                   ) : (
-                                    ''
+                                    <Text className='picker__text gray'>请选择</Text>
                                   )}
                                 </View>
                               </Picker>

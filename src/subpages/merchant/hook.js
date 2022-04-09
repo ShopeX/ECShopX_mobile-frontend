@@ -5,7 +5,7 @@ import { useDepChange } from '@/hooks'
 import api from '@/api'
 
 //解决闭包问题
-export function useLatest (params) {
+export function useLatest(params) {
   const latest = useRef()
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const useTimer = (seconds = 60) => {
 }
 
 //模拟setState的回调函数
-export function useStateCallback (initialValue, next) {
+export function useStateCallback(initialValue, next) {
   const asyncCallback = useRef()
 
   const [state, setState] = useState(initialValue)
@@ -53,14 +53,14 @@ export function useStateCallback (initialValue, next) {
 }
 
 //强制刷新界面
-export function useUpdate () {
+export function useUpdate() {
   const [, forceUpdate] = useState()
 
   return useCallback(() => forceUpdate({}), [])
 }
 
 //获取区域等操作
-export function useArea () {
+export function useArea() {
   //总区域
   const [allAreaList, setAllAreaList] = useState([])
   //选择器区域
@@ -109,6 +109,7 @@ export function useArea () {
   }, [])
 
   const onColumnChange = (e) => {
+    console.log('===onColumnChange==', e)
     let selectColumn = e.detail.column
     let selectIndex = e.detail.value
 
@@ -129,7 +130,7 @@ export function useArea () {
           })
           areaList[1] = arrCity
           areaList[2] = arrCounty
-          setAreaList(areaList)
+          setAreaList([...areaList])
         }
       })
     } else if (selectColumn === 1) {
@@ -143,7 +144,7 @@ export function useArea () {
               arrCounty.push(cny_item.label)
             })
             areaList[2] = arrCounty
-            setAreaList(areaList)
+            setAreaList([...areaList])
           }
         })
       })
@@ -182,7 +183,7 @@ export function useArea () {
   }
 }
 
-function usePrevious (state, compare = true) {
+function usePrevious(state, compare = true) {
   const previous = useRef()
 
   useEffect(() => {

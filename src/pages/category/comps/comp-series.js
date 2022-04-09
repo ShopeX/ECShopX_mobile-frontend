@@ -102,7 +102,7 @@ const CompSeries = (props) => {
           {currentTopImg && (
             <SpImage
               className='category__banner'
-              mode='aspectFill'
+              mode='widthFix'
               src={currentTopImg}
               onClick={() => handleCustomClick(currentID)}
             />
@@ -113,11 +113,17 @@ const CompSeries = (props) => {
                 <View className='new' key={index}>
                   <View className='group-title'>{item.name}</View>
                   <View className='content-group'>
-                    {item.children.map((child) => renderCategoryHandler(child))}
+                    {item.children.map((child, sindex) => (
+                      <View className='goods-category-item' key={`content-group__${sindex}`}>
+                        {renderCategoryHandler(child)}
+                      </View>
+                    ))}
                   </View>
                 </View>
               ) : (
-                () => renderCategoryHandler(item)
+                <View className='goods-category-item' key={`content-group__${index}`}>
+                  {renderCategoryHandler(item)}
+                </View>
               )
             })}
           </View>

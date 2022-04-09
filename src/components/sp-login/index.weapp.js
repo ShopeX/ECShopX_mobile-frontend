@@ -14,8 +14,8 @@ import './index.scss'
 function SpLogin(props) {
   const { children, className, onChange, newUser = false } = props
   const { isLogin, login, updatePolicyTime, setToken } = useLogin({
-    policyUpdateHook: () => {
-      setPolicyModal(true)
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
     }
   })
 
