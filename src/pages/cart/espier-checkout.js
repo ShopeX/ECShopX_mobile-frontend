@@ -726,14 +726,17 @@ function CartCheckout(props) {
   // 街道社区
   const bindMultiPickerColumnChange = (e) => {
     const { column, value } = e.detail
-
+    let _multiValue = [multiValue[0]]
+    // debugger
     if (column == 0) {
-      multiValue[1] = streetCommunityList[value].children.map((item) => item.label)
+      _multiValue[1] = streetCommunityList[value].children.map((item) => item.label)
+      setState((draft) => {
+        draft.multiValue = _multiValue
+        draft.multiIndex = [value, 0]
+      })
+    } else {
     }
-    setState((draft) => {
-      draft.multiValue = multiValue
-      // draft.multiIndex = [value, 0]
-    })
+    // debugger
   }
 
   const renderFooter = () => {
