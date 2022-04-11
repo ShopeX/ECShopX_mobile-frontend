@@ -351,7 +351,7 @@ function EspierDetail(props) {
               Taro.navigateTo({ url: '/subpages/member/index' })
             }}
           >
-            <Text className='iconfont icon-home1'></Text>
+            <Text className='iconfont icon-huiyuanzhongxin'></Text>
           </SpFloatMenuItem>
           <SpChat sessionFrom={JSON.stringify(sessionFrom)}>
             <SpFloatMenuItem>

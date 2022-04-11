@@ -36,6 +36,13 @@ export const initialState = {
   isPointOpen: false,
   point_use: 0,
   pointInfo: {},
+  streetCommunityList: [],
+  openStreet: false,
+  multiValue: [],
+  multiIndex: [0, 0],
+  streetCommunityTxt: '请选择',
+  street: null, // 街道
+  community: null, // 社区
   isPaymentOpend: false,
   isPackageOpend: false,
   isNeedPackage: false, // 是否需要打包

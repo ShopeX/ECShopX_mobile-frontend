@@ -28,10 +28,12 @@
       transform: translate(-50%, -50%);
     }
   }
-  .icon-home1,
-  .icon-headphones {
-    font-size: 38px;
-    color: #fff;
+  .float-container {
+    .icon-huiyuanzhongxin,
+    .icon-headphones {
+      font-size: 38px;
+      color: #fff;
+    }
   }
   .btn-video {
     position: absolute;

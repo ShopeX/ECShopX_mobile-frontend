@@ -1,4 +1,4 @@
-@import "../../style/imports";
+@import '../../style/imports';
 $primary-color: rgba(244, 129, 31, 1);
 .page-store-height {
   height: 100vh !important;
@@ -7,27 +7,27 @@ $primary-color: rgba(244, 129, 31, 1);
   background: #fff;
   height: 100%;
   box-sizing: border-box;
-  &.fixedSearch{
+  &.fixedSearch {
     .wgts-wrap {
       padding-top: 170px;
       /*  #ifdef  h5  */
       padding-top: 160px;
-      /*  #endif  */   
-    }  
+      /*  #endif  */
+    }
   }
-  .store-header { 
+  .store-header {
     text-align: center;
-    padding:30px 0;
+    padding: 30px 0;
     .store-brand {
       display: inline-block;
       width: 120px;
       height: 120px;
-      box-shadow: 0 0 1PX rgba(0,0,0,0.5);
+      box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
     }
     .store-name {
       font-size: 32px;
     }
-  } 
+  }
   .add_tip {
     display: flex;
     position: fixed;
@@ -53,7 +53,6 @@ $primary-color: rgba(244, 129, 31, 1);
       font-size: 24px;
       color: #fff;
     }
-
   }
   .add_tip:after {
     content: '';
@@ -74,8 +73,14 @@ $primary-color: rgba(244, 129, 31, 1);
     .distribution-shop {
       width: 100%;
       border-radius: 60px;
-      box-shadow: 0 0 20px rgba(0,0,0,.2);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     }
+  }
+
+  .icon-huiyuanzhongxin,
+  .icon-gouwuche {
+    font-size: 38px;
+    color: #fff;
   }
 }
 
@@ -142,13 +147,14 @@ $primary-color: rgba(244, 129, 31, 1);
       height: 8px;
       background: #333;
       border-radius: 50%;
-      &::before, &::after {
+      &::before,
+      &::after {
         position: absolute;
         width: 8px;
         height: 8px;
         background: #333;
         border-radius: 50%;
-        content: "";
+        content: '';
       }
       &::before {
         transform: translateX(-160%);
@@ -170,9 +176,7 @@ $primary-color: rgba(244, 129, 31, 1);
       padding: 10px;
       box-sizing: border-box;
     }
-  
   }
-  
 }
 
 .grid-goods__type-grid {

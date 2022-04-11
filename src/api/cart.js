@@ -91,3 +91,8 @@ export function getCartRemind(params) {
 export function exchangeGood(params) {
   return req.post('user/exchangeCard', params)
 }
+
+// 获取街道、社区列表
+export function getSubdistrict(params) {
+  return req.get('/espier/subdistrict', params)
+}

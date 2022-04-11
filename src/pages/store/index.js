@@ -1,8 +1,16 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, ScrollView } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, SpRecommend, SpCellCoupon, SpPage } from '@/components'
+import { View, Text, ScrollView } from '@tarojs/components'
+import {
+  SpToast,
+  Loading,
+  BackToTop,
+  SpRecommend,
+  SpCellCoupon,
+  SpPage,
+  SpFloatMenuItem
+} from '@/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
@@ -336,6 +344,24 @@ export default class StoreIndex extends Component {
         })}
         isDefault={storeIsVaild}
         defaultMsg='该店铺已注销，在别的店铺看看吧'
+        renderFloat={
+          <View>
+            <SpFloatMenuItem
+              onClick={() => {
+                Taro.navigateTo({ url: '/subpages/member/index' })
+              }}
+            >
+              <Text className='iconfont icon-huiyuanzhongxin'></Text>
+            </SpFloatMenuItem>
+            <SpFloatMenuItem
+              onClick={() => {
+                Taro.navigateTo({ url: '/pages/cart/espier-index' })
+              }}
+            >
+              <Text className='iconfont icon-gouwuche'></Text>
+            </SpFloatMenuItem>
+          </View>
+        }
       >
         <ScrollView
           className='wgts-wrap wgts-wrap__fixed__page'
@@ -381,7 +407,7 @@ export default class StoreIndex extends Component {
           </View>
         </ScrollView>
 
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
+        {/* <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} /> */}
 
         {/* <SpToast /> */}
         <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />

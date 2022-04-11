@@ -216,4 +216,23 @@ $margin24: 24px;
       }
     }
   }
+
+  .cart-checkout__stree {
+    margin: 0 0 $margin24;
+    .sp-cell {
+      padding: 30px 16px;
+      box-shadow: 0px 2px 10px 0px #eae7e0;
+    }
+    .required {
+      color: #e62424;
+    }
+    &-desc {
+      color: #666;
+      font-size: 24px;
+    }
+    .picker-value {
+      color: #222;
+      text-align: right;
+    }
+  }
 }
