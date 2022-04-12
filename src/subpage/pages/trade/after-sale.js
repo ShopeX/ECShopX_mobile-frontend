@@ -137,10 +137,11 @@ export default class AfterSale extends Component {
       <View className='trade-list'>
         <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className='trade-list__tabs'
+          className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
+          customStyle={{ color: colors.data[0].primary }}
         >
           {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
