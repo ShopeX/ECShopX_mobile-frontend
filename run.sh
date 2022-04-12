@@ -44,6 +44,7 @@ then
     map_name=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^map_name/{print $3}')
     image_cdn=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^image_cdn/{print $3}')
     ali_isvid=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^ali_isvid/{print $3}')
+    dianwu_url=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^dianwu_url/{print $3}')
     break
   done
     else
@@ -59,6 +60,7 @@ then
       map_name=${10}
       image_cdn=${11}
       ali_isvid=${12}
+      dianwu_url=${13}
     fi
 
 # version=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -108,6 +110,7 @@ APP_ID='${appid}'
 APP_MAP_KEY='${map_key}'
 APP_MAP_NAME='${map_name}'
 APP_IMAGE_CDN='${image_cdn}'
+APP_DIANWU_URL='${dianwu_url}'
 ' > ./.env
 
 echo "请选择编译方式"
