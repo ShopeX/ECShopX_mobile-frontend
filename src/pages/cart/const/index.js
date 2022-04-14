@@ -38,11 +38,14 @@ export const initialState = {
   pointInfo: {},
   streetCommunityList: [],
   openStreet: false,
+  openBuilding: false,
   multiValue: [],
   multiIndex: [0, 0],
   streetCommunityTxt: '请选择',
   street: null, // 街道
   community: null, // 社区
+  buildingNumber: '', // 楼号
+  houseNumber: '', // 房号
   isPaymentOpend: false,
   isPackageOpend: false,
   isNeedPackage: false, // 是否需要打包

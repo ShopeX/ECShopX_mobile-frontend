@@ -235,4 +235,26 @@ $margin24: 24px;
       text-align: right;
     }
   }
+
+  .cart-checkout__building {
+    margin-bottom: $margin24;
+    .at-input {
+      margin-bottom: 0;
+      width: 100%;
+      padding: 0;
+      &::after {
+        border-color: transparent;
+      }
+    }
+    // .sp-cell {
+    //   &:not(:last-child) {
+    //     &::after {
+    //       position: absolute;
+    //       /* prettier-ignore */
+    //       height: 1PX;
+    //       background: #666;
+    //     }
+    //   }
+    // }
+  }
 }

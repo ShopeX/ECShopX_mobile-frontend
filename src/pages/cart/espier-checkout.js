@@ -76,6 +76,7 @@ function CartCheckout(props) {
     pointInfo,
     streetCommunityList,
     openStreet,
+    openBuilding,
     multiValue,
     multiIndex,
     streetCommunityTxt,
@@ -84,7 +85,9 @@ function CartCheckout(props) {
     isNeedPackage,
     isPackageOpend,
     isPaymentOpend,
-    openCashier
+    openCashier,
+    buildingNumber,
+    houseNumber // 房号
   } = state
 
   const {
@@ -221,6 +224,11 @@ function CartCheckout(props) {
     if (openStreet) {
       params['subdistrict_parent_id'] = street
       params['subdistrict_id'] = community
+    }
+
+    if (openBuilding) {
+      params['building_number'] = buildingNumber
+      params['house_number'] = houseNumber
     }
     console.log('trade params:', params)
     if (payType === 'deposit') {
@@ -508,6 +516,8 @@ function CartCheckout(props) {
       real_use_point,
       // 是否开启下单填写街道、社区
       is_require_subdistrict: openStreet,
+      // 是否开启楼道、楼号
+      is_require_building: openBuilding,
       subdistrict_parent_id,
       subdistrict_id,
       receiver_state,
@@ -590,6 +600,7 @@ function CartCheckout(props) {
       draft.paramsInfo = { ...paramsInfo, ...cus_parmas }
       draft.pointInfo = point_info
       draft.openStreet = openStreet
+      draft.openBuilding = openBuilding
       if (openStreet) {
         const {
           multiValue,
@@ -739,6 +750,12 @@ function CartCheckout(props) {
     // debugger
   }
 
+  const onChangeBuildInput = (name, val) => {
+    setState((draft) => {
+      draft[name] = val
+    })
+  }
+
   const renderFooter = () => {
     return (
       <View className='checkout-toolbar'>
@@ -833,6 +850,28 @@ function CartCheckout(props) {
           <View className='cart-checkout__stree-desc'>
             <Text className='required'>*</Text>如所选街道居委信息错误，订单将无法配送！
           </View>
+        </View>
+      )}
+
+      {openBuilding && (
+        <View className='cart-checkout__building'>
+          <SpCell border title='楼号'>
+            <AtInput
+              name='buildingNumber'
+              placeholder='请输入楼号'
+              value={buildingNumber}
+              onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
+            />
+          </SpCell>
+
+          <SpCell border title='房号'>
+            <AtInput
+              name='houseNumber'
+              placeholder='请输入房号'
+              value={houseNumber}
+              onChange={onChangeBuildInput.bind(this, 'houseNumber')}
+            />
+          </SpCell>
         </View>
       )}
 
