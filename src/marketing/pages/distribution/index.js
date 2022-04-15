@@ -4,8 +4,7 @@ import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components
 import { connect } from 'react-redux'
 import { SpNavBar, Loading, SpPage } from '@/components'
 import api from '@/api'
-import { pickBy, canvasExp } from '@/utils'
-import { getDtidIdUrl } from '@/utils/helper'
+import { pickBy, canvasExp, classNames, isArray } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import req from '@/api/req'
 import S from '@/spx'
@@ -15,26 +14,31 @@ import './index.scss'
   colors: colors.current
 }))
 export default class DistributionDashboard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       info: null,
       showPoster: false,
       poster: null,
-      posterImgs: null
+      posterImgs: null,
+      adapay_status: null
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
       backgroundColor: colors.data[0].marketing
     })
+  }
+
+  componentDidShow() {
+    this.getAdapayInfo()
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const resUser = Taro.getStorageSync('userinfo')
     const { username, avatar } = resUser
 
@@ -60,7 +64,8 @@ export default class DistributionDashboard extends Component {
       promoter_grade_name: 'promoter_grade_name',
       isOpenShop: 'isOpenShop',
       shop_status: 'shop_status',
-      reason: 'reason'
+      reason: 'reason',
+      qrcode_bg_img: 'qrcode_bg_img'
     })
     const res2 = await api.member.hfpayUserApply()
     const userInfo = pickBy(res2, {
@@ -73,7 +78,26 @@ export default class DistributionDashboard extends Component {
     this.setState({ info })
   }
 
-  handleOpenApply () {
+  async getAdapayInfo() {
+    const { cert_status } = await api.distribution.adapayCert()
+    let adapay_status = null
+    if (isArray(cert_status)) {
+      adapay_status = '未认证'
+    } else if (cert_status.audit_state == 'A') {
+      adapay_status = '审核中'
+    } else if (
+      cert_status.audit_state == 'B' ||
+      cert_status.audit_state == 'C' ||
+      cert_status.audit_state == 'D'
+    ) {
+      adapay_status = '认证失败'
+    } else if (cert_status.audit_state == 'E') {
+      adapay_status = '已认证'
+    }
+    this.setState({ adapay_status })
+  }
+
+  handleOpenApply() {
     Taro.showModal({
       title: '申请开店',
       content: '是否申请开启小店推广',
@@ -94,7 +118,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const extConfig = wx.getExtConfigSync
       ? wx.getExtConfigSync()
       : { wxa_name: process.env.APP_MAP_NAME }
@@ -124,10 +148,9 @@ export default class DistributionDashboard extends Component {
   }
 
   downloadPosterImg = async () => {
-    console.log('-----down')
     // 处理海报信息以及太阳码
     let {
-      info: { username, isOpenShop, shop_status }
+      info: { username, isOpenShop, shop_status, qrcode_bg_img }
     } = this.state
     let userinfo = Taro.getStorageSync('userinfo')
     const { avatar, userId } = userinfo
@@ -143,27 +166,25 @@ export default class DistributionDashboard extends Component {
     const extConfig =
       Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync
         ? wx.getExtConfigSync()
-        : {
-            appid: process.env.APP_ID,
-            company_id: process.env.APP_COMPANY_ID
-          }
+        : { appid: process.env.APP_ID, company_id: process.env.APP_COMPANY_ID }
 
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
-    let avatarImg
-    console.log('wxappCode==', wxappCode)
-    console.log('avatar==', avatar)
+    let avatarImg, bck
     if (avatar) {
       // 头像
       avatarImg = await Taro.getImageInfo({ src: avatar })
     }
-    console.log('avatarImg==', avatarImg)
-    const bck = await Taro.getImageInfo({
-      src: 'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
-    }) // 背景图片
+    if (qrcode_bg_img) {
+      // 背景
+      bck = await Taro.getImageInfo({ src: qrcode_bg_img })
+    } else {
+      bck = await Taro.getImageInfo({
+        src: 'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
+      }) // 背景图片
+    }
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
-    console.log('codeImg==', codeImg)
     if (avatarImg) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
@@ -179,7 +200,6 @@ export default class DistributionDashboard extends Component {
           this.drawImage()
         }
       )
-
       return posterImgs
     } else {
       return null
@@ -282,10 +302,9 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
-    const { info, showPoster, poster } = this.state
-    console.log(info)
+    const { info, showPoster, poster, adapay_status } = this.state
     if (!info) {
       return <Loading />
     }
@@ -355,7 +374,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order'
             >
-              <View className='iconfont icon-list3 icon-fontsize'></View>
+              <View className='iconfont icon-list3 icon-fontsize' />
               <View className='label'>提成订单</View>
               <View>{info.promoter_order_count}</View>
             </Navigator>
@@ -364,7 +383,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/trade?type=order_team'
             >
-              <View className='iconfont icon-list2 icon-fontsize'></View>
+              <View className='iconfont icon-list2 icon-fontsize' />
               <View className='label'>津贴订单</View>
               <View>{info.promoter_grade_order_count}</View>
             </Navigator>
@@ -373,7 +392,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/statistics'
             >
-              <View className='iconfont icon-money icon-fontsize'></View>
+              <View className='iconfont icon-money icon-fontsize' />
               <View className='label'>推广费</View>
               <View className='mark'>{info.rebateTotal / 100}</View>
             </Navigator>
@@ -382,7 +401,7 @@ export default class DistributionDashboard extends Component {
               hover-class='none'
               url='/marketing/pages/distribution/point-platform'
             >
-              <View className='iconfont icon-jifen icon-fontsize'></View>
+              <View className='iconfont icon-jifen icon-fontsize' />
               <View className='label'>推广积分</View>
               <View className='mark'>{info.pointTotal || 0}</View>
             </Navigator>
@@ -407,37 +426,37 @@ export default class DistributionDashboard extends Component {
         </View>
         <View className='section list share'>
           <View className='list-item' onClick={this.handleClick}>
-            <View className='iconfont icon-qrcode1 icon-fontsize'></View>
+            <View className='iconfont icon-qrcode1 icon-fontsize' />
             <View className='list-item-txt'>我的二维码</View>
-            <View className='iconfont icon-arrowRight icon-right'></View>
+            <View className='iconfont icon-arrowRight icon-right' />
           </View>
           <Navigator
             className='list-item'
-            // open-type='navigateTo'
+            open-type='navigateTo'
             url={`/marketing/pages/distribution/goods?status=${
               info.isOpenShop && info.shop_status === 1
             }`}
           >
-            <View className='iconfont icon-weChat icon-fontsize'></View>
+            <View className='iconfont icon-weChat icon-fontsize' />
             <View className='list-item-txt'>推广商品</View>
-            <View className='iconfont icon-arrowRight icon-right'></View>
+            <View className='iconfont icon-arrowRight icon-right' />
           </Navigator>
           {info.isOpenShop && info.shop_status === 1 && (
             <Navigator
               className='list-item'
-              // open-type='navigateTo'
+              open-type='navigateTo'
               url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}`}
             >
-              <View className='iconfont icon-shop icon-fontsize'></View>
+              <View className='iconfont icon-shop icon-fontsize' />
               <View className='list-item-txt'>我的小店</View>
-              <View className='iconfont icon-arrowRight icon-right'></View>
+              <View className='iconfont icon-arrowRight icon-right' />
             </Navigator>
           )}
           {Taro.getEnv() !== 'WEB' && info.shop_status !== 1 && (
             <Button className='share-btn list-item' open-type='share'>
-              <View className='iconfont icon-share1 icon-fontsize'></View>
+              <View className='iconfont icon-share1 icon-fontsize' />
               <View className='list-item-txt'>分享给好友</View>
-              <View className='iconfont icon-arrowRight icon-right'></View>
+              <View className='iconfont icon-arrowRight icon-right' />
             </Button>
           )}
           {info.isHf && (
@@ -446,11 +465,30 @@ export default class DistributionDashboard extends Component {
               open-type='navigateTo'
               url='/marketing/pages/verified-card/index'
             >
-              <View className='item-icon icon-weChart'></View>
+              <View className='iconfont item-icon icon-weChart' />
               <View className='list-item-txt'>实名认证以及绑卡</View>
-              <View className='iconfont icon-arrowRight'></View>
+              <View className='iconfont icon-arrowRight icon-right' />
             </Navigator>
           )}
+          <Navigator
+            className='list-item'
+            open-type='navigateTo'
+            url='/marketing/pages/certification/index'
+          >
+            <View className='iconfont item-icon icon-shimingrenzheng' />
+            <View className='list-item-txt'>实名认证</View>
+            <View
+              className={classNames(
+                'cicle',
+                (adapay_status == '审核中' && 'approve') ||
+                  (adapay_status == '未认证' && 'NotCertified') ||
+                  (adapay_status == '认证失败' && 'fail') ||
+                  (adapay_status == '已认证' && 'success')
+              )}
+            />
+            <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
+            <View className='iconfont icon-arrowRight icon-right' />
+          </Navigator>
         </View>
         {showPoster && (
           <View className='poster-modal'>
@@ -464,7 +502,7 @@ export default class DistributionDashboard extends Component {
             <View
               className='iconfont icon-close poster-close-btn'
               onClick={this.handleHidePoster.bind(this)}
-            ></View>
+            />
           </View>
         )}
         <Canvas className='canvas' canvas-id='myCanvas'></Canvas>

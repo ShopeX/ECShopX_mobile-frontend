@@ -1,0 +1,65 @@
+.certification-box {
+  .page {
+    height: 100vh;
+  }
+  .at-input {
+    text-align: right;
+    display: block;
+  }
+  .at-input__title {
+    width: 230px;
+  }
+  .at-input::after {
+    border-bottom: 1px solid #ddd;
+  }
+  .at-input--disabled {
+    opacity: 1;
+  }
+  .sumbit-btn {
+    border-radius: 60px;
+    font-size: 30px;
+    color: #fff;
+  }
+  .sumbit-btn::after {
+    border: none;
+  }
+  .certification-form {
+    padding: 30px 40px;
+    padding-bottom: 0px;
+    background-color: #fff;
+  }
+  .certification-btn {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    left: 0;
+    background: #fff;
+    .sumbit-btn {
+      margin: 20px 50px 50px 50px;
+    }
+  }
+  .header-box {
+    padding: 25px;
+  }
+  .header {
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 8px;
+    .img {
+      width: 230px;
+      height: 150px;
+    }
+    .title {
+      color: #666;
+    }
+    .tips {
+      color: #aaa;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+  }
+}
