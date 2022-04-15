@@ -413,7 +413,7 @@ export default class DistributionDashboard extends Component {
             url={`/marketing/pages/distribution/subordinate?hasBuy=${info.isbuy_promoter}&noBuy=${info.notbuy_promoter}`}
           >
             <View className='view-flex-item'>我的会员</View>
-            <View className='iconfont icon-arrowRight'></View>
+            <View className='iconfont icon-arrowRight icon-right'></View>
           </Navigator>
           <View className='content-padded-b view-flex content-center member'>
             <View className='view-flex-item'>

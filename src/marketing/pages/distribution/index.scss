@@ -85,7 +85,7 @@
     color: #333;
   }
   .analysis {
-    [class^='icon-'] {
+    .iconfont {
       color: #00c3ff;
       font-size: 50px;
     }
@@ -108,6 +108,24 @@
       &::after {
         content: none;
       }
+    }
+    .cicle {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+    .NotCertified {
+      background: #ccc;
+    }
+    .approve {
+      background: #00c3ff;
+    }
+    .success {
+      background: #1aad19;
+    }
+    .fail {
+      background: #f56f6f;
     }
   }
   .canvas {
@@ -168,7 +186,9 @@
     }
   }
   .icon-fontsize {
-    font-size: 50px;
+    font-size: 40px;
+    color: #00c3ff;
+    margin-right: 16px;
   }
   .icon-right {
     font-size: 30px;
