@@ -186,9 +186,14 @@ function CartCheckout(props) {
       showToast('该商品已下架')
       return
     }
-    // 校验开始街道、社区
-    if (openStreet && (!street || !community)) {
-      return showToast('请选择街道居委')
+    // 校验楼号、房号
+    if (openBuilding && !buildingNumber) {
+      return showToast('请输入楼号')
+    }
+
+    // 校验楼道，楼号
+    if (openBuilding && !houseNumber) {
+      return showToast('请输入房号')
     }
 
     setState(
