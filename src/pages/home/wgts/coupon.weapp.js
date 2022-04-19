@@ -72,11 +72,10 @@ export default class WgtCoupon extends Component {
       card_id: card_item.id
     }
     try {
-      const data = await api.member.homeCouponGet(query)
+      await api.member.homeCouponGet(query)
 
+      showToast('优惠券领取成功')
       Tracker.dispatch('GET_COUPON', card_item)
-
-      S.toast('优惠券领取成功')
     } catch (e) {}
   }
 
@@ -87,7 +86,7 @@ export default class WgtCoupon extends Component {
   /** 券包领取 */
   handleCouponClick = (card_item) => {
     if (!S.getAuthToken()) {
-      S.toast('请先登录再领取')
+      showToast('请先登录再领取')
 
       setTimeout(() => {
         S.login(this)
@@ -105,10 +104,7 @@ export default class WgtCoupon extends Component {
       if (all_card_list && all_card_list.length > 0) {
         this.setState({ visible: true })
       } else {
-        Taro.showToast({
-          title: '领取失败',
-          icon: 'none'
-        })
+        showToast('领取失败')
       }
       this.setState({ all_card_list })
     })

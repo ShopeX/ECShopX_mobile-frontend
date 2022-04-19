@@ -136,7 +136,7 @@ function Home() {
     if (openLocation == 1) {
       parmas.lat = lat
       parmas.lng = lng
-      parmas.distributor_id = undefined
+      // parmas.distributor_id = undefined
     }
     const res = await api.shop.getShop(parmas)
     dispatch(updateShopInfo(res))
