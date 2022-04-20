@@ -57,7 +57,8 @@ export default {
     {
       root: 'subpages/marketing',
       pages: [
-        'package-list' // 组合优惠
+        'package-list', // 组合优惠
+        'certification' // 实名认证
       ]
     },
     {
@@ -100,7 +101,6 @@ export default {
         'pages/reservation/reservation-list', // 预约（代码逻辑显示）
         'pages/reservation/goods-reservate', // 预约报名
         'pages/reservation/reservation-detail', // 预约详情
-        'pages/certification/index', // 实名认证
 
         'pages/member/item-activity', // 活动列表
         'pages/member/activity-detail', // 活动详情

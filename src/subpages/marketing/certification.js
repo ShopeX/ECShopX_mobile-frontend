@@ -9,7 +9,7 @@ import { SpPage, SpNavBar, SpToast } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
 
-import './index.scss'
+import './certification.scss'
 
 const initialState = {
   info: {},
@@ -163,7 +163,7 @@ function Certification(props) {
             <AtInput
               title='开户人姓名'
               type='text'
-              clear={isEdit}
+              // clear={isEdit}
               required
               name='card_name'
               editable={isEdit}
@@ -174,7 +174,7 @@ function Certification(props) {
             <AtInput
               title='银行预留手机号'
               type='phone'
-              clear={isEdit}
+              // clear={isEdit}
               required
               name='tel_no'
               editable={isEdit}
@@ -187,7 +187,7 @@ function Certification(props) {
               title='开户结算卡号'
               type='number'
               placeholder='请输入结算卡号'
-              clear={isEdit}
+              // clear={isEdit}
               name='card_id'
               required
               editable={isEdit}
@@ -198,7 +198,7 @@ function Certification(props) {
               title='开户人证件号码'
               type='idcard'
               name='cert_id'
-              clear={isEdit}
+              // clear={isEdit}
               required
               editable={isEdit}
               placeholder='请输入证件号码'

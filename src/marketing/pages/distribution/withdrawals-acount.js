@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtInput } from 'taro-ui'
+import { showToast } from '@/utils'
 import api from '@/api'
 
 import './withdrawals-acount.scss'
 
 export default class DistributionWithdrawalsAcount extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -19,11 +20,11 @@ export default class DistributionWithdrawalsAcount extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
       name: alipay_name,
@@ -46,6 +47,12 @@ export default class DistributionWithdrawalsAcount extends Component {
 
   handleSubmit = async () => {
     const { name, acount, new_acount, hasBind, isEdit } = this.state
+    if (!name) {
+      return showToast('请输入姓名')
+    }
+    if (!acount) {
+      return showToast('请输入账号')
+    }
     const params = {
       alipay_name: name,
       //alipay_account: !hasBind ? acount : new_acount
@@ -62,7 +69,7 @@ export default class DistributionWithdrawalsAcount extends Component {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { name, acount, isEdit, hasBind } = this.state
     console.log('00', hasBind)
 
@@ -74,6 +81,7 @@ export default class DistributionWithdrawalsAcount extends Component {
             title='开户人姓名：'
             type='text'
             maxLength='30'
+            name='name'
             onChange={this.handleChange.bind(this, 'name')}
             value={name}
             placeholder='请输入开户人姓名'
@@ -83,6 +91,7 @@ export default class DistributionWithdrawalsAcount extends Component {
             title='支付宝账号'
             type='text'
             maxLength='30'
+            name='acount'
             onChange={this.handleChange.bind(this, 'acount')}
             value={acount}
             placeholder='请输入账号'

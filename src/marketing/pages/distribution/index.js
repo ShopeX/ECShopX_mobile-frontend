@@ -473,7 +473,7 @@ export default class DistributionDashboard extends Component {
           <Navigator
             className='list-item'
             open-type='navigateTo'
-            url='/marketing/pages/certification/index'
+            url='/subpages/marketing/certification'
           >
             <View className='iconfont item-icon icon-shimingrenzheng' />
             <View className='list-item-txt'>实名认证</View>

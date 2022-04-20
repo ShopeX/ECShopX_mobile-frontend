@@ -3,6 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
 import { isArray } from '@/utils'
 import { AtInput } from 'taro-ui'
+import { SpPage } from '@/components'
 import api from '@/api'
 
 import './withdraw.scss'
@@ -19,7 +20,13 @@ export default class DistributionWithdraw extends Component {
       payList: [],
       alipay_account: '',
       // accountInfo: {},
-      bank_code: null
+      bank_code: null,
+      payText: {
+        'alipay': '支付宝',
+        'wechat': '微信(<=800)',
+        'hfpay': '微信支付',
+        'bankcard': '银行卡'
+      }
     }
   }
 
@@ -40,7 +47,7 @@ export default class DistributionWithdraw extends Component {
         success: (res) => {
           if (res.confirm) {
             Taro.navigateTo({
-              url: `/marketing/pages/certification/index`
+              url: `/subpages/marketing/certification`
             })
           }
         }
@@ -155,16 +162,11 @@ export default class DistributionWithdraw extends Component {
       curIdx,
       payList,
       alipay_account,
-      bank_code
+      bank_code,
+      payText
     } = this.state
-    let payText = {
-      'alipay': '支付宝',
-      'wechat': '微信(<=800)',
-      'hfpay': '微信支付',
-      'bankcard': '银行卡'
-    }
     return (
-      <View className='page-distribution-withdraw'>
+      <SpPage className='page-distribution-withdraw'>
         <View className='withdraw'>
           <View className='withdraw-title'>
             <View className='title'>可提现金额（元）</View>
@@ -189,12 +191,19 @@ export default class DistributionWithdraw extends Component {
         </View>
         <View className='section list'>
           <View className='list-item' style='position: relative'>
-            <Picker onChange={this.handlePick.bind(this)} range={payList} rangeKey='name'>
-              <View className='pay-type-picker'></View>
-            </Picker>
+            {payList.length > 0 && (
+              <Picker
+                onChange={this.handlePick.bind(this)}
+                mode='selector'
+                range={payList}
+                rangeKey='name'
+              >
+                <View className='pay-type-picker'></View>
+              </Picker>
+            )}
             <View className='label'>提现方式</View>
             <View className='list-item-txt content-right'>{payText[curIdx]}</View>
-            <View className='item-icon-go icon-arrowRight'></View>
+            <View className='iconfont item-icon-go icon-arrowRight'></View>
           </View>
           {curIdx === 'alipay' && (
             <Navigator url='/marketing/pages/distribution/withdrawals-acount' className='list-item'>
@@ -202,7 +211,7 @@ export default class DistributionWithdraw extends Component {
               <View className='list-item-txt content-right'>
                 {alipay_account ? alipay_account : '去设置'}
               </View>
-              <View className='item-icon-go icon-arrowRight'></View>
+              <View className='iconfont item-icon-go icon-arrowRight'></View>
             </Navigator>
           )}
           {curIdx == 'bankcard' && bank_code && (
@@ -222,15 +231,14 @@ export default class DistributionWithdraw extends Component {
         </View>
         <View className='content-padded'>
           <Button
-            className="g-button {{isClick ? '_off' : ''}}"
-            type='primary'
+            className='g-button'
             onClick={this.goWithdraw}
             disabled={curIdx == 'wechat' && amount > 800}
           >
             提现
           </Button>
         </View>
-      </View>
+      </SpPage>
     )
   }
 }
