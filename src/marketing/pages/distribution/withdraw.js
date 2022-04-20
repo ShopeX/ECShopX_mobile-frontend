@@ -20,7 +20,13 @@ export default class DistributionWithdraw extends Component {
       payList: [],
       alipay_account: '',
       // accountInfo: {},
-      bank_code: null
+      bank_code: null,
+      payText: {
+        'alipay': '支付宝',
+        'wechat': '微信(<=800)',
+        'hfpay': '微信支付',
+        'bankcard': '银行卡'
+      }
     }
   }
 
@@ -156,14 +162,9 @@ export default class DistributionWithdraw extends Component {
       curIdx,
       payList,
       alipay_account,
-      bank_code
+      bank_code,
+      payText
     } = this.state
-    let payText = {
-      'alipay': '支付宝',
-      'wechat': '微信(<=800)',
-      'hfpay': '微信支付',
-      'bankcard': '银行卡'
-    }
     return (
       <SpPage className='page-distribution-withdraw'>
         <View className='withdraw'>
