@@ -9,7 +9,7 @@ import { SpPage, SpNavBar, SpToast } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
 
-import './index.scss'
+import './certification.scss'
 
 const initialState = {
   info: {},

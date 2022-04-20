@@ -40,7 +40,7 @@ export default class DistributionWithdraw extends Component {
         success: (res) => {
           if (res.confirm) {
             Taro.navigateTo({
-              url: `/marketing/pages/certification/index`
+              url: `/subpages/marketing/certification`
             })
           }
         }

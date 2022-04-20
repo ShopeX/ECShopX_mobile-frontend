@@ -1,35 +1,60 @@
 .page-distribution-withdraw {
   .withdraw {
+    at-input {
+      width: 75%;
+    }
     .at-input {
-      padding-left: 20px;
-      padding-right: 20px;
       margin: 0;
-      // background: #f8f8f8;
       &:after {
         border: 0;
       }
+      &__input {
+        font-size: 80px;
+        height: 80px;
+        line-height: 80px;
+      }
+      &__title {
+        width: 55px;
+        margin-right: 10px;
+        font-size: 50px;
+        font-weight: bold;
+        margin-top: 5px;
+      }
     }
     .withdraw-title {
-      height: 80px;
-      display: -webkit-box;
-      -webkit-box-align: center;
-      padding: 0 30px;
-      border-bottom: 1px solid #ddd;
-      margin-bottom: 50px;
-      color: #333333;
+      padding: 40px;
+      .title {
+        color: #666666;
+      }
+      .content {
+        color: #222222;
+        font-size: 50px;
+        margin-top: 10px;
+        font-weight: bold;
+      }
     }
     .withdraw-body {
-      display: -webkit-box;
-      -webkit-box-align: center;
-      -webkit-box-pack: justify;
-      padding: 0 30px 20px;
+      background: #fff;
+      padding: 20px 20px 20px 25px;
+      margin: 0px 15px 30px 15px;
+    }
+    .withdraw-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 60px 0px 30px 0px;
     }
     .withdraw-body-input {
-      -webkit-box-flex: 1;
+      // -webkit-box-flex: 1;
+      width: 75%;
       font-size: 32px;
     }
     .withdraw-body-btn {
-      margin-left: 20px;
+      color: #1aad19;
+      font-size: 26px;
+      padding: 6px 25px;
+      border: 1px solid #1aad19;
+      border-radius: 40px;
     }
   }
   .g-button._off {
@@ -45,7 +70,27 @@
     bottom: -1px;
     height: 1px;
     background: #f8f8f8;
-    content: " ";
+    content: ' ';
+  }
+  .list {
+    margin: 0px 15px;
+    .label {
+      color: #666;
+    }
+  }
+  .content-padded {
+    background: #fff;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    .g-button {
+      margin: 20px 50px 50px 50px;
+      border-radius: 50px;
+      font-size: 30px;
+      color: #fff;
+      padding: 5px 0px;
+    }
   }
 }
 .pay-type-picker {
@@ -57,13 +102,14 @@
   z-index: 999;
 }
 .g-ul {
-  padding: 0 30px;
+  padding: 30px 50px;
   font-size: 28px;
-  color: #999;
+  color: #aaa;
   line-height: 48px;
   .g-ul-li {
     display: -webkit-box;
     -webkit-box-align: center;
+    font-size: 26px;
     &:before {
       content: '';
       display: block;
