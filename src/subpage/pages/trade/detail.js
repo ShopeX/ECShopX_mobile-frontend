@@ -335,12 +335,10 @@ export default class TradeDetail extends Component {
           wxpayapp: 'wxpay'
         }
         try {
-          debugger
           await Taro.SAPPPay.payment({
             id: AppPayType[pay_type],
             order_params: config.config
           })
-          debugger
         } catch (e) {
           console.error(e)
           debugger
@@ -1026,7 +1024,7 @@ export default class TradeDetail extends Component {
         </ScrollView>
 
         {info.status !== 'TRADE_CLOSED' && (
-          <View className='trade-detail__footer'>
+          <View className={classNames('trade-detail__footer', info.order_status_des)}>
             {
               // 立即支付
               info.status === 'WAIT_BUYER_PAY' && (

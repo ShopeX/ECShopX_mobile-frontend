@@ -1,5 +1,5 @@
 $custabs: 80px;
-$paddingBottom:100px;
+$paddingBottom: 100px;
 
 .page-trade-detail {
   box-sizing: border-box;
@@ -249,7 +249,7 @@ $paddingBottom:100px;
   }
   .trade-detail-goods {
     margin: 0 20px;
-    padding-top:16px;
+    padding-top: 16px;
     min-height: 100px;
     background: #fff;
     border-radius: 6px 6px 0 0;
@@ -404,6 +404,15 @@ $paddingBottom:100px;
       line-height: 100px;
       transform: translateX(0) !important;
       border-radius: 0;
+    }
+    &.WAIT_BUYER_CONFIRM {
+      .trade-detail__footer__btn {
+        margin-right: 0;
+        position: initial;
+        transform: inherit;
+        margin: 0 20px;
+        width: calc(100% - 40px);
+      }
     }
   }
   .allFooter_btn {
