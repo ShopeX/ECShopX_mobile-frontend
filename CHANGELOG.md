@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [2.6.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.6.0...v2.6.1) (2022-04-21)
+
+
+### Bug Fixes
+
+* bug ([0d4ea76](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0d4ea76b549eaf607f071ef0b4e16e01c033d1fa))
+* dianwu ([01f2cb9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/01f2cb966be6fe237257b89ee390c2878399b601))
+* run.sh ([aac4fcd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/aac4fcdaf24ea4bf03303cddd8deef2a62345c66))
+* sp-page ([2070380](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/207038088be76ee10098e73236a28ad7e87dfe96))
+* 下单添加楼道、楼号 ([ea51b54](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ea51b54ff9264cbb0f95b8b04b4c6200240e638a))
+* 优化订单详情 ([447cc74](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/447cc74ad3e3946c25120597260e7d294558da3f))
+* 修改标题 ([0e4eaac](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0e4eaace1bf8f56b012d0dda0018adc1e3c93eae))
+* 楼号 ([084e683](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/084e6831ea7ab5d49f3b3a9dfba56cdc73cbeb8a))
+* 添加社区街道关联地区 ([4c03a70](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4c03a7099c2323589e0064507673dedbd77017d5))
+* 街道选择bug ([b7577ca](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b7577ca67dcae30c909ccd90584048c403bf305e))
+
 ## [2.6.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.5.1...v2.6.0) (2022-04-09)
 
 
