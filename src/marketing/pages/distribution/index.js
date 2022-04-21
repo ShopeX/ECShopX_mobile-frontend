@@ -109,7 +109,7 @@ export default class DistributionDashboard extends Component {
           if (res.status) {
             Taro.showToast({
               title: '申请成功等待审核',
-              icon: 'success',
+              icon: 'none',
               duration: 2000
             }).then((res) => this.fetch())
           }
