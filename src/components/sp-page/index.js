@@ -130,6 +130,41 @@ function SpPage(props, ref) {
   const { page } = getCurrentInstance()
   const _pageTitle = page?.config?.navigationBarTitleText
 
+  const pages = Taro.getCurrentPages()
+  const currentPage = pages[pages.length - 1]
+  const { navigationStyle } = currentPage.config
+  const customNavigation = navigationStyle === 'custom'
+
+  const CustomNavigation = () => {
+    const menuButton = Taro.getMenuButtonBoundingClientRect()
+    const { statusBarHeight } = Taro.getSystemInfoSync()
+
+    console.log('MenuButton:', menuButton, statusBarHeight)
+
+    const navbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
+
+    return (
+      <View
+        className='custom-navigation'
+        style={styleNames({
+          height: `${navbarH}px`,
+          paddingTop: `${statusBarHeight}px`
+        })}
+      >
+        <View className='left-container'>
+          <Text
+            className='in-icon icon-home1'
+            onClick={() => {
+              Taro.navigateTo({ url: '/subpages/guide/index' })
+            }}
+          ></Text>
+        </View>
+        <View className='title-container'>{pageTitle}</View>
+        <View className='right-container'></View>
+      </View>
+    )
+  }
+
   return (
     <View
       className={classNames('sp-page', className, {
@@ -145,6 +180,8 @@ function SpPage(props, ref) {
       )}
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
+
+      {customNavigation && CustomNavigation()}
 
       {/* {loading && <SpNote img='loading.gif' />} */}
 

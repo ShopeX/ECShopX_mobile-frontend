@@ -68,6 +68,13 @@ export default {
       ]
     },
     {
+      root: 'subpages/community',
+      pages: [
+        'index', // 社区团购个人中心
+        'group' // 一键开团
+      ]
+    },
+    {
       root: 'marketing',
       pages: [
         'pages/distribution/index', // 推广管理首页

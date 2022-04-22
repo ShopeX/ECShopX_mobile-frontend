@@ -1,0 +1,32 @@
+.sp-upload {
+  display: flex;
+  flex-wrap: wrap;
+  .file-item {
+    width: 160px;
+    height: 160px;
+    /* prettier-ignore */
+    border: 1PX solid #e0e0e0;
+    border-radius: 16px;
+    margin: 0 20px 20px 0;
+  }
+  .btn-upload {
+    width: 160px;
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* prettier-ignore */
+    border: 1PX solid #e0e0e0;
+    border-radius: 16px;
+    margin: 0 20px 20px 0;
+    .icon-plus {
+      font-size: 48px;
+      color: #999;
+    }
+    .btn-upload-txt {
+      font-size: 24px;
+      color: #999;
+    }
+  }
+}

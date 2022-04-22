@@ -1,0 +1,40 @@
+.page-community-group {
+  .page-header {
+    background: var(--color-primary);
+    height: 220px;
+    padding: 200px 20px 20px;
+  }
+  .user-info {
+    display: flex;
+    align-items: center;
+    .sp-image {
+      margin-right: 20px;
+    }
+    .user-name {
+      color: #fff;
+      font-size: 30px;
+    }
+  }
+  .card-block {
+    border-radius: 16px;
+    
+    margin: 20px;
+    background: #fff;
+    &-hd {
+      font-size: 32px;
+      font-weight: bold;
+      padding: 30px 20px 20px;
+      /* prettier-ignore */
+      border-bottom: 1PX solid #f5f5f5;
+    }
+    .tip {
+      color: #999;
+    }
+  }
+  .teamhead-barcode {
+    margin-top: 20px;
+  }
+  .btn-group {
+    padding: 20px;
+  }
+}
