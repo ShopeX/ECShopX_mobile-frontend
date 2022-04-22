@@ -1,0 +1,32 @@
+@import '@/style/imports';
+.page-community-order {
+  padding-bottom: $tabbar-height !important;
+  .search {
+    padding: 16px 24px;
+  }
+  .at-tabs {
+    box-shadow: 0 10px 10px rgba(#000, 0.05);
+    margin-bottom: 24px;
+    // &__header {
+    // position: fixed;
+    // left: 0;
+    // width: 100%;
+    // z-index: $z-index-toolbar;
+    // }
+    &__body {
+      height: 0px !important;
+    }
+    &__item {
+      // height: $tabs-height;
+      color: $color-brand-accent-light;
+    }
+    &__item-underline {
+      width: 40%;
+      left: 30%;
+      background: var(--color-primary);
+    }
+    &__item--active {
+      color: var(--color-primary);
+    }
+  }
+}

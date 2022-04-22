@@ -90,6 +90,15 @@ const MENUS_CONST = [
 //   }
 // ]
 
+const MENUS_COMMUNITY = [
+  {
+    key: 'community',
+    name: '社区团购',
+    icon: 'm_menu_xianxiadingdan.png',
+    link: '/subpages/community/order'
+  }
+]
+
 function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
   const config = Taro.getStorageSync(SG_APP_CONFIG)
@@ -106,6 +115,11 @@ function CompMenu(props) {
   //商家入驻是否开启
   if (accessMenu.merchant_status && !VERSION_STANDARD) {
     menus = menus.concat(MENUS_CONST)
+  }
+
+  // 社区团购
+  if (VERSION_PLATFORM) {
+    menus = menus.concat(MENUS_COMMUNITY)
   }
 
   // if (accessMenu.offline_order) {

@@ -231,6 +231,13 @@ export default {
         'forgotpwd', //找回密码页面
         'edit-phone' //修改密码页面
       ]
+    },
+    {
+      // 社区团购
+      root: 'subpages/community',
+      pages: [
+        'order' //注册页面
+      ]
     }
   ],
   permission: {
