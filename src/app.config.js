@@ -72,7 +72,9 @@ export default {
       pages: [
         'index', // 社区团购个人中心
         'group', // 一键开团
-        'order' //注册页面
+        'order', //注册页面
+        'espier-checkout', //结算页
+        'wait-pay', //待支付订单
       ]
     },
     {
