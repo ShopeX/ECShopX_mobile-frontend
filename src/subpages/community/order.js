@@ -59,8 +59,6 @@ function CommunityOrder(props) {
   const { keywords, orderList, curTabIdx, isOpened, remark, curDeliverTagIdx, curAfterTagIdx } =
     state
 
-  useEffect(() => {}, [])
-
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
       page: pageIndex,
@@ -133,35 +131,35 @@ function CommunityOrder(props) {
     return (
       <>
         <View
-          onClick={handleClickBtn}
+          onClick={() => handleClickBtn('refund')}
           className='footer-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           申请退款
         </View>
         <View
-          onClick={handleClickBtn}
+          onClick={() => handleClickBtn('aftersale')}
           className='footer-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           售后详情
         </View>
         <View
-          onClick={handleClickBtn}
+          onClick={() => handleClickBtn('close')}
           className='footer-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           关闭订单
         </View>
         <View
-          onClick={handleClickBtn}
+          onClick={() => handleClickBtn('gopay')}
           className='footer-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           去支付
         </View>
         <View
-          onClick={handleClickBtn}
+          onClick={() => handleClickBtn('again')}
           className='footer-btn'
           style={`background: ${colorPrimary};`}
         >
@@ -171,7 +169,13 @@ function CommunityOrder(props) {
     )
   }
 
-  const handleClickBtn = () => {}
+  const handleClickBtn = (type) => {
+    if (type == 'refund') {
+      Taro.navigateTo({
+        url: '/subpages/community/order-refund'
+      })
+    }
+  }
 
   const onEditClick = (isOpened) => {
     setState((draft) => {
