@@ -1,0 +1,157 @@
+.page-community-group {
+  .page-bg {
+    background: var(--color-primary);
+    height: 420px;
+    // padding: 200px 20px 20px;
+  }
+
+  .page-body {
+    .page-header {
+      background-color: #fff;
+      position: relative;
+      top: -50px;
+      left: 0;
+      width: 100%;
+      border-radius: 30px 30px 0 0;
+      min-height: 100vh;
+      padding: 30px 0;
+      box-sizing: border-box;
+    }
+
+    .user-info {
+      border-bottom: 1PX solid #eee;
+      padding: 0 30px;
+
+      .user-head {
+        position: relative;
+        top: -60px;
+        box-shadow: 0 4px 8px #ccc;
+        border-radius: 10px;
+        overflow: hidden;
+        border: 2px solid #fff;
+      }
+
+      .user-name {
+        font-size: 40px;
+      }
+
+      .leader-info {
+        padding: 20px 0;
+        font-size: 26px;
+        color: #999;
+
+        .i {
+          display: inline-block;
+          height: 20px;
+          width: 1PX;
+          background-color: #eee;
+          margin: 0 12px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .user-info-right {
+      position: absolute;
+      top: 0;
+      right: 30px;
+      display: flex;
+      padding: 20px 0;
+      // height: 120px;
+      background: #fff;
+      box-sizing: border-box;
+
+      .right-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+        line-height: 1.2;
+        margin-left: 30px;
+
+        .iconfont {
+          font-size: 38px;
+          color: #3ec07d;
+        }
+
+        &-txt {
+          font-size: 20px;
+          color: #999;
+        }
+      }
+    }
+
+    .group-info {
+      padding: 20px 30px;
+      border-bottom: 1PX solid #eee;
+
+      .head {
+        margin-bottom: 20px;
+      }
+
+      .name {
+        font-size: 36px;
+        vertical-align: middle;
+        font-weight: bold;
+      }
+
+      .type {
+        color: #3ec07d;
+        background-color: #e9f9f2;
+        font-size: 26px;
+        vertical-align: middle;
+        margin-left: 20px;
+        padding: 0 4px;
+      }
+
+      .list {
+        margin-bottom: 4px;
+        font-size: 24px;
+        color: #999;
+
+        .time {
+          font-size: 24px;
+          display: flex;
+          align-items: center;
+
+          .date {}
+
+          .countdown {
+            color: #ef9e67;
+          }
+
+          .i {
+            display: inline-block;
+            height: 20px;
+            width: 1PX;
+            background-color: #eee;
+            margin: 0 12px;
+            vertical-align: middle;
+
+          }
+        }
+      }
+
+      .warning {
+        padding: 20px 0;
+        color: #ef9e67;
+
+        .icon {
+          font-size: 26px;
+          margin-right: 4px;
+        }
+
+        .group-head {}
+      }
+
+    }
+
+
+    .group-foot {
+      padding: 20px 30px;
+    }
+
+
+  }
+}

@@ -72,7 +72,8 @@ export default {
       pages: [
         'index', // 社区团购个人中心
         'group', // 一键开团
-        'order' //注册页面
+        'order', //注册页面
+        'group-leaderdetail'  // 社区团详情页（团长）
       ]
     },
     {
