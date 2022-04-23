@@ -18,13 +18,7 @@ const MENUS = [
   },
   {
     key: 'dianwu',
-    name: '订单管理',
-    icon: 'm_menu_dianwu.png',
-    link: '/subpages/dianwu/index'
-  },
-  {
-    key: 'dianwu',
-    name: '订单管理',
+    name: '我的活动',
     icon: 'm_menu_dianwu.png',
     link: '/subpages/dianwu/index'
   }
@@ -52,9 +46,13 @@ const Index = () => {
         </View>
       </View>
 
-      <View className=''>
+      <View className='card-block'></View>
+
+      <View className='group-list'>
         {[1, 2, 3].map((item) => (
-          <CompGroupItem />
+          <View className='card-block'>
+            <CompGroupItem />
+          </View>
         ))}
       </View>
     </SpPage>

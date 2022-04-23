@@ -96,7 +96,7 @@ const MENUS_COMMUNITY = [
     key: 'community',
     name: '社区团购',
     icon: 'm_menu_tuangou.png',
-    link: '/subpages/community/order'
+    link: '/subpages/community/index'
   }
 ]
 

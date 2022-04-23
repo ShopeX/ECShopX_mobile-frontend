@@ -1,3 +1,31 @@
 .comp-group-item {
   background: #fff;
+  .group-item-hd {
+    padding: 30px 20px 20px;
+  }
+  .item-info {
+    .name {
+      font-size: 32px;
+      font-weight: bold;
+    }
+  }
+  .img_list {
+    white-space: nowrap;
+    padding: 20px;
+    box-sizing: border-box;
+    .goods-item {
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+  .item-status {
+    padding: 0 20px;
+  }
+  .group-item-ft {
+    padding: 20px 20px 30px;
+  }
+  .goods-item {
+    display: inline-block;
+  }
 }

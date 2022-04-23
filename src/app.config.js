@@ -71,7 +71,8 @@ export default {
       root: 'subpages/community',
       pages: [
         'index', // 社区团购个人中心
-        'group' // 一键开团
+        'group', // 一键开团
+        'order' //注册页面
       ]
     },
     {
@@ -237,13 +238,6 @@ export default {
         'auth-loading', //授权加载页
         'forgotpwd', //找回密码页面
         'edit-phone' //修改密码页面
-      ]
-    },
-    {
-      // 社区团购
-      root: 'subpages/community',
-      pages: [
-        'order' //注册页面
       ]
     }
   ],

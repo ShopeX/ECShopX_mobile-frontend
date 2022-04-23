@@ -17,7 +17,7 @@
 
   .card-block {
     border-radius: 16px;
-
+    overflow: hidden;
     margin: 20px;
     background: #fff;
     &-hd {
@@ -47,6 +47,14 @@
     .menu-name {
       font-size: 24px;
       color: #222;
+    }
+  }
+
+  .group-list {
+    .card-block {
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
     }
   }
 }

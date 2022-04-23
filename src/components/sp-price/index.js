@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text } from '@tarojs/components'
-import { classNames, isNumber } from '@/utils'
+import { classNames, isNumber, styleNames } from '@/utils'
 
 import './index.scss'
 
@@ -17,7 +17,8 @@ export default class SpPrice extends Component {
     noDecimal: false,
     unit: 'default',
     appendText: '',
-    plus: false
+    plus: false,
+    size: 32
   }
 
   static externalClasses = ['classes']
@@ -32,7 +33,8 @@ export default class SpPrice extends Component {
       unit,
       appendText,
       lineThrough,
-      plus
+      plus,
+      size
     } = this.props
     let priceVal = unit === 'cent' ? +value / 100 : value
     if (isNumber(priceVal)) {
@@ -55,10 +57,33 @@ export default class SpPrice extends Component {
       >
         {minus && <Text>-</Text>}
         {plus && <Text>+</Text>}
-        {noSymbol ? null : <Text className='sp-price__symbol'>{symbol || '¥'}</Text>}
-        <Text className='sp-price__int'>{int.indexOf('-') === 0 ? int.slice(1) : int}</Text>
+        {noSymbol ? null : (
+          <Text
+            className='sp-price__symbol'
+            style={styleNames({
+              fontSize: `${size - 8}rpx`
+            })}
+          >
+            {symbol || '¥'}
+          </Text>
+        )}
+        <Text
+          className='sp-price__int'
+          style={styleNames({
+            fontSize: `${size}rpx`
+          })}
+        >
+          {int.indexOf('-') === 0 ? int.slice(1) : int}
+        </Text>
         {decimal !== undefined && !noDecimal && (
-          <Text className='sp-price__decimal'>.{decimal}</Text>
+          <Text
+            className='sp-price__decimal'
+            style={styleNames({
+              fontSize: `${size - 4}rpx`
+            })}
+          >
+            .{decimal}
+          </Text>
         )}
         {appendText && <Text className='sp-price__append'>{appendText}</Text>}
       </Text>
