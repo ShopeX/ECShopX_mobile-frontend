@@ -17,7 +17,8 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
-import CompOrderItem from './comps/comp-order-item'
+import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
+import CompTabbar from './comps/comp-tabbar'
 
 import './order.scss'
 
@@ -222,7 +223,7 @@ function CommunityOrder(props) {
   }
 
   return (
-    <SpPage className='page-community-order'>
+    <SpPage className='page-community-order' renderFooter={<CompTabbar />}>
       <SpScrollView className='order-list-scroll' ref={orderRef} fetch={fetch}>
         <View className='search'>
           <SpSearchBar

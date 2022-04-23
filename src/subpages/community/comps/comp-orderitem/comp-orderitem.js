@@ -4,7 +4,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
 
-import './comp-order-item.scss'
+import './comp-orderitem.scss'
 
 const statusList = [{ name: '已支付', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' }]
 
