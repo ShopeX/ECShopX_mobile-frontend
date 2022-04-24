@@ -5,11 +5,11 @@ import { classNames } from '@/utils'
 
 import './index.scss'
 
-const CompGroupLogListItem = () => {
+const CompGroupLogListItem = (props) => {
   const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   const [isOpen, setIsOpen] = useState(false)
   const [showNum, setShowNum] = useState(5)
-
+  const { isLeader = false } = props
   // 查看更多
   const handleClickMore = () => {
     setIsOpen(!isOpen)
@@ -30,9 +30,9 @@ const CompGroupLogListItem = () => {
                     <Text className='user__name'>
                       测试买家
                     </Text>
-                    <Text className='user__tag'>
+                    {isLeader && <Text className='user__tag'>
                       回头客
-                    </Text>
+                    </Text>}
                     <Text className='user__time'>
                       17小时前
                     </Text>
@@ -43,19 +43,19 @@ const CompGroupLogListItem = () => {
                     <Text className='goods__num'>
                       +2
                     </Text>
-                    <Text className='goods__status'>
+                    {isLeader && <Text className='goods__status'>
                       已取消
-                    </Text>
+                    </Text>}
                   </View>
 
-                  <View className='order'>
+                  {isLeader && <View className='order'>
                     <Text className='order__time'>
                       2022-04-01 22:10:10
                     </Text>
                     <Text className='order__status'>
                       核销成功
                     </Text>
-                  </View>
+                  </View>}
                 </View>
               </View>
             )

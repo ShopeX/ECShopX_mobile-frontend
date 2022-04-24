@@ -46,6 +46,14 @@
       font-size: 26px;
     }
 
+    &__num {
+      display: inline-block;
+      border: 1px solid #cbcbcb;
+      padding: 0 6px;
+      color: #222;
+      font-size: 22px;
+    }
+
     &__tag {
       display: inline-block;
       color: #3ec07d;
@@ -53,6 +61,7 @@
       font-size: 26px;
       vertical-align: middle;
       margin-right: 10px;
+      margin-bottom: 10px;
       padding: 0 4px;
     }
 

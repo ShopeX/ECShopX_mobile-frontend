@@ -27,7 +27,7 @@ function GroupLeaderDetail(props) {
 
 
   return (
-    <SpPage className='page-community-group' renderFooter={<CompGroupTabbar></CompGroupTabbar>}>
+    <SpPage className='page-community-group-leaderdetail' renderFooter={<CompGroupTabbar></CompGroupTabbar>}>
       <View className='page-bg'></View>
       <View className='page-body'>
         <View className='page-header'>
@@ -80,9 +80,8 @@ function GroupLeaderDetail(props) {
         </View>
 
         <View className='goodslist'>
-          <CompGoodsItemBuy></CompGoodsItemBuy>
-          <CompGoodsItemBuy></CompGoodsItemBuy>
-          <CompGoodsItemBuy></CompGoodsItemBuy>
+          <CompGoodsItemBuy isShare isMarket isLeft isTag isSpecs></CompGoodsItemBuy>
+          <CompGoodsItemBuy isShare isMarket isLeft></CompGoodsItemBuy>
           <AtButton className='add-cart' type='primary' circle onClick={handleAddCart.bind(this)}>
             加入购物车
           </AtButton>
@@ -92,7 +91,7 @@ function GroupLeaderDetail(props) {
           <View className='title'>
             跟团记录
           </View>
-          <CompGroupLogList></CompGroupLogList>
+          <CompGroupLogList isLeader></CompGroupLogList>
         </View>
 
       </View>
