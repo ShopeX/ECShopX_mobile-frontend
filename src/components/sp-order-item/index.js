@@ -38,6 +38,8 @@ function SpOrderItem(props) {
 
   const img = info.pic_path ? info.pic_path : Array.isArray(info.pics) ? info.pics[0] : info.pics
 
+  console.log('order item info:', info)
+
   return (
     <View className='sp-order-item' onClick={onClick}>
       <View className='sp-order-item__hd'>
@@ -73,7 +75,7 @@ function SpOrderItem(props) {
               value={info.item_point || info.point}
             />
           ) : (
-            <SpPrice className='sp-order-item__price' unit='cent' value={info.price}></SpPrice>
+            <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
           )}
         </View>
       )}

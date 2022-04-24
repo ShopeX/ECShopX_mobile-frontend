@@ -158,7 +158,7 @@ export default class TradeList extends Component {
           origincountry_img_url: 'origincountry_img_url',
           type: 'type',
           item_spec_desc: 'item_spec_desc',
-          price: 'item_fee',
+          price: 'total_fee',
           item_fee: 'item_fee',
           point: 'item_point',
           num: 'num',
