@@ -1,0 +1,61 @@
+.comp-goodsbuytoolbar {
+  display: flex;
+  padding: 20px;
+  height: 120px;
+  background: #fff;
+  box-sizing: border-box;
+
+  .toolbar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    line-height: 1.2;
+
+    .iconfont {
+      font-size: 38px;
+      color: #3ec07d;
+    }
+
+    &-money {
+      color: #3ec07d;
+
+      &-cn {
+        font-size: 20px;
+      }
+
+      &-num {
+        font-size: 38px;
+        font-weight: bold;
+      }
+    }
+
+    &-button {
+      display: flex;
+      align-items: center;
+      font-size: 38px;
+      padding: 10px 20px;
+      color: #3ec07d;
+      border: 1px solid #3ec07d;
+      border-radius: 10px;
+
+      &-txt {
+        margin-left: 8px;
+        font-size: 30px;
+        color: #3ec07d;
+        vertical-align: middle;
+      }
+    }
+
+    &-txt {
+      font-size: 24px;
+      color: #666;
+      /* #ifdef  h5  */
+      position: relative;
+      top: -10px;
+      vertical-align: middle;
+      /* #endif */
+    }
+  }
+}

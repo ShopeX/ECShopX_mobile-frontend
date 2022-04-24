@@ -1,0 +1,131 @@
+.espierCheckout {
+  &-header {
+    // height: 150px;
+    background: #fefffe;
+    padding: 35px 30px;
+    border-top: 1px solid #f7f7f7;
+
+    &__explain {
+      font-size: 30px;
+      margin-bottom: 4px;
+    }
+  }
+
+  &-address {
+    padding: 35px 30px;
+    background: #fefffe;
+    margin-top: 22px;
+
+    &__title {
+      padding-bottom: 28px;
+      font-weight: 700;
+      font-size: 30px;
+
+      &-text {
+        color: #fe6620;
+      }
+    }
+
+    &__info {
+      padding: 35px 20px 25px 20px;
+      background: #f8f8f7;
+
+      &-name {
+        Text {
+          font-weight: 700;
+          font-size: 30px;
+          margin-right: 20px;
+        }
+        padding-bottom: 20px;
+      }
+    }
+  }
+
+  &-goods {
+    margin-top: 22px;
+    padding: 0 30px;
+    background: #fff;
+  }
+
+  &-total {
+    padding: 26px 30px 30px 30px;
+    background: #fff;
+
+    &__price {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &__title {
+      font-size: 30px;
+    }
+    .sp-price__int,
+    .sp-price__symbol {
+      font-weight: 900;
+    }
+
+    &__payPrice {
+      text-align: right;
+      margin-top: 34px;
+      font-size: 30px;
+
+      &-num {
+        color: #666;
+        margin-right: 8px;
+      }
+
+      .sp-price__int,
+      .sp-price__symbol {
+        font-size: 38px !important;
+        color: #fe6620;
+      }
+    }
+  }
+
+  &-remarks {
+    padding: 30px;
+    margin-top: 22px;
+    background: #fff;
+
+    .at-input {
+      padding: 0;
+      margin: 0;
+    }
+
+    .at-input__title {
+      width: 80px;
+      font-size: 30px;
+    }
+  }
+
+  &-toolbar {
+    padding-left: 30px;
+    display: flex;
+    justify-content: space-between;
+
+    &__price {
+      height: 108px;
+      line-height: 108px;
+
+      .sp-price__int,
+      .sp-price__symbol {
+        font-size: 38px !important;
+        color: #fe6620;
+        font-weight: 900;
+      }
+
+      .sp-price__int {
+        font-size: 45px !important;
+      }
+    }
+
+    &__button {
+      width: 290px;
+      height: 108px;
+      line-height: 108px;
+      text-align: center;
+      color: #fff;
+      background: #06c160;
+    }
+  }
+}
