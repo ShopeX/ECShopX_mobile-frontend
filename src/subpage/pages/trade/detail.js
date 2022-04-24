@@ -137,7 +137,7 @@ export default class TradeDetail extends Component {
       delivery_status: 'delivery_status',
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
-      price: 'item_fee',
+      price: ({ total_fee }) => (total_fee / 100).toFixed(2),
       point: 'item_point',
       item_point: 'item_point',
       num: 'num',
