@@ -18,7 +18,7 @@ $good-img-width: 150px;
     width: 100%;
     text-align: center;
   }
-  &-hd {
+  &-head {
     padding: 24px;
     background: #fff;
     /* prettier-ignore */
@@ -26,24 +26,22 @@ $good-img-width: 150px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    .group {
-      font-size: 32px;
-    }
-    .num {
-      color: var(--color-primary);
-    }
-    .date {
-      font-size: 26px;
-      color: #999;
-      margin-top: 10px;
-    }
-    .hd-status {
-      padding: 10px 20px;
-      border-radius: 60px;
-    }
-    .payed {
-      background: #e1fff3;
-      color: #4da915;
+    .head-info {
+      &-group {
+        font-size: 32px;
+      }
+      &-num {
+        color: var(--color-primary);
+      }
+      &-date {
+        font-size: 26px;
+        color: #999;
+        margin-top: 10px;
+      }
+      &-status {
+        padding: 10px 20px;
+        border-radius: 60px;
+      }
     }
   }
   &-content {
@@ -53,7 +51,7 @@ $good-img-width: 150px;
     padding-bottom: 24px;
     display: flex;
     justify-content: space-between;
-    .left {
+    .content-imgbox {
       width: $avater-width;
       height: $avater-width;
       margin-right: 24px;
@@ -61,16 +59,16 @@ $good-img-width: 150px;
       border: 1PX solid #FBFCFB;
       border-radius: 8px;
       overflow: hidden;
-      .img {
+      .content-img {
         width: $avater-width;
         height: $avater-width;
         display: block;
       }
     }
-    .right {
+    .content-active {
       display: flex;
       align-items: center;
-      .text {
+      &-name {
         @include multi-ellipsis(1);
       }
       .iconfont {
@@ -83,7 +81,7 @@ $good-img-width: 150px;
     padding-bottom: 24px;
     display: flex;
     justify-content: space-between;
-    .left {
+    .goods-info {
       width: 80%;
       height: 100%;
       white-space: nowrap;
@@ -100,14 +98,7 @@ $good-img-width: 150px;
           margin-right: 0px;
         }
       }
-      .describe {
-        @include multi-ellipsis(1);
-        padding: 10px 0px;
-      }
-      .size {
-        font-size: 26px;
-      }
-      .thumbnail {
+      .goods-imgbox {
         width: $good-img-width;
         height: $good-img-width;
         border-radius: 16px;
@@ -131,8 +122,15 @@ $good-img-width: 150px;
           text-align: center;
         }
       }
+      .goods-desc {
+        @include multi-ellipsis(1);
+        padding: 10px 0px;
+      }
+      .goods-num {
+        font-size: 26px;
+      }
     }
-    .right {
+    .goods-sale {
       width: 20%;
       display: flex;
       flex-direction: column;
@@ -142,7 +140,7 @@ $good-img-width: 150px;
       .sale-price {
         font-weight: bold;
       }
-      .desc {
+      .sale-num {
         font-size: 26px;
         color: #797979;
         margin-top: 10px;
@@ -158,18 +156,18 @@ $good-img-width: 150px;
       font-size: 32px;
       margin-right: 5px;
     }
-    .address-icon {
+    .showaddress-icon {
       font-size: 32px;
       margin-left: 10px;
       color: var(--color-primary);
       cursor: pointer;
     }
-    .desc {
+    .ziti-desc {
       font-weight: 400;
     }
     .ziti-title {
       font-size: 30px;
-      font-weight: 400;
+      font-weight: bold;
     }
     .ziti {
       display: flex;

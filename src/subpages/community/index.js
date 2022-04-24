@@ -16,13 +16,19 @@ const MENUS = [
     key: 'dianwu',
     name: '订单管理',
     icon: 'm_menu_dianwu.png',
-    link: '/subpages/dianwu/index'
+    link: '/subpages/community/order-manage'
   },
   {
     key: 'dianwu',
     name: '我的活动',
     icon: 'm_menu_dianwu.png',
     link: '/subpages/dianwu/index'
+  },
+  {
+    key: 'dianwu',
+    name: '一键开团',
+    icon: 'm_menu_dianwu.png',
+    link: '/subpages/community/group'
   }
 ]
 
@@ -56,7 +62,7 @@ const Index = () => {
   }
 
   return (
-    <SpPage className='page-community-index' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-index'>
       <View className='page-header'>
         <View className='user-info'>
           <SpImage width={120} height={120} />
@@ -68,7 +74,11 @@ const Index = () => {
         <View className='card-block-hd'>团长功能</View>
         <View className='card-block-bd menu-list'>
           {MENUS.map((item, index) => (
-            <View className='menu-item' key={`menu-item__${index}`}>
+            <View
+              className='menu-item'
+              onClick={() => Taro.navigateTo({ url: item.link })}
+              key={`menu-item__${index}`}
+            >
               <SpImage className='menu-image' src={item.icon} width={100} height={100} />
               <Text className='menu-name'>{item.name}</Text>
             </View>

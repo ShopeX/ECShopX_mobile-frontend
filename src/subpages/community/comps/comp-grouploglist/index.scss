@@ -1,0 +1,90 @@
+.comp-grouploglist {
+  &-item {
+    display: flex;
+    // padding: 20px 10px;
+    padding: 20px 40px;
+
+    &__num {
+      font-size: 24px;
+      color: #666;
+      padding-top: 30px;
+    }
+
+    &__img {
+      margin: 0 20px;
+      width: 100px;
+      height: 100px;
+    }
+
+    &__info {
+      .user {
+        display: flex;
+        margin-bottom: 10px;
+
+        &__name {
+          color: #666;
+          font-size: 24px;
+        }
+
+        &__tag {
+          color: #fff;
+          background-color: #0bc262;
+          font-size: 20px;
+          vertical-align: middle;
+          margin: 0 10px;
+          padding: 0 4px;
+          border-radius: 4px;
+        }
+
+        &__time {
+          color: #999;
+          font-size: 24px;
+
+        }
+
+      }
+
+      .goods {
+        color: #999;
+        font-size: 28px;
+        margin-bottom: 10px;
+
+        &__num {
+          color: #ef9e67;
+        }
+
+        &__status {
+          margin-left: 4px;
+        }
+      }
+
+      .order {
+        color: #666;
+        font-size: 24px;
+
+        // margin-top: 10px;
+        &__time {}
+
+        &__status {}
+      }
+    }
+
+  }
+
+  .more {
+    border-top: 1PX solid #eee;
+    color: #666;
+    padding: 10px;
+    text-align: center;
+
+    .icon {
+      font-size: 30px;
+      color: #ccc;
+      display: inline-block;
+
+      &.open {
+        transform: rotate(180deg);
+      }
+    }
+  }
+}

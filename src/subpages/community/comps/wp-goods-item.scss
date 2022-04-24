@@ -1,0 +1,37 @@
+.wpGoods {
+  background: #fff;
+  // padding-top: 22px;
+  padding-bottom: 25px;
+  display: flex;
+  position: relative;
+  // border-bottom: 1px solid #f7f7f7;
+
+  &-img {
+    height: 130px;
+    width: 130px;
+    // background: #777;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  &-info {
+    flex: 1;
+    padding-left: 14px;
+
+    &__name {
+      padding: 5px 0px;
+      display: flex;
+      justify-content: space-between;
+
+      .sp-price__decimal {
+        font-size: 32px !important;
+      }
+    }
+
+    &__num {
+      color: #222;
+      font-size: 22px;
+      margin-top: 1px;
+    }
+  }
+}

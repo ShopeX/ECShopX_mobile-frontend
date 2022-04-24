@@ -232,7 +232,9 @@ function Group(props) {
       <View className='card-block'>
         <View className='card-block-hd'>团购设置</View>
         <View className='card-block-bd'>
-          <SpCell border title='选择服务小区' isLink />
+          <SpCell border title='选择服务小区' isLink onClick={() => {
+            Taro.navigateTo({ url: '/subpages/community/picker-community' })
+          }}/>
           {/* <SpCell border title="需要用户填写信息" isLink/> */}
 
           <SpCell border title='团购开始时间' isLink>

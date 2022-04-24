@@ -153,9 +153,9 @@ function SpPage(props, ref) {
       >
         <View className='left-container'>
           <Text
-            className='in-icon icon-home1'
+            className='iconfont icon-shangyiyehoutuifanhui-xianxingyuankuang'
             onClick={() => {
-              Taro.navigateTo({ url: '/subpages/guide/index' })
+              Taro.navigateBack()
             }}
           ></Text>
         </View>
