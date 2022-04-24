@@ -8,17 +8,15 @@ import WpGoodsItem from './comps/wp-goods-item'
 
 import './wait-pay.scss'
 
-
-
 const WaitPay = () => {
-
   const renderFooter = () => {
+    return (
+      <View className='waitPay-toolbar'>
+        <SpPrice value={0.01} />
 
-    return <View className='waitPay-toolbar'>
-      <SpPrice value={0.01} />
-
-      <View className='espierCheckout-toolbar__button'>立即支付</View>
-    </View>
+        <View className='espierCheckout-toolbar__button'>立即支付</View>
+      </View>
+    )
   }
 
   return (
@@ -27,7 +25,9 @@ const WaitPay = () => {
         <View className='waitPay-header'>
           <View className='waitPay-header__info'>
             <View className='waitPay-header__info-title'>待支付</View>
-            <View className='waitPay-header__info-time'>请在<Text>00:01:10</Text>内完成支付</View>
+            <View className='waitPay-header__info-time'>
+              请在<Text>00:01:10</Text>内完成支付
+            </View>
           </View>
 
           <View className='waitPay-header__img'>
@@ -61,7 +61,6 @@ const WaitPay = () => {
             <Text className='iconfont icon iconfont icon-member'></Text>
             团员备注：无备注
           </View>
-
         </View>
 
         <View className='waitPay-title'>
@@ -89,10 +88,8 @@ const WaitPay = () => {
 
         <View className='waitPay-total'>
           <Text className='waitPay-total__num'>共10件</Text>
-            实际支付：
-          <SpPrice
-            value={0.02}
-          />
+          实际支付：
+          <SpPrice value={0.02} />
         </View>
 
         <View className='waitPay-title'>订单信息</View>
@@ -102,9 +99,7 @@ const WaitPay = () => {
             <View className='waitPay-order__item-avatar'>
               <SpImage />
             </View>
-            <View className='waitPay-order__item-name'>
-              vip
-            </View>
+            <View className='waitPay-order__item-name'>vip</View>
             <View className='waitPay-order__item-avatar'>
               <SpImage />
             </View>
@@ -124,10 +119,7 @@ const WaitPay = () => {
           </View>
         </View>
 
-        <View className='waitPay-close'>
-          关闭订单
-        </View>
-
+        <View className='waitPay-close'>关闭订单</View>
       </View>
     </SpPage>
   )

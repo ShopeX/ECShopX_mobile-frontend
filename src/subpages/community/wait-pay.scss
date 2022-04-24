@@ -1,38 +1,36 @@
-
 $colorSecondary: #666;
 $colorIcon: #777;
 
-.waitPay{
-
-  &-header{
+.waitPay {
+  &-header {
     margin-top: 120px;
     background: #fff;
     padding: 30px 87px 30px 45px;
     display: flex;
     justify-content: space-between;
 
-    &__info{
+    &__info {
       padding-top: 30px;
-      &-title{
+      &-title {
         font-size: 50px;
         font-weight: 700;
         margin-bottom: 10px;
       }
-      &-time{
+      &-time {
         color: $colorSecondary;
-        Text{
+        Text {
           color: #fe6620;
         }
       }
     }
 
-    &__img{
+    &__img {
       width: 180px;
       height: 180px;
     }
   }
 
-  &-title{
+  &-title {
     font-size: 30px;
     font-weight: 700;
     padding: 26px 30px;
@@ -43,19 +41,19 @@ $colorIcon: #777;
     justify-content: space-between;
     align-items: center;
 
-    &__l{
+    &__l {
       display: flex;
       align-items: center;
     }
 
-    &__img{
+    &__img {
       width: 50px;
       height: 50px;
       display: inline-block;
       margin-right: 5px;
     }
 
-    &__r{
+    &__r {
       width: 235px;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -63,7 +61,7 @@ $colorIcon: #777;
       position: relative;
       padding-right: 50px;
 
-      .at-icon{
+      .at-icon {
         position: absolute;
         right: 0;
         top: 0;
@@ -73,125 +71,125 @@ $colorIcon: #777;
     }
   }
 
-
-  &-address{
+  &-address {
     background: #fff;
     padding: 0px 30px;
 
-    .iconfont{
+    .iconfont {
       font-size: 28px;
       margin-right: 5px;
       color: $colorIcon;
       font-weight: 700;
     }
 
-    &__info{
+    &__info {
       padding: 30px 0px;
       border-bottom: 1px solid #f7f7f7;
       margin-bottom: 15px;
 
-      &-strong{
+      &-strong {
         font-weight: 700;
       }
 
-      &-position{
+      &-position {
         color: $colorSecondary;
         margin-top: 15px;
         margin-left: 31px;
       }
     }
 
-    &__user{
-      &-name{
+    &__user {
+      &-name {
         margin-right: 20px;
       }
 
-      View{
+      View {
         line-height: 44px;
         color: $colorSecondary;
       }
 
-      &-li{
+      &-li {
         margin-left: 31px;
       }
     }
 
-    &__remarks{
+    &__remarks {
       padding: 31px 0;
       color: $colorSecondary;
     }
   }
 
-  &-goods{
+  &-goods {
     padding: 25px 30px;
     background: #fff;
     border-bottom: 1px solid #f7f7f7;
 
-    &__price{
+    &__price {
       display: flex;
       justify-content: space-between;
 
-      .sp-price__decimal{
+      .sp-price__decimal {
         font-size: 32px !important;
       }
     }
   }
 
-  &-total{
+  &-total {
     padding: 26px 30px 30px 30px;
     background: #fff;
     text-align: right;
     margin-top: 34px;
     font-size: 30px;
 
-    &__num{
+    &__num {
       color: #666;
       margin-right: 20px;
     }
 
-    .sp-price__symbol{
+    .sp-price__symbol {
       color: #fe6620;
       font-weight: 900;
       font-size: 28px !important;
     }
 
-    .sp-price__int , .sp-price__decimal{
+    .sp-price__int,
+    .sp-price__decimal {
       font-size: 38px !important;
       color: #fe6620;
       font-weight: 900;
     }
   }
 
-  &-order{
+  &-order {
     background: #fff;
     padding: 20px 0px 0 30px;
 
-    &__item{
+    &__item {
       display: flex;
       height: 60px;
       box-sizing: border-box;
 
-      &-label{
+      &-label {
         width: 155px;
       }
 
-      &-name{
+      &-name {
         margin: 0 5px;
       }
 
-      &-avatar{
+      &-avatar {
         width: 40px;
         height: 40px;
       }
 
-      &-btn{
+      &-btn {
         font-size: 22px;
         border: 1px solid #cbcbcb;
         height: 38px;
         padding: 0 8px;
         margin-left: 10px;
         line-height: 38px;
-        .icon{
+        .icon {
           font-size: 24px;
           margin: 0 14px 0 6px;
         }
@@ -199,7 +197,7 @@ $colorIcon: #777;
     }
   }
 
-  &-close{
+  &-close {
     height: 95px;
     line-height: 95px;
     width: 100%;
@@ -209,7 +207,7 @@ $colorIcon: #777;
     background: #fff;
   }
 
-  &-toolbar{
+  &-toolbar {
     width: 100%;
     height: 108px;
     text-align: center;
@@ -218,7 +216,9 @@ $colorIcon: #777;
     box-sizing: border-box;
     padding-top: 7px;
 
-    .sp-price__int ,.sp-price__symbol, .sp-price__decimal{
+    .sp-price__int,
+    .sp-price__symbol,
+    .sp-price__decimal {
       font-size: 38px !important;
       color: #fff;
       font-weight: 900;

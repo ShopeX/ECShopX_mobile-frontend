@@ -9,25 +9,22 @@ import './comp-orderitem.scss'
 const statusList = [{ name: '已支付', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' }]
 
 function CompOrderItem(props) {
-  const { info, renderFooter = null, showActions = true, onEditClick = () => {} } = props
-  const { colorPrimary } = useSelector((state) => state.sys)
-
-  useEffect(() => {}, [])
+  const { info, renderFooter = null, onEditClick = () => {} } = props
 
   return (
     <View className='comp-order-item'>
       <View className='comp-order-item-timer'>请在000000</View>
-      <View className='comp-order-item-hd'>
-        <View className='hd-time'>
-          <View className='group'>
+      <View className='comp-order-item-head'>
+        <View className='head-info'>
+          <View className='head-info-group'>
             <Text>跟团号：</Text>
-            <Text className='num'>10</Text>
+            <Text className='head-info-num'>10</Text>
           </View>
-          <View className='date'>2022/04/21 22:33</View>
+          <View className='head-info-date'>2022/04/21 22:33</View>
         </View>
         {statusList.map((item) => (
           <View
-            className='hd-status'
+            className='head-info-status'
             key={item.status}
             style={{ color: item.fontColor, backgroundColor: item.backgroundColor }}
           >
@@ -37,22 +34,22 @@ function CompOrderItem(props) {
       </View>
       <View className='comp-order-item-content'>
         <View className='comp-order-item-title'>
-          <View className='left'>
+          <View className='content-imgbox'>
             <Image
               src='https://preissue-b-img-cdn.yuanyuanke.cn/image/42/2022/01/12/16c76febe685d4249e419259ad979f9bxZsiiZARkIXx70VrEOdbVANzU96nH7hU'
-              className='img'
-            ></Image>
+              className='content-img'
+            />
           </View>
-          <View className='right'>
-            <View className='text'>活动名称</View>
+          <View className='content-active'>
+            <View className='content-active-name'>活动名称</View>
             <Text className='iconfont icon-qianwang-01' />
           </View>
         </View>
         <View className='comp-order-item-goods'>
-          <View className='left'>
+          <View className='goods-info'>
             <ScrollView className='scroll-goods' scrollX>
               <View className='scroll-item'>
-                <View className='thumbnail'>
+                <View className='goods-imgbox'>
                   <Image
                     src='https://preissue-b-img-cdn.yuanyuanke.cn/image/42/2022/01/12/16c76febe685d4249e419259ad979f9bxZsiiZARkIXx70VrEOdbVANzU96nH7hU'
                     className='goods-img'
@@ -60,14 +57,14 @@ function CompOrderItem(props) {
                   />
                   <View className='img-desc'>商品已核销</View>
                 </View>
-                <View className='describe'>商品描述啊啊啊啊啊啊</View>
-                <View className='size'>+11件</View>
+                <View className='goods-desc'>商品描述啊啊啊啊啊啊</View>
+                <View className='goods-num'>+11件</View>
               </View>
             </ScrollView>
           </View>
-          <View className='right'>
+          <View className='goods-sale'>
             <SpPrice className='sale-price' value={0.03} />
-            <View className='desc'>共5件</View>
+            <View className='sale-num'>共5件</View>
           </View>
         </View>
         <View className='comp-order-item-info'>
@@ -75,19 +72,19 @@ function CompOrderItem(props) {
           <View className='ziti-box'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='desc'>自提点：</Text>
-              <Text className='desc'>嘻嘻嘻谢谢</Text>
+              <Text className='ziti-desc'>自提点：</Text>
+              <Text className='ziti-desc'>嘻嘻嘻谢谢</Text>
             </View>
             <View className='ziti-address'>
               <Text>详细地址写在这里啊</Text>
-              <Text className='iconfont icon-dizhi-01 address-icon' />
+              {/* <Text className='iconfont icon-dizhi-01 showaddress-icon' /> */}
             </View>
           </View>
           <View className='ziti-info'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='desc'>XXXXX</Text>
-              <Text className='desc ml'>186738383933</Text>
+              <Text className='ziti-desc'>XXXXX</Text>
+              <Text className='ziti-desc ml'>186738383933</Text>
             </View>
             <View className='ziti-address'>详细地址写在这里啊</View>
             <View className='ziti-address'>楼号(如10)</View>
@@ -97,8 +94,8 @@ function CompOrderItem(props) {
           <View className='ziti-tuan'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='desc'>团员备注：</Text>
-              <Text className='desc'>暂无</Text>
+              <Text className='ziti-desc'>团员备注：</Text>
+              <Text className='ziti-desc'>暂无</Text>
               <Text onClick={onEditClick} className='iconfont icon-edit address-icon' />
             </View>
           </View>

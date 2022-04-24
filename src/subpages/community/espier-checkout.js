@@ -5,24 +5,22 @@ import { SpPage, SpImage, SpPrice } from '@/components'
 import qs from 'qs'
 import { log } from '@/utils'
 import GoodsItem from './comps/goods-item'
-import { AtInput }  from 'taro-ui'
+import { AtInput } from 'taro-ui'
 
 import './espier-checkout.scss'
 
-
-
 const EspierCheckout = () => {
-
   const renderFooter = () => {
+    return (
+      <View className='espierCheckout-toolbar'>
+        <View className='espierCheckout-toolbar__price'>
+          实际支付：
+          <SpPrice value={990} noDecimal />
+        </View>
 
-    return <View className='espierCheckout-toolbar'>
-      <View className='espierCheckout-toolbar__price'>
-        实际支付：
-        <SpPrice value={990} noDecimal />
+        <View className='espierCheckout-toolbar__button'>立即支付</View>
       </View>
-
-      <View className='espierCheckout-toolbar__button'>立即支付</View>
-    </View>
+    )
   }
 
   return (
@@ -44,11 +42,8 @@ const EspierCheckout = () => {
               <Text>孙旭</Text>
               131221080999
             </View>
-            <View>
-              上海市徐汇区宜山路700号
-            </View>
+            <View>上海市徐汇区宜山路700号</View>
           </View>
-
         </View>
 
         <View className='espierCheckout-goods'>
@@ -60,19 +55,13 @@ const EspierCheckout = () => {
           <View className='espierCheckout-total__price'>
             <View className='espierCheckout-total__title'>商品总价</View>
 
-            <SpPrice
-              value={990}
-              noDecimal
-            />
+            <SpPrice value={990} noDecimal />
           </View>
 
           <View className='espierCheckout-total__payPrice'>
             <Text className='espierCheckout-total__payPrice-num'>共10件</Text>
             实际支付
-            <SpPrice
-              value={990}
-              noDecimal
-            />
+            <SpPrice value={990} noDecimal />
           </View>
         </View>
 

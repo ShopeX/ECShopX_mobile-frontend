@@ -8,31 +8,36 @@ import { AtInput, AtButton, AtProgress, AtIcon } from 'taro-ui'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
 
 function CompGroupNeighbour(props) {
-  const info = [{
-    name: 'xx小区',
-    distance: 20.1,
-    groupTotal: 100,
-    hasJoin: 90,
-    lessJoin: 75
-  }, {
-    name: 'xx小区',
-    distance: 20.1,
-    groupTotal: 100,
-    hasJoin: 90,
-    lessJoin: 75
-  }, {
-    name: 'xx小区',
-    distance: 20.1,
-    groupTotal: 100,
-    hasJoin: 90,
-    lessJoin: 75
-  }, {
-    name: 'xx小区',
-    distance: 20.1,
-    groupTotal: 100,
-    hasJoin: 90,
-    lessJoin: 75
-  }]
+  const info = [
+    {
+      name: 'xx小区',
+      distance: 20.1,
+      groupTotal: 100,
+      hasJoin: 90,
+      lessJoin: 75
+    },
+    {
+      name: 'xx小区',
+      distance: 20.1,
+      groupTotal: 100,
+      hasJoin: 90,
+      lessJoin: 75
+    },
+    {
+      name: 'xx小区',
+      distance: 20.1,
+      groupTotal: 100,
+      hasJoin: 90,
+      lessJoin: 75
+    },
+    {
+      name: 'xx小区',
+      distance: 20.1,
+      groupTotal: 100,
+      hasJoin: 90,
+      lessJoin: 75
+    }
+  ]
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -56,23 +61,29 @@ function CompGroupNeighbour(props) {
                   <View className='head__r'>
                     {item.distance}km
                   </View>
-                </View>
-                <View className='info'>
-                  <View className='progress'>
-                    <AtProgress percent={item.hasJoin / item.groupTotal * 100} color='#0bc262' strokeWidth={8} isHidePercent></AtProgress>
                   </View>
-                  <Text>还差{item.lessJoin}件起送</Text>
+                  <View className='info'>
+                    <View className='progress'>
+                      <AtProgress
+                        percent={(item.hasJoin / item.groupTotal) * 100}
+                        color='#0bc262'
+                        strokeWidth={8}
+                        isHidePercent
+                      ></AtProgress>
+                    </View>
+                    <Text>还差{item.lessJoin}件起送</Text>
+                  </View>
                 </View>
-              </View>
             )
           })}
         </View>
 
         <View className='more' onClick={handleClickMore.bind(this)}>
-          查看全部<Text className={classNames('icon-arrowDown iconfont icon', isOpen ? 'open' : '')}></Text>
+          查看全部
+          <Text className={classNames('icon-arrowDown iconfont icon', isOpen ? 'open' : '')}></Text>
         </View>
       </View>
-    </View >
+    </View>
   )
 }
 

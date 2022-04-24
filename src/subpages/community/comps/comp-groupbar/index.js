@@ -22,27 +22,28 @@ const TABLIST = [
     iconPrefixClass: 'iconfont icon',
     url: '/subpages/community/group',
     urlRedirect: true
-  },
+  }
 ]
 
 function CompGroupTabbar(props) {
-
   const handleClickShare = () => {
-    console.log('点击微信分享');
+    console.log('点击微信分享')
   }
 
   return (
     <View className='comp-goodsbuytoolbar'>
-      <View className='toolbar-item' onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}>
-        <Text
-          className='icon iconfont icon-gouwuche'
-        ></Text>
+      <View
+        className='toolbar-item'
+        onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
+      >
+        <Text className='icon iconfont icon-gouwuche'></Text>
         <Text className='toolbar-item-txt'>订单管理</Text>
       </View>
-      <View className='toolbar-item' onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}>
-        <Text
-          className='icon iconfont icon-gouwuche'
-        ></Text>
+      <View
+        className='toolbar-item'
+        onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
+      >
+        <Text className='icon iconfont icon-gouwuche'></Text>
         <Text className='toolbar-item-txt'>团管理</Text>
       </View>
       <View className='toolbar-item'>

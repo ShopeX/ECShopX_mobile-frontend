@@ -16,10 +16,7 @@ const GoodsItem = () => {
         <View className='goods-info__specs'>10斤（都是大白菜）</View>
         <Text className='goods-info__num'>10件起购</Text>
         <View className='goods-info__price'>
-          <SpPrice
-            value={99}
-            noDecimal
-          />
+          <SpPrice value={99} noDecimal />
         </View>
       </View>
 

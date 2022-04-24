@@ -1,4 +1,4 @@
-.goods{
+.goods {
   background: #fff;
   padding-top: 22px;
   padding-bottom: 25px;
@@ -6,7 +6,7 @@
   position: relative;
   border-bottom: 1px solid #f7f7f7;
 
-  &-img{
+  &-img {
     height: 170px;
     width: 170px;
     // background: #777;
@@ -14,42 +14,43 @@
     overflow: hidden;
   }
 
-  &-info{
+  &-info {
     flex: 1;
     padding-left: 14px;
 
-    &__name{
+    &__name {
       padding: 5px 0px;
     }
 
-    &__specs{
+    &__specs {
       color: #959595;
       margin-bottom: 6px;
       font-size: 26px;
     }
 
-    &__num{
+    &__num {
       border: 1px solid #cbcbcb;
       padding: 0 6px;
       color: #222;
       font-size: 22px;
     }
 
-    &__price{
+    &__price {
       margin-top: 7px;
-      .sp-price__int ,.sp-price__symbol{
+      .sp-price__int,
+      .sp-price__symbol {
         font-weight: 900;
       }
     }
   }
 
-  &-handle{
+  &-handle {
     position: absolute;
     right: 0px;
     bottom: 20px;
     display: flex;
 
-    &__num{
+    &__num {
       width: 120px;
       height: 42px;
       line-height: 42px;
@@ -58,7 +59,7 @@
       font-size: 32px;
     }
 
-    &__symbol{
+    &__symbol {
       width: 45px;
       height: 40px;
       line-height: 37px;
@@ -67,12 +68,12 @@
       font-weight: 700;
     }
 
-    &__reduce{
+    &__reduce {
       border: 1px solid #d7d6d7;
       color: #d7d6d7;
     }
 
-    &__plus{
+    &__plus {
       border: 1px solid #9c9c9c;
       color: #9c9c9c;
     }
