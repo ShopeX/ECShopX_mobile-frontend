@@ -35,4 +35,25 @@ export const COMMUNITY_ORDER_LIST = {
   }
 }
 
-export const COMMUNITY_ACTIVITY_LIST = {}
+export const COMMUNITY_ACTIVITY_LIST = {
+  activityId: 'activity_id',
+  chiefId: 'chief_id',
+  activityName: 'activity_name',
+  activityStatus: 'activity_status',
+  activityStatusMsg: 'activity_status_msg',
+  startTime: 'start_time',
+  priceRange: 'price_range',
+  deliveryStatus: 'delivery_status',
+  items: ({ items }) => {
+    if (!items) {
+      return []
+    } else {
+      return pickBy(items, {
+        itemId: 'item_id',
+        itemName: 'item_name',
+        itemPics: 'item_pics',
+        pics: ({ pics }) => pics[0]
+      })
+    }
+  }
+}

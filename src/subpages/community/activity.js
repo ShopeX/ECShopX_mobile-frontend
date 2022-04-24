@@ -1,22 +1,13 @@
-import React, { useEffect, useCallback, useRef, useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import React, { useRef } from 'react'
 import { View, ScrollView, Image } from '@tarojs/components'
-import {
-  AtTabs,
-  AtTabsPane,
-  AtModal,
-  AtModalContent,
-  AtModalAction,
-  AtModalHeader,
-  AtInput,
-  AtTag
-} from 'taro-ui'
+import { AtModal } from 'taro-ui'
 import { SpPage, SpScrollView, SpFilterBar, SpPrice } from '@/components'
-import { pickBy, classNames } from '@/utils'
+import { pickBy, classNames, showToast } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
+
 import CompTabbar from './comps/comp-tabbar'
 
 import './activity.scss'
@@ -32,15 +23,8 @@ const tabList = [
   { title: '销量', type: '2' }
 ]
 
-const statusList = [
-  { name: '未开始', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' },
-  { name: '活动中', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' },
-  { name: '已结束', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' }
-]
-
-function ActivityPage(props) {
+function ActivityPage() {
   const [state, setState] = useImmer(initialState)
-  const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const activityRef = useRef()
 
@@ -49,16 +33,12 @@ function ActivityPage(props) {
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
       page: pageIndex,
-      pageSize,
-      order_type: 'normal',
-      status: 0,
-      curTabIdx
+      pageSize
+      // order_type: 'normal',
+      // status: 0,
+      // curTabIdx
     }
-    const {
-      list,
-      pager: { count: total },
-      rate_status
-    } = await api.trade.list(params)
+    const { list, total_count: total } = await api.community.getActivityLits(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ACTIVITY_LIST)
     setState((draft) => {
       draft.activityList = [...activityList, ...n_list]
@@ -70,13 +50,22 @@ function ActivityPage(props) {
   const onFilterChange = async (e) => {
     await setState((draft) => {
       draft.curTabIdx = e.current || 0
+      draft.activityList = []
     })
     activityRef.current.reset()
   }
 
-  const onModalChange = (isOpened, type) => {
+  const onModalChange = async (isOpened, type) => {
     console.log(type)
     if (type == 'confirm') {
+      // api.community.sss().then(res => {
+      //   showToast('操作成功')
+      //   await setState((draft) => {
+      //     draft.curTabIdx = e.current || 0
+      //     draft.activityList = []
+      //   })
+      //   activityRef.current.reset()
+      // })
     }
     setState((draft) => {
       draft.isOpened = isOpened
@@ -89,6 +78,8 @@ function ActivityPage(props) {
     })
   }
 
+  console.log(activityList)
+
   return (
     <SpPage className='page-community-activity' renderFooter={<CompTabbar />}>
       <SpScrollView className='page-community-activity-scroll' ref={activityRef} fetch={fetch}>
@@ -100,30 +91,29 @@ function ActivityPage(props) {
           className='page-community-activity-filter'
           color={colorPrimary}
         />
-        {activityList.map((item) => (
-          <View className='page-community-activity-info'>
+        {activityList.map((info, idx) => (
+          <View key={idx} className='page-community-activity-info'>
             <View className='page-community-activity-head'>
               <View className='goods-hd'>
-                <View className='goods-title'>活动名称</View>
-                <View className='goods-price'>0.01</View>
+                <View className='goods-title'>{info.activityName}</View>
+                <View className='goods-price'>{info.priceRange}</View>
               </View>
-              <View className='goods-time'>2022/04/01</View>
+              <View className='goods-time'>{info.startTime}</View>
             </View>
             <View className='page-community-activity-goods'>
               <View className='goods-info'>
                 <ScrollView className='scroll-goods' scrollX>
-                  <View className='scroll-item'>
-                    <View className='goods-imgbox'>
-                      <Image
-                        src='https://preissue-b-img-cdn.yuanyuanke.cn/image/42/2022/01/12/16c76febe685d4249e419259ad979f9bxZsiiZARkIXx70VrEOdbVANzU96nH7hU'
-                        className='goods-img'
-                        lazyLoad
-                      />
-                      {/* <View className='img-desc'>商品已核销</View> */}
-                    </View>
-                    <View className='goods-desc'>商品描述啊啊啊啊啊啊</View>
-                    {/* <View className='goods-num'>+11件</View> */}
-                  </View>
+                  {info.items &&
+                    info.items.map((el, elidx) => (
+                      <View className='scroll-item' key={elidx}>
+                        <View className='goods-imgbox'>
+                          <Image src={el.pics} className='goods-img' lazyLoad />
+                          {/* <View className='img-desc'>商品已核销</View> */}
+                        </View>
+                        <View className='goods-desc'>{el.itemName}</View>
+                        {/* <View className='goods-num'>+11件</View> */}
+                      </View>
+                    ))}
                 </ScrollView>
               </View>
               {/* <View className='goods-sale'>
@@ -147,22 +137,18 @@ function ActivityPage(props) {
               <View className='activity-static border'>未发货</View>
             </View>
             <View className='page-community-activity-footer'>
-              {statusList.map((item) => (
-                <View
-                  className='footer-status'
-                  key={item.status}
-                  style={{ color: item.fontColor, backgroundColor: item.backgroundColor }}
-                >
-                  {item.name}
-                </View>
-              ))}
-              <View
-                onClick={handleClickBtn}
-                className='footer-btn'
-                style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-              >
-                确认收货
+              <View className={classNames('footer-status', info.activityStatus)}>
+                {info.activityStatusMsg}
               </View>
+              {info.deliveryStatus == 'DONE' && (
+                <View
+                  onClick={handleClickBtn}
+                  className='footer-btn'
+                  style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+                >
+                  确认收货
+                </View>
+              )}
             </View>
           </View>
         ))}
