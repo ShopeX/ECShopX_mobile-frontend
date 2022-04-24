@@ -72,8 +72,9 @@ export default {
       pages: [
         'index', // 社区团购个人中心
         'group', // 一键开团
-        'order', // 团员订单页
-        'order-refund' // 订单退款页
+        'order', // 团员订单列表页
+        'order-refund', // 订单退款页
+        'order-manage' // 团长订单列表页
       ]
     },
     {

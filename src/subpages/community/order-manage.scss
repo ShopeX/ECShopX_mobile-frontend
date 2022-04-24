@@ -1,5 +1,5 @@
 @import '@/style/imports';
-.page-community-order {
+.page-order-manage {
   padding-bottom: 140px !important;
   &-search {
     padding: 16px 24px;
@@ -14,6 +14,7 @@
         height: 0px !important;
       }
       &__item {
+        // height: $tabs-height;
         color: $color-brand-accent-light;
       }
       &__item-underline {
@@ -30,7 +31,7 @@
     padding: 24px;
     background: #fff;
     margin-bottom: 24px;
-    .order-tags {
+    .manage-tags {
       margin-right: 15px;
       font-size: 24px;
       &-active {

@@ -18,9 +18,8 @@ import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
 import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
-import CompTabbar from './comps/comp-tabbar'
 
-import './order.scss'
+import './order-manage.scss'
 
 const initialState = {
   keywords: '',
@@ -33,9 +32,10 @@ const initialState = {
 }
 const tabList = [
   { title: '全部', type: '0' },
-  { title: '待支付', type: '1' },
-  { title: '发货', type: '2' },
-  { title: '售后', type: '3' }
+  { title: '发货', type: '1' },
+  { title: '核销', type: '2' },
+  { title: '售后', type: '3' },
+  { title: '备注', type: '4' }
 ]
 
 const deliverTagList = [
@@ -50,7 +50,7 @@ const afterTagList = [
   { title: '已退款', type: '1' }
 ]
 
-function CommunityOrder(props) {
+function OrderManage(props) {
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
@@ -132,35 +132,35 @@ function CommunityOrder(props) {
       <>
         <View
           onClick={() => handleClickBtn('refund')}
-          className='page-community-order-btn'
+          className='page-order-manage-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           申请退款
         </View>
         <View
           onClick={() => handleClickBtn('aftersale')}
-          className='page-community-order-btn'
+          className='page-order-manage-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           售后详情
         </View>
         <View
           onClick={() => handleClickBtn('close')}
-          className='page-community-order-btn'
+          className='page-order-manage-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           关闭订单
         </View>
         <View
           onClick={() => handleClickBtn('gopay')}
-          className='page-community-order-btn'
+          className='page-order-manage-btn'
           style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
         >
           去支付
         </View>
         <View
           onClick={() => handleClickBtn('again')}
-          className='page-community-order-btn'
+          className='page-order-manage-btn'
           style={`background: ${colorPrimary};`}
         >
           再来一单
@@ -227,9 +227,9 @@ function CommunityOrder(props) {
   }
 
   return (
-    <SpPage className='page-community-order' renderFooter={<CompTabbar />}>
-      <SpScrollView className='page-community-order-scroll' ref={orderRef} fetch={fetch}>
-        <View className='page-community-order-search'>
+    <SpPage className='page-order-manage'>
+      <SpScrollView className='page-order-manage-scroll' ref={orderRef} fetch={fetch}>
+        <View className='page-order-manage-search'>
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
@@ -241,7 +241,7 @@ function CommunityOrder(props) {
             onConfirm={handleConfirm}
           />
         </View>
-        <View className='page-community-order-tabs'>
+        <View className='page-order-manage-tabs'>
           <AtTabs
             current={curTabIdx}
             tabList={tabList}
@@ -253,7 +253,7 @@ function CommunityOrder(props) {
             ))}
           </AtTabs>
           {curTabIdx == 2 && (
-            <View className='page-community-order-tags'>
+            <View className='page-order-manage-tags'>
               {deliverTagList.map((item, idx) => (
                 <AtTag
                   name={item}
@@ -261,8 +261,8 @@ function CommunityOrder(props) {
                   active={idx == curDeliverTagIdx}
                   onClick={deliverTagClick}
                   className={classNames(
-                    'order-tags',
-                    idx === curDeliverTagIdx ? 'order-tags-active' : ''
+                    'manage-tags',
+                    idx === curDeliverTagIdx ? 'manage-tags-active' : ''
                   )}
                 >
                   {item.title}
@@ -271,7 +271,7 @@ function CommunityOrder(props) {
             </View>
           )}
           {curTabIdx == 3 && (
-            <View className='page-community-order-tags'>
+            <View className='page-order-manage-tags'>
               {afterTagList.map((item, idx) => (
                 <AtTag
                   name={item}
@@ -279,8 +279,8 @@ function CommunityOrder(props) {
                   active={idx == curAfterTagIdx}
                   onClick={afterTagClick}
                   className={classNames(
-                    'order-tags',
-                    idx === curAfterTagIdx ? 'order-tags-active' : ''
+                    'manage-tags',
+                    idx === curAfterTagIdx ? 'manage-tags-active' : ''
                   )}
                 >
                   {item.title}
@@ -319,4 +319,4 @@ function CommunityOrder(props) {
   )
 }
 
-export default CommunityOrder
+export default OrderManage
