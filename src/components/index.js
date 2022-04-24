@@ -82,6 +82,7 @@ import SpCashier from './sp-cashier'
 import SpCustomNavigation from './sp-custom-navigation'
 import SpUpload from './sp-upload'
 import SpPicker from './sp-picker'
+import SpPickerAddress from './sp-picker-address'
 
 export default {}
 
@@ -169,5 +170,6 @@ export {
   SpCashier,
   SpCustomNavigation,
   SpUpload,
-  SpPicker
+  SpPicker,
+  SpPickerAddress
 }

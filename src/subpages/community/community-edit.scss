@@ -1,0 +1,11 @@
+.page-community-edit{
+  .btn-wrap {
+    padding: 20px;
+  }
+  .at-input {
+    margin-bottom: 0;
+    &::after {
+      border-color: transparent;
+    }
+  }
+}

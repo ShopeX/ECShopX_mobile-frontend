@@ -74,6 +74,7 @@ export default {
         'group', // 一键开团
         'itemlist', // 商品选品
         'picker-community', // 选择社区
+        'community-edit', // 添加社区
         'order', // 团员订单列表页
         'order-refund', // 订单退款页
         'espier-checkout', //结算页

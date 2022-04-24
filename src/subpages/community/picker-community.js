@@ -64,8 +64,9 @@ function PickerCommunity(props) {
   }
 
   const handleConfirm = () => {
-    dispatch(updateSelectGoods(selection))
-    Taro.navigateBack()
+    Taro.navigateTo({
+      url: `/subpages/community/community-edit?type=add`
+    })
   }
 
   return (
@@ -74,7 +75,7 @@ function PickerCommunity(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleConfirm}>
-            确定
+            添加自提点
           </AtButton>
         </View>
       }
