@@ -3,14 +3,14 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
-import './index.scss'
+import './comp-groupitem.scss'
 
 function CompGroupItem(props) {
   return (
     <View className='comp-group-item'>
       <View className='group-item-hd'>
-        <View className="item-info">
-          <View className="name">[快团团保供]</View>
+        <View className='item-info'>
+          <View className='name'>[快团团保供]</View>
           <SpPrice size={36} value={100} />
         </View>
         <View></View>
@@ -23,14 +23,19 @@ function CompGroupItem(props) {
             </View>
           ))}
         </ScrollView>
-        <View className="item-status">
-          <Text className="status">正在跟团中</Text>
+        <View className='item-status'>
+          <Text className='status'>正在跟团中</Text>
           {/* <View>分享</View> */}
         </View>
       </View>
       <View className='group-item-ft'>
-        <View>实际收入<SpPrice value={100} /></View>
-        <View><Text>已跟团 5人次</Text> <Text>已跟团数量 25箱</Text> <Text>查看 5人</Text></View>
+        <View>
+          实际收入
+          <SpPrice value={100} />
+        </View>
+        <View>
+          <Text>已跟团 5人次</Text> <Text>已跟团数量 25箱</Text> <Text>查看 5人</Text>
+        </View>
       </View>
     </View>
   )

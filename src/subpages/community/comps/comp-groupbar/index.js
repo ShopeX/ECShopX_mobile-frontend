@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import React, { useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
+import { SpImage, SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH } from '@/consts'
@@ -47,8 +48,7 @@ function CompGroupTabbar(props) {
       </View>
       <View className='toolbar-item'>
         <View className='toolbar-item-money'>
-          <Text className='toolbar-item-money-cn'>¥</Text>
-          <Text className='toolbar-item-money-num'>0.00</Text>
+          <SpPrice value={0} />
         </View>
         <Text className='toolbar-item-txt'>x人来过</Text>
       </View>

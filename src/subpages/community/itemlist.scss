@@ -1,0 +1,24 @@
+.page-community-itemlist {
+  .sp-scrollview-body {
+    padding: 20px;
+  }
+  .goods-item-wrap {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  .sp-checkbox-new {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    &__label {
+      margin-left: 0;
+      margin-right: 16px;
+    }
+  }
+  .btn-wrap {
+    padding: 20px;
+  }
+}

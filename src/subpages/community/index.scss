@@ -57,4 +57,15 @@
       }
     }
   }
+
+  .search-wrap {
+    padding: 20px;
+  }
+
+  .group-state-list {
+    padding: 0 20px;
+    .at-tabs__body {
+      height: 0;
+    }
+  }
 }

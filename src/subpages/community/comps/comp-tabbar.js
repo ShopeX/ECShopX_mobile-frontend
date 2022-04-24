@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, getCurrentRoute } from '@/utils'
-import './index.scss'
+import './comp-tabbar.scss'
 
 const TABLIST = [
   {

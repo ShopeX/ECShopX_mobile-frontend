@@ -1,4 +1,4 @@
-.page-community-group {
+.page-community-group-leaderdetail {
   .page-bg {
     background: var(--color-primary);
     height: 420px;
@@ -6,14 +6,17 @@
   }
 
   .page-body {
+    margin-bottom: 30px;
+
     .page-header {
       background-color: #fff;
       position: relative;
-      top: -50px;
+      top: 0;
       left: 0;
+      margin-top: -30px;
+      margin-bottom: 30px;
       width: 100%;
       border-radius: 30px 30px 0 0;
-      min-height: 100vh;
       padding: 30px 0;
       box-sizing: border-box;
     }
@@ -103,6 +106,7 @@
         vertical-align: middle;
         margin-left: 20px;
         padding: 0 4px;
+        border-radius: 4px;
       }
 
       .list {
@@ -149,6 +153,28 @@
 
     .group-foot {
       padding: 20px 30px;
+    }
+
+    .goodslist {
+      background-color: #fff;
+      padding: 10px 30px;
+      margin-bottom: 30px;
+
+      .add-cart {
+        margin: 20px 0;
+        background-color: #3ec07d !important;
+        border-color: #3ec07d !important;
+      }
+    }
+
+    .joinlog {
+      background-color: #fff;
+      padding: 10px 0;
+
+      .title {
+        font-size: 30px;
+        padding: 20px 30px;
+      }
     }
   }
 }

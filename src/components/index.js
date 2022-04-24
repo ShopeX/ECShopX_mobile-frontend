@@ -81,6 +81,7 @@ import SpRecommendItem from './sp-recommend-item'
 import SpCashier from './sp-cashier'
 import SpCustomNavigation from './sp-custom-navigation'
 import SpUpload from './sp-upload'
+import SpPicker from './sp-picker'
 
 export default {}
 
@@ -167,5 +168,6 @@ export {
   SpRecommendItem,
   SpCashier,
   SpCustomNavigation,
-  SpUpload
+  SpUpload,
+  SpPicker
 }

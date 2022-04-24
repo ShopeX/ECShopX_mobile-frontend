@@ -11,23 +11,22 @@
     flex-direction: column;
     align-items: center;
     position: relative;
-    line-height: 1.2;
 
     .iconfont {
       font-size: 38px;
+      line-height: 40px;
+
       color: #3ec07d;
     }
 
     &-money {
-      color: #3ec07d;
+      height: 40px;
 
-      &-cn {
-        font-size: 20px;
-      }
-
-      &-num {
-        font-size: 38px;
-        font-weight: bold;
+      .sp-price__int,
+      .sp-price__symbol,
+      .sp-price__decimal {
+        color: #3ec07d;
+        font-weight: 900;
       }
     }
 

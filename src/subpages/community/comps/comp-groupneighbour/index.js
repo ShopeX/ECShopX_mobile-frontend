@@ -45,15 +45,15 @@ function CompGroupNeighbour(props) {
     setIsOpen(!isOpen)
   }
   return (
-    <View className='group-neighbour'>
+    <View className='comp-group-neighbour'>
       <Text className='title'>支持配送的小区</Text>
 
       <View className='main'>
-        <View className={classNames('group-neighbour-contanier', isOpen ? 'open' : '')}>
+        <View className={classNames('comp-group-neighbour-contanier', isOpen ? 'open' : '')}>
           {info &&
             info.map((item, index) => {
               return (
-                <View className='group-neighbour-item' key={index}>
+                <View className='comp-group-neighbour-item' key={index}>
                   <View className='head'>
                     <View className='head__l'>
                       <Text className='icon iconfont icon-gouwuche'></Text>

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { useImmer } from 'use-immer'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpImage } from '@/components'
+import { AtInput, AtTabs, AtTabsPane, AtSearchBar } from 'taro-ui'
 import qs from 'qs'
 import { log } from '@/utils'
 import './index.scss'
@@ -21,12 +23,46 @@ const MENUS = [
     name: '我的活动',
     icon: 'm_menu_dianwu.png',
     link: '/subpages/community/activity'
+  },
+  {
+    key: 'dianwu',
+    name: '一键开团',
+    icon: 'm_menu_dianwu.png',
+    link: '/subpages/community/group'
   }
 ]
 
+const tabList = [
+  { title: '全部', type: '0' },
+  { title: '跟团中', type: '1' },
+  { title: '预览中', type: '2' },
+  { title: '未开始', type: '3' },
+  { title: '已结束', type: '4' }
+]
+
+const initialState = {
+  curTabIdx: 0,
+  searchValue: ''
+}
+
 const Index = () => {
+  const [state, setState] = useImmer(initialState)
+  const { curTabIdx, searchValue } = state
+
+  const handleClickTab = (curTabIdx) => {
+    setState((draft) => {
+      draft.curTabIdx = curTabIdx
+    })
+  }
+
+  const onSearchChange = (value) => {
+    setState((draft) => {
+      draft.searchValue = value
+    })
+  }
+
   return (
-    <SpPage className='page-community-index' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-index'>
       <View className='page-header'>
         <View className='user-info'>
           <SpImage width={120} height={120} />
@@ -50,7 +86,18 @@ const Index = () => {
         </View>
       </View>
 
-      <View className='card-block'></View>
+      <View className='card-block'>
+        <View className='search-wrap'>
+          <AtSearchBar value={searchValue} onChange={onSearchChange} />
+        </View>
+        <View className='group-state-list'>
+          <AtTabs current={curTabIdx} tabList={tabList} onClick={handleClickTab}>
+            {tabList.map((panes, pIdx) => (
+              <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+            ))}
+          </AtTabs>
+        </View>
+      </View>
 
       <View className='group-list'>
         {[1, 2, 3].map((item) => (
