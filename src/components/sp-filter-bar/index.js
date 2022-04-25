@@ -26,7 +26,7 @@ export default class SpFilterBar extends Component {
     }
   }
 
-  handleClickItem(idx) {
+  handleClickItem(idx, type = '') {
     const item = this.props.list[idx]
     let sortOrder = null
 
@@ -41,7 +41,8 @@ export default class SpFilterBar extends Component {
 
     this.props.onChange({
       current: idx,
-      sort: sortOrder
+      sort: sortOrder,
+      type
     })
   }
 
@@ -60,7 +61,7 @@ export default class SpFilterBar extends Component {
                   'sort-asc': item.sort && sortOrder > 0,
                   'sort-desc': item.sort && sortOrder < 0
                 })}
-                onClick={this.handleClickItem.bind(this, idx)}
+                onClick={this.handleClickItem.bind(this, idx, item.type)}
                 key={`sp-filter-bar-item__${idx}`}
               >
                 <Text className='sp-filter-bar__item-text' style={curIdx === idx && { color }}>

@@ -15,13 +15,14 @@ import './activity.scss'
 const initialState = {
   activityList: [],
   curTabIdx: 0,
+  tabType: '',
   isOpened: false,
   currentInfo: {}
 }
 const tabList = [
-  { title: '默认', type: '0' },
-  { title: '上新', type: '1' },
-  { title: '销量', type: '2' }
+  { title: '默认', type: '' },
+  { title: '上新', type: 'create_time' },
+  { title: '销量', type: 'order_num' }
 ]
 
 function ActivityPage() {
@@ -29,15 +30,13 @@ function ActivityPage() {
   const { colorPrimary } = useSelector((state) => state.sys)
   const activityRef = useRef()
 
-  const { activityList, curTabIdx, isOpened, currentInfo } = state
+  const { activityList, curTabIdx, isOpened, currentInfo, tabType } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
       page: pageIndex,
-      pageSize
-      // order_type: 'normal',
-      // status: 0,
-      // curTabIdx
+      pageSize,
+      order_by: tabType
     }
     const { list, total_count: total } = await api.community.getActivityLits(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ACTIVITY_LIST)
@@ -51,19 +50,20 @@ function ActivityPage() {
   const onFilterChange = async (e) => {
     await setState((draft) => {
       draft.curTabIdx = e.current || 0
+      draft.tabType = e.type
       draft.activityList = []
     })
     activityRef.current.reset()
   }
 
   const onModalChange = async (isOpened, type) => {
-    console.log(type)
     if (type == 'confirm') {
       const { activityId } = currentInfo
       api.community.confirmDelivery(activityId).then((res) => {
         showToast('操作成功')
         setState((draft) => {
           draft.curTabIdx = 0
+          draft.tabType = ''
           draft.activityList = []
         })
         activityRef.current.reset()
@@ -101,7 +101,7 @@ function ActivityPage() {
                 <View className='goods-title'>{info.activityName}</View>
                 <View className='goods-price'>{info.priceRange}</View>
               </View>
-              <View className='goods-time'>{info.startTime}</View>
+              <View className='goods-time'>{info.startTime.split(' ')[0]}</View>
             </View>
             <View className='page-community-activity-goods'>
               <View className='goods-info'>
@@ -126,17 +126,17 @@ function ActivityPage() {
             </View>
             <View className='page-community-activity-static'>
               <View className='activity-static'>
-                <SpPrice value={0.03} primary />
+                <SpPrice value={info.totalFee} unit='cent' primary />
                 <View className='activity-static-desc'>实际收入(元)</View>
               </View>
               <View className='activity-static'>
-                <SpPrice value={10} noSymbol noDecimal />
+                <SpPrice value={info.orderNum} noSymbol noDecimal />
                 <View className='activity-static-desc'>已跟团</View>
               </View>
-              <View className='activity-static'>
+              {/* <View className='activity-static'>
                 <SpPrice value={20} noSymbol noDecimal />
                 <View className='activity-static-desc'>已浏览</View>
-              </View>
+              </View> */}
               <View className='activity-static border'>未发货</View>
             </View>
             <View className='page-community-activity-footer'>
