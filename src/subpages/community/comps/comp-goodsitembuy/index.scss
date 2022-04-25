@@ -54,7 +54,7 @@
 
     &__tag {
       display: inline-block;
-      color: #3ec07d;
+      color: var(--color-primary);
       background-color: #e9f9f2;
       font-size: 26px;
       vertical-align: middle;
@@ -102,7 +102,7 @@
     // display: flex;
     .icon {
       font-size: 30px;
-      color: #0bc262;
+      color: var(--color-primary);
     }
   }
 
@@ -131,13 +131,17 @@
     }
 
     &__reduce {
-      border: 1px solid #0bc262;
-      color: #0bc262;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
     }
 
     &__plus {
-      border: 1px solid #0bc262;
-      color: #0bc262;
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
     }
+  }
+  .add-btn {
+    background: var(--color-primary);
+    color: #fff;
   }
 }

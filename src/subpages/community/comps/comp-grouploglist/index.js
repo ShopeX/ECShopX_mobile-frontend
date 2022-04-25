@@ -2,22 +2,57 @@ import React, { useEffect, useState } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
 import { classNames } from '@/utils'
+import { useImmer } from 'use-immer'
+import api from '@/api'
+import { useAsyncCallback } from '@/hooks'
 
 import './index.scss'
 
+const initialState = {
+  groupList: [],
+  isOpen: false,
+  pageSize: 5,
+  page: 1,
+  total: 5
+}
+
 const CompGroupLogListItem = (props) => {
-  const arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
-  const [isOpen, setIsOpen] = useState(false)
-  const [showNum, setShowNum] = useState(5)
   const { isLeader = false } = props
+
+  const [state, setState] = useAsyncCallback(initialState)
+
+  const { isOpen, pageSize, groupList, page, total } = state
+
+  useEffect(() => {
+    getActivityList()
+  }, [])
+
   // 查看更多
-  const handleClickMore = () => {
-    setIsOpen(!isOpen)
+  const handleClickMore = async () => {
+    let pages = page
+    setState(
+      (draft) => {
+        draft.isOpen = !isOpen
+        draft.page = ++pages
+        draft.total = ++pages
+      },
+      ({ page }) => {
+        getActivityList(page)
+      }
+    )
   }
+
+  const getActivityList = async (pages = 1) => {
+    const list = await api.community.getActiveDetail(1)
+    setState((draft) => {
+      draft.groupList = list.items
+    })
+  }
+
   return (
     <View className='comp-grouploglist'>
-      {arr.map((item, index) => {
-        if (isOpen ? true : index < showNum) {
+      {groupList.map((item, index) => {
+        if (isOpen ? true : index < pageSize) {
           return (
             <View className='comp-grouploglist-item' key={index}>
               <View className='comp-grouploglist-item__num'>{index + 1}</View>
@@ -27,7 +62,7 @@ const CompGroupLogListItem = (props) => {
               <View className='comp-grouploglist-item__info'>
                 <View className='user'>
                   <Text className='user__name'>测试买家</Text>
-                  {isLeader && <Text className='user__tag'>回头客</Text>}
+                  {/* {isLeader && <Text className='user__tag'>回头客</Text>} */}
                   <Text className='user__time'>17小时前</Text>
                 </View>
 
@@ -37,21 +72,23 @@ const CompGroupLogListItem = (props) => {
                   {isLeader && <Text className='goods__status'>已取消</Text>}
                 </View>
 
-                {isLeader && (
+                {/* {isLeader && (
                   <View className='order'>
                     <Text className='order__time'>2022-04-01 22:10:10</Text>
                     <Text className='order__status'>核销成功</Text>
                   </View>
-                )}
+                )} */}
               </View>
             </View>
           )
         }
       })}
-      <View className='more' onClick={handleClickMore.bind(this)}>
-        查看更多
-        <Text className={classNames('icon-arrowDown iconfont icon', isOpen ? 'open' : '')}></Text>
-      </View>
+      {total <= 10 && (
+        <View className='more' onClick={handleClickMore.bind(this)}>
+          查看更多
+          <Text className={classNames('icon-arrowDown iconfont icon')}></Text>
+        </View>
+      )}
     </View>
   )
 }

@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
-import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
+import CompOrderItem from './comps/comp-orderitem'
 
 import './order-manage.scss'
 
@@ -50,7 +50,7 @@ const afterTagList = [
   { title: '已退款', type: '1' }
 ]
 
-function OrderManage(props) {
+function CheifOrderManage(props) {
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
@@ -323,4 +323,4 @@ function OrderManage(props) {
   )
 }
 
-export default OrderManage
+export default CheifOrderManage

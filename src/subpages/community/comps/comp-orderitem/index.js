@@ -5,15 +5,34 @@ import { SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
 import { classNames } from '@/utils'
 
-import './comp-orderitem.scss'
+import './index.scss'
 
 function CompOrderItem(props) {
-  const { info = {}, renderFooter = null, onEditClick = () => {} } = props
+  const {
+    info = {},
+    renderFooter = null,
+    onEditClick = () => {},
+    onCountDownEnd = () => {}
+  } = props
   const { checkIsChief } = useSelector((state) => state.user)
 
   return (
     <View className='comp-order-item'>
-      {!checkIsChief && <View className='comp-order-item-timer'>只有团员才有</View>}
+      {!checkIsChief && autoCancelSeconds && (
+        <View className='comp-order-item-timer'>
+          请在
+          <AtCountdown
+            format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+            isShowDay={autoCancelSeconds.dd > 0}
+            day={autoCancelSeconds.dd}
+            hours={autoCancelSeconds.hh}
+            minutes={autoCancelSeconds.mm}
+            seconds={autoCancelSeconds.ss}
+            onTimeUp={onCountDownEnd}
+          />
+          内支付，过期订单自动关闭
+        </View>
+      )}
       <View className='comp-order-item-head'>
         <View className='head-info'>
           <View className='head-info-group'>

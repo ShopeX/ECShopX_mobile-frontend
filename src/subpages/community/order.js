@@ -17,13 +17,13 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
-import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
+import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
 
 import './order.scss'
 
 const initialState = {
-  keywords: '',
+  keywords: undefined,
   orderList: [],
   curTabIdx: 0,
   curDeliverTagIdx: 0,
@@ -62,18 +62,13 @@ function CommunityOrder(props) {
     let params = {
       page: pageIndex,
       pageSize,
-      keywords,
-      order_type: 'normal',
-      status: 0,
-      curTabIdx,
-      curDeliverTagIdx,
-      curAfterTagIdx
+      mobile: keywords,
+      status: curDeliverTagIdx
+      // curTabIdx,
+      // curDeliverTagIdx,
+      // curAfterTagIdx
     }
-    const {
-      list,
-      pager: { count: total },
-      rate_status
-    } = await api.trade.list(params)
+    const { list, total_count: total } = await api.community.getCommunityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
     setState((draft) => {
       draft.orderList = [...orderList, ...n_list]
@@ -122,6 +117,7 @@ function CommunityOrder(props) {
       draft.curTabIdx = curTabIdx
       draft.curAfterTagIdx = 0
       draft.curDeliverTagIdx = 0
+      draft.orderList = []
     })
     orderRef.current.reset()
   }
@@ -182,13 +178,29 @@ function CommunityOrder(props) {
     })
   }
 
-  const actionChange = (isOpened, type) => {
+  const onCountDownEnd = async () => {
+    await setState((draft) => {
+      draft.remark = ''
+      draft.orderList = []
+      draft.curTabIdx = 0
+      draft.curAfterTagIdx = 0
+      draft.curDeliverTagIdx = 0
+    })
+    orderRef.current.reset()
+  }
+
+  const actionChange = async (isOpened, type) => {
     console.log(type)
     if (type == 'confirm') {
       console.log(remark, '---')
-      setState((draft) => {
+      await setState((draft) => {
         draft.remark = ''
+        draft.orderList = []
+        draft.curTabIdx = 0
+        draft.curAfterTagIdx = 0
+        draft.curDeliverTagIdx = 0
       })
+      orderRef.current.reset()
     } else {
       setState((draft) => {
         draft.remark = ''
@@ -211,6 +223,7 @@ function CommunityOrder(props) {
     await setState((draft) => {
       draft.curDeliverTagIdx = idx
       draft.curAfterTagIdx = 0
+      draft.orderList = []
     })
     orderRef.current.reset()
   }
@@ -221,6 +234,7 @@ function CommunityOrder(props) {
     await setState((draft) => {
       draft.curAfterTagIdx = idx
       draft.curDeliverTagIdx = 0
+      draft.orderList = []
     })
     orderRef.current.reset()
   }
@@ -251,7 +265,7 @@ function CommunityOrder(props) {
               <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
             ))}
           </AtTabs>
-          {curTabIdx == 2 && (
+          {curTabIdx == 1 && (
             <View className='page-community-order-tags'>
               {deliverTagList.map((item, idx) => (
                 <AtTag
@@ -294,6 +308,7 @@ function CommunityOrder(props) {
             info={item}
             renderFooter={renderFooter()}
             onEditClick={onEditClick}
+            onCountDownEnd={onCountDownEnd}
           />
         ))}
       </SpScrollView>

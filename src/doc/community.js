@@ -1,4 +1,4 @@
-import { pickBy } from '@/utils'
+import { pickBy, calcTimer } from '@/utils'
 
 export const COMMUNITY_ORDER_LIST = {
   orderId: 'order_id',
@@ -19,6 +19,13 @@ export const COMMUNITY_ORDER_LIST = {
   totalNum: 'total_num',
   buildingNumber: 'building_number',
   houseNumber: 'house_number',
+  autoCancelSeconds: ({ auto_cancel_seconds }) => {
+    if (auto_cancel_seconds) {
+      return calcTimer(auto_cancel_seconds)
+    } else {
+      return {}
+    }
+  },
   items: ({ items }) => {
     if (!items) {
       return []
