@@ -1,4 +1,5 @@
 import { pickBy, calcTimer } from '@/utils'
+import { AFTER_SALE_STATUS } from '@/consts'
 
 export const COMMUNITY_ORDER_LIST = {
   orderId: 'order_id',
@@ -86,4 +87,24 @@ export const COMMUNITY_GOODS_ITEM = {
   itemName: 'item_name',
   store: 'store',
   price: ({ price }) => (price / 100).toFixed(2)
+}
+
+export const COMMUNITY_AFTER_SALE_ITEM = {
+  id: 'aftersales_bn',
+  status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+  totalItems: 'num',
+  payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
+  pay_type: 'pay_type',
+  point: 'point',
+  distributor_info: 'distributor_info',
+  order: ({ detail }) =>
+    pickBy(detail, {
+      order_id: 'order_id',
+      item_id: 'item_id',
+      pic_path: 'item_pic',
+      title: 'item_name',
+      price: ({ refund_fee }) => (+refund_fee / 100).toFixed(2),
+      point: 'item_point',
+      num: 'num'
+    })
 }
