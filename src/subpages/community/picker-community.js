@@ -63,7 +63,7 @@ function PickerCommunity(props) {
         {list.map((item, index) => (
           <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>
             <SpCheckbox
-              checked={item.id == selectCommunityZiti.id}
+              checked={selectCommunityZiti ? item.id == selectCommunityZiti.id : false}
               onChange={onSelectCommunityChange.bind(this, item)}
             >
               <View className='community-item'>

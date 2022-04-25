@@ -1,7 +1,7 @@
 .page-community-group-leaderdetail {
   .page-bg {
     background: var(--color-primary);
-    height: 420px;
+    height: 320px;
     // padding: 200px 20px 20px;
   }
 
@@ -22,12 +22,14 @@
     }
 
     .user-info {
-      border-bottom: 1px solid #eee;
+      /* prettier-ignore */
+      border-bottom: 1PX solid #eee;
       padding: 0 30px;
+      height: 158px;
 
       .user-head {
         position: relative;
-        top: -60px;
+        top: -83px;
         box-shadow: 0 4px 8px #ccc;
         border-radius: 10px;
         overflow: hidden;
@@ -35,13 +37,17 @@
       }
 
       .user-name {
-        font-size: 40px;
+        font-size: 36px;
+        position: relative;
+        top: -65px;
       }
 
       .leader-info {
         padding: 20px 0;
         font-size: 26px;
         color: #999;
+        position: relative;
+        top: -80px;
 
         .i {
           display: inline-block;
@@ -63,7 +69,6 @@
       // height: 120px;
       background: #fff;
       box-sizing: border-box;
-
       .right-item {
         flex: 1;
         display: flex;
@@ -72,14 +77,12 @@
         position: relative;
         line-height: 1.2;
         margin-left: 30px;
-
-        .iconfont {
-          font-size: 38px;
-          color: #3ec07d;
+        .icon-fenxiang-01 {
+          font-size: 40px;
+          // color: #3ec07d;
         }
-
         &-txt {
-          font-size: 20px;
+          font-size: 24px;
           color: #999;
         }
       }

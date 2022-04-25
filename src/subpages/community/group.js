@@ -4,9 +4,10 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker } from '@/components'
-import { AtInput, AtTextarea } from 'taro-ui'
+import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
-import { classNames } from '@/utils'
+import { classNames, showToast } from '@/utils'
+import api from '@/api'
 import CompGoodsItem from './comps/comp-goodsitem'
 import './group.scss'
 
@@ -20,18 +21,11 @@ const initialState = {
   comps: [
     {
       type: 'text',
-      value: 'test1'
-    },
-    {
-      type: 'bigimage',
-      value:
-        'https://bbctest.aixue7.com//image/35/2022/04/23/b320911a329439d1bd14cf95f82855437vucLMBZBVdLa0a58b91f4398946fc3e013d639ac7d7.jpg'
-    },
-    {
-      type: 'text',
-      value: 'test2'
+      value: ''
     }
   ],
+  qrcode: [],
+  activityName: '',
   startDate: '',
   startTime: '',
   endDate: '',
@@ -39,8 +33,9 @@ const initialState = {
 }
 function Group(props) {
   const [state, setState] = useImmer(initialState)
+  const { userInfo = {} } = useSelector((state) => state.user)
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
-  const { list, comps, startDate, startTime, endDate, endTime } = state
+  const { list, qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
   const savePreview = () => {}
 
   const releaseGroup = () => {}
@@ -118,34 +113,107 @@ function Group(props) {
     }
   }
 
+  const onInputChange = (key, value) => {
+    setState((draft) => {
+      draft[key] = value
+    })
+  }
+
+  const onTextAreaChange = (index, value) => {
+    const _comps = JSON.parse(JSON.stringify(comps))
+    _comps[index].value = value
+    setState((draft) => {
+      draft.comps = _comps
+    })
+  }
+
+  const createChiefActivity = async () => {
+    if (!activityName) {
+      return showToast('请填写团购活动标题')
+    }
+
+    if (qrcode.length == 0) {
+      return showToast('请上传团长个人微信二维码')
+    }
+
+    const comp = comps.find((item) => !item.value)
+    if (comp) {
+      if (comp.type == 'text') {
+        return showToast('请输入团购活动内容')
+      }
+      if (comp.type == 'bigimage') {
+        return showToast('请添加团购活动图片')
+      }
+    }
+
+    if (!selectCommunityZiti) {
+      return showToast('请选择自提地址')
+    }
+
+    if (!startDate || !startTime) {
+      return showToast('请输入团购开始时间')
+    }
+
+    if (!endDate || !endTime) {
+      return showToast('请输入团购结束时间')
+    }
+
+    const params = {
+      activity_name: activityName,
+      activity_pics: qrcode,
+      activity_intro: JSON.stringify(comps),
+      items: selectGoods.map((item) => item.itemId),
+      ziti: selectCommunityZiti.id,
+      start_time: `${startDate} ${startTime}`,
+      end_time: `${endDate} ${endTime}`
+    }
+    const { activity_id } = await api.community.createChiefActivity(params)
+    showToast('团购活动添加成功')
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: `/subpages/community/group-leaderdetail?activity_id=${activity_id}`
+      })
+    }, 200)
+  }
+
   return (
     <SpPage
       className='page-community-group'
       renderFooter={
         <View className='btn-group'>
-          <SpButton
-            resetText='保存并预览'
-            confirmText='发布团购'
-            onConfirm={savePreview}
-            onReset={releaseGroup}
-          ></SpButton>
+          <AtButton circle type='primary' onClick={createChiefActivity}>
+            发布团购
+          </AtButton>
         </View>
       }
     >
       <View className='page-header'>
         <View className='user-info'>
-          <SpImage width={120} height={120} />
-          <Text className='user-name'>xxx</Text>
+          <SpImage src={userInfo.avatar} width={110} height={110} />
+          <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
         </View>
       </View>
       <View className='card-block'>
         <View className='card-block-hd'>团购介绍</View>
-        <View className='card-block-bd'>
-          <AtInput className='group-name' placeholder='请输入团购活动标题' />
+        <View className='card-block-bd padding-20'>
+          <AtInput
+            name='activityName'
+            value={activityName}
+            className='group-name'
+            placeholder='请输入团购活动标题'
+            onChange={onInputChange.bind(this, 'activityName')}
+          />
           <View className='tip'>添加群或个人微信二维码，方便团员取得联系</View>
 
           <View className='teamhead-barcode'>
-            <SpUpload />
+            <SpUpload
+              value={qrcode}
+              onChange={(val) => {
+                setState((draft) => {
+                  draft.qrcode = val
+                })
+              }}
+            />
           </View>
           <View className='info-list'>
             {comps.map((item, index) => (
@@ -187,7 +255,13 @@ function Group(props) {
                 </View>
                 {item.type == 'bigimage' && <SpImage src={item.value} width={670} height={670} />}
                 {item.type == 'text' && (
-                  <AtTextarea value={item.value} placeholder='请输入团购活动内容' count={false} />
+                  <AtTextarea
+                    name={`${item.type}__${index}`}
+                    value={item.value}
+                    placeholder='请输入团购活动内容'
+                    count={false}
+                    onChange={onTextAreaChange.bind(this, index)}
+                  />
                 )}
               </View>
             ))}
@@ -221,7 +295,7 @@ function Group(props) {
             选品
           </View>
         </View>
-        <View className='card-block-bd'>
+        <View className='card-block-bd padding-20'>
           <View className='goods-list'>
             {selectGoods.map((item) => (
               <CompGoodsItem info={item} />
@@ -242,7 +316,7 @@ function Group(props) {
             }}
           >
             {selectCommunityZiti ? (
-              <View className="ziti-info">{selectCommunityZiti.zitiName}</View>
+              <View className='ziti-info'>{selectCommunityZiti.zitiName}</View>
             ) : (
               <View className='ziti-info placeholder'>选择服务小区</View>
             )}

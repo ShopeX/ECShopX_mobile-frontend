@@ -12,7 +12,7 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max } = props
+  const { max, onChange = () => {} } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
@@ -28,12 +28,14 @@ function SpUpload(props) {
     }))
     imgUploader.uploadImageFn(resultFiles).then((res) => {
       console.log('---uploadImageFn res---', res)
+      const _files = [
+        ...files,
+        ...res
+      ]
       setState((draft) => {
-        draft.files = [
-          ...files,
-          ...res
-        ]
+        draft.files = _files
       })
+      onChange(_files)
     })
   }
 

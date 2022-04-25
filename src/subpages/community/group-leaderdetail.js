@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
 import { AtInput, AtButton, AtProgress } from 'taro-ui'
@@ -11,8 +11,22 @@ import CompGroupTabbar from './comps/comp-groupbar'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
 import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 import CompGroupLogList from './comps/comp-grouploglist'
+import api from '@/api'
 
 function GroupLeaderDetail(props) {
+  const $instance = getCurrentInstance()
+  const { activity_id } = $instance.router.params
+
+  const { userInfo = {} } = useSelector((state) => state.user)
+
+  useEffect(() => {
+    fetchDetial()
+  }, [])
+
+  const fetchDetial = async () => {
+    await api.community.getChiefActivity(activity_id)
+  }
+
   // 点击素材
   const handleClickPic = () => {}
 
@@ -25,25 +39,25 @@ function GroupLeaderDetail(props) {
   return (
     <SpPage
       className='page-community-group-leaderdetail'
-      renderFooter={<CompGroupTabbar></CompGroupTabbar>}
+      renderFooter={<CompGroupTabbar />}
     >
       <View className='page-bg'></View>
       <View className='page-body'>
         <View className='page-header'>
           <View className='user-info'>
-            <SpImage className='user-head' width={120} height={120} />
-            <Text className='user-name'>xxx</Text>
+            <SpImage className='user-head' src={userInfo.avatar} width={110} height={110} />
+            <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
             <View className='leader-info'>
               成员 xx <Text className='i'></Text> 跟团人次 xx
             </View>
           </View>
           <View className='user-info-right'>
-            <View className='right-item' onClick={handleClickPic.bind(this)}>
+            {/* <View className='right-item' onClick={handleClickPic.bind(this)}>
               <Text className='icon iconfont icon-gouwuche'></Text>
               <Text className='right-item-txt'>素材</Text>
-            </View>
+            </View> */}
             <View className='right-item' onClick={handleClickShare.bind(this)}>
-              <Text className='icon iconfont icon-gouwuche'></Text>
+              <Text className='iconfont icon-fenxiang-01'></Text>
               <Text className='right-item-txt'>分享</Text>
             </View>
           </View>
@@ -86,10 +100,10 @@ function GroupLeaderDetail(props) {
           </AtButton>
         </View>
 
-        <View className='joinlog'>
+        {/* <View className='joinlog'>
           <View className='title'>跟团记录</View>
           <CompGroupLogList isLeader></CompGroupLogList>
-        </View>
+        </View> */}
       </View>
     </SpPage>
   )
