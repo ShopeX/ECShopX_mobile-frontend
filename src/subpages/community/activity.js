@@ -15,7 +15,8 @@ import './activity.scss'
 const initialState = {
   activityList: [],
   curTabIdx: 0,
-  isOpened: false
+  isOpened: false,
+  currentInfo: {}
 }
 const tabList = [
   { title: '默认', type: '0' },
@@ -28,7 +29,7 @@ function ActivityPage() {
   const { colorPrimary } = useSelector((state) => state.sys)
   const activityRef = useRef()
 
-  const { activityList, curTabIdx, isOpened } = state
+  const { activityList, curTabIdx, isOpened, currentInfo } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
@@ -58,23 +59,25 @@ function ActivityPage() {
   const onModalChange = async (isOpened, type) => {
     console.log(type)
     if (type == 'confirm') {
-      // api.community.sss().then(res => {
-      //   showToast('操作成功')
-      //   await setState((draft) => {
-      //     draft.curTabIdx = e.current || 0
-      //     draft.activityList = []
-      //   })
-      //   activityRef.current.reset()
-      // })
+      const { activityId } = currentInfo
+      api.community.confirmDelivery(activityId).then((res) => {
+        showToast('操作成功')
+        setState((draft) => {
+          draft.curTabIdx = 0
+          draft.activityList = []
+        })
+        activityRef.current.reset()
+      })
     }
     setState((draft) => {
       draft.isOpened = isOpened
     })
   }
 
-  const handleClickBtn = async () => {
+  const handleClickBtn = async (info) => {
     await setState((draft) => {
       draft.isOpened = true
+      draft.currentInfo = info
     })
   }
 
@@ -142,7 +145,7 @@ function ActivityPage() {
               </View>
               {info.deliveryStatus == 'DONE' && (
                 <View
-                  onClick={handleClickBtn}
+                  onClick={() => handleClickBtn(info)}
                   className='footer-btn'
                   style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
                 >

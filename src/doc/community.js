@@ -14,7 +14,7 @@ export const COMMUNITY_ORDER_LIST = {
   receiver_address: 'receiver_address',
   receiver_type: 'receiver_type',
   memberInfo: 'member',
-  zitiInfo: 'zitiList',
+  communityInfo: 'community_info',
   createDate: 'create_date',
   totalNum: 'total_num',
   buildingNumber: 'building_number',

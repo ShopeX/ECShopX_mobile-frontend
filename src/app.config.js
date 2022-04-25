@@ -81,6 +81,7 @@ export default {
         'espier-checkout', //结算页
         'wait-pay', //待支付订单
         'group-leaderdetail', // 社区团详情页（团长）
+        'group-memberdetail', // 社区团详情页（团员）
         'order-manage', // 团长订单列表页
         'activity' // 我的活动
       ]

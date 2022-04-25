@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
+import { useSelector } from 'react-redux'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpImage } from '@/components'
 import { AtInput, AtTabs, AtTabsPane, AtSearchBar } from 'taro-ui'
@@ -47,7 +48,21 @@ const initialState = {
 
 const Index = () => {
   const [state, setState] = useImmer(initialState)
+  const { chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { curTabIdx, searchValue } = state
+
+  console.log(checkIsChief, chiefInfo, '---state.user----')
+
+  // useEffect(() => {
+  //   if (checkIsChief) {
+  //     MENUS.unshift({
+  //       key: 'dianwu',
+  //       name: '订单管理',
+  //       icon: 'm_menu_dianwu.png',
+  //       link: '/subpages/community/order-manage'
+  //     })
+  //   }
+  // }, [checkIsChief])
 
   const handleClickTab = (curTabIdx) => {
     setState((draft) => {

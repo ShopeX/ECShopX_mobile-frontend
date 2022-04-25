@@ -22,7 +22,7 @@ import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
 import './order-manage.scss'
 
 const initialState = {
-  keywords: '',
+  keywords: undefined,
   orderList: [],
   curTabIdx: 0,
   curDeliverTagIdx: 0,
@@ -71,7 +71,7 @@ function OrderManage(props) {
     const {
       list,
       pager: { count: total }
-    } = await api.community.getCommunityLits(params)
+    } = await api.community.getCommunityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
     setState((draft) => {
       draft.orderList = [...orderList, ...n_list]

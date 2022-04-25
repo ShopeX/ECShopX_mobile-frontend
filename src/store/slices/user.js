@@ -14,7 +14,9 @@ const initialState = {
   favs: [],
   // 是用户结算的默认地址，也是附近商家的收货地址
   address: null,
-  location: {}
+  location: {},
+  chiefInfo: {}, // 团长信息
+  checkIsChief: true // 检查是否是团长
 }
 
 export const fetchUserFavs = createAsyncThunk('user/fetchUserFavs', async (params) => {
@@ -80,6 +82,12 @@ const userSlice = createSlice({
       state.favs = []
       state.address = null
       state.location = {}
+    },
+
+    updateCheckChief: (state, { payload }) => {
+      const { status, result } = payload
+      state.checkIsChief = status
+      state.chiefInfo = result
     }
   },
   extraReducers: (builder) => {
@@ -90,6 +98,7 @@ const userSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateChooseAddress, updateLocation } = userSlice.actions
+export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief } =
+  userSlice.actions
 
 export default userSlice.reducer

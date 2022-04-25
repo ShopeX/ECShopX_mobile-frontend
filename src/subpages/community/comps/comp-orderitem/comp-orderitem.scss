@@ -43,6 +43,15 @@ $good-img-width: 150px;
         border-radius: 60px;
       }
     }
+    .CANCEL,
+    .private,
+    .public,
+    .protected,
+    .success,
+    .fail {
+      color: #4da915;
+      background: #e1fff3;
+    }
   }
   &-content {
     padding: 24px;

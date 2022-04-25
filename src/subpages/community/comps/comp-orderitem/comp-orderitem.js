@@ -3,36 +3,30 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
+import { classNames } from '@/utils'
 
 import './comp-orderitem.scss'
 
-const statusList = [{ name: '已支付', status: 0, fontColor: '#4da915', backgroundColor: '#e1fff3' }]
-
 function CompOrderItem(props) {
   const { info = {}, renderFooter = null, onEditClick = () => {} } = props
+  const { checkIsChief } = useSelector((state) => state.user)
 
   return (
     <View className='comp-order-item'>
-      <View className='comp-order-item-timer'>只有团员才有</View>
+      {!checkIsChief && <View className='comp-order-item-timer'>只有团员才有</View>}
       <View className='comp-order-item-head'>
         <View className='head-info'>
           <View className='head-info-group'>
             <Text>跟团号：</Text>
             <Text className='head-info-num'>
-              {info.zitiList && info.zitiList.activity_trade_no}
+              {info.communityInfo && info.communityInfo.activity_trade_no}
             </Text>
           </View>
           <View className='head-info-date'>{info.createDate}</View>
         </View>
-        {statusList.map((item) => (
-          <View
-            className='head-info-status'
-            key={item.status}
-            style={{ color: item.fontColor, backgroundColor: item.backgroundColor }}
-          >
-            {info.order_status_msg}
-          </View>
-        ))}
+        <View className={classNames('head-info-status', info.orderStatus)}>
+          {info.orderStatusMsg}
+        </View>
       </View>
       <View className='comp-order-item-content'>
         <View className='comp-order-item-title'>
@@ -42,7 +36,9 @@ function CompOrderItem(props) {
           <Text>{info.memberInfo && info.memberInfo.username}</Text>
         </View>
         <View className='comp-order-item-active'>
-          <View className='active-name'>{info.zitiList && info.zitiList.activity_name}</View>
+          <View className='active-name'>
+            {info.communityInfo && info.communityInfo.activity_name}
+          </View>
           <View>
             <Text className='active-font'>查看</Text>
             <Text className='iconfont icon-qianwang-01' />
@@ -56,7 +52,7 @@ function CompOrderItem(props) {
                   <View className='scroll-item' key={goodIdx}>
                     <View className='goods-imgbox'>
                       <Image src={good.pic} className='goods-img' lazyLoad />
-                      <View className='img-desc'>商品已核销（只有团员有）</View>
+                      {!checkIsChief && <View className='img-desc'>商品已核销（只有团员有）</View>}
                     </View>
                     <View className='goods-desc'>{good.itemName}</View>
                     <View className='goods-num'>+{good.num}件</View>

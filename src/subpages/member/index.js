@@ -5,7 +5,7 @@ import Taro, {
   getCurrentInstance
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
+import { updateUserInfo, fetchUserFavs, updateCheckChief } from '@/store/slices/user'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
@@ -362,6 +362,10 @@ function MemberIndex(props) {
           path: infoPage
         })
       }
+    }
+    if (key == 'community') {
+      const res = await api.community.checkChief()
+      dispatch(updateCheckChief(res))
     }
     if (link) {
       Taro.navigateTo({ url: link })
