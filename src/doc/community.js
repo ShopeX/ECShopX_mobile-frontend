@@ -31,6 +31,7 @@ export const COMMUNITY_ORDER_LIST = {
       return []
     } else {
       return pickBy(items, {
+        orderId: 'order_id',
         itemName: 'item_name',
         // price: 'price',
         total_fee: 'total_fee',

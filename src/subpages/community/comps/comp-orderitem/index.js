@@ -71,7 +71,7 @@ function CompOrderItem(props) {
                   <View className='scroll-item' key={goodIdx}>
                     <View className='goods-imgbox'>
                       <Image src={good.pic} className='goods-img' lazyLoad />
-                      {!checkIsChief && <View className='img-desc'>商品已核销（只有团员有）</View>}
+                      {/* {!checkIsChief && <View className='img-desc'>商品已核销（只有团员有）</View>} */}
                     </View>
                     <View className='goods-desc'>{good.itemName}</View>
                     <View className='goods-num'>+{good.num}件</View>
@@ -113,7 +113,7 @@ function CompOrderItem(props) {
               <Text className='iconfont icon-dizhi-01' />
               <Text className='ziti-desc'>团员备注：</Text>
               <Text className='ziti-desc'>{info.remark}</Text>
-              <Text onClick={onEditClick} className='iconfont icon-edit address-icon' />
+              {/* <Text onClick={onEditClick} className='iconfont icon-edit address-icon' /> */}
             </View>
           </View>
         </View>
