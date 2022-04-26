@@ -55,7 +55,6 @@ const EspierCheckout = () => {
     const { address_id, username, telephone, province, city, county, adrdetail } = address
     const goodsItems = JSON.parse(decodeURIComponent(items))
     const { ziti, distributor_id } = activityInfo
-    const { distributor_id } = chiefInfo.distributors
     const params = {
       receipt_type: 'ziti',
       order_type: 'normal_community',
