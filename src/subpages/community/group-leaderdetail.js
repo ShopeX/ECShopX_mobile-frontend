@@ -86,8 +86,15 @@ function GroupLeaderDetail(props) {
       <View className='page-body'>
         <View className='page-header'>
           <View className='user-info'>
-            <SpImage className='user-head' src={userInfo.avatar} width={110} height={110} />
-            <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
+            <SpImage
+              src={detail?.chiefInfo?.chief_avatar}
+              className='user-head'
+              width={120}
+              height={120}
+            />
+            <Text className='user-name'>
+              {detail?.chiefInfo?.chief_name || detail?.chiefInfo?.chief_mobile}
+            </Text>
             {/* <View className='leader-info'>
               成员 xx <Text className='i'></Text> 跟团人次 xx
             </View> */}
@@ -111,7 +118,7 @@ function GroupLeaderDetail(props) {
           <View className='group-info'>
             <View className='head'>
               <Text className='name'>{detail?.activityName}</Text>
-              <Text className='type'>自提</Text>
+              <Text className='type'>顾客自提</Text>
             </View>
             <View className='goods-group-info'>
               <View className='list'>

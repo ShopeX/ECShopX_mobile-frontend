@@ -28,6 +28,7 @@ function CompGroupTabbar(props) {
   }
 
   const onClickChange = (isFloatOpened) => {
+    if (info?.buttons.length <= 0) return
     setState((draft) => {
       draft.isFloatOpened = isFloatOpened
     })
@@ -74,12 +75,10 @@ function CompGroupTabbar(props) {
         <Text className='icon iconfont icon-gouwuche'></Text>
         <Text className='toolbar-item-txt'>订单管理</Text>
       </View>
-      {info?.isActivityAuthor && (
-        <View className='toolbar-item' onClick={() => onClickChange(true)}>
-          <Text className='icon iconfont icon-gouwuche'></Text>
-          <Text className='toolbar-item-txt'>团管理</Text>
-        </View>
-      )}
+      <View className='toolbar-item' onClick={() => onClickChange(true)}>
+        <Text className='icon iconfont icon-gouwuche'></Text>
+        <Text className='toolbar-item-txt'>团管理</Text>
+      </View>
       <View className='toolbar-item'>
         <View className='toolbar-item-money'>
           <SpPrice value={0} />
@@ -93,17 +92,27 @@ function CompGroupTabbar(props) {
         </View>
       </Button>
       <SpFloatLayout hideClose open={isFloatOpened} onClose={() => onClickChange(false)}>
-        <View onClick={() => onClickItem('edit')} className='toolbar-list'>
-          修改团信息
-        </View>
-        <View onClick={() => onClickItem('success')} className='toolbar-list'>
-          立即成团
-        </View>
-        <View onClick={() => onClickItem('fail')} className='toolbar-list'>
-          取消团
-        </View>
+        {info?.buttons.map((item, idx) => (
+          <View key={idx}>
+            {item == 'update' && (
+              <View onClick={() => onClickItem('edit')} className='toolbar-list'>
+                修改团信息
+              </View>
+            )}
+            {item == 'success' && (
+              <View onClick={() => onClickItem('success')} className='toolbar-list'>
+                立即成团
+              </View>
+            )}
+            {item == 'fail' && (
+              <View onClick={() => onClickItem('fail')} className='toolbar-list'>
+                取消团
+              </View>
+            )}
+          </View>
+        ))}
         <View onClick={() => onClickItem('close')} className='toolbar-list cancel'>
-          取消
+          取消{' '}
         </View>
       </SpFloatLayout>
       <AtModal

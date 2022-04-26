@@ -60,6 +60,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
     return JSON.parse(activity_pics)
   },
   orders: 'orders',
+  buttons: 'buttons',
   activityName: 'activity_name',
   activityId: 'activity_id',
   chiefInfo: 'chief_info',
@@ -129,6 +130,7 @@ export const COMMUNITY_ACTIVITY_LIST = {
   activityName: 'activity_name',
   activityStatus: 'activity_status',
   activityStatusMsg: 'activity_status_msg',
+  activityDeliveryStatusMsg: 'activity_delivery_status_msg',
   startTime: 'start_time',
   priceRange: 'price_range',
   deliveryStatus: 'delivery_status',
