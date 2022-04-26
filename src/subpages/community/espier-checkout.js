@@ -1,15 +1,35 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpImage, SpPrice } from '@/components'
+import { AtInput } from 'taro-ui'
 import qs from 'qs'
 import { log } from '@/utils'
-import GoodsItem from './comps/goods-item'
-import { AtInput } from 'taro-ui'
+import api from '@/api'
+import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 
 import './espier-checkout.scss'
 
 const EspierCheckout = () => {
+  const $instance = getCurrentInstance()
+  const { activity_id, items } = $instance.router.params
+  const { chiefInfo, checkIsChief } = useSelector((state) => state.user)
+  console.log('chiefInfo:', chiefInfo)
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  const fetch = async () => {
+    const goodsItems = JSON.parse(decodeURIComponent(items))
+    const params = {
+      order_type: 'normal_community',
+      community_activity_id: activity_id,
+      items: goodsItems
+    }
+    await api.cart.total(params)
+  }
+
   const renderFooter = () => {
     return (
       <View className='espierCheckout-toolbar'>
@@ -47,8 +67,9 @@ const EspierCheckout = () => {
         </View>
 
         <View className='espierCheckout-goods'>
-          <GoodsItem />
-          <GoodsItem />
+          {/* <GoodsItem />
+          <GoodsItem /> */}
+          {<CompGoodsItemBuy />}
         </View>
 
         <View className='espierCheckout-total'>

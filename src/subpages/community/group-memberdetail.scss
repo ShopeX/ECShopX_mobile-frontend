@@ -5,20 +5,15 @@ $good-img-width: 80px;
     --main-color-green: var(--color-primary);
   }
 
-  .comp-goodsbuytoolbar {
+  .goodsbuytoolbar {
     display: flex;
-    height: 120px;
-    background: #fff;
-    box-sizing: border-box;
+    padding: 20px;
 
     .toolbar-item {
-      width: 100px;
+      width: 200px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      position: relative;
-      padding: 20px 0 0;
-
       .iconfont {
         font-size: 38px;
         line-height: 40px;
@@ -59,11 +54,28 @@ $good-img-width: 80px;
         /* #endif */
       }
     }
+
+    .btn-buy-wrap {
+      flex: 1;
+    }
+  }
+
+  .btn-buy {
+    display: flex;
+    align-items: center;
+    .sp-price {
+      margin-right: 20px;
+    }
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: #fff;
+    }
   }
 
   .page-bg {
     background: var(--color-primary);
-    height: 420px;
+    height: 320px;
     // padding: 200px 20px 20px;
   }
 
@@ -368,8 +380,13 @@ $good-img-width: 80px;
 
     .goodslist {
       background-color: #fff;
-      padding: 10px 30px;
+      padding: 20px;
       margin-bottom: 30px;
+      .comp-goodsitembuy {
+        &:not(:last-child) {
+          margin-bottom: 30px;
+        }
+      }
 
       .add-cart {
         margin: 20px 0;

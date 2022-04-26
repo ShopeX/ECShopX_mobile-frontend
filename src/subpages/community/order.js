@@ -19,7 +19,7 @@ import doc from '@/doc'
 import api from '@/api'
 import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
-import CompTradeItem from './comps/comp-tradeitem'
+// import CompTradeItem from './comps/comp-tradeitem'
 
 import './order.scss'
 
@@ -405,7 +405,7 @@ function CommunityOrder(props) {
             </View>
           )} */}
         </View>
-        {curTabIdx == 3 &&
+        {/* {curTabIdx == 3 &&
           orderList.map((item, idx) => (
             <CompTradeItem
               key={`${idx}1`}
@@ -422,7 +422,7 @@ function CommunityOrder(props) {
               info={item}
               onClick={() => handleClickItem(item)}
             />
-          ))}
+          ))} */}
         {curTabIdx !== 3 &&
           orderList.map((item) => (
             <CompOrderItem

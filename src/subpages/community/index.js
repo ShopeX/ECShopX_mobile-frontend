@@ -48,7 +48,7 @@ const initialState = {
 
 const Index = () => {
   const [state, setState] = useImmer(initialState)
-  const { chiefInfo, checkIsChief } = useSelector((state) => state.user)
+  const { userInfo = {}, chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { curTabIdx, searchValue } = state
 
   console.log(checkIsChief, chiefInfo, '---state.user----')

@@ -35,7 +35,7 @@ function CompGroupTabbar(props) {
         </View>
         <Text className='toolbar-item-txt'>x人来过</Text>
       </View> */}
-      <Button className='toolbar-item' openType='share'>
+      <Button className='toolbar-item btn-share' openType='share'>
         <View className='toolbar-item-button'>
           <Text className='iconfont icon-weChat'></Text>
           <Text className='toolbar-item-button-txt'>分享</Text>

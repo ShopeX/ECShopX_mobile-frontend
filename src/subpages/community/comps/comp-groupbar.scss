@@ -57,4 +57,13 @@
       /* #endif */
     }
   }
+  .btn-share {
+    background-color: transparent;
+    line-height: normal;
+    margin: 0;
+    padding: 0;
+    &:after {
+      border: 0px;
+    }
+  }
 }

@@ -12,7 +12,7 @@ import './community-edit.scss'
 
 const initialState = {
   ziti_name: '',
-  areaValue: null,
+  areaValue: [],
   address: ''
 }
 function CommunityEdit(props) {
@@ -38,7 +38,8 @@ function CommunityEdit(props) {
     const list = pickBy(res, doc.community.COMMUNITY_ZITI)
     const { province, city, country, address, zitiName } = list.find((item) => item.id == id)
     setState((draft) => {
-      ;(draft.ziti_name = zitiName), (draft.areaValue = [province, city, country])
+      draft.ziti_name = zitiName
+      draft.areaValue = [province, city, country]
       draft.address = address
     })
   }
@@ -104,7 +105,9 @@ function CommunityEdit(props) {
       </SpCell>
       <SpCell border title='所在区域'>
         {/* {JSON.stringify(areaValue)} */}
-        {areaValue && <SpPickerAddress value={areaValue} onChange={onAddressChange} />}
+        {(areaValue.length > 0 || !id) && (
+          <SpPickerAddress value={areaValue} onChange={onAddressChange} />
+        )}
       </SpCell>
       <SpCell border title='自提地址'>
         <AtInput
