@@ -60,6 +60,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
     return JSON.parse(activity_pics)
   },
   orders: 'orders',
+  buttons: 'buttons',
   activityName: 'activity_name',
   activityId: 'activity_id',
   chiefInfo: 'chief_info',

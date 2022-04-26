@@ -59,9 +59,6 @@ function GroupLeaderDetail(props) {
   // 点击素材
   const handleClickPic = () => {}
 
-  // 点击分享
-  const handleClickShare = () => {}
-
   const handleClickBuy = () => {
     const tempItems = items
       .filter((item) => item.num > 0)
@@ -131,14 +128,16 @@ function GroupLeaderDetail(props) {
         <View className='page-header'>
           <View className='user-info'>
             <SpImage src={chiefInfo?.chief_avatar} className='user-head' width={120} height={120} />
-            <Text className='user-name'>{chiefInfo?.chief_name}</Text>
+            <Text className='user-name'>
+              {chiefInfo?.chief_name || info?.chiefInfo?.chief_mobile}
+            </Text>
           </View>
           <View className='user-info-right'>
             {/* <View className='right-item' onClick={handleClickPic.bind(this)}>
               <Text className='icon iconfont icon-weixin'></Text>
               <Text className='right-item-txt'>朋友圈</Text>
             </View> */}
-            <View className='right-item' onClick={handleClickShare.bind(this)}>
+            <View className='right-item' openType='share'>
               <Text className='icon iconfont icon-fenxiang-01'></Text>
               <Text className='right-item-txt'>分享</Text>
             </View>
