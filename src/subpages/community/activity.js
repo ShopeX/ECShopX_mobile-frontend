@@ -1,5 +1,4 @@
 import React, { useRef } from 'react'
-
 import { View, ScrollView, Image } from '@tarojs/components'
 import { AtModal } from 'taro-ui'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -40,7 +39,7 @@ function ActivityPage() {
       pageSize,
       order_by: tabType
     }
-    const { list, total_count: total } = await api.community.getActivityLits(params)
+    const { list, total_count: total } = await api.community.getActivityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ACTIVITY_LIST)
     setState((draft) => {
       draft.activityList = [...activityList, ...n_list]
@@ -118,17 +117,16 @@ function ActivityPage() {
             <View className='page-community-activity-goods'>
               <View className='goods-info'>
                 <ScrollView className='scroll-goods' scrollX>
-                  {info.items &&
-                    info.items.map((el, elidx) => (
-                      <View className='scroll-item' key={elidx}>
-                        <View className='goods-imgbox'>
-                          <Image src={el.pics} className='goods-img' lazyLoad />
-                          {/* <View className='img-desc'>商品已核销</View> */}
-                        </View>
-                        <View className='goods-desc'>{el.itemName}</View>
-                        {/* <View className='goods-num'>+11件</View> */}
+                  {info?.items.map((el, elidx) => (
+                    <View className='scroll-item' key={elidx}>
+                      <View className='goods-imgbox'>
+                        <Image src={el.pics} className='goods-img' lazyLoad />
+                        {/* <View className='img-desc'>商品已核销</View> */}
                       </View>
-                    ))}
+                      <View className='goods-desc'>{el.itemName}</View>
+                      {/* <View className='goods-num'>+11件</View> */}
+                    </View>
+                  ))}
                 </ScrollView>
               </View>
               {/* <View className='goods-sale'>
@@ -142,7 +140,7 @@ function ActivityPage() {
                 <View className='activity-static-desc'>实际收入(元)</View>
               </View>
               <View className='activity-static'>
-                <SpPrice value={info.orderNum} noSymbol noDecimal />
+                <SpPrice value={info.orderNum || 0} noSymbol noDecimal />
                 <View className='activity-static-desc'>已跟团</View>
               </View>
               {/* <View className='activity-static'>

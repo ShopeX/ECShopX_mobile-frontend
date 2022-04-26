@@ -18,8 +18,8 @@ function SpUpload(props) {
   const { files } = state
 
   useEffect(() => {
-    if(value.length > 0) {
-      setState(draft => {
+    if (value.length > 0) {
+      setState((draft) => {
         draft.files = value
       })
     }
@@ -36,11 +36,8 @@ function SpUpload(props) {
     }))
     imgUploader.uploadImageFn(resultFiles).then((res) => {
       console.log('---uploadImageFn res---', res)
-      const _res = res.map(item => item.url)
-      const _files = [
-        ...files,
-        ..._res
-      ]
+      const _res = res.map((item) => item.url)
+      const _files = [...files, ..._res]
       setState((draft) => {
         draft.files = _files
       })

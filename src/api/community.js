@@ -4,9 +4,14 @@ export function getCommunityList(params) {
   return req.get('/community/orders', params)
 }
 
-export function getActivityLits(params) {
+export function getActivityList(params) {
   // 获取团长活动列表
   return req.get('/community/chief/activity', params)
+}
+
+export function getMemberActivityList(params) {
+  // 个人中心活动列表
+  return req.get('/community/member/activity', params)
 }
 
 export function createActivityZiti(params) {

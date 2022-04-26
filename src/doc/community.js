@@ -134,7 +134,9 @@ export const COMMUNITY_ACTIVITY_LIST = {
   startTime: 'start_time',
   priceRange: 'price_range',
   deliveryStatus: 'delivery_status',
+  saveTime: 'save_time',
   orderNum: 'order_num',
+  userNum: 'user_num',
   totalFee: 'total_fee',
   items: ({ items }) => {
     if (!items) {
