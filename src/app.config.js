@@ -5,7 +5,7 @@ export default {
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
     'pages/cart/cashier-result', // 支付结果页面
-    
+
     'pages/store/index', // 店铺首页
     'pages/store/brand-info', // 店铺品牌
 
@@ -83,7 +83,13 @@ export default {
         'group-leaderdetail', // 社区团详情页（团长）
         'group-memberdetail', // 社区团详情页（团员）
         'order-manage', // 团长订单列表页
-        'activity' // 我的活动
+        'activity', // 我的活动
+        'trade/refund', // 团购-售后申请提交页面
+        'trade/refund-detail', // 团购-售后申请提交结果页面
+        'trade/split-bagpack', // 团购-分单物流详情页面Ω
+        'trade/delivery-info', // 团购-整单物流详情页面
+        'trade/cancel', // 团购-取消订单页面,
+        'trade/after-sale-detail' // 团购-售后详情页面
       ]
     },
     {

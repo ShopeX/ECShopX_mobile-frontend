@@ -126,9 +126,12 @@ function CheifOrderManage(props) {
   }
 
   const renderFooter = (info) => {
+    const { orderStatusDes, canApplyCancel, isLogistics, receiver_type, status, communityInfo } =
+      info || {}
+    // let isShowCacel =(orderStatusDes == 'PAYED' || orderStatusDes == 'NOTPAY') && canApplyCancel != 0 && communityInfo.activity_status != 'success'
     return (
       <>
-        {(info.orderStatus == 5 || info.orderStatus == 4) && (
+        {isShowCacel && (
           <View
             onClick={() => handleClickBtn(info)}
             className='page-order-manage-btn'

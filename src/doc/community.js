@@ -20,6 +20,14 @@ export const COMMUNITY_ORDER_LIST = {
   totalNum: 'total_num',
   buildingNumber: 'building_number',
   houseNumber: 'house_number',
+  payStatus: 'pay_status',
+  isLogistics: 'is_logistics',
+  canApplyCancel: 'can_apply_cancel',
+  orderStatusDes: 'order_status_des',
+  status: 'status',
+  orderType: 'order_type',
+  payType: 'pay_type',
+  canApplyAftersales: 'can_apply_aftersales',
   autoCancelSeconds: ({ auto_cancel_seconds }) => {
     if (auto_cancel_seconds) {
       return calcTimer(auto_cancel_seconds)

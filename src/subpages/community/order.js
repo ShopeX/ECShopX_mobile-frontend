@@ -12,7 +12,7 @@ import {
   AtTag
 } from 'taro-ui'
 import { SpPage, SpScrollView, SpSearchBar } from '@/components'
-import { pickBy, classNames } from '@/utils'
+import { pickBy, isWeb, isAPP, payPlatform, log, getCurrentRoute } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
@@ -30,7 +30,8 @@ const initialState = {
   // curDeliverTagIdx: 0,
   // curAfterTagIdx: 0,
   isOpened: false,
-  remark: ''
+  remark: '',
+  payLoading: false
 }
 const tabList = [
   { title: '全部', type: 0 },
@@ -59,8 +60,9 @@ function CommunityOrder(props) {
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
+  const $instance = getCurrentInstance()
 
-  const { keywords, orderList, curTabIdx, isOpened, remark } = state
+  const { keywords, orderList, curTabIdx, isOpened, remark, payLoading } = state
   const fetch = async ({ pageIndex, pageSize }) => {
     let total_count = 0
     if (curTabIdx == 3) {
@@ -141,52 +143,126 @@ function CommunityOrder(props) {
     orderRef.current.reset()
   }
 
-  const renderFooter = () => {
+  const renderFooter = (info) => {
+    const {
+      orderStatusDes,
+      canApplyCancel,
+      receiver_type,
+      status,
+      communityInfo,
+      canApplyAftersales
+    } = info || {}
+    let isShowCacel =
+      (orderStatusDes == 'PAYED' || orderStatusDes == 'NOTPAY') &&
+      canApplyCancel != 0 &&
+      communityInfo.activity_status != 'success'
     return (
       <>
-        <View
-          onClick={() => handleClickBtn('refund')}
-          className='page-community-order-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          申请退款
-        </View>
-        <View
-          onClick={() => handleClickBtn('aftersale')}
-          className='page-community-order-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          售后详情
-        </View>
-        <View
-          onClick={() => handleClickBtn('close')}
-          className='page-community-order-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          关闭订单
-        </View>
-        <View
-          onClick={() => handleClickBtn('gopay')}
-          className='page-community-order-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          去支付
-        </View>
-        <View
-          onClick={() => handleClickBtn('again')}
-          className='page-community-order-btn'
-          style={`background: ${colorPrimary};`}
-        >
-          再来一单
-        </View>
+        {isShowCacel && (
+          <View
+            onClick={() => handleClickBtn(info, 'cancel')}
+            className='page-order-manage-btn'
+            style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+          >
+            取消订单
+          </View>
+        )}
+        {status === 'WAIT_BUYER_PAY' && (
+          <View
+            onClick={() => handleClickBtn(info, 'pay')}
+            className='page-order-manage-btn'
+            style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+          >
+            立即支付
+          </View>
+        )}
+        {canApplyAftersales && (
+          <View
+            onClick={() => handleClickBtn(info, 'detail')}
+            className='page-community-order-btn'
+            style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+          >
+            申请售后
+          </View>
+        )}
       </>
     )
   }
 
-  const handleClickBtn = (type) => {
-    if (type == 'refund') {
+  const handleClickBtn = (info, type) => {
+    if (type == 'cancel') {
       Taro.navigateTo({
-        url: '/subpages/community/order-refund'
+        url: `/subpages/community/trade/cancel?order_id=${info.orderId}` // 待支付
+      })
+      return
+    }
+    if (type == 'detail') {
+      Taro.navigateTo({
+        url: `/subpages/community/trade/after-sale-detail?id=${info.orderId}`
+      })
+      return
+    }
+    if (type == 'pay') {
+      handlePay(info)
+    }
+  }
+
+  const handlePay = async (info) => {
+    const { orderId, orderType, payType } = info
+    const paymentParams = {
+      payType,
+      orderId,
+      orderType
+    }
+    setState((draft) => {
+      draft.payLoading = true
+    })
+    if (isWeb && !isAPP()) {
+      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${orderId}&pay_type=${payType}`)
+      return
+    }
+
+    const config = await api.cashier.getPayment(paymentParams)
+    setState((draft) => {
+      draft.payLoading = false
+    })
+    let payErr
+    try {
+      if (isAPP()) {
+        const AppPayType = {
+          alipayapp: 'alipay',
+          wxpayapp: 'wxpay'
+        }
+        try {
+          await Taro.SAPPPay.payment({
+            id: AppPayType[payType],
+            order_params: config.config
+          })
+        } catch (e) {
+          console.error(e)
+          payErr = e
+        }
+      } else {
+        const resObj = await payPlatform(config)
+        payErr = resObj.payErr
+        // 支付上报
+        log.debug(`[order pay]: `, resObj.payRes)
+      }
+    } catch (e) {
+      payErr = e
+      Taro.showToast({
+        title: e.err_desc || e.errMsg || '支付失败',
+        icon: 'none'
+      })
+    }
+    if (!payErr) {
+      await Taro.showToast({
+        title: '支付成功',
+        icon: 'success'
+      })
+      const { fullPath } = getCurrentRoute($instance.router?.params || {})
+      Taro.redirectTo({
+        url: fullPath
       })
     }
   }
@@ -352,7 +428,7 @@ function CommunityOrder(props) {
             <CompOrderItem
               key={item.tid}
               info={item}
-              renderFooter={renderFooter()}
+              renderFooter={renderFooter(item)}
               onEditClick={onEditClick}
               onCountDownEnd={onCountDownEnd}
             />

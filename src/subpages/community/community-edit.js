@@ -48,7 +48,7 @@ function CommunityEdit(props) {
     if (!ziti_name) {
       return showToast('请填写自提名称')
     }
-    if (areaValue.length == 0) {
+    if (areaValue && areaValue.length == 0) {
       return showToast('请选择省市区')
     }
     if (!address) {
