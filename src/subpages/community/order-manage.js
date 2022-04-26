@@ -128,7 +128,10 @@ function CheifOrderManage(props) {
   const renderFooter = (info) => {
     const { orderStatusDes, canApplyCancel, isLogistics, receiver_type, status, communityInfo } =
       info || {}
-    // let isShowCacel =(orderStatusDes == 'PAYED' || orderStatusDes == 'NOTPAY') && canApplyCancel != 0 && communityInfo.activity_status != 'success'
+    let isShowCacel =
+      (orderStatusDes == 'PAYED' || orderStatusDes == 'NOTPAY') &&
+      canApplyCancel != 0 &&
+      communityInfo.activity_status != 'success'
     return (
       <>
         {isShowCacel && (

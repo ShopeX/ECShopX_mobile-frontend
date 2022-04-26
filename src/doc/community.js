@@ -61,6 +61,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   },
   activityName: 'activity_name',
   activityId: 'activity_id',
+  chiefInfo: 'chief_info',
   items: ({ items }) => {
     return pickBy(items, {
       itemId: 'itemId',

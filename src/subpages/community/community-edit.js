@@ -105,7 +105,9 @@ function CommunityEdit(props) {
       </SpCell>
       <SpCell border title='所在区域'>
         {/* {JSON.stringify(areaValue)} */}
-        {(areaValue.length > 0 || !id) && <SpPickerAddress value={areaValue} onChange={onAddressChange} />}
+        {(areaValue.length > 0 || !id) && (
+          <SpPickerAddress value={areaValue} onChange={onAddressChange} />
+        )}
       </SpCell>
       <SpCell border title='自提地址'>
         <AtInput

@@ -31,7 +31,7 @@ const CompGoodsItemBuy = (props) => {
   return (
     <View className='comp-goodsitembuy'>
       <View className='comp-goodsitembuy-img'>
-        <SpImage src={info.pic} width={160} height={160}/>
+        <SpImage src={info.pic} width={160} height={160} />
       </View>
       {/* {isShare && (
         <View className='comp-goodsitembuy-share'>
@@ -55,9 +55,7 @@ const CompGoodsItemBuy = (props) => {
         </View>
       </View>
 
-      <View className='hasbuy-num'>
-        {/* <Text className=''>已团{info.buy_num}</Text> */}
-      </View>
+      <View className='hasbuy-num'>{/* <Text className=''>已团{info.buy_num}</Text> */}</View>
 
       <View className='comp-goodsitembuy-handle'>
         <SpInputNumber value={info.num} min={0} onChange={onNumChange} />
