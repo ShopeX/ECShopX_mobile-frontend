@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View, Button, Text } from '@tarojs/components'
 import {
   AtTabs,
   AtTabsPane,
@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
-import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
+import CompOrderItem from './comps/comp-orderitem'
 
 import './order-manage.scss'
 
@@ -25,48 +25,47 @@ const initialState = {
   keywords: undefined,
   orderList: [],
   curTabIdx: 0,
-  curDeliverTagIdx: 0,
-  curAfterTagIdx: 0,
+  // curDeliverTagIdx: 0,
+  // curAfterTagIdx: 0,
   isOpened: false,
   remark: ''
 }
 const tabList = [
-  { title: '全部', type: '0' },
-  { title: '发货', type: '1' }
+  { title: '全部', type: 0 },
+  { title: '待支付', type: 5 },
+  { title: '待收货', type: 4 }
   // { title: '核销', type: '2' },
   // { title: '售后', type: '3' },
   // { title: '备注', type: '4' }
 ]
 
-const deliverTagList = [
-  { title: '待收货', type: 6 }
-  // { title: '部分发货', type: '1' },
-  // { title: '已发货', type: '2' },
-  // { title: '已收货', type: '3' }
-]
+// const deliverTagList = [
+//   { title: '待收货', type: 6 }
+//   { title: '部分发货', type: '1' },
+//   { title: '已发货', type: '2' },
+//   { title: '已收货', type: '3' }
+// ]
 
-const afterTagList = [
-  { title: '待退款', type: '0' },
-  { title: '已退款', type: '1' }
-]
+// const afterTagList = [
+//   { title: '待退款', type: '0' },
+//   { title: '已退款', type: '1' }
+// ]
 
-function OrderManage(props) {
+function CheifOrderManage(props) {
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
 
-  const { keywords, orderList, curTabIdx, isOpened, remark, curDeliverTagIdx, curAfterTagIdx } =
-    state
+  const { keywords, orderList, curTabIdx, isOpened, remark } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
       page: pageIndex,
       pageSize,
       mobile: keywords,
-      status: curDeliverTagIdx
-      // curDeliverTagIdx,
-      // curAfterTagIdx
+      status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || '',
+      is_seller: 1
     }
     const {
       list,
@@ -118,61 +117,38 @@ function OrderManage(props) {
   const handleClickTab = async (curTabIdx) => {
     await setState((draft) => {
       draft.curTabIdx = curTabIdx
-      draft.curAfterTagIdx = 0
-      draft.curDeliverTagIdx = 0
+      // draft.curAfterTagIdx = ''
+      // draft.curDeliverTagIdx = ''
       draft.orderList = []
     })
+    if (curTabIdx == 3) return
     orderRef.current.reset()
   }
 
-  const renderFooter = () => {
+  const renderFooter = (info) => {
     return (
       <>
-        <View
-          onClick={() => handleClickBtn('refund')}
-          className='page-order-manage-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          申请退款
-        </View>
-        <View
-          onClick={() => handleClickBtn('aftersale')}
-          className='page-order-manage-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          售后详情
-        </View>
-        <View
-          onClick={() => handleClickBtn('close')}
-          className='page-order-manage-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          关闭订单
-        </View>
-        <View
-          onClick={() => handleClickBtn('gopay')}
-          className='page-order-manage-btn'
-          style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
-        >
-          去支付
-        </View>
-        <View
-          onClick={() => handleClickBtn('again')}
-          className='page-order-manage-btn'
-          style={`background: ${colorPrimary};`}
-        >
-          再来一单
-        </View>
+        {(info.orderStatus == 5 || info.orderStatus == 4) && (
+          <View
+            onClick={() => handleClickBtn(info)}
+            className='page-order-manage-btn'
+            style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+          >
+            取消订单
+          </View>
+        )}
       </>
     )
   }
 
-  const handleClickBtn = (type) => {
-    if (type == 'refund') {
-      Taro.navigateTo({
-        url: '/subpages/community/order-refund'
-      })
-    }
+  const handleClickBtn = (info) => {
+    console.log(info, 'info')
+    Taro.navigateTo({
+      url: `/subpage/pages/trade/cancel?order_id=${info.orderId}`
+    })
+    // Taro.navigateTo({
+    //   url: '/subpages/community/order-refund'
+    // })
   }
 
   const onEditClick = (isOpened) => {
@@ -189,8 +165,8 @@ function OrderManage(props) {
         draft.remark = ''
         draft.orderList = []
         draft.curTabIdx = 0
-        draft.curAfterTagIdx = 0
-        draft.curDeliverTagIdx = 0
+        // draft.curAfterTagIdx = 0
+        // draft.curDeliverTagIdx = 0
       })
       orderRef.current.reset()
     } else {
@@ -209,26 +185,26 @@ function OrderManage(props) {
     })
   }
 
-  const deliverTagClick = async ({ name }) => {
-    const idx = deliverTagList.findIndex((el) => el.type == name.type)
-    await setState((draft) => {
-      draft.curDeliverTagIdx = idx
-      draft.curAfterTagIdx = 0
-      draft.orderList = []
-    })
-    orderRef.current.reset()
-  }
+  // const deliverTagClick = async ({ name }) => {
+  //   const idx = deliverTagList.findIndex((el) => el.type == name.type)
+  //   await setState((draft) => {
+  //     draft.curDeliverTagIdx = idx
+  //     draft.curAfterTagIdx = 0
+  //     draft.orderList = []
+  //   })
+  //   orderRef.current.reset()
+  // }
 
-  const afterTagClick = async ({ name }) => {
-    const idx = afterTagList.findIndex((el) => el.type == name.type)
-    console.log(idx)
-    await setState((draft) => {
-      draft.curAfterTagIdx = idx
-      draft.curDeliverTagIdx = 0
-      draft.orderList = []
-    })
-    orderRef.current.reset()
-  }
+  // const afterTagClick = async ({ name }) => {
+  //   const idx = afterTagList.findIndex((el) => el.type == name.type)
+  //   console.log(idx)
+  //   await setState((draft) => {
+  //     draft.curAfterTagIdx = idx
+  //     draft.curDeliverTagIdx = 0
+  //     draft.orderList = []
+  //   })
+  //   orderRef.current.reset()
+  // }
 
   return (
     <SpPage className='page-order-manage'>
@@ -253,10 +229,10 @@ function OrderManage(props) {
             customStyle={{ color: colorPrimary }}
           >
             {tabList.map((panes, pIdx) => (
-              <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
+              <AtTabsPane current={curTabIdx} key={panes.type} index={pIdx}></AtTabsPane>
             ))}
           </AtTabs>
-          {curTabIdx == 1 && (
+          {/* {curTabIdx == 1 && (
             <View className='page-order-manage-tags'>
               {deliverTagList.map((item, idx) => (
                 <AtTag
@@ -273,8 +249,8 @@ function OrderManage(props) {
                 </AtTag>
               ))}
             </View>
-          )}
-          {curTabIdx == 3 && (
+          )} */}
+          {/* {curTabIdx == 3 && (
             <View className='page-order-manage-tags'>
               {afterTagList.map((item, idx) => (
                 <AtTag
@@ -291,13 +267,13 @@ function OrderManage(props) {
                 </AtTag>
               ))}
             </View>
-          )}
+          )} */}
         </View>
         {orderList.map((item) => (
           <CompOrderItem
             key={item.order_id}
             info={item}
-            renderFooter={renderFooter()}
+            renderFooter={renderFooter(item)}
             onEditClick={onEditClick}
           />
         ))}
@@ -323,4 +299,4 @@ function OrderManage(props) {
   )
 }
 
-export default OrderManage
+export default CheifOrderManage

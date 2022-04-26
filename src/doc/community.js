@@ -1,4 +1,5 @@
-import { pickBy } from '@/utils'
+import { pickBy, calcTimer } from '@/utils'
+import { AFTER_SALE_STATUS } from '@/consts'
 
 export const COMMUNITY_ORDER_LIST = {
   orderId: 'order_id',
@@ -19,11 +20,19 @@ export const COMMUNITY_ORDER_LIST = {
   totalNum: 'total_num',
   buildingNumber: 'building_number',
   houseNumber: 'house_number',
+  autoCancelSeconds: ({ auto_cancel_seconds }) => {
+    if (auto_cancel_seconds) {
+      return calcTimer(auto_cancel_seconds)
+    } else {
+      return {}
+    }
+  },
   items: ({ items }) => {
     if (!items) {
       return []
     } else {
       return pickBy(items, {
+        orderId: 'order_id',
         itemName: 'item_name',
         // price: 'price',
         total_fee: 'total_fee',
@@ -76,6 +85,8 @@ export const COMMUNITY_ACTIVITY_LIST = {
   startTime: 'start_time',
   priceRange: 'price_range',
   deliveryStatus: 'delivery_status',
+  orderNum: 'order_num',
+  totalFee: 'total_fee',
   items: ({ items }) => {
     if (!items) {
       return []
@@ -109,3 +120,26 @@ export const COMMUNITY_GOODS_ITEM = {
   store: 'store',
   price: ({ price }) => (price / 100).toFixed(2)
 }
+<<<<<<< HEAD
+=======
+
+export const COMMUNITY_AFTER_SALE_ITEM = {
+  id: 'aftersales_bn',
+  status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+  totalItems: 'num',
+  payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
+  pay_type: 'pay_type',
+  point: 'point',
+  distributor_info: 'distributor_info',
+  order: ({ detail }) =>
+    pickBy(detail, {
+      order_id: 'order_id',
+      item_id: 'item_id',
+      pic_path: 'item_pic',
+      title: 'item_name',
+      price: ({ refund_fee }) => (+refund_fee / 100).toFixed(2),
+      point: 'item_point',
+      num: 'num'
+    })
+}
+>>>>>>> 54b088864cb9de502d5c04b446552c7d91070a0a

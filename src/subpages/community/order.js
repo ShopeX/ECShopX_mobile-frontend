@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback, useRef, useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Button } from '@tarojs/components'
+import { View, Button, Text } from '@tarojs/components'
 import {
   AtTabs,
   AtTabsPane,
@@ -17,38 +17,42 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
-import CompOrderItem from './comps/comp-orderitem/comp-orderitem'
+import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
+import CompTradeItem from './comps/comp-tradeitem'
 
 import './order.scss'
 
 const initialState = {
-  keywords: '',
+  keywords: undefined,
   orderList: [],
   curTabIdx: 0,
-  curDeliverTagIdx: 0,
-  curAfterTagIdx: 0,
+  // curDeliverTagIdx: 0,
+  // curAfterTagIdx: 0,
   isOpened: false,
   remark: ''
 }
 const tabList = [
-  { title: '全部', type: '0' },
-  { title: '待支付', type: '1' },
-  { title: '发货', type: '2' },
-  { title: '售后', type: '3' }
+  { title: '全部', type: 0 },
+  { title: '待支付', type: 5 },
+  { title: '待收货', type: 4 },
+  { title: '售后', type: 10 }
 ]
 
-const deliverTagList = [
-  { title: '待收货', type: '0' },
-  { title: '部分发货', type: '1' },
-  { title: '已发货', type: '2' },
-  { title: '已收货', type: '3' }
-]
+// const deliverTagList = [
+//   { title: '待收货', type: '0' },
+//   { title: '部分发货', type: '1' },
+//   { title: '已发货', type: '2' },
+//   { title: '已收货', type: '3' }
+// ]
 
-const afterTagList = [
-  { title: '待退款', type: '0' },
-  { title: '已退款', type: '1' }
-]
+// const afterTagList = [
+//   { title: '待处理', status: '0' },
+//   { title: '处理中', status: '1' },
+//   { title: '已处理', status: '2' },
+//   { title: '已驳回', status: '3' },
+//   { title: '已关闭', status: '4' }
+// ]
 
 function CommunityOrder(props) {
   const [state, setState] = useImmer(initialState)
@@ -56,30 +60,40 @@ function CommunityOrder(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
 
-  const { keywords, orderList, curTabIdx, isOpened, remark, curDeliverTagIdx, curAfterTagIdx } =
-    state
+  const { keywords, orderList, curTabIdx, isOpened, remark } = state
   const fetch = async ({ pageIndex, pageSize }) => {
-    let params = {
-      page: pageIndex,
-      pageSize,
-      keywords,
-      order_type: 'normal',
-      status: 0,
-      curTabIdx,
-      curDeliverTagIdx,
-      curAfterTagIdx
+    let total_count = 0
+    if (curTabIdx == 3) {
+      let params = {
+        page: pageIndex,
+        pageSize
+      }
+      const { list, total_count: total } = await api.aftersales.list(params)
+      const n_list = pickBy(list, doc.community.COMMUNITY_AFTER_SALE_ITEM)
+      setState((draft) => {
+        draft.orderList = [...orderList, ...n_list]
+      })
+      total_count = total
+    } else {
+      let params = {
+        page: pageIndex,
+        pageSize,
+        mobile: keywords,
+        status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || ''
+        // status: curAfterTagIdx
+        // curTabIdx,
+        // curDeliverTagIdx,
+        // curAfterTagIdx
+      }
+      const { list, total_count: total } = await api.community.getCommunityList(params)
+      const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
+      setState((draft) => {
+        draft.orderList = [...orderList, ...n_list]
+      })
+      total_count = total
     }
-    const {
-      list,
-      pager: { count: total },
-      rate_status
-    } = await api.trade.list(params)
-    const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
-    setState((draft) => {
-      draft.orderList = [...orderList, ...n_list]
-    })
 
-    return { total }
+    return { total: total_count }
   }
 
   const handleOnFocus = () => {
@@ -120,8 +134,9 @@ function CommunityOrder(props) {
   const handleClickTab = async (curTabIdx) => {
     await setState((draft) => {
       draft.curTabIdx = curTabIdx
-      draft.curAfterTagIdx = 0
-      draft.curDeliverTagIdx = 0
+      // draft.curAfterTagIdx = '0'
+      // draft.curDeliverTagIdx = 0
+      draft.orderList = []
     })
     orderRef.current.reset()
   }
@@ -182,13 +197,29 @@ function CommunityOrder(props) {
     })
   }
 
-  const actionChange = (isOpened, type) => {
+  const onCountDownEnd = async () => {
+    await setState((draft) => {
+      draft.remark = ''
+      draft.orderList = []
+      draft.curTabIdx = 0
+      draft.curAfterTagIdx = 0
+      // draft.curDeliverTagIdx = 0
+    })
+    orderRef.current.reset()
+  }
+
+  const actionChange = async (isOpened, type) => {
     console.log(type)
     if (type == 'confirm') {
       console.log(remark, '---')
-      setState((draft) => {
+      await setState((draft) => {
         draft.remark = ''
+        draft.orderList = []
+        draft.curTabIdx = 0
+        draft.curAfterTagIdx = 0
+        // draft.curDeliverTagIdx = 0
       })
+      orderRef.current.reset()
     } else {
       setState((draft) => {
         draft.remark = ''
@@ -205,24 +236,34 @@ function CommunityOrder(props) {
     })
   }
 
-  const deliverTagClick = async ({ name }) => {
-    const idx = deliverTagList.findIndex((el) => el.type == name.type)
-    console.log(idx)
-    await setState((draft) => {
-      draft.curDeliverTagIdx = idx
-      draft.curAfterTagIdx = 0
-    })
-    orderRef.current.reset()
-  }
+  // const deliverTagClick = async ({ name }) => {
+  //   const idx = deliverTagList.findIndex((el) => el.type == name.type)
+  //   console.log(idx)
+  //   await setState((draft) => {
+  //     draft.curDeliverTagIdx = idx
+  //     draft.curAfterTagIdx = 0
+  //     draft.orderList = []
+  //   })
+  //   orderRef.current.reset()
+  // }
 
-  const afterTagClick = async ({ name }) => {
-    const idx = afterTagList.findIndex((el) => el.type == name.type)
-    console.log(idx)
-    await setState((draft) => {
-      draft.curAfterTagIdx = idx
-      draft.curDeliverTagIdx = 0
+  // const afterTagClick = async ({ name }) => {
+  //   const idx = afterTagList.findIndex((el) => el.type == name.type)
+  //   console.log(idx)
+  //   await setState((draft) => {
+  //     draft.curAfterTagIdx = idx
+  //     // draft.curDeliverTagIdx = 0
+  //     draft.orderList = []
+  //   })
+  //   orderRef.current.reset()
+  // }
+
+  const handleClickItem = (trade) => {
+    const { id } = trade
+
+    Taro.navigateTo({
+      url: `/subpages/community/trade/refund-detail?aftersales_bn=${id}`
     })
-    orderRef.current.reset()
   }
 
   return (
@@ -251,7 +292,7 @@ function CommunityOrder(props) {
               <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
             ))}
           </AtTabs>
-          {curTabIdx == 2 && (
+          {/* {curTabIdx == 1 && (
             <View className='page-community-order-tags'>
               {deliverTagList.map((item, idx) => (
                 <AtTag
@@ -268,8 +309,8 @@ function CommunityOrder(props) {
                 </AtTag>
               ))}
             </View>
-          )}
-          {curTabIdx == 3 && (
+          )} */}
+          {/* {curTabIdx == 3 && (
             <View className='page-community-order-tags'>
               {afterTagList.map((item, idx) => (
                 <AtTag
@@ -286,16 +327,36 @@ function CommunityOrder(props) {
                 </AtTag>
               ))}
             </View>
-          )}
+          )} */}
         </View>
-        {orderList.map((item) => (
-          <CompOrderItem
-            key={item.tid}
-            info={item}
-            renderFooter={renderFooter()}
-            onEditClick={onEditClick}
-          />
-        ))}
+        {curTabIdx == 3 &&
+          orderList.map((item, idx) => (
+            <CompTradeItem
+              key={`${idx}1`}
+              payType={item.pay_type}
+              customHeader
+              renderHeader={
+                <View className='trade-item__hd-cont trade-cont'>
+                  <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
+                  <Text className='more'>{item.status_desc}</Text>
+                </View>
+              }
+              customFooter
+              renderFooter={<View></View>}
+              info={item}
+              onClick={() => handleClickItem(item)}
+            />
+          ))}
+        {curTabIdx !== 3 &&
+          orderList.map((item) => (
+            <CompOrderItem
+              key={item.tid}
+              info={item}
+              renderFooter={renderFooter()}
+              onEditClick={onEditClick}
+              onCountDownEnd={onCountDownEnd}
+            />
+          ))}
       </SpScrollView>
       <AtModal isOpened={isOpened} closeOnClickOverlay={false}>
         <AtModalHeader>添加备注</AtModalHeader>
