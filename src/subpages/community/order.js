@@ -19,7 +19,7 @@ import doc from '@/doc'
 import api from '@/api'
 import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
-import CompTradeItem from './comps/comp-tradeitem'
+// import CompTradeItem from './comps/comp-tradeitem'
 
 import './order.scss'
 
@@ -141,9 +141,18 @@ function CommunityOrder(props) {
     orderRef.current.reset()
   }
 
-  const renderFooter = () => {
+  const renderFooter = (info) => {
     return (
       <>
+        {(info.orderStatus == 5 || info.orderStatus == 4) && (
+          <View
+            onClick={() => handleClickBtn(info, 'cancel')}
+            className='page-order-manage-btn'
+            style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+          >
+            取消订单
+          </View>
+        )}
         <View
           onClick={() => handleClickBtn('refund')}
           className='page-community-order-btn'
@@ -183,10 +192,10 @@ function CommunityOrder(props) {
     )
   }
 
-  const handleClickBtn = (type) => {
-    if (type == 'refund') {
+  const handleClickBtn = (info, type) => {
+    if (type == 'cancel') {
       Taro.navigateTo({
-        url: '/subpages/community/order-refund'
+        url: `/subpages/community/trade/cancel?order_id=${info.orderId}`
       })
     }
   }
@@ -342,7 +351,7 @@ function CommunityOrder(props) {
                 </View>
               }
               customFooter
-              renderFooter={<View></View>}
+              // renderFooter={<View></View>}
               info={item}
               onClick={() => handleClickItem(item)}
             />
@@ -352,7 +361,7 @@ function CommunityOrder(props) {
             <CompOrderItem
               key={item.tid}
               info={item}
-              renderFooter={renderFooter()}
+              renderFooter={renderFooter(item)}
               onEditClick={onEditClick}
               onCountDownEnd={onCountDownEnd}
             />
