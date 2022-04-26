@@ -235,7 +235,7 @@ function GroupLeaderDetail(props) {
         {/* 跟团记录 */}
         <View className='joinlog'>
           <View className='title'>跟团记录</View>
-          <CompGroupLogList />
+          <CompGroupLogList list={info?.orders} />
         </View>
       </View>
     </SpPage>

@@ -4,8 +4,8 @@ import { useImmer } from 'use-immer'
 import Taro, { useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
-import { AtInput, AtButton, AtProgress } from 'taro-ui'
-import { classNames, pickBy, log } from '@/utils'
+import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
+import { calcTimer, pickBy, log } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
 
@@ -20,14 +20,15 @@ import './group-leaderdetail.scss'
 
 const initialState = {
   detail: null,
-  loading: true
+  loading: true,
+  timer: {}
 }
 function GroupLeaderDetail(props) {
   const $instance = getCurrentInstance()
   const { activity_id } = $instance.router.params
 
   const [state, setState] = useImmer(initialState)
-  const { detail, loading } = state
+  const { detail, loading, timer } = state
   const { userInfo = {} } = useSelector((state) => state.user)
 
   useEffect(() => {
@@ -37,9 +38,14 @@ function GroupLeaderDetail(props) {
   const fetchDetial = async () => {
     const res = await api.community.getChiefActivity(activity_id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
+    let timer = {}
+    if (res.last_second > 0) {
+      timer = calcTimer(res.last_second)
+    }
     setState((draft) => {
       draft.detail = pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM)
       draft.loading = false
+      draft.timer = timer
     })
   }
 
@@ -63,6 +69,10 @@ function GroupLeaderDetail(props) {
   const handleAddCart = () => {}
 
   const onRefresh = () => {
+    fetchDetial()
+  }
+
+  const countDownEnd = () => {
     fetchDetial()
   }
 
@@ -101,23 +111,41 @@ function GroupLeaderDetail(props) {
           <View className='group-info'>
             <View className='head'>
               <Text className='name'>{detail?.activityName}</Text>
-              {/* <Text className='type'>顾客自提</Text> */}
+              <Text className='type'>自提</Text>
             </View>
-
-            {/* <View className='list'>
-              <View className='time'>
-                <Text className=''>昨天 发布</Text>
-                <Text className='i'></Text>
-                <Text className='countdown'>5天22:22:40 后结束</Text>
+            <View className='goods-group-info'>
+              <View className='list'>
+                <View className='time'>
+                  {detail?.save_time && <View className='date'>{detail?.save_time} 发布</View>}
+                  {timer.ss && (
+                    <>
+                      <View className='i'></View>
+                      <View className='countdown'>
+                        <AtCountdown
+                          format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                          isShowDay={timer.dd > 0}
+                          day={timer.dd}
+                          hours={timer.hh}
+                          minutes={timer.mm}
+                          seconds={timer.ss}
+                          onTimeUp={countDownEnd}
+                        />
+                      </View>
+                      后结束
+                    </>
+                  )}
+                </View>
               </View>
-            </View> */}
-            {/* <View className='list'>
-              <View className='time'>
-                <Text className=''>9人查看</Text>
-                <Text className='i'></Text>
-                <Text className=''>14人跟团</Text>
-              </View>
-            </View> */}
+              {detail?.order_num && (
+                <View className='list'>
+                  <View className='time'>
+                    {/* <Text className=''>9人查看</Text> */}
+                    {/* <Text className='i'></Text> */}
+                    <Text className=''>{detail?.order_num}人跟团</Text>
+                  </View>
+                </View>
+              )}
+            </View>
 
             <View className='warning'>
               <Text className='icon iconfont icon-gouwuche'></Text>
@@ -143,10 +171,10 @@ function GroupLeaderDetail(props) {
           </AtButton> */}
         </View>
 
-        {/* <View className='joinlog'>
+        <View className='joinlog'>
           <View className='title'>跟团记录</View>
-          <CompGroupLogList isLeader></CompGroupLogList>
-        </View> */}
+          <CompGroupLogList list={detail?.orders} isLeader />
+        </View>
       </View>
     </SpPage>
   )
