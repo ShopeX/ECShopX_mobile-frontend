@@ -17,13 +17,14 @@ import './group-memberdetail.scss'
 
 const initialState = {
   info: {},
-  timer: {}
+  timer: {},
+  cusArr: []
 }
 
 function GroupLeaderDetail(props) {
   const [state, setState] = useImmer(initialState)
 
-  const { info, timer } = state
+  const { info, timer, cusArr } = state
 
   useEffect(() => {
     fetch()
@@ -35,9 +36,12 @@ function GroupLeaderDetail(props) {
     if (info.last_second > 0) {
       timer = calcTimer(info.last_second)
     }
+    let cusArr = info.items.map((el) => {
+      return { num: 1, item_id: el.itemId }
+    })
     setState((draft) => {
       draft.info = info
-      draft.timer = timer
+      ;(draft.timer = timer), (draft.cusArr = cusArr)
     })
   }
 
@@ -47,14 +51,30 @@ function GroupLeaderDetail(props) {
   // 点击分享
   const handleClickShare = () => {}
 
-  const handleClickBuy = () => {}
+  const handleClickBuy = () => {
+    let url = `/subpages/community/espier-checkout?list=${JSON.stringify(cusArr)}`
+    Taro.navigateTo({
+      url
+    })
+  }
 
   const countDownEnd = () => {
     fetch()
   }
 
-  const onNumChange = ({ itemId }, goodsIdx, goodsNum) => {
-    console.log(itemId, goodsIdx, goodsNum)
+  const onNumChange = async ({ itemId }, goodsIdx, goodsNum) => {
+    let cusList = { ...cusArr[goodsIdx], num: Number(goodsNum), item_id: itemId }
+    await setState((draft) => {
+      draft.cusArr = filterArr([...cusArr, cusList])
+    })
+  }
+
+  const filterArr = (arr) => {
+    let pushedList = {}
+    arr.forEach((current, index) => {
+      pushedList[current.item_id] = index
+    })
+    return Object.values(pushedList).map((itemIndex) => arr[itemIndex])
   }
 
   return (
