@@ -120,8 +120,6 @@ export const COMMUNITY_GOODS_ITEM = {
   store: 'store',
   price: ({ price }) => (price / 100).toFixed(2)
 }
-<<<<<<< HEAD
-=======
 
 export const COMMUNITY_AFTER_SALE_ITEM = {
   id: 'aftersales_bn',
@@ -142,4 +140,3 @@ export const COMMUNITY_AFTER_SALE_ITEM = {
       num: 'num'
     })
 }
->>>>>>> 54b088864cb9de502d5c04b446552c7d91070a0a
