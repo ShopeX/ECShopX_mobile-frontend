@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
@@ -8,6 +8,7 @@ import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast } from '@/utils'
 import api from '@/api'
+import { updateSelectGoods, updateSelectCommunityZiti } from '@/store/slices/community'
 import CompGoodsItem from './comps/comp-goodsitem'
 import './group.scss'
 
@@ -36,6 +37,7 @@ function Group(props) {
   const { userInfo = {} } = useSelector((state) => state.user)
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
   const { list, qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
+  const dispatch = useDispatch()
   const savePreview = () => {}
 
   const releaseGroup = () => {}
@@ -168,6 +170,8 @@ function Group(props) {
       end_time: `${endDate} ${endTime}`
     }
     const { activity_id } = await api.community.createChiefActivity(params)
+    dispatch(updateSelectGoods([]))
+    dispatch(updateSelectCommunityZiti(null))
     showToast('团购活动添加成功')
     setTimeout(() => {
       Taro.navigateTo({

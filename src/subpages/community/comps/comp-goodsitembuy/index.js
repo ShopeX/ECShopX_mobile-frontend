@@ -44,11 +44,11 @@ const CompGoodsItemBuy = (props) => {
         <Text className=''>已团12</Text>
       </View>
 
-      <View className='comp-goodsitembuy-handle'>
+      {/* <View className='comp-goodsitembuy-handle'>
         <View className='comp-goodsitembuy-handle__symbol comp-goodsitembuy-handle__reduce'>-</View>
         <View className='comp-goodsitembuy-handle__num'>10</View>
         <View className='comp-goodsitembuy-handle__symbol comp-goodsitembuy-handle__plus'>+</View>
-      </View>
+      </View> */}
     </View>
   )
 }

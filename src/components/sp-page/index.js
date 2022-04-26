@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useDidShow, usePageScroll, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote } from '@/components'
+import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading } from '@/components'
 import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, hasNavbar, isWeixin } from '@/utils'
 
@@ -184,8 +184,9 @@ function SpPage(props, ref) {
       {customNavigation && CustomNavigation()}
 
       {/* {loading && <SpNote img='loading.gif' />} */}
+      {loading && <SpLoading />}
 
-      {!isDefault && <View className='sp-page-body'>{children}</View>}
+      {!isDefault && !loading && <View className='sp-page-body'>{children}</View>}
 
       {/* 置底操作区 */}
       {renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}

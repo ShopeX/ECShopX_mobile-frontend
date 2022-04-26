@@ -35,6 +35,38 @@ export const COMMUNITY_ORDER_LIST = {
   }
 }
 
+export const COMMUNITY_ACTIVITY_ITEM = {
+  activityIntro: ({ activity_intro }) => {
+    return JSON.parse(activity_intro)
+  },
+  activityPics: ({ activity_pics }) => {
+    return JSON.parse(activity_pics)
+  },
+  activityName: 'activity_name',
+  activityId: 'activity_id',
+  items: ({ items }) => {
+    return pickBy(items, {
+      itemId: 'itemId',
+      pic: 'pics[0]',
+      itemName: 'item_name',
+      store: 'store',
+      price: ({ price }) => (price / 100).toFixed(2)
+    })
+  },
+  ziti: ({ ziti }) => {
+    return pickBy(ziti, {
+      area: ({ province, city, area }) => {
+        return `${province} ${city} ${area}`
+      },
+      zitiName: 'ziti_name',
+      province: 'province',
+      city: 'city',
+      country: 'area',
+      address: 'address'
+    })
+  }
+}
+
 export const COMMUNITY_ACTIVITY_LIST = {
   activityId: 'activity_id',
   chiefId: 'chief_id',

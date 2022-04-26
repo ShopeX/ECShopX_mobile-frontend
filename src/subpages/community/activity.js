@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
+
 import { View, ScrollView, Image } from '@tarojs/components'
 import { AtModal } from 'taro-ui'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { SpPage, SpScrollView, SpFilterBar, SpPrice } from '@/components'
 import { pickBy, classNames, showToast } from '@/utils'
 import { useSelector } from 'react-redux'
@@ -81,10 +83,16 @@ function ActivityPage() {
     })
   }
 
-  console.log(activityList)
+  console.log('activityList:', activityList)
+
+  const handleClickActivity = ({ activityId }) => {
+    Taro.navigateTo({
+      url: `/subpages/community/group-leaderdetail?activity_id=${activityId}`
+    })
+  }
 
   return (
-    <SpPage className='page-community-activity' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-activity'>
       <SpScrollView className='page-community-activity-scroll' ref={activityRef} fetch={fetch}>
         <SpFilterBar
           custom
@@ -95,7 +103,11 @@ function ActivityPage() {
           color={colorPrimary}
         />
         {activityList.map((info, idx) => (
-          <View key={idx} className='page-community-activity-info'>
+          <View
+            key={idx}
+            className='page-community-activity-info'
+            onClick={handleClickActivity.bind(this, info)}
+          >
             <View className='page-community-activity-head'>
               <View className='goods-hd'>
                 <View className='goods-title'>{info.activityName}</View>

@@ -1,29 +1,12 @@
 import Taro from '@tarojs/taro'
 import React, { useState } from 'react'
-import { View, Image, Text } from '@tarojs/components'
+import { View, Image, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, navigateTo } from '@/utils'
-import './index.scss'
-
-const TABLIST = [
-  {
-    title: '订单管理',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/subpages/community/order',
-    urlRedirect: true
-  },
-  {
-    title: '团管理',
-    iconType: 'home',
-    iconPrefixClass: 'iconfont icon',
-    url: '/subpages/community/group',
-    urlRedirect: true
-  }
-]
+import './comp-groupbar.scss'
 
 function CompGroupTabbar(props) {
   const handleClickShare = () => {
@@ -32,7 +15,7 @@ function CompGroupTabbar(props) {
 
   return (
     <View className='comp-goodsbuytoolbar'>
-      <View
+      {/* <View
         className='toolbar-item'
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
       >
@@ -51,13 +34,13 @@ function CompGroupTabbar(props) {
           <SpPrice value={0} />
         </View>
         <Text className='toolbar-item-txt'>x人来过</Text>
-      </View>
-      <View className='toolbar-item' onClick={handleClickShare.bind(this)}>
+      </View> */}
+      <Button className='toolbar-item' openType='share'>
         <View className='toolbar-item-button'>
           <Text className='iconfont icon-weChat'></Text>
           <Text className='toolbar-item-button-txt'>分享</Text>
         </View>
-      </View>
+      </Button>
     </View>
   )
 }

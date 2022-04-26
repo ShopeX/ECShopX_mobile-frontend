@@ -28,9 +28,10 @@ function SpUpload(props) {
     }))
     imgUploader.uploadImageFn(resultFiles).then((res) => {
       console.log('---uploadImageFn res---', res)
+      const _res = res.map(item => item.url)
       const _files = [
         ...files,
-        ...res
+        ..._res
       ]
       setState((draft) => {
         draft.files = _files
@@ -43,7 +44,7 @@ function SpUpload(props) {
     <View className='sp-upload'>
       {files.map((item, index) => (
         <View className='file-item' key={`file-item__${index}`}>
-          <SpImage src={item.url} />
+          <SpImage src={item} />
         </View>
       ))}
       <View className='btn-upload' onClick={handleUploadFile}>
