@@ -149,7 +149,7 @@ function ActivityPage() {
                 <SpPrice value={20} noSymbol noDecimal />
                 <View className='activity-static-desc'>已浏览</View>
               </View> */}
-              <View className='activity-static border'>未发货</View>
+              <View className='activity-static border'>{info.activityDeliveryStatusMsg}</View>
             </View>
             <View className='page-community-activity-footer'>
               <View className={classNames('footer-status', info.activityStatus)}>

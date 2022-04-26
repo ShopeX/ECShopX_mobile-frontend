@@ -128,6 +128,7 @@ export const COMMUNITY_ACTIVITY_LIST = {
   activityName: 'activity_name',
   activityStatus: 'activity_status',
   activityStatusMsg: 'activity_status_msg',
+  activityDeliveryStatusMsg: 'activity_delivery_status_msg',
   startTime: 'start_time',
   priceRange: 'price_range',
   deliveryStatus: 'delivery_status',
