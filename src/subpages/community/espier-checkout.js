@@ -54,12 +54,13 @@ const EspierCheckout = () => {
   const handlePay = async () => {
     const { address_id, username, telephone, province, city, county, adrdetail } = address
     const goodsItems = JSON.parse(decodeURIComponent(items))
+    const { ziti, distributor_id } = activityInfo
     const { distributor_id } = chiefInfo.distributors
     const params = {
       receipt_type: 'ziti',
       order_type: 'normal_community',
       distributor_id,
-      community_ziti_id: activityInfo.ziti[0].ziti_id,
+      community_ziti_id: ziti[0].ziti_id,
       community_activity_id: activity_id,
       receiver_name: username,
       receiver_mobile: telephone,

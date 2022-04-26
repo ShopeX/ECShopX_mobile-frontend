@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
+import Taro, { useShareAppMessage, useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
 import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
@@ -31,7 +31,7 @@ function GroupLeaderDetail(props) {
   const { detail, loading, timer } = state
   const { userInfo = {} } = useSelector((state) => state.user)
 
-  useEffect(() => {
+  useDidShow(() => {
     fetchDetial()
   }, [])
 

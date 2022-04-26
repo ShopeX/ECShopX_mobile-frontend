@@ -214,9 +214,13 @@ function Group(props) {
     dispatch(updateSelectCommunityZiti(null))
     showToast(id ? '活动修改成功' : '活动添加成功')
     setTimeout(() => {
-      Taro.navigateTo({
-        url: `/subpages/community/group-leaderdetail?activity_id=${act_id}`
-      })
+      if(id) {
+        Taro.navigateBack()
+      } else {
+        Taro.redirectTo({
+          url: `/subpages/community/group-leaderdetail?activity_id=${act_id}`
+        })
+      }
     }, 200)
   }
 
