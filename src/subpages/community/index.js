@@ -124,7 +124,7 @@ const Index = () => {
   }
 
   return (
-    <SpPage className='page-community-index' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-index'>
       <SpScrollView className='page-community-activity-scroll' ref={activityRef} fetch={fetch}>
         <View className='page-header'>
           <View className='user-info'>
