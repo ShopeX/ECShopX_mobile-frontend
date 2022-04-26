@@ -123,6 +123,12 @@ const Index = () => {
     activityRef.current.reset()
   }
 
+  const handleClickActivity = ({ activityId }) => {
+    Taro.navigateTo({
+      url: `/subpages/community/group-leaderdetail?activity_id=${activityId}`
+    })
+  }
+
   return (
     <SpPage className='page-community-index'>
       <SpScrollView className='page-community-activity-scroll' ref={activityRef} fetch={fetch}>
@@ -173,7 +179,7 @@ const Index = () => {
 
         <View className='group-list'>
           {activityList.map((item, idx) => (
-            <View className='card-block' key={idx}>
+            <View className='card-block' key={idx} onClick={handleClickActivity.bind(this, item)} s>
               <CompGroupItem info={item} />
             </View>
           ))}
