@@ -62,11 +62,15 @@ function GroupLeaderDetail(props) {
   // 加入购物车
   const handleAddCart = () => {}
 
+  const onRefresh = () => {
+    fetchDetial()
+  }
+
   return (
     <SpPage
       className='page-community-group-leaderdetail'
       loading={loading}
-      renderFooter={<CompGroupTabbar />}
+      renderFooter={<CompGroupTabbar info={detail} onRefresh={onRefresh} />}
     >
       <View className='page-bg'></View>
       <View className='page-body'>

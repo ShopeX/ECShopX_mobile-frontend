@@ -22,7 +22,7 @@ export function getActivityZiti(id) {
 }
 
 export function getChiefItems(params) {
-  return req.get(`/community/chief/items` ,params)
+  return req.get(`/community/chief/items`, params)
 }
 
 export function createChiefActivity(params) {
@@ -51,4 +51,9 @@ export function getActiveDetail(activity_id) {
 export function getChiefActiveDetail(activity_id) {
   // 团长获取活动详情
   return req.get(`/community/chief/activity/${activity_id}`)
+}
+
+export function updateActivityStatus(activity_id, parmas) {
+  // 团长修改活动状态
+  return req.post(`/community/chief/activity_status/${activity_id}`, parmas)
 }

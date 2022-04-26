@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker } from '@/components'
 import { AtButton, AtInput, AtTextarea } from 'taro-ui'
@@ -38,6 +38,10 @@ function Group(props) {
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
   const { list, qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
   const dispatch = useDispatch()
+  const $instance = getCurrentInstance()
+  const { id } = $instance.router.params
+  console.log(id, '-id--')
+
   const savePreview = () => {}
 
   const releaseGroup = () => {}
