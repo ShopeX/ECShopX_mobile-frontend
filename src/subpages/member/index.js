@@ -366,7 +366,13 @@ function MemberIndex(props) {
     if (key == 'community') {
       const res = await api.community.checkChief()
       dispatch(updateCheckChief(res))
+      if(res.status) {
+        Taro.navigateTo({ url: link })
+      } else {
+        Taro.navigateTo({ url: `/subpages/community/order-manage` })
+      }
     }
+
     if (link) {
       Taro.navigateTo({ url: link })
     }

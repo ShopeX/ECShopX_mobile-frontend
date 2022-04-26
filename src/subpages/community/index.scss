@@ -7,7 +7,12 @@
     display: flex;
     align-items: center;
     .sp-image {
+      border: 4px solid #fff;
+      width: 110px;
+      height: 110px;
+      border-radius: 50px;
       margin-right: 20px;
+      overflow: hidden;
     }
     .user-name {
       color: #fff;

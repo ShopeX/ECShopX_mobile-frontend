@@ -64,6 +64,8 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   activityId: 'activity_id',
   chiefInfo: 'chief_info',
   isActivityAuthor: 'is_activity_author',
+  startTime: 'start_time',
+  endTime: 'end_time',
   items: ({ items }) => {
     return pickBy(items, {
       itemId: 'itemId',

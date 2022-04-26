@@ -77,11 +77,11 @@ const Index = () => {
   }
 
   return (
-    <SpPage className='page-community-index' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-index'>
       <View className='page-header'>
         <View className='user-info'>
-          <SpImage width={120} height={120} />
-          <Text className='user-name'>xxx</Text>
+          <SpImage src={chiefInfo?.chief_avatar} width={110} height={110} />
+          <Text className='user-name'>{chiefInfo?.chief_name}</Text>
         </View>
       </View>
 

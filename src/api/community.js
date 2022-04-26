@@ -33,6 +33,10 @@ export function getChiefActivity(activity_id) {
   return req.get(`/community/chief/activity/${activity_id}`)
 }
 
+export function modiflyChiefActivity(activity_id, params) {
+  return req.post(`/community/chief/activity/${activity_id}`, params)
+}
+
 export function confirmDelivery(activity_id) {
   // 团长确认收货
   return req.post(`/community/chief/confirm_delivery/${activity_id}`)
@@ -48,10 +52,10 @@ export function getActiveDetail(activity_id) {
   return req.get(`/community/member/activity/${activity_id}`)
 }
 
-export function getChiefActiveDetail(activity_id) {
-  // 团长获取活动详情
-  return req.get(`/community/chief/activity/${activity_id}`)
-}
+// export function getChiefActiveDetail(activity_id) {
+//   // 团长获取活动详情
+//   return req.get(`/community/chief/activity/${activity_id}`)
+// }
 
 export function updateActivityStatus(activity_id, parmas) {
   // 团长修改活动状态

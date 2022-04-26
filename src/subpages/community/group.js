@@ -6,9 +6,11 @@ import { View, Text, Picker } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker } from '@/components'
 import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
-import { classNames, showToast } from '@/utils'
+import { classNames, showToast, pickBy } from '@/utils'
 import api from '@/api'
+import doc from '@/doc'
 import { updateSelectGoods, updateSelectCommunityZiti } from '@/store/slices/community'
+import dayjs from 'dayjs'
 import CompGoodsItem from './comps/comp-goodsitem'
 import './group.scss'
 
@@ -18,7 +20,6 @@ const COMPS_LIST = [
 ]
 
 const initialState = {
-  list: [],
   comps: [
     {
       type: 'text',
@@ -36,15 +37,41 @@ function Group(props) {
   const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
-  const { list, qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
+  const { qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
   const { id } = $instance.router.params
   console.log(id, '-id--')
 
-  const savePreview = () => {}
+  useEffect(() => {
+    if (id) {
+      fetchActivity()
+    }
+  }, [])
 
-  const releaseGroup = () => {}
+  const fetchActivity = async () => {
+    const res = await api.community.getChiefActivity(id)
+    console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
+    const { activityIntro, activityName, activityPics, startTime, endTime } = pickBy(
+      res,
+      doc.community.COMMUNITY_ACTIVITY_ITEM
+    )
+    setState((draft) => {
+      draft.comps = activityIntro
+      draft.qrcode = activityPics
+      draft.activityName = activityName
+      draft.startDate = dayjs(startTime * 1000).format('YYYY-MM-DD')
+      draft.startTime = dayjs(startTime * 1000).format('HH:mm')
+      draft.endDate = dayjs(endTime * 1000).format('YYYY-MM-DD')
+      draft.endTime = dayjs(endTime * 1000).format('HH:mm')
+    })
+
+    const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
+    dispatch(updateSelectCommunityZiti(_ziti))
+
+    const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
+    dispatch(updateSelectGoods(_items))
+  }
 
   const onCompsClick = async ({ key }) => {
     if (key == 'bigimage') {
@@ -173,13 +200,22 @@ function Group(props) {
       start_time: `${startDate} ${startTime}`,
       end_time: `${endDate} ${endTime}`
     }
-    const { activity_id } = await api.community.createChiefActivity(params)
+    let act_id
+    // 修改活动
+    if (id) {
+      await api.community.modiflyChiefActivity(id, params)
+      act_id = id
+    } else {
+      const { activity_id } = await api.community.createChiefActivity(params)
+      act_id = activity_id
+    }
+
     dispatch(updateSelectGoods([]))
     dispatch(updateSelectCommunityZiti(null))
-    showToast('团购活动添加成功')
+    showToast(id ? '活动修改成功' : '活动添加成功')
     setTimeout(() => {
       Taro.navigateTo({
-        url: `/subpages/community/group-leaderdetail?activity_id=${activity_id}`
+        url: `/subpages/community/group-leaderdetail?activity_id=${act_id}`
       })
     }, 200)
   }

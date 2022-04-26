@@ -122,7 +122,7 @@ function SpPage(props, ref) {
 
   if (isWeixin) {
     const deviceInfo = Taro.getSystemInfoSync()
-    console.log('deviceInfo:', deviceInfo)
+    // console.log('deviceInfo:', deviceInfo)
     model = deviceInfo.model
     ipx = model.search(/iPhone X|iPhone 11|iPhone 12|iPhone 13/g) > -1
   }
