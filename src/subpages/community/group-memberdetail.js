@@ -97,9 +97,12 @@ function GroupLeaderDetail(props) {
         <View className='goodsbuytoolbar'>
           <View
             className='toolbar-item'
-            onClick={navigateTo.bind(this, '/subpages/community/order')}
+            onClick={navigateTo.bind(
+              this,
+              `/subpages/community/order?activity_id=${info?.activityId}`
+            )}
           >
-            <Text className='icon iconfont icon-gouwuche' />
+            <Text className='icon iconfont icon-dingdan' />
             <Text className='toolbar-item-txt'>订单</Text>
           </View>
           {/* <View

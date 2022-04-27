@@ -11,12 +11,13 @@ import {
   AtInput,
   AtTag
 } from 'taro-ui'
-import { SpPage, SpScrollView, SpSearchBar } from '@/components'
-import { pickBy, classNames } from '@/utils'
+import { SpPage, SpScrollView, SpSearchBar, SpPrice } from '@/components'
+import { pickBy, copyText } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
+
 import CompOrderItem from './comps/comp-orderitem'
 
 import './order-manage.scss'
@@ -28,7 +29,8 @@ const initialState = {
   // curDeliverTagIdx: 0,
   // curAfterTagIdx: 0,
   isOpened: false,
-  remark: ''
+  remark: '',
+  totalInfo: {}
 }
 const tabList = [
   { title: '全部', type: 0 },
@@ -56,8 +58,10 @@ function CheifOrderManage(props) {
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
+  const $instance = getCurrentInstance()
+  const { activity_id } = $instance.router?.params
 
-  const { keywords, orderList, curTabIdx, isOpened, remark } = state
+  const { keywords, orderList, curTabIdx, isOpened, remark, totalInfo } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
@@ -65,15 +69,20 @@ function CheifOrderManage(props) {
       pageSize,
       mobile: keywords,
       status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || '',
-      is_seller: 1
+      is_seller: 1,
+      activity_id
     }
     const {
       list,
-      pager: { count: total }
+      pager: { count: total },
+      totalFee,
+      appliedTotalNum,
+      appliedTotalRefundFee
     } = await api.community.getCommunityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
     setState((draft) => {
       draft.orderList = [...orderList, ...n_list]
+      draft.totalInfo = { totalFee, appliedTotalNum, appliedTotalRefundFee }
     })
 
     return { total }
@@ -212,14 +221,62 @@ function CheifOrderManage(props) {
   //   orderRef.current.reset()
   // }
 
+  const renderExportFooter = () => {
+    if (activity_id) {
+      return (
+        <View className='page-order-manage-bot' onClick={onCopyClick}>
+          <View className='iconfont icon-dingdandaochu' />
+          <View>订单导出</View>
+        </View>
+      )
+    }
+  }
+
+  const onCopyClick = async () => {
+    const { url } = await api.community.exportOrder({ activity_id })
+    await copyText(url, '复制成功，请从浏览器打开')
+  }
+
   return (
-    <SpPage className='page-order-manage'>
+    <SpPage className='page-order-manage' renderFooter={renderExportFooter()}>
+      <View className='page-order-manage-top'>
+        <View className='order-content'>
+          <View className='order-content-num'>{totalInfo.appliedTotalNum || 0}</View>
+          <View className='order-content-desc'>
+            有效订单
+            <Text className='iconfont icon-info' />
+          </View>
+        </View>
+        <View className='order-content'>
+          <View className='order-content-num'>
+            <SpPrice className='sale-price' size={50} unit='cent' value={totalInfo.totalFee || 0} />
+          </View>
+          <View className='order-content-desc'>
+            订单总金额
+            <Text className='iconfont icon-info' />
+          </View>
+        </View>
+        <View className='order-content'>
+          <View className='order-content-num'>
+            <SpPrice
+              className='sale-price'
+              size={50}
+              unit='cent'
+              value={totalInfo.appliedTotalRefundFee || 0}
+            />
+          </View>
+          <View className='order-content-desc'>
+            退款金额
+            <Text className='iconfont icon-info' />
+          </View>
+        </View>
+      </View>
       <SpScrollView className='page-order-manage-scroll' ref={orderRef} fetch={fetch}>
         <View className='page-order-manage-search'>
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
-            placeholder='搜索商品名'
+            placeholder='手机号'
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}

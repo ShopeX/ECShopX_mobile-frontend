@@ -61,6 +61,7 @@ function CommunityOrder(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
   const $instance = getCurrentInstance()
+  const { activity_id } = $instance.router?.params
 
   const { keywords, orderList, curTabIdx, isOpened, remark, payLoading } = state
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -81,11 +82,8 @@ function CommunityOrder(props) {
         page: pageIndex,
         pageSize,
         mobile: keywords,
-        status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || ''
-        // status: curAfterTagIdx
-        // curTabIdx,
-        // curDeliverTagIdx,
-        // curAfterTagIdx
+        status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || '',
+        activity_id
       }
       const { list, total_count: total } = await api.community.getCommunityList(params)
       const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
@@ -392,6 +390,7 @@ function CommunityOrder(props) {
             <CompOrderItem
               key={item.tid}
               info={item}
+              checkIsChief={false}
               renderFooter={renderFooter(item)}
               onEditClick={onEditClick}
               onCountDownEnd={onCountDownEnd}

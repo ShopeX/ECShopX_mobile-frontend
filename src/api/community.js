@@ -66,3 +66,8 @@ export function updateActivityStatus(activity_id, parmas) {
   // 团长修改活动状态
   return req.post(`/community/chief/activity_status/${activity_id}`, parmas)
 }
+
+export function exportOrder(parmas) {
+  // 导出团购订单
+  return req.get(`/community/orders/export`, parmas)
+}

@@ -8,17 +8,17 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function CompOrderItem(props) {
+  const { checkIsChief = true } = props
   const {
     info = {},
     renderFooter = null,
     onEditClick = () => {},
     onCountDownEnd = () => {}
   } = props
-  const { checkIsChief } = useSelector((state) => state.user)
 
   return (
     <View className='comp-order-item'>
-      {!checkIsChief && autoCancelSeconds && (
+      {!checkIsChief && autoCancelSeconds?.ss && (
         <View className='comp-order-item-timer'>
           请在
           <AtCountdown
@@ -80,7 +80,7 @@ function CompOrderItem(props) {
             </ScrollView>
           </View>
           <View className='goods-sale'>
-            <SpPrice className='sale-price' value={0.03} />
+            <SpPrice className='sale-price' value={info.totalFee} />
             <View className='sale-num'>共{info.totalNum}件</View>
           </View>
         </View>
@@ -90,10 +90,10 @@ function CompOrderItem(props) {
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
               <Text className='ziti-desc'>自提点：</Text>
-              <Text className='ziti-desc'>{info.address || '000'}</Text>
+              <Text className='ziti-desc'>{info.address}</Text>
             </View>
             <View className='ziti-address'>
-              <Text>{info.ziti_name || '000'}</Text>
+              <Text>{info.ziti_name}</Text>
               {/* <Text className='iconfont icon-dizhi-01 showaddress-icon' /> */}
             </View>
           </View>
@@ -104,8 +104,10 @@ function CompOrderItem(props) {
               <Text className='ziti-desc ml'>{info.receiver_mobile}</Text>
             </View>
             <View className='ziti-address'>{info.receiver_address}</View>
-            <View className='ziti-address'>{info.buildingNumber}(如10)</View>
-            <View className='ziti-address'>{info.houseNumber}(如101)</View>
+            {info.buildingNumber && (
+              <View className='ziti-address'>{info.buildingNumber}(如10)</View>
+            )}
+            {info.houseNumber && <View className='ziti-address'>{info.houseNumber}(如101)</View>}
             {/* <View className='ziti-address'>多少弄：</View> */}
           </View>
           <View className='ziti-tuan'>

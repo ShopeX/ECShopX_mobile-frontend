@@ -1,8 +1,49 @@
 @import '@/style/imports';
 .page-order-manage {
+  padding-top: 200px !important;
   padding-bottom: 140px !important;
+  &-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 24px 0px;
+    text-align: center;
+    background: #fff;
+    margin-bottom: 24px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    .iconfont {
+      font-size: 32px;
+      color: #999;
+      margin-left: 10px;
+    }
+    .order-content {
+      &-num {
+        font-size: 50px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+      &-desc {
+        font-size: 30px;
+        color: #999;
+      }
+    }
+  }
+  &-bot {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 24px;
+    .iconfont {
+      font-size: 50px;
+      margin-bottom: 5px;
+    }
+  }
   &-search {
-    padding: 16px 24px;
+    padding: 30px 24px;
     background: #fff;
     display: flex;
     justify-content: space-around;
