@@ -180,7 +180,7 @@ function CheifOrderManage(props) {
 
   const onOrderClick = (item) => {
     Taro.navigateTo({
-      url: `/subpages/community/group-leaderdetail?activity_id=${item.activityId}`
+      url: `/subpages/community/group-leaderdetail?activity_id=${item?.communityInfo.activity_id}`
     })
   }
 

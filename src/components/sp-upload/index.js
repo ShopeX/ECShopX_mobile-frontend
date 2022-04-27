@@ -44,11 +44,25 @@ function SpUpload(props) {
     })
   }
 
+  const handleDeletePic = (idx) => {
+    let newArr = files
+    if (newArr.length > 1) {
+      newArr = newArr.filter((el, ix) => ix != idx)
+    } else {
+      setState((draft) => {
+        draft.files = []
+      })
+      newArr = []
+    }
+    onChange(newArr)
+  }
+
   return (
     <View className='sp-upload'>
       {files.map((item, index) => (
         <View className='file-item' key={`file-item__${index}`}>
           <SpImage src={item} width={160} height={160} />
+          <Text className='iconfont icon-close' onClick={() => handleDeletePic(index)}></Text>
         </View>
       ))}
       <View className='btn-upload' onClick={handleUploadFile}>

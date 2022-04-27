@@ -8,6 +8,18 @@
     border: 1PX solid #e0e0e0;
     border-radius: 16px;
     margin: 0 20px 20px 0;
+    position: relative;
+    .at-icon,
+    .iconfont {
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      font-size: 48px;
+      color: #999;
+      background: #f1f1f1;
+      border-radius: 50%;
+      z-index: 99;
+    }
   }
   .btn-upload {
     width: 160px;
