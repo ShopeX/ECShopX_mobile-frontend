@@ -70,21 +70,24 @@ function CompGroupTabbar(props) {
     <View className='comp-goodsbuytoolbar'>
       <View
         className='toolbar-item'
-        onClick={navigateTo.bind(this, '/subpages/community/order-manage')}
+        onClick={navigateTo.bind(
+          this,
+          `/subpages/community/order-manage?activity_id=${info?.activityId}`
+        )}
       >
-        <Text className='icon iconfont icon-gouwuche'></Text>
+        <Text className='icon iconfont icon-dingdan'></Text>
         <Text className='toolbar-item-txt'>订单管理</Text>
       </View>
       <View className='toolbar-item' onClick={() => onClickChange(true)}>
-        <Text className='icon iconfont icon-gouwuche'></Text>
+        <Text className='icon iconfont icon-quanbu'></Text>
         <Text className='toolbar-item-txt'>团管理</Text>
       </View>
-      <View className='toolbar-item'>
+      {/* <View className='toolbar-item'>
         <View className='toolbar-item-money'>
           <SpPrice value={0} />
         </View>
         <Text className='toolbar-item-txt'>x人来过</Text>
-      </View>
+      </View> */}
       <Button className='toolbar-item btn-share' openType='share'>
         <View className='toolbar-item-button'>
           <Text className='iconfont icon-weChat'></Text>
@@ -112,7 +115,7 @@ function CompGroupTabbar(props) {
           </View>
         ))}
         <View onClick={() => onClickItem('close')} className='toolbar-list cancel'>
-          取消{' '}
+          取消
         </View>
       </SpFloatLayout>
       <AtModal
