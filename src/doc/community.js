@@ -206,3 +206,19 @@ export const COMMUNITY_CHECKOUT_RES = {
   totalFee: ({ total_fee }) => (total_fee / 100).toFixed(2),
   totalItemNum: 'totalItemNum'
 }
+
+export const GOOD_LIST = {
+  pic: ({ pics }) => pics[0],
+  name: 'itemName',
+  no: 'itemBn',
+  store: 'store',
+  price: 'price',
+  approve_status: 'approve_status',
+  goods_id: 'goods_id',
+  audit_status: 'audit_status',
+  item_id: 'item_id',
+  itemBn: 'itemBn',
+  itemBoxNum: 'item_box_num',
+  itemPieceNum: 'item_piece_num',
+  unitScale: 'unit_scale'
+}

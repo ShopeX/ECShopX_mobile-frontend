@@ -89,7 +89,8 @@ export default {
         'trade/split-bagpack', // 团购-分单物流详情页面Ω
         'trade/delivery-info', // 团购-整单物流详情页面
         'trade/cancel', // 团购-取消订单页面,
-        'trade/after-sale-detail' // 团购-售后详情页面
+        'trade/after-sale-detail', // 团购-售后详情页面
+        'boxlist'
       ]
     },
     {

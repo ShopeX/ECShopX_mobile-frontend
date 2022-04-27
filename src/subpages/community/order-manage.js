@@ -38,7 +38,7 @@ const initialState = {
 const tabList = [
   { title: '全部', type: 0 },
   { title: '待支付', type: 5 },
-  { title: '待收货', type: 4 }
+  { title: '待自提', type: 4 }
   // { title: '核销', type: '2' },
   // { title: '售后', type: '3' },
   // { title: '备注', type: '4' }
@@ -275,6 +275,12 @@ function CheifOrderManage(props) {
     await copyText(url, '复制成功，请从浏览器打开')
   }
 
+  const onHefChange = () => {
+    Taro.navigateTo({
+      url: '/subpages/community/boxlist'
+    })
+  }
+
   return (
     <SpPage
       className={`page-order-manage ${checkIsChief && 'paddingMrt'}`}
@@ -317,6 +323,11 @@ function CheifOrderManage(props) {
               <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 3)} />
             </View>
           </View>
+        </View>
+      )}
+      {checkIsChief && (
+        <View className='page-order-manage-boxlist' onClick={onHefChange}>
+          <View className='btn'>成团汇总</View>
         </View>
       )}
       <SpScrollView className='page-order-manage-scroll' ref={orderRef} fetch={fetch}>
