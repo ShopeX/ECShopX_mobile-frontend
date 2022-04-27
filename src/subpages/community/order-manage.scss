@@ -15,18 +15,18 @@
     left: 0;
     width: 100%;
     .iconfont {
-      font-size: 32px;
+      font-size: 30px;
       color: #999;
       margin-left: 10px;
     }
     .order-content {
       &-num {
-        font-size: 50px;
+        font-size: 48px;
         font-weight: bold;
         margin-bottom: 16px;
       }
       &-desc {
-        font-size: 30px;
+        // font-size: 30px;
         color: #999;
       }
     }
@@ -89,5 +89,17 @@
     display: inline-block;
     color: #fff;
     margin: 0px 5px;
+  }
+  .order-modal {
+    .at-modal__container {
+      width: 75%;
+      .content-simple {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .at-modal__content {
+        min-height: 140px;
+      }
+    }
   }
 }

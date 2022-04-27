@@ -169,7 +169,7 @@ function OrderRefund(props) {
         <View className='right'>
           <View className='total-price'>
             共退款：
-            <SpPrice primary size={36} value={100} />
+            <SpPrice primary size={36} unit='cent' value={100} />
           </View>
           <AtButton circle type='primary' onClick={() => handleCheckout(checkList)}>
             提交申请

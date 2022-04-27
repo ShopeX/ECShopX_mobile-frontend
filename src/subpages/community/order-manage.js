@@ -30,7 +30,10 @@ const initialState = {
   // curAfterTagIdx: 0,
   isOpened: false,
   remark: '',
-  totalInfo: {}
+  totalInfo: {},
+  orderModal: false,
+  orderModalCont: '',
+  orderModalTitle: ''
 }
 const tabList = [
   { title: '全部', type: 0 },
@@ -61,7 +64,17 @@ function CheifOrderManage(props) {
   const $instance = getCurrentInstance()
   const { activity_id } = $instance.router?.params
 
-  const { keywords, orderList, curTabIdx, isOpened, remark, totalInfo } = state
+  const {
+    keywords,
+    orderList,
+    curTabIdx,
+    isOpened,
+    remark,
+    totalInfo,
+    orderModal,
+    orderModalCont,
+    orderModalTitle
+  } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
@@ -200,6 +213,26 @@ function CheifOrderManage(props) {
     })
   }
 
+  const onOrderChange = (orderModal, type = 0) => {
+    let content = ''
+    let title = ''
+    if (type == 1) {
+      title = '有效订单'
+      content = '全部订单-已取消订单'
+    } else if (type == 2) {
+      title = '订单总金额'
+      content = '该活动所有订单实付金额（含退款金额）'
+    } else if (type == 3) {
+      title = '退款金额'
+      content = '所有订单退款金额'
+    }
+    setState((draft) => {
+      draft.orderModal = orderModal
+      draft.orderModalTitle = title
+      draft.orderModalCont = content
+    })
+  }
+
   // const deliverTagClick = async ({ name }) => {
   //   const idx = deliverTagList.findIndex((el) => el.type == name.type)
   //   await setState((draft) => {
@@ -244,7 +277,7 @@ function CheifOrderManage(props) {
           <View className='order-content-num'>{totalInfo.appliedTotalNum || 0}</View>
           <View className='order-content-desc'>
             有效订单
-            <Text className='iconfont icon-info' />
+            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 1)} />
           </View>
         </View>
         <View className='order-content'>
@@ -253,7 +286,7 @@ function CheifOrderManage(props) {
           </View>
           <View className='order-content-desc'>
             订单总金额
-            <Text className='iconfont icon-info' />
+            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 2)} />
           </View>
         </View>
         <View className='order-content'>
@@ -267,7 +300,7 @@ function CheifOrderManage(props) {
           </View>
           <View className='order-content-desc'>
             退款金额
-            <Text className='iconfont icon-info' />
+            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 3)} />
           </View>
         </View>
       </View>
@@ -358,6 +391,15 @@ function CheifOrderManage(props) {
           <Button onClick={() => actionChange(false, 'confirm')}>确定</Button>
         </AtModalAction>
       </AtModal>
+      <AtModal
+        isOpened={orderModal}
+        className='order-modal'
+        confirmText='知道了'
+        content={orderModalCont}
+        title={orderModalTitle}
+        closeOnClickOverlay={false}
+        onConfirm={() => onOrderChange(false, 0)}
+      />
     </SpPage>
   )
 }
