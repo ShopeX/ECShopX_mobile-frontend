@@ -18,19 +18,19 @@ const MENUS = [
   {
     key: 'dianwu',
     name: '订单管理',
-    icon: 'm_menu_dianwu.png',
+    icon: 'm_menu_order.png',
     link: '/subpages/community/order-manage'
   },
   {
     key: 'dianwu',
     name: '我的活动',
-    icon: 'm_menu_dianwu.png',
+    icon: 'm_menu_activity.png',
     link: '/subpages/community/activity'
   },
   {
     key: 'dianwu',
     name: '一键开团',
-    icon: 'm_menu_dianwu.png',
+    icon: 'm_menu_group.png',
     link: '/subpages/community/group'
   }
 ]
