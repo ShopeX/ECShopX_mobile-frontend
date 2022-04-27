@@ -80,7 +80,7 @@ function CompOrderItem(props) {
             </ScrollView>
           </View>
           <View className='goods-sale'>
-            <SpPrice className='sale-price' value={info.totalFee} />
+            <SpPrice className='sale-price' unit='cent' value={info.totalFee} />
             <View className='sale-num'>共{info.totalNum}件</View>
           </View>
         </View>
