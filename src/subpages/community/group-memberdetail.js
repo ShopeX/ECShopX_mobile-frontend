@@ -97,9 +97,9 @@ function GroupLeaderDetail(props) {
         <View className='goodsbuytoolbar'>
           <View
             className='toolbar-item'
-            onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
+            onClick={navigateTo.bind(this, '/subpages/community/order')}
           >
-            <Text className='icon iconfont icon-gouwuche'></Text>
+            <Text className='icon iconfont icon-gouwuche' />
             <Text className='toolbar-item-txt'>订单</Text>
           </View>
           {/* <View
@@ -138,7 +138,7 @@ function GroupLeaderDetail(props) {
               <Text className='right-item-txt'>朋友圈</Text>
             </View> */}
             <View className='right-item' openType='share'>
-              <Text className='icon iconfont icon-fenxiang-01'></Text>
+              <Text className='icon iconfont icon-fenxiang-01' />
               <Text className='right-item-txt'>分享</Text>
             </View>
           </View>
@@ -183,20 +183,24 @@ function GroupLeaderDetail(props) {
           <View className='goods-group-info'>
             <View className='list'>
               <View className='time'>
-                <View className='date'>{info?.save_time} 发布</View>
-                <View className='i'></View>
-                <View className='countdown'>
-                  <AtCountdown
-                    format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
-                    isShowDay={timer.dd > 0}
-                    day={timer.dd}
-                    hours={timer.hh}
-                    minutes={timer.mm}
-                    seconds={timer.ss}
-                    onTimeUp={countDownEnd}
-                  />
-                </View>
-                后结束
+                {info?.save_time && <View className='date'>{info?.save_time} 发布</View>}
+                {info?.save_time && timer.ss && <View className='i' />}
+                {timer?.ss && (
+                  <>
+                    <View className='countdown'>
+                      <AtCountdown
+                        format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                        isShowDay={timer.dd > 0}
+                        day={timer.dd}
+                        hours={timer.hh}
+                        minutes={timer.mm}
+                        seconds={timer.ss}
+                        onTimeUp={countDownEnd}
+                      />
+                    </View>
+                    后结束
+                  </>
+                )}
               </View>
             </View>
             <View className='list'>
@@ -225,17 +229,18 @@ function GroupLeaderDetail(props) {
               // isMarket={false}
               // isLeft={false}
               // isTag={false}
-
               onChange={onNumChange.bind(this, index)}
             />
           ))}
         </View>
 
         {/* 跟团记录 */}
-        <View className='joinlog'>
-          <View className='title'>跟团记录</View>
-          <CompGroupLogList list={info?.orders} />
-        </View>
+        {info?.orders.length > 0 && (
+          <View className='joinlog'>
+            <View className='title'>跟团记录</View>
+            <CompGroupLogList list={info?.orders} />
+          </View>
+        )}
       </View>
     </SpPage>
   )

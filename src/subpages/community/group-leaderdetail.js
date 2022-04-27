@@ -124,9 +124,9 @@ function GroupLeaderDetail(props) {
               <View className='list'>
                 <View className='time'>
                   {detail?.save_time && <View className='date'>{detail?.save_time} 发布</View>}
-                  {timer.ss && (
+                  {detail?.save_time && timer.ss && <View className='i' />}
+                  {timer?.ss && (
                     <>
-                      <View className='i'></View>
                       <View className='countdown'>
                         <AtCountdown
                           format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
@@ -177,11 +177,12 @@ function GroupLeaderDetail(props) {
             加入购物车
           </AtButton> */}
         </View>
-
-        <View className='joinlog'>
-          <View className='title'>跟团记录</View>
-          <CompGroupLogList list={detail?.orders} isLeader />
-        </View>
+        {detail?.orders.length > 0 && (
+          <View className='joinlog'>
+            <View className='title'>跟团记录</View>
+            <CompGroupLogList list={detail?.orders} isLeader />
+          </View>
+        )}
       </View>
     </SpPage>
   )
