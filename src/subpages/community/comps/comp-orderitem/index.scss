@@ -61,17 +61,19 @@ $good-img-width: 150px;
       &-status {
         padding: 10px 20px;
         border-radius: 60px;
+        color: var(--color-primary);
+        background: rgba(var(--color-rgb), 0.1);
       }
     }
-    .CANCEL,
-    .private,
-    .public,
-    .protected,
-    .success,
-    .fail {
-      color: #4da915;
-      background: #e1fff3;
-    }
+    // .CANCEL,
+    // .private,
+    // .public,
+    // .protected,
+    // .success,
+    // .fail {
+    //   color: #4da915;
+    //   background: #e1fff3;
+    // }
   }
   &-content {
     padding: 24px;

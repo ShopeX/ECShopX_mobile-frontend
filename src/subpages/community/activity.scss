@@ -154,16 +154,18 @@ $good-img-width: 150px;
       padding: 6px 20px;
       border-radius: 60px;
       font-size: 24px;
+      color: var(--color-primary);
+      background: rgba(var(--color-rgb), 0.1);
     }
-    .running,
-    .private,
-    .public,
-    .protected,
-    .success,
-    .fail {
-      color: #4da915;
-      background: #e1fff3;
-    }
+    // .running,
+    // .private,
+    // .public,
+    // .protected,
+    // .success,
+    // .fail {
+    //   color: #4da915;
+    //   background: #e1fff3;
+    // }
     .footer-btn {
       padding: 2px 10px;
       border-radius: 8px;
