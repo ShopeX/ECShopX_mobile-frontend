@@ -78,10 +78,12 @@ function CompGroupTabbar(props) {
         <Text className='icon iconfont icon-dingdan'></Text>
         <Text className='toolbar-item-txt'>订单管理</Text>
       </View>
-      <View className='toolbar-item' onClick={() => onClickChange(true)}>
-        <Text className='icon iconfont icon-quanbu'></Text>
-        <Text className='toolbar-item-txt'>团管理</Text>
-      </View>
+      {info?.buttons.length > 0 && (
+        <View className='toolbar-item' onClick={() => onClickChange(true)}>
+          <Text className='icon iconfont icon-quanbu'></Text>
+          <Text className='toolbar-item-txt'>团管理</Text>
+        </View>
+      )}
       {/* <View className='toolbar-item'>
         <View className='toolbar-item-money'>
           <SpPrice value={0} />

@@ -82,6 +82,12 @@ function ActivityPage() {
     })
   }
 
+  const onCloseChange = async (info) => {
+    await api.community.closeCode({ activity_id: info.activityId }).then((res) => {
+      showToast('核销成功')
+    })
+  }
+
   console.log('activityList:', activityList)
 
   const handleClickActivity = ({ activityId }) => {
@@ -102,19 +108,21 @@ function ActivityPage() {
           color={colorPrimary}
         />
         {activityList.map((info, idx) => (
-          <View
-            key={idx}
-            className='page-community-activity-info'
-            onClick={handleClickActivity.bind(this, info)}
-          >
-            <View className='page-community-activity-head'>
+          <View key={idx} className='page-community-activity-info'>
+            <View
+              className='page-community-activity-head'
+              onClick={() => handleClickActivity(info)}
+            >
               <View className='goods-hd'>
                 <View className='goods-title'>{info.activityName}</View>
                 <View className='goods-price'>{info.priceRange}</View>
               </View>
               <View className='goods-time'>{info.startTime.split(' ')[0]}</View>
             </View>
-            <View className='page-community-activity-goods'>
+            <View
+              className='page-community-activity-goods'
+              onClick={() => handleClickActivity(info)}
+            >
               <View className='goods-info'>
                 <ScrollView className='scroll-goods' scrollX>
                   {info?.items.map((el, elidx) => (
@@ -160,6 +168,15 @@ function ActivityPage() {
                   style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
                 >
                   确认收货
+                </View>
+              )}
+              {info.canWriteoff == 1 && (
+                <View
+                  onClick={() => onCloseChange(info)}
+                  className='footer-btn'
+                  style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}`}
+                >
+                  批量核销
                 </View>
               )}
             </View>

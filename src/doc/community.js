@@ -142,6 +142,7 @@ export const COMMUNITY_ACTIVITY_LIST = {
   orderNum: 'order_num',
   userNum: 'user_num',
   totalFee: 'total_fee',
+  canWriteoff: 'can_writeoff',
   items: ({ items }) => {
     if (!items) {
       return []

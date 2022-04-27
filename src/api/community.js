@@ -81,3 +81,8 @@ export function activityOrderItem(activity_id) {
   // 团长查看活动商品统计
   return req.post(`/community/chief/activity_order_item/${activity_id}`)
 }
+
+export function closeCode(parmas) {
+  // 活动核销码
+  return req.post(`/community/orders/batch_writeoff`, parmas)
+}
