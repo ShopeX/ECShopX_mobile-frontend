@@ -137,20 +137,22 @@ const Index = () => {
 
   const onMenusClick = (item) => {
     if (item.key == 'goods') {
-      Taro.scanCode().then(async (res) => {
-        let parmas = {
-          code: res.result
-        }
-        try {
-          const result = await api.user.scanOrderCode(parmas)
-          S.toast(result.msg)
-        } catch (e) {
-          Taro.showToast({
-            icon: 'none',
-            title: e.message
-          })
-        }
-      })
+      Taro.scanCode()
+        .then(async (res) => {
+          let parmas = {
+            code: res.result
+          }
+          try {
+            const result = await api.community.scanOrderCode(parmas)
+            S.toast(result.msg)
+          } catch (e) {
+            Taro.showToast({
+              icon: 'none',
+              title: e.message
+            })
+          }
+        })
+        .catch((err) => {})
     } else {
       Taro.navigateTo({ url: item.link })
     }

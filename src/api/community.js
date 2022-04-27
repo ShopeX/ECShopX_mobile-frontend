@@ -74,5 +74,5 @@ export function exportOrder(parmas) {
 
 export function scanOrderCode(parmas) {
   // 核销码
-  return req.post('/community/orders/qr_writeoffcode', parmas)
+  return req.post('/community/orders/qr_writeoff', parmas)
 }
