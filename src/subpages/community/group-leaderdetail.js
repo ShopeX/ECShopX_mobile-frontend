@@ -91,6 +91,7 @@ function GroupLeaderDetail(props) {
               className='user-head'
               width={120}
               height={120}
+              mode='aspectFit'
             />
             <Text className='user-name'>
               {detail?.chiefInfo?.chief_name || detail?.chiefInfo?.chief_mobile}
@@ -159,7 +160,13 @@ function GroupLeaderDetail(props) {
               请先加好友或进群，确认邻居身份后再下单
             </View>
             {detail?.activityPics.map((item) => (
-              <SpImage src={item} className='group-head' width={200} height={200} />
+              <SpImage
+                src={item}
+                mode='aspectFit'
+                className='group-head'
+                width={200}
+                height={200}
+              />
             ))}
           </View>
           <View className='group-foot'>

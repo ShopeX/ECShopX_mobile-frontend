@@ -237,7 +237,7 @@ function Group(props) {
     >
       <View className='page-header'>
         <View className='user-info'>
-          <SpImage src={userInfo.avatar} width={110} height={110} />
+          <SpImage src={userInfo.avatar} mode='aspectFit' width={110} height={110} />
           <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
         </View>
       </View>

@@ -151,7 +151,7 @@ function CommunityOrder(props) {
       canApplyAftersales
     } = info || {}
     let isShowCacel =
-      (orderStatusDes == 'PAYED' || orderStatusDes == 'NOTPAY') &&
+      (orderStatusDes == 'PAYED_PENDING' || orderStatusDes == 'NOTPAY') &&
       canApplyCancel != 0 &&
       communityInfo.activity_status != 'success'
     return (
@@ -174,7 +174,7 @@ function CommunityOrder(props) {
             立即支付
           </View>
         )}
-        {canApplyAftersales && (
+        {canApplyAftersales > 0 && (
           <View
             onClick={() => handleClickBtn(info, 'detail')}
             className='page-community-order-btn'
@@ -282,6 +282,12 @@ function CommunityOrder(props) {
     orderRef.current.reset()
   }
 
+  const onOrderClick = (item) => {
+    Taro.navigateTo({
+      url: `/subpages/community/group-memberdetail?activity_id=${item?.communityInfo.activity_id}`
+    })
+  }
+
   // const actionChange = async (isOpened, type) => {
   //   console.log(type)
   //   if (type == 'confirm') {
@@ -359,7 +365,7 @@ function CommunityOrder(props) {
           <AtTabs
             current={curTabIdx}
             tabList={tabList}
-            onClick={handleClickTab}
+            onClick={(e) => handleClickTab(e)}
             customStyle={{ color: colorPrimary }}
           >
             {tabList.map((panes, pIdx) => (
@@ -388,10 +394,11 @@ function CommunityOrder(props) {
         {curTabIdx !== 3 &&
           orderList.map((item) => (
             <CompOrderItem
-              key={item.tid}
+              key={item.orderId}
               info={item}
               checkIsChief={false}
               renderFooter={renderFooter(item)}
+              onClick={onOrderClick}
               // onEditClick={onEditClick}
               onCountDownEnd={onCountDownEnd}
             />

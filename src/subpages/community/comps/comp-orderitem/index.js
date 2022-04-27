@@ -3,33 +3,35 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
+import { AtCountdown } from 'taro-ui'
 import { classNames } from '@/utils'
 
 import './index.scss'
 
 function CompOrderItem(props) {
-  const { checkIsChief = true, onClick = () => {} } = props
   const {
     info = {},
     renderFooter = null,
     onEditClick = () => {},
-    onCountDownEnd = () => {}
+    onCountDownEnd = () => {},
+    checkIsChief = true,
+    onClick = () => {}
   } = props
   // const { checkIsChief: isChief } = useSelector((state) => state.user)
 
   return (
     <View className='comp-order-item'>
-      {!checkIsChief && autoCancelSeconds?.ss && (
+      {!checkIsChief && info.autoCancelSeconds?.ss > 0 && (
         <View className='comp-order-item-timer'>
           请在
           <AtCountdown
             format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
-            isShowDay={autoCancelSeconds.dd > 0}
-            day={autoCancelSeconds.dd}
-            hours={autoCancelSeconds.hh}
-            minutes={autoCancelSeconds.mm}
-            seconds={autoCancelSeconds.ss}
-            onTimeUp={onCountDownEnd}
+            isShowDay={info.autoCancelSeconds.dd > 0}
+            day={info.autoCancelSeconds.dd}
+            hours={info.autoCancelSeconds.hh}
+            minutes={info.autoCancelSeconds.mm}
+            seconds={info.autoCancelSeconds.ss}
+            onTimeUp={() => onCountDownEnd()}
           />
           内支付，过期订单自动关闭
         </View>
@@ -49,18 +51,18 @@ function CompOrderItem(props) {
       <View className='comp-order-item-content'>
         <View className='comp-order-item-title'>
           <View className='content-imgbox'>
-            <Image src={info?.memberInfo?.avatar} className='content-img' />
+            <Image src={info?.communityInfo?.chief_avatar} className='content-img' />
           </View>
-          <Text>{info?.memberInfo?.username}</Text>
+          <Text>{info?.communityInfo?.chief_name}</Text>
         </View>
         <View className='comp-order-item-active'>
           <View className='active-name'>{info?.communityInfo?.activity_name}</View>
-          {checkIsChief && (
-            <View onClick={onClick(info)}>
-              <Text className='active-font'>查看</Text>
-              <Text className='iconfont icon-qianwang-01' />
-            </View>
-          )}
+          {/* {checkIsChief && ( */}
+          <View onClick={() => onClick(info)}>
+            <Text className='active-font'>查看</Text>
+            <Text className='iconfont icon-qianwang-01' />
+          </View>
+          {/* )} */}
         </View>
         <View className='comp-order-item-goods'>
           <View className='goods-info'>
@@ -108,14 +110,16 @@ function CompOrderItem(props) {
             {info.houseNumber && <View className='ziti-address'>{info.houseNumber}(如101)</View>}
             {/* <View className='ziti-address'>多少弄：</View> */}
           </View>
-          <View className='ziti-tuan'>
-            <View className='ziti-label'>
-              <Text className='iconfont icon-dizhi-01' />
-              <Text className='ziti-desc'>团员备注：</Text>
-              <Text className='ziti-desc'>{info.remark}</Text>
-              {/* <Text onClick={onEditClick} className='iconfont icon-edit address-icon' /> */}
+          {info.remark && (
+            <View className='ziti-tuan'>
+              <View className='ziti-label'>
+                <Text className='iconfont icon-dizhi-01' />
+                <Text className='ziti-desc'>团员备注：</Text>
+                <Text className='ziti-desc'>{info.remark}</Text>
+                {/* <Text onClick={onEditClick} className='iconfont icon-edit address-icon' /> */}
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
       {renderFooter && <View className='comp-order-item-footer'>{renderFooter}</View>}

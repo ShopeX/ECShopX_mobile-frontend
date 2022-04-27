@@ -31,7 +31,7 @@ export const COMMUNITY_ORDER_LIST = {
   activityId: 'activity_id',
   canApplyAftersales: 'can_apply_aftersales',
   autoCancelSeconds: ({ auto_cancel_seconds }) => {
-    if (auto_cancel_seconds) {
+    if (auto_cancel_seconds > 0) {
       return calcTimer(auto_cancel_seconds)
     } else {
       return 0
