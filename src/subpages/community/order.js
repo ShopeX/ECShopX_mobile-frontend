@@ -341,7 +341,7 @@ function CommunityOrder(props) {
   }
 
   return (
-    <SpPage className='page-community-order' renderFooter={<CompTabbar />}>
+    <SpPage className='page-community-order'>
       <SpScrollView className='page-community-order-scroll' ref={orderRef} fetch={fetch}>
         <View className='page-community-order-search'>
           <SpSearchBar
