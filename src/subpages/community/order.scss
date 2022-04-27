@@ -1,0 +1,51 @@
+@import '@/style/imports';
+.page-community-order {
+  padding-bottom: 140px !important;
+  &-search {
+    padding: 16px 24px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+  }
+  &-tabs {
+    margin-bottom: 20px;
+    .at-tabs {
+      &__body {
+        height: 0px !important;
+      }
+      &__item {
+        color: $color-brand-accent-light;
+      }
+      &__item-underline {
+        width: 40%;
+        left: 30%;
+        background: var(--color-primary);
+      }
+      &__item--active {
+        color: var(--color-primary);
+      }
+    }
+  }
+  &-tags {
+    padding: 24px;
+    background: #fff;
+    margin-bottom: 24px;
+    .order-tags {
+      margin-right: 15px;
+      font-size: 24px;
+      &-active {
+        color: #ffffff;
+        background: var(--color-primary);
+        border: 1px solid var(--color-primary);
+      }
+    }
+  }
+  &-btn {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 26px;
+    display: inline-block;
+    color: #fff;
+    margin: 0px 5px;
+  }
+}

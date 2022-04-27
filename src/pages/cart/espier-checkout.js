@@ -853,7 +853,7 @@ function CartCheckout(props) {
             </Picker>
           </SpCell>
           <View className='cart-checkout__stree-desc'>
-            <Text className='required'>*</Text>如所选街道居委信息错误，订单将无法配送！
+            <Text className='required'>*</Text>疫情期间按小区统一配送！
           </View>
         </View>
       )}

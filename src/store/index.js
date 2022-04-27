@@ -17,7 +17,7 @@ const reducer = persistReducer(
   {
     key: 'root',
     storage,
-    blacklist: ['merchant']
+    blacklist: ['merchant', 'select']
   },
   rootReducer
 )

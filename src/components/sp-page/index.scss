@@ -48,4 +48,36 @@
     z-index: $z-index-level-3;
     background: #fff;
   }
+
+  .custom-navigation {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    right: 0;
+    .left-container,
+    .right-container {
+      width: 100px;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .title-container {
+      flex: 1;
+      height: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .icon-home1 {
+      font-size: 38px;
+    }
+    .icon-shangyiyehoutuifanhui-xianxingyuankuang {
+      font-size: 50px;
+      color: #fff;
+    }
+  }
 }

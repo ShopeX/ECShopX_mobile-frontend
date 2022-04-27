@@ -1,0 +1,32 @@
+@import '@/style/imports';
+
+.page-trade-cancel {
+  .sp-cell {
+    flex-direction: column;
+    align-items: left;
+    &__hd {
+      margin: 0 0 floor($edge-size / 2);
+    }
+    &__bd {
+      width: 100%;
+    }
+    .cancel-reason {
+      margin: 0 6px 0 0;
+    }
+  }
+  .trade-cancel-footer {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+  }
+  .toolbar_btn {
+    width: 100%;
+    box-sizing: border-box;
+    display: inline-block;
+    height: 87px;
+    line-height: 87px;
+    text-align: center;
+    color: #ffffff;
+  }
+}
