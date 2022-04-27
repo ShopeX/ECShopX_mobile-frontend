@@ -76,3 +76,8 @@ export function scanOrderCode(parmas) {
   // 核销码
   return req.post('/community/orders/qr_writeoff', parmas)
 }
+
+export function activityOrderItem() {
+  // 团长查看活动商品统计
+  return req.post(`/community/chief/activity_order_item`)
+}
