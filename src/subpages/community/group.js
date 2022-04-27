@@ -165,9 +165,9 @@ function Group(props) {
       return showToast('请填写团购活动标题')
     }
 
-    if (qrcode.length == 0) {
-      return showToast('请上传团长个人微信二维码')
-    }
+    // if (qrcode.length == 0) {
+    //   return showToast('请上传团长个人微信二维码')
+    // }
 
     const comp = comps.find((item) => !item.value)
     if (comp) {

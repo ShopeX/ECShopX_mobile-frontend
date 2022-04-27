@@ -49,9 +49,10 @@ function ItemList(props) {
       page: pageIndex,
       page_size: pageSize
     }
-    const { total_count: total, list } = await api.community.getChiefItems(params)
+    const { total_count: total, list: plist } = await api.community.getChiefItems(params)
+    const _plist = pickBy(plist, doc.community.COMMUNITY_GOODS_ITEM)
     setState((draft) => {
-      draft.list = [...list, pickBy(list, doc.community.COMMUNITY_GOODS_ITEM)]
+      draft.list = [...list, ..._plist]
     })
     return {
       total

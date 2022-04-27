@@ -85,14 +85,17 @@ function CommunityOrder(props) {
         status: (curTabIdx == 1 && 5) || (curTabIdx == 2 && 4) || '',
         activity_id
       }
-      const { list, total_count: total } = await api.community.getCommunityList(params)
+      const {
+        list,
+        pager: { count }
+      } = await api.community.getCommunityList(params)
       const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
       setState((draft) => {
         draft.orderList = [...orderList, ...n_list]
       })
-      total_count = total
+      total_count = count
     }
-
+    debugger
     return { total: total_count }
   }
 

@@ -40,6 +40,7 @@ function PickerCommunity(props) {
 
   const onSelectCommunityChange = (item, checked) => {
     dispatch(updateSelectCommunityZiti(item))
+    Taro.navigateBack()
   }
 
   const handleConfirm = () => {
@@ -72,11 +73,14 @@ function PickerCommunity(props) {
               </View>
             </SpCheckbox>
             <View className='community-item-tools'>
-              <Text className='iconfont icon-edit' onClick={() => {
-                Taro.navigateTo({
-                  url: `/subpages/community/community-edit?id=${item.id}`
-                })
-              }}></Text>
+              <Text
+                className='iconfont icon-edit'
+                onClick={() => {
+                  Taro.navigateTo({
+                    url: `/subpages/community/community-edit?id=${item.id}`
+                  })
+                }}
+              ></Text>
             </View>
           </View>
         ))}

@@ -369,7 +369,7 @@ function MemberIndex(props) {
       if (res.status) {
         Taro.navigateTo({ url: link })
       } else {
-        Taro.navigateTo({ url: `/subpages/community/order-manage` })
+        Taro.navigateTo({ url: `/subpages/community/order` })
       }
     }
 
