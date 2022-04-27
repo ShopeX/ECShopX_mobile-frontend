@@ -1,6 +1,5 @@
 @import '@/style/imports';
 .page-order-manage {
-  padding-top: 200px !important;
   padding-bottom: 140px !important;
   &-top {
     display: flex;
@@ -102,4 +101,7 @@
       }
     }
   }
+}
+.paddingMrt {
+  padding-top: 200px !important;
 }

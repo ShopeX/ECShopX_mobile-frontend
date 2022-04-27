@@ -60,6 +60,7 @@ function CheifOrderManage(props) {
   const [state, setState] = useImmer(initialState)
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
+  const { checkIsChief } = useSelector((state) => state.user)
   const orderRef = useRef()
   const $instance = getCurrentInstance()
   const { activity_id } = $instance.router?.params
@@ -88,14 +89,12 @@ function CheifOrderManage(props) {
     const {
       list,
       pager: { count: total },
-      totalFee,
-      appliedTotalNum,
-      appliedTotalRefundFee
+      statistics
     } = await api.community.getCommunityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
     setState((draft) => {
       draft.orderList = [...orderList, ...n_list]
-      draft.totalInfo = { totalFee, appliedTotalNum, appliedTotalRefundFee }
+      draft.totalInfo = statistics
     })
 
     return { total }
@@ -255,7 +254,7 @@ function CheifOrderManage(props) {
   // }
 
   const renderExportFooter = () => {
-    if (activity_id) {
+    if (activity_id && checkIsChief) {
       return (
         <View className='page-order-manage-bot' onClick={onCopyClick}>
           <View className='iconfont icon-dingdandaochu' />
@@ -271,39 +270,49 @@ function CheifOrderManage(props) {
   }
 
   return (
-    <SpPage className='page-order-manage' renderFooter={renderExportFooter()}>
-      <View className='page-order-manage-top'>
-        <View className='order-content'>
-          <View className='order-content-num'>{totalInfo.appliedTotalNum || 0}</View>
-          <View className='order-content-desc'>
-            有效订单
-            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 1)} />
+    <SpPage
+      className={`page-order-manage ${checkIsChief && 'paddingMrt'}`}
+      renderFooter={renderExportFooter()}
+    >
+      {checkIsChief && (
+        <View className='page-order-manage-top'>
+          <View className='order-content'>
+            <View className='order-content-num'>{totalInfo?.appliedTotalNum || 0}</View>
+            <View className='order-content-desc'>
+              有效订单
+              <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 1)} />
+            </View>
+          </View>
+          <View className='order-content'>
+            <View className='order-content-num'>
+              <SpPrice
+                className='sale-price'
+                size={50}
+                unit='cent'
+                value={totalInfo?.totalFee || 0}
+              />
+            </View>
+            <View className='order-content-desc'>
+              订单总金额
+              <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 2)} />
+            </View>
+          </View>
+          <View className='order-content'>
+            <View className='order-content-num'>
+              <SpPrice
+                className='sale-price'
+                size={50}
+                unit='cent'
+                value={totalInfo?.appliedTotalRefundFee || 0}
+              />
+            </View>
+            <View className='order-content-desc'>
+              退款金额
+              <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 3)} />
+            </View>
           </View>
         </View>
-        <View className='order-content'>
-          <View className='order-content-num'>
-            <SpPrice className='sale-price' size={50} unit='cent' value={totalInfo.totalFee || 0} />
-          </View>
-          <View className='order-content-desc'>
-            订单总金额
-            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 2)} />
-          </View>
-        </View>
-        <View className='order-content'>
-          <View className='order-content-num'>
-            <SpPrice
-              className='sale-price'
-              size={50}
-              unit='cent'
-              value={totalInfo.appliedTotalRefundFee || 0}
-            />
-          </View>
-          <View className='order-content-desc'>
-            退款金额
-            <Text className='iconfont icon-info' onClick={() => onOrderChange(true, 3)} />
-          </View>
-        </View>
-      </View>
+      )}
       <SpScrollView className='page-order-manage-scroll' ref={orderRef} fetch={fetch}>
         <View className='page-order-manage-search'>
           <SpSearchBar
