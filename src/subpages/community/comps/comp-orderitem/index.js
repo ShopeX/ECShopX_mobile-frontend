@@ -104,11 +104,11 @@ function CompOrderItem(props) {
               <Text className='ziti-desc ml'>{info.receiver_mobile}</Text>
             </View>
             <View className='ziti-address'>{info.receiver_address}</View>
-            {info.buildingNumber && (
-              <View className='ziti-address'>{info.buildingNumber}(如10)</View>
-            )}
-            {info.houseNumber && <View className='ziti-address'>{info.houseNumber}(如101)</View>}
-            {/* <View className='ziti-address'>多少弄：</View> */}
+            {info?.communityInfo?.extra_data_str?.map((el, idx) => (
+              <View className='ziti-address' key={idx}>
+                {el}
+              </View>
+            ))}
           </View>
           {info.remark && (
             <View className='ziti-tuan'>
