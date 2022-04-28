@@ -162,7 +162,7 @@ function CommunityOrder(props) {
         {isShowCacel && (
           <View
             onClick={() => handleClickBtn(info, 'cancel')}
-            className='page-order-manage-btn'
+            className='page-community-order-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}; margin-right: 10px;`}
           >
             取消订单
@@ -171,13 +171,13 @@ function CommunityOrder(props) {
         {orderStatus === 'NOTPAY' && (
           <View
             onClick={() => handleClickBtn(info, 'pay')}
-            className='page-order-manage-btn'
+            className='page-community-order-btn'
             style={`border: 1PX solid ${colorPrimary}; color: ${colorPrimary}; margin-right: 10px;`}
           >
             立即支付
           </View>
         )}
-        {canApplyAftersales > 0 && (
+        {canApplyAftersales == 1 && (
           <View
             onClick={() => handleClickBtn(info, 'detail')}
             className='page-community-order-btn'
