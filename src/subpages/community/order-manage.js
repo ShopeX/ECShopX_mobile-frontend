@@ -112,7 +112,7 @@ function CheifOrderManage(props) {
 
   const handleOnClear = async () => {
     await setState((draft) => {
-      draft.keywords = ''
+      draft.keywords = undefined
       draft.orderList = []
     })
     setIsShowSearch(false)
@@ -121,9 +121,11 @@ function CheifOrderManage(props) {
 
   const handleSearchCancel = () => {
     setState((draft) => {
-      draft.keywords = ''
+      draft.keywords = undefined
+      draft.orderList = []
     })
     setIsShowSearch(false)
+    orderRef.current.reset()
   }
 
   const handleConfirm = async (val) => {

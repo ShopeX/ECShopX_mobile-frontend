@@ -110,7 +110,7 @@ function CommunityOrder(props) {
 
   const handleOnClear = async () => {
     await setState((draft) => {
-      draft.keywords = ''
+      draft.keywords = undefined
       draft.orderList = []
     })
     setIsShowSearch(false)
@@ -119,9 +119,11 @@ function CommunityOrder(props) {
 
   const handleSearchCancel = () => {
     setState((draft) => {
-      draft.keywords = ''
+      draft.keywords = undefined
+      draft.orderList = []
     })
     setIsShowSearch(false)
+    orderRef.current.reset()
   }
 
   const handleConfirm = async (val) => {
