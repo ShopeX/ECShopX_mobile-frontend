@@ -6,7 +6,7 @@ import { SpPage, SpImage, SpPrice, AddressChoose, SpCell } from '@/components'
 import { AtButton, AtInput } from 'taro-ui'
 import { usePayment } from '@/hooks'
 import qs from 'qs'
-import { log, pickBy } from '@/utils'
+import { log, pickBy, showToast } from '@/utils'
 import api from '@/api'
 import doc from '@/doc'
 import CompGoodsItemBuy from './comps/comp-goodsitembuy'
@@ -69,13 +69,25 @@ const EspierCheckout = () => {
   })
 
   const handlePay = async () => {
-    const { address_id, username, telephone, province, city, county, adrdetail } = address
-    const goodsItems = JSON.parse(decodeURIComponent(items))
+    const { address_id, username, telephone, province, city, county, adrdetail } = address || {}
+    const goodsItems = items && JSON.parse(decodeURIComponent(items))
     const { ziti, distributor_id } = activityInfo
+    if (!adrdetail) {
+      showToast('请选择地址')
+      return
+    }
     const communityExtraData = {}
-    extraFields.forEach(item => {
+    extraFields.forEach((item) => {
       communityExtraData[item.field_name] = item.field_value
     })
+
+    for (let key in communityExtraData) {
+      if (!communityExtraData[key]) {
+        showToast(`请输入${key}`)
+        return
+      }
+    }
+
     const params = {
       receipt_type: 'ziti',
       order_type: 'normal_community',
@@ -104,7 +116,12 @@ const EspierCheckout = () => {
           <SpPrice size={46} value={info?.totalFee} />
         </View>
 
-        <AtButton circle type="primary" className='espierCheckout-toolbar__button' onClick={handlePay}>
+        <AtButton
+          circle
+          type='primary'
+          className='espierCheckout-toolbar__button'
+          onClick={handlePay}
+        >
           立即支付
         </AtButton>
       </View>
@@ -133,9 +150,16 @@ const EspierCheckout = () => {
         {extraFields.length > 0 && (
           <View className='extra-block'>
             {extraFields.map((item, index) => (
-              <SpCell border title={item.field_name}>
+              <SpCell border title={item.field_name} key={index}>
                 {item.field_type == 'text' && (
-                  <AtInput name={item.field_name} value={item.field_value} placeholder={`请填写${item.field_name}`} onChange={onInputChange.bind(this, index)} />
+                  <AtInput
+                    name={item.field_name}
+                    value={item.field_value}
+                    placeholder={`请填写${item.field_name}`}
+                    onChange={onInputChange.bind(this, index)}
+                  >
+                    {item.unit}
+                  </AtInput>
                 )}
               </SpCell>
             ))}

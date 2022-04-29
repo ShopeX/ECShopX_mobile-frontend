@@ -344,28 +344,28 @@ export default class TradeRefund extends Component {
           >
             {' '}
           </AtTextarea>
-          {curSegIdx === 1 ? (
-            <View className='refund-describe__img'>
-              <Text className='refund-describe__text'>上传凭证</Text>
-              <View className='refund-describe__imgupload'>
-                <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
-                <View className='refund-describe__imgupload_picker'>
-                  <AtImagePicker
-                    multiple
-                    mode='aspectFill'
-                    showAddBtn={imgs.length < 3}
-                    length={3}
-                    count={3}
-                    files={imgs}
-                    onChange={this.handleImageChange}
-                    onImageClick={this.handleImageClick}
-                  >
-                    {' '}
-                  </AtImagePicker>
-                </View>
+          {/* {curSegIdx === 1 ? ( */}
+          <View className='refund-describe__img'>
+            <Text className='refund-describe__text'>上传凭证</Text>
+            <View className='refund-describe__imgupload'>
+              <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
+              <View className='refund-describe__imgupload_picker'>
+                <AtImagePicker
+                  multiple
+                  mode='aspectFill'
+                  showAddBtn={imgs.length < 3}
+                  length={3}
+                  count={3}
+                  files={imgs}
+                  onChange={this.handleImageChange}
+                  onImageClick={this.handleImageClick}
+                >
+                  {' '}
+                </AtImagePicker>
               </View>
             </View>
-          ) : null}
+          </View>
+          {/* ) : null} */}
         </View>
 
         {remind && remind.is_open && (

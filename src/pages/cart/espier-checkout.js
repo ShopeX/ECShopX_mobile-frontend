@@ -866,7 +866,9 @@ function CartCheckout(props) {
               placeholder='请输入楼号'
               value={buildingNumber}
               onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
-            />
+            >
+              楼/栋
+            </AtInput>
           </SpCell>
 
           <SpCell border title='房号'>
@@ -875,7 +877,9 @@ function CartCheckout(props) {
               placeholder='请输入房号'
               value={houseNumber}
               onChange={onChangeBuildInput.bind(this, 'houseNumber')}
-            />
+            >
+              号/室
+            </AtInput>
           </SpCell>
         </View>
       )}
