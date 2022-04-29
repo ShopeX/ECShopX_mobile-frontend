@@ -113,9 +113,9 @@ const Index = () => {
     })
   }
 
-  const handleOnClear = async (value) => {
+  const handleOnClear = async () => {
     await setState((draft) => {
-      draft.searchValue = value
+      draft.searchValue = undefined
       draft.activityList = []
     })
     setIsShowSearch(false)
@@ -124,9 +124,11 @@ const Index = () => {
 
   const handleSearchCancel = () => {
     setState((draft) => {
-      draft.searchValue = ''
+      draft.searchValue = undefined
+      draft.orderList = []
     })
     setIsShowSearch(false)
+    orderRef.current.reset()
   }
 
   const handleConfirm = async (val) => {
@@ -193,7 +195,7 @@ const Index = () => {
           </View>
         </View>
 
-        <View className='card-block'>
+        {/* <View className='card-block'>
           <View className='card-block-hd'>团员功能</View>
           <View className='card-block-bd menu-list'>
             {MENUS.map((item, index) => (
@@ -207,14 +209,14 @@ const Index = () => {
               </View>
             ))}
           </View>
-        </View>
+        </View> */}
 
         <View className='card-block'>
           <View className='search-wrap'>
             <SpSearchBar
               showDailog={false}
               keyword={searchValue}
-              placeholder='搜索商品名'
+              placeholder='根据活动名查询'
               onFocus={handleOnFocus}
               onChange={onSearchChange}
               onClear={handleOnClear}

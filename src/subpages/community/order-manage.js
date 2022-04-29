@@ -337,7 +337,7 @@ function CheifOrderManage(props) {
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
-            placeholder='手机号'
+            placeholder='根据手机号查询'
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}
