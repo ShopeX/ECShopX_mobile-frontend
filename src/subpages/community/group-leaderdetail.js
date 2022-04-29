@@ -5,7 +5,7 @@ import Taro, { useShareAppMessage, useDidShow, getCurrentInstance } from '@taroj
 import { View, Text, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
 import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
-import { calcTimer, pickBy, log } from '@/utils'
+import { calcTimer, pickBy, log, isArray } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
 
@@ -75,7 +75,6 @@ function GroupLeaderDetail(props) {
   const countDownEnd = () => {
     fetchDetial()
   }
-
   return (
     <SpPage
       className='page-community-group-leaderdetail'
@@ -162,8 +161,8 @@ function GroupLeaderDetail(props) {
               <Text className='icon iconfont icon-gouwuche'></Text>
               请先加好友或进群，确认邻居身份后再下单
             </View>
-            {detail?.activityPics &&
-              detail?.activityPics?.map((item) => (
+            {isArray(detail?.activityPics) &&
+              detail?.activityPics.map((item) => (
                 <SpImage
                   src={item}
                   mode='aspectFit'

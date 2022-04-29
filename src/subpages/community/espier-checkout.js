@@ -17,7 +17,8 @@ import { useImmer } from 'use-immer'
 const initialState = {
   info: null,
   activityInfo: null,
-  extraFields: []
+  extraFields: [],
+  submitLoading: false
 }
 
 const EspierCheckout = () => {
@@ -26,7 +27,7 @@ const EspierCheckout = () => {
   const { address, chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { cashierPayment } = usePayment()
   const [state, setState] = useImmer(initialState)
-  const { info, activityInfo, extraFields } = state
+  const { info, activityInfo, extraFields, submitLoading } = state
   console.log('chiefInfo:', chiefInfo)
   console.log('address:', address)
   log.debug(`activity_id: ${activity_id}`)
@@ -69,6 +70,7 @@ const EspierCheckout = () => {
   })
 
   const handlePay = async () => {
+    if (submitLoading) return
     const { address_id, username, telephone, province, city, county, adrdetail } = address || {}
     const goodsItems = items && JSON.parse(decodeURIComponent(items))
     const { ziti, distributor_id } = activityInfo
@@ -87,6 +89,9 @@ const EspierCheckout = () => {
         return
       }
     }
+    setState((draft) => {
+      draft.submitLoading = true
+    })
 
     const params = {
       receipt_type: 'ziti',
@@ -104,8 +109,16 @@ const EspierCheckout = () => {
       items: goodsItems,
       community_extra_data: JSON.stringify(communityExtraData)
     }
-    const orderInfo = await api.trade.create(params)
-    cashierPayment(params, orderInfo)
+    await api.trade
+      .create(params)
+      .then((orderInfo) => {
+        cashierPayment(params, orderInfo)
+      })
+      .catch(() => {
+        setState((draft) => {
+          draft.submitLoading = false
+        })
+      })
   }
 
   const renderFooter = () => {
@@ -119,6 +132,7 @@ const EspierCheckout = () => {
         <AtButton
           circle
           type='primary'
+          loading={submitLoading}
           className='espierCheckout-toolbar__button'
           onClick={handlePay}
         >
