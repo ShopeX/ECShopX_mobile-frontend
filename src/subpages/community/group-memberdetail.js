@@ -238,6 +238,18 @@ function GroupLeaderDetail(props) {
         </View>
 
         <View className='goodslist'>
+          {info?.showChiefGoodsList === 1 && (
+            <View
+              className='btn-viewmore'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/subpages/community/list?chief_id=${info.chiefId}&distributor_id=${info.distributorId}`
+                })
+              }}
+            >
+              查看平台所有商品
+            </View>
+          )}
           {items?.map((goods, index) => (
             <CompGoodsItemBuy
               // isShare={false}
@@ -249,18 +261,6 @@ function GroupLeaderDetail(props) {
               onChange={onNumChange.bind(this, index)}
             />
           ))}
-          {info?.showChiefGoodsList === 1 && (
-            <View
-              className='btn-viewmore'
-              onClick={() => {
-                Taro.navigateTo({
-                  url: `/subpages/community/list?chief_id=${info.chiefId}&distributor_id=${info.distributorId}`
-                })
-              }}
-            >
-              查看所有可团商品
-            </View>
-          )}
         </View>
 
         {/* 跟团记录 */}
