@@ -358,7 +358,7 @@ function CommunityOrder(props) {
           <SpSearchBar
             showDailog={false}
             keyword={keywords}
-            placeholder='根据商品名查询'
+            placeholder='根据手机号查询'
             onFocus={handleOnFocus}
             onChange={handleOnChange}
             onClear={handleOnClear}
