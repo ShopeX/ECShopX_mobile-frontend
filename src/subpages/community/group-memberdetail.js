@@ -249,6 +249,18 @@ function GroupLeaderDetail(props) {
               onChange={onNumChange.bind(this, index)}
             />
           ))}
+          {info?.showChiefGoodsList === 1 && (
+            <View
+              className='btn-viewmore'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/subpages/community/list?chief_id=${info.chiefId}&distributor_id=${info.distributorId}`
+                })
+              }}
+            >
+              查看所有可团商品
+            </View>
+          )}
         </View>
 
         {/* 跟团记录 */}

@@ -68,15 +68,25 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   activityName: 'activity_name',
   activityId: 'activity_id',
   chiefInfo: 'chief_info',
+  chiefId: 'chief_id',
   isActivityAuthor: 'is_activity_author',
   startTime: 'start_time',
   endTime: 'end_time',
+  distributorId: 'distributor_id',
+  showChiefGoodsList: ({ show_chief_goodslist }) => {
+    if(typeof show_chief_goodslist == 'undefined') {
+      return 1
+    } else {
+      return show_chief_goodslist
+    }
+  },
   items: ({ items }) => {
     return pickBy(items, {
       itemId: 'itemId',
       pic: 'pics[0]',
       itemName: 'item_name',
       store: 'store',
+      distributorId: 'distributor_id',
       price: ({ price }) => (price / 100).toFixed(2),
       num: 0
     })
@@ -174,7 +184,8 @@ export const COMMUNITY_GOODS_ITEM = {
   pic: 'pics[0]',
   itemName: 'item_name',
   store: 'store',
-  price: ({ price }) => (price / 100).toFixed(2)
+  price: ({ price }) => (price / 100).toFixed(2),
+  distributorId: 'distributor_id'
 }
 
 export const COMMUNITY_AFTER_SALE_ITEM = {

@@ -90,7 +90,9 @@ export default {
         'trade/delivery-info', // 团购-整单物流详情页面
         'trade/cancel', // 团购-取消订单页面,
         'trade/after-sale-detail', // 团购-售后详情页面
-        'boxlist'
+        'boxlist', // 箱数列表
+        'list', // 商品列表
+        'espier-detail' // 商品详情
       ]
     },
     {
@@ -270,7 +272,7 @@ export default {
   window: {
     'backgroundTextStyle': 'light',
     'navigationBarBackgroundColor': '#fff',
-    'navigationBarTitleText': 'ECShopX免费',
+    // 'navigationBarTitleText': 'ECShopX免费',
     'navigationBarTextStyle': 'black'
   }
 }

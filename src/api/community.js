@@ -86,3 +86,8 @@ export function closeCode(parmas) {
   // 活动核销码
   return req.post(`/community/orders/batch_writeoff`, parmas)
 }
+
+// 获取所有可团商品
+export function getMemberItems(params) {
+  return req.get('/community/member/items', params)
+}

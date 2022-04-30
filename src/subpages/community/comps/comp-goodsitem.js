@@ -12,8 +12,16 @@ function CompGoodsItem(props) {
   }
 
   const { pic, itemName, store, price } = info
+
+  const handleClickGoodsDetail = () => {
+    const { itemId, distributorId } = info
+    Taro.navigateTo({
+      url: `/subpages/community/espier-detail?id=${itemId}&dtid=${distributorId}`
+    })
+  }
+
   return (
-    <View className='comp-goods-item'>
+    <View className='comp-goods-item' onClick={handleClickGoodsDetail}>
       <View className='item-hd'>
         <SpImage src={pic} width={160} height={160} />
       </View>

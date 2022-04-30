@@ -46,17 +46,8 @@ import S from '@/spx'
 import { Tracker } from '@/service'
 import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
-import CompActivityBar from './comps/comp-activitybar'
-import CompVipGuide from './comps/comp-vipguide'
-import CompCouponList from './comps/comp-couponlist'
-import CompStore from './comps/comp-store'
-import CompPackageList from './comps/comp-packagelist'
 import CompEvaluation from './comps/comp-evaluation'
-import CompBuytoolbar from './comps/comp-buytoolbar'
-import CompShare from './comps/comp-share'
-import CompPromation from './comps/comp-promation'
-import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../pages/home/wgts'
 
 import './espier-detail.scss'
 
@@ -87,7 +78,8 @@ const initialState = {
   evaluationTotal: 0,
   // 多规格商品选中的规格
   curItem: null,
-  recommendList: []
+  recommendList: [],
+  from: ''
 }
 
 function EspierDetail(props) {
@@ -123,8 +115,10 @@ function EspierDetail(props) {
     type,
     dtid,
     curItem,
-    recommendList
+    recommendList,
+    from
   } = state
+
 
   useEffect(() => {
     init()
@@ -139,7 +133,6 @@ function EspierDetail(props) {
   useEffect(() => {
     if (id) {
       fetch()
-      getPackageList()
       getEvaluationList()
     }
   }, [id])
@@ -201,11 +194,12 @@ function EspierDetail(props) {
   }
 
   const init = async () => {
-    const { type, id, dtid } = await entryLaunch.getRouteParams()
+    const { type, id, dtid, from } = await entryLaunch.getRouteParams()
     setState((draft) => {
       draft.id = id
       draft.type = type
       draft.dtid = dtid
+      draft.from = from
     })
   }
 
@@ -275,20 +269,6 @@ function EspierDetail(props) {
         console.error(e)
       }
     }
-
-    if (openRecommend == 1) {
-      getRecommendList() // 猜你喜欢
-    }
-  }
-
-  const getRecommendList = async () => {
-    const { list } = await api.cart.likeList({
-      page: 1,
-      pageSize: 30
-    })
-    setState((draft) => {
-      draft.recommendList = list
-    })
   }
 
   // 获取包裹
@@ -309,14 +289,6 @@ function EspierDetail(props) {
     setState((draft) => {
       draft.evaluationList = list
       draft.evaluationTotal = total_count
-    })
-  }
-
-  // 领券
-  const handleReceiveCoupon = () => {
-    const { item_id, distributor_id } = info
-    Taro.navigateTo({
-      url: `/others/pages/home/coupon-home?item_id=${item_id}&distributor_id=${distributor_id}`
     })
   }
 
@@ -350,31 +322,6 @@ function EspierDetail(props) {
       isDefault={isDefault}
       defaultMsg={defaultMsg}
       ref={pageRef}
-      renderFloat={
-        <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/index' })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-          <SpChat sessionFrom={JSON.stringify(sessionFrom)}>
-            <SpFloatMenuItem>
-              <Text className='iconfont icon-headphones'></Text>
-            </SpFloatMenuItem>
-          </SpChat>
-        </View>
-      }
-      renderFooter={
-        <CompBuytoolbar
-          info={info}
-          onChange={onChangeToolBar}
-          onSubscribe={() => {
-            fetch()
-          }}
-        />
-      }
     >
       {!info && <SpLoading />}
       {info && (
@@ -429,45 +376,14 @@ function EspierDetail(props) {
             )}
           </View>
 
-          {/* 拼团、秒杀、限时特惠显示活动价 */}
-          {ACTIVITY_LIST[info.activityType] && (
-            <CompActivityBar
-              info={info.activityInfo}
-              type={info.activityType}
-              onTimeUp={() => {
-                fetch()
-              }}
-            >
-              <SpGoodsPrice info={curItem ? curItem : info} />
-            </CompActivityBar>
-          )}
-
           <View className='goods-info'>
-            {/* 拼团、秒杀、限时特惠不显示 */}
-            {!ACTIVITY_LIST[info.activityType] && <SpGoodsPrice info={curItem ? curItem : info} />}
-
-            <CompVipGuide
-              info={{
-                ...info.vipgradeGuideTitle,
-                memberPrice: info.memberPrice
-              }}
-            />
-
-            <CompCouponList
-              info={
-                info.couponList.list.length > 3
-                  ? info.couponList.list.slice(0, 3)
-                  : info.couponList.list
-              }
-              onClick={handleReceiveCoupon}
-            />
 
             <View className='goods-name-wrap'>
               <View className='goods-name'>
                 <View className='title'>{info.itemName}</View>
                 <View className='brief'>{info.brief}</View>
               </View>
-              {(isWeixin || isAPP()) && (
+              {/* {(isWeixin || isAPP()) && (
                 <SpLogin
                   onChange={async () => {
                     if (isAPP()) {
@@ -485,11 +401,9 @@ function EspierDetail(props) {
                     <Text className='share-txt'>分享</Text>
                   </View>
                 </SpLogin>
-              )}
+              )} */}
             </View>
           </View>
-
-          <CompGroup info={info} />
 
           {!info.nospec && (
             <View className='sku-block'>
@@ -508,40 +422,6 @@ function EspierDetail(props) {
             </View>
           )}
 
-          <View className='sku-block'>
-            {promotionPackage.length > 0 && (
-              <SpCell
-                title='组合优惠'
-                isLink
-                onClick={() => {
-                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}` })
-                  // setState((draft) => {
-                  //   draft.packageOpen = true
-                  // })
-                }}
-              >
-                <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
-              </SpCell>
-            )}
-            {promotionActivity.length > 0 && (
-              <SpCell
-                title='优惠活动'
-                isLink
-                onClick={() => {
-                  setState((draft) => {
-                    draft.promotionOpen = true
-                  })
-                }}
-              >
-                {promotionActivity.map((item, index) => (
-                  <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                    {item.promotionTag}
-                  </View>
-                ))}
-              </SpCell>
-            )}
-          </View>
-
           <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
@@ -556,9 +436,6 @@ function EspierDetail(props) {
 
           {/* 商品评价 */}
           <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>
-
-          {/* 店铺 */}
-          {VERSION_PLATFORM && <CompStore info={info.distributorInfo} />}
 
           <View className='goods-desc'>
             <View className='desc-hd'>
@@ -583,85 +460,6 @@ function EspierDetail(props) {
         </View>
       )}
 
-      <SpRecommend info={recommendList} />
-
-      {/* 优惠组合 */}
-      <CompPackageList
-        open={packageOpen}
-        onClose={() => {
-          setState((draft) => {
-            draft.packageOpen = false
-          })
-        }}
-        info={{
-          mainGoods,
-          makeUpGoods
-        }}
-      />
-
-      {/* 促销优惠活动 */}
-      <CompPromation
-        open={promotionOpen}
-        info={promotionActivity}
-        onClose={() => {
-          setState((draft) => {
-            draft.promotionOpen = false
-          })
-        }}
-      />
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
-
-      {/* 分享 */}
-      <CompShare
-        open={sharePanelOpen}
-        onClose={() => {
-          setState((draft) => {
-            draft.sharePanelOpen = false
-          })
-        }}
-        onCreatePoster={() => {
-          setState((draft) => {
-            draft.sharePanelOpen = false
-            draft.posterModalOpen = true
-          })
-        }}
-        onShareEdit={() => {
-          const { itemId, companyId, distributorId } = info
-          Taro.navigateTo({
-            url: `/subpage/pages/editShare/index?id=${itemId}&dtid=${distributorId}&company_id=${companyId}`
-          })
-        }}
-      />
-
-      {/* 海报 */}
-      {posterModalOpen && (
-        <SpPoster
-          info={info}
-          type='goodsDetial'
-          onClose={() => {
-            setState((draft) => {
-              draft.posterModalOpen = false
-            })
-          }}
-        />
-      )}
     </SpPage>
   )
 }

@@ -85,6 +85,7 @@ export const GOODS_INFO = {
   companyId: 'company_id',
   activityInfo: 'activity_info',
   activityType: 'activity_type',
+  approveStatus: 'approve_status',
   price: ({ price }) => price / 100,
   activityPrice: ({ act_price }) => act_price / 100,
   memberPrice: ({ member_price }) => {

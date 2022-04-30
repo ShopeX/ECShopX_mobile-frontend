@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice, SpInputNumber } from '@/components'
 import { useImmer } from 'use-immer'
@@ -28,8 +29,15 @@ const CompGoodsItemBuy = (props) => {
     onChange(num)
   }
 
+  const handleClickGoodsDetail = () => {
+    const { itemId, distributorId } = info
+    Taro.navigateTo({
+      url: `/subpages/community/espier-detail?id=${itemId}&dtid=${distributorId}`
+    })
+  }
+
   return (
-    <View className='comp-goodsitembuy'>
+    <View className='comp-goodsitembuy' onClick={handleClickGoodsDetail}>
       <View className='comp-goodsitembuy-img'>
         <SpImage src={info.pic} width={160} height={160} />
       </View>

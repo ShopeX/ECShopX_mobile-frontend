@@ -189,17 +189,19 @@ function SpPage(props, ref) {
       {!isDefault && !loading && <View className='sp-page-body'>{children}</View>}
 
       {/* 置底操作区 */}
-      {renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
+      {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
 
       {/* 浮动 */}
-      <View className='float-container'>
-        {renderFloat}
-        {showToTop && scrollToTopBtn && (
-          <SpFloatMenuItem onClick={scrollToTop}>
-            <Text className='iconfont icon-arrow-up'></Text>
-          </SpFloatMenuItem>
-        )}
-      </View>
+      {!isDefault && (
+        <View className='float-container'>
+          {renderFloat}
+          {showToTop && scrollToTopBtn && (
+            <SpFloatMenuItem onClick={scrollToTop}>
+              <Text className='iconfont icon-arrow-up'></Text>
+            </SpFloatMenuItem>
+          )}
+        </View>
+      )}
     </View>
   )
 }
