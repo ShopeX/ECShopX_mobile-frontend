@@ -547,7 +547,7 @@ function EspierDetail(props) {
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
                 <View className='params-item' key={`params-item__${index}`}>
-                  <View className='params-label'>{item.attribute_name}</View>
+                  <View className='params-label'>{`${item.attribute_name}：`}</View>
                   <View className='params-value'>{item.attribute_value_name}</View>
                 </View>
               ))}

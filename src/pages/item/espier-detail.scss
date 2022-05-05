@@ -215,11 +215,11 @@
     }
     .params-label {
       color: #666;
-      width: 100px;
+      // width: 100px;
     }
     .params-value {
       color: #222;
-      max-width: 500px;
+      max-width: 550px;
       @include text-overflow();
     }
   }
