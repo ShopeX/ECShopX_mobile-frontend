@@ -35,7 +35,7 @@ function CompPointUse(props) {
             })
           }}>使用规则</Text>
         </View>
-        <SpNumberKeyBoard maxValue={info.max_point} onClose={onClose} onConfirm={onChange}/>
+        <SpNumberKeyBoard maxValue={info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
       </SpFloatLayout>
 
       <AtModal isOpened={isOpenRule}>

@@ -21,8 +21,8 @@ function CompGoodsItem(props) {
   }
 
   return (
-    <View className='comp-goods-item' onClick={handleClickGoodsDetail}>
-      <View className='item-hd'>
+    <View className='comp-goods-item'>
+      <View className='item-hd' onClick={handleClickGoodsDetail}>
         <SpImage src={pic} width={160} height={160} />
       </View>
       <View className='item-bd'>

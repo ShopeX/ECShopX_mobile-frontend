@@ -53,7 +53,7 @@ function SpNumberKeyBoard(props) {
         break
       case 'all':
         setState((draft) => {
-          draft.currentValue = maxValue
+          draft.currentValue = maxValue < value ? maxValue : value
         })
         break
       default:

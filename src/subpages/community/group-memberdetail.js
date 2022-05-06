@@ -162,6 +162,26 @@ function GroupLeaderDetail(props) {
           </View>
         )}
 
+        {
+          isArray(info?.activityPics) && <View className='leader-concat'>
+            <View className='warning'>
+              <Text className='icon iconfont icon-gouwuche'></Text>
+              请先加好友或进群，确认邻居身份后再下单
+            </View>
+            {
+              info?.activityPics.map((item) => (
+                <SpImage
+                  src={item}
+                  mode='aspectFit'
+                  className='group-head'
+                  width={200}
+                  height={200}
+                />
+              ))
+            }
+          </View>
+        }
+
         <CompGroupNeighbour info={info?.ziti} />
 
         {/* 本团信息 */}

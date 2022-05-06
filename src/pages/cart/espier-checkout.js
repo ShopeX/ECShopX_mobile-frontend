@@ -28,8 +28,8 @@ import {
   isAPP,
   log,
   VERSION_STANDARD,
+  VERSION_B2C,
   VERSION_PLATFORM,
-  VERSION_IN_PURCHASE
 } from '@/utils'
 import { useAsyncCallback, useLogin, usePayment } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
@@ -297,8 +297,8 @@ function CartCheckout(props) {
       draft.submitLoading = false
     })
 
-    // 储值支付
-    if (payType === 'deposit') {
+    // 储值支付 或者 积分抵扣
+    if (payType === 'deposit' || params.pay_type == 'point') {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
     } else {
       if (params.pay_type == 'wxpayjs') {
@@ -630,7 +630,6 @@ function CartCheckout(props) {
         receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       }
     }
-
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -644,7 +643,7 @@ function CartCheckout(props) {
       // not_use_coupon: 0,
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: payType,
+      pay_type: (point_use > 0 && totalInfo.total_fee == 0 ) ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
 
@@ -678,7 +677,7 @@ function CartCheckout(props) {
     // if (submitLoading) {
     // 提交时候获取参数 把留言信息传进去
     cus_parmas.remark = remark
-    cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
+    // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
 
@@ -915,7 +914,8 @@ function CartCheckout(props) {
         </SpCell>
       )}
 
-      {!VERSION_IN_PURCHASE && pointInfo?.is_open_deduct_point && (
+      {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
+      {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) && pointInfo?.is_open_deduct_point && (
         <SpCell
           isLink
           className='cart-checkout__invoice'
@@ -967,7 +967,7 @@ function CartCheckout(props) {
         <SpCell className='trade-sub__item' title='优惠金额：'>
           <SpPrice unit='cent' primary value={-1 * totalInfo.discount_fee} />
         </SpCell>
-        {pointInfo.is_open_deduct_point && !VERSION_IN_PURCHASE && (
+        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) && pointInfo.is_open_deduct_point && (
           <SpCell className='trade-sub__item' title={`${pointName}抵扣：`}>
             <SpPrice unit='cent' primary value={-1 * totalInfo.point_fee} />
           </SpCell>
