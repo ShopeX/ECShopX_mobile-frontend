@@ -41,8 +41,13 @@
 
   &-goods {
     margin-top: 20px;
-    padding: 0 30px;
+    padding: 20px 30px;
     background: #fff;
+    &.spec-item {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
   }
 
   &-total {
@@ -115,6 +120,31 @@
     margin-top: 20px;
     .sp-cell {
       padding: 10px 30px;
+    }
+  }
+
+  .spec-item {
+    display: flex;
+    &-hd {
+      margin-right: 10px;
+    }
+    &-bd {
+      flex: 1;
+    }
+    .item-name {
+      margin-top: 10px;
+    }
+    .spec-desc {
+      color: #666;
+    }
+    .spec-num {
+      text-align: right;
+      color: #666;
+    }
+    .item-price-num {
+      display: flex;
+      margin-top: 20px;
+      justify-content: space-between;
     }
   }
 }

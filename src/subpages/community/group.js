@@ -54,10 +54,12 @@ function Group(props) {
       res,
       doc.community.COMMUNITY_ACTIVITY_ITEM
     )
+    // const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
     setState((draft) => {
       draft.comps = activityIntro
       draft.qrcode = activityPics
       draft.activityName = activityName
+      // draft.goodsList = _items
       draft.startDate = dayjs(startTime * 1000).format('YYYY-MM-DD')
       draft.startTime = dayjs(startTime * 1000).format('HH:mm')
       draft.endDate = dayjs(endTime * 1000).format('YYYY-MM-DD')
@@ -67,8 +69,8 @@ function Group(props) {
     const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
     dispatch(updateSelectCommunityZiti(_ziti))
 
-    const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
-    dispatch(updateSelectGoods(_items))
+    const selectGoods = _items.map(item => item.itemId)
+    dispatch(updateSelectGoods(selectGoods))
   }
 
   const onCompsClick = async ({ key }) => {
@@ -175,6 +177,10 @@ function Group(props) {
       if (comp.type == 'bigimage') {
         return showToast('请添加团购活动图片')
       }
+    }
+
+    if(selectGoods.length == 0) {
+      return showToast('请选择团购商品')
     }
 
     if (!selectCommunityZiti) {

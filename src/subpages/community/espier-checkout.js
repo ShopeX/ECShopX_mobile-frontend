@@ -182,7 +182,17 @@ const EspierCheckout = () => {
 
         <View className='espierCheckout-goods'>
           {info?.items.map((item) => (
-            <CompGoodsItemBuy info={item} hideInputNumber />
+            // <CompGoodsItemBuy info={item} hideInputNumber />
+            <View className='spec-item'>
+              <View className='spec-item-hd'>
+                <SpImage src={item.pic} width={160} height={160} />
+              </View>
+              <View className='spec-item-bd'>
+                <View className='item-name'>{item.itemName}</View>
+                <View className='spec-desc'>{item.itemSpecDesc}</View>
+                <View className='spec-num'>x{item.num}</View>
+              </View>
+            </View>
           ))}
         </View>
 
