@@ -88,7 +88,25 @@ export const COMMUNITY_ACTIVITY_ITEM = {
       store: 'store',
       distributorId: 'distributor_id',
       price: ({ price }) => (price / 100).toFixed(2),
-      num: 0
+      num: 0,
+      buyNum: ({ buy_num }) => {
+        return 10
+      },
+      minDeliveryNum: ({ min_delivery_num }) => {
+        return min_delivery_num + 100
+      },
+      nospec: 'nospec',
+      specItems: ({ spec_items }) => {
+        return pickBy(spec_items, {
+          pic: 'pics[0]',
+          itemId: 'item_id',
+          itemName: 'item_name',
+          itemSpecDesc: 'item_spec_desc',
+          price: ({ price }) => (price / 100).toFixed(2),
+          num: 0
+        })
+      },
+
     })
   },
   ziti: ({ ziti }) => {
@@ -180,7 +198,7 @@ export const COMMUNITY_ZITI = {
 }
 
 export const COMMUNITY_GOODS_ITEM = {
-  itemId: 'itemId',
+  itemId: 'item_id',
   pic: 'pics[0]',
   itemName: 'item_name',
   store: 'store',
@@ -215,7 +233,8 @@ export const COMMUNITY_CHECKOUT_RES = {
       pic: 'pic',
       itemName: 'item_name',
       price: ({ price }) => (price / 100).toFixed(2),
-      num: 'num'
+      num: 'num',
+      itemSpecDesc: 'item_spec_desc'
     })
   },
   totalFee: ({ total_fee }) => (total_fee / 100).toFixed(2),

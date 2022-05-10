@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
-import { SpPage, SpImage, SpPrice, SpHtml } from '@/components'
+import { SpPage, SpImage, SpPrice, SpFloatLayout, SpInputNumber } from '@/components'
 import { AtButton, AtCountdown } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
@@ -17,14 +17,15 @@ import CompGroupNeighbour from './comps/comp-groupneighbour'
 import CompWgts from './comps/comp-wgts'
 
 import './group-memberdetail.scss'
-import { defaultTo } from 'lodash'
 
 const initialState = {
   info: null,
   timer: {},
   loading: true,
   chiefInfo: null,
-  items: []
+  items: [],
+  isOpened: false,
+  activeIndex: null
 }
 
 function GroupLeaderDetail(props) {
@@ -32,7 +33,7 @@ function GroupLeaderDetail(props) {
   const { activity_id } = $instance.router.params
   const [state, setState] = useImmer(initialState)
 
-  const { info, timer, loading, chiefInfo, items } = state
+  const { info, timer, loading, chiefInfo, items, isOpened, activeIndex } = state
 
   useEffect(() => {
     fetch()
@@ -61,14 +62,25 @@ function GroupLeaderDetail(props) {
   const handleClickPic = () => {}
 
   const handleClickBuy = () => {
-    const tempItems = items
-      .filter((item) => item.num > 0)
-      .map((item) => {
-        return {
+    let tempItems = []
+    items.forEach(item => {
+      // 多规格
+      if(!item.nospec) {
+        item.specItems.forEach(spec => {
+          if(spec.num > 0) {
+            tempItems.push({
+              item_id: spec.itemId,
+              num: spec.num
+            })
+          }
+        })
+      } else if(item.num > 0) {
+        tempItems.push({
           item_id: item.itemId,
           num: item.num
-        }
-      })
+        })
+      }
+    })
     if (tempItems.length == 0) {
       return showToast('请选择购买商品')
     }
@@ -87,6 +99,21 @@ function GroupLeaderDetail(props) {
     _items[idx].num = goodsNum
     setState((draft) => {
       draft.items = _items
+    })
+  }
+
+  const onSkuNumChange = (idx, num) => {
+    const _items = JSON.parse(JSON.stringify(items))
+    _items[activeIndex].specItems[idx].num = num
+    setState((draft) => {
+      draft.items = _items
+    })
+  }
+
+  const onChangeSku  = (index) => {
+    setState(draft => {
+      draft.activeIndex = index
+      draft.isOpened = true
     })
   }
 
@@ -272,13 +299,9 @@ function GroupLeaderDetail(props) {
           )}
           {items?.map((goods, index) => (
             <CompGoodsItemBuy
-              // isShare={false}
-              // key={goodsIdx}
               info={goods}
-              // isMarket={false}
-              // isLeft={false}
-              // isTag={false}
               onChange={onNumChange.bind(this, index)}
+              onChangeSku={onChangeSku.bind(this, index)}
             />
           ))}
         </View>
@@ -291,6 +314,43 @@ function GroupLeaderDetail(props) {
           </View>
         )}
       </View>
+
+      {/* sku选择 */}
+      <SpFloatLayout
+        hideClose
+        open={isOpened}
+        renderFooter={
+          <AtButton
+            circle
+            type="primary"
+            onClick={() => {
+              setState(draft => {
+                draft.isOpened = false
+              })
+            }}
+          >
+            确定
+          </AtButton>
+        }
+      >
+        {
+          activeIndex !== null && items[activeIndex]?.specItems.map((item, index) => (
+            <View className='spec-item'>
+              <View className='spec-item-hd'>
+                <SpImage src={item.pic} width={160} height={160} />
+              </View>
+              <View className='spec-item-bd'>
+                <View className='item-name'>{item.itemName}</View>
+                <View className='spec-desc'>{item.itemSpecDesc}</View>
+                <View className='item-price-num'>
+                  <SpPrice size={32} value={item.price / 100} />
+                  <SpInputNumber value={item.num} min={0} onChange={onSkuNumChange.bind(this, index)} />
+                </View>
+              </View>
+            </View>
+          ))
+        }
+      </SpFloatLayout>
     </SpPage>
   )
 }

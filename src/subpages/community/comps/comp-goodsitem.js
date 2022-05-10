@@ -12,13 +12,21 @@ function CompGoodsItem(props) {
     return
   }
 
-  const { pic, itemName, store, price, itemSpecDesc } = info
+  const { pic, itemName, store, price, itemSpecDesc,  buyNum, minDeliveryNum } = info
 
   const handleClickGoodsDetail = () => {
     const { itemId, distributorId } = info
     Taro.navigateTo({
       url: `/subpages/community/espier-detail?id=${itemId}&dtid=${distributorId}`
     })
+  }
+
+  const diff = minDeliveryNum - buyNum
+  let progressValue = 0
+  if(diff <= 0) {
+    progressValue = 100
+  } else {
+    progressValue = buyNum / minDeliveryNum * 100
   }
 
   return (
@@ -35,8 +43,8 @@ function CompGoodsItem(props) {
         </View>
         {showProgress && (
           <View className='activity-progress'>
-            <AtProgress percent={25} isHidePercent />
-            <Text className='progress-txt'>还差50件起送</Text>
+            <AtProgress percent={progressValue} isHidePercent />
+            <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
           </View>
         )}
       </View>

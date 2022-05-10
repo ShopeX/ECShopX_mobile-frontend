@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
-import { AtProgress } from 'taro-ui'
+import { AtButton, AtProgress } from 'taro-ui'
 import { View, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice, SpInputNumber } from '@/components'
 import { useImmer } from 'use-immer'
@@ -21,10 +21,12 @@ const CompGoodsItemBuy = (props) => {
     isLeft = false,
     isTag = false,
     isSpecs = false,
-    hideInputNumber = false
+    hideInputNumber = false,
+    onChangeSku = () => {}
   } = props
   // const [state, setState] = useImmer(initialState)
   // const { num } = state
+  const { buyNum, minDeliveryNum } = info
 
   const onNumChange = (num) => {
     onChange(num)
@@ -37,6 +39,15 @@ const CompGoodsItemBuy = (props) => {
     })
   }
 
+  const diff = minDeliveryNum - buyNum
+  let progressValue = 0
+  if(diff <= 0) {
+    progressValue = 100
+  } else {
+    progressValue = buyNum / minDeliveryNum * 100
+  }
+
+
   return (
     <View className='comp-goodsitembuy' >
       <View className='comp-goodsitembuy-img' onClick={handleClickGoodsDetail}>
@@ -48,15 +59,16 @@ const CompGoodsItemBuy = (props) => {
           <SpPrice value={info.price} />
         </View>
         <View className="activity-progress">
-          <AtProgress percent={25} isHidePercent />
-          <Text className='progress-txt'>还差50件起送</Text>
+          <AtProgress percent={progressValue} isHidePercent />
+          <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
         </View>
       </View>
 
 
       {!hideInputNumber && (
         <View className='comp-goodsitembuy-handle'>
-          <SpInputNumber value={info.num} min={0} onChange={onNumChange} />
+          {info.nospec && <SpInputNumber value={info.num} min={0} onChange={onNumChange} />}
+          {!info.nospec && <AtButton circle type="primary" onClick={onChangeSku}>选择规格</AtButton>}
         </View>
       )}
     </View>

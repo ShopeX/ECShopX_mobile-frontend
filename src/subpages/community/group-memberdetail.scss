@@ -475,4 +475,25 @@ $good-img-width: 80px;
     .group-head {
     }
   }
+  .spec-item {
+    display: flex;
+    margin-bottom: 20px;
+    &-hd {
+      margin-right: 10px;
+    }
+    &-bd {
+      flex: 1;
+    }
+    .item-name {
+      margin-top: 10px;
+    }
+    .spec-desc {
+      color: #666;
+    }
+    .item-price-num {
+      display: flex;
+      margin-top: 20px;
+      justify-content: space-between;
+    }
+  }
 }
