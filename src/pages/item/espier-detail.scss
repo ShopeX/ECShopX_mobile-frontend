@@ -76,6 +76,15 @@
       background-color: #fff;
       padding: 19px 16px;
       box-shadow: 0px 2px 10px 0px #eae7e0;
+      &-title {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .kc {
+        font-size: 24px;
+        color: #999;
+      }
     }
     .goods-desc {
       margin: 24px 16px;

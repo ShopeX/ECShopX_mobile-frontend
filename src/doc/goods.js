@@ -104,6 +104,7 @@ export const GOODS_INFO = {
   vipgradeGuideTitle: 'vipgrade_guide_title',
   couponList: 'kaquan_list',
   store: 'store',
+  store_setting: 'store_setting',
   limitNum: 'limit_num',
   isGift: 'is_gift',
   itemParams: 'item_params',
