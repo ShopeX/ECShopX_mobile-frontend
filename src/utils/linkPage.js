@@ -2,7 +2,15 @@ import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
 function linkPage (data) {
-  const { id, title, linkPage, type } = data
+  const { id, title, linkPage, linkType, type } = data
+  // console.log('linkPage:', type, data)
+  // h5链接
+  if(linkType == 1) {
+    Taro.navigateTo({
+      url: `/pages/webview?url=${encodeURIComponent(data.linkUrl)}`
+    })
+    return
+  }
   let url = ''
   switch (linkPage) {
     case 'goods':

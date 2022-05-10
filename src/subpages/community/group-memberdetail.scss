@@ -459,4 +459,20 @@ $good-img-width: 80px;
     color: var(--color-primary);
     padding: 20px 0;
   }
+  .leader-concat {
+    padding: 20px;
+    background-color: #fff;
+  }
+  .warning {
+    padding: 20px 0;
+    color: #ef9e67;
+
+    .icon {
+      font-size: 26px;
+      margin-right: 4px;
+    }
+
+    .group-head {
+    }
+  }
 }

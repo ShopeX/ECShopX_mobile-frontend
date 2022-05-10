@@ -179,7 +179,7 @@ function GroupLeaderDetail(props) {
 
         <View className='goodslist'>
           {detail?.items?.map((item) => (
-            <CompGoodsItem info={item} />
+            <CompGoodsItem info={item} showProgress />
           ))}
           {/* <CompGoodsItemBuy isShare isMarket isLeft isTag isSpecs></CompGoodsItemBuy>
           <CompGoodsItemBuy isShare isMarket isLeft></CompGoodsItemBuy> */}

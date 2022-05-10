@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
+import { AtProgress } from 'taro-ui'
 import { View, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice, SpInputNumber } from '@/components'
 import { useImmer } from 'use-immer'
@@ -45,6 +46,10 @@ const CompGoodsItemBuy = (props) => {
         <View className='comp-goodsitembuy-info__name'>{info.itemName}</View>
         <View className='comp-goodsitembuy-info__price'>
           <SpPrice value={info.price} />
+        </View>
+        <View className="activity-progress">
+          <AtProgress percent={25} isHidePercent />
+          <Text className='progress-txt'>还差50件起送</Text>
         </View>
       </View>
 

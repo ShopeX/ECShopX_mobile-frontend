@@ -83,6 +83,7 @@ import SpCustomNavigation from './sp-custom-navigation'
 import SpUpload from './sp-upload'
 import SpPicker from './sp-picker'
 import SpPickerAddress from './sp-picker-address'
+import SpNumberKeyBoard from './sp-numberkeyboard'
 
 export default {}
 
@@ -171,5 +172,6 @@ export {
   SpCustomNavigation,
   SpUpload,
   SpPicker,
-  SpPickerAddress
+  SpPickerAddress,
+  SpNumberKeyBoard
 }

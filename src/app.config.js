@@ -1,11 +1,12 @@
 export default {
   pages: [
     'pages/index', // 首页
+    'pages/webview', // webview
     'pages/category/index', // 分类
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
     'pages/cart/cashier-result', // 支付结果页面
-
+    
     'pages/store/index', // 店铺首页
     'pages/store/brand-info', // 店铺品牌
 
@@ -272,7 +273,7 @@ export default {
   window: {
     'backgroundTextStyle': 'light',
     'navigationBarBackgroundColor': '#fff',
-    // 'navigationBarTitleText': 'ECShopX免费',
+    'navigationBarTitleText': '小程序',
     'navigationBarTextStyle': 'black'
   }
 }

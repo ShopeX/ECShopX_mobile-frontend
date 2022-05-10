@@ -119,6 +119,7 @@ function SpPage(props, ref) {
 
   let model = ''
   let ipx = false
+  let customNavigation = false
 
   if (isWeixin) {
     const deviceInfo = Taro.getSystemInfoSync()
@@ -130,10 +131,12 @@ function SpPage(props, ref) {
   const { page } = getCurrentInstance()
   const _pageTitle = page?.config?.navigationBarTitleText
 
-  const pages = Taro.getCurrentPages()
-  const currentPage = pages[pages.length - 1]
-  const { navigationStyle } = currentPage.config
-  const customNavigation = navigationStyle === 'custom'
+  if (isWeixin) {
+    const pages = Taro.getCurrentPages()
+    const currentPage = pages[pages.length - 1]
+    const { navigationStyle } = currentPage.config
+    customNavigation = navigationStyle === 'custom'
+  }
 
   const CustomNavigation = () => {
     const menuButton = Taro.getMenuButtonBoundingClientRect()
