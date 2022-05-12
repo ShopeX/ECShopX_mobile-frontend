@@ -121,7 +121,6 @@ function GroupLeaderDetail(props) {
     <SpPage
       className='page-group-memberdetail'
       loading={loading}
-      isBackIndex
       renderFooter={
         <View className='goodsbuytoolbar'>
           <View

@@ -31,8 +31,7 @@ function SpPage(props, ref) {
     loading = false,
     defaultMsg = '',
     navbar = true,
-    onClickLeftIcon = null,
-    isBackIndex = false
+    onClickLeftIcon = null
   } = props
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
@@ -121,6 +120,7 @@ function SpPage(props, ref) {
   let model = ''
   let ipx = false
   let customNavigation = false
+  let cusCurrentPage = 0
 
   if (isWeixin) {
     const deviceInfo = Taro.getSystemInfoSync()
@@ -137,6 +137,7 @@ function SpPage(props, ref) {
     const currentPage = pages[pages.length - 1]
     const { navigationStyle } = currentPage.config
     customNavigation = navigationStyle === 'custom'
+    cusCurrentPage = pages.length
   }
 
   const CustomNavigation = () => {
@@ -144,6 +145,7 @@ function SpPage(props, ref) {
     const { statusBarHeight } = Taro.getSystemInfoSync()
 
     console.log('MenuButton:', menuButton, statusBarHeight)
+    console.log(cusCurrentPage)
 
     const navbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
 
@@ -155,7 +157,7 @@ function SpPage(props, ref) {
           paddingTop: `${statusBarHeight}px`
         })}
       >
-        {isBackIndex ? (
+        {cusCurrentPage == 1 ? (
           <View className='left-container'>
             <Text
               className='iconfont icon-home'
@@ -164,7 +166,7 @@ function SpPage(props, ref) {
                   url: '/pages/index'
                 })
               }}
-            ></Text>
+            />
           </View>
         ) : (
           <View className='left-container'>
@@ -173,7 +175,7 @@ function SpPage(props, ref) {
               onClick={() => {
                 Taro.navigateBack()
               }}
-            ></Text>
+            />
           </View>
         )}
         <View className='title-container'>{pageTitle}</View>
