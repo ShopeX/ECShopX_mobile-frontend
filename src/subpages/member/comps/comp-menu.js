@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { classNames, styleNames, isWeb, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
+import { classNames, styleNames, isWeixin, isWeb, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
 import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
@@ -119,7 +119,7 @@ function CompMenu(props) {
   }
 
   // 社区团购
-  if (VERSION_PLATFORM) {
+  if (VERSION_PLATFORM && isWeixin) {
     menus = menus.concat(MENUS_COMMUNITY)
   }
 
