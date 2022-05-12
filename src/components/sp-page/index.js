@@ -31,7 +31,8 @@ function SpPage(props, ref) {
     loading = false,
     defaultMsg = '',
     navbar = true,
-    onClickLeftIcon = null
+    onClickLeftIcon = null,
+    isBackIndex = false
   } = props
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
@@ -154,14 +155,27 @@ function SpPage(props, ref) {
           paddingTop: `${statusBarHeight}px`
         })}
       >
-        <View className='left-container'>
-          <Text
-            className='iconfont icon-shangyiyehoutuifanhui-xianxingyuankuang'
-            onClick={() => {
-              Taro.navigateBack()
-            }}
-          ></Text>
-        </View>
+        {isBackIndex ? (
+          <View className='left-container'>
+            <Text
+              className='iconfont icon-home'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: '/pages/index'
+                })
+              }}
+            ></Text>
+          </View>
+        ) : (
+          <View className='left-container'>
+            <Text
+              className='iconfont icon-shangyiyehoutuifanhui-xianxingyuankuang'
+              onClick={() => {
+                Taro.navigateBack()
+              }}
+            ></Text>
+          </View>
+        )}
         <View className='title-container'>{pageTitle}</View>
         <View className='right-container'></View>
       </View>

@@ -63,18 +63,18 @@ function GroupLeaderDetail(props) {
 
   const handleClickBuy = () => {
     let tempItems = []
-    items.forEach(item => {
+    items.forEach((item) => {
       // 多规格
-      if(!item.nospec) {
-        item.specItems.forEach(spec => {
-          if(spec.num > 0) {
+      if (!item.nospec) {
+        item.specItems.forEach((spec) => {
+          if (spec.num > 0) {
             tempItems.push({
               item_id: spec.itemId,
               num: spec.num
             })
           }
         })
-      } else if(item.num > 0) {
+      } else if (item.num > 0) {
         tempItems.push({
           item_id: item.itemId,
           num: item.num
@@ -110,8 +110,8 @@ function GroupLeaderDetail(props) {
     })
   }
 
-  const onChangeSku  = (index) => {
-    setState(draft => {
+  const onChangeSku = (index) => {
+    setState((draft) => {
       draft.activeIndex = index
       draft.isOpened = true
     })
@@ -121,6 +121,7 @@ function GroupLeaderDetail(props) {
     <SpPage
       className='page-group-memberdetail'
       loading={loading}
+      isBackIndex
       renderFooter={
         <View className='goodsbuytoolbar'>
           <View
@@ -189,25 +190,23 @@ function GroupLeaderDetail(props) {
           </View>
         )}
 
-        {
-          isArray(info?.activityPics) && <View className='leader-concat'>
+        {isArray(info?.activityPics) && (
+          <View className='leader-concat'>
             <View className='warning'>
               <Text className='icon iconfont icon-gouwuche'></Text>
               请先加好友或进群，确认邻居身份后再下单
             </View>
-            {
-              info?.activityPics.map((item) => (
-                <SpImage
-                  src={item}
-                  mode='aspectFit'
-                  className='group-head'
-                  width={200}
-                  height={200}
-                />
-              ))
-            }
+            {info?.activityPics.map((item) => (
+              <SpImage
+                src={item}
+                mode='aspectFit'
+                className='group-head'
+                width={200}
+                height={200}
+              />
+            ))}
           </View>
-        }
+        )}
 
         <CompGroupNeighbour info={info?.ziti} />
 
@@ -322,9 +321,9 @@ function GroupLeaderDetail(props) {
         renderFooter={
           <AtButton
             circle
-            type="primary"
+            type='primary'
             onClick={() => {
-              setState(draft => {
+              setState((draft) => {
                 draft.isOpened = false
               })
             }}
@@ -333,8 +332,8 @@ function GroupLeaderDetail(props) {
           </AtButton>
         }
       >
-        {
-          activeIndex !== null && items[activeIndex]?.specItems.map((item, index) => (
+        {activeIndex !== null &&
+          items[activeIndex]?.specItems.map((item, index) => (
             <View className='spec-item'>
               <View className='spec-item-hd'>
                 <SpImage src={item.pic} width={160} height={160} />
@@ -344,12 +343,15 @@ function GroupLeaderDetail(props) {
                 <View className='spec-desc'>{item.itemSpecDesc}</View>
                 <View className='item-price-num'>
                   <SpPrice size={32} value={item.price / 100} />
-                  <SpInputNumber value={item.num} min={0} onChange={onSkuNumChange.bind(this, index)} />
+                  <SpInputNumber
+                    value={item.num}
+                    min={0}
+                    onChange={onSkuNumChange.bind(this, index)}
+                  />
                 </View>
               </View>
             </View>
-          ))
-        }
+          ))}
       </SpFloatLayout>
     </SpPage>
   )
