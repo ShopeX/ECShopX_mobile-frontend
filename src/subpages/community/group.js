@@ -54,7 +54,6 @@ function Group(props) {
       res,
       doc.community.COMMUNITY_ACTIVITY_ITEM
     )
-    // const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
     setState((draft) => {
       draft.comps = activityIntro
       draft.qrcode = activityPics
@@ -65,12 +64,13 @@ function Group(props) {
       draft.endDate = dayjs(endTime * 1000).format('YYYY-MM-DD')
       draft.endTime = dayjs(endTime * 1000).format('HH:mm')
     })
-
+    
     const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
     dispatch(updateSelectCommunityZiti(_ziti))
-
-    const selectGoods = _items.map(item => item.itemId)
-    dispatch(updateSelectGoods(selectGoods))
+    
+    const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
+    console.log(`_items:`, _items)
+    dispatch(updateSelectGoods(_items))
   }
 
   const onCompsClick = async ({ key }) => {

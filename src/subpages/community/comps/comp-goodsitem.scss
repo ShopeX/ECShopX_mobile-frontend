@@ -19,4 +19,13 @@
       color: #666;
     }
   }
+  .spec-label {
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    border-radius: 4px;
+    color: var(--color-primary);
+    padding: 0 4px;
+    font-size: 24px;
+    display: inline-block;
+  }
 }

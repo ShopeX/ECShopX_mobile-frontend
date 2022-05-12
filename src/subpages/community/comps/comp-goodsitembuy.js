@@ -41,15 +41,14 @@ const CompGoodsItemBuy = (props) => {
 
   const diff = minDeliveryNum - buyNum
   let progressValue = 0
-  if(diff <= 0) {
+  if (diff <= 0) {
     progressValue = 100
   } else {
-    progressValue = buyNum / minDeliveryNum * 100
+    progressValue = (buyNum / minDeliveryNum) * 100
   }
 
-
   return (
-    <View className='comp-goodsitembuy' >
+    <View className='comp-goodsitembuy'>
       <View className='comp-goodsitembuy-img' onClick={handleClickGoodsDetail}>
         <SpImage src={info.pic} width={160} height={160} />
       </View>
@@ -58,17 +57,22 @@ const CompGoodsItemBuy = (props) => {
         <View className='comp-goodsitembuy-info__price'>
           <SpPrice value={info.price} />
         </View>
-        <View className="activity-progress">
-          <AtProgress percent={progressValue} isHidePercent />
-          <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
-        </View>
+        {minDeliveryNum > 0 && (
+          <View className='activity-progress'>
+            <AtProgress percent={progressValue} isHidePercent />
+            <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
+          </View>
+        )}
       </View>
-
 
       {!hideInputNumber && (
         <View className='comp-goodsitembuy-handle'>
           {info.nospec && <SpInputNumber value={info.num} min={0} onChange={onNumChange} />}
-          {!info.nospec && <AtButton circle type="primary" onClick={onChangeSku}>选择规格</AtButton>}
+          {!info.nospec && (
+            <AtButton circle type='primary' onClick={onChangeSku}>
+              选择规格
+            </AtButton>
+          )}
         </View>
       )}
     </View>

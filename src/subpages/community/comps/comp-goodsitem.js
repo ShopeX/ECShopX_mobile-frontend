@@ -12,7 +12,7 @@ function CompGoodsItem(props) {
     return
   }
 
-  const { pic, itemName, store, price, itemSpecDesc,  buyNum, minDeliveryNum } = info
+  const { pic, itemName, store, price, itemSpecDesc,  buyNum, minDeliveryNum, nospec } = info
 
   const handleClickGoodsDetail = () => {
     const { itemId, distributorId } = info
@@ -36,12 +36,13 @@ function CompGoodsItem(props) {
       </View>
       <View className='item-bd'>
         <View className='goods-name'>{itemName}</View>
+        { !nospec && <View className="spec-label">多规格</View>}
         <View className='goods-spec'>{itemSpecDesc}</View>
         <View className='goods-store'>{`库存：${store}`}</View>
         <View className='goods-price'>
           <SpPrice primary value={price} />
         </View>
-        {showProgress && (
+        {showProgress && (minDeliveryNum > 0) && (
           <View className='activity-progress'>
             <AtProgress percent={progressValue} isHidePercent />
             <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
