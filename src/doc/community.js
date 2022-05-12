@@ -201,7 +201,8 @@ export const COMMUNITY_GOODS_ITEM = {
   price: ({ price }) => (price / 100).toFixed(2),
   distributorId: 'distributor_id',
   itemSpecDesc: 'item_spec_desc',
-  nospec: 'nospec'
+  nospec: 'nospec',
+  minDeliveryNum: 'min_delivery_num'
 }
 
 export const COMMUNITY_AFTER_SALE_ITEM = {

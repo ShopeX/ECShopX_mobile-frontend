@@ -327,11 +327,11 @@ function CheifOrderManage(props) {
           </View>
         </View>
       )}
-      {checkIsChief && activity_id && (
+      {/* {checkIsChief && activity_id && (
         <View className='page-order-manage-boxlist' onClick={onHefChange}>
           <View className='btn'>成团汇总</View>
         </View>
-      )}
+      )} */}
       <SpScrollView className='page-order-manage-scroll' ref={orderRef} fetch={fetch}>
         <View className='page-order-manage-search'>
           <SpSearchBar

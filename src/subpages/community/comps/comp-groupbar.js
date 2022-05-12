@@ -36,7 +36,7 @@ function CompGroupTabbar(props) {
 
   const onClickItem = (type) => {
     if (type === 'edit') {
-      Taro.navigateTo({
+      Taro.redirectTo({
         url: `/subpages/community/group?id=${info.activityId}`
       })
     } else if (type === 'success' || type === 'fail') {

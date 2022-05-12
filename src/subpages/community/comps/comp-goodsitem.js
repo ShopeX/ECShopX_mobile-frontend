@@ -48,6 +48,9 @@ function CompGoodsItem(props) {
             <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
           </View>
         )}
+        {
+           <View className="delivery-num">{`${minDeliveryNum}件起送`}</View>
+        }
       </View>
     </View>
   )
