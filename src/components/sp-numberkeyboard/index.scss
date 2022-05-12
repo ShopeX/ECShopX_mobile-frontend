@@ -1,0 +1,87 @@
+.sp-number-keyboard {
+  .display-col {
+    padding: 10px;
+    background: #fff;
+    /* prettier-ignore */
+    border-bottom: 1PX solid $color-border-gray-light;
+    position: relative;
+    .title {
+      margin-bottom: 10px;
+    }
+    .display-con {
+      background: $color-border-gray-light;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 10px 20px;
+      font-size: 48px;
+      font-family: DINPro-Medium, DIN Alternate, Helvetica Neue, Helvetica, PingFang SC,
+        Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;
+      // .sw-price__symbol {
+      //   font-size: 36px;
+      // }
+      // .sw-price__int {
+      //   font-size: 48px;
+      // }
+      // .sw-price__decimal {
+      //   font-size: 44px;
+      // }
+    }
+  }
+  .all-use {
+    font-size: 26px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: var(--color-primary);
+  }
+  .row {
+    display: flex;
+    .keyboard {
+      flex: 1;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      font-family: DINPro-Medium, DIN Alternate, Helvetica Neue, Helvetica, PingFang SC,
+        Hiragino Sans GB, Microsoft YaHei, 微软雅黑, Arial, sans-serif;
+    }
+  }
+  .row-root {
+    display: flex;
+    .col {
+      &:first-child {
+        width: 75%;
+        .keyboard {
+          /* prettier-ignore */
+          border-bottom: 1PX solid $color-border-gray-light;
+          /* prettier-ignore */
+          border-right: 1PX solid $color-border-gray-light;
+        }
+      }
+      &:last-child {
+        width: 25%;
+        .keyboard {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+    .btn-ok__con {
+      background: var(--color-primary);
+      color: #fff;
+      &.disabled {
+        background: $color-hint-text;
+        color: $color-disabled-text;
+      }
+    }
+  }
+  .word {
+    font-size: 32px !important;
+  }
+}

@@ -41,7 +41,7 @@ export default (props = {}) => {
 
   // 微信小程序支付
   const weappPay = async (params, orderInfo) => {
-    const { order_id } = orderInfo.trade_info
+    const { order_id, tradeSourceType } = orderInfo.trade_info
     try {
       await Taro.requestPayment(orderInfo)
       const { activityType } = params
@@ -51,7 +51,12 @@ export default (props = {}) => {
         Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })
       }
     } catch (e) {
-      Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
+      // 社区拼团订单
+      if(tradeSourceType == 'normal_community') {
+        Taro.redirectTo({ url: `/subpages/community/order` })
+      } else {
+        Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
+      }
     }
   }
 

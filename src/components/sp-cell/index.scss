@@ -29,7 +29,8 @@ $cell-prefix: 'sp-cell';
     color: #666;
   }
   &__title {
-    color: #666;
+    color: #333;
+    font-size: 30px;
   }
   &__ft {
     color: $font-size-small;

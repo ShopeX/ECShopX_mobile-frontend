@@ -257,4 +257,10 @@ $margin24: 24px;
     //   }
     // }
   }
+
+  .point-float-layout {
+    .sp-float-layout-bd {
+      padding: 0;
+    }
+  }
 }

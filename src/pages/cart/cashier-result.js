@@ -81,7 +81,8 @@ function CashierResult(props) {
         </View>
       )}
       <View className='btn-block'>
-        {!czOrder && (
+        {/* 普通订单 */}
+        {tradeInfo?.tradeSourceType == 'normal' && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'
@@ -96,6 +97,22 @@ function CashierResult(props) {
           </View>
         )}
 
+        {/* 社区拼团订单 */}
+        {tradeInfo?.tradeSourceType == 'normal_community' && (
+          <View className='btn-wrap'>
+            <AtButton
+              circle
+              type='plain'
+              onClick={() => {
+                Taro.redirectTo({ url: '/subpages/community/order' })
+              }}
+            >
+              订单列表
+            </AtButton>
+          </View>
+        )}
+
+        {/* 充值订单 */}
         {czOrder && (
           <View className='btn-wrap cz-order'>
             <AtButton

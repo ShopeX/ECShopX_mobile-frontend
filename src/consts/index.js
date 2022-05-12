@@ -90,7 +90,8 @@ export const BUY_TOOL_BTNS = {
   ACTIVITY_BUY: { title: '立即购买', key: 'activity_buy', btnStatus: 'active' },
   ACTIVITY_GROUP_BUY: { title: '我要开团', key: 'activity_group_buy', btnStatus: 'active' },
   SHARE: { title: '我要分享', key: 'share', btnStatus: 'active' },
-  NO_STORE: { title: '无货', key: 'nostore', btnStatus: 'disabled' }
+  NO_STORE: { title: '无货', key: 'nostore', btnStatus: 'disabled' },
+  ONLY_SHOW: { title: '仅展示商品', key: 'only_show', btnStatus: 'disabled' }
 }
 
 export const COUPON_TYPE = {

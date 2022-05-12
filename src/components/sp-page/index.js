@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useDidShow, usePageScroll, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote } from '@/components'
+import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading } from '@/components'
 import { TABBAR_PATH } from '@/consts'
 import { classNames, styleNames, hasNavbar, isWeixin } from '@/utils'
 
@@ -119,16 +119,70 @@ function SpPage(props, ref) {
 
   let model = ''
   let ipx = false
+  let customNavigation = false
+  let cusCurrentPage = 0
 
   if (isWeixin) {
     const deviceInfo = Taro.getSystemInfoSync()
-    console.log('deviceInfo:', deviceInfo)
+    // console.log('deviceInfo:', deviceInfo)
     model = deviceInfo.model
     ipx = model.search(/iPhone X|iPhone 11|iPhone 12|iPhone 13/g) > -1
   }
 
   const { page } = getCurrentInstance()
   const _pageTitle = page?.config?.navigationBarTitleText
+
+  if (isWeixin) {
+    const pages = Taro.getCurrentPages()
+    const currentPage = pages[pages.length - 1]
+    const { navigationStyle } = currentPage.config
+    customNavigation = navigationStyle === 'custom'
+    cusCurrentPage = pages.length
+  }
+
+  const CustomNavigation = () => {
+    const menuButton = Taro.getMenuButtonBoundingClientRect()
+    const { statusBarHeight } = Taro.getSystemInfoSync()
+
+    console.log('MenuButton:', menuButton, statusBarHeight)
+    console.log(cusCurrentPage)
+
+    const navbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
+
+    return (
+      <View
+        className='custom-navigation'
+        style={styleNames({
+          height: `${navbarH}px`,
+          paddingTop: `${statusBarHeight}px`
+        })}
+      >
+        {cusCurrentPage == 1 ? (
+          <View className='left-container'>
+            <Text
+              className='iconfont icon-home'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: '/pages/index'
+                })
+              }}
+            />
+          </View>
+        ) : (
+          <View className='left-container'>
+            <Text
+              className='iconfont icon-shangyiyehoutuifanhui-xianxingyuankuang'
+              onClick={() => {
+                Taro.navigateBack()
+              }}
+            />
+          </View>
+        )}
+        <View className='title-container'>{pageTitle}</View>
+        <View className='right-container'></View>
+      </View>
+    )
+  }
 
   return (
     <View
@@ -146,22 +200,27 @@ function SpPage(props, ref) {
 
       {isDefault && <SpNote img='empty_data.png' title={defaultMsg} />}
 
-      {/* {loading && <SpNote img='loading.gif' />} */}
+      {customNavigation && CustomNavigation()}
 
-      {!isDefault && <View className='sp-page-body'>{children}</View>}
+      {/* {loading && <SpNote img='loading.gif' />} */}
+      {loading && <SpLoading />}
+
+      {!isDefault && !loading && <View className='sp-page-body'>{children}</View>}
 
       {/* 置底操作区 */}
-      {renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
+      {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
 
       {/* 浮动 */}
-      <View className='float-container'>
-        {renderFloat}
-        {showToTop && scrollToTopBtn && (
-          <SpFloatMenuItem onClick={scrollToTop}>
-            <Text className='iconfont icon-arrow-up'></Text>
-          </SpFloatMenuItem>
-        )}
-      </View>
+      {!isDefault && (
+        <View className='float-container'>
+          {renderFloat}
+          {showToTop && scrollToTopBtn && (
+            <SpFloatMenuItem onClick={scrollToTop}>
+              <Text className='iconfont icon-arrow-up'></Text>
+            </SpFloatMenuItem>
+          )}
+        </View>
+      )}
     </View>
   )
 }

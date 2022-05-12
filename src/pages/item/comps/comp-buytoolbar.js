@@ -28,6 +28,10 @@ function CompGoodsBuyToolbar(props) {
   }
 
   const RenderBtns = () => {
+    if(info.approveStatus == 'only_show') {
+      btns.push(BUY_TOOL_BTNS.ONLY_SHOW)
+      return
+    }
     if (info.store == 0) {
       if (info.subscribe) {
         btns.push(BUY_TOOL_BTNS.SUBSCRIBE)

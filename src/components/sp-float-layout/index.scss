@@ -31,10 +31,10 @@
       opacity: 1;
     }
     #{$self}__body {
-      opacity: 1;
-      visibility: visible;
+      // opacity: 1;
+      // visibility: visible;
       transform: translate3D(0, 0, 0);
-      transition-delay: 0s;
+      transition-delay: 0.3s;
     }
   }
 

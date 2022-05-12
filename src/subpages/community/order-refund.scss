@@ -1,0 +1,109 @@
+$bot-height: 160px;
+.page-order-refund {
+  padding-bottom: $bot-height + 24px !important;
+  .refund-apply-type,
+  .refund-apply-reason {
+    display: flex;
+    padding: 30px 24px;
+    background: #fff;
+    /* prettier-ignore */
+    border-top: 1PX solid #F5F5F5;
+    .label {
+      font-size: 30px;
+      font-weight: bold;
+      margin-right: 24px;
+    }
+    .desc {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex: 1;
+    }
+    .iconfont {
+      font-size: 28px;
+    }
+  }
+  .refund-reason-list,
+  .refund-type-list {
+    padding: 30px 24px;
+    font-size: 30px;
+    /* prettier-ignore */
+    border-bottom: 1PX solid #F5F5F5;
+    &:last-child {
+      border: none;
+    }
+    &:first-child {
+      padding-top: 5px;
+    }
+  }
+  .refund-apply-goods {
+    background: #fff;
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      padding: 30px 24px;
+      margin-top: 24px;
+      /* prettier-ignore */
+      border-bottom: 1PX solid #F5F5F5;
+    }
+    .goods-info {
+      height: 90px;
+      line-height: 90px;
+      padding: 0px 24px;
+      .nums {
+        font-size: 24px;
+        margin-left: 10px;
+        color: #999;
+      }
+      .sp-checkbox-new {
+        justify-content: flex-start;
+      }
+    }
+    .refund-money {
+      padding: 24px 0px 15px 0px;
+      /* prettier-ignore */
+      border-top: 1PX solid #F5F5F5;
+      margin-left: 65px;
+      margin-right: 24px;
+    }
+    .refund-input {
+      font-size: 60px;
+      margin: 0px;
+      padding: 24px 0px;
+      input {
+        font-size: 40px;
+      }
+    }
+    .refund-box {
+      display: flex;
+      align-items: center;
+      .symol {
+        font-size: 40px;
+        font-weight: bold;
+        margin-right: 20px;
+      }
+      .more {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+  .sp-page-footer {
+    height: $bot-height !important;
+    .page-order-refund-ft {
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 24px 0px 24px;
+    }
+    .right {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .total-price {
+      margin-right: 24px;
+    }
+  }
+}

@@ -219,6 +219,12 @@ function EspierDetail(props) {
           distributor_id: dtid
         })
         data = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        if (data.approveStatus == 'instock') {
+          setState((draft) => {
+            draft.isDefault = true
+            draft.defaultMsg = '商品已下架'
+          })
+        }
       } catch (e) {
         setState((draft) => {
           draft.isDefault = true
@@ -437,8 +443,13 @@ function EspierDetail(props) {
           )}
 
           <View className='goods-info'>
-            {/* 拼团、秒杀、限时特惠不显示 */}
-            {!ACTIVITY_LIST[info.activityType] && <SpGoodsPrice info={curItem ? curItem : info} />}
+            <View className='goods-info-title'>
+              {/* 拼团、秒杀、限时特惠不显示 */}
+              {!ACTIVITY_LIST[info.activityType] && (
+                <SpGoodsPrice info={curItem ? curItem : info} />
+              )}
+              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
+            </View>
 
             <CompVipGuide
               info={{

@@ -1,0 +1,339 @@
+@import '@/style/imports';
+
+$custabs: 80px;
+
+/*  #ifdef h5  */
+* {
+  box-sizing: border-box;
+}
+/*  #endif */
+
+.trade-detail {
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  &.paddingBottom {
+    padding-bottom: 84px;
+  }
+  &.islog {
+    padding-top: $custabs;
+    /*  #ifdef  h5  */
+    padding-top: calc(#{$navigate-height-h5} + #{$custabs});
+    /*  #endif  */
+  }
+  .custabs {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    background: #fff;
+    top: 0;
+    z-index: 99;
+    /*  #ifdef  h5  */
+    top: $navigate-height-h5;
+    /*  #endif  */
+    .online,
+    .offline {
+      height: $custabs;
+      line-height: $custabs;
+      flex: 1;
+      text-align: center;
+    }
+  }
+  .content {
+    height: 100%;
+  }
+  &-header {
+    width: 100%;
+    min-height: 150px;
+    color: #ffffff;
+    &__waitpay {
+      text-align: center;
+      font-size: 26px;
+      line-height: 150px;
+      .count-down {
+        font-size: 36px;
+        margin: 0 20px;
+      }
+    }
+    .at-countdown__time {
+      color: #fff;
+    }
+    .at-countdown__time-box {
+      font-family: $font-family;
+    }
+  }
+  &-waitdeliver {
+    width: 100%;
+    padding: 34px 58px 39px 30px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    .oneline {
+      width: 100%;
+      margin-left: 23px;
+    }
+    &.column {
+      flex-direction: column;
+      .line {
+        font-size: 26px;
+        margin-left: 23px;
+      }
+    }
+    .delivery-infos {
+      flex: 1;
+      margin-left: 23px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .delivery-infos__text {
+      display: block;
+      font-size: 22px;
+    }
+    .text-status {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+  }
+  .ziti-content {
+    padding: 50px 0;
+    .ziti-qrcode {
+      display: block;
+      margin: 0 auto 50px;
+      width: 200px;
+      height: 200px;
+    }
+    .ziti-text {
+      text-align: center;
+      font-size: 24px;
+      color: #666;
+      .ziti-text-name {
+        margin-bottom: 15px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+    .sendCode {
+      width: 208px;
+      height: 60px;
+      line-height: 60px;
+      background: #101010;
+      color: #fff;
+      border-radius: 100px;
+      text-align: center;
+      margin: 20px auto 34px;
+    }
+    .sendCodeTips {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 24px;
+      color: #666;
+    }
+  }
+  &-address {
+    width: 100%;
+    padding: 30px;
+    box-sizing: border-box;
+    background: #fff;
+    /*.trade-info {
+      font-size: 20px;
+      line-height: 36px;
+      color: #999999;
+    }*/
+    .trader-info-val {
+      //margin-left: 20px;
+    }
+    .address-receive {
+      display: flex;
+      justify-content: flex-start;
+      color: #555555;
+      font-size: 22px;
+    }
+    .info-trade {
+      flex: 1;
+    }
+    .user-info-trade {
+      display: flex;
+      justify-content: space-between;
+      font-size: 22px;
+      line-height: 36px;
+    }
+    .address-detail {
+      font-size: 22px;
+      color: #999999;
+    }
+  }
+  &-goods {
+    border-top: 14px solid #f6f6f6;
+    width: 100%;
+    min-height: 100px;
+    background: #fff;
+  }
+  .order-item__pay-type {
+    display: none;
+  }
+  .trade-money {
+    box-sizing: border-box;
+    width: 100%;
+    text-align: right;
+    padding: 34px 38px;
+    font-size: 26px;
+    color: #5b5b5b;
+    border-top: 1px solid #ececec;
+    background: #fff;
+    &__num {
+      font-size: 36px;
+      color: $color-brand-primary;
+    }
+
+    &__point {
+      font-size: 36px;
+      color: $color-brand-primary;
+
+      .cash {
+        font-size: 30px;
+        color: $color-brand-accent;
+      }
+    }
+  }
+  &-info {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: $font-size-small;
+    line-height: 1.5;
+    color: #999999;
+    border-top: 14px solid #f6f6f6;
+    padding: 42px 30px;
+    background: #fff;
+    .info-text {
+      display: block;
+      font-size: 24px;
+    }
+    .delivery_code_copy {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      .info-text {
+        flex: 1;
+        font-size: 24px;
+      }
+      .info-text-btn {
+        font-size: 24px;
+        display: inline-block;
+        width: 120px;
+        text-align: right;
+      }
+    }
+    .icon-fuzhi {
+      margin-left: 20px;
+    }
+  }
+  &-remark {
+    padding-top: 21px;
+    &__header {
+      padding: 20px 30px;
+      font-size: 26px;
+      background: #fff;
+      border-bottom: 1px solid #efefef;
+    }
+    &__body {
+      padding: 20px 30px;
+      font-size: 24px;
+      background: #fff;
+    }
+  }
+  &__footer {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 84px;
+    bottom: 0;
+    &__btn {
+      width: 50%;
+      display: inline-block;
+      vertical-align: middle;
+      height: 87px;
+      line-height: 87px;
+      text-align: center;
+      background-color: #fafafa;
+      font-size: 26px;
+      border-radius: 0;
+      &-inline {
+        width: 100%;
+      }
+      &:before {
+        border: none;
+      }
+    }
+    .at-button__icon {
+      vertical-align: middle;
+    }
+    &_active {
+      color: #ffffff;
+    }
+    &_allWidthBtn {
+      width: 100%;
+    }
+  }
+  .allFooter_btn {
+    width: 100%;
+  }
+
+  .delivery-btn {
+    margin-right: 15px;
+  }
+  .at-input-number {
+    $input-size: 40px;
+    border: none;
+    border-radius: 0;
+    height: $input-size;
+    overflow: hidden;
+    &__btn {
+      border: 1px solid $color-border-gray;
+      &:before,
+      &:after {
+        border: none;
+      }
+      width: $input-size;
+      height: $input-size;
+      box-sizing: border-box;
+      padding: 0;
+      text-align: center;
+      overflow: hidden;
+      &-subtract,
+      &-add {
+        font-size: 20px;
+      }
+    }
+    &__input,
+    input {
+      line-height: $input-size;
+      height: $input-size !important;
+      min-height: $input-size;
+      padding-top: 0;
+      padding-bottom: 0;
+      box-sizing: border-box;
+      font-size: $font-size-small;
+      border: none;
+    }
+  }
+  .kefuBtn {
+    width: 50%;
+    box-sizing: border-box;
+  }
+  .logConfirm {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    .btn {
+      width: 240px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 30px;
+      text-align: center;
+      color: #fff;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+.page-community-picker {
+  .item-list {
+    padding: 20px;
+  }
+  .goods-item-wrap {
+    background: #fff;
+    border-radius: 16px;
+    padding: 20px;
+    &:not(:last-child) {
+      margin-bottom: 30px;
+    }
+  }
+  .sp-checkbox-new {
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    &__label {
+      margin-left: 0;
+      margin-right: 16px;
+      width: 600px;
+    }
+  }
+  .btn-wrap {
+    padding: 20px;
+  }
+  .community-item {
+    &-tools {
+      text-align: right;
+      padding: 0 20px;
+    }
+  }
+  .icon-edit {
+    font-size: 36px;
+    color: #666;
+  }
+}

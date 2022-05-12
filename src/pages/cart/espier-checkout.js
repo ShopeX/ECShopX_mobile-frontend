@@ -2,7 +2,16 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
-import { SpPage, SpPrice, SpCell, SpOrderItem, SpCashier, SpGoodsCell } from '@/components'
+import {
+  SpPage,
+  SpPrice,
+  SpCell,
+  SpOrderItem,
+  SpCashier,
+  SpGoodsCell,
+  SpFloatLayout,
+  SpNumberKeyBoard
+} from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
@@ -19,7 +28,8 @@ import {
   isAPP,
   log,
   VERSION_STANDARD,
-  VERSION_PLATFORM
+  VERSION_B2C,
+  VERSION_PLATFORM,
 } from '@/utils'
 import { useAsyncCallback, useLogin, usePayment } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
@@ -132,12 +142,12 @@ function CartCheckout(props) {
   }, [address, coupon, payType, shop.zitiShop, point_use])
 
   useEffect(() => {
-    if (isPackageOpend || openCashier) {
+    if (isPackageOpend || openCashier || isPointOpenModal) {
       pageRef.current.pageLock()
     } else {
       pageRef.current.pageUnLock()
     }
-  }, [isPackageOpend, openCashier])
+  }, [isPackageOpend, openCashier, isPointOpenModal])
 
   // 是否需要包装
   const getTradeSetting = async () => {
@@ -147,33 +157,9 @@ function CartCheckout(props) {
     })
   }
 
-  // 选择是否需要包装
-  const changeNeedPackage = (isNeedPackage) => {
-    setState((draft) => {
-      draft.isNeedPackage = isNeedPackage
-      draft.isPackageOpend = false
-    })
-  }
-
-  const handlePointClick = () => {
-    setState((draft) => {
-      draft.isPointOpenModal = true
-    })
-  }
-
-  const resetPoint = (e) => {
-    e.stopPropagation()
-    setState((draft) => {
-      draft.point_use = 0
-      draft.pointInfo = { ...pointInfo, point_use: 0 }
-      draft.payType = defalutPaytype
-    })
-  }
-
-  const handlePointUseChange = (point_use, payType) => {
+  const handlePointUseChange = (point_use) => {
     setState((draft) => {
       draft.point_use = point_use
-      draft.payType = payType
       draft.isPointOpenModal = false
     })
   }
@@ -311,8 +297,8 @@ function CartCheckout(props) {
       draft.submitLoading = false
     })
 
-    // 储值支付
-    if (payType === 'deposit') {
+    // 储值支付 或者 积分抵扣
+    if (payType === 'deposit' || params.pay_type == 'point') {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
     } else {
       if (params.pay_type == 'wxpayjs') {
@@ -584,7 +570,6 @@ function CartCheckout(props) {
     }
 
     const point_info = {
-      ...pointInfo,
       deduct_point_rule,
       is_open_deduct_point,
       user_point, //用户现有积分
@@ -645,7 +630,6 @@ function CartCheckout(props) {
         receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       }
     }
-
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -659,7 +643,7 @@ function CartCheckout(props) {
       // not_use_coupon: 0,
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: payType,
+      pay_type: (point_use > 0 && totalInfo.total_fee == 0 ) ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
 
@@ -693,7 +677,7 @@ function CartCheckout(props) {
     // if (submitLoading) {
     // 提交时候获取参数 把留言信息传进去
     cus_parmas.remark = remark
-    cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
+    // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
 
@@ -853,7 +837,7 @@ function CartCheckout(props) {
             </Picker>
           </SpCell>
           <View className='cart-checkout__stree-desc'>
-            <Text className='required'>*</Text>如所选街道居委信息错误，订单将无法配送！
+            <Text className='required'>*</Text>疫情期间按小区统一配送！
           </View>
         </View>
       )}
@@ -866,7 +850,9 @@ function CartCheckout(props) {
               placeholder='请输入楼号'
               value={buildingNumber}
               onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
-            />
+            >
+              楼/栋
+            </AtInput>
           </SpCell>
 
           <SpCell border title='房号'>
@@ -875,7 +861,9 @@ function CartCheckout(props) {
               placeholder='请输入房号'
               value={houseNumber}
               onChange={onChangeBuildInput.bind(this, 'houseNumber')}
-            />
+            >
+              号/室
+            </AtInput>
           </SpCell>
         </View>
       )}
@@ -926,20 +914,20 @@ function CartCheckout(props) {
         </SpCell>
       )}
 
-      {VERSION_STANDARD && pointInfo.is_open_deduct_point && (
+      {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
+      {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) && pointInfo?.is_open_deduct_point && (
         <SpCell
           isLink
           className='cart-checkout__invoice'
           title={`${pointName}抵扣`}
-          onClick={handlePointClick}
+          onClick={() => {
+            setState((draft) => {
+              draft.isPointOpenModal = true
+            })
+          }}
         >
           <View className='invoice-title'>
-            {(pointInfo.point_use > 0 || payType === 'point') && (
-              <View className='icon-close invoice-close' onClick={(e) => resetPoint(e)}></View>
-            )}
-            {payType === 'point'
-              ? '全额抵扣'
-              : pointInfo.point_use > 0
+            {pointInfo.point_use > 0
               ? `已使用${pointInfo.real_use_point}${pointName}`
               : `使用${pointName}`}
           </View>
@@ -979,7 +967,7 @@ function CartCheckout(props) {
         <SpCell className='trade-sub__item' title='优惠金额：'>
           <SpPrice unit='cent' primary value={-1 * totalInfo.discount_fee} />
         </SpCell>
-        {pointInfo.is_open_deduct_point && VERSION_STANDARD && (
+        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) && pointInfo.is_open_deduct_point && (
           <SpCell className='trade-sub__item' title={`${pointName}抵扣：`}>
             <SpPrice unit='cent' primary value={-1 * totalInfo.point_fee} />
           </SpCell>
@@ -991,8 +979,6 @@ function CartCheckout(props) {
 
       <CompPointUse
         isOpened={isPointOpenModal}
-        type={payType}
-        defalutPaytype={defalutPaytype}
         info={pointInfo}
         onClose={() => {
           setState((draft) => {
