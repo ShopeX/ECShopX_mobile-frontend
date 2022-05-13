@@ -1,0 +1,129 @@
+.comp-goodsitembuy {
+  background: #fff;
+  padding-top: 22px;
+  padding-bottom: 70px;
+  display: flex;
+  position: relative;
+  /* prettier-ignore */
+  border-bottom: 1PX solid #f7f7f7;
+
+  &-img {
+    &__num {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 170px;
+      // height: 38px;
+      // border: 1px solid #cbcbcb;
+      background-color: #959595;
+      // padding: 14px 0;
+      text-align: center;
+      color: #fff;
+      font-size: 22px;
+    }
+  }
+
+  &-info {
+    flex: 1;
+    padding-left: 20px;
+
+    &__name {
+      padding: 5px 0px;
+      width: 450px;
+    }
+
+    &__specs {
+      color: #959595;
+      margin-bottom: 6px;
+      font-size: 26px;
+    }
+
+    &__num {
+      display: inline-block;
+      border: 1px solid #cbcbcb;
+      padding: 0 6px;
+      color: #222;
+      font-size: 22px;
+    }
+
+    &__tag {
+      display: inline-block;
+      color: var(--color-primary);
+      background-color: #e9f9f2;
+      font-size: 26px;
+      vertical-align: middle;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      padding: 0 4px;
+    }
+
+    &__price {
+      margin-top: 7px;
+    }
+  }
+
+  .hasbuy-num {
+    position: absolute;
+    right: 0px;
+    top: 100px;
+    display: flex;
+    color: #e96717;
+    font-size: 24px;
+  }
+
+  &-share {
+    position: absolute;
+    right: 0px;
+    top: 20px;
+
+    // display: flex;
+    .icon {
+      font-size: 30px;
+      color: var(--color-primary);
+    }
+  }
+
+  &-handle {
+    position: absolute;
+    right: 0px;
+    bottom: 20px;
+    display: flex;
+
+    &__num {
+      width: 120px;
+      height: 42px;
+      line-height: 42px;
+      font-weight: 700;
+      text-align: center;
+      font-size: 32px;
+    }
+
+    &__symbol {
+      width: 45px;
+      height: 40px;
+      line-height: 37px;
+      text-align: center;
+      font-size: 40px;
+      font-weight: 700;
+    }
+
+    &__reduce {
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    &__plus {
+      border: 1px solid var(--color-primary);
+      color: var(--color-primary);
+    }
+  }
+  .add-btn {
+    background: var(--color-primary);
+    color: #fff;
+  }
+  .activity-progress {
+    .progress-txt {
+      color: #666;
+    }
+  }
+}

@@ -1,0 +1,124 @@
+@import '@/style/imports';
+.page-order-manage {
+  padding-bottom: 140px !important;
+  &-boxlist {
+    text-align: center;
+    color: var(--color-primary);
+    cursor: pointer;
+    // margin-bottom: 24px;
+    padding: 10px 0px;
+    font-size: 30px;
+    background: #fff;
+    .btn {
+      background: #fff;
+      margin: 0px 24px;
+      padding: 15px 0px;
+      border-radius: 50px;
+      border: 1px solid var(--color-primary);
+    }
+  }
+  &-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 24px 0px;
+    text-align: center;
+    background: #fff;
+    // margin-bottom: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 999;
+    .iconfont {
+      font-size: 30px;
+      color: #999;
+      margin-left: 10px;
+    }
+    .order-content {
+      &-num {
+        font-size: 48px;
+        font-weight: bold;
+        margin-bottom: 16px;
+      }
+      &-desc {
+        // font-size: 30px;
+        color: #999;
+      }
+    }
+  }
+  &-bot {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 24px;
+    .iconfont {
+      font-size: 50px;
+      margin-bottom: 5px;
+    }
+  }
+  &-search {
+    padding: 30px 24px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+  }
+  &-tabs {
+    margin-bottom: 20px;
+    .at-tabs {
+      &__body {
+        height: 0px !important;
+      }
+      &__item {
+        // height: $tabs-height;
+        color: $color-brand-accent-light;
+      }
+      &__item-underline {
+        width: 40%;
+        left: 30%;
+        background: var(--color-primary);
+      }
+      &__item--active {
+        color: var(--color-primary);
+      }
+    }
+  }
+  &-tags {
+    padding: 24px;
+    background: #fff;
+    margin-bottom: 24px;
+    .manage-tags {
+      margin-right: 15px;
+      font-size: 24px;
+      &-active {
+        color: #ffffff;
+        background: var(--color-primary);
+        border: 1px solid var(--color-primary);
+      }
+    }
+  }
+  &-btn {
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 26px;
+    display: inline-block;
+    color: #fff;
+    margin: 0px 5px;
+  }
+  .order-modal {
+    .at-modal__container {
+      width: 75%;
+      .content-simple {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .at-modal__content {
+        min-height: 140px;
+      }
+    }
+  }
+}
+.paddingMrt {
+  padding-top: 170px !important;
+}

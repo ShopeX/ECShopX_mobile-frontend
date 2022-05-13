@@ -1,0 +1,84 @@
+.comp-group-item {
+  background: #fff;
+  .group-item-hd {
+    padding: 30px 20px 20px;
+  }
+  .item-info {
+    .info-hd {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .name {
+        flex: 1;
+        font-size: 32px;
+        font-weight: bold;
+        @include multi-ellipsis(1);
+        margin-right: 30px;
+      }
+      .days {
+        font-size: 26px;
+        color: #999;
+      }
+    }
+    .goods-price {
+      color: var(--color-primary);
+      font-size: 32px;
+    }
+  }
+  .img_list {
+    white-space: nowrap;
+    padding: 20px;
+    box-sizing: border-box;
+    .goods-item {
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+  .item-status {
+    padding: 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .running,
+    .private,
+    .public,
+    .protected,
+    .success,
+    .fail {
+      color: #4da915;
+    }
+    .right-item {
+      display: flex;
+      align-items: center;
+      position: relative;
+
+      background-color: transparent;
+      line-height: normal;
+      margin: 0;
+      padding: 0;
+      &:after {
+        border: 0px;
+      }
+      .icon-fenxiang-01 {
+        font-size: 40px;
+        margin-right: 5px;
+        color: #999;
+      }
+      &-txt {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+  .group-item-ft {
+    padding: 20px 20px 30px;
+  }
+  .goods-item {
+    display: inline-block;
+  }
+  .cus-font {
+    font-size: 26px;
+    color: #999;
+  }
+}

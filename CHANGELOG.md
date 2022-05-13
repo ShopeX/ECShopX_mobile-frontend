@@ -2,6 +2,37 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.7.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.6.3...v2.7.0) (2022-05-12)
+
+
+### Features
+
+* 2.7.0 ([82a16d0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/82a16d06c4aafda01eb3b7abdf952288a62e6bd4))
+* 新增 团长详情页，bar组件、小区组件。 ([aeb9eb6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/aeb9eb60e5216d68f62d5cb2a6042dadc17b8062))
+* 新增 社区详情页（团员）静态页 ([4b82d38](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4b82d38d776559a93a6cf014b748f5ac3ccf8b36))
+* 社区团详情页（团长）静态部分完成 ([e3c52dd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e3c52dd6afcf07c92966bb8e640b8420a5c5b863))
+
+
+### Bug Fixes
+
+* checkbox ([1cc091b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1cc091bd2d6ece897cd6afa8aa1ef95d4c6f2519))
+* 事件冒泡 ([f84978e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f84978ec3057a76f0e7021c3b5ef36cf85f394a8))
+* 修复积分抵扣 ([4ce8352](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4ce83523c6fcabf5d2f5a9571bf50ece45c86c1d))
+* 修改input placeholder ([a86ecf4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a86ecf4ff30ce7868b9317e8069fabd37c9feda7))
+* 修改地址 ([05f5a0f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/05f5a0f0e1e08d877699e213fcdacf9495a139cd))
+* 修改拼团文案 ([61b0414](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/61b041413cf871a336c32fc18fcbeca1ada43849))
+* 商品起送量 ([828573e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/828573e8694dce767b312b0ceef82e1b54f89383))
+* 团活动生成 ([6767e5a](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6767e5a56b0df1fa2deab77bc7c6d73297fa27de))
+* 楼道 ([56cc740](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/56cc740d0ce148c444550888d6e0a079965100d6))
+* 热区组件添加H5跳转链接 ([27fa519](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/27fa519029999fcf42ece4977e36b235b95410da))
+* 社区团发布 ([b1930d8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b1930d80a1950f991850de908cf2a8e97a27a9a6))
+* 社区团多规格 ([3192f39](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3192f3998190779da3bb980bbd0164530c0a5d76))
+* 社区团购下单 ([54d91e4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/54d91e487f4bd8f1384653e1c56f13bb7af2dfe8))
+* 社区拼团添加商品详情 ([e2c62bc](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e2c62bca81e8bd5320996a18c50d60aaa8d4bfae))
+* 社区详情 ([e534406](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e53440658737fb74558923acb9aa417abf5a0002))
+* 起送量 ([9213e14](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9213e14ebc039e4dc9bf479c0c84e2b712e0a11f))
+* 起送量优化 ([1df3ce3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1df3ce36ef45d7663b91fc14886a3359721196b4))
+
 ### [2.6.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.6.2...v2.6.3) (2022-05-09)
 
 ### [2.6.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.6.1...v2.6.2) (2022-05-09)

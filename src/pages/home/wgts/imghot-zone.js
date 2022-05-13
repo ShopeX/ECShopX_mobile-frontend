@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { linkPage, classNames, styleNames } from '@/utils'
+import { linkPage, classNames, styleNames, isString } from '@/utils'
 
 import './imghot-zone.scss'
 

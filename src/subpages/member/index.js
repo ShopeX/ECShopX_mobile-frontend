@@ -5,7 +5,7 @@ import Taro, {
   getCurrentInstance
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
+import { updateUserInfo, fetchUserFavs, updateCheckChief } from '@/store/slices/user'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
@@ -70,7 +70,8 @@ const initialConfigState = {
     memberinfo_enable: false, // 个人信息
     tenants: true, //商家入驻
     purchase: true, // 员工内购
-    dianwu: false // 店务
+    dianwu: false, // 店务,
+    community: false // 社区
   },
   infoAppId: '',
   infoPage: '',
@@ -362,6 +363,16 @@ function MemberIndex(props) {
         })
       }
     }
+    if (key == 'community') {
+      const res = await api.community.checkChief()
+      dispatch(updateCheckChief(res))
+      if (res.status) {
+        Taro.navigateTo({ url: link })
+      } else {
+        Taro.navigateTo({ url: `/subpages/community/order` })
+      }
+    }
+
     if (link) {
       Taro.navigateTo({ url: link })
     }

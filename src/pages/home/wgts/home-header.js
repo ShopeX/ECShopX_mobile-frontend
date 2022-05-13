@@ -10,8 +10,7 @@ import './home-header.scss'
 function WgtHomeHeader(props) {
   const { children, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const sys = useSelector((state) => state.sys)
-  const { openScanQrcode } = sys
+  const { openScanQrcode, openLocation } = useSelector((state) => state.sys)
 
   const handlePickStore = () => {
     Taro.navigateTo({
@@ -23,7 +22,7 @@ function WgtHomeHeader(props) {
 
   return (
     <View className={classNames('home-header', !isSetHight && 'cus-home-header')}>
-      {VERSION_PLATFORM && (
+      {VERSION_PLATFORM && openLocation == 1 && (
         <View className='nearly-shop' onClick={handlePickStore}>
           <View className='address'>{location.address || '北京市北京市昌平区'}</View>
           <Text className='iconfont icon-qianwang-01'></Text>

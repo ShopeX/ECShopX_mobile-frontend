@@ -202,6 +202,7 @@ function SpSkuSelect(props) {
       return
     }
     Taro.showLoading()
+    onClose()
     const { distributorId, activityType, activityInfo } = info
     const itemId = curItem ? curItem.itemId : info.itemId
     await api.cart.fastBuy({

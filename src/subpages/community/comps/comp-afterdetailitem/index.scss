@@ -1,0 +1,70 @@
+@import '@/style/imports';
+
+.detail-item {
+  padding: 36px 0 37px;
+  &-good {
+    position: relative;
+  }
+  &__fix {
+    display: flex;
+    border-bottom: 1px solid #ececec;
+    padding: 0 38px 0 27px;
+  }
+
+  &__title {
+    flex: 0 0 200px 0;
+    width: 200px;
+    display: block;
+    font-size: 22px;
+    line-height: 36px;
+    color: #333333;
+  }
+  &__title {
+    display: block;
+    font-size: 22px;
+    line-height: 36px;
+    color: #333333;
+    padding: 0 38px 17px 17px;
+  }
+  &__code {
+    flex: 1;
+    display: block;
+    font-size: 22px;
+    color: #999999;
+    text-align: right;
+    .btn {
+      margin-left: 20px;
+    }
+  }
+  .sp-order-item__ft {
+    position: absolute;
+    bottom: 20px;
+    right: 30px;
+    display: flex;
+    //z-index: 999;
+  }
+  .order-item__btn {
+    position: absolute;
+    right: 0;
+    top: 30%;
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 30px;
+
+    .at-button--primary {
+      border: 1px solid var(--color-primary) !important;
+    }
+  }
+  .order-flex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &_checkbox {
+      flex: 0 0 100px;
+      text-align: center;
+    }
+    &_goods {
+      flex: 1;
+    }
+  }
+}

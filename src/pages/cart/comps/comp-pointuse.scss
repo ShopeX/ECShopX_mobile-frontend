@@ -1,6 +1,16 @@
-@import '@/style/imports';
-
 .comp-pointuse {
+  .point-hd {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 20px 0;
+  }
+  .point-info {
+    color: #666;
+  }
+  .point-rule {
+    color: var(--color-primary)
+  }
   &__hd {
     background: #fff;
     height: 95px;

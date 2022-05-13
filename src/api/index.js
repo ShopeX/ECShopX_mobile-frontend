@@ -27,6 +27,7 @@ import * as merchant from './merchant'
 import * as purchase from './purchase'
 import * as guide from './guide'
 import * as dianwu from './dianwu'
+import * as community from './community'
 
 export default {
   article,
@@ -57,5 +58,6 @@ export default {
   wgts,
   merchant,
   purchase,
-  dianwu
+  dianwu,
+  community
 }

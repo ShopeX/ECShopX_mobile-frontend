@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { classNames, styleNames, isWeb, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
+import { classNames, styleNames, isWeixin, isWeb, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
 import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
@@ -64,6 +64,7 @@ const MENUS = [
     icon: 'm_menu_dianwu.png',
     link: '/subpages/dianwu/index'
   }
+
   // {
   //   key: "complaint",
   //   name: "投诉记录",
@@ -90,6 +91,15 @@ const MENUS_CONST = [
 //   }
 // ]
 
+const MENUS_COMMUNITY = [
+  {
+    key: 'community',
+    name: '社区团购',
+    icon: 'm_menu_tuangou.png',
+    link: '/subpages/community/index'
+  }
+]
+
 function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
   const config = Taro.getStorageSync(SG_APP_CONFIG)
@@ -106,6 +116,11 @@ function CompMenu(props) {
   //商家入驻是否开启
   if (accessMenu.merchant_status && !VERSION_STANDARD) {
     menus = menus.concat(MENUS_CONST)
+  }
+
+  // 社区团购
+  if (VERSION_PLATFORM && isWeixin) {
+    menus = menus.concat(MENUS_COMMUNITY)
   }
 
   // if (accessMenu.offline_order) {

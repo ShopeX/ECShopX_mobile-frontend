@@ -1,0 +1,144 @@
+@import '@/style/imports';
+
+.page-trade-refund {
+  overflow: auto;
+
+  .at-tabs__page {
+    display: none;
+  }
+  .trade-refund__reason {
+    // margin-top: $tabs-height;
+    margin-top: 10px;
+    padding-top: 30px;
+  }
+  .trade-refund__reason.sp-cell {
+    flex-direction: column;
+    align-items: flex-start;
+    .sp-cell__hd {
+      margin: 0 0 floor($edge-size / 2) 0;
+    }
+    .sp-cell__title {
+      color: #000000;
+    }
+    .sp-cell__bd {
+      width: 100%;
+    }
+  }
+  .refund-reason {
+    margin: 0 10px 10px 0;
+    &__checked {
+      color: #ffffff;
+      background: $color-brand-primary;
+      border: 1px solid $color-brand-primary;
+    }
+  }
+  .trade-refund__goods {
+    margin-top: 20px;
+  }
+  .refund-goods {
+    .at-action-sheet__header {
+      color: #000000;
+      font-size: 32px;
+      position: static;
+    }
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      padding-right: 30px;
+      .default__icon {
+        font-size: 40px;
+        color: #9d9d9d;
+      }
+      .default__checked {
+        color: $color-brand-primary;
+      }
+    }
+    .at-action-sheet__body {
+      background: #ffffff;
+      padding-bottom: 150px;
+    }
+    .at-action-sheet__item {
+      position: static;
+      border-bottom: 1px solid #ebebeb;
+      padding-right: 0;
+    }
+    .at-action-sheet__footer {
+      border-top: 0;
+      background: $color-brand-primary;
+      color: #ffffff;
+    }
+  }
+  .refund-describe {
+    margin-top: 20px;
+    padding: 30px;
+    background: #ffffff;
+    .at-textarea {
+      height: auto;
+      border: 1px solid #e6e6e6;
+      background: #f6f5f5;
+      font-size: 22px;
+    }
+    .at-textarea__counter {
+      display: none;
+    }
+    &__img {
+      margin-top: 40px;
+    }
+    &__text {
+      color: #666666;
+      display: block;
+      margin-bottom: 27px;
+    }
+    &__imgupload {
+      border: 1px solid #e6e6e6;
+      height: 290px;
+      width: 100%;
+      background: #f6f5f5;
+      &_text {
+        display: block;
+        padding: 30px;
+        color: #b3b3b3;
+      }
+      &_picker {
+        .at-image-picker__item {
+          top: 35%;
+          width: 75%;
+          height: 75%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+  }
+  .refund-btn {
+    height: 84px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    line-height: 84px;
+    text-align: center;
+    color: #ffffff;
+  }
+  .remind-wrap {
+    margin-top: 30px;
+    padding: 30px;
+    margin-bottom: 30px;
+  }
+  .biao-icon-tishi {
+    color: #853c3b;
+    // color:#f6e7e5;
+  }
+  .remind-icon {
+    background-color: #f6e7e5;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+  }
+  .remind-icon-text {
+    color: #853c3b;
+  }
+  .remind-text {
+    margin-top: 30px;
+    color: #666;
+  }
+}

@@ -20,7 +20,7 @@ function SpImage(props) {
   const { diskDriver } = useSelector((state) => state.sys)
 
   if (!src) {
-    src = 'default_img.png'
+    src = 'default.jpg'
   }
 
   let imgUrl = /^http/.test(src) || isBase64(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`

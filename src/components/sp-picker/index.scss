@@ -1,0 +1,31 @@
+.sp-picker {
+  .mask {
+    position: fixed;
+    z-index: 10002;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.3s ease;
+    &.visible {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+  &-cnt {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    transition: all 0.3s ease;
+    transform: translateY(100%);
+    z-index: 10003;
+    background-color: #fff;
+    &.visible {
+      transform: translateY(0);
+    }
+  }
+}

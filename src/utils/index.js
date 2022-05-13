@@ -658,7 +658,8 @@ export function exceedLimit({ size: fileSize }) {
 }
 
 function isBase64(str) {
-  if (str.indexOf('data:') != -1 && str.indexOf('base64') != -1) {
+  let isStr = str?.url ? str?.url : str
+  if (isStr.indexOf('data:') != -1 && isStr.indexOf('base64') != -1) {
     return true
   } else {
     return false

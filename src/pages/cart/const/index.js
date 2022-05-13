@@ -50,7 +50,8 @@ export const initialState = {
   isPackageOpend: false,
   isNeedPackage: false, // 是否需要打包
   openCashier: false,
-  calcing: false
+  calcing: false,
+  isPointOpenModal: false
 }
 
 export const deliveryList = [

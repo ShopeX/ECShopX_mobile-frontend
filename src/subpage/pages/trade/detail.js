@@ -1047,8 +1047,7 @@ export default class TradeDetail extends Component {
                     info.dada.dada_status === 4 ||
                     info.dada.dada_status === 10)) ||
                 (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                  (info.is_all_delivery ||
-                    (!info.is_all_delivery && info.delivery_status === 'DONE')) &&
+                  (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
                   info.receipt_type !== 'dada')) &&
                 info.can_apply_aftersales === 1 &&
                 info.order_class !== 'excard' && (
