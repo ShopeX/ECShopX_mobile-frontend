@@ -10,7 +10,7 @@ import { FormIdCollector, SpLogin } from '@/components'
 import { classNames, isWeb, showToast, merchantIsvaild } from '@/utils'
 import './buy-toolbar.scss'
 
-const store = configStore()
+const {store} = configStore()
 @connect(({ colors, user }) => ({
   colors: colors.current,
   favs: user.favs || []

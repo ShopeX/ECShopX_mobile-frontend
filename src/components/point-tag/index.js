@@ -5,7 +5,7 @@ import configStore from '@/store'
 
 import './index.scss'
 
-const store = configStore()
+const {store} = configStore()
 export default class PointTag extends Component {
   static defaultProps = {
     url: ''

@@ -8,7 +8,7 @@ import configStore from '@/store'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 import './destroy-member.scss'
 
-const store = configStore()
+const {store} = configStore()
 @connect(({ colors }) => ({
   colors: colors.current
 }))

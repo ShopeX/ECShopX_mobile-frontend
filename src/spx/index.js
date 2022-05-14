@@ -5,7 +5,7 @@ import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
 import qs from 'qs'
 import configStore from '@/store'
 
-const store = configStore()
+const {store} = configStore()
 
 const globalData = {}
 export class Spx {

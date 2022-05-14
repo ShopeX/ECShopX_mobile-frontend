@@ -22,7 +22,7 @@ import validate from './validate'
 import checkAppVersion from './updateManager'
 import linkPage from './linkPage'
 
-const store = configStore()
+const {store} = configStore()
 
 export * from './platforms'
 

@@ -18,7 +18,7 @@ import './app.scss'
 //   require('nerv-devtools')
 // }
 
-const store = configStore()
+const {store} = configStore()
 
 // 如果是app模式，注入SAPP
 if (process.env.APP_BUILD_TARGET == 'app') {

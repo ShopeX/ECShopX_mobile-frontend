@@ -11,7 +11,7 @@ import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import './index.scss'
 import configStore from '@/store'
 
-const store = configStore()
+const {store} = configStore()
 
 @connect(
   ({ colors, user }) => ({
