@@ -148,7 +148,7 @@ export default class CompAfterDetailItem extends Component {
                               查看物流
                             </AtButton>
                           ))}
-                    {item.left_aftersales_num && (
+                    {item.left_aftersales_num > 0 && (
                       <InputNumber
                         min={1}
                         max={item.left_aftersales_num}

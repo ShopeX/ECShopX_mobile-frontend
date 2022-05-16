@@ -209,7 +209,7 @@ const EspierCheckout = () => {
           </View>
         </View>
 
-        <View className='espierCheckout-remarks'>
+        {/* <View className='espierCheckout-remarks'>
           <AtInput
             name='value'
             title='备注'
@@ -217,7 +217,7 @@ const EspierCheckout = () => {
             placeholder='请输入您需要备注的内容'
             border={false}
           />
-        </View>
+        </View> */}
       </View>
     </SpPage>
   )

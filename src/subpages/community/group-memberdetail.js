@@ -341,7 +341,7 @@ function GroupLeaderDetail(props) {
                 <View className='item-name'>{item.itemName}</View>
                 <View className='spec-desc'>{item.itemSpecDesc}</View>
                 <View className='item-price-num'>
-                  <SpPrice size={32} value={item.price / 100} />
+                  <SpPrice size={32} value={item.price} />
                   <SpInputNumber
                     value={item.num}
                     min={0}
