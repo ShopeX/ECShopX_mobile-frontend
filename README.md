@@ -58,3 +58,12 @@ APP_CDN_REGION=ap-southeast-2
 APP_CDN_BUCKET=unat-bucket
 
 
+# 如遇初始化下载时间过长或者network timeout，可更换npm镜像源
+# npm更换淘宝镜像，使用此命令后，npm指令关键词改为（cnpm），例如：npm i 改为 cnpm i
+# 更换命令：npm install -g cnpm --registry=https://registry.npm.taobao.org
+
+# 先安装插件
+npm install @shopex/taro-plugin-modules -S --registry=http://registry.npm.ishopex.cn
+
+# 再安装其他依赖
+npm install
