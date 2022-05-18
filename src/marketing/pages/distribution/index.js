@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpNavBar, Loading, SpPage } from '@/components'
+import { SpNavBar, Loading, SpPage, SpPoster } from '@/components'
 import api from '@/api'
 import { pickBy, canvasExp, classNames, isArray } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
@@ -171,6 +171,7 @@ export default class DistributionDashboard extends Component {
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
+    console.log('wxappCode:', wxappCode)
     let avatarImg, bck
     if (avatar) {
       // 头像
@@ -181,7 +182,7 @@ export default class DistributionDashboard extends Component {
       bck = await Taro.getImageInfo({ src: qrcode_bg_img })
     } else {
       bck = await Taro.getImageInfo({
-        src: 'https://b-img-cdn.yuanyuanke.cn/image/21/2021/10/21/9c8cbb5f6b6a346641fe151b5e1604118H6zDVOajmkASVYKgPePOYXIeFpc55Ta'
+        src: `${process.env.APP_IMAGE_CDN}/fenxiao_bk.png`
       }) // 背景图片
     }
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
@@ -214,7 +215,9 @@ export default class DistributionDashboard extends Component {
     const ctx = Taro.createCanvasContext('myCanvas')
 
     canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
-    canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
+    // canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
+    // ctx.drawImage(bck, 0, 0, 750, 1335, 0, 0, 375, 640)
+    // ctx.save()
     canvasExp.textFill(ctx, username, 180, 50, 18, '#222')
     canvasExp.drawImageFill(ctx, code, 100, 325, 180, 180)
     canvasExp.imgCircleClip(ctx, avatar, 100, 15, 65, 65)
@@ -222,6 +225,8 @@ export default class DistributionDashboard extends Component {
       Taro.canvasToTempFilePath({
         x: 0,
         y: 0,
+        width: 375,
+        height: 640,
         canvasId: 'myCanvas'
       }).then((res) => {
         const shareImg = res.tempFilePath
@@ -490,7 +495,9 @@ export default class DistributionDashboard extends Component {
             <View className='iconfont icon-arrowRight icon-right' />
           </Navigator>
         </View>
-        {showPoster && (
+
+
+        {/* {showPoster && (
           <View className='poster-modal'>
             <Image className='poster' src={poster} mode='aspectFit' />
             <View
@@ -504,6 +511,17 @@ export default class DistributionDashboard extends Component {
               onClick={this.handleHidePoster.bind(this)}
             />
           </View>
+        )} */}
+        {showPoster && (
+          <SpPoster
+            info={info}
+            type='distribution'
+            onClose={() => {
+              this.setState({
+                showPoster: false
+              })
+            }}
+          />
         )}
         <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
       </SpPage>
