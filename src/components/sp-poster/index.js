@@ -8,6 +8,7 @@ import { classNames, authSetting, showToast } from '@/utils'
 import GoodsDetailPoster from './dw-goodsdetail'
 import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
 import GuideCheckout from './dw-guidecheckout'
+import Distribution from './dw-distribution'
 
 import './index.scss'
 
@@ -89,6 +90,15 @@ function SpPoster(props) {
           ctx,
           info,
           userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'distribution':
+        canvasObj = new Distribution({
+          ctx,
+          info,
+          userInfo,
           toPx,
           toRpx
         })
