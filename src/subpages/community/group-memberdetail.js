@@ -189,12 +189,19 @@ function GroupLeaderDetail(props) {
           </View>
         )}
 
+        <View className='warning'>
+          <Text className='icon iconfont icon-gouwuche'></Text>
+          请先加好友或进群，确认邻居身份后再下单
+        </View>
         {isArray(info?.activityPics) && (
-          <View className='leader-concat'>
-            <View className='warning'>
-              <Text className='icon iconfont icon-gouwuche'></Text>
-              请先加好友或进群，确认邻居身份后再下单
-            </View>
+          <View
+            className='leader-concat'
+            onClick={() => {
+              Taro.previewImage({
+                urls: info?.activityPics
+              })
+            }}
+          >
             {info?.activityPics.map((item) => (
               <SpImage
                 src={item}

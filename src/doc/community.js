@@ -116,7 +116,11 @@ export const COMMUNITY_ACTIVITY_ITEM = {
       country: 'area',
       address: 'address'
     })
-  }
+  },
+  showCondition: ({ condition_type }) => condition_type == 'money',
+  totalFee: 'total_fee',
+  conditionMoney: 'condition_money',
+  conditionType: "condition_type"
 }
 
 export const COMMUNITY_ACTIVITY_DETAIL_ITEM = {

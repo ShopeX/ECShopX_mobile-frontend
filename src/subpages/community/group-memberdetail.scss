@@ -460,12 +460,18 @@ $good-img-width: 80px;
     padding: 20px 0;
   }
   .leader-concat {
-    padding: 20px;
     background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 0 30px;
+    .sp-image {
+      margin: 0 20px 20px 0;
+    }
   }
   .warning {
-    padding: 20px 0;
     color: #ef9e67;
+    padding: 20rpx 30rpx;
+    background: #fff;
 
     .icon {
       font-size: 26px;
