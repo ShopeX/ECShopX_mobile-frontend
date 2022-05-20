@@ -1,4 +1,4 @@
-$avater-width: 60px;
+$avater-width: 80px;
 $good-img-width: 150px;
 
 .comp-order-item {
@@ -85,8 +85,7 @@ $good-img-width: 150px;
     .content-imgbox {
       width: $avater-width;
       height: $avater-width;
-      margin-right: 24px;
-      /* prettier-ignore */
+      margin-right: 20px;
       border-radius: 8px;
       overflow: hidden;
       .content-img {
@@ -191,9 +190,9 @@ $good-img-width: 150px;
     }
   }
   &-info {
-    padding: 16px;
+    padding: 20px;
     background: #f9faf9;
-    border-radius: 10px;
+    border-radius: 16px;
     color: #444;
     .iconfont {
       font-size: 32px;
@@ -204,6 +203,10 @@ $good-img-width: 150px;
       margin-left: 10px;
       color: var(--color-primary);
       cursor: pointer;
+    }
+    .ziti-label {
+      display: flex;
+      align-items: center;
     }
     .ziti-desc {
       font-weight: 400;
@@ -249,5 +252,39 @@ $good-img-width: 150px;
   }
   .ml {
     margin-left: 25px;
+  }
+
+  .goods-list-wrap {
+    margin: 20px 0;
+    .order-goods-item {
+      display: flex;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+      &-bd {
+        flex: 1;
+        padding-left: 20px;
+      }
+      .name {
+        color: #333;
+      }
+      .sku-info {
+        font-size: 26px;
+        color: #666;
+      }
+      .price-num {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+  }
+  .total-info {
+    /* prettier-ignore */
+    border-top: 1PX solid #f5f5f5;
+    padding: 30px 0;
+    text-align: right;
+    .sale-num {
+      margin-right: 20px;
+    }
   }
 }

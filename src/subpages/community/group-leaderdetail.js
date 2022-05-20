@@ -76,15 +76,6 @@ function GroupLeaderDetail(props) {
     fetchDetial()
   }
 
-  let diffConditionMoney = 0
-  if (detail) {
-    const { conditionMoney, conditionType, totalFee, items } = detail
-    const totalNum = items.reduce((pre, next) => pre.buyNum + next.buyNum, 0)
-    if (conditionType == 'num') {
-      // diffConditionMoney =
-    }
-  }
-
   return (
     <SpPage
       className='page-community-group-leaderdetail'
@@ -173,10 +164,14 @@ function GroupLeaderDetail(props) {
             </View>
 
             {detail?.showCondition && (
-              <View className='condition'>
-                <Text>成团金额</Text>
-                <AtProgress percent={20} isHidePercent />
-                <Text></Text>
+              <View className='condition-wrap'>
+                <View className='condition'>
+                  <View className='condition-label'>
+                    <Text>成团金额</Text>
+                    <Text>{`还差${detail.diffCondition}元成团`}</Text>
+                  </View>
+                  <AtProgress percent={detail.progressValue} isHidePercent />
+                </View>
               </View>
             )}
 

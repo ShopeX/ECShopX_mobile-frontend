@@ -260,4 +260,17 @@
       margin: 0 20px 20px 0;
     }
   }
+  .condition {
+    background: #faf7fa;
+    padding: 30px 20px;
+    border-radius: 16px;
+    &-label {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+    }
+    .at-progress__outer-inner {
+      background-color: #d6d6d6;
+    }
+  }
 }

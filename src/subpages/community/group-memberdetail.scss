@@ -502,4 +502,22 @@ $good-img-width: 80px;
       justify-content: space-between;
     }
   }
+
+  .condition {
+    background: #faf7fa;
+    padding: 30px 20px;
+    border-radius: 16px;
+    &-wrap {
+      background: #fff;
+      padding: 0 20px 20px;
+    }
+    &-label {
+      display: flex;
+      justify-content: space-between;
+      color: #666;
+    }
+    .at-progress__outer-inner {
+      background-color: #d6d6d6;
+    }
+  }
 }

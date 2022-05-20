@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtCountdown } from 'taro-ui'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import { SpPrice } from '@/components'
+import { SpPrice, SpImage } from '@/components'
 import { useSelector } from 'react-redux'
 import { classNames } from '@/utils'
 
@@ -64,14 +64,14 @@ function CompOrderItem(props) {
           </View>
           {/* )} */}
         </View>
-        <View className='comp-order-item-goods'>
+        {/* <View className='comp-order-item-goods'>
           <View className='goods-info'>
             <ScrollView className='scroll-goods' scrollX>
               {info?.items.map((good, goodIdx) => (
                 <View className='scroll-item' key={goodIdx}>
                   <View className='goods-imgbox'>
                     <Image src={good.pic} className='goods-img' lazyLoad />
-                    {/* {!checkIsChief && <View className='img-desc'>商品已核销（只有团员有）</View>} */}
+                    {!checkIsChief && <View className='img-desc'>商品已核销（只有团员有）</View>}
                   </View>
                   <View className='goods-desc'>{good.itemName}</View>
                   <View className='goods-num'>+{good.num}件</View>
@@ -83,14 +83,37 @@ function CompOrderItem(props) {
             <SpPrice className='sale-price' unit='cent' value={info.totalFee} />
             <View className='sale-num'>共{info.totalNum}件</View>
           </View>
+        </View> */}
+
+        <View className='goods-list-wrap'>
+          {info?.items.map((good) => (
+            <View className='order-goods-item'>
+              <View className='order-goods-item-hd'>
+                <SpImage src={good.pic} className='goods-img' width={150} height={150} />
+              </View>
+              <View className='order-goods-item-bd'>
+                <View className='name'>{good.itemName}</View>
+                <View className='sku-info'>{good.itemSpecDesc}</View>
+                <View className='price-num'>
+                  <SpPrice value={good.price} />
+                  <View className='goods-num'>{`x ${good.num}`}件</View>
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
+
+        <View className="total-info">
+          <Text className='sale-num'>共{info.totalNum}件</Text>
+          <SpPrice className='sale-price' unit='cent' value={info.totalFee} />
+        </View>
+
         <View className='comp-order-item-info'>
           <View className='ziti-title'>顾客自提</View>
           <View className='ziti-box'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='ziti-desc'>自提点：</Text>
-              <Text className='ziti-desc'>{info?.communityInfo?.ziti_name}</Text>
+              <Text className='ziti-desc'>{`自提点: ${info?.communityInfo?.ziti_name}`}</Text>
             </View>
             <View className='ziti-address'>
               <Text>{info?.communityInfo?.name}</Text>
@@ -100,13 +123,12 @@ function CompOrderItem(props) {
           <View className='ziti-info'>
             <View className='ziti-label'>
               <Text className='iconfont icon-dizhi-01' />
-              <Text className='ziti-desc'>{info.receiver_name}</Text>
-              <Text className='ziti-desc ml'>{info.receiver_mobile}</Text>
+              <Text className='ziti-desc'>{`${info.receiver_name} ${info.receiver_mobile}`}</Text>
             </View>
             <View className='ziti-address'>{info.receiver_address}</View>
             {info?.communityInfo?.extra_data_str?.map((el, idx) => (
               <View className='ziti-address' key={idx}>
-                {el}
+                {el.replace(":", ": ")}
               </View>
             ))}
           </View>
@@ -114,8 +136,7 @@ function CompOrderItem(props) {
             <View className='ziti-tuan'>
               <View className='ziti-label'>
                 <Text className='iconfont icon-dizhi-01' />
-                <Text className='ziti-desc'>团员备注：</Text>
-                <Text className='ziti-desc'>{info.remark}</Text>
+                <Text className='ziti-desc'>{`团员备注: ${info.remark}`}</Text>
                 {/* <Text onClick={onEditClick} className='iconfont icon-edit address-icon' /> */}
               </View>
             </View>

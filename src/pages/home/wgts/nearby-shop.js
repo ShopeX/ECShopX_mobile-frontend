@@ -40,7 +40,7 @@ function WgtNearbyShop(props) {
     const params = {
       lat: location.lat,
       lng: location.lng,
-      distributor_tag_id: seletedTags[state.activeIndex].tag_id,
+      distributor_tag_id: seletedTags[state.activeIndex]?.tag_id,
       show_discount: 1,
       province: location.lat ? location.province : '北京市',
       city: location.lat ? location.city : '北京市',

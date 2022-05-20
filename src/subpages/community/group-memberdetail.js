@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpPrice, SpFloatLayout, SpInputNumber } from '@/components'
-import { AtButton, AtCountdown } from 'taro-ui'
+import { AtButton, AtCountdown, AtProgress } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import api from '@/api'
@@ -193,6 +193,19 @@ function GroupLeaderDetail(props) {
           <Text className='icon iconfont icon-gouwuche'></Text>
           请先加好友或进群，确认邻居身份后再下单
         </View>
+
+        {info?.showCondition && (
+          <View className='condition-wrap'>
+            <View className='condition'>
+              <View className='condition-label'>
+                <Text>成团金额</Text>
+                <Text>{`还差${info.diffCondition}元成团`}</Text>
+              </View>
+              <AtProgress percent={info.progressValue} isHidePercent />
+            </View>
+          </View>
+        )}
+
         {isArray(info?.activityPics) && (
           <View
             className='leader-concat'
