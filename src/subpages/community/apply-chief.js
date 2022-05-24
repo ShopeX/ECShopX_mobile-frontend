@@ -145,6 +145,7 @@ function ApplyChief(props) {
         formComp = (
           <AtInput
             clear
+            focus
             name={key}
             type='text'
             value={form[key]}
@@ -158,6 +159,7 @@ function ApplyChief(props) {
         formComp = (
           <AtInput
             clear
+            focus
             name={key}
             type='number'
             value={form[key]}
