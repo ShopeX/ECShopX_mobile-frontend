@@ -10,13 +10,14 @@ const initialState = {
   areaData: [],
   areaList: [[], [], []],
   multiIndex: [0, 0, 0],
-  selectValue: []
+  selectValue: [],
+  selectId: []
 }
 
 function SpPickerAddress(props) {
   const { onChange = () => {}, value = [] } = props
   const [state, setState] = useImmer(initialState)
-  const { areaData, areaList, multiIndex, selectValue } = state
+  const { areaData, areaList, multiIndex, selectValue, selectId } = state
   
   useEffect(() => {
     fetch()
@@ -75,26 +76,31 @@ function SpPickerAddress(props) {
   const onMultiPickerChange = (e) => {
     const [provinceIndex = 0, cityIndex = 0, countryIndex = 0] = e.detail.value
     const selectValue = []
+    const selectId = []
     areaData.forEach((item, index) => {
       if (index === provinceIndex) {
         selectValue.push(item.label)
+        selectId.push(item.value)
         item.children.forEach((citem, cindex) => {
           if (cindex === cityIndex) {
             selectValue.push(citem.label)
+            selectId.push(citem.value)
             citem.children.forEach((sitem, sindex) => {
               if (sindex === countryIndex) {
                 selectValue.push(sitem.label)
+                selectId.push(sitem.value)
               }
             })
           }
         })
       }
     })
-    console.log(`selectValue:`, selectValue)
+    console.log(`selectValue:`, selectValue, selectId)
     setState((draft) => {
       draft.selectValue = selectValue
+      draft.selectId = selectId
     })
-    onChange(selectValue)
+    onChange(selectValue, selectId)
   }
 
   const onMultiPickerColumnChange = (e) => {

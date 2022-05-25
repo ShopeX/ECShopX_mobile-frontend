@@ -57,6 +57,7 @@ const ImgPicker = (props) => {
                 className={classNames('view-flex view-flex-vertical view-flex-middle', {
                   'is-hasimg': uploadSuccess(index)
                 })}
+                key={`image-item__${index}`}
               >
                 <SpImagePicker
                   backgroundSrc={IMG_MAP[mode]}
