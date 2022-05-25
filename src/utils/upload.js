@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
-import { isAlipay, getAppId, exceedLimit } from '@/utils'
+import { isAlipay, getAppId, exceedLimit, isWeixin } from '@/utils'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -82,15 +82,18 @@ const upload = {
   localUpload: async (item, tokenRes) => {
     const { filetype = 'image', domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    const appid = getAppId()
+    let header = {
+      Authorization: `Bearer ${S.getAuthToken()}`,
+    }
+    if(isWeixin) {
+      header['authorizer-appid'] = getAppId()
+    }
     try {
       const res = await Taro.uploadFile({
         url: `${req.baseURL}espier/uploadlocal`,
         filePath: item.url,
-        header: {
-          Authorization: `Bearer ${S.getAuthToken()}`,
-          'authorizer-appid': appid
-        },
+        header,
+        withCredentials: false,
         name: 'images',
         formData: {
           name: filename,

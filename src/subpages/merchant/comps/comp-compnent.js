@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Text, View, Input, Picker } from '@tarojs/components'
-import { Loading } from '@/components'
+import { Loading, SpPickerAddress } from '@/components'
 import { useDepChange } from '@/hooks'
 import S from '@/spx'
 import { isWeb } from '@/utils/platforms'
@@ -98,23 +98,27 @@ const Cell = (props) => {
     </View>
   )
   const renderAreaContent = mode === 'area' && (
-    <Picker
-      mode='multiSelector'
-      range={areaList}
+    <SpPickerAddress
+      value={value}
       onChange={onChange}
-      onColumnChange={onColumnChange}
-    >
-      {selectArea.length === 0 ? (
-        <View className='comps-cell_selector'>
-          <Text className='text'>请选择</Text>
-          <Text className='icon icon-qianwang-01'></Text>
-        </View>
-      ) : (
-        <View className='comps-cell_selector'>
-          {`${selectArea[0]},${selectArea[1]},${selectArea[2]}`}
-        </View>
-      )}
-    </Picker>
+    />
+    // <Picker
+    //   mode='multiSelector'
+    //   range={areaList}
+    //   onChange={onChange}
+    //   onColumnChange={onColumnChange}
+    // >
+    //   {selectArea.length === 0 ? (
+    //     <View className='comps-cell_selector'>
+    //       <Text className='text'>请选择</Text>
+    //       <Text className='icon icon-qianwang-01'></Text>
+    //     </View>
+    //   ) : (
+    //     <View className='comps-cell_selector'>
+    //       {`${selectArea[0]},${selectArea[1]},${selectArea[2]}`}
+    //     </View>
+    //   )}
+    // </Picker>
   )
 
   return (

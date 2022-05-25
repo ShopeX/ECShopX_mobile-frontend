@@ -500,7 +500,7 @@ const Apply = () => {
                       value={state.social_credit_code_id}
                       onChange={handleChange('social_credit_code_id')}
                     />
-                    <MCell
+                    {/* <MCell
                       title='所在省市'
                       required
                       mode='area'
@@ -508,6 +508,18 @@ const Apply = () => {
                       selectArea={state.regions}
                       onColumnChange={onAreaColumnChange}
                       onChange={onAreaChange}
+                    /> */}
+                    <MCell
+                      title='所在省市'
+                      required
+                      mode='area'
+                      value={state.regions}
+                      onChange={(regions, regionIds) => {
+                        setState((draft) => {
+                          draft.regions = regions
+                          draft.regions_id = regionIds
+                        })
+                      }}
                     />
                     <MCell
                       title='详细地址'
