@@ -53,13 +53,27 @@ function SpGoodsCell(props) {
             )}
           </View>
         </View>
-        {info.orderItemType != 'normal' && (
-          <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
-        )}
+        <View className='labels-block'>
+          {info.discount_info?.map((sp, idx) => (
+            <View className='goods-type' key={`goods-type__${idx}`}>
+              {sp.rule || sp.info}
+            </View>
+          ))}
+          {info.orderItemType != 'normal' && (
+            <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
+          )}
+        </View>
         <View className='item-ft'>
           <View className='price-gp'>
             <SpPrice value={_price}></SpPrice>
-            <SpPrice className='market-price' size={28} lineThrough value={info.marketPrice}></SpPrice>
+            {info.marketPrice > 0 && (
+              <SpPrice
+                className='market-price'
+                size={28}
+                lineThrough
+                value={info.marketPrice}
+              ></SpPrice>
+            )}
           </View>
 
           {info.num && <Text className='item-num'>x {info.num}</Text>}

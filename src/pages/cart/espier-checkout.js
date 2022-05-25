@@ -227,7 +227,7 @@ function CartCheckout(props) {
     console.log('trade params:', params)
     if (payType === 'deposit') {
       // 验证余额额度是否可用
-      if (userInfo.deposit < totalInfo.total_fee) {
+      if (userInfo.deposit < totalInfo.total_fee / 100) {
         const { confirm } = await Taro.showModal({
           content: '余额额度不足，请充值',
           cancelText: '取消',
@@ -518,7 +518,9 @@ function CartCheckout(props) {
       subdistrict_id,
       receiver_state,
       receiver_city,
-      receiver_district
+      receiver_district,
+      item_fee_new,
+      market_fee
     } = orderRes
 
     let subdistrictRes
@@ -557,6 +559,8 @@ function CartCheckout(props) {
 
     const total_info = {
       ...totalInfo,
+      item_fee_new,
+      market_fee,
       item_fee,
       discount_fee,
       member_discount,
@@ -969,11 +973,11 @@ function CartCheckout(props) {
       )}
 
       <View className='cart-checkout__total'>
-        {/* <SpCell className='trade-sub__item' title='原价：'>
-          <SpPrice unit='cent' value={totalInfo.item_fee} />
-        </SpCell> */}
+        <SpCell className='trade-sub__item' title='原价：'>
+          <SpPrice unit='cent' value={totalInfo.market_fee} />
+        </SpCell>
         <SpCell className='trade-sub__item' title='总价：'>
-          <SpPrice unit='cent' value={totalInfo.item_fee} />
+          <SpPrice unit='cent' value={totalInfo.item_fee_new} />
         </SpCell>
         <SpCell className='trade-sub__item' title='运费：'>
           <SpPrice unit='cent' value={totalInfo.freight_fee} />

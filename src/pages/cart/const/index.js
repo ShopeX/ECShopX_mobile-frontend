@@ -12,6 +12,8 @@ export const initialState = {
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
   totalInfo: {
+    market_fee: 0, // 原价
+    item_fee_new: 0, // 总价
     items_count: 0, // 商品总件数
     total_fee: '0.00', // 商品总计
     promotion_discount: 0, // 促销

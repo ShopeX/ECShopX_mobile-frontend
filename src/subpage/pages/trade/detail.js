@@ -209,7 +209,10 @@ export default class TradeDetail extends Component {
       orders: ({ items = [], logistics_items = [], is_split }) =>
         pickBy(is_split ? logistics_items : items, pickItem),
       log_orders: ({ items = [] }) => pickBy(items, pickItem),
-      can_apply_cancel: 'can_apply_cancel'
+      can_apply_cancel: 'can_apply_cancel',
+      market_fee: ({ market_fee }) => market_fee / 100,
+      item_fee_new: ({ item_fee_new }) => item_fee_new / 100,
+      promotion_discount: ({ promotion_discount }) => promotion_discount / 100
     })
 
     const ziti = pickBy(data.distributor, {
@@ -948,37 +951,54 @@ export default class TradeDetail extends Component {
               </View>
             )}
             <View className='line'>
-              <View className='left'>商品金额</View>
+              <View className='left'>原价</View>
               <View className='right'>
-                {transformTextByPoint(this.isPointitemGood(), info.item_fee, info.item_point)}
+                {`¥${info.market_fee}`}
+              </View>
+            </View>
+            <View className='line'>
+              <View className='left'>总价</View>
+              <View className='right'>
+                {transformTextByPoint(this.isPointitemGood(), info.item_fee_new, info.item_point)}
               </View>
             </View>
             <View className='line'>
               <View className='left'>运费</View>
               <View className='right'>
                 {info.freight_type !== 'point'
-                  ? `¥ ${info.freight_fee}`
+                  ? `¥${info.freight_fee}`
                   : `${info.freight_fee * 100}${this.props.pointName}`}
+              </View>
+            </View>
+            <View className='line'>
+              <View className='left'>促销</View>
+              <View className='right'>
+                {`- ¥${info.promotion_discount}`}
+              </View>
+            </View>
+            <View className='line'>
+              <View className='left'>优惠券</View>
+              <View className='right'>
+                {`- ¥${info.coupon_discount}`}
               </View>
             </View>
             {info.type == '1' && (
               <View className='line'>
                 <View className='left'>税费</View>
-                <View className='right'>￥{info.total_tax}</View>
+                <View className='right'>{`¥${info.total_tax}`}</View>
               </View>
             )}
             {!this.isPointitemGood() && (
               <View className='line'>
                 <View className='left'>优惠</View>
-                <View className='right'>-￥{info.discount_fee}</View>
+                <View className='right'>{`- ￥${info.discount_fee}`}</View>
               </View>
             )}
             {info.point_use > 0 && (
               <View className='line'>
                 <View className='left'>{`${this.props.pointName}支付`}</View>
                 <View className='right'>
-                  {info.point_use}
-                  {this.props.pointName}，抵扣：¥{info.point_fee}
+                  {`${info.point_use} ${this.props.pointName}，抵扣: ¥${info.point_fee}`}
                 </View>
               </View>
             )}
@@ -986,7 +1006,7 @@ export default class TradeDetail extends Component {
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
-                  ¥{info.payment} {' 余额支付'}
+                  {`¥${info.payment} 余额支付`}
                 </View>
               </View>
             )}
@@ -994,8 +1014,7 @@ export default class TradeDetail extends Component {
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
-                  ¥{info.payment}{' '}
-                  {info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}
+                  {`¥${info.payment} ${info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}`}
                 </View>
               </View>
             )}

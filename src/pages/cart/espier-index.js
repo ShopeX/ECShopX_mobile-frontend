@@ -134,7 +134,7 @@ function CartIndex() {
       }
       cus_plus_item_list.push({
         discount_desc: null,
-        cus_general_goods_list: no_active_item,
+        cus_general_goods_list: no_active_item.reverse(),
         cus_plus_exchange_item_list: null
       })
       return {

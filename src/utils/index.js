@@ -733,6 +733,10 @@ export const returnFloat = (value) => {
   }
 }
 
+export const isShowMarketPrice = (mktPrice) => {
+  return !isNaN(mktPrice) && mktPrice > 0
+}
+
 export {
   classNames,
   log,

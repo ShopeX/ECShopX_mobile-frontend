@@ -19,6 +19,18 @@ function CompGoodsItem(props) {
     return null
   }
 
+  const { price, activity_price, member_price, package_price } = info
+  let _price
+  if (!isNaN(activity_price)) {
+    _price = activity_price
+  } else if (!isNaN(package_price)) {
+    _price = package_price
+  } else if (!isNaN(member_price)) {
+    _price = member_price
+  } else {
+    _price = price
+  }
+
   return (
     <View>
       {children}
@@ -56,8 +68,8 @@ function CompGoodsItem(props) {
 
           <View className='item-ft'>
             <View className='goods-price-wrap'>
-              <SpPrice value={info.price / 100} />
-              {info.market_price && <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />}
+              <SpPrice value={_price / 100} />
+              {info.market_price > 0 && <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />}
             </View>
             {isShowAddInput ? (
               <SpInputNumber

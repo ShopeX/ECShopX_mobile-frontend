@@ -123,7 +123,7 @@ function SpGoodsItem(props) {
             <View className='goods-price'>
               <View className='gd-price'>
                 <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
-                {!isNaN(info.marketPrice) && (
+                {info.marketPrice > 0 && (
                   <SpPrice
                     size={26}
                     className='mkt-price'
@@ -134,18 +134,30 @@ function SpGoodsItem(props) {
               </View>
               {!info.activityPrice && (
                 <View>
-                  <View className='vip-price'>
-                    <SpPrice value={info.memberPrice} />
-                    <SpVipLabel content='会员价' type='member' />
-                  </View>
-                  <View className='vip-price'>
-                    <SpPrice value={info.vipPrice} />
-                    <SpVipLabel content='VIP' type='vip' />
-                  </View>
-                  <View className='svip-price'>
-                    <SpPrice value={info.svipPrice} />
-                    <SpVipLabel content='SVIP' type='svip' />
-                  </View>
+                  {info.memberPrice < info.price && (
+                    <View className='vip-price'>
+                      <SpPrice value={info.memberPrice} />
+                      <SpVipLabel content='会员价' type='member' />
+                    </View>
+                  )}
+
+                  {info.vipPrice > 0 &&
+                    info.vipPrice < info.price &&
+                    info.vipPrice > info.svipPrice && !info.svipPrice && (
+                      <View className='vip-price'>
+                        <SpPrice value={info.vipPrice} />
+                        <SpVipLabel content='VIP' type='vip' />
+                      </View>
+                    )}
+
+                  {info.svipPrice > 0 &&
+                    info.svipPrice < info.vipPrice &&
+                    info.svipPrice < info.price && (
+                      <View className='svip-price'>
+                        <SpPrice value={info.svipPrice} />
+                        <SpVipLabel content='SVIP' type='svip' />
+                      </View>
+                    )}
                 </View>
               )}
             </View>

@@ -26,23 +26,32 @@ function SpGoodsPrice(props) {
         <View>
           <View className='goods-price'>
             <SpPrice size={48} className='sale-price' value={price} />
-            {!isNaN(marketPrice) && (
-              <SpPrice className='mkt-price' lineThrough value={marketPrice} />
-            )}
+            {marketPrice > 0 && <SpPrice className='mkt-price' lineThrough value={marketPrice} />}
           </View>
           <View>
-            <View className='vip-price'>
-              <SpPrice value={info.memberPrice} />
-              <SpVipLabel content='会员价' type='member' />
-            </View>
-            <View className='vip-price'>
-              <SpPrice value={vipPrice} />
-              <SpVipLabel content='VIP' type='vip' />
-            </View>
-            <View className='svip-price'>
-              <SpPrice value={svipPrice} />
-              <SpVipLabel content='SVIP' type='svip' />
-            </View>
+            {info.memberPrice < info.price && (
+              <View className='vip-price'>
+                <SpPrice value={info.memberPrice} />
+                <SpVipLabel content='会员价' type='member' />
+              </View>
+            )}
+
+            {info.vipPrice > 0 &&
+              info.vipPrice < info.price &&
+              info.vipPrice > info.svipPrice &&
+              !info.svipPrice && (
+                <View className='vip-price'>
+                  <SpPrice value={info.vipPrice} />
+                  <SpVipLabel content='VIP' type='vip' />
+                </View>
+              )}
+
+            {info.svipPrice > 0 && info.svipPrice < info.vipPrice && info.svipPrice < info.price && (
+              <View className='svip-price'>
+                <SpPrice value={info.svipPrice} />
+                <SpVipLabel content='SVIP' type='svip' />
+              </View>
+            )}
           </View>
         </View>
       )}

@@ -11,16 +11,13 @@ export const CHECKOUT_GOODS_ITEM = {
   origincountry_name: 'origincountry_name',
   point: 'point',
   item_point: 'item_point',
-  price: ({ price }) => price / 100,
-  activityPrice: ({ act_price }) => act_price / 100,
-  memberPrice: ({ member_price }) => {
-    if (!member_price) {
-      return NaN
-    } else {
-      return member_price / 100
-    }
-  },
-  marketPrice: ({ market_price }) => market_price / 100,
+  price: ({ price }) => price / 100, // 销售价
+  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
+  marketPrice: ({ market_price }) => market_price / 100, // 原价
+  memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
+  vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
+  svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
+  packagePrice: ({ package_price }) => package_price / 100, // 组合价
   num: 'num',
   itemSpecDesc: 'item_spec_desc',
   nospec: ({ item_spec_desc }) => {
