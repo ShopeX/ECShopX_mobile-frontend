@@ -58,7 +58,20 @@ const initialState = {
   openRecommend: 1,
   openScanQrcode: 1,
   openLocation: 1,
-  openOfficialAccount: 1
+  openOfficialAccount: 1,
+  priceSetting: {
+    cart_page: {
+      market_price: false
+    },
+    item_page: {
+      market_price: false,
+      member_price: false,
+      svip_price: false
+    },
+    order_page: {
+      market_price: false
+    }
+  }
 }
 
 const sysSlice = createSlice({

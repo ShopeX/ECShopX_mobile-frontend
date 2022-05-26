@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
 import { SpPage, SpPrice, SpImage, SpPoint } from '@/components'
 import './index.scss'
 
@@ -19,6 +19,9 @@ function SpOrderItem(props) {
     renderFooter
   } = props
   const { pointName } = useSelector((state) => state.sys)
+  const { priceSetting } = useSelector((state) => state.sys)
+  const { order_page } = priceSetting
+  const { market_price: enMarketPrice } = order_page
 
   if (!info) return null
 
@@ -75,7 +78,12 @@ function SpOrderItem(props) {
               value={info.item_point || info.point}
             />
           ) : (
-            <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
+            <View>
+              <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
+              {info.market_price > 0 && enMarketPrice && (
+                <SpPrice lineThrough value={info.market_price}></SpPrice>
+              )}
+            </View>
           )}
         </View>
       )}

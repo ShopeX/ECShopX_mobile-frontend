@@ -1,4 +1,5 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage } from '@/components'
 
@@ -14,6 +15,11 @@ function CompGoodsItem(props) {
     onChange = () => {},
     onClickImgAndTitle = () => {}
   } = props
+  const { priceSetting } = useSelector((state) => state.sys)
+  const { cart_page } = priceSetting
+  const {
+    market_price: enMarketPrice,
+  } = cart_page
 
   if (!info) {
     return null
@@ -69,7 +75,7 @@ function CompGoodsItem(props) {
           <View className='item-ft'>
             <View className='goods-price-wrap'>
               <SpPrice value={_price / 100} />
-              {info.market_price > 0 && <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />}
+              {info.market_price > 0 && enMarketPrice && <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />}
             </View>
             {isShowAddInput ? (
               <SpInputNumber

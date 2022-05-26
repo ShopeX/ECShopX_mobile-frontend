@@ -16,6 +16,9 @@ import './index.scss'
 function SpGoodsItem(props) {
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
+  const { priceSetting } = useSelector((state) => state.sys)
+  const { cart_page, item_page, order_page } = priceSetting
+  const { market_price: enMarketPrice, member_price: enMemberPrice, svip_price: enSvipPrice } = item_page
   const {
     onClick,
     onStoreClick = () => {},
@@ -123,7 +126,7 @@ function SpGoodsItem(props) {
             <View className='goods-price'>
               <View className='gd-price'>
                 <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
-                {info.marketPrice > 0 && (
+                {info.marketPrice > 0 && enMarketPrice && (
                   <SpPrice
                     size={26}
                     className='mkt-price'
@@ -134,7 +137,7 @@ function SpGoodsItem(props) {
               </View>
               {!info.activityPrice && (
                 <View>
-                  {info.memberPrice < info.price && (
+                  {info.memberPrice < info.price && enMemberPrice && (
                     <View className='vip-price'>
                       <SpPrice value={info.memberPrice} />
                       <SpVipLabel content='会员价' type='member' />
@@ -143,7 +146,8 @@ function SpGoodsItem(props) {
 
                   {info.vipPrice > 0 &&
                     info.vipPrice < info.price &&
-                    info.vipPrice > info.svipPrice && !info.svipPrice && (
+                    info.vipPrice > info.svipPrice &&
+                    !info.svipPrice && enSvipPrice && (
                       <View className='vip-price'>
                         <SpPrice value={info.vipPrice} />
                         <SpVipLabel content='VIP' type='vip' />
@@ -152,7 +156,7 @@ function SpGoodsItem(props) {
 
                   {info.svipPrice > 0 &&
                     info.svipPrice < info.vipPrice &&
-                    info.svipPrice < info.price && (
+                    info.svipPrice < info.price && enSvipPrice && (
                       <View className='svip-price'>
                         <SpPrice value={info.svipPrice} />
                         <SpVipLabel content='SVIP' type='svip' />

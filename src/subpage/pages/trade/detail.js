@@ -60,7 +60,8 @@ const statusImg = {
 }
 @connect(({ colors, sys }) => ({
   colors: colors.current,
-  pointName: sys.pointName
+  pointName: sys.pointName,
+  priceSetting: sys.priceSetting
 }))
 export default class TradeDetail extends Component {
   $instance = getCurrentInstance()
@@ -138,6 +139,7 @@ export default class TradeDetail extends Component {
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
       price: ({ total_fee }) => (total_fee / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       point: 'item_point',
       item_point: 'item_point',
       num: 'num',
@@ -662,6 +664,9 @@ export default class TradeDetail extends Component {
     // TODO: orders 多商铺
     // const tradeOrders = resolveTradeOrders(info)
 
+    const { order_page } = this.props.priceSetting
+    const { market_price: enMarketPrice } = order_page
+
     return (
       <View
         className={classNames('page-trade-detail trade-detail', {
@@ -950,12 +955,13 @@ export default class TradeDetail extends Component {
                 <View className='right'>{info.invoice_content}</View>
               </View>
             )}
-            <View className='line'>
-              <View className='left'>原价</View>
-              <View className='right'>
-                {`¥${info.market_fee}`}
+            {enMarketPrice && (
+              <View className='line'>
+                <View className='left'>原价</View>
+                <View className='right'>{`¥${info.market_fee}`}</View>
               </View>
-            </View>
+            )}
+
             <View className='line'>
               <View className='left'>总价</View>
               <View className='right'>
@@ -972,15 +978,11 @@ export default class TradeDetail extends Component {
             </View>
             <View className='line'>
               <View className='left'>促销</View>
-              <View className='right'>
-                {`- ¥${info.promotion_discount}`}
-              </View>
+              <View className='right'>{`- ¥${info.promotion_discount}`}</View>
             </View>
             <View className='line'>
               <View className='left'>优惠券</View>
-              <View className='right'>
-                {`- ¥${info.coupon_discount}`}
-              </View>
+              <View className='right'>{`- ¥${info.coupon_discount}`}</View>
             </View>
             {info.type == '1' && (
               <View className='line'>
@@ -1005,16 +1007,16 @@ export default class TradeDetail extends Component {
             {isDeposit && (
               <View className='line'>
                 <View className='left'>支付</View>
-                <View className='right'>
-                  {`¥${info.payment} 余额支付`}
-                </View>
+                <View className='right'>{`¥${info.payment} 余额支付`}</View>
               </View>
             )}
             {!isDhPoint && !isDeposit && !NOT_PAY && (
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
-                  {`¥${info.payment} ${info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''}`}
+                  {`¥${info.payment} ${
+                    info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''
+                  }`}
                 </View>
               </View>
             )}

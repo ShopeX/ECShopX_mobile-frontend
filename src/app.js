@@ -81,6 +81,8 @@ class App extends Component {
       color_style: { primary, accent, marketing }
     } = await api.shop.getAppBaseInfo()
 
+    const priceSetting = await api.shop.getAppGoodsPriceSetting()
+
     // // 美洽客服配置
     // Taro.setStorageSync(SG_MEIQIA, meiqia);
     // // 一洽客服配置
@@ -119,7 +121,8 @@ class App extends Component {
           diskDriver: disk_driver,
           echat,
           meiqia,
-          openStore: !nostores_status // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
+          openStore: !nostores_status, // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
+          priceSetting
         }
       })
       // 兼容老的主题方式

@@ -88,3 +88,8 @@ export function getShopTemplate (params) {
 export function getMapKeyDetail (params) {
   return req.get('/third_party/map/key', params)
 }
+
+// 获取小程序价格配置
+export function getAppGoodsPriceSetting() {
+  return req.get('/setting/itemPrice')
+}

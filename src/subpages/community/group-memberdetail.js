@@ -199,7 +199,7 @@ function GroupLeaderDetail(props) {
             <View className='condition'>
               <View className='condition-label'>
                 <Text>成团金额</Text>
-                <Text>{`还差${info.diffCondition}元成团`}</Text>
+                <Text>{`${info.diffCondition <= 0 ? '已满足成团金额' : `还差${info.diffCondition}元成团`}`}</Text>
               </View>
               <AtProgress percent={info.progressValue} isHidePercent />
             </View>

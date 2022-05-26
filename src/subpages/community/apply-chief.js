@@ -206,8 +206,7 @@ function ApplyChief(props) {
           distributor_id
         })
         showToast('申请成功')
-        fetch()
-        aggrementAndExplanation()
+        getApplyChief()
       } else {
         showToast('请勾选团长注册协议')
       }
