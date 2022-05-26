@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { SpSearch, SpScrollView } from '@/components'
+import { SpSearch } from '@/components'
 // // import { Tracker } from '@/service'
 import {
   WgtSearchHome,
@@ -34,8 +34,7 @@ export default class HomeWgts extends Component {
   // }
 
   state = {
-    screenWidth: 375,
-    localWgts: []
+    screenWidth: 375
   }
 
   componentDidMount () {
@@ -78,32 +77,17 @@ export default class HomeWgts extends Component {
     loadMore(idx, goodType, currentTabIndex, currentLength)
   }
 
-  fetch = ({ pageIndex, pageSize }) => {
-    // console.log('fetch home wgts...', pageIndex, pageSize)
-    const { localWgts } = this.state
-    const { wgts } = this.props
-    this.setState({
-      localWgts: [
-        ...localWgts,
-        wgts[pageIndex - 1]
-      ]
-    })
-    return {
-      total: this.props.wgts.length
-    }
-  }
-
   render () {
     const { wgts } = this.props
-    const { screenWidth, localWgts } = this.state
+    const { screenWidth } = this.state
 
-    // console.log('home-wgts23', localWgts)
+    console.log('home-wgts23', wgts)
 
-    // if (localWgts.length <= 0) return null
+    if (!wgts || wgts.length <= 0) return null
 
     return (
-      <SpScrollView className='home-wgts' fetch={this.fetch} pageSize={1}>
-        {localWgts.map((item, idx) => (
+      <View className='home-wgts'>
+        {wgts.map((item, idx) => (
           <View
             className='wgt-wrap'
             key={`${item.name}${idx}`}
@@ -157,7 +141,7 @@ export default class HomeWgts extends Component {
             {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
           </View>
         ))}
-      </SpScrollView>
+      </View>
     )
   }
 }
