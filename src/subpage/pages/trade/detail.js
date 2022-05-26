@@ -1021,6 +1021,12 @@ export default class TradeDetail extends Component {
                 </View>
               </View>
             )}
+
+            <View className='line'>
+              <View className='left'>实付</View>
+              <View className='right'>{`¥${info.totalpayment}`}</View>
+            </View>
+
             {info.delivery_code && (
               <View className='line'>
                 <View className='left'>物流单号</View>
