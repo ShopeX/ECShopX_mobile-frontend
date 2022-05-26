@@ -58,6 +58,7 @@ function SpLogin(props) {
       Taro.showLoading()
 
       const { uid } = entryLaunch.getLaunchParams()
+      dubugger
       if (uid) {
         // 分销绑定
         params['uid'] = uid
