@@ -8,7 +8,7 @@ import './index.scss'
 
 function SpGoodsCell(props) {
   const { info, onSelectSku } = props
-  const { vipInfo = {} } = useSelector((state) => state.user)
+  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   if (!info) {
     return null
   }
@@ -59,8 +59,10 @@ function SpGoodsCell(props) {
               {userInfo?.gradeInfo?.grade_name}
             </View>
           ))} */}
+
+
           {!isNaN(memberPrice) && (
-            <View className='goods-type'>{vipInfo?.grade_name}</View>
+            <View className='goods-type'>{vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}</View>
           )}
           {info.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>

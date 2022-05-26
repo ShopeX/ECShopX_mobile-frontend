@@ -16,7 +16,7 @@ function CompGoodsItem(props) {
     onClickImgAndTitle = () => {}
   } = props
   const { priceSetting } = useSelector((state) => state.sys)
-  const { vipInfo = {} } = useSelector((state) => state.user)
+  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { cart_page } = priceSetting
   const { market_price: enMarketPrice } = cart_page
 
@@ -74,7 +74,7 @@ function CompGoodsItem(props) {
               <View className='item-tag'>{item.promotion_tag}</View>
             ))}
             {!isNaN(member_price) && (
-              <View className='item-tag'>{vipInfo?.grade_name}</View>
+              <View className='item-tag'>{vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}</View>
             )}
           </View>
 
