@@ -45,7 +45,7 @@ export default (props) => {
         v.hasMore = false
       }
       v.loading = false
-      // v.reset = false
+      v.reset = false
     })
   }
 
