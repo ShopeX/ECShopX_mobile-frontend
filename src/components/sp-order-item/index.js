@@ -80,9 +80,9 @@ function SpOrderItem(props) {
           ) : (
             <View>
               <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
-              {info.market_price > 0 && enMarketPrice && (
+              {/* {info.market_price > 0 && enMarketPrice && (
                 <SpPrice lineThrough value={info.market_price}></SpPrice>
-              )}
+              )} */}
             </View>
           )}
         </View>
