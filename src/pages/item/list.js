@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { connect } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { withPager, withBackToTop } from '@/hocs'
@@ -26,7 +26,7 @@ import {
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, getDistributorId } from '@/utils'
+import { pickBy, classNames, isWeixin, getDistributorId, styleNames } from '@/utils'
 import { Tracker } from '@/service'
 
 import './list.scss'
@@ -46,7 +46,8 @@ const initialState = {
   tagList: [],
   curTagIdx: 0,
   keywords: '',
-  show: false
+  show: false,
+  fixTop: 0
 }
 
 function ItemList(props) {
@@ -62,12 +63,30 @@ function ItemList(props) {
     filterList,
     tagList,
     curTagIdx,
-    show
+    show,
+    fixTop
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const goodsRef = useRef()
 
   useEffect(() => {}, [])
+
+  useDidShow(() => {
+    setTimeout(() => {
+      wx.createSelectorQuery()
+        .select('#item-list-head')
+        .boundingClientRect((res) => {
+          console.log('boundingClientRect:', res) //
+          if (res) {
+            setState((draft) => {
+              draft.fixTop = res.bottom
+              console.log('fixTop:', res.bottom) //
+            })
+          }
+        })
+        .exec()
+    }, 200)
+  })
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { cat_id, main_cat_id } = $instance.router.params
@@ -109,6 +128,7 @@ function ItemList(props) {
       select_tags_list = [],
       brand_list
     } = await api.item.search(params)
+    console.time('list render')
     const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
     const resLeftList = n_list.filter((item, index) => {
       if (index % 2 == 0) {
@@ -120,10 +140,11 @@ function ItemList(props) {
         return item
       }
     })
+    console.timeEnd('list render')
 
     setState((v) => {
-      v.leftList = [...v.leftList, ...resLeftList]
-      v.rightList = [...v.rightList, ...resRightList]
+      v.leftList[pageIndex - 1] = resLeftList
+      v.rightList[pageIndex - 1] = resRightList
       v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND)
       if (select_tags_list.length > 0) {
         v.tagList = [
@@ -132,6 +153,7 @@ function ItemList(props) {
             tag_id: 0
           }
         ].concat(select_tags_list)
+        v.fixTop = fixTop + 34
       }
     })
 
@@ -227,7 +249,7 @@ function ItemList(props) {
       url
     })
   }
-
+  console.log('page-item-list', fixTop)
   return (
     <SpPage
       scrollToTopBtn
@@ -235,7 +257,7 @@ function ItemList(props) {
         'has-tagbar': tagList.length > 0
       })}
     >
-      <View className='item-list-head'>
+      <View id='item-list-head' className='item-list-head'>
         <View className='search-wrap'>
           <SpSearchBar
             keyword={keywords}
@@ -269,21 +291,32 @@ function ItemList(props) {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' ref={goodsRef} fetch={fetch}>
+      <SpScrollView
+        className='item-list-scroll'
+        style={styleNames({
+          marginTop: `${fixTop}px`
+        })}
+        ref={goodsRef}
+        fetch={fetch}
+      >
         <View className='goods-list'>
           <View className='left-container'>
-            {leftList.map((item, index) => (
-              <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
-              </View>
-            ))}
+            {leftList.map((list, idx) => {
+              return list.map((item, sidx) => (
+                <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
+                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                </View>
+              ))
+            })}
           </View>
           <View className='right-container'>
-            {rightList.map((item, index) => (
-              <View className='goods-item-wrap' key={`goods-item-r__${index}`}>
-                <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
-              </View>
-            ))}
+            {rightList.map((list, idx) => {
+              return list.map((item, sidx) => (
+                <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
+                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                </View>
+              ))
+            })}
           </View>
         </View>
       </SpScrollView>

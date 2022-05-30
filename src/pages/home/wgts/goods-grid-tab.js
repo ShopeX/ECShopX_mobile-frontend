@@ -87,12 +87,20 @@ function WgtGoodsGridTab(props) {
                       const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
                       return (
                         <View className='goodgrid-item' key={`goods-item__${index}`}>
-                          <SpGoodsItem info={data} />
-                          {config.brand && (
-                            <View className='brand-info'>
-                              <SpImage src={good.brand} />
-                            </View>
-                          )}
+                          <SpGoodsItem
+                            info={data}
+                            renderBrand={
+                              config.brand && (
+                                <SpImage
+                                  className='brand-info'
+                                  src={good.brand}
+                                  width={110}
+                                  height={110}
+                                  mode='scaleToFill'
+                                />
+                              )
+                            }
+                          />
                         </View>
                       )
                     })}
@@ -102,12 +110,21 @@ function WgtGoodsGridTab(props) {
                       const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
                       return (
                         <View className='goodgrid-item' key={`goods-item__${index}`}>
-                          <SpGoodsItem info={data} />
-                          {config.brand && (
-                            <View className='brand-info'>
-                              <SpImage src={good.brand} />
-                            </View>
-                          )}
+                          <SpGoodsItem
+                            info={data}
+                            renderBrand={
+                              config.brand && (
+                                <SpImage
+                                  className='brand-info'
+                                  lazyLoad
+                                  src={good.brand}
+                                  width={110}
+                                  height={110}
+                                  mode='scaleToFill'
+                                />
+                              )
+                            }
+                          />
                         </View>
                       )
                     })}

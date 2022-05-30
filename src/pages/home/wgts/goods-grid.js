@@ -74,7 +74,7 @@ function WgtGoodsGrid(props) {
           {config.style === 'grids' &&
             goods.map((item, idx) => (
               <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
-                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} />
+                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} mode="aspectFill" />
               </View>
             ))}
         </View>

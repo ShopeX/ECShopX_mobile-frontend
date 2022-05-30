@@ -1,4 +1,22 @@
 .sp-image {
+  box-sizing: border-box;
+  &-loading {
+    &::before {
+      content: '';
+      padding-top: 100%;
+      display: block;
+    }
+    .sp-image-img {
+      opacity: 0;
+      display: none;
+    }
+  }
+  &-loadsuccess {
+    .sp-image-img {
+      opacity: 1;
+      transition: opacity 0.15s ease-in;
+    }
+  }
   &-img {
     width: 100%;
     display: block;

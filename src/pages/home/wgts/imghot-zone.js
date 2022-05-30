@@ -51,7 +51,7 @@ export default class WgtImgHotZone extends Component {
         )}
 
         <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
-          <SpImage img-class='img-hotzone_img' src={config.imgUrl} width='718' lazyLoad />
+          <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
           {data.map((item, index) => {
             return (
               <View

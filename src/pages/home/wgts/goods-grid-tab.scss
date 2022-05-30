@@ -60,28 +60,15 @@
     }
   }
   .brand-info {
-    background: #fff;
-    border-radius: 0 0 16px 16px;
+    border-radius: 55rpx;
+    position: relative;
+    top: -55px;
     overflow: hidden;
-    position: absolute;
-    top: 290px;
     left: 50%;
     transform: translateX(-50%);
-    width: 110px;
-    height: 110px;
-    border-radius: 50%;
-    .sp-image {
-      // height: 60px;
-      width: 100%;
-      height: 100%;
-      border-radius: 30px;
-      background: #eaeaea;
-      /* prettier-ignore */
-      // border: 1PX solid #FFFFFF;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
+    // border: 3px solid #ffffff;
+    // background: #dddddd;
+    // box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
   }
   .btn-more {
     width: 180px;

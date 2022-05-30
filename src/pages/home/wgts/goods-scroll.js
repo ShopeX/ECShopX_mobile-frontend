@@ -130,9 +130,8 @@ export default class WgtGoodsScroll extends Component {
           <ScrollView className='scroll-goods' scrollX>
             {goods.map((item, idx) => (
               <View
-                className={classNames('scroll-item', {
-                  'lastItem': idx === goods.length - 1
-                })}
+                className={classNames('scroll-item')}
+                key={`goodsscroll-item__${idx}`}
               >
                 {config.leaderboard && (
                   <View className='subscript'>
@@ -144,70 +143,12 @@ export default class WgtGoodsScroll extends Component {
                   showPrice={config.showPrice}
                   info={item}
                   key={`scroll-goods-item__${idx}`}
+                  mode="aspectFill"
+                  lazyLoad
                 />
               </View>
             ))}
-            {/* {data.map((item, idx) => {
-              const price = (
-                (item.act_price
-                  ? item.act_price
-                  : item.member_price
-                  ? item.member_price
-                  : item.price) / 100
-              ).toFixed(2)
-              const marketPrice = (
-                (item.act_price ? item.price : item.member_price ? item.price : item.market_price) /
-                100
-              ).toFixed(2)
-              return (
-                <View
-                  key={`${idx}1`}
-                  className={classNames('scroll-item', {
-                    'lastItem': idx === data.length - 1
-                  })}
-                  onClick={this.navigateTo.bind(
-                    this,
-                    `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
-                  )}
-                >
-                  {config.leaderboard && (
-                    <View className='subscript'>
-                      <View className='subscript-text'>NO.{idx + 1}</View>
-                      <Image className='subscript-img' lazyLoad src='/assets/imgs/paihang.png' />
-                    </View>
-                  )}
-                  <View className='thumbnail'>
-                    <Image src={item.imgUrl} className='goods-img' lazyLoad />
-                  </View>
-                  {item.title && <View className='subscript-title'>{item.title}</View>}
-                  {item.type === '1' && (
-                    <View className='nationalInfo'>
-                      <Image
-                        className='nationalFlag'
-                        src={item.origincountry_img_url}
-                        mode='aspectFill'
-                        lazyLoad
-                      />
-                      <Text className='nationalTitle'>{item.origincountry_name}</Text>
-                    </View>
-                  )}
-                  {config.showPrice && (
-                    <View className='subscript-price'>
-                      <View className='goods-price'>
-                        <Text className='cur'>¥</Text>
-                        {price}
-                      </View>
-                      {marketPrice != 0 && (
-                        <View className='market-price'>
-                          <Text className='cur'>¥</Text>
-                          {marketPrice}
-                        </View>
-                      )}
-                    </View>
-                  )}
-                </View>
-              )
-            })} */}
+      
 
             {config.moreLink.linkPage && (
               <View className='more_img' onClick={this.handleClickMore}>

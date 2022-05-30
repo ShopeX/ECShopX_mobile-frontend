@@ -107,14 +107,19 @@ const config = {
       // mode: IS_APP ? "hash" : "browser"
       mode: "browser"
     },
-    // devServer: {
-    //   https: {
-    //     key: "../cert/ecshopx-server.key",
-    //     cert: "../cert/ecshopx-server.crt",
-    //     // passphrase: "webpack-dev-server",
-    //     requestCert: true
-    //   }
-    // },
+    devServer: {
+      https: true,
+      // overlay: {
+      //   warnings: false,
+      //   errors: false
+      // }
+      // https: {
+      //   key: "../cert/ecshopx-server.key",
+      //   cert: "../cert/ecshopx-server.crt",
+      //   // passphrase: "webpack-dev-server",
+      //   requestCert: true
+      // }
+    },
     postcss: {
       autoprefixer: {
         enable: true,

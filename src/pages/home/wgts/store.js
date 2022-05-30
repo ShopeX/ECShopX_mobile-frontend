@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
-import { SpPrice } from '@/components'
+import { SpPrice, SpImage } from '@/components'
 import './store.scss'
 
 export default class WgtStore extends Component {
@@ -64,7 +64,7 @@ export default class WgtStore extends Component {
             style={{ backgroundColor: base.backgroundColor || '#FFF' }}
           >
             <View className='store-info' onClick={this.handleStoreClick.bind(this, item.id)}>
-              <Image className='store-logo' src={item.logo} mode='scaleToFill' />
+              <SpImage className='store-logo' src={item.logo} mode='scaleToFill' width={100} height={100}/>
               <View className='store-title'>
                 <View className='store-name'>{item.name}</View>
                 <View className='store-tags'>
@@ -77,7 +77,7 @@ export default class WgtStore extends Component {
                 </View>
               </View>
             </View>
-            {base.imgUrl && <Image className='store-banner' src={base.imgUrl} mode='widthFix' />}
+            {base.imgUrl && <SpImage className='store-banner' src={base.imgUrl} />}
             <ScrollView scrollX className='store-goods'>
               {item.items.map((goods) => (
                 <View
@@ -85,10 +85,12 @@ export default class WgtStore extends Component {
                   onClick={this.handleGoodsClick.bind(this, goods)}
                   key={goods.goodsId}
                 >
-                  <Image
+                  <SpImage
                     className='store-goods__item-thumbnail'
                     src={goods.imgUrl}
-                    mode='scaleToFill'
+                    mode='aspectFill'
+                    width={218}
+                    height={218}
                   />
                   <View className='store-goods__item-price' style={{ color: base.borderColor }}>
                     <SpPrice value={goods.price / 100} />

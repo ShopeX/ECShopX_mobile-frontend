@@ -1,18 +1,23 @@
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
-import qs from 'qs'
-import { showToast, log, isArray, VERSION_STANDARD } from '@/utils'
+import Taro, { getCurrentInstance } from '@tarojs/taro';
+import api from '@/api';
+import qs from 'qs';
+import { showToast, log, isArray, VERSION_STANDARD } from '@/utils';
+import configStore from '@/store';
 
-const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
-const $instance = getCurrentInstance()
+import MapLoader from '@/utils/lbs';
+
+const geocodeUrl = 'https://restapi.amap.com/v3/geocode';
+const $instance = getCurrentInstance();
+const { store } = configStore();
 class EntryLaunch {
   constructor() {
-    this.init()
+    this.init();
   }
 
+  
   init() {
     if (Taro.getEnv() == Taro.ENV_TYPE.WEB) {
-      this.initAMap()
+      this.initAMap();
     }
   }
 
@@ -20,109 +25,122 @@ class EntryLaunch {
    * @function 获取小程序路由参数
    */
   async getRouteParams() {
-    const { params } = $instance.router
-    let options = {}
+    const { params } = $instance.router;
+    let options = {};
     if (params.scene) {
       options = {
-        ...qs.parse(decodeURIComponent(params.scene))
-      }
+        ...qs.parse(decodeURIComponent(params.scene)),
+      };
 
       if (options.share_id) {
         const res = await api.wx.getShareId({
-          share_id: options.share_id
-        })
+          share_id: options.share_id,
+        });
+
         options = {
           ...options,
-          ...res
-        }
+          ...res,
+        };
       }
     } else {
-      options = params
+      options = params;
     }
-    console.log(`getRouteParams:`, options)
-    return options
+    console.log(`getRouteParams:`, options);
+    return options;
   }
 
   /**
    * @function 获取小程序启动参数
    */
   getLaunchParams() {
-    console.log(`app launch options:`, Taro.getLaunchOptionsSync())
-    const { query } = Taro.getLaunchOptionsSync()
+    console.log(`app launch options:`, Taro.getLaunchOptionsSync());
+    const { query } = Taro.getLaunchOptionsSync();
     let options = {
-      ...query
-    }
+      ...query,
+    };
+
     if (query.scene) {
       options = {
         ...options,
-        ...qs.parse(decodeURIComponent(query.scene))
-      }
+        ...qs.parse(decodeURIComponent(query.scene)),
+      };
     }
-    return options
+    return options;
   }
 
   /**
    * @function 初始化高德地图配置
    */
-  initAMap() {
-    AMap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
-      this.geolocation = new AMap.Geolocation({
-        enableHighAccuracy: true, //是否使用高精度定位，默认:true
-        timeout: 10000, //超过10秒后停止定位，默认：5s
-        position: 'RB', //定位按钮的停靠位置
-        buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-        zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-      })
-      this.geocoder = new AMap.Geocoder({
-        radius: 1000 //范围，默认：500
-      })
-    })
+  async initAMap(callback) {
+    return new Promise((reslove, reject) => {
+      MapLoader().then((amap) => {
+        amap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
+          this.geolocation = new amap.Geolocation({
+            enableHighAccuracy: true, //是否使用高精度定位，默认:true
+            timeout: 10000, //超过10秒后停止定位，默认：5s
+            position: 'RB', //定位按钮的停靠位置
+            buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+            zoomToAccuracy: true, //定位成功后是否自动调整地图视野到定位点
+          });
+          this.geocoder = new AMap.Geocoder({
+            radius: 1000, //范围，默认：500
+          });
+          reslove('ok');
+        });
+      });
+    });
   }
 
   /**
    * @function 获取当前店铺
    */
   async getCurrentStore() {
-    const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo')
-    const pages = Taro.getCurrentPages()
-    const currentPage = pages[pages.length - 1]
+    const { is_open_wechatapp_location } = Taro.getStorageSync('settingInfo');
+    const pages = Taro.getCurrentPages();
+    const currentPage = pages[pages.length - 1];
     const { dtid } =
-      process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router.params
-    let storeQuery = {} // 店铺查询参数
+      process.env.TARO_ENV == 'weapp'
+        ? currentPage.options
+        : currentPage.$router.params;
+    let storeQuery = {}; // 店铺查询参数
     if (dtid) {
       storeQuery = {
-        distributor_id: dtid
-      }
+        distributor_id: dtid,
+      };
     } else {
       // 开启定位
       if (is_open_wechatapp_location == 1) {
         try {
-          const { lng, lat } = await this.getLocationInfo()
+          const { lng, lat } = await this.getLocationInfo();
           storeQuery = {
             ...storeQuery,
             lng,
-            lat
-          }
-          const { addressComponent, formattedAddress } = await this.getAddressByLnglat(lng, lat)
+            lat,
+          };
+
+          const { addressComponent, formattedAddress } =
+            await this.getAddressByLnglat(lng, lat);
           Taro.setStorageSync('locationAddress', {
             ...addressComponent,
             formattedAddress,
             lng,
-            lat
-          })
-          showToast(formattedAddress)
+            lat,
+          });
+
+          showToast(formattedAddress);
         } catch (e) {
-          console.warn('location failed: ' + e.message)
+          console.warn('location failed: ' + e.message);
         }
       }
     }
-    const storeInfo = await api.shop.getShop(storeQuery)
-    Taro.setStorageSync('curStore', storeInfo)
+    const storeInfo = await api.shop.getShop(storeQuery);
+    Taro.setStorageSync('curStore', storeInfo);
     this.store.dispatch({
       type: 'shop/setShop',
-      payload: storeInfo
-    })
-    return storeInfo
+      payload: storeInfo,
+    });
+
+    return storeInfo;
   }
 
   /**
@@ -130,49 +148,50 @@ class EntryLaunch {
    */
   async getLocationInfo() {
     if (process.env.TARO_ENV === 'weapp') {
-      return new Promise((resolve, reject) => {
+      return new Promise(async (resolve, reject) => {
         Taro.getLocation({
           type: 'gcj02',
           success: (res) => {
             if (res.errMsg == 'getLocation:ok') {
               resolve({
                 lng: res.longitude,
-                lat: res.latitude
-              })
+                lat: res.latitude,
+              });
             } else {
-              resolve({})
-              reject({ message: res.errMsg })
+              resolve({});
+              reject({ message: res.errMsg });
             }
           },
           fail: (error) => {
-            resolve({})
-            reject({ message: error })
-          }
-        })
-      })
+            resolve({});
+            reject({ message: error });
+          },
+        });
+      });
     } else {
-      return new Promise((reslove, reject) => {
+      return new Promise(async (reslove, reject) => {
         this.geolocation.getCurrentPosition(function (status, result) {
           if (status == 'complete') {
             reslove({
               lng: result.position.lng,
-              lat: result.position.lat
-            })
+              lat: result.position.lat,
+            });
           } else {
-            reject({ message: result.message })
+            reject({ message: result.message });
           }
-        })
-      })
+        });
+      });
     }
   }
 
-  async getCurrentAddressInfo() {
-    const { lng, lat } = await this.getLocationInfo()
-    let res = {}
+  async getCurrentAddressInfo(refresh = false) {
+    const { lng, lat } = await this.getLocationInfo();
+    let res = {};
     if (lat) {
-      res = await this.getAddressByLnglatWebAPI(lng, lat)
+      res = await this.getAddressByLnglatWebAPI(lng, lat);
     }
-    return res
+    log.debug('getCurrentAddressInfo: ', res)
+    return res;
   }
 
   /**
@@ -183,11 +202,12 @@ class EntryLaunch {
       url: `${geocodeUrl}/geo`,
       data: {
         key: process.env.APP_MAP_KEY,
-        address
-      }
-    })
+        address,
+      },
+    });
+
     if (res.data.status == 1) {
-      const { geocodes } = res.data
+      const { geocodes } = res.data;
       if (geocodes.length > 0) {
         return {
           address: geocodes[0].formatted_address,
@@ -195,17 +215,17 @@ class EntryLaunch {
           city: geocodes[0].city,
           district: geocodes[0].district,
           lng: geocodes[0].location.split(',')[0],
-          lat: geocodes[0].location.split(',')[1]
-        }
+          lat: geocodes[0].location.split(',')[1],
+        };
       } else {
         return {
-          error: '没有搜索到地址'
-        }
+          error: '没有搜索到地址',
+        };
       }
     } else {
       return {
-        error: '地址解析错误'
-      }
+        error: '地址解析错误',
+      };
     }
   }
 
@@ -217,12 +237,12 @@ class EntryLaunch {
     return new Promise((reslove, reject) => {
       this.geocoder.getAddress([lng, lat], function (status, result) {
         if (status === 'complete' && result.regeocode) {
-          reslove(result.regeocode)
+          reslove(result.regeocode);
         } else {
-          reject(status)
+          reject(status);
         }
-      })
-    })
+      });
+    });
   }
 
   async getAddressByLnglatWebAPI(lng, lat) {
@@ -230,26 +250,27 @@ class EntryLaunch {
       url: `${geocodeUrl}/regeo`,
       data: {
         key: process.env.APP_MAP_KEY,
-        location: `${lng},${lat}`
-      }
-    })
+        location: `${lng},${lat}`,
+      },
+    });
+
     if (res.data.status == 1) {
       const {
         formatted_address,
-        addressComponent: { province, city, district }
-      } = res.data.regeocode
+        addressComponent: { province, city, district },
+      } = res.data.regeocode;
       return {
         lng,
         lat,
         address: formatted_address,
         province: province,
         city: isArray(city) ? province : city,
-        district: district
-      }
+        district: district,
+      };
     } else {
       return {
-        error: '地址解析错误'
-      }
+        error: '地址解析错误',
+      };
     }
   }
 
@@ -259,11 +280,11 @@ class EntryLaunch {
    * @description 标准版有门店，并且根据后台设置是否展示门店；平台版不显示门店
    */
   isOpenStore() {
-    const { nostores_status } = Taro.getStorageSync('otherSetting')
+    const { nostores_status } = Taro.getStorageSync('otherSetting');
     if (VERSION_STANDARD) {
-      return !nostores_status
+      return !nostores_status;
     } else {
-      return false
+      return false;
     }
   }
 
@@ -272,17 +293,17 @@ class EntryLaunch {
    */
   async isOpenPosition(callback) {
     if (process.env.TARO_ENV === 'weapp') {
-      const { authSetting } = await Taro.getSetting()
+      const { authSetting } = await Taro.getSetting();
       if (!authSetting['scope.userLocation']) {
         Taro.authorize({
           scope: 'scope.userLocation',
           success: async () => {
-            let { lng, lat } = await this.getLocationInfo()
-            let res = {}
+            let { lng, lat } = await this.getLocationInfo();
+            let res = {};
             if (lat) {
-              res = await this.getAddressByLnglatWebAPI(lng, lat)
+              res = await this.getAddressByLnglatWebAPI(lng, lat);
             }
-            if (callback) callback(res)
+            if (callback) callback(res);
           },
           fail: () => {
             Taro.showModal({
@@ -290,40 +311,40 @@ class EntryLaunch {
               content: '请打开定位权限',
               success: async (resConfirm) => {
                 if (resConfirm.confirm) {
-                  await Taro.openSetting()
-                  const setting = await Taro.getSetting()
+                  await Taro.openSetting();
+                  const setting = await Taro.getSetting();
                   if (setting.authSetting['scope.userLocation']) {
-                    let { lng, lat } = await this.getLocationInfo()
-                    let res = {}
+                    let { lng, lat } = await this.getLocationInfo();
+                    let res = {};
                     if (lat) {
-                      res = await this.getAddressByLnglatWebAPI(lng, lat)
+                      res = await this.getAddressByLnglatWebAPI(lng, lat);
                     }
-                    if (callback) callback(res)
+                    if (callback) callback(res);
                   } else {
-                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' });
                   }
                 }
-              }
-            })
-          }
-        })
+              },
+            });
+          },
+        });
       } else {
-        let { lng, lat } = await this.getLocationInfo()
-        let res = {}
+        let { lng, lat } = await this.getLocationInfo();
+        let res = {};
         if (lat) {
-          res = await this.getAddressByLnglatWebAPI(lng, lat)
+          res = await this.getAddressByLnglatWebAPI(lng, lat);
         }
-        if (callback) callback(res)
+        if (callback) callback(res);
       }
     } else {
-      let { lng, lat } = await this.getLocationInfo()
-      let res = {}
+      let { lng, lat } = await this.getLocationInfo();
+      let res = {};
       if (lat) {
-        res = await this.getAddressByLnglatWebAPI(lng, lat)
+        res = await this.getAddressByLnglatWebAPI(lng, lat);
       }
-      if (callback) callback(res)
+      if (callback) callback(res);
     }
   }
 }
 
-export default new EntryLaunch()
+export default new EntryLaunch();

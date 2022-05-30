@@ -86,7 +86,7 @@ function SpScrollView(props, ref) {
   return (
     <View className={classNames('sp-scrollview', className)} style={style} ref={wrapRef}>
       <View className='sp-scrollview-body'>{children}</View>
-      {page.loading && <SpLoading>正在加载...</SpLoading>}
+      {page.hasMore && <SpLoading>正在加载...</SpLoading>}
       {!page.hasMore &&
         getTotal() == 0 &&
         (renderEmpty ? renderEmpty : <SpNote icon title='没有查询到数据' />)}

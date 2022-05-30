@@ -18,7 +18,11 @@ function SpGoodsItem(props) {
   const { favs = [] } = useSelector((state) => state.user)
   const { priceSetting } = useSelector((state) => state.sys)
   const { cart_page, item_page, order_page } = priceSetting
-  const { market_price: enMarketPrice, member_price: enMemberPrice, svip_price: enSvipPrice } = item_page
+  const {
+    market_price: enMarketPrice,
+    member_price: enMemberPrice,
+    svip_price: enSvipPrice
+  } = item_page
   const {
     onClick,
     onStoreClick = () => {},
@@ -31,7 +35,9 @@ function SpGoodsItem(props) {
     renderFooter = null,
     showPromotion = true,
     showPrice = true,
-    hideStore = false
+    hideStore = false,
+    renderBrand,
+    mode = 'widthFix'
   } = props
 
   const handleFavClick = async (e) => {
@@ -82,8 +88,9 @@ function SpGoodsItem(props) {
   return (
     <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
       <View className='goods-item__hd'>
-        <SpImage src={info.pic} mode='aspectFill' />
+        <SpImage lazyLoad src={info.pic} mode={mode} />
       </View>
+      {renderBrand && <View className='goods-brand-wrap'>{renderBrand}</View>}
       <View className='goods-item__bd'>
         {/* 跨境商品 */}
         {info.type === '1' && (
@@ -147,7 +154,8 @@ function SpGoodsItem(props) {
                   {info.vipPrice > 0 &&
                     info.vipPrice < info.price &&
                     info.vipPrice > info.svipPrice &&
-                    !info.svipPrice && enSvipPrice && (
+                    !info.svipPrice &&
+                    enSvipPrice && (
                       <View className='vip-price'>
                         <SpPrice value={info.vipPrice} />
                         <SpVipLabel content='VIP' type='vip' />
@@ -156,7 +164,8 @@ function SpGoodsItem(props) {
 
                   {info.svipPrice > 0 &&
                     info.svipPrice < info.vipPrice &&
-                    info.svipPrice < info.price && enSvipPrice && (
+                    info.svipPrice < info.price &&
+                    enSvipPrice && (
                       <View className='svip-price'>
                         <SpPrice value={info.svipPrice} />
                         <SpVipLabel content='SVIP' type='svip' />
