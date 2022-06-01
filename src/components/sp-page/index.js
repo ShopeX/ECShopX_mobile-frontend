@@ -179,7 +179,7 @@ function SpPage(props, ref) {
               })}
               onClick={() => {
                 if (cusCurrentPage == 1) {
-                  Taro.navigateTo({
+                  Taro.redirectTo({
                     url: '/pages/index'
                   })
                 } else {

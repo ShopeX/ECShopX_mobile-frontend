@@ -68,10 +68,19 @@
     .icon-wrap {
       width: 58px;
       height: 58px;
-      background: #ffffff;
-      opacity: 0.2;
-      /* prettier-ignore */
-      border: 1PX solid #585858;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .icon-home1 {
+        font-size: 40px;
+        color: #fff;
+      }
+      .icon-fanhui {
+        font-size: 40px;
+        color: #fff;
+      }
     }
     .title-container {
       flex: 1;
