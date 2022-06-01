@@ -28,8 +28,9 @@ import doc from '@/doc'
 import api from '@/api'
 import { pickBy, classNames, isWeixin, getDistributorId, styleNames } from '@/utils'
 import { Tracker } from '@/service'
+import CompTabbar from './comps/comp-tabbar'
 
-import './list.scss'
+import './item-list.scss'
 
 const initialState = {
   leftList: [],
@@ -50,7 +51,7 @@ const initialState = {
   fixTop: 0
 }
 
-function ItemList(props) {
+function StoreItemList(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const {
@@ -67,6 +68,7 @@ function ItemList(props) {
     fixTop
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
+  const { tabbar = 1 } = $instance.router.params
   const goodsRef = useRef()
 
   useEffect(() => {}, [])
@@ -89,13 +91,14 @@ function ItemList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id, main_cat_id } = $instance.router.params
+    const { cat_id, main_cat_id, dtid } = $instance.router.params
     let params = {
       page: pageIndex,
       pageSize,
       brand_id: brandSelect,
       keywords: keywords,
       approve_status: 'onsale,only_show',
+      distributor_id: dtid,
       item_type: 'normal',
       is_point: 'false'
     }
@@ -119,7 +122,6 @@ function ItemList(props) {
       params['category'] = cat_id
     }
 
-    params.distributor_id = getDistributorId()
 
     const {
       list,
@@ -249,13 +251,14 @@ function ItemList(props) {
       url
     })
   }
-  console.log('page-item-list', fixTop)
+  console.log('page-store-item-list', fixTop)
   return (
     <SpPage
       scrollToTopBtn
-      className={classNames('page-item-list', {
+      className={classNames('page-store-item-list', {
         'has-tagbar': tagList.length > 0
       })}
+      renderFooter={tabbar == 1 && <CompTabbar />}
     >
       <View id='item-list-head' className='item-list-head'>
         <View className='search-wrap'>
@@ -270,18 +273,12 @@ function ItemList(props) {
           />
         </View>
         {tagList.length > 0 && (
-          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
-            {/* <View
-            className="filter-btn"
-            onClick={() => {
-              setState(v => {
-                v.show = true;
-              });
-            }}
-          >
-            筛选<Text className="iconfont icon-filter"></Text>
-          </View> */}
-          </SpTagBar>
+          <SpTagBar
+            className='tag-list'
+            list={tagList}
+            value={curTagIdx}
+            onChange={onChangeTag}
+          ></SpTagBar>
         )}
 
         <SpFilterBar
@@ -320,27 +317,8 @@ function ItemList(props) {
           </View>
         </View>
       </SpScrollView>
-
-      {/* <SpDrawer
-        show={show}
-        onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
-        }}
-        onConfirm={onConfirmBrand}
-        onReset={onResetBrand}
-      >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
-        />
-      </SpDrawer> */}
     </SpPage>
   )
 }
 
-export default ItemList
+export default StoreItemList

@@ -65,6 +65,14 @@
       justify-content: center;
       align-items: center;
     }
+    .icon-wrap {
+      width: 58px;
+      height: 58px;
+      background: #ffffff;
+      opacity: 0.2;
+      /* prettier-ignore */
+      border: 1PX solid #585858;
+    }
     .title-container {
       flex: 1;
       height: 100%;
@@ -81,6 +89,10 @@
     .icon-shangyiyehoutuifanhui-xianxingyuankuang {
       font-size: 50px;
       color: #fff;
+    }
+    &.mantle {
+      background: rgba(255, 255, 255, 0.5);
+      transition: all 0.15s ease-in;
     }
   }
 }

@@ -18,7 +18,7 @@ export default class WgtStore extends Component {
   }
 
   handleStoreClick = (id) => {
-    const url = `/pages/store/index?id=${id}`
+    const url = `/subpages/store/index?id=${id}`
     Taro.navigateTo({
       url
     })

@@ -1,0 +1,109 @@
+.comp-shop-brand {
+  // height: 253px;
+  background: #ffffff;
+  border-radius: 48px 48px 0px 0px;
+  padding-bottom: 20px;
+  .shop-brand-hd {
+    display: flex;
+    padding: 16px;
+    height: 80px;
+  }
+  .store-logo {
+    position: relative;
+    top: -60px;
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .store-info {
+    flex: 1;
+    margin-left: 16px;
+    .store-name {
+      font-size: 32px;
+      font-weight: 600;
+      color: #222222;
+    }
+  }
+  .store-score-desc {
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    color: #666666;
+    .store-score {
+      margin-right: 24px;
+    }
+    .store-desc {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .btn-attention {
+    padding: 0 10px;
+    height: 44px;
+    line-height: 44px;
+    background: #ffffff;
+    border-radius: 22px;
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    color: var(--color-primary);
+    font-size: 22px;
+    margin-top: 10px;
+    margin-left: 20px;
+    text-align: center;
+  }
+
+  .coupon-list {
+    padding: 0 16px;
+    .sp-shop-coupon {
+      margin-right: 16px;
+    }
+  }
+
+  .activity-list {
+    display: flex;
+    padding: 0 16px;
+    .activity {
+      flex: 1;
+      height: 35px;
+      overflow: hidden;
+      transition: all 0.15s ease-in;
+      &.extend {
+        height: auto;
+        transition: all 0.15s ease-in;
+      }
+    }
+    .activity-item {
+      display: flex;
+      align-items: center;
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+    }
+    .activity-tag {
+      height: 34px;
+      background: linear-gradient(174deg, #f31346 0%, #ff4a4a 100%);
+      color: #fff;
+      margin-right: 10px;
+      font-size: 24px;
+      border-radius: 4px;
+      padding: 0 4px;
+    }
+    .activity-name {
+      height: 33px;
+      font-size: 24px;
+      font-weight: 400;
+      color: #999999;
+      line-height: 33px;
+    }
+  }
+  .more-txt {
+    color: #444;
+    font-size: 24px;
+    display: flex;
+    align-items: flex-start;
+    .iconfont {
+      font-size: 30px;
+    }
+  }
+}

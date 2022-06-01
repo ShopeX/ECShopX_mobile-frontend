@@ -7,9 +7,6 @@ export default {
     'pages/cart/espier-checkout', // 结算页面
     'pages/cart/cashier-result', // 支付结果页面
 
-    'pages/store/index', // 店铺首页
-    'pages/store/brand-info', // 店铺品牌
-
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
 
@@ -23,8 +20,13 @@ export default {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index', // 直播间页面
-    'pages/store/list', // 选择店铺列表
-    'pages/store/ziti-list' // 自提列表
+
+    // 'pages/store/index', // 店铺首页
+    // 'pages/store/brand-info', // 店铺品牌
+    // 'pages/store/item-list', // 店铺商品列表
+    // 'pages/store/category', // 店铺商品分类
+    // 'pages/store/list', // 选择店铺列表
+    // 'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
     // 导购货架 guide
@@ -41,6 +43,18 @@ export default {
         'recommend/list', // 种草
         'recommend/detail', // 种草详情
         'custom/custom-page' // 自定义页面
+      ]
+    },
+    // 门店
+    {
+      root: 'subpages/store',
+      pages: [
+        'index', // 店铺首页
+        'brand-info', // 店铺品牌
+        'item-list', // 店铺商品列表
+        'category', // 店铺商品分类
+        'list', // 选择店铺列表
+        'ziti-list' // 自提列表
       ]
     },
     {
@@ -226,8 +240,6 @@ export default {
         // 储值
         'pages/recharge/index',
         'pages/recharge/history',
-        'pages/store/list', // 门店列表
-        'pages/store/category',
         // cart
         'pages/cart/coupon-picker',
         'pages/cart/drug-info',

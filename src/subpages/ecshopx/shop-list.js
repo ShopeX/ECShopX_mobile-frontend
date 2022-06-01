@@ -224,7 +224,7 @@ function shopList (props) {
   }
 
   const handleClickItem = (item) => {
-    Taro.navigateTo({ url: `/pages/store/index?id=${item.distributor_id}` })
+    Taro.navigateTo({ url: `/subpages/store/index?id=${item.distributor_id}` })
   }
 
   return (

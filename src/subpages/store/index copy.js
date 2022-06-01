@@ -43,7 +43,7 @@ import {
   WgtHeadline,
   WgtFloorImg,
   WgtHotTopic
-} from '../home/wgts'
+} from '@/pages/home/wgts'
 import CompHeader from './comps/comp-header'
 
 import './index.scss'
@@ -69,20 +69,20 @@ export default class StoreIndex extends Component {
           title: '店铺首页',
           iconPrefixClass: 'iconfont icon',
           iconType: 'home',
-          url: '/pages/store/index'
+          url: '/subpages/store/index'
           //iconfont icon-home"
         },
         {
           title: '商品列表',
           iconType: 'list',
           iconPrefixClass: 'iconfont icon',
-          url: '/others/pages/store/list'
+          url: '/subpages/store/list'
         },
         {
           title: '商品分类',
           iconType: 'category',
           iconPrefixClass: 'iconfont icon',
-          url: '/others/pages/store/category'
+          url: '/subpages/store/category'
         }
       ],
       couponList: [],
@@ -137,7 +137,7 @@ export default class StoreIndex extends Component {
     }
     return {
       title: this.state.storeInfo ? this.state.storeInfo.name : '店铺商品',
-      path: `/pages/store/index?id=${this.state.dtid}`
+      path: `/subpages/store/index?id=${this.state.dtid}`
     }
   }
 

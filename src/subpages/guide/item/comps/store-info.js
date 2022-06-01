@@ -42,7 +42,7 @@ export default class StoreInfo extends Component {
     const { distributor_id } = this.props.info
     console.log(1111111, distributor_id)
     Taro.navigateTo({
-      url: `/pages/store/index?id=${distributor_id}`
+      url: `/subpages/store/index?id=${distributor_id}`
     })
   }
 

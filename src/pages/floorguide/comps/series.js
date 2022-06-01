@@ -51,7 +51,7 @@ export default class Series extends Component {
 
   handleClickItem = (item) => {
     const { category_id } = item
-    const url = `/pages/store/index?id=${item.id}`
+    const url = `/subpages/store/index?id=${item.id}`
 
     Taro.navigateTo({
       url

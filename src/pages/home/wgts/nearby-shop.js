@@ -77,7 +77,7 @@ function WgtNearbyShop(props) {
   }
 
   const handleStoreClick = (id) => {
-    const url = `/pages/store/index?id=${id}`
+    const url = `/subpages/store/index?id=${id}`
     Taro.navigateTo({
       url
     })

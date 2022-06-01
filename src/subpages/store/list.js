@@ -231,7 +231,7 @@ function NearlyShop(props) {
   }
 
   const handleClickItem = () => {
-    Taro.navigateTo({ url: `/pages/store/index?id=${state.headquarters.distributor_id}` })
+    Taro.navigateTo({ url: `/subpages/store/index?id=${state.headquarters.distributor_id}` })
   }
 
   const handleClickShop = async (info) => {

@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('//at.alicdn.com/t/font_869421_a02bo3r52an.woff2?t=1653565964837') format('woff2'),
-       url('//at.alicdn.com/t/font_869421_a02bo3r52an.woff?t=1653565964837') format('woff'),
-       url('//at.alicdn.com/t/font_869421_a02bo3r52an.ttf?t=1653565964837') format('truetype');
+  src: url('//at.alicdn.com/t/font_869421_766fspocskn.woff2?t=1653920422605') format('woff2'),
+       url('//at.alicdn.com/t/font_869421_766fspocskn.woff?t=1653920422605') format('woff'),
+       url('//at.alicdn.com/t/font_869421_766fspocskn.ttf?t=1653920422605') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-dianpushangpinlist:before {
+  content: "\ec7c";
+}
+
+.icon-dianpufenlei:before {
+  content: "\ec7d";
+}
+
+.icon-dianpufenlei-fill:before {
+  content: "\ec7e";
+}
+
+.icon-dianpushouye:before {
+  content: "\ec7f";
+}
+
+.icon-dianpushangpinlist-fill:before {
+  content: "\ec80";
+}
+
+.icon-dianpushouye-fill:before {
+  content: "\ec81";
 }
 
 .icon-shouye:before {
