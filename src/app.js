@@ -7,8 +7,15 @@ import api from '@/api'
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
 import { fetchUserFavs } from '@/store/slices/user'
-import { DEFAULT_TABS, DEFAULT_THEME, SG_APP_CONFIG, SG_MEIQIA, SG_YIQIA } from '@/consts'
-import { checkAppVersion, isWeixin, isNavbar, log } from '@/utils'
+import {
+  DEFAULT_TABS,
+  DEFAULT_THEME,
+  SG_APP_CONFIG,
+  SG_MEIQIA,
+  SG_YIQIA,
+  SG_ROUTER_PARAMS
+} from '@/consts'
+import { checkAppVersion, isWeixin, isNavbar, log, entryLaunch } from '@/utils'
 
 import './app.scss'
 
@@ -18,7 +25,7 @@ import './app.scss'
 //   require('nerv-devtools')
 // }
 
-const {store} = configStore()
+const { store } = configStore()
 
 // 如果是app模式，注入SAPP
 if (process.env.APP_BUILD_TARGET == 'app') {
@@ -35,6 +42,10 @@ class App extends Component {
   //   // }
   // }
 
+  onLaunch(options) {
+    console.log(`app onLaunch:`, options)
+  }
+
   componentDidMount() {
     if (isWeixin) {
       checkAppVersion()
@@ -42,6 +53,11 @@ class App extends Component {
   }
 
   componentDidShow(options) {
+    entryLaunch.getRouteParams(options).then((params) => {
+      console.log(`app componentDidShow:`, options, params)
+      Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+    })
+
     // if (isNavbar()) {
     //   document.querySelector('title').addEventListener(
     //     'DOMSubtreeModified',

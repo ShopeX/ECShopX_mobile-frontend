@@ -24,30 +24,31 @@ class EntryLaunch {
   /**
    * @function 获取小程序路由参数
    */
-  async getRouteParams() {
-    const { params } = $instance.router;
-    let options = {};
+  async getRouteParams(options) {
+    // const { params } = $instance.router;
+    const params = options?.query || $instance.router.params
+    let _options = {};
     if (params.scene) {
       console.log(qs.parse(decodeURIComponent(params.scene)))
-      options = {
+      _options = {
         ...qs.parse(decodeURIComponent(params.scene)),
       };
 
-      if (options.share_id) {
+      if (_options.share_id) {
         const res = await api.wx.getShareId({
-          share_id: options.share_id,
+          share_id: _options.share_id,
         });
 
-        options = {
-          ...options,
+        _options = {
+          ..._options,
           ...res,
         };
       }
     } else {
-      options = params;
+      _options = params;
     }
-    console.log(`getRouteParams:`, options);
-    return options;
+    console.log(`getRouteParams:`, _options);
+    return _options;
   }
 
   /**

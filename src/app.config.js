@@ -69,7 +69,8 @@ export default {
       pages: [
         'index', // 会员中心
         'point-detail', // 积分明细
-        'point-rule' // 积分规则
+        'point-rule', // 积分规则
+        'member-level' // 会员等级
       ]
     },
     {
