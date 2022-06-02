@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { linkPage, classNames, styleNames, isString } from '@/utils'
+import { linkPage, classNames, styleNames, isString, isArray } from '@/utils'
 
 import './imghot-zone.scss'
 
@@ -52,7 +52,7 @@ export default class WgtImgHotZone extends Component {
 
         <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
           <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
-          {data.map((item, index) => {
+          {isArray(data) && data.map((item, index) => {
             return (
               <View
                 key={`${index}1`}
