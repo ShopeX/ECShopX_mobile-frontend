@@ -364,3 +364,8 @@ export function getSettingCenter() {
 export function getQRcode(params) {
   return req.get('/user/exchangeCardInfo', params)
 }
+
+// 会员等级
+export function getMemberCard() {
+  return req.get('/membercard/grades')
+}

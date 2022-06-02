@@ -9,6 +9,7 @@ import * as article from './article'
 import * as payment from './payment'
 import * as community from './community'
 import * as point from './point'
+import * as member from './member'
 
 export default {
   address,
@@ -21,5 +22,6 @@ export default {
   article,
   payment,
   community,
-  point
+  point,
+  member
 }

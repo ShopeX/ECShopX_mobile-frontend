@@ -1,20 +1,39 @@
 .page-member-level {
   .level-hd {
-    background-size: contain;
+    background-size: cover;
     height: 450px;
+    padding-top: 50px;
+    .card-swiper {
+      height: 375px;
+    }
     .member-card {
       background: #000;
       border-radius: 20px;
-      width: 600px;
-      height: 375px;
+      // width: 600px;
+      // height: 375px;
       margin-right: 32px;
       display: inline-block;
-      margin-top: 32px;
-      &:first-child {
-        margin-left: 75px;
+      // margin-top: 32px;
+      position: relative;
+      .sp-image {
+        width: 600px;
+        height: 375px;
+        border-radius: 20px;
+        overflow: hidden;
       }
-      &:last-child {
-        margin-right: 75px;
+      // &:first-child {
+      //   margin-left: 75px;
+      // }
+      // &:last-child {
+      //   margin-right: 75px;
+      // }
+      .grade-name {
+        position: absolute;
+        top: 140px;
+        left: 30px;
+        font-size: 42px;
+        font-weight: 600;
+        color: #E0BA9A;
       }
     }
     // .member-card {
