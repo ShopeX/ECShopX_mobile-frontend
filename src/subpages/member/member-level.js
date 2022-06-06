@@ -61,6 +61,7 @@ function MemberLevel(props) {
               <View className='member-card'>
                 <SpImage src={item.pic || 'fufei_bg.png'} width={600} height={375} />
                 <View className='grade-name'>{item.grade_name}</View>
+                <View className='grade-discount'>{`${item.discount_desc}折`}</View>
               </View>
             </SwiperItem>
           ))}
