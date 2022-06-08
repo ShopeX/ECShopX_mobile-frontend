@@ -25,7 +25,7 @@ function CashierWeApp(props) {
   // const _params = JSON.parse(decodeURIComponent(params))
   // const _orderInfo = JSON.parse(decodeURIComponent(orderInfo))
   const [state, setState] = useImmer(initialState)
-  const { price, order_id, create_time } = state
+  const { price, order_id, create_time, params, orderInfo } = state
 
   const { cashierPayment } = usePayment()
 
@@ -58,7 +58,7 @@ function CashierWeApp(props) {
     setState((draft) => {
       draft.price = total_fee / 100
       draft.order_id = order_id
-      draft.create_time = dayjs(create_time).format('YYYY-MM-DD HH:mm:ss')
+      draft.create_time = dayjs(create_time * 1000).format('YYYY-MM-DD HH:mm:ss')
       draft.params = params
       draft.orderInfo = orderInfo
     })
