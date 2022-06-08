@@ -45,9 +45,11 @@ function CashierWeApp(props) {
     }
 
     const orderDetail = await api.cashier.getOrderDetail(order_id)
-    const { activity_type, order_type, pay_type, total_fee, create_time } = orderDetail.orderInfo
+    const { activity_type, order_type, pay_type, total_fee, create_time, pay_channel } = orderDetail.orderInfo
     const params = {
-      activityType: activity_type
+      activityType: activity_type,
+      pay_channel: pay_channel,
+      pay_type: pay_type
     }
     const orderInfo = {
       order_id,
