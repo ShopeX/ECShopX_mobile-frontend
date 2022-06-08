@@ -13,6 +13,7 @@ import './index.scss'
 
 const paymentList = [
   {
+    paymentChannel: 'deposit',
     paymentCode: 'deposit',
     paymentName: '余额支付'
   }
