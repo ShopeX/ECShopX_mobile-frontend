@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Text } from '@tarojs/components'
-import { classNames, isNumber, styleNames } from '@/utils'
+import { classNames, isNumber, isString, styleNames } from '@/utils'
 
 import './index.scss'
 
@@ -36,14 +36,18 @@ export default class SpPrice extends Component {
       plus,
       size
     } = this.props
-    let priceVal = unit === 'cent' ? +value / 100 : value
+    let _value = value
+    if(isString(value)) {
+      _value = parseFloat(value)
+    }
+
+    let priceVal = unit === 'cent' ? +_value / 100 : _value
     if (isNumber(priceVal)) {
       priceVal = priceVal.toFixed(2)
     }
     const [int, decimal] = (priceVal || '').split('.')
-    const minus = value < 0
+    const minus = _value < 0
     const symbol = this.props.symbol
-
     return (
       <Text
         className={classNames(

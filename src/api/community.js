@@ -112,3 +112,28 @@ export function getApplyChief(params) {
 export function aggrementAndExplanation(params) {
   return req.get('/community/chief/aggrement_and_explanation', params)
 }
+
+// 团长业绩统计
+export function getChiefCashWithdraw() {
+  return req.get('/community/chief/cash_withdrawal/count')
+}
+
+// 团长提现记录
+export function getCashWithDraw(params) {
+  return req.get('/community/chief/cash_withdrawal', params)
+}
+
+// 获取团长提现账户
+export function getCashWithDrawAccount() {
+  return req.get('/community/chief/cash_withdrawal/account' )
+}
+
+// 更新团长提现账户
+export function updateCashWithDrawAccount(params) {
+  return req.post('/community/chief/cash_withdrawal/account', params)
+}
+
+// 团长佣金提现申请
+export function chiefCashWithdraw(params) {
+  return req.post('/community/chief/cash_withdrawal', params)
+}
