@@ -23,7 +23,10 @@ function CashierResult(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeInfo, orderId, czOrder } = state
   useEffect(() => {
-    fetch()
+    const { order_id } = $instance.router.params
+    if (order_id) {
+      fetch()
+    }
   }, [])
 
   // useDidShow(() => {
@@ -32,7 +35,9 @@ function CashierResult(props) {
 
   const fetch = async () => {
     const { order_id, code } = $instance.router.params
-
+    if(!order_id) {
+      return
+    }
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
     setState((draft) => {

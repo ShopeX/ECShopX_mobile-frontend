@@ -30,12 +30,15 @@ function CashierWeApp(props) {
   const { cashierPayment } = usePayment()
 
   useEffect(() => {
-    fetch()
+    const { order_id } = $instance.router.params
+    if (order_id) {
+      fetch()
+    }
   }, [])
 
   const fetch = async () => {
-    const { order_id, code  } = $instance.router.params
-    if(isWxWeb && !code) {
+    const { order_id, code } = $instance.router.params
+    if (isWxWeb && !code) {
       // 微信客户端code授权
       const loc = window.location
       // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
@@ -43,9 +46,9 @@ function CashierWeApp(props) {
       let { redirect_url } = await api.wx.getredirecturl({ url })
       window.location.href = redirect_url
     }
-
     const orderDetail = await api.cashier.getOrderDetail(order_id)
-    const { activity_type, order_type, pay_type, total_fee, create_time, pay_channel } = orderDetail.orderInfo
+    const { activity_type, order_type, pay_type, total_fee, create_time, pay_channel } =
+      orderDetail.orderInfo
     const params = {
       activityType: activity_type,
       pay_channel: isWeixin ? 'wx_lite' : pay_channel,
