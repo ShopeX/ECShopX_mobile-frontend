@@ -9,7 +9,7 @@ import { AtButton } from 'taro-ui'
 import { usePayment } from '@/hooks'
 import { SpPrice, SpCell } from '@/components'
 import dayjs from 'dayjs'
-import { isWxWeb } from '@/utils'
+import { isWxWeb, isWeixin } from '@/utils'
 import './cashier-weapp.scss'
 
 const initialState = {
@@ -48,7 +48,7 @@ function CashierWeApp(props) {
     const { activity_type, order_type, pay_type, total_fee, create_time, pay_channel } = orderDetail.orderInfo
     const params = {
       activityType: activity_type,
-      pay_channel: pay_channel,
+      pay_channel: isWeixin ? 'wx_lite' : pay_channel,
       pay_type: pay_type
     }
     const orderInfo = {
