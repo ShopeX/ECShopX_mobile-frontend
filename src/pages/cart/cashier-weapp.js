@@ -76,8 +76,20 @@ function CashierWeApp(props) {
     // })
   }
 
-  const handlePay = () => {
-    cashierPayment(params, orderInfo)
+  const handlePay = async () => {
+    const { pay_type, pay_channel } = params
+    const { order_id } = orderInfo
+    if(isWeixin) {
+      const weappOrderInfo = await api.cashier.getPayment({
+        pay_type,
+        pay_channel: 'wx_lite',
+        order_id,
+      })
+      cashierPayment(params, weappOrderInfo)
+    } else {
+      cashierPayment(params, orderInfo)
+    }
+    
   }
   return (
     <View className='cashier-weapp'>
