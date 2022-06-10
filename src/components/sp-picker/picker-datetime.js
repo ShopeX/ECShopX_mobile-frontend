@@ -68,7 +68,7 @@ function PickerDateTime(props) {
 
     // const { source, value } = state
     // source.item[]
-    debugger
+    
     setState(
       (draft) => {
         draft.value = e.detail.value

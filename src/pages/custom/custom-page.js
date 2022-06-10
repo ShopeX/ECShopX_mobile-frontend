@@ -1,80 +1,65 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
-import { SpToast, Loading, BackToTop, SpNavBar } from '@/components'
-import req from '@/api/req'
-import { withBackToTop } from '@/hocs'
-import S from '@/spx'
-import { buriedPoint, getDistributorId } from '@/utils'
-import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
-import HomeWgts from '../home/comps/home-wgts'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import api from '@/api'
+import doc from '@/doc'
 import qs from 'qs'
+import { View } from '@tarojs/components'
+import { SpPage, SpSearch } from '@/components'
+import { getDistributorId } from '@/utils'
+import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
+import req from '@/api/req'
+import HomeWgts from '@/pages/home/comps/home-wgts'
 import './custom-page.scss'
 
-@withBackToTop
-export default class HomeIndex extends Component {
-  $instance = getCurrentInstance()
-  constructor(props) {
-    super(props)
+const initialState = {
+  wgts: [],
+  loading: true
+}
+function CustomPage(props) {
+  const $instance = getCurrentInstance()
+  const [state, setState] = useImmer(initialState)
+  const { wgts, loading } = state
 
-    this.state = {
-      ...this.state,
-      wgts: null,
-      shareInfo: null,
-      authStatus: false,
-      positionStatus: false
-    }
-  }
+  useEffect(() => {
+    fetch()
+  }, [])
 
-  async componentDidMount() {
-    const { id } = this.$instance.router.params
+  const fetch = async () => {
+    const { id } = $instance.router.params
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
       page_name: `custom_${id}`,
-      name: 'search'
+      distributor_id: getDistributorId()
     })
     const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
-    const fixSetting = await req.get(url)
-
-    this.setState(
-      {
-        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      },
-      () => {
-        this.fetchInfo()
-      }
-    )
-    // 埋点处理
-    buriedPoint.call(this, {
-      event_type: 'activeCustomPage'
+    const { config } = await req.get(url)
+    setState((draft) => {
+      draft.wgts = config
+      draft.loading = false
     })
+
+    // this.setState(
+    //   {
+    //     positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
+    //   },
+    //   () => {
+    //     this.fetchInfo()
+    //   }
+    // )
   }
 
-  async fetchInfo() {
-    const { id } = this.$instance.router.params
-    const dtid = getDistributorId()
-    const pathparams = qs.stringify({
-      template_name: platformTemplateName,
-      version: 'v1.0.1',
-      page_name: `custom_${id}`,
-      distributor_id: dtid
-    })
-    const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
-    const info = await req.get(url)
+  useShareAppMessage(async (res) => {
+    return getAppShareInfo()
+  })
 
-    if (!S.getAuthToken()) {
-      this.setState({
-        authStatus: true
-      })
-    }
-    this.setState({
-      shareInfo: info.share,
-      wgts: info.config
-    })
-  }
+  useShareTimeline(async (res) => {
+    return getAppShareInfo()
+  })
 
-  async onShareAppMessage() {
+  const getAppShareInfo = () => {
     const { shareInfo } = this.state
     const { id } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
@@ -87,42 +72,25 @@ export default class HomeIndex extends Component {
     }
   }
 
-  onShareTimeline() {
-    const { shareInfo } = this.state
-    const { id } = this.$instance.router.params
-    const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`
-    return {
-      title: shareInfo.page_share_title,
-      imageUrl: shareInfo.page_share_imageUrl,
-      query: query
-    }
+  const searchComp = wgts.find((wgt) => wgt.name == 'search')
+  let filterWgts = []
+  if (searchComp && searchComp.config.fixTop) {
+    filterWgts = wgts.filter((wgt) => wgt.name !== 'search')
+  } else {
+    filterWgts = wgts
   }
+  const fixedTop = searchComp && searchComp.config.fixTop
 
-  render() {
-    const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
-
-    if (!wgts) {
-      return <Loading />
-    }
-
-    return (
-      <View className='page-index-custom'>
-        <SpNavBar title='微商城' />
-        <ScrollView
-          className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
-          scrollTop={scrollTop}
-          scrollY
-        >
-          <View className='wgts-wrap__cont'>
-            <HomeWgts wgts={wgts} />
-          </View>
-        </ScrollView>
-
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
-
-        <SpToast />
-      </View>
-    )
-  }
+  return (
+    <SpPage className='page-custom-page' loading={loading}>
+      {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
+      <HomeWgts wgts={filterWgts} />
+    </SpPage>
+  )
 }
+
+CustomPage.options = {
+  addGlobalClass: true
+}
+
+export default CustomPage

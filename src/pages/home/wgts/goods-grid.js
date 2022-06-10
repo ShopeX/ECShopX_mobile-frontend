@@ -48,7 +48,7 @@ function WgtGoodsGrid(props) {
             <Text className='wgt-title'>{base.title}</Text>
             <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
-          {config.moreLink.linkPage && (
+          {config.moreLink?.linkPage && (
             <View className='wgt-more' onClick={handleClickMore}>
               <View className='three-dot'></View>
             </View>
@@ -74,7 +74,7 @@ function WgtGoodsGrid(props) {
           {config.style === 'grids' &&
             goods.map((item, idx) => (
               <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
-                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} />
+                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} mode="aspectFill" />
               </View>
             ))}
         </View>

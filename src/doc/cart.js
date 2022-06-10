@@ -12,6 +12,19 @@ export const CART_GOODS_ITEM = {
   desc: 'desc'
 }
 
+// 加价购商品
+export const PLUS_BUY_ITEM = {
+  item_id: 'item_id',
+  item_name: 'item_name',
+  pics: ({ pics }) => pics[0],
+  price: 'plus_price',
+  market_price: 'market_price',
+  num: 1,
+  is_plus_buy: true, //加价购
+  item_spec_desc: 'item_spec_desc',
+  desc: 'desc'
+}
+
 // export const CART_GOODS_LIST = {
 //   item_id: "item_id",
 //   cart_id: "cart_id",

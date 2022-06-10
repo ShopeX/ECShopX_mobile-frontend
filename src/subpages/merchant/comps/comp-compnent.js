@@ -21,7 +21,7 @@ const Radio = (props) => {
   const { checked, onClick = () => {} } = props
   return (
     <View className={classNames('comps-radio', { 'is-checked': checked })} onClick={onClick}>
-      {checked && <Text className='icon-gou'></Text>}
+      {checked && <Text className='iconfont icon-gou'></Text>}
     </View>
   )
 }
@@ -74,7 +74,7 @@ const Cell = (props) => {
       {!value ? (
         <View className='view-flex view-flex-middle'>
           <Text className='text'>请选择</Text>
-          <Text className='icon icon-qianwang-01'></Text>
+          <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       ) : (
         value
@@ -213,7 +213,7 @@ const NavBar = (props) => {
       <View className='left'>
         {canBack && (
           <View className='left-button' onClick={onBack}>
-            <Text className='icon-fanhui'></Text>
+            <Text className='iconfont icon-fanhui'></Text>
           </View>
         )}
       </View>
@@ -221,7 +221,7 @@ const NavBar = (props) => {
       <View className='right'>
         {canLogout && (
           <View className='right-button' onClick={handleLogout}>
-            <Text className='icon-tuichu-01'></Text>
+            <Text className='iconfont icon-tuichu-01'></Text>
           </View>
         )}
       </View>

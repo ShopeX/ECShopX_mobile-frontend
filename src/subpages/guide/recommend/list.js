@@ -32,7 +32,7 @@ function GuideRecommendList(props) {
 
   useDidShow(() => {
     setTimeout(() => {
-      wx.createSelectorQuery()
+      Taro.createSelectorQuery()
         .select('#search-wrap')
         .boundingClientRect((res) => {
           console.log('boundingClientRect:', res) //

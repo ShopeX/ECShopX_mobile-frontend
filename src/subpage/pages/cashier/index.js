@@ -50,7 +50,6 @@ export default class Cashier extends Component {
 
     let env = ''
     if (browser.weixin) {
-      debugger
       env = 'WX'
     }
 

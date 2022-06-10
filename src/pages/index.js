@@ -49,7 +49,7 @@ function Home() {
 
   const [policyModal, setPolicyModal] = useState(false)
   const showAdv = useSelector((member) => member.user.showAdv)
-  const { location = {} } = useSelector((state) => state.user)
+  const { location } = useSelector((state) => state.user)
   const { openScanQrcode } = useSelector((state) => state.sys)
 
   const { wgts, loading } = state
@@ -81,7 +81,7 @@ function Home() {
       draft.wgts = config
       draft.loading = false
     })
-    fetchLikeList()
+    // fetchLikeList()
   }
 
   const fetchLikeList = async () => {
@@ -97,8 +97,11 @@ function Home() {
 
   // 定位
   const fetchLocation = async () => {
-    const res = await entryLaunch.getCurrentAddressInfo()
-    dispatch(updateLocation(res))
+    if (!location) {
+      const res = await entryLaunch.getCurrentAddressInfo()
+      dispatch(updateLocation(res))
+    }
+
     if (VERSION_STANDARD) {
       fetchStoreInfo(res)
     }
@@ -177,11 +180,11 @@ function Home() {
       )}
 
       <View className={classNames(isSetHight ? 'home-body' : 'cus-home-body')}>
-        <HomeWgts wgts={filterWgts} />
+        <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
+          {/* 猜你喜欢 */}
+          <SpRecommend className='recommend-block' info={likeList} />
+        </HomeWgts>
       </View>
-
-      {/* 猜你喜欢 */}
-      <SpRecommend className='recommend-block' info={likeList} />
 
       {/* 小程序搜藏提示 */}
       {isWeixin && <MCompAddTip />}

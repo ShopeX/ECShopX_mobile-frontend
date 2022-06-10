@@ -65,7 +65,7 @@ export function linkPage (type, data) {
       url = 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
       break
     case 'store':
-      url = `/pages/store/index?id=${id}`
+      url = `/subpages/store/index?id=${id}`
       break
     case 'custom':
       url = id

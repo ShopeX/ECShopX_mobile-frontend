@@ -7,7 +7,7 @@ function SpHtml(props) {
   const _content = content.toString()
     .replace(/\s+style="[^"]*"/g, '')
     .replace(/<img/g, '<img style="width:100%;height:auto;display: block;"')
-  console.log('content:', _content)
+  // console.log('content:', _content)
   return (
     <View className='sp-html'>
       {isWeb && <View dangerouslySetInnerHTML={{ __html: _content }} />}

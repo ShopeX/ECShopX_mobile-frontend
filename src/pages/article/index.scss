@@ -1,6 +1,4 @@
-@import "../../style/imports";
-
-.article-index {
+.page-article-index {
   background: #fff;
   height: 100vh;
   .article {
@@ -9,7 +7,7 @@
       width: 100%;
     }
     &-info {
-      padding: floor($edge-size / 2) 0;
+      padding: 30px 20px;
     }
     &-title {
       font-size: floor($font-size * 1.6);
@@ -25,5 +23,9 @@
     &-content {
       color: $color-primary-text;
     }
+  }
+  .sp-html {
+    padding: 0 16px;
+    color: #333;
   }
 }

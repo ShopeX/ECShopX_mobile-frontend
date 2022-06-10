@@ -36,3 +36,9 @@ export const BUSINESS_SORT = {
   tag_name: 'title',
   tag_id: 'sort'
 }
+
+export const STORE_INFO = {
+  name: 'name',
+  logo: 'logo',
+  marketingActivityList: 'marketingActivityList'
+}

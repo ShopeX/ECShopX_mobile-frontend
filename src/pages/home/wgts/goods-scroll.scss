@@ -6,8 +6,9 @@
     // display: flex;
     // align-items: baseline;
     position: relative;
+   
     .scroll-item {
-      width: 35%;
+      width: 260px;
       height: 100%;
       display: inline-grid;
       position: relative;
@@ -34,6 +35,7 @@
           transform: rotate(-45deg);
           color: #fff;
           font-size: 24px;
+          z-index: 100;
         }
       }
       .subscript-title {
@@ -44,22 +46,11 @@
         font-size: 24px;
         font-weight: bold;
       }
-      .thumbnail {
-        position: relative;
-        width: 265px;
-        height: 265px;
-        &::after {
-          display: flex;
-          padding-top: 100%;
-          content: '';
-        }
-        .goods-img {
-          display: block;
-          position: absolute;
-          width: 100%;
-          height: 100%;
-        }
+      .sp-image {
+        width: 260px;
+        height: 260px;
       }
+
     }
     .subscript-price {
       padding: 16px;

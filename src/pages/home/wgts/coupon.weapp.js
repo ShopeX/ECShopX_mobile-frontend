@@ -4,7 +4,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { CouponModal, SpImage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
-import { classNames, showToast } from '@/utils'
+import { classNames, showToast, isArray } from '@/utils'
 // import { Tracker } from '@/service'
 
 import './coupon.scss'
@@ -143,7 +143,7 @@ export default class WgtCoupon extends Component {
           </View>
         )}
         <View className='wgt__body with-padding'>
-          {data.map((item, idx) => {
+          {isArray(data) && data.map((item, idx) => {
             return (
               <View className={classNames('coupon-wgt', item.imgUrl && 'with-img')} key={`${idx}1`}>
                 {' '}

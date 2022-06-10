@@ -385,7 +385,7 @@ export default class List extends Component {
   }
 
   handleClickStore = (item) => {
-    const url = `/pages/store/index?id=${item.distributor_info.distributor_id}`
+    const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
     Taro.navigateTo({
       url
     })

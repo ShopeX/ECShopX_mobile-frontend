@@ -81,7 +81,7 @@ function ItemList(props) {
 
   useDidShow(() => {
     setTimeout(() => {
-      wx.createSelectorQuery()
+      Taro.createSelectorQuery()
         .select('#item-list-head')
         .boundingClientRect((res) => {
           console.log('boundingClientRect:', res) //

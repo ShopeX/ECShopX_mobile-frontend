@@ -38,7 +38,13 @@ export default class WgtNavigation extends Component {
               key={`nav-item__${idx}`}
               onClick={this.handleClickItem.bind(this, item)}
             >
-              <SpImage src={item.imgUrl} lazyLoad mode='scaleToFill' className='cuscss-sp-image' />
+              <SpImage
+                src={item.imgUrl}
+                mode='aspectFill'
+                className='cuscss-sp-image'
+                width={120}
+                height={120}
+              />
               <View className='nav-name'>{item.content}</View>
             </View>
           ))}

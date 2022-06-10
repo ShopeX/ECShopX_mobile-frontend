@@ -122,7 +122,8 @@ export default class DetailPluspriceList extends Component {
       desc: 'item_spec_desc',
       distributor_id: 'distributor_id',
       marketing_id: 'marketing_id',
-      price: ({ price }) => (price / 100).toFixed(2),
+      // price: ({ price }) => (price / 100).toFixed(2),
+      price: ({ plus_price }) => (plus_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2)
     })
 

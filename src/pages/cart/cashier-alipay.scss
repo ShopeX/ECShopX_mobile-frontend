@@ -1,0 +1,45 @@
+.cashier-alipay {
+  background-color: #fff;
+  height: 100vh;
+  .cashier-hd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 80px;
+  }
+  .icon-zhifubao {
+    font-size: 54px;
+    color: #108ee9;
+  }
+  .title {
+    height: 62px;
+    font-size: 42px;
+    font-weight: 400;
+    color: #111111;
+    line-height: 62px;
+  }
+  .pay-price {
+    margin-top: 120px;
+    text-align: center;
+  }
+  .trade-info {
+    margin-top: 80px;
+    padding: 0 40px;
+    .sp-cell {
+      padding: 0;
+      margin-bottom: 10px;
+    }
+  }
+  .btn-wrap {
+    margin-top: 380px;
+    .at-button {
+      width: 370px;
+      height: 80px;
+      background: #108ee9;
+      border-radius: 8px;
+      &__text {
+        color: #fff;
+      }
+    }
+  }
+}

@@ -1,10 +1,14 @@
+import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { Component } from '@tarojs/taro'
-import React from 'react'
+import { useImmer } from 'use-immer'
+import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { classNames, styleNames, isNumber, isBase64 } from '@/utils'
+import { classNames, styleNames, isNumber, isBase64, log } from '@/utils'
 import './index.scss'
 
+const initialState = {
+  loadSuccess: false
+}
 function SpImage(props) {
   let {
     src,
@@ -15,8 +19,10 @@ function SpImage(props) {
     onClick = () => {},
     onError = () => {},
     onLoad = () => {},
-    lazyLoad = true
+    lazyLoad = false
   } = props
+  const [state, setState] = useImmer(initialState)
+  const { loadSuccess } = state
   const { diskDriver } = useSelector((state) => state.sys)
 
   if (!src) {
@@ -30,12 +36,22 @@ function SpImage(props) {
       imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
     }
   }
+  
+  const handleOnLoad = (e) => {
+    // console.log('handleOnLoad:', e)
+    setState(draft => {
+      draft.loadSuccess = true
+    })
+
+  }
   // console.log('SpImage:', imgUrl)
   return (
     <View
       className={classNames(
         {
-          'sp-image': true
+          'sp-image': true,
+          'sp-image-loading': !loadSuccess && lazyLoad,
+          'sp-image-loadsuccess': loadSuccess && lazyLoad,
         },
         className
       )}
@@ -50,8 +66,8 @@ function SpImage(props) {
         src={imgUrl}
         mode={mode}
         // onError={onError}
-        // onLoad={onLoad}
-        lazyLoad={lazyLoad}
+        onLoad={handleOnLoad}
+        // lazyLoad={lazyLoad}
       />
     </View>
   )

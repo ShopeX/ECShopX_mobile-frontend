@@ -1,0 +1,87 @@
+.page-member-level {
+  .level-hd {
+    background-size: cover;
+    height: 450px;
+    padding-top: 50px;
+    .card-swiper {
+      height: 375px;
+    }
+    .member-card {
+      background: #000;
+      border-radius: 20px;
+      // width: 600px;
+      // height: 375px;
+      margin-right: 32px;
+      display: inline-block;
+      // margin-top: 32px;
+      position: relative;
+      .sp-image {
+        width: 600px;
+        height: 375px;
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      // &:first-child {
+      //   margin-left: 75px;
+      // }
+      // &:last-child {
+      //   margin-right: 75px;
+      // }
+      .grade-name {
+        position: absolute;
+        top: 140px;
+        left: 30px;
+        font-size: 42px;
+        font-weight: 600;
+        color: #E0BA9A;
+      }
+      .grade-discount {
+        position: absolute;
+        top: 220px;
+        left: 30px;
+        font-size: 28px;
+        color: #fff;
+      }
+    }
+    // .member-card {
+    //   background-size: contain;
+    //   width: 600px;
+    //   height: 375px;
+    // }
+  }
+  .member-card-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
+  .content-hd {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 56px;
+    .title {
+      width: 256px;
+      height: 45px;
+      font-size: 32px;
+      font-weight: 600;
+      color: #595959;
+      line-height: 45px;
+      padding: 0 20px;
+    }
+  }
+  .content-bd {
+    width: 686px;
+    background: #dedede;
+    border-radius: 20px;
+    padding: 32px 40px;
+    margin: 40px auto;
+    box-sizing: border-box;
+    .sp-html {
+      color: #444444;
+    }
+  }
+  .content-ft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

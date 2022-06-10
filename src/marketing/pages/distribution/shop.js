@@ -4,6 +4,7 @@ import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { SpPage } from '@/components'
+import { log } from '@/utils'
 // import { Tracker } from '@/service'
 
 import './shop.scss'
@@ -87,6 +88,7 @@ export default class DistributionShop extends Component {
   onShareAppMessage (res) {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
+    log.debug(`/marketing/pages/distribution/shop-home?uid=${userId}`)
     return {
       title: info.share_title || info.shop_name || `${username}的小店`,
       imageUrl: info.applets_share_img || info.shop_pic,

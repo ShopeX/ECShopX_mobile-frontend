@@ -112,7 +112,7 @@ const EspierCheckout = () => {
     await api.trade
       .create(params)
       .then((orderInfo) => {
-        cashierPayment(params, orderInfo)
+        cashierPayment(params, orderInfo.trade_info)
       })
       .catch(() => {
         setState((draft) => {

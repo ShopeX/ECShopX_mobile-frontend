@@ -19,7 +19,7 @@ const Login = () => {
 
   const phonePrefix = (value) => {
     if (value) {
-      return <Text className='icon-a-shoujihaoshouji'></Text>
+      return <Text className='iconfont icon-a-shoujihaoshouji'></Text>
     } else {
       return <SpImage src='phone_icon.png' className='phone-icon' lazyLoad={false} />
     }
@@ -27,7 +27,7 @@ const Login = () => {
 
   const tcodePrefix = (value) => {
     if (value) {
-      return <Text className='icon-tuxingyanzhengma-01-copy'></Text>
+      return <Text className='iconfont icon-tuxingyanzhengma-01-copy'></Text>
     } else {
       return <SpImage src='tcode_icon.png' className='tcode-icon' lazyLoad={false} />
     }
@@ -35,7 +35,7 @@ const Login = () => {
 
   const codePrefix = (value) => {
     if (value) {
-      return <Text className='icon-yanzhengma'></Text>
+      return <Text className='iconfont icon-yanzhengma'></Text>
     } else {
       return <SpImage src='vcode_icon.png' className='code-icon' lazyLoad={false} />
     }

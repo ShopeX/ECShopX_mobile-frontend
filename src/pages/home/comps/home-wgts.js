@@ -1,8 +1,10 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { SpSearch } from '@/components'
-// // import { Tracker } from '@/service'
+import { SpScrollView, SpSearch } from '@/components'
+import { log } from '@/utils'
 import {
   WgtSearchHome,
   WgtFilm,
@@ -22,72 +24,36 @@ import {
   WgtFloorImg,
   WgtNearbyShop
 } from '../wgts'
+import './home-wgts.scss'
 
-export default class HomeWgts extends Component {
-  constructor (props) {
-    console.log('HomeWgts-constructor-this.props1', props)
-    super(props)
-    console.log('HomeWgts-constructor-props2', props)
-  }
-  // static defaultProps = {
-  //   wgts: []
-  // }
+const initialState = {
+  localWgts: []
+}
+function HomeWgts(props) {
+  const { wgts, onLoad = () => {}, children } = props
+  const [state, setState] = useImmer(initialState)
+  const { localWgts } = state
 
-  state = {
-    screenWidth: 375
-  }
-
-  componentDidMount () {
-    console.log('HomeWgts-constructor-this.props3', this.props)
-    Taro.getSystemInfo().then((res) => {
-      this.setState({
-        screenWidth: res.screenWidth
-      })
-      // if (process.env.TARO_ENV == 'weapp') {
-      //   this.startTrack()
-      // }
+  const fetch = ({ pageIndex, pageSize }) => {
+    const x = pageSize * pageIndex
+    const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
+    log.debug(
+      `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${
+        x > wgts.length ? wgts.length : x
+      }`
+    )
+    setState((draft) => {
+      draft.localWgts[pageIndex - 1] = twgt
     })
-  }
 
-  static options = {
-    addGlobalClass: true
-  }
-
-  startTrack () {
-    this.endTrack()
-
-    const { wgts } = this.props
-
-    if (!wgts) return
-    // const toExpose = wgts.map((t, idx) => String(idx))
-
-    const observer = Taro.createIntersectionObserver({ observeAll: true })
-    this.observe = observer
-  }
-
-  endTrack () {
-    if (this.observer) {
-      this.observer.disconnect()
-      this.observe = null
+    return {
+      total: wgts.length
     }
   }
-
-  handleLoadMore = (idx, goodType, currentTabIndex, currentLength) => {
-    const { loadMore = () => {} } = this.props
-    loadMore(idx, goodType, currentTabIndex, currentLength)
-  }
-
-  render () {
-    const { wgts } = this.props
-    const { screenWidth } = this.state
-
-    console.log('home-wgts23', wgts)
-
-    if (!wgts || wgts.length <= 0) return null
-
-    return (
-      <View className='home-wgts'>
-        {wgts.map((item, idx) => (
+  return (
+    <SpScrollView className='home-wgts' fetch={fetch} pageSize={3} onLoad={onLoad}>
+      {localWgts.map((list) => {
+        return list.map((item, idx) => (
           <View
             className='wgt-wrap'
             key={`${item.name}${idx}`}
@@ -98,39 +64,19 @@ export default class HomeWgts extends Component {
             {item.name === 'search' && <SpSearch info={item} />} {/** 搜索 */}
             {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
             {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 文字轮播 */}
-            {item.name === 'slider' && (
-              <WgtSlider isHomeSearch info={item} width={screenWidth} />
-            )}{' '}
-            {/** 轮播 */}
+            {item.name === 'slider' && <WgtSlider isHomeSearch info={item} />} {/** 轮播 */}
             {item.name === 'navigation' && <WgtNavigation info={item} />} {/** 图片导航 */}
             {item.name === 'coupon' && <WgtCoupon info={item} />} {/** 优惠券 */}
             {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
             {/** 商品滚动 */}
             {item.name === 'goodsScroll' && (
-              <WgtGoodsScroll
-                info={item}
-                index={idx}
-                type='good-scroll'
-                onLoadMore={this.handleLoadMore}
-              />
+              <WgtGoodsScroll info={item} index={idx} type='good-scroll' />
             )}
             {/** 商品栅格 */}
-            {item.name === 'goodsGrid' && (
-              <WgtGoodsGrid
-                info={item}
-                index={idx}
-                type='good-grid'
-                onLoadMore={this.handleLoadMore}
-              />
-            )}
+            {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} index={idx} type='good-grid' />}
             {/** 商品Tab */}
             {item.name === 'goodsGridTab' && (
-              <WgtGoodsGridTab
-                info={item}
-                index={idx}
-                type='good-grid-tab'
-                onLoadMore={this.handleLoadMore}
-              />
+              <WgtGoodsGridTab info={item} index={idx} type='good-grid-tab' />
             )}
             {item.name === 'showcase' && <WgtShowcase info={item} />} {/** 橱窗 */}
             {item.name === 'headline' && <WgtHeadline info={item} />} {/** 文字标题 */}
@@ -140,8 +86,15 @@ export default class HomeWgts extends Component {
             {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
             {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
           </View>
-        ))}
-      </View>
-    )
-  }
+        ))
+      })}
+      {children}
+    </SpScrollView>
+  )
 }
+
+HomeWgts.options = {
+  addGlobalClass: true
+}
+
+export default HomeWgts

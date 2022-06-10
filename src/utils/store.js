@@ -7,7 +7,7 @@ export function JumpStoreIndex(info) {
   if (info.distributor_id == 0) {
     return JumpPageIndex()
   }
-  Taro.navigateTo({ url: `/pages/store/index?id=${info.distributor_id}` })
+  Taro.navigateTo({ url: `/subpages/store/index?id=${info.distributor_id}` })
 }
 
 //跳转到首页

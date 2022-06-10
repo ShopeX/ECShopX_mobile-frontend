@@ -22,9 +22,9 @@ function WgtHomeHeader(props) {
 
   return (
     <View className={classNames('home-header', !isSetHight && 'cus-home-header')}>
-      {VERSION_PLATFORM && openLocation == 1 && (
+      {VERSION_PLATFORM && (
         <View className='nearly-shop' onClick={handlePickStore}>
-          <View className='address'>{location.address || '北京市北京市昌平区'}</View>
+          <View className='address'>{location?.address || '北京市北京市昌平区'}</View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       )}

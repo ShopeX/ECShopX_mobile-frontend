@@ -1,24 +1,28 @@
 .sp-search {
-  display: flex;
-  align-items: center;
-  height: 60px;
-  background: #f5f5f5;
-  border-radius: 30px;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  .icon-sousuo-01 {
-    font-size: 38px;
-    color: var(--color-primary);
-  }
-  .place-holder {
-    font-size: 26px;
-    color: #aaa;
-    position: relative;
-    top: 2px;
-    margin-left: 8px;
-  }
-}
-.sp-search-nofix {
   background: #fff;
-  padding: 20px;
+  padding: 16px 28px;
+  .sp-search-block {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background: #f5f5f5;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    .icon-sousuo-01 {
+      font-size: 38px;
+      color: var(--color-primary);
+    }
+    .place-holder {
+      font-size: 26px;
+      color: #aaa;
+      position: relative;
+      top: 2px;
+      margin-left: 8px;
+    }
+  }
 }
+// .sp-search-nofix {
+//   background: #fff;
+//   padding: 20px;
+// }

@@ -27,6 +27,7 @@ import { Tracker } from '@/service'
 import api from '@/api'
 import { TracksPayed } from '@/utils/youshu'
 import S from '@/spx'
+import { usePayment } from '@/hooks'
 import DetailItem from './comps/detail-item'
 // 图片引入
 import ErrorDaDa from '../../assets/dada0.png'
@@ -202,6 +203,7 @@ export default class TradeDetail extends Component {
       payment: ({ pay_type, total_fee }) =>
         pay_type === 'point' ? Math.floor(total_fee) : (+total_fee / 100).toFixed(2), // 积分向下取整
       pay_type: 'pay_type',
+      pay_channel: 'pay_channel',
       pickupcode_status: 'pickupcode_status',
       invoice_content: 'invoice.content',
       delivery_status: 'delivery_status',
@@ -303,90 +305,105 @@ export default class TradeDetail extends Component {
   async handlePay() {
     const { info } = this.state
 
-    this.setState({
-      payLoading: true
-    })
+    // this.setState({
+    //   payLoading: true
+    // })
 
-    const { tid: order_id, order_type, pay_type } = info
-    const paymentParams = {
-      pay_type,
-      order_id,
-      order_type
-    }
+    // const { tid: order_id, order_type, pay_type } = info
+    // const paymentParams = {
+    //   pay_type,
+    //   order_id,
+    //   order_type
+    // }
+    // debugger
 
-    if (isWeb && !isAPP()) {
-      redirectUrl(api, `/subpage/pages/cashier/index?order_id=${order_id}&pay_type=${pay_type}`)
+    // const config = await api.cashier.getPayment(paymentParams)
+
+    // this.setState({
+    //   payLoading: false
+    // })
+    const { tid: order_id, order_type, pay_type, pay_channel, activity_type } = info
+    if (isWxWeb) {
+      Taro.navigateTo({
+        url: `/pages/cart/cashier-weapp?order_id=${order_id}`
+      })
       return
     }
 
-    const config = await api.cashier.getPayment(paymentParams)
-
-    this.setState({
-      payLoading: false
-    })
 
     let payErr
     try {
-      Tracker.dispatch('ORDER_PAY', {
-        ...info,
-        item_fee: info.item_fee * 100,
-        total_fee: info.total_fee * 100,
-        ...config,
-        timeStamp: config.order_info.create_time
-      })
-
-      if (isAPP()) {
-        const AppPayType = {
-          alipayapp: 'alipay',
-          wxpayapp: 'wxpay'
-        }
-        try {
-          await Taro.SAPPPay.payment({
-            id: AppPayType[pay_type],
-            order_params: config.config
-          })
-        } catch (e) {
-          console.error(e)
-          debugger
-          payErr = e
-        }
-      } else {
-        const resObj = await payPlatform(config)
-        payErr = resObj.payErr
-        // 支付上报
-        log.debug(`[order pay]: `, resObj.payRes)
+      const params = {
+        activityType: activity_type,
+        pay_channel: pay_channel,
+        pay_type: pay_type
       }
-    } catch (e) {
+      const orderInfo = {
+        order_id,
+        order_type: order_type,
+        pay_type
+      }
+      const paymentFn = usePayment()
+      paymentFn.cashierPayment(params, orderInfo)
+    } catch(e) {
+      console.error(e)
       payErr = e
-      if (e.errMsg.indexOf('cancel') < 0) {
-        Taro.showToast({
-          title: e.err_desc || e.errMsg || '支付失败',
-          icon: 'none'
-        })
-      } else {
-        Tracker.dispatch('CANCEL_PAY', {
-          ...info,
-          item_fee: parseInt(info.item_fee) * 100,
-          total_fee: parseInt(info.total_fee) * 100,
-          ...config,
-          timeStamp: config.order_info.create_time
-        })
-      }
     }
+    // try {
 
-    if (!payErr) {
-      TracksPayed(info, { ...config, timeStamp: config.order_info.create_time })
+    //   if (isAPP()) {
+    //     const AppPayType = {
+    //       alipayapp: 'alipay',
+    //       wxpayapp: 'wxpay'
+    //     }
+    //     try {
+    //       await Taro.SAPPPay.payment({
+    //         id: AppPayType[pay_type],
+    //         order_params: config.config
+    //       })
+    //     } catch (e) {
+    //       console.error(e)
+    //       debugger
+    //       payErr = e
+    //     }
+    //   } else {
+    //     // const resObj = await payPlatform(config)
+    //     debugger
+    //     const { cashierPayment } = usePayment()
+    //     cashierPayment(params, orderInfo)
+    //     payErr = resObj.payErr
+    //     // 支付上报
+    //     log.debug(`[order pay]: `, resObj.payRes)
+    //   }
+    // } catch (e) {
+    //   payErr = e
+    //   if (e.errMsg.indexOf('cancel') < 0) {
+    //     Taro.showToast({
+    //       title: e.err_desc || e.errMsg || '支付失败',
+    //       icon: 'none'
+    //     })
+    //   } else {
+    //     Tracker.dispatch('CANCEL_PAY', {
+    //       ...info,
+    //       item_fee: parseInt(info.item_fee) * 100,
+    //       total_fee: parseInt(info.total_fee) * 100,
+    //       ...config,
+    //       timeStamp: config.order_info.create_time
+    //     })
+    //   }
+    // }
+    // debugger
+    // if (!payErr) {
+    //   await Taro.showToast({
+    //     title: '支付成功',
+    //     icon: 'success'
+    //   })
 
-      await Taro.showToast({
-        title: '支付成功',
-        icon: 'success'
-      })
-
-      const { fullPath } = getCurrentRoute(this.$instance.router)
-      Taro.redirectTo({
-        url: fullPath
-      })
-    }
+    //   const { fullPath } = getCurrentRoute(this.$instance.router)
+    //   Taro.redirectTo({
+    //     url: fullPath
+    //   })
+    // }
   }
 
   async handleClickBtn(type, e) {

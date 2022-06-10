@@ -189,7 +189,7 @@ function EspierDetail(props) {
       dtid
     }
     if (userInfo) {
-      query['uid'] = userInfo.uid
+      query['uid'] = userInfo.user_id
     }
     const path = `/pages/item/espier-detail?${qs.stringify(query)}`
     log.debug(`share path: ${path}`)

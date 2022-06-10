@@ -24,6 +24,7 @@ function SpPage(props, ref) {
   const {
     className,
     children,
+    renderTitle,
     renderFloat,
     renderFooter,
     scrollToTopBtn = false,
@@ -33,12 +34,14 @@ function SpPage(props, ref) {
     loading = false,
     defaultMsg = '',
     navbar = true,
-    onClickLeftIcon = null
+    onClickLeftIcon = null,
+    navigateMantle = false // 自定义导航，开启滚动蒙层
   } = props
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
   const sys = useSelector((state) => state.sys)
   const [showToTop, setShowToTop] = useState(false)
+  const [mantle, setMantle] = useState(false)
   const { colorPrimary, colorMarketing, colorAccent, rgb } = sys
   const pageTheme = {
     '--color-primary': colorPrimary,
@@ -82,6 +85,12 @@ function SpPage(props, ref) {
   usePageScroll((res) => {
     if (!lock) {
       scrollTopRef.current = res.scrollTop
+    }
+
+    if (navigateMantle && res.scrollTop > 0) {
+      setMantle(true)
+    } else {
+      setMantle(false)
     }
 
     if (res.scrollTop > 300) {
@@ -153,34 +162,34 @@ function SpPage(props, ref) {
 
     return (
       <View
-        className='custom-navigation'
+        className={classNames('custom-navigation', {
+          'mantle': mantle
+        })}
         style={styleNames({
           height: `${navbarH}px`,
           paddingTop: `${statusBarHeight}px`
         })}
       >
-        {cusCurrentPage == 1 ? (
-          <View className='left-container'>
+        <View className='left-container'>
+          <View className='icon-wrap'>
             <Text
-              className='iconfont icon-home1'
+              className={classNames('iconfont', {
+                'icon-home1': cusCurrentPage == 1,
+                'icon-fanhui': cusCurrentPage != 1
+              })}
               onClick={() => {
-                Taro.navigateTo({
-                  url: '/pages/index'
-                })
+                if (cusCurrentPage == 1) {
+                  Taro.redirectTo({
+                    url: '/pages/index'
+                  })
+                } else {
+                  Taro.navigateBack()
+                }
               }}
             />
           </View>
-        ) : (
-          <View className='left-container'>
-            <Text
-              className='iconfont icon-shangyiyehoutuifanhui-xianxingyuankuang'
-              onClick={() => {
-                Taro.navigateBack()
-              }}
-            />
-          </View>
-        )}
-        <View className='title-container'>{pageTitle}</View>
+        </View>
+        <View className='title-container'>{pageTitle || renderTitle}</View>
         <View className='right-container'></View>
       </View>
     )

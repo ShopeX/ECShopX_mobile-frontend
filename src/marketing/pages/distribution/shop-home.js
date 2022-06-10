@@ -5,9 +5,10 @@ import { AtTabBar } from 'taro-ui'
 import { BackToTop, Loading, SpNavBar, SpImg, SpNote } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import qs from 'qs'
 import throttle from 'lodash/throttle'
-import { withPager } from '@/hocs'
-import { getCurrentRoute, pickBy } from '@/utils'
+import { withPager, withLogin } from '@/hocs'
+import { getCurrentRoute, pickBy, entryLaunch, log } from '@/utils'
 import entry from '@/utils/entry'
 import CustomHeader from './comps/header'
 
@@ -16,7 +17,7 @@ import './shop-home.scss'
 @withPager
 export default class DistributionShopHome extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -68,19 +69,30 @@ export default class DistributionShopHome extends Component {
     }
   }
 
-  componentDidMount () {
-    this.getShopInfo()
-    this.init()
+  async componentDidMount() {
+    // if (!S.getAuthToken()) {
+    //   const { path } = this.$instance.router
+    //   const params = await entryLaunch.getRouteParams()
+    //   const redirect = encodeURIComponent(`${path}?${qs.stringify(params)}`)
+    //   Taro.navigateTo({
+    //     url: `${process.env.APP_AUTH_PAGE}?redirect_url=${redirect}`
+    //   })
+    // } else {
+      this.getShopInfo()
+      this.init()
+    // }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.handleCloseSearch()
   }
 
   // 分享
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { info: shopInfo, userId } = this.state
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
+
+    log.debug(`/marketing/pages/distribution/shop-home?uid=${userId}`)
     return {
       title: shopInfo.share_title || title,
       imageUrl: shopInfo.applets_share_img || shopInfo.shop_pic,
@@ -153,20 +165,23 @@ export default class DistributionShopHome extends Component {
 
   // 获取小店信息
   getShopInfo = async () => {
-    const options = this.$instance.router.params
+    // const options = this.$instance.router.params
     const { tabList } = this.state
+    // 当前登录用户
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
-    // 执行全局绑定
-    entry.entryLaunch(options, false)
+    // uid（分享携带的用户id）
+    // featuredshop（店铺精选id）
+    const { uid, featuredshop } = await entryLaunch.getRouteParams()
+    // // 执行全局绑定
+    // entry.entryLaunch(options, false)
+
     const param = {
-      user_id: distributionShopId || userId
+      user_id: uid || featuredshop || userId
     }
-
-    if (options.featuredshop || options.uid) {
-      param.user_id = options.featuredshop || options.uid
-    }
-
+    // if (options.featuredshop || options.uid) {
+    //   param.user_id = options.featuredshop || options.uid
+    // }
     const res = await api.distribution.info(param)
     const {
       shop_name,
@@ -183,7 +198,7 @@ export default class DistributionShopHome extends Component {
       applets_share_img = '',
       isOpenPromoterInformation = true
     } = res
-
+    console.log(res)
     if (!is_valid) {
       Taro.reLaunch({
         url: '/pages/index'
@@ -411,7 +426,7 @@ export default class DistributionShopHome extends Component {
     )
   }
 
-  render () {
+  render() {
     const {
       showBackToTop,
       tabList,

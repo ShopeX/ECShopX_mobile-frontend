@@ -15,7 +15,7 @@ const BUILD_TARGET = IS_PROD ? process.env.target : process.env.npm_config_targe
 const CONST_ENVS = {
   APP_NAME: pkg.app_name,
   APP_AUTH_PAGE:
-    process.env.TARO_ENV == 'h5' ? '/subpage/pages/auth/login' : '/subpage/pages/auth/wxauth',
+    process.env.TARO_ENV == 'h5' ? '/subpage/pages/auth/login' : '/subpages/member/index',
   APP_BUILD_TARGET: BUILD_TARGET,
   ...APP_ENVS
 }
@@ -107,14 +107,19 @@ const config = {
       // mode: IS_APP ? "hash" : "browser"
       mode: "browser"
     },
-    // devServer: {
-    //   https: {
-    //     key: "../cert/ecshopx-server.key",
-    //     cert: "../cert/ecshopx-server.crt",
-    //     // passphrase: "webpack-dev-server",
-    //     requestCert: true
-    //   }
-    // },
+    devServer: {
+      // https: true,
+      // overlay: {
+      //   warnings: false,
+      //   errors: false
+      // }
+      // https: {
+      //   key: "../cert/ecshopx-server.key",
+      //   cert: "../cert/ecshopx-server.crt",
+      //   // passphrase: "webpack-dev-server",
+      //   requestCert: true
+      // }
+    },
     postcss: {
       autoprefixer: {
         enable: true,

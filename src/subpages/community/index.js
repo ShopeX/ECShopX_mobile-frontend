@@ -32,6 +32,12 @@ const CHIEFMENUS = [
     name: '一键开团',
     icon: 'm_menu_group.png',
     link: '/subpages/community/group'
+  },
+  {
+    key: 'yongjin',
+    name: '团长佣金',
+    icon: 'm_menu_yongjin.png',
+    link: '/subpages/community/commission'
   }
   // {
   //   key: 'goods',

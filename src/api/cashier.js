@@ -11,3 +11,13 @@ export function getPayment (params = {}) {
   // }
   return req.post('/payment', params)
 }
+
+export function getWeappUrlLink(params = {}) {
+ return req.post('/urllink', params)
+}
+
+export function getWeappUrlSchema(params = {}) {
+  return req.post('/urlschema', params)
+ }
+
+

@@ -6,9 +6,8 @@ export default {
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
     'pages/cart/cashier-result', // 支付结果页面
-
-    'pages/store/index', // 店铺首页
-    'pages/store/brand-info', // 店铺品牌
+    'pages/cart/cashier-alipay', // 支付宝收银台（adapay）
+    'pages/cart/cashier-weapp', // 微信收银台（adapay）
 
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
@@ -23,8 +22,13 @@ export default {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index', // 直播间页面
-    'pages/store/list', // 选择店铺列表
-    'pages/store/ziti-list' // 自提列表
+
+    // 'pages/store/index', // 店铺首页
+    // 'pages/store/brand-info', // 店铺品牌
+    // 'pages/store/item-list', // 店铺商品列表
+    // 'pages/store/category', // 店铺商品分类
+    // 'pages/store/list', // 选择店铺列表
+    // 'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
     // 导购货架 guide
@@ -43,6 +47,18 @@ export default {
         'custom/custom-page' // 自定义页面
       ]
     },
+    // 门店
+    {
+      root: 'subpages/store',
+      pages: [
+        'index', // 店铺首页
+        'brand-info', // 店铺品牌
+        'item-list', // 店铺商品列表
+        'category', // 店铺商品分类
+        'list', // 选择店铺列表
+        'ziti-list' // 自提列表
+      ]
+    },
     {
       root: 'subpages/ecshopx',
       pages: [
@@ -55,7 +71,8 @@ export default {
       pages: [
         'index', // 会员中心
         'point-detail', // 积分明细
-        'point-rule' // 积分规则
+        'point-rule', // 积分规则
+        'member-level' // 会员等级
       ]
     },
     {
@@ -98,7 +115,11 @@ export default {
         'list', // 商品列表
         'espier-detail', // 商品详情
         'apply-chief', // 申请团长
-        'chief-licence' // 团长注册协议
+        'chief-licence', // 团长注册协议
+        'commission', // 团长佣金
+        'withdraw', // 团长提现
+        'withdraw-bank', // 提现银行
+        'withdraw-list' // 提现记录
       ]
     },
     {
@@ -226,8 +247,6 @@ export default {
         // 储值
         'pages/recharge/index',
         'pages/recharge/history',
-        'pages/store/list', // 门店列表
-        'pages/store/category',
         // cart
         'pages/cart/coupon-picker',
         'pages/cart/drug-info',

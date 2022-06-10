@@ -72,7 +72,7 @@ const CategoryIndex = (props) => {
     })
 
     setTimeout(() => {
-      wx.createSelectorQuery()
+      Taro.createSelectorQuery()
         .select('#category-wrap')
         .boundingClientRect((res) => {
           console.log('boundingClientRect:', res) //

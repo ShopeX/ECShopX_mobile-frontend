@@ -115,7 +115,7 @@ function CartIndex() {
         // 加购价换购的商品
         let exchange_item = null
         if (plus_item) {
-          exchange_item = pickBy(plus_item, { ...doc.cart.CART_GOODS_ITEM, activity_id })
+          exchange_item = pickBy(plus_item, { ...doc.cart.PLUS_BUY_ITEM, activity_id })
         }
         all_plus_itemid_list.push(activity_item_ids)
         const general_goods = list.filter((k) => activity_item_ids.indexOf(k.item_id) > -1)

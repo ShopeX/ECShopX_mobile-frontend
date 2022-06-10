@@ -7,7 +7,7 @@ import api from '@/api'
 import './index.scss'
 
 function SpShopCoupon (props) {
-  const { className, info, fromStoreIndex = false } = props
+  const { className, info, fromStoreIndex = false, onClick= () => {} } = props
   const { card_type, discount, least_cost, title } = info
   let couponText = ''
   // 折扣券
@@ -27,6 +27,7 @@ function SpShopCoupon (props) {
         },
         className
       )}
+      onClick={onClick}
     >
       <View className='coupon-wrap'>
         <Text className='coupon-text'>{fromStoreIndex ? title : couponText}</Text>

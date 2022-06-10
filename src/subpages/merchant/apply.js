@@ -629,7 +629,7 @@ const Apply = () => {
               </View>
               {step !== 1 && (
                 <View className='info mt-24'>
-                  <Text className='icon-info'></Text>
+                  <Text className='iconfont icon-info'></Text>
                   <Text className='text'>
                     {step === 2 ? STEPTWOTEXT(fieldName) : STEPTHREETEXT}
                   </Text>

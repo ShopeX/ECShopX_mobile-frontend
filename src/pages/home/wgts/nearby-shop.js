@@ -3,6 +3,7 @@ import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
+import { useAsyncCallback } from '@/hooks'
 import api from '@/api'
 import { SpNoShop, SpImage } from '@/components'
 import { classNames, isEmpty } from '@/utils'
@@ -20,34 +21,47 @@ function WgtNearbyShop(props) {
     return null
   }
 
-  const [state, setState] = useImmer(initialState)
-  const { location = {} } = useSelector((state) => state.user)
+  const [state, setState] = useAsyncCallback(initialState)
+  const { activeIndex } = state
+  const { location } = useSelector((state) => state.user)
 
   const { base, seletedTags } = info
 
-  useEffect(() => {
-    console.log(state.activeIndex, location)
-    init()
-  }, [state.activeIndex, location])
-
   // useEffect(() => {
-  //   if (!isEmpty(location)) {
-  //     init()
-  //   }
-  // }, [location])
+  //   console.log(state.activeIndex, location)
+  //   init()
+  // }, [state.activeIndex])
 
-  const init = async () => {
-    const params = {
-      lat: location.lat,
-      lng: location.lng,
-      distributor_tag_id: seletedTags[state.activeIndex]?.tag_id,
+  useEffect(() => {
+    console.log('location:', location)
+    init(activeIndex)
+  }, [location])
+
+  const init = async (idx) => {
+    let lat, lng, province, city, district
+    if (location) {
+      lat = location?.lat
+      lng = location?.lng
+      province = location?.province || '北京市'
+      city = location?.city || '北京市'
+      district = location?.district || '昌平区'
+    }
+    let params = {
+      distributor_tag_id: seletedTags[idx]?.tag_id,
       show_discount: 1,
-      province: location.lat ? location.province : '北京市',
-      city: location.lat ? location.city : '北京市',
-      area: location.lat ? location.district : '昌平区',
       // 根据经纬度或地区查询
-      type: location.lat ? 0 : 1,
+      type: location?.lat ? 0 : 1,
       sort_type: 1
+    }
+    if (location) {
+      params = {
+        ...params,
+        lat,
+        lng,
+        province: province,
+        city: city,
+        area: district
+      }
     }
     const { list } = await api.shop.getNearbyShop(params)
     setState((v) => {
@@ -63,7 +77,7 @@ function WgtNearbyShop(props) {
   }
 
   const handleStoreClick = (id) => {
-    const url = `/pages/store/index?id=${id}`
+    const url = `/subpages/store/index?id=${id}`
     Taro.navigateTo({
       url
     })
@@ -100,9 +114,14 @@ function WgtNearbyShop(props) {
                 })}
                 key={item.tag_id}
                 onClick={() =>
-                  setState((v) => {
-                    v.activeIndex = index
-                  })
+                  setState(
+                    (draft) => {
+                      draft.activeIndex = index
+                    },
+                    ({ activeIndex }) => {
+                      init(activeIndex)
+                    }
+                  )
                 }
               >
                 {item.tag_name}
@@ -120,8 +139,9 @@ function WgtNearbyShop(props) {
                 <View className='shop-image'>
                   <SpImage
                     src={item.banner || 'shop_default_bg.png'}
-                    // mode="aspectFill"
-                    width={220}
+                    mode="aspectFill"
+                    width={200}
+                    height={130}
                   />
                 </View>
                 <View className='shop-logo'>

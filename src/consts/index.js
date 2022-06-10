@@ -148,7 +148,12 @@ export const PAYMENT_TYPE = {
   deposit: '余额支付',
   wxpayapp: '微信支付',
   alipayapp: '支付宝支付',
-  adapay: '微信支付'
+  adapay: '微信支付',
+  wx_lite: '微信支付',
+  wx_pub: '微信支付',
+  alipay: '支付宝支付',
+  alipay_wap: '支付宝支付',
+  alipay_qr: "支付宝支付"
 }
 
 export const TRANSFORM_PAYTYPE = {
@@ -157,7 +162,8 @@ export const TRANSFORM_PAYTYPE = {
   'wxpayjs': 'wxpay',
   'deposit': 'deposit',
   'wxpayapp': 'wxpay',
-  'alipayapp': 'alipay'
+  'alipayapp': 'alipay',
+  'adapay': 'adapay'
 }
 
 export const POINT_TYPE = {

@@ -58,8 +58,9 @@ export default (props = {}) => {
     getUserInfo()
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
+    console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
     if(redirect_url) {
-      Taro.redirectTo({ url: redirect_url })
+      Taro.redirectTo({ url: decodeURIComponent(redirect_url) })
     }
   }
 

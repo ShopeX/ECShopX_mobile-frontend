@@ -1,0 +1,33 @@
+.page-withdraw-list {
+  padding: 0 16px;
+  .list-hd {
+    padding: 30px 0;
+    display: flex;
+    align-items: center;
+    .title {
+      font-size: 28px;
+      font-weight: 400;
+      color: #222222;
+    }
+  }
+  .withdraw-item {
+    padding: 20px 24px;
+    background: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    .item-hd {
+      display: flex;
+      justify-content: space-between;
+    }
+    .apply-money {
+      font-weight: 500;
+      color: #222222;
+      font-size: 28px;
+    }
+    .apply-datetime {
+      font-weight: 400;
+      color: #999999;
+      font-size: 28px;
+    }
+  }
+}

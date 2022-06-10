@@ -74,7 +74,7 @@ export function getAppBaseInfo () {
 }
 
 /**
- * @function 首页模版配置
+ * @function 平台首页模版配置
  */
 export function getShopTemplate (params) {
   return req.get(`/pagestemplate/detail`, {
@@ -83,6 +83,18 @@ export function getShopTemplate (params) {
     ...params
   })
 }
+
+/**
+ * @function 店铺首页模版配置
+ */
+ export function getStoreShopTemplate (params) {
+  return req.get(`/pagestemplate/shopDetail`, {
+    template_name: 'yykweishop',
+    weapp_pages: 'index',
+    ...params
+  })
+}
+
 
 // 获取高德地图key
 export function getMapKeyDetail (params) {

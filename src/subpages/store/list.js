@@ -231,7 +231,7 @@ function NearlyShop(props) {
   }
 
   const handleClickItem = () => {
-    Taro.navigateTo({ url: `/pages/store/index?id=${state.headquarters.distributor_id}` })
+    Taro.navigateTo({ url: `/subpages/store/index?id=${state.headquarters.distributor_id}` })
   }
 
   const handleClickShop = async (info) => {
@@ -256,7 +256,6 @@ function NearlyShop(props) {
 
   // 根据收货地址搜索
   const onLocationChange = async (info) => {
-    debugger
     let local = info.address || info.province + info.city + info.county + info.adrdetail
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))

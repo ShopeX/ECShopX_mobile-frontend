@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpButton, SpLoading } from '@/components'
 import { usePayment } from '@/hooks'
+import { isArray } from '@/utils'
 import api from '@/api'
 import './cashier-result.scss'
 
@@ -22,25 +23,35 @@ function CashierResult(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeInfo, orderId, czOrder } = state
   useEffect(() => {
-    fetch()
+    const { order_id } = $instance.router.params
+    if (order_id) {
+      fetch()
+    }
   }, [])
+
+  // useDidShow(() => {
+  //   fetch()
+  // })
 
   const fetch = async () => {
     const { order_id, code } = $instance.router.params
+    if(!order_id) {
+      return
+    }
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
     setState((draft) => {
-      draft.tradeInfo = tradeInfo
+      draft.tradeInfo = isArray(tradeInfo) && tradeInfo.length == 0 ? { tradeState: 'NOTPAY' } : tradeInfo
       draft.orderId = order_id
       draft.czOrder = order_id.indexOf('CZ') > -1
     })
     // 获取openid, 微信客户端支付方式
-    if (code && orderInfo.pay_type == 'wxpay') {
-      cashierPayment({
-        ...orderInfo,
-        pay_type: 'wxpayjs'
-      })
-    }
+    // if (code && orderInfo.pay_type == 'wxpay') {
+    //   cashierPayment({
+    //     ...orderInfo,
+    //     pay_type: 'wxpayjs'
+    //   })
+    // }
 
     if (tradeInfo && tradeInfo.tradeState != 'SUCCESS') {
       setTimeout(() => {
@@ -69,7 +80,7 @@ function CashierResult(props) {
       {tradeInfo && (
         <View className='trade-info'>
           <View>
-            订单编号：<Text className='trade-info-value'>{tradeInfo.orderId}</Text>
+            订单编号：<Text className='trade-info-value'>{orderId}</Text>
           </View>
           <View>
             支付单号：<Text className='trade-info-value'>{tradeInfo.tradeId}</Text>

@@ -58,7 +58,7 @@ function CompStore(props) {
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     const { status } = await api.distribution.merchantIsvaild({ distributor_id: distributorId })
     if (status) {
-      Taro.navigateTo({ url: `/pages/store/index?id=${distributorId}` })
+      Taro.navigateTo({ url: `/subpages/store/index?id=${distributorId}` })
     } else {
       showToast('店铺已注销，去别的店铺看看吧')
     }

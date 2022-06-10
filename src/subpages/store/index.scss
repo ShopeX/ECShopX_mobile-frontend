@@ -1,0 +1,19 @@
+.page-store-index {
+  .header-block {
+    padding-top: 230px;
+    background: #4b78e2;
+    box-shadow: inset 0px -242px 700px 0px rgba(255, 255, 255, 0.4);
+  }
+  .icon-huiyuanzhongxin {
+    font-size: 38px;
+  }
+  .icon-gouwuche {
+    font-size: 38px;
+  }
+  .title-container {
+    justify-content: flex-start !important;
+    .sp-search {
+      width: 80%;
+    }
+  }
+}
