@@ -6,12 +6,15 @@
     .card-swiper {
       height: 375px;
     }
+    .swiper-slide {
+      text-align: center;
+    }
     .member-card {
       background: #000;
       border-radius: 20px;
       // width: 600px;
       // height: 375px;
-      margin-right: 32px;
+      // margin-right: 32px;
       display: inline-block;
       // margin-top: 32px;
       position: relative;
@@ -59,7 +62,7 @@
     align-items: center;
     margin-top: 56px;
     .title {
-      width: 256px;
+      // width: 256px;
       height: 45px;
       font-size: 32px;
       font-weight: 600;
