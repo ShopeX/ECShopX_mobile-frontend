@@ -7,7 +7,7 @@ import doc from '@/doc'
 import qs from 'qs'
 import { View } from '@tarojs/components'
 import { SpPage, SpSearch } from '@/components'
-import { getDistributorId } from '@/utils'
+import { getDistributorId, log } from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 import req from '@/api/req'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -15,12 +15,13 @@ import './custom-page.scss'
 
 const initialState = {
   wgts: [],
-  loading: true
+  loading: true,
+  shareInfo: null
 }
 function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { wgts, loading } = state
+  const { wgts, loading, shareInfo } = state
 
   useEffect(() => {
     fetch()
@@ -35,10 +36,11 @@ function CustomPage(props) {
       distributor_id: getDistributorId()
     })
     const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
-    const { config } = await req.get(url)
+    const { config, share } = await req.get(url)
     setState((draft) => {
       draft.wgts = config
       draft.loading = false
+      draft.shareInfo = share
     })
 
     // this.setState(
@@ -60,15 +62,15 @@ function CustomPage(props) {
   })
 
   const getAppShareInfo = () => {
-    const { shareInfo } = this.state
-    const { id } = this.$instance.router.params
+    const { id } = $instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
-
+    const path = `/pages/custom/custom-page${query}`
+    log.debug(`getAppShareInfo: ${path}`)
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,
-      path: `/pages/custom/custom-page${query}`
+      path
     }
   }
 

@@ -25,7 +25,7 @@ export const WGT_GOODS_GRID = {
   // },
   // marketPrice: 'market_price',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
+  activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
@@ -53,7 +53,7 @@ export const WGT_GOODS_GRID_TAB = {
   // },
   // marketPrice: 'market_price',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
+  activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格

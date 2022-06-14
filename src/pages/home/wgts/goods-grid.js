@@ -36,6 +36,7 @@ function WgtGoodsGrid(props) {
     }
   })
   console.log(config, 'config')
+  console.log(goods, 'goods')
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
