@@ -125,6 +125,10 @@ function ItemList(props) {
     if (cat_id) {
       params['category'] = cat_id
     }
+    
+    if(main_cat_id) {
+      params['main_category'] = main_cat_id
+    }
 
     params.distributor_id = getDistributorId()
 
