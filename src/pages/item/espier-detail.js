@@ -315,6 +315,7 @@ function EspierDetail(props) {
   // 领券
   const handleReceiveCoupon = () => {
     const { item_id, distributor_id } = info
+    debugger
     Taro.navigateTo({
       url: `/others/pages/home/coupon-home?item_id=${item_id}&distributor_id=${distributor_id}`
     })
@@ -522,7 +523,7 @@ function EspierDetail(props) {
                 title='组合优惠'
                 isLink
                 onClick={() => {
-                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}` })
+                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}` })
                   // setState((draft) => {
                   //   draft.packageOpen = true
                   // })
