@@ -105,7 +105,7 @@ function Home() {
     }
 
     if (VERSION_STANDARD) {
-      fetchStoreInfo(res)
+      fetchStoreInfo(location)
     }
   }
 
