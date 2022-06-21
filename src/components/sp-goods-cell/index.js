@@ -18,7 +18,6 @@ function SpGoodsCell(props) {
   }
 
   const { price, activityPrice, memberPrice, packagePrice, curItem } = info
-
   let _price = 0
   let t_price, t_activityPrice, t_memberPrice, t_packagePrice
   if(curItem) {

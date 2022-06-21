@@ -92,8 +92,8 @@ function CashierResult(props) {
         </View>
       )}
       <View className='btn-block'>
-        {/* 普通订单 */}
-        {tradeInfo?.tradeSourceType == 'normal' && (
+        {/* 普通订单, 秒杀订单 */}
+        {(tradeInfo?.tradeSourceType == 'normal' || tradeInfo?.tradeSourceType == 'normal_seckill') && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'
