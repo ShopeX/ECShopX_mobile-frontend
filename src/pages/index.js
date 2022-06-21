@@ -134,16 +134,17 @@ function Home() {
     }
   })
 
-  const fetchStoreInfo = async ({ lat, lng }) => {
-    let parmas = {
+  const fetchStoreInfo = async (location) => {
+    let params = {
       distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
     }
-    if (openLocation == 1) {
-      parmas.lat = lat
-      parmas.lng = lng
-      // parmas.distributor_id = undefined
+    if (openLocation == 1 && location) {
+      const { lat, lng } = location
+      params.lat = lat
+      params.lng = lng
+      // params.distributor_id = undefined
     }
-    const res = await api.shop.getShop(parmas)
+    const res = await api.shop.getShop(params)
     dispatch(updateShopInfo(res))
     await fetchWgts()
   }

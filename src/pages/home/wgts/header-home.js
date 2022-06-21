@@ -37,7 +37,7 @@ export default class HeaderHome extends Component {
       this.props.onClickItem()
     }
     Taro.navigateTo({
-      url: '/pages/store/list'
+      url: '/subpages/store/list'
     })
   }
 
