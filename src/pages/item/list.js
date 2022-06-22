@@ -72,27 +72,39 @@ function ItemList(props) {
   useEffect(() => {}, [])
 
   useDidShow(() => {
-    setTimeout(() => {
-      if (isWeixin) {
-        Taro.createSelectorQuery()
-          .select('#item-list-head')
-          .boundingClientRect((res) => {
-            console.log('boundingClientRect:', res) //
-            if (res) {
-              setState((draft) => {
-                draft.fixTop = res.bottom
-                console.log('fixTop1:', res.bottom) //
-              })
-            }
-          })
-          .exec()
-      } else {
-        setState((draft) => {
-          draft.fixTop = document.getElementById('item-list-head').clientHeight
-          console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
-        })
-      }
-    }, 500)
+    // setTimeout(() => {
+    //   if (isWeixin) {
+    //     Taro.createSelectorQuery()
+    //       .select('#item-list-head')
+    //       .boundingClientRect((res) => {
+    //         console.log('boundingClientRect:', res) //
+    //         if (res) {
+    //           setState((draft) => {
+    //             draft.fixTop = res.bottom
+    //             console.log('fixTop1:', res.bottom) //
+    //           })
+    //         }
+    //       })
+    //       .exec()
+    //   } else {
+    //     Taro.createSelectorQuery()
+    //       .select('#item-list-head')
+    //       .boundingClientRect((res) => {
+    //         console.log('boundingClientRect:', res) //
+    //         if (res) {
+    //           setState((draft) => {
+    //             draft.fixTop = res.bottom
+    //             console.log('fixTop2:', res.bottom) //
+    //           })
+    //         }
+    //       })
+    //       .exec()
+    //     // setState((draft) => {
+    //     //   draft.fixTop = document.getElementById('item-list-head').clientHeight
+    //     //   console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
+    //     // })
+    //   }
+    // }, 1000)
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -306,9 +318,9 @@ function ItemList(props) {
       </View>
       <SpScrollView
         className='item-list-scroll'
-        style={styleNames({
-          'margin-top': `${fixTop}px`
-        })}
+        // style={styleNames({
+        //   'margin-top': `${fixTop}px`
+        // })}
         ref={goodsRef}
         fetch={fetch}
       >

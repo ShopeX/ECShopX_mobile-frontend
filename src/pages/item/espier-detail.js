@@ -315,7 +315,6 @@ function EspierDetail(props) {
   // 领券
   const handleReceiveCoupon = () => {
     const { item_id, distributor_id } = info
-    debugger
     Taro.navigateTo({
       url: `/others/pages/home/coupon-home?item_id=${item_id}&distributor_id=${distributor_id}`
     })
@@ -477,6 +476,7 @@ function EspierDetail(props) {
                 <View className='brief'>{info.brief}</View>
               </View>
               {(isWeixin || isAPP()) && (
+                <View className='btn-share-wrap'>
                 <SpLogin
                   onChange={async () => {
                     if (isAPP()) {
@@ -494,6 +494,7 @@ function EspierDetail(props) {
                     <Text className='share-txt'>分享</Text>
                   </View>
                 </SpLogin>
+                </View>
               )}
             </View>
           </View>

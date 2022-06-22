@@ -62,7 +62,7 @@ function SpNumberKeyBoard(props) {
   }
 
   const isDisabled = () => {
-    console.log(ret.test(currentValue), parseFloat(currentValue) <= maxValue)
+    // console.log(ret.test(currentValue), parseFloat(currentValue) <= maxValue)
     return !(currentValue == '0' || (ret.test(currentValue) && parseFloat(currentValue) <= maxValue))
   }
 

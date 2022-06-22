@@ -2,14 +2,14 @@
   // background: $color-bg-gray;
   .item-list-head {
     background: #fff;
-    position: fixed;
-    left: 0;
-    top: 0;
-    /*  #ifdef  h5  */
-    top: $navigate-height;
-    /*  #endif  */
-    z-index: 999;
-    width: 100%;
+    // position: fixed;
+    // left: 0;
+    // top: 0;
+    // /*  #ifdef  h5  */
+    // top: $navigate-height;
+    // /*  #endif  */
+    // z-index: 999;
+    // width: 100%;
   }
   .search-wrap {
     padding: 16px 28px;

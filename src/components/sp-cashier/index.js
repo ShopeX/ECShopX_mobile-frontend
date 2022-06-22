@@ -36,7 +36,7 @@ function SpCashier(props) {
   const { userInfo } = useSelector((state) => state.user)
   const [state, setState] = useImmer(initialState)
   const { list, selectPayment, selectItem } = state
-  console.log('isAPP:', isAPP(), Taro.getEnv(), Taro.ENV_TYPE.APP)
+  // console.log('isAPP:', isAPP(), Taro.getEnv(), Taro.ENV_TYPE.APP)
   const ENV = Taro.getEnv()
   useEffect(() => {
     if (isAPP()) {
