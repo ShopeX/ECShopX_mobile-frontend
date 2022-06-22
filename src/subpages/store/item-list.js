@@ -73,22 +73,22 @@ function StoreItemList(props) {
 
   useEffect(() => {}, [])
 
-  useDidShow(() => {
-    setTimeout(() => {
-      Taro.createSelectorQuery()
-        .select('#item-list-head')
-        .boundingClientRect((res) => {
-          console.log('boundingClientRect:', res) //
-          if (res) {
-            setState((draft) => {
-              draft.fixTop = res.bottom
-              console.log('fixTop:', res.bottom) //
-            })
-          }
-        })
-        .exec()
-    }, 200)
-  })
+  // useDidShow(() => {
+  //   setTimeout(() => {
+  //     Taro.createSelectorQuery()
+  //       .select('#item-list-head')
+  //       .boundingClientRect((res) => {
+  //         console.log('boundingClientRect:', res) //
+  //         if (res) {
+  //           setState((draft) => {
+  //             draft.fixTop = res.bottom
+  //             console.log('fixTop:', res.bottom) //
+  //           })
+  //         }
+  //       })
+  //       .exec()
+  //   }, 200)
+  // })
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { cat_id, main_cat_id, dtid } = $instance.router.params
@@ -121,7 +121,6 @@ function StoreItemList(props) {
     if (cat_id) {
       params['category'] = cat_id
     }
-
 
     const {
       list,
@@ -260,18 +259,18 @@ function StoreItemList(props) {
       })}
       renderFooter={tabbar == 1 && <CompTabbar />}
     >
-      <View id='item-list-head' className='item-list-head'>
-        <View className='search-wrap'>
-          <SpSearchBar
-            keyword={keywords}
-            placeholder='搜索'
-            onFocus={handleOnFocus}
-            onChange={handleOnChange}
-            onClear={handleOnClear}
-            onCancel={handleSearchOff}
-            onConfirm={handleConfirm}
-          />
-        </View>
+      <View className='search-wrap'>
+        <SpSearchBar
+          keyword={keywords}
+          placeholder='搜索'
+          onFocus={handleOnFocus}
+          onChange={handleOnChange}
+          onClear={handleOnClear}
+          onCancel={handleSearchOff}
+          onConfirm={handleConfirm}
+        />
+      </View>
+      <View className='item-list-head'>
         {tagList.length > 0 && (
           <SpTagBar
             className='tag-list'

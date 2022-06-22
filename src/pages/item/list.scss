@@ -1,7 +1,13 @@
 .page-item-list {
   // background: $color-bg-gray;
+  &.has-navbar {
+    .search-wrap {
+      top: $navigate-height; 
+    }
+  }
   .item-list-head {
     background: #fff;
+    margin-top: $searchbar-height + 32;
     // position: fixed;
     // left: 0;
     // top: 0;
@@ -13,6 +19,12 @@
   }
   .search-wrap {
     padding: 16px 28px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #fff;
+    z-index: 1000;
   }
   .sp-filter-bar {
     &__item {

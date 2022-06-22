@@ -26,7 +26,14 @@ import {
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, getDistributorId, styleNames, VERSION_STANDARD } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  isWeixin,
+  getDistributorId,
+  styleNames,
+  VERSION_STANDARD
+} from '@/utils'
 import { Tracker } from '@/service'
 
 import './list.scss'
@@ -137,12 +144,12 @@ function ItemList(props) {
     if (cat_id) {
       params['category'] = cat_id
     }
-    
-    if(main_cat_id) {
+
+    if (main_cat_id) {
       params['main_category'] = main_cat_id
     }
 
-    if(VERSION_STANDARD) {
+    if (VERSION_STANDARD) {
       params.distributor_id = getDistributorId()
     }
 
@@ -282,18 +289,18 @@ function ItemList(props) {
         'has-tagbar': tagList.length > 0
       })}
     >
-      <View id='item-list-head' className='item-list-head'>
-        <View className='search-wrap'>
-          <SpSearchBar
-            keyword={keywords}
-            placeholder='搜索'
-            onFocus={handleOnFocus}
-            onChange={handleOnChange}
-            onClear={handleOnClear}
-            onCancel={handleSearchOff}
-            onConfirm={handleConfirm}
-          />
-        </View>
+      <View className='search-wrap'>
+        <SpSearchBar
+          keyword={keywords}
+          placeholder='搜索'
+          onFocus={handleOnFocus}
+          onChange={handleOnChange}
+          onClear={handleOnClear}
+          onCancel={handleSearchOff}
+          onConfirm={handleConfirm}
+        />
+      </View>
+      <View className='item-list-head'>
         {tagList.length > 0 && (
           <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
             {/* <View

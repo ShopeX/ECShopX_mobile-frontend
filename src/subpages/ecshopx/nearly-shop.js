@@ -54,17 +54,17 @@ function NearlyShop(props) {
     const { pageIndex: page, pageSize } = params
     const { keyword } = state
     const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
-    const { province, city, district } = location
+    // const { province, city, district } = location
     const query = {
       page,
       pageSize,
-      lat: location.lat,
-      lng: location.lng,
+      lat: location?.lat,
+      lng: location?.lng,
       name: keyword,
-      province: province || chooseProvice,
-      city: city || chooseCity,
-      area: district || chooseDistrict,
-      type: location.lat ? state.type : 1,
+      province: location?.province || chooseProvice,
+      city: location?.city || chooseCity,
+      area: location?.district || chooseDistrict,
+      type: location?.lat ? state.type : 1,
       search_type: state.search_type,
       sort_type: 1
     }
@@ -250,8 +250,8 @@ function NearlyShop(props) {
   }
 
   const { areaIndexArray, areaArray, chooseValue, showType } = state
-  const { province, city, district } = location
-  const locationValue = province + city + district
+  // const { province, city, district } = location
+  // const locationValue = province + city + district
 
   return (
     <SpPage className='page-ecshopx-nearlyshop'>
@@ -282,7 +282,7 @@ function NearlyShop(props) {
               placeholder='输入收货地址寻找周边门店'
               confirmType='search'
               value={state.keyword}
-              disabled={!location.address}
+              disabled={!location?.address}
               onInput={onInputChange}
               onConfirm={onConfirmSearch}
             />
@@ -297,7 +297,7 @@ function NearlyShop(props) {
         <View className='block-title'>当前定位地址</View>
         <View className='location-wrap'>
           <Text className='location-address' onClick={() => onLocationChange(location)}>
-            {location.address || '无法获取您的位置信息'}
+            {location?.address || '无法获取您的位置信息'}
           </Text>
           <View className='btn-location' onClick={isPolicyTime}>
             <Text
@@ -305,7 +305,7 @@ function NearlyShop(props) {
                 active: state.locationIng
               })}
             ></Text>
-            {location.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
+            {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
         <View className='block-title block-flex'>

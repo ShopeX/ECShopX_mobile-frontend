@@ -1,18 +1,22 @@
 .page-store-item-list {
   // background: $color-bg-gray;
+  &.has-navbar {
+    .search-wrap {
+      top: $navigate-height; 
+    }
+  }
   .item-list-head {
     background: #fff;
-    position: fixed;
-    left: 0;
-    top: 0;
-    /*  #ifdef  h5  */
-    top: $navigate-height;
-    /*  #endif  */
-    z-index: 999;
-    width: 100%;
+    margin-top: $searchbar-height + 32;
   }
   .search-wrap {
     padding: 16px 28px;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #fff;
+    z-index: 1000;
   }
   .sp-filter-bar {
     &__item {
@@ -25,7 +29,7 @@
       }
     }
   }
-
+  
   &.has-tagbar {
     .item-list-scroll {
       // /*  #ifdef h5 */
