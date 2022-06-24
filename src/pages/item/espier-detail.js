@@ -388,7 +388,7 @@ function EspierDetail(props) {
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage
-                    mode='aspecFill'
+                    mode='aspectFill'
                     src={img}
                     width={windowWidth * 2}
                     height={windowWidth * 2}

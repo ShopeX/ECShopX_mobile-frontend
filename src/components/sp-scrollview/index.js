@@ -38,7 +38,6 @@ function SpScrollView(props, ref) {
       })
       setTimeout(() => {
         observer.relativeToViewport({ bottom: 0 }).observe('.scrollview-bottom', (res) => {
-          console.log('isIntersecting:', res)
           if (res.intersectionRatio > 0) {
             if (page.hasMore && !page.loading) {
               nextPage()
@@ -52,7 +51,6 @@ function SpScrollView(props, ref) {
       observer = new IntersectionObserver(
         (res) => {
           const { isIntersecting } = res[0]
-          console.log('isIntersecting:', isIntersecting)
           if (isIntersecting) {
             if (page.hasMore && !page.loading) {
               nextPage()

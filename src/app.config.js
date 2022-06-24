@@ -31,6 +31,13 @@ export default {
     // 'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
+    // 内购
+    {
+      root: 'subpages/purchase', 
+      pages: [
+        'espier-detail',
+      ]
+    },
     // 导购货架 guide
     {
       root: 'subpages/guide',
