@@ -194,7 +194,7 @@ function SpSkuSelect(props) {
     dispatch(updateCount({ shop_type: 'distributor' }))
     
     Taro.hideLoading()
-    showToast('成功加入购物车')
+    // showToast('成功加入购物车')
   }
 
   const fastBuy = async () => {

@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-import { pickBy, hasNavbar, isWxWeb } from '@/utils'
+import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM } from '@/utils'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, RecommendItem } from '@/components'
 import StoreFavItem from './comps/store-fav-item'
 
@@ -20,14 +20,19 @@ export default class ItemFav extends Component {
   constructor(props) {
     super(props)
 
+    const tabList = [
+      { title: '商品', status: '0' },
+      { title: '软文', status: '1' }
+    ]
+
+    if(VERSION_PLATFORM) {
+      tabList.push({ title: '店铺', status: '2' })
+    }
+
     this.state = {
       ...this.state,
       curTabIdx: 0,
-      tabList: [
-        { title: '商品', status: '0' },
-        { title: '软文', status: '1' },
-        { title: '店铺', status: '2' }
-      ],
+      tabList: tabList,
       list: []
     }
   }

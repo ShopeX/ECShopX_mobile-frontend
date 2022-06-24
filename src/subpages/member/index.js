@@ -115,8 +115,8 @@ function MemberIndex(props) {
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
-  const instance = getCurrentInstance()
-  const code = instance.router.params.code
+  const $instance = getCurrentInstance()
+  const code = $instance.router.params.code
   code && Taro.setStorageSync(SG_SHARE_CODE, code)
   const dispatch = useDispatch()
 
@@ -126,7 +126,7 @@ function MemberIndex(props) {
       setMemberBackground()
       const storageCode = Taro.getStorageSync(SG_SHARE_CODE)
       storageCode && getCode(storageCode)
-      const { redirect } = instance.router.params
+      const { redirect } = $instance.router.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
       }
@@ -157,8 +157,7 @@ function MemberIndex(props) {
 
   // 分享
   useShareAppMessage(async (res) => {
-    const { share_title = '震惊！这店绝了！', share_pic_wechatapp } =
-      await api.member.getMemberShareConfig()
+    const { share_title, share_pic_wechatapp } = await api.member.getMemberShareConfig()
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })

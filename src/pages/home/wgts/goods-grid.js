@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpGoodsItem } from '@/components'
+import { SpGoodsItem, SpImage } from '@/components'
 import { pickBy, classNames, linkPage } from '@/utils'
 import { Tracker } from '@/service'
 import { CreateIntersectionObserver } from '@/utils/platform'
@@ -36,6 +36,7 @@ function WgtGoodsGrid(props) {
     }
   })
   console.log(config, 'config')
+  console.log(goods, 'goods')
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -60,12 +61,42 @@ function WgtGoodsGrid(props) {
           <View className='container'>
             <View className='goods-item-wrap two-inrow left-container'>
               {leftFilterGoods.map((item, leftidx) => (
-                <SpGoodsItem showPrice={config.showPrice} info={item} key={`left_${leftidx}`} />
+                <SpGoodsItem
+                  renderBrand={
+                    config.brand && (
+                      <SpImage
+                        className='brand-info'
+                        src={item.brand}
+                        width={110}
+                        height={110}
+                        mode='scaleToFill'
+                      />
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  info={item}
+                  key={`left_${leftidx}`}
+                />
               ))}
             </View>
             <View className='goods-item-wrap two-inrow right-container'>
               {rightFilterGoods.map((item, rightidx) => (
-                <SpGoodsItem showPrice={config.showPrice} info={item} key={`right_${rightidx}`} />
+                <SpGoodsItem
+                  renderBrand={
+                    config.brand && (
+                      <SpImage
+                        className='brand-info'
+                        src={item.brand}
+                        width={110}
+                        height={110}
+                        mode='scaleToFill'
+                      />
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  info={item}
+                  key={`right_${rightidx}`}
+                />
               ))}
             </View>
           </View>
@@ -74,7 +105,23 @@ function WgtGoodsGrid(props) {
           {config.style === 'grids' &&
             goods.map((item, idx) => (
               <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
-                <SpGoodsItem showPrice={config.showPrice} showPromotion={false} info={item} mode="aspectFill" />
+                <SpGoodsItem
+                  renderBrand={
+                    config.brand && (
+                      <SpImage
+                        className='brand-info'
+                        src={item.brand}
+                        width={110}
+                        height={110}
+                        mode='scaleToFill'
+                      />
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  showPromotion={false}
+                  info={item}
+                  mode='aspectFill'
+                />
               </View>
             ))}
         </View>

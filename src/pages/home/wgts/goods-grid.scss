@@ -83,4 +83,16 @@
       }
     }
   }
+
+  .brand-info {
+    border-radius: 55rpx;
+    position: relative;
+    top: -55px;
+    overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+    // border: 3px solid #ffffff;
+    // background: #dddddd;
+    // box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  }
 }

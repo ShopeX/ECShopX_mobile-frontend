@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { classNames, formatPriceToHundred } from '@/utils'
+import { classNames, formatPriceToHundred, VERSION_PLATFORM } from '@/utils'
 import { SpNewShopItem, SpOrderItem } from '@/components'
 import './item.scss'
 
@@ -88,12 +88,16 @@ export default class TradeItem extends Component {
         {!noHeader &&
           (customHeader ? (
             <View>
-              <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+              {VERSION_PLATFORM && (
+                <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+              )}
               <View className='trade-item__hd'>{this.props.renderHeader}</View>
             </View>
           ) : (
             <View>
-              <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+              {VERSION_PLATFORM && (
+                <SpNewShopItem inOrderList info={info.distributor_info} canJump />
+              )}
               <View className='trade-item__hd'>
                 <View className='time lineone'>创建时间：{info.create_date}</View>
                 <View className='time linetwo'>

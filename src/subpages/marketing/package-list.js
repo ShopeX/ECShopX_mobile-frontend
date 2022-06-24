@@ -79,7 +79,7 @@ function PackageList(props) {
     const { itemId, sitemIds } = list[index].packageData
     await dispatch(
       addCart({
-        isAccumulate: false,
+        isAccumulate: true,
         item_id: itemId,
         items_id: sitemIds,
         num: 1,

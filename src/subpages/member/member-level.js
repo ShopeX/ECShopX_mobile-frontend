@@ -48,7 +48,7 @@ function MemberLevel(props) {
       <View
         className='level-hd'
         style={styleNames({
-          backgroundImage: `url(${process.env.APP_IMAGE_CDN}/member_bg.jpg)`
+          "background-image": `url(${process.env.APP_IMAGE_CDN}/member_bg.jpg)`
         })}
       >
         <Swiper

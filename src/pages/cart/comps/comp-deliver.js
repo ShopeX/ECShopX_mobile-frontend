@@ -10,9 +10,10 @@ import api from '@/api'
 
 import { deliveryList } from '../const'
 import './comp-deliver.scss'
+import { isNull } from 'lodash'
 
 const initialState = {
-  distributorInfo: {},
+  distributorInfo: null,
   receiptType: 'logistics'
 }
 
@@ -21,52 +22,65 @@ function CmopDeliver(props) {
     address = {},
     distributor_id,
     onChangReceiptType = () => {},
+    onChange = () => {},
     onEidtZiti = () => {}
   } = props
 
   const dispatch = useDispatch()
 
-  const { location = {} } = useSelector((state) => state.user)
+  const { location = {}, address: storeAddress } = useSelector((state) => state.user)
   const { rgb, openStore } = useSelector((state) => state.sys)
   const { zitiShop } = useSelector((state) => state.shop)
   const [state, setState] = useImmer(initialState)
   const { distributorInfo, receiptType } = state
 
-  useEffect(() => {
-    fetch()
-  }, [])
+  // useEffect(() => {
+  //   fetch()
+  // }, [])
 
   useEffect(() => {
+    //logistics
     fetchAddress()
   }, [receiptType])
 
-  const fetch = async () => {
-    let distributorInfo
-    if (distributor_id == 0) {
-      distributorInfo = await api.shop.getHeadquarters({ distributor_id })
-    } else {
-      distributorInfo = await api.shop.getShop({ distributor_id })
-    }
-    setState((draft) => {
-      draft.distributorInfo = distributorInfo
-    })
-  }
-
   const fetchAddress = async () => {
+    let _distributorInfo = distributorInfo
+    if (!distributorInfo) {
+      if (distributor_id == 0) {
+        _distributorInfo = await api.shop.getHeadquarters({ distributor_id })
+      } else {
+        _distributorInfo = await api.shop.getShop({ distributor_id })
+      }
+      setState((draft) => {
+        draft.distributorInfo = _distributorInfo
+      })
+    }
+    if (receiptType == 'ziti') {
+      onChange({
+        receipt_type: receiptType,
+        distributor_info: _distributorInfo,
+        address_info: null
+      })
+      return
+    }
+
     let query = {
       receipt_type: receiptType
     }
     if (receiptType == 'dada') {
-      query['city'] = distributorInfo.city
+      query['city'] = _distributorInfo.city
     }
-    // if (receiptType !== 'ziti') {
     // 非自提情况下，把地址存起来，否则清空地址
     const { list } = await api.member.addressList(query)
     const defaultAddress = list.find((item) => item.is_def) || list[0] || null
-    await dispatch(updateChooseAddress(defaultAddress))
-    // } else {
-    //   await dispatch(updateChooseAddress({defaultAddress}))
-    // }
+
+    const selectAddress = list.find(item => item.address_id == storeAddress?.address_id )
+
+    onChange({
+      receipt_type: receiptType,
+      distributor_info: _distributorInfo,
+      address_info: selectAddress || defaultAddress
+    })
   }
 
   const handleSwitchExpress = async (receipt_type) => {
@@ -75,7 +89,6 @@ function CmopDeliver(props) {
     setState((draft) => {
       draft.receiptType = receipt_type
     })
-    onChangReceiptType({ receipt_type, distributorInfo })
   }
 
   const handleMapClick = () => {
@@ -103,6 +116,10 @@ function CmopDeliver(props) {
 
   const zitiInfo = zitiShop && receiptType === 'ziti' ? zitiShop : distributorInfo
 
+  if (!distributorInfo) {
+    return null
+  }
+
   return (
     <View className='page-comp-deliver'>
       <View className='switch-box'>
@@ -113,9 +130,7 @@ function CmopDeliver(props) {
                 <View
                   key={item.type}
                   className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
-                  onClick={() => {
-                    handleSwitchExpress(item.type)
-                  }}
+                  onClick={handleSwitchExpress.bind(this, item.type)}
                 >
                   {item.name}
                 </View>

@@ -5,7 +5,19 @@ import useDepChange from './useDepChange'
 import useAsyncCallback from './useAsyncCallback'
 import usePayment from './usePayment'
 import useNavigation from './useNavigation'
+import useDebounce from './useDebounce'
+import useThrottle from './useThrottle'
 
 export default {}
 
-export { useLogin, useQwLogin, usePage, useDepChange, useAsyncCallback, usePayment, useNavigation }
+export {
+  useLogin,
+  useQwLogin,
+  usePage,
+  useDepChange,
+  useAsyncCallback,
+  usePayment,
+  useNavigation,
+  useDebounce,
+  useThrottle
+}

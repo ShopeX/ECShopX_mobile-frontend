@@ -1,10 +1,14 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage } from '@/components'
 
 import './comp-goodsitem.scss'
 
+const initialState = {
+  localNum: 0
+}
 function CompGoodsItem(props) {
   const {
     info,
@@ -19,9 +23,24 @@ function CompGoodsItem(props) {
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { cart_page } = priceSetting
   const { market_price: enMarketPrice } = cart_page
+  const [state, setState] = useImmer(initialState)
+  const { localNum } = state
+
+  useEffect(() => {
+    setState(draft => {
+      draft.localNum = info.num
+    })
+  }, [info.num])
 
   if (!info) {
     return null
+  }
+
+  const onChangeInputNumber = (e) => {
+    setState(draft => {
+      draft.localNum = e
+    })
+    onChange(e)
   }
 
   const { price, activity_price, member_price, package_price } = info
@@ -89,10 +108,10 @@ function CompGoodsItem(props) {
               </View>
               {isShowAddInput ? (
                 <SpInputNumber
-                  value={info.num}
+                  value={localNum}
                   max={info.store}
                   min={1}
-                  onChange={(e) => onChange(e)}
+                  onChange={onChangeInputNumber}
                 />
               ) : (
                 <Text className='item-num'>x {info.num}</Text>

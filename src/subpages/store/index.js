@@ -80,7 +80,6 @@ function StoreIndex() {
         // draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
         draft.loading = false
       })
-      fetchLikeList()
     }
   }
 
@@ -165,10 +164,10 @@ function StoreIndex() {
       <View className='header-block'>
         <CompShopBrand dtid={distributorId} />
       </View>
-      <HomeWgts wgts={filterWgts} />
-
-      {/* 猜你喜欢 */}
-      <SpRecommend className='recommend-block' info={likeList} />
+      <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
+        {/* 猜你喜欢 */}
+        <SpRecommend className='recommend-block' info={likeList} />
+      </HomeWgts>
     </SpPage>
   )
 }

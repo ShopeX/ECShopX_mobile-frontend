@@ -1,42 +1,34 @@
-@import "@/style/imports";
-
-.goods-content {
-  margin: 0 20px;
-  box-sizing: border-box;
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 2px 2px 6px 6px rgba(120, 120, 120, 0.1);
-  &__info {
-    display: flex;
-    padding: 20px;
+.wgt-goods {
+  .goods {
+    margin: 0 20px;
     box-sizing: border-box;
-    &_img {
-      width: 160px;
-      height: 160px;
-      border-radius: 8px;
-      overflow: hidden;
-      .img-style {
-        width: 100%;
-        height: 100%;
+    background: #ffffff;
+    border-radius: 8px;
+    box-shadow: 2px 2px 6px 6px rgba(120, 120, 120, 0.1);
+    .goods-info {
+      padding: 20px;
+      display: flex;
+    }
+    .goods-img {
+      width: 200px;
+    }
+    .goods-name {
+      margin-left: 10px;
+      .desc {
+        color: #888;
+        margin-top: 6px;
       }
     }
-    &_text {
-      margin-left: 20px;
+    .goods-btns {
       display: flex;
-      justify-content: center;
-      flex-direction: column;
+      justify-content: space-around;
+      padding: 0 20px 20px;
+      .btn-text {
+        color: $color-brand-primary;
+        &.disabled {
+          color: $color-brand-accent-light;
+        }
+      }
     }
-  }
-  &__operate {
-    display: flex;
-    &_btn {
-      flex: 1;
-      text-align: center;
-      color: $color-brand-primary;
-      margin-bottom: 20px;
-    }
-  }
-  .disabled__operate {
-    color: $color-brand-accent-light;
   }
 }

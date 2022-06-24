@@ -104,3 +104,8 @@ export function adapayCreateCert(params) {
 export function adapayUpdateCert(params) {
   return req.post('/adapay/popularize/update_cert', params)
 }
+
+// 获取店铺信息
+export function getDistributorInfo({ distributor_id }) {
+  return req.get(`/distributor/getDistributorInfo?distributor_id=${distributor_id}`)
+}

@@ -26,7 +26,14 @@ import {
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, getDistributorId, styleNames } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  isWeixin,
+  getDistributorId,
+  styleNames,
+  VERSION_STANDARD
+} from '@/utils'
 import { Tracker } from '@/service'
 
 import './list.scss'
@@ -72,27 +79,39 @@ function ItemList(props) {
   useEffect(() => {}, [])
 
   useDidShow(() => {
-    setTimeout(() => {
-      if (isWeixin) {
-        Taro.createSelectorQuery()
-          .select('#item-list-head')
-          .boundingClientRect((res) => {
-            console.log('boundingClientRect:', res) //
-            if (res) {
-              setState((draft) => {
-                draft.fixTop = res.bottom
-                console.log('fixTop1:', res.bottom) //
-              })
-            }
-          })
-          .exec()
-      } else {
-        setState((draft) => {
-          draft.fixTop = document.getElementById('item-list-head').clientHeight
-          console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
-        })
-      }
-    }, 500)
+    // setTimeout(() => {
+    //   if (isWeixin) {
+    //     Taro.createSelectorQuery()
+    //       .select('#item-list-head')
+    //       .boundingClientRect((res) => {
+    //         console.log('boundingClientRect:', res) //
+    //         if (res) {
+    //           setState((draft) => {
+    //             draft.fixTop = res.bottom
+    //             console.log('fixTop1:', res.bottom) //
+    //           })
+    //         }
+    //       })
+    //       .exec()
+    //   } else {
+    //     Taro.createSelectorQuery()
+    //       .select('#item-list-head')
+    //       .boundingClientRect((res) => {
+    //         console.log('boundingClientRect:', res) //
+    //         if (res) {
+    //           setState((draft) => {
+    //             draft.fixTop = res.bottom
+    //             console.log('fixTop2:', res.bottom) //
+    //           })
+    //         }
+    //       })
+    //       .exec()
+    //     // setState((draft) => {
+    //     //   draft.fixTop = document.getElementById('item-list-head').clientHeight
+    //     //   console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
+    //     // })
+    //   }
+    // }, 1000)
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -126,7 +145,13 @@ function ItemList(props) {
       params['category'] = cat_id
     }
 
-    params.distributor_id = getDistributorId()
+    if (main_cat_id) {
+      params['main_category'] = main_cat_id
+    }
+
+    if (VERSION_STANDARD) {
+      params.distributor_id = getDistributorId()
+    }
 
     const {
       list,
@@ -264,18 +289,18 @@ function ItemList(props) {
         'has-tagbar': tagList.length > 0
       })}
     >
-      <View id='item-list-head' className='item-list-head'>
-        <View className='search-wrap'>
-          <SpSearchBar
-            keyword={keywords}
-            placeholder='搜索'
-            onFocus={handleOnFocus}
-            onChange={handleOnChange}
-            onClear={handleOnClear}
-            onCancel={handleSearchOff}
-            onConfirm={handleConfirm}
-          />
-        </View>
+      <View className='search-wrap'>
+        <SpSearchBar
+          keyword={keywords}
+          placeholder='搜索'
+          onFocus={handleOnFocus}
+          onChange={handleOnChange}
+          onClear={handleOnClear}
+          onCancel={handleSearchOff}
+          onConfirm={handleConfirm}
+        />
+      </View>
+      <View className='item-list-head'>
         {tagList.length > 0 && (
           <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
             {/* <View
@@ -300,9 +325,9 @@ function ItemList(props) {
       </View>
       <SpScrollView
         className='item-list-scroll'
-        style={styleNames({
-          'margin-top': `${fixTop}px`
-        })}
+        // style={styleNames({
+        //   'margin-top': `${fixTop}px`
+        // })}
         ref={goodsRef}
         fetch={fetch}
       >

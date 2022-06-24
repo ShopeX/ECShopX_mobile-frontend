@@ -7,6 +7,7 @@ import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon } from '@/components'
 import { pickBy, showToast, classNames } from '@/utils'
+import S from '@/spx'
 import './comp-shopbrand.scss'
 
 const initialState = {
@@ -30,11 +31,16 @@ function CompShopBrand(props) {
       show_score: 1,
       show_marketing_activity: 1
     })
-    const { is_fav } = await api.member.storeIsFav(dtid)
+    let fav = false
+
+    if(S.getAuthToken()) {
+      const { is_fav } = await api.member.storeIsFav(dtid)
+      fav = is_fav
+    }
 
     setState((draft) => {
       draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
-      draft.fav = is_fav
+      draft.fav = fav
     })
   }
 

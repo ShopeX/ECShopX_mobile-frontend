@@ -369,3 +369,8 @@ export function getQRcode(params) {
 export function getMemberCard() {
   return req.get('/membercard/grades')
 }
+
+// 会员中心分享配置
+export function getMemberShareConfig() {
+  return req.get('/memberCenterShare/getInfo')
+}

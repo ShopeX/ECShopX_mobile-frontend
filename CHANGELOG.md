@@ -2,6 +2,39 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [2.10.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.9.0...v2.10.0) (2022-06-23)
+
+
+### Features
+
+* 2.10.0 ([7d7459c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7d7459c06bb9aca0424cc65a0562423934ba72a4))
+
+
+### Bug Fixes
+
+* bug修复 ([b7ea790](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b7ea790e719b0964865ed7b9724691e6d3c51046))
+* bug修复 ([a4a9eea](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a4a9eeada2a4d409b9db760f9b8c0c4025985d5b))
+* ECX-1892 ([8461caf](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/8461caff74a8d1b594aaa16ff0a4c3625633595b))
+* ECX-1902 ([defd5e2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/defd5e2995c84746597000bc1f19841fa1bf5bc3))
+* ECX-1907 ([fc0b783](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fc0b783284298b7a9e09f0106687bb9c6e618f7a))
+* ECX-1935 ([01a5349](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/01a5349fc8f3c37413386a44c04bb7248c4458dd))
+* ECX-1991 ([38617d3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/38617d35e1926ed248d9c678b9354127364ebba4))
+* ECX-2007 ([5ce008f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5ce008f460047e79e7596e977a7555ed3a56a62c))
+* ECX-2009 ([41e856c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/41e856c41da7adc0d4e2d882cc350bdc2d6695e1))
+* ECX-2176 ([9775165](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9775165895d4cc67fff7c2cc9acd13d4ffb80219))
+* ECX-2178 ([c6249aa](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c6249aa349d7db21b16a67bbb20af51d9972133d))
+* ECX-2178 ([e5e0fa9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e5e0fa94de9a0319e9fec551bbcd0e36f89e73c1))
+* ECX-2263 ([d3bb35b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d3bb35bf913350855e2e88f4738ec13213cbe601))
+* ECX-2264 ([c028774](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c0287742a88fedcf3ba89f81c225e0df11d93dd8))
+* ECX-2267 ECX-2268 ([98807c1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/98807c1e9cfd65131f14437f4bd5a098846fd192))
+* ECX-2286 ([0b23e4a](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0b23e4a8b8f54ef4598af4fc7829a8b8e23e0022))
+* ECX-2299 ([2785982](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/27859823b332bbe9f2ff0bb96dd48653cfcba5a2))
+* ios分页问题 ([8f08ca4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/8f08ca43a27ace037a5fa34a54c5b52b50175f3c))
+* 下单优化 ([1d0fca7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1d0fca797195bf30440d5d01879d9d17568b6011))
+* 会员等级 ([1a27018](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1a270181b0159e3d99977d26ff8702fa7ba834ed))
+* 店铺 ([3d43b04](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3d43b047e672898456da9e45fa51d76fa8060e32))
+* 组合商品价格问题 ([e86ccbb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e86ccbb228c7abff1c30fd7184aed6a764520dc2))
+
 ## [2.8.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v2.7.0...v2.8.0) (2022-05-26)
 
 

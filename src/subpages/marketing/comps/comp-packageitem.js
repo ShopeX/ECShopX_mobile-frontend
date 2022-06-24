@@ -16,7 +16,9 @@ const initialState = {
   skuInfo: null,
   curGoodsType: 0, // 0:主商品； 1:可选商品
   curMakeUpGoodsIndex: 0,
-  selection: new Set()
+  selection: new Set(),
+  main_package_price: null,
+  package_price: null
 }
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -30,7 +32,9 @@ function CompPackageItem(props) {
     skuInfo,
     selection,
     curGoodsType,
-    curMakeUpGoodsIndex
+    curMakeUpGoodsIndex,
+    main_package_price,
+    package_price
   } = state
 
   useEffect(() => {
@@ -54,12 +58,19 @@ function CompPackageItem(props) {
       itemLists,
       mainItem,
       main_package_price,
-      package_price: packagePrice
+      package_price
     } = await api.item.packageDetail(info.package_id)
-    console.log(pickBy(mainItem, doc.goods.GOODS_INFO))
+    console.log('packageDetail:', package_price)
     setState((draft) => {
       draft.mainGoods = pickBy(mainItem, doc.goods.GOODS_INFO)
+      itemLists.forEach(item => {
+        item.spec_items.forEach(spec => {
+          spec.price = package_price[spec.item_id].price
+        })
+      })
       draft.makeUpGoods = pickBy(itemLists, doc.goods.GOODS_INFO)
+      draft.main_package_price = main_package_price
+      draft.package_price = package_price
     })
   }
 
@@ -97,8 +108,12 @@ function CompPackageItem(props) {
       })
     } else {
       setState((draft) => {
+        console.log(package_price[curItem.itemId].price)
         draft.makeUpGoods[curMakeUpGoodsIndex].specText = specText
-        draft.makeUpGoods[curMakeUpGoodsIndex]['curItem'] = curItem
+        draft.makeUpGoods[curMakeUpGoodsIndex]['curItem'] = {
+          ...curItem,
+          price: package_price[curItem.itemId].price / 100
+        }
       })
     }
   }
@@ -116,7 +131,8 @@ function CompPackageItem(props) {
       // 已选择规格
       if (mainGoods.curItem) {
         itemId = mainGoods.curItem.itemId
-        packageTotalPrice += mainGoods.curItem.packagePrice
+        // packageTotalPrice += mainGoods.curItem.packagePrice
+        packageTotalPrice += main_package_price[itemId].price / 100
       }
     }
     makeUpGoods.forEach((goods) => {
@@ -128,7 +144,8 @@ function CompPackageItem(props) {
           // 已选择规格
           if (goods.curItem) {
             sitemIds.push(goods.curItem.itemId)
-            packageTotalPrice += goods.curItem.packagePrice
+            // packageTotalPrice += goods.curItem.packagePrice
+            packageTotalPrice += package_price[goods.curItem.itemId].price / 100
           } else {
             sitemIds.push(null)
           }
@@ -138,7 +155,7 @@ function CompPackageItem(props) {
     onChange && onChange({ itemId, sitemIds, packageTotalPrice })
   }
 
-  // console.log('mainGoods:', mainGoods)
+  console.log('makeUpGoods:', makeUpGoods)
   return (
     <View className='comp-packageitem'>
       <View className='main-goods'>主商品</View>

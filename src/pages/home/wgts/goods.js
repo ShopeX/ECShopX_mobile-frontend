@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImg, SpImage } from '@/components'
 import { connect } from 'react-redux'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import entry from '@/utils/entry'
-import { getDistributorId, VERSION_STANDARD } from '@/utils'
+import { getDistributorId, VERSION_STANDARD, classNames } from '@/utils'
 import api from '@/api'
 
 import './goods.scss'
@@ -199,7 +199,7 @@ export default class WgtGoods extends Component {
     const curContent = (data[curIdx] || {}).content
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={`wgt wgt-goods ${base.padded ? 'wgt__padded' : null}`}>
         {base.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>{base.title}</View>
@@ -207,50 +207,42 @@ export default class WgtGoods extends Component {
           </View>
         )}
         <View className='slider-wrap'>
-          {data.map((item) => {
-            return (
-              <View
-                className='goods-content'
-                key={item.item_id}
-                onClick={this.handleClickItem.bind(this, item)}
-              >
-                <View className='goods-content__info'>
-                  <View className='goods-content__info_img'>
-                    <SpImg
-                      img-class='img-style'
-                      src={item.img_url}
-                      mode='aspectFill'
-                      width='240'
-                      lazyLoad
-                    />
-                  </View>
-                  <View className='goods-content__info_text'>
-                    <Text>{item.item_name}</Text>
-                    <Text>{item.itemStatus ? '点击查看产品详情' : '该商品已下架'}</Text>
-                  </View>
-                </View>
-                <View className='goods-content__operate'>
-                  <View
-                    className={`goods-content__operate_btn ${
-                      item.itemStatus ? '' : 'disabled__operate'
-                    }`}
-                    onClick={this.handleClickOperate.bind(this, item, 'collect')}
-                  >
-                    {item.favStatus ? '移除心愿' : '加入心愿'}
-                  </View>
-                  <Text>|</Text>
-                  <View
-                    className={`goods-content__operate_btn ${
-                      item.itemStatus ? '' : 'disabled__operate'
-                    }`}
-                    onClick={this.handleClickOperate.bind(this, item, 'buy')}
-                  >
-                    加入购买
+          {data.map((item) => (
+            <View
+              className='goods'
+              key={item.item_id}
+              onClick={this.handleClickItem.bind(this, item)}
+            >
+              <View className='goods-info'>
+                <SpImage className='goods-img' src={item.img_url} />
+                <View className='goods-name'>
+                  <View className='name'>{item.item_name}</View>
+                  <View className='desc'>
+                    {item.itemStatus ? '点击查看产品详情' : '该商品已下架'}
                   </View>
                 </View>
               </View>
-            )
-          })}
+              <View className='goods-btns'>
+                <View
+                  className={classNames(`btn-text`, {
+                    'disabled': !item.itemStatus
+                  })}
+                  onClick={this.handleClickOperate.bind(this, item, 'collect')}
+                >
+                  {item.favStatus ? '移除心愿' : '加入心愿'}
+                </View>
+                <Text>|</Text>
+                <View
+                  className={classNames(`btn-text`, {
+                    'disabled': !item.itemStatus
+                  })}
+                  onClick={this.handleClickOperate.bind(this, item, 'buy')}
+                >
+                  加入购买
+                </View>
+              </View>
+            </View>
+          ))}
         </View>
       </View>
     )

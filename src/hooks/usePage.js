@@ -4,7 +4,7 @@ import { useAsyncCallback } from '@/hooks'
 import { useImmer } from 'use-immer'
 
 const initialState = {
-  loading: false,
+  loading: true,
   hasMore: true,
   pageIndex: 1,
   pageSize: 10,
@@ -38,6 +38,7 @@ export default (props) => {
       v.loading = true
     })
     const { total } = await fetch(page)
+    console.log('usePage total:', total)
     totalRef.current = total
     // console.log('excluteFetch:', total, page.pageSize, page.pageIndex)
     setPage((v) => {

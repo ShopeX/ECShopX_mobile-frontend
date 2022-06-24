@@ -7,8 +7,8 @@ import { useImmer } from 'use-immer'
 import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
-import { navigateTo, pickBy, classNames } from '@/utils'
-import { useLogin, useDepChange } from '@/hooks'
+import { navigateTo, pickBy, classNames, throttle } from '@/utils'
+import { useLogin, useDepChange, useDebounce } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
 import {
   SpPage,
@@ -206,12 +206,13 @@ function CartIndex() {
     getCartList()
   }
 
-  const onChangeCartGoodsItem = async (item, num) => {
+  const onChangeCartGoodsItem = useDebounce(async (item, num) => {
+    console.log(`onChangeCartGoodsItem:`, num)
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
     getCartList()
-  }
+  }, 200)
 
   const onClickImgAndTitle = async (item) => {
     Taro.navigateTo({

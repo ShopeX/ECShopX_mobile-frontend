@@ -124,16 +124,22 @@ class API {
     this.isRefreshingToken = false
     S.logout()
     setTimeout(() => {
-      const { path } = getCurrentInstance().router
+      console.log(getCurrentInstance().router)
+      const { path, params } = getCurrentInstance().router
+      delete params.$taroTimestamp
+      const fullPath = Object.keys(params).length > 0 ? `${path}?${qs.stringify(params)}` : path
       let url
       if (isMerchantModule()) {
         url = '/subpages/merchant/login'
       } else if (isGoodsShelves()) {
         url = '/subpages/guide/index'
       } else {
-        url = `/subpages/member/index${path != url ? `?redirect_url=${path}` : ''}`
+        url = `/subpages/member/index`
       }
-      getCurrentInstance().router.path !== url && Taro.redirectTo({ url })
+      if(path != url) {
+        url = url + `?redirect_url=${encodeURIComponent(fullPath)}`
+        Taro.redirectTo({ url })
+      }
     }, 300)
   }
 

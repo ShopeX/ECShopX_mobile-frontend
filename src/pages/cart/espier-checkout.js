@@ -125,7 +125,7 @@ function CartCheckout(props) {
       // tode 此处应有埋点
       return () => {
         dispatch(changeCoupon()) // 清空优惠券信息
-        dispatch(updateChooseAddress(null)) // 清空地址信息
+        // dispatch(updateChooseAddress(null)) // 清空地址信息
         dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
       }
     }
@@ -139,11 +139,17 @@ function CartCheckout(props) {
     }
   }, [isNewUser])
 
+  // useEffect(() => {
+  //   // if (!calc.current) {
+  //     calcOrder()
+  //   // }
+  // }, [address, coupon, payType, shop.zitiShop, point_use])
+
   useEffect(() => {
-    // if (!calc.current) {
+    if (receiptType && payType) {
       calcOrder()
-    // }
-  }, [address, coupon, payType, shop.zitiShop, point_use])
+    }
+  }, [address, payType, coupon, point_use])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
@@ -300,12 +306,15 @@ function CartCheckout(props) {
     setState((draft) => {
       draft.submitLoading = false
     })
-    
+
     // 储值支付 或者 积分抵扣
     if (payType === 'deposit' || params.pay_type == 'point') {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
     } else {
-      if (params.pay_type == 'wxpayjs' || (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)) {
+      if (
+        params.pay_type == 'wxpayjs' ||
+        (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+      ) {
         // 微信客户端code授权
         const loc = window.location
         // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
@@ -325,12 +334,18 @@ function CartCheckout(props) {
     }
   }
 
-  const handleSwitchExpress = ({ receipt_type, distributorInfo }) => {
+  const handleSwitchExpress = ({ receipt_type, distributor_info, address_info }) => {
+    console.log('xxxxxxx:', receipt_type)
+    // const _addressInfo = address_info || addressInfo
     // 切换配送模式
     setState((draft) => {
       draft.receiptType = receipt_type
-      draft.distributorInfo = distributorInfo
+      draft.distributorInfo = distributor_info
+      // draft.addressInfo = _addressInfo
     })
+    // if (address_info) {
+      dispatch(updateChooseAddress(address_info))
+    // }
   }
 
   const handleEditZitiClick = async (id) => {
@@ -410,7 +425,7 @@ function CartCheckout(props) {
         dtid || id
       }&source=${source}`
     })
-    dispatch(changeCoupon(couponInfo))
+    // dispatch(changeCoupon(couponInfo))
   }
 
   const handlePaymentShow = () => {
@@ -535,7 +550,7 @@ function CartCheckout(props) {
         subdistrict_id
       })
     }
-    console.log('subdistrictRes:', subdistrictRes)
+    // console.log('subdistrictRes:', subdistrictRes)
 
     if (coupon_info) {
       const info = {
@@ -595,7 +610,7 @@ function CartCheckout(props) {
     }
 
     Taro.hideLoading()
-    console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
+    // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info
@@ -830,7 +845,7 @@ function CartCheckout(props) {
         <CompDeliver
           distributor_id={dtid}
           address={address}
-          onChangReceiptType={handleSwitchExpress}
+          onChange={handleSwitchExpress}
           onEidtZiti={handleEditZitiClick}
         />
       </View>
@@ -962,7 +977,9 @@ function CartCheckout(props) {
                 {`${pointName}可用`}
               </Text>
             )}
-            <Text className='invoice-title'>{payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}</Text>
+            <Text className='invoice-title'>
+              {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+            </Text>
           </SpCell>
           {totalInfo.deduction && (
             <View>
@@ -999,7 +1016,6 @@ function CartCheckout(props) {
               <SpPrice unit='cent' primary value={0 - totalInfo.point_fee} />
             </SpCell>
           )}
-        
       </View>
 
       <CompPointUse

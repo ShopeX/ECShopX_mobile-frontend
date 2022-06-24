@@ -16,6 +16,7 @@ const initialState = {
   rgb: '',
   pointName: DEFAULT_POINT_NAME,
   pageTitle: '',
+  appName: '',
   tabbar: {
     config: {
       backgroundColor: '#fff',

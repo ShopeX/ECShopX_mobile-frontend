@@ -27,7 +27,9 @@ function SpScrollView(props, ref) {
     pageSize
   })
   const wrapRef = useRef(null)
+  const scrollViewRef = useRef(null)
   const [loading, setLoading] = useState()
+  const vid = new Date().getTime()
   useEffect(() => {
     let observer = null
     if (isWeixin) {
@@ -36,6 +38,7 @@ function SpScrollView(props, ref) {
       })
       setTimeout(() => {
         observer.relativeToViewport({ bottom: 0 }).observe('.scrollview-bottom', (res) => {
+          console.log('isIntersecting:', res)
           if (res.intersectionRatio > 0) {
             if (page.hasMore && !page.loading) {
               nextPage()
@@ -49,6 +52,7 @@ function SpScrollView(props, ref) {
       observer = new IntersectionObserver(
         (res) => {
           const { isIntersecting } = res[0]
+          console.log('isIntersecting:', isIntersecting)
           if (isIntersecting) {
             if (page.hasMore && !page.loading) {
               nextPage()
@@ -60,7 +64,8 @@ function SpScrollView(props, ref) {
           // threshold: [0, 0.8]
         }
       )
-      observer.observe(document.querySelector('.scrollview-bottom'))
+      // observer.observe(document.querySelector('.scrollview-bottom'))
+      observer.observe(document.querySelector(`.scrollview-${vid}`))
       // this.observe = observer;
       // observer = new IntersectionObserver((entries, observer) => {
       //   entries.forEach((entry) => {
@@ -109,7 +114,7 @@ function SpScrollView(props, ref) {
       {!page.loading && !page.hasMore && getTotal() > 0 && (
         <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
       )}
-      <View className='scrollview-bottom'></View>
+      <View className={classNames('scrollview-bottom', `scrollview-${vid}`)} ></View>
     </View>
   )
 }

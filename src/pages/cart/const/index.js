@@ -5,7 +5,7 @@ export const initialState = {
   submitLoading: false,
   btnIsDisabled: false,
   addressList: [],
-  receiptType: 'logistics', // 收货方式：ziti自提  logistics快递
+  receiptType: '', // 收货方式：ziti自提  logistics快递
   defalutPaytype: isWxWeb ? 'wxpayjs' : isWeb ? 'wxpayh5' : 'wxpay', // 默认支付方式
   payType: '', // wxpay 微信支付 point 积分支付 deposit 储值支付
   payChannel: '', // 支付渠道
@@ -19,7 +19,7 @@ export const initialState = {
     promotion_discount: 0, // 促销
     discount_fee: 0,
     item_fee: '', // 商品金额
-    freight_fee: '', // 运费
+    freight_fee: 0, // 运费
     member_discount: '', // 会员折扣
     coupon_discount: '', // 优惠券折扣
     point: '', // 积分

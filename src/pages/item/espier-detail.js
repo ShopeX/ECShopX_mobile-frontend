@@ -476,6 +476,7 @@ function EspierDetail(props) {
                 <View className='brief'>{info.brief}</View>
               </View>
               {(isWeixin || isAPP()) && (
+                <View className='btn-share-wrap'>
                 <SpLogin
                   onChange={async () => {
                     if (isAPP()) {
@@ -493,6 +494,7 @@ function EspierDetail(props) {
                     <Text className='share-txt'>分享</Text>
                   </View>
                 </SpLogin>
+                </View>
               )}
             </View>
           </View>
@@ -522,7 +524,7 @@ function EspierDetail(props) {
                 title='组合优惠'
                 isLink
                 onClick={() => {
-                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}` })
+                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}` })
                   // setState((draft) => {
                   //   draft.packageOpen = true
                   // })

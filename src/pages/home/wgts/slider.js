@@ -16,6 +16,7 @@ export default class WgtSlider extends Component {
     super(props)
 
     this.state = {
+      currentDot: 0,
       curIdx: 0,
       index: 0
     }
@@ -27,7 +28,14 @@ export default class WgtSlider extends Component {
 
   handleClickItem = linkPage
 
-  handleSwiperChange(e) {
+  dotChange(e) {
+    const { current } = e.detail
+    this.setState({
+      currentDot: current
+    })
+  }
+
+  swiperChange = (e) => {
     const { current } = e.detail
     this.setState({
       curIdx: current
@@ -36,7 +44,7 @@ export default class WgtSlider extends Component {
 
   render() {
     const { info } = this.props
-    const { curIdx, index } = this.state
+    const { curIdx, index, currentDot } = this.state
     if (!info) {
       return null
     }
@@ -56,10 +64,19 @@ export default class WgtSlider extends Component {
             </View>
           </View>
         )}
-        {config ? (
-          <View className='slider-wrap'>
+        {config && (
+          <View
+            className={classNames('slider-swiper-wrap', {
+              'padded': config.padded
+            })}
+          >
             {data[0] && (
-              <Image mode='widthFix' className='scale-placeholder' lazyLoad src={data[0].imgUrl} />
+              <SpImage
+                className={classNames('placeholder-img', {
+                  'rounded': config.rounded
+                })}
+                src={data[0].imgUrl}
+              />
             )}
             <Swiper
               className='slider-img'
@@ -68,67 +85,54 @@ export default class WgtSlider extends Component {
               current={curIdx}
               interval={config.interval}
               duration={300}
-              onChange={this.handleSwiperChange.bind(this)}
+              onChange={this.dotChange.bind(this)}
+              onAnimationFinish={this.swiperChange.bind(this)}
             >
               {data.map((item, idx) => {
                 return (
-                  <SwiperItem
-                    key={`${idx}1`}
-                    className={`slider-item ${config.rounded ? 'rounded' : null}`}
-                  >
+                  <SwiperItem key={`slider-item__${idx}`} className='slider-item'>
                     <View
                       // style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
-                      className='wrapper-img'
+                      className={classNames('wrapper-img', {
+                        'rounded': config.rounded
+                      })}
                       onClick={this.handleClickItem.bind(this, item)}
                     >
-                      <SpImage
-                        img-class='slider-item__img'
-                        src={item.imgUrl}
-                        mode='widthFix'
-                        width='718'
-                        height='100%'
-                        lazyLoad
-                      />
+                      <SpImage src={item.imgUrl} lazyLoad />
                     </View>
                   </SwiperItem>
                 )
               })}
             </Swiper>
-
-            {data.length > 1 && config.dot && (
-              <View
-                className={classNames(
-                  'slider-dot',
-                  { 'dot-size-switch': config.animation },
-                  config.dotLocation,
-                  config.dotCover ? 'cover' : 'no-cover',
-                  config.dotColor,
-                  config.shape
-                )}
-              >
-                {data.map((dot, dotIdx) => (
-                  <View
-                    className={classNames('dot', { active: curIdx === dotIdx })}
-                    key={`${dotIdx}1`}
-                  ></View>
-                ))}
-              </View>
+          </View>
+        )}
+        {data.length > 1 && (
+          <View
+            className={classNames(
+              'slider-pagination',
+              config.dotLocation,
+              config.shape,
+              config.dotColor,
+              {
+                'cover': !config.dotCover
+              }
             )}
+          >
+            {config.dot &&
+              data.map((dot, dotIdx) => (
+                <View
+                  className={classNames('dot-item', { active: currentDot === dotIdx })}
+                  key={`dot-item__${dotIdx}`}
+                ></View>
+              ))}
 
-            {data.length > 1 && !config.dot && (
-              <View
-                className={classNames(
-                  'slider-count',
-                  config.dotLocation,
-                  config.shape,
-                  config.dotColor
-                )}
-              >
-                {curIdx + 1}/{data.length}
+            {!config.dot && (
+              <View className='pagination-count'>
+                {currentDot + 1}/{data.length}
               </View>
             )}
           </View>
-        ) : null}
+        )}
         {config.content && curContent && <View className='slider-caption'>{curContent}</View>}
       </View>
     )

@@ -15,7 +15,7 @@ function WgtHomeHeaderShop(props) {
 
   const handlePickStore = () => {
     Taro.navigateTo({
-      url: '/pages/store/list'
+      url: '/subpages/store/list'
     })
   }
 

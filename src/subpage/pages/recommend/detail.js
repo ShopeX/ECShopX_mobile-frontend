@@ -5,7 +5,7 @@ import api from '@/api'
 import { withPager } from '@/hocs'
 import { FloatMenus, FloatMenuItem, SpNavBar } from '@/components'
 import { connect } from 'react-redux'
-import { formatTime, buriedPoint } from '@/utils'
+import { formatTime, buriedPoint, log } from '@/utils'
 import S from '@/spx'
 // import { Tracker } from '@/service'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
@@ -53,10 +53,11 @@ export default class recommendDetail extends Component {
     const { info } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
-
+    const path = `/subpage/pages/recommend/detail?id=${info.article_id}${query}`
+    log.debug(`onShareAppMessage: ${path}`)
     return {
       title: info.title,
-      path: `/subpage/pages/recommend/detail?id=${info.article_id}${query}`,
+      path,
       imageUrl: info.share_image_url || info.image_url
     }
   }
@@ -65,6 +66,7 @@ export default class recommendDetail extends Component {
     const { info } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `&uid=${userId}` : ''
+    log.debug(`onShareTimeline: ${query}`)
     return {
       title: info.title,
       query: `id=${info.article_id}${query}`,
@@ -75,6 +77,7 @@ export default class recommendDetail extends Component {
   // 确认本人文章是否已收藏
   confirmCollectArticle = async () => {
     const { id } = this.$instance.router.params
+    console.log('this.$instance.router:', this.$instance.router)
     if (S.getAuthToken()) {
       const res = await api.article.collectArticleInfo({ article_id: id })
       if (res.length === 0) {
@@ -102,7 +105,7 @@ export default class recommendDetail extends Component {
 
   async fetchContent () {
     const { id } = this.$instance.router.params
-
+    console.log('this.$instance.router:', this.$instance.router)
     // 关注数加1
     const resFocus = await api.article.focus(id)
 
