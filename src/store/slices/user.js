@@ -39,12 +39,13 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateUserInfo: (state, { payload }) => {
-      const { deposit, memberInfo, cardInfo, vipgrade, is_open_popularize, is_promoter, favs } =
+      const { deposit, memberInfo, cardInfo, vipgrade, is_open_popularize, is_promoter, favs, is_staff } =
         payload
       state.userInfo = {
         ...memberInfo,
         popularize: is_open_popularize,
         isPromoter: is_promoter,
+        isStaff: is_staff,
         deposit: deposit / 100 // 储值余额
       }
       state.cardInfo = cardInfo

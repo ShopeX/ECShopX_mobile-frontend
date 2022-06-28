@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '会员中心'
+  navigationBarTitleText: '订单结算'
 }

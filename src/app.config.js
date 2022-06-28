@@ -35,7 +35,10 @@ export default {
     {
       root: 'subpages/purchase', 
       pages: [
+        'member',
         'espier-detail',
+        'espier-checkout',
+        'index' // 家属分享
       ]
     },
     // 导购货架 guide
@@ -196,8 +199,7 @@ export default {
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
         'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-        'pages/member/qrcode',
-        'pages/member/purchase' //员工内购
+        'pages/member/qrcode'
       ]
     },
     {
@@ -307,10 +309,10 @@ export default {
     'navigationBarTitleText': '小程序',
     'navigationBarTextStyle': 'black'
   },
-  plugins: {
-    'live-player-plugin': {
-      'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
-      'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
-    }
-  }
+  // plugins: {
+  //   'live-player-plugin': {
+  //     'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+  //     'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+  //   }
+  // }
 }

@@ -96,6 +96,7 @@ export const ITEM_LIST_GOODS = {
 
 export const GOODS_INFO = {
   itemId: 'item_id',
+  itemBn: 'item_bn',
   itemName: 'itemName',
   brief: 'brief',
   img: 'pics[0]',

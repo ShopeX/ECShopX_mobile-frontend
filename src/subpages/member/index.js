@@ -7,7 +7,7 @@ import Taro, {
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { updateUserInfo, fetchUserFavs, updateCheckChief } from '@/store/slices/user'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_SHARE_CODE, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
+import { SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 
@@ -115,17 +115,12 @@ function MemberIndex(props) {
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
-  const $instance = getCurrentInstance()
-  const code = $instance.router.params.code
-  code && Taro.setStorageSync(SG_SHARE_CODE, code)
   const dispatch = useDispatch()
 
   useEffect(() => {
     if (isLogin) {
       getMemberCenterData()
       setMemberBackground()
-      const storageCode = Taro.getStorageSync(SG_SHARE_CODE)
-      storageCode && getCode(storageCode)
       const { redirect } = $instance.router.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
@@ -167,15 +162,6 @@ function MemberIndex(props) {
       path: '/pages/index'
     }
   })
-
-  const getCode = async (storageCode) => {
-    try {
-      await api.purchase.purchaseBind({ code: storageCode })
-      Taro.removeStorageSync(SG_SHARE_CODE)
-    } catch (error) {
-      Taro.removeStorageSync(SG_SHARE_CODE)
-    }
-  }
 
   const setHeaderBlock = async () => {
     const resAssets = await api.member.memberAssets()

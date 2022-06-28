@@ -1,0 +1,48 @@
+.comp-vipguide {
+  margin-top: 32px;
+  background-color: rgba(var(--color-rgb), 0.2);
+  padding: 19px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .btn-join {
+    width: 174px;
+    height: 60px;
+    border-radius: 30px;
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    color: var(--color-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .icon-qianwang-011 {
+    font-size: 28px;
+  }
+  .vip-value {
+    display: flex;
+    align-items: center;
+  }
+  .vip-desc {
+    color: var(--color-primary);
+    font-size: 24px;
+  }
+
+  .vip-zhekou {
+    color: var(--color-primary);
+    font-size: 28px;
+    font-weight: bold;
+  }
+
+  .vip-label {
+    height: 46px;
+    line-height: 46px;
+    background: var(--color-primary);
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    margin-right: 16px;
+    padding: 0 10px;
+  }
+}

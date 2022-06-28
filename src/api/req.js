@@ -7,7 +7,8 @@ import {
   isWeb,
   isMerchantModule,
   isGoodsShelves,
-  getExtConfigData
+  getExtConfigData,
+  VERSION_IN_PURCHASE
 } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
@@ -133,6 +134,8 @@ class API {
         url = '/subpages/merchant/login'
       } else if (isGoodsShelves()) {
         url = '/subpages/guide/index'
+      } else if (VERSION_IN_PURCHASE){
+        url = `/subpages/purchase/member`
       } else {
         url = `/subpages/member/index`
       }

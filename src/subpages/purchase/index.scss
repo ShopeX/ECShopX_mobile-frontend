@@ -1,195 +1,173 @@
-.pages-member-index {
-  padding-bottom: $tabbar-height;
+.page-purchase-index {
   .header-block {
     background-size: 100% 100%;
     background-repeat: no-repeat;
+    padding-bottom: 20px;
+    box-sizing: border-box;
   }
+
   .usericon {
     border: 4px solid #fff;
     width: 110px;
     height: 110px;
-    border-radius: 50px;
+    border-radius: 10px;
     margin-right: 20px;
     overflow: hidden;
   }
-  .icon-style {
-    width: 70px;
-    height: 70px;
-  }
+
   .header-hd {
-    padding: 32px;
+    padding: 30px 30px 40px 30px;
     display: flex;
     align-items: center;
+    box-sizing: border-box;
+
     &__body {
       line-height: 40px;
       width: 80%;
-      /*  #ifdef  h5  */
-      margin-top: 20px;
-      /*  #endif  */
     }
+
     .username-wrap {
       display: flex;
       justify-content: space-between;
+      height: 110px;
+
+      .left-wrap {
+        flex: 1;
+        padding: 10px 0;
+        box-sizing: border-box;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .shareBtn {
+        margin: 0;
+        background: rgb(240, 112, 47);
+        font-size: 24px;
+        color: #fff;
+        padding: 0;
+        width: 80px;
+        height: 50px;
+
+        &::after {
+          content: none;
+        }
+      }
+
+      .shareBtn[disabled] {
+        background: rgba(240, 112, 47, 0.5) !important;
+      }
     }
+
     .username {
-      font-size: 32px;
+      font-size: 28px;
       color: #222;
       width: 90%;
       font-weight: bold;
       @include multi-ellipsis(1);
     }
-    .gradename {
-      display: inline-block;
-      position: relative;
-      // padding: 0 20px;
-      z-index: 1;
+
+    .userRole {
       font-size: 24px;
-      text-align: center;
-      color: #777;
-      // background: linear-gradient(to right bottom, #fca280, #e75fa9);
-      // border-radius: 50px;
     }
+
     .icon-erweima-01 {
       color: var(--color-primary);
       font-size: 38px;
     }
+
     .join-us-txt {
       color: var(--color-primary);
       font-size: 28px;
     }
   }
+
   .header-bd {
     display: flex;
     align-items: center;
     justify-content: center;
+
     .bd-item {
       flex: 1;
       text-align: center;
     }
-    .deposit-item {
-      .sp-price__int {
-        font-size: 36px;
-      }
+
+    .border-item {
+      border-left: 2px solid #fff;
+      border-right: 2px solid #fff;
     }
+
     .bd-item-label {
-      color: #666;
-      font-size: 24px;
+      color: #333;
+      font-size: 28px;
+      font-weight: bold;
     }
+
     .bd-item-value {
       color: #333;
-      font-size: 36px;
-    }
-  }
-  .header-ft {
-    height: 110px;
-  }
-
-  .body-block {
-    padding: 24px 16px;
-    .comp-panel {
-      margin-bottom: 24px;
-    }
-  }
-  .ziti-order {
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    padding: 20px 16px;
-    margin-bottom: 24px;
-    &-info {
-      flex: 1;
-    }
-    .icon-qianwang-01 {
-      font-size: 24px;
-      color: #aaa;
-    }
-    .title {
-      font-size: 30px;
-      color: #444;
-      font-weight: bold;
-    }
-    .ziti-txt {
-      font-size: 24px;
-      color: #444;
-    }
-    .ziti-num {
-      color: #da760c;
-    }
-  }
-  .order-con {
-    display: flex;
-    .order-item {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      padding: 0px !important;
-    }
-    .order-bradge {
-      position: absolute;
-      top: -6px;
-      right: 45px;
-      font-size: 20px;
-      display: block;
-      border: 3px solid #fff;
-      border-radius: 20px 20px 20px 0px;
-      color: #fff;
-      padding: 3px 10px;
-      min-width: 16px;
-      line-height: 1.2;
-      box-sizing: content-box;
-      background-color: var(--color-primary);
-      text-align: center;
-    }
-    .order-txt {
-      font-size: 24px;
-      color: #222;
+      font-size: 28px;
     }
   }
 
-  .service-block {
-    background: #fff;
-    box-shadow: 0px 2px 10px 0px rgba(234, 231, 224, 1);
-    margin: 0 16px 24px;
-    .block-hd {
-      color: #333;
-      font-size: 36px;
-      font-weight: bold;
-      padding: 36px 25px;
-    }
-  }
-
-  .btn-share {
-    border-width: 0;
-    height: inherit;
-    line-height: inherit;
-    padding: 0;
-    width: fit-content;
-    background-color: transparent;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    &:after {
-      border-width: 0;
-    }
-  }
-
-  .dibiao-block {
+  .line-wrap {
     display: flex;
     justify-content: center;
-    margin-bottom: 40px;
-    .dibiao-image {
-      width: 320px;
+    align-items: center;
+    width: 100%;
+    height: 100px;
+
+    .line {
+      width: 120px;
+      height: 4px;
+      background: #dadada;
     }
-    // .sp-image-img {
-    //   height: 40px;
-    // }
-    // /*  #ifdef  h5  */
-    // img {
-    //   height: 40px;
-    // }
-    // /*  #endif  */
+
+    .line-title {
+      margin: 0 30px;
+    }
+  }
+
+  .list-wrap {
+    .list-item {
+      margin: 10px;
+      padding: 15px 20px;
+      box-sizing: border-box;
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 10px;
+
+      &-center {
+        flex: 1;
+        padding-left: 15px;
+      }
+
+      &-img {
+        width: 75px;
+        height: 75px;
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      &-name {
+        font-size: 26px;
+        font-weight: bold;
+      }
+
+      &-date {
+        font-size: 24px;
+        color: #ccc;
+      }
+
+      &-count {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+  }
+
+  .centerText {
+    text-align: center;
   }
 }

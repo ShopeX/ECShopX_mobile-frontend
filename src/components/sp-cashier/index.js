@@ -6,7 +6,7 @@ import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpFloatLayout, SpCheckbox } from '@/components'
 import api from '@/api'
-import { isWxWeb, getDistributorId, isAPP, pickBy } from '@/utils'
+import { isWxWeb, getDistributorId, isAPP, pickBy, VERSION_IN_PURCHASE } from '@/utils'
 import doc from '@/doc'
 import { payment_platform } from '@/utils/platform'
 import './index.scss'
@@ -60,11 +60,16 @@ function SpCashier(props) {
       platform: isWxWeb ? 'wxPlatform' : payment_platform
     }
     const res = await api.member.getTradePaymentList(params)
-    const list = [...pickBy(res, doc.payment.PAYMENT_ITEM), ...paymentList]
+    const list = pickBy(res, doc.payment.PAYMENT_ITEM)
+    if(!VERSION_IN_PURCHASE) {
+      list.concat(paymentList)
+    }
     setState((draft) => {
       draft.list = list
     })
     onChange(list[0])
+    onChangePayment(list[0])
+
     // console.log('===list===', list)
     // const isHasAlipay = list.some((item) => item.pay_type_code === 'alipayh5')
     // return {
@@ -76,11 +81,15 @@ function SpCashier(props) {
   const fetchAppPaymentList = async () => {
     const res = await Taro.SAPPPay.getPayList()
     console.log('fetchAppPaymentList:', res)
-    const list = [...pickBy(res, doc.payment.APP_PAYMENT_ITEM), ...paymentList]
+    const list = pickBy(res, doc.payment.APP_PAYMENT_ITEM)
+    if(!VERSION_IN_PURCHASE) {
+      list.concat(paymentList)
+    }
     setState((draft) => {
       draft.list = list
     })
     onChange(list[0])
+    onChangePayment(list[0])
   }
 
   const onChangePayment = (item) => {

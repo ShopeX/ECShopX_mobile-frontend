@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
-import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_SHARE_CODE, SG_ROUTER_PARAMS } from '@/consts'
+import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
@@ -49,10 +49,12 @@ function SpLogin(props) {
         user_type: 'wechat',
         auth_type: 'wxapp'
       }
-      if (Taro.getStorageSync(SG_SHARE_CODE)) {
+      // 内购分享码
+      const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+      if (purchaseCode) {
         params = {
           ...params,
-          purchanse_share_code: Taro.getStorageSync(SG_SHARE_CODE)
+          purchanse_share_code: purchaseCode
         }
       }
       Taro.showLoading()

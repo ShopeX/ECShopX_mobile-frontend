@@ -1,0 +1,30 @@
+.comp-panel {
+  background: #fff;
+  &-hd {
+    padding: 36px 24px 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  &-bd {
+    padding: 24px;
+  }
+  .panel-title {
+    color: #222;
+    font-size: 36px;
+    font-weight: bold;
+  }
+  .panel-extra {
+    display: flex;
+    align-items: center;
+    .iconfont {
+      font-size: 20px;
+      color: #aaa;
+      position: relative;
+      top: 2px;
+    }
+  }
+  .extra {
+    font-size: 24px;
+    color: #aaa;
+  }
+}

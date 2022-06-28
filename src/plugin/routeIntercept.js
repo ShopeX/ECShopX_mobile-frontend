@@ -6,7 +6,9 @@ class RouteIntercept {
     this.app_platform = process.env.APP_PLATFORM
     this.routes = {
       'in_purchase': {
-        '/pages/item/espier-detail': '/subpages/purchase/espier-detail'
+        '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout',
+        '/subpages/member/index': '/subpages/purchase/member'
       }
     }
   }
