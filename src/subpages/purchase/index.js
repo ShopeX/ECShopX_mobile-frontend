@@ -91,7 +91,7 @@ export default class PurchaseIndex extends Component {
           </View>
           <View className="share-info">
             <View className="title">邀请码</View>
-            <View className='limitnum'>{`共计：10；已使用：${info.surplus_share_limitnum}；可分享：${info.surplus_share_limitnum}`}</View>
+            <View className='limitnum'>{`共计：${info.dependents_limit}；已使用：${info.dependents_limit - info.surplus_share_limitnum}；可分享：${info.surplus_share_limitnum}`}</View>
           </View>
           <View className='header-bd'>
             <View className='bd-item'>
