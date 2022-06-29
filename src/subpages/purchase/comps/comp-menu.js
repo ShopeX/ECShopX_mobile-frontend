@@ -58,8 +58,8 @@ function CompMenu(props) {
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
 
-  if (userInfo?.isStaff) {
-    MENUS.push({
+  if (userInfo?.is_employee) {
+    menus.push({
       key: 'purchase',
       name: '分享家属',
       icon: 'm_menu_jiatingfengxiang.png',

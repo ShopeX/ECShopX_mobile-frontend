@@ -67,8 +67,14 @@ export default class PurchaseIndex extends Component {
               <View className='username-wrap'>
                 <View className='left-wrap'>
                   <View className='username'>{info.username}</View>
-                  <View className='userRole'>{info.user_type === 'dependents' && '家属'}</View>
-                  <View className='userRole'>{info.user_type === 'employee' && '员工'}</View>
+                  <View className='userRole'>
+                    {
+                      {
+                        'dependents': '家属',
+                        'employee': '员工'
+                      }[info.user_type]
+                    }
+                  </View>
                 </View>
                 {info.user_type === 'employee' && (
                   <Button
@@ -82,6 +88,10 @@ export default class PurchaseIndex extends Component {
                 )}
               </View>
             </View>
+          </View>
+          <View className="share-info">
+            <View className="title">邀请码</View>
+            <View className='limitnum'>{`共计：10；已使用：${info.surplus_share_limitnum}；可分享：${info.surplus_share_limitnum}`}</View>
           </View>
           <View className='header-bd'>
             <View className='bd-item'>

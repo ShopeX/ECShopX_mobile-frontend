@@ -379,7 +379,7 @@ function MemberIndex(props) {
             {
               true: '员工',
               false: '员工家属'
-            }[userInfo?.isStaff]
+            }[userInfo?.is_employee]
           }
         </View>
       )
