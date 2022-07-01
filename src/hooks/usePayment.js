@@ -185,7 +185,7 @@ export default (props = {}) => {
   const adapayH5Pay = async (params, orderInfo) => {
     const { order_id, orderType = 'normal' } = orderInfo
     const { openlink } = await api.cashier.getWeappUrlSchema({
-      path: '/pages/index',
+      path: '/pages/cart/cashier-weapp',
       query: {
         // params: JSON.stringify(params),
         // orderInfo: JSON.stringify(orderInfo)

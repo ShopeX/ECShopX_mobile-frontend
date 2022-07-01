@@ -10,7 +10,8 @@ const APP_ENVS = getEnvs()
 
 // 是否为生产模式
 const IS_PROD = process.env.NODE_ENV === 'production'
-const BUILD_TARGET = IS_PROD ? process.env.target : process.env.npm_config_target
+const BUILD_TARGET = process.env.TARGET
+const BUILD_APP_SERVER = process.env.SERVER
 
 const CONST_ENVS = {
   APP_NAME: pkg.app_name,
@@ -27,6 +28,8 @@ Object.keys(CONST_ENVS).forEach(key => {
 
 // 是否打包APP
 const IS_APP = BUILD_TARGET === 'app'
+// 是否打包成APP服务
+const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
 if (process.env.TARO_ENV != 'h5') {
@@ -99,13 +102,13 @@ const config = {
 
   h5: {
     // publicPath: IS_PROD ? './' : '/',
-    publicPath: '/',
-    // publicPath: (IS_APP && IS_PROD) ? './' : '/',
+    // publicPath: '/',
+    publicPath: (IS_APP && IS_PROD && !IS_APP_SERVER) ? './' : '/',
     // publicPath: process.env.APP_PUBLIC_PATH || '/',
     staticDirectory: 'static',
     router: {
-      // mode: IS_APP ? "hash" : "browser"
-      mode: "browser"
+      mode: IS_APP ? "hash" : "browser"
+      // mode: "browser"
     },
     devServer: {
       // https: true,

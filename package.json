@@ -12,7 +12,8 @@
     "build:tt": "taro build --type tt",
     "build:h5": "taro build --type h5",
     "build:rn": "taro build --type rn",
-    "build:app": "taro build --type h5 --target=app",
+    "build:app": "TARGET=app taro build --type h5",
+    "build:app:server": "TARGET=app SERVER=server taro build --type h5",
     "dev:weapp": "npm run build:weapp -- --watch",
     "dev:weapp:modules": "TARO_MODULES=true npm run build:weapp -- --watch",
     "dev:weapp:prd": "cross-env BUILD_ENV=prd npm run build:weapp -- --watch",
@@ -20,7 +21,7 @@
     "dev:alipay": "npm run build:alipay -- --watch",
     "dev:tt": "npm run build:tt -- --watch",
     "dev:h5": "npm run build:h5 -- --watch",
-    "dev:app": "npm run build:h5 --target=app -- --watch",
+    "dev:app": "TARGET=app npm run build:h5 -- --watch",
     "dev:rn": "npm run build:rn -- --watch",
     "release:h5": "RELEASE=h5 npm run build:h5",
     "lint": "prettier-eslint 'src/**/*.{js,jsx}' --write"
