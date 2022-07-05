@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtInput, AtTextarea, AtImagePicker, AtButton } from 'taro-ui'
+import { SpPage } from '@/components'
 import imgUploader from '@/utils/upload'
 import S from '@/spx'
 import api from '@/api'
@@ -93,7 +94,7 @@ export default class DistributionShopForm extends Component {
     const { info, imgs } = this.state
 
     return (
-      <View className='page-distribution-shop-form'>
+      <SpPage className='page-distribution-shop-form'>
         <View className='shop-form'>
           {info.key == 'shop_name' && (
             <AtInput
@@ -134,7 +135,7 @@ export default class DistributionShopForm extends Component {
             </AtButton>
           </View>
         </View>
-      </View>
+      </SpPage>
     )
   }
 }

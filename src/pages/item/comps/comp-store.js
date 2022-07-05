@@ -7,6 +7,7 @@ import { AtButton } from 'taro-ui'
 import { SpImage } from '@/components'
 import api from '@/api'
 import { isArray, classNames } from '@/utils'
+import S from '@/spx'
 import './comp-store.scss'
 
 const initialState = {
@@ -32,7 +33,9 @@ function CompStore(props) {
   }
 
   useEffect(() => {
-    fetch()
+    if (S.getAuthToken()) {
+      fetch()
+    }
   }, [])
 
   // 关注店铺
