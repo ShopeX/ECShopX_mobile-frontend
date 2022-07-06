@@ -159,7 +159,7 @@ export const PAYMENT_TYPE = {
 export const TRANSFORM_PAYTYPE = {
   'wxpayh5': 'wxpayh5',
   'alipayh5': 'alipay',
-  'wxpayjs': 'wxpay',
+  'wxpayjs': 'wxpayjs',
   'deposit': 'deposit',
   'wxpayapp': 'wxpay',
   'alipayapp': 'alipay',
