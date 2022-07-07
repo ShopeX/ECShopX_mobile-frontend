@@ -142,7 +142,7 @@ export default class SettingIndex extends Component {
             isLink
             onClick={this.handleClickWxOAuth.bind(this, '/marketing/pages/member/address', true)}
           ></SpCell>
-          {S.getAuthToken() && !VERSION_IN_PURCHASE && (
+          {S.getAuthToken() && (
             <View className='btn'>
               {isWeb && (
                 <Button
