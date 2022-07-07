@@ -143,7 +143,13 @@ function MemberIndex(props) {
   })
 
   const fetchPurchase = async () => {
+    // 内购分享码
+    const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
     const data = await api.purchase.purchaseInfo()
+    if(purchaseCode) {
+      await api.purchase.purchaseBind({ code: purchaseCode })
+    }
+
     setState((draft) => {
       draft.purchaseInfo = data
     })
@@ -301,16 +307,6 @@ function MemberIndex(props) {
   const handleClickLink = async (link) => {
     await getUserInfoAuth()
     Taro.navigateTo({ url: link })
-  }
-
-  const handleClickPoint = () => {
-    const { pointAppId, pointPage, pointUrlIsOpen } = config
-    if (pointUrlIsOpen) {
-      Taro.navigateToMiniProgram({
-        appId: pointAppId,
-        path: pointPage
-      })
-    }
   }
 
   const handleClickService = async (item) => {
