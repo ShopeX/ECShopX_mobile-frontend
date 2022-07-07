@@ -24,6 +24,12 @@ const MENUS = [
   //   icon: 'm_menu_soucang.png',
   //   link: '/pages/member/item-fav'
   // }
+  {
+    key: 'purchase',
+    name: '分享家属',
+    icon: 'm_menu_jiatingfengxiang.png',
+    link: '/subpages/purchase/index'
+  }
 ]
 
 // const MENUS_OFFLINE = [
@@ -59,16 +65,16 @@ function CompMenu(props) {
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
 
-  if (userInfo?.is_employee) {
-    menus.push({
-      key: 'purchase',
-      name: '分享家属',
-      icon: 'm_menu_jiatingfengxiang.png',
-      link: '/subpages/purchase/index'
-    })
-  }
+  // if (userInfo?.is_employee) {
+  //   menus.push({
+  //     key: 'purchase',
+  //     name: '分享家属',
+  //     icon: 'm_menu_jiatingfengxiang.png',
+  //     link: '/subpages/purchase/index'
+  //   })
+  // }
 
-  if(menus.length == 0) {
+  if (menus.length == 0) {
     return null
   }
 

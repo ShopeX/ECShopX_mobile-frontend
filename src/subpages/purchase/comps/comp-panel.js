@@ -9,7 +9,6 @@ function CompPanel (props) {
   // if(!children) {
   //   return null
   // }
-  console.log('children:', children)
   return (
     <View
       className={classNames(

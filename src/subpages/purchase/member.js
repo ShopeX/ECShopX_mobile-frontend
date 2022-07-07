@@ -358,7 +358,7 @@ function MemberIndex(props) {
           {
             {
               true: '员工',
-              false: '员工家属'
+              false: '员工亲友'
             }[userInfo?.is_employee]
           }
         </View>
@@ -503,6 +503,7 @@ function MemberIndex(props) {
         <CompMenu
           accessMenu={{
             ...config.menu,
+            purchase: (purchaseInfo.used_roles ? purchaseInfo.used_roles.indexOf('dependents') > -1 : false) && userInfo?.is_employee,
             popularize: userInfo ? userInfo.popularize : false
           }}
           isPromoter={userInfo ? userInfo.isPromoter : false}
