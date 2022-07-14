@@ -485,7 +485,7 @@ function MemberIndex(props) {
         <CompPanel
           title='订单'
           extra='查看全部订单'
-          onLink={handleClickLink.bind(this, '/subpage/pages/trade/list')}
+          onLink={handleClickLink.bind(this, '/subpage/pages/trade/list?status=0')}
         >
           {config.menu.ziti_order && (
             <View
