@@ -464,7 +464,7 @@ export default class VipIndex extends Component {
         </View>
 
         {/* 优惠券包 */}
-        <SpCouponPackage />
+        {/* <SpCouponPackage /> */}
       </SpPage>
     )
   }
