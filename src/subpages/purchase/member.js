@@ -477,6 +477,22 @@ function MemberIndex(props) {
           // extra='查看全部订单'
           // onLink={handleClickLink.bind(this, '/subpage/pages/trade/list')}
         >
+          {config.menu.ziti_order && (
+            <View
+              className='ziti-order'
+              onClick={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+            >
+              <View className='ziti-order-info'>
+                <View className='title'>自提订单</View>
+                <View className='ziti-txt'>
+                  您有<Text className='ziti-num'>{state.zitiNum}</Text>
+                  个等待自提的订单
+                </View>
+              </View>
+              <Text className='iconfont icon-qianwang-01'></Text>
+            </View>
+          )}
+          
           <View className='order-con'>
             <View
               className='order-item'
