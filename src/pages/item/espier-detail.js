@@ -131,7 +131,8 @@ function EspierDetail(props) {
   }, [])
 
   useEffect(() => {
-    if (id) {
+    const { path } = $instance.router
+    if (id && path === '/pages/item/espier-detail') {
       fetch()
     }
   }, [userInfo])

@@ -184,6 +184,11 @@ function SpCouponPackage(props) {
         </View>
         <View
           className='package-ft'
+          onClick={() => {
+            Taro.navigateTo({
+              url: '/subpages/marketing/coupon'
+            })
+          }}
           style={styleNames({
             'background-image': `url(${process.env.APP_IMAGE_CDN}/coupon_pkg_f.png)`
           })}
