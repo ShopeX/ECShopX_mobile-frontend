@@ -10,9 +10,14 @@
   display: flex;
   align-items: center;
 
-  .nearly-shop {
+  .left-block {
     display: flex;
     align-items: center;
+  }
+  .shop-name {
+    font-size: 28px;
+    max-width: 420px;
+    @include text-overflow();
   }
   .address {
     font-size: 28px;

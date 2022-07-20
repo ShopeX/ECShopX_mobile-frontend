@@ -188,6 +188,7 @@ function SpCouponPackage(props) {
             Taro.navigateTo({
               url: '/subpages/marketing/coupon'
             })
+            onClose()
           }}
           style={styleNames({
             'background-image': `url(${process.env.APP_IMAGE_CDN}/coupon_pkg_f.png)`

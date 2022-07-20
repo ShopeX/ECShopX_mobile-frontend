@@ -22,8 +22,8 @@ function CouponCenter(props) {
   const fetch = async ({ pageIndex, pageSize }) => {
     const { distributor_id, item_id = '', itemid = '', card_id } = $instance.router.params
     const params = {
-      page: pageIndex,
-      pageSize,
+      page_no: pageIndex,
+      page_size: pageSize,
       end_date: 1,
       card_id,
       distributor_id: distributor_id,

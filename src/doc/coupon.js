@@ -16,6 +16,9 @@ export const COUPON_ITEM = {
   useBound: 'use_bound',
   description: 'description',
   quantity: ({ quantity }) => parseInt(quantity),
+  distributorName: ({ distributor_info }) => {
+    return distributor_info.name
+  },
   getNum: 'get_num',
   valid: ({ valid }) => {
     if(typeof valid === 'undefined') {

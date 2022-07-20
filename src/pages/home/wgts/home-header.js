@@ -20,7 +20,7 @@ function WgtHomeHeader(props) {
     <View className={classNames('home-header')}>
       {VERSION_STANDARD && openStore && openLocation == 1 && (
         <View
-          className='shop-left'
+          className='left-block'
           onClick={() => {
             Taro.navigateTo({
               url: '/subpages/store/list'
@@ -34,7 +34,7 @@ function WgtHomeHeader(props) {
 
       {VERSION_PLATFORM && (
         <View
-          className='nearly-shop'
+          className='left-block'
           onClick={() => {
             Taro.navigateTo({
               url: '/subpages/ecshopx/nearly-shop'

@@ -38,13 +38,16 @@
       font-size: 24px;
       font-weight: 400;
       color: #ffffff;
-      margin-right: 6px;
+      margin: 2px 6px 0 0;
       text-align: center;
     }
     .couponn-info {
       margin: 28px 0 0 25px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      .title {
+        max-width: 380px;
+      }
     }
     .coupon-datetime {
       font-size: 22px;
