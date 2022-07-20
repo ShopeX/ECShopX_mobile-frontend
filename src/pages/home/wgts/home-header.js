@@ -10,6 +10,9 @@ function WgtHomeHeader(props) {
   const { children, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
   const { openScanQrcode, openStore, openLocation } = useSelector((state) => state.sys)
+  const {
+    shopInfo: { store_name }
+  } = useSelector((state) => state.shop)
 
   const handleScanCode = () => {}
 
