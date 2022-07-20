@@ -2,7 +2,15 @@ import React, { useEffect, useState, useCallback } from 'react'
 import Taro, { useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar, SpCouponPackage } from '@/components'
+import {
+  SpScreenAd,
+  SpPage,
+  SpSearch,
+  SpRecommend,
+  SpPrivacyModal,
+  SpTabbar,
+  SpCouponPackage
+} from '@/components'
 import api from '@/api'
 import {
   isWeixin,
@@ -159,11 +167,13 @@ function Home() {
   }
 
   const fixedTop = searchComp && searchComp.config.fixTop
-  const isSetHight =
+
+  const isShowHomeHeader =
     VERSION_PLATFORM ||
     (openScanQrcode == 1 && isWeixin) ||
-    (openStore && openLocation == 1) ||
+    (VERSION_STANDARD && openStore && openLocation == 1) ||
     fixedTop
+
   return (
     <SpPage
       className='page-index'
@@ -172,18 +182,13 @@ function Home() {
       renderFooter={<SpTabbar />}
       loading={loading}
     >
-      {/* header-block */}
-      {VERSION_STANDARD ? (
-        <WgtHomeHeaderShop isSetHight={isSetHight}>
-          {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
-        </WgtHomeHeaderShop>
-      ) : (
-        <WgtHomeHeader isSetHight={isSetHight}>
-          {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
-        </WgtHomeHeader>
-      )}
+      {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch />}</WgtHomeHeader>}
 
-      <View className={classNames(isSetHight ? 'home-body' : 'cus-home-body')}>
+      <View
+        className={classNames('home-body', {
+          'has-home-header': isShowHomeHeader
+        })}
+      >
         <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
           {/* 猜你喜欢 */}
           <SpRecommend className='recommend-block' info={likeList} />
@@ -206,7 +211,7 @@ function Home() {
       />
 
       {/* 优惠券包 */}
-      { VERSION_STANDARD && <SpCouponPackage /> }
+      {VERSION_STANDARD && <SpCouponPackage />}
     </SpPage>
   )
 }

@@ -53,6 +53,10 @@ function CmopDeliver(props) {
       }
       setState((draft) => {
         draft.distributorInfo = _distributorInfo
+        const fd = deliveryList.find((item) => _distributorInfo[item.key])
+        if(fd) {
+          draft.receiptType = fd.type
+        }
       })
     }
     if (receiptType == 'ziti') {

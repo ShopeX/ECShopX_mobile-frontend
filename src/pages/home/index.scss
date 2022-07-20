@@ -4,11 +4,10 @@
 .page-index {
   padding-bottom: $tabbar-height;
   .home-body {
-    margin-top: $home-header-height;
     overflow-x: hidden;
-  }
-  .cus-home-body {
-    margin-top: 0px;
+    &.has-home-header {
+      margin-top: $home-header-height;
+    }
   }
   .wgt__padded {
     padding: 24px 0px;

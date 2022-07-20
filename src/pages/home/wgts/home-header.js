@@ -2,28 +2,42 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { toggleTouchMove } from '@/utils/dom'
-import { VERSION_PLATFORM, classNames, isWeixin } from '@/utils'
+import { VERSION_PLATFORM, classNames, isWeixin, VERSION_STANDARD } from '@/utils'
 
 import './home-header.scss'
 
 function WgtHomeHeader(props) {
   const { children, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const { openScanQrcode, openLocation } = useSelector((state) => state.sys)
-
-  const handlePickStore = () => {
-    Taro.navigateTo({
-      url: '/subpages/ecshopx/nearly-shop'
-    })
-  }
+  const { openScanQrcode, openStore, openLocation } = useSelector((state) => state.sys)
 
   const handleScanCode = () => {}
 
   return (
-    <View className={classNames('home-header', !isSetHight && 'cus-home-header')}>
+    <View className={classNames('home-header')}>
+      {VERSION_STANDARD && openStore && openLocation == 1 && (
+        <View
+          className='shop-left'
+          onClick={() => {
+            Taro.navigateTo({
+              url: '/subpages/store/list'
+            })
+          }}
+        >
+          <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
+          <Text className='iconfont icon-qianwang-01'></Text>
+        </View>
+      )}
+
       {VERSION_PLATFORM && (
-        <View className='nearly-shop' onClick={handlePickStore}>
+        <View
+          className='nearly-shop'
+          onClick={() => {
+            Taro.navigateTo({
+              url: '/subpages/ecshopx/nearly-shop'
+            })
+          }}
+        >
           <View className='address'>{location?.address || '北京市北京市昌平区'}</View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>

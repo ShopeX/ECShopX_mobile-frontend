@@ -411,7 +411,7 @@ export default class VipIndex extends Component {
                         </View>
                         <View className='coupon-quan'>代金券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
@@ -423,7 +423,7 @@ export default class VipIndex extends Component {
                         <View className='coupon-desc'>{items.description}</View>
                         <View className='coupon-quan'>兑换券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
@@ -439,7 +439,7 @@ export default class VipIndex extends Component {
                         </View>
                         <View className='coupon-quan'>折扣券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
