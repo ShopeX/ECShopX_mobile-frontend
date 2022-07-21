@@ -56,7 +56,7 @@ function GuideCouponIndex(props) {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'coupon' })
     const { salesperson_id, distributor_id, work_userid, shop_code } = userInfo
     const gu = `${work_userid}_${shop_code}`
-    const path = `/others/pages/home/coupon-home?smid=${salesperson_id}&card_id=${cardId}&distributor_id=${distributor_id}&subtask_id=${subtask_id}&gu=${gu}`
+    const path = `/subpages/marketing/coupon-center?smid=${salesperson_id}&card_id=${cardId}&distributor_id=${distributor_id}&subtask_id=${subtask_id}&gu=${gu}`
     console.log(`getAppShareInfo:`, path)
     return {
       title: title,
@@ -75,9 +75,9 @@ function GuideCouponIndex(props) {
       item_id
     }
     const { list, total_count } = await api.member.homeCouponList(params)
-    console.log(pickBy(list, doc.coupon.COUPON_ITEM))
+    console.log(pickBy(list, doc.coupon.GUIDE_COUPON_ITEM))
     setState((draft) => {
-      draft.list = pickBy(list, doc.coupon.COUPON_ITEM)
+      draft.list = pickBy(list, doc.coupon.GUIDE_COUPON_ITEM)
     })
     return { total: total_count }
   }

@@ -1,4 +1,5 @@
 .page-point-detail {
+  overflow-x: hidden;
   .point-detail-hd {
     width: 850px;
     height: 300px;
@@ -9,10 +10,10 @@
     transform: translateX(-50%);
   }
   .point-info {
-    width: 710rpx;
-    height: 190rpx;
+    width: 710px;
+    height: 190px;
     background: #ffffff;
-    border-radius: 16rpx;
+    border-radius: 16px;
     position: absolute;
     left: 50%;
     transform: translateX(-50%);

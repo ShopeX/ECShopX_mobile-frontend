@@ -70,6 +70,7 @@ import SpScreenAd from './sp-screen-ad'
 import SpFloatMenus from './sp-float-menus'
 import SpFloatMenuItem from './sp-float-menu-item'
 import SpFloatAd from './sp-float-ad'
+import SpCoupon from './sp-coupon'
 import SpCouponPackage from './sp-coupon-package'
 import SpFloatLayout from './sp-float-layout'
 import SpOrderItem from './sp-order-item'
@@ -163,6 +164,7 @@ export {
   SpFloatMenus,
   SpFloatMenuItem,
   SpFloatAd,
+  SpCoupon,
   SpCouponPackage,
   SpFloatLayout,
   SpOrderItem,

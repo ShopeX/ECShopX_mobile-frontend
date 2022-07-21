@@ -1,0 +1,10 @@
+.page-coupon-center {
+  .list-scroll {
+    padding: 20px;
+    .coupon-item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+}

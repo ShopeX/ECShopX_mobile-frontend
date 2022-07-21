@@ -1,0 +1,62 @@
+.page-marketing-couponpicker {
+  .list-scroll {
+    padding: 20px;
+    .coupon-item-wrap {
+      display: flex;
+      justify-content: space-between;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+      .sp-coupon {
+        width: 650px;
+      }
+      .sp-coupon-content {
+        &:before {
+          left: 438px;
+        }
+        &:after {
+          left: 438px;
+        }
+      }
+      .sp-checkbox-new {
+        position: relative;
+        .iconfont {
+          position: absolute;
+          right: 0;
+          top: 76px;
+        }
+      }
+    }
+  }
+  .btn-wrap {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding: 0 20px;
+    .sp-checkbox-new {
+      position: relative;
+      justify-content: space-between;
+      &__label {
+        margin: 0 16px 0 0;
+        width: 694px;
+      }
+      .iconfont {
+        position: absolute;
+        right: 0;
+        // top: 76px;
+      }
+    }
+  }
+
+  .sp-coupon-ft {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .coupon-value {
+    margin-top: 0 !important;
+  }
+  .coupon-btn {
+    display: none;
+  }
+}

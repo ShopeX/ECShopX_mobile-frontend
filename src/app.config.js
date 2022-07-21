@@ -88,6 +88,10 @@ export default {
     {
       root: 'subpages/marketing',
       pages: [
+        'coupon', // 优惠券
+        'coupon-center', // 优惠券
+        'coupon-record', // 优惠券使用记录
+        'coupon-picker', // 优惠券选择
         'package-list', // 组合优惠
         'certification' // 实名认证
       ]
@@ -172,8 +176,8 @@ export default {
         'pages/member/user-info', // 用户注册
         'pages/member/complaint', // 投诉导购
         'pages/member/complaint-record', // 投诉导购记录
-        'pages/member/coupon', // 我的优惠券列表
-        'pages/member/coupon-detail', // 我的优惠券详情
+        // 'pages/member/coupon', // 我的优惠券列表
+        // 'pages/member/coupon-detail', // 我的优惠券详情
         'pages/member/address', // 我的地址
         'pages/member/edit-address', // 编辑地址
         'pages/member/crm-address-list', // 收货地址
@@ -246,7 +250,7 @@ export default {
       root: 'others',
       pages: [
         'pages/home/license',
-        'pages/home/coupon-home',
+        // 'pages/home/coupon-home',
         'pages/protocol/privacy',
         // 美恰客服
         'pages/meiqia/index',
@@ -257,12 +261,12 @@ export default {
         'pages/recharge/index',
         'pages/recharge/history',
         // cart
-        'pages/cart/coupon-picker',
+        // 'pages/cart/coupon-picker',
         'pages/cart/drug-info',
         // 绑定订单
         'pages/bindOrder/index',
         // 过期优惠券
-        'pages/nullify/coupon-nullify'
+        // 'pages/nullify/coupon-nullify'
       ]
     },
     {

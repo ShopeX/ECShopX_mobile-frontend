@@ -28,6 +28,7 @@ import {
   isAPP,
   isWxWeb,
   log,
+  isEmpty,
   VERSION_STANDARD,
   VERSION_B2C,
   VERSION_PLATFORM
@@ -271,10 +272,9 @@ function CartCheckout(props) {
       title: '正在提交',
       mask: true
     })
-
+    
     let orderInfo
     let orderId
-
     if ((isWeb || isAPP()) && payType !== 'deposit') {
       try {
         const h5ResInfo = await api.trade.h5create({
@@ -345,11 +345,11 @@ function CartCheckout(props) {
     })
 
     // 收货地址为空时，需要触发calcOrder
-    if(!address_info) {
+    if (!address_info) {
       calcOrder()
     }
     // if (address_info) {
-      dispatch(updateChooseAddress(address_info))
+    dispatch(updateChooseAddress(address_info))
     // }
   }
 
@@ -415,20 +415,24 @@ function CartCheckout(props) {
 
   const handleCouponsClick = async () => {
     const { cart_type, distributor_id: id } = paramsInfo
-    let items_filter = detailInfo.filter((item) => item.orderItemType !== 'gift')
-    items_filter = items_filter.map((item) => {
-      const { item_id, num, total_fee: price } = item
-      return {
-        item_id,
-        num,
-        price
-      }
-    })
-    let cus_item = JSON.stringify(items_filter)
+    const items = detailInfo
+      .filter((item) => item.orderItemType !== 'gift')
+      .map((item) => {
+        const { itemId, num, price } = item
+        return {
+          item_id: itemId,
+          num,
+          price
+        }
+      })
+    let url = `/subpages/marketing/coupon-picker?items=${JSON.stringify(
+      items
+    )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${dtid || id}&source=${source}`
+    if (couponInfo?.coupon_code) {
+      url = `${url}&coupon=${couponInfo?.coupon_code}`
+    }
     Taro.navigateTo({
-      url: `/others/pages/cart/coupon-picker?items=${cus_item}&is_checkout=true&cart_type=${cart_type}&distributor_id=${
-        dtid || id
-      }&source=${source}`
+      url
     })
     // dispatch(changeCoupon(couponInfo))
   }
@@ -558,21 +562,25 @@ function CartCheckout(props) {
     // console.log('subdistrictRes:', subdistrictRes)
 
     if (coupon_info) {
-      const info = {
-        type: 'coupon',
-        value: {
-          title: coupon_info.info,
-          card_id: coupon_info.id,
-          code: coupon_info.coupon_code,
-          discount: coupon_info.discount_fee
-        }
+      const { coupon_code, id, info } = coupon_info
+      const _info = {
+        // type: 'coupon',
+        // value: {
+        //   title: coupon_info.info,
+        //   card_id: coupon_info.id,
+        //   code: coupon_info.coupon_code,
+        //   discount: coupon_info.discount_fee
+        // }
+        coupon_id: id,
+        coupon_code: coupon_code,
+        title: info
       }
       setState((draft) => {
-        draft.couponInfo = info
+        draft.couponInfo = _info
       })
-      if (!coupon) {
-        dispatch(changeCoupon(info))
-      }
+      // if (!coupon) {
+      //   dispatch(changeCoupon(_info))
+      // }
     } else {
       setState((draft) => {
         draft.couponInfo = {}
@@ -694,12 +702,15 @@ function CartCheckout(props) {
     if (VERSION_PLATFORM) {
       delete cus_parmas.isNostores
     }
-
-    if (coupon) {
-      const { type, value } = coupon
-      cus_parmas.not_use_coupon = value?.code ? 0 : 1
-      cus_parmas.coupon_discount = type === 'coupon' && value.code ? value.code : undefined
-      cus_parmas.member_discount = type === 'member' && value ? 1 : 0
+    console.log(couponInfo)
+    const _coupon = coupon || couponInfo
+    if (!isEmpty(_coupon)) {
+      const { coupon_id, coupon_code, title } = _coupon
+      cus_parmas.not_use_coupon = coupon_code ? 0 : 1
+      if (coupon_code) {
+        cus_parmas.coupon_discount = coupon_code
+      }
+      // cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
 
     const { packName, packDes } = packInfo
@@ -831,12 +842,12 @@ function CartCheckout(props) {
   }
 
   console.log(couponInfo, 'couponInfo', coupon)
-  const couponText =
-    couponInfo.type === 'member'
-      ? '会员折扣'
-      : couponInfo?.value?.code
-      ? couponInfo?.value?.title
-      : ''
+  const couponText = couponInfo ? couponInfo.title : ''
+  // couponInfo.type === 'member'
+  //   ? '会员折扣'
+  //   : couponInfo?.value?.code
+  //   ? couponInfo?.value?.title
+  //   : ''
 
   return (
     <SpPage ref={pageRef} className='page-cart-checkout' renderFooter={renderFooter()}>

@@ -23,8 +23,7 @@ export function linkPage (type, data) {
       break
     case 'marketing':
       if (id == 'coupon_list') {
-        // url = "/marketing/pages/member/coupon";
-        url = '/others/pages/home/coupon-home'
+        url = '/subpages/marketing/coupon-center'
       } else if (id == 'groups_list') {
         url = '/marketing/pages/item/group-list'
       }

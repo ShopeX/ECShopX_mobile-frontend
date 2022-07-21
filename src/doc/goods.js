@@ -127,6 +127,8 @@ export const GOODS_INFO = {
   itemParams: 'item_params',
   groupsList: 'groups_list',
   orderItemType: 'item_type',
+  sales: 'sales',
+  salesSetting: 'sales_setting',
   promotionActivity: ({ promotion_activity }) => {
     if (!promotion_activity) {
       return []

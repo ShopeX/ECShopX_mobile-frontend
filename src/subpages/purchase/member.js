@@ -69,6 +69,7 @@ const initialConfigState = {
     ziti_order: false, // 自提
     share_enable: false, // 分享
     memberinfo_enable: false, // 个人信息
+    dianwu: false, // 店务,
     tenants: true, //商家入驻
     purchase: true, // 员工内购
     collection: true // 我的收藏
@@ -145,7 +146,9 @@ function MemberIndex(props) {
   const fetchPurchase = async () => {
     // 内购分享码
     const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    if (purchaseCode && !userInfo?.is_dependent) {
+    // 员工、家属
+    const { is_employee, is_dependent } = userInfo
+    if (purchaseCode && !is_employee && !is_dependent) {
       await api.purchase.purchaseBind({ code: purchaseCode })
     }
     const data = await api.purchase.purchaseInfo()
@@ -214,6 +217,14 @@ function MemberIndex(props) {
     }
     if (menuRes.list.length > 0) {
       menu = { ...menuRes.list[0].params.data, purchase: true }
+    }
+    if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_IN_PURCHASE)) {
+      const { result, status } = await api.dianwu.is_admin()
+      S.set('DIANWU_CONFIG', result, status)
+      menu = {
+        ...menu,
+        dianwu: status
+      }
     }
     if (redirectRes.list.length > 0) {
       const {
@@ -356,10 +367,10 @@ function MemberIndex(props) {
       return (
         <View className='gradename'>
           {
-            {
-              true: '员工',
-              false: '员工亲友'
-            }[userInfo?.is_employee]
+            userInfo?.is_employee && '员工'
+          }
+          {
+            userInfo?.is_dependent && '员工亲友'
           }
         </View>
       )
@@ -383,7 +394,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member'>
+    <SpPage className='page-purchase-member' renderFooter={<SpTabbar />}>
       <View
         className='header-block'
         style={styleNames({
@@ -465,9 +476,25 @@ function MemberIndex(props) {
 
         <CompPanel
           title='订单'
-          // extra='查看全部订单'
-          // onLink={handleClickLink.bind(this, '/subpage/pages/trade/list')}
+          extra='查看全部订单'
+          onLink={handleClickLink.bind(this, '/subpage/pages/trade/list?evaluate=0')}
         >
+          {config.menu.ziti_order && (
+            <View
+              className='ziti-order'
+              onClick={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+            >
+              <View className='ziti-order-info'>
+                <View className='title'>自提订单</View>
+                <View className='ziti-txt'>
+                  您有<Text className='ziti-num'>{state.zitiNum}</Text>
+                  个等待自提的订单
+                </View>
+              </View>
+              <Text className='iconfont icon-qianwang-01'></Text>
+            </View>
+          )}
+          
           <View className='order-con'>
             <View
               className='order-item'
@@ -529,7 +556,7 @@ function MemberIndex(props) {
         }}
       />
 
-      <SpTabbar />
+      
     </SpPage>
   )
 }

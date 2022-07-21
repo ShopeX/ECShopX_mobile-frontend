@@ -26,7 +26,7 @@ export default class CouponNullify extends Component {
       ],
       couponTab: [
         { id: 1, title: '首页', val: `/pages/index` },
-        { id: 2, title: '领券中心', val: `/others/pages/home/coupon-home` }
+        { id: 2, title: '领券中心', val: `/subpages/marketing/coupon-center` }
       ],
       list: [],
       curId: null

@@ -2,7 +2,15 @@ import Taro from '@tarojs/taro'
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { classNames, styleNames, isWeixin, isWeb, VERSION_PLATFORM, VERSION_STANDARD, VERSION_IN_PURCHASE } from '@/utils'
+import {
+  classNames,
+  styleNames,
+  isWeixin,
+  isWeb,
+  VERSION_PLATFORM,
+  VERSION_STANDARD,
+  VERSION_IN_PURCHASE
+} from '@/utils'
 import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
@@ -26,18 +34,18 @@ const MENUS = [
   //   icon: 'm_menu_poin.png',
   //   link: '/pointitem/pages/list'
   // },
-  // {
-  //   key: "boost_activity",
-  //   name: "助力活动",
-  //   icon: "m_menu_zhulihuodong.png",
-  //   link: "/boost/pages/home/index",
-  // },
-  // {
-  //   key: "boost_order",
-  //   name: "助力订单",
-  //   icon: "m_menu_zhulidingdan.png",
-  //   link: "/boost/pages/order/index",
-  // },
+  {
+    key: "boost_activity",
+    name: "助力活动",
+    icon: "m_menu_zhulihuodong.png",
+    link: "/boost/pages/home/index",
+  },
+  {
+    key: "boost_order",
+    name: "助力订单",
+    icon: "m_menu_zhulidingdan.png",
+    link: "/boost/pages/order/index",
+  },
   // {
   //   key: 'offline_order',
   //   name: '线下订单',
@@ -51,7 +59,11 @@ const MENUS = [
     icon: 'm_menu_baoming.png',
     link: '/marketing/pages/member/item-activity'
   },
-  { key: 'prorate', name: '推广管理', icon: 'm_menu_tuiguang.png' },
+  {
+    key: 'prorate',
+    name: '推广管理',
+    icon: 'm_menu_tuiguang.png'
+  },
   {
     key: 'purchase',
     name: '内购',

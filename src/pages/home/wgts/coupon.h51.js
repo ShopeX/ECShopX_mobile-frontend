@@ -77,7 +77,7 @@ export default class WgtCoupon extends Component {
   handleCouponChange = (visible, type) => {
     if (type === 'jump') {
       Taro.navigateTo({
-        url: `/marketing/pages/member/coupon`
+        url: `/subpages/marketing/coupon`
       })
     }
     this.setState({ visible })

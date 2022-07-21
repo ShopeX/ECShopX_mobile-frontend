@@ -17,7 +17,7 @@ const SpCellCoupon = (props) => {
     console.log('==info==', info)
     // return ;
     Taro.navigateTo({
-      url: `/others/pages/home/coupon-home?distributor_id=${info.distributor_id}`
+      url: `/subpages/marketing/coupon-center?distributor_id=${info.distributor_id}`
     })
   }, [info])
 

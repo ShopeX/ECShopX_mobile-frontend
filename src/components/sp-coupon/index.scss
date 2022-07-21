@@ -1,4 +1,4 @@
-.ba-coupon {
+.sp-coupon {
   &-content {
     display: flex;
     height: 200px;
@@ -38,18 +38,23 @@
       font-size: 24px;
       font-weight: 400;
       color: #ffffff;
-      margin-right: 6px;
+      margin: 2px 6px 0 0;
       text-align: center;
     }
     .couponn-info {
       margin: 28px 0 0 25px;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
+      .title {
+        max-width: 320px;
+        height: 80px;
+        @include multi-ellipsis(2);
+      }
     }
     .coupon-datetime {
       font-size: 22px;
       color: #555;
-      margin: 50px 0 0 25px;
+      margin: 4px 0 0 25px;
     }
     .coupon-desc {
       font-size: 22px;
@@ -68,10 +73,26 @@
     .coupon-btn {
       width: 140px;
       height: 44px;
+      line-height: 44px;
+      text-align: center;
+      font-size: 26px;
       background: #ffffff;
       box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.1);
       border-radius: 45px;
       margin: 18px auto;
+      &.cash {
+        color: #679BDD;
+      }
+      &.discount {
+        color: #7E6FA9;
+      }
+      &.gift {
+        color: #D4A570;
+      }
+      &.used,
+      &.overdue {
+        color: #A9A9A9;
+      }
     }
     .share-btn {
       height: auto;
@@ -94,12 +115,16 @@
       }
       .symbol {
         color: #fff;
-        font-size: 24px;
+        font-size: 28px;
+        margin-right: 4px;
+        position: relative;
+        top: -2px;
       }
       .coupon-rule {
         color: #fff;
         font-size: 22px;
         text-align: center;
+        height: 24px;
       }
     }
     .coupon-discount {
@@ -113,16 +138,20 @@
       }
       .symbol {
         color: #fff;
-        font-size: 24px;
+        font-size: 28px;
+        margin-left: 4px;
+        position: relative;
+        top: -2px;
       }
       .coupon-rule {
         color: #fff;
         font-size: 22px;
         text-align: center;
+        height: 24px;
       }
     }
   }
-  .ba-coupon-desc {
+  .sp-coupon-desc {
     padding: 20px;
     background-color: #fff;
     margin-top: 2px;

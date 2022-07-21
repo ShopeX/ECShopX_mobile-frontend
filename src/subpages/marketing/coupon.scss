@@ -1,0 +1,29 @@
+.page-marketing-coupon {
+  .list-scroll {
+    padding: 20px;
+    .coupon-item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+  .btn-wrap {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100px;
+    .space {
+      color: #DDDDDD;
+    }
+    .btn-text {
+      display: flex;
+      align-items: center;
+      &:last-child {
+        color: #F4811F;
+        .sp-image {
+          margin-left: 8px;
+        }
+      }
+    }
+  }
+}

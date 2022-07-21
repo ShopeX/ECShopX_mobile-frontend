@@ -5,4 +5,9 @@
     box-sizing: border-box;
     @include page-scroll(0, 0);
   }
+  &.has-navbar {
+    .point-scroll-view { 
+      @include page-scroll($navigate-height, 0);
+    }
+  }
 }

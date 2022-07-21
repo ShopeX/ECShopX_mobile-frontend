@@ -1,10 +1,15 @@
 .comp-vipcard {
-  // width: 750px;
-  height: 85px;
+  width: 750px;
+  height: 110px;
   background-size: 100% 100%;
-  margin-top: 28px;
+  // background-position: center;
+  // margin-top: 28px;
+  // margin: 20px 25px 0 25px;
+  // border-top-left-radius: 20px;
+  //   border-top-right-radius: 20px;
   display: flex;
   padding: 20px 60px;
+  box-sizing: border-box;
   &.is-not-default {
     margin: 20px 25px 0 25px;
     border-top-left-radius: 20px;
@@ -26,7 +31,7 @@
     }
   }
   .normal-account {
-    margin-top: 10px;
+    margin-top: 4px;
   }
   .block {
     width: 100%;
@@ -36,7 +41,7 @@
     width: 100%;
     display: flex;
     flex-direction: column;
-    padding-top: 10px;
+    padding-top: 4px;
     .top-block {
       display: flex;
       flex-direction: row;
@@ -44,24 +49,24 @@
       justify-content: space-between;
       .vip-card {
         font-size: 35px;
-        color: #000000;
+        color: #fff;
         font-weight: 500;
         display: flex;
         align-items: center;
         .icon {
-          color: #000000;
+          color: #fff;
           font-size: 20px;
           padding-left: 15px;
         }
       }
       .card-no {
         font-size: 30px;
-        color: #000000;
+        color: #fff;
         font-weight: 400;
       }
     }
     .expire-time {
-      color: gray;
+      color: #dfdfdf;
       font-size: 25px;
     }
   }

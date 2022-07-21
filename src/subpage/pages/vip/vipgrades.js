@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, ScrollView } from '@tarojs/components'
-import { Price, SpNavBar, SpCell, CouponModal, SpPage } from '@/components'
+import { Price, SpNavBar, SpCell, CouponModal, SpPage, SpCouponPackage } from '@/components'
 import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
@@ -120,7 +120,7 @@ export default class VipIndex extends Component {
   handleCouponChange = (visible, type) => {
     if (type === 'jump') {
       Taro.navigateTo({
-        url: `/marketing/pages/member/coupon`
+        url: `/subpages/marketing/coupon`
       })
     }
     this.setState({ visible })
@@ -181,7 +181,6 @@ export default class VipIndex extends Component {
     Taro.hideLoading()
 
     const order_id = data.trade_info.order_id
-
     if (env === 'h5') {
       redirectUrl(
         api,
@@ -206,8 +205,9 @@ export default class VipIndex extends Component {
           success: function (res) {
             console.log('success')
             S.getMemberInfo()
-            that.fetchCouponCardList()
-            Taro.navigateBack()
+            // that.fetchCouponCardList()
+            this.setState({ visible: true })
+            // Taro.navigateBack()
           }
         })
       },
@@ -411,7 +411,7 @@ export default class VipIndex extends Component {
                         </View>
                         <View className='coupon-quan'>代金券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
@@ -423,7 +423,7 @@ export default class VipIndex extends Component {
                         <View className='coupon-desc'>{items.description}</View>
                         <View className='coupon-quan'>兑换券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
@@ -439,7 +439,7 @@ export default class VipIndex extends Component {
                         </View>
                         <View className='coupon-quan'>折扣券</View>
                         <View className='coupon-mark'>
-                          {items.get_num > 0 ? `x${items.get_num}` : null}
+                          {items.give_num > 0 ? `x${items.give_num}` : null}
                         </View>
                       </View>
                     )}
@@ -460,8 +460,17 @@ export default class VipIndex extends Component {
               </View>
             </View>
           </View>
-          <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} />
+          {/* <CouponModal visible={visible} list={all_card_list} onChange={this.handleCouponChange} /> */}
         </View>
+
+        {/* 优惠券包 */}
+        {visible && (
+          <SpCouponPackage
+            onClose={() => {
+              this.setState({ visible: false })
+            }}
+          />
+        )}
       </SpPage>
     )
   }

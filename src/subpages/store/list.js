@@ -57,7 +57,8 @@ function NearlyShop(props) {
   }
 
   const fetchDefaultShop = async () => {
-    const headquarters = await api.shop.getHeadquarters() // 总店
+    // const headquarters = await api.shop.getHeadquarters() // 总店
+    const headquarters = await api.shop.getDefaultShop()
     const { logo } = await api.shop.getStoreBaseInfo()
     setState((v) => {
       v.headquarters = headquarters
