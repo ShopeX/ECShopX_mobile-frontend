@@ -31,7 +31,7 @@ function CompHeader (props) {
   })
   const handleCouponClick = useCallback(() => {
     Taro.navigateTo({
-      url: `/others/pages/home/coupon-home?distributor_id=${info.distributor_id}`
+      url: `/subpages/marketing/coupon-center?distributor_id=${info.distributor_id}`
     })
   }, [info])
   const handleFocus = (flag) => async () => {

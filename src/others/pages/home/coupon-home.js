@@ -54,7 +54,7 @@ export default class CouponHome extends Component {
     return {
       title: res.title,
       imageUrl: res.imageUrl,
-      path: `/others/pages/home/coupon-home${query}`
+      path: `/subpages/marketing/coupon-center${query}`
     }
   }
 

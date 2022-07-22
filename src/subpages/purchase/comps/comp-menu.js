@@ -29,6 +29,12 @@ const MENUS = [
     name: '分享家属',
     icon: 'm_menu_jiatingfengxiang.png',
     link: '/subpages/purchase/index'
+  },
+  {
+    key: 'dianwu',
+    name: '店务管理',
+    icon: 'm_menu_dianwu.png',
+    link: '/subpages/dianwu/index'
   }
 ]
 

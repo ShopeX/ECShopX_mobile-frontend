@@ -47,7 +47,7 @@ export default class TradeList extends Component {
     }
   }
 
-  componentDidShow() {
+  componentDidMount() {
     const { status, evaluate = 1 } = this.$instance.router.params
     const _tabList = JSON.parse(JSON.stringify(this.state.tabList))
     if (evaluate == 1) {
@@ -61,23 +61,19 @@ export default class TradeList extends Component {
           list: [],
           evaluate,
           tabList: _tabList
-        },
-        () => {
-          this.resetPage()
-          setTimeout(() => {
-            this.nextPage()
-          }, 500)
         }
       )
-    } else {
-      this.resetPage()
-      this.setState({
-        list: []
-      })
-      setTimeout(() => {
-        this.nextPage()
-      }, 500)
     }
+  }
+
+  componentDidShow() {
+    this.resetPage()
+    this.setState({
+      list: []
+    })
+    setTimeout(() => {
+      this.nextPage()
+    }, 500)
   }
 
   onPullDownRefresh = () => {

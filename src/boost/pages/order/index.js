@@ -104,11 +104,6 @@ export default class Order extends Component {
     const { colors } = this.props
     return (
       <View className='order'>
-        <SpNavBar
-          title={this.config.navigationBarTitleText}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
         <ScrollView
           className='list'
           scrollY

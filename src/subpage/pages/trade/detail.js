@@ -247,7 +247,7 @@ export default class TradeDetail extends Component {
               qrcode: qrcode_url,
               pickup_code: pickup_code
             })
-          }, 10000)
+          }, 60000)
 
           this.setState(
             {

@@ -1,0 +1,16 @@
+.page-marketing-couponrecord {
+  .list-scroll {
+    padding: 20px;
+    .coupon-item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+  .default-view {
+    .sp-button {
+      margin: 40px auto;
+      width: 425px;
+    }
+  }
+}

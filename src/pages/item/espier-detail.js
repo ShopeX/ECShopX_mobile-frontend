@@ -131,7 +131,8 @@ function EspierDetail(props) {
   }, [])
 
   useEffect(() => {
-    if (id) {
+    const { path } = $instance.router
+    if (id && path === '/pages/item/espier-detail') {
       fetch()
     }
   }, [userInfo])
@@ -316,7 +317,7 @@ function EspierDetail(props) {
   const handleReceiveCoupon = () => {
     const { item_id, distributor_id } = info
     Taro.navigateTo({
-      url: `/others/pages/home/coupon-home?item_id=${item_id}&distributor_id=${distributor_id}`
+      url: `/subpages/marketing/coupon-center?item_id=${item_id}&distributor_id=${distributor_id}`
     })
   }
 
@@ -477,25 +478,29 @@ function EspierDetail(props) {
               </View>
               {(isWeixin || isAPP()) && (
                 <View className='btn-share-wrap'>
-                <SpLogin
-                  onChange={async () => {
-                    if (isAPP()) {
-                      Taro.SAPPShare.open()
-                    } else {
-                      await getUserInfoAuth()
-                      setState((draft) => {
-                        draft.sharePanelOpen = true
-                      })
-                    }
-                  }}
-                >
-                  <View className='btn-share'>
-                    <Text className='iconfont icon-fenxiang-01'></Text>
-                    <Text className='share-txt'>分享</Text>
-                  </View>
-                </SpLogin>
+                  <SpLogin
+                    onChange={async () => {
+                      if (isAPP()) {
+                        Taro.SAPPShare.open()
+                      } else {
+                        await getUserInfoAuth()
+                        setState((draft) => {
+                          draft.sharePanelOpen = true
+                        })
+                      }
+                    }}
+                  >
+                    <View className='btn-share'>
+                      <Text className='iconfont icon-fenxiang-01'></Text>
+                      <Text className='share-txt'>分享</Text>
+                    </View>
+                  </SpLogin>
                 </View>
               )}
+            </View>
+            <View className='item-bn-sales'>
+              {/* <View className='item-bn'></View> */}
+              {info.salesSetting && <View className='item-sales'>{`销量：${info.sales || 0}`}</View>}
             </View>
           </View>
 
@@ -524,7 +529,9 @@ function EspierDetail(props) {
                 title='组合优惠'
                 isLink
                 onClick={() => {
-                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}` })
+                  Taro.navigateTo({
+                    url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
+                  })
                   // setState((draft) => {
                   //   draft.packageOpen = true
                   // })

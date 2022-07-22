@@ -16,7 +16,8 @@
   }
   .shop-name {
     font-size: 28px;
-    max-width: 160px;
+    // max-width: 160px;
+    max-width: 420px;
     @include text-overflow();
   }
   .children-block {
@@ -35,6 +36,9 @@
       position: relative;
       top: 4px;
     }
+  }
+  .sp-search {
+    padding: 0;
   }
 }
 .cus-home-header {

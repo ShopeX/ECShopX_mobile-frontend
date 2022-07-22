@@ -316,7 +316,7 @@ function EspierDetail(props) {
   const handleReceiveCoupon = () => {
     const { item_id, distributor_id } = info
     Taro.navigateTo({
-      url: `/others/pages/home/coupon-home?item_id=${item_id}&distributor_id=${distributor_id}`
+      url: `/subpages/marketing/coupon-center?item_id=${item_id}&distributor_id=${distributor_id}`
     })
   }
 

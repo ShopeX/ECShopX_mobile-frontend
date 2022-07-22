@@ -168,6 +168,16 @@
       font-size: 22px;
     }
   }
+  .item-bn-sales {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  .item-sales {
+    font-size: 24px;
+    color: #999999;
+  }
 
   .sku-block {
     // padding: 16px;

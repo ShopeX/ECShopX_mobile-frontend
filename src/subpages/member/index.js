@@ -80,8 +80,8 @@ const initialConfigState = {
   pointPage: '',
   pointUrlIsOpen: true,
   memberConfig: {
-    defaultImg: false,
-    vipImg: false
+    // defaultImg: null,
+    vipImg: null
   }
 }
 
@@ -255,7 +255,7 @@ function MemberIndex(props) {
     let memberRes = await api.member.memberInfo()
     setConfig((draft) => {
       draft.memberConfig = {
-        defaultImg: memberRes?.cardInfo?.background_pic_url,
+        // defaultImg: memberRes?.cardInfo?.background_pic_url,
         vipImg: memberRes?.vipgrade?.background_pic_url,
         backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
       }
@@ -405,9 +405,7 @@ function MemberIndex(props) {
       <View
         className='header-block'
         style={styleNames({
-          'background-image': memberConfig.backgroundImg
-            ? `url(${memberConfig.backgroundImg})`
-            : `url(${process.env.APP_IMAGE_CDN}/m_bg.png)`
+          'background-image': `url(${`${process.env.APP_IMAGE_CDN}/m_bg.png`})`
         })}
       >
         <View className='header-hd'>
@@ -435,7 +433,7 @@ function MemberIndex(props) {
         <View className='header-bd'>
           <View
             className='bd-item'
-            onClick={handleClickLink.bind(this, '/marketing/pages/member/coupon')}
+            onClick={handleClickLink.bind(this, '/subpages/marketing/coupon')}
           >
             <View className='bd-item-label'>优惠券(张)</View>
             <View className='bd-item-value'>{state.couponCount}</View>
@@ -447,15 +445,14 @@ function MemberIndex(props) {
             <View className='bd-item-label'>积分(分)</View>
             <View className='bd-item-value'>{state.point}</View>
           </View>
-          {VERSION_PLATFORM ||
-            (VERSION_STANDARD && (
+          {process.env.NODE_ENV === 'development' && (
               <View className='bd-item deposit-item'>
                 <View className='bd-item-label'>储值(¥)</View>
                 <View className='bd-item-value'>
                   <SpPrice noSymbol value={state.deposit} />
                 </View>
               </View>
-            ))}
+            )}
           <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>

@@ -8,6 +8,7 @@ function CompVipCard(props) {
   const { info, onLink, userInfo, memberConfig } = props
   console.log('vip-info==', info, userInfo, memberConfig)
   const { isVip, vipType, endTime } = info
+  const { vipImg } = memberConfig
   const { user_card_code } = userInfo
   const notVip = (
     <View className='block normal-account'>
@@ -37,33 +38,23 @@ function CompVipCard(props) {
     </View>
   )
   const renderBackgroundImage = () => {
-    const defaultImg = (index) => `url(${process.env.APP_IMAGE_CDN}/vip${index}.png)`
     //背景图
-    let backgroundImg
-    //是否是系统默认图片
-    let isSystemDefaultImg = true
-    if (!isVip) {
-      isSystemDefaultImg = memberConfig.defaultImg === ''
-      backgroundImg = isSystemDefaultImg ? defaultImg(1) : `url(${memberConfig.defaultImg})`
-    } else {
-      isSystemDefaultImg = memberConfig.vipImg === ''
-      backgroundImg = isSystemDefaultImg
-        ? defaultImg(vipType == 'svip' ? 3 : 2)
-        : `url(${memberConfig.vipImg})`
+    let background = vipImg ? `url(${vipImg})` : `url(${process.env.APP_IMAGE_CDN}/vip1.png)`
+    if (isVip) {
+      background = vipImg ? `url(${vipImg})` : `url(${process.env.APP_IMAGE_CDN}/vip2.png)`
     }
     return {
-      is_default: isSystemDefaultImg,
-      background: backgroundImg
+      background
     }
   }
-  const { is_default, background } = renderBackgroundImage()
+  // const { background } = renderBackgroundImage()
   return (
     <View
       className={classNames('comp-vipcard', {
-        'is-not-default': !is_default
+        // 'is-not-default': vipImg
       })}
       style={styleNames({
-        'background-image': background
+        'background-image': `url(${`${process.env.APP_IMAGE_CDN}/vip1.png`})`
       })}
       onClick={onLink}
     >

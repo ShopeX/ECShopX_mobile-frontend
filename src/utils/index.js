@@ -704,10 +704,10 @@ const getDistributorId = (platform_id = 0) => {
   const { sys, shop } = store.getState()
   const { openStore } = sys
   const {
-    shopInfo: { distributor_id, store_id }
+    shopInfo: { distributor_id, shop_id }
   } = shop
   if (VERSION_STANDARD) {
-    const standard_id = openStore ? distributor_id : store_id
+    const standard_id = openStore ? distributor_id : shop_id
     return standard_id
   } else {
     return platform_id

@@ -118,7 +118,7 @@ function CompShopBrand(props) {
             key={`shop-coupon__${index}`}
             onClick={() => {
               Taro.navigateTo({
-                url: `/others/pages/home/coupon-home?distributor_id=${dtid}`
+                url: `/subpages/marketing/coupon-center?distributor_id=${dtid}`
               })
             }}
           />

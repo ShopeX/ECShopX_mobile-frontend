@@ -127,7 +127,7 @@ export default class Coupon extends Component {
 
   handleCouponClick = () => {
     Taro.navigateTo({
-      url: `/others/pages/home/coupon-home`
+      url: `/subpages/marketing/coupon-center`
     })
   }
 

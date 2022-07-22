@@ -2,9 +2,10 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpImage } from '@/components'
-import { classNames, styleNames } from '@/utils'
+import { classNames, styleNames, VERSION_PLATFORM } from '@/utils'
 import { COUPON_TYPE } from '@/consts'
 import './index.scss'
 
@@ -12,7 +13,7 @@ const initialState = {
   isExpanded: false
 }
 function SpCoupon(props) {
-  const { info } = props
+  const { info, children, onClick = () => {} } = props
   const [state, setState] = useImmer(initialState)
   const { isExpanded } = state
   if (!info) {
@@ -32,11 +33,12 @@ function SpCoupon(props) {
     useBound,
     description,
     quantity,
-    getNum
+    getNum,
+    distributorName
   } = info
 
   const { tag, invalidBg, bg } = COUPON_TYPE[cardType]
-  const couponTagBg = info.tagClass === 'used' || info.tagClass === 'overdue' ? invalidBg : bg
+  const couponTagBg = info.tagClass === 'used' || info.tagClass === 'overdue' || !info.valid ? invalidBg : bg
 
   const getCouponValue = () => {
     if (cardType === 'cash') {
@@ -46,7 +48,7 @@ function SpCoupon(props) {
             <Text className='symbol'>¥</Text>
             <Text className='value'>{reduceCost}</Text>
           </View>
-          <View className='coupon-rule'>{`满${leastCost}可用`}</View>
+          <View className='coupon-rule'>{leastCost > 0 ? `满${leastCost}可用` : ''}</View>
         </View>
       )
     } else if (cardType === 'discount') {
@@ -56,19 +58,18 @@ function SpCoupon(props) {
             <Text className='value'>{discount}</Text>
             <Text className='symbol'>折</Text>
           </View>
-          <View className='coupon-rule'>{`满${leastCost}可用`}</View>
+          <View className='coupon-rule'>{leastCost > 0 ? `满${leastCost}可用` : ''}</View>
         </View>
       )
     }
   }
 
   const content = description.split('\n') || []
-
   return (
-    <View className='ba-coupon'>
-      <View className='ba-coupon-content'>
+    <View className='sp-coupon'>
+      <View className='sp-coupon-content'>
         <View
-          className='ba-coupon-hd'
+          className='sp-coupon-hd'
           // style={styleNames({
           //   backgroundImage: `url(${process.env.APP_IMAGE_CDN}${'/coupon_FFF.png'})`
           // })}
@@ -82,7 +83,9 @@ function SpCoupon(props) {
             >
               {COUPON_TYPE[cardType].tag}
             </View>
-            <Text className='title'>{title}</Text>
+            <View className='title'>{`${
+              VERSION_PLATFORM && distributorName ? `${distributorName}: ${title}` : title
+            }`}</View>
           </View>
           <View className='coupon-datetime'>{`有效期: ${beginDate} - ${endDate}`}</View>
           <View className='coupon-desc'>
@@ -100,33 +103,19 @@ function SpCoupon(props) {
           </View>
         </View>
         <View
-          className='ba-coupon-ft'
+          className='sp-coupon-ft'
           style={styleNames({
             background: couponTagBg
           })}
         >
           {getCouponValue()}
-          <View className='coupon-btn'>
-            {quantity > 0 && (
-              <View>
-                <Button
-                  plain
-                  openType='share'
-                  data-info={cardId}
-                  className={classNames('share-btn', {
-                    disabled: quantity - getNum <= 0
-                  })}
-                  disabled={quantity - getNum <= 0}
-                >
-                  分享给顾客
-                </Button>
-              </View>
-            )}
+          <View className={classNames('coupon-btn', cardType, info.tagClass)} onClick={onClick}>
+            {children}
           </View>
         </View>
       </View>
       {isExpanded && (
-        <View className='ba-coupon-desc'>
+        <View className='sp-coupon-desc'>
           {content.map((item, index) => (
             <View className='desc-txt' key={index}>
               {item}
