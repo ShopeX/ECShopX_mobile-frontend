@@ -35,16 +35,16 @@ const MENUS = [
   //   link: '/pointitem/pages/list'
   // },
   {
-    key: "boost_activity",
-    name: "助力活动",
-    icon: "m_menu_zhulihuodong.png",
-    link: "/boost/pages/home/index",
+    key: 'boost_activity',
+    name: '助力活动',
+    icon: 'm_menu_zhulihuodong.png',
+    link: '/boost/pages/home/index'
   },
   {
-    key: "boost_order",
-    name: "助力订单",
-    icon: "m_menu_zhulidingdan.png",
-    link: "/boost/pages/order/index",
+    key: 'boost_order',
+    name: '助力订单',
+    icon: 'm_menu_zhulidingdan.png',
+    link: '/boost/pages/order/index'
   },
   // {
   //   key: 'offline_order',
@@ -134,6 +134,15 @@ function CompMenu(props) {
   if (!VERSION_IN_PURCHASE && isWeixin) {
     menus = menus.concat(MENUS_COMMUNITY)
   }
+
+  menus = menus.concat([
+    {
+      key: 'pointMenu',
+      name: '积分商城',
+      icon: 'm_menu_poin.png',
+      link: '/subpages/pointshop/list'
+    }
+  ])
 
   // if (accessMenu.offline_order) {
   //   menus = menus.concat(MENUS_OFFLINE)

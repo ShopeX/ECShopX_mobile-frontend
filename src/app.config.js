@@ -102,6 +102,15 @@ export default {
         'index' // 店务端
       ]
     },
+    // 积分商城
+    {
+      root: 'subpages/pointshop',
+      pages: [
+        'list', // 积分商品列表
+        'espier-detail', // 积分商品详情
+        'espier-checkout' // 积分商品下单
+      ]
+    },
     {
       root: 'subpages/community',
       pages: [
