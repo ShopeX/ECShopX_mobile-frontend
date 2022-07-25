@@ -314,10 +314,10 @@ export default {
     'navigationBarTextStyle': 'black'
   },
   plugins: {
-    // 'live-player-plugin': {
-    //   'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
-    //   'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
-    // }
+    'live-player-plugin': {
+      'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+      'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+    }
   }
   
 }
