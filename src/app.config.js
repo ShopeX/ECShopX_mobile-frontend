@@ -22,13 +22,6 @@ export default {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index' // 直播间页面
-
-    // 'pages/store/index', // 店铺首页
-    // 'pages/store/brand-info', // 店铺品牌
-    // 'pages/store/item-list', // 店铺商品列表
-    // 'pages/store/category', // 店铺商品分类
-    // 'pages/store/list', // 选择店铺列表
-    // 'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
     // 内购
@@ -213,7 +206,6 @@ export default {
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
         'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-        // 'pages/member/qrcode'
       ]
     },
     {
