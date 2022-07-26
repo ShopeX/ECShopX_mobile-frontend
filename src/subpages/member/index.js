@@ -210,7 +210,7 @@ function MemberIndex(props) {
     if (menuRes.list.length > 0) {
       menu = { ...menuRes.list[0].params.data, purchase: true }
     }
-    if (S.getAuthToken() && VERSION_PLATFORM && VERSION_STANDARD) {
+    if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_STANDARD)) {
       const { result, status } = await api.dianwu.is_admin()
       S.set('DIANWU_CONFIG', result, status)
       menu = {
