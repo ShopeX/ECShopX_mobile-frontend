@@ -19,7 +19,7 @@ import {
 } from '@/subpages/guide/components'
 // import { WgtHomeHeader } from '@/pages/home/wgts'
 
-// import './home/index.scss'
+import './index.scss'
 
 const initState = {
   wgts: [],
@@ -98,7 +98,7 @@ function Home() {
   })
 
   return (
-    <SpPage className='page-index' scrollToTopBtn renderFooter={<BaTabBar />}>
+    <SpPage className='page-guide-index' scrollToTopBtn renderFooter={<BaTabBar />}>
       <BaNavBar home title='导购商城' />
 
       {userInfo && <BaStore guideInfo={userInfo} />}

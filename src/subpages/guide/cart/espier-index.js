@@ -398,8 +398,8 @@ function CartIndex() {
 
       {validCart.length == 0 && invalidCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
-          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
-            去选购
+          <AtButton type='primary' circle onClick={navigateTo.bind(this, '../item/list', true)}>
+            去添加商品
           </AtButton>
         </SpDefault>
       )}
