@@ -174,7 +174,8 @@ function ItemList() {
     }
 
     if (VERSION_STANDARD) {
-      params.distributor_id = getDistributorId()
+      // 有兑换券的时候，店铺ID传当前选中的店铺
+      params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
     }
 
     const {

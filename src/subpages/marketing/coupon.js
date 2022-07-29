@@ -13,7 +13,8 @@ const initialState = {
   couponTypes: [
     { tag_name: '全部', value: '' },
     { tag_name: '满减券', value: 'cash' },
-    { tag_name: '折扣券', value: 'discount' }
+    { tag_name: '折扣券', value: 'discount' },
+    { tag_name: '兑换券', value: 'new_gift' }
   ],
   couponType: '',
   couponList: []
