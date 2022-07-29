@@ -16,13 +16,20 @@ function BaStore(props) {
 
   return (
     <View className='ba-store'>
-      <Image
-        className='ba-avatar'
-        mode='widthFix'
-        src={guideInfo.avatar || '/assets/imgs/group.png'}
-      />
+      {guideInfo.avatar &&
+        <Image
+          className='ba-avatar'
+          mode='widthFix'
+          src={guideInfo.avatar}
+        />
+      }
+      {!guideInfo.avatar &&
+        <View
+          className='ba-avatar iconfont icon-member'
+        />
+      }
       <View className='ba-store-bd'>
-        <View className='guide-name'>{guideInfo.salesperson_name || '导购货架'}</View>
+        <View className='guide-name'>{guideInfo.salesperson_name || '未知'}</View>
         {storeInfo && <View className='store-name'>{storeInfo.store_name}</View>}
       </View>
     </View>
