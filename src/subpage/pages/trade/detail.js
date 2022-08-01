@@ -413,7 +413,7 @@ export default class TradeDetail extends Component {
     if (type === 'home') {
       if (this.isPointitemGood()) {
         Taro.redirectTo({
-          url: '/pointitem/pages/list'
+          url: '/subpages/pointshop/list'
         })
         return
       }
@@ -1042,7 +1042,7 @@ export default class TradeDetail extends Component {
 
             <View className='line'>
               <View className='left'>实付</View>
-              <View className='right'>{`¥${info.totalpayment}`}</View>
+              <View className='right'>{`${this.isPointitemGood() ? info.item_point + '积分' : `¥${info.totalpayment}`}`}</View>
             </View>
 
             {info.delivery_code && (
@@ -1096,7 +1096,7 @@ export default class TradeDetail extends Component {
                   (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
                   info.receipt_type !== 'dada')) &&
                 info.can_apply_aftersales === 1 &&
-                info.order_class !== 'excard' && !VERSION_IN_PURCHASE && (
+                info.order_class !== 'excard' && !VERSION_IN_PURCHASE && !this.isPointitemGood() && (
                   <Button
                     className={`trade-detail__footer__btn left ${
                       info.is_logistics &&

@@ -11,6 +11,7 @@ import { View, Button } from '@tarojs/components'
 import { SpPage, SpScrollView, CouponItem } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import qs from 'qs'
 import { pickBy } from '@/utils'
 import {
   BaHomeWgts,
@@ -55,8 +56,15 @@ function GuideCouponIndex(props) {
   const getAppShareInfo = async (cardId) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'coupon' })
     const { salesperson_id, distributor_id, work_userid, shop_code } = userInfo
-    const gu = `${work_userid}_${shop_code}`
-    const path = `/subpages/marketing/coupon-center?smid=${salesperson_id}&card_id=${cardId}&distributor_id=${distributor_id}&subtask_id=${subtask_id}&gu=${gu}`
+    const query = {
+      card_id: cardId,
+      dtid: distributor_id,
+      smid: salesperson_id,
+      gu: `${work_userid}_${shop_code}`,
+      // subtask_id: subtaskId
+    }
+
+    const path = `/subpages/marketing/coupon-center?${qs.stringify(query)}`
     console.log(`getAppShareInfo:`, path)
     return {
       title: title,

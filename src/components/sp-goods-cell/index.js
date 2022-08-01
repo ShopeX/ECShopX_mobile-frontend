@@ -18,7 +18,7 @@ function SpGoodsCell(props) {
     onSelectSku && onSelectSku(info)
   }
 
-  const { price, activityPrice, memberPrice, packagePrice, curItem, point } = info
+  const { price, activityPrice, memberPrice, packagePrice, curItem, point, isPoint } = info
   let _price = 0
   let t_price, t_activityPrice, t_memberPrice, t_packagePrice
   if (curItem) {
@@ -85,8 +85,8 @@ function SpGoodsCell(props) {
         </View>
         <View className='item-ft'>
           <View className='price-gp'>
-            {point && <SpPoint value={point} />}
-            {!point && <SpPrice value={_price}></SpPrice>}
+            {isPoint && <SpPoint value={point} />}
+            {!isPoint && <SpPrice value={_price}></SpPrice>}
             {info.marketPrice > 0 && (
               <SpPrice
                 className='market-price'

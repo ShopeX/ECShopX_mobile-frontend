@@ -76,7 +76,7 @@ export function linkPage (type, data) {
   }
 
   if (id === 'pointitems') {
-    url = '/pointitem/pages/list'
+    url = '/subpages/pointshop/list'
   }
 
   if(id == 'applyChief') {

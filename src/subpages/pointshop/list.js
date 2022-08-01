@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { AtDrawer, AtTabs } from 'taro-ui'
+import { AtDrawer, AtTabs, AtSearchBar, AtInput } from 'taro-ui'
 import {
   SpFilterBar,
   SearchBar,
@@ -32,7 +32,6 @@ import {
   styleNames,
   VERSION_STANDARD
 } from '@/utils'
-import { getMypoint } from '@/api/pointitem'
 
 import './list.scss'
 
@@ -40,67 +39,99 @@ const initialState = {
   leftList: [],
   rightList: [],
   brandList: [],
-  brandSelect: [],
+  pointSelect: [],
   filterList: [
     { title: '全部' },
     { title: '销量' },
-    { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 },
+    { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
   ],
   curFilterIdx: 0,
   sort: -1,
   tagList: [],
   curTagIdx: 0,
-  keywords: '',
   show: false,
   point: 0,
+  isFocus: false,
+  keywords: '',
+  pointFilter: false,
+  pointScoreList: [],
+  start_price: '',
+  end_price: ''
 }
 
 function PointShopList() {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const {
-    keywords,
     leftList,
     rightList,
     brandList,
-    brandSelect,
+    pointSelect,
     curFilterIdx,
     sort,
     filterList,
     tagList,
     curTagIdx,
     show,
-    point
+    point,
+    isFocus,
+    keywords,
+    pointFilter,
+    pointScoreList,
+    start_price,
+    end_price
   } = state
-  const [isShowSearch, setIsShowSearch] = useState(false)
+
   const { userInfo } = useSelector((state) => state.user)
   const goodsRef = useRef()
 
   useEffect(() => {
-    getMypoint()
+    getInitConfig()
   }, [])
 
   useEffect(() => {
-    goodsRef.current.reset()
-  }, [curFilterIdx, sort])
+    if (leftList.length == 0) {
+      goodsRef.current.reset()
+    }
+  }, [leftList])
 
-  const getMypoint = async () => {
-    const { point } = await api.pointitem.getMypoint()
+  const getInitConfig = async () => {
+    const [{ point: _point }, { screen }] = await Promise.all([
+      api.pointitem.getMypoint(),
+      api.pointitem.getPointitemSetting()
+    ])
+    const { point_openstatus, point_section } = screen
     setState((draft) => {
-      draft.point = point
+      draft.point = _point
+      draft.pointFilter = point_openstatus
+      draft.pointScoreList = point_section.map((item, index) => {
+        return {
+          id: index,
+          name: `${item[0]}~${item[1]}`,
+          value: item
+        }
+      })
     })
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { keywords, dis_id, cat_id, main_cat_id } = $instance.router.params
+    const { dis_id, cat_id, main_cat_id } = $instance.router.params
     let params = {
       page: pageIndex,
       pageSize,
-      item_type: 'normal'
-      // keywords: keywords,
+      item_type: 'normal',
+      keywords
       // approve_status: 'onsale,only_show',
       // item_type: 'normal',
       // is_point: 'false'
+    }
+    if (pointSelect.length > 0) {
+      const [idx] = pointSelect
+      params.start_price = pointScoreList[idx].value[0]
+      params.end_price = pointScoreList[idx].value[1]
+    } else if (start_price && end_price) {
+      params.start_price = start_price
+      params.end_price = end_price
     }
 
     if (curFilterIdx == 1) {
@@ -108,7 +139,7 @@ function PointShopList() {
       params['goodsSort'] = 1
     } else if (curFilterIdx == 2) {
       // 价格升序
-      if(sort == 1) {
+      if (sort == 1) {
         params['goodsSort'] = 3
       } else {
         params['goodsSort'] = 2
@@ -154,44 +185,22 @@ function PointShopList() {
     return { total: total_count }
   }
 
-  const handleOnFocus = () => {
-    setIsShowSearch(true)
-  }
-
-  const handleOnChange = (val) => {
-    setState((v) => {
-      v.keywords = val
+  const handleChangeSearch = (e) => {
+    setState((draft) => {
+      draft.keywords = e
     })
   }
 
-  const handleOnClear = async () => {
+  const handleConfirm = async (e) => {
     await setState((draft) => {
       draft.leftList = []
       draft.rightList = []
-      draft.keywords = ''
     })
-    setIsShowSearch(false)
-    goodsRef.current.reset()
+    console.log('handleConfirm:', leftList, rightList, keywords)
+    // goodsRef.current.reset()
   }
 
-  const handleSearchOff = async () => {
-    setIsShowSearch(false)
-    await setState((v) => {
-      v.keywords = ''
-    })
-  }
-
-  const handleConfirm = async (val) => {
-    setIsShowSearch(false)
-    await setState((draft) => {
-      draft.leftList = []
-      draft.rightList = []
-      draft.keywords = val
-    })
-    goodsRef.current.reset()
-  }
-
-  const handleFilterChange = ({ current, sort}) => {
+  const handleFilterChange = ({ current, sort }) => {
     setState((draft) => {
       draft.leftList = []
       draft.rightList = []
@@ -200,29 +209,31 @@ function PointShopList() {
     })
   }
 
-  const onChangeBrand = (val) => {
+  const onChangeFilterPoint = (val) => {
     setState((draft) => {
-      draft.brandSelect = val
+      draft.pointSelect = val
     })
   }
 
-  const onConfirmBrand = async () => {
+  const onConfirmFilter = async () => {
     await setState((draft) => {
       draft.leftList = []
       draft.rightList = []
       draft.show = false
     })
-    goodsRef.current.reset()
+    // goodsRef.current.reset()
   }
 
-  const onResetBrand = async () => {
+  const onResetFilter = async () => {
     await setState((draft) => {
-      draft.brandSelect = []
+      draft.pointSelect = []
       draft.leftList = []
       draft.rightList = []
+      draft.start_price = ''
+      draft.end_price = ''
       draft.show = false
     })
-    goodsRef.current.reset()
+    // goodsRef.current.reset()
   }
 
   const handleClickStore = (item) => {
@@ -245,7 +256,7 @@ function PointShopList() {
             </View>
           </View>
         </View>
-        <View className='item-list-head'>
+        <View className={classNames('item-list-head', { 'is-focus': isFocus })}>
           <SpFilterBar
             custom
             current={curFilterIdx}
@@ -262,15 +273,27 @@ function PointShopList() {
             >
               筛选<Text className='iconfont icon-filter'></Text>
             </View>
-            <SpSearchBar
-              keyword={keywords}
-              placeholder='搜索'
-              onFocus={handleOnFocus}
-              onChange={handleOnChange}
-              onClear={handleOnClear}
-              onCancel={handleSearchOff}
-              onConfirm={handleConfirm}
-            />
+
+            <View className='search'>
+              <View className='iconfont icon-sousuo-01'></View>
+              <AtInput
+                value={keywords}
+                name='keywords'
+                placeholder='搜索'
+                onFocus={() => {
+                  setState((draft) => {
+                    draft.isFocus = true
+                  })
+                }}
+                onBlur={() => {
+                  setState((draft) => {
+                    draft.isFocus = false
+                  })
+                }}
+                onChange={handleChangeSearch.bind(this)}
+                onConfirm={handleConfirm.bind(this)}
+              />
+            </View>
           </SpFilterBar>
         </View>
       </View>
@@ -297,24 +320,46 @@ function PointShopList() {
         </View>
       </SpScrollView>
 
-      {/* <SpDrawer
+      <SpDrawer
         show={show}
         onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
+          setState((v) => {
+            v.show = false
+          })
         }}
-        onConfirm={onConfirmBrand}
-        onReset={onResetBrand}
+        onConfirm={onConfirmFilter}
+        onReset={onResetFilter}
       >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
-        />
-      </SpDrawer> */}
+        <View className='fitler-title'>积分区间</View>
+        <View className='custom-point-input'>
+          <AtInput
+            clear
+            focus
+            name='start_price'
+            value={start_price}
+            placeholder='最低积分'
+            onChange={(e) => {
+              setState((draft) => {
+                draft.start_price = e
+              })
+            }}
+          ></AtInput>
+          <Text className='gap-line'>~</Text>
+          <AtInput
+            clear
+            focus
+            name='end_price'
+            value={end_price}
+            placeholder='最高积分'
+            onChange={(e) => {
+              setState((draft) => {
+                draft.end_price = e
+              })
+            }}
+          ></AtInput>
+        </View>
+        <SpSelect info={pointScoreList} value={pointSelect} onChange={onChangeFilterPoint} />
+      </SpDrawer>
     </SpPage>
   )
 }

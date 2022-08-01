@@ -61,6 +61,49 @@
   }
   .item-list-head {
     margin-top: 70px;
+    padding-bottom: 10px;
+    &.is-focus {
+      .filter-bar-body {
+        display: none;
+      }
+      .sp-filter-bar__extra {
+        flex: 1;
+      }
+      .filter-btn {
+        display: none;
+      }
+      .at-search-bar {
+        width: 100%;
+        transition: width 0.2s ease-in;
+      }
+    }
+  }
+  .search {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background: #f5f5f5;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    .icon-sousuo-01 {
+      font-size: 32px;
+      color: var(--color-primary);
+    }
+    .at-input {
+      margin: 0 10px;
+      padding: 0;
+      background: transparent;
+      flex: 1;
+      &:after {
+        display: none;
+      }
+      &__input {
+        font-size: 26px;
+        color: #666;
+      }
+    }
   }
   .sp-filter-bar {
     justify-content: space-between;
@@ -80,7 +123,7 @@
       height: 34px;
       background-color: #ccc;
       position: absolute;
-      top: 16px;
+      top: 18px;
       left: -16px;
     }
   }
@@ -120,6 +163,37 @@
     .sp-goods-item {
       border-radius: 16px;
       overflow: hidden;
+    }
+  }
+  .sp-drawer__body {
+    margin-top: 160px;
+    .fitler-title {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .at-input {
+      margin-bottom: 0;
+      /* prettier-ignore */
+      border: 1PX solid #cdcdcd;
+      border-radius: 8px;
+      padding: 4px 10px;
+      width: 160px;
+      &:after {
+        display: none;
+      }
+      &__input {
+        font-size: 26px;
+        color: #666;
+      }
+    }
+    .custom-point-input {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .gap-line {
+      margin: 0 10px;
     }
   }
 }

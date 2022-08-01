@@ -428,6 +428,7 @@ function PointShopEspierCheckout() {
 
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
+    items.forEach(item => item['is_point'] = true)
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info

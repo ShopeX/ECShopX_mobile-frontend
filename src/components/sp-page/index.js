@@ -13,13 +13,15 @@ const initialState = {
   lock: false,
   lockStyle: {},
   pageTitle: '',
-  isTabBarPage: true
+  isTabBarPage: true,
+  customNavigation: false,
+  cusCurrentPage: 0
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle, pageTitle, isTabBarPage } = state
+  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage } = state
   // debugger
   const {
     className,
@@ -67,6 +69,19 @@ function SpPage(props, ref) {
       })
     }
   }, [lock])
+
+  useEffect(() => {
+    if (isWeixin) {
+      const pages = Taro.getCurrentPages()
+      const { navigationStyle } = page.config
+      // customNavigation = navigationStyle === 'custom'
+      // cusCurrentPage = pages.length
+      setState(draft => {
+        draft.customNavigation = navigationStyle === 'custom'
+        draft.cusCurrentPage = pages.length
+      })
+    }
+  }, [])
 
   useDidShow(() => {
     const { page } = getCurrentInstance()
@@ -130,8 +145,8 @@ function SpPage(props, ref) {
 
   let model = ''
   let ipx = false
-  let customNavigation = false
-  let cusCurrentPage = 0
+  // let customNavigation = false
+  // let cusCurrentPage = 0
 
   if (isWeixin) {
     const deviceInfo = Taro.getSystemInfoSync()
@@ -140,16 +155,16 @@ function SpPage(props, ref) {
     ipx = model.search(/iPhone X|iPhone 11|iPhone 12|iPhone 13/g) > -1
   }
 
-  const { page } = getCurrentInstance()
+  const { page, route } = getCurrentInstance()
   const _pageTitle = page?.config?.navigationBarTitleText
 
-  if (isWeixin) {
-    const pages = Taro.getCurrentPages()
-    const currentPage = pages[pages.length - 1]
-    const { navigationStyle } = currentPage.config
-    customNavigation = navigationStyle === 'custom'
-    cusCurrentPage = pages.length
-  }
+  // if (isWeixin) {
+  //   const pages = Taro.getCurrentPages()
+  //   // const currentPage = pages[pages.length - 1]
+  //   const { navigationStyle } = page.config
+  //   customNavigation = navigationStyle === 'custom'
+  //   cusCurrentPage = pages.length
+  // }
 
   const CustomNavigation = () => {
     const menuButton = Taro.getMenuButtonBoundingClientRect()

@@ -252,7 +252,8 @@ function PointShopEspierDetail(props) {
     const { list, total_count } = await api.item.evaluationList({
       page: 1,
       pageSize: 2,
-      item_id: id
+      item_id: id,
+      order_type: 'pointsmall'
     })
     setState((draft) => {
       draft.evaluationList = list

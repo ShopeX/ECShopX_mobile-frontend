@@ -271,10 +271,6 @@ export default {
         // 'pages/nullify/coupon-nullify'
       ]
     },
-    {
-      root: 'pointitem',
-      pages: ['pages/list']
-    },
     // 商家入驻
     {
       root: 'subpages/merchant',
