@@ -79,7 +79,7 @@ function SpGoodsCell(props) {
               {vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}
             </View>
           )}
-          {info?.orderItemType != 'normal' && (
+          {info?.orderItemType && info?.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
           )}
         </View>

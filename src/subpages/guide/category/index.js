@@ -107,8 +107,7 @@ const CategoryIndex = (props) => {
   }
 
   return (
-    <SpPage className='page-guide-category-index' renderFloat={<BaTabBar />}>
-      <BaNavBar home title='导购商城' />
+    <SpPage className='page-guide-category-index' navigateTheme='dark' renderFloat={<BaTabBar />}>
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
@@ -120,7 +119,7 @@ const CategoryIndex = (props) => {
         id='category-wrap'
         className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
       >
-        <CompSeries info={currentList} fixTop={fixTop} />
+        <CompSeries info={currentList} />
       </View>
     </SpPage>
   )

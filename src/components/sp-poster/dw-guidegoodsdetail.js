@@ -34,12 +34,16 @@ class GuideGoodsDetailPoster {
 
     const pic = imgs[0].replace('http:', 'https:')
     console.log('goods pic:', pic)
+    console.log('avatar:', avatar)
+
     // 商品图片
     this.goodsImg = await Taro.getImageInfo({ src: pic })
     // 太阳码
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
     // 头像
-    this.avatar = await Taro.getImageInfo({ src: avatar })
+    this.avatar = await Taro.getImageInfo({
+      src: avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`
+    })
 
     const drawOptions = {
       ctx: this.ctx,

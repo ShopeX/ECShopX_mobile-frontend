@@ -13,10 +13,13 @@ import {
   SG_APP_CONFIG,
   SG_MEIQIA,
   SG_YIQIA,
-  SG_ROUTER_PARAMS
+  SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS,
+  SG_GUIDE_PARAMS_UPDATETIME
 } from '@/consts'
 import { checkAppVersion, isWeixin, isNavbar, log, entryLaunch } from '@/utils'
 import { requestIntercept } from '@/plugin/requestIntercept'
+import dayjs from 'dayjs'
 
 import './app.scss'
 
@@ -62,7 +65,27 @@ class App extends Component {
     entryLaunch.getRouteParams(options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+
+      // 已缓存的导购参数
+      const guideParams = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+      const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || ''
+      const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+      // 参数保存超过3天，清除导购参数
+      if (diffMilliseconds > 3 * 86400000) {
+        Taro.removeStorageSync(SG_GUIDE_PARAMS)
+        Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+      } else {
+        Taro.setStorageSync(SG_GUIDE_PARAMS, {
+          ...guideParams,
+          ...params
+        })
+        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+      }
     })
+
+    if (S.getAuthToken()) {
+      entryLaunch.postGuideUV()
+    }
 
     // if (isNavbar()) {
     //   document.querySelector('title').addEventListener(

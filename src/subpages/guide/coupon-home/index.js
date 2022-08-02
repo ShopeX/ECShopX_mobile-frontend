@@ -12,7 +12,7 @@ import { SpPage, SpScrollView, CouponItem } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
-import { pickBy } from '@/utils'
+import { pickBy, log } from '@/utils'
 import {
   BaHomeWgts,
   BaStoreList,
@@ -65,7 +65,7 @@ function GuideCouponIndex(props) {
     }
 
     const path = `/subpages/marketing/coupon-center?${qs.stringify(query)}`
-    console.log(`getAppShareInfo:`, path)
+    log.debug(`getAppShareInfo: ${path}`)
     return {
       title: title,
       imageUrl: imageUrl,
@@ -91,11 +91,10 @@ function GuideCouponIndex(props) {
   }
   console.log('list:', list)
   return (
-    <SpPage className='page-guide-coupon' renderFooter={<BaTabBar />}>
-      <BaNavBar home title='优惠券' />
+    <SpPage className='page-guide-coupon' navigateTheme='dark' renderFooter={<BaTabBar />}>
       <SpScrollView className='coupon-list' fetch={fetch}>
-        {list.map((item) => (
-          <View className='coupon-item__wrap'>
+        {list.map((item, index) => (
+          <View className='coupon-item__wrap' key={`coupon-item__${index}`}>
             <BaCoupon info={item} />
           </View>
         ))}

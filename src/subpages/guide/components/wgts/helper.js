@@ -21,10 +21,10 @@ export function linkPage(type, id, item) {
       url = `plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=${id}`
       break
     case 'coupon':
-      url = '/guide/coupon-home/index?card_id=' + id
+      url = '/subpages/guide/coupon-home/index?card_id=' + id
       break
     case 'custom_page':
-      url = `/guide/custom/custom-page?id=${id}&version=${item.version}`
+      url = `/subpages/guide/custom/custom-page?id=${id}&version=${item.version}`
       break
     default:
   }

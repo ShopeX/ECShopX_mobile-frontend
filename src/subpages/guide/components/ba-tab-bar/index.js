@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
-import S from '@/subpages/guide/lib/Spx.js'
+import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
 @connect(({ tabBar, cart }) => ({

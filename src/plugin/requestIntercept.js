@@ -1,11 +1,24 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import qs from 'qs'
+import { SG_GUIDE_PARAMS } from '@/consts'
 
 export function requestIntercept() {
   const interceptor = (chain) => {
-    const requestParams = chain.requestParams
+    let requestParams = chain.requestParams
     const { method, data, url } = requestParams
+    const { path } = getCurrentInstance().router
+    if(path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order` ) {
+      const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+      if(gu) {
+        const [work_userid] = gu.split('_')
+        const _data = qs.parse(data)
+        _data['work_userid'] = work_userid
+        requestParams.data = qs.stringify(_data)
+      }
+    }
+    // console.log('requestIntercept:', $instance)
     return chain.proceed(requestParams).then(res => {
-      console.log(`http <-- ${url} request:`, res)
+      // console.log(`http <-- ${url} request:`, res)
       return res
     })
   }

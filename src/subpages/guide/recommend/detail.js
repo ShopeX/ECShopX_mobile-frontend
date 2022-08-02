@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
+import qs from 'qs'
 import Taro, { useDidShow, useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -10,7 +11,6 @@ import doc from '@/doc'
 import { pickBy, log } from '@/utils'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
 import './detail.scss'
-import { drawText } from '@/components/sp-poster/helper'
 
 const initialState = {
   itemId: '',
@@ -38,8 +38,15 @@ function GuideRecommendDetail(props) {
 
   useShareAppMessage(async () => {
     const { salesperson_id, work_userid, distributor_id, shop_code } = userInfo
-    const gu = `${work_userid}_${shop_code}`
-    const sharePath = `/subpage/pages/recommend/detail?id=${itemId}&smid=${salesperson_id}&gu=${gu}&dtid=${distributor_id}`
+    const { subtask_id } = $instance.router.params
+    const query = {
+      id: itemId,
+      dtid: distributor_id,
+      smid: salesperson_id,
+      gu: `${work_userid}_${shop_code}`,
+      subtask_id
+    }
+    const sharePath = `/subpage/pages/recommend/detail?${qs.stringify(query)}`
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
       title: title,

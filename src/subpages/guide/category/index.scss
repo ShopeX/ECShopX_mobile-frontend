@@ -1,7 +1,16 @@
 .page-guide-category-index {
   width: 100%;
-  height: 100vh;
   background: #ffffff;
+  padding-top: 170px;
+  &:before {
+    content: '';
+    height: 170px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
   .at-tabs {
     box-sizing: border-box;
   }

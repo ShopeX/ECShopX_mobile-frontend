@@ -5,7 +5,7 @@ import { classNames } from '@/utils'
 import { connect } from 'react-redux'
 import api from '@/api'
 
-import S from '@/subpages/guide/lib/Spx.js'
+import S from '@/spx'
 
 import './goods.scss'
 

@@ -112,8 +112,7 @@ function GuideRecommendList(props) {
   }
 
   return (
-    <SpPage className='page-guide-recommendlist' renderFooter={<BaTabBar />}>
-      <BaNavBar home title='种草' />
+    <SpPage className='page-guide-recommendlist' navigateTheme='dark' renderFooter={<BaTabBar />}>
       <View id='search-wrap' className='search-wrap'>
         <SpSearchBar
           keyword={keywords}

@@ -1,147 +1,111 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, ScrollView, Button } from '@tarojs/components'
-// import { SpToast, Loading, BackToTop, NavBar } from '@/components'
-import { SpToast, Loading, BackToTop } from '@/components'
-import { connect } from 'react-redux'
-import req from '@/api/req'
-import { withPager, withBackToTop } from '@/hocs'
-import S from '@/subpages/guide/lib/Spx.js'
-import { buriedPoint, platformTemplateName, transformPlatformUrl } from '@/utils'
-import { getDtidIdUrl } from '@/utils/helper'
-import { BaHomeWgts } from '../components'
-import './custom-page.scss'
+import React, { useEffect, useState, useCallback } from 'react'
+import Taro, {
+  getCurrentInstance,
+  useShareAppMessage,
+  useShareTimeline,
+  useDidShow
+} from '@tarojs/taro'
+import { View, Image } from '@tarojs/components'
+import { useSelector, useDispatch } from 'react-redux'
 import qs from 'qs'
+import { AtButton } from 'taro-ui'
+import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpPrivacyModal, SpTabbar } from '@/components'
+import api from '@/api'
+import { isWeixin, log } from '@/utils'
+import entryLaunch from '@/utils/entryLaunch'
+import { updateStoreInfo } from '@/store/slices/guide'
+import { useImmer } from 'use-immer'
+import { useQwLogin, useNavigation } from '@/hooks'
+import {
+  BaHomeWgts,
+  BaStoreList,
+  BaStore,
+  BaGoodsBuyPanel,
+  BaTabBar,
+  BaNavBar
+} from '@/subpages/guide/components'
+// import { WgtHomeHeader } from '@/pages/home/wgts'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-@withBackToTop
-export default class HomeIndex extends Component {
-  constructor(props) {
-    super(props)
+import './custom-page.scss'
 
-    this.state = {
-      ...this.state,
-      wgts: null,
-      shareInfo: null,
-      authStatus: false,
-      positionStatus: false
+const initState = {
+  wgts: [],
+  shareInfo: {},
+  showBackToTop: false,
+  shopList: null
+}
+
+function GuideCustomPage() {
+  const [state, setState] = useImmer(initState)
+  const $instance = getCurrentInstance()
+  const { setNavigationBarTitle } = useNavigation()
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
+
+  const { userInfo } = useSelector((state) => state.guide)
+
+  const { wgts, shareInfo, shopList } = state
+
+
+  useEffect(() => {
+    if (userInfo) {
+      fetchWgts()
     }
-  }
+  }, [userInfo])
 
-  async componentDidMount() {
-    const { id } = getCurrentInstance().router.params
-
-    const pathparams = qs.stringify({
-      template_name: platformTemplateName,
-      version: 'v1.0.1',
-      page_name: `custom_${id}`,
-      name: 'search'
-    })
-    const url = transformPlatformUrl(`/alipay/pageparams/setting?${pathparams}`)
-    const fixSetting = await req.get(url)
-
-    this.setState(
-      {
-        positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
-      },
-      () => {
-        this.fetchInfo()
-      }
-    )
-    Taro.hideShareMenu({
-      //禁用胶囊分享
-      menus: ['shareAppMessage', 'shareTimeline']
-    })
-    // 埋点处理
-    buriedPoint.call(this, {
-      event_type: 'activeCustomPage'
-    })
-  }
-
-  async fetchInfo() {
-    const { id } = getCurrentInstance().router.params
-    const pathparams = qs.stringify({
-      template_name: platformTemplateName,
+  const fetchWgts = async () => {
+    const { id } = $instance.router.params
+    const { config, share } = await api.guide.getHomeTmps({
+      template_name: 'yykweishop',
       version: 'v1.0.1',
       page_name: `custom_${id}`
     })
-    const url = transformPlatformUrl(`/alipay/pageparams/setting?${pathparams}`)
-    const info = await req.get(url)
-
-    if (!S.getAuthToken()) {
-      this.setState({
-        authStatus: true
-      })
-    }
-    this.setState({
-      shareInfo: info.share,
-      wgts: info.config
+    setNavigationBarTitle(share.page_name)
+    setState((draft) => {
+      draft.wgts = config
+      draft.shareInfo = share
     })
   }
 
-  async onShareAppMessage() {
-    const { shareInfo } = this.state
-    const { id } = getCurrentInstance().router.params
-    const { salesperson_id, distributor_id, work_userid, shop_code } = S.get('GUIDE_INFO', true)
-    const gu = `${work_userid}_${shop_code}`
-    // const gu_user_id = Taro.getStorageSync("work_userid");
-    // const { userId } = Taro.getStorageSync("userinfo");
-    const query = salesperson_id
-      ? getDtidIdUrl(`?smid=${salesperson_id}&id=${id}&gu=${gu}`, distributor_id)
-      : `?id=${id}&gu=${gu}`
+  useShareAppMessage(async () => {
+    const { id, subtask_id } = $instance.router.params
+    const { salesperson_id, distributor_id, work_userid, shop_code } = userInfo
+    const query = {
+      id,
+      dtid: distributor_id,
+      smid: salesperson_id,
+      gu: `${work_userid}_${shop_code}`,
+      subtask_id
+    }
+    const path = `/pages/custom/custom-page?${qs.stringify(query)}`
+    log.debug(`share path: ${path}`)
 
     return {
       title: shareInfo.page_share_title,
       imageUrl: shareInfo.page_share_imageUrl,
-      path: `/pages/custom/custom-page${query}`
+      path: path
     }
-  }
+  })
 
-  onShareTimeline() {
-    const { shareInfo } = this.state
-    const { id } = getCurrentInstance().router.params
-    const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `uid=${userId}&id=${id}` : `id=${id}`
-    return {
-      title: shareInfo.page_share_title,
-      imageUrl: shareInfo.page_share_imageUrl,
-      query: query
-    }
-  }
-
-  render() {
-    const { wgts, authStatus, scrollTop, showBackToTop, positionStatus } = this.state
-    const { colors } = this.props
-    if (!wgts) {
-      return <Loading />
-    }
-
-    return (
-      <View className='page-index-custom'>
-        {/* <NavBar title='微商城' /> */}
-        <ScrollView
-          className={`wgts-wrap ${positionStatus ? 'wgts-wrap__fixed' : ''}`}
-          scrollTop={scrollTop}
-          scrollY
-        >
-          <View className='wgts-wrap__cont'>
-            <BaHomeWgts wgts={wgts} />
-          </View>
-
-          <View className='recommend-detail__bar'>
-            <Button openType='share' style={'background: ' + colors.data[0].primary}>
-              分享给顾客
-            </Button>
-          </View>
-        </ScrollView>
-
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
-
-        <SpToast />
+  return (
+    <SpPage
+      className='page-guide-custompage'
+      navigateTheme='dark'
+      scrollToTopBtn
+      renderFooter={
+        <View className='btn-wrap'>
+          <AtButton circle className='btn-share' type='primary' openType='share'>
+            分享给顾客
+          </AtButton>
+        </View>
+      }
+    >
+      <View className='home-body'>
+        <BaHomeWgts wgts={wgts} />
       </View>
-    )
-  }
+    </SpPage>
+  )
 }
+
+export default GuideCustomPage

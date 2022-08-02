@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
 import { updateCount } from '@/store/slices/cart'
 import api from '@/api'
-import { isWeixin, showToast } from '@/utils'
+import { isWeixin, showToast, entryLaunch } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
 
@@ -54,6 +54,8 @@ export default (props = {}) => {
   const setToken = async (token) => {
     const { redirect_url } = $instance.router.params
     S.setAuthToken(token)
+    // 导购UV统计
+    entryLaunch.postGuideUV()
     setIsLogin(true)
     getUserInfo()
     dispatch(fetchUserFavs())

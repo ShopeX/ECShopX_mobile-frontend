@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { SpImage } from '@/components'
 import './index.scss'
 
 function BaStore(props) {
@@ -16,18 +17,7 @@ function BaStore(props) {
 
   return (
     <View className='ba-store'>
-      {guideInfo.avatar &&
-        <Image
-          className='ba-avatar'
-          mode='widthFix'
-          src={guideInfo.avatar}
-        />
-      }
-      {!guideInfo.avatar &&
-        <View
-          className='ba-avatar iconfont icon-member'
-        />
-      }
+      <SpImage className='ba-avatar' src={guideInfo?.avatar || 'user_icon.png'} />
       <View className='ba-store-bd'>
         <View className='guide-name'>{guideInfo.salesperson_name || '未知'}</View>
         {storeInfo && <View className='store-name'>{storeInfo.store_name}</View>}

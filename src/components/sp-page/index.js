@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { useDidShow, usePageScroll, getCurrentInstance } from '@tarojs/taro'
+import Taro, { useDidShow, usePageScroll, getCurrentInstance, useReady } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isGoodsShelves, entryLaunch } from '@/utils'
 
 import './index.scss'
 
@@ -37,6 +37,7 @@ function SpPage(props, ref) {
     defaultMsg = '',
     navbar = true,
     onClickLeftIcon = null,
+    navigateTheme = 'light',
     navigateMantle = false // 自定义导航，开启滚动蒙层
   } = props
   const wrapRef = useRef(null)
@@ -51,6 +52,13 @@ function SpPage(props, ref) {
     '--color-accent': colorAccent,
     '--color-rgb': rgb
   }
+
+  useReady(() => {
+    // 导购货架数据上报
+    const router = $instance.router
+    entryLaunch.postGuideTask(router)
+    console.log('sp pages use ready:', $instance)
+  })
 
   useEffect(() => {
     if (lock) {
@@ -84,7 +92,7 @@ function SpPage(props, ref) {
   }, [])
 
   useDidShow(() => {
-    const { page } = getCurrentInstance()
+    const { page, router } = getCurrentInstance()
     const pageTitle = page?.config?.navigationBarTitleText
 
     const fidx = Object.values(TABBAR_PATH).findIndex(
@@ -95,6 +103,13 @@ function SpPage(props, ref) {
       draft.pageTitle = pageTitle
       draft.isTabBarPage = isTabBarPage
     })
+
+    // 导购货架分包路由，隐藏所有分享入口
+    if(router.path.indexOf('/subpages/guide') > -1) {
+      Taro.hideShareMenu({
+        menus: ["shareAppMessage", "shareTimeline"]
+      });
+    }
   })
 
   usePageScroll((res) => {
@@ -170,16 +185,16 @@ function SpPage(props, ref) {
     const menuButton = Taro.getMenuButtonBoundingClientRect()
     const { statusBarHeight } = Taro.getSystemInfoSync()
 
-    console.log('MenuButton:', menuButton, statusBarHeight)
-    console.log(cusCurrentPage)
+    // console.log('MenuButton:', menuButton, statusBarHeight)
+    // console.log(cusCurrentPage)
 
     const navbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
 
     return (
       <View
         className={classNames('custom-navigation', {
-          'mantle': mantle
-        })}
+          'mantle': mantle,
+        }, navigateTheme)}
         style={styleNames({
           height: `${navbarH}px`,
           paddingTop: `${statusBarHeight}px`
@@ -195,7 +210,7 @@ function SpPage(props, ref) {
               onClick={() => {
                 if (cusCurrentPage == 1) {
                   Taro.redirectTo({
-                    url: '/pages/index'
+                    url: isGoodsShelves() ? '/subpages/guide/index' : '/pages/index'
                   })
                 } else {
                   Taro.navigateBack()

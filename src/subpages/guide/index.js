@@ -36,9 +36,7 @@ function Home() {
 
   const sys = useSelector((state) => state.sys)
   const { userInfo } = useSelector((state) => state.guide)
-  const showAdv = useSelector((member) => member.user.showAdv)
 
-  const { openRecommend } = sys
   const { wgts, shareInfo, shopList } = state
 
   const dispatch = useDispatch()
@@ -46,7 +44,7 @@ function Home() {
   useEffect(() => {
     if (userInfo) {
       fetchWgts()
-      getStoreList()
+      // getStoreList()
       // fetchShareInfo()
     }
   }, [userInfo])
@@ -59,48 +57,51 @@ function Home() {
       company_id: 1
     })
 
-    setState((v) => {
-      v.wgts = config
-    })
-  }
-
-  //获取门店列表
-  const getStoreList = async (params = {}) => {
-    const { list } = await api.guide.distributorlist({
-      page: 1,
-      pageSize: 10000,
-      store_type: 'distributor'
-    })
-    const fd = list.find((item) => item.distributor_id == userInfo.distributor_id)
     setState((draft) => {
-      draft.shopList = list
+      draft.wgts = config
     })
-
-    if (fd) {
-      dispatch(updateStoreInfo(fd))
-    }
   }
 
-  useShareAppMessage(async (res) => {
-    return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
-      path: '/pages/index'
-    }
-  })
+  // //获取门店列表
+  // const getStoreList = async (params = {}) => {
+  //   const { list } = await api.guide.distributorlist({
+  //     page: 1,
+  //     pageSize: 10000,
+  //     store_type: 'distributor'
+  //   })
+  //   const fd = list.find((item) => item.distributor_id == userInfo.distributor_id)
+  //   setState((draft) => {
+  //     draft.shopList = list
+  //   })
 
-  useShareTimeline(async (res) => {
-    return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
-      query: '/pages/index'
-    }
-  })
+  //   if (fd) {
+  //     dispatch(updateStoreInfo(fd))
+  //   }
+  // }
+
+  // useShareAppMessage(async () => {
+  //   return {
+  //     title: shareInfo.title,
+  //     imageUrl: shareInfo.imageUrl,
+  //     path: '/pages/index'
+  //   }
+  // })
+
+  // useShareTimeline(async () => {
+  //   return {
+  //     title: shareInfo.title,
+  //     imageUrl: shareInfo.imageUrl,
+  //     query: '/pages/index'
+  //   }
+  // })
 
   return (
-    <SpPage className='page-guide-index' scrollToTopBtn renderFooter={<BaTabBar />}>
-      <BaNavBar home title='导购商城' />
-
+    <SpPage
+      className='page-guide-index'
+      navigateTheme='dark'
+      scrollToTopBtn
+      renderFooter={<BaTabBar />}
+    >
       {userInfo && <BaStore guideInfo={userInfo} />}
 
       <View className='home-body'>
