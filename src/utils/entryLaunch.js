@@ -369,16 +369,16 @@ class EntryLaunch {
    */
   async postGuideTask({ path, params }) {
     const routePath = {
-      '/pages/item/espier-detial': 'activeItemDetail',
+      '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
-      '/subpage/pages/recommend/detial': 'activeSeedingDetail',
+      '/subpage/pages/recommend/detail': 'activeSeedingDetail',
       '/pages/marketing/coupon-center': 'activeDiscountCoupon',
       '/pages/cart/espier-checkout': 'orderPaymentSuccess'
     }
     if (!routePath[path]) {
       return
     }
-    const { gu, subtask_id, item_id, dtid } = params
+    const { gu, subtask_id, item_id, dtid } = await this.getRouteParams()
     if (gu) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {

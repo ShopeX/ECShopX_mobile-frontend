@@ -367,24 +367,29 @@ function MemberIndex(props) {
   const VipGradeDom = () => {
     if (isLogin) {
       return (
-        <View
-          className='gradename'
-          onClick={() => {
-            Taro.navigateTo({ url: '/subpages/member/member-level' })
-          }}
-        >
-          {
+        <View className='user-grade-name'>
+          <View className='username'>
+            {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
+          </View>
+          <View
+            className='gradename'
+            onClick={() => {
+              Taro.navigateTo({ url: '/subpages/member/member-level' })
+            }}
+          >
             {
-              true: vipInfo.grade_name || '会员',
-              false: userInfo?.gradeInfo?.grade_name || ''
-            }[vipInfo.isVip]
-          }
+              {
+                true: vipInfo.grade_name || '会员',
+                false: userInfo?.gradeInfo?.grade_name || ''
+              }[vipInfo.isVip]
+            }
+          </View>
         </View>
       )
     } else {
       return (
         <SpLogin newUser={isNewUser}>
-          <Text className='join-us-txt'>加入我们?</Text>
+          <Text className='join-us-txt'>欢迎登录</Text>
         </SpLogin>
       )
     }
@@ -417,17 +422,18 @@ function MemberIndex(props) {
           />
           <View className='header-hd__body'>
             <View className='username-wrap'>
-              <Text className='username'>
+              {/* <Text className='username'>
                 {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
-              </Text>
-              {config.menu.member_code && (
-                <Text
-                  className='iconfont icon-erweima-01'
-                  onClick={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
-                ></Text>
-              )}
+              </Text> */}
+              <View className='join-us'>{VipGradeDom()}</View>
             </View>
-            <View className='join-us'>{VipGradeDom()}</View>
+
+            {config.menu.member_code && (
+              <Text
+                className='iconfont icon-erweima-01'
+                onClick={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
+              ></Text>
+            )}
           </View>
         </View>
         <View className='header-bd'>
@@ -446,13 +452,13 @@ function MemberIndex(props) {
             <View className='bd-item-value'>{state.point}</View>
           </View>
           {process.env.NODE_ENV === 'development' && (
-              <View className='bd-item deposit-item'>
-                <View className='bd-item-label'>储值(¥)</View>
-                <View className='bd-item-value'>
-                  <SpPrice noSymbol value={state.deposit} />
-                </View>
+            <View className='bd-item deposit-item'>
+              <View className='bd-item-label'>储值(¥)</View>
+              <View className='bd-item-value'>
+                <SpPrice noSymbol value={state.deposit} />
               </View>
-            )}
+            </View>
+          )}
           <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>

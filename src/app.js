@@ -51,17 +51,14 @@ class App extends Component {
   //   // }
   // }
 
-  onLaunch(options) {
-    console.log(`app onLaunch:`, options)
-  }
-
   componentDidMount() {
     if (isWeixin) {
       checkAppVersion()
     }
   }
 
-  componentDidShow(options) {
+  onLaunch(options) {
+    console.log(`app onLaunch:`, options)
     entryLaunch.getRouteParams(options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
@@ -86,6 +83,12 @@ class App extends Component {
     if (S.getAuthToken()) {
       entryLaunch.postGuideUV()
     }
+  }
+
+
+
+  componentDidShow(options) {
+
 
     // if (isNavbar()) {
     //   document.querySelector('title').addEventListener(

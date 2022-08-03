@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
-import { SpPage, SpPrice, SpPoint, SpCell, SpGoodsCell } from '@/components'
+import { SpPage, SpPrice, SpPoint, SpCell, SpGoodsCell, SpCashier } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
 import { changeCoupon } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
@@ -66,7 +66,8 @@ function PointShopEspierCheckout() {
     isPointOpenModal,
     point_use,
     isNeedPackage,
-    isPackageOpend
+    isPackageOpend,
+    openCashier
   } = state
 
   const {
@@ -241,10 +242,12 @@ function PointShopEspierCheckout() {
       draft.submitLoading = false
     })
 
+    const isCashPay = totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 // 是否需要现金支付
     // 储值支付 或者 积分抵扣
-    if (payType === 'deposit' || params.pay_type == 'point') {
+    if (payType === 'deposit' || params.pay_type == 'point' && !isCashPay) {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
     } else {
+      debugger
       if (
         params.pay_type == 'wxpayjs' ||
         (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
@@ -468,7 +471,8 @@ function PointShopEspierCheckout() {
       // not_use_coupon: 0,
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: 'point'
+      pay_type: totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 ? payType: 'point'
+      // pay_type: point_use > 0 && totalInfo.freight_fee > 0 ? 'point' : payType,
       // distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
 
@@ -512,6 +516,12 @@ function PointShopEspierCheckout() {
     return cus_parmas
   }
 
+  const handlePaymentShow = () => {
+    setState((draft) => {
+      draft.openCashier = true
+    })
+  }
+
   const renderFooter = () => {
     return (
       <View className='checkout-toolbar'>
@@ -524,7 +534,7 @@ function PointShopEspierCheckout() {
             </View>
             {totalInfo.freight_type == 'cash' && (
               <View>
-                {`邮费: `}
+                {`运费: `}
                 <SpPrice value={totalInfo.freight_fee / 100} />
               </View>
             )}
@@ -588,6 +598,34 @@ function PointShopEspierCheckout() {
 
       {renderGoodsComp()}
 
+      {totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 && (
+        <View>
+          <SpCell
+            isLink
+            className='cart-checkout__pay'
+            title='支付方式'
+            onClick={handlePaymentShow}
+          >
+            {totalInfo.deduction && (
+              <Text>
+                {totalInfo.remainpt}
+                {`${pointName}可用`}
+              </Text>
+            )}
+            <Text className='invoice-title'>
+              {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+            </Text>
+          </SpCell>
+          {totalInfo.deduction && (
+            <View>
+              可用{totalInfo.point}
+              {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
+              包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
+            </View>
+          )}
+        </View>
+      )}
+
       <View className='cart-checkout__total'>
         <SpCell className='trade-sub__item' title='积分：'>
           <SpPoint value={totalInfo.item_point} />
@@ -597,6 +635,24 @@ function PointShopEspierCheckout() {
           {totalInfo.freight_type == 'cash' && <SpPrice value={totalInfo.freight_fee / 100} />}
         </SpCell>
       </View>
+
+      <SpCashier
+        isOpened={openCashier}
+        paymentAmount={totalInfo.freight_fee}
+        value={payChannel}
+        onClose={() => {
+          setState((draft) => {
+            draft.openCashier = false
+          })
+        }}
+        onChange={(value) => {
+          setState((draft) => {
+            console.log(`SpCashier:`, value)
+            draft.payType = value.paymentCode
+            draft.payChannel = value.paymentChannel
+          })
+        }}
+      />
     </SpPage>
   )
 }

@@ -1042,7 +1042,7 @@ export default class TradeDetail extends Component {
 
             <View className='line'>
               <View className='left'>实付</View>
-              <View className='right'>{`${this.isPointitemGood() ? info.item_point + '积分' : `¥${info.totalpayment}`}`}</View>
+              <View className='right'>{`${this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`}`}</View>
             </View>
 
             {info.delivery_code && (
