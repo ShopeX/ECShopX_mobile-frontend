@@ -10,7 +10,7 @@ function CompEvaluation(props) {
   const { className, list = [], itemId } = props
 
   const onViewMore = () => {
-    let url = `/marketing/pages/item/espier-evaluation?id=${itemId}`
+    let url = `/marketing/pages/item/espier-evaluation?id=${itemId}&order_type=pointsmall`
     // if (this.isPointitemGood()) {
     //   url += `&order_type=pointsmall`
     // }

@@ -16,12 +16,18 @@ $margin24: 24px;
       white-space: nowrap;
       flex: 1;
       margin-right: 0;
+      display: flex;
+      align-items: center;
       .last_price {
         display: inline-block;
         .sp-price__append {
           color: var(--color-primary);
         }
       }
+    }
+    .checkout-total {
+      margin-left: 20px;
+      line-height: 32px;
     }
     &__price {
       display: inline-block;

@@ -327,7 +327,7 @@ function PointShopEspierCheckout() {
         confirmText: '返回',
         showCancel: false
       })
-      if(confirm) {
+      if (confirm) {
         Taro.navigateBack()
       }
     }
@@ -428,7 +428,7 @@ function PointShopEspierCheckout() {
 
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
-    items.forEach(item => item['is_point'] = true)
+    items.forEach((item) => (item['is_point'] = true))
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info
@@ -516,8 +516,19 @@ function PointShopEspierCheckout() {
     return (
       <View className='checkout-toolbar'>
         <View className='checkout-toolbar__total'>
-          {`共${totalInfo.items_count}件商品　总计: `}
-          <SpPoint value={totalInfo.point} />
+          {`共${totalInfo.items_count}件商品 `}
+          <View className='checkout-total'>
+            <View>
+              {`总计: `}
+              <SpPoint value={totalInfo.point} />
+            </View>
+            {totalInfo.freight_type == 'cash' && (
+              <View>
+                {`邮费: `}
+                <SpPrice value={totalInfo.freight_fee / 100} />
+              </View>
+            )}
+          </View>
         </View>
         <AtButton
           circle
@@ -582,7 +593,8 @@ function PointShopEspierCheckout() {
           <SpPoint value={totalInfo.item_point} />
         </SpCell>
         <SpCell className='trade-sub__item' title='运费：'>
-          <SpPoint value={totalInfo.freight_fee} />
+          {totalInfo.freight_type == 'point' && <SpPoint value={totalInfo.freight_fee} />}
+          {totalInfo.freight_type == 'cash' && <SpPrice value={totalInfo.freight_fee / 100} />}
         </SpCell>
       </View>
     </SpPage>

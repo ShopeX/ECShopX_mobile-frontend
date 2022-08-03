@@ -263,7 +263,7 @@ function PointShopList() {
             list={filterList}
             onChange={handleFilterChange}
           >
-            <View
+            {/* <View
               className='filter-btn'
               onClick={() => {
                 setState((v) => {
@@ -272,7 +272,7 @@ function PointShopList() {
               }}
             >
               筛选<Text className='iconfont icon-filter'></Text>
-            </View>
+            </View> */}
 
             <View className='search'>
               <View className='iconfont icon-sousuo-01'></View>

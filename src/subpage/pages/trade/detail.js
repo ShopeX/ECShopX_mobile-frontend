@@ -1116,7 +1116,7 @@ export default class TradeDetail extends Component {
                   info.receipt_type !== 'dada') ||
                 info.dada.dada_status !== 9) && (
                 <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                  className={`trade-detail__footer__btn trade-detail__footer_active ${
                     info.order_class === 'excard' ||
                     info.can_apply_aftersales !== 1 ||
                     (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
@@ -1139,7 +1139,7 @@ export default class TradeDetail extends Component {
                 (info.is_all_delivery ||
                   (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
                   <View
-                    className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${
                       info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'
                     }`}
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}

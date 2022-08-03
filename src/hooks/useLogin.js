@@ -47,6 +47,8 @@ export default (props = {}) => {
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
+      } else {
+        throw new Error()
       }
     }
   }

@@ -361,8 +361,9 @@ $paddingBottom: 100px;
     width: 100%;
     height: 100px;
     bottom: 0;
-    display: flex;
     background: #fff;
+    display: flex;
+    justify-content: space-evenly;
     align-items: center;
     &__btn {
       width: 338px;
@@ -375,6 +376,8 @@ $paddingBottom: 100px;
       border: 2px solid #bbb;
       overflow: hidden;
       font-size: 26px;
+      flex: 1;
+      margin: 0 20rpx;
       &.left {
         margin-left: 7%;
         width: 396px;
@@ -384,12 +387,12 @@ $paddingBottom: 100px;
         background: #fff;
       }
       &.right {
-        margin-right: 7%;
-        color: #fff;
-        border: none;
-        position: relative;
-        z-index: 99;
-        transform: translateX(-84px);
+        // margin-right: 7%;
+        // color: #fff;
+        // border: none;
+        // position: relative;
+        // z-index: 99;
+        // transform: translateX(-84px);
       }
       &:before {
         border: none;

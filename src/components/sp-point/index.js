@@ -11,10 +11,10 @@ const SpPoint = (props) => {
   const { pointName } = useSelector((state) => state.sys)
 
   return (
-    <View className={classNames('sp-point', className)}>
+    <Text className={classNames('sp-point', className)}>
       <Text class='point'>{value}</Text>
       <Text class='unit'>{pointName}</Text>
-    </View>
+    </Text>
   )
 }
 

@@ -151,7 +151,7 @@ function CompGoodsBuyToolbar(props) {
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   return (
     <View className='comp-goodsbuytoolbar'>
-      <SpLogin className='shoucang-wrap' onChange={onChangeCollection.bind(this)}>
+      {/* <SpLogin className='shoucang-wrap' onChange={onChangeCollection.bind(this)}>
         <View className='toolbar-item'>
           <Text
             className={classNames(
@@ -161,7 +161,7 @@ function CompGoodsBuyToolbar(props) {
           ></Text>
           <Text className='toolbar-item-txt'>收藏</Text>
         </View>
-      </SpLogin>
+      </SpLogin> */}
       <View
         className='toolbar-item'
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
