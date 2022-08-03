@@ -389,7 +389,7 @@ function MemberIndex(props) {
     } else {
       return (
         <SpLogin newUser={isNewUser}>
-          <Text className='join-us-txt'>欢迎登录</Text>
+          <Text className='join-us-txt'>登录查看全部订单</Text>
         </SpLogin>
       )
     }

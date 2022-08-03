@@ -45,12 +45,12 @@
     }
   }
   .toolbar-btns {
-    width: 580px;
-    padding-left: 20px;
+    width: 100%;
     box-sizing: border-box;
     position: relative;
     .btn-item {
-      width: calc(100% - 20px);
+      // width: calc(100% - 20px);
+      width: 100%;
       border-radius: 40px;
       height: 80px;
       line-height: 80px;

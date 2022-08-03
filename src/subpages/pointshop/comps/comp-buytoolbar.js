@@ -162,14 +162,14 @@ function CompGoodsBuyToolbar(props) {
           <Text className='toolbar-item-txt'>收藏</Text>
         </View>
       </SpLogin> */}
-      <View
+      {/* <View
         className='toolbar-item'
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
       >
         <Text className='iconfont icon-gouwuche'></Text>
         <Text className='toolbar-item-txt'>购物车</Text>
         {cartCount > 0 && <Text className='cart-count'>{cartCount}</Text>}
-      </View>
+      </View> */}
       <View
         className={classNames('toolbar-btns', {
           'mutiplte-btn': btns.length > 1

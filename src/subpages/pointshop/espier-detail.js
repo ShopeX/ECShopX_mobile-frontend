@@ -231,20 +231,20 @@ function PointShopEspierDetail(props) {
       draft.promotionActivity = data.promotionActivity
     })
 
-    if (openRecommend == 1) {
-      getRecommendList() // 猜你喜欢
-    }
+    // if (openRecommend == 1) {
+    //   getRecommendList() // 猜你喜欢
+    // }
   }
 
-  const getRecommendList = async () => {
-    const { list } = await api.cart.likeList({
-      page: 1,
-      pageSize: 30
-    })
-    setState((draft) => {
-      draft.recommendList = list
-    })
-  }
+  // const getRecommendList = async () => {
+  //   const { list } = await api.cart.likeList({
+  //     page: 1,
+  //     pageSize: 30
+  //   })
+  //   setState((draft) => {
+  //     draft.recommendList = list
+  //   })
+  // }
 
   // 获取评论
   const getEvaluationList = async () => {
@@ -440,7 +440,7 @@ function PointShopEspierDetail(props) {
         </View>
       )}
 
-      <SpRecommend info={recommendList} />
+      {/* <SpRecommend info={recommendList} /> */}
 
       {/* Sku选择器 */}
       <MSpSkuSelect
