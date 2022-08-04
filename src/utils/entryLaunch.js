@@ -402,18 +402,6 @@ class EntryLaunch {
         event_type: routePath[path],
         store_bn: shop_code
       })
-      // 判断是否已经绑定导购员
-      if (smid || gu_user_id) {
-        const { is_bind } = await api.member.getUsersalespersonrel({
-          salesperson_id: smid
-        })
-        // 绑定导购
-        if (is_bind !== '1') {
-          await api.member.setUsersalespersonrel({
-            salesperson_id: smid
-          })
-        }
-      }
     }
   }
 }

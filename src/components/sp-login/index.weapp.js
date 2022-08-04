@@ -61,9 +61,14 @@ function SpLogin(props) {
 
       // const { uid } = entryLaunch.getLaunchParams()
       const { uid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+      const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS)
       if (uid) {
         // 分销绑定
         params['uid'] = uid
+      }
+      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      if(gu_user_id) {
+        params['channel'] = 1
       }
 
       try {
