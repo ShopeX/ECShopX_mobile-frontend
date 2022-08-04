@@ -55,9 +55,8 @@ function SpPage(props, ref) {
 
   useReady(() => {
     // 导购货架数据上报
-    const router = $instance.router
-    entryLaunch.postGuideTask(router)
-    console.log('sp pages use ready:', $instance)
+    // const router = $instance.router
+    // console.log('sp pages use ready:', $instance)
   })
 
   useEffect(() => {

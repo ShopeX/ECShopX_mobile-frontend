@@ -43,7 +43,7 @@ export default class recommendDetail extends Component {
         screenWidth: res.screenWidth
       })
     })
-    entryLaunch.postGuideTask(this.$instance.router)
+    entryLaunch.postGuideTask()
   }
 
   onShareAppMessage(res) {

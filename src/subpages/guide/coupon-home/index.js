@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, {
@@ -13,6 +13,7 @@ import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import { pickBy, log } from '@/utils'
+import { useQwLogin } from '@/hooks'
 import {
   BaHomeWgts,
   BaStoreList,
@@ -28,15 +29,21 @@ const initialState = {
   list: []
 }
 function GuideCouponIndex(props) {
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
   const $instance = getCurrentInstance()
   const { subtask_id = '' } = getCurrentInstance().router.params
   const [state, setState] = useImmer(initialState)
   const { list } = state
+  const couponRef = useRef()
   const { userInfo } = useSelector((state) => state.guide)
 
-  // useEffect(() => {
-  //   fetch()
-  // }, [])
+  useEffect(() => {
+    if (isLogin) {
+      couponRef.current.reset()
+    }
+  }, [isLogin])
 
   useDidShow(() => {
     Taro.hideShareMenu({
@@ -60,7 +67,7 @@ function GuideCouponIndex(props) {
       card_id: cardId,
       dtid: distributor_id,
       smid: salesperson_id,
-      gu: `${work_userid}_${shop_code}`,
+      gu: `${work_userid}_${shop_code}`
       // subtask_id: subtaskId
     }
 
@@ -92,7 +99,7 @@ function GuideCouponIndex(props) {
   console.log('list:', list)
   return (
     <SpPage className='page-guide-coupon' navigateTheme='dark' renderFooter={<BaTabBar />}>
-      <SpScrollView className='coupon-list' fetch={fetch}>
+      <SpScrollView className='coupon-list' auto={false} ref={couponRef} fetch={fetch}>
         {list.map((item, index) => (
           <View className='coupon-item__wrap' key={`coupon-item__${index}`}>
             <BaCoupon info={item} />

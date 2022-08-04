@@ -214,7 +214,7 @@ function PointShopEspierCheckout() {
       try {
         const h5ResInfo = await api.trade.h5create({
           ...params,
-          pay_type: isAPP() ? payType : TRANSFORM_PAYTYPE[payType]
+          pay_type: params.pay_type != 'point' ? (isAPP() ? payType : TRANSFORM_PAYTYPE[payType]) : 'point'
         })
         orderInfo = h5ResInfo
         orderId = h5ResInfo.order_id
@@ -247,7 +247,6 @@ function PointShopEspierCheckout() {
     if (payType === 'deposit' || params.pay_type == 'point' && !isCashPay) {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
     } else {
-      debugger
       if (
         params.pay_type == 'wxpayjs' ||
         (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)

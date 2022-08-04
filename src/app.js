@@ -78,11 +78,13 @@ class App extends Component {
         })
         Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
       }
-    })
 
-    if (S.getAuthToken()) {
-      entryLaunch.postGuideUV()
-    }
+      // 导购UV上报
+      if (S.getAuthToken()) {
+        entryLaunch.postGuideUV()
+        entryLaunch.postGuideTask()
+      }
+    })
   }
 
 

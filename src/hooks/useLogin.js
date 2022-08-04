@@ -60,7 +60,7 @@ export default (props = {}) => {
     await getUserInfo()
     // 导购UV统计
     entryLaunch.postGuideUV()
-    entryLaunch.postGuideTask($instance.router)
+    entryLaunch.postGuideTask()
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))

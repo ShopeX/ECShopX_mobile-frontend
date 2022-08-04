@@ -93,7 +93,7 @@ function CashierResult(props) {
         </View>
       )}
       <View className='btn-block'>
-        {/* 普通订单, 秒杀订单, 积分订单 */}
+        {/* 普通订单, 秒杀订单 */}
         {(tradeInfo?.tradeSourceType == 'normal' ||
           tradeInfo?.tradeSourceType == 'normal_seckill') && (
           <View className='btn-wrap'>
@@ -111,7 +111,7 @@ function CashierResult(props) {
         )}
 
         {/* 积分订单 */}
-        {(tradeInfo?.tradeSourceType == 'normal_pointsmall') && (
+        {(tradeInfo?.tradeSourceType == 'normal_pointsmall' || tradeInfo?.tradeSourceType == 'normal_pointsmall_pointsmall') && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'

@@ -8,6 +8,7 @@ import { pickBy, styleNames } from '@/utils'
 import doc from '@/doc'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
+import { useQwLogin } from '@/hooks'
 import { BaTabBar, BaNavBar } from '@/subpages/guide/components'
 import CompSeries from './comps/comp-series'
 
@@ -23,6 +24,9 @@ const initialState = {
 }
 
 const CategoryIndex = (props) => {
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries, fixTop } = state
   // 获取数据

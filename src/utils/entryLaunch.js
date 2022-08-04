@@ -367,7 +367,8 @@ class EntryLaunch {
   /**
    * 导购任务埋点上报
    */
-  async postGuideTask({ path, params }) {
+  async postGuideTask() {
+    const { path, params } = $instance.router
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -378,7 +379,8 @@ class EntryLaunch {
     if (!routePath[path]) {
       return
     }
-    const { gu, subtask_id, item_id, dtid } = await this.getRouteParams()
+    // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+    const { gu, subtask_id, item_id, dtid, smid, gu_user_id } = params
     if (gu && S.getAuthToken()) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {
@@ -400,6 +402,18 @@ class EntryLaunch {
         event_type: routePath[path],
         store_bn: shop_code
       })
+      // 判断是否已经绑定导购员
+      if (smid || gu_user_id) {
+        const { is_bind } = await api.member.getUsersalespersonrel({
+          salesperson_id: smid
+        })
+        // 绑定导购
+        if (is_bind !== '1') {
+          await api.member.setUsersalespersonrel({
+            salesperson_id: smid
+          })
+        }
+      }
     }
   }
 }
