@@ -1,4 +1,14 @@
 .page-guide-recommendlist {
+  padding-top: 170px;
+  &:before {
+    content: '';
+    height: 170px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
   .search-wrap {
     padding: 16px 28px;
     background-color: #fff;

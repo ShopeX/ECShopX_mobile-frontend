@@ -349,7 +349,7 @@ class API {
   }
 
   reqError(res, msg = '') {
-    const errMsg = (res.data && res.data.message) || msg
+    const errMsg = (res.data && res.data?.data?.message) || msg
     const err = new Error(errMsg)
     err.res = res
     return err

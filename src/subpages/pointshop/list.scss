@@ -1,0 +1,199 @@
+.page-pointshop-list {
+  overflow-x: hidden;
+  .page-hd {
+    background-color: #fff;
+  }
+  .pointshop-hd {
+    width: 850px;
+    height: 300px;
+    background: var(--color-primary);
+    border-radius: 0 0 150px 150px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .point-info {
+    width: 710px;
+    height: 160px;
+    background: #ffffff;
+    border-radius: 16px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -54px;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    /* prettier-ignore */
+    border: 1PX solid rgba(var(--color-rgb), 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &-hd {
+      display: flex;
+      align-items: center;
+      .sp-image {
+        margin-right: 20px;
+        &-img {
+          border-radius: 40px;
+        }
+      }
+      .user-name {
+        color: #333;
+        font-size: 30px;
+        font-weight: 600;
+        max-width: 200px;
+        @include text-overflow();
+      }
+    }
+    .point-total {
+      .point {
+        font-size: 56px;
+        font-weight: 600;
+      }
+      // .unit {
+      //   font-size: 24px;
+      //   color: #444;
+      //   margin-left: 6px;
+      //   position: relative;
+      //   top: -4px;
+      // }
+    }
+  }
+  .item-list-head {
+    margin-top: 70px;
+    padding-bottom: 10px;
+    &.is-focus {
+      .filter-bar-body {
+        display: none;
+      }
+      .sp-filter-bar__extra {
+        flex: 1;
+      }
+      .filter-btn {
+        display: none;
+      }
+      .at-search-bar {
+        width: 100%;
+        transition: width 0.2s ease-in;
+      }
+    }
+  }
+  .search {
+    display: flex;
+    align-items: center;
+    height: 60px;
+    background: #f5f5f5;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    .icon-sousuo-01 {
+      font-size: 32px;
+      color: var(--color-primary);
+    }
+    .at-input {
+      margin: 0 10px;
+      padding: 0;
+      background: transparent;
+      flex: 1;
+      &:after {
+        display: none;
+      }
+      &__input {
+        font-size: 26px;
+        color: #666;
+      }
+    }
+  }
+  .sp-filter-bar {
+    justify-content: space-between;
+    .filter-bar-body {
+      width: 360px;
+      flex: none;
+    }
+  }
+  .sp-filter-bar__extra {
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    position: relative;
+    &:before {
+      content: '';
+      width: 1px;
+      height: 34px;
+      background-color: #ccc;
+      position: absolute;
+      top: 18px;
+      left: -16px;
+    }
+  }
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    color: #999;
+    height: 75px;
+    line-height: 75px;
+    .icon-filter {
+      font-size: 28px;
+      color: #999;
+    }
+  }
+  .goods-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px;
+    margin-top: 20px;
+    .goods-list-wrap {
+      width: 345px;
+      margin-bottom: 28px;
+    }
+    .left-container {
+      width: 350px;
+    }
+    .right-container {
+      width: 350px;
+      // padding-left: 20px;
+    }
+    .goods-item-wrap {
+      margin-bottom: 20px;
+      box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+    }
+    .sp-goods-item {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+  }
+  .sp-drawer__body {
+    margin-top: 160px;
+    .fitler-title {
+      color: #333;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .at-input {
+      margin-bottom: 0;
+      /* prettier-ignore */
+      border: 1PX solid #cdcdcd;
+      border-radius: 8px;
+      padding: 4px 10px;
+      width: 160px;
+      &:after {
+        display: none;
+      }
+      &__input {
+        font-size: 26px;
+        color: #666;
+      }
+    }
+    .custom-point-input {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .gap-line {
+      margin: 0 10px;
+    }
+  }
+}

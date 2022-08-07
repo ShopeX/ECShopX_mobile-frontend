@@ -49,7 +49,7 @@ function SpOrderItem(props) {
         <SpImage src={img} mode='aspectFill' width={170} height={170} />
       </View>
       <View className='sp-order-item__bd'>
-        {isShowPointTag && <SpPoint />}
+        {/* {isShowPointTag && <SpPoint />} */}
         <View className='sp-order-item__title'>
           {info.order_item_type === 'plus_buy' && (
             <Text className='sp-order-item__title-tag'>换购</Text>

@@ -1,0 +1,15 @@
+.page-guide-index {
+  padding-top: 170px;
+  &:before {
+    content: '';
+    height: 170px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .home-body {
+    padding-top: 125px;
+  }
+}

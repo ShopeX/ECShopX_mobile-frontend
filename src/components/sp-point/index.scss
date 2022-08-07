@@ -1,0 +1,14 @@
+.sp-point {
+  font-family: PingFangSC-Regular, PingFang SC;
+  .point {
+    font-size: 36px;
+    color: var(--color-primary);
+    margin-right: 4px;
+  }
+  .unit {
+    font-size: 26px;
+    color: var(--color-primary);
+    // position: relative;
+    // top: -2px;
+  }
+}

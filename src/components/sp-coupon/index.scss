@@ -81,17 +81,17 @@
       border-radius: 45px;
       margin: 18px auto;
       &.cash {
-        color: #679BDD;
+        color: #679bdd;
       }
       &.discount {
-        color: #7E6FA9;
+        color: #7e6fa9;
       }
-      &.gift {
-        color: #D4A570;
+      &.new_gift {
+        color: #d4a570;
       }
       &.used,
       &.overdue {
-        color: #A9A9A9;
+        color: #a9a9a9;
       }
     }
     .share-btn {
@@ -142,6 +142,22 @@
         margin-left: 4px;
         position: relative;
         top: -2px;
+      }
+      .coupon-rule {
+        color: #fff;
+        font-size: 22px;
+        text-align: center;
+        height: 24px;
+      }
+    }
+    .coupon-gift {
+      .coupon-value {
+        text-align: center;
+        margin-top: 20px;
+        .value {
+          color: #fff;
+          font-size: 38px;
+        }
       }
       .coupon-rule {
         color: #fff;

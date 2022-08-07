@@ -61,6 +61,15 @@ function SpCoupon(props) {
           <View className='coupon-rule'>{leastCost > 0 ? `满${leastCost}可用` : ''}</View>
         </View>
       )
+    } else if (cardType === 'new_gift') {
+      return (
+        <View className='coupon-gift'>
+          <View className='coupon-value'>
+            <Text className='value'>兑换券</Text>
+          </View>
+          <View className='coupon-rule'></View>
+        </View>
+      )
     }
   }
 

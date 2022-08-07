@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline, useReady } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
@@ -27,7 +27,6 @@ import {
   isArray,
   canvasExp,
   normalizeQuerys,
-  buriedPoint,
   isAlipay,
   isWeixin,
   isWeb,

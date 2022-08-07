@@ -22,18 +22,11 @@ export default {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index' // 直播间页面
-
-    // 'pages/store/index', // 店铺首页
-    // 'pages/store/brand-info', // 店铺品牌
-    // 'pages/store/item-list', // 店铺商品列表
-    // 'pages/store/category', // 店铺商品分类
-    // 'pages/store/list', // 选择店铺列表
-    // 'pages/store/ziti-list' // 自提列表
   ],
   subPackages: [
     // 内购
     {
-      root: 'subpages/purchase', 
+      root: 'subpages/purchase',
       pages: [
         'member',
         'espier-detail',
@@ -93,13 +86,23 @@ export default {
         'coupon-record', // 优惠券使用记录
         'coupon-picker', // 优惠券选择
         'package-list', // 组合优惠
-        'certification' // 实名认证
+        'certification', // 实名认证
+        'exchange-code', // 兑换券二维码
       ]
     },
     {
       root: 'subpages/dianwu',
       pages: [
         'index' // 店务端
+      ]
+    },
+    // 积分商城
+    {
+      root: 'subpages/pointshop',
+      pages: [
+        'list', // 积分商品列表
+        'espier-detail', // 积分商品详情
+        'espier-checkout' // 积分商品下单
       ]
     },
     {
@@ -203,7 +206,6 @@ export default {
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
         'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-        'pages/member/qrcode'
       ]
     },
     {
@@ -269,10 +271,6 @@ export default {
         // 'pages/nullify/coupon-nullify'
       ]
     },
-    {
-      root: 'pointitem',
-      pages: ['pages/list']
-    },
     // 商家入驻
     {
       root: 'subpages/merchant',
@@ -319,5 +317,5 @@ export default {
     //   'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
     // }
   }
-  
+
 }

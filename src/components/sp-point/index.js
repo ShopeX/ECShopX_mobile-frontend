@@ -1,25 +1,21 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { useSelector } from 'react-redux'
+import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
-import { DEFAULT_POINT_NAME } from '@/consts'
 
 import './index.scss'
 
-export default class SpPoint extends Component {
-  static defaultProps = {
-    value: 0
-  }
+const SpPoint = (props) => {
+  const { value = 0, className } = props
+  const { pointName } = useSelector((state) => state.sys)
 
-  render () {
-    const { className, value } = this.props
-    const unit = Taro.getStorageInfoSync('custom_point_name') || DEFAULT_POINT_NAME
-
-    return (
-      <View className={classNames('sp-point', className)}>
-        {value && <View class='point'>{value}</View>}
-        <View class='unit'>{unit}</View>
-      </View>
-    )
-  }
+  return (
+    <Text className={classNames('sp-point', className)}>
+      <Text className='point'>{value}</Text>
+      <Text className='unit'>{pointName}</Text>
+    </Text>
+  )
 }
+
+export default SpPoint

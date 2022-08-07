@@ -101,11 +101,15 @@ export const BUY_TOOL_BTNS = {
   ACTIVITY_GROUP_BUY: { title: '我要开团', key: 'activity_group_buy', btnStatus: 'active' },
   SHARE: { title: '我要分享', key: 'share', btnStatus: 'active' },
   NO_STORE: { title: '无货', key: 'nostore', btnStatus: 'disabled' },
-  ONLY_SHOW: { title: '仅展示商品', key: 'only_show', btnStatus: 'disabled' }
+  ONLY_SHOW: { title: '仅展示商品', key: 'only_show', btnStatus: 'disabled' },
+  // 兑换券商品
+  EX_CHANGE: { title: '立即兑换', key: 'exchange', btnStatus: 'active' },
+  // 兑换积分商品
+  EX_CHANGE_POINT: { title: '立即兑换', key: 'exchange_point', btnStatus: 'active' }
 }
 
 export const COUPON_TYPE = {
-  gift: {
+  new_gift: {
     tag: '兑换券',
     bg: 'linear-gradient(122deg, #F4C486 0%, #D4A570 100%)',
     fc: '#AC8050',

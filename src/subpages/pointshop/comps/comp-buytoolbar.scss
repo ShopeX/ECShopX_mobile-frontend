@@ -1,0 +1,105 @@
+.comp-goodsbuytoolbar {
+  display: flex;
+  padding: 20px;
+  background: #fff;
+  height: 120px;
+  box-sizing: border-box;
+  .shoucang-wrap {
+    flex: 1;
+  }
+  .icon-shoucang-01 {
+    font-size: 38px;
+  }
+  .icon-shoucanghover-01 {
+    font-size: 38px;
+    color: var(--color-primary);
+  }
+  .icon-gouwuche {
+    font-size: 38px;
+  }
+  .toolbar-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    &-txt {
+      font-size: 24px;
+      color: #222;
+      /* #ifdef  h5  */
+      position: relative;
+      top: -10px;
+      /* #endif */
+    }
+    .cart-count {
+      position: absolute;
+      display: inline-block;
+      width: 26px;
+      height: 26px;
+      border-radius: 26px;
+      background: var(--color-primary);
+      color: #fff;
+      font-size: 20px;
+      text-align: center;
+      right: 26px;
+    }
+  }
+  .toolbar-btns {
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    .btn-item {
+      // width: calc(100% - 20px);
+      width: 100%;
+      border-radius: 40px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      font-size: 26px;
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      .btn-item-txt {
+        height: 80px;
+        line-height: 80px;
+        font-size: 28px;
+      }
+      &.btn-active {
+        /* prettier-ignore */
+        border: 1PX solid var(--color-primary);
+        background: var(--color-primary);
+        color: #fff;
+        .btn-item-txt {
+          color: #fff;
+        }
+      }
+      &.btn-default {
+        /* prettier-ignore */
+        border: 1PX solid #E5E5E5;
+        color: #444;
+      }
+      &.btn-disabled {
+        /* prettier-ignore */
+        border: 1PX solid #E5E5E5;
+        background: #e5e5e5;
+        color: #8d8d8d;
+      }
+    }
+    &.mutiplte-btn {
+      .btn-item {
+        width: 58%;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        &:first-child {
+          padding-right: 8%;
+          left: 0;
+        }
+        &:last-child {
+          right: 0;
+        }
+      }
+    }
+  }
+}

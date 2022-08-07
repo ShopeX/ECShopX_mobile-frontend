@@ -8,6 +8,13 @@
   &__focus{
     height: 100vh;
     z-index: $z-index-dropdown;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 20rpx;
+    background: #fff;
     &.without-dialog {
       height: auto;
     }

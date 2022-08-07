@@ -3,7 +3,8 @@ module.exports = {
   rules: {
     "no-unused-vars": ["error", { varsIgnorePattern: "Taro" }],
     // "space-before-function-paren": [1, "always"],
-    "import/no-named-as-default": 0
+    "import/no-named-as-default": 0,
+    "react/react-in-jsx-scope": 0
   },
   parser: "babel-eslint",
   globals: {

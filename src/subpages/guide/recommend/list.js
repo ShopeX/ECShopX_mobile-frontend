@@ -14,6 +14,7 @@ import {
   BaCoupon
 } from '@/subpages/guide/components'
 import { pickBy, styleNames } from '@/utils'
+import { useQwLogin } from '@/hooks'
 import api from '@/api'
 import doc from '@/doc'
 import './list.scss'
@@ -25,6 +26,9 @@ const initialState = {
   fixTop: 0
 }
 function GuideRecommendList(props) {
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
   const [state, setState] = useImmer(initialState)
   const { leftList, rightList, keywords, fixTop } = state
   const scrollRef = useRef()
@@ -112,8 +116,7 @@ function GuideRecommendList(props) {
   }
 
   return (
-    <SpPage className='page-guide-recommendlist' renderFooter={<BaTabBar />}>
-      <BaNavBar home title='种草' />
+    <SpPage className='page-guide-recommendlist' navigateTheme='dark' renderFooter={<BaTabBar />}>
       <View id='search-wrap' className='search-wrap'>
         <SpSearchBar
           keyword={keywords}

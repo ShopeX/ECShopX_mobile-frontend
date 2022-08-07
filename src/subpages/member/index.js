@@ -210,7 +210,7 @@ function MemberIndex(props) {
     if (menuRes.list.length > 0) {
       menu = { ...menuRes.list[0].params.data, purchase: true }
     }
-    if (S.getAuthToken() && VERSION_PLATFORM) {
+    if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_STANDARD)) {
       const { result, status } = await api.dianwu.is_admin()
       S.set('DIANWU_CONFIG', result, status)
       menu = {
@@ -367,24 +367,29 @@ function MemberIndex(props) {
   const VipGradeDom = () => {
     if (isLogin) {
       return (
-        <View
-          className='gradename'
-          onClick={() => {
-            Taro.navigateTo({ url: '/subpages/member/member-level' })
-          }}
-        >
-          {
+        <View className='user-grade-name'>
+          <View className='username'>
+            {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
+          </View>
+          <View
+            className='gradename'
+            onClick={() => {
+              Taro.navigateTo({ url: '/subpages/member/member-level' })
+            }}
+          >
             {
-              true: vipInfo.grade_name || '会员',
-              false: userInfo?.gradeInfo?.grade_name || ''
-            }[vipInfo.isVip]
-          }
+              {
+                true: vipInfo.grade_name || '会员',
+                false: userInfo?.gradeInfo?.grade_name || ''
+              }[vipInfo.isVip]
+            }
+          </View>
         </View>
       )
     } else {
       return (
         <SpLogin newUser={isNewUser}>
-          <Text className='join-us-txt'>加入我们?</Text>
+          <Text className='join-us-txt'>登录查看全部订单</Text>
         </SpLogin>
       )
     }
@@ -411,23 +416,24 @@ function MemberIndex(props) {
         <View className='header-hd'>
           <SpImage
             className='usericon'
-            src={(userInfo && userInfo.avatar) || 'default_user.png'}
+            src={(userInfo && userInfo.avatar) || 'user_icon.png'}
             width='110'
             onClick={handleClickLink.bind(this, '/marketing/pages/member/userinfo')}
           />
           <View className='header-hd__body'>
             <View className='username-wrap'>
-              <Text className='username'>
+              {/* <Text className='username'>
                 {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
-              </Text>
-              {config.menu.member_code && (
-                <Text
-                  className='iconfont icon-erweima-01'
-                  onClick={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
-                ></Text>
-              )}
+              </Text> */}
+              <View className='join-us'>{VipGradeDom()}</View>
             </View>
-            <View className='join-us'>{VipGradeDom()}</View>
+
+            {config.menu.member_code && (
+              <Text
+                className='iconfont icon-erweima-01'
+                onClick={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
+              ></Text>
+            )}
           </View>
         </View>
         <View className='header-bd'>
@@ -446,13 +452,13 @@ function MemberIndex(props) {
             <View className='bd-item-value'>{state.point}</View>
           </View>
           {process.env.NODE_ENV === 'development' && (
-              <View className='bd-item deposit-item'>
-                <View className='bd-item-label'>储值(¥)</View>
-                <View className='bd-item-value'>
-                  <SpPrice noSymbol value={state.deposit} />
-                </View>
+            <View className='bd-item deposit-item'>
+              <View className='bd-item-label'>储值(¥)</View>
+              <View className='bd-item-value'>
+                <SpPrice noSymbol value={state.deposit} />
               </View>
-            )}
+            </View>
+          )}
           <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>

@@ -8,6 +8,7 @@ import { pickBy, styleNames } from '@/utils'
 import doc from '@/doc'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
+import { useQwLogin } from '@/hooks'
 import { BaTabBar, BaNavBar } from '@/subpages/guide/components'
 import CompSeries from './comps/comp-series'
 
@@ -23,6 +24,9 @@ const initialState = {
 }
 
 const CategoryIndex = (props) => {
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries, fixTop } = state
   // 获取数据
@@ -51,40 +55,52 @@ const CategoryIndex = (props) => {
     const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
     const { list } = await api.category.getCategory(query)
     let seriesList = list[0] ? list[0].params.data : []
-    let tabList = []
-    let contentList = []
-    // 说明有多系列
-    if (list[0].params.hasSeries) {
-      seriesList.map((item) => {
-        tabList.push({ title: item.title, status: item.name })
-        contentList.push(item.content)
+
+    if (!seriesList.length) {
+      const res = await api.category.get()
+      const currentList = pickBy(res, {
+        name: 'category_name',
+        img: 'image_url',
+        id: 'id',
+        category_id: 'category_id',
+        children: ({ children }) =>
+          pickBy(children, {
+            name: 'category_name',
+            img: 'image_url',
+            id: 'id',
+            category_id: 'category_id',
+            children: ({ children }) =>
+              pickBy(children, {
+                name: 'category_name',
+                img: 'image_url',
+                category_id: 'category_id'
+              })
+          })
+      })
+      setState((draft) => {
+        draft.currentList = currentList
+        draft.hasSeries = true
       })
     } else {
-      contentList.push(seriesList)
-    }
-    let currentList = contentList[activeIndex] //当前系列内容
-    currentList = pickBy(currentList, doc.category.CATEGORY_LIST)
-    setState((draft) => {
-      draft.tabList = tabList
-      draft.contentList = contentList
-      draft.hasSeries = true
-      draft.currentList = currentList
-    })
-
-    setTimeout(() => {
-      Taro.createSelectorQuery()
-        .select('#category-wrap')
-        .boundingClientRect((res) => {
-          console.log('boundingClientRect:', res) //
-          if (res) {
-            setState((draft) => {
-              draft.fixTop = res.top
-              console.log('fixTop:', res.top) //
-            })
-          }
+      let tabList = []
+      let contentList = []
+      if (list[0].params.hasSeries) {
+        seriesList.map((item) => {
+          tabList.push({ title: item.title, status: item.name })
+          contentList.push(item.content)
         })
-        .exec()
-    }, 200)
+      } else {
+        contentList.push(seriesList)
+      }
+      const curIndexList = contentList[activeIndex]
+      const nList = pickBy(curIndexList, doc.category.CATEGORY_LIST)
+      setState((draft) => {
+        draft.tabList = tabList
+        draft.contentList = contentList
+        draft.currentList = nList
+        draft.hasSeries = true
+      })
+    }
   }
 
   const fnSwitchSeries = (index) => {
@@ -95,8 +111,7 @@ const CategoryIndex = (props) => {
   }
 
   return (
-    <SpPage className='page-guide-category-index' renderFloat={<BaTabBar />}>
-      <BaNavBar home title='导购商城' />
+    <SpPage className='page-guide-category-index' navigateTheme='dark' renderFloat={<BaTabBar />}>
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
@@ -108,7 +123,7 @@ const CategoryIndex = (props) => {
         id='category-wrap'
         className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
       >
-        <CompSeries info={currentList} fixTop={fixTop} />
+        <CompSeries info={currentList} />
       </View>
     </SpPage>
   )

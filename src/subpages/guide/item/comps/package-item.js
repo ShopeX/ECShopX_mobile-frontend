@@ -4,7 +4,7 @@ import { AtAccordion, AtButton } from 'taro-ui'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { GoodsItem, SpCheckbox, GoodsBuyPanel } from '@/components'
 import { pickBy } from '@/utils'
-import S from '@/subpages/guide/lib/Spx.js'
+import S from '@/spx'
 import api from '@/api'
 import { connect } from 'react-redux'
 

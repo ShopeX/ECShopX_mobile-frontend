@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import Taro, { useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {

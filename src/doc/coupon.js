@@ -2,6 +2,7 @@ import { formatTime } from '@/utils'
 
 export const COUPON_ITEM = {
   title: 'title',
+  id: 'id',
   cardId: 'card_id',
   cardType: 'card_type',
   code: 'code',
@@ -19,6 +20,7 @@ export const COUPON_ITEM = {
   distributorName: ({ distributor_info }) => {
     return distributor_info?.name
   },
+  status: 'status',
   getNum: 'get_num',
   valid: ({ valid }) => {
     if(typeof valid === 'undefined') {
@@ -47,7 +49,7 @@ export const COUPON = {
   quantity: ({ quantity }) => parseInt(quantity),
   getNum: 'get_num',
   couponStatus: ({ quantity, get_limit, user_get_num, get_num}) => {
-    if(quantity - get_num <= 0) { 
+    if(quantity - get_num <= 0) {
       return 0 // 已领完
     } else if(get_limit - user_get_num > 0) {
       return 1 // 立即领取

@@ -95,10 +95,10 @@ function CouponCenter(props) {
   }
 
   return (
-    <SpPage className='page-coupon-center'>
+    <SpPage className='page-coupon-center' scrollToTopBtn>
       <SpScrollView className='list-scroll' fetch={fetch}>
         {couponList.map((item, index) => (
-          <View className='coupon-item-wrap'>
+          <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
             <SpCoupon info={item} onClick={handleClickCouponItem.bind(this, item, index)}>
               <Text>
                 {

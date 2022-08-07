@@ -294,7 +294,7 @@ export default class DistributionShopGoods extends Component {
                                           mode='aspectFill'
                                         />
                                       )}
-                                      {sku.spec_custom_value_name}
+                                      {sku.spec_custom_value_name || sku.spec_value_name}
                                     </View>
                                   ))
                                 ) : (

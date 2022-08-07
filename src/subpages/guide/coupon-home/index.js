@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, {
@@ -11,7 +11,9 @@ import { View, Button } from '@tarojs/components'
 import { SpPage, SpScrollView, CouponItem } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
-import { pickBy } from '@/utils'
+import qs from 'qs'
+import { pickBy, log } from '@/utils'
+import { useQwLogin } from '@/hooks'
 import {
   BaHomeWgts,
   BaStoreList,
@@ -27,15 +29,21 @@ const initialState = {
   list: []
 }
 function GuideCouponIndex(props) {
+  const { isLogin, login } = useQwLogin({
+    autoLogin: true
+  })
   const $instance = getCurrentInstance()
   const { subtask_id = '' } = getCurrentInstance().router.params
   const [state, setState] = useImmer(initialState)
   const { list } = state
+  const couponRef = useRef()
   const { userInfo } = useSelector((state) => state.guide)
 
-  // useEffect(() => {
-  //   fetch()
-  // }, [])
+  useEffect(() => {
+    if (isLogin) {
+      couponRef.current.reset()
+    }
+  }, [isLogin])
 
   useDidShow(() => {
     Taro.hideShareMenu({
@@ -55,9 +63,16 @@ function GuideCouponIndex(props) {
   const getAppShareInfo = async (cardId) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'coupon' })
     const { salesperson_id, distributor_id, work_userid, shop_code } = userInfo
-    const gu = `${work_userid}_${shop_code}`
-    const path = `/subpages/marketing/coupon-center?smid=${salesperson_id}&card_id=${cardId}&distributor_id=${distributor_id}&subtask_id=${subtask_id}&gu=${gu}`
-    console.log(`getAppShareInfo:`, path)
+    const query = {
+      card_id: cardId,
+      dtid: distributor_id,
+      smid: salesperson_id,
+      gu: `${work_userid}_${shop_code}`
+      // subtask_id: subtaskId
+    }
+
+    const path = `/subpages/marketing/coupon-center?${qs.stringify(query)}`
+    log.debug(`getAppShareInfo: ${path}`)
     return {
       title: title,
       imageUrl: imageUrl,
@@ -83,11 +98,10 @@ function GuideCouponIndex(props) {
   }
   console.log('list:', list)
   return (
-    <SpPage className='page-guide-coupon' renderFooter={<BaTabBar />}>
-      <BaNavBar home title='优惠券' />
-      <SpScrollView className='coupon-list' fetch={fetch}>
-        {list.map((item) => (
-          <View className='coupon-item__wrap'>
+    <SpPage className='page-guide-coupon' navigateTheme='dark' renderFooter={<BaTabBar />}>
+      <SpScrollView className='coupon-list' auto={false} ref={couponRef} fetch={fetch}>
+        {list.map((item, index) => (
+          <View className='coupon-item__wrap' key={`coupon-item__${index}`}>
             <BaCoupon info={item} />
           </View>
         ))}

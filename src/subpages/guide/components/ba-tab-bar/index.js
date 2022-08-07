@@ -4,7 +4,7 @@ import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
-import S from '@/subpages/guide/lib/Spx.js'
+import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
 @connect(({ tabBar, cart }) => ({
@@ -56,35 +56,35 @@ export default class TabBar extends Component {
       {
         title: '首页',
         iconType: 'home',
-        iconPrefixClass: 'icon',
+        iconPrefixClass: 'iconfont icon-home',
         url: '/subpages/guide/index',
         urlRedirect: true
       },
       {
         title: '分类',
         iconType: 'category',
-        iconPrefixClass: 'icon',
+        iconPrefixClass: 'iconfont icon-category',
         url: '/subpages/guide/category/index',
         urlRedirect: true
       },
       {
         title: '优惠券',
         iconType: 'member',
-        iconPrefixClass: 'icon',
+        iconPrefixClass: 'iconfont icon-coupon',
         url: '/subpages/guide/coupon-home/index',
         urlRedirect: true
       },
       {
         title: '种草',
         iconType: 'member',
-        iconPrefixClass: 'icon',
+        iconPrefixClass: 'iconfont icon-faverite',
         url: '/subpages/guide/recommend/list',
         urlRedirect: true
       },
       {
         title: '购物车',
         iconType: 'cart',
-        iconPrefixClass: 'icon',
+        iconPrefixClass: 'iconfont icon-cart',
         url: '/subpages/guide/cart/espier-index',
         text: this.cartCount || '',
         max: '99',

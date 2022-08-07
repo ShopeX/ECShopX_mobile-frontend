@@ -56,6 +56,7 @@
     position: fixed;
     left: 0;
     right: 0;
+    top: 0;
     z-index: 1000;
     .left-container,
     .right-container {
@@ -102,6 +103,15 @@
     &.mantle {
       background: rgba(255, 255, 255, 0.5);
       transition: all 0.15s ease-in;
+    }
+    &.dark {
+      background: #fff;
+      .icon-wrap {
+        background: #a0a0a0;
+      }
+      .title-container {
+        color: #333;
+      }
     }
   }
 }

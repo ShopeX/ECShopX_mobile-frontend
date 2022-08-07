@@ -192,7 +192,7 @@ function SpSkuSelect(props) {
     )
     onClose()
     dispatch(updateCount({ shop_type: 'distributor' }))
-    
+
     Taro.hideLoading()
     // showToast('成功加入购物车')
   }
@@ -211,8 +211,8 @@ function SpSkuSelect(props) {
       item_id: curItem ? curItem.itemId : info.itemId,
       num,
       distributor_id: distributorId
-    })
-    let url = `/pages/cart/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
+    }, !!info.point ) // info.point 有积分值时是积分商品
+    let url = `${!!info.point ? '/subpages/pointshop/espier-checkout' : '/pages/cart/espier-checkout' }?cart_type=fastbuy&shop_id=${distributorId}`
     if (activityType == 'seckill' || activityType === 'limited_time_sale') {
       const { seckill_id } = activityInfo
       const { ticket } = await api.item.seckillCheck({
@@ -286,9 +286,9 @@ function SpSkuSelect(props) {
         limitNum = 1
       }
     }
-    
+
     // 内购加购限制 + 内购立即购买限制
-    if (type == 'addcart' && purlimitByCart) { 
+    if (type == 'addcart' && purlimitByCart) {
       limitNum = purlimitByCart
       limitTxt = `（限购${purlimitByCart}件）`
     }
@@ -305,7 +305,7 @@ function SpSkuSelect(props) {
       max = curItem ? curItem.store : info.store
     }
 
-    
+
 
     return (
       <View className='buy-count'>

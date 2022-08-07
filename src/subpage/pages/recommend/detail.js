@@ -5,7 +5,7 @@ import api from '@/api'
 import { withPager } from '@/hocs'
 import { FloatMenus, FloatMenuItem, SpNavBar } from '@/components'
 import { connect } from 'react-redux'
-import { formatTime, buriedPoint, log, isWeixin } from '@/utils'
+import { formatTime, log, isWeixin, entryLaunch } from '@/utils'
 import S from '@/spx'
 // import { Tracker } from '@/service'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
@@ -43,10 +43,7 @@ export default class recommendDetail extends Component {
         screenWidth: res.screenWidth
       })
     })
-    // 埋点处理
-    buriedPoint.call(this, {
-      event_type: 'activeSeedingDetail'
-    })
+    entryLaunch.postGuideTask()
   }
 
   onShareAppMessage(res) {

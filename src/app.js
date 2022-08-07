@@ -13,9 +13,13 @@ import {
   SG_APP_CONFIG,
   SG_MEIQIA,
   SG_YIQIA,
-  SG_ROUTER_PARAMS
+  SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS,
+  SG_GUIDE_PARAMS_UPDATETIME
 } from '@/consts'
 import { checkAppVersion, isWeixin, isNavbar, log, entryLaunch } from '@/utils'
+import { requestIntercept } from '@/plugin/requestIntercept'
+import dayjs from 'dayjs'
 
 import './app.scss'
 
@@ -38,6 +42,7 @@ if (process.env.APP_BUILD_TARGET == 'app') {
   })
 }
 
+requestIntercept()
 class App extends Component {
   // componentWillMount() {
   //   this.getSystemConfig()
@@ -46,21 +51,48 @@ class App extends Component {
   //   // }
   // }
 
-  onLaunch(options) {
-    console.log(`app onLaunch:`, options)
-  }
-
   componentDidMount() {
     if (isWeixin) {
       checkAppVersion()
     }
   }
 
-  componentDidShow(options) {
+  onLaunch(options) {
+    console.log(`app onLaunch:`, options)
     entryLaunch.getRouteParams(options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+
+      // 已缓存的导购参数
+      const guideParams = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+      const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || ''
+      const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+      // 参数保存超过3天，清除导购参数
+      if (diffMilliseconds > 3 * 86400000) {
+        Taro.removeStorageSync(SG_GUIDE_PARAMS)
+        Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+      } else {
+        // 欢迎语携带用户编号
+        if(guideParams?.gu_user_id) { delete guideParams.gu_user_id }
+        Taro.setStorageSync(SG_GUIDE_PARAMS, {
+          ...guideParams,
+          ...params
+        })
+        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+      }
+
+      // 导购UV上报
+      if (S.getAuthToken()) {
+        entryLaunch.postGuideUV()
+        entryLaunch.postGuideTask()
+      }
     })
+  }
+
+
+
+  componentDidShow(options) {
+
 
     // if (isNavbar()) {
     //   document.querySelector('title').addEventListener(

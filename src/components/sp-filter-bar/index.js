@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { classNames } from '@/utils'
+import { classNames, isArray } from '@/utils'
 
 import './index.scss'
 
@@ -22,15 +22,14 @@ export default class SpFilterBar extends Component {
     const { current } = props
     this.state = {
       curIdx: current,
-      sortOrder: null
+      sortOrder: 1
     }
   }
 
   handleClickItem(idx, type = '') {
     const item = this.props.list[idx]
     let sortOrder = null
-
-    if (item.sort) {
+    if (typeof item.sort !== 'undefined') {
       sortOrder = idx === this.state.curIdx ? this.state.sortOrder * -1 : item.sort
     }
 
@@ -38,7 +37,7 @@ export default class SpFilterBar extends Component {
       curIdx: idx,
       sortOrder
     })
-
+    console.log('handleClickItem', idx, sortOrder, type)
     this.props.onChange({
       current: idx,
       sort: sortOrder,
@@ -58,8 +57,8 @@ export default class SpFilterBar extends Component {
               <View
                 className={classNames('sp-filter-bar__item', {
                   active: curIdx === idx,
-                  'sort-asc': item.sort && sortOrder > 0,
-                  'sort-desc': item.sort && sortOrder < 0
+                  // 'sort-asc': item.sort && sortOrder > 0,
+                  // 'sort-desc': item.sort && sortOrder < 0
                 })}
                 onClick={this.handleClickItem.bind(this, idx, item.type)}
                 key={`sp-filter-bar-item__${idx}`}
@@ -67,7 +66,7 @@ export default class SpFilterBar extends Component {
                 <Text className='sp-filter-bar__item-text' style={curIdx === idx && { color }}>
                   {item.title}
                 </Text>
-                {item.icon && <Text className={classNames('iconfont', item.icon)}></Text>}
+                {item.icon && <Text className={classNames('iconfont', isArray(item.icon) ? item.icon[sortOrder == 1 ? 0 : 1] : item.icon)}></Text>}
               </View>
             ))}
         </View>

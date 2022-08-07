@@ -5,7 +5,7 @@ import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import api from '@/api'
 import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
-import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS } from '@/consts'
+import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal } from '@/components'
 import { useLogin } from '@/hooks'
@@ -61,9 +61,15 @@ function SpLogin(props) {
 
       // const { uid } = entryLaunch.getLaunchParams()
       const { uid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+      const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS)
       if (uid) {
         // 分销绑定
         params['uid'] = uid
+      }
+      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      if(gu_user_id) {
+        params['channel'] = 1
+        params['work_userid'] = gu_user_id
       }
 
       try {

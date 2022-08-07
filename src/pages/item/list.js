@@ -1,24 +1,14 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { connect } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer, AtTabs } from 'taro-ui'
 import {
-  BackToTop,
-  Loading,
-  TagsBar,
   SpFilterBar,
-  SearchBar,
-  GoodsItem,
   SpTagBar,
   SpGoodsItem,
   SpSearchBar,
-  SpNote,
-  SpNavBar,
-  SpLoadMore,
-  TabBar,
   SpPage,
   SpScrollView,
   SpDrawer,
@@ -34,7 +24,6 @@ import {
   styleNames,
   VERSION_STANDARD
 } from '@/utils'
-import { Tracker } from '@/service'
 
 import './list.scss'
 
@@ -54,10 +43,12 @@ const initialState = {
   curTagIdx: 0,
   keywords: '',
   show: false,
-  fixTop: 0
+  fixTop: 0,
+  routerParams: null,
+  card_id: null // 兑换券
 }
 
-function ItemList(props) {
+function ItemList() {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const {
@@ -71,12 +62,41 @@ function ItemList(props) {
     tagList,
     curTagIdx,
     show,
-    fixTop
+    fixTop,
+    routerParams
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
-  const goodsRef = useRef()
+  const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
+  const { shopInfo } = useSelector((state) => state.shop)
 
-  useEffect(() => {}, [])
+  const goodsRef = useRef()
+  // console.log('$instance.router.params', $instance.router?.params)
+
+  useEffect(() => {
+    // card_id, user_card_id: 兑换券参数
+    const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = $instance.router.params
+    setState((draft) => {
+      draft.routerParams = {
+        cat_id,
+        main_cat_id,
+        tag_id,
+        card_id,
+        user_card_id
+      }
+    })
+  }, [])
+
+  useEffect(() => {
+    if (routerParams) {
+      goodsRef.current.reset()
+    }
+  }, [routerParams])
+
+  useEffect(() => {
+    if (shopInfo && card_id) {
+      goodsRef.current.reset()
+    }
+  }, [shopInfo])
 
   useDidShow(() => {
     // setTimeout(() => {
@@ -115,7 +135,9 @@ function ItemList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id, main_cat_id, tag_id } = $instance.router.params
+    // card_id: 兑换券id
+    // const { cat_id, main_cat_id, tag_id, card_id } = $instance.router.params
+    console.log(shopInfo)
     let params = {
       page: pageIndex,
       pageSize,
@@ -124,7 +146,8 @@ function ItemList(props) {
       approve_status: 'onsale,only_show',
       item_type: 'normal',
       is_point: 'false',
-      tag_id
+      tag_id,
+      card_id
     }
 
     if (curFilterIdx == 1) {
@@ -151,7 +174,8 @@ function ItemList(props) {
     }
 
     if (VERSION_STANDARD) {
-      params.distributor_id = getDistributorId()
+      // 有兑换券的时候，店铺ID传当前选中的店铺
+      params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
     }
 
     const {
@@ -221,9 +245,6 @@ function ItemList(props) {
   }
 
   const handleConfirm = async (val) => {
-    Tracker.dispatch('SEARCH_RESULT', {
-      keywords: val
-    })
     setIsShowSearch(false)
     await setState((draft) => {
       draft.leftList = []
@@ -282,7 +303,6 @@ function ItemList(props) {
       url
     })
   }
-  console.log('page-item-list', fixTop)
   return (
     <SpPage
       scrollToTopBtn
@@ -291,6 +311,20 @@ function ItemList(props) {
       })}
     >
       <View className='search-wrap'>
+        {/* 兑换券选择店铺 */}
+        {VERSION_STANDARD && card_id && (
+          <View
+            className='store-picker'
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/subpages/store/list'
+              })
+            }}
+          >
+            <View className='shop-name'>{shopInfo.store_name || '暂无店铺信息'}</View>
+            <Text className='iconfont icon-qianwang-01'></Text>
+          </View>
+        )}
         <SpSearchBar
           keyword={keywords}
           placeholder='搜索'
@@ -324,20 +358,21 @@ function ItemList(props) {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView
-        className='item-list-scroll'
-        // style={styleNames({
-        //   'margin-top': `${fixTop}px`
-        // })}
-        ref={goodsRef}
-        fetch={fetch}
-      >
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                  <SpGoodsItem
+                    showFav
+                    onStoreClick={handleClickStore}
+                    info={{
+                      ...item,
+                      card_id,
+                      user_card_id
+                    }}
+                  />
                 </View>
               ))
             })}
@@ -346,7 +381,15 @@ function ItemList(props) {
             {rightList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                  <SpGoodsItem
+                    showFav
+                    onStoreClick={handleClickStore}
+                    info={{
+                      ...item,
+                      card_id,
+                      user_card_id
+                    }}
+                  />
                 </View>
               ))
             })}

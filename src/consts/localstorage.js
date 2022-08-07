@@ -10,3 +10,5 @@ export const SG_YIQIA = 'echat' // 客户一洽配置
 export const SG_APP_CONFIG = 'settingInfo' // APP基础信息配置
 export const SG_SHOW_ADD_TIP = 'addTipIsShow' // 小程序添加指引
 export const SG_ROUTER_PARAMS = 'routerParams' // 路由参数缓存
+export const SG_GUIDE_PARAMS = 'guideParams' // 导购参数缓存
+export const SG_GUIDE_PARAMS_UPDATETIME = 'guideParams_updatetime' // 导购参数缓存时间戳

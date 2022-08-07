@@ -11,7 +11,6 @@ import { classNames, pickBy, log } from '@/utils'
 import { Tracker } from '@/service'
 import api from '@/api'
 import entry from '@/utils/entry'
-import S from '@/subpages/guide/lib/Spx.js'
 import './index.scss'
 import { floor } from 'lodash'
 

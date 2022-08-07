@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
 import { updateCount } from '@/store/slices/cart'
 import api from '@/api'
-import { isWeixin, showToast } from '@/utils'
+import { isWeixin, showToast, entryLaunch } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
 
@@ -47,6 +47,8 @@ export default (props = {}) => {
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
+      } else {
+        throw new Error()
       }
     }
   }
@@ -55,11 +57,14 @@ export default (props = {}) => {
     const { redirect_url } = $instance.router.params
     S.setAuthToken(token)
     setIsLogin(true)
-    getUserInfo()
+    await getUserInfo()
+    // 导购UV统计
+    entryLaunch.postGuideUV()
+    entryLaunch.postGuideTask()
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
-    if(redirect_url) {
+    if (redirect_url) {
       Taro.redirectTo({ url: decodeURIComponent(redirect_url) })
     }
   }

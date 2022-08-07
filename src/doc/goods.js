@@ -94,6 +94,29 @@ export const ITEM_LIST_GOODS = {
   store: 'store'
 }
 
+export const ITEM_LIST_POINT_GOODS = {
+  pic: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
+  itemId: 'item_id',
+  itemName: 'item_name',
+  brief: 'brief',
+  distributorId: 'distributor_id',
+  distributor_info: 'distributor_info',
+  promotion: 'promotion_activity',
+  origincountry_name: 'origincountry_name',
+  origincountry_img_url: 'origincountry_img_url',
+  type: 'type',
+  price: ({ price }) => price / 100, // 销售价
+  point: 'point',
+  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
+  marketPrice: ({ market_price }) => market_price / 100, // 原价
+  memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
+  vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
+  svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
+
+  // is_fav: ({ item_id }) => Boolean(favs[item_id]),
+  store: 'store'
+}
+
 export const GOODS_INFO = {
   itemId: 'item_id',
   itemBn: 'item_bn',
@@ -105,6 +128,8 @@ export const GOODS_INFO = {
   activityInfo: 'activity_info',
   activityType: 'activity_type',
   approveStatus: 'approve_status',
+  point: 'point',
+  isPoint: 'is_point',
   price: ({ price }) => price / 100, // 销售价
   activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
@@ -161,7 +186,7 @@ export const GOODS_INFO = {
       }
     })
   },
-  specItems: ({ spec_items }) => {
+  specItems: ({ spec_items, is_point }) => {
     return pickBy(spec_items, {
       specItem: ({ item_spec }) => {
         return pickBy(item_spec, {
@@ -186,6 +211,8 @@ export const GOODS_INFO = {
       //   }
       // },
       // activityPrice: ({ act_price }) => act_price / 100
+      point: 'point',
+      isPoint: () => is_point,
       price: ({ price }) => price / 100, // 销售价
       activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
       marketPrice: ({ market_price }) => market_price / 100, // 原价

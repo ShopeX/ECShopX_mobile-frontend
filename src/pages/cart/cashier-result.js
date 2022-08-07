@@ -35,13 +35,14 @@ function CashierResult(props) {
 
   const fetch = async () => {
     const { order_id, code } = $instance.router.params
-    if(!order_id) {
+    if (!order_id) {
       return
     }
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
     setState((draft) => {
-      draft.tradeInfo = isArray(tradeInfo) && tradeInfo.length == 0 ? { tradeState: 'NOTPAY' } : tradeInfo
+      draft.tradeInfo =
+        isArray(tradeInfo) && tradeInfo.length == 0 ? { tradeState: 'NOTPAY' } : tradeInfo
       draft.orderId = order_id
       draft.czOrder = order_id.indexOf('CZ') > -1
     })
@@ -93,7 +94,8 @@ function CashierResult(props) {
       )}
       <View className='btn-block'>
         {/* 普通订单, 秒杀订单 */}
-        {(tradeInfo?.tradeSourceType == 'normal' || tradeInfo?.tradeSourceType == 'normal_seckill') && (
+        {(tradeInfo?.tradeSourceType == 'normal' ||
+          tradeInfo?.tradeSourceType == 'normal_seckill') && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'
@@ -103,6 +105,22 @@ function CashierResult(props) {
               }}
               onConfirm={() => {
                 Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${orderId}` })
+              }}
+            ></SpButton>
+          </View>
+        )}
+
+        {/* 积分订单 */}
+        {(tradeInfo?.tradeSourceType == 'normal_pointsmall' || tradeInfo?.tradeSourceType == 'normal_pointsmall_pointsmall') && (
+          <View className='btn-wrap'>
+            <SpButton
+              resetText='首页'
+              confirmText='订单详情'
+              onReset={() => {
+                Taro.redirectTo({ url: '/pages/index' })
+              }}
+              onConfirm={() => {
+                Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${orderId}&type=pointitem` })
               }}
             ></SpButton>
           </View>

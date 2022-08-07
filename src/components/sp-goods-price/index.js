@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpPrice, SpVipLabel } from '@/components'
+import { SpPrice, SpPoint, SpVipLabel } from '@/components'
 import { classNames } from '@/utils'
 import './index.scss'
 
@@ -18,7 +18,7 @@ function SpGoodsPrice(props) {
   if (!info) {
     return null
   }
-  const { price, memberPrice, marketPrice, activityPrice, vipPrice, svipPrice } = info
+  const { price, memberPrice, marketPrice, activityPrice, vipPrice, svipPrice, isPoint, point } = info
   return (
     <View className={classNames('sp-goods-price')}>
       {!isNaN(activityPrice) && (
@@ -32,7 +32,12 @@ function SpGoodsPrice(props) {
       {isNaN(activityPrice) && (
         <View>
           <View className='goods-price'>
-            <SpPrice size={48} className='sale-price' value={price} />
+            {
+              isPoint && <SpPoint className='sale-point' value={point} />
+            }
+            {
+              !isPoint && <SpPrice size={48} className='sale-price' value={price} />
+            }
             {marketPrice > 0 && enMarketPrice && (
               <SpPrice className='mkt-price' lineThrough value={marketPrice} />
             )}

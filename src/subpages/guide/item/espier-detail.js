@@ -30,7 +30,6 @@ import {
   isArray,
   canvasExp,
   normalizeQuerys,
-  buriedPoint,
   isAlipay,
   isWeixin,
   isWeb,

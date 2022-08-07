@@ -1,4 +1,14 @@
 .page-guide-coupon {
+  padding-top: 170px;
+  &:before {
+    content: '';
+    height: 170px;
+    background-color: #fff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
   .coupon-list {
     padding: 20px;
     .coupon-item__wrap {

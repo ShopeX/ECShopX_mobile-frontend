@@ -2,8 +2,9 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import api from '@/api'
-import S from '@/subpages/guide/lib/Spx.js'
+import S from '@/spx'
 import { connect } from 'react-redux'
+import { isArray } from '@/utils'
 import { linkPage } from './helper'
 
 import './imghot-zone.scss'
@@ -95,7 +96,7 @@ export default class WgtImgHotZone extends Component {
             <Image src={config.imgUrl} mode='widthFix' className='img-hotzone_img' />
           )}
 
-          {data.map((item, index) => {
+          {isArray(data) && data.map((item, index) => {
             return (
               <View
                 key={index}

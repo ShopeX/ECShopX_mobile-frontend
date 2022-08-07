@@ -32,6 +32,8 @@
       .iconfont {
         font-weight: bold;
         color: $color-primary-text;
+        position: relative;
+        top: -2px;
       }
     }
     &-text {
@@ -40,7 +42,7 @@
     }
     .iconfont {
       color: $color-hint-text;
-      font-size: 24px; 
+      font-size: 24px;
     }
   }
 }

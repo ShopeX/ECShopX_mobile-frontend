@@ -119,7 +119,7 @@ function CartCheckout(props) {
     goodType,
     ticket = null
   } = $instance.router?.params || {}
-
+  console.log('$instance.router?.params:', $instance)
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()
@@ -272,7 +272,7 @@ function CartCheckout(props) {
       title: '正在提交',
       mask: true
     })
-    
+
     let orderInfo
     let orderId
     if ((isWeb || isAPP()) && payType !== 'deposit') {
@@ -345,7 +345,7 @@ function CartCheckout(props) {
     })
 
     // 收货地址为空时，需要触发calcOrder
-    if (!address_info) {
+    if (receipt_type == 'logistics' && !address_info) {
       calcOrder()
     }
     // if (address_info) {
@@ -624,6 +624,7 @@ function CartCheckout(props) {
 
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
+    items.forEach(item => item['is_point'] = false)
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info

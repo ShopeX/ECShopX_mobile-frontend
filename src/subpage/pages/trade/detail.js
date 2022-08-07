@@ -20,7 +20,8 @@ import {
   VERSION_PLATFORM,
   VERSION_IN_PURCHASE,
   isAPP,
-  isWxWeb
+  isWxWeb,
+  isWeixin
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { PAYTYPE } from '@/consts'
@@ -408,12 +409,13 @@ export default class TradeDetail extends Component {
   }
 
   async handleClickBtn(type, e) {
+    debugger
     e.stopPropagation()
     const { info } = this.state
     if (type === 'home') {
       if (this.isPointitemGood()) {
         Taro.redirectTo({
-          url: '/pointitem/pages/list'
+          url: '/subpages/pointshop/list'
         })
         return
       }
@@ -442,10 +444,17 @@ export default class TradeDetail extends Component {
       })
       if (confirm) {
         await api.trade.confirm(info.tid)
-        const { fullPath } = getCurrentRoute(this.$instance.router)
-        Taro.redirectTo({
-          url: fullPath
-        })
+        if(isWeixin) {
+          const { fullPath } = getCurrentRoute(this.$instance.router)
+          Taro.redirectTo({
+            url: fullPath
+          })
+        } else {
+          const { path } = this.$instance.router
+          Taro.redirectTo({
+            url: path
+          })
+        }
       }
       return
     }
@@ -1042,7 +1051,7 @@ export default class TradeDetail extends Component {
 
             <View className='line'>
               <View className='left'>实付</View>
-              <View className='right'>{`¥${info.totalpayment}`}</View>
+              <View className='right'>{`${this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`}`}</View>
             </View>
 
             {info.delivery_code && (
@@ -1096,16 +1105,16 @@ export default class TradeDetail extends Component {
                   (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
                   info.receipt_type !== 'dada')) &&
                 info.can_apply_aftersales === 1 &&
-                info.order_class !== 'excard' && !VERSION_IN_PURCHASE && (
-                  <Button
-                    className={`trade-detail__footer__btn left ${
+                info.order_class !== 'excard' && !VERSION_IN_PURCHASE && !this.isPointitemGood() && (
+                  <View
+                    className={`trade-detail__footer__btn ${
                       info.is_logistics &&
                       'trade-detail__footer_active trade-detail__footer_allWidthBtn'
                     }`}
                     onClick={this.handleClickBtn.bind(this, 'aftersales')}
                   >
                     申请售后
-                  </Button>
+                  </View>
                 )
             }
             {
@@ -1116,7 +1125,7 @@ export default class TradeDetail extends Component {
                   info.receipt_type !== 'dada') ||
                 info.dada.dada_status !== 9) && (
                 <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                  className={`trade-detail__footer__btn trade-detail__footer_active ${
                     info.order_class === 'excard' ||
                     info.can_apply_aftersales !== 1 ||
                     (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
@@ -1139,7 +1148,7 @@ export default class TradeDetail extends Component {
                 (info.is_all_delivery ||
                   (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
                   <View
-                    className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${
                       info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'
                     }`}
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}

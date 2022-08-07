@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpButton, SpLogin } from '@/components'
 import { classNames, navigateTo, showToast, isWeb } from '@/utils'
@@ -20,6 +20,7 @@ function CompGoodsBuyToolbar(props) {
   } = props
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { favs = [] } = useSelector((state) => state.user)
+  const $instance = getCurrentInstance()
   const dispatch = useDispatch()
   const btns = []
 
@@ -28,6 +29,13 @@ function CompGoodsBuyToolbar(props) {
   }
 
   const RenderBtns = () => {
+    // 兑换券
+    const { card_id } = $instance.router.params
+    if(card_id) {
+      btns.push(BUY_TOOL_BTNS.EX_CHANGE)
+      return
+    }
+
     if(info.approveStatus == 'only_show') {
       btns.push(BUY_TOOL_BTNS.ONLY_SHOW)
       return
@@ -102,6 +110,20 @@ function CompGoodsBuyToolbar(props) {
           onSubscribe()
         }
       })
+    } else if(key == 'exchange') {
+      const { dtid, card_id, user_card_id } = $instance.router.params
+      const { itemId } = info
+      const { status } = await api.cart.exchangeGood({
+        item_id: itemId,
+        distributor_id: dtid,
+        user_card_id
+      })
+      if (status) {
+        Taro.navigateTo({
+          url: `/subpages/marketing/exchange-code?user_card_id=${user_card_id}&card_id=${card_id}`
+        })
+        return
+      }
     } else {
       onChange(key)
     }

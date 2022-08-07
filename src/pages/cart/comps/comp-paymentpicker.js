@@ -126,7 +126,7 @@ function CompPaymentPicker(props) {
               </View>
             )}
             {/* {isShowBalance && VERSION_STANDARD && isWeixin && ( // 临时加的 后期需开启注释 */}
-            <View
+            {/* <View
               className={`payment-item ${
                 disabledPayment && disabledPayment['deposit'] ? 'is-disabled' : ''
               }`}
@@ -147,7 +147,7 @@ function CompPaymentPicker(props) {
                   checked={localType === 'deposit'}
                 ></SpCheckbox>
               </View>
-            </View>
+            </View> */}
             {/* )} */}
             {isShowDelivery && (
               <View

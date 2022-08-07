@@ -9,7 +9,11 @@ class RouteIntercept {
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout',
         '/subpages/member/index': '/subpages/purchase/member'
-      }
+      },
+      // 'standard': {
+      //   '/pages/item/espier-detail': '/subpages/pointshop/espier-detail',
+      //   '/pages/cart/espier-checkout': '/subpages/pointshop/espier-checkout'
+      // }
     }
   }
 
@@ -18,7 +22,7 @@ class RouteIntercept {
     const _redirectTo = Taro.redirectTo
     Taro.navigateTo = (params) => {
       const _params = this.transformParams(params)
-      _navigateTo(_params)      
+      _navigateTo(_params)
     }
 
     Taro.redirectTo = (params) => {
@@ -34,8 +38,8 @@ class RouteIntercept {
         const newPath = path.replace(/\//gm, '\\/')
         const regexp = new RegExp(`^${newPath}`)
         params.url = params.url.replace(regexp, this.routes[this.app_platform]?.[path])
-      } 
-    } 
+      }
+    }
     return params
   }
 }

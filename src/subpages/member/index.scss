@@ -24,20 +24,24 @@
     &__body {
       line-height: 40px;
       width: 80%;
+      display: flex;
+      justify-content: space-between;
       /*  #ifdef  h5  */
       margin-top: 20px;
       /*  #endif  */
     }
     .username-wrap {
-      display: flex;
-      justify-content: space-between;
+
+    }
+    .user-grade-name {
+      line-height: 35px;
     }
     .username {
       font-size: 32px;
       color: #222;
-      width: 90%;
+      // width: 90%;
       font-weight: bold;
-      @include multi-ellipsis(1);
+      // @include multi-ellipsis(1);
     }
     .gradename {
       display: inline-block;
@@ -55,8 +59,10 @@
       font-size: 38px;
     }
     .join-us-txt {
-      color: var(--color-primary);
-      font-size: 28px;
+      // color: var(--color-primary);
+      // font-size: 28px;
+      font-size: 32px;
+      color: #222;
     }
   }
   .header-bd {

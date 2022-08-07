@@ -89,13 +89,13 @@ const CategoryIndex = (props) => {
   console.log('curContent', curContent)
   return (
     <SpPage className='page-store-category' renderFooter={<CompTabbar />}>
-      <View id='category-tab'>
+      {/* <View id='category-tab'>
         <AtTabs current={pIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
             <AtTabsPane current={pIndex} index={index} key={item.status}></AtTabsPane>
           ))}
         </AtTabs>
-      </View>
+      </View> */}
       <View className='category-container'>
         <ScrollView className='comp-series__nav' scrollY>
           <View className='nav-list'>
@@ -129,13 +129,22 @@ const CategoryIndex = (props) => {
             )}
             <View className='category-content-list'>
               {curContent?.children.map((item, index) => (
-                <View
-                  className='content-item'
-                  key={`content-item__${index}`}
-                  onClick={() => handleClickItem(item)}
-                >
-                  <SpImage mode='aspectFill' src={item.img} width={158} height={158} />
-                  <View className='item-name'>{item.name}</View>
+                <View className='category-content' key={`content-item__${index}`}>
+                  <View className='category-two-item'>
+                    <Text className='item-name'>{item.name}</Text>
+                  </View>
+                  <View className='category-three'>
+                    {item.children.map((sitem, sindex) => (
+                      <View
+                        className='category-three-item'
+                        key={`category-three-item__${sindex}`}
+                        onClick={() => handleClickItem(sitem)}
+                      >
+                        <SpImage mode='aspectFill' src={sitem.img} width={158} height={158} />
+                        <View className='item-name'>{sitem.name}</View>
+                      </View>
+                    ))}
+                  </View>
                 </View>
               ))}
             </View>

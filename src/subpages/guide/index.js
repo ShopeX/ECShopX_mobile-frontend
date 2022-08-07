@@ -19,7 +19,7 @@ import {
 } from '@/subpages/guide/components'
 // import { WgtHomeHeader } from '@/pages/home/wgts'
 
-// import './home/index.scss'
+import './index.scss'
 
 const initState = {
   wgts: [],
@@ -36,9 +36,7 @@ function Home() {
 
   const sys = useSelector((state) => state.sys)
   const { userInfo } = useSelector((state) => state.guide)
-  const showAdv = useSelector((member) => member.user.showAdv)
 
-  const { openRecommend } = sys
   const { wgts, shareInfo, shopList } = state
 
   const dispatch = useDispatch()
@@ -59,8 +57,8 @@ function Home() {
       company_id: 1
     })
 
-    setState((v) => {
-      v.wgts = config
+    setState((draft) => {
+      draft.wgts = config
     })
   }
 
@@ -81,26 +79,29 @@ function Home() {
     }
   }
 
-  useShareAppMessage(async (res) => {
-    return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
-      path: '/pages/index'
-    }
-  })
+  // useShareAppMessage(async () => {
+  //   return {
+  //     title: shareInfo.title,
+  //     imageUrl: shareInfo.imageUrl,
+  //     path: '/pages/index'
+  //   }
+  // })
 
-  useShareTimeline(async (res) => {
-    return {
-      title: shareInfo.title,
-      imageUrl: shareInfo.imageUrl,
-      query: '/pages/index'
-    }
-  })
+  // useShareTimeline(async () => {
+  //   return {
+  //     title: shareInfo.title,
+  //     imageUrl: shareInfo.imageUrl,
+  //     query: '/pages/index'
+  //   }
+  // })
 
   return (
-    <SpPage className='page-index' scrollToTopBtn renderFooter={<BaTabBar />}>
-      <BaNavBar home title='导购商城' />
-
+    <SpPage
+      className='page-guide-index'
+      navigateTheme='dark'
+      scrollToTopBtn
+      renderFooter={<BaTabBar />}
+    >
       {userInfo && <BaStore guideInfo={userInfo} />}
 
       <View className='home-body'>

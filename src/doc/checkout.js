@@ -10,6 +10,7 @@ export const CHECKOUT_GOODS_ITEM = {
   origincountry_img_url: 'origincountry_img_url',
   origincountry_name: 'origincountry_name',
   point: 'point',
+  isPoint: 'is_point',
   item_point: 'item_point',
   price: ({ price }) => price / 100, // 销售价
   activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价

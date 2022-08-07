@@ -47,7 +47,7 @@ export default class TradeItem extends Component {
       if (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)) {
         total = `合计：${point} ${pointName}`
       } else if (freight_type === 'cash' && freight_fee != 0) {
-        total = `合计：${point} ${pointName} + ￥${formatPriceToHundred(total_fee)}`
+        total = `合计：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
       }
     } else {
       if (payType === 'dhpoint') {
