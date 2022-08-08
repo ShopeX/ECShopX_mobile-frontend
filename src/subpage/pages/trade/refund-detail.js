@@ -3,13 +3,13 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
-import { Loading, FloatMenuMeiQia, SpHtmlContent } from '@/components'
+import { Loading, FloatMenuMeiQia, SpHtml } from '@/components'
 import api from '@/api'
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -20,11 +20,11 @@ export default class TradeRefundDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { aftersales_bn, item_id, order_id } = this.$instance.router.params
     // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
     //   aftersales_bn,
@@ -93,7 +93,7 @@ export default class TradeRefundDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, remind, progress, aftersalesAddress } = this.state
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
@@ -243,9 +243,8 @@ export default class TradeRefundDetail extends Component {
         {remind && remind.is_open && (
           <View className='remind-wrap'>
             <Text className='biao-icon biao-icon-tishi'> 售后提醒</Text>
-
             <View className='remind-text'>
-              <SpHtmlContent className='goods-detail__content' content={remind.intro} />
+              <SpHtml className='goods-detail__content' content={remind.intro} />
             </View>
           </View>
         )}

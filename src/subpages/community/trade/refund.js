@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtImagePicker, AtTag, AtTextarea, AtTabsPane, AtTabs } from 'taro-ui'
-import { SpCell, SpToast, SpHtmlContent, SpImgPicker } from '@/components'
+import { SpCell, SpToast, SpHtml, SpImgPicker } from '@/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 // import req from '@/api/req'
@@ -373,7 +373,7 @@ export default class TradeRefund extends Component {
             <Text className='biao-icon biao-icon-tishi'> 售后提醒</Text>
 
             <View className='remind-text'>
-              <SpHtmlContent className='goods-detail__content' content={remind.intro} />
+              <SpHtml className='goods-detail__content' content={remind.intro} />
             </View>
           </View>
         )}

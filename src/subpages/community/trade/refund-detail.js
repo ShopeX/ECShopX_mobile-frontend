@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
 import { formatTime } from '@/utils'
-import { Loading, FloatMenuMeiQia, SpHtmlContent } from '@/components'
+import { Loading, FloatMenuMeiQia, SpHtml } from '@/components'
 import api from '@/api'
 import './refund-detail.scss'
 
@@ -245,7 +245,7 @@ export default class TradeRefundDetail extends Component {
             <Text className='biao-icon biao-icon-tishi'> 售后提醒</Text>
 
             <View className='remind-text'>
-              <SpHtmlContent className='goods-detail__content' content={remind.intro} />
+              <SpHtml className='goods-detail__content' content={remind.intro} />
             </View>
           </View>
         )}
