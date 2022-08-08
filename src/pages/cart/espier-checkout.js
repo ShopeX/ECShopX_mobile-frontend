@@ -290,8 +290,8 @@ function CartCheckout(props) {
       }
     } else {
       try {
-        const { trade_info } = await api.trade.create(params)
-        orderInfo = trade_info
+        const { trade_info, team_id } = await api.trade.create(params)
+        orderInfo = { ...trade_info, team_id }
         orderId = trade_info.order_id
       } catch (e) {
         setState((draft) => {
@@ -624,7 +624,7 @@ function CartCheckout(props) {
 
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
-    items.forEach(item => item['is_point'] = false)
+    items.forEach((item) => (item['is_point'] = false))
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info
