@@ -57,6 +57,17 @@ function CompGoodsItem(props) {
     _price = price
   }
 
+  let limitTxt = ''
+  let limitNum = ''
+  if (info?.limitedBuy?.marketing_type == 'limited_buy') {
+    limitNum = info?.limitedBuy?.rule.limit
+    if (info?.limitedBuy?.rule.day == 0) {
+      limitTxt = `限购${limitNum}件`
+    } else {
+      limitTxt = `每${info?.limitedBuy?.rule.day}天，限购${limitNum}件`
+    }
+  }
+
   return (
     <View>
       {children}
@@ -100,6 +111,7 @@ function CompGoodsItem(props) {
               </View>
             )}
             {goodType == 'packages' && <View className='item-tag'>组合商品</View>}
+            {limitTxt && <View className='item-tag'>{limitTxt}</View>}
           </View>
 
           <View className='item-ft'>
@@ -114,7 +126,7 @@ function CompGoodsItem(props) {
               {isShowAddInput ? (
                 <SpInputNumber
                   value={localNum}
-                  max={info.store}
+                  max={info?.limitedBuy ? info?.limitedBuy?.limit_buy : info.store}
                   min={1}
                   onChange={onChangeInputNumber}
                 />

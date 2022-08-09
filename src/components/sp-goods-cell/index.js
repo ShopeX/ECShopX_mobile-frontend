@@ -18,7 +18,8 @@ function SpGoodsCell(props) {
     onSelectSku && onSelectSku(info)
   }
 
-  const { price, activityPrice, memberPrice, packagePrice, curItem, point, isPoint } = info
+  const { price, activityPrice, memberPrice, packagePrice, curItem, point, isPoint, cusActivity } =
+    info
   let _price = 0
   let t_price, t_activityPrice, t_memberPrice, t_packagePrice
   if (curItem) {
@@ -41,6 +42,18 @@ function SpGoodsCell(props) {
   } else {
     _price = t_price
   }
+
+  let limitTxt = ''
+  let limitNum = ''
+  if (cusActivity?.activity_type == 'limited_buy') {
+    limitNum = cusActivity?.limit
+    if (cusActivity?.day == 0) {
+      limitTxt = `限购${limitNum}件`
+    } else {
+      limitTxt = `每${cusActivity?.day}天，限购${limitNum}件`
+    }
+  }
+
   // console.log('isNaN(memberPrice):', info.orderItemType)
   return (
     <View className='sp-goods-cell'>
@@ -82,6 +95,7 @@ function SpGoodsCell(props) {
           {info?.orderItemType && info?.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
           )}
+          {limitTxt && <View className='goods-type'>{limitTxt}</View>}
         </View>
         <View className='item-ft'>
           <View className='price-gp'>

@@ -24,7 +24,8 @@ export const CHECKOUT_GOODS_ITEM = {
   nospec: ({ item_spec_desc }) => {
     return !item_spec_desc
   },
-  distributor_id: 'distributor_id'
+  distributor_id: 'distributor_id',
+  cusActivity: 'cusActivity'
 }
 
 export const INVOICE_TITLE = {

@@ -541,7 +541,8 @@ function CartCheckout(props) {
       receiver_city,
       receiver_district,
       item_fee_new,
-      market_fee
+      market_fee,
+      items_promotion
     } = orderRes
 
     let subdistrictRes
@@ -620,6 +621,20 @@ function CartCheckout(props) {
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
     items.forEach((item) => (item['is_point'] = false))
+    /* 处理限购活动，添加到对应的items里（cusActivity为自定义的字段 不是后端返回的）---开始 */
+    const itmesid = items.map((el) => el.item_id)
+    items_promotion.forEach((i_el) => {
+      if (itmesid.indexOf(i_el.item_id) > -1) {
+        items[itmesid.indexOf(i_el.item_id)].cusActivity = {
+          activity_tag: i_el.activity_tag,
+          activity_name: i_el.activity_name,
+          activity_id: i_el.activity_id,
+          activity_type: i_el.activity_type,
+          ...i_el.activity_rule
+        }
+      }
+    })
+    /*  处理限购活动，添加到对应的items里---结束 */
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info
