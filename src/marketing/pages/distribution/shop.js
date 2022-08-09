@@ -14,7 +14,7 @@ import './shop.scss'
 }))
 export default class DistributionShop extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,12 +22,12 @@ export default class DistributionShop extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
-    const { turnover, point } = this.$instance.router.params
+  async fetch() {
+    const { turnover, point, disabled } = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
       user_id: userId
@@ -56,12 +56,13 @@ export default class DistributionShop extends Component {
         turnover,
         share_title,
         applets_share_img,
-        point
+        point,
+        disabled
       }
     })
   }
 
-  handleClick (key) {
+  handleClick(key) {
     const { userId } = Taro.getStorageSync('userinfo')
     let url = ''
     switch (key) {
@@ -85,7 +86,7 @@ export default class DistributionShop extends Component {
     })
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { username, userId } = Taro.getStorageSync('userinfo')
     const { info } = this.state
     log.debug(`/marketing/pages/distribution/shop-home?uid=${userId}`)
@@ -96,7 +97,7 @@ export default class DistributionShop extends Component {
     }
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info } = this.state
 
@@ -151,19 +152,23 @@ export default class DistributionShop extends Component {
             <View className='iconfont icon-list1 iconsize'></View>
             <View>小店订单</View>
           </View>
-          <View className=' shop-nav-item width'>
-            <Button openType='share' className='share-btn'>
-              <View className='iconfont icon-share2 iconsize'></View>
-              <View>分享小店</View>
-            </Button>
-          </View>
+          {info.disabled == 0 && (
+            <View className='shop-nav-item width'>
+              <Button openType='share' className='share-btn'>
+                <View className='iconfont icon-share2 iconsize'></View>
+                <View>分享小店</View>
+              </Button>
+            </View>
+          )}
         </View>
-        <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
-          <View className='main'>
-            <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
-            <View className='title'>预览小店</View>
+        {info.disabled == 0 && (
+          <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
+            <View className='main'>
+              <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
+              <View className='title'>预览小店</View>
+            </View>
           </View>
-        </View>
+        )}
       </SpPage>
     )
   }
