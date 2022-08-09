@@ -623,7 +623,7 @@ function CartCheckout(props) {
     items.forEach((item) => (item['is_point'] = false))
     /* 处理限购活动，添加到对应的items里（cusActivity为自定义的字段 不是后端返回的）---开始 */
     const itmesid = items.map((el) => el.item_id)
-    items_promotion.forEach((i_el) => {
+    items_promotion?.forEach((i_el) => {
       if (itmesid.indexOf(i_el.item_id) > -1) {
         items[itmesid.indexOf(i_el.item_id)].cusActivity = {
           activity_tag: i_el.activity_tag,

@@ -81,12 +81,6 @@ function SpGoodsCell(props) {
           </View>
         </View>
         <View className='labels-block'>
-          {/* {info.discount_info?.map((sp, idx) => (
-            <View className='goods-type' key={`goods-type__${idx}`}>
-              {userInfo?.gradeInfo?.grade_name}
-            </View>
-          ))} */}
-
           {!isNaN(memberPrice) && !VERSION_IN_PURCHASE && (
             <View className='goods-type'>
               {vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}
@@ -95,6 +89,11 @@ function SpGoodsCell(props) {
           {info?.orderItemType && info?.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
           )}
+          {info.discount_info?.map((sp, idx) => (
+            <View className='goods-type' key={`goods-type__${idx}`}>
+              {sp.info}
+            </View>
+          ))}
           {limitTxt && <View className='goods-type'>{limitTxt}</View>}
         </View>
         <View className='item-ft'>
