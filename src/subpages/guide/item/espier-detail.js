@@ -535,7 +535,7 @@ function EspierDetail(props) {
         </View>
       )}
 
-      {/* 优惠组合 */}
+      {/* 组合优惠 */}
       <CompPackageList
         open={packageOpen}
         onClose={() => {

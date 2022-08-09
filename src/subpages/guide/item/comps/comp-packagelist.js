@@ -26,7 +26,7 @@ function CompPackageList(props) {
   return (
     <SpFloatLayout
       className='comp-packagelist'
-      title='优惠组合'
+      title='组合优惠'
       open={open}
       onClose={onClose}
       renderFooter={

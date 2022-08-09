@@ -90,6 +90,7 @@ function PackageList(props) {
       })
     )
     await dispatch(updateCount({ shop_type: 'distributor' }))
+    Taro.navigateBack()
     // showToast('成功加入购物车')
   }
 

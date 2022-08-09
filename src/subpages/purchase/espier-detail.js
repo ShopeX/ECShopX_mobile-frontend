@@ -498,7 +498,9 @@ function EspierDetail(props) {
                 title='组合优惠'
                 isLink
                 onClick={() => {
-                  Taro.navigateTo({ url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}` })
+                  Taro.navigateTo({
+                    url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
+                  })
                   // setState((draft) => {
                   //   draft.packageOpen = true
                   // })
@@ -569,7 +571,7 @@ function EspierDetail(props) {
 
       <SpRecommend info={recommendList} />
 
-      {/* 优惠组合 */}
+      {/* 组合优惠 */}
       <CompPackageList
         open={packageOpen}
         onClose={() => {

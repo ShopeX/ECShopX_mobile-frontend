@@ -23,7 +23,7 @@ export default class PackageList extends Component {
   }
 
   config = {
-    navigationBarTitleText: '优惠组合'
+    navigationBarTitleText: '组合优惠'
   }
 
   componentDidMount() {

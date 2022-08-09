@@ -16,6 +16,7 @@ function CompGoodsItem(props) {
     children,
     isShowAddInput = true,
     isShowDeleteIcon = true,
+    goodType,
     onDelete = () => {},
     onChange = () => {},
     onClickImgAndTitle = () => {}
@@ -28,7 +29,7 @@ function CompGoodsItem(props) {
   const { localNum } = state
 
   useEffect(() => {
-    setState(draft => {
+    setState((draft) => {
       draft.localNum = info.num
     })
   }, [info.num])
@@ -38,7 +39,7 @@ function CompGoodsItem(props) {
   }
 
   const onChangeInputNumber = (e) => {
-    setState(draft => {
+    setState((draft) => {
       draft.localNum = e
     })
     onChange(e)
@@ -94,8 +95,11 @@ function CompGoodsItem(props) {
               <View className='item-tag'>{item.promotion_tag}</View>
             ))}
             {!isNaN(member_price) && !VERSION_IN_PURCHASE && (
-              <View className='item-tag'>{vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}</View>
+              <View className='item-tag'>
+                {vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}
+              </View>
             )}
+            {goodType == 'packages' && <View className='item-tag'>组合商品</View>}
           </View>
 
           <View className='item-ft'>

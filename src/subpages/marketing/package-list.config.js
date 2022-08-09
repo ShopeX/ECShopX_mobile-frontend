@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '优惠组合'
+  navigationBarTitleText: '组合优惠'
 }
