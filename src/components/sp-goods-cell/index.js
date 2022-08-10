@@ -43,17 +43,6 @@ function SpGoodsCell(props) {
     _price = t_price
   }
 
-  let limitTxt = ''
-  let limitNum = ''
-  if (cusActivity?.activity_type == 'limited_buy') {
-    limitNum = cusActivity?.limit
-    if (cusActivity?.day == 0) {
-      limitTxt = `限购${limitNum}件`
-    } else {
-      limitTxt = `每${cusActivity?.day}天，限购${limitNum}件`
-    }
-  }
-
   // console.log('isNaN(memberPrice):', info.orderItemType)
   return (
     <View className='sp-goods-cell'>
@@ -98,7 +87,25 @@ function SpGoodsCell(props) {
               )
             }
           })}
-          {limitTxt && <View className='goods-type'>{limitTxt}</View>}
+          {cusActivity?.map((el) => {
+            let limitTxt = ''
+            let limitNum = ''
+            if (el?.activity_type == 'limited_buy') {
+              limitNum = el?.limit
+              if (el?.day == 0) {
+                limitTxt = `限购${limitNum}件`
+              } else {
+                limitTxt = `每${el?.day}天，限购${limitNum}件`
+              }
+            } else if (el?.activity_type == 'seckill' || el?.activity_type == 'limited_time_sale') {
+              limitNum = el?.limit
+              limitTxt = `（限购${limitNum}件）`
+            } else if (el?.activity_type == 'member_tag_targeted_promotion') {
+              limitTxt = el.activity_name
+            }
+            return <View className='goods-type'>{limitTxt}</View>
+          })}
+          {/* {limitTxt && <View className='goods-type'>{limitTxt}</View>} */}
         </View>
         <View className='item-ft'>
           <View className='price-gp'>

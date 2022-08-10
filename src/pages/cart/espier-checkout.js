@@ -624,15 +624,17 @@ function CartCheckout(props) {
     /* 处理限购活动，添加到对应的items里（cusActivity为自定义的字段 不是后端返回的）---开始 */
     const itmesid = items.map((el) => el.item_id)
     items_promotion?.forEach((i_el) => {
+      let arr = []
       if (itmesid.indexOf(i_el.item_id) > -1) {
-        items[itmesid.indexOf(i_el.item_id)].cusActivity = {
+        arr.push({
           activity_tag: i_el.activity_tag,
           activity_name: i_el.activity_name,
           activity_id: i_el.activity_id,
           activity_type: i_el.activity_type,
           ...i_el.activity_rule
-        }
+        })
       }
+      items[itmesid.indexOf(i_el.item_id)].cusActivity = arr
     })
     /*  处理限购活动，添加到对应的items里---结束 */
     setState((draft) => {
