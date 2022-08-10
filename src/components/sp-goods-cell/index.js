@@ -97,11 +97,14 @@ function SpGoodsCell(props) {
               } else {
                 limitTxt = `每${el?.day}天，限购${limitNum}件`
               }
-            } else if (el?.activity_type == 'seckill' || el?.activity_type == 'limited_time_sale') {
+            }
+            {
+              /* else if (el?.activity_type == 'seckill' || el?.activity_type == 'limited_time_sale') {
               limitNum = el?.limit
               limitTxt = `（限购${limitNum}件）`
             } else if (el?.activity_type == 'member_tag_targeted_promotion') {
-              limitTxt = el.activity_name
+              limitTxt = '专属优惠'
+            } */
             }
             return <View className='goods-type'>{limitTxt}</View>
           })}
