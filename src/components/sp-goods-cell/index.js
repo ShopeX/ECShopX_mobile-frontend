@@ -89,11 +89,15 @@ function SpGoodsCell(props) {
           {info?.orderItemType && info?.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
           )}
-          {info.discount_info?.map((sp, idx) => (
-            <View className='goods-type' key={`goods-type__${idx}`}>
-              {sp.info}
-            </View>
-          ))}
+          {info.discount_info?.map((sp, idx) => {
+            if (sp.type == 'member_tag_targeted_promotion') {
+              return (
+                <View className='goods-type' key={`goods-type__${idx}`}>
+                  {sp.info}
+                </View>
+              )
+            }
+          })}
           {limitTxt && <View className='goods-type'>{limitTxt}</View>}
         </View>
         <View className='item-ft'>
