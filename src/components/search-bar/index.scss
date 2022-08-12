@@ -1,20 +1,21 @@
-@import "../../style/imports";
+@import '../../style/imports';
 
 .search-input {
   width: 100%;
   height: $searchbar-height;
   border-bottom: 0;
   box-sizing: border-box;
-  &__focus{
+  &__focus {
     height: 100vh;
     z-index: $z-index-dropdown;
     position: absolute;
-    top: 0;
+    top: 170px;
     left: 0;
     right: 0;
     bottom: 0;
-    padding: 20rpx;
+    padding: 16px 28px;
     background: #fff;
+    box-sizing: border-box;
     &.without-dialog {
       height: auto;
     }
@@ -30,7 +31,7 @@
       font-size: 24px;
       color: #000000;
       display: flex;
-      justify-content:space-between;
+      justify-content: space-between;
       align-items: center;
       padding: 30px 30px 6px 30px;
       .icon-del {
@@ -41,18 +42,18 @@
       font-size: 26px;
       color: #666666;
       display: flex;
-      justify-content:flex-start;
+      justify-content: flex-start;
       flex-wrap: wrap;
       padding: 0 30px;
       &__btn {
         padding: 8px 16px;
-        background: #F2F2F2;
+        background: #f2f2f2;
         margin: 25px 20px 0 0;
         border-radius: 4px;
         color: #333333;
         font-size: 24px;
       }
-      &__btn:nth-child(-n+3) {
+      &__btn:nth-child(-n + 3) {
         background: $color-brand-primary;
         color: #fefefe;
       }
@@ -69,7 +70,7 @@
     padding: 0 30px;
     &__item {
       padding: 42px 0 35px;
-      border-bottom: 1PX solid #ececec;
+      border-bottom: 1px solid #ececec;
       display: flex;
       justify-content: space-between;
       color: #333333;
