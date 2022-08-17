@@ -13,7 +13,7 @@ const initialState = {
   showStore: false,
   featuredShopId: null
 }
-function CompFloatMenu (props) {
+function CompFloatMenu(props) {
   const [state, setState] = useImmer(initialState)
   const { userInfo } = useSelector((state) => state.user)
 
@@ -65,6 +65,19 @@ function CompFloatMenu (props) {
           }}
         />
       )}
+
+      {/* 店务入口 */}
+      <SpImage
+        className='my-store'
+        src='dianwu_entry.png'
+        onClick={() => {
+          Taro.navigateTo({
+            url: `/marketing/pages/distribution/shop-home?featuredshop=${state.featuredShopId}`
+          })
+        }}
+        width={120}
+        height={120}
+      />
     </View>
   )
 }

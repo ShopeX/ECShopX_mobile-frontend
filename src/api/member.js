@@ -374,3 +374,7 @@ export function getMemberCard() {
 export function getMemberShareConfig() {
   return req.get('/memberCenterShare/getInfo')
 }
+
+export function is_admin(params) {
+  return req.get('/distributor/bind/checkout', params)
+}

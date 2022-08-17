@@ -50,7 +50,8 @@ function SpPage(props, ref) {
     '--color-primary': colorPrimary,
     '--color-marketing': colorMarketing,
     '--color-accent': colorAccent,
-    '--color-rgb': rgb
+    '--color-rgb': rgb,
+    '--color-dianwu-primary': '#4980FF'
   }
 
   useReady(() => {

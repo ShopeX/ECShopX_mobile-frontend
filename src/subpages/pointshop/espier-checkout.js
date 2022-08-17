@@ -301,7 +301,7 @@ function PointShopEspierCheckout() {
       bargain_id: params.bargain_id
     }
     Taro.navigateTo({
-      url: `/pages/store/ziti-list?${qs.stringify(query)}`
+      url: `/subpages/store/ziti-list?${qs.stringify(query)}`
     })
   }
 

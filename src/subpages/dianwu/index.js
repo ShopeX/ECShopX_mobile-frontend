@@ -21,7 +21,11 @@ const Index = () => {
   })}`
   log.debug(`dianwu url:`, URL)
 
-  return <WebView src={URL} />
+  const onMessage = (e) => {
+    debugger
+  }
+
+  return <WebView src={URL} onMessage={onMessage} />
 }
 
 export default Index

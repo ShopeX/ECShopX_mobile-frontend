@@ -88,6 +88,8 @@ import SpNumberKeyBoard from './sp-numberkeyboard'
 import SpForm from './sp-form'
 import SpFormItem from './sp-form-item'
 import SpVipLabel from './sp-vip-label'
+import SpAddress from './sp-address'
+import SpSearchInput from './sp-search-input'
 
 export default {}
 
@@ -181,5 +183,7 @@ export {
   SpNumberKeyBoard,
   SpForm,
   SpFormItem,
-  SpVipLabel
+  SpVipLabel,
+  SpAddress,
+  SpSearchInput
 }

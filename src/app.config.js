@@ -91,9 +91,15 @@ export default {
       ]
     },
     {
-      root: 'subpages/dianwu',
+      root: 'subpages/dianwu', // 店务端
       pages: [
-        'index' // 店务端
+        'index', // webview
+        'list', // 商品搜索列表
+        'cashier', // 收银台
+        'checkout', // 结算
+        'collection', // 收款
+        'pending-checkout', // 取单
+        'collection-result' // 收款结果
       ]
     },
     // 积分商城

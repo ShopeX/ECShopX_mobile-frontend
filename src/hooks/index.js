@@ -7,6 +7,7 @@ import usePayment from './usePayment'
 import useNavigation from './useNavigation'
 import useDebounce from './useDebounce'
 import useThrottle from './useThrottle'
+import useDianWuLogin from './useDianWuLogin'
 
 export default {}
 
@@ -19,5 +20,6 @@ export {
   usePayment,
   useNavigation,
   useDebounce,
-  useThrottle
+  useThrottle,
+  useDianWuLogin
 }

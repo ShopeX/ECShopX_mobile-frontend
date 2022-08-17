@@ -1,0 +1,99 @@
+.page-dianwu-list {
+  .search-block {
+    padding: 20px;
+    background-color: #fff;
+  }
+  .footer-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    .total-info {
+      flex: 1;
+      height: 80px;
+      background: #111a34;
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 50px 0 0 50px;
+      line-height: 30px;
+      padding-left: 40px;
+      display: flex;
+      flex-direction: column;
+      .sp-price {
+        margin-top: 10px;
+      }
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        color: #fff;
+      }
+      .txt {
+        color: #fff;
+        font-size: 24px;
+      }
+    }
+    .btn-confirm {
+      width: 245px;
+      height: 80px;
+      text-align: center;
+      line-height: 80px;
+      background: var(--color-dianwu-primary);
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 0px 50px 50px 0px;
+      color: #fff;
+      font-size: 32px;
+    }
+  }
+  .at-tabs__item {
+    color: #858b9c;
+    &--active {
+      color: #333;
+      font-weight: 600;
+    }
+    &-underline {
+      background-color: var(--color-dianwu-primary);
+    }
+  }
+  .item-list-scroll {
+    padding: 20px 0 0 0;
+  }
+  .item-wrap {
+    padding: 20px 30px;
+    background-color: #fff;
+    margin-bottom: 20px;
+    .at-button {
+      display: inline-block;
+      min-width: 120px;
+      margin: 0;
+      height: 56px;
+      line-height: 54px;
+      &.active {
+        background-color: var(--color-dianwu-primary);
+        color: #fff;
+      }
+      .icon-plus {
+        font-size: 40px;
+        color: #fff;
+      }
+    }
+  }
+  .promotion-tag {
+    font-size: 24px;
+    color: #ff5257;
+    text-shadow: 0px 2px 4px #e2e4ea;
+    border-radius: 4px;
+    border: 1px solid #ff5257;
+    padding: 2px 4px;
+    margin-right: 16px;
+  }
+  .item-hd {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .view-discount {
+    color: var(--color-dianwu-primary);
+    .icon-qianwang-01 {
+      font-size: 28px;
+    }
+  }
+}
