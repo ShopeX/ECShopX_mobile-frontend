@@ -21,7 +21,7 @@ function CompGoods(props) {
     <View className='comp-goods'>
       <View className='item-bd'>
         <View className='item-bd-hd'>
-          <SpImage circle src={info.pic} width={110} height={110} />
+          <SpImage src={info.pic} width={110} height={110} />
         </View>
         <View className='item-bd-bd'>
           <View className='title'>{info.name}</View>

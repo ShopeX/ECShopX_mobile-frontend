@@ -249,7 +249,9 @@ function DianWuCashier() {
           </View>
           <View className='g-button'>
             <View className='g-button__first'>挂单</View>
-            <View className='g-button__second'>结算收银</View>
+            <View className='g-button__second' onClick={() => {
+              Taro.navigateTo({ url: '/subpages/dianwu/checkout' })
+            }}>结算收银</View>
           </View>
         </View>
       }
