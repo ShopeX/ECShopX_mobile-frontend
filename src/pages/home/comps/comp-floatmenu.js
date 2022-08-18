@@ -67,7 +67,7 @@ function CompFloatMenu(props) {
       )}
 
       {/* 店务入口 */}
-      <SpImage
+      {/* <SpImage
         className='my-store'
         src='dianwu_entry.png'
         onClick={() => {
@@ -77,7 +77,7 @@ function CompFloatMenu(props) {
         }}
         width={120}
         height={120}
-      />
+      /> */}
     </View>
   )
 }

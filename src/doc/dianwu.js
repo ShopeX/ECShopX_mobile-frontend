@@ -19,6 +19,8 @@ export const CART_GOODS_ITEM = {
   totalCount: 'cart_total_coun',
   totalNum: 'cart_total_num',
   totalPrice: ({ cart_total_price }) => cart_total_price / 100,
+  discountFee: ({ discount_fee }) => discount_fee / 100,
+  totalFee: ({ total_fee }) => total_fee / 100,
   giftActivity: 'gift_activity',
   list: ({ list }) => {
     return pickBy(list, {
@@ -40,6 +42,13 @@ export const CART_GOODS_ITEM = {
 
 
 export const MEMBER_ITEM = {
+  username: 'username',
+  mobile: 'mobile',
+  userId: 'user_id'
+}
+
+
+export const CREATE_MEMBER_ITEM = {
   username: 'username',
   mobile: 'mobile',
   userId: 'user_id'

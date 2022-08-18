@@ -6,7 +6,7 @@ export function requestIntercept() {
   const interceptor = (chain) => {
     let requestParams = chain.requestParams
     const { method, data, url } = requestParams
-    const { path } = getCurrentInstance().router
+    const { path } = getCurrentInstance().router || {}
     if(path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order` ) {
       const { gu, gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
       let work_userid = gu_user_id

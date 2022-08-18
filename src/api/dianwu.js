@@ -15,8 +15,8 @@ export function scanAddToCart(params) {
 }
 
 // 收银台数据查询
-export function getCartDataList() {
-  return req.get('/operator/cartdatalist')
+export function getCartDataList(params) {
+  return req.get('/operator/cartdatalist', params)
 }
 
 // 收银台更新
@@ -32,4 +32,9 @@ export function deleteCartData(cart_id) {
 // 会员查询接口
 export function getMembers(params) {
   return req.get('/members', params)
+}
+
+// 会员创建
+export function createMember(params) {
+  return req.post('/member', params)
 }

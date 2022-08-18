@@ -9,7 +9,8 @@
     background: #fff;
     padding: 20px;
     .sp-search-input {
-      width: 290px;
+      // width: 290px;
+      flex: 1;
     }
     .g-button {
       flex: 1;
@@ -27,6 +28,18 @@
         line-height: 70px;
       }
     }
+    .btn-adduser {
+      background-color: var(--color-dianwu-primary);
+      color: #fff;
+      margin-left: 20px;
+      .icon-xinzenghuiyuan-01 {
+        font-size: 32px;
+      }
+    }
+  }
+
+  .scan-code {
+    height: 280px;
   }
 
   .member-info {
@@ -536,5 +549,93 @@
         margin: 20px auto;
       }
     }
+  }
+
+  .search-user {
+    background-color: #ffffff;
+    &-hd {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      .title {
+        font-size: 30px;
+        font-weight: 600;
+      }
+      .scan-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24px;
+      }
+      .icon-saoma {
+        font-size: 48px;
+      }
+    }
+    &-bd {
+      padding: 30px 30px;
+      .form-field {
+        height: 90px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        /* prettier-ignore */
+        border: 1PX solid #d7d7d7;
+        display: flex;
+        align-items: center;
+        margin-bottom: 30px;
+        .at-input {
+          background-color: transparent;
+          color: #333;
+          flex: 1;
+          margin-bottom: 0;
+          &:after {
+            border-color: transparent;
+          }
+          &__input {
+            font-size: 32px;
+            font-weight: 500;
+            color: #333;
+            padding-left: 24px;
+          }
+        }
+      }
+      .search-result {
+
+      }
+    }
+    &-ft {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px;
+      .btn-cancel {
+        height: 78px;
+        border-radius: 40px;
+        text-align: center;
+        font-size: 32px;
+        font-weight: 500;
+        /* prettier-ignore */
+        border: 1PX solid #cdcdcd;
+        color: #333;
+        border-radius: 40px;
+        line-height: 78px;
+        padding: 0 40px;
+
+      }
+      .btn-confirm {
+        height: 80px;
+        font-weight: 500;
+        /* prettier-ignore */
+        border: 1PX solid var(--color-dianwu-primary);
+        background: var(--color-dianwu-primary);
+        color: #ffffff;
+        border-radius: 40px;
+        line-height: 80px;
+        padding: 0 40px;
+        margin: 0 0 0 30px;
+      }
+    }
+  }
+
+  .at-curtain--closed {
+    display: none;
   }
 }
