@@ -24,9 +24,9 @@ function SpGoodsPrice(props) {
       {!isNaN(activityPrice) && (
         <View className='activity'>
           <SpPrice className='sale-price' value={price} />
-          <View className='activity-wrap'>
+          {/* <View className='activity-wrap'>
             活动价 <SpPrice className='activity-price' value={activityPrice} />
-          </View>
+          </View> */}
         </View>
       )}
       {isNaN(activityPrice) && (

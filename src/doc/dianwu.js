@@ -18,7 +18,8 @@ export const GOODS_ITEM = {
 export const CART_GOODS_ITEM = {
   totalCount: 'cart_total_coun',
   totalNum: 'cart_total_num',
-  totalPrice: 'cart_total_price',
+  totalPrice: ({ cart_total_price }) => cart_total_price / 100,
+  giftActivity: 'gift_activity',
   list: ({ list }) => {
     return pickBy(list, {
       cartId: 'cart_id',
@@ -35,4 +36,11 @@ export const CART_GOODS_ITEM = {
       svipPrice: ({ svip_price }) => svip_price / 100 // svip价格
     })
   }
+}
+
+
+export const MEMBER_ITEM = {
+  username: 'username',
+  mobile: 'mobile',
+  userId: 'user_id'
 }

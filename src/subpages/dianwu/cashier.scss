@@ -409,6 +409,21 @@
       &:not(:last-child) {
         margin-bottom: 30px;
       }
+      .at-button {
+        display: inline-block;
+        min-width: 120px;
+        margin: 0;
+        height: 56px;
+        line-height: 54px;
+        &.active {
+          background-color: var(--color-dianwu-primary);
+          color: #fff;
+        }
+        .icon-plus {
+          font-size: 40px;
+          color: #fff;
+        }
+      }
     }
     .user-item {
       display: flex;

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
@@ -17,8 +17,10 @@ import {
   SpCell
 } from '@/components'
 import { useDebounce } from '@/hooks'
-import { styleNames, pickBy, showToast } from '@/utils'
+import { styleNames, pickBy, showToast, classNames } from '@/utils'
+import { selectMember } from '@/store/slices/dianwu'
 import CompGoods from './comps/comp-goods'
+import CompGift from './comps/comp-gift'
 import CompGoodsPrice from './comps/comp-goods-price'
 import './cashier.scss'
 
@@ -30,6 +32,8 @@ const initialState = {
   ],
   current: 0,
   cartList: [],
+  searchGoodsList: [],
+  searchMemberList: [],
   discountDetailLayout: false,
   searchResultLayout: false,
   addUserCurtain: false
@@ -44,11 +48,15 @@ function DianWuCashier() {
     cartList,
     discountDetailLayout,
     searchResultLayout,
-    addUserCurtain
+    addUserCurtain,
+    searchGoodsList,
+    searchMemberList
   } = state
   const pageRef = useRef()
   const $instance = getCurrentInstance()
   const { distributor_id } = $instance.router.params
+  const { member } = useSelector((state) => state.dianwu)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     getCashierList()
@@ -63,11 +71,35 @@ function DianWuCashier() {
   }, [discountDetailLayout, searchResultLayout, addUserCurtain])
 
   useEffect(() => {
-    if (searchResultLayout) {
-      getMembers(keywords)
-      getItemList(keywords)
+    if (keywords) {
+      handleSearchByKeyword(keywords)
     }
   }, [keywords])
+
+  const handleSearchByKeyword = async (keywords) => {
+    Taro.showLoading()
+    const [{ list: memberList }, { list: goodsList }] = await Promise.all([
+      await api.dianwu.getMembers({
+        page: 1,
+        pageSize: 100,
+        mobile: keywords
+      }),
+      await api.dianwu.goodsItems({
+        page: 1,
+        pageSize: 100,
+        distributor_id,
+        keywords
+      })
+    ])
+
+    Taro.hideLoading()
+
+    setState((draft) => {
+      draft.searchGoodsList = pickBy(goodsList, doc.dianwu.GOODS_ITEM)
+      draft.searchMemberList = pickBy(memberList, doc.dianwu.MEMBER_ITEM)
+      draft.searchResultLayout = true
+    })
+  }
 
   const handleScanCode = async () => {
     const { errMsg, result } = await Taro.scanCode()
@@ -86,7 +118,7 @@ function DianWuCashier() {
 
   // 查询会员
   const getMembers = async (bn) => {
-    await api.dianwu.getMembers({ mobile: bn })
+    await api.dianwu.getMembers()
   }
 
   // 查询商品
@@ -96,6 +128,10 @@ function DianWuCashier() {
       pageSize: 1000,
       distributor_id,
       keywords: bn
+    })
+
+    setState((draft) => {
+      draft.searchGoodsList = pickBy(_list, doc.dianwu.GOODS_ITEM)
     })
   }
 
@@ -130,6 +166,20 @@ function DianWuCashier() {
     getCashierList()
   }
 
+  const handleAddToCart = async ({ itemId }) => {
+    await api.dianwu.addToCart({
+      item_id: itemId,
+      num: 1
+    })
+    getCashierList()
+    showToast('加入收银台成功')
+  }
+
+  // 选择会员
+  const handleSelectMember = (item) => {
+    dispatch(selectMember(item))
+  }
+
   return (
     <SpPage
       className='page-dianwu-cashier'
@@ -156,7 +206,7 @@ function DianWuCashier() {
           onConfirm={(val) => {
             setState((draft) => {
               draft.keywords = val
-              draft.searchResultLayout = true
+              // draft.searchResultLayout = true
             })
           }}
         />
@@ -176,18 +226,21 @@ function DianWuCashier() {
           </View>
         </View>
       </View>
-      <View className='member-info'>
-        <View className='lf'>
-          <Text className='name'>未知</Text>
-          <Text className='mobile'>138****8888</Text>
-        </View>
-        <View className='rg'>
-          <View className='cash'>
-            会员折扣：<Text className='cash-value'>8.8</Text>
+      {member && (
+        <View className='member-info'>
+          <View className='lf'>
+            <Text className='name'>{member.usename}</Text>
+            <Text className='mobile'>{member.mobile}</Text>
           </View>
-          <View className='btn-clear'>清除</View>
+          <View className='rg'>
+            <View className='cash'>
+              会员折扣：<Text className='cash-value'>8.8</Text>
+            </View>
+            <View className='btn-clear'>清除</View>
+          </View>
         </View>
-      </View>
+      )}
+
       {/* <View className='block-promation'>
         {[1, 2, 3].map((item, index) => (
           <View className='promation-item' key={`promation-item__${index}`}>
@@ -246,20 +299,25 @@ function DianWuCashier() {
         })}
       </View>
       <View className='block-gift'>
-        {[1, 2, 3].map((item, index) => (
-          <View className='gift-item' key={`gift-item__${index}`}>
-            <View className='gift-tag'>赠品</View>
-            <View className='gift-info'>
-              <View className='title'>
-                我商品名我商品名我商品名最多只显示一行我商品名我商品名我商品名最多只显示一行
-              </View>
-              <View className='sku-num'>
-                <View className='sku'>白色、XL、印花</View>
-                <View className='num'>数量：20</View>
-              </View>
-            </View>
-          </View>
-        ))}
+        {cartList.map((shopList, idx) => {
+          return shopList.giftActivity.map((item, index) => {
+            return item.gifts.map((gift, gindex) => (
+              <CompGift info={gift} key={`gift-item__${idx}_${index}_${gindex}`} />
+              // <View className='gift-item' key={`gift-item__${idx}_${index}_${gindex}`}>
+              //   <View className='gift-tag'>赠品</View>
+              //   <View className='gift-info'>
+              //     <View className='title'>
+              //       {gift.itemName}
+              //     </View>
+              //     <View className='sku-num'>
+              //       <View className='sku'></View>
+              //       <View className='num'>数量：{gift.gift_num}</View>
+              //     </View>
+              //   </View>
+              // </View>
+            ))
+          })
+        })}
       </View>
 
       <View className='total-bar'>
@@ -330,24 +388,34 @@ function DianWuCashier() {
         >
           <AtTabsPane current={current} index={0}>
             <ScrollView className='tab-scroll-list' scrollY>
-              {[1, 2, 3, 4, 5].map((item, index) => (
+              {searchGoodsList.map((item, index) => (
                 <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>
-                  <CompGoods />
+                  <CompGoods info={item}>
+                    <AtButton
+                      circle
+                      className={classNames({ 'active': true })}
+                      onClick={handleAddToCart.bind(this, item)}
+                    >
+                      <Text className='iconfont icon-plus'></Text>
+                    </AtButton>
+                  </CompGoods>
                 </View>
               ))}
             </ScrollView>
           </AtTabsPane>
           <AtTabsPane current={current} index={1}>
             <ScrollView className='tab-scroll-list' scrollY>
-              {[1, 2, 3, 4, 5].map((item, index) => (
+              {searchMemberList.map((item, index) => (
                 <View className='user-item' key={`user-item__${index}`}>
                   <SpImage width={100} height={100} />
                   <View className='user-item-bd'>
-                    <View className='name'>客户昵称</View>
-                    <View className='mobile'>138****8888</View>
-                    <View className='vip'>白金会员</View>
+                    <View className='name'>{item.usename}</View>
+                    <View className='mobile'>{item.mobile}</View>
+                    {/* <View className='vip'>白金会员</View> */}
                   </View>
-                  <AtButton circle>选择客户</AtButton>
+                  <AtButton circle onClick={handleSelectMember.bind(this, item)}>
+                    选择客户
+                  </AtButton>
                 </View>
               ))}
             </ScrollView>

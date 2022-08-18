@@ -8,6 +8,7 @@ import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice, SpVipLabel } from '@/components'
 import { classNames } from '@/utils'
+import CompGoodsPrice from './comp-goods-price'
 import './comp-goods.scss'
 
 function CompGoods(props) {
@@ -25,7 +26,7 @@ function CompGoods(props) {
         <View className='item-bd-bd'>
           <View className='title'>{info.name}</View>
           {info.itemSpecDesc && <View className='sku'>{info.itemSpecDesc}</View>}
-          <View className='price-list'>
+          {/* <View className='price-list'>
             <SpPrice className='sale-price' value={999.99}></SpPrice>
             <View className='price-wrap'>
               <SpPrice className='vip-price' value={888.99}></SpPrice>
@@ -35,7 +36,8 @@ function CompGoods(props) {
               <SpPrice className='svip-price' value={666.99}></SpPrice>
               <SpVipLabel content='SVIP' type='svip' />
             </View>
-          </View>
+          </View> */}
+          <CompGoodsPrice info={info} />
           <View className='goods-info'>
             <View className='kc-bn'>
               <View className='kc'>

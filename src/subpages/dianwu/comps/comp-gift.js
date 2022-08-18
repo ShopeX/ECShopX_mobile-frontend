@@ -8,16 +8,15 @@ import { View } from '@tarojs/components'
 import './comp-gift.scss'
 
 function CompGift(props) {
+  const { itemName, item_spec_desc, gift_num } = props.info
   return (
     <View className='comp-gift'>
       <View className='gift-tag'>赠品</View>
       <View className='gift-info'>
-        <View className='title'>
-          我商品名我商品名我商品名最多只显示一行我商品名我商品名我商品名最多只显示一行
-        </View>
+        <View className='title'>{itemName}</View>
         <View className='sku-num'>
-          <View className='sku'>白色、XL、印花</View>
-          <View className='num'>数量：20</View>
+          <View>{item_spec_desc && <View className='sku'>{item_spec_desc}</View>}</View>
+          <View className='num'>数量：{gift_num}</View>
         </View>
       </View>
     </View>

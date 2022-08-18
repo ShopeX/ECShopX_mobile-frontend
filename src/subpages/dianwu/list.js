@@ -20,12 +20,13 @@ const initialState = {
     { title: '促销商品', value: '3' }
   ],
   list: [],
-  current: 0
+  current: 0,
+  cartList: []
 }
 
 function DianWuList() {
   const [state, setState] = useImmer(initialState)
-  const { keywords, typeList, current, list } = state
+  const { keywords, typeList, current, list, cartList } = state
   const goodsRef = useRef()
   const $instance = getCurrentInstance()
   const { distributor_id } = $instance.router.params
@@ -68,11 +69,15 @@ function DianWuList() {
       item_id: itemId,
       num: 1
     })
+    getCashierList()
     showToast('加入收银台成功')
   }
 
   const getCashierList = async () => {
-    await api.dianwu.getCartDataList()
+    const { valid_cart } = await api.dianwu.getCartDataList()
+    setState((draft) => {
+      draft.cartList = pickBy(valid_cart, doc.dianwu.CART_GOODS_ITEM)
+    })
   }
 
   return (
@@ -82,8 +87,8 @@ function DianWuList() {
       renderFooter={
         <View className='footer-wrap'>
           <View className='total-info'>
-            <SpPrice value={100} size={38} />
-            <View className='txt'>已选择4件商品</View>
+            <SpPrice value={cartList[0]?.totalPrice} size={38} />
+            <View className='txt'>已选择{cartList[0]?.totalNum}件商品</View>
           </View>
           <View
             className='btn-confirm'
