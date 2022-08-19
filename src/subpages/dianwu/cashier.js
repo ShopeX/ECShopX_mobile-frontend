@@ -250,7 +250,7 @@ function DianWuCashier() {
           <View className='g-button'>
             <View className='g-button__first'>挂单</View>
             <View className='g-button__second' onClick={() => {
-              Taro.navigateTo({ url: '/subpages/dianwu/checkout' })
+              Taro.navigateTo({ url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}` })
             }}>结算收银</View>
           </View>
         </View>
@@ -477,7 +477,6 @@ function DianWuCashier() {
           <View className='search-user-bd'>
             <View className='form-field'>
               <AtInput
-                clear
                 name='mobile'
                 value={mobile}
                 className='mobile'

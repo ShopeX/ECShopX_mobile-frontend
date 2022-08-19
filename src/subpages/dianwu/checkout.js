@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
@@ -19,9 +19,17 @@ function DianwuCheckout(props) {
   const [state, setState] = useImmer(initialState)
   const { remark, isOpened, couponLayout } = state
   const pageRef = useRef()
+  const $instance = getCurrentInstance()
+  const { distributor_id } = $instance.router.params
+  const { member } = useSelector((state) => state.dianwu)
 
   const onPendingOrder = () => {}
   const onCollection = () => {}
+
+
+  useEffect(() => {
+    getCheckout()
+  }, [])
 
   useEffect(() => {
     if (isOpened || couponLayout) {
@@ -30,6 +38,14 @@ function DianwuCheckout(props) {
       pageRef.current.pageUnLock()
     }
   }, [isOpened, couponLayout])
+
+
+  const getCheckout = async () => {
+    await api.dianwu.checkout({
+      user_id: member?.userId,
+      distributor_id
+    })
+  }
 
   return (
     <SpPage

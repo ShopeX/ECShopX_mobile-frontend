@@ -144,7 +144,7 @@ class API {
       //   url = url + `?redirect_url=${encodeURIComponent(fullPath)}`
       //   Taro.redirectTo({ url })
       // }
-      Taro.redirectTo({ url: '/subpages/dianwu/index' })
+      Taro.redirectTo({ url: '/subpages/member/index' })
     }, 300)
   }
 

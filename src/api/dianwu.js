@@ -38,3 +38,8 @@ export function getMembers(params) {
 export function createMember(params) {
   return req.post('/member', params)
 }
+
+// 收银台结算
+export function checkout(params) {
+  return req.post('/checkout', params)
+}
