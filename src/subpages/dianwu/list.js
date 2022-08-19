@@ -44,8 +44,7 @@ function DianWuList() {
   const fetch = async ({ pageIndex, pageSize }) => {
     let params = {
       page: pageIndex,
-      pageSize,
-      distributor_id
+      pageSize
     }
     if (keywords) {
       params = {
@@ -96,7 +95,7 @@ function DianWuList() {
             className='btn-confirm'
             onClick={() => {
               Taro.navigateTo({
-                url: `/subpages/dianwu/cashier?distributor_id=${distributor_id}`
+                url: `/subpages/dianwu/cashier`
               })
             }}
           >

@@ -17,7 +17,7 @@ import {
   SpCell,
   SpNote
 } from '@/components'
-import { useDebounce } from '@/hooks'
+import { useDianWuLogin, useDebounce } from '@/hooks'
 import { styleNames, pickBy, showToast, classNames, validate } from '@/utils'
 import { selectMember } from '@/store/slices/dianwu'
 import CompGoods from './comps/comp-goods'
@@ -53,7 +53,7 @@ function DianWuCashier() {
     searchResultLayout,
     addUserCurtain,
     searchGoodsList,
-    searchMemberResult
+    searchMemberResult,
   } = state
   const pageRef = useRef()
   const scanIsUseableRef = useRef(true)
@@ -62,6 +62,8 @@ function DianWuCashier() {
   const { distributor_id } = $instance.router.params
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
+
+  useDianWuLogin()
 
   useEffect(() => {
     audioContextRef.current = wx.createInnerAudioContext({
@@ -93,7 +95,6 @@ function DianWuCashier() {
     const { list: goodsList } = await api.dianwu.goodsItems({
       page: 1,
       pageSize: 100,
-      distributor_id,
       keywords
     })
     // const [{ list: memberList }, { list: goodsList }] = await Promise.all([
@@ -230,7 +231,7 @@ function DianWuCashier() {
         draft.searchMemberResult = pickBy(list, doc.dianwu.MEMBER_ITEM)
       })
     } else {
-      showToast('请输入正确的手机号:', mobile)
+      showToast('请输入正确的手机号')
     }
   }
 
@@ -249,9 +250,14 @@ function DianWuCashier() {
           </View>
           <View className='g-button'>
             <View className='g-button__first'>挂单</View>
-            <View className='g-button__second' onClick={() => {
-              Taro.navigateTo({ url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}` })
-            }}>结算收银</View>
+            <View
+              className='g-button__second'
+              onClick={() => {
+                Taro.navigateTo({ url: `/subpages/dianwu/checkout` })
+              }}
+            >
+              结算收银
+            </View>
           </View>
         </View>
       }
@@ -275,7 +281,7 @@ function DianWuCashier() {
             })
           }}
         >
-          <Text className='iconfont icon-xinzenghuiyuan-01'></Text>添加会员
+          <Text className='iconfont icon-xinzenghuiyuan-01'></Text>选择会员
           {/* <View className='g-button__second' onClick={handleScanCode}>
             <Text className='iconfont icon-saoma'></Text>扫商品/会员码
           </View> */}
@@ -296,6 +302,10 @@ function DianWuCashier() {
               className='btn-clear'
               onClick={() => {
                 dispatch(selectMember(null))
+                setState((draft) => {
+                  draft.mobile = ''
+                  draft.searchMemberResult = null
+                })
               }}
             >
               清除
@@ -334,19 +344,6 @@ function DianWuCashier() {
                   <View className='title'>{item.itemName}</View>
                   {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
                   <View className='ft-info'>
-                    {/* <View className='price-list'>
-                    <View className='price-wrap'>
-                      <SpPrice className='sale-price' value={999.99}></SpPrice>
-                    </View>
-                    <View className='price-wrap'>
-                      <SpPrice className='vip-price' value={888.99}></SpPrice>
-                      <SpVipLabel content='VIP' type='vip' />
-                    </View>
-                    <View className='price-wrap'>
-                      <SpPrice className='svip-price' value={666.99}></SpPrice>
-                      <SpVipLabel content='SVIP' type='svip' />
-                    </View>
-                  </View> */}
                     <CompGoodsPrice info={item} />
                     <SpInputNumber
                       value={item.num}
@@ -365,7 +362,7 @@ function DianWuCashier() {
           })}
         </View>
       )}
-      {cartList[0]?.list.length > 0 && (
+      {cartList[0]?.giftActivity.length > 0 && (
         <View className='block-gift'>
           {cartList.map((shopList, idx) => {
             return shopList.giftActivity.map((item, index) => {

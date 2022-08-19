@@ -101,6 +101,24 @@
     .gift-list {
       padding: 20px 10px;
       .gift-item-wrapper {
+        .item-hd {
+          display: flex;
+          justify-content: space-between;
+        }
+        .goods-name {
+          width: 500px;
+          @include multi-ellipsis(2);
+        }
+        .num {
+          font-size: 24px;
+          font-weight: 300;
+          color: #666f83;
+        }
+        .sku {
+          font-size: 24px;
+          font-weight: 400;
+          color: #111a34;
+        }
         &:not(:last-child) {
           padding-bottom: 20px;
           margin-bottom: 20px;

@@ -6,26 +6,60 @@ import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { AtTextarea, AtModal, AtModalHeader, AtModalContent } from 'taro-ui'
-import { SpPage, SpImage, SpPrice, SpVipLabel, SpCell, SpButton, SpFloatLayout, SpCheckbox } from '@/components'
+import {
+  SpPage,
+  SpImage,
+  SpPrice,
+  SpVipLabel,
+  SpCell,
+  SpButton,
+  SpFloatLayout,
+  SpCheckbox
+} from '@/components'
+import { pickBy, showToast } from '@/utils'
+import CompGoodsPrice from './comps/comp-goods-price'
+import CompGift from './comps/comp-gift'
 import CompCoupon from './comps/comp-coupon'
 import './checkout.scss'
 
 const initialState = {
+  itemList: [],
+  itemsPromotion: [],
+  totalItemNum: 0,
+  itemFee: 0,
+  discountFee: 0,
+  totalFee: 0,
   remark: '',
   isOpened: false,
-  couponLayout: true
+  couponLayout: false
 }
 function DianwuCheckout(props) {
   const [state, setState] = useImmer(initialState)
-  const { remark, isOpened, couponLayout } = state
+  const {
+    itemList,
+    itemsPromotion,
+    totalItemNum,
+    itemFee,
+    discountFee,
+    totalFee,
+    remark,
+    isOpened,
+    couponLayout
+  } = state
   const pageRef = useRef()
   const $instance = getCurrentInstance()
   const { distributor_id } = $instance.router.params
   const { member } = useSelector((state) => state.dianwu)
 
   const onPendingOrder = () => {}
-  const onCollection = () => {}
 
+  // 收款
+  const onCollection = async () => {
+    setState((draft) => {
+      draft.isOpened = true
+      // draft.orderId = order_id
+    })
+  }
 
   useEffect(() => {
     getCheckout()
@@ -39,12 +73,81 @@ function DianwuCheckout(props) {
     }
   }, [isOpened, couponLayout])
 
-
   const getCheckout = async () => {
-    await api.dianwu.checkout({
-      user_id: member?.userId,
-      distributor_id
+    const res = await api.dianwu.checkout({
+      user_id: member?.userId
     })
+    const {
+      items,
+      itemsPromotion: _itemsPromotion,
+      totalItemNum: _totalItemNum,
+      itemFee: _itemFee,
+      discountFee: _discountFee,
+      totalFee: _totalFee
+    } = pickBy(res, doc.dianwu.CHECKOUT_GOODS_ITEM)
+    setState((draft) => {
+      draft.itemList = items
+      draft.itemsPromotion = _itemsPromotion
+      draft.totalItemNum = _totalItemNum
+      draft.itemFee = _itemFee
+      draft.discountFee = _discountFee
+      draft.totalFee = _totalFee
+    })
+  }
+
+  const onChangeRemark = (e) => {
+    setState((draft) => {
+      draft.remark = e
+    })
+  }
+
+  const createOrder = async () => {
+    const { order_id } = await api.dianwu.createOrder({
+      user_id: member?.userId,
+      remark
+      // distributor_id
+      // pay_type
+      // not_use_coupon
+      // coupon_discount
+    })
+    return order_id
+  }
+
+  // 扫码收款
+  const handleClickScanCode = async () => {
+    const { errMsg, result } = await Taro.scanCode()
+    if (errMsg == 'scanCode:ok') {
+      console.log(`handleClickScanCode:`, result)
+      const order_id = await createOrder()
+      const { trade_info } = await api.dianwu.orderPayment({
+        order_id,
+        auth_code: '130784806218283467'
+      })
+      Taro.redirectTo({
+        url: `/subpages/dianwu/collection-result?order_id=${order_id}&trade_id=${trade_info.trade_id}`
+      })
+    } else {
+      showToast(errMsg)
+    }
+  }
+
+  // 现金收款
+  const handleClickCash = async () => {
+    const res = await Taro.showModal({
+      title: '现金收款确认提示',
+      content: '请确认是否已收到商品款?',
+      showCancel: true,
+      cancel: '取消',
+      cancelText: '未收到',
+      confirmText: '确认收到'
+    })
+    if (!res.confirm) return
+    const order_id = await createOrder()
+    await api.dianwu.orderPayment({
+      order_id,
+      pay_type: 'pos'
+    })
+    Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
   }
 
   return (
@@ -56,8 +159,8 @@ function DianwuCheckout(props) {
           <SpButton
             resetText='挂单'
             confirmText='收款'
-            onConfirm={onPendingOrder}
-            onReset={onCollection}
+            onConfirm={onCollection}
+            onReset={onPendingOrder}
           ></SpButton>
         </View>
       }
@@ -66,10 +169,10 @@ function DianwuCheckout(props) {
         <SpImage width={110} height={110} />
         <View className='user-info'>
           <View className='info-hd'>
-            <Text className='name'>未知</Text>
-            <Text className='mobile'>138****8888</Text>
+            <Text className='name'>{member?.username || '未知'}</Text>
+            <Text className='mobile'>{member?.mobile}</Text>
           </View>
-          <View className='info-bd'>
+          {/* <View className='info-bd'>
             <View className='filed-item'>
               <Text className='label'>积分:</Text>
               <Text className='value'>888888</Text>
@@ -82,22 +185,21 @@ function DianwuCheckout(props) {
               <Text className='label'>会员折扣:</Text>
               <Text className='value'>8.8</Text>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
       <View className='block-goods'>
-        {[1, 2, 3].map((item, index) => (
+        {itemList.map((item, index) => (
           <View className='item-wrap' key={`item-wrap__${index}`}>
             <View className='item-hd'>
-              <SpImage width={110} height={110} />
+              <SpImage src={item.pic} width={110} height={110} />
             </View>
             <View className='item-bd'>
-              <View className='title'>
-                我商品名我商品名我商品名最多只显示一行我商品名我商品名我商品名最多只显示一行
-              </View>
-              <View className='sku'>白色、XL、印花</View>
+              <View className='title'>{item.name}</View>
+              {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
               <View className='ft-info'>
-                <View className='price-list'>
+                <CompGoodsPrice info={item} />
+                {/* <View className='price-list'>
                   <View className='price-wrap'>
                     <SpPrice className='sale-price' value={999.99}></SpPrice>
                   </View>
@@ -109,57 +211,52 @@ function DianwuCheckout(props) {
                     <SpPrice className='svip-price' value={666.99}></SpPrice>
                     <SpVipLabel content='SVIP' type='svip' />
                   </View>
-                </View>
-                <View className='num'>数量：20</View>
+                </View> */}
+                <View className='num'>数量：{item.num}</View>
               </View>
             </View>
           </View>
         ))}
       </View>
-      <View className='block-gift'>
-        {[1, 2, 3].map((item, index) => (
-          <View className='gift-item' key={`gift-item__${index}`}>
-            <View className='gift-tag'>赠品</View>
-            <View className='gift-info'>
-              <View className='title'>
-                我商品名我商品名我商品名最多只显示一行我商品名我商品名我商品名最多只显示一行
+      {itemsPromotion && (
+        <View className='block-gift'>
+          {itemsPromotion.map((item, idx) => {
+            return item.activity_desc.gifts.map((gift, index) => (
+              <View className='gift-item' key={`gift-item__${idx}_${index}`}>
+                <CompGift info={gift} />
               </View>
-              <View className='sku-num'>
-                <View className='sku'>白色、XL、印花</View>
-                <View className='num'>数量：20</View>
-              </View>
-            </View>
-          </View>
-        ))}
-      </View>
+            ))
+          })}
+        </View>
+      )}
 
       <View className='block-coupon'>
         <SpCell title='使用券' border isLink>
           <Text>共5张优惠券可用</Text>
         </SpCell>
-        <SpCell title='使用积分' isLink>
+        {/* <SpCell title='使用积分' isLink>
           暂无可用
-        </SpCell>
+        </SpCell> */}
       </View>
 
       <View className='block-checkout-info'>
-        <SpCell title='43件商品合计' border>
-          <SpPrice value={2450} />
+        <SpCell title={`${totalItemNum}件商品合计`} border>
+          <SpPrice value={itemFee} />
         </SpCell>
-        <SpCell title='促销优惠' border>
-          <SpPrice value={-500} />
+        <SpCell title='优惠' border>
+          <SpPrice value={`-${discountFee}`} />
         </SpCell>
-        <SpCell title='会员折扣' border>
+        {/* <SpCell title='会员折扣' border>
           <SpPrice value={-50} />
-        </SpCell>
-        <SpCell title='券优惠' border>
+        </SpCell> */}
+        {/* <SpCell title='券优惠' border>
           <SpPrice value={-50} />
-        </SpCell>
-        <SpCell title='积分抵扣' border>
+        </SpCell> */}
+        {/* <SpCell title='积分抵扣' border>
           <SpPrice value={-50} />
-        </SpCell>
+        </SpCell> */}
         <SpCell title='应收款'>
-          <SpPrice value={1450} />
+          <SpPrice value={totalFee} />
         </SpCell>
       </View>
 
@@ -168,7 +265,7 @@ function DianwuCheckout(props) {
         <AtTextarea
           count
           value={remark}
-          onChange={() => {}}
+          onChange={onChangeRemark}
           maxLength={150}
           placeholder='请输入您的备注'
         ></AtTextarea>
@@ -178,17 +275,17 @@ function DianwuCheckout(props) {
         <AtModalHeader>应收款</AtModalHeader>
         <AtModalContent>
           <View className='total-mount'>
-            <SpPrice size={48} value={1450} />
+            <SpPrice size={48} value={totalFee} />
           </View>
-          <SpCell isLink border>
+          {/* <SpCell isLink border>
             <Text className='iconfont icon-weixinzhifu'></Text>
             <Text>微信收款</Text>
+          </SpCell> */}
+          <SpCell isLink border onClick={handleClickScanCode}>
+            <Text className='iconfont icon-saoma'></Text>
+            <Text>微信/支付宝收款</Text>
           </SpCell>
-          <SpCell isLink border>
-            <Text className='iconfont icon-zhifubao'></Text>
-            <Text>支付宝收款</Text>
-          </SpCell>
-          <SpCell isLink>
+          <SpCell isLink onClick={handleClickCash}>
             <Text className='iconfont icon-money1'></Text>
             <Text>现金收款</Text>
           </SpCell>
@@ -215,7 +312,9 @@ function DianwuCheckout(props) {
       >
         <View className='coupon-list'>
           {[1, 2, 3, 4, 5, 6].map((item, index) => (
-            <CompCoupon key={`coupon-item__${index}`}><SpCheckbox /></CompCoupon>
+            <CompCoupon key={`coupon-item__${index}`}>
+              <SpCheckbox />
+            </CompCoupon>
           ))}
         </View>
       </SpFloatLayout>

@@ -140,7 +140,7 @@
     background-color: #fff;
     margin-top: 24px;
     .gift-item {
-      display: flex;
+      // display: flex;
       &:not(:last-child) {
         margin-bottom: 20px;
       }
@@ -259,6 +259,10 @@
     .icon-zhifubao {
       color: #02a9f1;
       font-size: 40px;
+    }
+    .icon-saoma {
+      color: #333;
+      font-size: 36px;
     }
     .icon-money1 {
       color: #ffc90d;
