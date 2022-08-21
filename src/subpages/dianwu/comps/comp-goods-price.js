@@ -33,8 +33,6 @@ function SpGoodsPrice(props) {
         <View>
           <View className='goods-price'>
             <SpPrice className='sale-price' value={price} />
-          </View>
-          <View>
             {info.memberPrice < info.price && enMemberPrice && (
               <View className='vip-price'>
                 <SpPrice value={info.memberPrice} />

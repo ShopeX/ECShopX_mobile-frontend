@@ -2,14 +2,23 @@
   .mkt-price {
     margin-left: 8px;
   }
-  .vip-price,
-  .svip-price {
+  .goods-price {
+    padding: 10px 0;
     display: flex;
-    align-items: center;
-    .sp-price__symbol,
-    .sp-price__int,
-    .sp-price__decimal {
-      color: #666;
+    flex-wrap: wrap;
+    .sale-price {
+      margin-right: 20px;
+    }
+    .vip-price,
+    .svip-price {
+      display: flex;
+      align-items: center;
+      padding-right: 20px;
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        color: #666;
+      }
     }
   }
   .activity {

@@ -90,7 +90,7 @@ function DianWuList() {
         <View className='footer-wrap'>
           <View className='total-info'>
             <SpPrice value={cartList[0]?.totalPrice} size={38} />
-            <View className='txt'>已选择{cartList[0]?.totalNum}件商品</View>
+            <View className='txt'>已选择 {cartList[0]?.totalNum} 件商品</View>
           </View>
           <View
             className='btn-confirm'
@@ -119,7 +119,7 @@ function DianWuList() {
       <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         {list.map((items, idx) => {
           return items.map((item, sidx) => (
-            <View className='item-wrap' key={`item-wrap__${idx}_${sidx}`}>
+            <View className={classNames('item-wrap', {'item-disabled' : item.store == 0})} key={`item-wrap__${idx}_${sidx}`}>
               {/* <View className='item-hd'>
                 <View className='promotion-list'>
                   <Text className='promotion-tag'>满1000减100</Text>
@@ -133,17 +133,11 @@ function DianWuList() {
               <CompGoods info={item}>
                 {item.store > 0 && (
                   <AtButton
+                    className='btn-add-cart'
                     circle
-                    className={classNames({ 'active': true })}
                     onClick={handleAddToCart.bind(this, item)}
                   >
-                    <Text className='iconfont icon-plus'></Text>
-                  </AtButton>
-                )}
-
-                {item.store == 0 && (
-                  <AtButton circle disabled>
-                    缺货
+                    加入收银台
                   </AtButton>
                 )}
               </CompGoods>
