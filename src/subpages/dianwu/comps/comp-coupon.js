@@ -8,23 +8,39 @@ import { View, Text } from '@tarojs/components'
 import './comp-coupon.scss'
 
 function CompCoupon(props) {
-  const { children } = props
+  const { children, info } = props
   return (
     <View className='comp-coupon'>
       <View className='coupon-inner'>
         <View className='coupon-hd'>
-          <View className='coupon-value'>
-            <Text className='symbol'>¥</Text>
-            <Text className='value'>15</Text>
+          {info.cardType == 'cash' && (
+            <View className='coupon-value'>
+              <Text className='symbol'>¥</Text>
+              <Text className='value'>{info.reduceCost}</Text>
+            </View>
+          )}
+
+          {info.cardType == 'discount' && (
+            <View className='coupon-value'>
+              <Text className='value'>{info.discount}</Text>
+              <Text className='symbol'>折</Text>
+            </View>
+          )}
+
+          <View className='coupon-tag'>
+            {
+              {
+                'cash': '满减券',
+                'discount': '满折券',
+                'new_gift': '兑换券'
+              }[info.cardType]
+            }
           </View>
-          <View className='coupon-tag'>满减券</View>
         </View>
         <View className='coupon-bd'>
-          <View className='coupon-name'>
-            新人券满2万减9999如果文字过多可换行显示新人券满2万减9999如果文字过多可换行显示
-          </View>
-          <View className='coupon-desc'>满20可用</View>
-          <View className='coupon-datetime'>有效期: 2022.06.15 - 2023.06.01</View>
+          <View className='coupon-name'>{info?.title}</View>
+          {info.leastCost > 0 && <View className='coupon-desc'>满{info.leastCost}可用</View>}
+          <View className='coupon-datetime'>{`有效期: ${info?.beginDate} - ${info?.endDate}`}</View>
         </View>
         <View className='coupon-ft'>{children}</View>
       </View>

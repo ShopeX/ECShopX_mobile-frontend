@@ -68,3 +68,8 @@ export function getTradeDetail(order_id) {
 export function getMemberByUserId(params) {
   return req.get(`/member`, params)
 }
+
+// 获取优惠券
+export function getUserCardList(params) {
+  return req.get('/getUserCardList', params)
+}

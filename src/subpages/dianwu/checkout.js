@@ -29,6 +29,12 @@ const initialState = {
   itemFee: 0,
   discountFee: 0,
   totalFee: 0,
+  memberDiscount: 0,
+  couponDiscount: 0,
+  promotionDiscount: 0,
+  couponInfo: null,
+  selectCoupon: null,
+  couponList: [],
   remark: '',
   isOpened: false,
   couponLayout: false
@@ -42,9 +48,15 @@ function DianwuCheckout(props) {
     itemFee,
     discountFee,
     totalFee,
+    memberDiscount,
+    couponDiscount,
+    promotionDiscount,
     remark,
     isOpened,
-    couponLayout
+    couponLayout,
+    couponList,
+    couponInfo,
+    selectCoupon
   } = state
   const pageRef = useRef()
   const $instance = getCurrentInstance()
@@ -63,6 +75,7 @@ function DianwuCheckout(props) {
 
   useEffect(() => {
     getCheckout()
+    getUserCardList()
   }, [])
 
   useEffect(() => {
@@ -73,17 +86,38 @@ function DianwuCheckout(props) {
     }
   }, [isOpened, couponLayout])
 
-  const getCheckout = async () => {
-    const res = await api.dianwu.checkout({
+  const getUserCardList = async () => {
+    const { list } = await api.dianwu.getUserCardList({
       user_id: member?.userId
     })
+    setState((draft) => {
+      draft.couponList = pickBy(list, doc.dianwu.COUPON_ITEM)
+    })
+  }
+
+  const getCheckout = async () => {
+    let params = {
+      user_id: member?.userId,
+    }
+    if(selectCoupon) {
+      params = {
+        ...params,
+        not_use_coupon: 0,
+        coupon_discount: selectCoupon
+      }
+    }
+    const res = await api.dianwu.checkout(params)
     const {
       items,
       itemsPromotion: _itemsPromotion,
       totalItemNum: _totalItemNum,
       itemFee: _itemFee,
       discountFee: _discountFee,
-      totalFee: _totalFee
+      totalFee: _totalFee,
+      memberDiscount: _memberDiscount,
+      couponDiscount: _couponDiscount,
+      promotionDiscount: _promotionDiscount,
+      couponInfo: _couponInfo
     } = pickBy(res, doc.dianwu.CHECKOUT_GOODS_ITEM)
     setState((draft) => {
       draft.itemList = items
@@ -92,6 +126,11 @@ function DianwuCheckout(props) {
       draft.itemFee = _itemFee
       draft.discountFee = _discountFee
       draft.totalFee = _totalFee
+      draft.memberDiscount = _memberDiscount
+      draft.couponDiscount = _couponDiscount
+      draft.promotionDiscount = _promotionDiscount
+      draft.couponInfo = _couponInfo
+      draft.selectCoupon = _couponInfo ? _couponInfo.coupon_code : null
     })
   }
 
@@ -121,7 +160,7 @@ function DianwuCheckout(props) {
       const order_id = await createOrder()
       const { trade_info } = await api.dianwu.orderPayment({
         order_id,
-        auth_code: '130784806218283467'
+        auth_code: result
       })
       Taro.redirectTo({
         url: `/subpages/dianwu/collection-result?order_id=${order_id}&trade_id=${trade_info.trade_id}`
@@ -148,6 +187,28 @@ function DianwuCheckout(props) {
       pay_type: 'pos'
     })
     Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
+  }
+
+  // 使用优惠券
+  const handleUseCoupon = async () => {
+    getCheckout()
+    setState(draft => {
+      draft.couponLayout = false
+    })
+  }
+
+  const couponIsChecked = ({ couponCode }) => {
+    if (selectCoupon == couponCode) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  const onChangeCoupon = ({ couponCode }, e) => {
+    setState(draft => {
+      draft.selectCoupon = e ? couponCode : null
+    })
   }
 
   return (
@@ -221,7 +282,7 @@ function DianwuCheckout(props) {
       {itemsPromotion && (
         <View className='block-gift'>
           {itemsPromotion.map((item, idx) => {
-            return item.activity_desc.gifts.map((gift, index) => (
+            return item.activity_desc?.gifts?.map((gift, index) => (
               <View className='gift-item' key={`gift-item__${idx}_${index}`}>
                 <CompGift info={gift} />
               </View>
@@ -231,9 +292,21 @@ function DianwuCheckout(props) {
       )}
 
       <View className='block-coupon'>
-        <SpCell title='使用券' border isLink>
-          <Text>共5张优惠券可用</Text>
-        </SpCell>
+        {couponList.length > 0 && (
+          <SpCell
+            title='使用券'
+            border
+            isLink
+            onClick={() => {
+              setState((draft) => {
+                draft.couponLayout = true
+              })
+            }}
+          >
+            <Text>{`${couponInfo ? couponInfo.rule : '请选择'}`}</Text>
+          </SpCell>
+        )}
+
         {/* <SpCell title='使用积分' isLink>
           暂无可用
         </SpCell> */}
@@ -243,15 +316,15 @@ function DianwuCheckout(props) {
         <SpCell title={`${totalItemNum}件商品合计`} border>
           <SpPrice value={itemFee} />
         </SpCell>
-        <SpCell title='优惠' border>
-          <SpPrice value={`-${discountFee}`} />
+        <SpCell title='促销优惠' border>
+          <SpPrice value={`-${promotionDiscount}`} />
         </SpCell>
-        {/* <SpCell title='会员折扣' border>
-          <SpPrice value={-50} />
-        </SpCell> */}
-        {/* <SpCell title='券优惠' border>
-          <SpPrice value={-50} />
-        </SpCell> */}
+        <SpCell title='会员折扣' border>
+          <SpPrice value={`-${memberDiscount}`} />
+        </SpCell>
+        <SpCell title='券优惠' border>
+          <SpPrice value={`-${couponDiscount}`} />
+        </SpCell>
         {/* <SpCell title='积分抵扣' border>
           <SpPrice value={-50} />
         </SpCell> */}
@@ -305,15 +378,22 @@ function DianwuCheckout(props) {
           <SpButton
             resetText='暂不使用'
             confirmText='确定'
-            onConfirm={onPendingOrder}
-            onReset={onCollection}
+            onConfirm={handleUseCoupon}
+            onReset={() => {
+              setState((draft) => {
+                draft.couponLayout = false
+              })
+            }}
           ></SpButton>
         }
       >
         <View className='coupon-list'>
-          {[1, 2, 3, 4, 5, 6].map((item, index) => (
-            <CompCoupon key={`coupon-item__${index}`}>
-              <SpCheckbox />
+          {couponList.map((item, index) => (
+            <CompCoupon info={item} key={`coupon-item__${index}`}>
+              <SpCheckbox
+                checked={couponIsChecked(item)}
+                onChange={onChangeCoupon.bind(this, item)}
+              />
             </CompCoupon>
           ))}
         </View>

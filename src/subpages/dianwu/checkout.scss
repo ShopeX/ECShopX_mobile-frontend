@@ -136,11 +136,19 @@
   }
 
   .block-gift {
-    padding: 20px 30px;
+    // padding: 20px 30px;
     background-color: #fff;
     margin-top: 24px;
+    overflow: hidden;
     .gift-item {
       // display: flex;
+      padding: 0 30px;
+      &:first-child {
+        margin-top: 20px;
+      }
+      &:last-child {
+        margin-bottom: 20px;
+      }
       &:not(:last-child) {
         margin-bottom: 20px;
       }

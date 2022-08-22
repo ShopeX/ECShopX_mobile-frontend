@@ -383,7 +383,7 @@ function DianWuCashier() {
             已优惠 <SpPrice size={38} value={cartList[0]?.discountFee} />
           </View>
         </View>
-        {/* <View
+        <View
           className='rg'
           onClick={() => {
             setState((draft) => {
@@ -392,7 +392,7 @@ function DianWuCashier() {
           }}
         >
           优惠详情<Text className='iconfont icon-qianwang-01'></Text>
-        </View> */}
+        </View>
       </View>
 
       <SpFloatLayout
@@ -405,14 +405,14 @@ function DianWuCashier() {
         }}
       >
         <View className='discount-detail'>
-          <SpCell title='4件商品合计'>
-            <SpPrice value={2450}></SpPrice>
+          <SpCell title={`${cartList[0]?.totalNum}件商品合计`}>
+            <SpPrice value={cartList[0]?.totalPrice}></SpPrice>
           </SpCell>
           <SpCell title='促销优惠'>
-            <SpPrice value={-500}></SpPrice>
+            <SpPrice value={`-${cartList[0]?.promotionFee}`}></SpPrice>
           </SpCell>
           <SpCell title='会员折扣'>
-            <SpPrice value={-500}></SpPrice>
+            <SpPrice value={`-${cartList[0]?.memberDiscount}`}></SpPrice>
           </SpCell>
         </View>
       </SpFloatLayout>
@@ -513,39 +513,6 @@ function DianWuCashier() {
           </View>
         </View>
       </AtCurtain>
-
-      {/* <AtCurtain
-        isOpened={addUserCurtain}
-        onClose={() => {
-          setState((draft) => {
-            draft.addUserCurtain = false
-          })
-        }}
-      >
-        <View
-          className='create-user'
-          style={styleNames({
-            'background-image': `url(${process.env.APP_IMAGE_CDN}/create_member_bk.png)`
-          })}
-        >
-          <View className='create-user-hd'>
-            <View className='title'>创建会员</View>
-            <View className='sub-title'>引导客户创建会员，领取新客礼</View>
-          </View>
-          <View className='create-user-bd'>
-            <View className='form-field'>
-              <AtInput className='mobile' />
-            </View>
-            <View className='form-field'>
-              <AtInput className='code' />
-              <View className='send-code'>重新发送</View>
-            </View>
-          </View>
-          <View className='create-user-ft'>
-            <View className='btn-submit'>快捷创建</View>
-          </View>
-        </View>
-      </AtCurtain> */}
     </SpPage>
   )
 }

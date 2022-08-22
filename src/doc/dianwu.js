@@ -1,4 +1,5 @@
 import { pickBy } from '@/utils'
+import Big from 'big.js'
 
 export const GOODS_ITEM = {
   itemId: 'item_id',
@@ -21,7 +22,13 @@ export const CART_GOODS_ITEM = {
   totalPrice: ({ cart_total_price }) => cart_total_price / 100,
   discountFee: ({ discount_fee }) => discount_fee / 100,
   totalFee: ({ total_fee }) => total_fee / 100,
+  memberDiscount: ({ member_discount }) => member_discount / 100,
   giftActivity: 'gift_activity',
+  promotionFee: ({ activity_grouping }) => {
+    const promotionFee = activity_grouping.reduce((total, item) => new Big(total).plus(item.discount_fee), 0)
+    return promotionFee / 100
+  },
+  activityGrouping: 'activity_grouping',
   list: ({ list }) => {
     return pickBy(list, {
       cartId: 'cart_id',
@@ -53,6 +60,7 @@ export const CREATE_MEMBER_ITEM = {
 }
 
 export const CHECKOUT_GOODS_ITEM = {
+  couponInfo: 'coupon_info',
   items: ({ items }) => {
     return pickBy(items, {
       itemId: 'item_id',
@@ -73,5 +81,22 @@ export const CHECKOUT_GOODS_ITEM = {
   totalItemNum: 'totalItemNum',
   itemFee: ({ item_fee }) => item_fee / 100,
   discountFee: ({ discount_fee }) => discount_fee / 100,
-  totalFee: ({ total_fee }) => total_fee / 100
+  totalFee: ({ total_fee }) => total_fee / 100,
+  memberDiscount: ({ member_discount }) => member_discount / 100,
+  couponDiscount: ({ coupon_discount }) => coupon_discount / 100,
+  promotionDiscount: ({ promotion_discount }) => promotion_discount / 100
+}
+
+export const COUPON_ITEM = {
+  cardId: 'card_id',
+  couponCode: 'code',
+  title: 'title',
+  beginDate: ({ begin_date }) => begin_date.replace(/-/g, '.'),
+  endDate: ({ end_date }) => end_date.replace(/-/g, '.'),
+  cardType: 'card_type',
+  reduceCost: ({ reduce_cost }) => reduce_cost / 100,
+  leastCost: ({ least_cost }) => least_cost / 100,
+  discount: ({ discount }) => {
+    return (100 - discount) / 10
+  }
 }
