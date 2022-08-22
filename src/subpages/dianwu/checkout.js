@@ -272,19 +272,6 @@ function DianwuCheckout(props) {
               {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
               <View className='ft-info'>
                 <CompGoodsPrice info={item} />
-                {/* <View className='price-list'>
-                  <View className='price-wrap'>
-                    <SpPrice className='sale-price' value={999.99}></SpPrice>
-                  </View>
-                  <View className='price-wrap'>
-                    <SpPrice className='vip-price' value={888.99}></SpPrice>
-                    <SpVipLabel content='VIP' type='vip' />
-                  </View>
-                  <View className='price-wrap'>
-                    <SpPrice className='svip-price' value={666.99}></SpPrice>
-                    <SpVipLabel content='SVIP' type='svip' />
-                  </View>
-                </View> */}
                 <View className='num'>数量：{item.num}</View>
               </View>
             </View>
@@ -392,7 +379,7 @@ function DianwuCheckout(props) {
         }}
         renderFooter={
           <SpButton
-            resetText='暂不使用'
+            resetText='取消'
             confirmText='确定'
             onConfirm={handleUseCoupon}
             onReset={() => {
