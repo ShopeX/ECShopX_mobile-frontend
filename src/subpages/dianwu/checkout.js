@@ -69,7 +69,6 @@ function DianwuCheckout(props) {
 
   // 收款
   const onCollection = async () => {
-    debugger
     setState((draft) => {
       draft.isOpened = true
       // draft.orderId = order_id

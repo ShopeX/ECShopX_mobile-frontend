@@ -55,6 +55,9 @@ function DianwuCollectionResult(props) {
       item_fee,
       discount_fee,
       total_fee,
+      member_discount,
+      coupon_discount,
+      promotion_discount,
       remark,
       user_id,
       pay_status
@@ -71,6 +74,9 @@ function DianwuCollectionResult(props) {
         itemFee: item_fee / 100,
         discountFee: discount_fee / 100,
         totalFee: total_fee / 100,
+        memberDiscount: member_discount ? member_discount / 100 : 0,
+        couponDiscount: coupon_discount ? coupon_discount / 100 : 0,
+        promotionDiscount: promotion_discount ? promotion_discount / 100 : 0,
         remark: remark,
         username: username,
         mobile: mobile,
@@ -93,11 +99,13 @@ function DianwuCollectionResult(props) {
         </View>
       }
     >
-      {!info && (
+      {(!info || (info && info?.payStatus == 'NOTPAY')) && (
         <View className='result-hd'>
-          <Text>等待支付中</Text>
+          <Text>等待支付中...</Text>
         </View>
       )}
+
+
 
       {info && info?.payStatus == 'PAYED' && (
         <View>
@@ -148,16 +156,16 @@ function DianwuCollectionResult(props) {
             <SpCell title='商品合计' border>
               <SpPrice value={info.itemFee}></SpPrice>
             </SpCell>
-            <SpCell title='优惠' border>
-              <SpPrice value={`-${info.discountFee}`}></SpPrice>
+            <SpCell title='促销优惠' border>
+              <SpPrice value={`-${info.promotionDiscount}`}></SpPrice>
             </SpCell>
-            {/* <SpCell title='会员折扣' border>
-          <SpPrice value={-50}></SpPrice>
-        </SpCell>
-        <SpCell title='券优惠' border>
-          <SpPrice value={-50}></SpPrice>
-        </SpCell>
-        <SpCell title='积分抵扣' border>
+            <SpCell title='会员折扣' border>
+              <SpPrice value={`-${info.memberDiscount}`}></SpPrice>
+            </SpCell>
+            <SpCell title='券优惠' border>
+              <SpPrice value={`-${info.couponDiscount}`}></SpPrice>
+            </SpCell>
+            {/* <SpCell title='积分抵扣' border>
           <SpPrice value={-50}></SpPrice>
         </SpCell> */}
             <SpCell title='实收'>
@@ -173,7 +181,9 @@ function DianwuCollectionResult(props) {
               title='支付方式'
               value={
                 {
-                  'pos': '现金支付'
+                  'pos': '现金支付',
+                  'wxpaypos': '微信支付',
+                  'alipaypos': '支付宝支付'
                 }[info.payType]
               }
             ></SpCell>
