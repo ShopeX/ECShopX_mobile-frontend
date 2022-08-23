@@ -105,8 +105,6 @@ function DianwuCollectionResult(props) {
         </View>
       )}
 
-
-
       {info && info?.payStatus == 'PAYED' && (
         <View>
           <View className='result-hd'>
@@ -130,7 +128,7 @@ function DianwuCollectionResult(props) {
                     <View className='goods-name'>{item.item_name}</View>
                     <View className='num'>{`x ${item.num}`}</View>
                   </View>
-                  <View className='sku'>规格：白色、XL、印花</View>
+                  {item.item_spec_desc && <View className='sku'>规格：{item.item_spec_desc}</View>}
                 </View>
               ))}
             </View>
@@ -144,7 +142,9 @@ function DianwuCollectionResult(props) {
                         <View className='goods-name'>{item.item_name}</View>
                         <View className='num'>{`x ${item.num}`}</View>
                       </View>
-                      <View className='sku'>规格：白色、XL、印花</View>
+                      {item.item_spec_desc && (
+                        <View className='sku'>规格：{item.item_spec_desc}</View>
+                      )}
                     </View>
                   ))}
                 </View>
