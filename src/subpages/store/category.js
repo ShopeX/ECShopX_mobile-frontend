@@ -42,14 +42,14 @@ const CategoryIndex = (props) => {
     const seriesList = pickBy(data, doc.category.CATEGORY_STORE_LIST)
     let tabList = []
     let contentList = []
-    if (hasSeries) {
-      seriesList?.map((item) => {
-        tabList.push({ title: item.name, status: item.name })
-        contentList.push(item.children)
-      })
-    } else {
-      contentList.push(seriesList)
-    }
+    // if (hasSeries) {
+    //   seriesList?.map((item) => {
+    //     tabList.push({ title: item.name, status: item.name })
+    //     contentList.push(item.children)
+    //   })
+    // } else {
+    // }
+    contentList.push(seriesList)
     console.log(`contentList:`, contentList)
     setState((draft) => {
       draft.tabList = tabList
