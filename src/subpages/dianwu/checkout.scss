@@ -11,6 +11,7 @@
     }
     .user-info {
       flex: 1;
+      margin-top: 20px;
     }
     .info-hd {
       .name {
@@ -22,7 +23,7 @@
     .info-bd {
       display: flex;
       justify-content: space-between;
-      margin-top: 36px;
+      // margin-top: 36px;
     }
     .filed-item {
       // margin-right: 10px;

@@ -248,20 +248,20 @@ function DianwuCheckout(props) {
             <Text className='name'>{member?.username || '未知'}</Text>
             <Text className='mobile'>{member?.mobile}</Text>
           </View>
-          {/* <View className='info-bd'>
+          <View className='info-bd'>
             <View className='filed-item'>
               <Text className='label'>积分:</Text>
-              <Text className='value'>888888</Text>
+              <Text className='value'>{member?.point || 0}</Text>
             </View>
             <View className='filed-item'>
               <Text className='label'>券:</Text>
-              <Text className='value'>888</Text>
+              <Text className='value'>{member?.couponNum || 0}</Text>
             </View>
             <View className='filed-item'>
               <Text className='label'>会员折扣:</Text>
-              <Text className='value'>8.8</Text>
+              <Text className='value'>{member?.vipDiscount || 0}</Text>
             </View>
-          </View> */}
+          </View>
         </View>
       </View>
       <View className='block-goods'>

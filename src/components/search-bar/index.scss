@@ -1,5 +1,3 @@
-@import '../../style/imports';
-
 .search-input {
   width: 100%;
   height: $searchbar-height;
@@ -9,7 +7,7 @@
     height: 100vh;
     z-index: $z-index-dropdown;
     position: absolute;
-    top: 170px;
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;

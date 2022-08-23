@@ -54,6 +54,16 @@ export const MEMBER_ITEM = {
   userId: 'user_id'
 }
 
+export const MEMBER_INFO = {
+  vipDiscount: ({ vipgrade }) => {
+    return (100 - vipgrade.discount) / 10
+  },
+  couponNum: ({ coupon_num }) => {
+    return coupon_num || 0
+  },
+  point: 'point'
+}
+
 export const CREATE_MEMBER_ITEM = {
   username: 'username',
   mobile: 'mobile',
