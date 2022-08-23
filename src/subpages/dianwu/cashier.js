@@ -402,9 +402,10 @@ function DianWuCashier() {
                       min={1}
                       onBlur={(num) => {
                         setState((draft) => {
-                          draft.cartList[idx].list[index].num = num
+                          draft.cartList[idx].list[index].num = (num == '' ||  num == 0) ? 1 : num
+                        },() => {
+                          onChangeInputNumber(item, num)
                         })
-                        onChangeInputNumber(item, num)
                       }}
                     />
                   </View>
