@@ -92,8 +92,8 @@ function DianWuList() {
       renderFooter={
         <View className='footer-wrap'>
           <View className='total-info'>
-            <SpPrice value={cartList[0]?.totalPrice} size={38} />
-            <View className='txt'>已选择 {cartList[0]?.totalNum} 件商品</View>
+            <SpPrice value={cartList[0]?.totalPrice || 0} size={38} />
+            <View className='txt'>已选择 {cartList[0]?.totalNum || 0} 件商品</View>
           </View>
           <View
             className='btn-confirm'

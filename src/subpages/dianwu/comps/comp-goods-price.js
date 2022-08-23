@@ -8,6 +8,13 @@ import './comp-goods-price.scss'
 
 function SpGoodsPrice(props) {
   const { info } = props
+  const { priceSetting } = useSelector((state) => state.sys)
+  const { cart_page, item_page, order_page } = priceSetting
+  const {
+    market_price: enMarketPrice,
+    member_price: enMemberPrice,
+    svip_price: enSvipPrice
+  } = item_page
 
   if (!info) {
     return null
@@ -29,7 +36,7 @@ function SpGoodsPrice(props) {
             <SpPrice className='sale-price' value={price} />
           </View>
           <View>
-            {info.memberPrice < info.price && (
+            {info.memberPrice < info.price && enMemberPrice && (
               <View className='vip-price'>
                 <SpPrice value={info.memberPrice} />
                 <SpVipLabel content='会员价' type='member' />
@@ -39,7 +46,8 @@ function SpGoodsPrice(props) {
             {info.vipPrice > 0 &&
               info.vipPrice < info.price &&
               info.vipPrice > info.svipPrice &&
-              !info.svipPrice && (
+              !info.svipPrice &&
+              enSvipPrice && (
                 <View className='vip-price'>
                   <SpPrice value={info.vipPrice} />
                   <SpVipLabel content='VIP' type='vip' />
@@ -48,7 +56,8 @@ function SpGoodsPrice(props) {
 
             {info.svipPrice > 0 &&
               info.svipPrice < info.vipPrice &&
-              info.svipPrice < info.price && (
+              info.svipPrice < info.price &&
+              enSvipPrice && (
                 <View className='svip-price'>
                   <SpPrice value={info.svipPrice} />
                   <SpVipLabel content='SVIP' type='svip' />

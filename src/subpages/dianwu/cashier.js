@@ -189,8 +189,10 @@ function DianWuCashier() {
   }
 
   // 选择会员
-  const handleSelectMember = () => {
+  const handleSelectMember = async () => {
     const [item] = searchMemberResult
+    // await api.dianwu.getMemberByUserId({ user_id: item.userId })
+    // debugger
     dispatch(selectMember(item))
     setState((draft) => {
       draft.addUserCurtain = false
