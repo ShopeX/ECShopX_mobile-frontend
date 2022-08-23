@@ -236,7 +236,7 @@
       padding: 20px;
       display: flex;
       // flex: 1;
-      width: calc(100% - 180px);
+      width: calc(100% - 123px);
       .item-hd {
         margin-right: 20px;
         .btn-delete {
@@ -279,7 +279,7 @@
     .item-option {
       display: flex;
       flex-direction: column;
-      width: 180px;
+      width: 123px;
       border-left: 1PX solid #dadada;
       &-count {
         display: flex;
@@ -290,6 +290,9 @@
           line-height: 60px;
           text-align: center;
           font-size: 32px;
+          &:first-child {
+            border-right: 1PX solid #dadada;
+          }
         }
       }
       &-input {
@@ -315,6 +318,7 @@
         line-height: 50px;
         text-align: center;
         font-size: 30px;
+        border-top: 1PX solid #dadada;
       }
     }
   }

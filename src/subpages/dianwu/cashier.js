@@ -386,12 +386,12 @@ function DianWuCashier() {
                 <View className='item-option'>
                   <View className='item-option-count'>
                     <View
-                      className='count-option iconfont icon-plus'
-                      onClick={onChangePlus.bind(this, item, idx, index)}
-                    ></View>
-                    <View
                       className='count-option iconfont icon-minus'
                       onClick={onChangeMinus.bind(this, item, idx, index)}
+                    ></View>
+                    <View
+                      className='count-option iconfont icon-plus'
+                      onClick={onChangePlus.bind(this, item, idx, index)}
                     ></View>
                   </View>
                   <View className='item-option-input'>
