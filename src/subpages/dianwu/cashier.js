@@ -316,7 +316,17 @@ function DianWuCashier() {
         </AtButton>
       </View>
       {isCameraOpend && (
-        <Camera className='scan-code' mode='scanCode' onScanCode={handleScanCodeByGoods} />
+        <View class="scan-code-wrap">
+          <Camera className='scan-code-camera' mode='scanCode' onScanCode={handleScanCodeByGoods} />
+          <View
+            className='scan-code-close'
+            onClick={() => {
+              setState((draft) => {
+                draft.isCameraOpend = false
+              })
+            }}
+          >关闭扫码</View>
+        </View>
       )}
       {!isCameraOpend && (
         <View
@@ -520,16 +530,10 @@ function DianWuCashier() {
                 {item.store > 0 && (
                   <AtButton
                     circle
-                    className={classNames({ 'active': true })}
+                    className='btn-add-cart'
                     onClick={handleAddToCart.bind(this, item)}
                   >
-                    <Text className='iconfont icon-plus'></Text>
-                  </AtButton>
-                )}
-
-                {item.store == 0 && (
-                  <AtButton circle disabled>
-                    缺货
+                    加入收银
                   </AtButton>
                 )}
               </CompGoods>

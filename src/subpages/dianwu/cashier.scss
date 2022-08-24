@@ -37,9 +37,23 @@
       }
     }
   }
-
-  .scan-code, .camera-placeholder {
+  .scan-code-wrap {
+    position: relative;
+  }
+  .scan-code-camera, .camera-placeholder {
     height: 280px;
+  }
+  .scan-code-close {
+    padding: 0 20px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 60px;
+    line-height: 60px;
+    background-color: rgba(0,0,0,0.5);
+    color: #fff;
+    font-size: 24px;
+    border-radius: 0 0 0 10px
   }
   .camera-placeholder {
     background: #efefef;
@@ -505,6 +519,16 @@
         .icon-plus {
           font-size: 40px;
           color: #fff;
+        }
+      }
+      .btn-add-cart {
+        padding: 6px 20px;
+        height: auto;
+        box-sizing: content-box;
+        line-height: normal;
+        border-color: #4d84fc;
+        .at-button__text {
+          color: #4d84fc;
         }
       }
     }

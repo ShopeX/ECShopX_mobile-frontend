@@ -140,7 +140,7 @@ function DianWuList() {
                     circle
                     onClick={handleAddToCart.bind(this, item)}
                   >
-                    加入收银台
+                    加入收银
                   </AtButton>
                 )}
               </CompGoods>
