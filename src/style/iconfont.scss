@@ -13,6 +13,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-camera:before {
+  content: "\e881";
+}
+
 .icon-money1:before {
   content: "\e6b9";
 }
@@ -1064,4 +1068,3 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
-

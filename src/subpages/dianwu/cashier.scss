@@ -38,8 +38,27 @@
     }
   }
 
-  .scan-code {
+  .scan-code, .camera-placeholder {
     height: 280px;
+  }
+  .camera-placeholder {
+    background: #efefef;
+    text-align: center;
+    color: #CCCCCC;
+    font-size: 24px;
+    &-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 260px;
+      margin: 20px;
+      border: 1PX solid #CCCCCC;
+    }
+    .iconfont {
+      margin-bottom: 10px;
+      font-size: 80px;
+    }
   }
 
   .member-info {
