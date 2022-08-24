@@ -12,14 +12,15 @@ import './collection-result.scss'
 
 const initialState = {
   distributor: null,
-  info: null
+  info: null,
+  operatorInfo: null
 }
 function DianwuCollectionResult(props) {
   const $instance = getCurrentInstance()
   const { member } = useSelector((state) => state.dianwu)
   const { order_id, trade_id, pay_type } = $instance.router.params
   const [state, setState] = useImmer(initialState)
-  const { distributor, info } = state
+  const { distributor, info, operatorInfo } = state
 
   useEffect(() => {
     if (pay_type == 'pos') {
@@ -47,7 +48,7 @@ function DianwuCollectionResult(props) {
   }
 
   const fetchOrderInfo = async () => {
-    const { distributor, orderInfo } = await api.dianwu.getTradeDetail(order_id)
+    const { distributor, orderInfo, operatorInfo } = await api.dianwu.getTradeDetail(order_id)
     const {
       items,
       pay_type,
@@ -82,6 +83,7 @@ function DianwuCollectionResult(props) {
         mobile: mobile,
         payStatus: pay_status
       }
+      draft.operatorInfo = operatorInfo
     })
   }
 
@@ -175,7 +177,7 @@ function DianwuCollectionResult(props) {
 
           <View className='extr-info'>
             <SpCell border title='收款门店' value={distributor?.name}></SpCell>
-            {/* <SpCell border title='操作人' value='张三'></SpCell> */}
+            <SpCell border title='操作人' value={operatorInfo?.username}></SpCell>
             <SpCell
               border
               title='支付方式'
