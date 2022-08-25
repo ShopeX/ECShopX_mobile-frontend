@@ -42,7 +42,7 @@ sh dev.sh
 #打包使用
 sh run.sh
 ```
-cicd test 3
+cicd test 3 1
 
 ## 代码prettier
 npm run prepare
