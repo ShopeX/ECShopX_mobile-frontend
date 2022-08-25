@@ -97,8 +97,8 @@ export const CHECKOUT_GOODS_ITEM = {
   },
   itemsPromotion: 'items_promotion',
   totalItemNum: 'totalItemNum',
-  // item_fee_new 不包含赠品商品价格
-  itemFee: ({ item_fee_new }) => item_fee_new / 100,
+  // market_fee 不包含赠品商品价格
+  itemFee: ({ market_fee }) => market_fee / 100,
   discountFee: ({ discount_fee }) => discount_fee / 100,
   totalFee: ({ total_fee }) => total_fee / 100,
   memberDiscount: ({ member_discount }) => member_discount ? member_discount / 100 : 0,
