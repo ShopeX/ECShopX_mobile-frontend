@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.2.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.2.0-live...v3.2.1) (2022-08-25)
+
+
+### Bug Fixes
+
+* bug ([f99c449](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f99c4493fc30e869ebf79c094f730fbf1e97c45a))
+* 优化 ([376053f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/376053fb36c071c014cae00a6ed1ccb6c01c0179))
+* 优化 ([7a01409](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7a014093efc5c3fa91c5d5a642331c5b0c25c5c3))
+* 优化 ([7ae51eb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7ae51eb33bea1be98097950451323fe691ad7e31))
+* 店务id ([914b674](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/914b67446935fa5c95860b49580015122ead7a5b))
+* 移动收银 ([3d74d86](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3d74d86640fd4cf33f8724a319a759aec671403a))
+* 移动收银添加操作人 ([48f16fc](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/48f16fc2c279b7e42ba644f824d7c907ed0a4a9d))
+* 移动收银添加操作人 ([76cc754](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/76cc754f04d3373c86dfa02028c54d70af5b8d6d))
+
 ## [3.2.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.1.0-live...v3.2.0) (2022-08-04)
 
 
