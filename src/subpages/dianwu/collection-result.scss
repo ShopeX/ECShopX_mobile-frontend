@@ -14,12 +14,12 @@
       .name {
         font-weight: 400;
         color: #111a34;
-        margin-right: 40px;
       }
       .mobile {
         font-weight: 400;
         color: #111a34;
         position: relative;
+        margin-left: 40px;
         &:before {
           content: '';
           height: 30px;
