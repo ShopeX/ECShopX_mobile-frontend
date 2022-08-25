@@ -1,6 +1,11 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline, useReady } from '@tarojs/taro'
+import Taro, {
+  getCurrentInstance,
+  useShareAppMessage,
+  useShareTimeline,
+  useReady
+} from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
@@ -499,7 +504,9 @@ function EspierDetail(props) {
             </View>
             <View className='item-bn-sales'>
               {/* <View className='item-bn'></View> */}
-              {info.salesSetting && <View className='item-sales'>{`销量：${info.sales || 0}`}</View>}
+              {info.salesSetting && (
+                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
+              )}
             </View>
           </View>
 
@@ -601,7 +608,7 @@ function EspierDetail(props) {
 
       <SpRecommend info={recommendList} />
 
-      {/* 优惠组合 */}
+      {/* 组合优惠 */}
       <CompPackageList
         open={packageOpen}
         onClose={() => {

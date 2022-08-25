@@ -290,8 +290,8 @@ function CartCheckout(props) {
       }
     } else {
       try {
-        const { trade_info } = await api.trade.create(params)
-        orderInfo = trade_info
+        const { trade_info, team_id } = await api.trade.create(params)
+        orderInfo = { ...trade_info, team_id }
         orderId = trade_info.order_id
       } catch (e) {
         setState((draft) => {
@@ -307,30 +307,25 @@ function CartCheckout(props) {
       draft.submitLoading = false
     })
 
-    // 储值支付 或者 积分抵扣
-    if (payType === 'deposit' || params.pay_type == 'point') {
-      Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
+    if (
+      params.pay_type == 'wxpayjs' ||
+      (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+    ) {
+      // 微信客户端code授权
+      const loc = window.location
+      // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
+      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
+      let { redirect_url } = await api.wx.getredirecturl({ url })
+      window.location.href = redirect_url
     } else {
-      if (
-        params.pay_type == 'wxpayjs' ||
-        (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
-      ) {
-        // 微信客户端code授权
-        const loc = window.location
-        // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-        const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
-        let { redirect_url } = await api.wx.getredirecturl({ url })
-        window.location.href = redirect_url
-      } else {
-        cashierPayment(
-          {
-            ...params,
-            // 活动类型：拼团
-            activityType: type
-          },
-          orderInfo
-        )
-      }
+      cashierPayment(
+        {
+          ...params,
+          // 活动类型：拼团
+          activityType: type
+        },
+        orderInfo
+      )
     }
   }
 
@@ -365,7 +360,7 @@ function CartCheckout(props) {
       bargain_id: params.bargain_id
     }
     Taro.navigateTo({
-      url: `/pages/store/ziti-list?${qs.stringify(query)}`
+      url: `/subpages/store/ziti-list?${qs.stringify(query)}`
     })
   }
 
@@ -546,7 +541,8 @@ function CartCheckout(props) {
       receiver_city,
       receiver_district,
       item_fee_new,
-      market_fee
+      market_fee,
+      items_promotion
     } = orderRes
 
     let subdistrictRes
@@ -624,7 +620,23 @@ function CartCheckout(props) {
 
     Taro.hideLoading()
     // console.log('xxx', pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM))
-    items.forEach(item => item['is_point'] = false)
+    items.forEach((item) => (item['is_point'] = false))
+    /* 处理限购活动，添加到对应的items里（cusActivity为自定义的字段 不是后端返回的）---开始 */
+    const itmesid = items.map((el) => el.item_id)
+    const activity_arr = []
+    items_promotion?.forEach((i_el) => {
+      if (itmesid.indexOf(i_el.item_id) > -1 && i_el.activity_type == 'limited_buy') {
+        activity_arr.push({
+          activity_tag: i_el.activity_tag,
+          activity_name: i_el.activity_name,
+          activity_id: i_el.activity_id,
+          activity_type: i_el.activity_type,
+          ...i_el.activity_rule
+        })
+      }
+      items[itmesid.indexOf(i_el.item_id)].cusActivity = activity_arr
+    })
+    /*  处理限购活动，添加到对应的items里---结束 */
     setState((draft) => {
       draft.detailInfo = pickBy(items, doc.checkout.CHECKOUT_GOODS_ITEM)
       draft.totalInfo = total_info

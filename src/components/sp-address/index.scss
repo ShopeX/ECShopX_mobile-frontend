@@ -1,0 +1,25 @@
+.sp-address {
+  .sp-float-layout-bd {
+    padding: 0;
+  }
+  .address-hd {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px 10px;
+    .tab-item {
+      margin-right: 20px;
+    }
+  }
+  .address-bd {
+    padding: 10px 40px 20px;
+    height: 500px;
+  }
+  .address-item {
+    padding: 10px 0;
+    color: #666;
+    &.active {
+      color: #333;
+      font-weight: 600;
+    }
+  }
+}

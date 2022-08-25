@@ -73,21 +73,25 @@ export default class AddressIndex extends Component {
     })
 
     if (this.$instance.router.params.isWechatAddress) {
-      const resAddress = await Taro.chooseAddress()
-      const query = {
-        province: resAddress.provinceName,
-        city: resAddress.cityName,
-        county: resAddress.countyName,
-        adrdetail: resAddress.detailInfo,
-        is_def: 0,
-        postalCode: resAddress.postalCode,
-        telephone: resAddress.telNumber,
-        username: resAddress.userName
+      try {
+        const resAddress = await Taro.chooseAddress()
+        const query = {
+          province: resAddress.provinceName,
+          city: resAddress.cityName,
+          county: resAddress.countyName,
+          adrdetail: resAddress.detailInfo,
+          is_def: 0,
+          postalCode: resAddress.postalCode,
+          telephone: resAddress.telNumber,
+          username: resAddress.userName
+        }
+        this.setState({
+          info: query,
+          chooseValue: [query.province, query.city, query.county]
+        })
+      } catch (err) {
+        Taro.navigateBack()
       }
-      this.setState({
-        info: query,
-        chooseValue: [query.province, query.city, query.county]
-      })
     }
 
     Taro.hideLoading()

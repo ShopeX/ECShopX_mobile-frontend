@@ -54,17 +54,14 @@ function CompPackageItem(props) {
   }, [mainGoods, makeUpGoods])
 
   const fetch = async () => {
-    const {
-      itemLists,
-      mainItem,
-      main_package_price,
-      package_price
-    } = await api.item.packageDetail(info.package_id)
+    const { itemLists, mainItem, main_package_price, package_price } = await api.item.packageDetail(
+      info.package_id
+    )
     console.log('packageDetail:', package_price)
     setState((draft) => {
       draft.mainGoods = pickBy(mainItem, doc.goods.GOODS_INFO)
-      itemLists.forEach(item => {
-        item.spec_items.forEach(spec => {
+      itemLists.forEach((item) => {
+        item.spec_items.forEach((spec) => {
           spec.price = package_price[spec.item_id].price
         })
       })
@@ -118,7 +115,7 @@ function CompPackageItem(props) {
     }
   }
 
-  // 计算优惠组合
+  // 计算组合优惠
   const calcPackage = () => {
     let itemId // 主商品id
     let sitemIds = [] // 可选商品id

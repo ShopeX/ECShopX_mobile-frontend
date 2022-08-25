@@ -144,7 +144,7 @@ export default class Recharge extends Component {
       shop_name: store_name,
       recharge_rule_id,
       total_fee: Number(value) * 100,
-      member_card_code: '',
+      user_card_code: '',
       body: `${store_name}充值`,
       detail: '充值',
       pay_type: payType

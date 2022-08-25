@@ -49,7 +49,7 @@ export default class WgtFloorImg extends Component {
                     <View className='imgbox' key={item.id} onClick={this.onRoute.bind(this, item)}>
                       <Image lazyLoad className='img' src={item.imgUrl}></Image>
                     </View>
-                    <View className='title' style={'color:' + base && base.WordColor}>
+                    <View className='title' style={`color: ${base && base.WordColor}`}>
                       {item.ImgTitle}
                     </View>
                   </View>

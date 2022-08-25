@@ -5,7 +5,7 @@ import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
-import { showToast, tokenParse, tokenParseH5, isWeixin } from '@/utils'
+import { showToast, tokenParse, tokenParseH5, isWeixin, isWxWeb } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
 
@@ -21,7 +21,7 @@ import './userinfo.scss'
   })
 )
 export default class UserInfo extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +46,7 @@ export default class UserInfo extends Component {
     this.optionsType = ''
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getFormItem()
   }
 
@@ -248,6 +248,10 @@ export default class UserInfo extends Component {
       showToast('修改成功')
 
       await S.getMemberInfo()
+
+      Taro.reLaunch({
+        url: '/subpages/member/index'
+      })
       // this.props.setMemberInfo({
       //   ...memberInfo
       // });
@@ -274,7 +278,7 @@ export default class UserInfo extends Component {
   // })
   // }
 
-  render () {
+  render() {
     const {
       formItems,
       userInfo,
@@ -294,7 +298,7 @@ export default class UserInfo extends Component {
     }
 
     return (
-      <SpPage className='page-member-setting'>
+      <SpPage className={`page-member-setting ${isWxWeb && 'page-member-setting-nopadding'}`}>
         <SpNavBar title='用户信息' />
         <View className='baseInfo'>
           <View className='item'>
@@ -383,6 +387,7 @@ export default class UserInfo extends Component {
                     disabled={!item.is_edit}
                     value={userInfo[item.key]}
                     onChange={this.pickerChange.bind(this, item)}
+                    start='1900-01-01'
                   >
                     <View className='picker'>{userInfo[item.key] || item.required_message}</View>
                   </Picker>

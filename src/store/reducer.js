@@ -9,6 +9,7 @@ import shopReducer from './slices/shop'
 import guideReducer from './slices/guide'
 import tabBar from './slices/tab-bar'
 import communityReducer from './slices/community'
+import dianwuReducer from './slices/dianwu'
 
 const rootReducer = combineReducers({
   guide: guideReducer,
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   merchant: merchantReducer,
   shop: shopReducer,
   tabBar: tabBar,
-  community: communityReducer
+  community: communityReducer,
+  dianwu: dianwuReducer
 })
 
 export default rootReducer

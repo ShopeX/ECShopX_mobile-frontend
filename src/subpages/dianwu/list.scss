@@ -1,0 +1,118 @@
+.page-dianwu-list {
+  font-family: Helvetica;
+  .search-block {
+    padding: 20px;
+    background-color: #fff;
+  }
+  .footer-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px 20px 40px;
+    .total-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      flex: 1;
+      height: 100px;
+      background: #111a34;
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 50px 0 0 50px;
+      line-height: 30px;
+      padding-left: 40px;
+      display: flex;
+      flex-direction: column;
+      .sp-price {
+        margin-botom: 10px;
+        font-weight: bold;
+      }
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        color: #fff;
+      }
+      .txt {
+        color: #efefef;
+        font-size: 24px;
+      }
+    }
+    .btn-confirm {
+      width: 245px;
+      height: 100px;
+      text-align: center;
+      line-height: 100px;
+      background: var(--color-dianwu-primary);
+      box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+      border-radius: 0px 50px 50px 0px;
+      color: #fff;
+      font-size: 28px;
+    }
+  }
+  .at-tabs__item {
+    color: #858b9c;
+    &--active {
+      color: #333;
+      font-weight: 600;
+    }
+    &-underline {
+      background-color: var(--color-dianwu-primary);
+    }
+  }
+  .item-list-scroll {
+    padding: 20px 10px;
+  }
+  .item-wrap {
+    padding: 25px 20px;
+    background-color: #fff;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #efefef;
+    .at-button {
+      display: inline-block;
+      min-width: 120px;
+      margin: 0;
+      height: 56px;
+      line-height: 54px;
+      &.active {
+        background-color: var(--color-dianwu-primary);
+        color: #fff;
+      }
+      .icon-plus {
+        font-size: 40px;
+        color: #fff;
+      }
+    }
+    &.item-disabled {
+      opacity: 0.6;
+    }
+  }
+  .promotion-tag {
+    font-size: 24px;
+    color: #ff5257;
+    text-shadow: 0px 2px 4px #e2e4ea;
+    border-radius: 4px;
+    border: 1px solid #ff5257;
+    padding: 2px 4px;
+    margin-right: 16px;
+  }
+  .item-hd {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .view-discount {
+    color: var(--color-dianwu-primary);
+    .icon-qianwang-01 {
+      font-size: 28px;
+    }
+  }
+  .btn-add-cart {
+    padding: 6px 20px;
+    height: auto;
+    box-sizing: content-box;
+    line-height: normal;
+    border-color: #4d84fc;
+    .at-button__text {
+      color: #4d84fc;
+    }
+  }
+}

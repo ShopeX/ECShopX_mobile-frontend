@@ -24,7 +24,7 @@ import {
   isWeixin
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
-import { PAYTYPE } from '@/consts'
+import { PAYTYPE, PAYMENT_TYPE } from '@/consts'
 import { Tracker } from '@/service'
 import api from '@/api'
 import { TracksPayed } from '@/utils/youshu'
@@ -647,13 +647,14 @@ export default class TradeDetail extends Component {
     const {
       info: { pay_type }
     } = this.state
-    if (isAlipay) {
-      return '支付宝'
-    } else if (pay_type === PAYTYPE.ALIH5) {
-      return '支付宝'
-    } else {
-      return '微信'
-    }
+    return PAYMENT_TYPE[pay_type]
+    // if (isAlipay) {
+    //   return '支付宝'
+    // } else if (pay_type === PAYTYPE.ALIH5) {
+    //   return '支付宝'
+    // } else {
+    //   return '微信'
+    // }
   }
 
   render() {
@@ -1043,7 +1044,7 @@ export default class TradeDetail extends Component {
                 <View className='left'>支付</View>
                 <View className='right'>
                   {`¥${info.payment} ${
-                    info.order_class !== 'excard' ? this.computedPayType() + '支付' : ''
+                    info.order_class !== 'excard' ? this.computedPayType() : ''
                   }`}
                 </View>
               </View>

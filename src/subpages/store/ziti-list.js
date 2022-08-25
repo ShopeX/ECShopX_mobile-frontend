@@ -8,7 +8,8 @@ import {
   SpNavBar,
   SpCheckbox,
   SpNote,
-  SpLoading
+  SpLoading,
+  SpAddress
 } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
@@ -421,7 +422,7 @@ export default class StoreZitiList extends Component {
     } = this.state
     return (
       <View className='page-store-list'>
-        <SpNavBar title='选择自提门店' leftIconType='chevron-left' />
+        <SpAddress />
         {/* <View className='store-list__search'>
           <SearchBar
             showDailog={false}

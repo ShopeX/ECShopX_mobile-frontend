@@ -245,7 +245,6 @@ const Apply = () => {
         showCancel: true,
         cancel: '取消',
         confirmText: '确认',
-        confirmColor: 'rgba(244, 129, 31, 1)'
       })
       if (!confirm) {
         return true

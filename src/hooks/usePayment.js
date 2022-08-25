@@ -26,9 +26,9 @@ export default (props = {}) => {
         break
       case 'adapay':
         if (pay_channel == 'wx_lite') {
-          if(isWeixin) {
+          if (isWeixin) {
             weappPay(params, orderInfo)
-          } else if(isWeb) {
+          } else if (isWeb) {
             // H5非微信浏览器，跳转小程序发起支付
             adapayH5Pay(params, orderInfo)
           }
@@ -50,6 +50,10 @@ export default (props = {}) => {
       case 'wxpayapp':
       case 'alipayapp':
         AppPay(params, orderInfo)
+        break
+      case 'deposit':
+      case 'point':
+        depositPay(params, orderInfo)
         break
     }
   }
@@ -220,6 +224,17 @@ export default (props = {}) => {
       // window.location.href = payment
       window.location.replace(`alipays://platformapi/startapp?saId=10000007&qrcode=${payment}`)
     }, 1000)
+  }
+
+  // 余额/积分支付
+  const depositPay = async (params, orderInfo) => {
+    const { activityType } = params
+    const { order_id, team_id } = orderInfo
+    if (activityType == 'group') {
+      Taro.redirectTo({ url: `/marketing/pages/item/group-detail?team_id=${team_id}` })
+    } else {
+      Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })
+    }
   }
 
   return {

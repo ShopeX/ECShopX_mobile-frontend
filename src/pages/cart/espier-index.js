@@ -343,6 +343,7 @@ function CartIndex() {
                                     <CompGoodsItem
                                       disabled
                                       info={pack_sitem}
+                                      goodType='packages'
                                       isShowAddInput={false}
                                       isShowDeleteIcon={false}
                                     />

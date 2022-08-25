@@ -44,6 +44,10 @@ export function isObject(val) {
   return isPrimitiveType(val, '[object Object]')
 }
 
+export function isBoolean(val) {
+  return isPrimitiveType(val, '[object Boolean]')
+}
+
 export function isArray(arr) {
   return Array.isArray(arr)
 }

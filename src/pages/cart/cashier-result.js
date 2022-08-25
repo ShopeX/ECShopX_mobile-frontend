@@ -95,7 +95,8 @@ function CashierResult(props) {
       <View className='btn-block'>
         {/* 普通订单, 秒杀订单 */}
         {(tradeInfo?.tradeSourceType == 'normal' ||
-          tradeInfo?.tradeSourceType == 'normal_seckill') && (
+          tradeInfo?.tradeSourceType == 'normal_seckill' ||
+          tradeInfo?.tradeSourceType == 'normal_groups') && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'
@@ -111,7 +112,8 @@ function CashierResult(props) {
         )}
 
         {/* 积分订单 */}
-        {(tradeInfo?.tradeSourceType == 'normal_pointsmall' || tradeInfo?.tradeSourceType == 'normal_pointsmall_pointsmall') && (
+        {(tradeInfo?.tradeSourceType == 'normal_pointsmall' ||
+          tradeInfo?.tradeSourceType == 'normal_pointsmall_pointsmall') && (
           <View className='btn-wrap'>
             <SpButton
               resetText='首页'

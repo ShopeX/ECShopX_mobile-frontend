@@ -106,7 +106,7 @@ function ItemList(props) {
       approve_status: 'onsale,only_show',
       item_type: 'normal',
       is_point: 'false',
-      distributor_id: storeInfo.distributor_id
+      distributor_id: storeInfo?.distributor_id
     }
 
     if (curFilterIdx == 1) {

@@ -181,6 +181,9 @@
 }
 
 .page-group-detail {
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #ifdef  h5  */
   .btn-submit {
     background: $color-brand-primary;
     text-align: center;

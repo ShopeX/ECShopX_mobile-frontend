@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { classNames, styleNames, isNumber, isBase64, log } from '@/utils'
+import { classNames, styleNames, isNumber, isBoolean, isBase64, log } from '@/utils'
 import './index.scss'
 
 const initialState = {
@@ -19,7 +19,8 @@ function SpImage(props) {
     onClick = () => {},
     onError = () => {},
     onLoad = () => {},
-    lazyLoad = false
+    lazyLoad = false,
+    circle = false
   } = props
   const [state, setState] = useImmer(initialState)
   const { loadSuccess } = state
@@ -36,22 +37,21 @@ function SpImage(props) {
       imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + width : ''}${height ? '/h/' + height : ''}`
     }
   }
-  
+
   const handleOnLoad = (e) => {
     // console.log('handleOnLoad:', e)
-    setState(draft => {
+    setState((draft) => {
       draft.loadSuccess = true
     })
-
   }
-  // console.log('SpImage:', imgUrl)
+  // console.log('SpImage:', circle)
   return (
     <View
       className={classNames(
         {
           'sp-image': true,
           'sp-image-loading': !loadSuccess && lazyLoad,
-          'sp-image-loadsuccess': loadSuccess && lazyLoad,
+          'sp-image-loadsuccess': loadSuccess && lazyLoad
         },
         className
       )}
@@ -63,6 +63,13 @@ function SpImage(props) {
     >
       <Image
         className='sp-image-img'
+        style={styleNames({
+          'border-radius': isNumber(circle)
+            ? `${circle}px`
+            : isBoolean(circle) && circle
+            ? `${width / 2}px`
+            : 0
+        })}
         src={imgUrl}
         mode={mode}
         // onError={onError}

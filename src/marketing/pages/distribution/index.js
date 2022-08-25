@@ -65,7 +65,8 @@ export default class DistributionDashboard extends Component {
       isOpenShop: 'isOpenShop',
       shop_status: 'shop_status',
       reason: 'reason',
-      qrcode_bg_img: 'qrcode_bg_img'
+      qrcode_bg_img: 'qrcode_bg_img',
+      disabled: 'disabled'
     })
     const res2 = await api.member.hfpayUserApply()
     const userInfo = pickBy(res2, {
@@ -430,11 +431,13 @@ export default class DistributionDashboard extends Component {
           </View>
         </View>
         <View className='section list share'>
-          <View className='list-item' onClick={this.handleClick}>
-            <View className='iconfont icon-qrcode1 icon-fontsize' />
-            <View className='list-item-txt'>我的二维码</View>
-            <View className='iconfont icon-arrowRight icon-right' />
-          </View>
+          {info.disabled == 0 && (
+            <View className='list-item' onClick={this.handleClick}>
+              <View className='iconfont icon-qrcode1 icon-fontsize' />
+              <View className='list-item-txt'>我的二维码</View>
+              <View className='iconfont icon-arrowRight icon-right' />
+            </View>
+          )}
           <Navigator
             className='list-item'
             open-type='navigateTo'
@@ -450,7 +453,7 @@ export default class DistributionDashboard extends Component {
             <Navigator
               className='list-item'
               open-type='navigateTo'
-              url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}`}
+              url={`/marketing/pages/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}&disabled=${info.disabled}`}
             >
               <View className='iconfont icon-shop icon-fontsize' />
               <View className='list-item-txt'>我的小店</View>
@@ -495,7 +498,6 @@ export default class DistributionDashboard extends Component {
             <View className='iconfont icon-arrowRight icon-right' />
           </Navigator>
         </View>
-
 
         {/* {showPoster && (
           <View className='poster-modal'>

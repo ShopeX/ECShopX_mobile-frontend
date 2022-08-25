@@ -97,7 +97,10 @@ function GuideRecommendList(props) {
   const handleSearchOff = async () => {
     await setState((draft) => {
       draft.keywords = ''
+      draft.leftList = []
+      draft.rightList = []
     })
+    scrollRef.current.reset()
   }
 
   const handleConfirm = async (val) => {

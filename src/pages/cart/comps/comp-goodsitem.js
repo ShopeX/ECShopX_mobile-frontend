@@ -16,6 +16,7 @@ function CompGoodsItem(props) {
     children,
     isShowAddInput = true,
     isShowDeleteIcon = true,
+    goodType,
     onDelete = () => {},
     onChange = () => {},
     onClickImgAndTitle = () => {}
@@ -28,7 +29,7 @@ function CompGoodsItem(props) {
   const { localNum } = state
 
   useEffect(() => {
-    setState(draft => {
+    setState((draft) => {
       draft.localNum = info.num
     })
   }, [info.num])
@@ -38,7 +39,7 @@ function CompGoodsItem(props) {
   }
 
   const onChangeInputNumber = (e) => {
-    setState(draft => {
+    setState((draft) => {
       draft.localNum = e
     })
     onChange(e)
@@ -54,6 +55,17 @@ function CompGoodsItem(props) {
     _price = member_price
   } else {
     _price = price
+  }
+
+  let limitTxt = ''
+  let limitNum = ''
+  if (info?.limitedBuy?.marketing_type == 'limited_buy') {
+    limitNum = info?.limitedBuy?.rule.limit
+    if (info?.limitedBuy?.rule.day == 0) {
+      limitTxt = `限购${limitNum}件`
+    } else {
+      limitTxt = `每${info?.limitedBuy?.rule.day}天，限购${limitNum}件`
+    }
   }
 
   return (
@@ -94,8 +106,12 @@ function CompGoodsItem(props) {
               <View className='item-tag'>{item.promotion_tag}</View>
             ))}
             {!isNaN(member_price) && !VERSION_IN_PURCHASE && (
-              <View className='item-tag'>{vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}</View>
+              <View className='item-tag'>
+                {vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}
+              </View>
             )}
+            {goodType == 'packages' && <View className='item-tag'>组合商品</View>}
+            {limitTxt && <View className='item-tag'>{limitTxt}</View>}
           </View>
 
           <View className='item-ft'>
@@ -110,7 +126,7 @@ function CompGoodsItem(props) {
               {isShowAddInput ? (
                 <SpInputNumber
                   value={localNum}
-                  max={info.store}
+                  max={info?.limitedBuy ? info?.limitedBuy?.limit_buy : info.store}
                   min={1}
                   onChange={onChangeInputNumber}
                 />

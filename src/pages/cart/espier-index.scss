@@ -127,12 +127,13 @@
     width: 620px;
   }
   .at-input-number {
-    border: 1px solid #999;
+    border: 1PX solid #999;
     border-radius: 0;
     height: 40px;
     &__input {
-      border-left: 1px solid #999;
-      border-right: 1px solid #999;
+      /* prettier-ignore */
+      border-left: 1PX solid #999;
+      border-right: 1PX solid #999;
       width: 60px;
       height: 32px;
       line-height: 32px;
