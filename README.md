@@ -43,7 +43,7 @@ sh dev.sh
 sh run.sh
 ```
 
-cicd test 3
+cicd test 3 111
 
 ## 代码prettier
 npm run prepare
