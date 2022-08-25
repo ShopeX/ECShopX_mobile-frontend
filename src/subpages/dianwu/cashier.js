@@ -280,7 +280,12 @@ function DianWuCashier() {
                   draft.isCameraOpend = false
                 })
                 Taro.navigateTo({
-                  url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}`
+                  url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}`,
+                  events: {
+                    onEventCreateOrder: () => {
+                      getCashierList()
+                    }
+                  }
                 })
               }}
             >

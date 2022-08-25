@@ -55,8 +55,14 @@ export const MEMBER_ITEM = {
 }
 
 export const MEMBER_INFO = {
-  vipDiscount: ({ vipgrade }) => {
-    return (100 - vipgrade.discount) / 10
+  vipDiscount: ({ vipgrade, gradeInfo }) => {
+    if(vipgrade && vipgrade.is_vip) {
+      return (100 - vipgrade.discount) / 10
+    } else if(gradeInfo && gradeInfo?.privileges?.discount_desc != 0) {
+      return gradeInfo.privileges.discount_desc
+    } else {
+      return 10
+    }
   },
   couponNum: ({ coupon_num }) => {
     return coupon_num || 0
@@ -91,7 +97,8 @@ export const CHECKOUT_GOODS_ITEM = {
   },
   itemsPromotion: 'items_promotion',
   totalItemNum: 'totalItemNum',
-  itemFee: ({ item_fee }) => item_fee / 100,
+  // item_fee_new 不包含赠品商品价格
+  itemFee: ({ item_fee_new }) => item_fee_new / 100,
   discountFee: ({ discount_fee }) => discount_fee / 100,
   totalFee: ({ total_fee }) => total_fee / 100,
   memberDiscount: ({ member_discount }) => member_discount ? member_discount / 100 : 0,

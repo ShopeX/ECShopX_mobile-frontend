@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { AtButton, AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import doc from '@/doc'
@@ -33,9 +33,14 @@ function DianWuList() {
 
   useDianWuLogin()
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   getCashierList()
+  // }, [])
+
+  useDidShow(() => {
     getCashierList()
-  }, [])
+  })
+
 
   useEffect(() => {
     goodsRef.current.reset()

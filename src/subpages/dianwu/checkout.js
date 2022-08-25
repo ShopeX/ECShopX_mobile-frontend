@@ -176,6 +176,7 @@ function DianwuCheckout(props) {
         auth_code: result
       })
       dispatch(selectMember(null))
+      onEventCreateOrder()
       Taro.redirectTo({
         url: `/subpages/dianwu/collection-result?order_id=${order_id}&trade_id=${trade_info.trade_id}`
       })
@@ -201,7 +202,15 @@ function DianwuCheckout(props) {
       pay_type: 'pos'
     })
     dispatch(selectMember(null))
+    onEventCreateOrder()
     Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
+  }
+
+  const onEventCreateOrder = () => {
+    const pages = Taro.getCurrentPages()
+    const current = pages[pages.length - 1]
+    const eventChannel = current.getOpenerEventChannel()
+    eventChannel.emit('onEventCreateOrder');
   }
 
   // 使用优惠券
