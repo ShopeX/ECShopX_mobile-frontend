@@ -251,7 +251,7 @@ function DianwuCheckout(props) {
       }
     >
       <View className='block-user'>
-        <SpImage src={member?.avatar || 'user_icon.png'} width={110} height={110} />
+        <SpImage src={member?.avatar || 'user_icon.png'} width={80} height={80} />
         <View className='user-info'>
           <View className='info-hd'>
             <Text className='name'>{member?.username || '匿名'}</Text>
@@ -266,10 +266,12 @@ function DianwuCheckout(props) {
               <Text className='label'>券:</Text>
               <Text className='value'>{member?.couponNum || 0}</Text>
             </View>
-            <View className='filed-item'>
-              <Text className='label'>会员折扣:</Text>
-              <Text className='value'>{member?.vipDiscount || 0}</Text>
-            </View>
+            { member?.vipDiscount < 10 && (
+              <View className='filed-item'>
+                <Text className='label'>会员折扣:</Text>
+                <Text className='value'>{member?.vipDiscount || 0}</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -292,11 +294,10 @@ function DianwuCheckout(props) {
       </View>
       {itemsPromotion && (
         <View className='block-gift'>
+          <View className='gift-tag'>赠品</View>
           {itemsPromotion.map((item, idx) => {
             return item.activity_desc?.gifts?.map((gift, index) => (
-              <View className='gift-item' key={`gift-item__${idx}_${index}`}>
-                <CompGift info={gift} />
-              </View>
+              <CompGift info={gift} key={`gift-item__${idx}_${index}`} />
             ))
           })}
         </View>

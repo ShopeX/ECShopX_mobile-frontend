@@ -11,12 +11,13 @@ function CompGift(props) {
   const { itemName, item_spec_desc, gift_num } = props.info
   return (
     <View className='comp-gift'>
-      <View className='gift-tag'>赠品</View>
       <View className='gift-info'>
-        <View className='title'>{itemName}</View>
+        <View className='title'>
+          <View className='gift-info'>{itemName}</View>
+          <View className='num'>x {gift_num}</View>
+        </View>
         <View className='sku-num'>
           <View>{item_spec_desc && <View className='sku'>{item_spec_desc}</View>}</View>
-          <View className='num'>数量：{gift_num}</View>
         </View>
       </View>
     </View>

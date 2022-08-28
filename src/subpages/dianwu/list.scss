@@ -1,14 +1,40 @@
 .page-dianwu-list {
+  $header-height: 100px !default;
+  $footer-height: 120px !default;
+  $tabbar-height: 120px !default;
+  $tabbar-ipx-height: 140px !default;
   font-family: Helvetica;
-  .search-block {
-    padding: 20px;
-    background-color: #fff;
+  &.ipx {
+    .sp-page-body {
+      height: calc(100vh - 140px);
+    }
   }
-  .footer-wrap {
+  .sp-page-body {
+    position: relative;
+    height: calc(100vh - 120px);
+  }
+  .search-block {
     display: flex;
     align-items: center;
+    padding: 0 20px;
+    height: $header-height;
+    background-color: #fff;
+  }
+  &.ipx {
+    .footer-wrap {
+      bottom: $tabbar-ipx-height;
+    }
+  }
+  .footer-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: $tabbar-height;
+    height: $footer-height;
+    display: flex;
     justify-content: space-between;
-    padding: 0 40px 20px 40px;
+    padding: 0 40px;
+    background: #ffffff;
     .total-info {
       display: flex;
       flex-direction: column;
@@ -59,12 +85,13 @@
     }
   }
   .item-list-scroll {
-    padding: 20px 10px;
+    padding: 20px 0;
+    @include page-scroll($header-height, $footer-height);
   }
   .item-wrap {
     padding: 25px 20px;
     background-color: #fff;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 10px;
     border-bottom: 1px solid #efefef;
     .at-button {
       display: inline-block;
