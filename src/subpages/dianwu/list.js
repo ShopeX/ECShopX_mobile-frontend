@@ -11,6 +11,7 @@ import { SpPage, SpScrollView, SpPrice, SpImage, SpSearchInput, SpVipLabel } fro
 import { classNames, pickBy, showToast } from '@/utils'
 import { SG_ROUTER_PARAMS } from '@/consts'
 import CompGoods from './comps/comp-goods'
+import CompTabbar from './comps/comp-tabbar'
 import './list.scss'
 
 const initialState = {
@@ -94,24 +95,7 @@ function DianWuList() {
     <SpPage
       className='page-dianwu-list'
       scrollToTopBtn
-      renderFooter={
-        <View className='footer-wrap'>
-          <View className='total-info'>
-            <SpPrice value={cartList[0]?.totalPrice || 0} size={38} />
-            <View className='txt'>已选择 {cartList[0]?.totalNum || 0} 件商品</View>
-          </View>
-          <View
-            className='btn-confirm'
-            onClick={() => {
-              Taro.navigateTo({
-                url: `/subpages/dianwu/cashier?distributor_id=${distributor_id}`
-              })
-            }}
-          >
-            进入收银台
-          </View>
-        </View>
-      }
+      renderFooter={<CompTabbar />}
     >
       <View className='search-block'>
         <SpSearchInput
@@ -153,6 +137,22 @@ function DianWuList() {
           ))
         })}
       </SpScrollView>
+      <View className='footer-wrap'>
+        <View className='total-info'>
+          <SpPrice value={cartList[0]?.totalPrice || 0} size={38} />
+          <View className='txt'>已选择 {cartList[0]?.totalNum || 0} 件商品</View>
+        </View>
+        <View
+          className='btn-confirm'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/subpages/dianwu/cashier?distributor_id=${distributor_id}`
+            })
+          }}
+        >
+          进入收银台
+        </View>
+      </View>
     </SpPage>
   )
 }
