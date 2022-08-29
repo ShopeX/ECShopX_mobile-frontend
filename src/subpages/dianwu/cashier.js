@@ -231,7 +231,16 @@ function DianWuCashier() {
   const handleCreateMember = async () => {
     const res = await api.dianwu.createMember({ mobile })
     const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    dispatch(selectMember(newUser))
+    const userInfo = await api.dianwu.getMemberByUserId({ user_id: newUser.userId })
+    const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
+    dispatch(
+      selectMember({
+        ...newUser,
+        couponNum,
+        point,
+        vipDiscount
+      })
+    )
     setState((draft) => {
       draft.addUserCurtain = false
     })
