@@ -212,7 +212,15 @@ function DianWuCashier() {
   // 挂单
   const handleOrderPendding = async () => {
     if (cartList.length == 0) {
-      Taro.navigateTo({ url: '/subpages/dianwu/pending-checkout' })
+      Taro.navigateTo({
+        url: `/subpages/dianwu/pending-checkout?distributor_id=${distributor_id}`,
+        events: {
+          // 取单事件
+          onEventFetchOrder: () => {
+            getCashierList()
+          }
+        }
+      })
       return
     }
     const { confirm } = await Taro.showModal({

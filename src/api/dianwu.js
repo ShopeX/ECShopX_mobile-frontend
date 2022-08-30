@@ -83,3 +83,13 @@ export function orderPendding(params) {
 export function fetchPendding(params) {
   return req.post('/operator/pending/fetch', params)
 }
+
+// 挂单列表
+export function penddingList(params) {
+  return req.get('/operator/pending/list', params)
+}
+
+// 删除挂单
+export function penddingDelete(params) {
+  return req.delete('/operator/pending/delete', params)
+}

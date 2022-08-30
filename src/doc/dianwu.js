@@ -1,4 +1,5 @@
 import { pickBy } from '@/utils'
+import dayjs from 'dayjs'
 import Big from 'big.js'
 
 export const GOODS_ITEM = {
@@ -118,4 +119,12 @@ export const COUPON_ITEM = {
   discount: ({ discount }) => {
     return (100 - discount) / 10
   }
+}
+
+export const PENDING_ITEM = {
+  created: ({ created }) => {
+    return dayjs(created * 1000).format('YYYY.MM.DD HH:mm:ss')
+  },
+  pendingId: 'pending_id',
+  pendingData: "pending_data"
 }
