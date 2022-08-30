@@ -232,6 +232,7 @@ function DianWuCashier() {
         user_id: member?.userId,
         distributor_id
       })
+      dispatch(selectMember(null))
       getCashierList()
     }
   }

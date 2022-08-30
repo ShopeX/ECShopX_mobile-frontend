@@ -1,8 +1,9 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
+import { SG_DIANWU_TOKEN } from '@/consts'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId } from '@/utils'
 import './comp-tabbar.scss'
 
@@ -25,6 +26,7 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
+  const $instance = getCurrentInstance()
   const { colorPrimary } = useSelector((state) => state.sys)
 
   const tabList = TABBAR_LIST.map((item) => {
@@ -49,11 +51,11 @@ function CompTabbar(props) {
 
   const handleTabbarClick = async (index) => {
     const tabItem = tabList[index]
-    const { path } = getCurrentRoute()
-    const { id, dtid } = await entryLaunch.getRouteParams()
-    const distributor_id = getDistributorId(id || dtid)
+    const { path } = $instance
+    const { distributor_id } = $instance.router.params
+    const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     if (path != tabItem.url) {
-      Taro.redirectTo({ url: `${tabItem.url}?dtid=${distributor_id}` })
+      Taro.redirectTo({ url: `${tabItem.url}?token=${token}&distributor_id=${distributor_id}&from=tabbar` })
     }
   }
 

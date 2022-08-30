@@ -65,7 +65,24 @@ function DianwuCheckout(props) {
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
 
-  const onPendingOrder = () => {}
+  // 挂单
+  const onPendingOrder = async () => {
+    const { confirm } = await Taro.showModal({
+      title: '挂单确认',
+      content: '请确认是否挂单'
+    })
+    if (confirm) {
+      await api.dianwu.orderPendding({
+        user_id: member?.userId,
+        distributor_id
+      })
+      dispatch(selectMember(null))
+      onEventCreateOrder()
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 200)
+    }
+  }
 
   // 收款
   const onCollection = async () => {
@@ -104,7 +121,7 @@ function DianwuCheckout(props) {
       not_use_coupon: 1,
       distributor_id
     }
-    if(selectCoupon) {
+    if (selectCoupon) {
       params = {
         ...params,
         not_use_coupon: 0,
@@ -126,7 +143,7 @@ function DianwuCheckout(props) {
       couponInfo: _couponInfo
     } = pickBy(res, doc.dianwu.CHECKOUT_GOODS_ITEM)
     setState((draft) => {
-      draft.itemList = items.filter(item => item.orderItemType != 'gift')
+      draft.itemList = items.filter((item) => item.orderItemType != 'gift')
       draft.itemsPromotion = _itemsPromotion
       draft.totalItemNum = _totalItemNum
       draft.itemFee = _itemFee
@@ -154,7 +171,7 @@ function DianwuCheckout(props) {
       not_use_coupon: 1,
       distributor_id
     }
-    if(couponInfo) {
+    if (couponInfo) {
       params = {
         ...params,
         not_use_coupon: 0,
@@ -210,13 +227,13 @@ function DianwuCheckout(props) {
     const pages = Taro.getCurrentPages()
     const current = pages[pages.length - 1]
     const eventChannel = current.getOpenerEventChannel()
-    eventChannel.emit('onEventCreateOrder');
+    eventChannel.emit('onEventCreateOrder')
   }
 
   // 使用优惠券
   const handleUseCoupon = async () => {
     getCheckout()
-    setState(draft => {
+    setState((draft) => {
       draft.couponLayout = false
     })
   }
@@ -230,7 +247,7 @@ function DianwuCheckout(props) {
   }
 
   const onChangeCoupon = ({ couponCode }, e) => {
-    setState(draft => {
+    setState((draft) => {
       draft.selectCoupon = e ? couponCode : null
     })
   }
@@ -266,7 +283,7 @@ function DianwuCheckout(props) {
               <Text className='label'>券:</Text>
               <Text className='value'>{member?.couponNum || 0}</Text>
             </View>
-            { member?.vipDiscount < 10 && (
+            {member?.vipDiscount < 10 && (
               <View className='filed-item'>
                 <Text className='label'>会员折扣:</Text>
                 <Text className='value'>{member?.vipDiscount || 0}</Text>
@@ -356,11 +373,15 @@ function DianwuCheckout(props) {
         ></AtTextarea>
       </View>
 
-      <AtModal className='collection-modal' isOpened={isOpened} onClose={() => {
-        setState(draft => {
-          draft.isOpened = false
-        })
-      }}>
+      <AtModal
+        className='collection-modal'
+        isOpened={isOpened}
+        onClose={() => {
+          setState((draft) => {
+            draft.isOpened = false
+          })
+        }}
+      >
         <AtModalHeader>应收款</AtModalHeader>
         <AtModalContent>
           <View className='total-mount'>

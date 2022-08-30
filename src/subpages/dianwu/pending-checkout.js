@@ -1,12 +1,15 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
+import { useDianWuLogin } from '@/hooks'
+import { SG_DIANWU_TOKEN } from '@/consts'
 import { SpPage, SpScrollView, SpImage } from '@/components'
+import { selectMember } from '@/store/slices/dianwu'
 import { classNames, pickBy } from '@/utils'
 import CompGoods from './comps/comp-goods'
 import CompGift from './comps/comp-gift'
@@ -35,11 +38,14 @@ const initialState = {
 }
 function DianwuPendingCheckout(props) {
   const $instance = getCurrentInstance()
-  const { distributor_id } = $instance.router.params
+  const { distributor_id, from } = $instance.router.params
   const [state, setState] = useImmer(initialState)
   const { list } = state
   const { member } = useSelector((state) => state.dianwu)
+  const dispatch = useDispatch()
   const listRef = useRef()
+
+  useDianWuLogin()
 
   useEffect(() => {}, [])
 
@@ -48,10 +54,10 @@ function DianwuPendingCheckout(props) {
       page: pageIndex,
       pageSize,
       distributor_id,
-      user_id: member?.userId,
+      user_id: member?.userId
     }
     const { list: _list, total_count } = await api.dianwu.penddingList(params)
-
+    console.log('PENDING_ITEM:', pickBy(_list, doc.dianwu.PENDING_ITEM))
     setState((draft) => {
       draft.list[pageIndex - 1] = pickBy(_list, doc.dianwu.PENDING_ITEM)
     })
@@ -81,12 +87,34 @@ function DianwuPendingCheckout(props) {
     listRef.current.reset()
   }
 
-  const handleFetchOrder = async ({ pendingId }) => {
-    await api.dianwu.fetchPendding({ pending_id: pendingId, user_id: member?.userId })
+  const handleFetchOrder = async ({ pendingId, userId }) => {
+    const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
+    await api.dianwu.fetchPendding({
+      pending_id: pendingId,
+      user_id: member?.userId,
+      distributor_id
+    })
+    if (userId != 0) {
+      const userInfo = await api.dianwu.getMemberByUserId({ user_id: userId })
+      const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
+      dispatch(
+        selectMember({
+          couponNum,
+          point,
+          vipDiscount
+        })
+      )
+    }
+    if (from == 'home' || from == 'tabbar') {
+      Taro.redirectTo({
+        url: `/subpages/dianwu/cashier?token=${token}&distributor_id=${distributor_id}`
+      })
+      return
+    }
     const pages = Taro.getCurrentPages()
     const current = pages[pages.length - 1]
     const eventChannel = current.getOpenerEventChannel()
-    eventChannel.emit('onEventFetchOrder');
+    eventChannel.emit('onEventFetchOrder')
     Taro.navigateBack()
   }
 
@@ -95,7 +123,7 @@ function DianwuPendingCheckout(props) {
       <SpScrollView className='pending-checkout-list' ref={listRef} fetch={fetch}>
         {list.map((items, index) => {
           return items.map((item, sidx) => (
-            <View className='pending-checkout-item' key={`pending-checkout-item__${index}`}>
+            <View className='pending-checkout-item' key={`pending-checkout-item__${index}_${sidx}`}>
               <View className='checkoutitem-hd'>
                 <View className='account'>
                   {/* 账号：<Text className='account-value'>ZH12345678</Text> */}
@@ -103,21 +131,28 @@ function DianwuPendingCheckout(props) {
                 <View className='create-time'>{item.created}</View>
               </View>
               <View className='checkoutitem-bd'>
-                {/* <View className='user-info'>
-                  <SpImage width={70} height={70} circle />
+                <View className='user-info'>
+                  <SpImage
+                    src={item?.memberInfo?.avatar || 'user_icon.png'}
+                    width={70}
+                    height={70}
+                    circle
+                  />
                   <View className='user-wrap'>
                     <View>
-                      <Text className='name'>客户昵称</Text>
-                      <Text className='mobile'>138****8888</Text>
+                      <Text className='name'>{item?.memberInfo?.username || '匿名'}</Text>
+                      <Text className='mobile'>{item?.memberInfo?.mobile}</Text>
                     </View>
-                    <View className='vip'>白金会员</View>
+                    {/* <View className='vip'>白金会员</View> */}
                   </View>
-                </View> */}
+                </View>
+
                 <View className='shousuo-detail'>
                   <View className='goods-list'>
                     <ScrollView className='goods-image-wrap' scrollX>
                       {item.pendingData.map((goods, goods_index) => (
                         <SpImage
+                          src={goods.pic}
                           width={110}
                           height={110}
                           circle={8}
