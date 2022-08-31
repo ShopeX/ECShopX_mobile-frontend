@@ -74,7 +74,8 @@ export const MEMBER_INFO = {
   point: 'point',
   username: 'username',
   avatar: 'avatar',
-  mobile: 'mobile'
+  mobile: 'mobile',
+  userId: 'user_id'
 }
 
 export const CREATE_MEMBER_ITEM = {
@@ -137,6 +138,7 @@ export const PENDING_ITEM = {
       pic: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
       name: 'itemName',
       itemSpecDesc: 'item_spec_desc',
+      price: ({ price }) => price / 100,
       num: 'num'
     })
   },

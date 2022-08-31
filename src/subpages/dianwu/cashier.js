@@ -235,7 +235,6 @@ function DianWuCashier() {
         distributor_id
       })
       dispatch(selectMember(null))
-      getCashierList()
     }
   }
 
