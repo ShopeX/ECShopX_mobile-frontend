@@ -234,7 +234,11 @@ function DianWuCashier() {
         user_id: member?.userId,
         distributor_id
       })
-      dispatch(selectMember(null))
+      if(!member) {
+        getCashierList()
+      } else {
+        dispatch(selectMember(null))
+      }
     }
   }
 
