@@ -206,13 +206,51 @@ function DianWuCashier() {
     )
     setState((draft) => {
       draft.addUserCurtain = false
+      draft.mobile = ''
+      draft.searchMemberResult = null
     })
+  }
+
+  // 挂单
+  const handleOrderPendding = async () => {
+    if (cartList.length == 0) {
+      Taro.navigateTo({
+        url: `/subpages/dianwu/pending-checkout?distributor_id=${distributor_id}`,
+        events: {
+          // 取单事件
+          onEventFetchOrder: () => {
+            getCashierList()
+          }
+        }
+      })
+      return
+    }
+    const { confirm } = await Taro.showModal({
+      title: '挂单确认',
+      content: '请确认是否挂单'
+    })
+    if (confirm) {
+      await api.dianwu.orderPendding({
+        user_id: member?.userId,
+        distributor_id
+      })
+      dispatch(selectMember(null))
+    }
   }
 
   const handleCreateMember = async () => {
     const res = await api.dianwu.createMember({ mobile })
     const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    dispatch(selectMember(newUser))
+    const userInfo = await api.dianwu.getMemberByUserId({ user_id: newUser.userId })
+    const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
+    dispatch(
+      selectMember({
+        ...newUser,
+        couponNum,
+        point,
+        vipDiscount
+      })
+    )
     setState((draft) => {
       draft.addUserCurtain = false
     })
@@ -260,11 +298,7 @@ function DianWuCashier() {
   }
 
   return (
-    <SpPage
-      className='page-dianwu-cashier'
-      ref={pageRef}
-      renderFooter={<CompTabbar />}
-    >
+    <SpPage className='page-dianwu-cashier' ref={pageRef} renderFooter={<CompTabbar />}>
       <View className='block-tools'>
         <SpSearchInput
           placeholder='商品名称/货号/条码'
@@ -510,11 +544,13 @@ function DianWuCashier() {
           <View className='txt'>已选择{cartList[0]?.totalNum || 0}件商品</View>
         </View>
         <View className='g-button'>
-          <View className='g-button__first'>挂单</View>
+          <View className='g-button__first' onClick={handleOrderPendding}>
+            {cartList.length == 0 ? '取单' : '挂单'}
+          </View>
           <View
             className='g-button__second'
             onClick={() => {
-              if(cartList.length == 0) {
+              if (cartList.length == 0) {
                 showToast('请添加商品')
                 return
               }

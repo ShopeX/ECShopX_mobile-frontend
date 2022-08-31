@@ -1,4 +1,5 @@
 import { pickBy } from '@/utils'
+import dayjs from 'dayjs'
 import Big from 'big.js'
 
 export const GOODS_ITEM = {
@@ -25,7 +26,10 @@ export const CART_GOODS_ITEM = {
   memberDiscount: ({ member_discount }) => member_discount / 100,
   giftActivity: 'gift_activity',
   promotionFee: ({ activity_grouping }) => {
-    const promotionFee = activity_grouping.reduce((total, item) => new Big(total).plus(item.discount_fee), 0)
+    const promotionFee = activity_grouping.reduce(
+      (total, item) => new Big(total).plus(item.discount_fee),
+      0
+    )
     return promotionFee / 100
   },
   activityGrouping: 'activity_grouping',
@@ -56,9 +60,9 @@ export const MEMBER_ITEM = {
 
 export const MEMBER_INFO = {
   vipDiscount: ({ vipgrade, gradeInfo }) => {
-    if(vipgrade && vipgrade.is_vip) {
+    if (vipgrade && vipgrade.is_vip) {
       return (100 - vipgrade.discount) / 10
-    } else if(gradeInfo && gradeInfo?.privileges?.discount_desc != 0) {
+    } else if (gradeInfo && gradeInfo?.privileges?.discount_desc != 0) {
       return gradeInfo.privileges.discount_desc
     } else {
       return 10
@@ -67,7 +71,11 @@ export const MEMBER_INFO = {
   couponNum: ({ coupon_num }) => {
     return coupon_num || 0
   },
-  point: 'point'
+  point: 'point',
+  username: 'username',
+  avatar: 'avatar',
+  mobile: 'mobile',
+  userId: 'user_id'
 }
 
 export const CREATE_MEMBER_ITEM = {
@@ -101,9 +109,9 @@ export const CHECKOUT_GOODS_ITEM = {
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
   discountFee: ({ discount_fee }) => discount_fee / 100,
   totalFee: ({ total_fee }) => total_fee / 100,
-  memberDiscount: ({ member_discount }) => member_discount ? member_discount / 100 : 0,
-  couponDiscount: ({ coupon_discount }) => coupon_discount ? coupon_discount / 100 : 0,
-  promotionDiscount: ({ promotion_discount }) => promotion_discount ? promotion_discount / 100 : 0
+  memberDiscount: ({ member_discount }) => (member_discount ? member_discount / 100 : 0),
+  couponDiscount: ({ coupon_discount }) => (coupon_discount ? coupon_discount / 100 : 0),
+  promotionDiscount: ({ promotion_discount }) => (promotion_discount ? promotion_discount / 100 : 0)
 }
 
 export const COUPON_ITEM = {
@@ -118,4 +126,23 @@ export const COUPON_ITEM = {
   discount: ({ discount }) => {
     return (100 - discount) / 10
   }
+}
+
+export const PENDING_ITEM = {
+  created: ({ created }) => {
+    return dayjs(created * 1000).format('YYYY.MM.DD HH:mm:ss')
+  },
+  pendingId: 'pending_id',
+  pendingData: ({ pending_data }) => {
+    return pickBy(pending_data, {
+      pic: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
+      name: 'itemName',
+      itemSpecDesc: 'item_spec_desc',
+      price: ({ price }) => price / 100,
+      num: 'num'
+    })
+  },
+  userId: 'user_id',
+  memberInfo: 'memberInfo',
+  showDetail: false
 }

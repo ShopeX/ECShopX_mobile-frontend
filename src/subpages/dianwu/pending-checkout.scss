@@ -135,9 +135,29 @@
   .expend-detail {
     padding: 20px 0;
     .goods-list {
-      .comp-goods {
+      .g-item {
+        display: flex;
         &:not(:last-child) {
           margin-bottom: 20px;
+        }
+        .g-item-hd {
+          margin-right: 16px;
+        }
+        .g-item-bd {
+          flex: 1;
+        }
+        .sku-num {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+        }
+        .sku {
+          background: #efefef;
+          padding: 4px 20px;
+          font-size: 24px;
+          color: #666;
+          border-radius: 6px;
+          margin-top: 10px;
         }
       }
     }
