@@ -81,7 +81,8 @@ function DianWuCashier() {
   }, [])
 
   useEffect(() => {
-    getCashierList()
+    const { distributor_id: dtid } = $instance.router.params
+    getCashierList(dtid)
   }, [member])
 
   useEffect(() => {
@@ -133,6 +134,7 @@ function DianWuCashier() {
   }
 
   const handleScanGoodsBN = async () => {
+    // 注意：真机scancode扫码完成后回调，taro getCurrentInstance().router = null，无法获取到路由参数
     const { errMsg, result } = await Taro.scanCode()
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
@@ -149,11 +151,10 @@ function DianWuCashier() {
     }
   }
 
-  const getCashierList = async () => {
-    const { distributor_id } = $instance.router.params
+  const getCashierList = async (dtid) => {
     const { valid_cart } = await api.dianwu.getCartDataList({
       user_id: member?.userId,
-      distributor_id
+      distributor_id: dtid || distributor_id
     })
     setState((draft) => {
       draft.cartList = pickBy(valid_cart, doc.dianwu.CART_GOODS_ITEM)
