@@ -1,8 +1,12 @@
 .page-dianwu-checkout {
   .block-user {
-    background: #feefdc;
     display: flex;
-    padding: 24px 40px 30px;
+    align-items: center;
+    padding: 20px 30px;
+    margin: 20px;
+    background: #e3ebfc;
+    border: 1PX solid var(--color-dianwu-primary);
+    border-radius: 20px;
     .sp-image {
       margin-right: 20px;
     }
@@ -11,9 +15,9 @@
     }
     .user-info {
       flex: 1;
-      margin-top: 20px;
     }
     .info-hd {
+      margin-bottom: 8px;
       .name {
       }
       .mobile {
@@ -26,17 +30,23 @@
       // margin-top: 36px;
     }
     .filed-item {
+      flex: 1;
+      font-size: 24px;
+      border-left: 1PX solid #CCC;
+      padding-left: 16px;
+      &:first-child {
+        padding: 0;
+        border: none;
+      }
       // margin-right: 10px;
     }
     .label {
-      font-weight: 400;
       color: #666f83;
       margin-right: 10px;
     }
     .value {
       font-weight: 500;
       color: #111a34;
-      font-size: 32px;
     }
   }
   .block-goods {
@@ -58,8 +68,11 @@
     }
     .ft-info {
       display: flex;
-      align-items: flex-end;
+      align-items: center;
       justify-content: space-between;
+      .num {
+        font-size: 24px;
+      }
     }
     .price-list {
     }
@@ -118,14 +131,15 @@
         font-weight: 600;
         @include text-overflow();
         max-width: 540px;
+        padding-bottom: 10px;
       }
       .sku {
-        background: #f5f5f5;
-        height: 46px;
-        line-height: 46px;
-        padding: 0 6px;
+        background: #efefef;
+        padding: 4px 20px;
         display: inline-block;
-        margin-top: 6px;
+        font-size: 24px;
+        color: #666;
+        border-radius: 6px;
       }
       .price-list {
         display: flex;
@@ -137,24 +151,13 @@
   }
 
   .block-gift {
-    // padding: 20px 30px;
-    background-color: #fff;
-    margin-top: 24px;
-    overflow: hidden;
-    .gift-item {
-      // display: flex;
-      padding: 0 30px;
-      &:first-child {
-        margin-top: 20px;
-      }
-      &:last-child {
-        margin-bottom: 20px;
-      }
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
+    padding: 20px 0;
+    .comp-gift {
+      padding: 20px 30px;
     }
     .gift-tag {
+      margin-left: 30px;
+      margin-bottom: 16px;
       width: 110px;
       height: 40px;
       background: #ff5257;
@@ -162,29 +165,6 @@
       color: #fff;
       text-align: center;
       margin-right: 10px;
-    }
-    .gift-info {
-      // width: 540px;
-      flex: 1;
-    }
-    .title {
-      @include text-overflow();
-      max-width: 540px;
-    }
-    .sku-num {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .sku {
-        background: #f5f5f5;
-        height: 46px;
-        line-height: 46px;
-        padding: 0 6px;
-        display: inline-block;
-        margin-top: 6px;
-      }
-      .num {
-      }
     }
   }
   .block-coupon {

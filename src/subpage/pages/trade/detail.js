@@ -227,7 +227,7 @@ export default class TradeDetail extends Component {
       store_address: 'store_address',
       store_name: 'store_name',
       hour: 'hour',
-      phone: 'phone'
+      phone: 'mobile'
     })
 
     const cancelData = data.cancelData
@@ -332,7 +332,6 @@ export default class TradeDetail extends Component {
       return
     }
 
-
     let payErr
     try {
       const params = {
@@ -347,7 +346,7 @@ export default class TradeDetail extends Component {
       }
       const paymentFn = usePayment()
       paymentFn.cashierPayment(params, orderInfo)
-    } catch(e) {
+    } catch (e) {
       console.error(e)
       payErr = e
     }
@@ -444,7 +443,7 @@ export default class TradeDetail extends Component {
       })
       if (confirm) {
         await api.trade.confirm(info.tid)
-        if(isWeixin) {
+        if (isWeixin) {
           const { fullPath } = getCurrentRoute(this.$instance.router)
           Taro.redirectTo({
             url: fullPath
@@ -1052,7 +1051,9 @@ export default class TradeDetail extends Component {
 
             <View className='line'>
               <View className='left'>实付</View>
-              <View className='right'>{`${this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`}`}</View>
+              <View className='right'>{`${
+                this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`
+              }`}</View>
             </View>
 
             {info.delivery_code && (
@@ -1106,7 +1107,9 @@ export default class TradeDetail extends Component {
                   (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
                   info.receipt_type !== 'dada')) &&
                 info.can_apply_aftersales === 1 &&
-                info.order_class !== 'excard' && !VERSION_IN_PURCHASE && !this.isPointitemGood() && (
+                info.order_class !== 'excard' &&
+                !VERSION_IN_PURCHASE &&
+                !this.isPointitemGood() && (
                   <View
                     className={`trade-detail__footer__btn ${
                       info.is_logistics &&

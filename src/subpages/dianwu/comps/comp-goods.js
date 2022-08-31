@@ -40,10 +40,12 @@ function CompGoods(props) {
           <CompGoodsPrice info={info} />
           <View className='goods-info'>
             <View className='kc-bn'>
-              <View className='kc'>
-                <Text className='label'>库存：</Text>
-                {info.store}
-              </View>
+              {info.store && (
+                <View className='kc'>
+                  <Text className='label'>库存：</Text>
+                  {info.store}
+                </View>
+              )}
               {info.barcode && (
                 <View className='bn'>
                   <Text className='label'>条码：</Text>

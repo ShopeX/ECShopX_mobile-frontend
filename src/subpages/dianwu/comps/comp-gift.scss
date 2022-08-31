@@ -1,20 +1,17 @@
 .comp-gift {
-  display: flex;
-  .gift-tag {
-    width: 110px;
-    height: 40px;
-    background: #ff5257;
-    border-radius: 4px;
-    color: #fff;
-    text-align: center;
-    margin-right: 10px;
-  }
-  .gift-info {
-    flex: 1;
-  }
+  padding: 10px 20px;
+  background: #ffffff;
   .title {
-    @include text-overflow();
-    max-width: 540px;
+    display: flex;
+    .gift-info {
+      width: 1%;
+      flex: 1;
+      @include text-overflow();
+    }
+    .num {
+      padding-left: 20px;
+      text-align: right;
+    }
   }
   .sku-num {
     display: flex;
@@ -27,8 +24,6 @@
       padding: 0 6px;
       display: inline-block;
       margin-top: 6px;
-    }
-    .num {
     }
   }
 }

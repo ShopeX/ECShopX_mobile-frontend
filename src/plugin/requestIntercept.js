@@ -1,26 +1,31 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
 import { SG_GUIDE_PARAMS } from '@/consts'
+import { isObject } from '@/utils'
 
 export function requestIntercept() {
   const interceptor = (chain) => {
     let requestParams = chain.requestParams
     const { method, data, url } = requestParams
-    const { path } = getCurrentInstance().router || {}
-    if(path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order` ) {
-      const { gu, gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
-      let work_userid = gu_user_id
-      if(gu) {
-        work_userid = gu.split('_')[0]
+    console.log('getCurrentInstance:', getCurrentInstance())
+    if (isObject(getCurrentInstance().router)) {
+      const { path } = getCurrentInstance()?.router
+      console.log('getCurrentInstance params:', path)
+      if (path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order`) {
+        const { gu, gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+        let work_userid = gu_user_id
+        if (gu) {
+          work_userid = gu.split('_')[0]
+        }
+        if (work_userid) {
+          const _data = qs.parse(data)
+          _data['work_userid'] = work_userid
+          requestParams.data = qs.stringify(_data)
+        }
       }
-      if(work_userid) {
-      const _data = qs.parse(data)
-      _data['work_userid'] = work_userid
-      requestParams.data = qs.stringify(_data)
-    }
     }
     // console.log('requestIntercept:', $instance)
-    return chain.proceed(requestParams).then(res => {
+    return chain.proceed(requestParams).then((res) => {
       // console.log(`http <-- ${url} request:`, res)
       return res
     })

@@ -65,7 +65,42 @@ function DianwuCheckout(props) {
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
 
-  const onPendingOrder = () => {}
+  // 挂单
+  const onPendingOrder = async () => {
+    const { confirm } = await Taro.showModal({
+      title: '挂单确认',
+      content: '请确认是否挂单'
+    })
+    if (confirm) {
+      try {
+        await api.dianwu.orderPendding({
+          user_id: member?.userId,
+          distributor_id,
+          showError: false
+        })
+        dispatch(selectMember(null))
+        onEventCreateOrder()
+        setTimeout(() => {
+          Taro.navigateBack()
+        }, 200)
+      } catch (e) {
+        if (e.res.data.data?.code == '42201') {
+          const pendingModal = await Taro.showModal({
+            title: '挂单上限提醒',
+            content: e.res.data.data.message,
+            confirmText: '现在就去'
+          })
+          if (pendingModal.confirm) {
+            Taro.redirectTo({
+              url: `/subpages/dianwu/pending-checkout?distributor_id=${distributor_id}&from=checkout`
+            })
+          }
+        } else {
+          showToast(e.res.data.data.message)
+        }
+      }
+    }
+  }
 
   // 收款
   const onCollection = async () => {
@@ -104,7 +139,7 @@ function DianwuCheckout(props) {
       not_use_coupon: 1,
       distributor_id
     }
-    if(selectCoupon) {
+    if (selectCoupon) {
       params = {
         ...params,
         not_use_coupon: 0,
@@ -126,7 +161,7 @@ function DianwuCheckout(props) {
       couponInfo: _couponInfo
     } = pickBy(res, doc.dianwu.CHECKOUT_GOODS_ITEM)
     setState((draft) => {
-      draft.itemList = items.filter(item => item.orderItemType != 'gift')
+      draft.itemList = items.filter((item) => item.orderItemType != 'gift')
       draft.itemsPromotion = _itemsPromotion
       draft.totalItemNum = _totalItemNum
       draft.itemFee = _itemFee
@@ -154,7 +189,7 @@ function DianwuCheckout(props) {
       not_use_coupon: 1,
       distributor_id
     }
-    if(couponInfo) {
+    if (couponInfo) {
       params = {
         ...params,
         not_use_coupon: 0,
@@ -210,13 +245,13 @@ function DianwuCheckout(props) {
     const pages = Taro.getCurrentPages()
     const current = pages[pages.length - 1]
     const eventChannel = current.getOpenerEventChannel()
-    eventChannel.emit('onEventCreateOrder');
+    eventChannel.emit('onEventFetchOrder')
   }
 
   // 使用优惠券
   const handleUseCoupon = async () => {
     getCheckout()
-    setState(draft => {
+    setState((draft) => {
       draft.couponLayout = false
     })
   }
@@ -230,7 +265,7 @@ function DianwuCheckout(props) {
   }
 
   const onChangeCoupon = ({ couponCode }, e) => {
-    setState(draft => {
+    setState((draft) => {
       draft.selectCoupon = e ? couponCode : null
     })
   }
@@ -251,7 +286,7 @@ function DianwuCheckout(props) {
       }
     >
       <View className='block-user'>
-        <SpImage src={member?.avatar || 'user_icon.png'} width={110} height={110} />
+        <SpImage src={member?.avatar || 'user_icon.png'} width={80} height={80} />
         <View className='user-info'>
           <View className='info-hd'>
             <Text className='name'>{member?.username || '匿名'}</Text>
@@ -266,10 +301,12 @@ function DianwuCheckout(props) {
               <Text className='label'>券:</Text>
               <Text className='value'>{member?.couponNum || 0}</Text>
             </View>
-            <View className='filed-item'>
-              <Text className='label'>会员折扣:</Text>
-              <Text className='value'>{member?.vipDiscount || 0}</Text>
-            </View>
+            {member?.vipDiscount < 10 && (
+              <View className='filed-item'>
+                <Text className='label'>会员折扣:</Text>
+                <Text className='value'>{member?.vipDiscount || 0}</Text>
+              </View>
+            )}
           </View>
         </View>
       </View>
@@ -292,11 +329,10 @@ function DianwuCheckout(props) {
       </View>
       {itemsPromotion && (
         <View className='block-gift'>
+          <View className='gift-tag'>赠品</View>
           {itemsPromotion.map((item, idx) => {
             return item.activity_desc?.gifts?.map((gift, index) => (
-              <View className='gift-item' key={`gift-item__${idx}_${index}`}>
-                <CompGift info={gift} />
-              </View>
+              <CompGift info={gift} key={`gift-item__${idx}_${index}`} />
             ))
           })}
         </View>
@@ -355,11 +391,15 @@ function DianwuCheckout(props) {
         ></AtTextarea>
       </View>
 
-      <AtModal className='collection-modal' isOpened={isOpened} onClose={() => {
-        setState(draft => {
-          draft.isOpened = false
-        })
-      }}>
+      <AtModal
+        className='collection-modal'
+        isOpened={isOpened}
+        onClose={() => {
+          setState((draft) => {
+            draft.isOpened = false
+          })
+        }}
+      >
         <AtModalHeader>应收款</AtModalHeader>
         <AtModalContent>
           <View className='total-mount'>

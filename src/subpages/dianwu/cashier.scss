@@ -1,16 +1,32 @@
 .page-dianwu-cashier {
+  $header-height: 120px !default;
+  $camera-height: 280px !default;
+  $footer-height: 120px !default;
+  $tabbar-height: 120px !default;
+  $tabbar-ipx-height: 140px !default;
+  .item-list-scroll {
+    @include page-scroll($header-height + $camera-height, $footer-height + 70px);
+  }
+  &.ipx {
+    .sp-page-body {
+      height: calc(100vh - 140px);
+    }
+  }
   .sp-page-body {
-    padding-bottom: 90px;
     position: relative;
+    height: calc(100vh - 120px);
   }
   .block-tools {
     display: flex;
     align-items: center;
     background: #fff;
-    padding: 20px;
+    padding: 0 20px;
+    height: $header-height;
     .sp-search-input {
       // width: 290px;
       flex: 1;
+      margin-right: 20px;
+      height: 90px;
     }
     .g-button {
       flex: 1;
@@ -29,11 +45,18 @@
       }
     }
     .btn-adduser {
-      background-color: var(--color-dianwu-primary);
-      color: #fff;
-      margin-left: 20px;
+      width: 280px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1PX solid var(--color-dianwu-primary);
+      color: var(--color-dianwu-primary);
+      border-radius: 30px;
+      background: #e3ebfc;
       .icon-xinzenghuiyuan-01 {
-        font-size: 32px;
+        font-size: 40px;
+        margin-right: 12px;
       }
     }
   }
@@ -41,7 +64,7 @@
     position: relative;
   }
   .scan-code-camera, .camera-placeholder {
-    height: 280px;
+    height: $camera-height;
   }
   .scan-code-close {
     padding: 0 20px;
@@ -56,49 +79,54 @@
     border-radius: 0 0 0 10px
   }
   .camera-placeholder {
-    background: #efefef;
+    position: relative;
+    height: $camera-height;
     text-align: center;
     color: #CCCCCC;
     font-size: 24px;
+    background: #fff;
     &-wrap {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 20px;
+      bottom: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 260px;
-      margin: 20px;
       border: 1PX solid #CCCCCC;
     }
     .iconfont {
       margin-bottom: 10px;
       font-size: 80px;
     }
+    .icon-camera {
+      color: var(--color-dianwu-primary);
+    }
   }
 
   .member-info {
-    height: 72px;
-    background: linear-gradient(236deg, #e2bd9f 0%, #ffe6d2 39%, #e6bca2 100%);
+    padding: 0 20px;
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    border: 1PX solid var(--color-dianwu-primary);
+    border-radius: 30px;
+    background: #e3ebfc;
     .lf {
-      margin-left: 40px;
+      padding: 0 20px 0 10px;
+      color: #4d84fc;
     }
     .rg {
-      display: flex;
-      align-items: center;
+
     }
     .name {
+      width: 80px;
+      @include text-overflow();
       font-weight: 400;
-      color: #111a34;
     }
     .mobile {
       font-weight: 600;
-      color: #111a34;
-      margin-left: 16px;
-      padding-left: 16px;
-      /* prettier-ignore */
-      border-left: 1PX solid #CDAB8E;
     }
     .cash {
       font-size: 24px;
@@ -111,13 +139,15 @@
       }
     }
     .btn-clear {
-      width: 130px;
-      height: 46px;
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 23px 0px 0px 23px;
-      color: #96603d;
-      text-align: center;
-      line-height: 48px;
+      width: 50px;
+      height: 90px;
+      line-height: 90px;
+      color: var(--color-dianwu-primary);
+      text-align: right;
+      border-left: 1PX solid var(--color-dianwu-primary);
+      .iconfont {
+        font-size: 36px;
+      }
     }
   }
 
@@ -197,7 +227,7 @@
       &:not(:last-child) {
         /* prettier-ignore */
         border-bottom: 1PX solid #ededed;
-        margin-bottom: 26px;
+        margin-bottom: 20px;
         // padding-bottom: 20px;
       }
     }
@@ -336,19 +366,33 @@
       }
     }
   }
+  &.ipx {
+    .footer-wrap {
+      bottom: $tabbar-ipx-height;
+    }
+  }
   .footer-wrap {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: $tabbar-height;
+    height: $footer-height;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px;
+    padding: 0 20px;
+    background: #fff;
     .total-info {
       line-height: 32px;
     }
     .real-mount {
+      margin-bottom: 6px;
       font-weight: 600;
+      font-size: 24px;
     }
     .txt {
       color: #666;
+      font-size: 24px;
     }
     .g-button {
       width: 400px;
@@ -356,17 +400,10 @@
   }
 
   .block-gift {
-    padding: 20px 30px;
-    background-color: #fff;
-    margin-top: 24px;
-    .gift-item {
-      display: flex;
-      margin-right: 10px;
-      &:not(:last-child) {
-        margin-bottom: 20px;
-      }
-    }
+    padding: 20px;
     .gift-tag {
+      margin-left: 10px;
+      margin-bottom: 10px;
       width: 110px;
       height: 40px;
       background: #ff5257;
@@ -375,32 +412,10 @@
       text-align: center;
       margin-right: 10px;
     }
-    .gift-info {
-      width: 540px;
-    }
-    .title {
-      @include text-overflow();
-      max-width: 540px;
-    }
-    .sku-num {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .sku {
-        background: #f5f5f5;
-        height: 46px;
-        line-height: 46px;
-        padding: 0 6px;
-        display: inline-block;
-        margin-top: 6px;
-      }
-      .num {
-      }
-    }
   }
   &.ipx {
     .total-bar {
-      bottom: 140px;
+      bottom: $footer-height + $tabbar-ipx-height;
     }
   }
   .total-bar {
@@ -411,7 +426,7 @@
     padding: 0 30px;
     justify-content: space-between;
     position: fixed;
-    bottom: 120px;
+    bottom: $footer-height + $tabbar-height;
     left: 0;
     right: 0;
     .lf {
@@ -646,36 +661,41 @@
   }
 
   .search-user {
+    padding: 20px;
     background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
     &-hd {
       display: flex;
       justify-content: space-between;
       padding: 20px 30px;
       .title {
-        font-size: 30px;
-        font-weight: 600;
+        padding-top: 20px;
+        font-size: 32px;
+        color: #666;
       }
       .scan-member {
         display: flex;
         flex-direction: column;
         align-items: center;
         font-size: 24px;
+        color: var(--color-dianwu-primary);
       }
       .icon-saoma {
-        font-size: 48px;
+        font-size: 90px;
       }
     }
     &-bd {
       padding: 30px 30px;
       .form-field {
-        height: 90px;
+        height: 80px;
         background: #f5f5f5;
         border-radius: 8px;
         /* prettier-ignore */
         border: 1PX solid #d7d7d7;
         display: flex;
         align-items: center;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         .at-input {
           background-color: transparent;
           color: #333;
@@ -685,15 +705,18 @@
             border-color: transparent;
           }
           &__input {
-            font-size: 32px;
-            font-weight: 500;
+            font-size: 28px;
             color: #333;
             padding-left: 24px;
           }
         }
       }
       .search-result {
-
+        padding: 10px 20px;
+        border: 1PX solid #efefef;
+        border-radius: 6px;
+        color: var(--color-dianwu-primary);
+        font-size: 24px;
       }
     }
     &-ft {
