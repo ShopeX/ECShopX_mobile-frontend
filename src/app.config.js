@@ -6,7 +6,7 @@ export default {
     'pages/cart/espier-index', // 购物车页面
     'pages/cart/espier-checkout', // 结算页面
     'pages/cart/cashier-result', // 支付结果页面
-    'pages/cart/cashier-alipay', // 支付宝收银台（adapay）
+    // 'pages/cart/cashier-alipay', // 支付宝收银台（adapay）
     'pages/cart/cashier-weapp', // 微信收银台（adapay）
 
     'pages/home/landing', // 跳转等待页面
