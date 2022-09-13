@@ -120,9 +120,6 @@ function DianwuPendingCheckout(props) {
           return items.map((item, sidx) => (
             <View className='pending-checkout-item' key={`pending-checkout-item__${index}_${sidx}`}>
               <View className='checkoutitem-hd'>
-                <View className='account'>
-                  {/* 账号：<Text className='account-value'>ZH12345678</Text> */}
-                </View>
                 <View className='create-time'>{item.created}</View>
               </View>
               <View className='checkoutitem-bd'>
@@ -205,7 +202,7 @@ function DianwuPendingCheckout(props) {
                   })}
                   onClick={toggleShowDetail.bind(this, item, index, sidx)}
                 >
-                  {item.showDetail ? '收起明细' : '展开明细'}
+                  {item.showDetail ? '收起明细 ' : '展开明细 '}
                   <Text className='iconfont icon-qianwang-01'></Text>
                 </View>
                 <View className='btn-actions'>
