@@ -5,6 +5,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
+import qs from 'qs'
 import { useAsyncCallback } from '@/hooks'
 import { SpPage, SpCell, SpSelect, SpImage, SpPrice, SpCheckbox } from '@/components'
 import { View, Text, ScrollView } from '@tarojs/components'
@@ -44,7 +45,8 @@ function DianwuChangePrice(props) {
   const { member } = useSelector((state) => state.dianwu)
 
   useEffect(() => {
-    const params = $instance.router.params
+    const { checkout } = $instance.router.params
+    const params = qs.parse(decodeURIComponent(checkout))
     fetchCheckout(params)
   }, [])
 
@@ -92,7 +94,8 @@ function DianwuChangePrice(props) {
   }
 
   const getChangePriceParams = (_items) => {
-    const params = $instance.router.params
+    const { checkout } = $instance.router.params
+    const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
     const tItems = _items.map((item) => {
       let total_fee
@@ -128,14 +131,19 @@ function DianwuChangePrice(props) {
 
   // 一键改价
   const onChangeGlobalPrice = (value) => {
+    const _value = validate.isMoney(value) ? value : value.substring(0, value.length - 1)
+    if(!validate.isMoney(value)) {
+      console.log(_value)
+    }
     setState((draft) => {
-      draft.globalPrice = validate.isMoney(value) ? value : value.substring(0, value.length - 1)
+      draft.globalPrice = _value
     })
   }
 
   // 一键改价确定
   const handleGlobalChangePrice = async () => {
-    const params = $instance.router.params
+    const { checkout } = $instance.router.params
+    const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
 
     markdown['total_fee'] = globalPrice * 100
@@ -145,7 +153,7 @@ function DianwuChangePrice(props) {
     fetchCheckout(params)
   }
 
-  const itemPriceFormat = ({ totalFee, price, num, discountFee, point }) => {
+  const itemPriceFormat = ({ totalFee, price, num, discountFee, point = 0 }) => {
     return `¥${totalFee.toFixed(2)} = ${price.toFixed(2)} x ${num} - ${discountFee.toFixed(
       2
     )} - ${point.toFixed(2)}`

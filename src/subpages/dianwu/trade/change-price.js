@@ -81,7 +81,7 @@ function DianwuChangePrice(props) {
 
     const { store_address, store_name } = distributor
 
-    const { username, mobile } = await api.dianwu.getMemberByUserId(user_id)
+    const { username, mobile } = await api.dianwu.getMemberByUserId({ user_id })
 
     let _buyMember = ''
     let _receiveName = ''
@@ -146,9 +146,14 @@ function DianwuChangePrice(props) {
   }
 
   const handleGlobalChangePrice = async () => {
-    const params = {
+    let params = {
       down_type: 'total',
       total_fee: globalPrice * 100
+    }
+    if (isFreeFreight) {
+      params['freight_fee'] = 0
+    } else if (!isNaN(parseFloat(globalFreightFee))) {
+      params['freight_fee'] = globalFreightFee * 100
     }
     orderMarkdown(params)
   }
@@ -167,6 +172,9 @@ function DianwuChangePrice(props) {
     }
     if (!isNaN(parseFloat(globalFreightFee))) {
       params['freight_fee'] = globalFreightFee * 100
+    }
+    if (isFreeFreight) {
+      params['freight_fee'] = 0
     }
     params['items'] = list.map((item) => {
       let total_fee
@@ -243,7 +251,7 @@ function DianwuChangePrice(props) {
       ...params,
       order_id: trade_id
     }
-    if(isFreeFreight) {
+    if (isFreeFreight) {
       params['freight_fee'] = 0
     }
     await api.dianwu.changePriceConfirm(params)

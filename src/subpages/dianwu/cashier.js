@@ -544,6 +544,9 @@ function DianWuCashier() {
                     <View className='gift-item' key={`gift-item__${m}__${n}`}>
                       <View className='gift-tag'>赠品</View>
                       <View className='gift-content'>{gift.itemName}</View>
+                      {gift.item_spec_desc && (
+                        <Text className='gift-sku'>（{gift.item_spec_desc}）</Text>
+                      )}
                     </View>
                   ))
                 })}

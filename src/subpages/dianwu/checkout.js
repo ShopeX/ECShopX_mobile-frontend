@@ -41,7 +41,8 @@ const initialState = {
   remark: '',
   isOpened: false,
   couponLayout: false,
-  markdown: null
+  markdown: null,
+  distributor_id: null
 }
 function DianwuCheckout(props) {
   const [state, setState] = useImmer(initialState)
@@ -61,11 +62,12 @@ function DianwuCheckout(props) {
     couponList,
     couponInfo,
     selectCoupon,
-    markdown
+    markdown,
+    distributor_id
   } = state
   const pageRef = useRef()
   const $instance = getCurrentInstance()
-  const { distributor_id } = $instance.router.params
+
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
 
@@ -115,9 +117,18 @@ function DianwuCheckout(props) {
   }
 
   useEffect(() => {
-    getCheckout()
-    getUserCardList()
+    const { distributor_id } = $instance.router.params
+    setState((draft) => {
+      draft.distributor_id = distributor_id
+    })
   }, [])
+
+  useEffect(() => {
+    if (distributor_id) {
+      getCheckout()
+      getUserCardList()
+    }
+  }, [distributor_id])
 
   useEffect(() => {
     if (isOpened || couponLayout) {
@@ -232,16 +243,18 @@ function DianwuCheckout(props) {
         coupon_discount: selectCoupon
       }
     }
-    if(markdown) {
+    if (markdown) {
       params = {
         ...params,
         markdown
       }
     }
+    console.log('handleChangePrice:', params)
     Taro.navigateTo({
-      url: `/subpages/dianwu/change-price?${qs.stringify(params)}`,
+      url: `/subpages/dianwu/change-price?checkout=${encodeURIComponent(qs.stringify(params))}`,
       events: {
         onEventChangePrice: ({ res, markdown }) => {
+          console.log('onEventChangePrice:', markdown)
           resloveResWrap(res, markdown)
         }
       }
@@ -268,7 +281,7 @@ function DianwuCheckout(props) {
         coupon_discount: couponInfo.coupon_code
       }
     }
-    if(markdown) {
+    if (markdown) {
       params = {
         ...params,
         markdown

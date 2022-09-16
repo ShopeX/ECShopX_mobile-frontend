@@ -164,7 +164,7 @@ export const ORDER_INFO = {
       price: ({ price }) => price / 100,
       num: 'num',
       discountFee: ({ discount_fee }) => discount_fee / 100,
-      point: ({ point }) => point / 100
+      point: ({ point_fee }) => point_fee / 100
     })
   },
   user_id: 'user_id',
