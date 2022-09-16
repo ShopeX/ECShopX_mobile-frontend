@@ -31,7 +31,8 @@ const initialState = {
   globalPrice: '',
   globalFreightFee: '',
   isFreeFreight: false,
-  pointFreightFee: ''
+  pointFreightFee: '',
+  receiptType: null
 }
 function DianwuChangePrice(props) {
   const [state, setState] = useImmer(initialState)
@@ -50,7 +51,8 @@ function DianwuChangePrice(props) {
     globalPrice,
     globalFreightFee,
     isFreeFreight,
-    pointFreightFee
+    pointFreightFee,
+    receiptType
   } = state
   const $instance = getCurrentInstance()
   const { trade_id } = $instance.router.params
@@ -76,7 +78,7 @@ function DianwuChangePrice(props) {
       itemFeeNew,
       freightFee,
       totalFee,
-      pointFreightFee
+      pointFreightFee,
     } = pickBy(orderInfo, doc.dianwu.ORDER_INFO)
 
     const { store_address, store_name } = distributor
@@ -113,6 +115,7 @@ function DianwuChangePrice(props) {
       draft.buyMember = _buyMember
       draft.receiveName = _receiveName
       draft.receiveAddress = _receiveAddress
+      draft.receiptType = receipt_type
       draft.isZiti = _isZiti
       draft.list = _items
       draft.itemFeeNew = itemFeeNew
@@ -365,12 +368,12 @@ function DianwuChangePrice(props) {
               value={globalFreightFee}
               name='global-freight'
               prefix='¥'
-              disabled={isFreeFreight}
+              disabled={isFreeFreight || receiptType == 'dada'}
               onChange={onChangeGlobalFreight}
               onConfirm={onConfirmGlobalFreight}
             />
             <View className='bd-item-ft'>
-              <SpCheckbox checked={isFreeFreight} onChange={onChangeFreeFreight}>
+              <SpCheckbox checked={isFreeFreight} disabled={receiptType == 'dada'} onChange={onChangeFreeFreight}>
                 免运费
               </SpCheckbox>
             </View>
