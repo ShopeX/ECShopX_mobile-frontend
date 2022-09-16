@@ -28,7 +28,7 @@ const initialState = {
   globalFreightFee: ''
 }
 function DianwuChangePrice(props) {
-  const [state, setState] = useAsyncCallback(initialState)
+  const [state, setState] = useImmer(initialState)
   const {
     changeTypeList,
     items,
@@ -71,17 +71,11 @@ function DianwuChangePrice(props) {
   }
 
   const onChangePrice = (index, value) => {
-    setState(
-      (draft) => {
-        draft.items[index].changePrice = validate.isMoney(value)
-          ? value
-          : value.substring(0, value.length - 1)
-      }
-      // ({ items: _items }) => {
-      //   const params = getChangePriceParams(_items)
-      //   fetchCheckout(params)
-      // }
-    )
+    setState((draft) => {
+      draft.items[index].changePrice = validate.isMoney(value)
+        ? value
+        : value.substring(0, value.length - 1)
+    })
   }
 
   const onChangeDiscount = (index, value) => {
@@ -90,6 +84,11 @@ function DianwuChangePrice(props) {
         ? value
         : value.substring(0, value.length - 1)
     })
+  }
+
+  const onConfirmItemChange = () => {
+    const params = getChangePriceParams(items)
+    fetchCheckout(params)
   }
 
   const getChangePriceParams = (_items) => {
@@ -228,6 +227,7 @@ function DianwuChangePrice(props) {
                         prefix='¥'
                         value={item.changePrice}
                         onChange={onChangePrice.bind(this, index)}
+                        onConfirm={onConfirmItemChange}
                       />
                     )}
 
@@ -237,6 +237,7 @@ function DianwuChangePrice(props) {
                         suffix='%'
                         value={item.changeDiscount}
                         onChange={onChangeDiscount.bind(this, index)}
+                        onConfirm={onConfirmItemChange}
                       />
                     )}
                   </View>

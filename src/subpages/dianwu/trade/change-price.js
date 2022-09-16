@@ -247,7 +247,10 @@ function DianwuChangePrice(props) {
       params['freight_fee'] = 0
     }
     await api.dianwu.changePriceConfirm(params)
-    Taro.navigateBack()
+    showToast('订单价格修改成功')
+    setTimeout(() => {
+      Taro.navigateBack()
+    }, 2000)
   }
 
   return (
