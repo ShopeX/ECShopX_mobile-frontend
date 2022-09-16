@@ -181,18 +181,17 @@ function DianwuChangePrice(props) {
       if (changeType[0] == 1) {
         total_fee = !isNaN(parseFloat(item.changePrice))
           ? new Big(item.changePrice).times(100).toNumber()
-          : item.totalFee * 100
+          : new Big(item.totalFee).times(100).toNumber()
       } else {
         total_fee = !isNaN(parseFloat(item.changeDiscount))
           ? new Big(item.changeDiscount).times(item.totalFee).toNumber()
-          : item.totalFee * 100
+          : new Big(item.totalFee).times(100).toNumber()
       }
       return {
         item_id: item.itemId,
         total_fee: total_fee
       }
     })
-    debugger
     return params
   }
 
