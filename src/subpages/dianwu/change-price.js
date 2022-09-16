@@ -101,10 +101,10 @@ function DianwuChangePrice(props) {
       let total_fee
       // 直接改价
       if (changeType[0] == 1) {
-        total_fee = item.changePrice ? item.changePrice * 100 : item.totalFee * 100
+        total_fee = item.changePrice ? new Big(item.changePrice).times(100).toNumber() : item.totalFee * 100
       } else if (changeType[0] == 2) {
         // 折扣改价
-        total_fee = item.changeDiscount ? item.changeDiscount * item.totalFee : item.totalFee * 100
+        total_fee = item.changeDiscount ? new Big(item.changeDiscount).times(item.totalFee).toNumber() : item.totalFee * 100
       }
       return {
         item_id: item.itemId,

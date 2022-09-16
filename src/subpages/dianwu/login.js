@@ -5,6 +5,7 @@ import Taro from '@tarojs/taro'
 import { AtInput, AtButton } from 'taro-ui'
 import api from '@/api'
 import doc from '@/doc'
+import { showToast } from '@/utils'
 import { View } from '@tarojs/components'
 import { SpPage, SpForm, SpFormItem } from '@/components'
 import './login.scss'
@@ -15,8 +16,11 @@ const initialState = {
     code: ''
   },
   rules: {
-    mobile: [{ required: true, message: '银行名称不能为空' }],
-    code: [{ required: true, message: '银行卡号不能为空' }]
+    mobile: [
+      { required: true, message: '手机号不能为空' },
+      { validate: 'mobile', message: '请输入正确的手机号码' }
+    ],
+    code: [{ required: true, message: '请输入验证码' }]
   }
 }
 function DianwuLogin(props) {
@@ -30,7 +34,17 @@ function DianwuLogin(props) {
     })
   }
 
-  const onFormSubmit = () => {}
+  const onFormSubmit = async () => {
+    formRef.current.onSubmit(async () => {
+      const { mobile, code } = form
+      await api.operator.smsLogin({
+        mobile,
+        code,
+        logintype: 'smsstaff'
+      })
+      showToast('登录成功')
+    })
+  }
 
   return (
     <SpPage className='page-dianwu-login'>
