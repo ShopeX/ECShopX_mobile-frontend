@@ -28,11 +28,17 @@ function CustomPage(props) {
   }, [])
 
   const fetch = async () => {
-    const { id } = $instance.router.params
+    const { id, scene = '' } = $instance.router.params
+    let pid = id
+    if (scene) {
+      const query  = qs.parse(decodeURIComponent(scene))
+      pid = query.id
+    }
+
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
-      page_name: `custom_${id}`,
+      page_name: `custom_${pid}`,
       distributor_id: getDistributorId()
     })
     const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)

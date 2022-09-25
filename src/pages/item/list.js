@@ -15,6 +15,7 @@ import {
   SpSelect
 } from '@/components'
 import doc from '@/doc'
+import qs from 'qs'
 import api from '@/api'
 import {
   pickBy,
@@ -22,6 +23,7 @@ import {
   isWeixin,
   getDistributorId,
   styleNames,
+  normalizeQuerys,
   VERSION_STANDARD
 } from '@/utils'
 
@@ -74,10 +76,17 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = $instance.router.params
+    const { cat_id, main_cat_id, tag_id, card_id, user_card_id, scene = '' } = $instance.router.params
+
+    let cid = cat_id
+
+    if (scene) {
+      const query = qs.parse(decodeURIComponent(scene))
+      cid = query.cat_id
+    }
     setState((draft) => {
       draft.routerParams = {
-        cat_id,
+        cat_id : cid,
         main_cat_id,
         tag_id,
         card_id,
