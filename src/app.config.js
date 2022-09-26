@@ -75,7 +75,8 @@ export default {
         'index', // 会员中心
         'point-detail', // 积分明细
         'point-rule', // 积分规则
-        'member-level' // 会员等级
+        'member-level', // 会员等级
+        'user-info' // 个人信息
       ]
     },
     {
@@ -195,7 +196,7 @@ export default {
         'pages/member/edit-address', // 编辑地址
         'pages/member/crm-address-list', // 收货地址
         'pages/member/setting', // 设置页面
-        'pages/member/userinfo', // 用户信息
+        // 'pages/member/userinfo', // 用户信息
         'pages/member/item-history', // 浏览记录
         'pages/member/item-guess', // 猜你喜欢页面
         'pages/member/member-code', // 用户二维码

@@ -6,7 +6,7 @@ import { updateCount } from '@/store/slices/cart'
 import api from '@/api'
 import { isWeixin, showToast } from '@/utils'
 import S from '@/spx'
-import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
+import { SG_USER_INFO } from '@/consts/localstorage'
 
 export default (props = {}) => {
   const { autoLogin = false } = props

@@ -1,0 +1,61 @@
+.pages-member-user-info {
+  .sp-page-body {
+    padding: 0 0 20px 0;
+  }
+  .sp-page-footer {
+    padding: 20px 20px 0;
+  }
+  .block-container {
+    margin: 20px 30px;
+    .sp-cell {
+      &:first-child {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+      }
+      &:last-child {
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+      }
+    }
+    .sp-cell__ft {
+      max-width: 400px;
+    }
+    .input-field {
+      text-align: right;
+      color: #666;
+    }
+  }
+
+  .avatar-wrapper {
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+    &:after {
+      border-width: 0;
+    }
+  }
+
+  .input-placeholder {
+    color: #a5a5a5;
+  }
+  .picker-value {
+    color: #666;
+    &.disabled {
+      color: #e4e4e4;
+    }
+    &.placeholder {
+      color: #a5a5a5;
+    }
+  }
+  .sp-float-layout-bd {
+    max-height: 600px;
+    padding: 0;
+  }
+  .checkout-item {
+    margin: 24px;
+    .sp-checkbox-new {
+      justify-content: flex-start;
+      // flex-direction: row-reverse;
+    }
+  }
+}

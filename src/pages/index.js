@@ -53,7 +53,7 @@ function Home() {
   const { initState, openRecommend, openLocation, openStore, appName } = useSelector(
     (state) => state.sys
   )
-  const { isLogin, login, updatePolicyTime, checkPolicyChange } = useLogin({
+  const { isLogin, login, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       if (isUpdate) {
         setPolicyModal(true)
