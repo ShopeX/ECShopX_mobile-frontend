@@ -4,11 +4,12 @@ import { classNames, styleNames } from '@/utils'
 
 import './comp-panel.scss'
 
-function CompPanel (props) {
+function CompPanel(props) {
   const { title, extra, icon = 'icon-qianwang-01', children, className, onLink = () => {} } = props
-  if(!children) {
+  if (!children) {
     return null
   }
+
   return (
     <View
       className={classNames(
@@ -18,22 +19,24 @@ function CompPanel (props) {
         className
       )}
     >
-      <View className='comp-panel-hd'>
-        <View className='panel-title'>{title}</View>
-        {extra && (
-          <View className='panel-extra' onClick={onLink}>
-            <Text className='extra'>{extra}</Text>
-            <Text
-              className={classNames(
-                {
-                  iconfont: true
-                },
-                icon
-              )}
-            ></Text>
-          </View>
-        )}
-      </View>
+      {(title || extra) && (
+        <View className='comp-panel-hd'>
+          <View className='panel-title'>{title}</View>
+          {extra && (
+            <View className='panel-extra' onClick={onLink}>
+              <View className='extra'>{extra}</View>
+              <Text
+                className={classNames(
+                  {
+                    iconfont: true
+                  },
+                  icon
+                )}
+              ></Text>
+            </View>
+          )}
+        </View>
+      )}
       <View className='comp-panel-bd'>{children}</View>
     </View>
   )

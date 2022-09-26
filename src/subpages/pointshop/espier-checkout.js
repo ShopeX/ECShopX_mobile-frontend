@@ -35,7 +35,7 @@ import './espier-checkout.scss'
 
 function PointShopEspierCheckout() {
   const $instance = getCurrentInstance()
-  const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
+  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true
   })
 

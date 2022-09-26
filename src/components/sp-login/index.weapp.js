@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef, useImperativeHandle } from 'react'
 import { View, Button } from '@tarojs/components'
 import { AtButton, AtCurtain } from 'taro-ui'
 import { useImmer } from 'use-immer'
@@ -12,9 +12,9 @@ import { SpPrivacyModal, SpImage } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
-function SpLogin(props) {
+function SpLogin(props, ref) {
   const { children, className, onChange, newUser = false } = props
-  const { isLogin, login, updatePolicyTime, setToken, checkPolicyChange } = useLogin({
+  const { isLogin, login, setToken, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       // isUpdate && setPolicyModal(true)
     }
@@ -30,19 +30,22 @@ function SpLogin(props) {
     }
   }, [newUser])
 
-  const handleClickLogin = async () => {
-    try {
-      await login()
-      onChange && onChange()
-    } catch (e) {
-      setIsNewUser(true)
+  useEffect(() => {
+    if (loginModal) {
+      Taro.login({
+        success: ({ code }) => {
+          codeRef.current = code
+        },
+        fail: (e) => {
+          console.error('[sp-login] taro login fail:', e)
+        }
+      })
     }
-  }
+  }, [loginModal])
 
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
-      // const { code } = await Taro.login()
       const code = codeRef.current
       let params = {
         code,
@@ -89,58 +92,50 @@ function SpLogin(props) {
     }
   }
 
-  const handleOnChange = () => {
-    onChange && onChange()
-  }
-
   const handleCloseModal = useCallback(() => {
     setPolicyModal(false)
   }, [])
 
+  // 同意隐私协议
   const handleConfirmModal = useCallback(async () => {
-    // 自动登录
-    try {
-      await login()
-      onChange && onChange()
-    } catch (e) {
-      console.log(e)
-      setIsNewUser(true)
-    }
     setPolicyModal(false)
+    if (isNewUser) {
+      return setLoginModal(true)
+    } else {
+      try {
+        await login()
+      } catch (e) {
+        setLoginModal(true)
+      }
+    }
   }, [])
 
-  const handleClick = async () => {
+  // 登录
+  const handleClickLogin = async () => {
     const checkRes = await checkPolicyChange()
-    if(!checkRes) {
+    if (!checkRes) {
       setPolicyModal(true)
       return
     }
     if (isLogin) {
       onChange && onChange()
     } else {
-      const { code } = await Taro.login()
-      codeRef.current = code
       setLoginModal(true)
     }
   }
 
-  console.log('newUser:', newUser, isNewUser)
+  useImperativeHandle(ref, () => ({
+    _setPolicyModal: () => {
+      setPolicyModal(true)
+    }
+  }))
 
   // eslint-disable-next-line no-undef
   const { icon, nickname } = __wxConfig.accountInfo
 
   return (
     <View className={classNames('sp-login', className)}>
-      <View onClick={handleClick}>{children}</View>
-      {/* {isLogin && <View onClick={handleOnChange}>{children}</View>}
-
-      {!isLogin && isNewUser && (
-        <Button className='login-btn' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
-          {children}
-        </Button>
-      )}
-
-      {!isLogin && !isNewUser && <View onClick={handleClickLogin}>{children}</View>} */}
+      <View onClick={handleClickLogin}>{children}</View>
 
       {/* 隐私协议 */}
       <SpPrivacyModal
@@ -163,7 +158,6 @@ function SpLogin(props) {
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
-            {/* <AtButton type='primary'>登录</AtButton> */}
             <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
               登录
             </AtButton>
@@ -178,4 +172,4 @@ SpLogin.options = {
   addGlobalClass: true
 }
 
-export default SpLogin
+export default React.forwardRef(SpLogin)

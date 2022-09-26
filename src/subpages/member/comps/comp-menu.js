@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
-import { SpImage } from '@/components'
+import { SpImage, SpLogin } from '@/components'
 import {
   classNames,
   styleNames,
@@ -157,12 +157,12 @@ function CompMenu(props) {
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (
-        <View className='menu-item' key={`menu-item__${index}`} onClick={onLink.bind(this, item)}>
+        <SpLogin className='menu-item' key={`menu-item__${index}`} onChange={onLink.bind(this, item)}>
           <SpImage className='menu-image' src={item.icon} width={100} height={100} />
           <Text className='menu-name'>
             {item.key == 'popularize' ? (isPromoter ? item.name : '我要推广') : item.name}
           </Text>
-        </View>
+        </SpLogin>
       ))}
     </View>
   )

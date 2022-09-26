@@ -59,7 +59,7 @@ class App extends Component {
 
   onLaunch(options) {
     console.log(`app onLaunch:`, options)
-    this.getSystemConfig()
+
     entryLaunch.getRouteParams(options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
@@ -92,22 +92,7 @@ class App extends Component {
 
   componentDidShow(options) {
     console.log(`app componentDidShow:`, options)
-    // if (isNavbar()) {
-    //   document.querySelector('title').addEventListener(
-    //     'DOMSubtreeModified',
-    //     () => {
-    //       const pageTitle = document.querySelector('title').innerHTML
-    //       log.debug(`document title: ${pageTitle}, current env is ${Taro.getEnv()}`)
-    //       store.dispatch({
-    //         type: 'sys/updatePageTitle',
-    //         payload: {
-    //           pageTitle
-    //         }
-    //       })
-    //     },
-    //     false
-    //   )
-    // }
+    this.getSystemConfig()
   }
 
   async getSystemConfig() {

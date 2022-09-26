@@ -52,7 +52,7 @@ import './espier-checkout.scss'
 
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
-  const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
+  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true
   })
 
@@ -943,17 +943,18 @@ function CartCheckout(props) {
           title='开发票'
           className='cart-checkout__invoice'
           onClick={handleInvoiceClick}
-        >
-          <View className='invoice-title'>
-            {invoiceTitle && (
-              <View
-                onClick={(e) => resetInvoice(e)}
-                className='iconfont icon-close invoice-close'
-              />
-            )}
-            {invoiceTitle || '否'}
-          </View>
-        </SpCell>
+          value={
+            <View className='invoice-title'>
+              {invoiceTitle && (
+                <View
+                  onClick={(e) => resetInvoice(e)}
+                  className='iconfont icon-close invoice-close'
+                />
+              )}
+              {invoiceTitle || '否'}
+            </View>
+          }
+        />
       )}
 
       {packInfo.is_open && (
@@ -966,9 +967,8 @@ function CartCheckout(props) {
               draft.isPackageOpend = true
             })
           }}
-        >
-          <View className='invoice-title'>{isNeedPackage ? '需要' : '不需要'}</View>
-        </SpCell>
+          value={<View className='invoice-title'>{isNeedPackage ? '需要' : '不需要'}</View>}
+        />
       )}
 
       {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
@@ -983,13 +983,14 @@ function CartCheckout(props) {
                 draft.isPointOpenModal = true
               })
             }}
-          >
-            <View className='invoice-title'>
-              {pointInfo.point_use > 0
-                ? `已使用${pointInfo.real_use_point}${pointName}`
-                : `使用${pointName}`}
-            </View>
-          </SpCell>
+            value={
+              <View className='invoice-title'>
+                {pointInfo.point_use > 0
+                  ? `已使用${pointInfo.real_use_point}${pointName}`
+                  : `使用${pointName}`}
+              </View>
+            }
+          />
         )}
 
       {!bargain_id && (
@@ -999,17 +1000,20 @@ function CartCheckout(props) {
             className='cart-checkout__pay'
             title='支付方式'
             onClick={handlePaymentShow}
-          >
-            {totalInfo.deduction && (
-              <Text>
-                {totalInfo.remainpt}
-                {`${pointName}可用`}
-              </Text>
-            )}
-            <Text className='invoice-title'>
-              {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
-            </Text>
-          </SpCell>
+            value={
+              <View>
+                {totalInfo.deduction && (
+                  <Text>
+                    {totalInfo.remainpt}
+                    {`${pointName}可用`}
+                  </Text>
+                )}
+                <Text className='invoice-title'>
+                  {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+                </Text>
+              </View>
+            }
+          />
           {totalInfo.deduction && (
             <View>
               可用{totalInfo.point}
@@ -1021,29 +1025,41 @@ function CartCheckout(props) {
       )}
 
       <View className='cart-checkout__total'>
-        <SpCell className='trade-sub__item' title='原价：'>
-          <SpPrice unit='cent' value={totalInfo.market_fee} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='总价：'>
-          <SpPrice unit='cent' value={totalInfo.item_fee_new} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='运费：'>
-          <SpPrice unit='cent' value={totalInfo.freight_fee} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='促销：'>
-          <SpPrice unit='cent' primary value={0 - totalInfo.promotion_discount} />
-        </SpCell>
-        <SpCell className='trade-sub__item' title='优惠券：'>
-          <SpPrice unit='cent' primary value={0 - totalInfo.coupon_discount} />
-        </SpCell>
+        <SpCell
+          className='trade-sub__item'
+          title='原价：'
+          value={<SpPrice unit='cent' value={totalInfo.market_fee} />}
+        />
+        <SpCell
+          className='trade-sub__item'
+          title='总价：'
+          value={<SpPrice unit='cent' value={totalInfo.item_fee_new} />}
+        />
+        <SpCell
+          className='trade-sub__item'
+          title='运费：'
+          value={<SpPrice unit='cent' value={totalInfo.freight_fee} />}
+        />
+        <SpCell
+          className='trade-sub__item'
+          title='促销：'
+          value={<SpPrice unit='cent' primary value={0 - totalInfo.promotion_discount} />}
+        />
+        <SpCell
+          className='trade-sub__item'
+          title='优惠券：'
+          value={<SpPrice unit='cent' primary value={0 - totalInfo.coupon_discount} />}
+        />
         {/* <SpCell className='trade-sub__item' title='优惠金额：'>
           <SpPrice unit='cent' primary value={0 - totalInfo.discount_fee} />
         </SpCell> */}
         {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
           pointInfo.is_open_deduct_point && (
-            <SpCell className='trade-sub__item' title={`${pointName}抵扣：`}>
-              <SpPrice unit='cent' primary value={0 - totalInfo.point_fee} />
-            </SpCell>
+            <SpCell
+              className='trade-sub__item'
+              title={`${pointName}抵扣：`}
+              value={<SpPrice unit='cent' primary value={0 - totalInfo.point_fee} />}
+            />
           )}
       </View>
 

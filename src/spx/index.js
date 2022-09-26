@@ -43,6 +43,10 @@ export class Spx {
     }
   }
 
+  clearAuthToken() {
+    Taro.removeStorageSync(SG_TOKEN)
+  }
+
   logout() {
     if (isMerchantModule()) {
       Taro.removeStorageSync(MERCHANT_TOKEN)

@@ -6,6 +6,7 @@
   width: 100%;
   height: 100%;
   z-index: 1000;
+  // display: none;
   transform: translate3D(0, 110%, 0);
   &__overlay {
     position: absolute;
@@ -14,8 +15,9 @@
     width: 100%;
     height: 100%;
     background: rgba(#000, 0.3);
-    opacity: 1;
-    transition: all 0.15s ease-in;
+    // display: none;
+    // opacity: 1;
+    // transition: all 0.15s ease-in;
   }
   &__body {
     position: absolute;
@@ -24,17 +26,22 @@
     bottom: 0;
     border-radius: 16px 16px 0 0;
     overflow: hidden;
+    transform: translate3D(0, 100%, 0);
+    // transition: all .3s linear;
   }
   &.active {
     transform: translate3D(0, 0, 0);
+    // display: block;
     #{$self}__overlay {
-      opacity: 1;
+      // opacity: 1;
     }
+
     #{$self}__body {
       // opacity: 1;
       // visibility: visible;
       transform: translate3D(0, 0, 0);
-      transition-delay: 0.3s;
+      transition: all .3s ease-in;
+      // transition-delay: 0.3s;
     }
   }
 
