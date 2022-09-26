@@ -83,6 +83,7 @@ function SpLogin(props, ref) {
         if (token) {
           setToken(token)
           Taro.hideLoading()
+          setLoginModal(false)
           showToast('恭喜您，注册成功')
           onChange && onChange()
         }
