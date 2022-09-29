@@ -15,4 +15,39 @@
   .ali-button {
     background: transparent;
   }
+
+  .login-modal {
+    background: #fff;
+    border-radius: 16px;
+    &__hd {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .sp-image {
+        position: relative;
+        top: -60px;
+      }
+      .nick-name {
+        font-size: 32px;
+        font-weight: 500;
+        color: #222222;
+        position: relative;
+        top: -40px;
+      }
+    }
+    &__bd {
+      font-size: 28px;
+      font-weight: 400;
+      color: #666666;
+      text-align: center;
+    }
+    &__ft {
+      text-align: center;
+      .at-button--primary {
+        width: 370px;
+        height: 80px;
+      }
+      padding: 50px 0;
+    }
+  }
 }

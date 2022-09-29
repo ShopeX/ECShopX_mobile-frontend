@@ -49,7 +49,7 @@ import './espier-checkout.scss'
 
 function PurchaseCheckout(props) {
   const $instance = getCurrentInstance()
-  const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
+  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true
   })
 

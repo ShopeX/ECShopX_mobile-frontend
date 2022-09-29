@@ -98,7 +98,7 @@ const userSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief } =
+export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief, clearUserInfo } =
   userSlice.actions
 
 export default userSlice.reducer

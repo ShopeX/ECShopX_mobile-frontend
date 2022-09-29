@@ -1,12 +1,13 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateUserInfo, fetchUserFavs } from '@/store/slices/user'
-import { updateCount } from '@/store/slices/cart'
+import dayjs from 'dayjs'
+import { updateUserInfo, fetchUserFavs, clearUserInfo } from '@/store/slices/user'
+import { updateCount, clearCart } from '@/store/slices/cart'
 import api from '@/api'
 import { isWeixin, showToast, entryLaunch } from '@/utils'
 import S from '@/spx'
-import { SG_POLICY_UPDATETIME, SG_USER_INFO } from '@/consts/localstorage'
+import { SG_POLICY } from '@/consts/localstorage'
 
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {} } = props
@@ -38,19 +39,26 @@ export default (props = {}) => {
       // 隐私协议
       const checkResult = await checkPolicyChange()
       if (checkResult) {
+        Taro.showLoading()
         const { code } = await Taro.login()
         try {
           const { token } = await api.wx.login({ code, showError: false })
+          Taro.hideLoading()
           setToken(token)
         } catch (e) {
           setIsNewUser(true)
+          Taro.hideLoading()
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
-      } else {
-        throw new Error()
       }
     }
+  }
+
+  const logout = () => {
+    S.clearAuthToken()
+    dispatch(clearUserInfo())
+    dispatch(clearCart())
   }
 
   const setToken = async (token) => {
@@ -92,18 +100,47 @@ export default (props = {}) => {
    * @return false: 协议已变更
    */
   const checkPolicyChange = async () => {
-    const { update_time } = await api.wx.getPrivacyTime()
-    const res = Taro.getStorageSync(SG_POLICY_UPDATETIME) === update_time
-    policyUpdateHook(!res)
-    return res
+
+    const policyInfo = Taro.getStorageSync(SG_POLICY) || {
+      policyUpdateTime: null,
+      localPolicyUpdateTime: null,
+      agreeTime: null,
+      lastRequestTime: null
+    }
+    const { policyUpdateTime, localPolicyUpdateTime, lastRequestTime } = policyInfo
+    let diffMilliseconds = 0
+    if (lastRequestTime) {
+      diffMilliseconds = dayjs().diff(dayjs(lastRequestTime))
+    }
+    console.log('diffMilliseconds:', diffMilliseconds)
+    // 超过3分钟缓存记录，重新拉取隐私协议
+    if (!policyUpdateTime || diffMilliseconds > 3 * 60 * 1000) {
+      const { update_time } = await api.wx.getPrivacyTime()
+      const res = localPolicyUpdateTime === update_time * 1000
+      policyUpdateHook(!res)
+      Taro.setStorageSync(SG_POLICY, {
+        ...policyInfo,
+        policyUpdateTime: update_time * 1000,
+        lastRequestTime: new Date().getTime()
+      })
+      return res
+    } else {
+      const res = localPolicyUpdateTime === policyUpdateTime
+      policyUpdateHook(!res)
+      return res
+    }
   }
 
   /**
    * @function 更新隐私协议同意时间
    */
   const updatePolicyTime = async () => {
-    const { update_time } = await api.wx.getPrivacyTime()
-    Taro.setStorageSync(SG_POLICY_UPDATETIME, update_time)
+    const policyInfo = Taro.getStorageSync(SG_POLICY)
+    Taro.setStorageSync(SG_POLICY, {
+      ...policyInfo,
+      localPolicyUpdateTime: policyInfo.policyUpdateTime,
+      agreeTime: new Date().getTime()
+    })
   }
 
   /**
@@ -149,6 +186,7 @@ export default (props = {}) => {
     isLogin,
     isNewUser,
     login,
+    logout,
     updatePolicyTime,
     setToken,
     getUserInfoAuth,

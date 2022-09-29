@@ -58,6 +58,12 @@ const cartSlice = createSlice({
     },
     changeZitiStore: (state, { payload }) => {
       state.zitiShop = payload
+    },
+    clearCart: (state ) => {
+      state.cartCount = 0
+      state.validCart = []
+      state.invalidCart = []
+      state.coupon = null
     }
   },
   extraReducers: (builder) => {
@@ -74,6 +80,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum, changeCoupon } = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart } = cartSlice.actions
 
 export default cartSlice.reducer

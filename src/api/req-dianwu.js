@@ -154,7 +154,7 @@ class API {
     const methodIsGet = method.toLowerCase() === 'get'
 
     const reqUrl = this.getReqUrl(url)
-    const query = !data || typeof data === 'string' ? qs.parse(data) : data
+    let query = !data || typeof data === 'string' ? qs.parse(data) : data
     if (company_id) {
       query['company_id'] = company_id
     }

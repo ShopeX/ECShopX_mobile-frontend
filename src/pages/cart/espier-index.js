@@ -59,9 +59,9 @@ function CartIndex() {
     fetch()
   }, [isLogin])
 
-  useDidShow(() => {
-    fetch()
-  })
+  // useDidShow(() => {
+  //   fetch()
+  // })
 
   const fetch = () => {
     if (openRecommend == 1) {

@@ -20,7 +20,7 @@ export default class SpCell extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const {
       isLink,
       value,
@@ -35,11 +35,11 @@ export default class SpCell extends Component {
       commonStyle
     } = this.props
 
-    let linkClassName = `sp-cell__ft-icon at-icon at-icon-chevron-${arrow}`
+    let linkClassName = `iconfont icon-arrowRight`
 
-    if (Taro.getEnv() == Taro.ENV_TYPE.ALIPAY) {
-      linkClassName = 'icon-arrowRight'
-    }
+    // if (Taro.getEnv() == Taro.ENV_TYPE.ALIPAY) {
+    //   linkClassName = 'icon-arrowRight'
+    // }
 
     return (
       <View
@@ -65,7 +65,7 @@ export default class SpCell extends Component {
         <View className='sp-cell__ft'>
           {value && <View className='sp-cell__value'>{value}</View>}
         </View>
-        {isLink && <View className={linkClassName}></View>}
+        <View className='sp-cell__link'>{isLink && <View className={linkClassName}></View>}</View>
       </View>
     )
   }

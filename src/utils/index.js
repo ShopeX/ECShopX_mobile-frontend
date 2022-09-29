@@ -12,6 +12,7 @@ import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
 import _keys from 'lodash/keys'
 import _isEmpty from 'lodash/isEmpty'
+import _remove from 'lodash/remove'
 import debounce from 'lodash/debounce'
 import throttle from 'lodash/throttle'
 import log from './log'
@@ -58,6 +59,11 @@ export function isString(val) {
 
 export function isEmpty(obj) {
   return _isEmpty(obj)
+}
+
+export function removeItemInArray(array, fn) {
+  _remove(array, fn)
+  // return array
 }
 
 export function isObjectsValue(val) {

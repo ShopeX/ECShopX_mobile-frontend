@@ -22,6 +22,7 @@ import {
   isWeixin,
   getDistributorId,
   styleNames,
+  entryLaunch,
   VERSION_STANDARD
 } from '@/utils'
 
@@ -74,15 +75,18 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = $instance.router.params
-    setState((draft) => {
-      draft.routerParams = {
-        cat_id,
-        main_cat_id,
-        tag_id,
-        card_id,
-        user_card_id
-      }
+    entryLaunch.getRouteParams($instance.router.params).then((params) => {
+      const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = params
+
+      setState((draft) => {
+        draft.routerParams = {
+          cat_id,
+          main_cat_id,
+          tag_id,
+          card_id,
+          user_card_id
+        }
+      })
     })
   }, [])
 

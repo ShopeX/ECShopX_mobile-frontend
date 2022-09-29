@@ -30,8 +30,16 @@
       margin-top: 20px;
       /*  #endif  */
     }
+    &__footer {
+      .user-info__link {
+        margin-top: 20px;
+        display: inline-block;
+      }
+      .icon-qianwang-01 {
+        font-size: 28px;
+      }
+    }
     .username-wrap {
-
     }
     .user-grade-name {
       line-height: 35px;
@@ -113,7 +121,7 @@
     .title {
       font-size: 30px;
       color: #444;
-      font-weight: bold;
+      // font-weight: bold;
     }
     .ziti-txt {
       font-size: 24px;

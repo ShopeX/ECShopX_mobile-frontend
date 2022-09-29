@@ -1,7 +1,7 @@
 export const SG_TOKEN = 'token'
 export const SG_DIANWU_TOKEN = 'dianwu_token'
 export const MERCHANT_TOKEN = 'merchant_token'
-export const SG_POLICY_UPDATETIME = 'policy_updatetime'
+export const SG_POLICY = 'policy_info' // 隐私协议信息
 export const SG_SHARER_UID = 'distribution_shop_id' // 推广用户uid
 export const SG_TRACK_PARAMS = 'trackParams'
 export const SG_QW_USERID = 'work_userid' // 企业微信用户id

@@ -14,6 +14,11 @@ export function updateMemberInfo(params = {}) {
   return req.put('/memberinfo', params)
 }
 
+// 注销用户
+export function deleteMember(params) {
+  return req.delete('/member', params)
+}
+
 // 更新会员手机号
 export function setMemberMobile(params = {}) {
   return req.put('/member/mobile', params)
