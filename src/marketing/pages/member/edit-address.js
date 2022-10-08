@@ -90,6 +90,7 @@ export default class AddressIndex extends Component {
           chooseValue: [query.province, query.city, query.county]
         })
       } catch (err) {
+        console.error(err)
         Taro.navigateBack()
       }
     }

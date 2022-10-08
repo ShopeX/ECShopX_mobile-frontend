@@ -5,6 +5,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
 import doc from '@/doc'
+import qs from 'qs'
 import { CHIEF_APPLY_STATUS, FORM_COMP } from '@/consts'
 import { View, Text, Picker } from '@tarojs/components'
 import { SpPage, SpImage, SpForm, SpFormItem, SpUpload, SpCheckbox, SpNote } from '@/components'
@@ -42,7 +43,12 @@ function ApplyChief(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const $instance = getCurrentInstance()
   const formRef = useRef()
-  const { distributor_id } = $instance.router.params
+  const { distributor_id: dtid, scene = '' } = $instance.router.params
+  let distributor_id = dtid
+  if (scene) {
+    const { did } = qs.parse(decodeURIComponent(scene))
+    distributor_id = did
+  }
 
   useEffect(() => {
     getApplyChief()
@@ -220,7 +226,6 @@ function ApplyChief(props) {
   }
 
   const handleClickViewLicence = (e) => {
-    const { distributor_id } = $instance.router.params
     e.stopPropagation()
     Taro.navigateTo({
       url: `/subpages/community/chief-licence?distributor_id=${distributor_id}`
@@ -247,9 +252,15 @@ function ApplyChief(props) {
       defaultMsg={defaultMsg}
       loading={loading}
       renderDefault={
-        <View className={classNames('default-view', { reject: approveStatus == CHIEF_APPLY_STATUS.REJECT })}>
+        <View
+          className={classNames('default-view', {
+            reject: approveStatus == CHIEF_APPLY_STATUS.REJECT
+          })}
+        >
           <SpNote img={defaultImg} title={defaultMsg} />
-          {approveStatus == CHIEF_APPLY_STATUS.REJECT && <View className='reject-reason'>{refuseReason}</View>}
+          {approveStatus == CHIEF_APPLY_STATUS.REJECT && (
+            <View className='reject-reason'>{refuseReason}</View>
+          )}
           {(approveStatus == CHIEF_APPLY_STATUS.RESLOVE ||
             approveStatus == CHIEF_APPLY_STATUS.REJECT) && (
             <AtButton circle type='primary' onClick={handleClickDefaultBtn}>
@@ -273,7 +284,7 @@ function ApplyChief(props) {
     >
       <View className='page-hd'>
         <View className='form-bg'>
-          <SpImage src={'form_bg.png'} />
+          <SpImage src='form_bg.png' />
         </View>
         <View className='container'>
           <View className='applychief-desc'>

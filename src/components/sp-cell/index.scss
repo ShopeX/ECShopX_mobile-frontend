@@ -33,12 +33,13 @@ $cell-prefix: 'sp-cell';
     font-size: 30px;
   }
   &__ft {
-    color: $font-size-small;
     color: $color-gray-light;
-    &-icon {
-      font-size: 40px;
+  }
+  &__link {
+    width: 30px;
+    .iconfont {
+      font-size: 36px;
       color: rgba($color-gray-light, 0.8);
-      margin-right: -8px;
     }
   }
   &__icon {

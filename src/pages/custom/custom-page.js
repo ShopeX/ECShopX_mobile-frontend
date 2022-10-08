@@ -7,7 +7,7 @@ import doc from '@/doc'
 import qs from 'qs'
 import { View } from '@tarojs/components'
 import { SpPage, SpSearch } from '@/components'
-import { getDistributorId, log } from '@/utils'
+import { getDistributorId, log, entryLaunch } from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 import req from '@/api/req'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -28,7 +28,7 @@ function CustomPage(props) {
   }, [])
 
   const fetch = async () => {
-    const { id } = $instance.router.params
+    const { id } = await entryLaunch.getRouteParams($instance.router.params)
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -42,7 +42,6 @@ function CustomPage(props) {
       draft.loading = false
       draft.shareInfo = share
     })
-
     // this.setState(
     //   {
     //     positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false

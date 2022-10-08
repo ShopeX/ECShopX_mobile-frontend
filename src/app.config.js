@@ -75,7 +75,8 @@ export default {
         'index', // 会员中心
         'point-detail', // 积分明细
         'point-rule', // 积分规则
-        'member-level' // 会员等级
+        'member-level', // 会员等级
+        'user-info' // 个人信息
       ]
     },
     {
@@ -195,7 +196,7 @@ export default {
         'pages/member/edit-address', // 编辑地址
         'pages/member/crm-address-list', // 收货地址
         'pages/member/setting', // 设置页面
-        'pages/member/userinfo', // 用户信息
+        // 'pages/member/userinfo', // 用户信息
         'pages/member/item-history', // 浏览记录
         'pages/member/item-guess', // 猜你喜欢页面
         'pages/member/member-code', // 用户二维码
@@ -322,10 +323,13 @@ export default {
     'navigationBarTextStyle': 'black'
   },
   plugins: {
-    'live-player-plugin': {
-      'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
-      'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
-    }
-  }
-
+    // 'live-player-plugin': {
+    //   'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+    //   'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+    // }
+  },
+  requiredPrivateInfos: [
+    "getLocation",
+    "chooseAddress"
+  ]
 }

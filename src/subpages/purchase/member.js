@@ -106,7 +106,7 @@ const initialState = {
 
 function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
-  const { isLogin, isNewUser, updatePolicyTime, getUserInfoAuth } = useLogin({
+  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true,
     policyUpdateHook: () => {
       setPolicyModal(true)

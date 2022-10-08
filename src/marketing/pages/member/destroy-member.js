@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpCheckbox } from '@/components'
+import { SpPage, SpCheckbox } from '@/components'
 import req from '@/api/req'
 import configStore from '@/store'
 import DestoryConfirm from './comps/destory-comfirm-modal'
@@ -70,7 +70,7 @@ export default class SettingIndex extends Component {
     const { checked, visible, content, title, cancelBtnContent, confirmBtnContent } = this.state
     const { colors } = this.props
     return (
-      <View className='destory-member'>
+      <SpPage className='destory-member'>
         <View className='title'>将{this.$instance.router.params.phone}的账号注销</View>
         <View className='content'>
           <View className='margin fonts'>
@@ -112,7 +112,7 @@ export default class SettingIndex extends Component {
           confirmBtn={confirmBtnContent}
           onCancel={this.handCancel}
         />
-      </View>
+      </SpPage>
     )
   }
 }
