@@ -128,11 +128,11 @@ export default (props = {}) => {
     const refMeta = document.querySelector('meta[name="referrer"]')
     refMeta.setAttribute('content', 'always')
     const { pay_type } = params
-    const { order_id, orderType = 'normal' } = orderInfo
+    const { order_id, order_type = 'normal' } = orderInfo
     const res = await api.cashier.getPayment({
       pay_type,
       order_id,
-      order_type: orderType
+      order_type: order_type
     })
     console.log(`wxpayh5Pay res:`, res)
     const loc = window.location
@@ -143,11 +143,11 @@ export default (props = {}) => {
   // APP(微信、支付宝)
   const AppPay = async (params, orderInfo) => {
     console.log('AppPay:', params, orderInfo)
-    const { order_id, orderType = 'normal', pay_type } = orderInfo
+    const { order_id, order_type = 'normal', pay_type } = orderInfo
     const query = {
       order_id,
       pay_type,
-      order_type: orderType
+      order_type: order_type
     }
     const { config: appPayConfig } = await api.cashier.getPayment(query)
     try {
@@ -165,12 +165,12 @@ export default (props = {}) => {
   // 支付宝H5
   const alipayh5Pay = async (params, orderInfo) => {
     const { pay_type, pay_channel } = params
-    const { order_id, orderType = 'normal' } = orderInfo
+    const { order_id, order_type = 'normal' } = orderInfo
     const { protocol, host } = window.location
     let query = {
       order_id,
       pay_type,
-      order_type: orderType,
+      order_type: order_type,
       return_url: `${protocol}//${host}${cashierResultUrl}?order_id=${order_id}`
     }
     if (pay_type == 'adapay' && pay_channel == 'alipay_wap') {
@@ -187,7 +187,7 @@ export default (props = {}) => {
   }
 
   const adapayH5Pay = async (params, orderInfo) => {
-    const { order_id, orderType = 'normal' } = orderInfo
+    const { order_id } = orderInfo
     const { openlink } = await api.cashier.getWeappUrlSchema({
       path: '/pages/cart/cashier-weapp',
       query: {
@@ -206,12 +206,12 @@ export default (props = {}) => {
 
   const adapayAliH5Pay = async (params, orderInfo) => {
     const { pay_type, pay_channel } = params
-    const { order_id, orderType = 'normal' } = orderInfo
+    const { order_id, order_type = 'normal' } = orderInfo
     const { protocol, host } = window.location
     let query = {
       order_id,
       pay_type,
-      order_type: orderType,
+      order_type: order_type,
       return_url: `${protocol}//${host}${cashierResultUrl}?order_id=${order_id}`
     }
     if (pay_type == 'adapay' && pay_channel == 'alipay_wap') {

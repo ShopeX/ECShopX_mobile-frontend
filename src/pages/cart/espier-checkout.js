@@ -275,31 +275,42 @@ function CartCheckout(props) {
 
     let orderInfo
     let orderId
-    if ((isWeb || isAPP()) && params.pay_type !== 'deposit') {
-      try {
-        const h5ResInfo = await api.trade.h5create({
-          ...params,
-          pay_type: isAPP() ? params.pay_type : TRANSFORM_PAYTYPE[params.pay_type]
-        })
-        orderInfo = h5ResInfo
-        orderId = h5ResInfo.order_id
-      } catch (e) {
-        setState((draft) => {
-          draft.submitLoading = false
-        })
-      }
-    } else {
-      try {
-        const { trade_info, team_id } = await api.trade.create(params)
-        orderInfo = { ...trade_info, team_id }
-        orderId = trade_info.order_id
-      } catch (e) {
-        setState((draft) => {
-          draft.submitLoading = false
-        })
-        return
-      }
+    try {
+      const resOrderInfo = await api.trade.h5create(params)
+      orderInfo = resOrderInfo
+      orderId = resOrderInfo.order_id
+    } catch (e) {
+      setState((draft) => {
+        draft.submitLoading = false
+      })
+      return
     }
+
+    // if ((isWeb || isAPP()) && params.pay_type !== 'deposit') {
+    //   try {
+    //     const h5ResInfo = await api.trade.h5create({
+    //       ...params,
+    //       pay_type: isAPP() ? params.pay_type : TRANSFORM_PAYTYPE[params.pay_type]
+    //     })
+    //     orderInfo = h5ResInfo
+    //     orderId = h5ResInfo.order_id
+    //   } catch (e) {
+    //     setState((draft) => {
+    //       draft.submitLoading = false
+    //     })
+    //   }
+    // } else {
+    //   try {
+    //     const { trade_info, team_id } = await api.trade.create(params)
+    //     orderInfo = { ...trade_info, team_id }
+    //     orderId = trade_info.order_id
+    //   } catch (e) {
+    //     setState((draft) => {
+    //       draft.submitLoading = false
+    //     })
+    //     return
+    //   }
+    // }
 
     Taro.hideLoading()
 
