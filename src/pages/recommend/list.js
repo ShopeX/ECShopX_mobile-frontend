@@ -12,7 +12,8 @@ import {
   TabBar,
   SpNote,
   FilterBar,
-  SpTabbar
+  SpTabbar,
+  SpPage
 } from '@/components'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
@@ -28,7 +29,7 @@ import './list.scss'
 export default class RecommendList extends Component {
   $instance = getCurrentInstance()
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,7 +47,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     api.wx.shareSetting({ shareindex: 'planting' }).then((res) => {
       this.setState({
         shareInfo: res
@@ -54,7 +55,7 @@ export default class RecommendList extends Component {
     })
   }
 
-  componentDidShow () {
+  componentDidShow() {
     const params = this.$instance.router.params
     if (params) {
       const { id, name } = params
@@ -79,7 +80,7 @@ export default class RecommendList extends Component {
     // this.praiseNum()
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `/pages/recommend/list?uid=${userId}` : '/pages/recommend/list'
@@ -90,7 +91,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  onShareTimeline () {
+  onShareTimeline() {
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `uid=${userId}` : ''
@@ -101,7 +102,7 @@ export default class RecommendList extends Component {
     }
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { columnList, areaList } = this.state
     let { selectColumn } = this.state
@@ -489,7 +490,7 @@ export default class RecommendList extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       list,
       showBackToTop,
@@ -508,132 +509,135 @@ export default class RecommendList extends Component {
     let address = info.province + info.city
 
     return (
-      <View className='page-recommend-list'>
-        <View className='recommend-list__toolbar'>
-          <View
-            className={`recommend-list__search ${
-              query && query.title && isShowSearch ? 'on-search' : null
-            }`}
-          >
-            <SearchBar
-              showDailog={false}
-              keyword={query ? query.title : ''}
-              onFocus={this.handleSearchOn}
-              onChange={this.handleSearchChange}
-              onClear={this.handleSearchClear}
-              onCancel={this.handleSearchOff}
-              onConfirm={this.handleConfirm.bind(this)}
-            />
+      <SpPage renderFooter={<SpTabbar />}>
+        <View className='page-recommend-list'>
+          <View className='recommend-list__toolbar'>
+            <View
+              className={`recommend-list__search ${
+                query && query.title && isShowSearch ? 'on-search' : null
+              }`}
+            >
+              <SearchBar
+                showDailog={false}
+                keyword={query ? query.title : ''}
+                onFocus={this.handleSearchOn}
+                onChange={this.handleSearchChange}
+                onClear={this.handleSearchClear}
+                onCancel={this.handleSearchOff}
+                onConfirm={this.handleConfirm.bind(this)}
+              />
+            </View>
+            <FilterBar className='recommend-list__tabs'>
+              <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
+                <View className='iconfont icon-menu'></View>
+                <Text>{selectColumn.name || '栏目'}</Text>
+              </View>
+              <View className='filter-bar__item region-picker'>
+                <Picker
+                  mode='multiSelector'
+                  onClick={this.handleClickPicker}
+                  onChange={this.bindMultiPickerChange}
+                  onColumnChange={this.bindMultiPickerColumnChange}
+                  value={multiIndex}
+                  range={areaList}
+                >
+                  <View>
+                    <View className='iconfont icon-periscope'></View>
+                    <Text>{address || '地区'}</Text>
+                  </View>
+                </Picker>
+                {address ? (
+                  <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text>
+                ) : (
+                  ''
+                )}
+              </View>
+            </FilterBar>
           </View>
-          <FilterBar className='recommend-list__tabs'>
-            <View className='filter-bar__item' onClick={this.handleClickFilter.bind(this)}>
-              <View className='iconfont icon-menu'></View>
-              <Text>{selectColumn.name || '栏目'}</Text>
+          <AtDrawer
+            show={showDrawer}
+            right
+            mask
+            width={`${Taro.pxTransform(570)}`}
+            onClose={this.handleClose}
+          >
+            <View className='drawer-item'>
+              <View className='drawer-item__options'>
+                {columnList.map((item, index) => {
+                  return (
+                    <View
+                      className={classNames(
+                        'drawer-item__options__item',
+                        item.isChooseColumn ? 'drawer-item__options__checked' : ''
+                      )}
+                      // className='drawer-item__options__item'
+                      style={
+                        item.isChooseColumn
+                          ? {
+                              background: (colors && colors.data && colors.data[0].primary) || null
+                            }
+                          : {}
+                      }
+                      key={`${index}1`}
+                      onClick={this.handleClickParmas.bind(this, item.id)}
+                    >
+                      {item.name}
+                    </View>
+                  )
+                })}
+                <View className='drawer-item__options__none'> </View>
+                <View className='drawer-item__options__none'> </View>
+                <View className='drawer-item__options__none'> </View>
+              </View>
             </View>
-            <View className='filter-bar__item region-picker'>
-              <Picker
-                mode='multiSelector'
-                onClick={this.handleClickPicker}
-                onChange={this.bindMultiPickerChange}
-                onColumnChange={this.bindMultiPickerColumnChange}
-                value={multiIndex}
-                range={areaList}
+            <View className='drawer-footer'>
+              <Text
+                className='drawer-footer__btn'
+                onClick={this.handleClickSearchParams.bind(this, 'reset')}
               >
-                <View>
-                  <View className='iconfont icon-periscope'></View>
-                  <Text>{address || '地区'}</Text>
-                </View>
-              </Picker>
-              {address ? (
-                <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}></Text>
-              ) : (
-                ''
-              )}
+                重置
+              </Text>
+              <Text
+                className='drawer-footer__btn drawer-footer__btn_active'
+                style={{ background: (colors && colors.data && colors.data[0].primary) || null }}
+                onClick={this.handleClickSearchParams.bind(this, 'submit')}
+              >
+                确定
+              </Text>
             </View>
-          </FilterBar>
-        </View>
-        <AtDrawer
-          show={showDrawer}
-          right
-          mask
-          width={`${Taro.pxTransform(570)}`}
-          onClose={this.handleClose}
-        >
-          <View className='drawer-item'>
-            <View className='drawer-item__options'>
-              {columnList.map((item, index) => {
+          </AtDrawer>
+
+          <ScrollView
+            className='recommend-list__scroll'
+            scrollY
+            scrollTop={scrollTop}
+            scrollWithAnimation
+            onScroll={this.handleScroll}
+            onScrollToLower={this.nextPage}
+          >
+            <View className='recommend-list recommend-list__type-grid'>
+              {list.map((item) => {
                 return (
-                  <View
-                    className={classNames(
-                      'drawer-item__options__item',
-                      item.isChooseColumn ? 'drawer-item__options__checked' : ''
-                    )}
-                    // className='drawer-item__options__item'
-                    style={
-                      item.isChooseColumn
-                        ? { background: (colors && colors.data && colors.data[0].primary) || null }
-                        : {}
-                    }
-                    key={`${index}1`}
-                    onClick={this.handleClickParmas.bind(this, item.id)}
-                  >
-                    {item.name}
+                  <View className='recommend-list__item'>
+                    <RecommendItem
+                      key={item.item_id}
+                      info={item}
+                      onClick={() => this.handleClickItem(item)}
+                    />
                   </View>
                 )
               })}
-              <View className='drawer-item__options__none'> </View>
-              <View className='drawer-item__options__none'> </View>
-              <View className='drawer-item__options__none'> </View>
             </View>
-          </View>
-          <View className='drawer-footer'>
-            <Text
-              className='drawer-footer__btn'
-              onClick={this.handleClickSearchParams.bind(this, 'reset')}
-            >
-              重置
-            </Text>
-            <Text
-              className='drawer-footer__btn drawer-footer__btn_active'
-              style={{ background: (colors && colors.data && colors.data[0].primary) || null }}
-              onClick={this.handleClickSearchParams.bind(this, 'submit')}
-            >
-              确定
-            </Text>
-          </View>
-        </AtDrawer>
+            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            )}
+          </ScrollView>
 
-        <ScrollView
-          className='recommend-list__scroll'
-          scrollY
-          scrollTop={scrollTop}
-          scrollWithAnimation
-          onScroll={this.handleScroll}
-          onScrollToLower={this.nextPage}
-        >
-          <View className='recommend-list recommend-list__type-grid'>
-            {list.map((item) => {
-              return (
-                <View className='recommend-list__item'>
-                  <RecommendItem
-                    key={item.item_id}
-                    info={item}
-                    onClick={() => this.handleClickItem(item)}
-                  />
-                </View>
-              )
-            })}
-          </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
-          {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-          )}
-        </ScrollView>
-
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
-
-        <SpTabbar />
-      </View>
+          <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
+          
+        </View>
+      </SpPage>
     )
   }
 }
