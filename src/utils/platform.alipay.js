@@ -11,3 +11,9 @@ export const platformTemplateName = 'yykweishop'
 export const transformPlatformUrl = (url) => {
   return `/alipay${url}`
 }
+
+export function dealTextAreaValue(value) {
+  return value
+}
+
+export const payment_platform = 'wxMiniProgram'
