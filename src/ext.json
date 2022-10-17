@@ -12,9 +12,5 @@
       "navigationBarBackgroundColor": "#fff",
       "navigationBarTitleText": "微商城",
       "navigationBarTextStyle": "black"
-  },
-  "requiredPrivateInfos": [
-		"getLocation",
-    "chooseAddress"
-	]
+  }
 }

@@ -96,3 +96,8 @@ export function exchangeGood(params) {
 export function getSubdistrict(params) {
   return req.get('/espier/subdistrict', params)
 }
+
+// 获取自提点列表
+export function getZitiList(params) {
+  return req.get('/distributor/pickuplocation', params)
+}

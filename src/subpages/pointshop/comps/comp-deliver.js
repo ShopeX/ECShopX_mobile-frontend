@@ -4,7 +4,6 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
-import { updateChooseAddress } from '@/store/slices/user'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
 
@@ -72,7 +71,7 @@ function CmopDeliver(props) {
     }
     // 非自提情况下，把地址存起来，否则清空地址
     const { list } = await api.member.addressList(query)
-    const defaultAddress = list.find((item) => item.is_def) || list[0] || null
+    const defaultAddress = list.find((item) => item.is_def) || list[0] || undefined
 
     const selectAddress = list.find(item => item.address_id == storeAddress?.address_id )
 

@@ -6,7 +6,8 @@ const initialState = {
   cartCount: 0,
   validCart: [],
   invalidCart: [],
-  coupon: null
+  coupon: null,
+  zitiAddress: null
 }
 
 export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (params) => {
@@ -64,6 +65,9 @@ const cartSlice = createSlice({
       state.validCart = []
       state.invalidCart = []
       state.coupon = null
+    },
+    changeZitiAddress: (state, { payload }) => {
+      state.zitiAddress = payload
     }
   },
   extraReducers: (builder) => {
@@ -80,6 +84,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart } = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart, changeZitiAddress } = cartSlice.actions
 
 export default cartSlice.reducer

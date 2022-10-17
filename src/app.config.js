@@ -59,7 +59,8 @@ export default {
         'item-list', // 店铺商品列表
         'category', // 店铺商品分类
         'list', // 选择店铺列表
-        'ziti-list' // 自提列表
+        'ziti-list', // 自提列表
+        'ziti-picker' // 自提点选择
       ]
     },
     {

@@ -37,6 +37,13 @@ function SpForm(props, ref) {
   useImperativeHandle(ref, () => ({
     onSubmit: (cb) => {
       onSubmitForm(cb)
+    },
+    onSubmitAsync: () => {
+      return new Promise((resolve, reject) =>{
+        onSubmitForm(() => {
+          resolve()
+        })
+      })
     }
   }))
 

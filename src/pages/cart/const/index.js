@@ -70,7 +70,7 @@ export const deliveryList = [
   },
   {
     type: 'ziti',
-    name: '自提',
+    name: '到店自提',
     key: 'is_ziti'
   }
 ]

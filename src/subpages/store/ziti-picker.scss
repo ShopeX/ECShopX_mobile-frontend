@@ -1,0 +1,24 @@
+.page-store-zitipicker {
+  padding: 24px 16px;
+  .ziti-item {
+    padding: 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-between;
+    &-bd {
+      flex: 1;
+    }
+    .name {
+      font-size: 32px;
+      font-weight: 500;
+      color: #222222;
+    }
+    .address {
+      font-size: 28px;
+      font-weight: 400;
+      color: #6e6e6e;
+      margin-top: 16px;
+    }
+  }
+}

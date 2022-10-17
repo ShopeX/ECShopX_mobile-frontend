@@ -230,6 +230,12 @@ export const LOGISTICS_CODE = {
   'JTSD': '极兔速递'
 }
 
+export const enumdays = {
+  0: '今天',
+  1: '明天',
+  2: '后天'
+}
+
 export * from './localstorage'
 
 export default {}

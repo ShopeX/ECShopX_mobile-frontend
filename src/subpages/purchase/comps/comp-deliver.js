@@ -4,7 +4,6 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
-import { updateChooseAddress } from '@/store/slices/user'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
 
