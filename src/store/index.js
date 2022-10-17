@@ -9,7 +9,7 @@ import rootReducer from './reducer'
 
 let storage, store, persistor
 
-if (process.env.TARO_ENV === 'weapp') {
+if (process.env.TARO_ENV === 'weapp' || process.env.TARO_ENV === 'alipay') {
   // storage = require('redux-persist-weapp-storage/lib/bundle')
   storage = weappStorage
 } else {

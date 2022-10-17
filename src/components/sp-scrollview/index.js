@@ -5,7 +5,7 @@ import { SpImg, SpNote, SpLoading } from '@/components'
 import api from '@/api'
 import { usePage } from '@/hooks'
 
-import { isObject, classNames, isWeixin, isWeb } from '@/utils'
+import { isObject, classNames, isWeixin, isAlipay, isWeb } from '@/utils'
 
 import './index.scss'
 
@@ -32,7 +32,7 @@ function SpScrollView(props, ref) {
   const vid = new Date().getTime()
   useEffect(() => {
     let observer = null
-    if (isWeixin) {
+    if (isWeixin || isAlipay) {
       observer = Taro.createIntersectionObserver(Taro.getCurrentInstance().page, {
         observeAll: true
       })
