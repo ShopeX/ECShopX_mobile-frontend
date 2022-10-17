@@ -90,7 +90,14 @@ function NearlyShop(props) {
   }
 
   const onConfirmSearch = async ({ detail }) => {
-    const res = await entryLaunch.getLnglatByAddress(location.address)
+    // console.log('onConfirmSearch:location', location)
+    const { areaArray:aA, areaIndexArray:aIA } = state
+    const _address = aA[0][aIA[0]]+aA[1][aIA[1]]+aA[2][aIA[2]]
+    // console.log('onConfirmSearch:aA', aA, aIA)
+    // console.log('onConfirmSearch:_address', _address )
+    
+    const res = await entryLaunch.getLnglatByAddress(_address)
+    // console.log('onConfirmSearch:res', res)
     const { lng, lat, error } = res
     if (error) {
       showToast(error)
@@ -177,6 +184,7 @@ function NearlyShop(props) {
         v.areaIndexArray[2] = value
       })
     }
+    // console.log('onColumnChange：detail', detail)
   }
 
   // 定位

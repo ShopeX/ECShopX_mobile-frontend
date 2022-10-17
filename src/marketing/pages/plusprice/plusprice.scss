@@ -180,6 +180,9 @@
       bottom: 0;
       box-sizing: border-box;
       padding-bottom: 130px;
+      /*  #ifdef  h5  */  
+      padding-top: $navigate-height-h5;
+      /*  #endif  */  
       .goods-list__item {
         display: flex;
         border-radius: 10px;

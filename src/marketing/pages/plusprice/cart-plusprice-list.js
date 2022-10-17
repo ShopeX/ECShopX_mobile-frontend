@@ -117,7 +117,7 @@ export default class DetailPluspriceList extends Component {
     const { list, showBackToTop, scrollTop, page } = this.state
     return (
       <View className='cart-page-plusprice' style={`background: ${colors.data[0].primary}`}>
-        {hasNavbar && <SpNavBar title='微商城' />}
+        {hasNavbar && <SpNavBar title='优惠换购' />}
         <ScrollView
           className='cart-page-plusprice-goods__scroll'
           scrollY
