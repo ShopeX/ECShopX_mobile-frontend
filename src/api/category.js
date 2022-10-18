@@ -6,5 +6,5 @@ export function get (params) {
 }
 
 export function getCategory (params = {}) {
-  return req.get(transformPlatformUrl('/pageparams/setting'), params)
+  return req.get('/pageparams/setting', params)
 }

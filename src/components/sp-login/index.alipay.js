@@ -32,14 +32,7 @@ function SpLogin(props, ref) {
 
   useEffect(() => {
     if (loginModal) {
-      Taro.login({
-        success: ({ code }) => {
-          codeRef.current = code
-        },
-        fail: (e) => {
-          console.error('[sp-login] taro login fail:', e)
-        }
-      })
+      console.error('[sp-login] taro login fail:支付宝小程序等待配置' )
     }
   }, [loginModal])
 
@@ -132,7 +125,8 @@ function SpLogin(props, ref) {
   }))
 
   // eslint-disable-next-line no-undef
-  const { icon, nickname } = __wxConfig.accountInfo
+  // const { icon, nickname } = __wxConfig.accountInfo
+  const icon='', nickname='';
 
   return (
     <View className={classNames('sp-login', className)}>

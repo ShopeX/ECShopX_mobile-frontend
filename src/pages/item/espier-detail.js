@@ -480,7 +480,7 @@ function EspierDetail(props) {
                 <View className='title'>{info.itemName}</View>
                 <View className='brief'>{info.brief}</View>
               </View>
-              {(isWeixin || isAPP()) && (
+              {(isWeixin || isAPP() || isAlipay) && (
                 <View className='btn-share-wrap'>
                   <SpLogin
                     onChange={async () => {

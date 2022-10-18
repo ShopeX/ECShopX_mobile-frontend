@@ -168,6 +168,11 @@ class EntryLaunch {
           }
         })
       })
+    } else if (process.env.TARO_ENV === 'alipay') {
+      // TODO 支付宝小程序 地图
+      return new Promise(async (reslove, reject) => {
+        reject({ message: '支付宝小程序地图等待配置' })
+      })
     } else {
       return new Promise(async (reslove, reject) => {
         this.geolocation.getCurrentPosition(function (status, result) {
