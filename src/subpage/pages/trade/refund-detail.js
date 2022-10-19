@@ -257,7 +257,7 @@ export default class TradeRefundDetail extends Component {
             <Button className='refund-detail-btn'>联系客服</Button>
           </FloatMenuMeiQia>
         ) : (
-          <Button openType='contact' className='refund-detail-btn'>
+          !isWeb && <Button openType='contact' className='refund-detail-btn'>
             联系客服
           </Button>
         )}
