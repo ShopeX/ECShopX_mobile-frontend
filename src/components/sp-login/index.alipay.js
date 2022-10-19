@@ -124,9 +124,6 @@ function SpLogin(props, ref) {
     }
   }))
 
-  // eslint-disable-next-line no-undef
-  // const { icon, nickname } = __wxConfig.accountInfo
-  const icon='', nickname='';
 
   return (
     <View className={classNames('sp-login', className)}>
@@ -148,8 +145,7 @@ function SpLogin(props, ref) {
       >
         <View className='login-modal'>
           <View className='login-modal__hd'>
-            <SpImage circle src={icon} width={120} height={120} />
-            <View className='nick-name'>{nickname}</View>
+            <View className='nick-name'>''</View>
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
