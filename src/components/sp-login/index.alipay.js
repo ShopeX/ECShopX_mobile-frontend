@@ -2,12 +2,10 @@ import Taro from '@tarojs/taro'
 import React, { useEffect, useState, useCallback, useRef, useImperativeHandle } from 'react'
 import { View, Button } from '@tarojs/components'
 import { AtButton, AtCurtain } from 'taro-ui'
-import { useImmer } from 'use-immer'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
-import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts'
-import { Tracker } from '@/service'
+import { classNames, showToast, alipayAutoLogin } from '@/utils'
+
 import { SpPrivacyModal, SpImage } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
@@ -30,49 +28,42 @@ function SpLogin(props, ref) {
     }
   }, [newUser])
 
-  useEffect(() => {
+  useEffect(async () => {
     if (loginModal) {
-      console.error('[sp-login] taro login fail:支付宝小程序等待配置' )
+      const { code } = await alipayAutoLogin()
+      codeRef.current = code
     }
   }, [loginModal])
 
-  const handleBindPhone = async (e) => {
-    const { encryptedData, iv, cloudID } = e.detail
-    if (encryptedData && iv) {
+
+  const getPhoneNumber = () => {
+    return new Promise((resolve, reject) => {
+      my.getPhoneNumber({
+        success: (res) => {
+          resolve(res)
+        },
+        fail: (res) => {
+          console.error('[sp-login] taro login getPhoneNumber fail')
+          reject(res)
+        }
+      })
+    })
+  }
+
+  const onGetAuthorize = async () => {
+    const res = await getPhoneNumber()
+    const encryptedData = JSON.parse(res.response).response;
+    if (encryptedData) {
       const code = codeRef.current
       let params = {
         code,
         encryptedData,
-        iv,
-        cloudID,
-        user_type: 'wechat',
-        auth_type: 'wxapp'
-      }
-      // 内购分享码
-      const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      if (purchaseCode) {
-        params = {
-          ...params,
-          purchanse_share_code: purchaseCode
-        }
+        auth_type: 'aliapp'
       }
       Taro.showLoading()
 
-      // const { uid } = entryLaunch.getLaunchParams()
-      const { uid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS)
-      if (uid) {
-        // 分销绑定
-        params['uid'] = uid
-      }
-      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
-      if (gu_user_id) {
-        params['channel'] = 1
-        params['work_userid'] = gu_user_id
-      }
-
       try {
-        const { token, is_new } = await api.wx.newlogin(params)
+        const { token } = await api.alipay.alipay_login(params)
         if (token) {
           setToken(token)
           Taro.hideLoading()
@@ -149,9 +140,9 @@ function SpLogin(props, ref) {
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
-            <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
+            <button className='alipay-button--primary' type='primary' open-type='getAuthorize' scope='phoneNumber' onGetAuthorize={onGetAuthorize}>
               登录
-            </AtButton>
+            </button>
           </View>
         </View>
       </AtCurtain>

@@ -382,13 +382,13 @@ export const browser = (() => {
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ;(function (m, ei, q, i, a, j, s) {
+  ; (function (m, ei, q, i, a, j, s) {
     m[i] =
       m[i] ||
       function () {
-        ;(m[i].a = m[i].a || []).push(arguments)
+        ; (m[i].a = m[i].a || []).push(arguments)
       }
-    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+      ; (j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
     j.async = true
     j.charset = 'UTF-8'
     j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
@@ -754,6 +754,23 @@ export const onEventChannel = (eventName, data) => {
   eventChannel.emit(eventName, data)
 }
 
+// 支付宝小程序取code
+const alipayAutoLogin = () => {
+  return new Promise((resolve, reject) => {
+    my.getAuthCode({
+      scopes: 'auth_base',
+      success: (res) => {
+        const code = res.authCode;
+        resolve({ code })
+      },
+      fail: (res) => {
+        console.error('[sp-login] alipayAutoLogin login fail:', res)
+        reject(res)
+      }
+    })
+  })
+}
+
 export {
   classNames,
   log,
@@ -772,7 +789,8 @@ export {
   isMerchantModule,
   isUndefined,
   merchantIsvaild,
-  getDistributorId
+  getDistributorId,
+  alipayAutoLogin
 }
 
 export * from './platforms'

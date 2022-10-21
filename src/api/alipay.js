@@ -23,3 +23,9 @@ export function newlogin (params) {
     appid: getAppId()
   })
 }
+
+export function alipay_login (params) {
+  return req.post(`/new_login`, {
+    ...params
+  })
+}

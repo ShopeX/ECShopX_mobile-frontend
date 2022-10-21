@@ -1,0 +1,11 @@
+@import './imports';
+
+.alipay-button {
+  &--primary {
+    background: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: #fff !important;
+    height: 80px;
+    font-size: 28px;
+  }
+}
