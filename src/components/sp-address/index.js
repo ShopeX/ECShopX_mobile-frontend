@@ -5,6 +5,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import api from '@/api'
 import { classNames } from '@/utils'
 import { SpFloatLayout } from '@/components'
+import { useAsyncCallback } from '@/hooks'
 import './index.scss'
 
 const initialState = {
@@ -18,20 +19,12 @@ const initialState = {
 }
 
 function SpAddress(props) {
-  const [state, setState] = useImmer(initialState)
+  const [state, setState] = useAsyncCallback(initialState)
   const { addressList, areaList, multiIndex, selectValue, selectId, pindex } = state
-  const { isOpened = false, onClose = () => {} ,onChange = () => {} } = props
+  const { isOpened = false, onClose = () => { }, onChange = () => { } } = props
   useEffect(() => {
     fetch()
   }, [])
-
-  useEffect(() => {
-    // console.log('selectValue 改变了',selectValue);
-    if(selectValue.length === 3) {
-      onChange(selectValue)
-      onClose()
-    }
-  }, [selectValue])
 
   const fetch = async () => {
     const _addressList = await api.member.areaList()
@@ -105,6 +98,11 @@ function SpAddress(props) {
           draft.selectValue.splice(level, selectValue.length - level)
         }
       }
+    }, (state) => {
+      if (state.selectValue.length === 3) {
+        onChange(state.selectValue)
+        onClose()
+      }
     })
   }
 
@@ -120,26 +118,35 @@ function SpAddress(props) {
     })
   }
 
+  const randomKey = () => new Date+Math.random()
+
+  console.log('pindex',pindex);
+  console.log('selectValue',selectValue);
+  console.log('areaList',areaList);
+  
   return (
     <View className='sp-address'>
       <View className='address-content'></View>
       <SpFloatLayout title='选择地址' open={isOpened} onClose={onClose}>
         <View className='address-hd'>
-          {selectValue.map((item, index) => (
+          {selectValue.map((vitem, vindex) => (
             <View
-              className='tab-item'
-              key={`tab-item__${index}`}
-              onClick={handleClickSelectItem.bind(this, item)}
+              className={classNames(`tab-item`, 
+              {
+                active: pindex === vindex || vindex === 2 && pindex === 3
+              })}
+              key={`tab-item__${randomKey()}`}
+              onClick={handleClickSelectItem.bind(this, vitem)}
             >
-              {item.label}
+              {vitem.label}
             </View>
           ))}
-          {selectValue.length < areaList.length && <View className='tab-item'>请选择</View>}
+          {(selectValue.length < areaList.length && pindex > 0) && <View className='tab-item active'>请选择</View>}
         </View>
         <ScrollView className='address-bd' scrollY>
           {areaList?.map((item, index) => (
             <View className={classNames('address-col', {
-              active: pindex === index
+              active: pindex === index || index === 2 && pindex === 3  // 保留区的选项
             })} key={`address-col__${index}`}>
               {item.map((sitem, sindex) => (
                 <View

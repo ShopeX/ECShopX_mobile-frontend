@@ -8,6 +8,9 @@
     padding: 20px 40px 10px;
     .tab-item {
       margin-right: 20px;
+      &.active {
+        font-weight: bold;
+      }
     }
   }
   .address-bd {
