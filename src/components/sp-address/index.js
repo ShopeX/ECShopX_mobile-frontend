@@ -14,17 +14,24 @@ const initialState = {
   multiIndex: [0, 0, 0],
   selectValue: [],
   selectId: [],
-  isOpened: true,
   pindex: 0
 }
 
-function SpAddress() {
+function SpAddress(props) {
   const [state, setState] = useImmer(initialState)
-  const { addressList, areaList, multiIndex, selectValue, selectId, isOpened, pindex } = state
-
+  const { addressList, areaList, multiIndex, selectValue, selectId, pindex } = state
+  const { isOpened = false, onClose = () => {} ,onChange = () => {} } = props
   useEffect(() => {
     fetch()
   }, [])
+
+  useEffect(() => {
+    // console.log('selectValue 改变了',selectValue);
+    if(selectValue.length === 3) {
+      onChange(selectValue)
+      onClose()
+    }
+  }, [selectValue])
 
   const fetch = async () => {
     const _addressList = await api.member.areaList()
@@ -103,8 +110,10 @@ function SpAddress() {
 
   const handleClickSelectItem = ({ parent_id, label, id, level }) => {
     setState((draft) => {
-      draft.areaList[level] = areaList[level - 1]
-      draft.pindex = level
+      // draft.areaList[level] = areaList[level - 1]
+      // draft.pindex = level
+      draft.areaList[level - 1] = areaList[level - 1]
+      draft.pindex = level - 1
       if (level < selectValue.length) {
         draft.selectValue.splice(level, selectValue.length - level)
       }
@@ -114,7 +123,7 @@ function SpAddress() {
   return (
     <View className='sp-address'>
       <View className='address-content'></View>
-      <SpFloatLayout title='选择地址' open={isOpened} onClose={() => {}}>
+      <SpFloatLayout title='选择地址' open={isOpened} onClose={onClose}>
         <View className='address-hd'>
           {selectValue.map((item, index) => (
             <View
@@ -129,7 +138,9 @@ function SpAddress() {
         </View>
         <ScrollView className='address-bd' scrollY>
           {areaList?.map((item, index) => (
-            <View className='address-col' key={`address-col__${index}`}>
+            <View className={classNames('address-col', {
+              active: pindex === index
+            })} key={`address-col__${index}`}>
               {item.map((sitem, sindex) => (
                 <View
                   className={classNames('address-item', {

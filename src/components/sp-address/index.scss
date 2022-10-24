@@ -13,6 +13,12 @@
   .address-bd {
     padding: 10px 40px 20px;
     height: 500px;
+    .address-col {
+      display: none;
+      &.active {
+        display: block;
+      }
+    }
   }
   .address-item {
     padding: 10px 0;

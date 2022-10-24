@@ -4,7 +4,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Switch, Text, Picker, Button } from '@tarojs/components'
 import { AtForm, AtInput } from 'taro-ui'
 import { connect } from 'react-redux'
-import { SpCell, SpToast, SpNavBar } from '@/components'
+import { SpCell, SpToast, SpNavBar, SpAddress } from '@/components'
 import api from '@/api'
 import { isWxWeb } from '@/utils'
 import S from '@/spx'
@@ -39,7 +39,8 @@ export default class AddressIndex extends Component {
       areaArray: [[], [], []],
       areaIndexArray: [0, 0, 0],
       areaData: [],
-      chooseValue: ['北京市', '北京市', '昌平区']
+      chooseValue: ['北京市', '北京市', '昌平区'],
+      isOpened: false
       // ubmitLoading: false,
     }
   }
@@ -98,90 +99,31 @@ export default class AddressIndex extends Component {
     Taro.hideLoading()
   }
 
-  // 选定开户地区
   onPickerClick = () => {
-    const { chooseValue, areaData } = this.state
-    const [chooseProvice, chooseCity, chooseDistrict] = chooseValue
-    const p_label = chooseProvice
-    const c_label = chooseCity
-    const d_label = chooseDistrict
-    let chooseIndex = []
-    let proviceArr = []
-    let cityArr = []
-    let countyArr = []
-    areaData.map((item, index) => {
-      proviceArr.push(item.label)
-      if (item.label == p_label) {
-        chooseIndex.push(index)
-        item.children.map((c_item, c_index) => {
-          cityArr.push(c_item.label)
-          if (c_item.label == c_label) {
-            chooseIndex.push(c_index)
-            c_item.children.map((cny_item, cny_index) => {
-              countyArr.push(cny_item.label)
-              if (cny_item.label == d_label) {
-                chooseIndex.push(cny_index)
-              }
-            })
-          }
-        })
+    this.setState(
+      {
+        isOpened: true
       }
-    })
-    this.setState({
-      areaIndexArray: chooseIndex,
-      areaArray: [proviceArr, cityArr, countyArr]
-    })
+    )
   }
 
-  onPickerChange = async ({ detail }) => {
-    const { value } = detail || {}
-    const [one, two, three] = this.state.areaArray
-    const chooseValue = [one[value[0]], two[value[1]], three[value[2]]]
+  handleClickClose = () => {
+    this.setState(
+      {
+        isOpened: false
+      }
+    )
+  }
+
+  onPickerChange = (selectValue) => {
+    // console.log(selectValue,'selectValue1111');
+    const chooseValue = [selectValue[0].label,selectValue[1].label,selectValue[2].label]
     this.setState({
-      areaIndexArray: value,
       chooseValue
     })
   }
 
-  onColumnChange = async ({ detail }) => {
-    const { column, value } = detail
-    let { areaData, areaIndexArray, areaArray } = this.state
-    if (column == 0) {
-      this.setState({
-        areaIndexArray: [value, 0, 0]
-      })
-      let cityArr = []
-      let countyArr = []
-      cityArr = areaData[value].children.map((item) => item.label)
-      countyArr = areaData[value].children[0].children.map((item) => item.label)
-      areaArray[1] = cityArr
-      areaArray[2] = countyArr
-      this.setState({
-        areaArray: [...areaArray]
-      })
-    } else if (column == 1) {
-      areaIndexArray[1] = value
-      areaIndexArray[2] = 0
-      this.setState(
-        {
-          areaIndexArray: [...areaIndexArray]
-        },
-        () => {
-          let countyArr = []
-          countyArr = areaData[areaIndexArray[0]].children[value].children.map((item) => item.label)
-          areaArray[2] = countyArr
-          this.setState({
-            areaArray: [...areaArray]
-          })
-        }
-      )
-    } else {
-      areaIndexArray[2] = value
-      this.setState({
-        areaIndexArray: [...areaIndexArray]
-      })
-    }
-  }
+
 
   handleChange = (name, val) => {
     const { info } = this.state
@@ -258,7 +200,7 @@ export default class AddressIndex extends Component {
 
   render() {
     const { colors } = this.props
-    const { info, areaIndexArray, areaArray, chooseValue } = this.state
+    const { info, areaIndexArray, areaArray, chooseValue, isOpened } = this.state
     return (
       <View className='page-address-edit' style={isWxWeb && { paddingTop: 0 }}>
         {/*<EditAddress*/}
@@ -281,7 +223,7 @@ export default class AddressIndex extends Component {
               value={info.telephone}
               onChange={this.handleChange.bind(this, 'telephone')}
             />
-            <Picker
+            {/* <Picker
               mode='multiSelector'
               onClick={this.onPickerClick}
               onChange={this.onPickerChange}
@@ -291,12 +233,14 @@ export default class AddressIndex extends Component {
             >
               <View className='picker' onClick={this.onPickerClick}>
                 <View className='picker__title'>所在区域</View>
-                {/* {areaArray[0][areaIndexArray[0]]}
-                {areaArray[1][areaIndexArray[1]]}
-                {areaArray[2][areaIndexArray[2]]} */}
                 <Text>{chooseValue.join('') || '选择地区'}</Text>
               </View>
-            </Picker>
+            </Picker> */}
+            <View className='picker' onClick={this.onPickerClick}>
+              <View className='picker__title'>所在区域</View>
+              <Text>{chooseValue.join('') || '选择地区'}</Text>
+            </View>
+            <SpAddress isOpened={isOpened} onClose={this.handleClickClose} onChange={this.onPickerChange}/>
             <AtInput
               title='详细地址'
               name='adrdetail'
