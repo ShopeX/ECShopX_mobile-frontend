@@ -290,6 +290,7 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.submitLoading = false
       })
+      Taro.hideLoading()
       return
     }
 
@@ -888,6 +889,7 @@ function CartCheckout(props) {
   }
 
   console.log(couponInfo, 'couponInfo', coupon)
+  console.log('payChannel',payChannel)
   const couponText = couponInfo ? couponInfo.title : ''
   // couponInfo.type === 'member'
   //   ? '会员折扣'
