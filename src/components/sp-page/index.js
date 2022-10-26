@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isGoodsShelves, entryLaunch } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch } from '@/utils'
 
 import './index.scss'
 
@@ -165,11 +165,11 @@ function SpPage(props, ref) {
   // let customNavigation = false
   // let cusCurrentPage = 0
 
-  if (isWeixin) {
+  if (isWeixin || isAlipay) {
     const deviceInfo = Taro.getSystemInfoSync()
     // console.log('deviceInfo:', deviceInfo)
     model = deviceInfo.model
-    ipx = model.search(/iPhone X|iPhone 11|iPhone 12|iPhone 13/g) > -1
+    ipx = model.search(/iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*10/g) > -1
   }
 
   const { page, route } = getCurrentInstance()
