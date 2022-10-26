@@ -40,6 +40,23 @@ const request = (() => {
     }
   }
 
+  // 支付宝小程序，请求失败时，需要额外处理
+  if(isAlipay){
+    return async (...args) => {
+      let res
+      try {
+        res = await Taro.request(...args)
+      } catch (e) {
+        res = {
+          data: e.data,
+          statusCode: e.status,
+          header: e.headers
+        }
+      }
+      return res
+    }
+  }
+
   return Taro.request
 })()
 class RequestQueue {
@@ -241,6 +258,7 @@ class API {
   async refreshToken() {
     this.isRefreshingToken = true
     const token = S.getAuthToken()
+    console.log('refreshToken',66);
     try {
       await this.makeReq(
         {
@@ -313,6 +331,7 @@ class API {
         }
       }
     } catch (e) {
+      // console.log(5);
       console.log(e)
     }
 
