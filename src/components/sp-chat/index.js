@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpFloatMenuItem } from '@/components'
-import { showToast } from '@/utils'
+import { showToast, isAlipay } from '@/utils'
 import './index.scss'
 
 const initialState = {
@@ -46,6 +46,11 @@ function SpChat(props) {
       {isWeAppKefu && (
         <Button className='btn-cantact' openType='contact' sessionFrom={sessionFrom}>
           {children}
+          {isAlipay && <contact-button
+            tnt-inst-id="JRC_1NRG"
+            scene="SCE01214288"
+          >
+          </contact-button>}
         </Button>
       )}
       {!isWeAppKefu && (
