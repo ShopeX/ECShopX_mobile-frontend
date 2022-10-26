@@ -163,10 +163,13 @@ export const ORDER_INFO = {
       totalFee: ({ total_fee }) => total_fee / 100,
       price: ({ price }) => price / 100,
       num: 'num',
+      refundNum: 1,
+      checked: false,
       discountFee: ({ discount_fee }) => discount_fee / 100,
       point: ({ point_fee }) => point_fee / 100
     })
   },
+  ziti_info: 'ziti_info',
   user_id: 'user_id',
   receiver_name: 'receiver_name',
   receiver_mobile: 'receiver_mobile',
@@ -178,6 +181,7 @@ export const ORDER_INFO = {
   totalFee: ({ total_fee }) => total_fee / 100,
   freightFee: ({ freight_fee }) => freight_fee / 100,
   itemFeeNew: ({ item_total_fee }) => item_total_fee / 100,
+  itemPoint: 'item_point',
   receipt_type: 'receipt_type',
   pointFreightFee: ({ point_freight_fee }) => point_freight_fee / 100
 }

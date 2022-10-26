@@ -6,9 +6,12 @@ import api from "@/api"
 import doc from "@/doc"
 import { SpPage, SpButton, SpCell } from '@/components'
 import { View, Picker } from "@tarojs/components"
+import { showToast } from '@/utils'
+import CompTradeInfo from './../comps/comp-trade-info'
 import "./cancel-trade.scss";
 
 const initialState = {
+  info: null,
   reason: '',
   reasons: [
     '客户现在不想购买',
@@ -29,19 +32,26 @@ const initialState = {
 function DianwuTradeCancel(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { reason, reasons } = state
+  const { info, reason, reasons } = state
 
-  useEffect(() => {
-    fetch()
-  }, [])
-
-  const fetch = async () => {
-    const { trade_id } = $instance.router.params
+  const onCancel = () => {
+    Taro.navigateBack()
   }
 
-  const onCancel = () => { }
-
-  const onConfirm = () => { }
+  const onConfirm = async () => {
+    if(!reason) {
+      return showToast('请选择订单取消原因')
+    }
+    const { trade_id } = $instance.router.params
+    await api.dianwu.cancelTrade({
+      order_id: trade_id,
+      cancel_reason: reason
+    })
+    showToast('订单取消成功')
+    setTimeout(() => {
+      Taro.navigateBack()
+    }, 2000)
+  }
 
   return <SpPage className='page-dianwu-cancel-trade' renderFooter={
     <View className='btn-wrap'>
@@ -52,14 +62,12 @@ function DianwuTradeCancel(props) {
     <View className='trade-tip'>
       订单取消后，消费者将无法对订单进行支付操作。
     </View>
-    <View className='trade-info'>
-      <SpCell title='订单ID'>DD09876556789009</SpCell>
-      <SpCell title='买家'>赵照兆    13888888888</SpCell>
-      <SpCell title='收货人'>赵照兆    13888888888</SpCell>
-      <SpCell title='收货地址'>
-        上海市上海徐汇区田林街道宜山路700号普天信息
-        产业园区C1幢12楼</SpCell>
-    </View>
+
+    <CompTradeInfo onFetch={(data) => {
+      setState(draft => {
+        draft.info = data
+      })
+    }} />
 
     <View className='picker-reason'>
       <View className='title'>取消原因</View>
@@ -68,11 +76,11 @@ function DianwuTradeCancel(props) {
         range={reasons}
         onChange={(e) => {
           setState(draft => {
-            draft.reason = reasons[e.detail.value]
+            draft.reason = e.detail.value
           })
         }}
       >
-        <SpCell className='reason-container' isLink>{`${reason || '请选择取消原因'}`}</SpCell>
+        <SpCell className='reason-container' isLink>{`${reasons?.[reason] || '请选择取消原因'}`}</SpCell>
       </Picker>
     </View>
   </SpPage>

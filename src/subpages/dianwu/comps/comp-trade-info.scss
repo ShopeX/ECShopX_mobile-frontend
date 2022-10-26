@@ -1,0 +1,19 @@
+.comp-trade-info {
+  padding: 24px 32px;
+  background: #fff;
+  .sp-cell {
+    padding: 0;
+    align-items: flex-start;
+  }
+  .sp-cell__title {
+    color: #666f83;
+    font-size: 26px;
+  }
+  .sp-cell__hd {
+    width: 120px;
+  }
+  .sp-cell__bd {
+    color: #111a34;
+    font-size: 26px;
+  }
+}

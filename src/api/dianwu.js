@@ -112,3 +112,13 @@ export function changePriceConfirm (params) {
 export function is_admin(params) {
   return req.get('/distributor/bind/checkout', params)
 }
+
+// 订单取消
+export function cancelTrade(params) {
+  return req.post(`/order/${params.order_id}/cancel`, params)
+}
+
+// 申请售后
+export function salesAfterApply(params) {
+  return req.post('/aftersales/apply', params)
+}

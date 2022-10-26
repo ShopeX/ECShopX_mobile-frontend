@@ -1,0 +1,197 @@
+.page-dianwu-sale-after {
+  .btn-wrap {
+    padding: 20px;
+  }
+  .at-tabs {
+    &__item {
+      &--active {
+        color: var(--color-dianwu-primary);
+      }
+      &-underline {
+        background-color: var(--color-dianwu-primary);
+      }
+    }
+  }
+  .comp-trade-info {
+    margin-top: 20px;
+  }
+  .trade-info {
+    padding: 24px 32px;
+    background: #fff;
+    margin-top: 20px;
+    .sp-cell {
+      padding: 0;
+      align-items: flex-start;
+    }
+    .sp-cell__title {
+      color: #666f83;
+      font-size: 26px;
+    }
+    .sp-cell__hd {
+      width: 120px;
+    }
+    .sp-cell__bd {
+      color: #111a34;
+      font-size: 26px;
+    }
+  }
+  .picker-reason {
+    margin-top: 20px;
+  }
+  .reason-container {
+    background-color: #e2e4ea;
+    margin-top: 32px;
+    .sp-cell__bd {
+      padding: 0;
+    }
+  }
+  .refund-items {
+    background-color: #fff;
+    margin-top: 20px;
+    .title {
+      font-size: 30px;
+      font-weight: 500;
+      color: #666f83;
+      padding: 28px 32px;
+    }
+  }
+  .items-container {
+    padding: 10px 32px;
+  }
+  .item-wrap {
+    display: flex;
+    align-items: center;
+  }
+  .item-bd {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  .goods-info {
+    margin-left: 24px;
+    flex: 1;
+    &-hd {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-bd {
+      display: flex;
+      justify-content: space-between;
+    }
+    .goods-title {
+      font-weight: 500;
+      color: #111a34;
+    }
+    .goods-num {
+      font-size: 22px;
+      font-weight: 400;
+      color: #111a34;
+    }
+    .sku-info {
+      font-size: 24px;
+      font-weight: 400;
+      color: #858b9c;
+    }
+  }
+  .refund-amount,
+  .refund-point {
+    margin-top: 20px;
+    .at-input {
+      margin-bottom: 0;
+      background: #e2e4ea;
+      width: 480px;
+      &:after {
+        border-color: transparent;
+      }
+      &__input {
+        text-align: right;
+        color: #ff5257;
+      }
+    }
+    .sp-cell__link {
+      display: none;
+    }
+  }
+  .return-goods-type {
+    margin-top: 20px;
+    .sp-select {
+      /* prettier-ignore */
+      border: 1PX solid #C5CAD5;
+      .select-item {
+        margin: 0;
+        font-size: 24px;
+        border-radius: 0;
+        color: #858b9c;
+        background-color: #fff;
+        &:not(:first-child) {
+          margin-left: 2px;
+        }
+        &:not(:last-child) {
+          position: relative;
+          &:after {
+            content: '';
+            width: 2px;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: -2px;
+            background-color: #c5cad5;
+            z-index: -100;
+          }
+        }
+        &.active {
+          // /* prettier-ignore */
+          color: #4980ff;
+          background-color: #d8e9ff;
+          /* prettier-ignore */
+          outline: 1PX solid #4980ff;
+        }
+      }
+    }
+    .sp-cell__link {
+      display: none;
+    }
+  }
+
+  .sp-cell__title {
+    font-size: 30px;
+    font-weight: 500;
+    color: #666f83;
+  }
+  .desc-container {
+    background-color: #fff;
+    margin: 20px 0 50px;
+    padding-bottom: 30px;
+    .desc-content {
+      margin: 0 32px;
+    }
+    .title {
+      font-size: 30px;
+      font-weight: 500;
+      color: #666f83;
+      padding: 28px 32px;
+    }
+  }
+  .sp-upload {
+    margin-top: 30px;
+  }
+
+  .sp-button__confirm {
+    background-color: var(--color-dianwu-primary);
+    border-color: var(--color-dianwu-primary);
+  }
+
+  .sp-checkbox-new {
+    .icon-roundcheckfill {
+      color: var(--color-dianwu-primary) !important;
+    }
+  }
+
+  .cell-tip {
+    font-size: 24px;
+    text-align: right;
+    margin: 0 32rpx;
+    color: #ff5257;
+  }
+}

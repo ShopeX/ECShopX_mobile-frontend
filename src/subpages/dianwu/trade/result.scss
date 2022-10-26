@@ -1,0 +1,25 @@
+.page-dianwu-trade-result {
+  .sp-image {
+    margin: 150px auto 50px;
+  }
+  .title {
+    font-size: 32px;
+    font-weight: 400;
+    color: #111a34;
+    text-align: center;
+  }
+  .desc {
+    font-size: 24px;
+    font-weight: 400;
+    color: #858b9c;
+    text-align: center;
+    margin-top: 16px;
+  }
+
+  .btn-return {
+    background-color: var(--color-dianwu-primary);
+    color: #fff;
+    width: 430px;
+    margin-top: 328px;
+  }
+}
