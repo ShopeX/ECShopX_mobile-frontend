@@ -57,9 +57,8 @@ function Home() {
     policyUpdateHook: (isUpdate) => {
       if (isUpdate) {
         setPolicyModal(true)
-      } else {
-        fetchLocation()
       }
+      fetchLocation()
     }
   })
 
@@ -76,7 +75,7 @@ function Home() {
   useEffect(() => {
     if (initState) {
       init()
-      setNavigationBarTitle(appName)
+      // setNavigationBarTitle(appName)
     }
   }, [initState])
 
@@ -86,9 +85,7 @@ function Home() {
   })
 
   const init = async () => {
-    if (VERSION_STANDARD) {
-      await fetchStoreInfo(location)
-    } else {
+    if (!VERSION_STANDARD) {
       await fetchWgts()
     }
   }
@@ -169,11 +166,12 @@ function Home() {
   }
 
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
+  const pageData = wgts.find((wgt) => wgt.name == 'page')
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
-    filterWgts = wgts.filter((wgt) => wgt.name !== 'search')
+    filterWgts = wgts.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
   } else {
-    filterWgts = wgts
+    filterWgts = wgts.filter((wgt) => wgt.name != 'page')
   }
 
   const fixedTop = searchComp && searchComp.config.fixTop
@@ -184,21 +182,26 @@ function Home() {
     (VERSION_STANDARD && openStore && openLocation == 1) ||
     fixedTop
 
+  console.log('pageData:', pageData)
+
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
+      // renderNavigation={renderNavigation()}
+      pageConfig={pageData?.base}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       loading={loading}
     >
-      {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch />}</WgtHomeHeader>}
+
 
       <View
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader
         })}
       >
+        {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch />}</WgtHomeHeader>}
         <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
           {/* 猜你喜欢 */}
           <SpRecommend className='recommend-block' info={likeList} />

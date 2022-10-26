@@ -119,6 +119,7 @@ function MemberIndex(props) {
   const RefLogin = useRef()
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { pointName } = useSelector((state) => state.sys)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const dispatch = useDispatch()
 
@@ -461,7 +462,7 @@ function MemberIndex(props) {
             className='bd-item'
             onChange={handleClickLink.bind(this, '/subpages/member/point-detail')}
           >
-            <View className='bd-item-label'>积分(分)</View>
+            <View className='bd-item-label'>{`${pointName}`}</View>
             <View className='bd-item-value'>{state.point}</View>
           </SpLogin>
           {process.env.NODE_ENV === 'development' && (

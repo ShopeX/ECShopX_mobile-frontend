@@ -11,12 +11,13 @@ import "./ziti-picker.scss";
 
 const initialState = {
   zitiList: [],
-  zitiId: null
+  zitiId: null,
+  isDefault: false
 }
 function StoreZitiPicker(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { zitiList, zitiId } = state
+  const { zitiList, zitiId, isDefault } = state
   const dispatch = useDispatch()
   useEffect(() => {
     fetchZitiList()
@@ -29,7 +30,8 @@ function StoreZitiPicker(props) {
       distributor_id
     })
     setState(draft => {
-      draft.zitiList = list,
+      draft.zitiList = list
+      draft.isDefault = list.length == 0
       draft.zitiId = zitiId
     })
   }
@@ -42,7 +44,7 @@ function StoreZitiPicker(props) {
     }, 300)
   }
 
-  return <SpPage className='page-store-zitipicker'>
+  return <SpPage className='page-store-zitipicker' isDefault={isDefault} defaultMsg='暂无数据'>
     {
       zitiList.map((item, index) => (
         <View className='ziti-item' key={`ziti-item__${index}`}>

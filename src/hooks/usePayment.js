@@ -262,8 +262,13 @@ export default (props = {}) => {
 
   // 余额/积分支付
   const depositPay = async (params, orderInfo) => {
-    const { activityType } = params
-    const { order_id, team_id } = orderInfo
+    const { activityType, pay_type } = params
+    const { order_id, team_id, order_type } = orderInfo
+    await api.cashier.getPayment({
+      pay_type,
+      order_id,
+      order_type: order_type
+    })
     if (activityType == 'group') {
       Taro.redirectTo({ url: `/marketing/pages/item/group-detail?team_id=${team_id}` })
     } else {

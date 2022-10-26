@@ -1,0 +1,46 @@
+.page-dianwu-cancel-trade {
+  .btn-wrap {
+    padding: 20px;
+  }
+  .trade-tip {
+    height: 66px;
+    background: rgba(73, 128, 255, 0.2);
+    border-radius: 8px;
+    margin: 8px 24px;
+    font-size: 24px;
+    color: #4980FF;
+    padding: 16px 24px;
+    box-sizing: border-box;
+  }
+  .trade-info {
+    padding: 24px 32px;
+    background: #fff;
+    .sp-cell {
+      padding: 0;
+      align-items: flex-start;
+    }
+    .sp-cell__title {
+      color: #666F83;
+      font-size: 26px;
+    }
+    .sp-cell__hd {
+      width: 120px;
+    }
+    .sp-cell__bd {
+      color: #111A34;
+      font-size: 26px;
+    }
+  }
+  .picker-reason {
+    padding: 28px 32px;
+    background-color: #fff;
+    margin-top: 20px;
+  }
+  .reason-container {
+    background-color: #E2E4EA;
+    margin-top: 32px;
+    .sp-cell__bd {
+      padding: 0;
+    }
+  }
+}

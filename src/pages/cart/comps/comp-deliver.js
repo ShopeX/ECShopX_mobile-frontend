@@ -141,8 +141,7 @@ function CompDeliver(props, ref) {
 
   const onChangeWeekDays = (index) => {
     const activeWeekday = weekdays[index].value
-    const { hours, workdays } = zitiAddress
-    let latest_pickup_time = '23:00'
+    const { hours, latest_pickup_time, workdays } = zitiAddress
     const week = dayjs(activeWeekday).day()
     const _timeSlots = []
     for (let i = 0; i < hours.length; i++) {

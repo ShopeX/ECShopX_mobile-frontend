@@ -1,5 +1,11 @@
 @import "@/style/imports";
 
+.sec{
+  /*  #ifdef  h5  */  
+  padding-top: $navigate-height-h5;
+  /*  #endif  */  
+  
+}
 .page-refund-sendback {
   .at-input {
     padding-left: $edge-size;

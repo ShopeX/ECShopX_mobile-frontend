@@ -1177,7 +1177,7 @@ export default class TradeDetail extends Component {
               // 联系客服
               (info.status === 'TRADE_SUCCESS' ||
                 (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-              info.order_class !== 'excard' && (
+              info.order_class !== 'excard' && !isWeb  &&(
                 <View
                   className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 ||
                       (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
@@ -1193,10 +1193,10 @@ export default class TradeDetail extends Component {
                     >
                       联系客服
                     </FloatMenuMeiQia>
-                  ) : (
-                    <Button openType='contact' className='contact'>
-                      联系客服
-                    </Button>
+                  ) : (                    
+                      (<Button openType='contact' className='contact'>
+                        联系客服
+                      </Button>)
                   )}
                 </View>
               )

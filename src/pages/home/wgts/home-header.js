@@ -48,11 +48,11 @@ function WgtHomeHeader(props) {
 
       <View className='children-block'>{children}</View>
 
-      {isWeixin && openScanQrcode == 1 && (
+      {/* {isWeixin && openScanQrcode == 1 && (
         <View className='scancode' onClick={handleScanCode}>
           <Text className='iconfont icon-scan'></Text>
         </View>
-      )}
+      )} */}
     </View>
   )
 }

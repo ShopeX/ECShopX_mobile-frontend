@@ -9,6 +9,13 @@
       padding-bottom: $page-ipx-footer-height;
     }
   }
+  &.has-custom-navigation {
+    .countDown {
+      &.right_top {
+        top: 12%;
+      }
+    }
+  }
 
   &.ipx {
     padding-bottom: 20px;
@@ -91,6 +98,7 @@
       align-items: center;
       justify-content: center;
       color: #fff;
+      padding: 0 16px;
     }
     .icon-home1 {
       font-size: 40px;
