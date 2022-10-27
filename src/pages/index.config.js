@@ -3,5 +3,6 @@ export default {
   // backgroundTextStyle: 'dark',
   // onReachBottomDistance: 50
   navigationStyle: 'custom',
-  transparentTitle: 'auto'
+  transparentTitle: 'auto',
+  titlePenetrate: 'YES'
 }
