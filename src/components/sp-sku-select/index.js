@@ -300,9 +300,9 @@ function SpSkuSelect(props) {
 
 
     if (limitNum) {
-      max = limitNum
+      max = parseInt(limitNum)
     } else {
-      max = curItem ? curItem.store : info.store
+      max = parseInt(curItem ? curItem.store : info.store)
     }
 
 
@@ -316,7 +316,7 @@ function SpSkuSelect(props) {
         <SpInputNumber
           value={num}
           min={1}
-          max={limitNum || max}
+          max={max}
           onChange={(n) => {
             setState((draft) => {
               draft.num = n

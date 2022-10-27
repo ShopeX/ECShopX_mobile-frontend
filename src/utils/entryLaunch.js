@@ -88,6 +88,7 @@ class EntryLaunch {
           this.geocoder = new AMap.Geocoder({
             radius: 1000 //范围，默认：500
           })
+          console.log('entryLaunch', this)
           reslove('ok')
         })
       })
@@ -169,7 +170,14 @@ class EntryLaunch {
         })
       })
     } else {
+      console.log('getLocationInfo')
       return new Promise(async (reslove, reject) => {
+        if(!this.geolocation) {
+          setTimeout(() => {
+            this.getLocationInfo()
+          }, 1000)
+          return
+        }
         this.geolocation.getCurrentPosition(function (status, result) {
           if (status == 'complete') {
             reslove({
