@@ -1,13 +1,3 @@
-###
-# @Author: Arvin
-# @GitHub: https://github.com/973749104
-# @Blog: https://liuhgxu.com
-# @Description: 说明
- # @FilePath: /unite-vshop/run.sh
-# @Date: 2020-06-10 10:15:51
- # @LastEditors: Arvin
- # @LastEditTime: 2021-02-03 18:28:44
-### 
 #/usr/bash
 
 cd $(dirname "$0")
@@ -81,9 +71,9 @@ then
 #   exit
 # fi
 
-PROJECT_FILE_PATH='./project.config.json'
-oldappid=$(cat ${PROJECT_FILE_PATH} | sed 's/,/\n/g' | grep "appid" | sed 's/:/\n/g' | sed '1d' | sed 's/}//g')
-sed -i "" "s#${oldappid}#\"${appid}\"#g" ${PROJECT_FILE_PATH}
+# PROJECT_FILE_PATH='./project.config.json'
+# oldappid=$(cat ${PROJECT_FILE_PATH} | sed 's/,/\n/g' | grep "appid" | sed 's/:/\n/g' | sed '1d' | sed 's/}//g')
+# sed -i "" "s#${oldappid}#\"${appid}\"#g" ${PROJECT_FILE_PATH}
 
 echo '{
   "extEnable": true,
@@ -131,7 +121,7 @@ do
     then
     echo "npm run build:alipay"
     npm run build:h5
-  else 
+  else
     echo "npm run build:h5"
     npm run build:alipay
   fi
