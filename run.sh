@@ -81,6 +81,10 @@ then
 #   exit
 # fi
 
+PROJECT_FILE_PATH='./project.config.json'
+oldappid=$(cat ${PROJECT_FILE_PATH} | sed 's/,/\n/g' | grep "appid" | sed 's/:/\n/g' | sed '1d' | sed 's/}//g')
+sed -i "" "s#${oldappid}#\"${appid}\"#g" ${PROJECT_FILE_PATH}
+
 echo '{
   "extEnable": true,
   "extAppid": "'${appid}'",
