@@ -7,7 +7,7 @@ import doc from "@/doc"
 import { AtTabs, AtInput, AtTextarea } from 'taro-ui'
 import { SpPage, SpButton, SpCell, SpCheckbox, SpImage, SpInputNumber, SpSelect, SpUpload } from '@/components'
 import { View, Text, Picker } from "@tarojs/components"
-import { pickBy, showToast } from '@/utils'
+import { pickBy, showToast, isNumber } from '@/utils'
 import CompTradeInfo from './../comps/comp-trade-info'
 import "./sale-after.scss";
 
@@ -69,6 +69,12 @@ function DianwuTradeSaleAfter(props) {
     if(items.length == 0) {
       return showToast('请选择需要售后的商品')
     }
+    if(!isNumber(refundFee)) {
+      return showToast('请填写退款金额')
+    }
+    if(!isNumber(refundPoint)) {
+      return showToast('请填写积分')
+    }
     const params = {
       order_id: trade_id,
       aftersales_type: tabList[curTabIdx].status,
@@ -80,12 +86,20 @@ function DianwuTradeSaleAfter(props) {
       description,
       pic: img
     }
-    debugger
     await api.dianwu.salesAfterApply(params)
-    showToast('订单取消成功')
-    setTimeout(() => {
-      Taro.navigateBack()
-    }, 2000)
+    let type = 3
+    if(params.aftersales_type == 'ONLY_REFUND') {
+      type = 3
+    } else if(params.aftersales_type == 'REFUND_GOODS' && !params.goods_returned) {
+      type = 4
+    } else if(params.aftersales_type == 'REFUND_GOODS' && params.goods_returned) {
+      type = 5
+    }
+    Taro.redirectTo({ url: `/subpages/dianwu/trade/result?type=${type}` })
+    // showToast('订单取消成功')
+    // setTimeout(() => {
+    //   Taro.navigateBack()
+    // }, 2000)
   }
 
   const onChangeItemCheck = (item, index, e) => {

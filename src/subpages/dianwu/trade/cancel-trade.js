@@ -39,18 +39,26 @@ function DianwuTradeCancel(props) {
   }
 
   const onConfirm = async () => {
-    if(!reason) {
-      return showToast('请选择订单取消原因')
+    // if(!reason) {
+    //   return showToast('请选择订单取消原因')
+    // }
+    // const { trade_id } = $instance.router.params
+    // await api.dianwu.cancelTrade({
+    //   order_id: trade_id,
+    //   cancel_reason: reason
+    // })
+    // showToast('订单取消成功')
+    const { order_status } = info
+    let type = 1
+    if(order_status == 'NOTPAY') {
+      type = 1
+    } else if(order_status == 'PAYED') {
+      type = 2
     }
-    const { trade_id } = $instance.router.params
-    await api.dianwu.cancelTrade({
-      order_id: trade_id,
-      cancel_reason: reason
-    })
-    showToast('订单取消成功')
-    setTimeout(() => {
-      Taro.navigateBack()
-    }, 2000)
+    Taro.redirectTo({ url: `/subpages/dianwu/trade/result?type=${type}` })
+    // setTimeout(() => {
+    //   Taro.navigateBack()
+    // }, 2000)
   }
 
   return <SpPage className='page-dianwu-cancel-trade' renderFooter={
