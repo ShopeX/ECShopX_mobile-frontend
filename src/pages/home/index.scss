@@ -13,6 +13,11 @@
       margin-top: 0
     }
     /*  #endif  */
+    /*  #ifdef  alipay  */
+    &.has-home-header {
+      margin-top: $home-header-height;
+    }
+    /*  #endif  */
   }
   .wgt__padded {
     padding: 24px 0px;
