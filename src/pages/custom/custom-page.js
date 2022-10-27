@@ -35,7 +35,7 @@ function CustomPage(props) {
       page_name: `custom_${id}`,
       distributor_id: getDistributorId()
     })
-    const url = transformPlatformUrl(`/pageparams/setting?${pathparams}`)
+    const url = `/pageparams/setting?${pathparams}`
     const { config, share } = await req.get(url)
     setState((draft) => {
       draft.wgts = config
