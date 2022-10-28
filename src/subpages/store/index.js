@@ -164,7 +164,7 @@ function StoreIndex() {
       <View className='header-block'>
         <CompShopBrand dtid={distributorId} />
       </View>
-      <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
+      <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList} >
         {/* 猜你喜欢 */}
         <SpRecommend className='recommend-block' info={likeList} />
       </HomeWgts>

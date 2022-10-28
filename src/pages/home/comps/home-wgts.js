@@ -27,23 +27,32 @@ import {
 import './home-wgts.scss'
 
 const initialState = {
-  localWgts: []
+  localWgts: [],
+  searchMethod: null
 }
 function HomeWgts(props) {
-  const { wgts, onLoad = () => {}, children } = props
+  const { wgts, dtid, onLoad = () => { }, children } = props
   const [state, setState] = useImmer(initialState)
-  const { localWgts } = state
+  const { localWgts, searchMethod } = state
 
   const fetch = ({ pageIndex, pageSize }) => {
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
-      `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${
-        x > wgts.length ? wgts.length : x
+      `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${x > wgts.length ? wgts.length : x
       }`
     )
+
+    const storeClick = () => {
+      Taro.navigateTo({
+        url: `/subpages/store/item-list?dtid=${dtid}`
+      })
+    }
+    let searchMethod = dtid && storeClick;
+
     setState((draft) => {
-      draft.localWgts[pageIndex - 1] = twgt
+      draft.localWgts[pageIndex - 1] = twgt,
+        draft.searchMethod = searchMethod
     })
 
     return {
@@ -61,7 +70,7 @@ function HomeWgts(props) {
             data-name={item.name}
           >
             {/* {item.name === "search" && <WgtSearchHome info={item} />} */}
-            {item.name === 'search' && <SpSearch info={item} />} {/** 搜索 */}
+            {item.name === 'search' && <SpSearch info={item} onClick={searchMethod} />} {/** 搜索 */}
             {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
             {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 文字轮播 */}
             {item.name === 'slider' && <WgtSlider isHomeSearch info={item} />} {/** 轮播 */}
