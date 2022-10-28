@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpLogin, SpPrivacyModal } from '@/components'
+import { SpPage, SpScrollView, SpLogin, SpPrivacyModal, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
@@ -14,15 +14,13 @@ import { entryLaunch, pickBy, classNames, showToast, log, isArray } from '@/util
 import './nearly-shop.scss'
 
 const initialState = {
-  areaArray: [[], [], []],
-  areaIndexArray: [0, 0, 0],
-  areaData: [],
   shopList: [],
   locationIng: false,
   chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
   type: 0, // 参数
-  search_type: undefined // 参数
+  search_type: undefined, // 参数
+  isSpAddressOpened: false,
 }
 
 function NearlyShop(props) {
@@ -39,16 +37,9 @@ function NearlyShop(props) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    fetchAddressList()
+    // fetchAddressList()
     // onPickerClick()
   }, [])
-
-  const fetchAddressList = async () => {
-    const areaList = await api.member.areaList()
-    setState((v) => {
-      v.areaData = areaList
-    })
-  }
 
   const fetchShop = async (params) => {
     const { pageIndex: page, pageSize } = params
@@ -90,11 +81,8 @@ function NearlyShop(props) {
   }
 
   const onConfirmSearch = async ({ detail }) => {
-    // console.log('onConfirmSearch:location', location)
-    const { areaArray:aA, areaIndexArray:aIA } = state
-    const _address = aA[0][aIA[0]]+aA[1][aIA[1]]+aA[2][aIA[2]]
-    // console.log('onConfirmSearch:aA', aA, aIA)
-    // console.log('onConfirmSearch:_address', _address )
+    const { chooseValue } = state
+    const _address = chooseValue.join('') //浙江省杭州市西湖区
     
     const res = await entryLaunch.getLnglatByAddress(_address)
     // console.log('onConfirmSearch:res', res)
@@ -111,80 +99,6 @@ function NearlyShop(props) {
       })
       shopRef.current.reset()
     }
-  }
-
-  const onPickerClick = () => {
-    const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
-    const p_label = chooseProvice
-    const c_label = chooseCity
-    const d_label = chooseDistrict
-    let chooseIndex = []
-    let proviceArr = []
-    let cityArr = []
-    let countyArr = []
-    state.areaData.map((item, index) => {
-      proviceArr.push(item.label)
-      if (item.label == p_label) {
-        chooseIndex.push(index)
-        item.children.map((c_item, c_index) => {
-          cityArr.push(c_item.label)
-          if (c_item.label == c_label) {
-            chooseIndex.push(c_index)
-            c_item.children.map((cny_item, cny_index) => {
-              countyArr.push(cny_item.label)
-              if (cny_item.label == d_label) {
-                chooseIndex.push(cny_index)
-              }
-            })
-          }
-        })
-      }
-    })
-    setState((v) => {
-      v.areaIndexArray = chooseIndex
-      v.areaArray = [proviceArr, cityArr, countyArr]
-    })
-  }
-
-  const onPickerChange = async ({ detail }) => {
-    const { value } = detail || {}
-    const [one, two, three] = areaArray
-    const chooseValue = [one[value[0]], two[value[1]], three[value[2]]]
-    setState((v) => {
-      v.areaIndexArray = value
-      v.chooseValue = chooseValue
-    })
-  }
-
-  const onColumnChange = ({ detail }) => {
-    const { column, value } = detail
-    let cityArr = []
-    let countyArr = []
-    if (column == 0) {
-      cityArr = state.areaData[value].children.map((item) => item.label)
-      countyArr = state.areaData[value].children[0].children.map((item) => item.label)
-      setState((v) => {
-        v.areaIndexArray[0] = value
-        v.areaIndexArray[1] = 0
-        v.areaIndexArray[2] = 0
-        v.areaArray[1] = cityArr
-        v.areaArray[2] = countyArr
-      })
-    } else if (column == 1) {
-      countyArr = state.areaData[state.areaIndexArray[0]].children[value].children.map(
-        (item) => item.label
-      )
-      setState((v) => {
-        v.areaIndexArray[1] = value
-        v.areaIndexArray[2] = 0
-        v.areaArray[2] = countyArr
-      })
-    } else {
-      setState((v) => {
-        v.areaIndexArray[2] = value
-      })
-    }
-    // console.log('onColumnChange：detail', detail)
   }
 
   // 定位
@@ -257,7 +171,30 @@ function NearlyShop(props) {
     }
   }
 
-  const { areaIndexArray, areaArray, chooseValue, showType } = state
+  const handleClickCloseSpAddress = () => {
+    setState((v) => {
+      v.isSpAddressOpened = false
+    })
+  }
+
+  const handleClickOpenSpAddress = () => {
+    setState((v) => {
+      v.isSpAddressOpened = true
+    })
+  }
+
+  const onPickerChange = (selectValue) => {
+    const chooseValue = [
+      selectValue[0].label,
+      selectValue[1].label,
+      selectValue[2].label
+    ]
+    setState((v)=>{
+      v.chooseValue = chooseValue
+    })
+  }
+
+  const { chooseValue, isSpAddressOpened } = state
   // const { province, city, district } = location
   // const locationValue = province + city + district
 
@@ -266,21 +203,12 @@ function NearlyShop(props) {
       <View className='search-block'>
         <View className='search-bar'>
           <View className='region-picker'>
-            <Picker
-              mode='multiSelector'
-              onClick={onPickerClick}
-              onChange={onPickerChange}
-              onColumnChange={onColumnChange}
-              value={areaIndexArray}
-              range={areaArray}
-              style={{ width: '100%' }}
-            >
-              <View className='pick-title' onClick={onPickerClick}>
-                <View className='iconfont icon-periscope'></View>
-                <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-                <Text className='iconfont icon-arrowDown'></Text>
-              </View>
-            </Picker>
+            <SpAddress isOpened={isSpAddressOpened} onClose={handleClickCloseSpAddress} onChange={onPickerChange}/>
+            <View className='pick-title' onClick={handleClickOpenSpAddress}>
+              <View className='iconfont icon-periscope'></View>
+              <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
+              <Text className='iconfont icon-arrowDown'></Text>
+            </View>
           </View>
 
           <View className='search-comp-wrap'>
