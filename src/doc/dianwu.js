@@ -163,11 +163,19 @@ export const ORDER_INFO = {
       totalFee: ({ total_fee }) => total_fee / 100,
       price: ({ price }) => price / 100,
       num: 'num',
-      refundNum: 1,
+      refundNum: 'left_aftersales_num',
       checked: false,
       discountFee: ({ discount_fee }) => discount_fee / 100,
       point: ({ point_fee }) => point_fee / 100
     })
+  },
+  refundFee: ({ items }) => {
+    const remainFee = items.reduce((total, current) => total + current.remain_fee, 0)
+    return (remainFee / 100).toFixed(2)
+  },
+  refundPoint: ({ items }) => {
+    const remainPoint = items.reduce((total, current) => total + current.remain_point, 0)
+    return remainPoint
   },
   ziti_info: 'ziti_info',
   user_id: 'user_id',
