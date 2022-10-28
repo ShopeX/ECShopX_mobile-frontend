@@ -90,13 +90,9 @@ function NearlyShop(props) {
   }
 
   const onConfirmSearch = async ({ detail }) => {
-    // console.log('onConfirmSearch:location', location)
-    const { areaArray:aA, areaIndexArray:aIA } = state
-    const _address = aA[0][aIA[0]]+aA[1][aIA[1]]+aA[2][aIA[2]]
-    // console.log('onConfirmSearch:aA', aA, aIA)
-    // console.log('onConfirmSearch:_address', _address )
-    
-    const res = await entryLaunch.getLnglatByAddress(_address)
+    const { chooseValue } = state
+    const _address = chooseValue[0] + chooseValue[1] + chooseValue[2]    
+    const res = await entryLaunch.getLnglatByAddress(detail)
     // console.log('onConfirmSearch:res', res)
     const { lng, lat, error } = res
     if (error) {
