@@ -1,6 +1,12 @@
 @import "../../style/imports";
 
 .page-recommend-list {
+  .filter-bar{
+    position: absolute;
+    width: 100%;
+    z-index: 9999;
+    top: 70px;
+  }
   .recommend-list {
     &__toolbar {
       position: fixed;
@@ -20,6 +26,7 @@
       }
       .search-input {
         box-shadow: none;
+        padding: 10px 0;
         &__focus{
           .at-search-bar {
             padding-right: 30px !important;
@@ -54,6 +61,7 @@
     }
     &__tabs {
       display: flex;
+      
       .filter-bar__item {
         flex: 1;
         justify-content: center;
