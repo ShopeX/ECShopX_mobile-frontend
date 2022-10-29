@@ -20,7 +20,7 @@ const {store} = configStore()
   }),
   (dispatch) => ({
     onAddFav: ({ item_id, fav_id }) =>
-      dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+    dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
     onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
   })
 )

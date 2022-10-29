@@ -125,6 +125,17 @@ function SpLogin(props, ref) {
     }
   }
 
+  // 已注册会员登录
+  const handleUserLogin = async () => {
+    try {
+      await login()
+      setLoginModal(false)
+      onChange && onChange()
+    } catch (e) {
+      setIsNewUser(true)
+    }
+  }
+
   useImperativeHandle(ref, () => ({
     _setPolicyModal: () => {
       setPolicyModal(true)
@@ -159,9 +170,12 @@ function SpLogin(props, ref) {
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
-            <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
+            { isNewUser && <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
               登录
-            </AtButton>
+            </AtButton>}
+            {!isNewUser && <AtButton type='primary' onClick={handleUserLogin}>
+              登录
+            </AtButton>}
           </View>
         </View>
       </AtCurtain>

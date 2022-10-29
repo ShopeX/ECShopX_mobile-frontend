@@ -82,8 +82,7 @@ function NearlyShop(props) {
 
   const onConfirmSearch = async ({ detail }) => {
     const { chooseValue } = state
-    const _address = chooseValue.join('') //浙江省杭州市西湖区
-    
+    const _address = chooseValue.join('')
     const res = await entryLaunch.getLnglatByAddress(_address)
     // console.log('onConfirmSearch:res', res)
     const { lng, lat, error } = res
@@ -215,7 +214,7 @@ function NearlyShop(props) {
             <Text className='iconfont icon-sousuo-01'></Text>
             <Input
               className='search-comp'
-              placeholder='输入收货地址寻找周边门店'
+              placeholder='输入门店名称'
               confirmType='search'
               value={state.keyword}
               disabled={!location?.address}

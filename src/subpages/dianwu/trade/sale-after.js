@@ -192,7 +192,7 @@ function DianwuTradeSaleAfter(props) {
           })
         }}
       />}></SpCell>
-      <View className='cell-tip'>{`实际可退金额：${info?.itemFeeNew.toFixed(2)}`}</View>
+      <View className='cell-tip'>{`实际可退金额：${info?.refundFee}`}</View>
     </View>
 
     <View className='refund-point'>
@@ -205,7 +205,7 @@ function DianwuTradeSaleAfter(props) {
           })
         }}
       />}></SpCell>
-      <View className='cell-tip'>{`实际可退积分：${info?.itemPoint}`}</View>
+      <View className='cell-tip'>{`实际可退积分：${info?.refundPoint}`}</View>
     </View>
 
     <View className='return-goods-type'>

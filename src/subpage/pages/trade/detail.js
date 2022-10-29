@@ -839,7 +839,7 @@ export default class TradeDetail extends Component {
             )}
 
             {
-              info.receipt_type === 'ziti' && (
+              info.receipt_type === 'ziti' && info.ziti_info && (
                 <View className='ziti-container'>
                   <View className='ziti-name'>自提点：{info.ziti_info.name}</View>
                   <View className='ziti-address'>自提地址：{`${info.ziti_info.province}${info.ziti_info.city}${info.ziti_info.area}${info.ziti_info.address}`}</View>
@@ -1112,18 +1112,19 @@ export default class TradeDetail extends Component {
             }
             {
               // 申请售后
-              (info.status === 'WAIT_SELLER_SEND_GOODS' ||
-                (info.status === 'TRADE_SUCCESS' &&
-                  (info.receipt_type !== 'dada' ||
-                    info.dada.dada_status === 4 ||
-                    info.dada.dada_status === 10)) ||
-                (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-                  (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
-                  info.receipt_type !== 'dada')) &&
-              info.can_apply_aftersales === 1 &&
-              info.order_class !== 'excard' &&
-              !VERSION_IN_PURCHASE &&
-              !this.isPointitemGood() && (
+              // (info.status === 'WAIT_SELLER_SEND_GOODS' ||
+              //   (info.status === 'TRADE_SUCCESS' &&
+              //     (info.receipt_type !== 'dada' ||
+              //       info.dada.dada_status === 4 ||
+              //       info.dada.dada_status === 10)) ||
+              //   (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+              //     (info.is_all_delivery || info.delivery_status == 'PARTAIL') &&
+              //     info.receipt_type !== 'dada')) &&
+              // info.can_apply_aftersales === 1 &&
+              // info.order_class !== 'excard' &&
+              // !VERSION_IN_PURCHASE &&
+              // !this.isPointitemGood() && (
+              info.can_apply_aftersales === 1 && (
                 <View
                   className={`trade-detail__footer__btn ${info.is_logistics &&
                     'trade-detail__footer_active trade-detail__footer_allWidthBtn'
@@ -1143,10 +1144,10 @@ export default class TradeDetail extends Component {
                 info.dada.dada_status !== 9) && (
                 <View
                   className={`trade-detail__footer__btn trade-detail__footer_active ${info.order_class === 'excard' ||
-                      info.can_apply_aftersales !== 1 ||
-                      (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
-                      ? 'trade-detail__footer_allWidthBtn'
-                      : ''
+                    info.can_apply_aftersales !== 1 ||
+                    (info.status === 'WAIT_BUYER_CONFIRM_GOODS' && info.receipt_type === 'dada')
+                    ? 'trade-detail__footer_allWidthBtn'
+                    : ''
                     }`}
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};`}
                   onClick={this.handleClickBtn.bind(this, 'home')}
@@ -1177,10 +1178,10 @@ export default class TradeDetail extends Component {
               // 联系客服
               (info.status === 'TRADE_SUCCESS' ||
                 (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-              info.order_class !== 'excard' && !isWeb  &&(
+              info.order_class !== 'excard' && !isWeb && (
                 <View
                   className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 ||
-                      (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
+                    (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
                     'trade-detail__footer_allWidthBtn'
                     }`}
                   style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
@@ -1193,10 +1194,10 @@ export default class TradeDetail extends Component {
                     >
                       联系客服
                     </FloatMenuMeiQia>
-                  ) : (                    
-                      (<Button openType='contact' className='contact'>
-                        联系客服
-                      </Button>)
+                  ) : (
+                    (<Button openType='contact' className='contact'>
+                      联系客服
+                    </Button>)
                   )}
                 </View>
               )
