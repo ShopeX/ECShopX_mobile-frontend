@@ -79,7 +79,8 @@ export default class ItemFav extends Component {
             point: 'point',
             // price: ({ price }) => (price/100).toFixed(2),
             price: ({ price, item_price }) => ((price || item_price) / 100).toFixed(2),
-            is_fav: ({ item_id }) => this.hasFav(item_id)
+            // is_fav: ({ item_id }) => this.hasFav(item_id)
+            is_fav: true
           })
           total = res.total_count
           break
@@ -187,6 +188,7 @@ export default class ItemFav extends Component {
 
   render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
+    console.log('ItemFav:list', list)
     return (
       <View className='page-goods-fav'>
         <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
