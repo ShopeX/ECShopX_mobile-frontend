@@ -69,7 +69,7 @@
     "use-immer": "^0.6.0"
   },
   "devDependencies": {
-    "@shopex/taro-plugin-modules": "^1.0.11",
+    "@shopex/taro-plugin-modules": "^1.0.12",
     "@tarojs/cli": "3.4.3",
     "@tarojs/mini-runner": "3.4.3",
     "@tarojs/webpack-runner": "3.4.3",

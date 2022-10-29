@@ -96,6 +96,7 @@ export default class SearchBar extends Component {
       showSearchDailog: isOpened,
       isShowAction: false
     })
+    this.handleClear()
   }
 
   handleClickDelete = () => {
