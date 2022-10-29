@@ -56,11 +56,12 @@
     }
   }
   .items-container {
-    padding: 10px 32px;
+    padding: 0 32px 20px;
   }
   .item-wrap {
     display: flex;
     align-items: center;
+    margin-bottom: 20px;
   }
   .item-bd {
     flex: 1;
@@ -70,6 +71,7 @@
   .goods-info {
     margin-left: 24px;
     flex: 1;
+    margin-top: 8px;
     &-hd {
       display: flex;
       justify-content: space-between;
@@ -81,6 +83,7 @@
     .goods-title {
       font-weight: 500;
       color: #111a34;
+      font-size: 26px;
     }
     .goods-num {
       font-size: 22px;
@@ -191,7 +194,38 @@
   .cell-tip {
     font-size: 24px;
     text-align: right;
-    margin: 0 32rpx;
-    color: #ff5257;
+    margin: 10px 32px;
+    color: #666;
+  }
+
+  .at-input-number {
+    // margin-bottom: 10px;
+    /* prettier-ignore */
+    border: 1PX solid #999;
+    border-radius: 0;
+    &__btn {
+      color: #222;
+      padding: 0;
+      width: 40px;
+      display: block;
+      height: 40px;
+      box-sizing: border-box;
+      line-height: 44px;
+      .at-icon-subtract {
+        transform: scale(0.8);
+      }
+      .at-icon-add {
+        transform: scale(0.8);
+      }
+    }
+    &__input {
+      /* prettier-ignore */
+      border-left: 1PX solid #999;
+      border-right: 1px solid #999;
+      width: 60px;
+      height: 32px;
+      line-height: 32px;
+      font-size: 24px;
+    }
   }
 }

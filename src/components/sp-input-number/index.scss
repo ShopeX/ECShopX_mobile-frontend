@@ -1,0 +1,12 @@
+
+
+.sp-input-number {
+  &.disabled {
+    .at-input-number__input {
+      color: #ccc !important;
+    }
+  }
+  .at-input-number--disabled {
+    color: #ccc !important;
+  }
+}

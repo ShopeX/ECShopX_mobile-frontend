@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import _toString from 'lodash/toString'
 
 import AtComponent from './component'
+import './index.scss'
 
 // 实现两数相加并保留小数点后最短尾数
 function addNum(num1, num2) {
@@ -111,9 +112,11 @@ class AtInputNumber extends AtComponent {
     }
     const inputValue = this.handleValue(value)
     const rootCls = classNames(
+      'sp-input-number',
       'at-input-number',
       {
-        'at-input-number--lg': size
+        'at-input-number--lg': size,
+        'disabled': disabled
       },
       className
     )
@@ -134,7 +137,7 @@ class AtInputNumber extends AtComponent {
           style={inputStyle}
           type={type}
           value={inputValue}
-          // disabled
+          disabled={disabled}
           onInput={this.handleInput}
           onBlur={this.handleBlur}
         />

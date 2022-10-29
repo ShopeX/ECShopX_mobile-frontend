@@ -5,7 +5,7 @@ import Taro, { getCurrentInstance } from "@tarojs/taro";
 import api from "@/api"
 import doc from "@/doc"
 import { AtTabs, AtInput, AtTextarea } from 'taro-ui'
-import { SpPage, SpButton, SpCell, SpCheckbox, SpImage, SpInputNumber, SpSelect, SpUpload } from '@/components'
+import { SpPage, SpButton, SpCell, SpCheckbox, SpImage, SpInputNumber, SpSelect, SpUpload, SpPrice } from '@/components'
 import { View, Text, Picker } from "@tarojs/components"
 import { pickBy, showToast, isNumber } from '@/utils'
 import CompTradeInfo from './../comps/comp-trade-info'
@@ -50,6 +50,17 @@ function DianwuTradeSaleAfter(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeId, info, curTabIdx, tabList, reason, reasons, refundFee, refundPoint, goodsReturned, goodsReturnedList, description, pic } = state
 
+  // useEffect(() => {
+  //   if (info) {
+  //     const { items } = info
+  //     setState(draft => {
+  //       draft.refundFee = items
+  //         .filter((item) => item.checked)
+  //         .reduce((sum, { totalFee, num, refundNum }) => sum + totalFee / num * refundNum, 0)
+  //     })
+  //   }
+  // }, [info])
+
   const onCancel = () => {
     Taro.navigateBack()
   }
@@ -66,13 +77,16 @@ function DianwuTradeSaleAfter(props) {
         num: item.refundNum
       }
     })
-    if(items.length == 0) {
+    if (items.length == 0) {
       return showToast('请选择需要售后的商品')
     }
-    if(!isNumber(refundFee)) {
+    if (!isNumber(refundFee)) {
       return showToast('请填写退款金额')
     }
-    if(!isNumber(refundPoint)) {
+    if(refundFee > getRealRefundFee()) {
+      return showToast('退款金额超过实际可退金额')
+    }
+    if (!isNumber(refundPoint)) {
       return showToast('请填写积分')
     }
     const params = {
@@ -88,11 +102,11 @@ function DianwuTradeSaleAfter(props) {
     }
     await api.dianwu.salesAfterApply(params)
     let type = 3
-    if(params.aftersales_type == 'ONLY_REFUND') {
+    if (params.aftersales_type == 'ONLY_REFUND') {
       type = 3
-    } else if(params.aftersales_type == 'REFUND_GOODS' && !params.goods_returned) {
+    } else if (params.aftersales_type == 'REFUND_GOODS' && !params.goods_returned) {
       type = 4
-    } else if(params.aftersales_type == 'REFUND_GOODS' && params.goods_returned) {
+    } else if (params.aftersales_type == 'REFUND_GOODS' && params.goods_returned) {
       type = 5
     }
     Taro.redirectTo({ url: `/subpages/dianwu/trade/result?type=${type}` })
@@ -106,12 +120,24 @@ function DianwuTradeSaleAfter(props) {
     setState(draft => {
       draft.info.items[index].checked = e
     })
-   }
+  }
 
   const onChangeItemNum = (e, index) => {
+
     setState(draft => {
-      draft.info.items[index] = e
+      draft.info.items[index].refundNum = e
     })
+  }
+
+  const getRealRefundFee = () => {
+    let rFee = 0
+    if (info) {
+      const { items } = info
+      rFee = items
+        .filter((item) => item.checked)
+        .reduce((sum, { totalFee, num, refundNum }) => sum + totalFee / num * refundNum, 0)
+    }
+    return rFee
   }
 
   return <SpPage className='page-dianwu-sale-after' renderFooter={
@@ -158,16 +184,20 @@ function DianwuTradeSaleAfter(props) {
           info?.items.map((item, index) => (
             <View className='item-wrap' key={`item-wrap__${index}`}>
               <View className='item-hd'>
-                <SpCheckbox checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
+                <SpCheckbox disabled={!item.refundNum} checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
               </View>
               <View className='item-bd'>
-                <SpImage src={item.pic} width={110} height={110} radius={8} />
+                <SpImage src={item.pic} width={128} height={128} radius={8} />
                 <View className='goods-info'>
-                  <View className='goods-info-hd'><Text className='goods-title'>{item.itemName}</Text>
-                    <Text className='goods-num'>{`数量：${item.num}`}</Text></View>
+                  <View className='goods-info-hd'>
+                    <Text className='goods-title'>{item.itemName}</Text>
+                    <Text className='goods-num'>{`数量：${item.num}`}</Text>
+                  </View>
+                  <View><SpPrice value={item.totalFee / item.num} /></View>
                   <View className='goods-info-bd'>
                     <View className='sku-info'>{item.itemSpecDesc && <Text>{`规格：${item.itemSpecDesc}`}</Text>}</View>
                     <SpInputNumber
+                      disabled={!item.refundNum}
                       value={item.refundNum}
                       max={item.num}
                       min={1}
@@ -192,7 +222,7 @@ function DianwuTradeSaleAfter(props) {
           })
         }}
       />}></SpCell>
-      <View className='cell-tip'>{`实际可退金额：${info?.refundFee}`}</View>
+      <View className='cell-tip'>{`实际可退金额：${getRealRefundFee()}`}</View>
     </View>
 
     <View className='refund-point'>
@@ -208,7 +238,7 @@ function DianwuTradeSaleAfter(props) {
       <View className='cell-tip'>{`实际可退积分：${info?.refundPoint}`}</View>
     </View>
 
-    <View className='return-goods-type'>
+    {curTabIdx == 1 && <View className='return-goods-type'>
       <SpCell title='回寄方式' value={<SpSelect
         info={goodsReturnedList}
         value={goodsReturned}
@@ -218,7 +248,7 @@ function DianwuTradeSaleAfter(props) {
           })
         }}
       />}></SpCell>
-    </View>
+    </View>}
 
     <View className='desc-container'>
       <View className='title'>补充描述和凭证（选填）</View>
