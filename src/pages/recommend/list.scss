@@ -1,12 +1,14 @@
 @import "../../style/imports";
 
 .page-recommend-list {
+  /*  #ifdef  alipay  */
   .filter-bar{
     position: absolute;
     width: 100%;
     z-index: 9999;
     top: 90px;
   }
+  /*  #endif  */
   .recommend-list {
     &__toolbar {
       position: fixed;
@@ -26,7 +28,9 @@
       }
       .search-input {
         box-shadow: none;
+        /*  #ifdef  alipay  */
         padding: 20px 0;
+        /*  #endif  */
         &__focus{
           .at-search-bar {
             padding-right: 30px !important;
