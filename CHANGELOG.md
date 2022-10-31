@@ -2,6 +2,46 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.6.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.5.0...v3.6.0) (2022-10-31)
+
+
+### Features
+
+* 店铺自提点 ([2ac7245](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2ac7245ee8c62126f42b0f217e455becc603a1b0))
+
+
+### Bug Fixes
+
+* 【碧海商城】H5端，售后填写物流公司时，物流公司被遮盖无法选择 ([63458aa](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/63458aadfada223c285408ba4822823051f62ef1))
+* adpay微信支付宝 ([fcce9eb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fcce9eb05ddc3b7a6478faa96c236d239adb74fc))
+* bug ([1b9daa5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1b9daa506d352c311b098f90e251317ae21b8fde))
+* bug ([1ba18d0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1ba18d06621935337dcba0b97d027b76545a7afa))
+* bug ([9764251](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/97642517ac333ab37d24a825626dee7bee5abaa8))
+* ECX-3441【碧海商城】H5端，售后详情页，联系客服按钮点击无效; ([efb2224](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/efb22249670a861c851971495787950ebede13a2))
+* ECX-3447 换购>去选择：页面标题显示“微商城”；同时商品被标题条遮挡 in H5 ([e3749b2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e3749b2bb7e94107e4fe98d682d9c048ec2a1d86))
+* fix isWeb ([82f70eb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/82f70ebc89c5dde91a464b312012f02acd9848af))
+* fix pages/liveroom/index show cart num ([73517d9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/73517d9bc23c157e271dddf97e0ee72debb62f66))
+* fix pages/recommend/list cart not show num ([5cbf496](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5cbf4963bcf7eb4b7e5fa5d5b3dc2fd4856e874a))
+* fix search address ([6d3a996](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6d3a996bc1567637caddb73d6c29aaa991b6f620))
+* hidden web情况下 客服按钮 ([3ae8e5b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3ae8e5b2b8ded5aee1a188df0d19015398673bc4))
+* isNostores ([98febaf](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/98febafb6f389eed03fdf628b59358bf07f22a73))
+* refundFee ([222ca3e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/222ca3e50b36889bbc222302030b87931ce3be75))
+* search address ([c409378](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c409378c37576d8ad31d8eb5c49d1110235ad17a))
+* search store ([54f48a4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/54f48a44e74fed58f9e2790c182f59e29df14a1e))
+* ziti_info ([a47e8c0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a47e8c0b1e2a96a277f76d54e08f2c1946d7e7d6))
+* 优化售后 ([7a3cea3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7a3cea37905f607bd729454267c923be2439d230))
+* 售后数量限制 ([0451b4f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0451b4fc25a2367fa3606a27783282f3ba1cd339))
+* 子订单id ([bc3eee3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/bc3eee36205d71228dabd721f306a338b530d5a1))
+* 定位 ([d9ef8fc](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d9ef8fc63ad5fea8ff6bd3fb5d7bb2d861fbdc4c))
+* 店务售后 ([666f684](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/666f684b5849992214ee43c0d3a7e892b7c1b8e2))
+* 店务端售后 ([1313f80](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1313f808961069f44a1d5fcdedbe5232876b99da))
+* 支付更改 ([ed472db](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ed472db9b695939f1bb4cb861b73965687f2e9ef))
+* 自动获焦 ([140e643](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/140e643772047af24c74b159269b2cc766e35c92))
+* 自定义导航 ([67a93f2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/67a93f2b4d44ef9afb4426014327a47d16af1d2a))
+* 自提列表去除店铺id ([6c4b6e9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6c4b6e9411f50702baaf544891a7bd90f8cc1070))
+* 退款金额验证 ([e4dcf15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e4dcf15b1ffecfd053c82f35208535f57db4a3c5))
+* 首页自定义导航 ([3ea52ab](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3ea52ab52c0c3731e0a1fc0a449e33a2d54b6f99))
+
 ## [3.5.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.4.0-live...v3.5.0) (2022-09-29)
 
 
