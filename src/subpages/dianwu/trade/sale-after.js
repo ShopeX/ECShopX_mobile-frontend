@@ -73,7 +73,7 @@ function DianwuTradeSaleAfter(props) {
     const [img] = pic || []
     const items = info?.items.filter(item => item.checked).map(item => {
       return {
-        id: item.itemId,
+        id: item.id,
         num: item.refundNum
       }
     })

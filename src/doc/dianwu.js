@@ -156,6 +156,7 @@ export const PENDING_ITEM = {
 export const ORDER_INFO = {
   items: ({ items }) => {
     return pickBy(items, {
+      id: 'id',
       pic: 'pic',
       itemId: 'item_id',
       itemName: 'item_name',
