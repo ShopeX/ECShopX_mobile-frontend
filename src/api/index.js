@@ -28,6 +28,7 @@ import * as purchase from './purchase'
 import * as guide from './guide'
 import * as dianwu from './dianwu'
 import * as community from './community'
+import * as im from './im'
 
 export default {
   article,
@@ -59,5 +60,6 @@ export default {
   merchant,
   purchase,
   dianwu,
-  community
+  community,
+  im
 }
