@@ -185,7 +185,7 @@ function DianwuTradeSaleAfter(props) {
           info?.items.map((item, index) => (
             <View className='item-wrap' key={`item-wrap__${index}`}>
               <View className='item-hd'>
-                <SpCheckbox disabled={!item.refundNum} checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
+                <SpCheckbox disabled={!item.leftAftersalesNum} checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
               </View>
               <View className='item-bd'>
                 <SpImage src={item.pic} width={128} height={128} radius={8} />
@@ -198,9 +198,9 @@ function DianwuTradeSaleAfter(props) {
                   <View className='goods-info-bd'>
                     <View className='sku-info'>{item.itemSpecDesc && <Text>{`规格：${item.itemSpecDesc}`}</Text>}</View>
                     <SpInputNumber
-                      disabled={!item.refundNum}
+                      disabled={!item.leftAftersalesNum}
                       value={item.refundNum}
-                      max={item.num}
+                      max={item.leftAftersalesNum}
                       min={1}
                       onChange={(e) => onChangeItemNum(e, index)}
                     />
