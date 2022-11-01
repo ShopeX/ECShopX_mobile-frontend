@@ -1,6 +1,6 @@
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
-import { getExtConfigData } from '@/utils'
+import { getExtConfigData,isAlipay, } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
 const canvasWidth = 600
@@ -30,10 +30,11 @@ class GoodsDetailPoster {
     const { user_id, avatar } = this.userInfo
     // const { dtid } =
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
-    
+
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index  
-    console.log('wxappCode:', wxappCode)
+    const wxappCode = isAlipay ? `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}` : `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
+    
+    
 
     const pic = imgs[0].replace('http:', 'https:')
     // 商品图片
@@ -42,6 +43,11 @@ class GoodsDetailPoster {
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
     // 头像
     if(avatar) this.avatar = await Taro.getImageInfo({ src: avatar })
+
+    console.log('GoodsDetailPoster-wxappCode:', wxappCode)
+    console.log('GoodsDetailPoster-this.goodsImg:', this.goodsImg)
+    console.log('GoodsDetailPoster-this.codeImg:', this.codeImg)
+    console.log('GoodsDetailPoster-this.avatar:', this.avatar)
     const drawOptions = {
       ctx: this.ctx,
       toPx: this.toPx,

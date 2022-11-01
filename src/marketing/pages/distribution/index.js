@@ -172,7 +172,7 @@ export default class DistributionDashboard extends Component {
     shop_status = JSON.parse(shop_status === 1)
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
-    console.log('wxappCode:', wxappCode)
+    console.log('DistributionDashboard-wxappCode:', wxappCode)
     let avatarImg, bck
     if (avatar) {
       // 头像

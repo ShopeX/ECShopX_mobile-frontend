@@ -12,6 +12,9 @@
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
+
+import { isAlipay, } from '@/utils'
+
 export function _drawRadiusRect(drawData, drawOptions) {
   const { x, y, w, h, r } = drawData
   const {
@@ -102,12 +105,13 @@ export function _drawSingleText(drawData, drawOptions) {
   } = drawData
   // console.log(drawData)
   const { ctx, toPx, toRpx } = drawOptions
+  console.log('_drawSingleText:', drawOptions)
   ctx.save()
   ctx.beginPath()
   ctx.font = fontStyle + ' ' + fontWeight + ' ' + toPx(fontSize, true) + 'px ' + fontFamily
-  ctx.setGlobalAlpha(opacity)
+  !isAlipay && ctx.setGlobalAlpha(opacity)
   // ctx.setFontSize(toPx(fontSize));
-  ctx.setFillStyle(color)
+  !isAlipay && ctx.setFillStyle(color)
   ctx.setTextBaseline(baseLine)
   ctx.setTextAlign(textAlign)
   let textWidth = toRpx(ctx.measureText(text).width)
@@ -267,7 +271,7 @@ export function drawImage(data, drawOptions) {
     ctx.strokeStyle = 'rgba(255,255,255,0)'
     ctx.stroke()
     ctx.clip()
-    ctx.drawImage(
+    !isAlipay && ctx.drawImage(
       imgPath,
       toPx(sx),
       toPx(sy),
@@ -278,13 +282,27 @@ export function drawImage(data, drawOptions) {
       toPx(w),
       toPx(h)
     )
+    if(isAlipay){
+      const img = canvas.createImage();
+      img.src = imgPath;
+      img.onload = () => {
+        ctx.drawImage(img, toPx(sx),
+        toPx(sy),
+        toPx(sw),
+        toPx(sh),
+        toPx(x),
+        toPx(y),
+        toPx(w),
+        toPx(h));
+      }
+    }
     if (borderWidth > 0) {
       ctx.setStrokeStyle(borderColor)
       ctx.setLineWidth(toPx(borderWidth))
       ctx.stroke()
     }
   } else {
-    ctx.drawImage(
+    !isAlipay && ctx.drawImage(
       imgPath,
       toPx(sx),
       toPx(sy),
@@ -295,7 +313,23 @@ export function drawImage(data, drawOptions) {
       toPx(w),
       toPx(h)
     )
+    
+    if(isAlipay){
+      const img = canvas.createImage();
+      img.src = imgPath;
+      img.onload = () => {
+        ctx.drawImage(img, toPx(sx),
+        toPx(sy),
+        toPx(sw),
+        toPx(sh),
+        toPx(x),
+        toPx(y),
+        toPx(w),
+        toPx(h));
+      }
+    }
   }
+  
   ctx.restore()
 }
 
@@ -395,8 +429,8 @@ export function drawBlock(
   if (backgroundColor) {
     // 画面
     ctx.save()
-    ctx.setGlobalAlpha(opacity)
-    ctx.setFillStyle(backgroundColor)
+    !isAlipay && ctx.setGlobalAlpha(opacity)
+    !isAlipay && ctx.setFillStyle(backgroundColor)
     if (borderRadius > 0) {
       // 画圆角矩形
       let drawData = {
@@ -416,7 +450,7 @@ export function drawBlock(
   if (borderWidth) {
     // 画线
     ctx.save()
-    ctx.setGlobalAlpha(opacity)
+    !isAlipay && ctx.setGlobalAlpha(opacity)
     ctx.setStrokeStyle(borderColor)
     ctx.setLineWidth(toPx(borderWidth))
     if (borderRadius > 0) {

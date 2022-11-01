@@ -101,7 +101,8 @@
   .canvasbox {
     // border: 1PX solid red;
     position: fixed;
-    top: -200%;
-    left: -200%;
+    // top: -200%;
+    // left: -200%;
+    background: rgba(0,0,0,0.3);
   }
 }
