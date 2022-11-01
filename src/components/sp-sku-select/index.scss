@@ -72,14 +72,14 @@
     margin-top: 20px;
     .spec-name {
       display: block;
-      max-width: 260px;
-      @include text-overflow();
+      // max-width: 260px;
+      // @include text-overflow();
     }
   }
   .sku-btn {
     padding: 0 16px;
-    height: 60px;
-    line-height: 60px;
+    // height: 60px;
+    // line-height: 60px;
     background: #f5f5f5;
     /* prettier-ignore */
     border: 1PX solid #f5f5f5;
