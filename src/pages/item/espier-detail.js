@@ -348,18 +348,6 @@ function EspierDetail(props) {
     }
   }
 
-  const onCanvasReady = () => {
-    console.log('onCanvasReady')
-    // 通过 SelectorQuery 获取 Canvas 实例
-    Taro.createSelectorQuery().select('#canvas2').node().exec((res) => {
-        const canvas = res[0].node;
-        const ctx = canvas.getContext('2d');
-        console.log('canvas 宽高', canvas.width, canvas.height)
-        // 开始绘画
-        ctx.fillRect(0, 0, 50, 50);
-    });
-  }
-
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -393,7 +381,7 @@ function EspierDetail(props) {
         />
       }
     >      
-      <Canvas id="canvas2" type="2d" onReady={onCanvasReady} />
+      {/* <Canvas id="canvas2" type="2d" onReady={onCanvasReady} /> */}
       {!info && <SpLoading />}
       {info && (
         <View className='goods-contents'>

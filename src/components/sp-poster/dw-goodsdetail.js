@@ -8,12 +8,14 @@ const canvasHeight = 960
 
 class GoodsDetailPoster {
   constructor(props) {
-    const { ctx, info, userInfo, toPx, toRpx } = props
+    const { ctx, info, userInfo, toPx, toRpx, canvas } = props
     this.ctx = ctx
     this.info = info
     this.userInfo = userInfo
     this.toPx = toPx
     this.toRpx = toRpx
+    // alipay2.0 兼容
+    this.canvas = canvas
   }
 
   getCanvasSize() {
@@ -78,7 +80,8 @@ class GoodsDetailPoster {
         sw: this.goodsImg.width,
         sh: this.goodsImg.height
       },
-      drawOptions
+      drawOptions,
+      this.canvas
     )
     // 头像背景
     drawBlock(
@@ -106,7 +109,8 @@ class GoodsDetailPoster {
         sh: this.avatar.height,
         borderRadius: 80
       },
-      drawOptions
+      drawOptions,
+      this.canvas
     )
     // 姓名
     drawText(
@@ -184,7 +188,8 @@ class GoodsDetailPoster {
         sw: this.codeImg.width,
         sh: this.codeImg.height
       },
-      drawOptions
+      drawOptions,
+      this.canvas
     )
     drawText(
       {

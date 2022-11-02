@@ -307,6 +307,8 @@ function PointShopEspierCheckout() {
 
   // 商家留言
   const handleRemarkChange = (val) => {
+    if(val.length > 50) val = val.slice(0,50)
+    console.log('handleRemarkChange:remark', remark)
     setState((draft) => {
       draft.remark = val
     })

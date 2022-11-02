@@ -110,9 +110,6 @@ export function _drawSingleText(drawData, drawOptions) {
   ctx.beginPath()
   ctx.font = fontStyle + ' ' + fontWeight + ' ' + toPx(fontSize, true) + 'px ' + fontFamily
   !isAlipay && ctx.setGlobalAlpha(opacity)
-  // if(isAlipay){
-  //   ctx.globalAlpha(opacity)
-  // }
   // ctx.setFontSize(toPx(fontSize));
   !isAlipay && ctx.setFillStyle(color)
   !isAlipay && ctx.setTextBaseline(baseLine)
@@ -262,7 +259,6 @@ export function drawImage(data, drawOptions,canvas) {
     borderColor
   } = data
   ctx.save()
-  const args = [toPx(sx),toPx(sy),toPx(sw),toPx(sh),toPx(x),toPx(y),toPx(w),toPx(h)]
   if (borderRadius > 0) {
     let drawData = {
       x,
@@ -275,12 +271,29 @@ export function drawImage(data, drawOptions,canvas) {
     ctx.strokeStyle = 'rgba(255,255,255,0)'
     ctx.stroke()
     ctx.clip()
-    !isAlipay && ctx.drawImage(imgPath,...args)
+    !isAlipay && ctx.drawImage(
+      imgPath,
+      toPx(sx),
+      toPx(sy),
+      toPx(sw),
+      toPx(sh),
+      toPx(x),
+      toPx(y),
+      toPx(w),
+      toPx(h)
+    )
     if(isAlipay){
       const img = canvas.createImage();
       img.src = imgPath;
       img.onload = () => {
-        ctx.drawImage(img, ...args);
+        ctx.drawImage(img, toPx(sx),
+        toPx(sy),
+        toPx(sw),
+        toPx(sh),
+        toPx(x),
+        toPx(y),
+        toPx(w),
+        toPx(h));
       }
     }
     if (borderWidth > 0) {
@@ -289,12 +302,30 @@ export function drawImage(data, drawOptions,canvas) {
       ctx.stroke()
     }
   } else {
-    !isAlipay && ctx.drawImage(imgPath,...args)
+    !isAlipay && ctx.drawImage(
+      imgPath,
+      toPx(sx),
+      toPx(sy),
+      toPx(sw),
+      toPx(sh),
+      toPx(x),
+      toPx(y),
+      toPx(w),
+      toPx(h)
+    )
+
     if(isAlipay){
       const img = canvas.createImage();
       img.src = imgPath;
       img.onload = () => {
-        ctx.drawImage(img, ...args);
+        ctx.drawImage(img, toPx(sx),
+        toPx(sy),
+        toPx(sw),
+        toPx(sh),
+        toPx(x),
+        toPx(y),
+        toPx(w),
+        toPx(h));
       }
     }
   }
