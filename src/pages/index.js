@@ -198,8 +198,6 @@ function Home() {
       renderFooter={<SpTabbar />}
       loading={loading}
     >
-
-
       <View
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader

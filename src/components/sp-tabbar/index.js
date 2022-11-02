@@ -63,7 +63,7 @@ function SpTabbar(props) {
         {
           'sp-tabbar': true
         },
-        className
+        className,
       )}
       // color={colorPrimary}
       iconSize='20'

@@ -2,7 +2,7 @@
  * @Author: dreamworks.cnn@gmail.com
  * @Date: 2022-11-02 15:17:27
  * @LastEditors: dreamworks.cnn@gmail.com
- * @LastEditTime: 2022-11-02 16:35:02
+ * @LastEditTime: 2022-11-02 17:08:18
  * @FilePath: /ecshopxx-vshop/src/pages/index.config.js
  * @Description: 
  * 
@@ -14,6 +14,6 @@ export default {
   // onReachBottomDistance: 50
   navigationStyle: 'custom',
   transparentTitle: 'auto',
-  titlePenetrate: 'YES'
-  navigationBarTitleText: '首页'
+  titlePenetrate: 'YES',
+  navigationBarTitleText: ''
 }

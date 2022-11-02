@@ -107,7 +107,10 @@
 .at-tab-bar {
   padding: 0;
   align-items: center;
-
+  /*  #ifdef  alipay  */
+  padding: 10px 0 20px 0;
+  height: auto;
+  /*  #endif  */
   &__item {
     padding: 0 12px;
     line-height: 1;
@@ -153,7 +156,10 @@
 .at-tab-bar {
   box-shadow: -20px 5px 15px rgba(#000, 0.1);
   height: $tabbar-height;
-
+  /*  #ifdef  alipay  */
+  padding: 10px 0 20px 0;
+  height: auto;
+  /*  #endif  */
   [class^='icon-'] {
     font-size: $at-tab-bar-icon-font-size;
   }
