@@ -91,7 +91,7 @@ function CompDeliver(props, ref) {
     const _receiptType = deliveryList.find(item => !!_distributorInfo[item.key])
     setState((draft) => {
       draft.distributorInfo = _distributorInfo
-      draft.receiptType = _receiptType?.type
+      draft.receiptType = _receiptType?.type || 'logistics'
     })
   }
 
