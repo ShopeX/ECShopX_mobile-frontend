@@ -33,7 +33,7 @@ class GuideGoodsDetailPoster {
     console.log('GuideGoodsDetailPoster-wxappCode:', wxappCode)
 
     const pic = imgs[0].replace('http:', 'https:')
-    console.log('goods pic:', pic)
+    console.log('goods pic2:', pic)
     console.log('avatar:', avatar)
 
     // 商品图片

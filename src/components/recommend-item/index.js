@@ -19,11 +19,10 @@ export default class RecommendItem extends Component {
   }
 
   handleLikeClick = async (e) => {
-    e.stopPropagation()
     const { item_id, is_like } = this.props.info
-    // await api.item.collect(item_id)
+    const { count } = await api.article.praise(item_id)
+    return false
   }
-
   render () {
     const {
       info,
@@ -79,6 +78,7 @@ export default class RecommendItem extends Component {
               {!noShowZan && (
                 <View
                   className={`recommend-item__actions ${info.isPraise ? 'is_like__active' : ''}`}
+                  onClick={this.handleLikeClick.bind(this)}
                 >
                   <View className='iconfont icon-like'>
                     <Text>{info.articlePraiseNum}</Text>

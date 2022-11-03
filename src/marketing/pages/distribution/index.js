@@ -4,7 +4,7 @@ import { View, Text, Image, Navigator, Button, Canvas } from '@tarojs/components
 import { connect } from 'react-redux'
 import { SpNavBar, Loading, SpPage, SpPoster } from '@/components'
 import api from '@/api'
-import { pickBy, canvasExp, classNames, isArray, getExtConfigData } from '@/utils'
+import { pickBy, canvasExp, classNames, isArray, getExtConfigData, isAlipay } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import req from '@/api/req'
 import S from '@/spx'
@@ -173,6 +173,7 @@ export default class DistributionDashboard extends Component {
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
     console.log('DistributionDashboard-wxappCode:', wxappCode)
+    // debugger
     let avatarImg, bck
     if (avatar) {
       // 头像
@@ -187,7 +188,9 @@ export default class DistributionDashboard extends Component {
       }) // 背景图片
     }
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
-    if (avatarImg) {
+    console.log('DistributionDashboard-avatarImg:', avatarImg)
+    console.log('DistributionDashboard-codeImg:', codeImg)
+    if (avatarImg || isAlipay) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
         code: codeImg.path,
@@ -210,11 +213,13 @@ export default class DistributionDashboard extends Component {
 
   drawImage = () => {
     // 分享海报
+    console.log('drawImage run')
     const { posterImgs } = this.state
     if (!posterImgs) return
     const { avatar, code, bck, username } = posterImgs
     const ctx = Taro.createCanvasContext('myCanvas')
-
+    console.log('drawImage:ctx', ctx)
+    // debugger
     canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
     // canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
     // ctx.drawImage(bck, 0, 0, 750, 1335, 0, 0, 375, 640)
@@ -525,7 +530,7 @@ export default class DistributionDashboard extends Component {
             }}
           />
         )}
-        <Canvas className='canvas' canvas-id='myCanvas'></Canvas>
+        <Canvas className='canvas' canvas-id='myCanvas' id='myCanvas'></Canvas>
       </SpPage>
     )
   }

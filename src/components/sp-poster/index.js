@@ -9,7 +9,6 @@ import GoodsDetailPoster from './dw-goodsdetail'
 import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
 import GuideCheckout from './dw-guidecheckout'
 import Distribution from './dw-distribution'
-
 import './index.scss'
 
 const initialState = {
@@ -31,7 +30,8 @@ function SpPoster(props) {
   const { poster, pxWidth, pxHeight, eleId, ctx } = state
   console.log('SpPoster:state', state)
   useEffect(() => {
-    !isAlipay ? handleCreatePoster() : handleCreatePoster3()
+    // !isAlipay ? handleCreatePoster() : handleCreatePoster3()
+    handleCreatePoster()
   }, [])
 
   /**
@@ -66,6 +66,7 @@ function SpPoster(props) {
       title: '海报生成中...'
     })
     const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance().page)
+    console.log('sp-handleCreatePoster:ctx', ctx)
     let canvasObj
     switch (type) {
       case 'goodsDetial':
@@ -115,7 +116,7 @@ function SpPoster(props) {
         draft.ctx = ctx
       },
       async (_state) => {
-        console.log('handleCreatePoster-setState:_state', _state)
+        console.log('handleCreatePoster-setState:_state1', _state)
         await canvasObj.drawPoster()
         const poster = await getPoster(_state)
         Taro.hideLoading()
@@ -198,7 +199,7 @@ function SpPoster(props) {
             draft.canvas = res[0].node
           },
           async (_state) => {
-            console.log('handleCreatePoster-setState:_state', _state)
+            console.log('handleCreatePoster-setState:_state2', _state)
             await canvasObj.drawPoster()
             const poster = await getPoster(_state)
             Taro.hideLoading()
@@ -209,147 +210,23 @@ function SpPoster(props) {
         )
       })
   }
-  const handleCreatePoster3 = () => {
-    Taro.showLoading({
-      title: '海报生成中...'
-    })
-    console.log('handleCreatePoster run')
-    let ctx = null
-    // 通过 SelectorQuery 获取 Canvas 实例
-    const query = my.createSelectorQuery()
-    console.log('query', query)
-    query
-      .select('#poster-canvas')
-      .node()
-      .exec((res) => {
-        const canvas = res[0].node
-        const ctx = canvas.getContext('2d')
-        let canvasObj
-        switch (type) {
-          case 'goodsDetial':
-            canvasObj = new GoodsDetailPoster({
-              canvas,
-              ctx,
-              info,
-              userInfo,
-              toPx,
-              toRpx
-            })
-            break
-          case 'guideGoodsDetial':
-            canvasObj = new GuideGoodsDetailPoster({
-              ctx,
-              info,
-              userInfo: guideInfo,
-              toPx,
-              toRpx
-            })
-            break
-          case 'guideCheckout':
-            canvasObj = new GuideCheckout({
-              ctx,
-              info,
-              userInfo: guideInfo,
-              toPx,
-              toRpx
-            })
-            break
-          case 'distribution':
-            canvasObj = new Distribution({
-              ctx,
-              info,
-              userInfo,
-              toPx,
-              toRpx
-            })
-            break
-          default:
-            break
-        }
-        console.log('handleCreatePoster:canvasObj', canvasObj)
-        const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
-        console.log('handleCreatePoster:canvasWidth', canvasWidth)
-        console.log('handleCreatePoster:canvasHeight', canvasHeight)
-        setState(
-          (draft) => {
-            draft.pxWidth = canvasWidth
-            draft.pxHeight = canvasHeight
-            draft.ctx = ctx
-            draft.canvas = res[0].node
-          },
-          async (_state) => {
-            console.log('handleCreatePoster-setState:_state', _state)
-            console.log('canvas.toDataURL("image/png")', canvas.toDataURL("image/png"))
-            await canvasObj.drawPoster()
-            const poster = await getPoster(_state)
-            Taro.hideLoading()
-            setState((draft) => {
-              draft.poster = poster
-            })
-          }
-        )
-      })
-
-    // Taro.createSelectorQuery()
-    //   .select('#poster-canvas')
-    //   .node()
-    //   .exec((res) => {
-    //     console.log('alipay:res', res)
-    //     const canvas = res[0].node
-    //     ctx = canvas.getContext('2d')
-    //     console.log('canvas', canvas)
-    //     console.log('alipay:ctx1', ctx)
-    //     // 开始绘画
-    //     // ctx.fillRect(0, 100, 50, 50)
-    //     console.log('alipay:ctx2', ctx)
-
-    //   })
-  }
-  const getPoster = ({ ctx, pxWidth, pxHeight, eleId, canvas }) => {
-    console.log('handleCreatePoster-getPoster:canvas1', canvas)
-    return new Promise(async (resolve, reject) => {
-      console.log('handleCreatePoster-getPoster:ctx', ctx)
-      console.log('handleCreatePoster-getPoster:canvas2', canvas)
-      // ctx.fillRect(0, 0, 50, 50)
-      // ctx.draw(false, async () => {
-      //   try{
-      //     const { tempFilePath: poster } = await Taro.canvasToTempFilePath(
-      //       {
-      //         x: 0,
-      //         y: 0,
-      //         width: pxWidth,
-      //         height: pxHeight,
-      //         canvasId: eleId
-      //       },
-      //       Taro.getCurrentInstance().page
-      //     )
-      //     console.log('handleCreatePoster-getPoster:poster:resolve', poster)
-      //     resolve(poster)
-      //   }catch(err){
-      //     console.log('handleCreatePoster-getPoster:poster:reject', err)
-      //     reject(err)
-      //   }
-      // })
-      try {
+  const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {
+    console.log('getPoster:ctx', ctx)
+    return new Promise((resolve, reject) => {
+      ctx.draw(false, async () => {
         const { tempFilePath: poster } = await Taro.canvasToTempFilePath(
           {
             x: 0,
             y: 0,
             width: pxWidth,
             height: pxHeight,
-            canvasId: eleId,
-            canvas: ctx
+            canvasId: eleId
           },
           Taro.getCurrentInstance().page
         )
-        canvas.toDataURL("image/png")
-        console.log('handleCreatePoster-getPoster:poster:resolve', poster)
+        console.log('getPoster:poster', poster)
         resolve(poster)
-      } catch (err) {
-        console.log('handleCreatePoster-getPoster:poster:reject', err)
-        reject(err)
-      }
-      console.log('handleCreatePoster-getPoster:end')
+      })
     })
   }
 
@@ -391,7 +268,6 @@ function SpPoster(props) {
   // }
   return (
     <View className={classNames('sp-poster')}>
-      2333
       {/* <Canvas id="canvas1" type="2d" onReady={onCanvasReady} /> */}
       <View className='share-panel__overlay'></View>
       {poster && (
@@ -410,13 +286,12 @@ function SpPoster(props) {
       )}
       <Canvas
         className='canvasbox'
-        type='2d'
+        // type='2d'
         id='poster-canvas'
         canvasId='poster-canvas'
         style={`width:${pxWidth}px; height:${pxHeight}px;`}
-        onReady={handleCreatePoster2}
+        // onReady={handleCreatePoster2}
       />
-      666
     </View>
   )
 }

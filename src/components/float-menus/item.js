@@ -21,7 +21,7 @@ export default class Index extends Component {
 
     return (
       <Button
-        className={`float-menu__item ${hide ? 'hidden' : ''}`}
+        className={`float-menu__item iconfont icon-share1 ${hide ? 'hidden' : ''}`}
         onClick={onClick}
         openType={openType}
         sessionFrom={sessionFrom || ''}
