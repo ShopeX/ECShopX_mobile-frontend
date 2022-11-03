@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Image, Text, Button } from '@tarojs/components'
 import { Loading, SpNote } from '@/components'
-import { classNames, pickBy, getCurrentRoute } from '@/utils'
+import { classNames, pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
@@ -164,6 +164,21 @@ export default class DistributionShopCategory extends Component {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
     console.log(info)
+
+    if(isAlipay){    
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const info = Taro.getStorageSync('shareData')
+          console.log('shareData', info)
+          resolve({
+            title: info.title,
+            imageUrl: info.img,            
+            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+          })
+        },10)
+      });            
+    }
+
     return {
       title: info.title,
       imageUrl: info.img,
@@ -339,10 +354,11 @@ export default class DistributionShopCategory extends Component {
                                 )}
                               </View>
                               <Button
-                                className='itemShareBtn'
+                                className='itemShareBtn goods-item__share-btn'
                                 dataInfo={item}
                                 openType='share'
                                 size='small'
+                                onClick={()=>Taro.setStorageSync('shareData',item)}
                               >
                                 <Text class='iconfont icon-share2'></Text>
                               </Button>
@@ -350,7 +366,9 @@ export default class DistributionShopCategory extends Component {
                           </View>
                         </View>
                       )
-                    })}
+                    })
+                    || null    
+                  }
                 </View>
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
                 {!page.isLoading && !page.hasNext && !contentList.length && (

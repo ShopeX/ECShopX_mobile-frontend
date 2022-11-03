@@ -6,7 +6,7 @@ import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar, SpPage } from
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
-import { pickBy, getCurrentRoute } from '@/utils'
+import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
 import { getDtidIdUrl } from '@/utils/helper'
 
@@ -21,6 +21,7 @@ export default class DistributionGoods extends Component {
 
     this.state = {
       ...this.state,
+      shareInfo:{},
       info: {},
       curFilterIdx: 0,
       filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
@@ -267,8 +268,25 @@ export default class DistributionGoods extends Component {
   }
 
   onShareAppMessage (res) {
+    // const { userId } = Taro.getStorageSync('userinfo')
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
+    
+    if(isAlipay){    
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const info = Taro.getStorageSync('shareData')
+          resolve({
+            title: info.title,
+            imageUrl: info.img,            
+            path: getDtidIdUrl(
+              `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+              info.distributor_id 
+            )
+          })
+        },10)
+      });            
+    }
 
     return {
       title: info.title,
@@ -325,7 +343,9 @@ export default class DistributionGoods extends Component {
       }
     }
   }
-
+  shareDataChange = (shareInfo)=>{
+    this.setState({shareInfo})
+  }
   render () {
     const { status } = this.$instance.router.params
     const {
@@ -378,6 +398,7 @@ export default class DistributionGoods extends Component {
                     key={item.goods_id}
                     info={item}
                     isRelease={isRelease}
+                    shareDataChange={this.shareDataChange}
                     status={status}
                     onClick={() => this.handleClickItem(item.goods_id)}
                   />
