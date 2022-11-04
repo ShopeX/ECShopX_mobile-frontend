@@ -93,7 +93,7 @@ export default class BrandDetail extends Component {
               <View className='picker__title'>当前门店</View>
               <View className='pick-value'>
                 <Text>{brand_store !== '' ? brand_store : '请选择'}</Text>
-                <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
           </Picker>
@@ -106,7 +106,7 @@ export default class BrandDetail extends Component {
               <View className='picker__title'>预约品牌</View>
               <View className='pick-value'>
                 <Text>{brand_name !== '' ? brand_name : '请选择'}</Text>
-                <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
           </Picker>
@@ -119,7 +119,7 @@ export default class BrandDetail extends Component {
               <View className='picker__title'>预约服务</View>
               <View className='pick-value'>
                 <Text>{brand_service !== '' ? brand_service : '请选择'}</Text>
-                <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
           </Picker>
@@ -134,7 +134,7 @@ export default class BrandDetail extends Component {
               <View className='picker__title'>预约时间</View>
               <View className='pick-value'>
                 <Text>{brand_time !== '' ? brand_time : '请选择'}</Text>
-                <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
           </Picker>

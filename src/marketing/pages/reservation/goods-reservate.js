@@ -368,7 +368,7 @@ export default class GoodsReservate extends Component {
                                     )}
                                   </View>
                                   <View className='pick-value'>
-                                    <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                                    <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
                                   </View>
                                 </View>
                               </Picker>
@@ -396,7 +396,7 @@ export default class GoodsReservate extends Component {
                                     )}
                                   </View>
                                   <View className='pick-value'>
-                                    <View className='sp-cell__ft-icon at-icon at-icon-chevron-right'></View>
+                                    <View className='sp-cell__ft-icon at-icon iconfont at-icon-chevron-right'></View>
                                   </View>
                                 </View>
                               </Picker>
