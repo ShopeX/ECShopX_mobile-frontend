@@ -55,6 +55,8 @@ class GoodsDetailPoster {
       toPx: this.toPx,
       toRpx: this.toRpx
     }
+    console.log('GoodsDetailPoster-this.userInfo:', this.userInfo)
+    console.log('GoodsDetailPoster-drawOptions:', drawOptions)
     this.drawOptions = drawOptions
     const { username } = this.userInfo
     drawBlock(
@@ -78,7 +80,10 @@ class GoodsDetailPoster {
         sx: 0,
         sy: 0,
         sw: this.goodsImg.width,
-        sh: this.goodsImg.height
+        sh: this.goodsImg.height,
+        // sw: canvasWidth,
+        // sh: canvasHeight,
+        desc:'海报商品图'
       },
       drawOptions,
       this.canvas
@@ -115,9 +120,9 @@ class GoodsDetailPoster {
     // 姓名
     drawText(
       {
-        x: 112,
-        y: 656,
-        fontSize: 24,
+        x:isAlipay ? 20 :  112,
+        y:isAlipay ? 30 :  656,
+        fontSize:isAlipay ? 12 : 24,
         color: '#000',
         text: username
       },
@@ -126,9 +131,9 @@ class GoodsDetailPoster {
     //
     drawText(
       {
-        x: 112,
-        y: 688,
-        fontSize: 22,
+        x: isAlipay ? 20 : 112,
+        y: isAlipay ? 50 : 688,
+        fontSize: isAlipay ? 12 :22,
         color: '#999',
         text: '推荐一个好物给你'
       },
@@ -139,23 +144,23 @@ class GoodsDetailPoster {
     const floatPrice = `.${price.toFixed(2).split('.')[1]}`
     drawText(
       {
-        x: 24,
-        y: 815,
+        x: isAlipay ? 20 : 24,
+        y: isAlipay ? 160 :815,
         color: '#222',
         text: [
           {
             text: '¥',
-            fontSize: 28,
+            fontSize: isAlipay ? 14 :  28,
             color: '#222'
           },
           {
             text: initPrice,
-            fontSize: 46,
+            fontSize:isAlipay ? 23 : 46,
             color: '#222'
           },
           {
             text: floatPrice,
-            fontSize: 32,
+            fontSize:isAlipay ? 16 : 32,
             color: '#222'
           }
         ]
@@ -165,9 +170,9 @@ class GoodsDetailPoster {
     // 商品名称
     drawText(
       {
-        x: 24,
-        y: 887,
-        fontSize: 24,
+        x: isAlipay ? 20 : 24,
+        y: isAlipay ? 190 : 887,
+        fontSize:isAlipay ? 12 : 24,
         width: 312,
         color: '#666',
         text: this.info.itemName,
@@ -179,23 +184,28 @@ class GoodsDetailPoster {
     drawImage(
       {
         imgPath: this.codeImg.path,
-        x: 416,
-        y: 742,
+        x: isAlipay ? 210 : 416,
+        y: isAlipay ? 140 : 742,
+        // x: 0,
+        // y: 0,
         w: 160,
         h: 160,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,
-        sh: this.codeImg.height
+        sh: this.codeImg.height,
+        desc:'太阳码'
       },
       drawOptions,
       this.canvas
     )
     drawText(
       {
-        x: 433,
-        y: 928,
-        fontSize: 18,
+        x: isAlipay ? 214 : 433,
+        y: isAlipay ? 214 : 928,
+        // x: 433,
+        // y: 828,
+        fontSize: isAlipay ? 10 : 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',
         text: '长按或扫描查看'

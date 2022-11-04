@@ -4,7 +4,7 @@ import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
-import { getAppId } from '@/utils'
+import { getAppId,isAlipay } from '@/utils'
 import { connect } from 'react-redux'
 
 import './index.scss'
@@ -53,6 +53,7 @@ export default class EditShare extends Component {
 
   // 获取分享信息
   async getShareSettingInfo() {
+    debugger
     Taro.showLoading({ title: '' })
     const { id, dtid, company_id } = this.$instance.router.params
     const data = await api.item.getShareSetting(id)
@@ -114,14 +115,18 @@ export default class EditShare extends Component {
 
   // 生成图片canvas
   generateCanvas = async () => {
+    debugger
     const { selectPics, wxappCode } = this.state
     const showPoster = []
     const codeImg = await Taro.getImageInfo({ src: wxappCode.replace('http://', 'https://') })
     if (selectPics.length < 1) return false
     // 处理draw
     const draw = (ctx) => {
+      console.log('draw 1', ctx)
       return new Promise((resolve) => {
+        console.log('draw 2', ctx)
         ctx.draw(true, () => {
+          console.log('draw done')
           resolve()
         })
       })
@@ -130,14 +135,16 @@ export default class EditShare extends Component {
       const { url, isCode } = selectPics[i]
       const canvas = Taro.createCanvasContext(`canvas${i}`)
       const { path } = await Taro.getImageInfo({ src: url.replace('http://', 'https://') })
-      canvas.drawImage(path, 0, 0, canvsW_H, canvsW_H)
+      // canvas.drawImage(path, 0, 0, canvsW_H, canvsW_H/1.3)
+      canvas.drawImage(path, 0, 0, isAlipay? canvsW_H*1.5:canvsW_H, isAlipay? canvsW_H*1.2:canvsW_H,)
       canvas.restore()
       canvas.save()
       if (isCode) {
         canvas.drawImage(
           codeImg.path,
-          canvsW_H - wxCodeW_H - 5,
-          canvsW_H - wxCodeW_H - 5,
+          isAlipay? (canvsW_H - wxCodeW_H - 5) * 1.5 : canvsW_H - wxCodeW_H - 5,
+          isAlipay? (canvsW_H - wxCodeW_H - 5) * 1.1 : canvsW_H - wxCodeW_H - 5,
+          // canvsW_H - wxCodeW_H - 5,
           wxCodeW_H,
           wxCodeW_H
         )
@@ -296,6 +303,7 @@ export default class EditShare extends Component {
             className='canvas'
             key={`canvas${index}`}
             canvas-id={`canvas${index}`}
+            id={`canvas${index}`}
             style={`width: ${canvsW_H}px; height: ${canvsW_H}px`}
           />
         ))}

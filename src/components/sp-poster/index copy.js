@@ -4,12 +4,11 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image, Button, Canvas } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, authSetting, showToast } from '@/utils'
+import { classNames, authSetting, showToast, isAlipay } from '@/utils'
 import GoodsDetailPoster from './dw-goodsdetail'
 import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
 import GuideCheckout from './dw-guidecheckout'
 import Distribution from './dw-distribution'
-
 import './index.scss'
 
 const initialState = {
@@ -23,13 +22,15 @@ const initialState = {
 
 function SpPoster(props) {
   const { info, type, onClose = () => {} } = props
+  console.log('SpPoster:props', props)
   const { userInfo } = useSelector((state) => state.user)
   const { userInfo: guideInfo } = useSelector((state) => state.guide)
   const [state, setState] = useAsyncCallback(initialState)
 
   const { poster, pxWidth, pxHeight, eleId, ctx } = state
-
+  console.log('SpPoster:state', state)
   useEffect(() => {
+    // !isAlipay ? handleCreatePoster() : handleCreatePoster3()
     handleCreatePoster()
   }, [])
 
@@ -65,6 +66,7 @@ function SpPoster(props) {
       title: '海报生成中...'
     })
     const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance().page)
+    console.log('sp-handleCreatePoster:ctx', ctx)
     let canvasObj
     switch (type) {
       case 'goodsDetial':
@@ -114,6 +116,7 @@ function SpPoster(props) {
         draft.ctx = ctx
       },
       async (_state) => {
+        console.log('handleCreatePoster-setState:_state1', _state)
         await canvasObj.drawPoster()
         const poster = await getPoster(_state)
         Taro.hideLoading()
@@ -123,8 +126,92 @@ function SpPoster(props) {
       }
     )
   }
-
+  const handleCreatePoster2 = () => {
+    Taro.showLoading({
+      title: '海报生成中...'
+    })
+    console.log('handleCreatePoster run')
+    let ctx = null
+    // 通过 SelectorQuery 获取 Canvas 实例
+    Taro.createSelectorQuery()
+      .select('#poster-canvas')
+      .node()
+      .exec((res) => {
+        console.log('alipay:res', res)
+        const canvas = res[0].node
+        ctx = canvas.getContext('2d')
+        console.log('canvas', canvas)
+        console.log('alipay:ctx1', ctx)
+        // 开始绘画
+        // ctx.fillRect(0, 100, 50, 50)
+        console.log('alipay:ctx2', ctx)
+        let canvasObj
+        switch (type) {
+          case 'goodsDetial':
+            canvasObj = new GoodsDetailPoster({
+              canvas,
+              ctx,
+              info,
+              userInfo,
+              toPx,
+              toRpx
+            })
+            break
+          case 'guideGoodsDetial':
+            canvasObj = new GuideGoodsDetailPoster({
+              ctx,
+              info,
+              userInfo: guideInfo,
+              toPx,
+              toRpx
+            })
+            break
+          case 'guideCheckout':
+            canvasObj = new GuideCheckout({
+              ctx,
+              info,
+              userInfo: guideInfo,
+              toPx,
+              toRpx
+            })
+            break
+          case 'distribution':
+            canvasObj = new Distribution({
+              ctx,
+              info,
+              userInfo,
+              toPx,
+              toRpx
+            })
+            break
+          default:
+            break
+        }
+        console.log('handleCreatePoster:canvasObj', canvasObj)
+        const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
+        console.log('handleCreatePoster:canvasWidth', canvasWidth)
+        console.log('handleCreatePoster:canvasHeight', canvasHeight)
+        setState(
+          (draft) => {
+            draft.pxWidth = canvasWidth
+            draft.pxHeight = canvasHeight
+            draft.ctx = ctx
+            draft.canvas = res[0].node
+          },
+          async (_state) => {
+            console.log('handleCreatePoster-setState:_state2', _state)
+            await canvasObj.drawPoster()
+            const poster = await getPoster(_state)
+            Taro.hideLoading()
+            setState((draft) => {
+              draft.poster = poster
+            })
+          }
+        )
+      })
+  }
   const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {
+    console.log('getPoster:ctx', ctx)
     return new Promise((resolve, reject) => {
       ctx.draw(false, async () => {
         const { tempFilePath: poster } = await Taro.canvasToTempFilePath(
@@ -137,6 +224,7 @@ function SpPoster(props) {
           },
           Taro.getCurrentInstance().page
         )
+        console.log('getPoster:poster', poster)
         resolve(poster)
       })
     })
@@ -166,13 +254,26 @@ function SpPoster(props) {
       })
   }
 
+  // const onCanvasReady = () => {
+  //   console.log('onCanvasReady2222')
+  //   // 通过 SelectorQuery 获取 Canvas 实例
+  //   Taro.createSelectorQuery().select('#canvas1').node().exec((res) => {
+  //     console.log('canvas1:Res', res)
+  //       const canvas = res[0].node;
+  //       const ctx = canvas.getContext('2d');
+  //       console.log('canvas 宽高', canvas.width, canvas.height)
+  //       // 开始绘画
+  //       ctx.fillRect(0, 0, 50, 50);
+  //   });
+  // }
   return (
     <View className={classNames('sp-poster')}>
+      {/* <Canvas id="canvas1" type="2d" onReady={onCanvasReady} /> */}
       <View className='share-panel__overlay'></View>
       {poster && (
         <View className='share-panel__poster'>
           <View className='poster-container'>
-            <Image className='poster' src={poster} mode='scaleToFill' />
+            <Image className='poster' src={poster} mode='widthFix' />
           </View>
           <View className='poster-ft'>
             <Text className='iconfont icon-guanbi' onClick={onClose}></Text>
@@ -185,9 +286,11 @@ function SpPoster(props) {
       )}
       <Canvas
         className='canvasbox'
-        canvasId='poster-canvas'
+        // type='2d'
         id='poster-canvas'
+        canvasId='poster-canvas'
         style={`width:${pxWidth}px; height:${pxHeight}px;`}
+        // onReady={handleCreatePoster2}
       />
     </View>
   )
