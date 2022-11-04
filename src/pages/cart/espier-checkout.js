@@ -190,44 +190,29 @@ function CartCheckout(props) {
       showToast('该商品已下架')
       return
     }
-    // // 校验楼号、房号
-    // if (openBuilding && !buildingNumber) {
-    //   return showToast('请输入楼号')
-    // }
 
-    // // 校验楼道，楼号
-    // if (openBuilding && !houseNumber) {
-    //   return showToast('请输入房号')
-    // }
-
-    setState(
-      (draft) => {
-        draft.submitLoading = true
-      },
-      async () => {
-        if (isWeixin) {
-          const templeparams = {
-            temp_name: 'yykweishop',
-            source_type: receiptType === 'logistics' ? 'logistics_order' : 'ziti_order'
-          }
-          const { template_id } = await api.user.newWxaMsgTmpl(templeparams)
-          Taro.requestSubscribeMessage({
-            tmplIds: template_id,
-            success: () => {
-              handlePay()
-            },
-            fail: () => {
-              handlePay()
-            }
-          })
-        } else {
-          handlePay()
-        }
+    if (isWeixin) {
+      const templeparams = {
+        temp_name: 'yykweishop',
+        source_type: receiptType === 'logistics' ? 'logistics_order' : 'ziti_order'
       }
-    )
+      const { template_id } = await api.user.newWxaMsgTmpl(templeparams)
+      try {
+        await Taro.requestSubscribeMessage({ tmplIds: template_id })
+        handlePay()
+      } catch (e) {
+        console.error(e)
+        handlePay()
+      }
+    } else {
+      handlePay()
+    }
   }
 
   const handlePay = async () => {
+    setState((draft) => {
+      draft.submitLoading = true
+    })
     const params = await getParamsInfo()
     // 店铺是否开启社区街道
     if (openStreet) {
@@ -290,35 +275,9 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.submitLoading = false
       })
+      Taro.hideLoading()
       return
     }
-
-    // if ((isWeb || isAPP()) && params.pay_type !== 'deposit') {
-    //   try {
-    //     const h5ResInfo = await api.trade.h5create({
-    //       ...params,
-    //       pay_type: isAPP() ? params.pay_type : TRANSFORM_PAYTYPE[params.pay_type]
-    //     })
-    //     orderInfo = h5ResInfo
-    //     orderId = h5ResInfo.order_id
-    //   } catch (e) {
-    //     setState((draft) => {
-    //       draft.submitLoading = false
-    //     })
-    //   }
-    // } else {
-    //   try {
-    //     const { trade_info, team_id } = await api.trade.create(params)
-    //     orderInfo = { ...trade_info, team_id }
-    //     orderId = trade_info.order_id
-    //   } catch (e) {
-    //     setState((draft) => {
-    //       draft.submitLoading = false
-    //     })
-    //     return
-    //   }
-    // }
-
     Taro.hideLoading()
 
     setState((draft) => {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Button, Text } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar, SpPage } from '@/components'
 import S from '@/spx'
@@ -16,7 +16,7 @@ import './goods.scss'
 @withBackToTop
 export default class DistributionGoods extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -49,7 +49,7 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.hideShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -73,7 +73,7 @@ export default class DistributionGoods extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { page_no: page, page_size: pageSize } = params
     const { selectParams } = this.state
@@ -266,10 +266,13 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-
+    console.log('onShareAppMessage:', getDtidIdUrl(
+      `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+      info.distributor_id
+    ))
     return {
       title: info.title,
       imageUrl: info.img,
@@ -326,7 +329,7 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  render () {
+  render() {
     const { status } = this.$instance.router.params
     const {
       list,
@@ -349,7 +352,7 @@ export default class DistributionGoods extends Component {
             showDailog={false}
             keyword={query ? query.keywords : ''}
             onFocus={() => false}
-            onCancel={() => {}}
+            onCancel={() => { }}
             onChange={this.handleSearchChange}
             onClear={this.handleConfirm.bind(this)}
             onConfirm={this.handleConfirm.bind(this)}

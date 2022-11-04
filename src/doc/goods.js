@@ -188,6 +188,7 @@ export const GOODS_INFO = {
   },
   specItems: ({ spec_items, is_point }) => {
     return pickBy(spec_items, {
+      approveStatus: 'approve_status',
       specItem: ({ item_spec }) => {
         return pickBy(item_spec, {
           specId: 'spec_value_id',

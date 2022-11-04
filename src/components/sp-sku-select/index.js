@@ -67,8 +67,8 @@ function SpSkuSelect(props) {
       const key = item.specItem.map((spec) => spec.specId).join('_')
       skuDictRef.current[key] = item
     })
-    // 默认选择
-    const defaultSpecItem = specItems.find((item) => item.store > 0)
+    // 默认选中有库存并且前端可销售的sku
+    const defaultSpecItem = specItems.find((item) => item.store > 0 && item.approveStatus == 'onsale')
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -90,7 +90,7 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0
+        return key.match(reg) && skuDictRef.current[key].store > 0 && skuDictRef.current[key].approveStatus == 'onsale'
       })
     }
 

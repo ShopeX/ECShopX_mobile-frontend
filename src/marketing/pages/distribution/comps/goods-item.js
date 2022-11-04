@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
 import { classNames } from '@/utils'
@@ -60,7 +61,7 @@ export default class DistributionGoodsItem extends Component {
               <View className='goods-item__actions'>
                 <Button
                   className='goods-item__share-btn'
-                  dataInfo={info}
+                  data-info={info}
                   openType='share'
                   size='small'
                 >
