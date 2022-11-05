@@ -23,6 +23,7 @@ const upload = {
   aliUpload: async (item, tokenRes) => {
     const { accessid, dir, host, policy, signature } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+    debugger
     try {
       const res = await Taro.uploadFile({
         url: host,
@@ -39,8 +40,14 @@ const upload = {
           success_action_status: '200'
           // 服务端回调
           // callback: callback
+        },
+        fail:(err)=>{
+          debugger
+          console.log('aliUpload:Taro.uploadFile', err)
         }
       })
+      console.log('---aliUpload-upload:res', res)
+      console.log('---aliUpload-:dir', host, dir)
       if (!res) {
         return false
       }
@@ -48,7 +55,7 @@ const upload = {
         url: `${host}${dir}`
       }
     } catch (e) {
-      throw new Error(e)
+      throw new Error(`aliUpload:${e}`)
     }
   },
   qiNiuUpload: async (item, tokenRes) => {
@@ -192,12 +199,13 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const uploadType = getUploadFun(driver)
       console.log('----uploadType----', uploadType)
       const img = await upload[uploadType](item, { ...token, filetype })
+      console.log('---uploadImageFn---', img)
       if (!img || !img.url) {
         continue
       }
       imgs.push(img)
     } catch (e) {
-      console.log(e)
+      console.log('uploadImageFn', e)
     }
   }
   console.log('---uploadImageFn---', imgs)

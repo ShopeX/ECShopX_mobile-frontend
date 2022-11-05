@@ -144,6 +144,7 @@ export default class TradeRefund extends Component {
     const imgFiles = data.slice(0, 3)
 
     imgUploader.uploadImageFn(imgFiles).then((res) => {
+      console.log('uploadImageFn:res', res)
       this.setState({
         imgs: res
       })
@@ -346,7 +347,7 @@ export default class TradeRefund extends Component {
           </AtTextarea>
           {/* {curSegIdx === 1 ? ( */}
           <View className='refund-describe__img'>
-            <Text className='refund-describe__text'>上传凭证</Text>
+            <Text className='refund-describe__text'>上传凭证 1</Text>
             <View className='refund-describe__imgupload'>
               <Text className='refund-describe__imgupload_text'>您可以上传最多3张图片</Text>
               <View className='refund-describe__imgupload_picker'>
