@@ -55,13 +55,14 @@ function CartIndex() {
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
   const { tabbar = 1 } = router.params
 
-  useDepChange(() => {
-    fetch()
-  }, [isLogin])
-
-  // useDidShow(() => {
+  // useDepChange(() => {
   //   fetch()
-  // })
+  // }, [isLogin])
+
+  useDidShow(() => {
+    console.log('useDidShow', isLogin)
+    if(isLogin) fetch()
+  })
 
   const fetch = () => {
     if (openRecommend == 1) {
