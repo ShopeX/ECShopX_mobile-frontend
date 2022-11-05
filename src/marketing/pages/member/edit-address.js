@@ -27,6 +27,9 @@ const traverseData = (data) => {
 
 @connect(({ colors }) => ({
   colors: colors.current
+}),(dispatch) => ({
+  updateChooseAddress: (address) =>
+    dispatch({ type: 'user/updateChooseAddress', payload: address })
 }))
 export default class AddressIndex extends Component {
   $instance = getCurrentInstance()
@@ -188,6 +191,7 @@ export default class AddressIndex extends Component {
       } else {
         S.toast('创建成功')
       }
+      this.props.updateChooseAddress(data)
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
