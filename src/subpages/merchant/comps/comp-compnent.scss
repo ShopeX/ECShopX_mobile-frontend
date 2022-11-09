@@ -146,7 +146,7 @@ $left-button-border-color:rgba(88, 88, 88, 0.4);
 
     &_input{
         width: 100%; 
-
+        text-align: right;
         .input{
             font-size: 28px;
             text-align: right;
@@ -159,8 +159,15 @@ $left-button-border-color:rgba(88, 88, 88, 0.4);
             color: #A9B1C2;
         }
     }
+    
 } 
-
+.area-text{
+    background: none;
+    
+}
+.placeholder-class{
+    color:#A9B1C2
+}
 .comps-input{
 
     box-sizing: border-box;

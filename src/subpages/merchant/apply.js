@@ -512,8 +512,11 @@ const Apply = () => {
                       title='所在省市'
                       required
                       mode='area'
+                      placeholder='请输入选择地址信息'
                       value={state.regions}
                       onChange={(regions, regionIds) => {
+                        console.log('regions', regions)
+                        console.log('regionIds', regionIds)
                         setState((draft) => {
                           draft.regions = regions
                           draft.regions_id = regionIds

@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Text, View, Input, Picker } from '@tarojs/components'
-import { Loading, SpPickerAddress } from '@/components'
+import { Loading, SpPickerAddress, SpAddress } from '@/components'
 import { useDepChange } from '@/hooks'
 import S from '@/spx'
 import { isWeb } from '@/utils/platforms'
@@ -60,13 +60,24 @@ const Cell = (props) => {
     value,
     disabled = false
   } = props
-
+  const [isSpAddressOpened, setIsSpAddressOpened] = useState(false)
   const handleClick = (current) => {
     onRadioChange(current.value)
   }
 
   const handleInput = ({ detail: { value } }) => {
     onChange(value)
+  }
+  console.log('Cell:value',mode , value)
+  const onPickerChange = (selectValue) => {
+    console.log('onPickerChange:args', arguments)
+    console.log('onPickerChange:selectValue', selectValue)
+    const info = {
+      province: selectValue[0].label,
+      city: selectValue[1].label,
+      area: selectValue[2].label
+    }    
+    onChange(Object.values(info).join(''),selectValue.map(d=>d.id))
   }
 
   const renderSelectorContent = mode === 'selector' && !noselect && (
@@ -98,10 +109,24 @@ const Cell = (props) => {
     </View>
   )
   const renderAreaContent = mode === 'area' && (
-    <SpPickerAddress
-      value={value}
-      onChange={onChange}
-    />
+    // <SpPickerAddress
+    //   value={value}
+    //   onChange={onChange}
+    // />233
+    <>
+      <Text
+        className={`area-text ${value && value.length != 0 ? '' : 'placeholder-class'}`}
+        // placeholderClass='placeholder-class'
+        onClick={()=>{
+          console.log('isSpAddressOpened', isSpAddressOpened)
+          console.log('value', value)
+          setIsSpAddressOpened(!isSpAddressOpened)
+        }}
+      >
+        {value && value.length != 0 ? value : placeholder}
+      </Text>
+      <SpAddress isOpened={isSpAddressOpened} onClose={()=>setIsSpAddressOpened(!isSpAddressOpened)} onChange={onPickerChange} />
+    </>
     // <Picker
     //   mode='multiSelector'
     //   range={areaList}
