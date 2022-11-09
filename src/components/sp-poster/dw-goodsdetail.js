@@ -4,7 +4,7 @@ import { getExtConfigData,isAlipay, } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
 const canvasWidth = 600
-const canvasHeight = 960
+const canvasHeight = isAlipay ? 1160 : 960
 
 class GoodsDetailPoster {
   constructor(props) {
@@ -69,22 +69,33 @@ class GoodsDetailPoster {
       },
       drawOptions
     )
+
+    const drawImageOpt = isAlipay ? {
+      imgPath: this.goodsImg.path,
+      x: 0,
+      y: 0,
+      w: canvasWidth,
+      h: canvasWidth,
+      sx: 0,
+      sy: 0,
+      sw: this.goodsImg.width,
+      sh: canvasHeight,
+      desc:'海报商品图'
+    }:{
+      imgPath: this.goodsImg.path,
+      x: 0,
+      y: 0,
+      w: canvasWidth,
+      h: canvasWidth,
+      sx: 0,
+      sy: 0,
+      sw: this.goodsImg.width,
+      sh: this.goodsImg.height
+    }
+
     // 海报商品图
     drawImage(
-      {
-        imgPath: this.goodsImg.path,
-        x: 0,
-        y: 0,
-        w: canvasWidth,
-        h: canvasWidth,
-        sx: 0,
-        sy: 0,
-        sw: this.goodsImg.width,
-        sh: this.goodsImg.height,
-        // sw: canvasWidth,
-        // sh: canvasHeight,
-        desc:'海报商品图'
-      },
+      drawImageOpt,
       drawOptions,
       this.canvas
     )
@@ -145,7 +156,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: isAlipay ? 20 : 24,
-        y: isAlipay ? 160 :815,
+        y: isAlipay ? 180 :815,
         color: '#222',
         text: [
           {
@@ -171,7 +182,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: isAlipay ? 20 : 24,
-        y: isAlipay ? 190 : 887,
+        y: isAlipay ? 200 : 887,
         fontSize:isAlipay ? 12 : 24,
         width: 312,
         color: '#666',
@@ -184,12 +195,12 @@ class GoodsDetailPoster {
     drawImage(
       {
         imgPath: this.codeImg.path,
-        x: isAlipay ? 210 : 416,
-        y: isAlipay ? 140 : 742,
+        x: isAlipay ? 220 : 416,
+        y: isAlipay ? 154 : 742,
         // x: 0,
         // y: 0,
-        w: 160,
-        h: 160,
+        w: isAlipay ? 130 : 180,
+        h: isAlipay ? 130 : 180,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,
