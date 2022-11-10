@@ -118,8 +118,6 @@ const Cell = (props) => {
         className={`area-text ${value && value.length != 0 ? '' : 'placeholder-class'}`}
         // placeholderClass='placeholder-class'
         onClick={()=>{
-          console.log('isSpAddressOpened', isSpAddressOpened)
-          console.log('value', value)
           setIsSpAddressOpened(!isSpAddressOpened)
         }}
       >

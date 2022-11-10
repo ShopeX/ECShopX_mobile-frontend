@@ -30,14 +30,20 @@ class GoodsDetailPoster {
     const { appid, company_id } = getExtConfigData()
     const { itemId, imgs, price } = this.info
     const { user_id, avatar } = this.userInfo
-    // const { dtid } =
-
-
+    let wxappCode
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index  
-    const wxappCode = isAlipay ? `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}` : `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
-    
-    
-
+    if(isAlipay){
+      // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)      
+      const res = await Taro.request({
+        url: `${host}/api/h5app/alipaymini/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`, //仅为示例，并非真实的接口地址
+        header: {
+          'content-type': 'application/json' // 默认值
+        },        
+      })
+      wxappCode = res.data.data.qr_code_url
+    }else{
+      wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`    
+    }
     const pic = imgs[0].replace('http:', 'https:')
     // 商品图片
     this.goodsImg = await Taro.getImageInfo({ src: pic })
@@ -46,17 +52,17 @@ class GoodsDetailPoster {
     // 头像
     if(avatar) this.avatar = await Taro.getImageInfo({ src: avatar })
 
-    console.log('GoodsDetailPoster-wxappCode:', wxappCode)
-    console.log('GoodsDetailPoster-this.goodsImg:', this.goodsImg)
-    console.log('GoodsDetailPoster-this.codeImg:', this.codeImg)
-    console.log('GoodsDetailPoster-this.avatar:', this.avatar)
+    // console.log('GoodsDetailPoster-wxappCode:', wxappCode)
+    // console.log('GoodsDetailPoster-this.goodsImg:', this.goodsImg)
+    // console.log('GoodsDetailPoster-this.codeImg:', this.codeImg)
+    // console.log('GoodsDetailPoster-this.avatar:', this.avatar)
     const drawOptions = {
       ctx: this.ctx,
       toPx: this.toPx,
       toRpx: this.toRpx
     }
-    console.log('GoodsDetailPoster-this.userInfo:', this.userInfo)
-    console.log('GoodsDetailPoster-drawOptions:', drawOptions)
+    // console.log('GoodsDetailPoster-this.userInfo:', this.userInfo)
+    // console.log('GoodsDetailPoster-drawOptions:', drawOptions)
     this.drawOptions = drawOptions
     const { username } = this.userInfo
     drawBlock(
@@ -75,7 +81,7 @@ class GoodsDetailPoster {
       x: 0,
       y: 0,
       w: canvasWidth,
-      h: canvasWidth,
+      h: canvasWidth - 10,
       sx: 0,
       sy: 0,
       sw: this.goodsImg.width,
@@ -102,12 +108,12 @@ class GoodsDetailPoster {
     // 头像背景
     drawBlock(
       {
-        x: 24,
-        y: 624,
-        width: 312,
-        height: 80,
+        x: isAlipay ? 20 : 24,
+        y: isAlipay ? 150 : 624,
+        width: isAlipay ? 120 : 312,
+        height: isAlipay ? 12 :80,
         backgroundColor: '#efefef',
-        borderRadius: 80
+        borderRadius: isAlipay ? 20 :80
       },
       drawOptions
     )
@@ -115,15 +121,15 @@ class GoodsDetailPoster {
     avatar && drawImage(
       {
         imgPath: this.avatar.path,
-        x: 24,
-        y: 624,
-        w: 80,
-        h: 80,
+        x: isAlipay ? 22 : 24,
+        y: isAlipay ? 151 : 624,
+        w: isAlipay ? 28 : 80,
+        h: isAlipay ? 28 : 80,
         sx: 0,
         sy: 0,
-        sw: this.avatar.width,
-        sh: this.avatar.height,
-        borderRadius: 80
+        sw: isAlipay ? 28 : this.avatar.width,
+        sh: isAlipay ? 28 : this.avatar.height,
+        borderRadius: isAlipay ? 28 : 80
       },
       drawOptions,
       this.canvas
@@ -131,9 +137,9 @@ class GoodsDetailPoster {
     // 姓名
     drawText(
       {
-        x:isAlipay ? 20 :  112,
-        y:isAlipay ? 30 :  656,
-        fontSize:isAlipay ? 12 : 24,
+        x:isAlipay ? 60 :  112,
+        y:isAlipay ? 160 :  656,
+        fontSize:isAlipay ? 8 : 24,
         color: '#000',
         text: username
       },
@@ -142,9 +148,9 @@ class GoodsDetailPoster {
     //
     drawText(
       {
-        x: isAlipay ? 20 : 112,
-        y: isAlipay ? 50 : 688,
-        fontSize: isAlipay ? 12 :22,
+        x: isAlipay ? 60 : 112,
+        y: isAlipay ? 170 : 688,
+        fontSize: isAlipay ? 8 :22,
         color: '#999',
         text: '推荐一个好物给你'
       },
@@ -156,22 +162,22 @@ class GoodsDetailPoster {
     drawText(
       {
         x: isAlipay ? 20 : 24,
-        y: isAlipay ? 180 :815,
+        y: isAlipay ? 195 :815,
         color: '#222',
         text: [
           {
             text: '¥',
-            fontSize: isAlipay ? 14 :  28,
+            fontSize: isAlipay ? 12 :  28,
             color: '#222'
           },
           {
             text: initPrice,
-            fontSize:isAlipay ? 23 : 46,
+            fontSize:isAlipay ? 18 : 46,
             color: '#222'
           },
           {
             text: floatPrice,
-            fontSize:isAlipay ? 16 : 32,
+            fontSize:isAlipay ? 12 : 32,
             color: '#222'
           }
         ]
@@ -182,8 +188,8 @@ class GoodsDetailPoster {
     drawText(
       {
         x: isAlipay ? 20 : 24,
-        y: isAlipay ? 200 : 887,
-        fontSize:isAlipay ? 12 : 24,
+        y: isAlipay ? 210 : 887,
+        fontSize:isAlipay ? 10 : 24,
         width: 312,
         color: '#666',
         text: this.info.itemName,
@@ -196,11 +202,11 @@ class GoodsDetailPoster {
       {
         imgPath: this.codeImg.path,
         x: isAlipay ? 220 : 416,
-        y: isAlipay ? 154 : 742,
+        y: isAlipay ? 160 : 742,
         // x: 0,
         // y: 0,
-        w: isAlipay ? 130 : 180,
-        h: isAlipay ? 130 : 180,
+        w: isAlipay ? 120 : 180,
+        h: isAlipay ? 120 : 180,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,
@@ -210,13 +216,13 @@ class GoodsDetailPoster {
       drawOptions,
       this.canvas
     )
-    drawText(
+    !isAlipay && drawText(
       {
-        x: isAlipay ? 214 : 433,
+        x: isAlipay ? 220 : 433,
         y: isAlipay ? 214 : 928,
         // x: 433,
         // y: 828,
-        fontSize: isAlipay ? 10 : 18,
+        fontSize: isAlipay ? 8 : 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',
         text: '长按或扫描查看'
