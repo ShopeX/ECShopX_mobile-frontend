@@ -294,7 +294,7 @@ export function copyText(text, msg = '内容已复制') {
           text: text,
         });
         resolve(text)
-        return 
+        return
       }
       if (copy(text)) {
         S.toast(msg)
@@ -677,7 +677,7 @@ export function hex2rgb(hex) {
 
 export function exceedLimit({ size: fileSize }) {
   const size = fileSize / 1024 / 1024
-  return size > 2
+  return size > 15
 }
 
 function isBase64(str) {

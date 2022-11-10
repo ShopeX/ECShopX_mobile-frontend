@@ -128,7 +128,7 @@ function CartCheckout(props) {
       return () => {
         dispatch(changeCoupon()) // 清空优惠券信息
         dispatch(changeZitiAddress(null)) // 清空自提地址信息
-        // dispatch(updateChooseAddress(null)) // 清空地址信息
+        dispatch(updateChooseAddress(null)) // 清空地址信息
         dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
       }
     }
@@ -269,7 +269,7 @@ function CartCheckout(props) {
     let orderId
     try {
       const resOrderInfo = await api.trade.h5create(params)
-      orderInfo = resOrderInfo      
+      orderInfo = resOrderInfo
       orderId = resOrderInfo.order_id
     } catch (e) {
       setState((draft) => {
