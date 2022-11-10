@@ -147,12 +147,14 @@ $left-button-border-color:rgba(88, 88, 88, 0.4);
     &_input{
         width: 100%; 
         text-align: right;
+        margin-right: 20px;
         .input{
             font-size: 28px;
             text-align: right;
             border: none;
             background: white;
             padding-right: 0;
+            width:100%;
         }
 
         .placeholder-class{
