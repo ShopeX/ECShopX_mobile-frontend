@@ -61,6 +61,8 @@ const Cell = (props) => {
     disabled = false
   } = props
   const [isSpAddressOpened, setIsSpAddressOpened] = useState(false)
+  const [addressText, setAddressText] = useState(null)
+
   const handleClick = (current) => {
     onRadioChange(current.value)
   }
@@ -70,14 +72,9 @@ const Cell = (props) => {
   }
   console.log('Cell:value',mode , value)
   const onPickerChange = (selectValue) => {
-    console.log('onPickerChange:args', arguments)
     console.log('onPickerChange:selectValue', selectValue)
-    const info = {
-      province: selectValue[0].label,
-      city: selectValue[1].label,
-      area: selectValue[2].label
-    }    
-    onChange(Object.values(info).join(''),selectValue.map(d=>d.id))
+    setAddressText(selectValue.map(d=>d.label).join(''))
+    onChange(selectValue.map(d=>d.label),selectValue.map(d=>d.id))
   }
 
   const renderSelectorContent = mode === 'selector' && !noselect && (
@@ -121,7 +118,8 @@ const Cell = (props) => {
           setIsSpAddressOpened(!isSpAddressOpened)
         }}
       >
-        {value && value.length != 0 ? value : placeholder}
+        {addressText}
+        {value && value.length != 0 ? value.map(d=>d.label).join('') : placeholder}
       </Text>
       <SpAddress isOpened={isSpAddressOpened} onClose={()=>setIsSpAddressOpened(!isSpAddressOpened)} onChange={onPickerChange} />
     </>
