@@ -3,17 +3,35 @@ import api from '@/api'
 import { getExtConfigData,isAlipay, } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
-const canvasWidth = 600
-const canvasHeight = isAlipay ? 1160 : 960
+
+const UI_Width = 750
+//同步获取设备系统信息
+const info = Taro.getSystemInfoSync()
+//设备像素密度
+const dpr = info.pixelRatio;
+//计算比例
+const scale = info.screenWidth / UI_Width
+//计算canvas实际渲染尺寸
+let width = parseInt(scale * 335)
+let height = parseInt(scale * 536)
+//计算canvas画布尺寸
+let canvasWidth = width * dpr
+let canvasHeight = height * dpr
+
+
+console.log('systemInfo', info)
+console.log('dpr', dpr)
 
 class GoodsDetailPoster {
   constructor(props) {
     const { ctx, info, userInfo, toPx, toRpx, canvas } = props
+
     this.ctx = ctx
     this.info = info
     this.userInfo = userInfo
     this.toPx = toPx
     this.toRpx = toRpx
+    ctx.scale(dpr, dpr)
     // alipay2.0 兼容
     this.canvas = canvas
   }
@@ -80,12 +98,12 @@ class GoodsDetailPoster {
       imgPath: this.goodsImg.path,
       x: 0,
       y: 0,
-      w: canvasWidth,
-      h: canvasWidth - 10,
+      w: canvasWidth - 160,
+      h: canvasWidth - 90,
       sx: 0,
       sy: 0,
-      sw: this.goodsImg.width,
-      sh: canvasHeight,
+      sw: this.goodsImg.width ,
+      sh: this.goodsImg.height,
       desc:'海报商品图'
     }:{
       imgPath: this.goodsImg.path,
@@ -108,12 +126,12 @@ class GoodsDetailPoster {
     // 头像背景
     drawBlock(
       {
-        x: isAlipay ? 20 : 24,
-        y: isAlipay ? 150 : 624,
-        width: isAlipay ? 120 : 312,
+        x: isAlipay ? 10 : 24,
+        y: isAlipay ? 170 : 624,
+        width: isAlipay ? 90 : 312,
         height: isAlipay ? 12 :80,
         backgroundColor: '#efefef',
-        borderRadius: isAlipay ? 20 :80
+        borderRadius: isAlipay ? 30 :80
       },
       drawOptions
     )
@@ -121,15 +139,15 @@ class GoodsDetailPoster {
     avatar && drawImage(
       {
         imgPath: this.avatar.path,
-        x: isAlipay ? 22 : 24,
-        y: isAlipay ? 151 : 624,
-        w: isAlipay ? 28 : 80,
-        h: isAlipay ? 28 : 80,
+        x: isAlipay ? 10 : 24,
+        y: isAlipay ? 172 : 624,
+        w: isAlipay ? 26 : 80,
+        h: isAlipay ? 26 : 80,
         sx: 0,
         sy: 0,
-        sw: isAlipay ? 28 : this.avatar.width,
-        sh: isAlipay ? 28 : this.avatar.height,
-        borderRadius: isAlipay ? 28 : 80
+        sw: isAlipay ? 26 : this.avatar.width,
+        sh: isAlipay ? 26 : this.avatar.height,
+        borderRadius: isAlipay ? 26 : 80
       },
       drawOptions,
       this.canvas
@@ -137,9 +155,9 @@ class GoodsDetailPoster {
     // 姓名
     drawText(
       {
-        x:isAlipay ? 60 :  112,
-        y:isAlipay ? 160 :  656,
-        fontSize:isAlipay ? 8 : 24,
+        x:isAlipay ? 40 :  112,
+        y:isAlipay ? 180 :  656,
+        fontSize:isAlipay ? 6 : 24,
         color: '#000',
         text: username
       },
@@ -148,9 +166,9 @@ class GoodsDetailPoster {
     //
     drawText(
       {
-        x: isAlipay ? 60 : 112,
-        y: isAlipay ? 170 : 688,
-        fontSize: isAlipay ? 8 :22,
+        x: isAlipay ? 40 : 112,
+        y: isAlipay ? 190 : 688,
+        fontSize: isAlipay ? 6 :22,
         color: '#999',
         text: '推荐一个好物给你'
       },
@@ -161,8 +179,8 @@ class GoodsDetailPoster {
     const floatPrice = `.${price.toFixed(2).split('.')[1]}`
     drawText(
       {
-        x: isAlipay ? 20 : 24,
-        y: isAlipay ? 195 :815,
+        x: isAlipay ? 10 : 24,
+        y: isAlipay ? 226 :815,
         color: '#222',
         text: [
           {
@@ -187,9 +205,9 @@ class GoodsDetailPoster {
     // 商品名称
     drawText(
       {
-        x: isAlipay ? 20 : 24,
-        y: isAlipay ? 210 : 887,
-        fontSize:isAlipay ? 10 : 24,
+        x: isAlipay ? 10 : 24,
+        y: isAlipay ? 246 : 887,
+        fontSize:isAlipay ? 6 : 24,
         width: 312,
         color: '#666',
         text: this.info.itemName,
@@ -201,12 +219,12 @@ class GoodsDetailPoster {
     drawImage(
       {
         imgPath: this.codeImg.path,
-        x: isAlipay ? 220 : 416,
-        y: isAlipay ? 160 : 742,
+        x: isAlipay ? 114 : 416,
+        y: isAlipay ? 210 : 742,
         // x: 0,
         // y: 0,
-        w: isAlipay ? 120 : 180,
-        h: isAlipay ? 120 : 180,
+        w: isAlipay ? 90 : 180,
+        h: isAlipay ? 100 : 180,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,

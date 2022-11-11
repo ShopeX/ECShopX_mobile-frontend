@@ -3,13 +3,33 @@ import api from '@/api'
 import { getExtConfigData, isAlipay } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 import userIcon from '@/assets/imgs/user-icon.png'
-const canvasWidth = 750
-const canvasHeight = 1335
+// const canvasWidth = 750
+// const canvasHeight = 1335
+
+
+const UI_Width = 750
+//同步获取设备系统信息
+const info = Taro.getSystemInfoSync()
+//设备像素密度
+const dpr = info.pixelRatio;
+//计算比例
+const scale = info.screenWidth / UI_Width
+console.log('scale', scale)
+//计算canvas实际渲染尺寸
+let width = parseInt(scale * 335)
+let height = parseInt(scale * 596)
+//计算canvas画布尺寸
+let canvasWidth = width * dpr
+let canvasHeight = height * dpr
+
+let alipayScaleW = 1.5
+let alipayScaleH = 1.2
 
 class DistributionPoster {
   constructor(props) {
     const { ctx, info, userInfo, toPx, toRpx } = props
     this.ctx = ctx
+    ctx.scale(dpr, dpr)
     this.info = info
     this.userInfo = userInfo
     this.toPx = toPx
@@ -80,13 +100,13 @@ class DistributionPoster {
         imgPath: this.bkg.path,
         x: 0,
         y: 0,
-        w: isAlipay ? 320 : canvasWidth,
-        h: isAlipay ? 320 : canvasHeight,
+        w: isAlipay ? canvasWidth / alipayScaleW : canvasWidth,
+        h: isAlipay ? canvasHeight / alipayScaleH : canvasHeight,
         sx: 0,
         sy: 0,
-        sw: isAlipay ? 220 : this.bkg.width,
-        sh: isAlipay ? 220 :  this.bkg.height,
-        borderRadius: 80
+        sw: isAlipay ? this.bkg.width : this.bkg.width,
+        sh: isAlipay ? this.bkg.height :  this.bkg.height,
+        // borderRadius: 80
       },
       drawOptions
     )
@@ -94,24 +114,24 @@ class DistributionPoster {
     drawImage(
       {
         imgPath: this.avatar.path,
-        x: isAlipay ? 80 : 220,
-        y: isAlipay ? 10 : 60,
-        w: isAlipay ? 40 : 80,
-        h: isAlipay ? 40 : 80,
+        x: isAlipay ? 40  : 220,
+        y: isAlipay ? 20 : 60,
+        w: isAlipay ? 30 : 80,
+        h: isAlipay ? 30 : 80,
         sx: 0,
         sy: 0,
-        sw: isAlipay ? 40 : this.avatar.width,
-        sh: isAlipay ? 40 : this.avatar.height,
-        borderRadius: isAlipay ? 40 : 80
+        sw: isAlipay ? 30 : this.avatar.width,
+        sh: isAlipay ? 30 : this.avatar.height,
+        borderRadius: isAlipay ? 30 : 80
       },
       drawOptions
     )
     // 姓名
     drawText(
       {
-        x: isAlipay ? 130 : 310,
-        y: isAlipay ? 30 : 110,
-        fontSize: isAlipay ? 15 : 30,
+        x: isAlipay ? 76 : 310,
+        y: isAlipay ? 34 : 110,
+        fontSize: isAlipay ? 10 : 30,
         color: '#000',
         text: username
       },
@@ -121,8 +141,8 @@ class DistributionPoster {
     drawImage(
       {
         imgPath: this.codeImg.path,
-        x: isAlipay ? 100 : 120,
-        y: isAlipay ? 80 : 620,
+        x: isAlipay ? 26 : 120,
+        y: isAlipay ? 90 : 620,
         w: isAlipay ? 120 : 480,
         h: isAlipay ? 120 : 480,
         sx: 0,
