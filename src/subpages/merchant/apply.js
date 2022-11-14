@@ -188,27 +188,41 @@ const Apply = () => {
       }
       //第二步保存
     } else if (step === 2) {
-      const currentStepData = [
-        merchant_name,
-        social_credit_code_id,
-        regions_id,
-        regions,
-        address,
-        legal_name,
-        legal_cert_id,
-        legal_mobile,
-        bank_acct_type,
-        card_id_mask
-      ]
-
-      const hasValues = currentStepData.every(
-        (item) => (isArray(item) && item.length > 0) || !!item
-      )
-
-      if (!hasValues) {
-        showToast('请完善信息')
+      if (!merchant_name) {
+        showToast('请填写企业名称')
         return true
       }
+
+      if (!social_credit_code_id) {
+        showToast('请填写统一社会信用代码')
+        return true
+      }
+
+      if (regions_id.length == 0) {
+        showToast('请选择省市区')
+        return true
+      }
+
+      if (!address) {
+        showToast('请填写详细地址')
+        return true
+      }
+
+      if (!legal_name) {
+        showToast('请填写负责人姓名')
+        return true
+      }
+
+      if (!legal_cert_id) {
+        showToast('请填写负责人身份证')
+        return true
+      }
+
+      if (!legal_mobile) {
+        showToast('请填写负责人手机号码')
+        return true
+      }
+
       params = {
         step: 2,
         merchant_name,
@@ -225,17 +239,18 @@ const Apply = () => {
         bank_mobile
       }
     } else if (step === 3) {
-      const allData = [
-        license_url[0],
-        legal_certid_front_url,
-        legal_cert_id_back_url,
-        bank_card_front_url[0]
-      ]
+      if (!license_url[0]) {
+        showToast('请上传营业执照')
+        return true
+      }
 
-      const allWrite = allData.every((item) => !!item)
+      if (!legal_certid_front_url) {
+        showToast('请上传手持身份证正面照')
+        return true
+      }
 
-      if (!allWrite) {
-        showToast('请完善信息')
+      if (!legal_cert_id_back_url) {
+        showToast('请上传手持身份证反面照')
         return true
       }
 
@@ -554,7 +569,6 @@ const Apply = () => {
                     />
                     <MCell
                       title='结算银行账号类型'
-                      required
                       mode='radio'
                       value={state.bank_acct_type}
                       radioOptions={bankAccType}
@@ -562,7 +576,6 @@ const Apply = () => {
                     />
                     <MCell
                       title='结算银行账号'
-                      required
                       mode='input'
                       placeholder='请输入结算银行账号'
                       value={state.card_id_mask}
@@ -571,7 +584,6 @@ const Apply = () => {
                     {banknameRequired && (
                       <MCell
                         title='结算银行'
-                        required
                         value={bankName.name}
                         onClick={handleSwitchSelector(BANG_NAME)}
                       />
@@ -579,7 +591,6 @@ const Apply = () => {
                     {bankmobileRequired && (
                       <MCell
                         title='绑定手机号'
-                        required
                         mode='input'
                         placeholder='请输入绑定手机号'
                         value={state.bank_mobile}
@@ -614,6 +625,7 @@ const Apply = () => {
                     />
                     <MImgPicker
                       mode='bankCard'
+                      required={false}
                       value={state.bank_card_front_url}
                       onChange={handleChange('bank_card_front_url')}
                       title={
