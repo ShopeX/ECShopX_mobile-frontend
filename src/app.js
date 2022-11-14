@@ -43,6 +43,7 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 }
 
 requestIntercept()
+
 class App extends Component {
   // componentWillMount() {
   //   this.getSystemConfig()
@@ -90,7 +91,15 @@ class App extends Component {
     })
   }
 
-  componentDidShow(options) {
+  async componentDidShow(options) {
+    const {show_time} = await api.promotion.getScreenAd()
+    let showAdv
+    if( show_time === 'always'){
+        showAdv = false
+        store.dispatch({
+          type: 'user/closeAdv', payload: showAdv
+        })
+      }
     console.log(`app componentDidShow:`, options)
     this.getSystemConfig()
   }
@@ -184,3 +193,4 @@ class App extends Component {
 }
 
 export default App
+
