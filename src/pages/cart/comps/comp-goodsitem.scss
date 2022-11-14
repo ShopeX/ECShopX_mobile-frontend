@@ -69,7 +69,7 @@
     }
   }
   .goods-title {
-    @include multi-ellipsis(1);
+    @include multi-ellipsis(2);
     width: 300px;
     &__tag {
       /* prettier-ignore */

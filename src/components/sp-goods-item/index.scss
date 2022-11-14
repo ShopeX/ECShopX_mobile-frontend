@@ -29,7 +29,7 @@
       .goods-desc {
         font-size: 24px;
         color: $color-hint-text;
-        @include multi-ellipsis(1);
+        @include multi-ellipsis(2);
       }
 
       .promotions {
