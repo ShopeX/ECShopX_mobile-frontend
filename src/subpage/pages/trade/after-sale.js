@@ -95,11 +95,29 @@ export default class AfterSale extends Component {
 
     log.debug('[trade list] list fetched and processed: ', nList)
 
+    //售后详情跳转过滤列表
+    const nFList = this.detailFilter(nList)
+
     this.setState({
-      list: [...this.state.list, ...nList]
+      list: [...this.state.list, ...nFList]
     })
 
     return { total }
+  }
+
+  detailFilter(nList){
+    const {order_id} = this.$instance.router.params
+
+    let nFList = JSON.parse(JSON.stringify(nList))
+
+    if(order_id){
+      nFList = nList.filter(item => {
+        item.order = item.order.filter(oItem => oItem.order_id === order_id)
+        return item.order?.length
+      })
+    }
+
+    return nFList
   }
 
   handleClickTab = (idx) => {
@@ -132,6 +150,7 @@ export default class AfterSale extends Component {
 
   render() {
     const { curTabIdx, tabList, list, page } = this.state
+
     const { colors } = this.props
 
     return (
