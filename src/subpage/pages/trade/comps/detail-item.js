@@ -34,8 +34,9 @@ export default class DetailItem extends Component {
     const {
       info: { tid: order_id, is_all_delivery, delivery_status }
     } = this.props
+
     Taro.navigateTo({
-      url: `/subpage/pages/trade/after-sale`
+      url: `/subpage/pages/trade/after-sale?order_id=${item.order_id}`
     })
     // if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
     //   Taro.navigateTo({
