@@ -92,6 +92,7 @@ const MENUS_CONST = [
     name: '商家入驻',
     icon: 'm_menu_merchat.png',
     link: '/subpages/merchant/login'
+    // link: '/subpages/merchant/audit'
   }
 ]
 

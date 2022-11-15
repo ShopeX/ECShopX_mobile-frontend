@@ -1,13 +1,3 @@
-/*
- * @Author: dreamworks.cnn@gmail.com
- * @Date: 2022-11-01 11:36:16
- * @LastEditors: dreamworks.cnn@gmail.com
- * @LastEditTime: 2022-11-01 11:42:07
- * @FilePath: /ecshopxx-vshop/src/components/sp-chat/index.js
- * @Description: 
- * 
- * Copyright (c) 2022 by wangzhanyuan dreamworks.cnn@gmail.com, All Rights Reserved. 
- */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -35,7 +25,7 @@ function SpChat(props) {
   }, [])
 
   const init = () => {
-    if (echat?.is_open == 'true' || meiqia?.is_open == 'true') {
+    if (echat?.is_open == 'true' || meiqia?.is_open) {
       setState((draft) => {
         draft.isWeAppKefu = false
       })
@@ -49,15 +39,12 @@ function SpChat(props) {
       } else {
         Taro.navigateTo({ url: `/pages/chat/index?url=${encodeURIComponent(echat.echat_url)}` })
       }
-    } else if (meiqia?.is_open == 'true') {
+    } else if (meiqia?.is_open) {
       // 获取店铺美洽配置
       const { dtid } = $instance.router.params
-      const { meiqia_id, meiqia_token } = await api.im.getImConfigByDistributor(dtid)
-      if(!meiqia_id || !meiqia_token) {
-        return showToast('请检查美洽客服配置')
-      }
-      const chat_link = `https://chatlink.mstatik.com/widget/standalone.html?eid=${meiqia_id}&groupid=${meiqia_token}`
-      console.log('chat_link:', chat_link)
+      const meiqiaConfig = await api.im.getImConfigByDistributor(dtid)
+      const { channel, meiqia_url } = meiqiaConfig
+      const chat_link = channel == 'multi' ? meiqia_url.wxapp : meiqia_url.common
       Taro.navigateTo({ url: `/pages/chat/index?url=${encodeURIComponent(chat_link)}` })
     }
   }
