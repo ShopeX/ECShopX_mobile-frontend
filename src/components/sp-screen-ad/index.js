@@ -29,8 +29,6 @@ export default class ScreenAd extends Component {
       jumpUrl: {},
       // 图片/视频链接
       url: '',
-      //展示时机：第一次展示，还是每次都展示
-      show_time: ''
     }
   }
 
@@ -58,7 +56,6 @@ export default class ScreenAd extends Component {
         downTime: res.waiting_time,
         jumpUrl: res.ad_url,
         url: res.ad_material,
-        show_time: res.show_time
       },
       () => {
         setTimeout(() => {
@@ -97,8 +94,7 @@ export default class ScreenAd extends Component {
         isShow: false
       },
       () => {
-        let isShowAdvParams = this.state.show_time === 'first' ? true : false
-        this.props.onUpdateShowAdv(isShowAdvParams)
+        this.props.onUpdateShowAdv(true)
       }
     )
   }
