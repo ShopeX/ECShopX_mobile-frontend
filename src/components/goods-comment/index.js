@@ -43,7 +43,7 @@ export default class GoodsComment extends Component {
     this.props.onClose && this.props.onClose()
   }
 
-  async handleClickReply () {
+   handleClickReply = async () => {
     const { comment } = this.state
     if (!comment || !comment.length) {
       return
