@@ -624,7 +624,7 @@ const Apply = () => {
                       }
                       value={[state.legal_certid_front_url, state.legal_cert_id_back_url]}
                       onChange={handleChange('legal_certid_front_url', 'legal_cert_id_back_url')}
-                      info={[`上传${fieldName}手持身份证正面`, `上传${fieldName}手持身份证反面`]}
+                      info={[`上传${fieldName}手持身份证人像面`, `上传${fieldName}手持身份证国徽面`]}
                     />
                     <MImgPicker
                       mode='bankCard'
