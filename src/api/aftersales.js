@@ -30,3 +30,14 @@ export function reasonList (params = {}) {
 export function remindDetail (params = {}) {
   return req.get('/aftersales/remind/detail', params)
 }
+
+/**
+ * @param {*} params
+ * distributor_id 下单门店
+ * lng 经度
+ * lat 纬度
+ * @returns
+ */
+export function getAfterSaleStoreList(params) {
+  return req.get('/distributor/aftersaleslocation', params)
+}

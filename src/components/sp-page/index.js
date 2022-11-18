@@ -196,14 +196,14 @@ function SpPage(props, ref) {
       // 导航颜色背景
       if (navigateStyle == '1') {
         pageStyle = {
-          'backgroundColor': navigateBackgroundColor
+          'background-color': navigateBackgroundColor
         }
       } else {
         pageStyle = {
-          'backgroundImage': `url(${navigateBackgroundImage.url})`,
-          'backgroundSize': '100% 100%',
-          'backgroundRepeat': 'no-repeat',
-          'backgroundPosition': 'center'
+          'background-image': `url(${navigateBackgroundImage.url})`,
+          'background-size': '100% 100%',
+          'background-repeat': 'no-repeat',
+          'background-position': 'center'
         }
       }
       // 页面标题
@@ -268,9 +268,9 @@ function SpPage(props, ref) {
       }
     } else {
       pageBackground = {
-        'backgroundImage': `url(${pageBackgroundImage.url})`,
-        'backgroundSize': '100% 100%',
-        'backgroundPosition': 'center'
+        'background-image': `url(${pageBackgroundImage.url})`,
+        'background-size': '100% 100%',
+        'background-position': 'center'
       }
     }
   }

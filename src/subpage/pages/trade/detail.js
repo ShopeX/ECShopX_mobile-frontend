@@ -439,7 +439,7 @@ export default class TradeDetail extends Component {
       })
       if (confirm) {
         await api.trade.confirm(info.tid)
-        if (isWeixin) {
+        if (isWeixin || isAlipay) {
           const { fullPath } = getCurrentRoute(this.$instance.router)
           Taro.redirectTo({
             url: fullPath

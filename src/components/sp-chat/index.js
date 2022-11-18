@@ -4,7 +4,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpFloatMenuItem } from '@/components'
-import { showToast, isAlipay } from '@/utils'
+import { showToast, isAlipay, isWeixin, isWeb, isAPP } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
@@ -44,21 +44,32 @@ function SpChat(props) {
       const { dtid } = $instance.router.params
       const meiqiaConfig = await api.im.getImConfigByDistributor(dtid)
       const { channel, meiqia_url } = meiqiaConfig
-      const chat_link = channel == 'multi' ? meiqia_url.wxapp : meiqia_url.common
+      let chat_link = ''
+      if(channel == 'multi') {
+        if(isWeixin) {
+          chat_link = meiqia_url.wxapp
+        } else if(isWeb) {
+          chat_link = meiqia_url.h5
+        } else if(isAPP()) {
+          chat_link = meiqia_url.app
+        }
+      } else {
+        chat_link = meiqia_url.common
+      }
       Taro.navigateTo({ url: `/pages/chat/index?url=${encodeURIComponent(chat_link)}` })
     }
   }
 
   return (
     <View className='sp-chat'>
-      {(isWeAppKefu && !isAlipay) && (
+      {(isWeAppKefu && isWeixin) && (
         <Button className='btn-cantact' openType='contact' sessionFrom={sessionFrom}>
           {children}
-          {isAlipay && <contact-button
+          {/* {isAlipay && <contact-button
             tnt-inst-id="JRC_1NRG"
             scene="SCE01214288"
           >
-          </contact-button>}
+          </contact-button>} */}
         </Button>
       )}
       {!isWeAppKefu && (

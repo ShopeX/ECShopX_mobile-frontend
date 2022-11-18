@@ -124,7 +124,7 @@ function TradeAfterSale(props) {
     }
     const aftersales_type = tabList[curTabIdx].type
     const reason = reasons?.[reasonIndex]
-    const params = {
+    let params = {
       detail: checkedItems.map(({ id: _id, refundNum }) => {
         return {
           id: _id,
@@ -137,8 +137,22 @@ function TradeAfterSale(props) {
       description,
       evidence_pic: pic
     }
-    debugger
+    if(aftersales_type == 'REFUND_GOODS') {
+      params = {
+        ...params,
+        return_type: refundType == 1 ? 'logistics' : 'offline',
+        // aftersales_address_id: '请选择退货门店',
+        // contact: '请填写联系人姓名',
+        // mobile: '请填写联系人手机号码'
+      }
+    }
     await api.aftersales.apply(params)
+    showToast('提交成功')
+    setTimeout(() => {
+      Taro.redirectTo({
+        url: `/subpage/pages/trade/detail?id=${id}`
+      })
+    }, 200)
   }
 
   return <SpPage ref={pageRef} className='page-trade-after-sale' renderFooter={
@@ -249,7 +263,7 @@ function TradeAfterSale(props) {
         refundType == 2 && <>
           <SpCell border title='退货门店' isLink onClick={() => {
             Taro.navigateTo({
-              url: '/subpages/trade/store-picker'
+              url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}`
             })
           }}>
           </SpCell>

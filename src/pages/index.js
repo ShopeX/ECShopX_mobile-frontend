@@ -76,7 +76,7 @@ function Home() {
   useEffect(() => {
     if (initState) {
       init()
-      // setNavigationBarTitle(appName)
+      setNavigationBarTitle(appName)
     }
   }, [initState])
 
@@ -200,7 +200,7 @@ function Home() {
     >
       <View
         className={classNames('home-body', {
-          'has-home-header': isShowHomeHeader
+          'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch />}</WgtHomeHeader>}

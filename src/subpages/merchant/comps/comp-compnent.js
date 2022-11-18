@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { Text, View, Input, Picker } from '@tarojs/components'
-import { Loading, SpPickerAddress } from '@/components'
+import { Loading, SpPickerAddress, SpAddress } from '@/components'
 import { useDepChange } from '@/hooks'
 import S from '@/spx'
 import { isWeb } from '@/utils/platforms'
@@ -60,6 +60,8 @@ const Cell = (props) => {
     value,
     disabled = false
   } = props
+  const [isSpAddressOpened, setIsSpAddressOpened] = useState(false)
+  const [addressText, setAddressText] = useState(null)
 
   const handleClick = (current) => {
     onRadioChange(current.value)
@@ -67,6 +69,12 @@ const Cell = (props) => {
 
   const handleInput = ({ detail: { value } }) => {
     onChange(value)
+  }
+  console.log('Cell:value',mode , value)
+  const onPickerChange = (selectValue) => {
+    console.log('onPickerChange:selectValue', selectValue)
+    setAddressText(selectValue.map(d=>d.label).join(''))
+    onChange(selectValue.map(d=>d.label),selectValue.map(d=>d.id))
   }
 
   const renderSelectorContent = mode === 'selector' && !noselect && (
@@ -98,10 +106,23 @@ const Cell = (props) => {
     </View>
   )
   const renderAreaContent = mode === 'area' && (
-    <SpPickerAddress
-      value={value}
-      onChange={onChange}
-    />
+    // <SpPickerAddress
+    //   value={value}
+    //   onChange={onChange}
+    // />233
+    <>
+      <Text
+        className={`area-text ${value && value.length != 0 ? '' : 'placeholder-class'}`}
+        // placeholderClass='placeholder-class'
+        onClick={()=>{
+          setIsSpAddressOpened(!isSpAddressOpened)
+        }}
+      >
+        {addressText}
+        {value && value.length != 0 ? value.map(d=>d.label).join('') : placeholder}
+      </Text>
+      <SpAddress isOpened={isSpAddressOpened} onClose={()=>setIsSpAddressOpened(!isSpAddressOpened)} onChange={onPickerChange} />
+    </>
     // <Picker
     //   mode='multiSelector'
     //   range={areaList}

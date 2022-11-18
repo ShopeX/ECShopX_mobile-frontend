@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
 import { useImmer } from "use-immer"
-import Taro from "@tarojs/taro";
+import Taro, { getCurrentInstance } from "@tarojs/taro";
 import api from "@/api"
 import doc from "@/doc"
 import { View } from "@tarojs/components"
@@ -14,8 +14,18 @@ const initialState = {
   list: []
 }
 function TradeStorePicker(props) {
+  const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { keywords } = state
+
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  const fetch = async () => {
+    const { distributor_id } = $instance.router.params
+    await api.aftersales.getAfterSaleStoreList({ distributor_id, distributor_name: keywords })
+  }
 
   return <SpPage className='page-trade-store-picker' renderFooter={<View className='btn-wrap'>
     <AtButton circle type='primary'>确定</AtButton>
