@@ -25,13 +25,21 @@ export const TRADE_ITEM = {
   receiverState: "receiver_state",
   items: ({ items }) => {
     return pickBy(items, {
+      id: 'id',
       pic: 'pic',
       itemName: 'item_name',
       price: ({ total_fee }) => total_fee / 100,
       num: 'num',
-      itemSpecDesc: 'item_spec_desc'
+      // 可售后商品数
+      leftAftersalesNum: 'left_aftersales_num',
+      // 默认售后商品数
+      refundNum: 1,
+      itemSpecDesc: 'item_spec_desc',
+      point: 'point',
+      checked: () => false
     })
   },
+  point: 'point',
   createdTime: ({ create_time }) => formatDateTime(create_time * 1000),
   totalFee: ({ total_fee }) => total_fee / 100,
   marketFee: ({ market_fee }) => market_fee / 100,

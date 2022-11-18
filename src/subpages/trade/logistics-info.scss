@@ -1,0 +1,28 @@
+.page-trade-logistics-info {
+  .btn-wrap {
+    padding: 20px;
+  }
+
+  .logistics-company,
+  .logistics-no {
+    margin: 24px 16px 0;
+    border-radius: 16px;
+    background-color: #fff;
+    overflow: hidden;
+  }
+
+  .logistics-no {
+    .at-input {
+      margin-bottom: 0;
+      width: 380px;
+      padding: 0;
+      &:after {
+        border-color: transparent;
+      }
+      &__input {
+        text-align: right;
+        padding-right: 0;
+      }
+    }
+  }
+}

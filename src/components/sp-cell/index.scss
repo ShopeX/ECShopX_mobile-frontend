@@ -13,9 +13,10 @@ $cell-prefix: 'sp-cell';
     position: absolute;
     left: 20px;
     right: 20px;
-    height: 2px;
+    /* prettier-ignore */
+    height: 1PX;
     bottom: 0;
-    background: #f4f4f4;
+    background: #f5f5f5;
   }
   &__no-border {
     &:before {

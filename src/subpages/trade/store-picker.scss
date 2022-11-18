@@ -1,0 +1,53 @@
+.page-trade-store-picker {
+  .btn-wrap {
+    padding: 20px;
+  }
+  .sp-search-input {
+    margin: 15px 24px;
+    background-color: #fff;
+    width: auto;
+  }
+
+  .store-item {
+    background-color: #fff;
+    padding: 32px 16px;
+    border-radius: 16px;
+    margin: 24px 16px 0;
+    &.active {
+      border: 2px solid #F4811F;
+    }
+  }
+  .store-name {
+    font-size: 30px;
+    font-weight: 400;
+    color: #222222;
+    line-height: 42px;
+  }
+  .store-address {
+    font-size: 28px;
+    font-weight: 400;
+    color: #999999;
+    line-height: 40px;
+  }
+  .store-connect {
+    font-size: 28px;
+    font-weight: 400;
+    color: #999999;
+    line-height: 40px;
+  }
+  .ft-container {
+    display: flex;
+    justify-content: space-between;
+  }
+  .store-time {
+    font-size: 24px;
+    font-weight: 400;
+    color: #999999;
+  }
+  .store-distance {
+    font-size: 28px;
+    font-weight: 400;
+    color: #666666;
+    line-height: 40px;
+  }
+}

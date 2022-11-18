@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1668577313708') format('woff2'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1668577313708') format('woff'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1668577313708') format('truetype');
+  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1668586974427') format('woff2'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1668586974427') format('woff'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1668586974427') format('truetype');
 }
 
 .iconfont {
@@ -13,8 +13,36 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-camera:before {
-  content: "\e881";
+.icon-tuikuantuihuo-01:before {
+  content: "\e8f9";
+}
+
+.icon-jintuikuan-01:before {
+  content: "\e8fa";
+}
+
+.icon-shangpinchaxunhover-01:before {
+  content: "\ec82";
+}
+
+.icon-qudanhover-01:before {
+  content: "\ec83";
+}
+
+.icon-qudan-01:before {
+  content: "\ec84";
+}
+
+.icon-shouyintaihover-01:before {
+  content: "\ec85";
+}
+
+.icon-shouyintai-01:before {
+  content: "\ec86";
+}
+
+.icon-shangpinchaxun-01:before {
+  content: "\ec87";
 }
 
 .icon-money1:before {

@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import { View, Text, RichText } from '@tarojs/components'
-import { isWeb, isAlipay, htmlStringToNodeArray } from '@/utils'
+import { isWeb, isAlipay, htmlStringToNodeArray, isWeixin } from '@/utils'
 function SpHtml(props) {
   const { content = '' } = props
   let _content = content.toString()
@@ -13,7 +13,7 @@ function SpHtml(props) {
   return (
     <View className='sp-html'>
       {isWeb && <View dangerouslySetInnerHTML={{ __html: _content }} />}
-      {(!isWeb && !isAlipay) && <mp-html content={_content} />}
+      {isWeixin && <mp-html content={_content} />}
       {isAlipay && <RichText nodes={_content} />}
     </View>
   )
