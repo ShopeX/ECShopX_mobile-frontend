@@ -33,10 +33,11 @@ const Selector = () => {
       page_size: pageSize,
       parent_id: type === MERCHANT_TYPE ? 0 : parent_id
     }
+    const {searchingName} = state
     if (isBank) {
-      params.bank_name = name
+      params.bank_name = searchingName
     } else {
-      params.name = name
+      params.name = searchingName
     }
     let list = [],
       total_count = 0
@@ -61,6 +62,7 @@ const Selector = () => {
 
   //点击搜索框搜索
   const handleConfirm = async (val) => {
+    console.log('------------',val)
     await setState((v) => {
       v.list = []
       v.name = val
