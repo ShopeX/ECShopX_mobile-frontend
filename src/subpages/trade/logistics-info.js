@@ -12,7 +12,6 @@ import { showToast } from '@/utils'
 import "./logistics-info.scss";
 
 const initialState = {
-  corp_code: '',
   logi_no: '',
   corpIndex: 0,
   expressList: []
@@ -20,22 +19,23 @@ const initialState = {
 function TradeLogisticsInfo(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { corp_code, logi_no, expressList, corpIndex } = state
+  const { logi_no, expressList, corpIndex } = state
 
   useEffect(() => {
-    const expressList = Object.keys(LOGISTICS_CODE).map(key => {
+    const _expressList = Object.keys(LOGISTICS_CODE).map(key => {
       return {
         name: LOGISTICS_CODE[key],
         code: key
       }
     })
     setState(draft => {
-      draft.expressList = expressList
+      draft.expressList = _expressList
     })
   }, [])
 
   const onSubmit = async () => {
     const { item_id, order_id, aftersales_bn } = $instance.router.params
+    const corp_code = expressList[corpIndex]?.code
     if (!corp_code) {
       showToast('请填写物流公司')
       return
@@ -52,11 +52,11 @@ function TradeLogisticsInfo(props) {
       corp_code
     })
     showToast('操作成功')
-    // setTimeout(() => {
-    //   Taro.redirectTo({
-    //     url: '/subpage/pages/trade/after-sale'
-    //   })
-    // }, 1000)
+    setTimeout(() => {
+      Taro.navigateBack({
+        delta: 2
+      })
+    }, 1000)
   }
 
   const onChangeExpress = (e) => {

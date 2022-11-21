@@ -143,8 +143,12 @@ export default class AfterSale extends Component {
   handleClickItem = (trade) => {
     const { id } = trade
 
+    // Taro.navigateTo({
+    //   url: `/subpage/pages/trade/refund-detail?aftersales_bn=${id}`
+    // })
+
     Taro.navigateTo({
-      url: `/subpage/pages/trade/refund-detail?aftersales_bn=${id}`
+      url: `/subpages/trade/after-sale-detail?aftersales_bn=${id}`
     })
   }
 

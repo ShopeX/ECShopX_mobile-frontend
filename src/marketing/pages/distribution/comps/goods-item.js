@@ -1,13 +1,3 @@
-/*
- * @Author: dreamworks.cnn@gmail.com
- * @Date: 2022-02-28 00:39:48
- * @LastEditors: dreamworks.cnn@gmail.com
- * @LastEditTime: 2022-11-04 17:10:21
- * @FilePath: /ecshopxx-vshop/src/marketing/pages/distribution/comps/goods-item.js
- * @Description: 
- * 
- * Copyright (c) 2022 by wangzhanyuan dreamworks.cnn@gmail.com, All Rights Reserved. 
- */
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'

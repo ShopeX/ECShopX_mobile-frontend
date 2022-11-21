@@ -454,8 +454,11 @@ export default class TradeDetail extends Component {
       return
     }
     if (type === 'aftersales') {
+      // Taro.navigateTo({
+      //   url: `/subpage/pages/trade/after-sale-detail?id=${info.tid}`
+      // })
       Taro.navigateTo({
-        url: `/subpage/pages/trade/after-sale-detail?id=${info.tid}`
+        url: `/subpages/trade/after-sale?id=${info.tid}`
       })
       return
     }

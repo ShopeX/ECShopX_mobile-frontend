@@ -25,6 +25,29 @@ export const REFUND_STATUS = {
   '7': '售后关闭'
 }
 
+export const AFTER_SALE_TYPE = [
+  { title: '仅退款', icon: 'icon-jintuikuan-01', type: 'ONLY_REFUND' },
+  { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
+]
+
+export const REFUND_FEE_TYPE = [
+  { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 'logistics' },
+  { title: '到店退货', desc: '前往线下门店退货', value: 'offline' },
+]
+
+export const AFTER_SALE_STATUS_TEXT = {
+  0: '售后申请已提交，等待商家处理',
+  1: '商家审核通过，请及时上传物流信息',
+  2: '消费者回寄，等待商家收货确认',
+  3: '售后已驳回',
+  4: '退款成功，请留意资金到账',
+  5: '退款驳回',
+  6: '退款已处理',
+  7: '售后关闭',
+  8: '商家确认收货',
+  9: '退款处理中'
+}
+
 export const PROMOTION_TAG = {
   single_group: '团购',
   full_minus: '满减',

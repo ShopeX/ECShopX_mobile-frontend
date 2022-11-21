@@ -1,13 +1,3 @@
-/*
- * @Author: dreamworks.cnn@gmail.com
- * @Date: 2022-10-13 00:40:25
- * @LastEditors: dreamworks.cnn@gmail.com
- * @LastEditTime: 2022-11-11 17:52:50
- * @FilePath: /ecshopxx-vshop/src/subpages/marketing/coupon-record.js
- * @Description: 
- * 
- * Copyright (c) 2022 by wangzhanyuan dreamworks.cnn@gmail.com, All Rights Reserved. 
- */
 import React, { useRef, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
