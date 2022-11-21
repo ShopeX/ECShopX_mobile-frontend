@@ -11,7 +11,6 @@ import {
   SpTagBar,
   SpGoodsItem,
   SpSearchBar,
-  SpNote,
   SpNavBar,
   SpLoadMore,
   TabBar,

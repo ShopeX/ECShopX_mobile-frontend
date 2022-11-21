@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '选择门店'
+  navigationBarTitleText: '选择退货点'
 }

@@ -50,3 +50,30 @@ export const TRADE_ITEM = {
 export const SHOP_INFO = {
 
 }
+
+export const TRADE_AFTER_SALES_ITEM = {
+  progress: 'progress',
+  orderId: 'order_id',
+  afterSalesBn: 'aftersales_bn',
+  afterSalesType: 'aftersales_type',
+  distributorRemark: 'distributor_remark',
+  items: ({ detail }) => {
+    return pickBy(detail, {
+      pic: ({ orderItem }) => orderItem.pic,
+      itemName: ({ orderItem }) => orderItem.item_name,
+      itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
+      num: ({ orderItem }) => orderItem.num,
+      price: ({ orderItem }) => orderItem.total_fee / 100,
+    })
+  },
+  afterSalesMobile: ({ aftersales_address }) =>  aftersales_address.aftersales_mobile,
+  afterSalesAddress: ({ aftersales_address }) =>  aftersales_address.aftersales_address,
+  afterSalesContact: ({ aftersales_address }) =>  aftersales_address.aftersales_contact,
+  refundFee: ({ refund_fee }) => refund_fee / 100,
+  refundPoint: ({ refund_point }) => refund_point / 100,
+  reason: 'reason',
+  description: 'description',
+  evidencePic: 'evidence_pic',
+  createTime: ({ create_time }) => formatDateTime(create_time * 1000),
+  returnType: 'return_type',
+}

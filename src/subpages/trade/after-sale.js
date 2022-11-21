@@ -7,32 +7,27 @@ import doc from "@/doc"
 import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import { SpPage, SpTabs, SpCell, SpCheckbox, SpImage, SpInputNumber, SpFloatLayout, SpUpload, SpPrice, SpHtml } from '@/components'
 import { View, Text, Picker } from "@tarojs/components"
-import { pickBy, showToast, isNumber } from '@/utils'
+import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
+import { pickBy, showToast, classNames } from '@/utils'
 import "./after-sale.scss";
 
 const initialState = {
   info: null,
   curTabIdx: 0,
-  tabList: [
-    { title: '仅退款', icon: 'icon-jintuikuan-01', type: 'ONLY_REFUND' },
-    { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
-  ],
+  tabList: AFTER_SALE_TYPE,
   reasonIndex: '',
   reasons: [],
   refundFee: 0,
   refundPoint: 0,
-  refundType: 2,
+  refundType: 'offline',
   description: '',
   pic: '',
-  refundTypeList: [
-    { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 1 },
-    { title: '到店退货', desc: '前往线下门店退货', value: 2 },
-  ],
+  refundTypeList: REFUND_FEE_TYPE,
   refundStore: '', // 退货门店
-  connect: '', // 联系人
+  contact: '', // 联系人
   mobile: '', // 联系电话
   openRefundType: false,
-  selectRefundValue: 2,
+  selectRefundValue: 'offline',
   afterSaleDesc: {
     intro: '',
     is_open: false
@@ -44,7 +39,7 @@ function TradeAfterSale(props) {
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const { info, curTabIdx, tabList, reasonIndex, reasons, refundFee, refundPoint, refundType, refundTypeList, description, pic, openRefundType, selectRefundValue,
-    refundStore, connect, mobile, afterSaleDesc } = state
+    refundStore, contact, mobile, afterSaleDesc } = state
 
   useEffect(() => {
     fetch()
@@ -137,13 +132,30 @@ function TradeAfterSale(props) {
       description,
       evidence_pic: pic
     }
-    if(aftersales_type == 'REFUND_GOODS') {
+    // 退货退款
+    if (aftersales_type == 'REFUND_GOODS') {
       params = {
         ...params,
-        return_type: refundType == 1 ? 'logistics' : 'offline',
-        // aftersales_address_id: '请选择退货门店',
-        // contact: '请填写联系人姓名',
-        // mobile: '请填写联系人手机号码'
+        return_type: refundType
+      }
+      // 到店退货
+      if (refundType == 'offline') {
+        if (!refundStore) {
+          return showToast('请选择退货门店')
+        }
+        if (!contact) {
+          return showToast('请输入联系人姓名')
+        }
+        if (!mobile) {
+          return showToast('请输入联系人电话')
+        }
+        params = {
+          ...params,
+          return_type: refundType,
+          aftersales_address_id: refundStore.address_id,
+          contact,
+          mobile
+        }
       }
     }
     await api.aftersales.apply(params)
@@ -220,18 +232,18 @@ function TradeAfterSale(props) {
     <View className='refund-detail'>
       <View className='refund-amount'>
         <SpCell title='退款金额' value={getRealRefundFee()
-        // <>
-        //   <AtInput
-        //     name='refund_fee'
-        //     value={refundFee}
-        //     onChange={(e) => {
-        //       setState(draft => {
-        //         draft.refundFee = parseFloat(e)
-        //       })
-        //     }}
-        //   />
-        //   <Text className='iconfont icon-bianji1'></Text>
-        // </>
+          // <>
+          //   <AtInput
+          //     name='refund_fee'
+          //     value={refundFee}
+          //     onChange={(e) => {
+          //       setState(draft => {
+          //         draft.refundFee = parseFloat(e)
+          //       })
+          //     }}
+          //   />
+          //   <Text className='iconfont icon-bianji1'></Text>
+          // </>
         }></SpCell>
         {/* <View className='cell-tip'>{`实际最多可退商品金额：${getRealRefundFee()}`}</View> */}
       </View>
@@ -247,7 +259,7 @@ function TradeAfterSale(props) {
           //     })
           //   }}
           // /><Text className='iconfont icon-bianji1'></Text></>
-          }></SpCell>
+        }></SpCell>
         {/* <View className='cell-tip'>{`实际最多可退还积分：${info?.point}`}</View> */}
       </View>
     </View>
@@ -260,20 +272,29 @@ function TradeAfterSale(props) {
         })
       }}></SpCell>
       {
-        refundType == 2 && <>
-          <SpCell border title='退货门店' isLink onClick={() => {
+        refundType == 'offline' && <>
+          <SpCell border title='退货门店' isLink value={<Text className={classNames({
+            'placeholder': !refundStore
+          })}>{refundStore ? refundStore.name : '请选择退货门店'}</Text>} onClick={() => {
             Taro.navigateTo({
-              url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}`
+              url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}&refund_store=${refundStore?.address_id}`,
+              events: {
+                onEventPickerStore: (item) => {
+                  console.log('onEventPickerStore:', item)
+                  setState(draft => {
+                    draft.refundStore = item
+                  })
+                }
+              }
             })
-          }}>
-          </SpCell>
+          }} />
           <SpCell border title='联系人' value={<AtInput
-            name='connect'
-            value={connect}
+            name='contact'
+            value={contact}
             placeholder='请填写联系人姓名'
             onChange={(e) => {
               setState(draft => {
-                draft.connect = e
+                draft.contact = e
               })
             }}
           />}>
