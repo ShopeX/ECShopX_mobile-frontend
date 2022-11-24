@@ -55,6 +55,13 @@ const Audit = () => {
     copyText(`地址：${process.env.APP_MERCHANT_URL}/merchant/login\n账号：${mobile}\n密码：${password}`)
   }
 
+  const onResetPsd = async() => {
+    const {password} = await api.merchant.getResetPsd()
+    setState((draft) => {
+      draft.password = password
+    })
+  }
+
   return (
     <SpPage
       className={classNames('page-merchant-audit', {
@@ -86,7 +93,7 @@ const Audit = () => {
             </View>
             <View className='block-item'><View className='item-label'>账号：</View><View className='item-field'>{mobile}</View></View>
             <View className='block-item'><View className='item-label'>密码：</View><View className='item-field'>{password}</View>
-            {/* <AtButton circle size='small'>重新获取</AtButton> */}
+            <AtButton circle size='small' onClick={onResetPsd}>重新获取</AtButton>
             </View>
             <AtButton className='btn-copy' circle type='primary' onClick={onCopyLoginInfo}>复制登录信息</AtButton>
           </View>
