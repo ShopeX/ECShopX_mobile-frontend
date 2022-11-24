@@ -35,7 +35,8 @@ const Index = () => {
     // })}`
     const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
       token,
-      company_id
+      company_id,
+      in_shop_wechat: true
       // type:'alipay'
     })}`
     setState(draft => {

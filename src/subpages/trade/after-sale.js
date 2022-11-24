@@ -8,7 +8,7 @@ import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import { SpPage, SpTabs, SpCell, SpCheckbox, SpImage, SpInputNumber, SpFloatLayout, SpUpload, SpPrice, SpHtml } from '@/components'
 import { View, Text, Picker } from "@tarojs/components"
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
-import { pickBy, showToast, classNames } from '@/utils'
+import { pickBy, showToast, classNames, VERSION_STANDARD } from '@/utils'
 import "./after-sale.scss";
 
 const initialState = {
@@ -22,7 +22,9 @@ const initialState = {
   refundType: 'offline',
   description: '',
   pic: '',
-  refundTypeList: [],
+  // 用于云店后台交易设置-到店退货关闭时判断
+  offlineAftersalesIsOpen: false,
+  refundTypeList: REFUND_FEE_TYPE,
   refundStore: '', // 退货门店
   contact: '', // 联系人
   mobile: '', // 联系电话
@@ -39,7 +41,7 @@ function TradeAfterSale(props) {
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const { info, curTabIdx, tabList, reasonIndex, reasons, refundFee, refundPoint, refundType, refundTypeList, description, pic, openRefundType, selectRefundValue,
-    refundStore, contact, mobile, afterSaleDesc } = state
+    refundStore, contact, mobile, afterSaleDesc, offlineAftersalesIsOpen } = state
 
   useEffect(() => {
     fetch()
@@ -69,18 +71,22 @@ function TradeAfterSale(props) {
 
   const fetch = async () => {
     const { id } = $instance.router.params
-    const { orderInfo } = await api.trade.detail(id)
+    const { orderInfo, offline_aftersales_is_open } = await api.trade.detail(id)
     const reasons = await api.aftersales.reasonList()
     const { intro, is_open } = await api.aftersales.remindDetail()
     const _info = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     setState(draft => {
       draft.info = _info
       draft.reasons = reasons
+      draft.offlineAftersalesIsOpen = offline_aftersales_is_open
       draft.afterSaleDesc = {
         intro,
         is_open
       }
-      draft.refundTypeList = _info.offlineAftersalesIsOpen ? REFUND_FEE_TYPE : REFUND_FEE_TYPE.filter(item => item.value != 'offline')
+      if (VERSION_STANDARD && !offline_aftersales_is_open) {
+        draft.refundTypeList = REFUND_FEE_TYPE.filter(item => item.value != 'offline')
+        draft.refundType = 'logistics'
+      }
     })
   }
 
@@ -284,7 +290,7 @@ function TradeAfterSale(props) {
         })
       }}></SpCell>
       {
-        refundType == 'offline' && <>
+        refundType == 'offline' && ((offlineAftersalesIsOpen && VERSION_STANDARD) || !VERSION_STANDARD) && <>
           <SpCell border title='退货门店' isLink value={<Text className={classNames({
             'placeholder': !refundStore
           })}>{refundStore ? refundStore.name : '请选择退货门店'}</Text>} onClick={() => {

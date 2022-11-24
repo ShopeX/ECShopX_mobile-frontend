@@ -44,9 +44,7 @@ export const TRADE_ITEM = {
   totalFee: ({ total_fee }) => total_fee / 100,
   marketFee: ({ market_fee }) => market_fee / 100,
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
-  freightFee: ({ freight_fee }) => freight_fee / 100,
-  // 用于云店后台交易设置-到店退货关闭时判断
-  offlineAftersalesIsOpen: 'offline_aftersales_is_open'
+  freightFee: ({ freight_fee }) => freight_fee / 100
 }
 
 export const SHOP_INFO = {
