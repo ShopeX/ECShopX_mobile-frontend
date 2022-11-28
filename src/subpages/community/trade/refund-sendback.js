@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtInput, AtButton } from 'taro-ui'
-import { SpNavBar, SpToast, SpPage } from '@/components'
+import { SpToast, SpPage } from '@/components'
 import { getThemeStyle, styleNames } from '@/utils'
 import { LOGISTICS_CODE } from '@/consts'
 import api from '@/api'
@@ -32,6 +32,20 @@ export default class TradeRefundSendback extends Component {
   $instance = getCurrentInstance()
   constructor(props) {
     super(props)
+
+    this.state = {
+      express: [],
+      curExpressIdx: 0,
+      corp_code: 'SF',
+      logi_no: ''
+    }
+  }
+
+  componentDidMount() {
+    this.initState()
+  }
+
+  initState = () => {
     const express = []
     for (let key in LOGISTICS_CODE) {
       express.push({
@@ -42,13 +56,6 @@ export default class TradeRefundSendback extends Component {
     this.setState({
       express
     })
-
-    this.state = {
-      express,
-      curExpressIdx: 0,
-      corp_code: 'SF',
-      logi_no: ''
-    }
   }
 
   handleExpressChange = (e) => {
@@ -112,7 +119,7 @@ export default class TradeRefundSendback extends Component {
                   rangeKey='corp_name'
                   onChange={this.handleExpressChange}
                 >
-                  <View className='picker'>{express[curExpressIdx].corp_name}</View>
+                  <View className='picker'>{express[curExpressIdx]?.corp_name}</View>
                 </Picker>
               </View>
             </View>
