@@ -96,15 +96,15 @@ function SpPage(props, ref) {
   useDidShow(() => {
     const { page, router } = getCurrentInstance()
 
-    const nPageTitle = page?.config?.navigationBarTitleText
+    const pageTitle = page?.config?.navigationBarTitleText
 
     const fidx = Object.values(TABBAR_PATH).findIndex(
       (v) => v == $instance.router?.path.split('?')[0]
     )
-    const nIsTabBarPage = fidx > -1
+    const isTabBarPage = fidx > -1
     setState((draft) => {
-      draft.pageTitle = nPageTitle
-      draft.isTabBarPage = nIsTabBarPage
+      draft.pageTitle = pageTitle
+      draft.isTabBarPage = isTabBarPage
     })
 
     // 导购货架分包路由，隐藏所有分享入口
