@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtInput, AtButton } from 'taro-ui'
-import { SpNavBar, SpToast } from '@/components'
-import { getThemeStyle, styleNames,isWxWeb } from '@/utils'
+import { SpNavBar, SpToast,SpPage } from '@/components'
+import { getThemeStyle, styleNames } from '@/utils'
 import { LOGISTICS_CODE } from '@/consts'
 import api from '@/api'
 import S from '@/spx'
@@ -100,10 +100,11 @@ export default class TradeRefundSendback extends Component {
   render() {
     const { express, logi_no, curExpressIdx } = this.state
     return (
-      <View className='page-refund-sendback' style={styleNames(getThemeStyle())}>
+      <SpPage className='page-distribution-tarde-refund-sendback'>
+          <View className='page-refund-sendback' style={styleNames(getThemeStyle())}>
         <SpNavBar title='售后填写物流公司' leftIconType='chevron-left' fixed='true' />
 
-        <View className='sec' style={isWxWeb && { paddingTop: 0 }}>
+        <View className='sec' >
           <View className='at-input'>
             <View className='at-input__container'>
               <View className='at-input__title'>物流公司：</View>
@@ -136,6 +137,8 @@ export default class TradeRefundSendback extends Component {
 
         <SpToast />
       </View>
+    </SpPage>
+
     )
   }
 }

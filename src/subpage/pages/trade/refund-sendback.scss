@@ -1,14 +1,14 @@
 @import "@/style/imports";
 
-.sec{
-  /*  #ifdef  h5  */  
-  padding-top: $navigate-height-h5;
-  /*  #endif  */  
-  
-}
-.page-refund-sendback {
-  .at-input {
-    padding-left: $edge-size;
-    padding-right: $edge-size;
+.page-distribution-tarde-refund-sendback{
+  /*  #ifdef  h5  */
+  // padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .page-refund-sendback {
+    .at-input {
+      padding-left: $edge-size;
+      padding-right: $edge-size;
+    }
   }
 }
+
