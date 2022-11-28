@@ -64,6 +64,7 @@ function SpPoster(props) {
     Taro.showLoading({
       title: '海报生成中...'
     })
+    debugger
     const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance().page)
     let canvasObj
     switch (type) {
@@ -107,6 +108,7 @@ function SpPoster(props) {
         break
     }
     const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
+    debugger
     setState(
       (draft) => {
         draft.pxWidth = canvasWidth
@@ -115,6 +117,8 @@ function SpPoster(props) {
       },
       async (_state) => {
         await canvasObj.drawPoster()
+        debugger
+        //========================================
         const poster = await getPoster(_state)
         Taro.hideLoading()
         setState((draft) => {
@@ -125,8 +129,10 @@ function SpPoster(props) {
   }
 
   const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {
+    debugger
     return new Promise((resolve, reject) => {
       ctx.draw(false, async () => {
+        debugger
         const { tempFilePath: poster } = await Taro.canvasToTempFilePath(
           {
             x: 0,

@@ -173,12 +173,14 @@ export default class DistributionDashboard extends Component {
     const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
     const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
     console.log('DistributionDashboard-wxappCode:', wxappCode)
-    // debugger
     let avatarImg, bck
-    if (avatar) {
-      // 头像
-      avatarImg = await Taro.getImageInfo({ src: avatar })
-    }
+    // if (avatar) {
+    //   // 头像
+    //   avatarImg = await Taro.getImageInfo({ src: avatar })
+    // }
+    let nAvatar = avatar === '' ? `${process.env.APP_IMAGE_CDN}/user_icon.png` : avatar
+    //头像
+    avatarImg = await Taro.getImageInfo({ src: nAvatar })
     if (qrcode_bg_img) {
       // 背景
       bck = await Taro.getImageInfo({ src: qrcode_bg_img })
@@ -190,6 +192,7 @@ export default class DistributionDashboard extends Component {
     const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
     console.log('DistributionDashboard-avatarImg:', avatarImg)
     console.log('DistributionDashboard-codeImg:', codeImg)
+
     if (avatarImg || isAlipay) {
       const posterImgs = {
         avatar: avatarImg ? avatarImg.path : null,
@@ -219,7 +222,6 @@ export default class DistributionDashboard extends Component {
     const { avatar, code, bck, username } = posterImgs
     const ctx = Taro.createCanvasContext('myCanvas')
     console.log('drawImage:ctx', ctx)
-    // debugger
     canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
     // canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
     // ctx.drawImage(bck, 0, 0, 750, 1335, 0, 0, 375, 640)
