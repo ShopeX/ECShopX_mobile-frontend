@@ -2,7 +2,6 @@ import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
 import { getExtConfigData, isAlipay } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
-import userIcon from '@/assets/imgs/user-icon.png'
 // const canvasWidth = 750
 // const canvasHeight = 1335
 
@@ -51,14 +50,14 @@ class DistributionPoster {
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
     const url = (isOpenShop && shop_status == 1) ? `marketing/pages/distribution/shop-home` : `pages/index`
     let wxappCode
-    // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index  
+    // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
     if(isAlipay){
-      // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)      
+      // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
       const res = await Taro.request({
         url: `${host}/api/h5app/alipaymini/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`, //仅为示例，并非真实的接口地址
         header: {
           'content-type': 'application/json' // 默认值
-        },        
+        },
       })
       wxappCode = res.data.data.qr_code_url
     }else{
@@ -74,7 +73,7 @@ class DistributionPoster {
     // 太阳码
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
     // 头像
-    this.avatar = await Taro.getImageInfo({ src: avatar || userIcon })
+    this.avatar = await Taro.getImageInfo({ src: avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png` })
 
     const drawOptions = {
       ctx: this.ctx,
