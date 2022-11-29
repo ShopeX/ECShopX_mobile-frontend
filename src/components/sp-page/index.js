@@ -80,7 +80,7 @@ function SpPage(props, ref) {
   }, [lock])
 
   useEffect(() => {
-    if (isWeixin) {
+    if (isWeixin || isAlipay) {
       const pages = Taro.getCurrentPages()
       const { navigationStyle } = page.config
       // customNavigation = navigationStyle === 'custom'
@@ -196,14 +196,14 @@ function SpPage(props, ref) {
       // 导航颜色背景
       if (navigateStyle == '1') {
         pageStyle = {
-          'backgroundColor': navigateBackgroundColor
+          'background-color': navigateBackgroundColor
         }
       } else {
         pageStyle = {
-          'backgroundImage': `url(${navigateBackgroundImage.url})`,
-          'backgroundSize': '100% 100%',
-          'backgroundRepeat': 'no-repeat',
-          'backgroundPosition': 'center'
+          'background-image': `url(${navigateBackgroundImage.url})`,
+          'background-size': '100% 100%',
+          'background-repeat': 'no-repeat',
+          'background-position': 'center'
         }
       }
       // 页面标题
@@ -228,7 +228,7 @@ function SpPage(props, ref) {
         }, navigateTheme)}
         style={styleNames({
           height: `${gNavbarH}px`,
-          paddingTop: `${gStatusBarHeight}px`,
+          'padding-top': `${gStatusBarHeight}px`,
           ...pageStyle
         })}
       >
@@ -252,7 +252,7 @@ function SpPage(props, ref) {
           </View>
         </View>}
 
-        <View className='title-container' style={styleNames(pageTitleStyle)}>{pageTitle || renderTitle}</View>
+        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>{pageTitle || renderTitle}</View>}
         {/* <View className='right-container'></View> */}
       </View>
     )
@@ -264,13 +264,13 @@ function SpPage(props, ref) {
 
     if (pageBackgroundStyle == '1') {
       pageBackground = {
-        'backgroundColor': pageBackgroundColor
+        'background-color': pageBackgroundColor
       }
     } else {
       pageBackground = {
-        'backgroundImage': `url(${pageBackgroundImage.url})`,
-        'backgroundSize': '100% 100%',
-        'backgroundPosition': 'center'
+        'background-image': `url(${pageBackgroundImage.url})`,
+        'background-size': '100% 100%',
+        'background-position': 'center'
       }
     }
   }
@@ -298,7 +298,7 @@ function SpPage(props, ref) {
       {loading && <SpLoading />}
 
       {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        marginTop: `${(customNavigation && pageConfig) ? gNavbarH : 0}px`
+        'margin-top': `${(customNavigation && pageConfig) ? gNavbarH : 0}px`
       })}>{children}</View>}
 
       {/* 置底操作区 */}

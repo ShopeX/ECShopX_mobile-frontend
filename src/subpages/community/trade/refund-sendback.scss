@@ -1,8 +1,10 @@
 @import '@/style/imports';
-
-.page-refund-sendback {
-  .at-input {
-    padding-left: $edge-size;
-    padding-right: $edge-size;
+.page-distribution-tarde-refund-sendback{
+  .page-refund-sendback {
+    .at-input {
+      padding-left: $edge-size;
+      padding-right: $edge-size;
+    }
   }
 }
+

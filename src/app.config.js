@@ -155,6 +155,15 @@ export default {
       ]
     },
     {
+      root: 'subpages/trade',
+      pages: [
+        'after-sale',
+        'after-sale-detail',
+        'logistics-info',
+        'store-picker'
+      ]
+    },
+    {
       root: 'marketing',
       pages: [
         'pages/distribution/index', // 推广管理首页
@@ -317,9 +326,9 @@ export default {
       desc: '您的位置信息将用于定位附近门店'
     }
   },
-  // usingComponents: {
-  //   'mp-html': './components/sp-html/mp-weixin/index'
-  // },
+  usingComponents: {
+    'mp-html': './components/sp-html/mp-weixin/index'
+  },
   window: {
     'backgroundTextStyle': 'light',
     'navigationBarBackgroundColor': '#fff',

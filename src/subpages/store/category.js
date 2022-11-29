@@ -39,7 +39,7 @@ const CategoryIndex = (props) => {
     }
     const { list } = await api.category.getCategory(query)
     const { data, hasSeries } = list[0].params
-    const seriesList = pickBy(data, doc.category.CATEGORY_STORE_LIST_TWO_CHILDREN)
+    const seriesList = pickBy(data, doc.category.CATEGORY_STORE_LIST)
     let tabList = []
     let contentList = []
     // if (hasSeries) {
@@ -131,11 +131,11 @@ const CategoryIndex = (props) => {
             <View className='category-content-list'>
               {curContent?.children?.map((item, index) => (
                 <View className='category-content' key={`content-item__${index}`} >
-                  <View className='category-two-item' onClick={() => handleClickItem(item)}>
-                    <SpImage mode='aspectFill' src={item.img} width={158} height={158} />
+                  <View className='category-two-item' >
+
                     <Text className='item-name'>{item.name}</Text>
                   </View>
-                  {/* <View className='category-three'>
+                  <View className='category-three'>
                     {item?.children?.map((sitem, sindex) => (
                       <View
                         className='category-three-item'
@@ -146,7 +146,7 @@ const CategoryIndex = (props) => {
                         <View className='item-name'>{sitem.name}</View>
                       </View>
                     ))}
-                  </View> */}
+                  </View>
                 </View>
               ))}
             </View>

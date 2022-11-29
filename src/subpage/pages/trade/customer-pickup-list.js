@@ -5,7 +5,7 @@ import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager, withLogin } from '@/hocs'
-import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
+import { log, pickBy, resolveOrderStatus, getCurrentRoute, classNames, isNavbar } from '@/utils'
 // import { Tracker } from '@/service'
 import TradeItem from './comps/item'
 
@@ -162,7 +162,9 @@ export default class TradePickList extends Component {
     const { curItemActionsId, tabList, list, page } = this.state
 
     return (
-      <View className='page-trade-list'>
+      <View className={classNames('page-trade-list', {
+        'has-navbar': isNavbar()
+      })}>
         <SpNavBar title='自提订单' leftIconType='chevron-left' fixed='true' />
 
         <ScrollView

@@ -25,6 +25,19 @@
       }
       &-active {
         color: #333;
+        font-size: 30px;
+        .name {
+          position: relative;
+          &:after {
+            content: "";
+            height: 4px;
+            position: absolute;
+            left: -48px;
+            right: -20px;
+            bottom: -24px;
+            background-color:#333;
+          }
+        }
       }
     }
   }

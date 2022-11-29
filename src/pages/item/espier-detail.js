@@ -319,9 +319,9 @@ function EspierDetail(props) {
 
   // 领券
   const handleReceiveCoupon = () => {
-    const { item_id, distributor_id } = info
+    const { itemId, distributorId } = info
     Taro.navigateTo({
-      url: `/subpages/marketing/coupon-center?item_id=${item_id}&distributor_id=${distributor_id}`
+      url: `/subpages/marketing/coupon-center?item_id=${itemId}&distributor_id=${distributorId}`
     })
   }
 
@@ -380,7 +380,7 @@ function EspierDetail(props) {
           }}
         />
       }
-    >      
+    >
       {/* <Canvas id="canvas2" type="2d" onReady={onCanvasReady} /> */}
       {!info && <SpLoading />}
       {info && (

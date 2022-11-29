@@ -75,6 +75,7 @@ export default class AfterSale extends Component {
 
     let nList = pickBy(list, {
       id: 'aftersales_bn',
+      order_id: 'order_id',
       status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
       totalItems: 'num',
       payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
@@ -95,11 +96,23 @@ export default class AfterSale extends Component {
 
     log.debug('[trade list] list fetched and processed: ', nList)
 
+    //售后详情跳转过滤列表
+    const nFList = this.detailFilter(nList)
+
     this.setState({
-      list: [...this.state.list, ...nList]
+      list: [...this.state.list, ...nFList]
     })
 
     return { total }
+  }
+
+  detailFilter(nList){
+    const {order_id} = this.$instance.router.params
+    let nFList = JSON.parse(JSON.stringify(nList))
+    if(order_id){
+      nFList = nList.filter(item => item.order_id == order_id)
+    }
+    return nFList
   }
 
   handleClickTab = (idx) => {
@@ -125,13 +138,18 @@ export default class AfterSale extends Component {
   handleClickItem = (trade) => {
     const { id } = trade
 
+    // Taro.navigateTo({
+    //   url: `/subpage/pages/trade/refund-detail?aftersales_bn=${id}`
+    // })
+
     Taro.navigateTo({
-      url: `/subpage/pages/trade/refund-detail?aftersales_bn=${id}`
+      url: `/subpages/trade/after-sale-detail?aftersales_bn=${id}`
     })
   }
 
   render() {
     const { curTabIdx, tabList, list, page } = this.state
+
     const { colors } = this.props
 
     return (

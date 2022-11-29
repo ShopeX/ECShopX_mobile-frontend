@@ -439,7 +439,7 @@ export default class TradeDetail extends Component {
       })
       if (confirm) {
         await api.trade.confirm(info.tid)
-        if (isWeixin) {
+        if (isWeixin || isAlipay) {
           const { fullPath } = getCurrentRoute(this.$instance.router)
           Taro.redirectTo({
             url: fullPath
@@ -454,8 +454,11 @@ export default class TradeDetail extends Component {
       return
     }
     if (type === 'aftersales') {
+      // Taro.navigateTo({
+      //   url: `/subpage/pages/trade/after-sale-detail?id=${info.tid}`
+      // })
       Taro.navigateTo({
-        url: `/subpage/pages/trade/after-sale-detail?id=${info.tid}`
+        url: `/subpages/trade/after-sale?id=${info.tid}`
       })
       return
     }

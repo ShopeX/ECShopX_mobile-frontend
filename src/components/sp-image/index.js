@@ -65,7 +65,7 @@ function SpImage(props) {
         className='sp-image-img'
         style={styleNames({
           'border-radius': isNumber(circle)
-            ? `${circle}px`
+            ? `${circle / 2}px`
             : isBoolean(circle) && circle
             ? `${width / 2}px`
             : 0

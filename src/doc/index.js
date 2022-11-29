@@ -11,6 +11,7 @@ import * as community from './community'
 import * as point from './point'
 import * as member from './member'
 import * as dianwu from './dianwu'
+import * as trade from './trade'
 
 export default {
   address,
@@ -25,5 +26,6 @@ export default {
   community,
   point,
   member,
-  dianwu
+  dianwu,
+  trade
 }

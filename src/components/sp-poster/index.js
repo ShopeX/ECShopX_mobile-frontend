@@ -11,10 +11,26 @@ import Distribution from './dw-distribution'
 
 import './index.scss'
 
+const UI_Width = 750
+//同步获取设备系统信息
+const info = Taro.getSystemInfoSync()
+//设备像素密度
+const dpr = info.pixelRatio;
+//计算比例
+const scale = info.screenWidth / UI_Width
+//计算canvas实际渲染尺寸
+let width = parseInt(scale * 335)
+let height = parseInt(scale * 536)
+//计算canvas画布尺寸
+let canvasWidth1 = width * dpr
+let canvasHeight2 = height * dpr
+
 const initialState = {
   poster: null,
-  pxWidth: 200,
-  pxHeight: 200,
+  // pxWidth: 200,
+  // pxHeight: 200,
+  pxWidth: 335,
+  pxHeight: 536,
   factor: 1,
   eleId: 'poster-canvas',
   ctx: null
@@ -186,6 +202,8 @@ function SpPoster(props) {
         className='canvasbox'
         canvasId='poster-canvas'
         id='poster-canvas'
+        width={canvasWidth1} 
+        height={canvasHeight2}
         style={`width:${pxWidth}px; height:${pxHeight}px;`}
       />
     </View>

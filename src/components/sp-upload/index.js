@@ -12,7 +12,7 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max, onChange = () => {}, value = [], multiple = true } = props
+  const { max, onChange = () => { }, value = [], multiple = true } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
@@ -63,17 +63,18 @@ function SpUpload(props) {
       {isArray(files) &&
         files.map((item, index) => (
           <View className='file-item' key={`file-item__${index}`}>
-            <SpImage mode='aspectFit' src={item} width={160} height={160} />
+            <SpImage mode='aspectFit' src={item} width={160} height={160} circle={16}/>
             <Text
               className='iconfont icon-guanbi'
               onClick={handleDeletePic.bind(this, index)}
             ></Text>
           </View>
         ))}
-      {(multiple || (!multiple && files.length == 0)) && (
+      {((multiple && files.length < max) || (!multiple && files.length == 0)) && (
         <View className='btn-upload' onClick={handleUploadFile}>
-          <Text className='iconfont icon-plus'></Text>
+          <Text className='iconfont icon-xiangji'></Text>
           <Text className='btn-upload-txt'>上传图片</Text>
+          {max && <Text className='files-length'>{`(${files.length + 1}/${max})`}</Text>}
         </View>
       )}
     </View>

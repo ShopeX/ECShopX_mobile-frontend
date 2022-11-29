@@ -79,10 +79,10 @@ function CouponRecord() {
               resetText='首页'
               confirmText='领券中心'
               onConfirm={() => {
-                Taro.navigateTo({ url: '/pages/index' })
+                Taro.navigateTo({ url: '/subpages/marketing/coupon-center' })
               }}
               onReset={() => {
-                Taro.navigateTo({ url: '/subpages/marketing/coupon-center' })
+                Taro.navigateTo({ url: '/pages/index' })
               }}
             />
           </View>

@@ -1,13 +1,3 @@
-/*
- * @Author: dreamworks.cnn@gmail.com
- * @Date: 2022-10-13 00:40:25
- * @LastEditors: dreamworks.cnn@gmail.com
- * @LastEditTime: 2022-10-31 18:06:46
- * @FilePath: /ecshopxx-vshop/src/subpages/dianwu/index.js
- * @Description: 
- * 
- * Copyright (c) 2022 by wangzhanyuan dreamworks.cnn@gmail.com, All Rights Reserved. 
- */
 import React, { useEffect, Component } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
@@ -33,7 +23,7 @@ const Index = () => {
   // })
 
   const createWebviewUrl = () => {
-    // const { openid, unionid, app_id, app_type, company_id } = S.get('DIANWU_CONFIG', true)
+    const { openid, unionid, app_id, app_type, company_id } = S.get('DIANWU_CONFIG', true)
     const token =  S.getAuthToken()
     // const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
     //   in_shop_wechat: true,
@@ -43,12 +33,14 @@ const Index = () => {
     //   company_id,
     //   app_type
     // })}`
-    const url = `${'http://192.168.1.101:10086'}?${qs.stringify({
+    const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
       token,
-      type:'alipay'
+      company_id,
+      in_shop_wechat: true
+      // type:'alipay'
     })}`
     setState(draft => {
-      draft.webviewSrc = url      
+      draft.webviewSrc = url
     })
     console.log('webviewSrc', url)
   }

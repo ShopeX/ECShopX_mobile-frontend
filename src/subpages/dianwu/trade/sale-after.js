@@ -50,16 +50,16 @@ function DianwuTradeSaleAfter(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeId, info, curTabIdx, tabList, reason, reasons, refundFee, refundPoint, goodsReturned, goodsReturnedList, description, pic } = state
 
-  // useEffect(() => {
-  //   if (info) {
-  //     const { items } = info
-  //     setState(draft => {
-  //       draft.refundFee = items
-  //         .filter((item) => item.checked)
-  //         .reduce((sum, { totalFee, num, refundNum }) => sum + totalFee / num * refundNum, 0)
-  //     })
-  //   }
-  // }, [info])
+  useEffect(() => {
+    if (info) {
+      const { items } = info
+      setState(draft => {
+        draft.refundFee = items
+          .filter((item) => item.checked)
+          .reduce((sum, { totalFee, num, refundNum }) => sum + totalFee / num * refundNum, 0)
+      })
+    }
+  }, [info])
 
   const onCancel = () => {
     Taro.navigateBack()
@@ -99,7 +99,7 @@ function DianwuTradeSaleAfter(props) {
       refund_fee: refundFee * 100,
       refund_point: refundPoint,
       description,
-      pic: img
+      evidence_pic: [img]
     }
     await api.dianwu.salesAfterApply(params)
     let type = 3
@@ -138,6 +138,7 @@ function DianwuTradeSaleAfter(props) {
         .filter((item) => item.checked)
         .reduce((sum, { totalFee, num, refundNum }) => sum + totalFee / num * refundNum, 0)
     }
+
     return rFee
   }
 

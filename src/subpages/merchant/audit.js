@@ -1,7 +1,10 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { useState, useEffect } from 'react'
+import { useImmer } from 'use-immer'
 import { SpPage, SpImage, Loading } from '@/components'
+import { classNames, copyText, showToast } from '@/utils'
+import { AtButton } from 'taro-ui'
 import api from '@/api'
 import {
   AUDITING,
@@ -13,37 +16,33 @@ import {
 } from './consts'
 import { MButton, MNavBar } from './comps'
 import './audit.scss'
-import { classNames } from '@/utils'
-import { useImmer } from 'use-immer'
+
+
+
+const initialState = {
+  status: AUDIT_UNKNOWN,
+  memo: '',
+  mobile: '',
+  password: ''
+}
 
 const Audit = () => {
-  const [state, setState] = useImmer({
-    status: AUDIT_UNKNOWN,
-    memo: ''
-  })
+  const [state, setState] = useImmer(initialState)
+  const { status, memo, mobile, password } = state
+
+  useEffect(() => {
+    getAuditStatus()
+  }, [])
 
   const getAuditStatus = async () => {
-    const { audit_status, audit_memo } = await api.merchant.getAuditstatus()
-    setState((v) => {
-      v.status = audit_status
-      v.memo = audit_memo
+    const { audit_status, audit_memo, mobile, password } = await api.merchant.getAuditstatus()
+    setState((draft) => {
+      draft.status = audit_status
+      draft.memo = audit_memo
+      draft.mobile = mobile
+      draft.password = password
     })
   }
-
-  const { status, memo } = state
-
-  const renderIng = <View className='text'>预计会在1～5个工作日完成审核</View>
-
-  const renderSuccess = (
-    <View className='text success'>登录地址及账号密码将发送短信至注册手机号，请注意查收</View>
-  )
-
-  const renderFail = (
-    <View className='block'>
-      <View className='text'>审批意见：</View>
-      <View className='text'>{memo}</View>
-    </View>
-  )
 
   const handleReset = () => {
     const url = `/subpages/merchant/apply`
@@ -52,9 +51,16 @@ const Audit = () => {
     })
   }
 
-  useEffect(() => {
-    getAuditStatus()
-  }, [])
+  const onCopyLoginInfo = () => {
+    copyText(`地址：${process.env.APP_MERCHANT_URL}/merchant/login\n账号：${mobile}\n密码：${password}`)
+  }
+
+  const onResetPsd = async () => {
+    const { password } = await api.merchant.getResetPsd()
+    setState((draft) => {
+      draft.password = password
+    })
+  }
 
   return (
     <SpPage
@@ -74,9 +80,29 @@ const Audit = () => {
       <View className='status-title'>{[AUDIT_MAP_TITLE[status]]}</View>
 
       <View className='status-info'>
-        {status == AUDITING && renderIng}
-        {status == AUDIT_SUCCESS && renderSuccess}
-        {status == AUDIT_FAIL && renderFail}
+        {status == AUDITING && <View className='text'>预计会在1～5个工作日完成审核</View>}
+
+        {status == AUDIT_SUCCESS && <View>
+          <View className='text success'>
+            您的入驻申请已通过审核，请使用下方的信息登录商户后台继续操作
+          </View>
+          <View className='block'>
+            <View className='block-item'>
+              <View className='item-label'>地址：</View>
+              <View className='item-field'>{`${process.env.APP_MERCHANT_URL}/merchant/login`}</View>
+            </View>
+            <View className='block-item'><View className='item-label'>账号：</View><View className='item-field'>{mobile}</View></View>
+            <View className='block-item'><View className='item-label'>密码：</View><View className='item-field'>{password}</View>
+              <AtButton circle size='small' onClick={onResetPsd}>重新获取</AtButton>
+            </View>
+            <AtButton className='btn-copy' circle type='primary' onClick={onCopyLoginInfo}>复制登录信息</AtButton>
+          </View>
+        </View>}
+
+        {status == AUDIT_FAIL && <View className='block'>
+          <View className='text'>审批意见：</View>
+          <View className='text'>{memo}</View>
+        </View>}
       </View>
 
       {status == AUDIT_FAIL && (

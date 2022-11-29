@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpFloatLayout, SpCheckbox } from '@/components'
@@ -33,6 +33,7 @@ function SpCashier(props) {
     onChange = () => { },
     paymentAmount = 0
   } = props
+  const $instance = getCurrentInstance()
   const { userInfo } = useSelector((state) => state.user)
   const [state, setState] = useImmer(initialState)
   const { list, selectPayment, selectItem } = state
@@ -68,9 +69,9 @@ function SpCashier(props) {
     } else if (isWeb) {
       platform = 'h5'
     }
-
+    const { shop_id } = $instance.router.params
     const params = {
-      distributor_id: getDistributorId(),
+      distributor_id: getDistributorId(shop_id),
       platform
     }
     const res = await api.member.getTradePaymentList(params)

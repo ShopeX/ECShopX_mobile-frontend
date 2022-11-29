@@ -9,7 +9,7 @@ import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
-import { entryLaunch, pickBy, classNames, showToast, log, isArray } from '@/utils'
+import { entryLaunch, pickBy, classNames, showToast, log, isArray, uniqueFunc } from '@/utils'
 
 import './nearly-shop.scss'
 
@@ -62,7 +62,7 @@ function NearlyShop(props) {
     const { list, total_count: total, defualt_address } = await api.shop.list(query)
 
     setState((v) => {
-      v.shopList = v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)),'distributor_id') 
       v.chooseValue = [query.province, query.city, query.area]
     })
 
@@ -116,6 +116,7 @@ function NearlyShop(props) {
           v.type = 0
           v.search_type = undefined
         })
+        console.log('getLocationInfo 重新定位',)
         shopRef.current.reset()
       }
     })

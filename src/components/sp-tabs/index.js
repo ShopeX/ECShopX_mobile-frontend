@@ -22,7 +22,7 @@ function SpTabs (props) {
             onClick={onChange.bind(this, index)}
           >
             {tab.icon && <Text className={classNames(`iconfont`, tab.icon)}></Text>}
-            <Text>{tab.title}</Text>
+            <Text className='name'>{tab.title}</Text>
           </View>
         ))}
       </View>

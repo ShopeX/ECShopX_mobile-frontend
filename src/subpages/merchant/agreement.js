@@ -1,6 +1,6 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import { ScrollView, View } from '@tarojs/components'
-import { SpPage } from '@/components'
+import { SpPage, SpHtml } from '@/components'
 import { isWeb, classNames } from '@/utils'
 import { useState, useEffect } from 'react'
 import api from '@/api'
@@ -37,11 +37,9 @@ const Agreement = () => {
   return (
     <SpPage className={classNames('page-merchant-agreement')} navbar={false}>
       <MNavBar canLogout={false} />
-
-      <ScrollView className='page-merchant-agreement-content'>
+      <ScrollView className='page-merchant-agreement-content' scrollY>
         <View className='title'>商家入驻协议</View>
-
-        <View className='main' dangerouslySetInnerHTML={{ __html: content }} />
+        <SpHtml content={content}></SpHtml>
       </ScrollView>
     </SpPage>
   )
