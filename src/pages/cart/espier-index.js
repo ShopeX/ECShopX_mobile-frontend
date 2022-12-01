@@ -53,7 +53,7 @@ function CartIndex() {
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
-  const { tabbar = 1 } = router.params
+  const { tabbar = 1 } = router?.params || {}
 
   // useDepChange(() => {
   //   fetch()
