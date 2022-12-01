@@ -13,7 +13,7 @@
   .region-picker {
 		display: flex;
     align-items: center;
-    width: 45%;
+    width: 300px;
     justify-content: flex-start;
   }
   .pick-title {
@@ -26,6 +26,8 @@
   .pick-address {
     color: #333;
     font-size: 26px;
+    width: 240px;
+    display: inline-block;
     @include text-overflow();
   }
   .search-comp-wrap {
