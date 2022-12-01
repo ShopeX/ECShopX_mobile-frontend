@@ -173,7 +173,7 @@ function SpPage(props, ref) {
 
     const menuButton = Taro.getMenuButtonBoundingClientRect()
     const { statusBarHeight } = Taro.getSystemInfoSync()
-    gNavbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
+    gNavbarH = Math.floor(statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2)
     gStatusBarHeight = statusBarHeight
   }
 

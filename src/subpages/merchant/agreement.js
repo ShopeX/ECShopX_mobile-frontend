@@ -37,9 +37,11 @@ const Agreement = () => {
   return (
     <SpPage className={classNames('page-merchant-agreement')} navbar={false}>
       <MNavBar canLogout={false} />
+
       <ScrollView className='page-merchant-agreement-content' scrollY>
         <View className='title'>商家入驻协议</View>
-        <SpHtml content={content}></SpHtml>
+
+        <SpHtml content={content} />
       </ScrollView>
     </SpPage>
   )

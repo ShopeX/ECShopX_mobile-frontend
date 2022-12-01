@@ -62,7 +62,7 @@ function NearlyShop(props) {
     const { list, total_count: total, defualt_address } = await api.shop.list(query)
 
     setState((v) => {
-      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)),'distributor_id') 
+      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)),'distributor_id')
       v.chooseValue = [query.province, query.city, query.area]
     })
 
@@ -207,7 +207,7 @@ function NearlyShop(props) {
             <View className='pick-title' onClick={handleClickOpenSpAddress}>
               <View className='iconfont icon-periscope'></View>
               <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-              <Text className='iconfont icon-arrowDown'></Text>
+              {/* <Text className='iconfont icon-arrowDown'></Text> */}
             </View>
           </View>
 
