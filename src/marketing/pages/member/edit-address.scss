@@ -3,20 +3,24 @@
 .page-address-edit {
   width: 100%;
   overflow-x: hidden;
+  padding: 24px $edge-size;
+  box-sizing: border-box;
   /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
   /*  #endif  */
+  .page-address-edit__form{
+    padding-top: 0;
+  }
+  .sp-cell__ft {
+    color: #ccc;
+  }
   &__form {
     background: #fff;
     padding: $edge-size;
     margin: 0 0 $edge-margin;
   }
   .picker {
-    padding: 16px 0;
-    margin: 0 0 $edge-size;
-    display: flex;
-    justify-content: flex-start;
-    border-bottom: 1px solid rgba($color-brand-primary, 0.2);
+    width: 350px;
     &__title {
       font-size: $font-size;
       margin-right: 16px;
@@ -32,4 +36,23 @@
       color: #808080;
     }
   }
+  .submit-btn{
+    border-radius: 5px;
+    font-size: 30px;
+  }
+  .logistics-no {
+    border-bottom:#d8d8d8 0.5px solid;
+    .at-input {
+      margin-bottom: 0;
+      width: 350px;
+      padding: 0;
+      &:after {
+        border-color: transparent;
+      }
+      &__input {
+        padding-right: 0;
+      }
+    }
+  }
+
 }

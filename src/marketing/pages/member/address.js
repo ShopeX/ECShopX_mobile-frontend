@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
 // import AddressList from '@/components/new-address/address'
 import { connect } from 'react-redux'
 import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
@@ -34,11 +35,11 @@ export default class AddressIndex extends Component {
   }
 
   componentDidShow() {
-    this.fetch()    
+    this.fetch()
   }
 
-  async fetch(isDelete = false) {    
-    const { isPicker, receipt_type = '', city = '' } = this.$instance.router.params    
+  async fetch(isDelete = false) {
+    const { isPicker, receipt_type = '', city = '' } = this.$instance.router.params
     if (isPicker) {
       this.setState({
         isPicker: true
@@ -107,9 +108,21 @@ export default class AddressIndex extends Component {
   }
 
   handleDelete = async (item) => {
+    const res = await Taro.showModal({
+      title: '提示',
+      content: `确定要删除该地址吗?`,
+      showCancel: true,
+      cancel: '取消',
+      cancelText: '拒绝',
+      confirmText: '同意',
+      confirmColor: this.props.colors.colorPrimary
+    })
+    if (!res.confirm) return
+
     const { selectedId } = this.state
     await api.member.addressDelete(item.address_id)
     S.toast('删除成功')
+
     if (selectedId === item.address_id) {
       this.props.updateChooseAddress(null)
     }
@@ -145,7 +158,16 @@ export default class AddressIndex extends Component {
     const { colors } = this.props
     const { selectedId, isPicker, list, is_open_crmAddress } = this.state
     return (
-      <SpPage className='page-address-index'>
+      <SpPage
+        className='page-address-index'
+        renderFooter={
+          <View className='btn-wrap'>
+            <AtButton circle type='primary' onClick={this.handleClickToEdit.bind(this)}>
+              +新增地址
+            </AtButton>
+          </View>
+        }
+      >
         <View>
           {process.env.TARO_ENV === 'weapp' ? (
             <SpCell
@@ -171,66 +193,79 @@ export default class AddressIndex extends Component {
                   key={item[ADDRESS_ID]}
                   className={`address-item ${item.disabled ? 'disabled' : ''}`}
                 >
-                  {isPicker && !item.disabled && (
-                    <View
-                      className='address-item__check'
-                      onClick={this.handleClickChecked.bind(this, item)}
-                    >
-                      {item[ADDRESS_ID] === selectedId ? (
-                        <Text
-                          className='iconfont icon-check address-item__checked'
-                          style={{ color: colors.colorPrimary }}
-                        ></Text>
-                      ) : (
-                        <Text
-                          className='address-item__unchecked'
-                          style={{ borderColor: colors.colorPrimary }}
-                        >
-                          {' '}
-                        </Text>
-                      )}
-                    </View>
-                  )}
-
                   <View className='address-item__content'>
                     <View className='address-item__title'>
                       <Text className='address-item__info'>{item.username}</Text>
-                      <Text className='address-item__info'>{item.telephone}</Text>
+                      <Text className='address-item__info_tel'>{item.telephone}</Text>
                     </View>
-                    <View className='address-item__detail'>
-                      {item.province}
-                      {item.city}
-                      {item.county}
-                      {item.adrdetail}
+                    <View className='address-item__detail_box'>
+                      <View className='address-item__detail'>
+                        {item.province}
+                        {item.city}
+                        {item.county}
+                        {item.adrdetail}
+                      </View>
+
+                      {isPicker && !item.disabled && (
+                        <View
+                          className='address-item__check'
+                          onClick={this.handleClickChecked.bind(this, item)}
+                        >
+                          {item[ADDRESS_ID] === selectedId ? (
+                            <Text
+                              className='iconfont icon-check address-item__checked'
+                              style={{ color: colors.colorPrimary }}
+                            ></Text>
+                          ) : (
+                            <Text
+                              className='address-item__unchecked'
+                              style={{ borderColor: colors.colorPrimary }}
+                            >
+                              {' '}
+                            </Text>
+                          )}
+                        </View>
+                      )}
                     </View>
+
                     <View className='address-item__footer'>
                       <View
                         className='address-item__footer_default'
                         onClick={this.handleChangeDefault.bind(this, item)}
                       >
                         {item.is_def ? (
-                          <Text
-                            className='iconfont icon-check default__icon default__checked'
-                            style={{ color: colors.colorPrimary }}
-                          >
-                            {' '}
-                          </Text>
+                          <>
+                            <Text
+                              className='iconfont icon-check default__icon default__checked'
+                              style={{ color: colors.colorPrimary }}
+                            >
+                              {' '}
+                            </Text>
+                            <Text className='default-text'>已设为默认</Text>
+                          </>
                         ) : (
-                          <Text className='iconfont icon-check default__icon'> </Text>
+                          <>
+                            <Text
+                              className='address-item__unchecked'
+                              style={{ borderColor: colors.colorPrimary }}
+                            >
+                              {' '}
+                            </Text>
+                            <Text className='default-text'>设为默认</Text>
+                          </>
                         )}
-                        <Text className='default-text'>设为默认</Text>
                       </View>
                       <View className='address-item__footer_edit'>
+                        <View className='footer-text' onClick={this.handleDelete.bind(this, item)}>
+                          <Text className='iconfont icon-trashCan footer-icon'> </Text>
+                          <Text>删除</Text>
+                        </View>
                         <View
                           className='footer-text'
                           onClick={this.handleClickToEdit.bind(this, item)}
                         >
                           <Text className='iconfont icon-edit footer-icon'> </Text>
                           <Text>编辑</Text>
-                        </View>
-                        <View className='footer-text' onClick={this.handleDelete.bind(this, item)}>
-                          <Text className='iconfont icon-trashCan footer-icon'> </Text>
-                          <Text>删除</Text>
                         </View>
                       </View>
                     </View>
@@ -239,13 +274,13 @@ export default class AddressIndex extends Component {
               )
             })}
           </View>
-          <View
+          {/* <View
             className='member-address-add'
             style={'background: ' + colors.colorPrimary}
             onClick={this.handleClickToEdit.bind(this)}
           >
             添加新地址
-          </View>
+          </View> */}
           <SpToast />
         </View>
       </SpPage>

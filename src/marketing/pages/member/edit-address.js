@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 // import EditAddress from '@/components/new-address/edit-address'
 import { View, Switch, Text, Picker, Button } from '@tarojs/components'
-import { AtForm, AtInput } from 'taro-ui'
+import { AtForm, AtInput, AtButton } from 'taro-ui'
 import { connect } from 'react-redux'
 import { SpCell, SpToast, SpNavBar, SpAddress } from '@/components'
 import api from '@/api'
@@ -25,12 +25,15 @@ const traverseData = (data) => {
   return item
 }
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}),(dispatch) => ({
-  updateChooseAddress: (address) =>
-    dispatch({ type: 'user/updateChooseAddress', payload: address })
-}))
+@connect(
+  ({ colors }) => ({
+    colors: colors.current
+  }),
+  (dispatch) => ({
+    updateChooseAddress: (address) =>
+      dispatch({ type: 'user/updateChooseAddress', payload: address })
+  })
+)
 export default class AddressIndex extends Component {
   $instance = getCurrentInstance()
   constructor(props) {
@@ -42,15 +45,22 @@ export default class AddressIndex extends Component {
       areaArray: [[], [], []],
       areaIndexArray: [0, 0, 0],
       areaData: [],
-      chooseValue: ['北京市', '北京市', '昌平区'],
+      chooseValue: ['', '', ''],
       isOpened: false
       // ubmitLoading: false,
     }
   }
 
-  componentDidMount() {
-    this.fetchAddressList()
-    this.fetch()
+  async componentDidMount() {
+    await this.fetchAddressList()
+    await this.fetch()
+    Taro.setNavigationBarTitle({
+      title: this.setNavigationBarTitle()
+    })
+  }
+
+  setNavigationBarTitle = () => {
+    return this.state.info.user_id ? '编辑地址' : '新增地址'
   }
 
   fetchAddressList = async () => {
@@ -103,30 +113,23 @@ export default class AddressIndex extends Component {
   }
 
   onPickerClick = () => {
-    this.setState(
-      {
-        isOpened: true
-      }
-    )
+    this.setState({
+      isOpened: true
+    })
   }
 
   handleClickClose = () => {
-    this.setState(
-      {
-        isOpened: false
-      }
-    )
+    this.setState({
+      isOpened: false
+    })
   }
 
   onPickerChange = (selectValue) => {
-    // console.log(selectValue,'selectValue1111');
-    const chooseValue = [selectValue[0].label,selectValue[1].label,selectValue[2].label]
+    const chooseValue = [selectValue[0].label, selectValue[1].label, selectValue[2].label]
     this.setState({
       chooseValue
     })
   }
-
-
 
   handleChange = (name, val) => {
     const { info } = this.state
@@ -205,90 +208,116 @@ export default class AddressIndex extends Component {
   render() {
     const { colors } = this.props
     const { info, areaIndexArray, areaArray, chooseValue, isOpened } = this.state
+    console.log('color', colors, info)
     return (
       <View className='page-address-edit' style={isWxWeb && { paddingTop: 0 }}>
-        {/*<EditAddress*/}
-        {/*address={getCurrentInstance().params.address}*/}
-        {/*addressID={getCurrentInstance().params.address_id}*/}
-        {/*/>*/}
-        <SpNavBar title='编辑地址' leftIconType='chevron-left' fixed='true' />
-        <AtForm onSubmit={this.handleSubmit}>
-          <View className='page-address-edit__form'>
-            <AtInput
-              title='收件人姓名'
-              name='username'
-              value={info.username}
-              onChange={this.handleChange.bind(this, 'username')}
-            />
-            <AtInput
-              title='手机号码'
-              name='telephone'
-              maxLength={11}
-              value={info.telephone}
-              onChange={this.handleChange.bind(this, 'telephone')}
-            />
-            {/* <Picker
-              mode='multiSelector'
-              onClick={this.onPickerClick}
-              onChange={this.onPickerChange}
-              onColumnChange={this.onColumnChange}
-              value={areaIndexArray}
-              range={areaArray}
-            >
+        <SpNavBar title={this.setNavigationBarTitle()} leftIconType='chevron-left' fixed='true' />
+        <View className='page-address-edit__form'>
+          <SpCell
+            className='logistics-no'
+            title='收件人'
+            value={
+              <AtInput
+                name='username'
+                value={info.username}
+                placeholder='收件人姓名'
+                onChange={this.handleChange.bind(this, 'username')}
+              />
+            }
+          ></SpCell>
+
+          <SpCell
+            className='logistics-no'
+            title='手机号码'
+            value={
+              <AtInput
+                name='telephone'
+                maxLength={11}
+                value={info.telephone}
+                placeholder='收件人手机号码'
+                onChange={this.handleChange.bind(this, 'telephone')}
+              />
+            }
+          ></SpCell>
+
+          <SpCell
+            className='logistics-no province'
+            title='所在区域'
+            value={
               <View className='picker' onClick={this.onPickerClick}>
-                <View className='picker__title'>所在区域</View>
-                <Text>{chooseValue.join('') || '选择地区'}</Text>
+                {chooseValue.join('') === '' ? (
+                  <Text>选择省/市/区</Text>
+                ) : (
+                  <Text style={{ color: '#000' }}>{chooseValue.join('/')}</Text>
+                )}
               </View>
-            </Picker> */}
-            <View className='picker' onClick={this.onPickerClick}>
-              <View className='picker__title'>所在区域</View>
-              <Text>{chooseValue.join('') || '选择地区'}</Text>
-            </View>
-            <SpAddress isOpened={isOpened} onClose={this.handleClickClose} onChange={this.onPickerChange}/>
-            <AtInput
-              title='详细地址'
-              name='adrdetail'
-              value={info.adrdetail}
-              onChange={this.handleChange.bind(this, 'adrdetail')}
-            />
-            <AtInput
-              title='邮政编码'
-              name='postalCode'
-              value={info.postalCode}
-              onChange={this.handleChange.bind(this, 'postalCode')}
-            />
-          </View>
+            }
+          ></SpCell>
+          <SpAddress
+            isOpened={isOpened}
+            onClose={this.handleClickClose}
+            onChange={this.onPickerChange}
+          />
 
-          <View className='sec'>
-            <SpCell title='设为默认地址'>
-              <Switch checked={info.is_def} onChange={this.handleDefChange.bind(this)} />
-            </SpCell>
-          </View>
+          <SpCell
+            className='logistics-no'
+            title='详细地址'
+            value={
+              <AtInput
+                name='adrdetail'
+                value={info.adrdetail}
+                placeholder='请填写详细地址（街道、门牌）'
+                onChange={this.handleChange.bind(this, 'adrdetail')}
+              />
+            }
+          ></SpCell>
 
-          <View className='btns'>
-            {process.env.TARO_ENV === 'weapp' ? (
-              <Button
-                type='primary'
-                // onClick={this.handleSubmit}
-                formType='submit'
-                style={`background: ${colors}; border-color: ${colors}`}
-              >
-                提交
-              </Button>
-            ) : (
-              <Button
-                type='primary'
-                // onClick={this.handleSubmit}
-                formType='submit'
-                style={`background: ${colors}; border-color: ${colors}`}
-              >
-                提交
-              </Button>
-            )}
-          </View>
-        </AtForm>
+          {/* <SpCell
+            className='logistics-no'
+            title='邮政编码'
+            value={
+              <AtInput
+                name='postalCode'
+                value={info.postalCode}
+                onChange={this.handleChange.bind(this, 'postalCode')}
+              />
+            }
+          ></SpCell> */}
+        </View>
 
-        <SpToast />
+        <View className='sec'>
+          <SpCell
+            title='设为默认地址'
+            iisLink
+            value={
+              <Switch
+                checked={info.is_def}
+                className='def-switch'
+                onChange={this.handleDefChange.bind(this)}
+                color={colors.data[0].primary}
+              />
+            }
+          ></SpCell>
+        </View>
+        <View className='btns'>
+          {/* <AtButton
+            circle
+            type='primary'
+            className='save-btn'
+            onClick={this.handleSubmit}
+            style={`background: ${colors}; border-color: ${colors};border-radius: 25px;`}
+          >
+            保存并使用
+          </AtButton> */}
+          <Button
+            type='primary'
+            onClick={this.handleSubmit}
+            className='submit-btn'
+            style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};border-radius: 25px;`}
+          >
+            保存并使用
+          </Button>
+        </View>
       </View>
     )
   }
