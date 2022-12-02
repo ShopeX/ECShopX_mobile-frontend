@@ -55,7 +55,7 @@ function NearlyShop(props) {
       province: location?.province || chooseProvice,
       city: location?.city || chooseCity,
       area: location?.district || chooseDistrict,
-      type: location?.lat ? state.type : 1,
+      type: location?.lat ? state.type : 0,
       search_type: state.search_type,
       sort_type: 1
     }
@@ -113,15 +113,17 @@ function NearlyShop(props) {
           v.shopList = []
           v.keyword = ''
           v.name = ''
-          v.type = 0
+          // v.type = 0
           v.search_type = undefined
         })
         console.log('getLocationInfo 重新定位',)
         shopRef.current.reset()
       }
     })
+
     setState((v) => {
       v.locationIng = false
+      v.type = 2
     })
   }
 
@@ -169,6 +171,10 @@ function NearlyShop(props) {
     } else {
       setPolicyModal(true)
     }
+
+    setState((v) => {
+      v.type = 2
+    })
   }
 
   const handleClickCloseSpAddress = () => {
@@ -191,6 +197,7 @@ function NearlyShop(props) {
     ]
     setState((v)=>{
       v.chooseValue = chooseValue
+      v.type = 1
     })
   }
 
