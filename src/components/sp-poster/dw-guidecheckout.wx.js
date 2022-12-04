@@ -41,7 +41,7 @@ class GuideCheckoutPoster {
      */
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/cart/espier-checkout`}&
     appid=${appid}&company_id=${company_id}&cxdid=${salesPromotionId}&smid=${salesperson_id}&distributor_id=${distributor_id}&gu=${gu}`
-    console.log('GuideCheckoutPoster-wxappCode:', wxappCode)
+    console.log('wxappCode:', wxappCode)
 
     // 太阳码
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
