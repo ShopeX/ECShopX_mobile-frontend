@@ -63,6 +63,7 @@ class GoodsDetailPoster {
       wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`    
     }
     const pic = imgs[0].replace('http:', 'https:')
+    wxappCode = imgs[0].replace('http:', 'https:')
     // 商品图片
     this.goodsImg = await Taro.getImageInfo({ src: pic })
     // 太阳码
