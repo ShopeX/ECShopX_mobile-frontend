@@ -19,8 +19,8 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  const [state, setState] = useImmer(initialState)
   const $instance = getCurrentInstance()
+  const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.sys)
   const { address } = useSelector((state) => state.user)
   const dispatch = useDispatch()
@@ -36,8 +36,8 @@ function AddressIndex(props) {
   const fetch = async (isDelete = false) => {
     const { isPicker, receipt_type = '', city = '' } = $instance.router.params
     if (isPicker) {
-      setState({
-        isPicker: true
+      setState(draft=>{
+        draft.isPicker = true
       })
     }
     Taro.showLoading({ title: '' })
@@ -58,15 +58,16 @@ function AddressIndex(props) {
     } else {
       selectedId = list.find((addr) => addr.is_def > 0) || null
     }
-    setState({
-      list: newList,
-      selectedId
+    setState(draft=>{
+      draft.list = newList,
+      draft.selectedId = selectedId
     })
   }
 
   const handleClickChecked = (e, item) => {
-    setState({
-      selectedId: item[ADDRESS_ID]
+
+    setState(draft=>{
+      draft.selectedId = item[ADDRESS_ID]
     })
 
     updateChooseAddress(item)
@@ -76,9 +77,10 @@ function AddressIndex(props) {
   }
 
   const handleChangeDefault = async (e, item) => {
-    item.is_def = 1
+    const nItem = JSON.parse(JSON.stringify(item))
+    nItem.is_def = 1
     try {
-      await api.member.addressCreateOrUpdate(item)
+      await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
         S.toast('修改成功')
       }
@@ -92,7 +94,6 @@ function AddressIndex(props) {
   }
 
   const handleClickToEdit = (e, item) => {
-    console.log(123, e, item)
     if (item?.address_id) {
       Taro.navigateTo({
         url: `/marketing/pages/member/edit-address?address_id=${item.address_id}`
@@ -185,7 +186,7 @@ function AddressIndex(props) {
         )}
 
         <View className='member-address-list'>
-          {list.map((item) => {
+          {list?.map((item) => {
             return (
               <View
                 key={item[ADDRESS_ID]}
@@ -205,7 +206,7 @@ function AddressIndex(props) {
                     </View>
 
                     {isPicker && !item.disabled && (
-                      <View className='address-item__check' onClick={handleClickChecked}>
+                      <View className='address-item__check' onClick={e=>handleClickChecked(e,item)}>
                         {item[ADDRESS_ID] === selectedId ? (
                           <Text
                             className='iconfont icon-check address-item__checked'
