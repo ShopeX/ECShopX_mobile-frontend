@@ -4,13 +4,23 @@ import Taro from '@tarojs/taro'
 import { View, Text, Image, Canvas } from '@tarojs/components'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, authSetting, showToast, isAlipay } from '@/utils'
-import GoodsDetailPoster from './dw-goodsdetail'
-import Distribution from './dw-distribution'
-import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
-import GuideCheckout from './dw-guidecheckout'
+import GoodsDetailPosterWx from './dw-goodsdetail'
+import GoodsDetailPosterAli from './dw-goodsdetail.alipay'
+import DistributionWx from './dw-distribution'
+import DistributionAli from './dw-distribution.alipay'
+import GuideGoodsDetailPosterWx from './dw-guidegoodsdetail'
+import GuideGoodsDetailPosterAli from './dw-guidegoodsdetail.alipay'
+import GuideCheckoutWx from './dw-guidecheckout'
+import GuideCheckoutAli from './dw-guidecheckout.alipay'
 
 
 import './index.scss'
+
+const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout] = isAlipay ? [
+  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli
+] : [
+  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx
+]
 
 const initialState = {
   poster: null,

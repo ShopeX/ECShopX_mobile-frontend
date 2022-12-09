@@ -43,7 +43,6 @@ class DistributionPoster {
       },
     })
     wxappCode = res.data.data.qr_code_url
-    debugger
 
     console.log('DistributionPoster-wxappCode:', wxappCode)
 
