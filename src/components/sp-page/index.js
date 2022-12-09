@@ -94,10 +94,10 @@ function SpPage(props, ref) {
 
   useEffect(()=>{
     if(pageConfig){
-      const {alipayTitleColor} = pageConfig
+      const {navigateBackgroundColor} = pageConfig
       if(isAlipay){
           my.setNavigationBar({
-            backgroundColor:alipayTitleColor
+            backgroundColor:navigateBackgroundColor
           })
       }
     }
