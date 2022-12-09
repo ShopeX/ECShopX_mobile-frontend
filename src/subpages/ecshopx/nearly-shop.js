@@ -107,8 +107,8 @@ function NearlyShop(props) {
 
   // 定位
   const getLocationInfo = async () => {
-    setState((v) => {
-      v.locationIng = true
+    setState((draft) => {
+      draft.locationIng = true
     })
     setPolicyModal(false)
     await entryLaunch.isOpenPosition(async (res) => {
@@ -118,17 +118,15 @@ function NearlyShop(props) {
           v.shopList = []
           v.keyword = ''
           v.name = ''
-          // v.type = 0
           v.search_type = undefined
         })
-        console.log('getLocationInfo 重新定位',)
         shopRef.current.reset()
       }
     })
 
-    setState((v) => {
-      v.locationIng = false
-      v.type = 2
+    setState((draft) => {
+      draft.locationIng = false
+      draft.type = 2
     })
   }
 
@@ -258,7 +256,7 @@ function NearlyShop(props) {
         </View>
         <View className='block-title block-flex'>
           <View>我的收货地址</View>
-          {!address && (
+          {address && (
             <View
               className='arrow'
               onClick={() =>
