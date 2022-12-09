@@ -97,8 +97,7 @@ function SpPage(props, ref) {
       const {alipayTitleColor} = pageConfig
       if(isAlipay){
           my.setNavigationBar({
-            frontColor: alipayTitleColor,
-            reset:true,
+            backgroundColor:alipayTitleColor
           })
       }
     }
