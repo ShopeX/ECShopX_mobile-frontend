@@ -7,11 +7,31 @@ import api from '@/api'
 import { classNames } from '@/utils'
 import './select-role2.scss'
 import userIcon from '@/assets/imgs/user-icon.png'
+import CompBottomTip from './comps/comp-bottomTip'
+import arrow from '@/assets/imgs/arrow.png'
 
 const initialState = {}
 
 function SelectRole(props) {
-  useEffect(() => {}, [])
+  const [options, setOptions] = useState([
+    { title: '亲友', value: 'friend' },
+    { title: '员工', value: 'staff' }
+  ])
+  const [activeIndex, setActiveIndex] = useState(null)
+
+  useEffect(() => {
+
+  }, [])
+
+  const handleOptionClick = (index) => {
+    console.log(index)
+    setActiveIndex((val) => (val = index))
+  }
+
+  const handleConfirmClick = ()=>{
+    //todo
+    console.log('confirm',options[activeIndex].title)
+  }
 
   return (
     <View className='select-role'>
@@ -23,21 +43,33 @@ function SelectRole(props) {
       <View className='select'>
         <View className='select-title'>我是</View>
         <View className='select-options'>
-          <View className='select-friend'>
-            <View className='select-pic'></View>
-            <View className='select-content'>亲友</View>
-          </View>
-          <View className='select-friend'>
-            <View className='select-pic'></View>
-            <View className='select-content'>员工</View>
-          </View>
+          {options.map((item, index) => {
+            return (
+              <View
+                className={classNames('select-friend', {
+                  'active': activeIndex === index
+                })}
+                key={item.title}
+                onClick={() => handleOptionClick(index)}
+              >
+                <Image className='select-pic' src={arrow} />
+                <View className='select-content'>{item.title}</View>
+              </View>
+            )
+          })}
         </View>
         <View className='btn-confirm'>
-          <button className='confirm'>确定</button>
+          <button
+            className={classNames('confirm', {
+              'active': [0,1].includes(activeIndex)
+            })}
+            onClick={handleConfirmClick}
+          >
+            确定
+          </button>
         </View>
-
       </View>
-      <View className='end-text'>* 本功能仅供企业内部人员使用，不对外开</View>
+      <CompBottomTip />
     </View>
   )
 }

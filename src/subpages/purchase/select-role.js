@@ -7,10 +7,12 @@ import api from '@/api'
 import { classNames } from '@/utils'
 import './select-role.scss'
 import userIcon from '@/assets/imgs/user-icon.png'
+import CompBottomTip from './comps/comp-bottomTip'
 
 const initialState = {}
 
 function SelectRole(props) {
+
   useEffect(() => {}, [])
 
   return (
@@ -25,12 +27,12 @@ function SelectRole(props) {
           我是员工
           <Text className='iconfont icon-close'></Text>
         </AtButton>
-        <AtButton  circle className='btns-frined'>
+        <AtButton circle className='btns-frined'>
           我是亲友
           <Text className='iconfont icon-close'></Text>
         </AtButton>
       </View>
-      <View className='end-text'>* 本功能仅供企业内部人员使用，不对外开</View>
+      <CompBottomTip />
     </View>
   )
 }

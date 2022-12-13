@@ -58,6 +58,13 @@
           color: #222222;
         }
       }
+      .active{
+
+        border: #F4811F 4px solid;
+        .select-content{
+          color: #F4811F !important;
+        }
+      }
     }
     .btn-confirm{
       width: 100%;
@@ -76,17 +83,9 @@
         position: absolute;
         right: 0;
       }
+      .active{
+        opacity: 1;
+      }
     }
-
-  }
-  .end-text{
-    position: absolute;
-    left: 136px;
-    bottom: 184px;
-    font-size: 24px;
-    font-family: PingFangSC-Regular, PingFang SC;
-    font-weight: 400;
-    color: #AAAAAA;
-
   }
 }
