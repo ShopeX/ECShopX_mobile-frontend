@@ -61,7 +61,7 @@ function SpAddress(props) {
         level
       }
     })
-    console.log('resAddressList:', resAddressList, _areaList)
+    // console.log('resAddressList:', resAddressList, _areaList)
     setState((draft) => {
       draft.addressList = resAddressList
       draft.areaList = _areaList
@@ -123,7 +123,7 @@ function SpAddress(props) {
   console.log('pindex',pindex);
   console.log('selectValue',selectValue);
   console.log('areaList',areaList);
-  
+
   return (
     <View className='sp-address'>
       <View className='address-content'></View>
@@ -131,7 +131,7 @@ function SpAddress(props) {
         <View className='address-hd'>
           {selectValue.map((vitem, vindex) => (
             <View
-              className={classNames(`tab-item`, 
+              className={classNames(`tab-item`,
               {
                 active: pindex === vindex || vindex === 2 && pindex === 3
               })}

@@ -30,10 +30,12 @@ function StoreZitiPicker(props) {
 
   const fetchZitiList = async () => {
     const { distributor_id, zitiId, cart_type } = $instance.router.params
-    const _params = {
+    let _params = {
       cart_type,
-      distributor_id,
-      isNostores: 1
+      distributor_id
+    }
+    if(VERSION_STANDARD) {
+      _params['isNostores'] = 1
     }
     // if(VERSION_PLATFORM || (VERSION_STANDARD && openLocation != 1)) {
     //   _params['isNostores'] = 1

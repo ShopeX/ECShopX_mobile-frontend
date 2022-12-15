@@ -144,7 +144,7 @@ function CartCheckout(props) {
 
   useEffect(() => {
     if (receiptType && payType) {
-      console.log('useEffect.....................')
+      console.log('useEffect.....................', payType, point_use, address, coupon, zitiAddress)
       calcOrder()
     }
     // }, [address, payType, coupon, point_use, receiptType, zitiAddress])

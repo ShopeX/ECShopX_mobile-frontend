@@ -12,35 +12,16 @@ import './index.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
-
-
 export default class DistributionDashboard extends Component {
   constructor(props) {
     super(props)
-    const UI_Width = 750
-    //同步获取设备系统信息
-    const info = Taro.getSystemInfoSync()
-    //设备像素密度
-    const dpr = info.pixelRatio;
-    //计算比例
-    const scale = info.screenWidth / UI_Width
-    //计算canvas实际渲染尺寸
-    let width = parseInt(scale * 335)
-    let height = parseInt(scale * 536)
-    //计算canvas画布尺寸
-    let canvasWidth = width * dpr
-    let canvasHeight = height * dpr
 
     this.state = {
       info: null,
       showPoster: false,
       poster: null,
       posterImgs: null,
-      adapay_status: null,
-      dpr,
-      canvasWidth,
-      canvasHeight
+      adapay_status: null
     }
   }
 
@@ -152,195 +133,14 @@ export default class DistributionDashboard extends Component {
   }
 
   handleClick = async () => {
-    const { posterImgs } = this.state
-    if (!posterImgs || !posterImgs.avatar || !posterImgs.code || !posterImgs.username) {
-      const imgs = await this.downloadPosterImg()
-      if (imgs && imgs.avatar && imgs.code && imgs.username) {
-        this.setState({
-          showPoster: true
-        })
-      }
-    } else {
-      this.setState({
-        showPoster: true
-      })
-    }
-  }
-
-  downloadPosterImg = async () => {
-    // 处理海报信息以及太阳码
-    let {
-      info: { username, isOpenShop, shop_status, qrcode_bg_img },
-      canvasWidth,
-      canvasHeight,
-    } = this.state
-    
-
-    let userinfo = Taro.getStorageSync('userinfo')
-    const { avatar, userId } = userinfo
-    if (S.getAuthToken() && (!userinfo || !userId)) {
-      const res = await api.member.memberInfo()
-      const userObj = {
-        avatar: res.memberInfo.avatar,
-        userId: res.memberInfo.user_id
-      }
-      Taro.setStorageSync('userinfo', userObj)
-      userinfo = userObj
-    }
-    // const extConfig =
-    //   Taro.getEnv() === 'WEAPP' && wx.getExtConfigSync
-    //     ? wx.getExtConfigSync()
-    //     : { appid: process.env.APP_ID, company_id: process.env.APP_COMPANY_ID }
-    const extConfig = getExtConfigData()
-    shop_status = JSON.parse(shop_status === 1)
-    const url = isOpenShop && shop_status ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const wxappCode = `${req.baseURL}promoter/qrcode.png?path=${url}&appid=${extConfig.appid}&company_id=${extConfig.company_id}&user_id=${userId}`
-    console.log('DistributionDashboard-wxappCode:', wxappCode)
-    let avatarImg, bck
-
-    //头像
-    let nAvatar = avatar === '' ? `${process.env.APP_IMAGE_CDN}/user_icon.png` : avatar
-    avatarImg = await Taro.getImageInfo({ src: nAvatar })
-
-    if (qrcode_bg_img) {
-      // 背景
-      bck = await Taro.getImageInfo({ src: qrcode_bg_img })
-    } else {
-      bck = await Taro.getImageInfo({
-        src: `${process.env.APP_IMAGE_CDN}/fenxiao_bk.png`
-      }) // 背景图片
-    }
-
-    const codeImg = await Taro.getImageInfo({ src: wxappCode }) // 二维码
-    console.log('DistributionDashboard-avatarImg:', avatarImg)
-    console.log('DistributionDashboard-codeImg:', codeImg)
-
-    if (avatarImg || isAlipay) {
-      const posterImgs = {
-        avatar: avatarImg ? avatarImg.path : null,
-        code: codeImg.path,
-        bck: bck.path,
-        username
-      }
-      await this.setState(
-        {
-          posterImgs
-        },
-        () => {
-          this.drawImage()
-        }
-      )
-      return posterImgs
-    } else {
-      return null
-    }
-  }
-
-  drawImage = () => {
-    // 分享海报
-    console.log('drawImage run')
-    const { posterImgs } = this.state
-    if (!posterImgs) return
-    const { avatar, code, bck, username } = posterImgs
-    const ctx = Taro.createCanvasContext('myCanvas')
-    console.log('drawImage:ctx', ctx)
-    canvasExp.roundRect(ctx, '#fff', 0, 0, 375, 640, 5)
-    // canvasExp.drawImageFill(ctx, bck, 0, 0, 375, 640)
-    // ctx.drawImage(bck, 0, 0, 750, 1335, 0, 0, 375, 640)
-    // ctx.save()
-    canvasExp.textFill(ctx, username, 180, 50, 18, '#222')
-    canvasExp.drawImageFill(ctx, code, 100, 325, 180, 180)
-    canvasExp.imgCircleClip(ctx, avatar, 100, 15, 65, 65)
-    ctx.draw(true, () => {
-      Taro.canvasToTempFilePath({
-        x: 0,
-        y: 0,
-        width: 375,
-        height: 640,
-        canvasId: 'myCanvas'
-      }).then((res) => {
-        const shareImg = res.tempFilePath
-        this.setState(
-          {
-            poster: shareImg
-          },
-          () => {
-            this.setState({
-              showPoster: true
-            })
-          }
-        )
-      })
-    })
-  }
-
-  /** 点击保存按钮 */
-  handleSavePoster = () => {
-    const { poster } = this.state
-    Taro.getSetting().then((res) => {
-      if (!res.authSetting['scope.writePhotosAlbum']) {
-        Taro.authorize({
-          scope: 'scope.writePhotosAlbum',
-          success: async () => {
-            await this.savePoster(poster)
-          },
-          fail: () => {
-            Taro.showModal({
-              title: '提示',
-              content: '请打开保存到相册权限',
-              success: async (resConfirm) => {
-                if (resConfirm.confirm) {
-                  await Taro.openSetting()
-                  const setting = await Taro.getSetting()
-                  if (setting.authSetting['scope.writePhotosAlbum']) {
-                    await this.savePoster(poster)
-                  } else {
-                    Taro.showToast({ title: '保存失败', icon: 'none' })
-                  }
-                }
-              }
-            })
-          }
-        })
-      } else {
-        this.savePoster(poster)
-      }
-    })
-  }
-
-  /** 保存图片 */
-  savePoster = (poster) => {
-    Taro.saveImageToPhotosAlbum({
-      filePath: poster
-    })
-      .then(() => {
-        Taro.showToast({
-          icon: 'none',
-          title: '保存成功'
-        })
-        this.setState({
-          showPoster: false
-        })
-      })
-      .catch((res) => {
-        console.log(res)
-        Taro.showToast({
-          icon: 'none',
-          title: '保存失败'
-        })
-      })
-  }
-
-  handleHidePoster = () => {
     this.setState({
-      showPoster: false
+      showPoster: true
     })
   }
 
   render() {
     const { colors } = this.props
-    const { info, showPoster, poster, adapay_status,canvasWidth,
-      canvasHeight, } = this.state
+    const { info, showPoster, adapay_status } = this.state
     if (!info) {
       return <Loading />
     }
@@ -471,9 +271,8 @@ export default class DistributionDashboard extends Component {
           <Navigator
             className='list-item'
             open-type='navigateTo'
-            url={`/marketing/pages/distribution/goods?status=${
-              info.isOpenShop && info.shop_status === 1
-            }`}
+            url={`/marketing/pages/distribution/goods?status=${info.isOpenShop && info.shop_status === 1
+              }`}
           >
             <View className='iconfont icon-weChat icon-fontsize' />
             <View className='list-item-txt'>推广商品</View>
@@ -519,9 +318,9 @@ export default class DistributionDashboard extends Component {
               className={classNames(
                 'cicle',
                 (adapay_status == '审核中' && 'approve') ||
-                  (adapay_status == '未认证' && 'NotCertified') ||
-                  (adapay_status == '认证失败' && 'fail') ||
-                  (adapay_status == '已认证' && 'success')
+                (adapay_status == '未认证' && 'NotCertified') ||
+                (adapay_status == '认证失败' && 'fail') ||
+                (adapay_status == '已认证' && 'success')
               )}
             />
             <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
@@ -555,8 +354,8 @@ export default class DistributionDashboard extends Component {
             }}
           />
         )}
-        <Canvas className='canvas' canvas-id='myCanvas' width={canvasWidth} 
-        height={canvasHeight} id='myCanvas'></Canvas>
+        {/* <Canvas className='canvas' canvas-id='myCanvas' width={canvasWidth}
+        height={canvasHeight} id='myCanvas'></Canvas> */}
       </SpPage>
     )
   }

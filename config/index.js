@@ -38,6 +38,9 @@ if (process.env.TARO_ENV != 'h5') {
 if (process.env.TARO_ENV == 'h5') {
   copyPatterns.push({ from: 'src/files', to: `${DIST_PATH}` })
 }
+if(process.env.TARO_ENV == 'alipay') {
+  copyPatterns.push({ from: 'mini.project.json', to: `${DIST_PATH}/mini.project.json` })
+}
 
 const config = {
   projectName: pkg.name,

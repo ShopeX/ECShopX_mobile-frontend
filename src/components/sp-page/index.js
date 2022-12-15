@@ -92,6 +92,17 @@ function SpPage(props, ref) {
     }
   }, [])
 
+  useEffect(()=>{
+    if(pageConfig){
+      const {navigateBackgroundColor} = pageConfig
+      if(isAlipay){
+          my.setNavigationBar({
+            backgroundColor:navigateBackgroundColor
+          })
+      }
+    }
+  },[pageConfig])
+
   useDidShow(() => {
     const { page, router } = getCurrentInstance()
     const pageTitle = page?.config?.navigationBarTitleText
