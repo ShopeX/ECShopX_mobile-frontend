@@ -1,5 +1,5 @@
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import React, { useState, useMemo } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -53,15 +53,19 @@ function CartIndex() {
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
-  const { tabbar = 1 } = router.params
+  const { tabbar = 1 } = router?.params || {}
 
   // useDepChange(() => {
   //   fetch()
   // }, [isLogin])
 
+  useEffect(() => {
+    if (isLogin) fetch()
+  }, [isLogin])
+
   useDidShow(() => {
     console.log('useDidShow', isLogin)
-    if(isLogin) fetch()
+    if (isLogin) fetch()
   })
 
   const fetch = () => {
@@ -75,7 +79,7 @@ function CartIndex() {
 
   const getCartList = async () => {
     Taro.showLoading({ title: '' })
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params || {}
     const params = {
       shop_type: type
     }
@@ -262,7 +266,7 @@ function CartIndex() {
       {!isLogin && (
         <View className='login-header'>
           <View className='login-txt'>授权登录后同步购物车的商品</View>
-          <SpLogin onChange={() => {}}>
+          <SpLogin onChange={() => { }}>
             <View className='btn-login'>授权登录</View>
           </SpLogin>
         </View>

@@ -1,19 +1,26 @@
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
-import { getExtConfigData } from '@/utils'
+import { getExtConfigData, isAlipay, } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
-const canvasWidth = 600
-const canvasHeight = 960
 
-class GuideGoodsDetailPoster {
+//计算canvas画布尺寸
+let canvasWidth = 600
+let canvasHeight = 960
+
+
+class GoodsDetailPoster {
   constructor(props) {
-    const { ctx, info, userInfo, toPx, toRpx } = props
+    const { ctx, info, userInfo, toPx, toRpx, canvas } = props
+
     this.ctx = ctx
     this.info = info
     this.userInfo = userInfo
     this.toPx = toPx
     this.toRpx = toRpx
+    // ctx.scale(dpr, dpr)
+    // // alipay2.0 兼容
+    // this.canvas = canvas
   }
 
   getCanvasSize() {
@@ -25,33 +32,37 @@ class GuideGoodsDetailPoster {
 
   async drawPoster() {
     const host = process.env.APP_BASE_URL.replace('/api/h5app/wxapp', '')
-    const { appid } = getExtConfigData()
-    const { itemId, imgs, price, subtaskId } = this.info
-    const { salesperson_id, avatar, company_id, work_userid, shop_code } = this.userInfo
-    const gu = `${work_userid}_${shop_code}`
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&smid=${salesperson_id}&subtask_id=${subtaskId}&gu=${gu}`
-    console.log('wxappCode:', wxappCode)
+    const { appid, company_id } = getExtConfigData()
+    const { itemId, imgs, price } = this.info
+    const { user_id, avatar } = this.userInfo
+    let wxappCode
+    // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
+    // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
+    const res = await Taro.request({
+      url: `${host}/api/h5app/alipaymini/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`, //仅为示例，并非真实的接口地址
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+    })
+    wxappCode = res.data.data.qr_code_url
 
     const pic = imgs[0].replace('http:', 'https:')
-    console.log('goods pic:', pic)
-    console.log('avatar:', avatar)
-
     // 商品图片
     this.goodsImg = await Taro.getImageInfo({ src: pic })
     // 太阳码
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
     // 头像
-    this.avatar = await Taro.getImageInfo({
-      src: avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`
-    })
+    const _avatar = avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`
+    this.avatar = await Taro.getImageInfo({ src: _avatar })
 
     const drawOptions = {
       ctx: this.ctx,
       toPx: this.toPx,
       toRpx: this.toRpx
     }
+
     this.drawOptions = drawOptions
-    const { salesperson_name } = this.userInfo
+    const { username } = this.userInfo
     drawBlock(
       {
         x: 0,
@@ -62,6 +73,9 @@ class GuideGoodsDetailPoster {
       },
       drawOptions
     )
+    console.log('海报商品图:', this.goodsImg)
+    console.log('太阳码:', this.codeImg)
+    console.log('头像:', this.avatar, avatar)
     // 海报商品图
     drawImage(
       {
@@ -83,7 +97,7 @@ class GuideGoodsDetailPoster {
         x: 24,
         y: 624,
         width: 312,
-        height: 80,
+        height: 40 * 2,
         backgroundColor: '#efefef',
         borderRadius: 80
       },
@@ -103,7 +117,7 @@ class GuideGoodsDetailPoster {
         sh: this.avatar.height,
         borderRadius: 80
       },
-      drawOptions
+      drawOptions,
     )
     // 姓名
     drawText(
@@ -112,7 +126,7 @@ class GuideGoodsDetailPoster {
         y: 656,
         fontSize: 24,
         color: '#000',
-        text: salesperson_name
+        text: username
       },
       drawOptions
     )
@@ -175,26 +189,15 @@ class GuideGoodsDetailPoster {
         x: 416,
         y: 742,
         w: 160,
-        h: 160,
+        h: 195,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,
         sh: this.codeImg.height
       },
-      drawOptions
-    )
-    drawText(
-      {
-        x: 433,
-        y: 928,
-        fontSize: 18,
-        // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
-        color: '#999',
-        text: '长按或扫描查看'
-      },
-      drawOptions
+      drawOptions,
     )
   }
 }
 
-export default GuideGoodsDetailPoster
+export default GoodsDetailPoster

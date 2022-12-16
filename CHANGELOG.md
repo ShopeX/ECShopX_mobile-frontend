@@ -2,6 +2,45 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.8.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.7.5...v3.8.0) (2022-12-15)
+
+
+### Bug Fixes
+
+* input clear ([070bd35](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/070bd35d5b2832d730eda03755aa9d03efdf6fb2))
+* remove update checkout address ([7dcf0f0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7dcf0f0d2a415d5cb2541bf4e906a68e9f217841))
+* 下单成功后购物车更新 ([eb7d48a](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/eb7d48a40ca72bca6180993e23d288a8aabcac64))
+* 优化海报文件 ([2f93058](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2f9305841c20d7a22f1658fba705413fd598a996))
+* 兼容ali海报模式 ([af2ad96](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/af2ad96e35afec2a54c59acb2ac8c8272ac02289))
+* 删除海报多余代码 ([2672a55](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2672a5588b52a8fa73112a574542a3de0f309e38))
+* 商品详情不显示 ([f275369](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f275369ecb988759a7a76fda5924ddaf7b3c3f1e))
+* 增加 alipay 海报兼容模式； ([ce683b8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ce683b8dd3391f226f4372b6e63da822761efc4b))
+* 增加兼容文件 ([b5bd262](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b5bd262eb8c8135d59d24d6e171fb89a891fc449))
+* 推广海报优化 ([9764cd8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9764cd843a2091e0cb92210b9fd85836be6849a6))
+* 海报优化 ([d266565](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d2665653aa7b04175feee65ec27a2a916d868e93))
+* 积分商品下单添加自提点 ([db5f567](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/db5f5676fb242baff352188c6130319fed2ca398))
+* 积分商品下单页店铺id ([aaf91a4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/aaf91a43b2f5a9c3cdaebb6f00b8cbe9ac23940f))
+* 积分商品订单详情跳转商品详情问题 ([7a388f9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7a388f9387eef7a461de6f52da094bec781730fb))
+* 跨店售后 ([2db092d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2db092d4092cb629d7bc9c55f9e549a02dfe3c2c))
+
+### [3.7.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.7.4...v3.7.5) (2022-12-08)
+
+### [3.7.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.7.3-live...v3.7.4) (2022-12-07)
+
+### [3.7.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.7.2...v3.7.3) (2022-12-07)
+
+
+### Bug Fixes
+
+* 商品详情 ([8947422](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/894742214f30c6a464f6461a9d2510cd84d206c9))
+
+### [3.7.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.7.1...v3.7.2) (2022-12-07)
+
+
+### Bug Fixes
+
+* 微信支付宝海报兼容 ([f6f5f66](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f6f5f6675824cb4f16ca735bbae998ee21647b43))
+
 ## [3.7.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.6.0-live...v3.7.0) (2022-11-24)
 
 

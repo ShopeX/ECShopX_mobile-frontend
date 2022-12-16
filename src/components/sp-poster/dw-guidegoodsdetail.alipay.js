@@ -30,10 +30,10 @@ class GuideGoodsDetailPoster {
     const { salesperson_id, avatar, company_id, work_userid, shop_code } = this.userInfo
     const gu = `${work_userid}_${shop_code}`
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&smid=${salesperson_id}&subtask_id=${subtaskId}&gu=${gu}`
-    console.log('wxappCode:', wxappCode)
+    console.log('GuideGoodsDetailPoster-wxappCode:', wxappCode)
 
     const pic = imgs[0].replace('http:', 'https:')
-    console.log('goods pic:', pic)
+    console.log('goods pic2:', pic)
     console.log('avatar:', avatar)
 
     // 商品图片

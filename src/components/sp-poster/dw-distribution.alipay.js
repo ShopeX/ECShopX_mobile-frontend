@@ -1,7 +1,10 @@
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
-import { getExtConfigData } from '@/utils'
+import { getExtConfigData, isAlipay } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
+// const canvasWidth = 750
+// const canvasHeight = 1335
+
 
 const canvasWidth = 600
 const canvasHeight = 960
@@ -24,19 +27,27 @@ class DistributionPoster {
   }
 
   async drawPoster() {
-    // const host = process.env.APP_BASE_URL.replace('/api/h5app/wxapp', '')
+    const host = process.env.APP_BASE_URL.replace('/api/h5app/wxapp', '')
     const { appid, company_id } = getExtConfigData()
     const { isOpenShop, shop_status, qrcode_bg_img } = this.info
     const { user_id, avatar } = this.userInfo
-    // const { dtid } =
-
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
     const url = (isOpenShop && shop_status == 1) ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`
-    console.log('wxappCode:', wxappCode)
+    let wxappCode
+    // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
+    // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
+    const res = await Taro.request({
+      url: `${host}/api/h5app/alipaymini/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`, //仅为示例，并非真实的接口地址
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+    })
+    wxappCode = res.data.data.qr_code_url
+
+    console.log('DistributionPoster-wxappCode:', wxappCode)
 
     const pic = qrcode_bg_img || `${process.env.APP_IMAGE_CDN}/fenxiao_bk.png`
-    console.log('goods pic:', pic)
+    console.log('goods pic1:', pic)
     // 背景图片
     this.bkg = await Taro.getImageInfo({ src: pic })
     // 太阳码
@@ -45,7 +56,6 @@ class DistributionPoster {
     const _avatar = avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`
     this.avatar = await Taro.getImageInfo({ src: _avatar })
 
-    console.log('this.codeImg:', this.codeImg)
     const drawOptions = {
       ctx: this.ctx,
       toPx: this.toPx,
@@ -75,7 +85,7 @@ class DistributionPoster {
         sy: 0,
         sw: this.bkg.width,
         sh: this.bkg.height,
-        borderRadius: 80
+        // borderRadius: 80
       },
       drawOptions
     )
@@ -110,10 +120,10 @@ class DistributionPoster {
     drawImage(
       {
         imgPath: this.codeImg.path,
-        x: 112,
+        x: 140,
         y: 442,
-        w: 370,
-        h: 370,
+        w: 320,
+        h: 390,
         sx: 0,
         sy: 0,
         sw: this.codeImg.width,

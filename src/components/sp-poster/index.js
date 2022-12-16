@@ -1,44 +1,38 @@
 import { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
-import { View, Text, Image, Button, Canvas } from '@tarojs/components'
-import { useImmer } from 'use-immer'
+import { View, Text, Image, Canvas } from '@tarojs/components'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, authSetting, showToast } from '@/utils'
-import GoodsDetailPoster from './dw-goodsdetail'
-import GuideGoodsDetailPoster from './dw-guidegoodsdetail'
-import GuideCheckout from './dw-guidecheckout'
-import Distribution from './dw-distribution'
+import { classNames, authSetting, showToast, isAlipay } from '@/utils'
+import GoodsDetailPosterWx from './dw-goodsdetail'
+import GoodsDetailPosterAli from './dw-goodsdetail.alipay'
+import DistributionWx from './dw-distribution'
+import DistributionAli from './dw-distribution.alipay'
+import GuideGoodsDetailPosterWx from './dw-guidegoodsdetail'
+import GuideGoodsDetailPosterAli from './dw-guidegoodsdetail.alipay'
+import GuideCheckoutWx from './dw-guidecheckout'
+import GuideCheckoutAli from './dw-guidecheckout.alipay'
+
 
 import './index.scss'
 
-const UI_Width = 750
-//同步获取设备系统信息
-const info = Taro.getSystemInfoSync()
-//设备像素密度
-const dpr = info.pixelRatio;
-//计算比例
-const scale = info.screenWidth / UI_Width
-//计算canvas实际渲染尺寸
-let width = parseInt(scale * 335)
-let height = parseInt(scale * 536)
-//计算canvas画布尺寸
-let canvasWidth1 = width * dpr
-let canvasHeight2 = height * dpr
+const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout] = isAlipay ? [
+  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli
+] : [
+  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx
+]
 
 const initialState = {
   poster: null,
-  // pxWidth: 200,
-  // pxHeight: 200,
-  pxWidth: 335,
-  pxHeight: 536,
+  pxWidth: 200,
+  pxHeight: 200,
   factor: 1,
   eleId: 'poster-canvas',
   ctx: null
 }
 
 function SpPoster(props) {
-  const { info, type, onClose = () => {} } = props
+  const { info, type, onClose = () => { } } = props
   const { userInfo } = useSelector((state) => state.user)
   const { userInfo: guideInfo } = useSelector((state) => state.guide)
   const [state, setState] = useAsyncCallback(initialState)
@@ -132,6 +126,7 @@ function SpPoster(props) {
       async (_state) => {
         await canvasObj.drawPoster()
         const poster = await getPoster(_state)
+        console.log('handleCreatePoster:getPoster', poster)
         Taro.hideLoading()
         setState((draft) => {
           draft.poster = poster
@@ -203,8 +198,8 @@ function SpPoster(props) {
         className='canvasbox'
         canvasId='poster-canvas'
         id='poster-canvas'
-        width={canvasWidth1} 
-        height={canvasHeight2}
+        width={pxWidth}
+        height={pxHeight}
         style={`width:${pxWidth}px; height:${pxHeight}px;`}
       />
     </View>
