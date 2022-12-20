@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, Canvas } from '@tarojs/components'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, authSetting, showToast, isAlipay } from '@/utils'
+import { classNames, authSetting, showToast, isWeixin, isAlipay } from '@/utils'
 import GoodsDetailPosterWx from './dw-goodsdetail'
 import GoodsDetailPosterAli from './dw-goodsdetail.alipay'
 import DistributionWx from './dw-distribution'
@@ -137,19 +137,34 @@ function SpPoster(props) {
 
   const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {
     return new Promise((resolve, reject) => {
-      ctx.draw(false, async () => {
-        const { tempFilePath: poster } = await Taro.canvasToTempFilePath(
-          {
-            x: 0,
-            y: 0,
-            width: pxWidth,
-            height: pxHeight,
-            canvasId: eleId
-          },
-          Taro.getCurrentInstance().page
-        )
-        resolve(poster)
-      })
+      try {
+        ctx.draw(false, async () => {
+          if (isWeixin) {
+            const { tempFilePath } = await Taro.canvasToTempFilePath(
+              {
+                x: 0,
+                y: 0,
+                width: pxWidth,
+                height: pxHeight,
+                canvasId: eleId
+              },
+              Taro.getCurrentInstance().page
+            )
+            resolve(tempFilePath)
+          } else if(isAlipay) {
+            my.canvasToTempFilePath({
+              canvasId: eleId,
+              success: ({ apFilePath }) => {
+                console.log('success', apFilePath);
+                resolve(apFilePath)
+              }
+            });
+          }
+        })
+      } catch (e) {
+        console.error(e)
+        reject(e)
+      }
     })
   }
 
@@ -167,14 +182,15 @@ function SpPoster(props) {
 
   const savePoster = () => {
     Taro.saveImageToPhotosAlbum({
-      filePath: poster
-    })
-      .then((res) => {
+      filePath: poster,
+      success: (res) => {
         showToast('保存成功')
-      })
-      .catch((res) => {
+      },
+      fail: (res) => {
+        console.log(res)
         showToast('保存失败')
-      })
+      }
+    })
   }
 
   return (

@@ -34,7 +34,7 @@ export function isFunction(val) {
   return isPrimitiveType(val, '[object Function]')
 }
 
-export function uniqueFunc(arr, uniId){
+export function uniqueFunc(arr, uniId) {
   const res = new Map();
   return arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1));
 }
@@ -293,7 +293,7 @@ export function copyText(text, msg = '内容已复制') {
         error: reject
       })
     } else {
-      if(isAlipay){
+      if (isAlipay) {
         console.log('copyText:text', text)
         my.setClipboard({
           text: text,
@@ -354,15 +354,27 @@ export function maskMobile(mobile) {
 export function authSetting(scope, succFn, errFn) {
   Taro.getSetting({
     success(res) {
-      const result = res.authSetting[`scope.${scope}`]
-      if (result === undefined) {
-        Taro.authorize({
-          scope: `scope.${scope}`
-        }).then(succFn, errFn)
-      } else if (!result) {
-        Taro.openSetting().then(succFn, errFn)
-      } else {
-        succFn()
+      const result = res.authSetting[isWeixin ? `scope.${scope}` : `${scope}`]
+      if (isWeixin) {
+        if (result === undefined) {
+          Taro.authorize({
+            scope: `scope.${scope}`
+          }).then(succFn, errFn)
+        } else if (!result) {
+          Taro.openSetting().then(succFn, errFn)
+        } else {
+          succFn()
+        }
+      } else if(isAlipay) {
+        // const alipayScope = {
+        //   "album": "album",
+        //   "writePhotosAlbum": "album"
+        // }
+        if (result === false) {
+          Taro.openSetting().then(succFn, errFn)
+        } else {
+          succFn()
+        }
       }
     },
     fail(res) {

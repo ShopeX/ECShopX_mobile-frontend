@@ -1,4 +1,4 @@
-export default {
+const config = {
   pages: [
     'pages/index', // 首页
     'pages/webview', // webview
@@ -326,9 +326,9 @@ export default {
       desc: '您的位置信息将用于定位附近门店'
     }
   },
-  usingComponents: {
-    'mp-html': './components/sp-html/mp-weixin/index'
-  },
+  // usingComponents: {
+  //   'mp-html': './components/sp-html/mp-weixin/index'
+  // },
   window: {
     'backgroundTextStyle': 'light',
     'navigationBarBackgroundColor': '#fff',
@@ -346,3 +346,13 @@ export default {
     "chooseAddress"
   ]
 }
+
+if (process.env.TARO_ENV == 'weapp') {
+  Object.assign(config, {
+    usingComponents: {
+      'mp-html': './components/sp-html/mp-weixin/index'
+    }
+  })
+}
+
+export default config
