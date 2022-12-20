@@ -34,6 +34,8 @@ export default {
         'index', // 家属分享
         'select-company',
         'select-company-no',
+        'select-company-account',
+        'select-company-validate'
       ]
     },
     // 导购货架 guide

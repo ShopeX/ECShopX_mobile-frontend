@@ -1,0 +1,38 @@
+page{
+  background-color: #fff;
+  .select-component{
+    padding: 56px 50px;
+    .select-component-title{
+      font-size: 40px;
+      font-weight: 400;
+      color: #222222;
+    }
+    .select-component-prompt{
+      font-size: 28px;
+      color: #AAAAAA;
+      margin: 16rpx 0 100rpx 0;
+    }
+    .phone-box{
+      font-size: 32px;
+      color: #222222;
+      font-weight: 400;
+      .phone-number{
+        font-weight: bold;
+      }
+    }
+    .btns-phone{
+      background: #F4811F;
+      margin: 70rpx 0 40rpx 0;
+      font-size: 28px;
+      color: #FFFFFF;
+      height: 80px;
+      border: none;
+    }
+    .btns-other{
+      font-size: 28px;
+      color: #F4811F;
+      border: #F4811F 1px solid;
+    }
+  }
+}
+

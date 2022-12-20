@@ -6,9 +6,8 @@ import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
 import { classNames } from '@/utils'
 import './select-company-no.scss'
-import userIcon from '@/assets/imgs/user-icon.png'
 import CompBottomTip from './comps/comp-bottomTip'
-import arrow from '@/assets/imgs/arrow.png'
+
 
 function SelectComponent(props) {
   const [companyNo, setCompanyNo] = useState()

@@ -8,7 +8,11 @@ page{
       font-size: 40px;
       font-weight: 400;
       color: #222222;
-      margin-bottom: 160px;
+    }
+    .select-component-prompt{
+      font-size: 28px;
+      color: #AAAAAA;
+      margin: 16rpx 0 100rpx 0;
     }
     .pick-company{
       position: relative;
@@ -22,10 +26,10 @@ page{
       border-radius: 40px;
       border: 1px solid #D5D5DF;
       padding:15rpx 30rpx;
-      .at-input__input{
-        width: auto;
-        flex: 0.5;
-      }
+      // .at-input__input{
+      //   width: auto;
+      //   flex: 0.5;
+      // }
       // .at-icon{
       // }
 
