@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1668586974427') format('woff2'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1668586974427') format('woff'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1668586974427') format('truetype');
+  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1671689552802') format('woff2'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1671689552802') format('woff'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1671689552802') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,22 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-neigoudingdan:before {
+  content: "\e90d";
+}
+
+.icon-zhankai:before {
+  content: "\e90e";
+}
+
+.icon-neigouhuodong:before {
+  content: "\e90f";
+}
+
+.icon-zhengque-correct:before {
+  content: "\e65d";
 }
 
 .icon-tuikuantuihuo-01:before {
@@ -1096,3 +1112,4 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
+
