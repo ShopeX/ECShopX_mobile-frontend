@@ -40,7 +40,8 @@ export default {
         'select-company-validate',
         'select-company-activity',
         'select-identity',
-        'neigou-order'
+        'neigou-order',
+        'select-company-email'
       ]
     },
     // 导购货架 guide

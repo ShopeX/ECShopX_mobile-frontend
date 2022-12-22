@@ -11,8 +11,8 @@ import CompBottomTip from './comps/comp-bottomTip'
 
 function SelectComponent(props) {
   const [companyNo, setCompanyNo] = useState()
-  const [isError, setIsError] = useState(false)
-  const [isSuccess, setIsSuccess] = useState(true)
+  const [isError, setIsError] = useState(true)
+  const [isSuccess, setIsSuccess] = useState(false)
 
   useEffect(() => {
     //请求获取企业信息
@@ -30,7 +30,7 @@ function SelectComponent(props) {
           placeholder='请输入完整的企业编号'
           value={companyNo}
           onChange={onChange}
-          className='select-option '
+          className={classNames('select-option',isError?'err':'')}
           clear
         />
         <Text className='iconfont icon-search1 icon'></Text>
