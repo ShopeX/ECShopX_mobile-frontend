@@ -48,7 +48,7 @@ export default class TradeList extends Component {
   }
 
   componentDidMount() {
-    const { status, evaluate = 1 } = this.$instance.router.params
+    const { status = 0, evaluate = 1 } = this.$instance.router.params
     const _tabList = JSON.parse(JSON.stringify(this.state.tabList))
     if (evaluate == 1) {
       _tabList.push({ title: '待评价', status: '7', is_rate: 0 })

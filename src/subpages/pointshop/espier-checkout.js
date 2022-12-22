@@ -4,7 +4,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
 import { SpPage, SpPrice, SpPoint, SpCell, SpGoodsCell, SpCashier } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
-import { changeCoupon } from '@/store/slices/cart'
+import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
 import { changeZitiStore } from '@/store/slices/shop'
 import {
@@ -45,10 +45,11 @@ function PointShopEspierCheckout() {
 
   const dispatch = useDispatch()
   const pageRef = useRef()
+  const deliverRef = useRef()
 
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
-  const { coupon } = useSelector((state) => state.cart)
+  const { coupon, zitiAddress } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
 
   const {
@@ -93,6 +94,7 @@ function PointShopEspierCheckout() {
       // tode 此处应有埋点
       return () => {
         dispatch(changeCoupon()) // 清空优惠券信息
+        dispatch(changeZitiAddress(null)) // 清空自提地址信息
         // dispatch(updateChooseAddress(null)) // 清空地址信息
         dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
       }
@@ -111,7 +113,7 @@ function PointShopEspierCheckout() {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [address, payType])
+  }, [payType, address, zitiAddress])
 
   useEffect(() => {
     if (isPackageOpend || isPointOpenModal) {
@@ -131,6 +133,15 @@ function PointShopEspierCheckout() {
 
   const onSubmitPayChange = async () => {
     if (submitLoading) return
+
+    if (receiptType == 'ziti') {
+      if (zitiAddress) {
+        await deliverRef.current.validateZitiInfo()
+      } else {
+        showToast('请选择自提地址')
+      }
+    }
+
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: dtid })
     if (!isValid) {
@@ -138,34 +149,28 @@ function PointShopEspierCheckout() {
       return
     }
 
-    setState(
-      (draft) => {
-        draft.submitLoading = true
-      },
-      async () => {
-        if (isWeixin) {
-          const templeparams = {
-            temp_name: 'yykweishop',
-            source_type: receiptType === 'logistics' ? 'logistics_order' : 'ziti_order'
-          }
-          const { template_id } = await api.user.newWxaMsgTmpl(templeparams)
-          Taro.requestSubscribeMessage({
-            tmplIds: template_id,
-            success: () => {
-              handlePay()
-            },
-            fail: () => {
-              handlePay()
-            }
-          })
-        } else {
-          handlePay()
-        }
+    if (isWeixin) {
+      const templeparams = {
+        temp_name: 'yykweishop',
+        source_type: receiptType === 'logistics' ? 'logistics_order' : 'ziti_order'
       }
-    )
+      const { template_id } = await api.user.newWxaMsgTmpl(templeparams)
+      try {
+        await Taro.requestSubscribeMessage({ tmplIds: template_id })
+        handlePay()
+      } catch (e) {
+        console.error(e)
+        handlePay()
+      }
+    } else {
+      handlePay()
+    }
   }
 
   const handlePay = async () => {
+    setState((draft) => {
+      draft.submitLoading = true
+    })
     const params = await getParamsInfo()
     console.log('trade params:', params)
     if (payType === 'deposit') {
@@ -271,22 +276,14 @@ function PointShopEspierCheckout() {
   }
 
   const handleSwitchExpress = ({ receipt_type, distributor_info, address_info }) => {
-    console.log('xxxxxxx:', receipt_type)
-    // const _addressInfo = address_info || addressInfo
+    console.log('xxxxxxx:', receipt_type, address_info)
     // 切换配送模式
     setState((draft) => {
       draft.receiptType = receipt_type
       draft.distributorInfo = distributor_info
-      // draft.addressInfo = _addressInfo
     })
 
-    // 收货地址为空时，需要触发calcOrder
-    if (receipt_type == 'logistics' && !address_info) {
-      calcOrder()
-    }
-    // if (address_info) {
     dispatch(updateChooseAddress(address_info))
-    // }
   }
 
   const handleEditZitiClick = async (id) => {
@@ -453,11 +450,15 @@ function PointShopEspierCheckout() {
     let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
-      receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
-      if (shop.zitiShop) {
-        const { distributor_id } = shop.zitiShop
-        ziti_shopid = distributor_id
-        receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
+      // receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
+      const { pickerTime, pickerName, pickerPhone } = await deliverRef.current.getZitiInfo()
+
+      receiver = {
+        receiver_name: pickerName,
+        receiver_mobile: pickerPhone,
+        pickup_date: pickerTime.date,
+        pickup_time: pickerTime.time,
+        pickup_location: zitiAddress?.id
       }
     }
     let cus_parmas = {
@@ -590,6 +591,7 @@ function PointShopEspierCheckout() {
     <SpPage ref={pageRef} className='page-pointshop-espiercheckout' renderFooter={renderFooter()}>
       <View className='cart-checkout__address'>
         <CompDeliver
+          ref={deliverRef}
           distributor_id={dtid}
           address={address}
           onChange={handleSwitchExpress}

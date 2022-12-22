@@ -306,7 +306,6 @@ function CompDeliver(props, ref) {
               </SpFormItem>
               <SpFormItem label='提货人' prop='pickerName'>
                 <AtInput
-                  clear
                   name='pickerName'
                   value={form.pickerName}
                   placeholder='请输入提货人姓名'
@@ -315,7 +314,6 @@ function CompDeliver(props, ref) {
               </SpFormItem>
               <SpFormItem label='手机号码' prop='pickerPhone'>
                 <AtInput
-                  clear
                   name='pickerPhone'
                   value={form.pickerPhone}
                   placeholder='请输入提货人手机号码'

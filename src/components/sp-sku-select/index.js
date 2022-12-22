@@ -42,8 +42,8 @@ function SpSkuSelect(props) {
   const {
     info,
     open = false,
-    onClose = () => {},
-    onChange = () => {},
+    onClose = () => { },
+    onChange = () => { },
     type,
     hideInputNumber = false
   } = props
@@ -69,7 +69,7 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find((item) => item.store > 0 && item.approveStatus == 'onsale')
+    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale', 'offline_sale'].includes(item.approveStatus))
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -91,7 +91,7 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0 && skuDictRef.current[key].approveStatus == 'onsale'
+        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale', 'offline_sale'].includes(skuDictRef.current[key].approveStatus)
       })
     }
 
@@ -212,8 +212,8 @@ function SpSkuSelect(props) {
       item_id: curItem ? curItem.itemId : info.itemId,
       num,
       distributor_id: distributorId
-    }, !!info.point ) // info.point 有积分值时是积分商品
-    let url = `${!!info.point ? '/subpages/pointshop/espier-checkout' : '/pages/cart/espier-checkout' }?cart_type=fastbuy&shop_id=${distributorId}`
+    }, !!info.point) // info.point 有积分值时是积分商品
+    let url = !!info.point ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0' : `/pages/cart/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
     if (activityType == 'seckill' || activityType === 'limited_time_sale') {
       const { seckill_id } = activityInfo
       const { ticket } = await api.item.seckillCheck({
@@ -295,7 +295,7 @@ function SpSkuSelect(props) {
       limitTxt = `（限购${purlimitByCart}件）`
     }
 
-    if(type == 'fastbuy' && purlimitByFastbuy) {
+    if (type == 'fastbuy' && purlimitByFastbuy) {
       limitNum = purlimitByFastbuy
       limitTxt = `（限购${purlimitByFastbuy}件）`
     }
@@ -352,7 +352,7 @@ function SpSkuSelect(props) {
           </View> */}
           <SpGoodsPrice info={curItem || info} />
           <View className='goods-sku-txt'>{skuText}</View>
-          <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>
+          {info.store_setting && <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>}
         </View>
       </View>
       <View className='sku-list'>

@@ -92,6 +92,17 @@ function SpPage(props, ref) {
     }
   }, [])
 
+  useEffect(()=>{
+    if(pageConfig){
+      const {navigateBackgroundColor} = pageConfig
+      if(isAlipay){
+          my.setNavigationBar({
+            backgroundColor:navigateBackgroundColor
+          })
+      }
+    }
+  },[pageConfig])
+
   useDidShow(() => {
     const { page, router } = getCurrentInstance()
     const pageTitle = page?.config?.navigationBarTitleText
@@ -173,7 +184,7 @@ function SpPage(props, ref) {
 
     const menuButton = Taro.getMenuButtonBoundingClientRect()
     const { statusBarHeight } = Taro.getSystemInfoSync()
-    gNavbarH = statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
+    gNavbarH = Math.floor(statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2)
     gStatusBarHeight = statusBarHeight
   }
 
@@ -219,7 +230,7 @@ function SpPage(props, ref) {
       }
 
     }
-    showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page.route}`)
+    showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
 
     return (
       <View

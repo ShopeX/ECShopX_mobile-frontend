@@ -18,7 +18,7 @@ const initialState = {
   locationIng: false,
   chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
-  type: 0, // 参数
+  type: 0, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
   search_type: undefined, // 参数
   isSpAddressOpened: false,
 }
@@ -37,9 +37,11 @@ function NearlyShop(props) {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    // fetchAddressList()
+    if (address) {
+      shopRef.current.reset()
+    }
     // onPickerClick()
-  }, [])
+  }, [address])
 
   const fetchShop = async (params) => {
     const { pageIndex: page, pageSize } = params
@@ -55,14 +57,14 @@ function NearlyShop(props) {
       province: location?.province || chooseProvice,
       city: location?.city || chooseCity,
       area: location?.district || chooseDistrict,
-      type: location?.lat ? state.type : 1,
+      type: location?.lat ? state.type : 0,
       search_type: state.search_type,
       sort_type: 1
     }
     const { list, total_count: total, defualt_address } = await api.shop.list(query)
 
     setState((v) => {
-      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)),'distributor_id') 
+      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)), 'distributor_id')
       v.chooseValue = [query.province, query.city, query.area]
     })
 
@@ -102,8 +104,8 @@ function NearlyShop(props) {
 
   // 定位
   const getLocationInfo = async () => {
-    setState((v) => {
-      v.locationIng = true
+    setState((draft) => {
+      draft.locationIng = true
     })
     setPolicyModal(false)
     await entryLaunch.isOpenPosition(async (res) => {
@@ -113,15 +115,15 @@ function NearlyShop(props) {
           v.shopList = []
           v.keyword = ''
           v.name = ''
-          v.type = 0
           v.search_type = undefined
         })
-        console.log('getLocationInfo 重新定位',)
         shopRef.current.reset()
       }
     })
-    setState((v) => {
-      v.locationIng = false
+
+    setState((draft) => {
+      draft.locationIng = false
+      draft.type = 2
     })
   }
 
@@ -169,6 +171,10 @@ function NearlyShop(props) {
     } else {
       setPolicyModal(true)
     }
+
+    setState((v) => {
+      v.type = 2
+    })
   }
 
   const handleClickCloseSpAddress = () => {
@@ -189,8 +195,9 @@ function NearlyShop(props) {
       selectValue[1].label,
       selectValue[2].label
     ]
-    setState((v)=>{
+    setState((v) => {
       v.chooseValue = chooseValue
+      v.type = 1
     })
   }
 
@@ -203,11 +210,11 @@ function NearlyShop(props) {
       <View className='search-block'>
         <View className='search-bar'>
           <View className='region-picker'>
-            <SpAddress isOpened={isSpAddressOpened} onClose={handleClickCloseSpAddress} onChange={onPickerChange}/>
+            <SpAddress isOpened={isSpAddressOpened} onClose={handleClickCloseSpAddress} onChange={onPickerChange} />
             <View className='pick-title' onClick={handleClickOpenSpAddress}>
               <View className='iconfont icon-periscope'></View>
               <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-              <Text className='iconfont icon-arrowDown'></Text>
+              {/* <Text className='iconfont icon-arrowDown'></Text> */}
             </View>
           </View>
 

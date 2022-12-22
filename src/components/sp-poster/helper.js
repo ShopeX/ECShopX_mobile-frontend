@@ -12,9 +12,7 @@
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
- import { isAlipay, } from '@/utils'
-
-export function _drawRadiusRect(drawData, drawOptions) {
+ export function _drawRadiusRect(drawData, drawOptions) {
   const { x, y, w, h, r } = drawData
   const {
     ctx,
@@ -85,11 +83,6 @@ export function _getTextWidth(text, drawOptions) {
  * @param { function } drawOptions.toRpx - toRpx方法
  */
 export function _drawSingleText(drawData, drawOptions) {
-  if(isAlipay){
-    // drawData.x = drawData.x / 4
-    // drawData.y = drawData.y / 4
-    // drawData.fontSize = drawData.fontSize / 2
-  }
   const {
     x,
     y,
@@ -107,7 +100,7 @@ export function _drawSingleText(drawData, drawOptions) {
     fontStyle = 'normal',
     fontFamily = 'sans-serif'
   } = drawData
-  console.log('_drawSingleText:drawData',drawData)
+  // console.log(drawData)
   const { ctx, toPx, toRpx } = drawOptions
   ctx.save()
   ctx.beginPath()
@@ -209,7 +202,6 @@ export function drawText(params, drawOptions) {
     // lineNum,
     // lineHeight
   } = params
-  console.log('drawText', params)
   if (Object.prototype.toString.call(text) === '[object Array]') {
     let preText = { x, y, baseLine }
     text.forEach((item) => {
@@ -248,11 +240,6 @@ export function drawText(params, drawOptions) {
  */
 export function drawImage(data, drawOptions) {
   const { ctx, toPx } = drawOptions
-  if(isAlipay){
-    data.sw = data.sw * 2
-    data.sh = data.sh * 2
-    data.h = data.h / 1.3
-  }
   const {
     imgPath,
     x,
@@ -268,7 +255,6 @@ export function drawImage(data, drawOptions) {
     borderColor
   } = data
   ctx.save()
-  console.log('drawImage:data', data)
   if (borderRadius > 0) {
     let drawData = {
       x,
@@ -280,7 +266,7 @@ export function drawImage(data, drawOptions) {
     _drawRadiusRect(drawData, drawOptions)
     ctx.strokeStyle = 'rgba(255,255,255,0)'
     ctx.stroke()
-    ctx.clip()   
+    ctx.clip()
     ctx.drawImage(
       imgPath,
       toPx(sx),
@@ -377,9 +363,7 @@ export function drawBlock(
     opacity = 1
   },
   drawOptions
-) {  
-  console.log('drawBlock:data',arguments[0])
-  height = height * 2
+) {
   const { ctx, toPx } = drawOptions
   // 判断是否块内有文字
   let blockWidth = 0 // 块的宽度

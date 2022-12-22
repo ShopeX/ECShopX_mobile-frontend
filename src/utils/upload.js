@@ -90,6 +90,7 @@ const upload = {
         url: `${domain}/${imgData.key}`
       }
     } catch (e) {
+      console.error(e)
       throw new Error(e)
     }
   },
@@ -206,13 +207,13 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
       const img = await upload[uploadType](item, { ...token, filetype })
-      // console.log('---uploadImageFn---1', img)
+      console.log('---uploadImageFn---', img)
       if (!img || !img.url) {
         continue
       }
       imgs.push(img)
-    } catch (e) {
-      // console.log('uploadImageFn', e)
+    } catch (err) {
+      console.error('---uploadImageFn---', err.message)
     }
   }
   // console.log('---uploadImageFn---2', imgs)

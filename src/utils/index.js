@@ -364,6 +364,9 @@ export function authSetting(scope, succFn, errFn) {
       } else {
         succFn()
       }
+    },
+    fail(res) {
+      console.error(res)
     }
   })
 }
