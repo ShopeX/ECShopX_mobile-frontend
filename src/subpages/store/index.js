@@ -113,13 +113,15 @@ function StoreIndex() {
   // })
 
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
+  const pageData = wgts.find((wgt) => wgt.name == 'page')
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
     filterWgts = wgts.filter((wgt) => wgt.name !== 'search')
   } else {
     filterWgts = wgts
   }
-  const fixedTop = searchComp && searchComp.config.fixTop
+  // const fixedTop = searchComp && searchComp.config.fixTop
+
 
   return (
     <SpPage
@@ -128,19 +130,23 @@ function StoreIndex() {
       defaultMsg='该店铺已注销，在别的店铺看看吧'
       loading={loading}
       scrollToTopBtn
-      navigateMantle
-      renderTitle={
-        fixedTop && (
-          <SpSearch
-            isFixTop={searchComp.config.fixTop}
-            onClick={() => {
-              Taro.navigateTo({
-                url: `/subpages/store/item-list?dtid=${distributorId}`
-              })
-            }}
-          />
-        )
-      }
+      // navigateMantle
+      pageConfig={pageData?.base}
+      // renderTitle={
+      //   fixedTop && (
+      //     <>
+      //     <SpSearch
+      //       isFixTop={searchComp.config.fixTop}
+      //       onClick={() => {
+      //         Taro.navigateTo({
+      //           url: `/subpages/store/item-list?dtid=${distributorId}`
+      //         })
+      //       }}
+      //     />
+      //     </>
+
+      //   )
+      // }
       renderFloat={
         <View>
           <SpFloatMenuItem
@@ -161,10 +167,21 @@ function StoreIndex() {
       }
       renderFooter={<CompTabbar />}
     >
+      <View className='search' style={{background:`${pageData?.base?.pageBackgroundColor}`}}>
+        <SpSearch
+          isFixTop={searchComp?.config?.fixTop}
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/subpages/store/item-list?dtid=${distributorId}`
+            })
+          }}
+        />
+      </View>
+
       <View className='header-block'>
         <CompShopBrand dtid={distributorId} />
       </View>
-      <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList} >
+      <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
         {/* 猜你喜欢 */}
         <SpRecommend className='recommend-block' info={likeList} />
       </HomeWgts>
