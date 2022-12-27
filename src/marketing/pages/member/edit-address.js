@@ -110,10 +110,14 @@ function AddressIndex(props) {
     })
   }
 
-  const handleChange = (name, val) => {
-    console.log('---', name, val)
+  const handleChange = (name,val,e) => {
+    console.log('---', name,val,e)
     const nInfo = JSON.parse(JSON.stringify(state.info || {}))
-    nInfo[name] = val
+    if(name==='adrdetail'){
+      nInfo[name] = e.detail.value
+    }else{
+      nInfo[name] = val
+    }
     setState((draft) => {
       draft.info = nInfo
     })
@@ -197,7 +201,7 @@ function AddressIndex(props) {
               name='username'
               value={info?.username}
               placeholder='收件人姓名'
-              onChange={(e) => handleChange('username', e)}
+              onChange={(e) => handleChange('username',e)}
             />
           }
         ></SpCell>
@@ -243,7 +247,7 @@ function AddressIndex(props) {
             value={info?.adrdetail}
             maxLength={100}
             placeholder='请填写详细地址（街道、门牌）'
-            onChange={(e) => handleChange('adrdetail', e)}
+            onChange={handleChange.bind(this,'adrdetail')}
           />
         </SpCell>
 
