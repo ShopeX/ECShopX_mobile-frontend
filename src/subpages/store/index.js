@@ -167,7 +167,7 @@ function StoreIndex() {
       }
       renderFooter={<CompTabbar />}
     >
-      <View className='search' style={{background:`${pageData?.base?.pageBackgroundColor}`}}>
+      <View className='search' >
         <SpSearch
           isFixTop={searchComp?.config?.fixTop}
           onClick={() => {
@@ -178,7 +178,7 @@ function StoreIndex() {
         />
       </View>
 
-      <View className='header-block'>
+      <View className='header-block' style={{background:`${pageData?.base?.pageBackgroundColor}`}}>
         <CompShopBrand dtid={distributorId} />
       </View>
       <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
