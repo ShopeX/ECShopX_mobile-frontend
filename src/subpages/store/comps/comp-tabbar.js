@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId } from '@/utils'
+import { classNames, entryLaunch, getCurrentRoute, getDistributorId,isWeb } from '@/utils'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -41,8 +41,11 @@ function CompTabbar(props) {
   let currentIndex = 0
   const pages = Taro.getCurrentPages()
   if (pages.length > 0) {
-    const currentPage = pages[pages.length - 1].route
-    currentIndex = TABBAR_LIST.findIndex((tab) => tab.url == `/${currentPage}`)
+    let currentPage = pages[pages.length - 1].route
+    currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
+    currentIndex = TABBAR_LIST.findIndex((tab) => {
+      return tab.url == currentPage
+    })
   }
 
   console.log('comp-tabbar currentIndex:', currentIndex)

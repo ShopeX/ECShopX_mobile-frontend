@@ -4,7 +4,7 @@ import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH, TABBAR_ICON } from '@/consts'
-import { classNames, styleNames, getCurrentRoute } from '@/utils'
+import { classNames, styleNames, getCurrentRoute, isWeb } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import './index.scss'
 
@@ -33,15 +33,16 @@ function SpTabbar(props) {
   let currentIndex = 0
   const pages = Taro.getCurrentPages()
   if (pages.length > 0) {
-    const currentPage = pages[pages.length - 1].route
+    let currentPage = pages[pages.length - 1].route
+    currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
     currentIndex = tabList?.findIndex((tab) => {
       if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
         return (
           routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
-          `/${currentPage}`
+          currentPage
         )
       } else {
-        return TABBAR_PATH[tab.name] == `/${currentPage}`
+        return TABBAR_PATH[tab.name] == currentPage
       }
     })
   }
