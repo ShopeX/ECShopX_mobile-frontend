@@ -194,7 +194,7 @@ export default class GoodsItem extends Component {
                       {item.tag_type === 'full_gift' ? '满赠' : ''}
                       {item.tag_type === 'normal' ? '秒杀' : ''}
                       {item.tag_type === 'limited_time_sale' ? '限时特惠' : ''}
-                      {item.tag_type === 'plus_price_buy' ? '换购' : ''}
+                      {item.tag_type === 'plus_price_buy' ? '加价购' : ''}
                       {item.tag_type === 'member_preference' ? '会员限购' : ''}
                     </Text>
                   ))}
