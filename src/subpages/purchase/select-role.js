@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
@@ -6,33 +6,47 @@ import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { classNames } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
-import {  SpFloatPrivacyShort } from '@/components'
+import { SpFloatPrivacyShort } from '@/components'
 import { useLogin } from '@/hooks'
 import './select-role.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 
-const initialState = {}
-
-function SelectRole(props) {
-  const [userInfo, setUserInfo] = useState({
+const initialState = {
+  isRole: true,
+  isLogin: false,
+  policyModal: false,
+  userInfo: {
     avatar: '',
     phone: 17777778987
-  })
+  }
+}
 
-  const [isRole, setIsRole] = useState(false)
+function SelectRole(props) {
 
-  const [isLogin, setIsLogin] = useState(true)
-  const [policyModal, setPolicyModal] = useState(true)
+  const [state, setState] = useImmer(initialState)
 
-  useEffect(() => {}, [])
+  const { isLogin, isRole, policyModal, userInfo } = state
+  const $instance = getCurrentInstance()
+  const { isLogin: isRouterLogin = false, isRole: isRouterRole = true } = $instance.router.params || {}
+
+  useEffect(() => {
+    setState(draft => {
+      draft.isLogin = JSON.parse(isRouterLogin)
+      draft.isRole = JSON.parse(isRouterRole)
+    })
+  }, [])
 
   const handleCloseModal = useCallback(() => {
-    setPolicyModal(false)
+    setState(draft => {
+      draft.policyModal = false
+    })
   }, [])
 
   // 同意隐私协议
   const handleConfirmModal = useCallback(async () => {
-    setPolicyModal(false)
+    setState(draft => {
+      draft.policyModal = false
+    })
     // if (isNewUser) {
     //   return setLoginModal(true)
     // } else {

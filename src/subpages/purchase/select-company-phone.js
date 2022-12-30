@@ -6,7 +6,7 @@ import { View, Text, ScrollView, Image, Input, Picker ,Button} from '@tarojs/com
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
 import { classNames } from '@/utils'
-import './select-company-validate.scss'
+import './select-company-phone.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 
 

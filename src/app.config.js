@@ -37,11 +37,11 @@ export default {
         'select-company',
         'select-company-no',
         'select-company-account',
-        'select-company-validate',
+        'select-company-email',
+        'select-company-phone',
         'select-company-activity',
         'select-identity',
         'neigou-order',
-        'select-company-email'
       ]
     },
     // 导购货架 guide
