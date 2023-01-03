@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components'
@@ -12,14 +12,14 @@ import { SpForm, SpFormItem, SpTimer } from '@/components'
 const initialState = {
   form: {
     email: '',
-    code: ''
+    vcode: ''
   },
   rules: {
     email: [
       // { required: true, message: '邮箱地址不能为空' },
       // { validate: 'mobile', message: '请输入正确的邮箱地址' }
     ],
-    code: [{ required: true, message: '请输入验证码' }]
+    vcode: [{ required: true, message: '请输入验证码' }]
   }
 }
 
@@ -27,9 +27,10 @@ function SelectComponent(props) {
   const [state, setState] = useImmer(initialState)
   const { form, rules } = state
 
-  const [isError, setIsError] = useState(true)
-  const [isErrorCode, setIsErrorCode] = useState(true)
+  const [isError, setIsError] = useState(false)
+  const [isErrorCode, setIsErrorCode] = useState(false)
   const formRef = useRef()
+  const $instance = getCurrentInstance()
 
   useEffect(() => {
     //请求获取企业信息
@@ -42,45 +43,44 @@ function SelectComponent(props) {
   }
 
   const onFormSubmit = async () => {
+    const { enterprise_id } = $instance.router.params
     // 有商场校验白名单，账号绑定并登录，无商场检验白名单通过手机号授权
     formRef.current.onSubmit(async () => {
-      const { email, code } = form
-      // await api.operator.smsLogin({
-      //   email,
-      //   code,
-      //   logintype: 'smsstaff'
-      // })
-      showToast('登录成功')
+      const { email, vcode } = form
+      const params = {
+        enterprise_id,
+        email,
+        vcode
+      }
+      await api.purchase.setEmployeeAuth(params)
+      showToast('验证成功')
 
       // 无商场逻辑（需要调整一个页面去授权手机号）
-      Taro.navigateTo({ url: `/subpages/purchase/select-role` })
+      Taro.navigateTo({ url: `/subpages/purchase/select-company-phone?isHasShop=false` })
     })
   }
 
   // 获取验证码
   const getSmsCode = async (resolve) => {
+    const { enterprise_id } = $instance.router.params
     const { email } = form
-    if (!/1\d{10}/.test(email)) {
+    if (!/^\w+@[a-z0-9]+\.[a-z]{2,4}$/.test(email)) {
       Taro.showToast({
-        title: '请输入正确的手机号',
+        title: '请输入正确的邮箱',
         icon: 'none'
       })
       return false
     }
-    const query = {
-      type: 'update',
-      email
-    }
+    // 先检验白名单，通过以后在请求验证码
     try {
-      await api.user.regSmsCode(query)
+      await api.purchase.getEmailCode({ email, enterprise_id })
       Taro.showToast({
         title: '发送成功',
         icon: 'none'
       })
-    } catch (error) {
-      return false
+    } catch (e) {
+      console.log(e)
     }
-    resolve()
   }
 
   return (
@@ -111,14 +111,14 @@ function SelectComponent(props) {
           {isError && <View className='err-info'>验证码错误，请重新输入验证码</View>}
 
           <View className={classNames(isError ? 'error-form-item' : '')}>
-            <SpFormItem prop='code'>
+            <SpFormItem prop='vcode'>
               <AtInput
                 clear
                 focus
-                name='code'
-                value={form.code}
+                name='vcode'
+                value={form.vcode}
                 placeholder='请输入邮箱验证码'
-                onChange={onInputChange.bind(this, 'code')}
+                onChange={onInputChange.bind(this, 'vcode')}
               />
             </SpFormItem>
           </View>
@@ -133,7 +133,7 @@ function SelectComponent(props) {
       <AtButton
         circle
         className='btns-staff'
-        disabled={!(form.email || form.code)}
+        disabled={!(form.email && form.vcode)}
         onClick={onFormSubmit}
       >
         验证

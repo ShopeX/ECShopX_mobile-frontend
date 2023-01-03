@@ -14,3 +14,15 @@ export function purchaseBind(params = {}) {
 export function purchaseCode(params = {}) {
   return req.get('/promotion/employeepurchase/sharecode', params)
 }
+
+export function getEnterprisesList(params) {
+  return req.get('/enterprises', params)
+}
+
+export function getEmailCode(params) {
+  return req.get('/employee/email/vcode', params)
+}
+
+export function setEmployeeAuth(params) {
+  return req.post('/employee/auth', params)
+}

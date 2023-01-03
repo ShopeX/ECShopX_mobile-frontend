@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -13,6 +13,8 @@ import CompBottomTip from './comps/comp-bottomTip'
 function SelectComponent(props) {
   const [phone, setPhone] = useState('18878787778')
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const $instance = getCurrentInstance()
+  const { isHasShop } = $instance.router.params
 
   const handleValidate = async () => {
     Taro.showModal({
@@ -40,19 +42,25 @@ function SelectComponent(props) {
     <View className='select-component'>
       <View className='select-component-title'>商派软件有限公司</View>
       <View className='select-component-prompt'>使用手机号进行验证</View>
-      <View className='phone-box'>
-        <Text>已授权手机号：</Text>
-        <Text className='phone-number'>{phone}</Text>
-      </View>
-      <AtButton circle className='btns-phone' onClick={handleValidate}>
-        使用该号码验证
-      </AtButton>
-      <AtButton circle className='btns-other' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone} >
-        其他手机号码验证
-      </AtButton>
-      <AtButton circle className='btns-phone' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone} customStyle={{ marginTop: '50%' }}>
-        微信授权登录
-      </AtButton>
+      {Boolean(parseInt(isHasShop)) &&
+        <>
+          <View className='phone-box'>
+            <Text>已授权手机号：</Text>
+            <Text className='phone-number'>{phone}</Text>
+          </View>
+          <AtButton circle className='btns-phone' onClick={handleValidate}>
+            使用该号码验证
+          </AtButton>
+          <AtButton circle className='btns-other' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone} >
+            其他手机号码验证
+          </AtButton>
+        </>
+      }
+      {!Boolean(parseInt(isHasShop)) &&
+        <AtButton circle className='btns-phone' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone} customStyle={{ marginTop: '50%' }}>
+          微信授权登录
+        </AtButton>
+      }
       <CompBottomTip />
     </View>
   )

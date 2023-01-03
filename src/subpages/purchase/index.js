@@ -13,11 +13,17 @@ export default class PurchaseIndex extends Component {
     this.state = {
       ...this.state,
       info: {
-        dependents_limit: 0,
-        surplus_share_limitnum: 0
+        invite_limit: 0,
+        invited_num: 0
       },
       code: ''
     }
+  }
+
+  componentDidMount() {
+    Taro.hideShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
   }
 
   componentDidShow() {
@@ -27,18 +33,18 @@ export default class PurchaseIndex extends Component {
   onShareAppMessage() {
     const { info } = this.state
     return new Promise(async function (resolve) {
-      const data = await api.purchase.purchaseCode()
-      log.debug(`/subpages/purchase/member?code=${data.code}`)
+      const data = await api.purchase.getEmployeeInvitedata()
+      log.debug(`/subpages/purchase/member?code=${data.invite_code}`)
       resolve({
         title: info.purchase_name,
         imageUrl: info.ad_pic,
-        path: `/subpages/purchase/member?code=${data.code}`
+        path: `/subpages/purchase/member?code=${data.invite_code}`
       })
     })
   }
 
   async fetch() {
-    const data = await api.purchase.purchaseInfo()
+    const data = await api.purchase.getEmployeeInvitedata()
     this.setState({
       info: data
     })
@@ -46,7 +52,7 @@ export default class PurchaseIndex extends Component {
 
   showInfo() {
     const { info } = this.state
-    info.surplus_share_limitnum == '0' &&
+    info.invited_num == '0' &&
       Taro.showToast({
         title: '分享次数为0',
         icon: 'none'
@@ -85,7 +91,10 @@ export default class PurchaseIndex extends Component {
                     open-type='share'
                     size='mini'
                     className='shareBtn'
-                    disabled={info.surplus_share_limitnum == '0'}
+                    disabled={
+                      info.invited_num == '0' ||
+                      info.dependents_begin_time > dayjs().unix()
+                    }
                   >
                     <Text onClick={this.showInfo.bind(this)}>分享</Text>
                   </Button>
@@ -95,7 +104,7 @@ export default class PurchaseIndex extends Component {
           </View>
           <View className="share-info">
             <View className="title">分享额度</View>
-            <View className='limitnum'>{`共计：${info.dependents_limit}；已使用：${info.dependents_limit - info.surplus_share_limitnum}；可分享：${info.surplus_share_limitnum}`}</View>
+            <View className='limitnum'>{`共计：${info.invite_limit}；已使用：${info.invite_limit - info.invited_num}；可分享：${info.invited_num}`}</View>
           </View>
           {/* <View className='header-bd'>
             <View className='bd-item'>
@@ -125,9 +134,9 @@ export default class PurchaseIndex extends Component {
               <Text className='line-title'>全部家属</Text>
               <Text className='line'></Text>
             </View>
-            {info.dependents_list && info.dependents_list.length > 0 && (
+            {info.relative_list && info.relative_list.length > 0 && (
               <View className='list-wrap'>
-                {info.dependents_list.map((item) => {
+                {info.relative_list.map((item) => {
                   return (
                     <View className='list-item' key={item.id}>
                       <SpImage
@@ -154,7 +163,7 @@ export default class PurchaseIndex extends Component {
                 })}
               </View>
             )}
-            {info.dependents_list.length === 0 && <View className='centerText'>暂无数据</View>}
+            {info.relative_list.length === 0 && <View className='centerText'>暂无数据</View>}
           </View>
         )}
       </SpPage>

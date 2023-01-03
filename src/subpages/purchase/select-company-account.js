@@ -48,8 +48,9 @@ function SelectComponent(props) {
       showToast('登录成功')
 
       // 无商场逻辑（需要调整一个页面去授权手机号）
+      Taro.navigateTo({ url: `/subpages/purchase/select-company-phone` }) // 有商场员工手机号登录
       // Taro.navigateTo({ url: `/subpages/purchase/select-role?isLogin=true&isRole=false` })
-      Taro.navigateTo({ url: `/subpages/purchase/select-role?isLogin=false&isRole=false` })
+      // Taro.navigateTo({ url: `/subpages/purchase/select-role?isLogin=false&isRole=false` })
     })
   }
 

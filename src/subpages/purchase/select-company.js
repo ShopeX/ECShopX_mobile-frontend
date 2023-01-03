@@ -9,11 +9,7 @@ import './select-company.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 
 const initialState = {
-  enterpriseList: [
-    { login_type: 'account', enterprise_name: '上海商派-账号', enterprise_sn: '001' },
-    { login_type: 'email', enterprise_name: '北京商派-邮箱', enterprise_sn: '002' },
-    { login_type: 'phone', enterprise_name: '商派-手机号', enterprise_sn: '003' },
-  ],
+  enterpriseList: [],
   enterpriseName: '',
   enterpriseInfo: {}
 }
@@ -24,49 +20,45 @@ function SelectComponent(props) {
 
   useEffect(() => {
     //请求获取企业信息
-    // getEnterpriseList()
+    getEnterpriseList()
   }, [])
 
   const getEnterpriseList = async () => {
-    const data = await api.purchase.getEnterpriseList()
+    const data = await api.purchase.getEnterprisesList({ page: 1, pageSize: 20 })
     setState((draft) => {
       draft.enterpriseList = data.list
     })
   }
 
   const onPickerChange = (e) => {
-    const { enterprise_name, enterprise_sn, login_type } = enterpriseList[e.detail.value] || {}
-    console.log(e, enterprise_name, enterprise_sn, login_type)
+    const { name } = enterpriseList[e.detail.value] || {}
     setState((draft) => {
-      draft.enterpriseName = enterprise_name
-      draft.enterpriseInfo = {
-        enterprise_name,
-        enterprise_sn,
-        login_type,
-      }
+      draft.enterpriseName = name
+      draft.enterpriseInfo = enterpriseList[e.detail.value]
     })
   }
 
   const onValidateChange = () => {
     if (!enterpriseName) return
-    const { login_type, enterprise_name, enterprise_sn } = enterpriseInfo
+    const { auth_type, name, enterprise_sn, id } = enterpriseInfo
+    console.log(enterpriseInfo)
     let redirectUrl = ''
-    if (login_type == 'account') {
+    if (auth_type == 'account') {
       redirectUrl = `/subpages/purchase/select-company-account`
-    } else if (login_type == 'email') {
+    } else if (auth_type == 'email') {
       redirectUrl = `/subpages/purchase/select-company-email`
-    } else if (login_type == 'phone') {
-      redirectUrl = `/subpages/purchase/select-company-phone`
+    } else if (auth_type == 'phone') {
+      redirectUrl = `/subpages/purchase/select-company-phone?isHasShop=true`
     }
     Taro.navigateTo({
-      url: `${redirectUrl}?enterprise_sn=${enterprise_sn}&enterprise_name=${enterprise_name}`
+      url: `${redirectUrl}?enterprise_sn=${enterprise_sn}&enterprise_name=${name}&enterprise_id=${id}`
     })
   }
 
   return (
     <View className='select-component'>
       <View className='select-component-title'>选择企业</View>
-      <Picker range={enterpriseList} rangeKey='enterprise_name' onChange={onPickerChange} className='pick-company'>
+      <Picker range={enterpriseList} rangeKey='name' onChange={onPickerChange} className='pick-company'>
         <View className='select-component-enterprise_sn'>{enterpriseName || '选择企业后继续登录'}</View>
         <Text className='iconfont icon-zhankai select'></Text>
       </Picker>
