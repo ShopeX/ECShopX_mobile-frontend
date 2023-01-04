@@ -81,7 +81,7 @@ export default class GoodsItem extends Component {
             )}
             <View className='cart-item__cont-hd'>
               <View className='cart-item__title' onClick={this.props.onClickImgAndTitle}>
-                {info.is_plus_buy && <Text className='cart-item__tag'> 换购 </Text>}
+                {info.is_plus_buy && <Text className='cart-item__tag'> 加价购 </Text>}
                 {info.title}
               </View>
               {info.desc && <Text className='cart-item__desc'>{info.desc}</Text>}

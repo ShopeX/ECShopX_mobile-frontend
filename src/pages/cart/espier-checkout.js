@@ -119,8 +119,8 @@ function CartCheckout(props) {
     scene, // 情景值
     goodType,
     ticket = null
-  } = $instance.router?.params || {}
-  console.log('$instance.router?.params:', $instance)
+  } = $instance?.router?.params || {}
+  console.log('$instance.router?.params:', $instance.router)
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()
@@ -847,6 +847,7 @@ function CartCheckout(props) {
   }
 
   console.log(couponInfo, 'couponInfo', coupon)
+  console.log('invoiceTitle',invoiceTitle)
   console.log('payChannel',payChannel)
   const couponText = couponInfo ? couponInfo.title : ''
   // couponInfo.type === 'member'
@@ -930,7 +931,6 @@ function CartCheckout(props) {
           value={couponText || '请选择'}
         />
       )}
-
       {isWeixin && !bargain_id && totalInfo.invoice_status && (
         <SpCell
           isLink

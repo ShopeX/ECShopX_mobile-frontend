@@ -30,7 +30,7 @@ function CompGoodsItem(props) {
           <View className='item-hd'>
             <View className='goods-title'>
               {/* {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>} */}
-              {info.is_plus_buy && <Text className='goods-title__tag'>换购</Text>}
+              {info.is_plus_buy && <Text className='goods-title__tag'>加价购</Text>}
               {info.item_name}
             </View>
             {isShowDeleteIcon && (

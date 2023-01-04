@@ -5,15 +5,16 @@
     left: 0;
     right: 0;
     z-index: 2;
+    background: transparent;
   }
   .sp-search {
     width: 100%;
     padding: 0 15px;
   }
   .header-block {
-    padding-top: 200px;
-    background: #4b78e2;
-    box-shadow: inset 0px -242px 700px 0px rgba(255, 255, 255, 0.4);
+    padding-top: 150px;
+    // background: transparent;
+    // box-shadow: inset 0px -242px 700px 0px rgba(255, 255, 255, 0.4);
   }
   .icon-huiyuanzhongxin {
     font-size: 38px;
