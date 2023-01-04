@@ -33,9 +33,7 @@ export default {
         'espier-checkout',
         'index', // 家属分享
         'select-role',
-        'select-role2',
         'select-company',
-        'select-company-no',
         'select-company-account',
         'select-company-email',
         'select-company-phone',
