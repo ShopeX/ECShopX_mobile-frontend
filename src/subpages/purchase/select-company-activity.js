@@ -44,10 +44,21 @@ function SelectComponent(props) {
     scrollRef.current.reset()
   }
 
+  const renderFooter = () => {
+    return (
+      <View className='select-component-footer' onClick={handleToggleRole}>
+        切换身份
+      </View>
+    )
+  }
+
   return (
-    <SpPage className='select-component' renderFooter={<CompTabbar />}>
+    <SpPage
+      className='select-component'
+      renderFooter={renderFooter()}
+    >
       <View className='user-box'>
-        <View className='user-flex'>
+        {/* <View className='user-flex'>
           <Image
             className='user-avatar'
             src={userInfo?.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
@@ -62,7 +73,7 @@ function SelectComponent(props) {
           <View className='user-more' onClick={handleToggleRole}>
             <Text className='iconfont icon-qianwang-01 more'></Text>
           </View>
-        </View>
+        </View> */}
         <View className='user-serach'>
           <SpSearchInput
             placeholder='活动名称'
