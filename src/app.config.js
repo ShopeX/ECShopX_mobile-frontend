@@ -167,6 +167,7 @@ const config = {
       root: 'subpages/mdugc',
       pages: [
         "pages/index/index",
+        "pages/index/index2",
           "pages/list/index",
           "pages/make/index",
           "pages/member/index",
