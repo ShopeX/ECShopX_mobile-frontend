@@ -58,8 +58,6 @@ function SelectComponent(props) {
           Taro.navigateTo({ url: `/subpages/purchase/select-company-activity` })
         }, 2000)
       }
-      // Taro.navigateTo({ url: `/subpages/purchase/select-role?isLogin=true&isRole=false` })
-      // Taro.navigateTo({ url: `/subpages/purchase/select-role?isLogin=false&isRole=false` })
     })
   }
 

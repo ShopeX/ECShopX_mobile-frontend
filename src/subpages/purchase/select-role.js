@@ -3,58 +3,44 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
+import { useSelector } from 'react-redux'
 import api from '@/api'
 import { showToast, VERSION_IN_PURCHASE } from '@/utils'
 import { SpFloatPrivacyShort } from '@/components'
 import { useLogin } from '@/hooks'
 import './select-role.scss'
 import CompBottomTip from './comps/comp-bottomTip'
-
-const initialState = {
-  isRole: true,
-  isLogin: false,
-  policyModal: false,
-  userInfo: {
-    avatar: '',
-    phone: 17777778987
-  }
-}
-
 function SelectRole(props) {
-
-  const [state, setState] = useImmer(initialState)
-
-  const { isLogin, isRole, policyModal, userInfo } = state
+  const { isLogin, checkPolicyChange } = useLogin({
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
+    }
+  })
+  const { userInfo = {} } = useSelector((state) => state.user)
+  const [policyModal, setPolicyModal] = useState(false)
+  const [reject, setReject] = useState(false)
   const $instance = getCurrentInstance()
-  const { isLogin: isRouterLogin = false, isRole: isRouterRole = true, code: invite_code } = $instance.router.params || {}
+  const { code: invite_code } = $instance.router.params || {}
 
   useEffect(() => {
-    setState(draft => {
-      draft.isLogin = JSON.parse(isRouterLogin)
-      draft.isRole = JSON.parse(isRouterRole)
-    })
+    checkPrivacy()
   }, [])
 
+  const checkPrivacy = async () => {
+    const checkRes = await checkPolicyChange()
+    if (!checkRes) {
+      setPolicyModal(true)
+      return
+    }
+  }
+
   const handleCloseModal = useCallback(() => {
-    setState(draft => {
-      draft.policyModal = false
-    })
+    setReject(true)
   }, [])
 
   // 同意隐私协议
   const handleConfirmModal = useCallback(async () => {
-    setState(draft => {
-      draft.policyModal = false
-    })
-    // if (isNewUser) {
-    //   return setLoginModal(true)
-    // } else {
-    //   try {
-    //     await login()
-    //   } catch (e) {
-    //     setLoginModal(true)
-    //   }
-    // }
+    setPolicyModal(false)
   }, [])
 
   const handleConfirmClick = async(type)=>{
@@ -108,12 +94,17 @@ function SelectRole(props) {
   return (
     <View className='select-role'>
       {/* 隐私协议 */}
-      <SpFloatPrivacyShort isOpened={policyModal} onClose={handleCloseModal} />
+      <SpFloatPrivacyShort
+        open={policyModal}
+        reject={reject}
+        onCancel={handleCloseModal}
+        onConfirm={handleConfirmModal}
+      />
 
       <View className='header'>
         <Image
           className='header-avatar'
-          src={userInfo.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
+          src={userInfo?.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
           mode='aspectFill'
         />
         <Text className='welcome'>欢迎登录</Text>
@@ -135,7 +126,7 @@ function SelectRole(props) {
         {invite_code && isLogin && VERSION_IN_PURCHASE && // 无商城，已登录亲友验证、绑定
           <>
             <View className='btns-account'>
-              已授权账号：<Text className='account'>{userInfo.phone}</Text>
+              已授权账号：<Text className='account'>{userInfo?.mobile}</Text>
             </View>
             <AtButton onClick={validatePhone} circle className='btns-staff button login'>
               确认登录

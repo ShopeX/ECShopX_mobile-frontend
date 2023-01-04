@@ -1,170 +1,133 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
-import { connect } from 'react-redux'
-import { AtButton, AtFloatLayout } from 'taro-ui'
-import S from '@/spx'
+import React, { useState, useEffect } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Image, Button, Text } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { useImmer } from 'use-immer'
+import { SpImage } from '@/components'
 import api from '@/api'
-import { isWeixin, isWeb, isAlipay, classNames, showToast, navigateTo } from '@/utils'
-// import { Tracker } from '@/service'
+import { classNames, styleNames, navigateTo } from '@/utils'
+import { useLogin } from '@/hooks'
+
 import './index.scss'
 
-@connect(
-  () => ({}),
-  (dispatch) => ({
-    setMemberInfo: (memberInfo) => dispatch({ type: 'member/init', payload: memberInfo })
-  })
-)
-export default class SpFloatPrivacyShort extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+const initState = {
+  logo: '',
+  member_register: '',
+  privacy: '',
+}
 
-  static defaultProps = {
-    isOpened: false,
-    wxUserInfo: true,
-    callback: () => {},
-    onClose: () => {},
-    onConfirm: () => {},
-    onChange: () => {}
-  }
-
-  constructor (props) {
-    super(props)
-    this.state = {
-      info: null
+function SpPrivacyModal(props) {
+  const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
+  const { open = false, reject, onCancel = () => {}, onConfirm = () => {} } = props
+  const [info, setInfo] = useImmer(initState)
+  useEffect(() => {
+    if (open) {
+      fetchPrivacyData()
     }
-  }
+  }, [open])
 
-  componentDidMount () {
-    this.fetch()
-  }
+  const fetchPrivacyData = async () => {
+    const { logo, protocol } = await api.shop.getStoreBaseInfo()
+    const { member_register, privacy } = protocol
 
-  async fetch () {
-    const data = await api.shop.getStoreBaseInfo()
-    this.setState({
-      info: data
+    setInfo((v) => {
+      v.logo = logo
+      v.member_register = member_register
+      v.privacy = privacy
     })
   }
 
-  navigateTo = navigateTo
-
-  handleCancel () {
-    this.props.onClose()
-  }
-
-  handleValidate = (fn) => {
-    this.handleCancel()
-    if (this.props.wxUserInfo) {
-      fn && fn()
-    } else {
-      this.props.onChange()
-    }
-    Taro.setStorageSync('Privacy_agress', '1')
-  }
-
-  handleConfirm () {
-    this.handleValidate(() => {
-      S.OAuthWxUserProfile(() => {
-        this.props.onChange()
-      }, true)
+  const handleClickPrivacy = (type) => {
+    Taro.navigateTo({
+      url: `/subpages/auth/reg-rule?type=${type}`
     })
   }
 
-  handleConfirmAlipay = (e) => {
-    this.handleValidate(() => {
-      if (!S.getAuthToken()) {
-        showToast('请先登录')
-        return
-      }
-      my.getOpenUserInfo({
-        fail: (res) => {},
-        success: async (res) => {
-          let userInfo = JSON.parse(res.response).response
-          await api.member.updateMemberInfo({
-            username: userInfo.nickName,
-            avatar: userInfo.avatar
-          })
-          await S.getMemberInfo()
-          this.props.onChange()
-        }
-      })
-    })
+  const handleConfirm = () => {
+    updatePolicyTime()
+    onConfirm()
   }
 
-  render () {
-    const { isOpened } = this.props
-    const { info } = this.state
-    console.log('====',info)
-    if (!info) {
-      return null
-    }
-    return (
-      <View
+  const handleCancel = () => {
+    onCancel()
+  }
+
+  return (
+    <View
         className={classNames(
           'sp-float-privacy',
-          {
-            'sp-float-privacy__active': isOpened
-          },
-          this.props.className
+          { 'sp-float-privacy__active': open }
         )}
       >
         <View className='sp-float-privacy__overlay'></View>
         <View className='sp-float-privacy__wrap'>
           <View className='privacy-hd'>个人隐私保护指引</View>
-
-          {(isWeixin || isWeb) && (
+          {!reject &&
             <View className='privacy-bd'>
               为了更好的保障你的个人信息安全及权利行使，并允许我们在必要场景下，合理使用你的个人信息，并充分保障你的合法权，请仔细阅读并理解
               <Text
                 className='privacy-txt'
-                onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=member_register')}
+                onClick={handleClickPrivacy.bind(this, 'member_register')}
               >
-                《{info.protocol.privacy}》
+                《{info?.member_register}》
               </Text>
               和
               <Text
                 className='privacy-txt'
-                onClick={this.navigateTo.bind(this, '/subpages/auth/reg-rule?type=privacy')}
+                onClick={handleClickPrivacy.bind(this, 'privacy')}
               >
-                {/* 《{info.protocol.privacy}》 */}
-                《用户协议》
+              《{info.privacy}》
               </Text>
               的内容。
             </View>
-          )}
-
-          {/* {isAlipay && (
+          }
+          {reject &&
             <View className='privacy-bd'>
-              您可以在“设置”中查看、变更、删除个人授权信息。
-              如您同意，请点击“同意”开始接受我们的服务。
+              你拒绝了{info?.member_register}和{info.privacy}，我们将无法为您提供相应的服务。请同意
+              <Text
+                className='privacy-txt'
+                onClick={handleClickPrivacy.bind(this, 'member_register')}
+              >
+                《{info?.member_register}》
+              </Text>
+              和
+              <Text
+                className='privacy-txt'
+                onClick={handleClickPrivacy.bind(this, 'privacy')}
+              >
+              《{info.privacy}》
+              </Text>
+              以便我们为你提供更优质的服务！如果你拒绝可自行退出。
             </View>
-          )} */}
-
-          <View className='privacy-ft'>
-            <View className='btn-wrap'>
-              <AtButton onClick={this.handleCancel.bind(this)} className='close'>取消</AtButton>
-            </View>
-            <View className='btn-wrap'>
-              {isWeixin && (
-                <AtButton className='allow'  onClick={this.handleConfirm.bind(this)}>
+          }
+          {!reject &&
+            <View className='privacy-ft'>
+              <View className='btn-wrap'>
+                <AtButton onClick={handleCancel} className='close'>拒绝</AtButton>
+              </View>
+              <View className='btn-wrap'>
+                <AtButton className='allow' onClick={handleConfirm}>
                   允许
                 </AtButton>
-              )}
-              {isAlipay && (
-                <Button
-                  className='ali-button'
-                  openType='getAuthorize'
-                  scope='userInfo'
-                  onGetAuthorize={this.handleConfirmAlipay}
-                >
-                  允许
-                </Button>
-              )}
+              </View>
             </View>
-          </View>
+          }
+          {reject &&
+            <View className='privacy-ft'>
+              <View className='btn-wrap'>
+                <AtButton className='allow'  onClick={handleConfirm}>
+                  同意并继续
+                </AtButton>
+              </View>
+            </View>
+          }
         </View>
       </View>
-    )
-  }
+  )
 }
+
+SpPrivacyModal.options = {
+  addGlobalClass: true
+}
+
+export default SpPrivacyModal
