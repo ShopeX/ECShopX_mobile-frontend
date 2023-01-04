@@ -8,7 +8,9 @@ class RouteIntercept {
       'in_purchase': {
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout',
-        '/subpages/member/index': '/subpages/purchase/member'
+        '/subpages/member/index': '/subpages/purchase/member',
+        '/pages/category/index': '/subpages/purchase/category',
+        '/pages/cart/espier-index': '/subpages/purchase/espier-index',
       },
       // 'standard': {
       //   '/pages/item/espier-detail': '/subpages/pointshop/espier-detail',
