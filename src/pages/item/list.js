@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs } from 'taro-ui'
 import {
@@ -14,6 +14,7 @@ import {
   SpDrawer,
   SpSelect
 } from '@/components'
+import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
 import api from '@/api'
 import {
@@ -25,6 +26,7 @@ import {
   entryLaunch,
   VERSION_STANDARD
 } from '@/utils'
+import S from '@/spx'
 
 import './list.scss'
 
@@ -69,9 +71,15 @@ function ItemList() {
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
+  const dispatch = useDispatch()
 
   const goodsRef = useRef()
   // console.log('$instance.router.params', $instance.router?.params)
+  useEffect(() => {
+    if (S.getAuthToken()) {
+      dispatch(fetchUserFavs())
+    }
+  }, [])
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数

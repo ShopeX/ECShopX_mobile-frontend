@@ -214,7 +214,9 @@ function EspierDetail(props) {
       draft.type = type
       draft.dtid = dtid
     })
-    await dispatch(fetchUserFavs())
+    if (S.getAuthToken()) {
+      await dispatch(fetchUserFavs())
+    }
   }
 
   const fetch = async () => {

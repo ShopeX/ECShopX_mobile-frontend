@@ -40,10 +40,6 @@ function SpGoodsItem(props) {
     mode = 'widthFix'
   } = props
 
-  useEffect(() => {
-   dispatch(fetchUserFavs())
-  }, [])
-
   const handleFavClick = async (e) => {
     e.stopPropagation()
     if (!S.getAuthToken()) {
