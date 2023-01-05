@@ -6,7 +6,7 @@ import Taro, {
   useDidShow
 } from '@tarojs/taro'
 import { pickBy } from '@/utils'
-import { View, Image } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpToast, Loading, SpNote, SearchBar } from '@/components'
 import api from '@/api'
@@ -24,7 +24,10 @@ const initialState = {
   istag: 1, //时间、热度
   val: '', //搜索框
   tagsList: [],
-  refresherTriggered: false
+  refresherTriggered: false,
+  page:{
+    page_no: 1, page_size: 10
+  }
 }
 
 function MdugcIndex() {
@@ -43,6 +46,7 @@ function MdugcIndex() {
 
   useEffect(() => {
     gettopicslist()
+    fetch(state.page)
     // nextPage()
   }, [])
 
@@ -123,7 +127,64 @@ function MdugcIndex() {
     )
   }
 
-  const { val, tagsList, curTagId, istag } = state
+  // 列表
+  const fetch = async (params) => {
+    Taro.showLoading({
+      title: '正在加载...'
+    })
+    let { curTagId, istag, val } = state
+    const { page_no: page = 1, page_size: pageSize = 10 } = params
+    params = {
+      page,
+      pageSize,
+      topics: [...curTagId],
+      sort: istag == 1 ? 'likes desc' : 'created desc',
+      content: val
+    }
+    const { list, total_count: total } = await api.mdugc.postlist(params)
+    console.log('list, total', list, total)
+    let nList = []
+    if (list) {
+      nList = pickBy(list, {
+        image_url: 'cover',
+        head_portrait: 'userInfo.headimgurl',
+        item_id: 'post_id',
+        title: 'title',
+        author: 'userInfo.nickname',
+        user_id: 'userInfo.user_id',
+        likes: 'likes',
+        isheart: 'like_status',
+        badges: 'badges'
+      })
+    }
+
+    console.log('这是nlist', nList)
+
+    let odd = [],
+      even = []
+    nList.map((item, idx) => {
+      if (idx % 2 == 0) {
+        odd.push(item)
+      } else {
+        even.push(item)
+      }
+    })
+    setState(
+      (draft) => {
+        ;(draft.list = [...this.state.list, ...nList]),
+          (draft.oddList = [...this.state.oddList, ...odd]),
+          (draft.evenList = [...this.state.evenList, ...even]),
+          (draft.refresherTriggered = false)
+      },
+      () => {
+        Taro.hideLoading()
+      }
+    )
+
+    return { total }
+  }
+
+  const { val, tagsList, curTagId, istag, oddList, evenList } = state
   return (
     <View className='ugcindex'>
       <View className='ugcindex_search'>
@@ -166,126 +227,53 @@ function MdugcIndex() {
             最新
           </View>
         </View>
-      </View>
-      {/* <ScrollView
-      className='goods-list__scroll'
-      scrollY
-      scrollTop={scrollTop}
-      scrollWithAnimation
-      onScroll={this.handleScroll}
-      onScrollToLower={this.nextPage}
-    >
-      <View className='goods-list'>
-        {list.map((item, index) => {
-          const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
-          return (
-            <View className='shop-goods-item' key={item.goods_id}>
-              <View className='shop-goods'>
-                <View className='shop-goods__caption'>
-                  <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
-                  <View className='view-flex-item'>
-                    <View className='shop-goods__title'>{item.title}</View>
-                    <View className='shop-goods__desc'>{item.desc}</View>
-                    <View className='shop-goods__price'>
-                      <Text className='cur'>¥</Text> {item.price}
-                    </View>
+        <ScrollView
+          scrollY
+          className='ugcindex_list__scroll'
+          // scrollTop={scrollTop}
+          scrollWithAnimation
+          // onScroll={this.handleScroll}
+          // onScrollToLower={this.nextPage}
+          // refresherEnabled={true}
+          // refresherTriggered={refresherTriggered}
+          // onRefresherRefresh={this.onRefresherRefresh}
+          lowerThreshold={100}
+        >
+          <View className='ugcindex_list__scroll_scrolls'>
+            <View className='ugcindex_list__scroll_scrolls_left'>
+              {oddList.map((item) => {
+                return (
+                  <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                    <Scrollitem item={item} setlikes={this.updatelist} />
                   </View>
-                  <View className='shop-goods__task'>
-                    <View className='shop-goods__task-label'>任务模式</View>
-                    {item.rebate_type === 'total_num' && (
-                      <View className='shop-goods__task-type'>按售出总量</View>
-                    )}
-                    {item.rebate_type === 'total_money' && (
-                      <View className='shop-goods__task-type'>按总销售金额</View>
-                    )}
-                  </View>
-                </View>
-                {!item.view_detail ? (
-                  <View
-                    className='shop-goods__detail'
-                    onClick={this.handleViewDetail.bind(this, index, item.goods_id)}
-                  >
-                    <Text className='icon-search'></Text> 查看指标明细
-                  </View>
-                ) : (
-                  <View className='shop-goods__detail'>
-                    <View className='content-bottom-padded view-flex'>
-                      <View className='view-flex-item2'>规格</View>
-                      <View className='view-flex-item'>指标</View>
-                      <View className='view-flex-item'>奖金</View>
-                    </View>
-                    {item.details &&
-                      item.details.map((detail, dindex) => (
-                        <View class='shop-goods__detail-item' key={`detail4${dindex}`}>
-                          <View className='shop-goods__detail-skus view-flex-item2'>
-                            {detail.item_spec ? (
-                              detail.item_spec &&
-                              detail.item_spec.map((sku, sindex) => (
-                                <View className='sku-item' key={`sku${sindex}`}>
-                                  {sku.spec_image_url && (
-                                    <Image
-                                      className='sku-img'
-                                      src={sku.spec_image_url}
-                                      mode='aspectFill'
-                                    />
-                                  )}
-                                  {sku.spec_custom_value_name || sku.spec_value_name}
-                                </View>
-                              ))
-                            ) : (
-                              <Text>单规格</Text>
-                            )}
-                          </View>
-                          {detail.task && (
-                            <View className='view-flex-item2'>
-                              {detail.task.map((task, tindex) => (
-                                <View className='view-flex' key={`task${tindex}`}>
-                                  <View className='view-flex-item'>{task.filter}</View>
-                                  <View className='view-flex-item'>
-                                    {task.money && <Text>¥</Text>}
-                                    {task.money}
-                                  </View>
-                                </View>
-                              ))}
-                            </View>
-                          )}
-                        </View>
-                      ))}
-                  </View>
-                )}
-              </View>
-              <View className='shop-goods__footer'>
-                <View
-                  className={classNames(
-                    'shop-goods__footer-item',
-                    !isRelease ? 'unreleased' : null
-                  )}
-                  onClick={this.handleItemRelease.bind(this, item.item_id)}
-                >
-                  {isRelease ? (
-                    <Text className='icon-moveDown'> 从小店下架</Text>
-                  ) : (
-                    <Text className='icon-moveUp'> 上架到小店</Text>
-                  )}
-                </View>
-                <Button
-                  className='shop-goods__footer-item'
-                  dataInfo={item}
-                  openType='share'
-                  size='small'
-                >
-                  <Text className='icon-share2'> 分享给好友</Text>
-                </Button>
-              </View>
+                )
+              })}
             </View>
-          )
-        })}
+            <View className='ugcindex_list__scroll_scrolls_right'>
+              {evenList.map((item) => {
+                return (
+                  <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                    <Scrollitem item={item} setlikes={this.updatelist} />
+                  </View>
+                )
+              })}
+            </View>
+          </View>
+          {/* {
+                page.isLoading && <Loading key={page.isLoading}>正在加载...</Loading>
+              } */}
+
+          {/* {
+                !page.isLoading && !page.hasNext && list.length==page.total
+                && (<View className='ugcindex_list__scroll_end'>—— ——人家是有底线的—— ——</View>)
+              } */}
+          {/* {
+                !page.isLoading && !page.hasNext && !list.length
+                && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
+              } */}
+        </ScrollView>
       </View>
-      {page.isLoading ? <Loading>正在加载...</Loading> : null}
-      {!page.isLoading && !page.hasNext && !list.length && (
-        <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-      )}
-    </ScrollView> */}
+
       <SpToast />
     </View>
   )
