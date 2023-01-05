@@ -70,9 +70,10 @@ function WgtCoupon(props) {
     showToast('优惠券领取成功')
   }
 
-  const len = data.length + voucher_package.length
+  const len = data.length + ((voucher_package?.length) ?? 0)
 
   const renderCouponCell1 = () => {
+
     return (
       <View className='coupon-wrap coupon-1'>
         {data.map((item, index) => {
@@ -125,7 +126,7 @@ function WgtCoupon(props) {
             )
           }
         })}
-        {voucher_package.map((item, index) => {
+        {voucher_package?.map((item, index) => {
           if (item.imgUrl) {
             return (
               <SpImage
@@ -220,7 +221,7 @@ function WgtCoupon(props) {
             )
           }
         })}
-        {voucher_package.map((item, index) => {
+        {voucher_package?.map((item, index) => {
           if (item.imgUrl) {
             return (
               <SpImage

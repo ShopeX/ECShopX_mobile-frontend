@@ -14,7 +14,8 @@ function WgtGoodsGrid(props) {
     return null
   }
   const { base, data, config } = info
-  const goods = pickBy(data, doc.goods.WGT_GOODS_GRID) || []
+  const newData = Array.isArray(data)? data : []
+  const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
 
   const handleClickMore = () => {
     const { moreLink } = config
@@ -24,6 +25,7 @@ function WgtGoodsGrid(props) {
       this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
     }
   }
+  // debugger
 
   const leftFilterGoods = goods.filter((leftgoods, leftindex) => {
     if (leftindex % 2 == 0) {
@@ -57,7 +59,7 @@ function WgtGoodsGrid(props) {
         </View>
       )}
       <View className='wgt-body'>
-        {config.style == 'grid' && (
+        {  config.style == 'grid' && (
           <View className='container'>
             <View className='goods-item-wrap two-inrow left-container'>
               {leftFilterGoods.map((item, leftidx) => (
