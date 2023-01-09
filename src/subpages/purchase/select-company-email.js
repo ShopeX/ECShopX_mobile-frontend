@@ -31,6 +31,7 @@ function SelectComponent(props) {
   const [isErrorCode, setIsErrorCode] = useState(false)
   const formRef = useRef()
   const $instance = getCurrentInstance()
+  const { enterprise_id, enterprise_name } = $instance.router.params
 
   useEffect(() => {
     //请求获取企业信息
@@ -43,7 +44,6 @@ function SelectComponent(props) {
   }
 
   const onFormSubmit = async () => {
-    const { enterprise_id } = $instance.router.params
     // 有商场校验白名单，账号绑定并登录，无商场检验白名单通过手机号授权
     formRef.current.onSubmit(async () => {
       if (VERSION_IN_PURCHASE) {
@@ -90,7 +90,7 @@ function SelectComponent(props) {
 
   return (
     <View className='select-component'>
-      <View className='select-component-title'>商派软件有限公司</View>
+      <View className='select-component-title'>{enterprise_name}</View>
       <View className='select-component-prompt'>使用已注册邮箱进行验证</View>
       <View className='selecte-box'>
         <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>

@@ -33,7 +33,7 @@ const TABBAR_LIST = [
 
 function CompTabbar(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
-  const { tabbar } = useSelector((state) => state.purchase)
+  const { tabbar, purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { backgroundColor } = tabbar?.config || {}
 
@@ -72,12 +72,12 @@ function CompTabbar(props) {
   console.log('comp-tabbar currentIndex:', currentIndex)
 
   const handleTabbarClick = async (index) => {
-    const get_share_info  = Taro.getStorageSync('purchase_share_info') || {}
     const tabItem = tabList[index]
     console.log(tabItem, 'tabItem')
     const { path } = getCurrentRoute()
     if (path != tabItem.url) {
-      Taro.redirectTo({ url: `/${tabItem.url}?${paramsSplice(get_share_info)}` })
+      Taro.redirectTo({ url: `/${tabItem.url}` })
+      // Taro.redirectTo({ url: `/${tabItem.url}?${paramsSplice(purchase_share_info)}` })
     }
   }
 

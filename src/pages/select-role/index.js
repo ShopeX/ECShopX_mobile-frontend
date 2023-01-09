@@ -3,12 +3,13 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import api from '@/api'
 import { showToast, VERSION_IN_PURCHASE } from '@/utils'
 import { SpFloatPrivacyShort } from '@/components'
 import { useLogin } from '@/hooks'
 import CompBottomTip from '@/subpages/purchase/comps/comp-bottomTip'
+import { updateInviteCode } from '@/store/slices/purchase'
 
 import './index.scss'
 function SelectRole(props) {
@@ -18,14 +19,16 @@ function SelectRole(props) {
     }
   })
   const { userInfo = {} } = useSelector((state) => state.user)
+  const { appName, appLogo } = useSelector((state) => state.sys)
   const [policyModal, setPolicyModal] = useState(false)
   const [reject, setReject] = useState(false)
   const $instance = getCurrentInstance()
   const { code: invite_code } = $instance.router.params || {}
+  const dispatch = useDispatch()
 
   useEffect(() => {
     checkPrivacy()
-    Taro.setStorageSync('invite_code', invite_code)
+    dispatch(updateInviteCode(invite_code))
   }, [])
 
   const checkPrivacy = async () => {
@@ -110,11 +113,11 @@ function SelectRole(props) {
       <View className='header'>
         <Image
           className='header-avatar'
-          src={userInfo?.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
+          src={appLogo}
           mode='aspectFill'
         />
         <Text className='welcome'>欢迎登录</Text>
-        <Text className='title'>上海商派员工亲友购</Text>
+        <Text className='title'>{appName}</Text>
       </View>
       <View className='btns'>
         {!invite_code && (

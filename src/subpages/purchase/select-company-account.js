@@ -29,6 +29,7 @@ function SelectComponent(props) {
   const formRef = useRef()
   const { form, rules } = state
   const $instance = getCurrentInstance()
+  const { enterprise_id, enterprise_name } = $instance.router.params
 
   useEffect(() => {
     //请求获取企业信息
@@ -41,7 +42,6 @@ function SelectComponent(props) {
   }
 
   const onFormSubmit = async () => {
-    const { enterprise_id } = $instance.router.params
     formRef.current.onSubmit(async () => {
       const { account, auth_code } = form
       // 无商场逻辑（需要调整一个页面去授权手机号）
@@ -64,7 +64,7 @@ function SelectComponent(props) {
 
   return (
     <View className='select-component'>
-      <View className='select-component-title'>商派软件有限公司</View>
+      <View className='select-component-title'>{enterprise_name}</View>
       <View className='select-component-prompt'>使用已注册账号密码进行验证</View>
       <View className='selecte-box'>
         <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>
@@ -84,7 +84,7 @@ function SelectComponent(props) {
                 placeholder='请输入登录密码'
                 value={form.auth_code}
                 onChange={onInputChange.bind(this, 'auth_code')}
-                className={classNames('select-option', isError ? 'err' : '')}
+                className={classNames('select-option ', isError ? 'err' : '')}
                 name='auth_code'
                 clear
                 focus

@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '身份验证'
+  navigationBarTitleText: '内购活动'
 }

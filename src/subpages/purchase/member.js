@@ -116,6 +116,7 @@ function MemberIndex(props) {
   const [policyModal, setPolicyModal] = useState(false)
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
@@ -144,7 +145,7 @@ function MemberIndex(props) {
 
   const fetchPurchase = async () => {
     // 内购分享信息
-    const { activity_id, enterprise_id } = Taro.getStorageSync('purchase_share_info') || {}
+    const { activity_id, enterprise_id } = purchase_share_info
     const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
     setState((draft) => {
       draft.purchaseInfo = data

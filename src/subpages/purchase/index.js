@@ -6,7 +6,6 @@ import {
   SpPage,
   SpSearch,
   SpPrivacyModal,
-  SpTabbar,
 } from '@/components'
 import api from '@/api'
 import {
@@ -16,9 +15,7 @@ import {
   VERSION_PLATFORM,
   classNames
 } from '@/utils'
-import entryLaunch from '@/utils/entryLaunch'
-import { updateLocation } from '@/store/slices/user'
-import { updateShopInfo } from '@/store/slices/shop'
+import { updatePurchaseShareInfo } from '@/store/slices/purchase'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -40,7 +37,8 @@ const { store } = configStore()
 function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
-  const { initState, openRecommend, openLocation, openStore, appName } = useSelector((state) => state.sys)
+  const { initState, openLocation, openStore, appName } = useSelector((state) => state.sys)
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { isLogin, login, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       if (isUpdate) {
@@ -74,7 +72,7 @@ function Home() {
   useEffect(() => {
     const { activity_id, enterprise_id, pages_template_id } = $instance.router.params || {}
     if (activity_id) {
-      Taro.setStorageSync('purchase_share_info', { activity_id, enterprise_id, pages_template_id })
+      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
     }
   }, [])
 
@@ -83,15 +81,15 @@ function Home() {
   }
 
   const fetchWgts = async () => {
-    const { pages_template_id } = Taro.getStorageSync('purchase_share_info')
-    console.log(Taro.getStorageSync('purchase_share_info'), pages_template_id, '-----')
+    const { pages_template_id } = purchase_share_info
+    console.log(purchase_share_info, pages_template_id, '-----purchase_share_info----')
     const { config, tab_bar } = await api.shop.getShopTemplate({
       distributor_id: getDistributorId(),
       pages_template_id
     })
     const tabBar = JSON.parse(tab_bar)
     store.dispatch({
-      type: 'purchase/setPurchaseTabbar',
+      type: 'purchase/updatePurchaseTabbar',
       payload: {
         tabbar: tabBar
       }

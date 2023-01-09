@@ -14,11 +14,10 @@ const initialState = {
 }
 
 function SelectComponent(props) {
+  const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
   const $instance = getCurrentInstance()
   const { enterprise_id, enterprise_name } = $instance.router.params
-  const [state, setState] = useImmer(initialState)
 
   useDidShow(() => {
     getLoginCode()
@@ -73,8 +72,6 @@ function SelectComponent(props) {
     }
   }
 
-  console.log(VERSION_IN_PURCHASE)
-
   return (
     <View className='select-component'>
       <View className='select-component-title'>{enterprise_name}</View>
@@ -83,7 +80,7 @@ function SelectComponent(props) {
         <>
           <View className='phone-box'>
             <Text>已授权手机号：</Text>
-            <Text className='phone-number'>{userInfo.mobile}</Text>
+            <Text className='phone-number'>{userInfo?.mobile}</Text>
           </View>
           <AtButton circle className='btns-phone' onClick={() => validatePhone({
             enterprise_id,

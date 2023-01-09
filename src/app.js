@@ -127,6 +127,8 @@ class App extends Component {
 
     const priceSetting = await api.shop.getAppGoodsPriceSetting()
 
+    const appSettingInfo = await api.groupBy.getCompanySetting() // 获取小程序头像
+
     Taro.setStorageSync('distributor_param_status', distributor_param_status)
 
     try {
@@ -149,7 +151,8 @@ class App extends Component {
           echat,
           meiqia,
           openStore: !nostores_status, // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
-          priceSetting
+          priceSetting,
+          appLogo: appSettingInfo?.logo
         }
       })
       // 兼容老的主题方式

@@ -36,13 +36,14 @@ import {
   VERSION_STANDARD
 } from '@/utils'
 import { useLogin } from '@/hooks'
+import S from '@/spx'
+import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
-import S from '@/spx'
 
 const initialConfigState = {
   banner: {
@@ -383,8 +384,8 @@ function MemberIndex(props) {
       } else {
         Taro.navigateTo({ url: '/pages/select-role/index' })
       }
-      Taro.setStorageSync('purchase_share_info', {})
-      Taro.setStorageSync('invite_code', '')
+      dispatch(updatePurchaseShareInfo())
+      dispatch(updateInviteCode())
     }
 
     if (link) {

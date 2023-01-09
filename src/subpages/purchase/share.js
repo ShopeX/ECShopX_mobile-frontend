@@ -8,8 +8,9 @@ import { withPager } from '@/hocs'
 import { styleNames, formatDateTime, log } from '@/utils'
 import './share.scss'
 
-@connect(({ user }) => ({
-  userInfo: user.userInfo
+@connect(({ user, purchase }) => ({
+  userInfo: user.userInfo,
+  purchase_share_info: purchase.purchase_share_info
 }))
 @withPager
 export default class PurchaseIndex extends Component {
@@ -40,7 +41,7 @@ export default class PurchaseIndex extends Component {
 
   onShareAppMessage() {
     const { info } = this.state
-    const { enterprise_id, activity_id } = Taro.getStorageSync('purchase_share_info') || {}
+    const { enterprise_id, activity_id } = this.props.purchase_share_info || {}
     return new Promise(async function (resolve) {
       const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
       log.debug(`/pages/select-role/index?code=${data.invite_code}`)
@@ -53,7 +54,7 @@ export default class PurchaseIndex extends Component {
   }
 
   async getActivitydata() {
-    const { activity_id, enterprise_id } = Taro.getStorageSync('purchase_share_info') || {}
+    const { activity_id, enterprise_id } = this.props.purchase_share_info || {}
     const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
     this.setState({
       info: data
@@ -62,7 +63,7 @@ export default class PurchaseIndex extends Component {
 
   async fetch ({ pageIndex, pageSize }) {
     const { relative_list } = this.state
-    const { activity_id, enterprise_id } = Taro.getStorageSync('purchase_share_info') || {}
+    const { activity_id, enterprise_id } = this.props.purchase_share_info || {}
     const { list, total_count } = await api.purchase.getEmployeeInvitelist({ activity_id, enterprise_id, page: pageIndex, pageSize })
     this.setState({
       relative_list: [...relative_list, ...list]

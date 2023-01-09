@@ -12,14 +12,14 @@ page{
     .select-component-prompt{
       font-size: 28px;
       color: #AAAAAA;
-      margin: 16rpx 0 100rpx 0;
+      margin: 16px 0 100px 0;
     }
     .pick-company{
       position: relative;
       .select{
         position: absolute;
-        right: 40rpx ;
-        top: 28rpx;
+        right: 40px ;
+        top: 28px;
       }
     }
     .err{
@@ -28,7 +28,7 @@ page{
     .select-option{
       border-radius: 40px;
       border: 1px solid #D5D5DF;
-      padding:15rpx 30rpx;
+      padding:15px 30px;
       // .at-input__input{
       //   width: auto;
       //   flex: 0.5;
@@ -41,28 +41,28 @@ page{
       position: relative;
       .icon{
         position: absolute;
-        right: 40rpx;
-        top: 18rpx;
-        font-size: 36rpx;
+        right: 40px;
+        top: 18px;
+        font-size: 36px;
       }
     }
     .info{
-      font-size: 24rpx;
+      font-size: 24px;
       color: #AAAAAA;
       .icon{
-        margin: 0 5rpx 0 30rpx;
-        font-size: 24rpx;
+        margin: 0 5px 0 30px;
+        font-size: 24px;
       }
     }
     .err-info{
-      margin:15rpx 0 0 30rpx;
-      font-size: 24rpx;
+      margin:15px 0 0 30px;
+      font-size: 24px;
       color: #EC2E3D;
     }
     .success-info{
-      margin:15rpx 0 0 30rpx;
+      margin:15px 0 0 30px;
       width: 90%;
-      font-size: 32rpx;
+      font-size: 32px;
       font-weight: 500;
       color: #222222;
       display: flex;
@@ -82,7 +82,7 @@ page{
     }
     .form-item-message{
       color: red;
-      margin-left: 25rpx;
+      margin-left: 25px;
     }
 
   }
