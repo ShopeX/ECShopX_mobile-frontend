@@ -68,7 +68,7 @@ const MENUS = [
   {
     key: 'purchase',
     name: '内购',
-    icon: 'm_menu_tuangou.png',
+    icon: 'm_menu_jiatingfengxiang.png',
     link: '/pages/select-role/index'
   },
   {

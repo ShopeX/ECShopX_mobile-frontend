@@ -24,8 +24,8 @@ export function getEmployeeRelativeBind(params) { // 绑定成为亲友
   return req.post('/employee/relative/bind', params)
 }
 
-export function getUserEnterprises() { // 获取用户所在企业列表
-  return req.get('/user/enterprises')
+export function getUserEnterprises(params) { // 获取用户所在企业列表
+  return req.get('/user/enterprises', params)
 }
 
 export function getEmployeeIsOpen() { // 是否开启内购

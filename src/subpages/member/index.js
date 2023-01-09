@@ -377,6 +377,12 @@ function MemberIndex(props) {
     }
 
     if (key == 'purchase') {
+      const data = await api.purchase.getUserEnterprises({ disabled: 0 })
+      if (data?.length > 0) {
+        Taro.navigateTo({ url: '/subpages/purchase/select-company-activity' })
+      } else {
+        Taro.navigateTo({ url: '/pages/select-role/index' })
+      }
       Taro.setStorageSync('purchase_share_info', {})
       Taro.setStorageSync('invite_code', '')
     }
