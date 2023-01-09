@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import Taro, {
   getCurrentInstance,
   useShareAppMessage,
@@ -8,26 +8,88 @@ import Taro, {
 import { pickBy } from '@/utils'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpToast, Loading, SpNote, SearchBar } from '@/components'
+import { SpToast, Loading, SpNote, SearchBar, SpScrollView,SpTabbar,FloatMenus , FloatMenuItem } from '@/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import { TagsBarcheck, Scrollitem } from '../../components'
+import doc from '@/doc'
+import S from '@/spx'
 
 import './index2.scss'
 
 const initialState = {
-  list: [],
-  oddList: [],
-  evenList: [],
-  curTagId: [], //标签
-  istag: 1, //时间、热度
-  val: '', //搜索框
-  tagsList: [],
-  refresherTriggered: false,
-  page:{
-    page_no: 1, page_size: 10
-  }
+  file_video:{
+    url:'',
+    // urlimge_id:'',
+    cover:'',
+    // coverimge_id:'',
+    proportion:'',
+    video_idx:-1
+  },
+  file_img:[],
+  file_text:{
+    title:"",
+    attextarea:""
+  },
+  file_commodity:[],
+  file_word:[],
+  occupy:[
+    {
+      occupyi:0
+    },
+    {
+      occupyi:0
+    },
+    {
+      occupyi:0
+    },
+    {
+      occupyi:0
+    }
+  ],
+  curTagId:'',
+  isPopups:false,
+  videoenable:0,
+  elastic:{
+    title:'使用您的摄像头，将会上传你摄录的照片及视频',
+    closetext:'拒绝',
+    showtext:'允许',
+    type:0
+  },
+  isGrant:false, //是否授权
+  isOpened:false, //是否显示上传按钮
+  uploadtype:[],
+  upload_choice:[
+    {
+      text:'添加视频',
+      type:'video'
+    },
+    {
+      text:'添加图片',
+      type:'img'
+    }
+  ],
+  upload_img:[
+    {
+      text:'拍照',
+      type:'camera_i'
+    },
+    {
+      text:'从相册选择',
+      type:'album_i'
+    }
+  ],
+  upload_video:[
+    {
+      text:'拍摄',
+      type:'camera_v'
+    },
+    {
+      text:'从相册选择',
+      type:'album_v'
+    }
+  ]
 }
 
 function MdugcIndex() {
@@ -41,6 +103,7 @@ function MdugcIndex() {
   const { location } = useSelector((state) => state.user)
   const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
+  const listRef = useRef()
 
   const dispatch = useDispatch()
 
@@ -49,6 +112,19 @@ function MdugcIndex() {
     fetch(state.page)
     // nextPage()
   }, [])
+
+  useEffect(() => {
+    getUgcList()
+  }, [curTagId,istag])
+
+  const getUgcList = async () => {
+    await setState((draft) => {
+      draft.list = []
+      draft.oddList = []
+      draft.evenList = []
+    })
+    listRef.current.reset()
+  }
 
   // 搜索
   const shonChange = (val) => {
@@ -101,41 +177,33 @@ function MdugcIndex() {
       pageSize: 8
     }
     let { list } = await api.mdugc.topiclist(data)
-    let nList = pickBy(list, {
-      topic_id: 'topic_id',
-      topic_name: 'topic_name'
-    })
+    let nList = pickBy(list, doc.mdugc.MDUGC_TOPICLIST)
     setState((draft) => {
       draft.tagsList = nList
     })
   }
 
-  const onistag = (istag) => {
-    // this.resetPage()
-    console.log(istag)
-    setState((draft) => {
-      ;(draft.list = []), (draft.oddList = []), (draft.evenList = [])
-    })
-
-    setState(
+  const onistag = async(istag) => {
+    listRef.current.reset()
+    console.log(123,istag)
+    await setState(
       (draft) => {
         draft.istag = istag
-      },
-      () => {
-        // nextPage()
+        draft.list = []
+        draft.oddList = []
+        draft.evenList = []
       }
     )
   }
 
   // 列表
-  const fetch = async (params) => {
+  const fetch = async ({ pageIndex, pageSize }) => {
     Taro.showLoading({
       title: '正在加载...'
     })
     let { curTagId, istag, val } = state
-    const { page_no: page = 1, page_size: pageSize = 10 } = params
-    params = {
-      page,
+    const params = {
+      page:pageIndex,
       pageSize,
       topics: [...curTagId],
       sort: istag == 1 ? 'likes desc' : 'created desc',
@@ -145,17 +213,7 @@ function MdugcIndex() {
     console.log('list, total', list, total)
     let nList = []
     if (list) {
-      nList = pickBy(list, {
-        image_url: 'cover',
-        head_portrait: 'userInfo.headimgurl',
-        item_id: 'post_id',
-        title: 'title',
-        author: 'userInfo.nickname',
-        user_id: 'userInfo.user_id',
-        likes: 'likes',
-        isheart: 'like_status',
-        badges: 'badges'
-      })
+      nList = pickBy(list, doc.mdugc.MDUGC_NLIST)
     }
 
     console.log('这是nlist', nList)
@@ -171,9 +229,9 @@ function MdugcIndex() {
     })
     setState(
       (draft) => {
-        ;(draft.list = [...this.state.list, ...nList]),
-          (draft.oddList = [...this.state.oddList, ...odd]),
-          (draft.evenList = [...this.state.evenList, ...even]),
+        ;(draft.list = [...state.list, ...nList]),
+          (draft.oddList = [...state.oddList, ...odd]),
+          (draft.evenList = [...state.evenList, ...even]),
           (draft.refresherTriggered = false)
       },
       () => {
@@ -184,12 +242,27 @@ function MdugcIndex() {
     return { total }
   }
 
+    // 浮动按钮跳转
+    const topages=(url)=>{
+      const isAuth = S.getAuthToken()
+      if (!isAuth) {
+        Taro.showToast({
+          icon:'none',
+          title: '请先登录'
+        })
+        return
+      }
+      console.log("url",url)
+      Taro.navigateTo({ url })
+    }
+
+  console.log('---------',state.istag)
   const { val, tagsList, curTagId, istag, oddList, evenList } = state
   return (
     <View className='ugcindex'>
       <View className='ugcindex_search'>
         <SearchBar
-          showDailog={false}
+          // showDailog={false}
           keyword={val}
           placeholder='搜索'
           onFocus={() => false}
@@ -227,21 +300,10 @@ function MdugcIndex() {
             最新
           </View>
         </View>
-        <ScrollView
-          scrollY
-          className='ugcindex_list__scroll'
-          // scrollTop={scrollTop}
-          scrollWithAnimation
-          // onScroll={this.handleScroll}
-          // onScrollToLower={this.nextPage}
-          // refresherEnabled={true}
-          // refresherTriggered={refresherTriggered}
-          // onRefresherRefresh={this.onRefresherRefresh}
-          lowerThreshold={100}
-        >
+        <SpScrollView className='ugcindex_list__scroll' auto={false} ref={listRef} fetch={fetch}>
           <View className='ugcindex_list__scroll_scrolls'>
             <View className='ugcindex_list__scroll_scrolls_left'>
-              {oddList.map((item) => {
+              {oddList?.map((item) => {
                 return (
                   <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
                     <Scrollitem item={item} setlikes={this.updatelist} />
@@ -250,7 +312,7 @@ function MdugcIndex() {
               })}
             </View>
             <View className='ugcindex_list__scroll_scrolls_right'>
-              {evenList.map((item) => {
+              {evenList?.map((item) => {
                 return (
                   <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
                     <Scrollitem item={item} setlikes={this.updatelist} />
@@ -271,9 +333,24 @@ function MdugcIndex() {
                 !page.isLoading && !page.hasNext && !list.length
                 && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
               } */}
-        </ScrollView>
+        </SpScrollView>
       </View>
+      <View className={'ugcindex_floatmenus'}>
+          <FloatMenus>
+            <FloatMenuItem
+              iconPrefixClass='icon'
+              icon='tianjia1'
+              onClick={topages.bind(this,'/subpages/mdugc/pages/member/index')}
+            />
+            <FloatMenuItem
+              iconPrefixClass='icon'
+              icon='tianjia1'
+              onClick={topages.bind(this,'/subpages/mdugc/pages/make/index')}
 
+            />
+          </FloatMenus>
+        </View>
+      <SpTabbar />
       <SpToast />
     </View>
   )

@@ -12,6 +12,7 @@ import * as point from './point'
 import * as member from './member'
 import * as dianwu from './dianwu'
 import * as trade from './trade'
+import * as mdugc from './mdugc'
 
 export default {
   address,
@@ -27,5 +28,6 @@ export default {
   point,
   member,
   dianwu,
-  trade
+  trade,
+  mdugc
 }

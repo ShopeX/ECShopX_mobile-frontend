@@ -12,7 +12,7 @@ import api from "@/api";
 
 //import '../../font/iconfont.scss'
 import './index.scss'
-import { async } from 'regenerator-runtime';
+
 @connect(
   ({ member }) => ({
     memberData: member.member

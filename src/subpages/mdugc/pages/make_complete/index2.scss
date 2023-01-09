@@ -1,0 +1,77 @@
+.ugcindex{
+  width: 100%;
+  padding: 0 30px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #ffffff;
+  &_search{
+    .search-inputugc__bar {
+      padding-left: 0;
+    }
+  }
+  &_list{
+    &__scroll{
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      padding: 0 30px;
+      margin: 0 auto;
+      bottom: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+      &_scrolls{
+        width: 100%;
+        display: flex;
+        display: flex;
+        justify-content: space-between;
+        &_item{
+          width: 48.7%;
+          margin-top: 30px;
+          .goods-item{
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            &__cont{
+              background: #f2f2f2;
+              padding: 40px;
+            }
+            &__desc{
+              display: none;
+            }
+            &__extra{
+
+            }
+            &__title{
+              text-align: center;
+              font-size: 26px;
+            }
+            &__price-market{
+              display: none;
+            }
+            &__price{
+              padding-right: 0;
+              color: #000000;
+              .package-price{
+                text-align: center;
+                font-size: 26px;
+              }
+            }
+            &__actions{
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .float-menus{
+    right: 33px;
+  }
+  &_floatmenus{
+    .float-menus{
+      bottom: 220px;
+    }
+  }
+}
