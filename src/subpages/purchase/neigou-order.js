@@ -10,7 +10,6 @@ import './neigou-order.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 import { SpPage, SpTabbar } from '@/components'
 import CompTabbar from './comps/comp-tabbar'
-import actEnd from '@/assets/imgs/act_end.jpg'
 
 const tabbarState = [{ title: '全部' }, { title: '待支付' }, { title: '待收货' }]
 

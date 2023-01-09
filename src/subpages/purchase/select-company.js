@@ -4,7 +4,6 @@ import { useImmer } from 'use-immer'
 import { View, Text, Picker } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import arrow from '@/assets/imgs/arrow.png'
 import './select-company.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 

@@ -10,7 +10,6 @@ import './select-identity.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 import { SpPage, SpTabbar } from '@/components'
 import CompTabbar from './comps/comp-tabbar'
-import actEnd from '@/assets/imgs/act_end.jpg'
 
 const initialState = {
   identity: [],
