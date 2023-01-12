@@ -32,9 +32,8 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
-  const { colorPrimary } = useSelector((state) => state.sys)
   const { tabbar, purchase_share_info = {} } = useSelector((state) => state.purchase)
-  const { cartCount = 0 } = useSelector((state) => state.cart)
+  const { cartCount = 0 } = useSelector((state) => state.purchase)
   const { backgroundColor } = tabbar?.config || {}
 
   const tabList = tabbar?.data.map((item) => {
@@ -48,7 +47,7 @@ function CompTabbar(props) {
       selectedImage: item.selectedIconPath,
       url: PURCHASE_TABBAR_PATH[item.name],
       urlRedirect: true,
-      text: item.text === '购物车' && cartCount > 0 ? cartCount : null,
+      text: item.text.indexOf('购物车') > -1 && cartCount > 0 ? cartCount : null,
       max: item.max
     }
   })

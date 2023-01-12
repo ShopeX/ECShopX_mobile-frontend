@@ -83,7 +83,6 @@ const initialConfigState = {
     defaultImg: false,
     vipImg: false
   },
-  whitelist_status: false
 }
 
 const initialState = {
@@ -131,7 +130,6 @@ function MemberIndex(props) {
 
   useEffect(() => {
     getMemberCenterConfig()
-    getSettings()
   }, [])
 
   useDidShow(() => {
@@ -152,16 +150,6 @@ function MemberIndex(props) {
     })
   }
 
-  async function getSettings() {
-    const { whitelist_status = false } = await api.shop.homeSetting()
-    setState((draft) => {
-      draft.whitelist_status = whitelist_status
-    })
-    // 白名单配置
-    Taro.setStorageSync(SG_APP_CONFIG, {
-      whitelist_status
-    })
-  }
 
   // 分享
   useShareAppMessage(async (res) => {
@@ -348,10 +336,6 @@ function MemberIndex(props) {
         })
       }
     }
-    // if ((isEmpty(purchaseInfo) || !whitelist_status) && VERSION_IN_PURCHASE && key == 'purchase') {
-    //   showToast('暂无权限，请联系管理员')
-    //   return
-    // }
     if (link) {
       Taro.navigateTo({ url: link })
     }
