@@ -13,7 +13,6 @@ function linkPage (data) {
     return
   }
   let url = ''
-  debugger
   switch (linkPage) {
     case 'goods':
       url = '/pages/item/espier-detail?id=' + id
