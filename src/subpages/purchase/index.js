@@ -36,7 +36,6 @@ const { store } = configStore()
 
 function Home() {
   const [state, setState] = useImmer(initialState)
-  const [likeList, setLikeList] = useImmer([])
   const { initState, openLocation, openStore, appName } = useSelector((state) => state.sys)
   const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { isLogin, login, checkPolicyChange } = useLogin({

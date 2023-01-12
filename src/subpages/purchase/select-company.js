@@ -13,7 +13,7 @@ const initialState = {
   enterpriseInfo: {}
 }
 
-function SelectComponent(props) {
+function SelectComponent() {
   const [state, setState] = useImmer(initialState)
   const { enterpriseInfo, enterpriseName, enterpriseList } = state
 
@@ -40,7 +40,6 @@ function SelectComponent(props) {
   const onValidateChange = () => {
     if (!enterpriseName) return
     const { auth_type, name, enterprise_sn, id } = enterpriseInfo
-    console.log(enterpriseInfo)
     let redirectUrl = ''
     if (auth_type == 'account') {
       redirectUrl = `/subpages/purchase/select-company-account`

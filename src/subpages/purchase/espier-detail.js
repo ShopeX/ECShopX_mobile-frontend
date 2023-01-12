@@ -161,31 +161,31 @@ function EspierDetail(props) {
     }
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
-  useShareAppMessage(async (res) => {
-    return getAppShareInfo()
-  })
+  // useShareAppMessage(async (res) => {
+  //   return getAppShareInfo()
+  // })
 
-  useShareTimeline(async (res) => {
-    return getAppShareInfo()
-  })
+  // useShareTimeline(async (res) => {
+  //   return getAppShareInfo()
+  // })
 
-  const getAppShareInfo = () => {
-    const { itemName, imgs } = info
-    const query = {
-      id,
-      dtid
-    }
-    if (userInfo) {
-      query['uid'] = userInfo.user_id
-    }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
-    log.debug(`share path: ${path}`)
-    return {
-      title: itemName,
-      imageUrl: imgs.length > 0 ? imgs[0] : [],
-      path
-    }
-  }
+  // const getAppShareInfo = () => {
+  //   const { itemName, imgs } = info
+  //   const query = {
+  //     id,
+  //     dtid
+  //   }
+  //   if (userInfo) {
+  //     query['uid'] = userInfo.user_id
+  //   }
+  //   const path = `/subpages/purchase/espier-detail?${qs.stringify(query)}`
+  //   log.debug(`share path: ${path}`)
+  //   return {
+  //     title: itemName,
+  //     imageUrl: imgs.length > 0 ? imgs[0] : [],
+  //     path
+  //   }
+  // }
 
   const init = async () => {
     const { type, id, dtid } = await entryLaunch.getRouteParams()
@@ -251,8 +251,8 @@ function EspierDetail(props) {
           title: data.itemName,
           content: data.brief,
           pic: `${data.img}?time=${new Date().getTime()}`,
-          link: `${process.env.APP_CUSTOM_SERVER}/pages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
-          path: `/pages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
+          link: `${process.env.APP_CUSTOM_SERVER}/subpages/purchase/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
+          path: `/subpages/purchase/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
           price: data.price,
           weibo: false,
           miniApp: true

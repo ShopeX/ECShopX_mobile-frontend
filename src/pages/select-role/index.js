@@ -1,18 +1,18 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
-import { useImmer } from 'use-immer'
 import { View, Text, Image } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
-import { useSelector, useDispatch } from 'react-redux'
-import api from '@/api'
-import { showToast, VERSION_IN_PURCHASE } from '@/utils'
 import { SpFloatPrivacyShort, SpLogin } from '@/components'
+import { AtButton } from 'taro-ui'
+import { showToast } from '@/utils'
 import { useLogin } from '@/hooks'
 import S from '@/spx'
+import api from '@/api'
+import { useSelector, useDispatch } from 'react-redux'
 import CompBottomTip from '@/subpages/purchase/comps/comp-bottomTip'
 import { updateInviteCode } from '@/store/slices/purchase'
 
 import './index.scss'
+
 function SelectRole(props) {
   const { isLogin, checkPolicyChange, isNewUser, setToken, login } = useLogin({
     autoLogin: true,
@@ -22,9 +22,9 @@ function SelectRole(props) {
   })
   const { userInfo = {} } = useSelector((state) => state.user)
   const { appName, appLogo } = useSelector((state) => state.sys)
-  const [policyModal, setPolicyModal] = useState(false)
-  const [reject, setReject] = useState(false)
-  const [userEnterprises, setUserEnterprises] = useState([])
+  const [ policyModal, setPolicyModal ] = useState(false)
+  const [ reject, setReject ] = useState(false)
+  const [ userEnterprises, setUserEnterprises ] = useState([])
   const $instance = getCurrentInstance()
   const { code: invite_code, type = '' } = $instance.router.params || {}
   const dispatch = useDispatch()
@@ -134,7 +134,6 @@ function SelectRole(props) {
       Taro.showModal({
         content: e,
         confirmText: '我知道了',
-        cancelColor: '#aaa',
         showCancel: false,
         success: () => {
           Taro.reLaunch({ url: `/subpages/purchase/select-company-activity` })
@@ -178,17 +177,6 @@ function SelectRole(props) {
             </AtButton>
           </>
         }
-        {/* {!invite_code && isLogin && !type && userInfo?.is_relative && VERSION_IN_PURCHASE && // 无商城，已登录亲友验证、绑定
-          <>
-            <View className='btns-account'>
-              已授权账号：<Text className='account'>{userInfo?.mobile}</Text>
-            </View>
-            <AtButton onClick={validatePhone} circle className='btns-staff button login'>
-              确认登录
-            </AtButton>
-          </>
-        } */}
-        {/* {invite_code && isLogin && // 亲友&已登录 */}
         {invite_code && isLogin && userInfo?.is_relative && // 有/无商城，已登录亲友验证、绑定
           <>
             <View className='validate-pass'>验证通过</View>

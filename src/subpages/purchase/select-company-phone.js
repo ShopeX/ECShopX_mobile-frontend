@@ -114,7 +114,7 @@ function SelectComponent(props) {
           </AtButton>
         </>
       }
-      {VERSION_IN_PURCHASE && isNewUser &&
+      {VERSION_IN_PURCHASE && isNewUser && // 无商场&新用户需要手机号授权登录（调new_login接口 不需要绑定）
         <AtButton
           openType='getPhoneNumber'
           onGetPhoneNumber={handleBindPhone}
@@ -125,7 +125,7 @@ function SelectComponent(props) {
           微信授权登录
         </AtButton>
       }
-      {VERSION_IN_PURCHASE && !isNewUser &&
+      {VERSION_IN_PURCHASE && !isNewUser && // 无商场&老用户，直接调绑定接口
         <AtButton
           circle
           className='btns-phone'

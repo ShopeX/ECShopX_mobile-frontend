@@ -15,7 +15,6 @@ const initialState = {
 }
 
 function SelectComponent(props) {
-  const { userInfo = {} } = useSelector((state) => state.user)
   const [state, setState] = useImmer(initialState)
   const { activityList, activity_name } = state
   const scrollRef = useRef()
