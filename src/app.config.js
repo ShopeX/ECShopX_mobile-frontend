@@ -42,7 +42,8 @@ const config = {
         'neigou-order',
         'category',
         'espier-index',
-        'index'
+        'index',
+        'list'
       ]
     },
     // 导购货架 guide

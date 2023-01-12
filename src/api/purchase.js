@@ -40,6 +40,26 @@ export function getEmployeeInvitelist(params) { // 获取员工邀请亲友列�
   return req.get('/employee/invitelist', params)
 }
 
-// export function getEmployeeInvitData(params) { // 获取员工邀请数据
-//   return req.get('/employee/invitedata', params)
-// }
+export function getPurchaseActivityItems(params) { // 获取活动商品列表
+  return req.get('/employeepurchase/activity/items', params)
+}
+
+export function getPurchaseCart(params) { // 获取内购购物车
+  return req.get('/employeepurchase/cart', params)
+}
+
+export function updatePurchaseCart(params) { // 内购购物车更新
+  return req.put('/employeepurchase/cart', params)
+}
+
+export function addPurchaseCart(params) { // 内购购物车新增
+  return req.post('/employeepurchase/cart', params)
+}
+
+export function deletePurchaseCart(params) { // 内购购物车删除
+  return req.delete('/employeepurchase/cart', params)
+}
+
+export function updatePurchaseCartcount(params) { // 内购购物车数量
+  return req.get('/employeepurchase/cartcount', params)
+}

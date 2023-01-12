@@ -9,7 +9,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, classNames, throttle } from '@/utils'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
-import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
+import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/purchase'
 import {
   SpPage,
   SpTabbar,
@@ -53,7 +53,7 @@ function CartIndex() {
   const { current, recommendList, policyModal } = state
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
-  const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
+  const { validCart = [], invalidCart = [], purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { tabbar = 1 } = router?.params || {}
 
   // useDepChange(() => {
@@ -79,10 +79,13 @@ function CartIndex() {
   }
 
   const getCartList = async () => {
+    const { activity_id, enterprise_id } = purchase_share_info
     Taro.showLoading({ title: '' })
     const { type = 'distributor' } = router?.params || {}
     const params = {
-      shop_type: type
+      shop_type: type,
+      enterprise_id,
+      activity_id
     }
     await dispatch(fetchCartList(params))
     await dispatch(updateCount(params))
@@ -198,6 +201,7 @@ function CartIndex() {
   }
 
   const onDeleteCartGoodsItem = async ({ cart_id }) => {
+    const { activity_id, enterprise_id } = purchase_share_info
     const res = await Taro.showModal({
       title: '提示',
       content: '将当前商品移出购物车?',
@@ -208,15 +212,16 @@ function CartIndex() {
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
-    await dispatch(deleteCartItem({ cart_id }))
+    await dispatch(deleteCartItem({ cart_id, activity_id, enterprise_id }))
     getCartList()
   }
 
   const onChangeCartGoodsItem = useDebounce(async (item, num) => {
+    const { activity_id, enterprise_id } = purchase_share_info
     console.log(`onChangeCartGoodsItem:`, num)
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
-    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
+    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type, activity_id, enterprise_id }))
     getCartList()
   }, 200)
 

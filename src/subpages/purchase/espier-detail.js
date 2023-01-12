@@ -3,37 +3,25 @@ import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { AtCountdown } from 'taro-ui'
 import {
-  SpPrice,
   SpCell,
   SpImage,
   SpLoading,
   SpRecommend,
   SpHtml,
   SpPage,
-  SpSkuSelect,
   SpPoster,
-  SpLogin,
   SpFloatMenuItem,
-  SpChat,
   SpGoodsPrice
 } from '@/components'
 import api from '@/api'
-import req from '@/api/req'
 import {
   log,
-  calcTimer,
   isArray,
-  canvasExp,
-  normalizeQuerys,
-  isAlipay,
   isWeixin,
   isWeb,
-  linkPage,
   pickBy,
   classNames,
-  navigateTo,
   VERSION_PLATFORM,
   isAPP
 } from '@/utils'
@@ -42,9 +30,9 @@ import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
-import { Tracker } from '@/service'
 import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
@@ -55,11 +43,11 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
+import CompSkuSelect from './comps/comp-skuselect'
 
 import './espier-detail.scss'
 
-const MSpSkuSelect = React.memo(SpSkuSelect)
+const MSpSkuSelect = React.memo(CompSkuSelect)
 
 const initialState = {
   id: null,
@@ -70,7 +58,7 @@ const initialState = {
   play: false,
   isDefault: false,
   defaultMsg: '',
-  promotionPackage: [], // 组合优惠
+  // promotionPackage: [], // 组合优惠
   mainGoods: {},
   makeUpGoods: [], // 组合商品
   packageOpen: false,
@@ -107,7 +95,7 @@ function EspierDetail(props) {
     defaultMsg,
     evaluationList,
     curImgIdx,
-    promotionPackage,
+    // promotionPackage,
     packageOpen,
     skuPanelOpen,
     promotionOpen,
@@ -138,7 +126,7 @@ function EspierDetail(props) {
   useEffect(() => {
     if (id) {
       fetch()
-      getPackageList()
+      // getPackageList()
       getEvaluationList()
     }
   }, [id])
@@ -290,13 +278,13 @@ function EspierDetail(props) {
     })
   }
 
-  // 获取包裹
-  const getPackageList = async () => {
-    const { list } = await api.item.packageList({ item_id: id, showError: false })
-    setState((draft) => {
-      draft.promotionPackage = list
-    })
-  }
+  // // 获取包裹
+  // const getPackageList = async () => {
+  //   const { list } = await api.item.packageList({ item_id: id, showError: false })
+  //   setState((draft) => {
+  //     draft.promotionPackage = list
+  //   })
+  // }
 
   // 获取评论
   const getEvaluationList = async () => {
@@ -493,7 +481,7 @@ function EspierDetail(props) {
           )}
 
           <View className='sku-block'>
-            {promotionPackage.length > 0 && (
+            {/* {promotionPackage.length > 0 && (
               <SpCell
                 title='组合优惠'
                 isLink
@@ -508,7 +496,7 @@ function EspierDetail(props) {
               >
                 <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
               </SpCell>
-            )}
+            )} */}
             {promotionActivity.length > 0 && (
               <SpCell
                 title='优惠活动'
