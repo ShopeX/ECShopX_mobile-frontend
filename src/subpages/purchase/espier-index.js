@@ -255,7 +255,7 @@ function CartIndex() {
       goodType: current == 0 ? 'normal' : 'cross'
     }
     Taro.navigateTo({
-      url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
+      url: `/subpages/purchase/espier-checkout?${qs.stringify(query)}`
     })
   }
 
