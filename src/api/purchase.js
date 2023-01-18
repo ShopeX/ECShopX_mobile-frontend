@@ -63,3 +63,7 @@ export function deletePurchaseCart(params) { // 内购购物车删除
 export function updatePurchaseCartcount(params) { // 内购购物车数量
   return req.get('/employeepurchase/cartcount', params)
 }
+
+export function purchaseSelect(params) {
+  return req.put('/employeepurchase/cart/checkstatus', params)
+}

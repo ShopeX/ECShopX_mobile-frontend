@@ -5,10 +5,8 @@ import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
 import { Loading, SpNavBar, FloatMenuMeiQia, SpNewShopItem } from '@/components'
 import {
-  log,
   pickBy,
   formatDateTime,
-  payPlatform,
   resolveOrderStatus,
   copyText,
   getCurrentRoute,
@@ -16,20 +14,17 @@ import {
   classNames,
   isNavbar,
   isWeb,
-  redirectUrl,
   VERSION_PLATFORM,
   VERSION_IN_PURCHASE,
-  isAPP,
   isWxWeb,
   isWeixin
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { PAYTYPE, PAYMENT_TYPE } from '@/consts'
-import { Tracker } from '@/service'
 import api from '@/api'
-import { TracksPayed } from '@/utils/youshu'
 import S from '@/spx'
 import { usePayment } from '@/hooks'
+import dayjs from 'dayjs'
 import DetailItem from './comps/detail-item'
 // 图片引入
 import ErrorDaDa from '../../assets/dada0.png'
@@ -61,10 +56,11 @@ const statusImg = {
   // 骑士到店
   100: DadaGoStore
 }
-@connect(({ colors, sys }) => ({
+@connect(({ colors, sys, purchase }) => ({
   colors: colors.current,
   pointName: sys.pointName,
-  priceSetting: sys.priceSetting
+  priceSetting: sys.priceSetting,
+  purchase: purchase.purchase_share_info
 }))
 export default class TradeDetail extends Component {
   $instance = getCurrentInstance()
@@ -656,7 +652,7 @@ export default class TradeDetail extends Component {
   }
 
   render() {
-    const { colors } = this.props
+    const { colors, purchase } = this.props
     const {
       info,
       ziti,
@@ -872,6 +868,21 @@ export default class TradeDetail extends Component {
                     {!this.isPointitemGood() && <Text>{info.receiver_mobile}</Text>}
                   </View>
                 </View>
+                {purchase?.activity_id &&
+                  info.orderInfo?.close_modify_time > dayjs().unix() &&
+                  (info.order_status_des == 'PAYED' || info.order_status_des == 'NOTPAY') && (
+                    <View
+                      className='user-info-edit-address'
+                      onClick={() => {
+                        // this.props.updateChooseAddress({})
+                        Taro.navigateTo({
+                          url: `/marketing/pages/member/address?isPicker=choose&source=tradetail&order_id=${tradeInfo.orderId}`
+                        })
+                      }}
+                    >
+                      <View className='btn'>修改地址</View>
+                    </View>
+                  )}
               </View>
             )}
           </View>

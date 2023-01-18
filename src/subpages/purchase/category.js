@@ -5,6 +5,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
+import { useSelector } from 'react-redux'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
 import CompSeries from '@/pages/category/comps/comp-series'
@@ -22,18 +23,20 @@ const initialState = {
 const CategoryIndex = (props) => {
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   // 获取数据
   useEffect(() => {
     getConfig()
   }, [])
 
   const getConfig = async () => {
+    const { activity_id } = purchase_share_info
     const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
     const { list } = await api.category.getCategory(query)
     let seriesList = list[0] ? list[0].params.data : []
 
     if (!seriesList.length) {
-      const res = await api.category.get()
+      const res = await api.category.get({ activity_id })
       const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',

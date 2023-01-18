@@ -594,4 +594,18 @@ $paddingBottom: 100px;
     color: #0091ff;
     font-size: 28px;
   }
+  .user-info-edit-address {
+    display: flex;
+    align-items: flex-end;
+    .btn {
+      width: 130px;
+      height: 40px;
+      line-height: 40px;
+      border-radius: 30px;
+      font-size: 22px;
+      text-align: center;
+      color: var(--color-primary);
+      border: 2px solid #bbb;
+    }
+  }
 }

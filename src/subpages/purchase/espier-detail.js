@@ -85,6 +85,7 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { setNavigationBarTitle } = useNavigation()
 
   const [state, setState] = useImmer(initialState)
@@ -197,13 +198,16 @@ function EspierDetail(props) {
   }
 
   const fetch = async () => {
+    const { activity_id, enterprise_id } = purchase_share_info
     let data
     if (type == 'pointitem') {
     } else {
       try {
         const itemDetail = await api.item.detail(id, {
           showError: false,
-          distributor_id: dtid
+          distributor_id: dtid,
+          activity_id,
+          enterprise_id
         })
         data = pickBy(itemDetail, doc.goods.GOODS_INFO)
         if (data.approveStatus == 'instock') {
@@ -337,17 +341,6 @@ function EspierDetail(props) {
       isDefault={isDefault}
       defaultMsg={defaultMsg}
       ref={pageRef}
-      renderFloat={
-        <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/index' })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-        </View>
-      }
       renderFooter={
         <CompBuytoolbar
           info={info}

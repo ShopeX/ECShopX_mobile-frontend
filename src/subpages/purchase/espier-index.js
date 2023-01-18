@@ -12,9 +12,7 @@ import { useLogin, useDepChange, useDebounce } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/purchase'
 import {
   SpPage,
-  SpTabbar,
   SpPrice,
-  SpRecommend,
   SpLogin,
   SpDefault,
   SpCheckboxNew,
@@ -26,13 +24,7 @@ import CompTabbar from './comps/comp-tabbar'
 
 import './espier-index.scss'
 
-// const tablist = [
-//   { title: '普通商品', icon: 'icon-putongshangpin-01', type: 'normal' },
-//   { title: '跨境商品', icon: 'icon-kuajingshangpin-01', type: 'cross' }
-// ]
-
 const initialState = {
-  recommendList: [], // 猜你喜欢
   current: 0, // 0:普通商品  1:跨境商品
   policyModal: false // 隐私弹框
 }
@@ -50,15 +42,12 @@ function CartIndex() {
   const router = $instance.router
 
   const [state, setState] = useImmer(initialState)
-  const { current, recommendList, policyModal } = state
+  const { current, policyModal } = state
 
-  const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+  const { colorPrimary } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [], purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { tabbar = 1 } = router?.params || {}
 
-  // useDepChange(() => {
-  //   fetch()
-  // }, [isLogin])
 
   useEffect(() => {
     if (isLogin) fetch()
@@ -70,9 +59,6 @@ function CartIndex() {
   })
 
   const fetch = () => {
-    if (openRecommend == 1) {
-      getRecommendList() // 猜你喜欢
-    }
     if (isLogin) {
       getCartList()
     }
@@ -163,16 +149,6 @@ function CartIndex() {
     return newList
   }
 
-  const getRecommendList = async () => {
-    const { list } = await api.cart.likeList({
-      page: 1,
-      pageSize: 1000
-    })
-    setState((draft) => {
-      draft.recommendList = list
-    })
-  }
-
   // const onChangeSpTab = (current) => {
   //   setState(draft => {
   //     draft.current = current
@@ -184,8 +160,9 @@ function CartIndex() {
   // }
 
   const onChangeGoodsIsCheck = async (item, type, checked) => {
+    const { activity_id, enterprise_id } = purchase_share_info
     Taro.showLoading({ title: '' })
-    let parmas = { is_checked: checked }
+    let parmas = { is_checked: checked, activity_id, enterprise_id }
     if (type === 'all') {
       const cartIds = item.list.map((item) => item.cart_id)
       parmas['cart_id'] = cartIds
@@ -193,7 +170,7 @@ function CartIndex() {
       parmas['cart_id'] = item.cart_id
     }
     try {
-      await api.cart.select(parmas)
+      await api.purchase.purchaseSelect(parmas)
     } catch (e) {
       console.log(e)
     }
@@ -455,9 +432,6 @@ function CartIndex() {
           </AtButton>
         </SpDefault>
       )}
-
-      {/* 猜你喜欢 */}
-      <SpRecommend className='recommend-block' info={recommendList} />
 
       <SpPrivacyModal open={policyModal} onCancel={onPolicyChange} onConfirm={onPolicyChange} />
     </SpPage>

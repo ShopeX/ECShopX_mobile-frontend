@@ -58,7 +58,7 @@ function SelectComponent() {
       <View className='select-component-title'>选择企业</View>
       <Picker range={enterpriseList} rangeKey='name' onChange={onPickerChange} className='pick-company'>
         <View className='select-component-enterprise_sn'>{enterpriseName || '选择企业后继续登录'}</View>
-        <Text className='iconfont icon-zhankai select'></Text>
+        <Text className='iconfont icon-zhankai selecticon'></Text>
       </Picker>
       <AtButton circle className='btns-staff' onClick={onValidateChange} disabled={!enterpriseName}>
         继续验证

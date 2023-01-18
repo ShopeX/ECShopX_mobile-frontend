@@ -4,7 +4,6 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpButton, SpLogin } from '@/components'
 import { classNames, navigateTo, showToast, isWeb } from '@/utils'
-import { addCart } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS, ACTIVITY_LIST } from '@/consts'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
@@ -18,7 +17,7 @@ function CompGoodsBuyToolbar(props) {
     onChange = () => {},
     onSubscribe = () => {}
   } = props
-  const { cartCount = 0 } = useSelector((state) => state.cart)
+  const { cartCount = 0 } = useSelector((state) => state.purchase)
   const { favs = [] } = useSelector((state) => state.user)
   const dispatch = useDispatch()
   const btns = []
