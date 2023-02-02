@@ -7,12 +7,13 @@
   box-sizing: border-box;
   /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
+  margin-top: 24px;
   /*  #endif  */
   .page-address-edit__form{
     border-radius: 16px;
-    padding: 5rpx 16rpx 0rpx 16rpx;
+    padding: 5px 16px 0px 16px;
     .sp-cell{
-      padding: 24rpx 20rpx 24rpx 10rpx;
+      padding: 24px 20px 24px 10px;
       &__title{
         color: #666666;
       }
@@ -30,8 +31,8 @@
   .picker {
     width: 350px;
     text{
-      margin-left: -40rpx !important;
-      font-size: 32rpx;
+      margin-left: -40px !important;
+      font-size: 32px;
     }
 
     &__title {
@@ -53,14 +54,13 @@
     .submit-btn{
       border-radius: 5px;
       font-size: 30px;
-      padding: 8rpx 0;
+      padding: 8px 0;
     }
 
   .border-bottom{
-    border-bottom:1rpx solid #DDDDDD;
+    border-bottom:1px solid #DDDDDD;
   }
   .logistics-no {
-    // background-color: blue;
     .at-input {
       margin-bottom: 0;
       width: 350px;
@@ -76,21 +76,21 @@
       overflow: hidden;
       border: none;
       width: 100%;
-      height: 100rpx;
-      margin-left: 65rpx !important;
+      height: 100px;
+      margin-left: 65px !important;
       color: #222;
-      padding: 0 18rpx 12rpx 0;
+      padding: 0 18px 12px 0;
     }
   }
   .default_address{
     border-radius: 16px;
-    margin: 22rpx 0;
-    padding-right: 0rpx;
+    margin: 22px 0;
+    padding-right: 0px;
 
   }
   .at-input input{
-    margin-left: -40rpx ;
-    font-size: 32rpx;
+    margin-left: -40px ;
+    font-size: 32px;
   }
 
     .detail-address{

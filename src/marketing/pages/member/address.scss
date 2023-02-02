@@ -2,16 +2,17 @@
 
 .page-address-index {
   background: #f5f5f5;
-  padding: 20rpx 20rpx 0 20rpx;
+  padding: 20px 20px 0 20px;
   .btn-wrap{
-    padding: 20rpx 40rpx;
+    padding: 20px 40px;
   }
   .member-address-list {
-    margin-top: 20rpx;
-    // padding: 53px 30px 120px 40px;
-    /*  #ifdef  h5  */
-    padding: 48px 30px;
-    /*  #endif  */
+
+    // /*  #ifdef  h5  */
+    // padding: 48px 30px;
+    // /*  #endif  */
+
+    margin-top: 20px;
 
     .address-item__content{
       .address-item__detail_box{
@@ -26,12 +27,13 @@
 
   }
   .address-harvest{
-    border-radius: 16rpx;
+    border-radius: 16px;
   }
   .address-item {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20rpx;
+    margin-bottom: 20px;
+
     &.disabled {
       opacity: 0.6;
     }
@@ -57,7 +59,7 @@
       box-shadow: 0px 8px 26px 0px rgba(0, 0, 0, 0.07);
       border-radius: 16px;
       // margin-left: 12px;
-      padding: 15rpx;
+      padding: 15px;
     }
     &__title {
       color: #010101;
@@ -72,7 +74,7 @@
     }
     &__detail {
       @include multi-ellipsis(2);
-      margin: 0 40rpx 17rpx 0;
+      margin: 0 40px 17px 0;
       color: #0d0d0d;
 
     }
@@ -86,7 +88,7 @@
       display: flex;
       font-size: 23px;
       .address-item__unchecked{
-        margin: 0 14rpx 0 0;
+        margin: 0 14px 0 0;
       }
     }
     .default__icon {
