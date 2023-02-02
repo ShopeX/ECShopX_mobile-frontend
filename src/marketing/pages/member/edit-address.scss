@@ -22,6 +22,11 @@
   }
   .sp-cell__ft {
     color: #ccc;
+     /*  #ifdef  h5  */
+    color: #888;
+    font-size: 32px;
+    /*  #endif  */
+
   }
   &__form {
     background: #fff;
@@ -30,6 +35,9 @@
   }
   .picker {
     width: 350px;
+    /*  #ifdef  h5  */
+    width: 390px;
+    /*  #endif  */
     text{
       margin-left: -40px !important;
       font-size: 32px;
@@ -81,6 +89,10 @@
       color: #222;
       padding: 0 18px 12px 0;
     }
+    .taro-textarea{
+      font-size: 30px !important;
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
   }
   .default_address{
     border-radius: 16px;
@@ -92,11 +104,8 @@
     margin-left: -40px ;
     font-size: 32px;
   }
-
-    .detail-address{
-      padding-bottom: 0 !important;
-      align-items: flex-start !important;
-    }
-
-
+  .detail-address{
+    padding-bottom: 0 !important;
+    align-items: flex-start !important;
+  }
 }
