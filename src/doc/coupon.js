@@ -6,6 +6,7 @@ export const COUPON_ITEM = {
   cardId: 'card_id',
   cardType: 'card_type',
   code: 'code',
+  invalid_desc:'invalid_desc',
   beginDate: ({ begin_date }) => begin_date.replace(/-/g, '.'),
   endDate: ({ end_date }) => end_date.replace(/-/g, '.'),
   tagClass: 'tagClass',
