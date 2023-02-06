@@ -237,7 +237,7 @@ function NearlyShop(props) {
     await setState((draft) => {
       draft.shopList = []
       draft.keyword = ''
-      draft.type = 1
+      draft.type = 2
       draft.filterType = 3
       draft.queryProvice = province
       draft.queryCity = city
