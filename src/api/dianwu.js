@@ -122,3 +122,8 @@ export function cancelTrade(params) {
 export function salesAfterApply(params) {
   return req.post('/aftersales/apply', params)
 }
+
+//开票
+export function openBill(params) {
+  return req.post('/invoice/invoiced', params)
+}
