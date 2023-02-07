@@ -301,7 +301,7 @@ function SpPage(props, ref) {
         <SpNavBar title={pageTitle || _pageTitle} onClickLeftIcon={onClickLeftIcon} />
       )}
 
-      {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} />)}
+      {isDefault && (renderDefault || <SpNote img={defaultImg}  title={defaultMsg} isUrl={true}  />)}
 
       {customNavigation && CustomNavigation()}
 

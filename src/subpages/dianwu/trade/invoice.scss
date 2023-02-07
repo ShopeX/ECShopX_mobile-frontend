@@ -1,0 +1,47 @@
+.page-dianwu-invoice{
+  .dianwu-invoice-order-info{
+    background-color: #fff;
+    padding: 20px 20px 0;
+    margin: 20px;
+    border-radius: 20px;
+    .line{
+      display: flex;
+      align-items: flex-start;
+      padding-bottom: 20px;
+      font-size: 24px;
+      font-weight: 400;
+      .title{
+        color: #666F83;
+        min-width: 200px;
+        max-width: 200px;
+        width: 200px;
+      }
+      .content{
+          color: #111A34;
+          flex: 1;
+      }
+    }
+  }
+  .dianwu-invoice-footer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 200px;
+    .button{
+      width: 360px;
+      height: 80px;
+      text-align: center;
+      line-height: 80px;
+      background-color: #f2f2f2;
+      color: #0452d9;
+      border-radius: 10px;
+      font-size: 36px;
+    }
+    .copy{
+      background-color: #0452d9;
+      color: #fff;
+      margin-bottom: 20px;
+      
+    }
+  }
+}

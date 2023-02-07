@@ -19,6 +19,7 @@ import {
 import api from '@/api'
 import {
   isWeixin,
+  isAPP,
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
@@ -56,7 +57,7 @@ function Home() {
   )
   const { isLogin, login, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
-      if (isUpdate) {
+      if (isUpdate && process.env.APP_BUILD_TARGET != 'app') {
         setPolicyModal(true)
       } else {
         fetchLocation()

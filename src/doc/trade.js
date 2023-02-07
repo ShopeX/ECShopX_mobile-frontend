@@ -75,7 +75,7 @@ export const TRADE_AFTER_SALES_ITEM = {
   afterSalesContact: ({ aftersales_address }) =>  aftersales_address.aftersales_contact,
   aftersalesHours: ({ aftersales_address }) =>  aftersales_address.aftersales_hours,
   refundFee: ({ refund_fee }) => refund_fee / 100,
-  refundPoint: ({ refund_point }) => refund_point / 100,
+  refundPoint: 'refund_point',
   reason: 'reason',
   description: 'description',
   evidencePic: 'evidence_pic',
