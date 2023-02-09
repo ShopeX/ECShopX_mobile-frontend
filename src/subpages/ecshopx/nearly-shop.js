@@ -61,7 +61,7 @@ function NearlyShop(props) {
   }, [isSpAddressOpened])
 
   useEffect(() => {
-    const { province, city, district } = location
+    const { province, city, district } = location || {}
     setState((draft) => {
       draft.chooseValue = [province, city, district]
       draft.refresh = true
