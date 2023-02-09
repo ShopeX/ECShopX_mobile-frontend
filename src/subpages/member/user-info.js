@@ -242,7 +242,8 @@ function MemberUserInfo(props) {
   const handleLogOut = async () => {
     logout()
     showToast('退出登录成功')
-    Taro.redirectTo({ url: '/pages/index' })
+    // Taro.redirectTo({ url: '/pages/index' })
+    window.location.href = `${window.location.origin}/pages/index`
   }
 
   const onChooseAvatar = async (e) => {

@@ -9,7 +9,7 @@ import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
-import { entryLaunch, pickBy, classNames, showToast, log, isArray, uniqueFunc } from '@/utils'
+import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 
 import './nearly-shop.scss'
 
@@ -18,9 +18,14 @@ const initialState = {
   locationIng: false,
   chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
-  type: 0, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
-  search_type: undefined, // 参数
+  type: 1, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
+  filterType: 1, // 过滤方式（前端使用）1:省市区过滤 2:经纬度定位 3:收货地址
+  queryProvice: '',
+  queryCity: '',
+  queryDistrict: '',
+  queryAddress: '',
   isSpAddressOpened: false,
+  refresh: false
 }
 
 function NearlyShop(props) {
@@ -31,45 +36,83 @@ function NearlyShop(props) {
     }
   })
   const [state, setState] = useImmer(initialState)
+  const { chooseValue, isSpAddressOpened, keyword, refresh, type, filterType, queryProvice,
+    queryCity,
+    queryDistrict,
+    queryAddress } = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const shopRef = useRef()
+  const pageRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
-    if (address) {
+    if (refresh) {
       shopRef.current.reset()
     }
-    // onPickerClick()
-  }, [address])
+  }, [refresh])
 
-  const fetchShop = async (params) => {
-    const { pageIndex: page, pageSize } = params
-    const { keyword } = state
-    const [chooseProvice, chooseCity, chooseDistrict] = state.chooseValue
-    // const { province, city, district } = location
-    const query = {
-      page,
+  useEffect(() => {
+    if (isSpAddressOpened) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [isSpAddressOpened])
+
+  useEffect(() => {
+    const { province, city, district } = location || {}
+    setState((draft) => {
+      draft.chooseValue = [province, city, district]
+      draft.refresh = true
+    })
+  }, [])
+
+
+  const fetchShop = async ({ pageIndex, pageSize }) => {
+    let params = {
+      page: pageIndex,
       pageSize,
-      lat: location?.lat,
-      lng: location?.lng,
-      name: keyword,
-      province: location?.province || chooseProvice,
-      city: location?.city || chooseCity,
-      area: location?.district || chooseDistrict,
-      type: location?.lat ? state.type : 0,
-      search_type: state.search_type,
+      type,
+      search_type: 2, // 1=搜索商品；2=搜索门店
       sort_type: 1
     }
-    const { list, total_count: total, defualt_address } = await api.shop.list(query)
+    if (filterType == 1) {
+      const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
+      params = {
+        ...params,
+        province: chooseProvince,
+        city: chooseCity,
+        area: chooseDistrict
+      }
+      if (keyword) {
+        params = {
+          ...params,
+          name: keyword
+        }
+      }
+    } else if (filterType == 2) {
+      params = {
+        ...params,
+        lat: location?.lat,
+        lng: location?.lng,
+        province: location?.province,
+        city: location?.city,
+        area: location?.district
+      }
+    }
 
-    setState((v) => {
-      v.shopList = uniqueFunc(v.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM)), 'distributor_id')
-      v.chooseValue = [query.province, query.city, query.area]
+    log.debug(`fetchShop query: ${JSON.stringify(params)}`,)
+    const { list, total_count: total, defualt_address } = await api.shop.list(params)
+
+    setState((draft) => {
+      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      draft.refresh = false
     })
 
-    let format_address = !isArray(defualt_address) ? defualt_address : null
-    dispatch(updateChooseAddress(address || format_address))
+    if (isObject(defualt_address)) {
+      dispatch(updateChooseAddress(defualt_address))
+    }
 
     return {
       total
@@ -77,29 +120,29 @@ function NearlyShop(props) {
   }
 
   const onInputChange = ({ detail }) => {
-    setState((v) => {
-      v.keyword = detail.value
+    setState((draft) => {
+      draft.keyword = detail.value
     })
   }
 
   const onConfirmSearch = async ({ detail }) => {
-    const { chooseValue } = state
-    const _address = chooseValue.join('')
-    const res = await entryLaunch.getLnglatByAddress(_address)
-    // console.log('onConfirmSearch:res', res)
-    const { lng, lat, error } = res
-    if (error) {
-      showToast(error)
-    } else {
-      dispatch(updateLocation(res))
-      await setState((v) => {
-        v.keyword = detail.value
-        v.shopList = []
-        v.type = 1
-        v.search_type = 2
-      })
-      shopRef.current.reset()
-    }
+    await setState((draft) => {
+      draft.keyword = detail.value
+      draft.shopList = []
+      draft.type = 1
+      draft.filterType = 1
+      draft.refresh = true
+    })
+  }
+
+  const onClearValueChange = async () => {
+    await setState((draft) => {
+      draft.keyword = ''
+      draft.shopList = []
+      draft.type = 1
+      draft.filterType = 1
+      draft.refresh = true
+    })
   }
 
   // 定位
@@ -111,30 +154,19 @@ function NearlyShop(props) {
     await entryLaunch.isOpenPosition(async (res) => {
       if (res.lat) {
         dispatch(updateLocation(res))
-        await setState((v) => {
-          v.shopList = []
-          v.keyword = ''
-          v.name = ''
-          v.search_type = undefined
+        await setState((draft) => {
+          draft.shopList = []
+          draft.type = 1
+          draft.filterType = 2
+          draft.refresh = true
+          draft.locationIng = false
         })
-        shopRef.current.reset()
+      } else {
+        setState((draft) => {
+          draft.locationIng = false
+        })
       }
     })
-
-    setState((draft) => {
-      draft.locationIng = false
-      draft.type = 2
-    })
-  }
-
-  const onClearValueChange = async () => {
-    await setState((v) => {
-      v.shopList = []
-      v.keyword = ''
-      v.type = 0
-      v.search_type = undefined
-    })
-    shopRef.current.reset()
   }
 
   const handleClickItem = (item) => {
@@ -144,16 +176,6 @@ function NearlyShop(props) {
   const onAddChange = () => {
     if (!isLogin) return
     Taro.navigateTo({ url: '/marketing/pages/member/edit-address' })
-  }
-
-  const onChangeLoginSuccess = async () => {
-    await setState((v) => {
-      v.shopList = []
-      v.keyword = ''
-      v.type = 0
-      v.search_type = undefined
-    })
-    shopRef.current.reset()
   }
 
   // 根据收货地址搜索
@@ -171,47 +193,24 @@ function NearlyShop(props) {
     } else {
       setPolicyModal(true)
     }
-
-    setState((v) => {
-      v.type = 2
-    })
   }
 
-  const handleClickCloseSpAddress = () => {
-    setState((v) => {
-      v.isSpAddressOpened = false
+  const onPickerChange = ([{ label: province }, { label: city }, { label: area }]) => {
+    setState((draft) => {
+      draft.chooseValue = [province, city, area]
     })
   }
-
-  const handleClickOpenSpAddress = () => {
-    setState((v) => {
-      v.isSpAddressOpened = true
-    })
-  }
-
-  const onPickerChange = (selectValue) => {
-    const chooseValue = [
-      selectValue[0].label,
-      selectValue[1].label,
-      selectValue[2].label
-    ]
-    setState((v) => {
-      v.chooseValue = chooseValue
-      v.type = 1
-    })
-  }
-
-  const { chooseValue, isSpAddressOpened } = state
-  // const { province, city, district } = location
-  // const locationValue = province + city + district
 
   return (
-    <SpPage className='page-ecshopx-nearlyshop'>
+    <SpPage className='page-ecshopx-nearlyshop' ref={pageRef}>
       <View className='search-block'>
         <View className='search-bar'>
           <View className='region-picker'>
-            <SpAddress isOpened={isSpAddressOpened} onClose={handleClickCloseSpAddress} onChange={onPickerChange} />
-            <View className='pick-title' onClick={handleClickOpenSpAddress}>
+            <View className='pick-title' onClick={() => {
+              setState((draft) => {
+                draft.isSpAddressOpened = true
+              })
+            }}>
               <View className='iconfont icon-periscope'></View>
               <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
               {/* <Text className='iconfont icon-arrowDown'></Text> */}
@@ -251,9 +250,9 @@ function NearlyShop(props) {
             {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
-        <View className='block-title block-flex'>
-          <View>我的收货地址</View>
-          {address && (
+        {
+          address && <View className='block-title block-flex'>
+            <View>我的收货地址</View>
             <View
               className='arrow'
               onClick={() =>
@@ -262,15 +261,14 @@ function NearlyShop(props) {
             >
               选择其他地址<View className='iconfont icon-qianwang-01'></View>
             </View>
-          )}
-        </View>
+          </View>
+        }
+
         <View className='receive-address'>
-          {!address && (
-            <SpLogin onChange={onChangeLoginSuccess}>
-              <View className='btn-add-address' onClick={onAddChange}>
-                添加新地址
-              </View>
-            </SpLogin>
+          {!address && isLogin && (
+            <View className='btn-add-address' onClick={onAddChange}>
+              添加新地址
+            </View>
           )}
           {address && (
             <View
@@ -283,7 +281,7 @@ function NearlyShop(props) {
 
       <View className='nearlyshop-list'>
         <View className='list-title'>附近商家</View>
-        <SpScrollView ref={shopRef} className='shoplist-block' fetch={fetchShop}>
+        <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View
               onClick={() => handleClickItem(item)}
@@ -295,6 +293,13 @@ function NearlyShop(props) {
           ))}
         </SpScrollView>
       </View>
+
+      <SpAddress isOpened={isSpAddressOpened} onClose={() => {
+        setState((draft) => {
+          draft.isSpAddressOpened = false
+        })
+      }} onChange={onPickerChange} />
+
       <SpPrivacyModal
         open={policyModal}
         onCancel={() => setPolicyModal(false)}

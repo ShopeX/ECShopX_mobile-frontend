@@ -10,7 +10,7 @@ export const SHOP_ITEM = {
   distributor_id: 'distributor_id',
   distance: ({ distance, distance_unit }) => {
     return distance
-      ? (distance < 1 ? Math.round(distance * Math.pow(10, 3)) : Number(distance).toFixed(2)) +
+      ? (distance < 1 ? Math.round(distance * Math.pow(10, 3)) : Number(distance).toFixed(0)) +
       distance_unit
       : ''
   },
