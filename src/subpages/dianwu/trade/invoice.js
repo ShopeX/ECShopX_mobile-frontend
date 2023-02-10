@@ -8,27 +8,30 @@ import api from '@/api'
 
 const initialState = {
   billInfo: '',
-  realFee:"0.00"
+  realFee: '0.00',
+  isInvoiced: false
 }
 function DianWuInvoice() {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { billInfo,realFee } = state
+  const { billInfo, realFee, isInvoiced } = state
   //trade_id传递过来的订单id 获取订单发票详情
   const { trade_id } = $instance.router.params
-  useEffect(()=>{
+  useEffect(() => {
     getBillInfo()
-  },[])
+  }, [])
   async function getBillInfo() {
     const res = await api.dianwu.getTradeDetail(trade_id)
-    const {orderInfo} = res
+    const { orderInfo } = res
     setState((draft) => {
+      draft.isInvoiced = orderInfo.is_invoiced
       draft.billInfo = orderInfo.invoice
-      draft.realFee = (orderInfo.item_total_fee/100).toFixed(2)
+      draft.realFee = (orderInfo.item_total_fee / 100).toFixed(2)
     })
   }
   //确定开票
   const drawBill = async () => {
+    if(isInvoiced) return
     const { confirm } = await Taro.showModal({
       content: '确定将该订单标记为已开票吗？',
       cancelText: '取消',
@@ -40,8 +43,12 @@ function DianWuInvoice() {
         order_id: trade_id,
         status: true
       })
-      if(success){
+      if (success) {
         wx.showToast({ title: '开票成功' })
+        setState((draft) => {
+          draft.isInvoiced = true
+        })
+
       }
     }
   }
@@ -104,7 +111,7 @@ function DianWuInvoice() {
         <View className='button copy' onClick={copyBill}>
           复制发票资料
         </View>
-        <View className='button' onClick={drawBill}>
+        <View className={`${isInvoiced ? 'button disable-btn' : 'button'}`} onClick={drawBill}>
           已开票
         </View>
       </View>

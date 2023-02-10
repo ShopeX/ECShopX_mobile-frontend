@@ -14,7 +14,7 @@ export default class SpNote extends Component {
     title: '',
     btnText: '',
     to: '',
-    isUrl: false,
+    isUrl: true,
     img: ''
   }
 
