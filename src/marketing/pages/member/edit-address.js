@@ -6,7 +6,7 @@ import { View, Switch, Text, Button } from '@tarojs/components'
 import { AtInput, AtButton, AtTextarea } from 'taro-ui'
 import { SpCell, SpNavBar, SpAddress } from '@/components'
 import api from '@/api'
-import { isWxWeb } from '@/utils'
+import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
 
@@ -152,11 +152,11 @@ function AddressIndex(props) {
     }
 
     if (!data.username) {
-      return S.toast('请输入收件人')
+      return showToast('请输入收件人')
     }
 
     if (!data.telephone) {
-      return S.toast('请输入手机号')
+      return showToast('请输入手机号')
     }
 
     data.province = chooseValue[0]
@@ -164,7 +164,7 @@ function AddressIndex(props) {
     data.county = chooseValue[2]
 
     if (!data.adrdetail) {
-      return S.toast('请输入详细地址')
+      return showToast('请输入详细地址')
     }
 
     Taro.showLoading('正在提交')
@@ -172,9 +172,9 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {
-        S.toast('修改成功')
+        showToast('修改成功')
       } else {
-        S.toast('创建成功')
+        showToast('创建成功')
       }
       updateChooseAddress(data)
       setTimeout(() => {
@@ -191,7 +191,7 @@ function AddressIndex(props) {
 
   return (
     <View className='page-address-edit' style={isWxWeb && { paddingTop: 0 }}>
-      <SpNavBar title={setNavigationBarTitle} leftIconType='chevron-left' fixed='true' />
+      <SpNavBar title={initNavigationBarTitle()} leftIconType='chevron-left' fixed='true' />
       <View className='page-address-edit__form'>
         <SpCell
           className='logistics-no border-bottom'

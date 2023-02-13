@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.10.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.9.0...v3.10.0) (2023-02-09)
+
+
+### Features
+
+* 发票功能 ([ab0c3f1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ab0c3f16c83a58710095408772dc579152041aba))
+* 发票功能 ([e12aadb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e12aadb69f5ea728607d2b747f318097a038c7a7))
+* 开发票功能 ([e8ac0c5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e8ac0c5e2674a2d3cb6e95339c7697391e76befe))
+
+
+### Bug Fixes
+
+* 兼容app ([62d488f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/62d488f04c77027905ac6891245baa2891b45908))
+* 小程序朋友圈分享优化 ([bd63dd1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/bd63dd11c435d400baa52465ab4e1df0bda3eb2f))
+* 店铺添加默认搜索 ([df77ced](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/df77ced70d54f72be51e7576254e25c1daf9a6b6))
+* 把已开票按钮的弹窗去掉，直接显示已开票灰色 ([ee9c52c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ee9c52c75db0d20f506d35d29346bff050a5ad28))
+* 朋友圈单页模式 ([fe21f75](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fe21f759cfab818581a36c34878f3dfe50ebca07))
+* 热区组件分类链接跳转 ([c223077](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c2230774b68f2811d5145691c58a6ed3a5f08a12))
+* 默认店铺搜索 ([d761572](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d7615728b374dce16df2b9c81eca5a265d0d74d2))
+
 ## [3.9.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.8.3...v3.9.0) (2023-01-05)
 
 ### [3.8.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.8.2...v3.8.3) (2022-12-20)

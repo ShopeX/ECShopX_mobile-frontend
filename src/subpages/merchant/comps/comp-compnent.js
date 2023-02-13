@@ -118,8 +118,8 @@ const Cell = (props) => {
           setIsSpAddressOpened(!isSpAddressOpened)
         }}
       >
-        {addressText}
-        {value && value.length != 0 ? value.map(d=>d.label).join('') : placeholder}
+        {/* {addressText} */}
+        {value && value.length != 0 ? value.join('/') : placeholder}
       </Text>
       <SpAddress isOpened={isSpAddressOpened} onClose={()=>setIsSpAddressOpened(!isSpAddressOpened)} onChange={onPickerChange} />
     </>

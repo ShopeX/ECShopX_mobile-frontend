@@ -113,6 +113,11 @@ function SpLogin(props, ref) {
 
   // 登录
   const handleClickLogin = async () => {
+    const { scene } = Taro.getLaunchOptionsSync()
+    // 微信朋友圈打开场景
+    if(scene == 1154) {
+      return showToast('请前往小程序使用完整服务')
+    }
     const checkRes = await checkPolicyChange()
     if (!checkRes) {
       setPolicyModal(true)

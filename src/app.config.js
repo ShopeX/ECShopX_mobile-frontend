@@ -105,6 +105,7 @@ const config = {
         'collection-result', // 收款结果
         'login', // 登录
         'picker-shop', // 店铺选择
+        'trade/invoice', //开具发票
         'trade/change-price', // 订单改价
         'trade/cancel-trade', // 取消订单
         'trade/sale-after', // 订单售后
@@ -335,12 +336,12 @@ const config = {
     'navigationBarTitleText': '小程序',
     'navigationBarTextStyle': 'black'
   },
-  plugins: {
-    // 'live-player-plugin': {
-    //   'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
-    //   'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
-    // }
-  },
+  // plugins: {
+  //   'live-player-plugin': {
+  //     'version': '1.3.0', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+  //     'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+  //   }
+  // },
   requiredPrivateInfos: [
     "getLocation",
     "chooseAddress"
