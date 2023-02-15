@@ -67,11 +67,19 @@ function MemberUserInfo(props) {
         }
       }
       if (data[key].element_type == 'checkbox') {
-        _formUserInfo[key] = isArray(userInfo?.requestFields[key])
-          ? userInfo?.requestFields[key]
+        _formUserInfo[key] = isArray(userInfo[key])
+          ? userInfo[key]
           : []
       } else {
-        _formUserInfo[key] = userInfo?.requestFields[key] || ''
+        _formUserInfo[key] = userInfo[key] || ''
+      }
+      if(key === 'sex'){
+        const sexType = {
+          0:'未知',
+          1:'男',
+          2:'女'
+        }
+        _formUserInfo[key] = sexType[userInfo[key]]
       }
     })
 
