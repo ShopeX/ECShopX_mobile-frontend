@@ -6,9 +6,21 @@ import Taro, {
   useDidShow
 } from '@tarojs/taro'
 import { pickBy } from '@/utils'
-import { View, Image, ScrollView } from '@tarojs/components'
+import { View, Image, Text, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpToast, Loading, SpNote, SearchBar, SpScrollView,SpTabbar,FloatMenus , FloatMenuItem } from '@/components'
+import {
+  SpToast,
+  Loading,
+  SpNote,
+  SearchBar,
+  SpScrollView,
+  SpTabbar,
+  FloatMenus,
+  FloatMenuItem,
+  SpPage,
+  SpFloatMenuItem,
+  CompTabbar
+} from '@/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -19,77 +31,82 @@ import S from '@/spx'
 import './index2.scss'
 
 const initialState = {
-  file_video:{
-    url:'',
+  file_video: {
+    url: '',
     // urlimge_id:'',
-    cover:'',
+    cover: '',
     // coverimge_id:'',
-    proportion:'',
-    video_idx:-1
+    proportion: '',
+    video_idx: -1
   },
-  file_img:[],
-  file_text:{
-    title:"",
-    attextarea:""
+  file_img: [],
+  file_text: {
+    title: '',
+    attextarea: ''
   },
-  file_commodity:[],
-  file_word:[],
-  occupy:[
+  file_commodity: [],
+  file_word: [],
+  occupy: [
     {
-      occupyi:0
+      occupyi: 0
     },
     {
-      occupyi:0
+      occupyi: 0
     },
     {
-      occupyi:0
+      occupyi: 0
     },
     {
-      occupyi:0
+      occupyi: 0
     }
   ],
-  curTagId:'',
-  isPopups:false,
-  videoenable:0,
-  elastic:{
-    title:'使用您的摄像头，将会上传你摄录的照片及视频',
-    closetext:'拒绝',
-    showtext:'允许',
-    type:0
+  curTagId: '',
+  isPopups: false,
+  videoenable: 0,
+  elastic: {
+    title: '使用您的摄像头，将会上传你摄录的照片及视频',
+    closetext: '拒绝',
+    showtext: '允许',
+    type: 0
   },
-  isGrant:false, //是否授权
-  isOpened:false, //是否显示上传按钮
-  uploadtype:[],
-  upload_choice:[
+  isGrant: false, //是否授权
+  isOpened: false, //是否显示上传按钮
+  uploadtype: [],
+  upload_choice: [
     {
-      text:'添加视频',
-      type:'video'
+      text: '添加视频',
+      type: 'video'
     },
     {
-      text:'添加图片',
-      type:'img'
+      text: '添加图片',
+      type: 'img'
     }
   ],
-  upload_img:[
+  upload_img: [
     {
-      text:'拍照',
-      type:'camera_i'
+      text: '拍照',
+      type: 'camera_i'
     },
     {
-      text:'从相册选择',
-      type:'album_i'
+      text: '从相册选择',
+      type: 'album_i'
     }
   ],
-  upload_video:[
+  upload_video: [
     {
-      text:'拍摄',
-      type:'camera_v'
+      text: '拍摄',
+      type: 'camera_v'
     },
     {
-      text:'从相册选择',
-      type:'album_v'
+      text: '从相册选择',
+      type: 'album_v'
     }
-  ]
+  ],
+  page: {
+    pageIndex: 1,
+    pageSize: 10
+  },
+  istag: 1,
 }
 
 function MdugcIndex() {
@@ -109,13 +126,13 @@ function MdugcIndex() {
 
   useEffect(() => {
     gettopicslist()
-    fetch(state.page)
+    // fetch()
     // nextPage()
   }, [])
 
   useEffect(() => {
     getUgcList()
-  }, [curTagId,istag])
+  }, [curTagId, istag])
 
   const getUgcList = async () => {
     await setState((draft) => {
@@ -183,27 +200,25 @@ function MdugcIndex() {
     })
   }
 
-  const onistag = async(istag) => {
+  const onistag = async (istag) => {
     listRef.current.reset()
-    console.log(123,istag)
-    await setState(
-      (draft) => {
-        draft.istag = istag
-        draft.list = []
-        draft.oddList = []
-        draft.evenList = []
-      }
-    )
+    console.log(123, istag)
+    await setState((draft) => {
+      draft.istag = istag
+      draft.list = []
+      draft.oddList = []
+      draft.evenList = []
+    })
   }
 
   // 列表
-  const fetch = async ({ pageIndex, pageSize }) => {
+  const fetch = async ({ pageIndex = 2, pageSize = 10 }) => {
     Taro.showLoading({
       title: '正在加载...'
     })
     let { curTagId, istag, val } = state
     const params = {
-      page:pageIndex,
+      page: pageIndex,
       pageSize,
       topics: [...curTagId],
       sort: istag == 1 ? 'likes desc' : 'created desc',
@@ -238,121 +253,328 @@ function MdugcIndex() {
         Taro.hideLoading()
       }
     )
+    Taro.hideLoading()
 
     return { total }
   }
 
-    // 浮动按钮跳转
-    const topages=(url)=>{
-      const isAuth = S.getAuthToken()
-      if (!isAuth) {
-        Taro.showToast({
-          icon:'none',
-          title: '请先登录'
-        })
-        return
-      }
-      console.log("url",url)
-      Taro.navigateTo({ url })
+  // 浮动按钮跳转
+  const topages = (url) => {
+    const isAuth = S.getAuthToken()
+    if (!isAuth) {
+      Taro.showToast({
+        icon: 'none',
+        title: '请先登录'
+      })
+      return
     }
+    console.log('url', url)
+    Taro.navigateTo({ url })
+  }
 
-  console.log('---------',state.istag)
+  console.log('---------', state.istag)
   const { val, tagsList, curTagId, istag, oddList, evenList } = state
   return (
-    <View className='ugcindex'>
-      <View className='ugcindex_search'>
-        <SearchBar
-          // showDailog={false}
-          keyword={val}
-          placeholder='搜索'
-          onFocus={() => false}
-          onCancel={() => {}}
-          onChange={shonChange.bind(this)}
-          onClear={shonClear.bind(this)}
-          onConfirm={shonConfirm.bind(this)}
-        />
-      </View>
-      <View className='ugcindex_tagsbar'>
-        {tagsList.length && (
-          <TagsBarcheck current={curTagId} list={tagsList} onChange={handleTagChange.bind(this)} />
-        )}
-      </View>
-      <View className='ugcindex_list'>
-        <View className='ugcindex_list__tag'>
-          <View
-            onClick={onistag.bind(this, 1)}
-            className={
-              istag == 1
-                ? 'ugcindex_list__tag_i icon-shijian ugcindex_list__tag_iact'
-                : 'ugcindex_list__tag_i icon-shijian'
-            }
+    <SpPage
+      className='ugcindex'
+      scrollToTopBtn
+      renderFloat={
+        <View>
+          <SpFloatMenuItem
+            onClick={() => {
+              Taro.navigateTo({ url: '/subpages/mdugc/pages/member/index' })
+            }}
           >
-            最热
-          </View>
-          <View
-            onClick={onistag.bind(this, 2)}
-            className={
-              istag == 2
-                ? 'ugcindex_list__tag_i icon-shoucang ugcindex_list__tag_iact'
-                : 'ugcindex_list__tag_i icon-shoucang'
-            }
+            <Text className='iconfont icon-huiyuanzhongxin'></Text>
+          </SpFloatMenuItem>
+          <SpFloatMenuItem
+            onClick={() => {
+              Taro.navigateTo({ url: '/subpages/mdugc/pages/make/index' })
+            }}
           >
-            最新
-          </View>
+            <Text className='iconfont icon-tianjia1'></Text>
+          </SpFloatMenuItem>
         </View>
-        <SpScrollView className='ugcindex_list__scroll' auto={false} ref={listRef} fetch={fetch}>
-          <View className='ugcindex_list__scroll_scrolls'>
-            <View className='ugcindex_list__scroll_scrolls_left'>
-              {oddList?.map((item) => {
-                return (
-                  <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                    <Scrollitem item={item} setlikes={this.updatelist} />
-                  </View>
-                )
-              })}
+      }
+      renderFooter={<SpTabbar />}
+    >
+    <View >
+        <View className='ugcindex_search'>
+          <SearchBar
+            // showDailog={false}
+            keyword={val}
+            placeholder='搜索'
+            onFocus={() => false}
+            onCancel={() => {}}
+            onChange={shonChange.bind(this)}
+            onClear={shonClear.bind(this)}
+            onConfirm={shonConfirm.bind(this)}
+          />
+        </View>
+        <View className='ugcindex_tagsbar'>
+          {tagsList?.length && (
+            <TagsBarcheck
+              current={curTagId}
+              list={tagsList}
+              onChange={handleTagChange.bind(this)}
+            />
+          )}
+        </View>
+        <View className='ugcindex_list'>
+          <View className='ugcindex_list__tag'>
+            <View
+              onClick={onistag.bind(this, 1)}
+              className={
+                istag == 1
+                  ? 'ugcindex_list__tag_i icon-shijian ugcindex_list__tag_iact'
+                  : 'ugcindex_list__tag_i icon-shijian'
+              }
+            >
+              最热
             </View>
-            <View className='ugcindex_list__scroll_scrolls_right'>
-              {evenList?.map((item) => {
-                return (
-                  <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                    <Scrollitem item={item} setlikes={this.updatelist} />
-                  </View>
-                )
-              })}
+            <View
+              onClick={onistag.bind(this, 2)}
+              className={
+                istag == 2
+                  ? 'ugcindex_list__tag_i icon-shoucang ugcindex_list__tag_iact'
+                  : 'ugcindex_list__tag_i icon-shoucang'
+              }
+            >
+              最新
             </View>
           </View>
-          {/* {
+          <SpScrollView className='ugcindex_list__scroll' auto={false}  ref={listRef} fetch={fetch}>
+            <View className='ugcindex_list__scroll_scrolls'>
+              <View className='ugcindex_list__scroll_scrolls_left'>
+                {oddList?.map((item) => {
+                  return (
+                    <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                      <Scrollitem item={item} setlikes={this.updatelist} />
+                    </View>
+                  )
+                })}
+              </View>
+              <View className='ugcindex_list__scroll_scrolls_right'>
+                {evenList?.map((item) => {
+                  return (
+                    <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                      <Scrollitem item={item} setlikes={this.updatelist} />
+                    </View>
+                  )
+                })}
+              </View>
+            </View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+
+            {/* {
                 page.isLoading && <Loading key={page.isLoading}>正在加载...</Loading>
               } */}
 
-          {/* {
+            {/* {
                 !page.isLoading && !page.hasNext && list.length==page.total
                 && (<View className='ugcindex_list__scroll_end'>—— ——人家是有底线的—— ——</View>)
               } */}
-          {/* {
+            {/* {
                 !page.isLoading && !page.hasNext && !list.length
                 && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
               } */}
-        </SpScrollView>
-      </View>
-      <View className={'ugcindex_floatmenus'}>
-          <FloatMenus>
-            <FloatMenuItem
-              iconPrefixClass='icon'
-              icon='tianjia1'
-              onClick={topages.bind(this,'/subpages/mdugc/pages/member/index')}
-            />
-            <FloatMenuItem
-              iconPrefixClass='icon'
-              icon='tianjia1'
-              onClick={topages.bind(this,'/subpages/mdugc/pages/make/index')}
-
-            />
-          </FloatMenus>
+          </SpScrollView>
+                {/* <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View> */}
         </View>
-      <SpTabbar />
-      <SpToast />
-    </View>
+      </View>
+    </SpPage>
+
+
+    // <View className='ugcindex'>
+    //   <View className='ugcindex_search'>
+    //     <SearchBar
+    //       // showDailog={false}
+    //       keyword={val}
+    //       placeholder='搜索'
+    //       onFocus={() => false}
+    //       onCancel={() => {}}
+    //       onChange={shonChange.bind(this)}
+    //       onClear={shonClear.bind(this)}
+    //       onConfirm={shonConfirm.bind(this)}
+    //     />
+    //   </View>
+    //   <View className='ugcindex_tagsbar'>
+    //     {tagsList?.length && (
+    //       <TagsBarcheck current={curTagId} list={tagsList} onChange={handleTagChange.bind(this)} />
+    //     )}
+    //   </View>
+    //   <View className='ugcindex_list'>
+    //     <View className='ugcindex_list__tag'>
+    //       <View
+    //         onClick={onistag.bind(this, 1)}
+    //         className={
+    //           istag == 1
+    //             ? 'ugcindex_list__tag_i icon-shijian ugcindex_list__tag_iact'
+    //             : 'ugcindex_list__tag_i icon-shijian'
+    //         }
+    //       >
+    //         最热
+    //       </View>
+    //       <View
+    //         onClick={onistag.bind(this, 2)}
+    //         className={
+    //           istag == 2
+    //             ? 'ugcindex_list__tag_i icon-shoucang ugcindex_list__tag_iact'
+    //             : 'ugcindex_list__tag_i icon-shoucang'
+    //         }
+    //       >
+    //         最新
+    //       </View>
+    //     </View>
+
+    //     <SpScrollView className='ugcindex_list__scroll' auto={false} ref={listRef} fetch={fetch}>
+    //       <View className='ugcindex_list__scroll_scrolls'>
+    //         <View className='ugcindex_list__scroll_scrolls_left'>
+    //           {oddList?.map((item) => {
+    //             return (
+    //               <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+    //                 <Scrollitem item={item} setlikes={this.updatelist} />
+    //               </View>
+    //             )
+    //           })}
+    //         </View>
+    //         <View className='ugcindex_list__scroll_scrolls_right'>
+    //           {evenList?.map((item) => {
+    //             return (
+    //               <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+    //                 <Scrollitem item={item} setlikes={this.updatelist} />
+    //               </View>
+    //             )
+    //           })}
+    //         </View>
+    //       </View>
+    //       {/* {
+    //             page.isLoading && <Loading key={page.isLoading}>正在加载...</Loading>
+    //           } */}
+
+    //       {/* {
+    //             !page.isLoading && !page.hasNext && list.length==page.total
+    //             && (<View className='ugcindex_list__scroll_end'>—— ——人家是有底线的—— ——</View>)
+    //           } */}
+    //       {/* {
+    //             !page.isLoading && !page.hasNext && !list.length
+    //             && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
+    //           } */}
+    //     </SpScrollView>
+
+    //   </View>
+    //   <View className={'ugcindex_floatmenus'}>
+    //       <FloatMenus>
+    //         <FloatMenuItem
+    //           iconPrefixClass='icon'
+    //           icon='tianjia1'
+    //           onClick={topages.bind(this,'/subpages/mdugc/pages/member/index')}
+    //         />
+    //         <FloatMenuItem
+    //           iconPrefixClass='icon'
+    //           icon='tianjia1'
+    //           onClick={topages.bind(this,'/subpages/mdugc/pages/make/index')}
+
+    //         />
+    //       </FloatMenus>
+    //     </View>
+    //   <SpTabbar />
+    //   <SpToast />
+    // </View>
   )
 }
 
