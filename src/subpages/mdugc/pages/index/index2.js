@@ -5,8 +5,8 @@ import Taro, {
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { pickBy } from '@/utils'
-import { View, Image, Text, ScrollView } from '@tarojs/components'
+import { pickBy, navigateTo } from '@/utils'
+import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   SpToast,
@@ -19,8 +19,10 @@ import {
   FloatMenuItem,
   SpPage,
   SpFloatMenuItem,
+  SpDefault,
   CompTabbar
 } from '@/components'
+import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -106,7 +108,7 @@ const initialState = {
     pageIndex: 1,
     pageSize: 10
   },
-  istag: 1,
+  istag: 1
 }
 
 function MdugcIndex() {
@@ -153,6 +155,7 @@ function MdugcIndex() {
     setState((draft) => {
       ;(draft.list = []), (draft.oddList = []), (draft.evenList = []), (draft.val = '')
     })
+    listRef.current.reset()
   }
   const shonConfirm = (val) => {
     console.log('完成触发', val)
@@ -160,6 +163,7 @@ function MdugcIndex() {
     setState((draft) => {
       ;(draft.list = []), (draft.oddList = []), (draft.evenList = []), (draft.val = val)
     })
+    listRef.current.reset()
   }
 
   const handleTagChange = (id) => {
@@ -273,211 +277,172 @@ function MdugcIndex() {
   }
 
   console.log('---------', state.istag)
-  const { val, tagsList, curTagId, istag, oddList, evenList } = state
+  const { val, tagsList, curTagId, istag, oddList, evenList, list } = state
   return (
-    <SpPage
-      className='ugcindex'
-      scrollToTopBtn
-      renderFloat={
-        <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/mdugc/pages/member/index' })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/mdugc/pages/make/index' })
-            }}
-          >
-            <Text className='iconfont icon-tianjia1'></Text>
-          </SpFloatMenuItem>
-        </View>
-      }
-      renderFooter={<SpTabbar />}
-    >
-    <View >
-        <View className='ugcindex_search'>
-          <SearchBar
-            // showDailog={false}
-            keyword={val}
-            placeholder='搜索'
-            onFocus={() => false}
-            onCancel={() => {}}
-            onChange={shonChange.bind(this)}
-            onClear={shonClear.bind(this)}
-            onConfirm={shonConfirm.bind(this)}
-          />
-        </View>
-        <View className='ugcindex_tagsbar'>
-          {tagsList?.length && (
-            <TagsBarcheck
-              current={curTagId}
-              list={tagsList}
-              onChange={handleTagChange.bind(this)}
-            />
-          )}
-        </View>
-        <View className='ugcindex_list'>
-          <View className='ugcindex_list__tag'>
-            <View
-              onClick={onistag.bind(this, 1)}
-              className={
-                istag == 1
-                  ? 'ugcindex_list__tag_i icon-shijian ugcindex_list__tag_iact'
-                  : 'ugcindex_list__tag_i icon-shijian'
-              }
-            >
-              最热
+    <View className='ugcindex'>
+      <View className='ugcindex_search'>
+        <SearchBar
+          // showDailog={false}
+          keyword={val}
+          placeholder='搜索'
+          onFocus={() => false}
+          onCancel={() => {}}
+          onChange={shonChange.bind(this)}
+          onClear={shonClear.bind(this)}
+          onConfirm={shonConfirm.bind(this)}
+        />
+      </View>
+
+      {/* {tagsList?.length !== 0 && list?.length !== 0 && ( */}
+        <SpPage
+          scrollToTopBtn
+          renderFloat={
+            <View className='float-icon'>
+              <SpFloatMenuItem
+                style={{ fontSize: '38px' }}
+                onClick={topages.bind(this,'/subpages/mdugc/pages/member/index')}
+              >
+                <Text className='iconfont icon-huiyuanzhongxin'></Text>
+              </SpFloatMenuItem>
+              <SpFloatMenuItem
+                onClick={topages.bind(this,'/subpages/mdugc/pages/make/index')}
+              >
+                <Text className='iconfont icon-tianjia1'></Text>
+              </SpFloatMenuItem>
             </View>
-            <View
-              onClick={onistag.bind(this, 2)}
-              className={
-                istag == 2
-                  ? 'ugcindex_list__tag_i icon-shoucang ugcindex_list__tag_iact'
-                  : 'ugcindex_list__tag_i icon-shoucang'
-              }
-            >
-              最新
+          }
+          renderFooter={<SpTabbar />}
+        >
+          <View>
+            <View className='ugcindex_tagsbar'>
+              {tagsList?.length && (
+                <TagsBarcheck
+                  current={curTagId}
+                  list={tagsList}
+                  onChange={handleTagChange.bind(this)}
+                />
+              )}
+            </View>
+            <View className='ugcindex_list'>
+              <View className='ugcindex_list__tag'>
+                <View
+                  onClick={onistag.bind(this, 1)}
+                  className={
+                    istag == 1
+                      ? 'ugcindex_list__tag_i icon-shijian ugcindex_list__tag_iact'
+                      : 'ugcindex_list__tag_i icon-shijian'
+                  }
+                >
+                  最热
+                </View>
+                <View
+                  onClick={onistag.bind(this, 2)}
+                  className={
+                    istag == 2
+                      ? 'ugcindex_list__tag_i icon-shoucang ugcindex_list__tag_iact'
+                      : 'ugcindex_list__tag_i icon-shoucang'
+                  }
+                >
+                  最新
+                </View>
+              </View>
+              <SpScrollView
+                className='ugcindex_list__scroll'
+                auto={false}
+                ref={listRef}
+                fetch={fetch}
+              >
+                <View className='ugcindex_list__scroll_scrolls'>
+                  <View className='ugcindex_list__scroll_scrolls_left'>
+                    {oddList?.map((item) => {
+                      return (
+                        <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                          <Scrollitem item={item} setlikes={this.updatelist} />
+                        </View>
+                      )
+                    })}
+                  </View>
+                  <View className='ugcindex_list__scroll_scrolls_right'>
+                    {evenList?.map((item) => {
+                      return (
+                        <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
+                          <Scrollitem item={item} setlikes={this.updatelist} />
+                        </View>
+                      )
+                    })}
+                  </View>
+                </View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+                <View>1</View>
+              </SpScrollView>
             </View>
           </View>
-          <SpScrollView className='ugcindex_list__scroll' auto={false}  ref={listRef} fetch={fetch}>
-            <View className='ugcindex_list__scroll_scrolls'>
-              <View className='ugcindex_list__scroll_scrolls_left'>
-                {oddList?.map((item) => {
-                  return (
-                    <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                      <Scrollitem item={item} setlikes={this.updatelist} />
-                    </View>
-                  )
-                })}
-              </View>
-              <View className='ugcindex_list__scroll_scrolls_right'>
-                {evenList?.map((item) => {
-                  return (
-                    <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                      <Scrollitem item={item} setlikes={this.updatelist} />
-                    </View>
-                  )
-                })}
-              </View>
-            </View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
+        </SpPage>
+      {/*  )} */}
 
-            {/* {
-                page.isLoading && <Loading key={page.isLoading}>正在加载...</Loading>
-              } */}
+      {/* {tagsList?.length == 0 && list?.length == 0 && (
+        <>
+          <SpNote img='trades_empty.png' isUrl>
+            暂无更新~先去商城看看
+          </SpNote>
+          <Button
+            className='pay-button'
+            style={{ backgroundColor: '#009bd4' }}
+            onClick={navigateTo.bind(this, '/pages/index', true)}
+          >
+            去选购
+          </Button>
+          <SpTabbar />
+        </>
+       )}  */}
 
-            {/* {
-                !page.isLoading && !page.hasNext && list.length==page.total
-                && (<View className='ugcindex_list__scroll_end'>—— ——人家是有底线的—— ——</View>)
-              } */}
-            {/* {
-                !page.isLoading && !page.hasNext && !list.length
-                && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
-              } */}
-          </SpScrollView>
-                {/* <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View>
-                <View>1</View> */}
-        </View>
-      </View>
-    </SpPage>
-
+    </View>
 
     // <View className='ugcindex'>
     //   <View className='ugcindex_search'>

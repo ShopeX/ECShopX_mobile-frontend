@@ -1,6 +1,6 @@
 import React, { Component, useEffect } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
-import { View, Text, Input, ScrollView, Button } from '@tarojs/components'
+import { View, Text,Image, Input, ScrollView, Button } from '@tarojs/components'
 import { Swiperugc, Popups } from '../../components'
 import { FloatMenus, FloatMenuItem, BackToTop, Loading } from '@/components'
 import S from '@/spx'
@@ -42,7 +42,7 @@ function MdugcDetails(props) {
 
   useEffect(() => {
     let { item_id } = router.params
-    this.getpostdetail(item_id)
+    getpostdetail(item_id)
     return () => {
       //组件销毁
       comsRemoveEvent()
@@ -262,7 +262,7 @@ function MdugcDetails(props) {
       })
     } else {
       console.log('二级评论_回复')
-      this.closesheet()
+      closesheet()
       let name = ''
 
       if (comment_act.reply) {
@@ -764,8 +764,8 @@ function MdugcDetails(props) {
         className='ugcdetailsr_scroll'
         scrollTop={scrollTop}
         scrollWithAnimation
-        onScroll={this.handleScroll}
-        onScrollToLower={this.nextPage}
+        onScroll={handleScroll}
+        onScrollToLower={nextPage}
       >
         <View className='ugcdetailsr_scroll_view'>
           <View className='ugcdetailsr_swiper'>
@@ -1097,7 +1097,7 @@ function MdugcDetails(props) {
         onClose={closesheet}
         onCancel={closesheet}
       >
-        <AtActionSheetItem onClick={this.reply}>回复</AtActionSheetItem>
+        <AtActionSheetItem onClick={reply}>回复</AtActionSheetItem>
         {memberData.memberInfo &&
         (comment_act.reply.user_id == memberData.memberInfo.user_id ||
           (comment_act.parent.user_id == memberData.memberInfo.user_id &&
