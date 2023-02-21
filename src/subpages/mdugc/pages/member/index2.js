@@ -1,6 +1,6 @@
 import React, { Component, useEffect } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
-import { View, Text, Button, ScrollView } from '@tarojs/components'
+import { View, Text, Button, ScrollView,Image } from '@tarojs/components'
 import { Scrollitem, Popups } from '../../components'
 import S from '@/spx'
 import { useSelector } from 'react-redux'
@@ -359,6 +359,7 @@ function mdugcmember(props) {
 
   return (
     <View className='ugcmember'>
+      123
       <View className='ugcmember_t'>
         <View className='ugcmember_t_data'>
           <View className='ugcmember_t_data_l'>
@@ -559,3 +560,4 @@ function mdugcmember(props) {
     </View>
   )
 }
+export default mdugcmember

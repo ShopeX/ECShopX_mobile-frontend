@@ -300,12 +300,12 @@ function MdugcIndex() {
             <View className='float-icon'>
               <SpFloatMenuItem
                 style={{ fontSize: '38px' }}
-                onClick={topages.bind(this,'/subpages/mdugc/pages/member/index')}
+                onClick={topages.bind(this,'/subpages/mdugc/pages/member/index2')}
               >
                 <Text className='iconfont icon-huiyuanzhongxin'></Text>
               </SpFloatMenuItem>
               <SpFloatMenuItem
-                onClick={topages.bind(this,'/subpages/mdugc/pages/make/index')}
+                onClick={topages.bind(this,'/subpages/mdugc/pages/make/index2')}
               >
                 <Text className='iconfont icon-tianjia1'></Text>
               </SpFloatMenuItem>

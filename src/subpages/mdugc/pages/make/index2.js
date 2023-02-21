@@ -871,8 +871,8 @@ function Make(props) {
               }
             </View> */}
           <View className='makeindex_upload_img'>
-            {(file_img.length == 0 && file_video.url) ||
-            (file_video.video_idx == -1 && file_video.url) ? (
+            {(file_img?.length == 0 && file_video?.url) ||
+            (file_video?.video_idx == -1 && file_video?.url) ? (
               <View className='makeindex_upload_img_i'>
                 <SpImg
                   img-class='makeindex_upload_img_i_img'
@@ -908,7 +908,7 @@ function Make(props) {
                       编辑
                     </View>
                   </View>
-                  {file_video.video_idx == idx && file_video.url ? (
+                  {file_video.video_idx == idx && file_video?.url ? (
                     // <View className='makeindex_upload_video_i'>
                     //   <Video className='makeindex_upload_video_i_video' src={file_video.url} objectFit="contain" controls={false} showCenterPlayBtn={false}></Video>
                     //   <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this,0,'video')}>
