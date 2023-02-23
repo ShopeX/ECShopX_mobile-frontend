@@ -95,6 +95,7 @@ export default class mdugcdetails extends Component {
       mask:true
     })
     const { memberData } = this.props;
+    console.log(11111,memberData)
     let {isoneself,old_isheart}=this.state
     let id=Number(post_id)
     let data={
@@ -784,8 +785,8 @@ export default class mdugcdetails extends Component {
               <View className="ugcdetailsr_text">
                 <View className='ugcdetailsr_text_top'>
                   <View className='ugcdetailsr_text_top_l' onClick={this.topages.bind(this,`/mdugc/pages/member/index?user_id=${file_details.user_id}`)}>
-                    <image mode="aspectFit" src={file_details.userInfo.headimgurl} />
-                    <View>{file_details.userInfo.nickname }</View>
+                    <image mode="aspectFit" src={file_details?.userInfo?.headimgurl} />
+                    <View>{file_details?.userInfo?.nickname }</View>
                   </View>
                   {
                     !isoneself?(
@@ -808,7 +809,7 @@ export default class mdugcdetails extends Component {
                 </View>
                 <View className='ugcdetailsr_text_subject'>
                   {
-                    topics.map((item)=>{
+                    topics?.map((item)=>{
                       return(
                         <View onClick={this.wordlist.bind(this,item)} className='ugcdetailsr_text_subject_i'>
                           {item.topic_name}
@@ -822,14 +823,14 @@ export default class mdugcdetails extends Component {
                 </View>
               </View>
               {
-                goods.length>0?(
+                goods?.length>0?(
                   <View className='ugcdetailsr_commodity'>
                     <View className="ugcdetailsr_commodity_title">
                       推荐商品
                     </View>
                     <View className='ugcdetailsr_commodity_center'>
                       {
-                        goods.length>2?(
+                        goods?.length>2?(
                           <View
                           className='ugcdetailsr_commodity_center_left'
                           onClick={this.oncommoditynum.bind(this)}
@@ -875,7 +876,7 @@ export default class mdugcdetails extends Component {
                   共{totalnum?totalnum:page.total}条评论
                 </View>
                 {
-                  theory.length>0?(
+                  theory?.length>0?(
                     <View className='ugcdetailsr_theory_text'>
                       {
                         theory.map((item,idx)=>{
@@ -988,14 +989,14 @@ export default class mdugcdetails extends Component {
 
                               </View>
                               {
-                                ( (commentlist[item.comment_id] && (commentlist[item.comment_id].total==commentlist[item.comment_id].list.length) ) || (item.child && item.child.length<2 || (!item.child)) )?null:(
+                                ( (commentlist[item.comment_id] && (commentlist[item.comment_id].total==commentlist[item.comment_id].list?.length) ) || (item.child && item.child.length<2 || (!item.child)) )?null:(
                                   <View className='ugcdetailsr_theory_open' onClick={this.getcommentlist.bind(this,item)}>
                                     展开10条评论
                                   </View>
                                 )
                               }
                               {
-                                (commentlist[item.comment_id] &&  (commentlist[item.comment_id].total==commentlist[item.comment_id].list.length) && commentlist[item.comment_id].total>2 )?(
+                                (commentlist[item.comment_id] &&  (commentlist[item.comment_id].total==commentlist[item.comment_id].list?.length) && commentlist[item.comment_id].total>2 )?(
                                   <View className='ugcdetailsr_theory_open' onClick={this.stowcommentlist.bind(this,item.comment_id)}>
                                     收起评论
                                   </View>
@@ -1010,7 +1011,7 @@ export default class mdugcdetails extends Component {
                   ):null
                 }
                 {
-                  !page.isLoading && !page.hasNext && !theory.length
+                  !page.isLoading && !page.hasNext && !theory?.length
                   && (
                     <View className='ugcdetailsr_theory_empty'>
                       <View className='icon-sixin ugcdetailsr_theory_empty_icons'></View>

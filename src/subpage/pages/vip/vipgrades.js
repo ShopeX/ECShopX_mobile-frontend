@@ -48,6 +48,7 @@ export default class VipIndex extends Component {
   }
 
   componentDidMount() {
+    console.log(S.getAuthToken())
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',

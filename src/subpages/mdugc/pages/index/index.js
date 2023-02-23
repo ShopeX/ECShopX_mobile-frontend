@@ -6,6 +6,7 @@ import S from '@/spx'
 import {SearchBar,TagsBarcheck,Scrollitem} from '../../components'
 import { SpNote , BackToTop , FloatMenus , FloatMenuItem, SpTabbar } from "@/components";
 import { pickBy } from "@/utils";
+import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from "@/api";
@@ -13,9 +14,16 @@ import api from "@/api";
 
 //import '../../font/iconfont.scss'
 import './index.scss'
+@connect(
+  ({ member }) => ({
+    memberData: member.member
+  }),dispatch => ({
+    setMemberInfo: memberInfo =>
+      dispatch({ type: "member/init", payload: memberInfo })
+  })
+)
 @withPager
 @withBackToTop
-
 export default class mdugcindex extends Component {
   constructor (props) {
     super(props)
@@ -32,7 +40,10 @@ export default class mdugcindex extends Component {
     }
   }
 
-  componentDidMount () {
+ async  componentDidMount () {
+    const res = await S.getMemberInfo()
+    this.props.setMemberInfo(res)
+    console.log(123,this.props)
     this.gettopicslist()
     this.nextPage()
   }
@@ -40,6 +51,7 @@ export default class mdugcindex extends Component {
     navigationBarTitleText: '社区',
   }
   componentDidShow () {
+
     Taro.setNavigationBarColor({
       frontColor: '#000000',
       backgroundColor: '#eeeeee',
@@ -384,12 +396,12 @@ export default class mdugcindex extends Component {
             <FloatMenuItem
               iconPrefixClass="icon"
               icon="gerenzhongxin"
-              onClick={this.topages.bind(this,'/mdugc/pages/member/index')}
+              onClick={this.topages.bind(this,'/subpages/mdugc/pages/member/index')}
             />
             <FloatMenuItem
               iconPrefixClass="icon"
               icon="jiahao"
-              onClick={this.topages.bind(this,'/mdugc/pages/make/index')}
+              onClick={this.topages.bind(this,'/subpages/mdugc/pages/make/index')}
 
             />
           </FloatMenus>
