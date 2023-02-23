@@ -128,6 +128,8 @@ function MdugcIndex() {
 
   useEffect(() => {
     gettopicslist()
+
+    initHandle()
     // fetch()
     // nextPage()
   }, [])
@@ -136,6 +138,37 @@ function MdugcIndex() {
     getUgcList()
   }, [curTagId, istag])
 
+  // componentDidShow () {
+  const initHandle = () => {
+    Taro.setNavigationBarColor({
+      frontColor: '#000000',
+      backgroundColor: '#eeeeee',
+    })
+    let pages = Taro.getCurrentPages();
+    let currentPage = pages[pages.length - 1]; // 获取当前页面
+    if (currentPage.__data__.delete) { // 获取值
+      console.log("这是笔记详情传递的删除数据",currentPage.__data__.delete)
+      let post_id=currentPage.__data__.delete
+      this.updatelist(post_id,"delete")
+      setTimeout(() => {
+        currentPage.setData({ //清空上一页面传递值
+          delete:''
+        });
+      }, 1000);
+
+    }else if(currentPage.__data__.heart){
+      console.log("这是笔记详情传递的点赞数据",currentPage.__data__.heart)
+      let heart=currentPage.__data__.heart
+      this.updatelist(heart.item_id,heart.isheart,heart.likes)
+      setTimeout(() => {
+        currentPage.setData({ //清空上一页面传递值
+          heart:''
+        });
+      }, 1000);
+    }
+  }
+
+
   const getUgcList = async () => {
     await setState((draft) => {
       draft.list = []
@@ -143,6 +176,45 @@ function MdugcIndex() {
       draft.evenList = []
     })
     listRef.current.reset()
+  }
+
+   // 更新列表
+  const updatelist=(post_id,type,likes)=>{
+    let {list,oddList,evenList}=state
+    let idx=list.findIndex(item=>item.item_id==post_id)
+    let idx_odd=oddList.findIndex(item=>item.item_id==post_id)
+    let idx_even=evenList.findIndex(item=>item.item_id==post_id)
+    console.log("这是下标",idx,idx_odd,idx_even)
+    if(idx>=0){
+      if(type=='delete'){
+        list.splice(idx,1)
+        if(idx_odd>=0){
+          oddList.splice(idx_odd,1)
+        }else{
+          evenList.splice(idx_even,1)
+        }
+      }else{
+        list=setlist(list,idx,type,likes)
+        // if(idx_odd>=0){
+        //   oddList=that.setlist(oddList,idx_odd,type)
+        // }else{
+        //   evenList=that.setlist(evenList,idx_even,type)
+        // }
+        console.log("这是改后数据",list,oddList,evenList)
+      }
+      setState(draft=>{
+        draft.list = list,
+        draft.oddList = oddList,
+        draft.evenList = evenList
+      })
+    }
+  }
+
+  const setlist=(lists,idxs,types,likes)=>{
+    let listi=lists,idx=idxs,type=types;
+    listi[idx].isheart=type
+    listi[idx].likes=likes
+    return listi
   }
 
   // 搜索
@@ -357,7 +429,7 @@ function MdugcIndex() {
                     {oddList?.map((item) => {
                       return (
                         <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                          <Scrollitem item={item} setlikes={this.updatelist} />
+                          <Scrollitem item={item} setlikes={updatelist} />
                         </View>
                       )
                     })}
@@ -366,7 +438,7 @@ function MdugcIndex() {
                     {evenList?.map((item) => {
                       return (
                         <View className='ugcindex_list__scroll_scrolls_item' key={item.item_id}>
-                          <Scrollitem item={item} setlikes={this.updatelist} />
+                          <Scrollitem item={item} setlikes={updatelist} />
                         </View>
                       )
                     })}
