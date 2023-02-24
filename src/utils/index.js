@@ -601,7 +601,7 @@ export function styleNames(styles) {
       styleNames += `${key}:${styles[key]};`
       return
     }
-    if (typeof styles[key] !== 'object' || styles[key].length === 0) {
+    if (typeof styles[key] !== 'object' || styles[key]?.length === 0) {
       return
     }
     let conditions = styles[key]
