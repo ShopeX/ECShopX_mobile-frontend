@@ -97,6 +97,13 @@
             }
         }
     }
+    .filter-bar{
+      position: sticky;
+      position: -webkit-sticky;
+      top: 0;
+      background-color: transparent;
+      height: auto;
+    }
     .at-tabs{
         // position: relative;
         height: auto;

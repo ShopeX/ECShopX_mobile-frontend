@@ -333,7 +333,6 @@ function mdugcmember(props) {
     } else {
       res = await api.mdugc.followercreate(data)
     }
-    debugger
 
     if (res.action == 'unfollow') {
       userinfo.follow_status = 0
@@ -438,12 +437,14 @@ function mdugcmember(props) {
               关注
             </View>
           )}
-          <View className='ugcmember_t_news_r' onClick={followercreate.bind(this, 'unfollow')}>
-              已关注
-            </View>
         </View>
       </View>
-      <FilterBar current={curTagId} tab={tab} onTabClick={handleTagChange.bind(this)} />
+      <FilterBar
+        current={curTagId}
+        tab={tab}
+        onTabClick={handleTagChange.bind(this)}
+        className='filter-bar'
+      />
       <SpPage scrollToTopBtn isDefault={false} defaultMsg='暂无更新～'>
         <View className='ugcmember_b'>
           <View className='ugcmember_b_list'>
