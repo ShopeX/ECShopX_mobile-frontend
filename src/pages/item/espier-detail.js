@@ -394,6 +394,7 @@ function EspierDetail(props) {
               // current={curImgIdx}
               onChange={onChangeSwiper}
             >
+              {console.log('info',info)}
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage

@@ -1,37 +1,92 @@
-import React, { Component, useEffect,useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
-import { View, Text, Image, Input, ScrollView, Button } from '@tarojs/components'
-import { Swiperugc, Popups } from '../../components'
-import { FloatMenus, FloatMenuItem, SpPage, BackToTop, Loading } from '@/components'
+import { View, Text, Image, Input,Video, Button, Swiper, SwiperItem, } from '@tarojs/components'
+import {  Popups } from '../../components'
+import { FloatMenus, FloatMenuItem, SpPage,SpImage, BackToTop, Loading } from '@/components'
 import S from '@/spx'
 import { useSelector } from 'react-redux'
-import { withPager, withBackToTop, withPointitem } from '@/hocs'
-
+import { WgtFloorImg } from '@/pages/home/wgts'
+import {classNames,isWeb,isWeixin} from '@/utils'
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 
 //import '../../font/iconfont.scss'
 import './index2.scss'
-import { async } from 'regenerator-runtime'
 
 const initialState = {
   isoneself: false,
   file_details: {
-    user_id:'123',
-    follow_status:true,
-    title:'ZzzzZ',
-    content:'dayugdwauhbdwajhdwahdpwuahdwa',
-    userInfo:{
-      headimgurl:'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
-      nickname:'jhon asd'
+    user_id: '123',
+    follow_status: true,
+    title: 'ZzzzZ',
+    content: 'dayugdwauhbdwajhdwahdpwuahdwa',
+    userInfo: {
+      headimgurl:
+        'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      nickname: 'jhon asd'
     },
-    images:['https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY','https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY','https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY','https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY'],
-    video:'https://ecshopx1.yuanyuanke.cn/videos/35/2022/05/27/1dc847cbf9d73a5281cf8b8c7896970ahwKqT4DAWI0mDWxatWvW9izucYk6uWXc',
-    topics:[{topic_name:'香薰'},{topic_name:'水晶石'},{topic_name:'水晶石精油'},{topic_name:'火香薰'},{topic_name:'精油'},{topic_name:'话题跳转模板'}],
-    created:1678185237
+    imgs: [
+      'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY'
+    ],
+    video:
+      'https://ecshopx1.yuanyuanke.cn/videos/35/2022/05/27/1dc847cbf9d73a5281cf8b8c7896970ahwKqT4DAWI0mDWxatWvW9izucYk6uWXc',
+    topics: [
+      { topic_name: '香薰' },
+      { topic_name: '水晶石' },
+      { topic_name: '水晶石精油' },
+      { topic_name: '火香薰' },
+      { topic_name: '精油' },
+      { topic_name: '话题跳转模板' }
+    ],
+    created: 1678185237,
+    goods: {
+      'name': 'floorImg',
+      'base': {
+        'title': '推荐商品',
+        'subtitle': '看看大家都在买什么',
+        'padded': true,
+        'WordColor': '#222',
+        'openBackImg': false,
+        'backgroundImg': ''
+      },
+      'data': [
+        {
+          'imgUrl':
+            'https://ecshopx1.yuanyuanke.cn/image/35/2022/05/27/9271b4c965ad206f2d17e1a9d58a4643YTT1ycKVjaGJN3IG9LRWsDX8YiPpIQpM',
+          'title': '口红',
+          'id': '751',
+          'linkPage': 'sale_category',
+          'linkType': 0,
+          'ImgTitle': '123adadadaawdwafwfwafawsdswdawdwadwafwsdw'
+        },
+        {
+          'ImgTitle': '334',
+          'imgUrl':
+            'https://ecshopx1.yuanyuanke.cn/image/35/2023/02/17/509930acbe53b6a18061d41d845ff210ufGM8HslZpfeWu5oxSybj4QCH5xlBMdJ',
+          'linkPage': 'goods',
+          'title': '02-13-01',
+          'id': '1426'
+        },
+        {
+          'ImgTitle': '5454',
+          'imgUrl':
+            'https://ecshopx1.yuanyuanke.cn/image/35/2023/02/07/ed285f4b49efb77cf43a4bdc6a9c9166H5dMdAdwbtOOZBrssuAs4kprohpzOUA1',
+          'linkPage': 'goods',
+          'title': '23-01-09',
+          'id': '1337'
+        },
+        {
+          'ImgTitle': '2123',
+          'imgUrl':
+            'https://ecshopx1.yuanyuanke.cn/image/35/2022/11/10/140445f4f4d4e7508cdbe6394a9cc681q0N8mmRcF53P27nkexGRc0LSNERCsUyw'
+        }
+      ]
+    }
   },
-  theory: [],
   isOpened: false,
   inputtext: '',
   isfocus: false,
@@ -42,10 +97,66 @@ const initialState = {
     parent: '',
     reply: ''
   },
-  commentlist: {},
+  commentlist: {
+    2: {
+      list: [
+        {
+          headimgurl:
+            'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+          nickname: '青蛙王子commentlist',
+          content: '真好吃12w4d6w46d4pw',
+          created: '2022-06-03 09:02',
+          comment_id: '111',
+          like_status: true,
+          likes: 23,
+          reply_nickname: '小蛙'
+        }
+      ]
+    }
+  },
   old_isheart: -1,
   commoditynum: 0,
-  totalnum: 0
+  totalnum: 0,
+  page: {
+    total: 0
+  },
+  curImgIdx: 0,
+  play: false,
+  theory: [
+    {
+      headimgurl:
+        'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      nickname: '小蛙',
+      content: '真好吃12w4d6w46d4pw',
+      created: '2022-06-03 09:02',
+      comment_id: '1',
+      like_status: true,
+      likes: 23,
+      child: [
+        {
+          headimgurl:
+            'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+          nickname: '青蛙王子child',
+          content: '真好吃12w4d6w46d4pw',
+          created: '2022-06-03 09:02',
+          comment_id: '111',
+          like_status: true,
+          likes: 23,
+          reply_nickname: '小蛙'
+        }
+      ]
+    },
+    {
+      headimgurl:
+        'https://bbc-espier-images.amorepacific.com.cn/image/2/2022/05/10/bae3541a7470e305133303fd8463289anybc3XWcf3hTmdVy5VCMRmBNKi9xesKY',
+      nickname: '小蛙',
+      content: '真好吃的那段难忘就啊等你回我的空间啊我看到结尾',
+      created: '2022-02-03 09:02',
+      comment_id: '2',
+      like_status: false,
+      likes: 23
+    }
+  ]
 }
 
 function MdugcDetails(props) {
@@ -62,6 +173,28 @@ function MdugcDetails(props) {
       comsRemoveEvent()
     }
   })
+
+  useEffect(() => {
+    let video
+    if (isWeixin) {
+      video = Taro.createVideoContext('goods-video')
+    } else if (isWeb) {
+      video = document.getElementById('goods-video')
+    }
+
+    if (!video) {
+      return
+    }
+
+    if (state.play) {
+      setTimeout(() => {
+        console.log('video:', video)
+        video.play()
+      }, 200)
+    } else {
+      isWeixin ? video.stop() : video.pause()
+    }
+  }, [state.play])
 
   const comsRemoveEvent = () => {
     let { item_id } = router.params
@@ -726,7 +859,7 @@ function MdugcDetails(props) {
     // 返回值，根据自己需求调整，现在已经拿到了年月日时分秒了
     let time = m + '月' + d + '日'
     // if (new_y > y) {
-      time = y + '年' + time
+    time = y + '年' + time
     // }
     return time
   }
@@ -751,6 +884,14 @@ function MdugcDetails(props) {
   //   console.log("这是滚动距离",e)
   // }
 
+  const onChangeSwiper = (e) => {
+    setState((draft) => {
+      draft.curImgIdx = e.detail.current
+    })
+  }
+
+  const { windowWidth } = Taro.getSystemInfoSync()
+
   const {
     isoneself,
     file_details,
@@ -767,7 +908,9 @@ function MdugcDetails(props) {
     comment_act,
     commentlist,
     commoditynum,
-    totalnum
+    totalnum,
+    curImgIdx,
+    play
   } = state
   let { goods, topics } = file_details
   // console.log("这是下拉",page)
@@ -814,11 +957,58 @@ function MdugcDetails(props) {
         }
       >
         <View className='ugcdetailsr_scroll_view'>
-          {/* <View className='ugcdetailsr_swiper'>
-            <Swiperugc file_detailss={file_details} />
-          </View> */}
-          <View className='ugcdetailsr_text'>
-            <View className='ugcdetailsr_text_top'>
+          {/* 轮播图 */}
+          <View className='ugcdetailsr_container'>
+            <Swiper
+              className='ugcdetailsr_swiper'
+              // current={curImgIdx}
+              onChange={onChangeSwiper}
+            >
+              {file_details?.imgs?.map((img, idx) => (
+                <SwiperItem key={`swiperitem__${idx}`}>
+                  <SpImage
+                    mode='aspectFill'
+                    src={img}
+                    width={windowWidth * 2}
+                    height={windowWidth * 2}
+                  ></SpImage>
+                </SwiperItem>
+              ))}
+            </Swiper>
+
+            {file_details?.imgs?.length > 1 && (
+              <View className='swiper-pagegation'>{`${curImgIdx + 1}/${file_details.imgs.length}`}</View>
+            )}
+
+            {file_details.video && play && (
+              <View className='video-container'>
+                <Video
+                  id='goods-video'
+                  className='item-video'
+                  src={file_details.video}
+                  showCenterPlayBtn={false}
+                />
+              </View>
+            )}
+
+            {file_details.video && (
+              <View
+                className={classNames('btn-video', {
+                  playing: play
+                })}
+                onClick={() => {
+                  setState((draft) => {
+                    play ? (draft.play = false) : (draft.play = true)
+                  })
+                }}
+              >
+                {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
+                {play ? '退出视频' : '播放视频'}
+              </View>
+            )}
+          </View>
+
+          <View className='ugcdetailsr_text_top'>
               <View
                 className='ugcdetailsr_text_top_l'
                 onClick={topages.bind(
@@ -834,10 +1024,11 @@ function MdugcDetails(props) {
                   onClick={followercreate.bind(this)}
                   className={`ugcdetailsr_text_top_r ${file_details.follow_status ? 'follow' : ''}`}
                 >
-                  {file_details.follow_status ? '已关注' : '关注'}
+                  {file_details.follow_status ? '已关注' : '+关注'}
                 </View>
               ) : null}
             </View>
+          <View className='ugcdetailsr_text'>
             <View className='ugcdetailsr_text_word'>
               <View className='ugcdetailsr_text_word_title'>{file_details.title}</View>
               <View className='ugcdetailsr_text_word_text'>
@@ -855,50 +1046,12 @@ function MdugcDetails(props) {
             </View>
             <View className='ugcdetailsr_text_time'>{formatDate(file_details.created)}</View>
           </View>
-          {/* {goods?.length > 0 ? (
-            <View className='ugcdetailsr_commodity'>
-              <View className='ugcdetailsr_commodity_title'>推荐商品</View>
-              <View className='ugcdetailsr_commodity_center'>
-                {goods?.length > 2 ? (
-                  <View
-                    className='ugcdetailsr_commodity_center_left'
-                    onClick={oncommoditynum.bind(this)}
-                  >
-                    <View className='ugcdetailsr_commodity_center_left_icon'>
-                      <Text className='icon-jiantouxiangzuo'></Text>
-                    </View>
-                  </View>
-                ) : (
-                  <View className='ugcdetailsr_commodity_center_left'>
-                    <View className='ugcdetailsr_commodity_center_left_icon'></View>
-                  </View>
-                )}
-                <ScrollView
-                  className='ugcdetailsr_commodity_center_scroll'
-                  scrollX
-                  scrollWithAnimation={true}
-                  scrollLeft={commoditynum}
-                  // onScroll={this.onscrollcommodity.bind(this)}
-                  scrollHeight={0}
-                >
-                  {goods?.map((item,idx) => {
-                    return (
-                      <View
-                        className='ugcdetailsr_commodity_center_scroll_i'
-                        onClick={handleClickItem.bind(this, item)}
-                        key={idx}
-                      >
-                        <Image mode='heightFix' src={item.pics[0]} />
-                      </View>
-                    )
-                  })}
-                </ScrollView>
-              </View>
-            </View>
-          ) : null} */}
-          {/* <View className='ugcdetailsr_theory'>
+          {/* 推荐商品 */}
+          <WgtFloorImg info={goods} />
+          {/* 评论 */}
+          <View className='ugcdetailsr_theory'>
             <View className='ugcdetailsr_theory_length'>
-              共{totalnum ? totalnum : page?.total}条评论
+              共&nbsp;{totalnum ? totalnum : page?.total}&nbsp;条评论
             </View>
             {theory?.length > 0 ? (
               <View className='ugcdetailsr_theory_text'>
@@ -925,17 +1078,18 @@ function MdugcDetails(props) {
                                 >
                                   <View className='ugcdetailsr_theory_i_r_t_text_word_title'>
                                     {item.content}
-                                  </View>
-                                  <View className='ugcdetailsr_theory_i_r_t_text_word_time'>
-                                    {item.created}
+                                    <Text className='ugcdetailsr_theory_i_r_t_text_word_time'>
+                                      {item.created}
+                                    </Text>
                                   </View>
                                 </View>
                               </View>
                               <View className='ugcdetailsr_theory_i_r_t_fabulous'>
                                 <View
                                   onClick={commentlike.bind(this, item.comment_id)}
-                                  className={`${
-                                    item.like_status ? 'icon-aixin-shixin' : 'icon-aixin'
+                                  className={`iconfont ${
+                                    // item.like_status ? 'icon-dianzanFilled' : 'icon-dianzan'
+                                    item.like_status ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
                                   }`}
                                 ></View>
                                 <Text>{item.likes}</Text>
@@ -946,9 +1100,9 @@ function MdugcDetails(props) {
                       </View>
                       <View className='ugcdetailsr_theory_list_bottom'>
                         {commentlist[item.comment_id]
-                          ? commentlist[item.comment_id].list.map((childi) => {
+                          ? commentlist[item.comment_id]?.list?.map((childi, index) => {
                               return (
-                                <View className='ugcdetailsr_theory_i'>
+                                <View className='ugcdetailsr_theory_i' key={index}>
                                   <View className='ugcdetailsr_theory_i_l'>
                                     <Image
                                       className='ugcdetailsr_theory_i_l_avatar'
@@ -970,17 +1124,23 @@ function MdugcDetails(props) {
                                               ? '回复   ' + childi.reply_nickname + '：'
                                               : null}
                                             {childi.content}
+                                            <Text className='ugcdetailsr_theory_i_r_t_text_word_time'>
+                                              {item.created}
+                                            </Text>
                                           </View>
-                                          <View className='ugcdetailsr_theory_i_r_t_text_word_time'>
+                                          {/* <View className='ugcdetailsr_theory_i_r_t_text_word_time'>
                                             {childi.created}
-                                          </View>
+                                          </View> */}
                                         </View>
                                       </View>
                                       <View className='ugcdetailsr_theory_i_r_t_fabulous'>
                                         <View
                                           onClick={commentlike.bind(this, childi.comment_id)}
-                                          className={`${
-                                            childi.like_status ? 'icon-aixin-shixin' : 'icon-aixin'
+                                          className={`iconfont ${
+                                            // item.like_status ? 'icon-dianzanFilled' : 'icon-dianzan'
+                                            item.like_status
+                                              ? 'icon-shoucanghover-01'
+                                              : 'icon-shoucang-01'
                                           }`}
                                         ></View>
                                         <Text>{childi.likes}</Text>
@@ -990,9 +1150,9 @@ function MdugcDetails(props) {
                                 </View>
                               )
                             })
-                          : item.child.map((childi) => {
+                          : item?.child?.map((childi, index) => {
                               return (
-                                <View className='ugcdetailsr_theory_i'>
+                                <View className='ugcdetailsr_theory_i' key={index}>
                                   <View className='ugcdetailsr_theory_i_l'>
                                     <Image
                                       className='ugcdetailsr_theory_i_l_avatar'
@@ -1014,17 +1174,23 @@ function MdugcDetails(props) {
                                               ? '回复   ' + childi.reply_nickname + '：'
                                               : null}
                                             {childi.content}
+                                            <Text className='ugcdetailsr_theory_i_r_t_text_word_time'>
+                                              {item.created}
+                                            </Text>
                                           </View>
-                                          <View className='ugcdetailsr_theory_i_r_t_text_word_time'>
+                                          {/* <View className='ugcdetailsr_theory_i_r_t_text_word_time'>
                                             {childi.created}
-                                          </View>
+                                          </View> */}
                                         </View>
                                       </View>
                                       <View className='ugcdetailsr_theory_i_r_t_fabulous'>
                                         <View
                                           onClick={commentlike.bind(this, childi.comment_id)}
-                                          className={`${
-                                            childi.like_status ? 'icon-aixin-shixin' : 'icon-aixin'
+                                          className={` iconfont ${
+                                            // item.like_status ? 'icon-dianzanFilled' : 'icon-dianzan'
+                                            item.like_status
+                                              ? 'icon-shoucanghover-01'
+                                              : 'icon-shoucang-01'
                                           }`}
                                         ></View>
                                         <Text>{childi.likes}</Text>
@@ -1063,15 +1229,17 @@ function MdugcDetails(props) {
                 })}
               </View>
             ) : null}
+
+            {theory.length > 0 && <View className='ugcdetailsr_theory_end'>- THE END -</View>}
             {!page?.isLoading && !page?.hasNext && !theory?.length && (
               <View className='ugcdetailsr_theory_empty'>
-                <View className='icon-sixin ugcdetailsr_theory_empty_icons'></View>
+                <View className=' iconfont icon-pinglun ugcdetailsr_theory_empty_icons'></View>
                 <View className='ugcdetailsr_theory_empty_text'>
                   还没有评论哦，<Text onClick={reply.bind(this, 'one')}>点击评论</Text>
                 </View>
               </View>
             )}
-          </View> */}
+          </View>
           {/* {isoneself ? (
             <View className='ugcdetailsr_float'>
               <FloatMenus>

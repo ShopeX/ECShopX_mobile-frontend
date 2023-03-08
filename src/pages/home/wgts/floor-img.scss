@@ -69,7 +69,13 @@
     line-height: 32px;
     max-width: 270px;
     padding: 0px 16px;
-    @include multi-ellipsis(1);
+    // @include multi-ellipsis(1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* display: -webkit-box; */
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
   }
 }
 
