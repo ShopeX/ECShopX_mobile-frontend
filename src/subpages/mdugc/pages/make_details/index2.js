@@ -537,8 +537,9 @@ function MdugcDetails(props) {
   // 跳转话题列表
   const wordlist = (item) => {
     let items = JSON.stringify(item)
+    console.log(123,items)
     Taro.navigateTo({
-      url: `/subpages/mdugc/pages/list/index?item=${items}`
+      url: `/subpages/mdugc/pages/list/index2?item=${items}`
     })
   }
   // 遮罩层

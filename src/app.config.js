@@ -169,6 +169,7 @@ const config = {
           "pages/index/index",
           "pages/index/index2",
           "pages/list/index",
+          "pages/list/index2",
           "pages/make/index",
           "pages/make/index2",
           "pages/member/index",

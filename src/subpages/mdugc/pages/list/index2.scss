@@ -2,50 +2,71 @@
     width: 100%;
     margin: 0 auto;
     min-height: 100vh;
-    background-color: #eeeeee;
-    padding-top: 30px;
+    background-color: #F5F5F5;
+    &_top{
+      // height: 100px;
+      background-color: #fff;
+    }
     &_title{
         padding: 0 20px;
         font-size: 40px;
         margin-bottom: 40px;
+
+    }
+    &__tag{
+      display: flex;
+      // flex-direction: row-reverse;
+      // margin-bottom: 25px;
+      border-radius: 50px 50px 0px 0px;
+      background-color: #F5F5F5;
+      padding: 24rpx 56rpx;
+      &_i{
+        margin-right: 88rpx;
+        color: rgba($color: #000000, $alpha: 0.3)
+      }
+      &_iact{
+        color: rgba($color: #000000, $alpha: 1.0)
+      }
+    }
+    .icon-huiyuanzhongxin,.icon-tianjia1{
+      font-size: 30px ;
     }
     &_list{
-      background-color: #fff;
-      box-shadow: 0px 0px 15px 0px 
-		rgba(0, 0, 0, 0.09);
-	    border-radius: 30px 30px 0px 0px;
-      &__tag{
-        display: flex;
-        padding: 35px 20px;
-        padding-bottom: 100px;
-        &_i{
-          margin-right: 60px;
-          font-size: 30px;
-          color: rgba($color: #000000, $alpha: 0.3);
-          padding-bottom: 3px;
-        }
-        &_iact{
-          color: rgba($color: #000000, $alpha: 1.0);
-          border-bottom: 1px solid black;
-        }
-      }
+      background-color: yellow;
+      font-size: 28px;
+      font-weight: 600;
+      color: #222222;
+      // border-radius: 50px 50px 0px 0px;
+      // padding: 24rpx 56rpx;
+
       &__scroll{
-        position: absolute;
-        top: 230px;
-        left: 0;
-        width: 100%;
+        // position: absolute;
+        // top: 270px;
+        // left: 0;
         padding: 0 5px;
         margin: 0 auto;
+        height: 200px;
         bottom: 0;
         overflow-y: auto;
         overflow-x: hidden;
-        z-index: 1;
-        background-color: #fff;
+        // z-index: 1;
+        background-color: #F5F5F5;
+        &_end{
+          width: 100%;
+          height: 30px;
+          line-height: 30px;
+          text-align: center;
+          color: #7b7b7b;
+          font-size: 25px;
+          position: relative;
+          bottom: 155px;
+        }
         &_scrolls{
           width: 100%;
           display: flex;
           justify-content: space-between;
           padding: 0 15px;
+          // padding-bottom:160px;
           &_left{
             width: 48.7%;
             padding-top: 10px;
@@ -60,14 +81,4 @@
         }
       }
     }
-    .float-menus{
-      right: 33px;
-      bottom: 120px;
-    }
-    &_floatmenus{
-      .float-menus{
-        bottom: 220px;
-      }
-    }
 }
-  
