@@ -20,6 +20,9 @@
       border-radius: 50px 50px 0px 0px;
       background-color: #F5F5F5;
       padding: 24rpx 56rpx;
+      font-size: 28px;
+      font-weight: 600;
+      color: #222222;
       &_i{
         margin-right: 88rpx;
         color: rgba($color: #000000, $alpha: 0.3)
@@ -32,7 +35,6 @@
       font-size: 30px ;
     }
     &_list{
-      background-color: yellow;
       font-size: 28px;
       font-weight: 600;
       color: #222222;
