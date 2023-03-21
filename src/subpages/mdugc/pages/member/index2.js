@@ -6,7 +6,7 @@ import S from '@/spx'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { FilterBar, Popups, Scrollitem } from '../../components'
-import { pickBy } from '@/utils'
+import { pickBy, styleNames, getThemeStyle } from '@/utils'
 
 import api from '@/api'
 
@@ -22,7 +22,7 @@ const initialState = {
       title: '思考i多久啊我i哦大家',
       head_portrait:
         'https://ecshopx1.yuanyuanke.cn/image/35/2023/02/17/509930acbe53b6a18061d41d845ff210ufGM8HslZpfeWu5oxSybj4QCH5xlBMdJ',
-      author: '多久a1',
+      author: '多久a1daduhuwhduw',
       status: 1,
       badges: [
         { badge_name: '多久啊好玩' },
@@ -404,7 +404,7 @@ function mdugcmember(props) {
   console.log('useri', userinfo)
 
   return (
-    <View className='ugcmember'>
+    <View className='ugcmember' style={styleNames(getThemeStyle())}>
       <View className='ugcmember_t'>
         <View className='ugcmember_t_data'>
           <View className='ugcmember_t_data_l'>

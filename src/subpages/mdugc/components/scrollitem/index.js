@@ -4,6 +4,7 @@ import { View, Image, Text, Block } from '@tarojs/components'
 import { SpImage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import {styleNames, getThemeStyle} from '@/utils'
 import { connect } from 'react-redux'
 
 //import '../../font/iconfont.scss'
@@ -25,8 +26,8 @@ export default class Scrollitem extends Component {
     super(props)
 
     this.state = {
-      iscollection: 0,
-      likes: 0
+      iscollection: 1,
+      likes: 1000
     }
   }
   componentDidMount() {
@@ -103,7 +104,7 @@ export default class Scrollitem extends Component {
       return <Block></Block>
     }
     return (
-      <View className='scrollitemlisti' key={item.item_id}>
+      <View className='scrollitemlisti' key={item.item_id} style={styleNames(getThemeStyle())}>
         <View className='img' onClick={() => this.handleClickItem(item)}>
           {/* <Image className="img_i" mode='widthFix' src={item.image_url} ></Image> */}
           <SpImage img-class='img_i' src={item.image_url} mode='widthFix' lazyLoad />
@@ -117,19 +118,21 @@ export default class Scrollitem extends Component {
               <SpImage className='btm_left_img' src={item.head_portrait} mode='widthFix' lazyLoad />
               <View className='btm_left_text'>{item.author}</View>
             </View>
-            {iscollection ? (
+            {'iscollection' ? (
               <View
                 onClick={this.oncollection.bind(this, item)}
-                className='btm_right iconfont icon-dianzanFilled'
+                // className='btm_right iconfont icon-dianzanFilled'
+                className='btm_right active iconfont icon-shoucanghover-01'
               >
-                <Text>{likes}</Text>
+                <Text>{likes}+100</Text>
               </View>
             ) : (
               <View
                 onClick={this.oncollection.bind(this, item)}
-                className='btm_right iconfont icon-dianzan'
+                // className='btm_right iconfont icon-dianzan'
+                className='btm_right iconfont icon-shoucang-01'
               >
-                <Text>{likes}</Text>
+                <Text>{likes}+100</Text>
               </View>
             )}
           </View>

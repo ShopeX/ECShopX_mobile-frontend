@@ -93,16 +93,22 @@
             }
             &_r.follow{
                 color: #fff;
-                background: #F4811F;
+                background: var(--color-primary);
             }
         }
     }
     .filter-bar{
       position: sticky;
-      position: -webkit-sticky;
-      top: 0;
+      // position: -webkit-sticky;
+      background: #E9E9E9 !important;
+      top: -10px;
       background-color: transparent;
       height: auto;
+      z-index: 999;
+      // border-radius: 50px 50px 0px 0px;
+      .at-tabs__header{
+        position: none !important;
+      }
     }
     .at-tabs{
         // position: relative;
@@ -135,7 +141,7 @@
         &_list{
             width: 100%;
             height: auto;
-            padding: 20px;
+            // padding: 20px;
             &__scroll{
                 width: 100%;
                 padding:0 5px;
@@ -182,8 +188,8 @@
                   width: 100%;
                   display: flex;
                   justify-content: space-between;
-                  background-color: #fff;
-                  padding: 0 15px;
+                  // background-color: #fff;
+                  padding: 20px;
                   &_left{
                     width: 48.7%;
                   }
