@@ -191,6 +191,11 @@ function CartCheckout(props) {
       return
     }
 
+    if(!payType) {
+      showToast('请选择支付方式')
+      return
+    }
+
     if (isWeixin) {
       const templeparams = {
         temp_name: 'yykweishop',
@@ -410,7 +415,7 @@ function CartCheckout(props) {
 
   // 商家留言
   const handleRemarkChange = (val) => {
-    if(val.length > 50) val = val.slice(0,50)
+    if (val.length > 50) val = val.slice(0, 50)
     console.log('handleRemarkChange:remark', remark)
     setState((draft) => {
       draft.remark = val
@@ -847,8 +852,8 @@ function CartCheckout(props) {
   }
 
   console.log(couponInfo, 'couponInfo', coupon)
-  console.log('invoiceTitle',invoiceTitle)
-  console.log('payChannel',payChannel)
+  console.log('invoiceTitle', invoiceTitle)
+  console.log('payChannel', payChannel)
   const couponText = couponInfo ? couponInfo.title : ''
   // couponInfo.type === 'member'
   //   ? '会员折扣'
@@ -1096,8 +1101,10 @@ function CartCheckout(props) {
         onChange={(value) => {
           setState((draft) => {
             console.log(`SpCashier:`, value)
-            draft.payType = value.paymentCode
-            draft.payChannel = value.paymentChannel
+            if (value) {
+              draft.payType = value.paymentCode
+              draft.payChannel = value.paymentChannel
+            }
           })
         }}
       />

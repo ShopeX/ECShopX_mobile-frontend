@@ -92,7 +92,7 @@ const initialState = {
   evaluationTotal: 0,
   // 多规格商品选中的规格
   curItem: null,
-  recommendList: []
+  recommendList: [],
 }
 
 function EspierDetail(props) {
@@ -415,6 +415,7 @@ function EspierDetail(props) {
             {info.video && play && (
               <View className='video-container'>
                 <Video
+                  direction={90}
                   id='goods-video'
                   className='item-video'
                   src={info.video}
@@ -487,7 +488,7 @@ function EspierDetail(props) {
                 <View className='brief'>{info.brief}</View>
               </View>
               {(isWeixin || isAPP()) && (
-              // {(
+                // {(
                 <View className='btn-share-wrap'>
                   <SpLogin
                     onChange={async () => {

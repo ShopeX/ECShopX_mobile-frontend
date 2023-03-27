@@ -211,7 +211,7 @@ function SpPage(props, ref) {
         }
       } else {
         pageStyle = {
-          'background-image': `url(${isObject(navigateBackgroundImage) ? navigateBackgroundImage.url : navigateBackgroundImage})`,
+          'background-image': `url(${navigateBackgroundImage})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
           'background-position': 'center'
@@ -223,7 +223,7 @@ function SpPage(props, ref) {
           color: titleColor
         })}>{appName}</Text>
       } else {
-        renderTitle = <SpImage src={isObject(titleBackgroundImage) ? titleBackgroundImage.url : titleBackgroundImage} height={72} mode='heightFix' />
+        renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
       pageTitleStyle = {
         'justify-content': titlePosition == 'left' ? 'flex-start' : 'center',
@@ -280,7 +280,7 @@ function SpPage(props, ref) {
       }
     } else {
       pageBackground = {
-        'background-image': `url(${isObject(pageBackgroundImage) ? pageBackgroundImage.url : pageBackgroundImage})`,
+        'background-image': `url(${pageBackgroundImage})`,
         'background-size': '100% 100%',
         'background-position': 'center'
       }
