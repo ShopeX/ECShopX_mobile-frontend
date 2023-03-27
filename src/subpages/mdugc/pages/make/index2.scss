@@ -116,7 +116,9 @@
     }
     &_textarea{
       border-bottom:1px solid #DDDDDD;;
-
+      .at-textarea__counter{
+        padding: 12px 0;
+      }
       .at-textarea{
         border: none;
         padding: 0;
