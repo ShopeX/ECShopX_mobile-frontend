@@ -61,7 +61,7 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtHeadline } from '../home/wgts'
 
 import './espier-detail.scss'
 
@@ -415,6 +415,7 @@ function EspierDetail(props) {
             {info.video && play && (
               <View className='video-container'>
                 <Video
+                  direction={90}
                   id='goods-video'
                   className='item-video'
                   src={info.video}
@@ -601,7 +602,8 @@ function EspierDetail(props) {
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
-                    {item.name === 'heading' && <WgtHeading info={item} />}
+                    {/* {item.name === 'heading' && <WgtHeading info={item} />} */}
+                    {item.name === 'headline' && <WgtHeadline info={item} />}
                     {item.name === 'goods' && <WgtGoods info={item} />}
                   </View>
                 ))}

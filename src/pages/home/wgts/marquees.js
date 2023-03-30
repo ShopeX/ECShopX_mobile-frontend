@@ -69,28 +69,44 @@ export default class WgtMarquees extends Component {
         <View className='wgt-body' style={styleNames({
           background: config.bgcolor
         })}>
-          <Swiper
-            className='marquees'
-            autoplay
-            circular
-            interval={5000}
-            duration={300}
-            vertical={config.direction}
-          >
-            {data.map((item, idx) => (
-              <SwiperItem key={`marquees-item__${idx}`} className='marquees-item'>
-                <View
-                  className='item-text'
-                  style={styleNames({
-                    color: config.fontcolor
-                  })}
-                  onClick={this.handleClickItem.bind(this, item.id)}
-                >
-                  {item.title}
-                </View>
-              </SwiperItem>
-            ))}
-          </Swiper>
+          {
+            config.direction === 'vertical' && <Swiper
+              className='marquees'
+              autoplay
+              circular
+              interval={5000}
+              duration={300}
+              vertical={config.direction}
+            >
+              {data.map((item, idx) => (
+                <SwiperItem key={`marquees-item__${idx}`} className='marquees-item'>
+                  <View
+                    className='item-text'
+                    style={styleNames({
+                      color: config.fontcolor
+                    })}
+                    onClick={this.handleClickItem.bind(this, item.id)}
+                  >
+                    {item.title}
+                  </View>
+                </SwiperItem>
+              ))}
+            </Swiper>
+          }
+
+          {
+            config.direction === 'horizontal' &&
+            <AtNoticebar marquee speed={30}>
+              <View
+                style={styleNames({
+                  color: config.fontcolor
+                })}
+              >
+                {announce}
+              </View>
+            </AtNoticebar>
+          }
+
         </View>
         {/* {config.label && (
           <View

@@ -18,7 +18,7 @@ export default class WgtFilm extends Component {
     screenWidth: null
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const res = Taro.getSystemInfoSync()
     this.setState({
       screenWidth: res.screenWidth
@@ -27,7 +27,7 @@ export default class WgtFilm extends Component {
 
   handleClickItem = linkPage
 
-  resolveSize ({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
+  resolveSize({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
     const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]
     const { proportion = 0 } = base
     let ratio = aspectRatios[proportion]
@@ -65,7 +65,7 @@ export default class WgtFilm extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info } = this.props
     const { screenWidth } = this.state
 
@@ -94,7 +94,7 @@ export default class WgtFilm extends Component {
           className={`slider-wrap ${config.padded ? 'padded' : ''}`}
           style={`width: ${width}; height: ${height}`}
         >
-          <Video className='flim-video' src={data[0].url} controls />
+          <Video className='flim-video' direction={90} src={data[0].url} controls />
         </View>
       </View>
     )
