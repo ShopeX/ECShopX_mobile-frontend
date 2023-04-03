@@ -143,12 +143,12 @@ function CartCheckout(props) {
   }, [isNewUser])
 
   useEffect(() => {
+    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
     if (receiptType && payType) {
-      console.log('useEffect.....................', payType, point_use, address, coupon, zitiAddress)
       calcOrder()
     }
     // }, [address, payType, coupon, point_use, receiptType, zitiAddress])
-  }, [payType, point_use, address, coupon, zitiAddress])
+  }, [payType, point_use, address, coupon, zitiAddress, receiptType])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
