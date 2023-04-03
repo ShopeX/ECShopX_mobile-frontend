@@ -11,26 +11,26 @@ import S from '@/spx'
 import './comp-shopbrand.scss'
 
 const initialState = {
-  storeInfo: null,
+  // storeInfo: null,
   fav: false,
   couponList: [],
   extend: false
 }
 function CompShopBrand(props) {
-  const { dtid = 0 } = props
+  const { dtid = 0, storeInfo = {} } = props
   const [state, setState] = useImmer(initialState)
-  const { storeInfo, fav, couponList, extend } = state
+  const { fav, couponList, extend } = state
   useEffect(() => {
     fetch()
     fetchCouponList()
   }, [])
 
   const fetch = async () => {
-    const storeInfo = await api.shop.getShop({
-      distributor_id: dtid,
-      show_score: 1,
-      show_marketing_activity: 1
-    })
+    // const storeInfo = await api.shop.getShop({
+    //   distributor_id: dtid,
+    //   show_score: 1,
+    //   show_marketing_activity: 1
+    // })
     let fav = false
 
     if(S.getAuthToken()) {
@@ -39,7 +39,7 @@ function CompShopBrand(props) {
     }
 
     setState((draft) => {
-      draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
+      // draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
       draft.fav = fav
     })
   }
