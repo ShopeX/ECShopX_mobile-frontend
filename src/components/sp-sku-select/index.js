@@ -69,7 +69,7 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale', 'offline_sale'].includes(item.approveStatus))
+    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale'].includes(item.approveStatus))
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -91,7 +91,7 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale', 'offline_sale'].includes(skuDictRef.current[key].approveStatus)
+        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale'].includes(skuDictRef.current[key].approveStatus)
       })
     }
 
