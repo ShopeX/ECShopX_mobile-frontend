@@ -463,7 +463,6 @@ function EspierDetail(props) {
               {!ACTIVITY_LIST[info.activityType] && (
                 <SpGoodsPrice info={curItem ? curItem : info} />
               )}
-              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
 
             <CompVipGuide
@@ -512,9 +511,8 @@ function EspierDetail(props) {
             </View>
             <View className='item-bn-sales'>
               {/* <View className='item-bn'></View> */}
-              {info.salesSetting && (
-                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
-              )}
+              {info.salesSetting && <View className='item-sales'>{`销量：${info.sales || 0}`}</View>}
+              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
           </View>
 

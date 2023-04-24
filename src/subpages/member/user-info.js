@@ -265,7 +265,7 @@ function MemberUserInfo(props) {
     ])
     console.log('onChooseAvatar:res', res)
     setState((draft) => {
-      draft.formUserInfo.avatar = res[0].url
+      draft.formUserInfo.avatar = res[0]?.url
     })
   }
 
