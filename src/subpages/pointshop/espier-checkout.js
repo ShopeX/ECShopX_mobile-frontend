@@ -95,7 +95,7 @@ function PointShopEspierCheckout() {
       return () => {
         dispatch(changeCoupon()) // 清空优惠券信息
         dispatch(changeZitiAddress(null)) // 清空自提地址信息
-        // dispatch(updateChooseAddress(null)) // 清空地址信息
+        dispatch(updateChooseAddress(null)) // 清空地址信息
         dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
       }
     }
@@ -110,10 +110,11 @@ function PointShopEspierCheckout() {
   }, [isNewUser])
 
   useEffect(() => {
+    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [payType, address, zitiAddress])
+  }, [payType, address, zitiAddress, receiptType])
 
   useEffect(() => {
     if (isPackageOpend || isPointOpenModal) {

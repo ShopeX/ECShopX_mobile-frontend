@@ -20,7 +20,7 @@ function StoreZitiPicker(props) {
   const [state, setState] = useImmer(initialState)
   const { zitiList, zitiId, isDefault } = state
   const dispatch = useDispatch()
-  const { openLocation } = useSelector(
+  const { openLocation, openStore } = useSelector(
     (state) => state.sys
   )
 
@@ -35,7 +35,7 @@ function StoreZitiPicker(props) {
       distributor_id
     }
     if(VERSION_STANDARD) {
-      _params['isNostores'] = 1
+      _params['isNostores'] = openStore ? 0 : 1
     }
     // if(VERSION_PLATFORM || (VERSION_STANDARD && openLocation != 1)) {
     //   _params['isNostores'] = 1

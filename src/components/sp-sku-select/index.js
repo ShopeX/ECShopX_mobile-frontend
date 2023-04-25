@@ -69,7 +69,7 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale', 'offline_sale'].includes(item.approveStatus))
+    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale'].includes(item.approveStatus))
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -91,7 +91,7 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale', 'offline_sale'].includes(skuDictRef.current[key].approveStatus)
+        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale'].includes(skuDictRef.current[key].approveStatus)
       })
     }
 
@@ -148,8 +148,8 @@ function SpSkuSelect(props) {
   const getImgs = () => {
     let img = info.imgs[0]
     if (curItem) {
-      const { specImgs } = curItem.specItem[curItem.specItem.length - 1]
-      if (specImgs.length > 0) {
+      const { specImgs } = curItem.specItem.find(item => item.specImgs.length > 0) || {}
+      if (specImgs && specImgs.length > 0) {
         img = specImgs[0]
       }
     }
@@ -160,8 +160,8 @@ function SpSkuSelect(props) {
   const handlePreviewImage = () => {
     let imgUrls = info.imgs
     if (curItem) {
-      const { specImgs } = curItem.specItem[curItem.specItem.length - 1]
-      if (specImgs.length > 0) {
+      const { specImgs } = curItem.specItem.find(item => item.specImgs.length > 0) || {}
+      if (specImgs && specImgs.length > 0) {
         imgUrls = specImgs
       }
     }

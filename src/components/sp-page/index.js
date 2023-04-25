@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch, isObject } from '@/utils'
 
 import './index.scss'
 
@@ -92,16 +92,16 @@ function SpPage(props, ref) {
     }
   }, [])
 
-  useEffect(()=>{
-    if(pageConfig){
-      const {navigateBackgroundColor} = pageConfig
-      if(isAlipay){
-          my.setNavigationBar({
-            backgroundColor:navigateBackgroundColor
-          })
+  useEffect(() => {
+    if (pageConfig) {
+      const { navigateBackgroundColor } = pageConfig
+      if (isAlipay) {
+        my.setNavigationBar({
+          backgroundColor: navigateBackgroundColor
+        })
       }
     }
-  },[pageConfig])
+  }, [pageConfig])
 
   useDidShow(() => {
     const { page, router } = getCurrentInstance()
@@ -211,7 +211,7 @@ function SpPage(props, ref) {
         }
       } else {
         pageStyle = {
-          'background-image': `url(${navigateBackgroundImage.url})`,
+          'background-image': `url(${navigateBackgroundImage})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
           'background-position': 'center'
@@ -223,10 +223,11 @@ function SpPage(props, ref) {
           color: titleColor
         })}>{appName}</Text>
       } else {
-        renderTitle = <SpImage src={titleBackgroundImage.url} height={72} mode='heightFix' />
+        renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
       pageTitleStyle = {
-        'justify-content': titlePosition == 'left' ? 'flex-start' : 'center'
+        'justify-content': titlePosition == 'left' ? 'flex-start' : 'center',
+        'color': titleColor
       }
 
     }
@@ -279,7 +280,7 @@ function SpPage(props, ref) {
       }
     } else {
       pageBackground = {
-        'background-image': `url(${pageBackgroundImage.url})`,
+        'background-image': `url(${pageBackgroundImage})`,
         'background-size': '100% 100%',
         'background-position': 'center'
       }
@@ -291,7 +292,7 @@ function SpPage(props, ref) {
       className={classNames('sp-page', className, {
         'has-navbar': hasNavbar && !isTabBarPage && navbar,
         'has-footer': renderFooter,
-        'has-custom-navigation': customNavigation,
+        'has-custom-navigation': customNavigation && pageConfig,
         'ipx': ipx
       })}
       style={styleNames({ ...pageTheme, ...lockStyle, ...pageBackground })}
@@ -301,9 +302,9 @@ function SpPage(props, ref) {
         <SpNavBar title={pageTitle || _pageTitle} onClickLeftIcon={onClickLeftIcon} />
       )}
 
-      {isDefault && (renderDefault || <SpNote img={defaultImg}  title={defaultMsg} isUrl={true}  />)}
+      {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} isUrl={true} />)}
 
-      {customNavigation && CustomNavigation()}
+      {customNavigation && pageConfig && CustomNavigation()}
 
       {/* {loading && <SpNote img='loading.gif' />} */}
       {loading && <SpLoading />}

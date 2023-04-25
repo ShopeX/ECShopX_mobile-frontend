@@ -8,8 +8,8 @@ import S from '@/spx'
 import { connect } from 'react-redux'
 import './index.scss'
 
-@connect(({ member }) => ({
-  memberData: member.member
+@connect(({ user }) => ({
+  memberData: user.userInfo
 }))
 export default class Flop extends Component {
   $instance = getCurrentInstance()
@@ -143,7 +143,7 @@ export default class Flop extends Component {
   }
 
   handleClickWxOAuth () {
-    const { avatar, username } = this.props.memberData.memberInfo
+    const { avatar, username } = this.props.memberData
     if (!avatar && !username) {
       this.setState({
         showPrivacy: true
@@ -156,7 +156,7 @@ export default class Flop extends Component {
     return (
       <View className='flop'>
         <SpNavBar
-          title={this.config.navigationBarTitleText}
+          title='帮砍'
           leftIconType='chevron-left'
           fixed='true'
         />

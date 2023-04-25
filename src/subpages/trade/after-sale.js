@@ -114,7 +114,7 @@ function TradeAfterSale(props) {
         .filter((item) => item.checked)
         .reduce((sum, { price, num, refundNum }) => sum + price / num * refundNum, 0)
     }
-    return rFee
+    return rFee.toFixed(2)
   }
 
   const getRealRefundPoint = () => {
@@ -125,7 +125,7 @@ function TradeAfterSale(props) {
         .filter((item) => item.checked)
         .reduce((sum, { point, num, refundNum }) => sum + point / num * refundNum, 0)
     }
-    return rPoint
+    return rPoint.toFixed(2)
   }
 
   const onChangeRefundType = ({ value }) => {
