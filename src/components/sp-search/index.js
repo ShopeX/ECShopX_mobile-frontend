@@ -7,7 +7,7 @@ import './index.scss'
 function SpSearch(props) {
   const { info, onClick } = props
   const { padded } = info.base
-  const { placeholder = '搜索' } = info.config
+  const { placeholder = '搜索', fixTop = false } = info.config
 
   const handleClick = () => {
     if (onClick) {
@@ -22,7 +22,8 @@ function SpSearch(props) {
   return (
     // <View className={!isFixTop && 'sp-search-nofix'}>
     <View className={classNames('sp-search', {
-      'wgt__padded': padded
+      'wgt__padded': padded,
+      'fixed-top': fixTop
     })} >
       <View className='sp-search-block' onClick={handleClick}>
         <View className='iconfont icon-sousuo-01'></View>

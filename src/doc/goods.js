@@ -171,7 +171,7 @@ export const GOODS_INFO = {
       })
     }
   },
-
+  specImages: 'spec_images',
   skuList: ({ item_spec_desc }) => {
     return pickBy(item_spec_desc, {
       skuName: 'spec_name',

@@ -60,7 +60,9 @@ class App extends Component {
 
   onLaunch(options) {
     console.log(`app onLaunch:`, options)
+  }
 
+  async componentDidShow(options) {
     entryLaunch.getRouteParams(options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
@@ -75,7 +77,7 @@ class App extends Component {
         Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
       } else {
         // 欢迎语携带用户编号
-        if(guideParams?.gu_user_id) { delete guideParams.gu_user_id }
+        if (guideParams?.gu_user_id) { delete guideParams.gu_user_id }
         Taro.setStorageSync(SG_GUIDE_PARAMS, {
           ...guideParams,
           ...params
@@ -89,18 +91,15 @@ class App extends Component {
         entryLaunch.postGuideTask()
       }
     })
-  }
 
-  async componentDidShow(options) {
-    const {show_time} = await api.promotion.getScreenAd()
+    const { show_time } = await api.promotion.getScreenAd()
     let showAdv
-    if( show_time === 'always'){
-        showAdv = false
-        store.dispatch({
-          type: 'user/closeAdv', payload: showAdv
-        })
-      }
-    console.log(`app componentDidShow:`, options)
+    if (show_time === 'always') {
+      showAdv = false
+      store.dispatch({
+        type: 'user/closeAdv', payload: showAdv
+      })
+    }
     this.getSystemConfig()
   }
 
@@ -166,7 +165,7 @@ class App extends Component {
     }
   }
 
-  componentDidCatchError() {}
+  componentDidCatchError() { }
 
   render() {
     return <Provider store={store}>{this.props.children}</Provider>

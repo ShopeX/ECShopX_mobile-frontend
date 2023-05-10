@@ -92,7 +92,7 @@ const initialState = {
   evaluationTotal: 0,
   // 多规格商品选中的规格
   curItem: null,
-  recommendList: []
+  recommendList: [],
 }
 
 function EspierDetail(props) {
@@ -463,7 +463,6 @@ function EspierDetail(props) {
               {!ACTIVITY_LIST[info.activityType] && (
                 <SpGoodsPrice info={curItem ? curItem : info} />
               )}
-              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
 
             <CompVipGuide
@@ -488,7 +487,7 @@ function EspierDetail(props) {
                 <View className='brief'>{info.brief}</View>
               </View>
               {(isWeixin || isAPP()) && (
-              // {(
+                // {(
                 <View className='btn-share-wrap'>
                   <SpLogin
                     onChange={async () => {
@@ -512,9 +511,8 @@ function EspierDetail(props) {
             </View>
             <View className='item-bn-sales'>
               {/* <View className='item-bn'></View> */}
-              {info.salesSetting && (
-                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
-              )}
+              {info.salesSetting && <View className='item-sales'>{`销量：${info.sales || 0}`}</View>}
+              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
           </View>
 

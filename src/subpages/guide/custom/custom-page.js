@@ -91,7 +91,6 @@ function GuideCustomPage() {
   return (
     <SpPage
       className='page-guide-custompage'
-      navigateTheme='dark'
       scrollToTopBtn
       renderFooter={
         <View className='btn-wrap'>

@@ -4,7 +4,7 @@
   $footer-height: 120px !default;
   $tabbar-height: 120px !default;
   $tabbar-ipx-height: 140px !default;
-  padding-top: 170px;
+  // padding-top: 170px;
   .item-list-scroll {
     padding: 24px 0;
     @include page-scroll($header-height + $camera-height + 168px, $footer-height + $page-footer-height + 66px);

@@ -111,6 +111,7 @@ class AtInputNumber extends AtComponent {
       width: width ? `${Taro.pxTransform(width)}` : ''
     }
     const inputValue = this.handleValue(value)
+    console.log('inputValue', inputValue, max, inputValue >= parseInt(max))
     const rootCls = classNames(
       'sp-input-number',
       'at-input-number',

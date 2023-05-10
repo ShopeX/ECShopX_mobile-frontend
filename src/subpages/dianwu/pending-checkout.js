@@ -114,7 +114,7 @@ function DianwuPendingCheckout(props) {
   }
 
   return (
-    <SpPage className='page-dianwu-pending-checkout' navigateTheme='dark' renderFooter={<CompTabbar />}>
+    <SpPage className='page-dianwu-pending-checkout' renderFooter={<CompTabbar />}>
       <SpScrollView className='pending-checkout-list' ref={listRef} fetch={fetch}>
         {list.map((items, index) => {
           return items.map((item, sidx) => (
