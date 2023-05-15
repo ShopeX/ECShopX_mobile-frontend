@@ -233,9 +233,9 @@
     }
     .params-item {
       display: flex;
-      align-items: center;
-      height: 60px;
-      line-height: 60px;
+      align-items: flex-start;
+      // height: 60px;
+      // line-height: 60px;
     }
     .params-label {
       color: #666;
@@ -243,8 +243,9 @@
     }
     .params-value {
       color: #222;
-      max-width: 550px;
-      @include text-overflow();
+      flex: 1;
+      // max-width: 550px;
+      // @include text-overflow();
     }
   }
 }
