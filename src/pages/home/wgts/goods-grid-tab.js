@@ -43,7 +43,7 @@ function WgtGoodsGridTab(props) {
             <Text className='wgt-title'>{base.title}</Text>
             <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
-          {config.moreLink.linkPage && (
+          {config.moreLink?.linkPage && (
             <View className='wgt-more' onClick={handleClickMore}>
               <View className='three-dot'></View>
             </View>
@@ -149,7 +149,7 @@ function WgtGoodsGridTab(props) {
             )
           })}
         </View>
-        {config.moreLink.id && (
+        {config.moreLink?.id && (
           <View className='btn-more' onClick={() => linkPage(config.moreLink)}>
             查看更多
           </View>
