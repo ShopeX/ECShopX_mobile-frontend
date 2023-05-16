@@ -155,12 +155,11 @@ function Home() {
   useShareTimeline(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     const params = getCurrentPageRouteParams()
-    const path = `/pages/index${isEmpty(params) ? '' : '?' + qs.stringify(getCurrentPageRouteParams())}`
-    console.log('useShareAppMessage path:', path)
+    console.log('useShareAppMessage path:', params)
     return {
       title: title,
       imageUrl: imageUrl,
-      path
+      query: qs.stringify(getCurrentPageRouteParams())
     }
   })
 
