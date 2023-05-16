@@ -20,18 +20,21 @@ import api from '@/api'
 import {
   isWeixin,
   isAPP,
+  isEmpty,
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
   VERSION_IN_PURCHASE,
   VERSION_B2C,
-  classNames
+  classNames,
+  getCurrentPageRouteParams
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
+import qs from 'qs'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import CompAddTip from './home/comps/comp-addtip'
@@ -51,6 +54,7 @@ const initialState = {
 function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
+
   const { initState, openRecommend, openLocation, openStore, appName } = useSelector(
     (state) => state.sys
   )
@@ -138,19 +142,25 @@ function Home() {
 
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    const params = getCurrentPageRouteParams()
+    const path = `/pages/index${isEmpty(params) ? '' : '?' + qs.stringify(getCurrentPageRouteParams())}`
+    console.log('useShareAppMessage path:', path)
     return {
       title: title,
       imageUrl: imageUrl,
-      path: '/pages/index'
+      path
     }
   })
 
   useShareTimeline(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    const params = getCurrentPageRouteParams()
+    const path = `/pages/index${isEmpty(params) ? '' : '?' + qs.stringify(getCurrentPageRouteParams())}`
+    console.log('useShareAppMessage path:', path)
     return {
       title: title,
       imageUrl: imageUrl,
-      query: '/pages/index'
+      path
     }
   })
 

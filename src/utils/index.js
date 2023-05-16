@@ -834,6 +834,17 @@ const htmlStringToNodeArray = (htmlString) => {
   return nodeArray;
 }
 
+const getCurrentPageRouteParams = () => {
+  const pages = Taro.getCurrentPages()
+  const options = {}
+  Object.keys(pages[pages.length - 1].options).forEach(key => {
+    if(key != '$taroTimestamp') {
+      options[key] = pages[pages.length - 1].options[key]
+    }
+  })
+  return options
+}
+
 
 export {
   classNames,
@@ -856,7 +867,8 @@ export {
   getDistributorId,
   alipayAutoLogin,
   requestAlipayminiPayment,
-  htmlStringToNodeArray
+  htmlStringToNodeArray,
+  getCurrentPageRouteParams
 }
 
 export * from './platforms'
