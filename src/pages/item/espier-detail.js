@@ -571,7 +571,7 @@ function EspierDetail(props) {
             )}
           </View>
 
-          <View className='goods-params'>
+          {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
@@ -581,7 +581,7 @@ function EspierDetail(props) {
                 </View>
               ))}
             </View>
-          </View>
+          </View>}
 
           {/* 商品评价 */}
           <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>

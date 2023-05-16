@@ -226,7 +226,7 @@ function SpPage(props, ref) {
         renderTitle = <Text style={styleNames({
           color: titleColor
         })}>{appName}</Text>
-      } else {
+      } else if (titleStyle == '2') {
         renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
       pageTitleStyle = {
@@ -270,7 +270,7 @@ function SpPage(props, ref) {
         </View>}
 
         {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>
-          {title || renderTitle || navigationBarTitleText}
+          {renderTitle || title || navigationBarTitleText}
           {/* 吸顶区域 */}
           {fixedTopContainer}
         </View>}
