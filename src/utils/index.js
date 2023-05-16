@@ -845,6 +845,10 @@ const getCurrentPageRouteParams = () => {
   return options
 }
 
+const resolveStringifyParams = (params) => {
+  return qs.stringify(params)
+}
+
 
 export {
   classNames,
@@ -868,7 +872,8 @@ export {
   alipayAutoLogin,
   requestAlipayminiPayment,
   htmlStringToNodeArray,
-  getCurrentPageRouteParams
+  getCurrentPageRouteParams,
+  resolveStringifyParams
 }
 
 export * from './platforms'
