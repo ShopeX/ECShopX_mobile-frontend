@@ -61,7 +61,7 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtHeadline } from '../home/wgts'
 
 import './espier-detail.scss'
 
@@ -92,7 +92,7 @@ const initialState = {
   evaluationTotal: 0,
   // 多规格商品选中的规格
   curItem: null,
-  recommendList: []
+  recommendList: [],
 }
 
 function EspierDetail(props) {
@@ -214,7 +214,9 @@ function EspierDetail(props) {
       draft.type = type
       draft.dtid = dtid
     })
-    await dispatch(fetchUserFavs())
+    if (S.getAuthToken()) {
+      await dispatch(fetchUserFavs())
+    }
   }
 
   const fetch = async () => {
@@ -414,6 +416,7 @@ function EspierDetail(props) {
             {info.video && play && (
               <View className='video-container'>
                 <Video
+                  direction={90}
                   id='goods-video'
                   className='item-video'
                   src={info.video}
@@ -461,7 +464,6 @@ function EspierDetail(props) {
               {!ACTIVITY_LIST[info.activityType] && (
                 <SpGoodsPrice info={curItem ? curItem : info} />
               )}
-              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
 
             <CompVipGuide
@@ -486,7 +488,7 @@ function EspierDetail(props) {
                 <View className='brief'>{info.brief}</View>
               </View>
               {(isWeixin || isAPP()) && (
-              // {(
+                // {(
                 <View className='btn-share-wrap'>
                   <SpLogin
                     onChange={async () => {
@@ -510,9 +512,8 @@ function EspierDetail(props) {
             </View>
             <View className='item-bn-sales'>
               {/* <View className='item-bn'></View> */}
-              {info.salesSetting && (
-                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
-              )}
+              {info.salesSetting && <View className='item-sales'>{`销量：${info.sales || 0}`}</View>}
+              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
           </View>
 
@@ -571,7 +572,7 @@ function EspierDetail(props) {
             )}
           </View>
 
-          <View className='goods-params'>
+          {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
@@ -581,7 +582,7 @@ function EspierDetail(props) {
                 </View>
               ))}
             </View>
-          </View>
+          </View>}
 
           {/* 商品评价 */}
           <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>
@@ -600,7 +601,8 @@ function EspierDetail(props) {
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
-                    {item.name === 'heading' && <WgtHeading info={item} />}
+                    {/* {item.name === 'heading' && <WgtHeading info={item} />} */}
+                    {item.name === 'headline' && <WgtHeadline info={item} />}
                     {item.name === 'goods' && <WgtGoods info={item} />}
                   </View>
                 ))}

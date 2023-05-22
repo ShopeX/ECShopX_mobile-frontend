@@ -1,7 +1,8 @@
+import Taro from '@tarojs/taro'
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { linkPage, classNames } from '@/utils'
+import { linkPage, classNames, isWeb } from '@/utils'
 
 import './navigation.scss'
 
@@ -24,14 +25,29 @@ export default class WgtNavigation extends Component {
     }
 
     const { base, data } = info
-
+    const { windowWidth } = isWeb ? {
+      windowWidth: window.innerWidth
+    } : Taro.getSystemInfoSync()
+    const itemWidth = Math.floor((windowWidth * 2 - (data.length + 1) * 16) / data.length)
+    // const itemWidth = 120
+    if (itemWidth == 0) {
+      return null
+    }
     return (
       <View
         className={classNames('wgt wgt-navigation', {
           wgt__padded: base.padded
         })}
       >
-        <View className='navigation'>
+        {base.title && (
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            </View>
+          </View>
+        )}
+        <View className='wgt-bd'>
           {data.map((item, idx) => (
             <View
               className='nav-item'
@@ -39,11 +55,11 @@ export default class WgtNavigation extends Component {
               onClick={this.handleClickItem.bind(this, item)}
             >
               <SpImage
+                className='nav-img'
                 src={item.imgUrl}
                 mode='aspectFill'
-                className='cuscss-sp-image'
-                width={120}
-                height={120}
+                width={itemWidth}
+                height={itemWidth}
               />
               <View className='nav-name'>{item.content}</View>
             </View>

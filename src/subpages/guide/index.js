@@ -98,7 +98,6 @@ function Home() {
   return (
     <SpPage
       className='page-guide-index'
-      navigateTheme='dark'
       scrollToTopBtn
       renderFooter={<BaTabBar />}
     >

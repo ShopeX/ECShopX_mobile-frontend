@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch, isObject } from '@/utils'
 
 import './index.scss'
 
@@ -15,13 +15,14 @@ const initialState = {
   pageTitle: '',
   isTabBarPage: true,
   customNavigation: false,
-  cusCurrentPage: 0
+  cusCurrentPage: 0,
+  showLeftContainer: false
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage } = state
+  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage, showLeftContainer } = state
   const {
     className,
     children,
@@ -37,7 +38,9 @@ function SpPage(props, ref) {
     onClickLeftIcon = null,
     navigateTheme = 'light',
     navigateMantle = false, // 自定义导航，开启滚动蒙层
-    pageConfig = null
+    pageConfig = null,
+    fixedTopContainer = null,
+    title = '' // 页面导航标题
   } = props
   let { renderTitle } = props
   const wrapRef = useRef(null)
@@ -92,16 +95,16 @@ function SpPage(props, ref) {
     }
   }, [])
 
-  useEffect(()=>{
-    if(pageConfig){
-      const {navigateBackgroundColor} = pageConfig
-      if(isAlipay){
-          my.setNavigationBar({
-            backgroundColor:navigateBackgroundColor
-          })
+  useEffect(() => {
+    if (pageConfig) {
+      const { navigateBackgroundColor } = pageConfig
+      if (isAlipay) {
+        my.setNavigationBar({
+          backgroundColor: navigateBackgroundColor
+        })
       }
     }
-  },[pageConfig])
+  }, [pageConfig])
 
   useDidShow(() => {
     const { page, router } = getCurrentInstance()
@@ -113,7 +116,8 @@ function SpPage(props, ref) {
     const isTabBarPage = fidx > -1
     setState((draft) => {
       draft.pageTitle = pageTitle
-      draft.isTabBarPage = isTabBarPage
+      draft.isTabBarPage = isTabBarPage,
+        draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
     })
 
     // 导购货架分包路由，隐藏所有分享入口
@@ -201,7 +205,7 @@ function SpPage(props, ref) {
 
   const CustomNavigation = () => {
     const { page, route } = getCurrentInstance()
-    let pageStyle = {}, pageTitleStyle = {}, showLeftContainer = true
+    let pageStyle = {}, pageTitleStyle = {}
     if (pageConfig) {
       const { navigateBackgroundColor, navigateStyle, navigateBackgroundImage, titleStyle, titleColor, titleBackgroundImage, titlePosition } = pageConfig
       // 导航颜色背景
@@ -211,7 +215,7 @@ function SpPage(props, ref) {
         }
       } else {
         pageStyle = {
-          'background-image': `url(${navigateBackgroundImage.url})`,
+          'background-image': `url(${navigateBackgroundImage})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
           'background-position': 'center'
@@ -222,16 +226,18 @@ function SpPage(props, ref) {
         renderTitle = <Text style={styleNames({
           color: titleColor
         })}>{appName}</Text>
-      } else {
-        renderTitle = <SpImage src={titleBackgroundImage.url} height={72} mode='heightFix' />
+      } else if (titleStyle == '2') {
+        renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
       pageTitleStyle = {
-        'justify-content': titlePosition == 'left' ? 'flex-start' : 'center'
+        'justify-content': titlePosition == 'left' ? 'flex-start' : 'center',
+        'color': titleColor
       }
 
     }
-    showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
-
+    // console.log('zzz', Taro.getCurrentPages())
+    // debugger
+    const navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
     return (
       <View
         className={classNames('custom-navigation', {
@@ -263,8 +269,12 @@ function SpPage(props, ref) {
           </View>
         </View>}
 
-        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>{pageTitle || renderTitle}</View>}
-        {/* <View className='right-container'></View> */}
+        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>
+          {renderTitle || title || navigationBarTitleText}
+          {/* 吸顶区域 */}
+          {fixedTopContainer}
+        </View>}
+        {showLeftContainer && <View className='right-container'></View>}
       </View>
     )
   }
@@ -279,19 +289,19 @@ function SpPage(props, ref) {
       }
     } else {
       pageBackground = {
-        'background-image': `url(${pageBackgroundImage.url})`,
+        'background-image': `url(${pageBackgroundImage})`,
         'background-size': '100% 100%',
         'background-position': 'center'
       }
     }
   }
-
+  console.log('xxx----', pageConfig)
   return (
     <View
       className={classNames('sp-page', className, {
         'has-navbar': hasNavbar && !isTabBarPage && navbar,
         'has-footer': renderFooter,
-        'has-custom-navigation': customNavigation,
+        'has-custom-navigation': customNavigation && pageConfig,
         'ipx': ipx
       })}
       style={styleNames({ ...pageTheme, ...lockStyle, ...pageBackground })}
@@ -301,15 +311,18 @@ function SpPage(props, ref) {
         <SpNavBar title={pageTitle || _pageTitle} onClickLeftIcon={onClickLeftIcon} />
       )}
 
-      {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} />)}
+      {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} isUrl={true} />)}
 
+      {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
       {customNavigation && CustomNavigation()}
 
       {/* {loading && <SpNote img='loading.gif' />} */}
       {loading && <SpLoading />}
 
+
+
       {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        'margin-top': `${(customNavigation && pageConfig) ? gNavbarH : 0}px`
+        'margin-top': `${customNavigation ? gNavbarH : 0}px`
       })}>{children}</View>}
 
       {/* 置底操作区 */}

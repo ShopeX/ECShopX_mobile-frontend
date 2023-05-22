@@ -5,7 +5,7 @@
   .tab-item {
     height: 40px;
     line-height: 40px;
-    padding: 0 30px;
+    padding: 0 20px;
     font-size: 28px;
     display: inline-block;
     position: relative;
@@ -51,7 +51,7 @@
         overflow: hidden;
       }
       .goods-item__bd {
-        padding-top: 65px;
+        padding-top: 16px;
       }
       .sp-goods-item {
         border-radius: 16px;
@@ -60,21 +60,19 @@
     }
   }
   .brand-info {
-    border-radius: 55rpx;
     position: relative;
     top: -55px;
     overflow: hidden;
     left: 50%;
     transform: translateX(-50%);
-    // border: 3px solid #ffffff;
-    // background: #dddddd;
-    // box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    background: #fff;
+    box-sizing: border-box;
   }
   .btn-more {
     width: 180px;
     height: 60px;
     line-height: 60px;
-    margin: 20px auto 40px;
+    margin: 40px auto;
     font-size: 24px;
     /* prettier-ignore */
     border: 1PX solid var(--color-primary);

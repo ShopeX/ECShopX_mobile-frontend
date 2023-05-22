@@ -36,12 +36,10 @@ export default class WgtMarquees extends Component {
   }
 
   handleClickItem = (id) => {
-    try {
+    if (id) {
       Taro.navigateTo({
         url: `/subpage/pages/recommend/detail?id=${id}`
       })
-    } catch (error) {
-      console.log(error)
     }
   }
 
@@ -56,11 +54,61 @@ export default class WgtMarquees extends Component {
 
     return (
       <View
-        className={classNames(`wgt wgt-goods-grid`, {
-          wgt__padded: base.padded
+        className={classNames(`wgt wgt-marquees`, {
+          'wgt__padded': base.padded
         })}
       >
-        {config.label && (
+        {base.title && (
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            </View>
+          </View>
+        )}
+        <View className='wgt-body' style={styleNames({
+          background: config.bgcolor
+        })}>
+          {
+            config.direction === 'vertical' && <Swiper
+              className='marquees'
+              autoplay
+              circular
+              interval={5000}
+              duration={300}
+              vertical={config.direction}
+            >
+              {data.map((item, idx) => (
+                <SwiperItem key={`marquees-item__${idx}`} className='marquees-item'>
+                  <View
+                    className='item-text'
+                    style={styleNames({
+                      color: config.fontcolor
+                    })}
+                    onClick={this.handleClickItem.bind(this, item.id)}
+                  >
+                    {item.title}
+                  </View>
+                </SwiperItem>
+              ))}
+            </Swiper>
+          }
+
+          {
+            config.direction === 'horizontal' &&
+            <AtNoticebar marquee speed={30}>
+              <View
+                style={styleNames({
+                  color: config.fontcolor
+                })}
+              >
+                {announce}
+              </View>
+            </AtNoticebar>
+          }
+
+        </View>
+        {/* {config.label && (
           <View
             className='marquees-label'
             style={styleNames({
@@ -70,34 +118,10 @@ export default class WgtMarquees extends Component {
             <Text className='iconfont icon-tongzhituiguang'></Text>
             {config.label}
           </View>
-        )}
-        {config.direction === 'vertical' ? (
-          <Swiper
-            className='marquees'
-            style={styleNames({
-              background: config.bgcolor
-            })}
-            autoplay
-            circular
-            interval={3000}
-            duration={300}
-            vertical={config.direction}
-          >
-            {data.map((item, idx) => (
-              <SwiperItem key={`marquees-item__${idx}`} className='marquees-item'>
-                <View
-                  className='item-text'
-                  style={styleNames({
-                    color: config.fontcolor
-                  })}
-                  onClick={this.handleClickItem.bind(this, item.id)}
-                >
-                  {item.title}
-                </View>
-              </SwiperItem>
-            ))}
-          </Swiper>
-        ) : (
+        )} */}
+        {/* {config.direction === 'vertical' ? ( */}
+
+        {/* ) : (
           <View
             style={styleNames({
               background: config.bgcolor,
@@ -114,7 +138,7 @@ export default class WgtMarquees extends Component {
               </View>
             </AtNoticebar>
           </View>
-        )}
+        )} */}
       </View>
     )
   }

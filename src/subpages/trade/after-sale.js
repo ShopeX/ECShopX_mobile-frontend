@@ -114,7 +114,18 @@ function TradeAfterSale(props) {
         .filter((item) => item.checked)
         .reduce((sum, { price, num, refundNum }) => sum + price / num * refundNum, 0)
     }
-    return rFee
+    return rFee.toFixed(2)
+  }
+
+  const getRealRefundPoint = () => {
+    let rPoint = 0
+    if (info) {
+      const { items } = info
+      rPoint = items
+        .filter((item) => item.checked)
+        .reduce((sum, { point, num, refundNum }) => sum + point / num * refundNum, 0)
+    }
+    return rPoint.toFixed(2)
   }
 
   const onChangeRefundType = ({ value }) => {
@@ -252,36 +263,12 @@ function TradeAfterSale(props) {
 
     <View className='refund-detail'>
       <View className='refund-amount'>
-        <SpCell title='退款金额' value={getRealRefundFee()
-          // <>
-          //   <AtInput
-          //     name='refund_fee'
-          //     value={refundFee}
-          //     onChange={(e) => {
-          //       setState(draft => {
-          //         draft.refundFee = parseFloat(e)
-          //       })
-          //     }}
-          //   />
-          //   <Text className='iconfont icon-bianji1'></Text>
-          // </>
-        }></SpCell>
-        {/* <View className='cell-tip'>{`实际最多可退商品金额：${getRealRefundFee()}`}</View> */}
+        <SpCell title='退款金额' value={getRealRefundFee()} />
       </View>
 
       <View className='refund-point'>
-        <SpCell title='退积分' value={info?.point
-          // <><AtInput
-          //   name='refund_point'
-          //   value={refundPoint}
-          //   onChange={(e) => {
-          //     setState(draft => {
-          //       draft.refundPoint = parseFloat(e)
-          //     })
-          //   }}
-          // /><Text className='iconfont icon-bianji1'></Text></>
-        }></SpCell>
-        {/* <View className='cell-tip'>{`实际最多可退还积分：${info?.point}`}</View> */}
+        {/* <SpCell title='退积分' value={info?.point} /> */}
+        <SpCell title='退积分' value={getRealRefundPoint()} />
       </View>
     </View>
 

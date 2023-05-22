@@ -24,19 +24,19 @@ function WgtShowCase(props) {
       )}
       <View className={`showcase-scheme showcase-scheme-${config.style}`}>
         <View className='left-item'>
-          <SpImage src={data[0].imgUrl} mode='scaleToFill' onClick={linkPage.bind(this, data[0])} />
+          <SpImage src={data[0].imgUrl} mode='aspectFill' onClick={linkPage.bind(this, data[0])} />
         </View>
         <View className='right-item'>
           <SpImage
             src={data[1].imgUrl}
             className='top-img'
-            mode='scaleToFill'
+            mode='aspectFill'
             onClick={linkPage.bind(this, data[1])}
           />
           <SpImage
             src={data[2].imgUrl}
             className='bot-img'
-            mode='scaleToFill'
+            mode='aspectFill'
             onClick={linkPage.bind(this, data[2])}
           />
         </View>

@@ -20,10 +20,12 @@ import {
   VERSION_B2C,
   classNames,
   entryLaunch,
-  pickBy
+  pickBy,
+  log
 } from '@/utils'
 import { useImmer } from 'use-immer'
 import { useNavigation } from '@/hooks'
+import qs from 'qs'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import CompTabbar from './comps/comp-tabbar'
 import CompShopBrand from './comps/comp-shopbrand'
@@ -45,7 +47,7 @@ function StoreIndex() {
   const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
-  const { wgts, loading, isDefault, distributorId } = state
+  const { wgts, loading, isDefault, distributorId, storeInfo } = state
 
   const dispatch = useDispatch()
 
@@ -66,18 +68,18 @@ function StoreIndex() {
       })
       return
     } else {
-      // const storeInfo = await api.shop.getShop({
-      //   distributor_id,
-      //   show_score: 1,
-      //   show_marketing_activity: 1
-      // })
+      const storeInfo = await api.shop.getShop({
+        distributor_id,
+        show_score: 1,
+        show_marketing_activity: 1
+      })
       const { config } = await api.shop.getStoreShopTemplate({
         distributor_id
       })
       setState((draft) => {
         draft.wgts = config
         draft.distributorId = distributor_id
-        // draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
+        draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
         draft.loading = false
       })
     }
@@ -94,23 +96,27 @@ function StoreIndex() {
     }
   }
 
-  // useShareAppMessage(async (res) => {
-  //   const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-  //   return {
-  //     title: title,
-  //     imageUrl: imageUrl,
-  //     path: '/pages/index'
-  //   }
-  // })
+  useShareAppMessage((res) => {
+    return getAppShareInfo()
+  })
 
-  // useShareTimeline(async (res) => {
-  //   const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-  //   return {
-  //     title: title,
-  //     imageUrl: imageUrl,
-  //     query: '/pages/index'
-  //   }
-  // })
+  useShareTimeline((res) => {
+    return getAppShareInfo()
+  })
+
+  const getAppShareInfo = async () => {
+    const { id } = await entryLaunch.getRouteParams()
+    const query = {
+      id
+    }
+    const path = `/subpages/store/index?${qs.stringify(query)}`
+    log.debug(`share path: ${path}`)
+    return {
+      title: storeInfo?.name,
+      imageUrl: storeInfo?.logo,
+      path
+    }
+  }
 
   const searchComp = wgts.find((wgt) => wgt.name == 'search')
   const pageData = wgts.find((wgt) => wgt.name == 'page')
@@ -169,7 +175,8 @@ function StoreIndex() {
     >
       <View className='search' >
         <SpSearch
-          isFixTop={searchComp?.config?.fixTop}
+          // isFixTop={searchComp?.config?.fixTop}
+          info={searchComp}
           onClick={() => {
             Taro.navigateTo({
               url: `/subpages/store/item-list?dtid=${distributorId}`
@@ -179,7 +186,7 @@ function StoreIndex() {
       </View>
 
       <View className='header-block' style={{background:`${pageData?.base?.pageBackgroundColor}`}}>
-        <CompShopBrand dtid={distributorId} />
+        <CompShopBrand storeInfo={storeInfo} />
       </View>
       <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
         {/* 猜你喜欢 */}

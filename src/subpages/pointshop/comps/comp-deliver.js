@@ -53,7 +53,7 @@ function CompDeliver(props, ref) {
   const { distributorInfo, receiptType, showTimePicker, form, rules, weekdays, timeSlots, pickerIndex, activeTimeId } = state
   const formRef = useRef()
   const $instance = getCurrentInstance()
-  const { cart_type } = $instance.router.params
+  const { cart_type } = $instance.router?.params || {}
   // useEffect(() => {
   //   fetch()
   // }, [])
@@ -113,7 +113,7 @@ function CompDeliver(props, ref) {
     }
     // 非自提情况下，把地址存起来，否则清空地址
     const { list } = await api.member.addressList(query)
-    const defaultAddress = list.find((item) => item.is_def) || list[0] || undefined
+    const defaultAddress = list.find((item) => item.is_def) || list[0] || null
 
     const selectAddress = list.find(item => item.address_id == storeAddress?.address_id)
 

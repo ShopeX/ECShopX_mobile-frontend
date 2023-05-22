@@ -1,8 +1,4 @@
 .home-header {
-  // position: fixed;
-  // top: 0;
-  // right: 0;
-  // left: 0;
   height: $home-header-height;
   padding: 0 20px;
   z-index: 1000;
@@ -12,6 +8,7 @@
   .left-block {
     display: flex;
     align-items: center;
+    flex: 1;
   }
   .shop-name {
     font-size: 28px;
@@ -25,7 +22,8 @@
   }
   .children-block {
     flex: 1;
-    padding: 0 10px;
+    padding-left: 10px;
+    min-width: 0;
   }
   .icon-qianwang-01 {
     font-size: 24px;
@@ -41,7 +39,11 @@
     }
   }
   .sp-search {
+    max-width: 300px;
     padding: 0;
+    .sp-search-block {
+      margin: 0;
+    }
   }
 }
 .cus-home-header {

@@ -40,7 +40,7 @@ export default class WgtHotTopic extends Component {
     return (
       <View
         className={classNames('wgt', 'wgt-hot-topic', {
-          wgt__padded: base.padded
+          'wgt__padded': base.padded
         })}
       >
         {base.title && (

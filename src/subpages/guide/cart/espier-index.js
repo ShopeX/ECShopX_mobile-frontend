@@ -229,7 +229,6 @@ function CartIndex() {
       className={classNames('page-guide-cart-index', {
         'has-tabbar': tabbar == 1
       })}
-      navigateTheme='dark'
       renderFooter={tabbar == 1 && <BaTabBar />}
     >
       <View>

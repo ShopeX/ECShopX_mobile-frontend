@@ -66,7 +66,11 @@ export function salesPromotion(params = {}, config = createHead()) {
 }
 
 //获取导购货架商品列表 wxapp/goods/salesperson/items
-
 export function salespersonItems(params = {}, config = createHead()) {
   return req.get('/goods/salesperson/items', params, config, { showLoading: true })
+}
+
+ // 更新导购敏感信息
+export function updateBAInfo(params = {}, config = createHead()) {
+  return req.post("/salesperson/bainfo", params, config);
 }

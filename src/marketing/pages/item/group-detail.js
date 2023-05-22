@@ -201,7 +201,7 @@ export default class GroupDetail extends Component {
         <View
           className={classNames('status-icon', {
             'iconfont success icon-over-group': detail && team_info.team_status == 2,
-            'iconfontfail icon-ungroup': detail && team_info.team_status == 3
+            'iconfont fail icon-ungroup': detail && team_info.team_status == 3
           })}
         ></View>
         {team_info.team_status == 1 && (
