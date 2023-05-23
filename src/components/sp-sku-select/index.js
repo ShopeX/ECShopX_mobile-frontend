@@ -371,9 +371,9 @@ function SpSkuSelect(props) {
                   key={`sku-values-item__${idx}`}
                 >
                   {spec.specImgs.length > 0 && (
-                    <SpImage src={spec.specImgs[0]} width={214} height={214} />
+                    <SpImage src={spec.specImgs[0]} width={260} height={260} />
                   )}
-                  <Text className='spec-name'>{spec.specName}</Text>
+                  <View className='spec-name'>{spec.specName}</View>
                 </View>
               ))}
             </View>

@@ -15,13 +15,14 @@ const initialState = {
   pageTitle: '',
   isTabBarPage: true,
   customNavigation: false,
-  cusCurrentPage: 0
+  cusCurrentPage: 0,
+  showLeftContainer: false
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage } = state
+  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage, showLeftContainer } = state
   const {
     className,
     children,
@@ -37,7 +38,9 @@ function SpPage(props, ref) {
     onClickLeftIcon = null,
     navigateTheme = 'light',
     navigateMantle = false, // 自定义导航，开启滚动蒙层
-    pageConfig = null
+    pageConfig = null,
+    fixedTopContainer = null,
+    title = '' // 页面导航标题
   } = props
   let { renderTitle } = props
   const wrapRef = useRef(null)
@@ -113,7 +116,8 @@ function SpPage(props, ref) {
     const isTabBarPage = fidx > -1
     setState((draft) => {
       draft.pageTitle = pageTitle
-      draft.isTabBarPage = isTabBarPage
+      draft.isTabBarPage = isTabBarPage,
+        draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
     })
 
     // 导购货架分包路由，隐藏所有分享入口
@@ -201,7 +205,7 @@ function SpPage(props, ref) {
 
   const CustomNavigation = () => {
     const { page, route } = getCurrentInstance()
-    let pageStyle = {}, pageTitleStyle = {}, showLeftContainer = true
+    let pageStyle = {}, pageTitleStyle = {}
     if (pageConfig) {
       const { navigateBackgroundColor, navigateStyle, navigateBackgroundImage, titleStyle, titleColor, titleBackgroundImage, titlePosition } = pageConfig
       // 导航颜色背景
@@ -222,7 +226,7 @@ function SpPage(props, ref) {
         renderTitle = <Text style={styleNames({
           color: titleColor
         })}>{appName}</Text>
-      } else {
+      } else if (titleStyle == '2') {
         renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
       pageTitleStyle = {
@@ -231,8 +235,9 @@ function SpPage(props, ref) {
       }
 
     }
-    showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
-
+    // console.log('zzz', Taro.getCurrentPages())
+    // debugger
+    const navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
     return (
       <View
         className={classNames('custom-navigation', {
@@ -264,8 +269,12 @@ function SpPage(props, ref) {
           </View>
         </View>}
 
-        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>{pageTitle || renderTitle}</View>}
-        {/* <View className='right-container'></View> */}
+        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>
+          {renderTitle || title || navigationBarTitleText}
+          {/* 吸顶区域 */}
+          {fixedTopContainer}
+        </View>}
+        {showLeftContainer && <View className='right-container'></View>}
       </View>
     )
   }
@@ -286,7 +295,7 @@ function SpPage(props, ref) {
       }
     }
   }
-
+  console.log('xxx----', pageConfig)
   return (
     <View
       className={classNames('sp-page', className, {
@@ -304,13 +313,16 @@ function SpPage(props, ref) {
 
       {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} isUrl={true} />)}
 
-      {customNavigation && pageConfig && CustomNavigation()}
+      {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
+      {customNavigation && CustomNavigation()}
 
       {/* {loading && <SpNote img='loading.gif' />} */}
       {loading && <SpLoading />}
 
+
+
       {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        'margin-top': `${(customNavigation && pageConfig) ? gNavbarH : 0}px`
+        'margin-top': `${customNavigation ? gNavbarH : 0}px`
       })}>{children}</View>}
 
       {/* 置底操作区 */}

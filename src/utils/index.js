@@ -4,7 +4,7 @@ import qs from 'qs'
 import dayjs from 'dayjs'
 import copy from 'copy-to-clipboard'
 import S from '@/spx'
-import { STATUS_TYPES_MAP } from '@/consts'
+import { STATUS_TYPES_MAP, SG_ROUTER_PARAMS } from '@/consts'
 import api from '@/api'
 import configStore from '@/store'
 import _get from 'lodash/get'
@@ -365,7 +365,7 @@ export function authSetting(scope, succFn, errFn) {
         } else {
           succFn()
         }
-      } else if(isAlipay) {
+      } else if (isAlipay) {
         // const alipayScope = {
         //   "album": "album",
         //   "writePhotosAlbum": "album"
@@ -746,8 +746,13 @@ const getDistributorId = (platform_id = 0) => {
     shopInfo: { distributor_id, shop_id = 0 }
   } = shop
   if (VERSION_STANDARD) {
-    const standard_id = openStore ? distributor_id : shop_id
-    return standard_id
+    // 小程序启动后URL是否携带店铺id
+    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    if (dtid) {
+      return dtid
+    } else {
+      return openStore ? distributor_id : shop_id
+    }
   } else {
     return platform_id
   }
@@ -829,6 +834,21 @@ const htmlStringToNodeArray = (htmlString) => {
   return nodeArray;
 }
 
+const getCurrentPageRouteParams = () => {
+  const pages = Taro.getCurrentPages()
+  const options = {}
+  Object.keys(pages[pages.length - 1].options).forEach(key => {
+    if(key != '$taroTimestamp') {
+      options[key] = pages[pages.length - 1].options[key]
+    }
+  })
+  return options
+}
+
+const resolveStringifyParams = (params) => {
+  return qs.stringify(params)
+}
+
 
 export {
   classNames,
@@ -851,7 +871,9 @@ export {
   getDistributorId,
   alipayAutoLogin,
   requestAlipayminiPayment,
-  htmlStringToNodeArray
+  htmlStringToNodeArray,
+  getCurrentPageRouteParams,
+  resolveStringifyParams
 }
 
 export * from './platforms'

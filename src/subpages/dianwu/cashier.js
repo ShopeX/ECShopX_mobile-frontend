@@ -354,7 +354,6 @@ function DianWuCashier() {
   return (
     <SpPage
       className='page-dianwu-cashier'
-      navigateTheme='dark'
       ref={pageRef}
       renderFooter={<CompTabbar />}
     >

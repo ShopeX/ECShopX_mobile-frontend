@@ -5,19 +5,28 @@
     padding: 0 16px;
 
     &-gambit {
-      max-width: 30%;
-      flex-shrink: 0;
+      // max-width: 30%;
+      // flex-shrink: 0;
+      // font-size: 24px;
+      // height: 40px;
+      // line-height: 40px;
+      // padding: 10px 32px;
+      // color: #222;
+      // background: #f5f5f5;
+      // border-radius: 30px;
+      // border: 1px solid #bbbbbb;
+      // margin-right: 24px;
+      // margin-bottom: 24px;
+      // @include multi-ellipsis(1);
       font-size: 24px;
-      height: 40px;
-      line-height: 40px;
-      padding: 10px 32px;
+      line-height: 52px;
+      padding: 0 24px;
       color: #222;
       background: #f5f5f5;
       border-radius: 30px;
-      border: 1px solid #bbbbbb;
-      margin-right: 24px;
-      margin-bottom: 24px;
-      @include multi-ellipsis(1);
+      /* prettier-ignore */
+      border: 1PX solid #bbbbbb;
+      margin: 0 20px 20px 0;
     }
 
     .checked {

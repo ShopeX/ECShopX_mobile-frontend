@@ -51,14 +51,15 @@ function HomeWgts(props) {
     let searchMethod = dtid && storeClick;
 
     setState((draft) => {
-      draft.localWgts[pageIndex - 1] = twgt,
-        draft.searchMethod = searchMethod
+      draft.localWgts[pageIndex - 1] = twgt
+      draft.searchMethod = searchMethod
     })
 
     return {
       total: wgts.length
     }
   }
+
   return (
     <SpScrollView className='home-wgts' fetch={fetch} pageSize={3} onLoad={onLoad}>
       {localWgts.map((list) => {

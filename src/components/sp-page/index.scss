@@ -86,11 +86,11 @@
       justify-content: center;
       align-items: center;
       .icon-home1 {
-        font-size: 28px;
+        font-size: 32px;
         color: #fff;
       }
       .icon-fanhui {
-        font-size: 28px;
+        font-size: 32px;
         color: #fff;
       }
     }
@@ -101,7 +101,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #fff;
+      color: #333;
       padding: 0 16px;
     }
     .icon-home1 {
@@ -117,6 +117,15 @@
       transition: all 0.15s ease-in;
     }
     &.dark {
+      background: #000;
+      .icon-wrap {
+        background: #a0a0a0;
+      }
+      .title-container {
+        color: #fff;
+      }
+    }
+    &.light {
       background: #fff;
       .icon-wrap {
         background: #a0a0a0;

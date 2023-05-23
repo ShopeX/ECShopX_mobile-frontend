@@ -9,6 +9,7 @@ import { View } from '@tarojs/components'
 import { SpPage, SpSearch } from '@/components'
 import { getDistributorId, log, entryLaunch } from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
+import { useNavigation } from '@/hooks'
 import req from '@/api/req'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import './custom-page.scss'
@@ -21,6 +22,7 @@ const initialState = {
 function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
+  const { setNavigationBarTitle } = useNavigation()
   const { wgts, loading, shareInfo } = state
 
   useEffect(() => {
@@ -42,6 +44,10 @@ function CustomPage(props) {
       draft.loading = false
       draft.shareInfo = share
     })
+    // setNavigationBarTitle(share?.page_name)
+    // Taro.setNavigationBarTitle({
+    //   title: share?.page_name
+    // })
     // this.setState(
     //   {
     //     positionStatus: (fixSetting.length && fixSetting[0].params.config.fixTop) || false
@@ -81,10 +87,16 @@ function CustomPage(props) {
     filterWgts = wgts
   }
   const fixedTop = searchComp && searchComp.config.fixTop
-
+  const pageData = wgts.find((wgt) => wgt.name == 'page')
   return (
-    <SpPage className='page-custom-page' loading={loading}>
-      {fixedTop && <SpSearch isFixTop={searchComp.config.fixTop} />}
+    <SpPage
+      scrollToTopBtn
+      className='page-custom-page'
+      pageConfig={pageData?.base}
+      loading={loading}
+      title={shareInfo?.page_name}
+      fixedTopContainer={fixedTop && <SpSearch info={searchComp} />}
+      >
       <HomeWgts wgts={filterWgts} />
     </SpPage>
   )

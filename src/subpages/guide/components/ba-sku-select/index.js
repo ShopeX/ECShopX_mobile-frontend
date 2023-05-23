@@ -311,7 +311,7 @@ function BaSkuSelect(props) {
 
   return (
     <SpFloatLayout
-      className='sp-sku-select'
+      className='ba-sku-select'
       open={open}
       onClose={onClose}
       renderFooter={renderFooter()}

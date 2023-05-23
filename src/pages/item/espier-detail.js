@@ -61,7 +61,7 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtHeadline } from '../home/wgts'
 
 import './espier-detail.scss'
 
@@ -571,7 +571,7 @@ function EspierDetail(props) {
             )}
           </View>
 
-          <View className='goods-params'>
+          {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
@@ -581,7 +581,7 @@ function EspierDetail(props) {
                 </View>
               ))}
             </View>
-          </View>
+          </View>}
 
           {/* 商品评价 */}
           <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>
@@ -600,7 +600,8 @@ function EspierDetail(props) {
                     {item.name === 'film' && <WgtFilm info={item} />}
                     {item.name === 'slider' && <WgtSlider info={item} />}
                     {item.name === 'writing' && <WgtWriting info={item} />}
-                    {item.name === 'heading' && <WgtHeading info={item} />}
+                    {/* {item.name === 'heading' && <WgtHeading info={item} />} */}
+                    {item.name === 'headline' && <WgtHeadline info={item} />}
                     {item.name === 'goods' && <WgtGoods info={item} />}
                   </View>
                 ))}

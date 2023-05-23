@@ -119,11 +119,11 @@ export default class WgtGoodsScroll extends Component {
                 </View>
               )}
             </View>
-            {config?.moreLink?.linkPage && (
+            {/* {config?.moreLink?.linkPage && (
               <View className='wgt-more' onClick={this.handleClickMore}>
                 <View className='three-dot'></View>
               </View>
-            )}
+            )} */}
           </View>
         )}
         <View className='wgt-body'>
@@ -143,19 +143,23 @@ export default class WgtGoodsScroll extends Component {
                   showPrice={config.showPrice}
                   info={item}
                   key={`scroll-goods-item__${idx}`}
-                  mode="aspectFill"
+                  mode='aspectFill'
                   lazyLoad
                 />
               </View>
             ))}
-      
 
-            {config?.moreLink?.linkPage && (
-              <View className='more_img' onClick={this.handleClickMore}>
-                <View className={`img ${isWeb ? 'h5-img' : ''}`}>
-                  <Image src={base.backgroundImg} className='goods-img' lazyLoad />
-                </View>
-                <View className='text'>查看更多</View>
+
+            {(config?.moreLink?.linkPage || config?.moreLink?.linkUrl) && (
+              <View className='more-link' onClick={this.handleClickMore}>
+                {
+                  base.backgroundImg && <SpImage circle={16} src={base.backgroundImg} mode='aspectFill' />
+                }
+                {
+                  !base.backgroundImg && <View className='text'>查看更多</View>
+                }
+                {/* <View className={`img ${isWeb ? 'h5-img' : ''}`}>
+                </View> */}
               </View>
             )}
           </ScrollView>

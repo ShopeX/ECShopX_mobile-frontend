@@ -111,7 +111,7 @@ const CategoryIndex = (props) => {
   }
 
   return (
-    <SpPage className='page-guide-category-index' navigateTheme='dark' renderFloat={<BaTabBar />}>
+    <SpPage className='page-guide-category-index' renderFloat={<BaTabBar />}>
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (

@@ -6,7 +6,7 @@ import { useImmer } from 'use-immer'
 import { useAsyncCallback } from '@/hooks'
 import api from '@/api'
 import { SpNoShop, SpImage } from '@/components'
-import { classNames, isEmpty } from '@/utils'
+import { classNames, styleNames, isEmpty } from '@/utils'
 import './nearby-shop.scss'
 
 const initialState = {
@@ -85,96 +85,97 @@ function WgtNearbyShop(props) {
 
   return (
     <View
-      className={classNames('wgt', {
+      className={classNames('wgt wgt-nearby-shop', {
         wgt__padded: base.padded
       })}
     >
-      <View className='wgt-nearbyshop'>
-        {base.title && (
-          <View className='wgt-head'>
-            <View className='wgt-hd'>
-              <Text className='wgt-title'>{base.title}</Text>
-              <Text className='wgt-subtitle'>{base.subtitle}</Text>
-            </View>
-            <View className='wgt-more' onClick={showMore}>
-              <View className='three-dot'></View>
-            </View>
-            {/* <Text className='more' onClick={showMore}>
+      {base.title && (
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+          </View>
+          <View className='wgt-more' onClick={showMore}>
+            <View className='three-dot'></View>
+          </View>
+          {/* <Text className='more' onClick={showMore}>
               查看更多
             </Text> */}
-          </View>
-        )}
+        </View>
+      )}
 
-        <View className='nearby_shop_wrap'>
-          <ScrollView className='scroll-tab' scrollX>
-            {seletedTags.map((item, index) => (
-              <View
-                className={classNames(`tag`, {
-                  active: state.activeIndex == index
-                })}
-                key={item.tag_id}
-                onClick={() =>
-                  setState(
-                    (draft) => {
-                      draft.activeIndex = index
-                    },
-                    ({ activeIndex }) => {
-                      init(activeIndex)
-                    }
-                  )
-                }
-              >
-                {item.tag_name}
-              </View>
-            ))}
-          </ScrollView>
+      <View className='nearby-shop-content'>
+        <ScrollView className='scroll-tab' scrollX>
+          {seletedTags.map((item, index) => (
+            <View
+              className={classNames(`tag-item`, {
+                'active': state.activeIndex == index
+              })}
+              key={item.tag_id}
+              onClick={() =>
+                setState(
+                  (draft) => {
+                    draft.activeIndex = index
+                  },
+                  ({ activeIndex }) => {
+                    init(activeIndex)
+                  }
+                )
+              }
+            >
+              {item.tag_name}
+            </View>
+          ))}
+        </ScrollView>
 
-          <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
-            {state.shopList.map((item) => (
-              <View
-                className='shop'
-                key={item.distributor_id}
-                onClick={() => handleStoreClick(item.distributor_id)}
-              >
-                <View className='shop-image'>
+        <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
+          {state.shopList.map((item) => (
+            <View
+              className='shop-item'
+              key={item.distributor_id}
+              onClick={() => handleStoreClick(item.distributor_id)}
+            >
+              <View className='shop-banner' style={styleNames({
+                'background-image': `url(${item.banner || process.env.APP_IMAGE_CDN + 'shop_default_bg.png'})`
+              })}>
+                <View className='logo-wrap' style={styleNames({
+                  'width': '50px',
+                  'height': '50px',
+                  'bottom': '-25px',
+                  'border-radius': '50px',
+                  'padding': '2px'
+                })}>
                   <SpImage
-                    src={item.banner || 'shop_default_bg.png'}
-                    mode="aspectFill"
-                    width={200}
-                    height={130}
+                    className='shop-logo'
+                    src={item.logo || 'shop_default_logo.png'}
+                    circle={92}
+                    width={92}
+                    height={92}
                   />
                 </View>
-                <View className='shop-logo'>
-                  <SpImage src={item.logo || 'shop_default_logo.png'} mode='scaleToFill' />
-                </View>
-                <View className='shop-info-block'>
-                  <View className='shop-name'>{item.name}</View>
-
-                  <View className='shop-ft'>
-                    {item.discountCardList.length > 0 && (
-                      <View className='sp-nearby-shop-coupon'>
-                        <View className='coupon-wrap'>
-                          <Text className='coupon-text'>{item.discountCardList[0].title}</Text>
-                        </View>
-                      </View>
-                    )}
-                  </View>
-                </View>
               </View>
-            ))}
-
-            {state.shopList.length == 0 && (
-              <View className='empty-con'>
-                <SpImage className='empty-img' src='empty_data.png' />
-                <View className='empty-tip'>更多商家接入中，敬请期待</View>
+              <View className='shop-info-block'>
+                <View className='shop-name'>{item.name}</View>
+                {
+                  base.show_coupon && <ScrollView className='shop-ft' scrollX>
+                    {
+                      item.discountCardList.map((coupon, index) => (
+                        <View className='coupon-item' key={`coupon-item__${index}`}>{coupon.title}</View>
+                      ))
+                    }
+                  </ScrollView>
+                }
               </View>
-            )}
-          </ScrollView>
-          {/* <View className='no_shop_content'>
-            <Image mode='widthFix' className='no_shop_img' src={`${process.env.APP_IMAGE_CDN}/empty_data.png`}></Image>
-            <View className='tips'>更多商家接入中，敬请期待</View>
-          </View> */}
-        </View>
+            </View>
+          ))}
+
+          {state.shopList.length == 0 && (
+            <View className='empty-con'>
+              <SpImage src='empty_data.png' width={292} height={224} />
+              <View className='empty-tip'>更多商家接入中，敬请期待</View>
+            </View>
+          )}
+        </ScrollView>
       </View>
     </View>
   )

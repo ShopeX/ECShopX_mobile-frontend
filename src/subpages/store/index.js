@@ -175,7 +175,8 @@ function StoreIndex() {
     >
       <View className='search' >
         <SpSearch
-          isFixTop={searchComp?.config?.fixTop}
+          // isFixTop={searchComp?.config?.fixTop}
+          info={searchComp}
           onClick={() => {
             Taro.navigateTo({
               url: `/subpages/store/item-list?dtid=${distributorId}`

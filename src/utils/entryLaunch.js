@@ -2,7 +2,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
-import { showToast, log, isArray, VERSION_STANDARD } from '@/utils'
+import { showToast, log, isArray, VERSION_STANDARD, isWeb } from '@/utils'
 import configStore from '@/store'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 
@@ -175,7 +175,7 @@ class EntryLaunch {
         my.getLocation({
           type: 0, // 获取经纬度和省市区县数据
           success: (res) => {
-            console.log(11,res);
+            console.log(11, res);
             resolve({
               lng: res.longitude,
               lat: res.latitude
@@ -189,7 +189,7 @@ class EntryLaunch {
     } else {
       console.log('getLocationInfo')
       return new Promise(async (reslove, reject) => {
-        if(!this.geolocation) {
+        if (!this.geolocation) {
           setTimeout(() => {
             this.getLocationInfo()
           }, 1000)

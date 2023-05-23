@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { classNames, linkPage } from '@/utils'
+import { SpImage } from '@/components'
 import './floor-img.scss'
 
 export default class WgtFloorImg extends Component {
@@ -26,9 +27,9 @@ export default class WgtFloorImg extends Component {
 
     return (
       <View
-        className={classNames('wgt', {
-          floor__padded: base.padded,
-          wgt_floor_img: base.openBackImg
+        className={classNames('wgt wgt-floor-img', {
+          'wgt__padded': base.padded,
+          'open-bgk': base.openBackImg
         })}
         style={base && base.openBackImg ? `background: url(${base && base.backgroundImg});` : null}
       >
@@ -40,18 +41,16 @@ export default class WgtFloorImg extends Component {
             </View>
           </View>
         )}
-        <View className={classNames('exclusive_list_two', 'exclusive_list')}>
-          <ScrollView scrollX className='img_list'>
+        <View className='wgt-bd'>
+          <ScrollView scrollX className='img-list'>
             {data &&
               data.map((item, idx) => {
                 return (
-                  <View className='lis' key={idx}>
-                    <View className='imgbox' key={item.id} onClick={this.onRoute.bind(this, item)}>
-                      <Image lazyLoad className='img' src={item.imgUrl}></Image>
-                    </View>
-                    <View className='title' style={`color: ${base && base.WordColor}`}>
+                  <View className='img-item' key={idx}>
+                    <SpImage src={item.imgUrl} mode='widthFix' circle={16} onClick={this.onRoute.bind(this, item)} />
+                    {item.ImgTitle && <View className='title' style={`color: ${base && base.WordColor}`}>
                       {item.ImgTitle}
-                    </View>
+                    </View>}
                   </View>
                 )
               })}

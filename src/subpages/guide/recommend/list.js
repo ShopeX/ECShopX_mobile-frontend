@@ -119,7 +119,7 @@ function GuideRecommendList(props) {
   }
 
   return (
-    <SpPage className='page-guide-recommendlist' navigateTheme='dark' renderFooter={<BaTabBar />}>
+    <SpPage className='page-guide-recommendlist' renderFooter={<BaTabBar />}>
       <View id='search-wrap' className='search-wrap'>
         <SpSearchBar
           keyword={keywords}
