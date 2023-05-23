@@ -927,7 +927,7 @@ function MdugcDetails(props) {
           <View className='ugcdetailsr_footer'>
             <View className='ugcdetailsr_footer_input' onClick={reply.bind(this, 'one')}>
               <Text className='iconfont icon-bianji1'></Text>
-              &nbsp;留言评论...
+              &nbsp;留言评论...&#xe602;
             </View>
             <View className='ugcdetailsr_footer_icon'>
               <View
@@ -1023,7 +1023,7 @@ function MdugcDetails(props) {
               {!isoneself ? (
                 <View
                   onClick={followercreate.bind(this)}
-                  className={`ugcdetailsr_text_top_r ${file_details.follow_status ? 'follow' : ''}`}
+                  className={`ugcdetailsr_text_top_r ${!file_details.follow_status ? 'follow' : ''}`}
                 >
                   {file_details.follow_status ? '已关注' : '+关注'}
                 </View>
@@ -1103,10 +1103,10 @@ function MdugcDetails(props) {
                         {commentlist[item.comment_id]
                           ? commentlist[item.comment_id]?.list?.map((childi, index) => {
                               return (
-                                <View className='ugcdetailsr_theory_i' key={index}>
+                                <View className='ugcdetailsr_theory_i reply-i' key={index}>
                                   <View className='ugcdetailsr_theory_i_l'>
                                     <Image
-                                      className='ugcdetailsr_theory_i_l_avatar'
+                                      className='ugcdetailsr_theory_i_l_avatar reply-avatar'
                                       src={childi.headimgurl}
                                     />
                                   </View>
@@ -1153,10 +1153,10 @@ function MdugcDetails(props) {
                             })
                           : item?.child?.map((childi, index) => {
                               return (
-                                <View className='ugcdetailsr_theory_i' key={index}>
+                                <View className='ugcdetailsr_theory_i reply-i' key={index}>
                                   <View className='ugcdetailsr_theory_i_l'>
                                     <Image
-                                      className='ugcdetailsr_theory_i_l_avatar'
+                                      className='ugcdetailsr_theory_i_l_avatar reply-avatar'
                                       src={childi.headimgurl}
                                     />
                                   </View>

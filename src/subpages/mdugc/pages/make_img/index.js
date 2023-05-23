@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react'
 import Taro,{getCurrentInstance} from '@tarojs/taro'
+import {styleNames, getThemeStyle} from '@/utils'
 import { Input, View, Image , MovableArea , MovableView ,Text} from '@tarojs/components'
 //import '../../font/iconfont.scss'
 import './index.scss'
@@ -205,7 +206,7 @@ export default class Make_img extends Component {
   render () {
     const { movearry , bg_shareImg } = this.state
     return (
-      <View className='makeimgindex'>
+      <View className='makeimgindex' style={styleNames(getThemeStyle())}>
         <View className='makeimgindex_title'>
           <Text>点击下方图片或下方按钮添加标签</Text>
         </View>

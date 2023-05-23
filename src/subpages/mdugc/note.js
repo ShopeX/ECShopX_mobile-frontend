@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
-import { pickBy } from '@/utils'
+import { pickBy, styleNames, getThemeStyle } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import imgUploader from '@/utils/upload'
@@ -81,6 +81,7 @@ function UgcNote(props) {
   const memberData = useSelector((member) => member.member)
   const colors = useSelector((state) => state.sys)
   const router = useRouter()
+<<<<<<< HEAD:src/subpages/mdugc/note.js
   const {
     file_video,
     file_img,
@@ -97,6 +98,9 @@ function UgcNote(props) {
     imageList,
     remmendItems
   } = state
+=======
+  const [textareaPlace, setTextareaPlace] = useState('&#xe602;添加正文......')
+>>>>>>> b43ec81b3b06937855567cbe8793d69934f458e3:src/subpages/mdugc/pages/make/index2.js
 
   useEffect(() => {
     iniData()
@@ -925,6 +929,7 @@ function UgcNote(props) {
 
 
   return (
+<<<<<<< HEAD:src/subpages/mdugc/note.js
     <SpPage className='page-ugc-note' renderFooter={<View className='action-container'>
       <View className='save-draft'>
         <Text className='iconfont icon-caogaoxiang'></Text>
@@ -1015,6 +1020,19 @@ function UgcNote(props) {
 
       <View className='makeindexs'>
         {/* <View className='makeindex_upload'>
+=======
+    <View className='makeindex' style={styleNames(getThemeStyle())}>
+      <NavBar
+        background='#ffffff'
+        color='#000'
+        iconTheme='#000'
+        onBack={onugcBack.bind(this)}
+        back
+        renderCenter={<View className='trace-rowAlignCenter'>编辑笔记</View>}
+      />
+      <View className='makeindexs'>
+        <View className='makeindex_upload'>
+>>>>>>> b43ec81b3b06937855567cbe8793d69934f458e3:src/subpages/mdugc/pages/make/index2.js
           <View className='makeindex_upload_img'>
             {file_img?.map((item, idx) => {
               return (
@@ -1066,9 +1084,37 @@ function UgcNote(props) {
               <View className='makeindex_upload_img_occupy'></View>
             ))}
           </View>
+<<<<<<< HEAD:src/subpages/mdugc/note.js
         </View> */}
 
         {/* <View className='makeindex_word'>
+=======
+        </View>
+        <View className='makeindex_input'>
+          <View className='makeindex_input_text'>
+            <AtInput
+              title=''
+              type='text'
+              placeholder='填写标题会有更多关注哦～'
+              maxLength='20'
+              value={file_text?.title}
+              onChange={handleChangetext}
+            />
+          </View>
+          <View className='makeindex_input_textarea'>
+            <AtTextarea
+              className='iconfont'
+              value={file_text?.attextarea}
+              onChange={handleChangeattextarea}
+              maxLength={1000}
+              height={360}
+              placeholder='&#xe602;添加正文......'
+            />
+
+          </View>
+        </View>
+        <View className='makeindex_word'>
+>>>>>>> b43ec81b3b06937855567cbe8793d69934f458e3:src/subpages/mdugc/pages/make/index2.js
           <View className='makeindex_word_scroll'>
             <View className='makeindex_word_scroll_left'>
               {file_word?.length > 0 && (

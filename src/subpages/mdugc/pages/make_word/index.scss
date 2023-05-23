@@ -10,7 +10,7 @@
       padding-left: 0;
     }
     .at-icon-search{
-      color: #F4811F;
+      color: var(--color-primary);
     }
     .at-icon-search::after{
       content: '';
@@ -19,6 +19,9 @@
       border-right: 1px solid #BBBBBB;
       position: relative;
       margin-left: 12px;
+    }
+    .at-search-bar__input{
+      padding:0 80px ;
     }
   }
 

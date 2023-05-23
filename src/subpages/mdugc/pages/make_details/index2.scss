@@ -89,7 +89,7 @@
   }
 
   .ugcdetailsr_text_top {
-    padding: 0 30px;
+    padding: 0 32px;
     background-color: #fff;
     display: flex;
     align-items: center;
@@ -106,20 +106,20 @@
       align-items: center;
 
       Image {
-        width: 85px;
-        height: 85px;
+        width: 88px;
+        height: 88px;
         border-radius: 50%;
         display: inline-block;
-        margin-right: 20px;
+        margin-right: 24px;
       }
     }
 
     &_r {
-      width: 153px;
-      height: 61px;
+      width: 140px;
+      height: 60px;
       text-align: center;
-      line-height: 59px;
-      background: #F4811F;
+      line-height: 60px;
+      background: var(--color-primary);
       border-radius: 31px;
       font-weight: 600;
       color: #fff;
@@ -136,7 +136,7 @@
     width: 100%;
     height: auto;
     box-sizing: border-box;
-    padding: 34px 40px;
+    padding: 40px 34px;
     border-bottom: 1px solid rgba($color: #000000, $alpha: 0.2);
 
 
@@ -165,7 +165,7 @@
         line-height: 40px;
         font-size: 28px;
         font-weight: 400;
-        color: #F4811F;
+        color: var(--color-primary);
         border-radius: 20px;
         margin-right: 16px;
         margin-bottom: 16px;
@@ -232,20 +232,21 @@
 
   &_theory {
     width: 100%;
-    padding: 35px 30px;
+    padding: 47px 32px;
     box-sizing: border-box;
     border-top: 1px solid rgba($color: #000000, $alpha: 0.2);
 
     &_length {
       font-size: 24px;
       color: #222;
+      font-weight: 400;
     }
 
     &_text {
       font-size: 18px;
       color: #555555;
-      padding-top: 40px;
-      border-bottom: 1px solid #DDDDDD;
+      // padding-top: 40px;
+      // border-bottom: 1px solid #DDDDDD;
     }
 
     &_end{
@@ -292,6 +293,7 @@
 
     &_list {
       width: 100%;
+      margin-top: 23px;
 
       &_top {
         width: 100%;
@@ -301,6 +303,10 @@
         width: 100%;
         padding-left: 80px;
         box-sizing: border-box;
+        .ugcdetailsr_theory_i:last-child{
+          border-bottom: 1px solid #DDDDDD;
+          padding-bottom: 24px;
+        }
       }
     }
 
@@ -317,6 +323,10 @@
           width: 60px;
           height: 60px;
           border-radius: 50%;
+        }
+        .reply-avatar{
+          width: 40px;
+          height: 40px;
         }
       }
 
@@ -362,7 +372,7 @@
             flex-direction: column;
 
             .icon-dianzanFilled,.icon-shoucanghover-01 {
-              color: #df2f2f;
+              color: var(--color-primary);
             }
 
             View {
@@ -390,7 +400,7 @@
     bottom: 0;
     left: 0;
     z-index: 100;
-    border-top: solid 1px rgba($color: #000000, $alpha: 0.2);
+    box-shadow: 0px -1px 0px 0px rgba(0,0,0,0.1);
 
     &_icon {
       text-align: center;
@@ -414,12 +424,8 @@
       }
     }
 
-    .icon-shoucang-shixin {
-      color: #FAD013;
-    }
-
-    .icon-aixin-shixin {
-      color: #df2f2f;
+    .icon-dianzanFilled,.icon-shoucanghover-01 {
+      color: var(--color-primary);
     }
 
     &_btn {
@@ -440,10 +446,11 @@
       height: 60px;
       background: #F5F5F5;
       border-radius: 40px;
-      color: rgba($color: #848484, $alpha: 0.8);
-      text-align: center;
+      color: #666;
+      padding-left: 24px;
+      box-sizing: border-box;
       line-height: 60px;
-      font-size: 20px;
+      font-size: 24px;
       .icon-bianji1{
         font-size: 24px;
       }
@@ -512,5 +519,21 @@
     padding: 40px 0;
     font-size: 33px;
     border-top: 0;
+
+  }
+
+  .exclusive_list_two .imgbox .img{
+    width: 270px;
+    height: 270px;
+  }
+
+  .wgt .wgt-head{
+    padding: 0 32rpx;
+  }
+  .exclusive_list_two .lis:first-child{
+    margin-left: 32rpx;
+  }
+  .exclusive_list_two .lis {
+    margin-right: 32rpx;
   }
 }

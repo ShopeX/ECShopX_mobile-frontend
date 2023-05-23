@@ -50,6 +50,9 @@
         margin-right: 40px;
       }
     }
+    .at-search-bar__input{
+      padding:0 80px ;
+    }
   }
 
 
@@ -62,11 +65,19 @@
     background-color: #fff;
     padding: 16px 24px;
   }
+<<<<<<< HEAD:src/subpages/mdugc/index.scss
 
   &_tagsbar {
     background-color: #fff;
     padding: 20px 0;
     min-height: 30px;
+=======
+  &_tagsbar{
+    // background-color: red !important;
+    // height: 60px;
+    // padding: 20rpx 0;
+    // min-height: 30px;
+>>>>>>> b43ec81b3b06937855567cbe8793d69934f458e3:src/subpages/mdugc/pages/index/index2.scss
   }
 
   &_list {

@@ -59,13 +59,14 @@ function UgcSubjectTalk(props) {
     listRef.current.reset()
   }
 
-  const handleClickItem = ({ topicId }) => {
+  const handleClickItem = ({ topicId, topicName }) => {
     if (selected.has(topicId)) {
       selected.delete(topicId)
       setSelected(new Set([...selected]));
     } else {
       setSelected(new Set([...selected, topicId]));
     }
+
 
   }
 

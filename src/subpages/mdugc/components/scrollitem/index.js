@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text, Block } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpImage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import {styleNames, getThemeStyle} from '@/utils'
 import { connect } from 'react-redux'
 
 //import '../../font/iconfont.scss'
@@ -25,8 +26,8 @@ export default class Scrollitem extends Component {
     super(props)
 
     this.state = {
-      iscollection: 0,
-      likes: 0
+      iscollection: 1,
+      likes: 1000
     }
   }
   componentDidMount() {
@@ -103,10 +104,10 @@ export default class Scrollitem extends Component {
       return <Block></Block>
     }
     return (
-      <View className='scrollitemlisti' key={item.item_id}>
+      <View className='scrollitemlisti' key={item.item_id} style={styleNames(getThemeStyle())}>
         <View className='img' onClick={() => this.handleClickItem(item)}>
           {/* <Image className="img_i" mode='widthFix' src={item.image_url} ></Image> */}
-          <SpImg img-class='img_i' src={item.image_url} mode='widthFix' lazyLoad />
+          <SpImage img-class='img_i' src={item.image_url} mode='widthFix' lazyLoad />
         </View>
         <View className='text'>
           <View className='title'>
@@ -114,22 +115,24 @@ export default class Scrollitem extends Component {
           </View>
           <View className='btm'>
             <View className='btm_left'>
-              <SpImg img-class='btm_left_img' src={item.head_portrait} mode='widthFix' lazyLoad />
+              <SpImage className='btm_left_img' src={item.head_portrait} mode='widthFix' lazyLoad />
               <View className='btm_left_text'>{item.author}</View>
             </View>
             {iscollection ? (
               <View
                 onClick={this.oncollection.bind(this, item)}
-                className='btm_right iconfont icon-dianzanFilled'
+                // className='btm_right iconfont icon-dianzanFilled'
+                className='btm_right active iconfont icon-shoucanghover-01'
               >
-                <Text>{likes}</Text>
+                <Text>{likes}+100</Text>
               </View>
             ) : (
               <View
                 onClick={this.oncollection.bind(this, item)}
-                className='btm_right iconfont icon-dianzan'
+                // className='btm_right iconfont icon-dianzan'
+                className='btm_right iconfont icon-shoucang-01'
               >
-                <Text>{likes}</Text>
+                <Text>{likes}+100</Text>
               </View>
             )}
           </View>

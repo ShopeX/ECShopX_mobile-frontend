@@ -96,7 +96,7 @@
     }
 
     &_complete {
-      background: #F4811F;
+      background: var(--color-primary);
       border-radius: 40px;
       color: #fff;
     }

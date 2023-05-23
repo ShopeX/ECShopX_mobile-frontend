@@ -1,12 +1,28 @@
 .ugcindex{
   width: 100%;
-  padding: 0 30px;
+  padding: 0 24px;
   margin: 0 auto;
   min-height: 100vh;
   background-color: #ffffff;
   &_search{
     .search-inputugc__bar {
       padding-left: 0;
+    }
+    .at-icon-search{
+      color: var(--color-primary) !important;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .at-icon-search::after{
+      content: '';
+      width: 1px;
+      height: 34px;
+      border-right: 1px solid #BBBBBB;
+      position: relative;
+      margin-left: 12px;
+    }
+    .at-search-bar__input{
+      padding:0 80px ;
     }
   }
   &_list{
