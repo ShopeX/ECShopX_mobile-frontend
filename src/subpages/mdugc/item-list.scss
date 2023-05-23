@@ -1,0 +1,81 @@
+.page-ugc-item-list {
+  .search-input {
+    padding: 16px 24px;
+    background: #fff;
+    box-sizing: border-box;
+    height: auto;
+
+    .at-icon-search {
+      color: var(--color-primary);
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 34px;
+        border-right: 1px solid #BBBBBB;
+        position: relative;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .goods-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+
+    .goods-list-wrap {
+      width: 345px;
+      margin-bottom: 28px;
+    }
+
+    .left-container {
+      width: 350px;
+    }
+
+    .right-container {
+      width: 350px;
+      // padding-left: 20px;
+    }
+
+    .goods-item-wrap {
+      margin-bottom: 20px;
+      // box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      position: relative;
+      &.selected {
+        .select-item {
+          visibility: visible;
+        }
+      }
+      .select-item {
+        visibility: hidden;
+        position: absolute;
+        right: 0;
+        top: 0;
+        width: 40px;
+        height: 40px;
+        background-color: var(--color-primary);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-top-right-radius: 16px;
+
+        .icon-gou {
+          color: #fff;
+          font-size: 30px;
+        }
+      }
+    }
+
+    .sp-goods-item {
+      border-radius: 16px;
+      overflow: hidden;
+
+      .promotions,
+      .more-price {
+        display: none;
+      }
+    }
+  }
+}

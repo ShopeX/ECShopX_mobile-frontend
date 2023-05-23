@@ -11,10 +11,11 @@ export default class SearchBar extends Component {
   static defaultProps = {
     isOpened: false,
     keyword: '',
-    showDailog: true
+    showDailog: true,
+    localStorageKey: 'searchHistory'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -29,7 +30,7 @@ export default class SearchBar extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -41,7 +42,7 @@ export default class SearchBar extends Component {
       showSearchDailog: isOpened,
       isShowAction: true
     })
-    Taro.getStorage({ key: 'searchHistory' })
+    Taro.getStorage({ key: this.props.localStorageKey })
       .then((res) => {
         let stringArr = res.data.split(',').filter((item) => {
           const isHave = item.trim()
@@ -49,12 +50,13 @@ export default class SearchBar extends Component {
         })
         this.setState({ historyList: stringArr })
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   handleChangeSearch = (value, event) => {
     //h5中value为空 需从event里面拿值
     // value = value.replace(/\s+/g,'')
+    console.log('handleChangeSearch', value)
     this.props.onChange?.(isWeb ? event?.detail?.value : value)
   }
 
@@ -63,26 +65,21 @@ export default class SearchBar extends Component {
   }
 
   handleConfirm = (e) => {
-    if (e.detail.value && e.detail.value.trim()) {
-      Taro.getStorage({ key: 'searchHistory' })
-        .then((res) => {
-          let stringArr = res.data.split(',')
-          let arr = [].concat(stringArr)
-          arr.unshift(e.detail.value)
-          arr = Array.from(new Set(arr))
-          let arrString = arr.join(',')
-          Taro.setStorage({ key: 'searchHistory', data: arrString })
-        })
-        .catch(() => {
-          let arr = []
-          arr.push(this.state.searchValue)
-          let arrString = arr.join(',')
-          Taro.setStorage({ key: 'searchHistory', data: arrString })
-        })
+    const keywords = e.detail.value.trim()
+    if (keywords) {
+      const value = Taro.getStorageSync(this.props.localStorageKey)
+      let defaultValue = []
+      if (value) {
+        const array = value.split(',')
+        if (!array.includes(keywords)) {
+          array.unshift(keywords)
+        }
+        defaultValue = array
+      } else {
+        defaultValue.push(keywords)
+      }
+      Taro.setStorage({ key: this.props.localStorageKey, data: defaultValue.toString() })
       this.props.onConfirm(e.detail.value)
-      /*Taro.navigateTo({
-        url: `/pages/item/list?keywords=${this.state.searchValue}`
-      })*/
     }
     this.setState({
       showSearchDailog: false,
@@ -100,7 +97,7 @@ export default class SearchBar extends Component {
   }
 
   handleClickDelete = () => {
-    Taro.removeStorage({ key: 'searchHistory' }).then(() => {
+    Taro.removeStorage({ key: this.props.localStorageKey }).then(() => {
       this.setState({ historyList: [] })
     })
   }
@@ -113,15 +110,14 @@ export default class SearchBar extends Component {
     })
   }
 
-  handleClickHotItem = () => {}
+  handleClickHotItem = () => { }
 
   handleBlurSearch = () => {
     this.props.onBlur?.()
   }
 
-  render () {
+  render() {
     const { isFixed, keyword, showDailog, placeholder } = this.props
-    console.log('===>keyword==>', keyword)
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View

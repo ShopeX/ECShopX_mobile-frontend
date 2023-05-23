@@ -295,7 +295,6 @@ function SpPage(props, ref) {
       }
     }
   }
-  console.log('xxx----', pageConfig)
   return (
     <View
       className={classNames('sp-page', className, {

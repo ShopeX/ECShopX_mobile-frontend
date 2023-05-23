@@ -12,7 +12,7 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max, onChange = () => { }, value = [], multiple = true } = props
+  const { max = 5, onChange = () => { }, value = [], multiple = true } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
@@ -73,8 +73,8 @@ function SpUpload(props) {
       {((multiple && files.length < max) || (!multiple && files.length == 0)) && (
         <View className='btn-upload' onClick={handleUploadFile}>
           <Text className='iconfont icon-xiangji'></Text>
-          <Text className='btn-upload-txt'>上传图片</Text>
-          {max && <Text className='files-length'>{`(${files.length + 1}/${max})`}</Text>}
+          <Text className='btn-upload-txt'>添加图片</Text>
+          {max && <Text className='files-length'>{`(${files.length}/${max})`}</Text>}
         </View>
       )}
     </View>

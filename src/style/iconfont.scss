@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1671689552802') format('woff2'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1671689552802') format('woff'),
-       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1671689552802') format('truetype');
+  src: url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff2?t=1684762920927') format('woff2'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.woff?t=1684762920927') format('woff'),
+       url('https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop/iconfont/iconfont.ttf?t=1684762920927') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,54 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-peisong:before {
+  content: "\e983";
+}
+
+.icon-jingshiFilled:before {
+  content: "\e975";
+}
+
+.icon-bianji:before {
+  content: "\e974";
+}
+
+.icon-xiaoxi:before {
+  content: "\e973";
+}
+
+.icon-caogaoxiang:before {
+  content: "\e972";
+}
+
+.icon-16:before {
+  content: "\e65e";
+}
+
+.icon-zhiding:before {
+  content: "\e971";
+}
+
+.icon-geren:before {
+  content: "\e6cf";
+}
+
+.icon-dianzan:before {
+  content: "\e96d";
+}
+
+.icon-dianzanFilled:before {
+  content: "\e96e";
+}
+
+.icon-pinglun:before {
+  content: "\e96f";
+}
+
+.icon-shipin:before {
+  content: "\e970";
 }
 
 .icon-neigoudingdan:before {
@@ -1112,4 +1160,6 @@
 .icon-arrowRight:before {
   content: "\e726";
 }
+
+
 

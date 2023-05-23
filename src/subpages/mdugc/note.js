@@ -5,13 +5,12 @@ import { pickBy } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import imgUploader from '@/utils/upload'
-import { AtInput, AtTextarea, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtInput, AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { SpPage, SpImg, SpUpload } from '@/components'
 import { TagsBar, NavBar, Popups } from '../../components'
 
-//import '../../font/iconfont.scss'
-import './index2.scss'
+import './note.scss'
 
 const initialState = {
   list: [],
@@ -31,7 +30,6 @@ const initialState = {
   file_commodity: [],
   file_img: [],
   file_video: {},
-  uploadtype: [],
   isPopups: false,
   videoenable: 0,
   elastic: {
@@ -72,30 +70,61 @@ const initialState = {
       text: '从相册选择',
       type: 'album_v'
     }
-  ]
+  ],
+
+  imageList: [],
+  remmendItems: []
 }
 
-function Make(props) {
+function UgcNote(props) {
   const [state, setState] = useImmer(initialState)
   const memberData = useSelector((member) => member.member)
   const colors = useSelector((state) => state.sys)
   const router = useRouter()
+  const {
+    file_video,
+    file_img,
+    occupy,
+    file_text,
+    file_word,
+    curTagId,
+    file_commodity,
+    isPopups,
+    isGrant,
+    elastic,
+    isOpened,
+    uploadtype,
+    imageList,
+    remmendItems
+  } = state
 
   useEffect(() => {
     iniData()
+
+    Taro.eventCenter.on('onEventSubjectTalk', (item) => {
+      console.log('onEventSubjectTalk:', item)
+      setState(draft => {
+        draft.refundStore = item
+      })
+    })
+
+    Taro.eventCenter.on('onEventRemmendItems', (item) => {
+      console.log('onEventRemmendItems:', item)
+      setState(draft => {
+        draft.refundStore = item
+      })
+    })
+
+    return () => {
+      Taro.eventCenter.off('onEventSubjectTalk')
+      Taro.eventCenter.off('onEventRemmendItems')
+    }
+
   }, [])
 
   const iniData = async () => {
     console.log(router.params) // 页面参数获取
     let { post_id } = router.params
-    // if(md_drafts=="true"){
-    //   let file_drafts=wx.getStorageSync('md_drafts')
-    //   file_drafts=JSON.parse(file_drafts)
-    //   let {file_video,file_img,file_text,file_commodity,file_word}=file_drafts
-    //   this.setState({
-    //     file_video,file_img,file_text,file_commodity,file_word
-    //   })
-    // }else
     let res = await api.mdugc.postsetting({ type: 'video' })
     console.log('视频是否开启上传', res['video.enable'])
     setState((draft) => {
@@ -164,7 +193,7 @@ function Make(props) {
         }
         setState(
           (draft) => {
-            ;(draft.file_video = file_video),
+            ; (draft.file_video = file_video),
               (draft.file_img = file_img),
               (draft.file_text = file_text),
               (draft.file_commodity = file_commodity),
@@ -183,7 +212,7 @@ function Make(props) {
     let file_commodity = JSON.parse(JSON.stringify(state.file_commodity))
 
     console.log('触发')
-    wx.enableAlertBeforeUnload({
+    Taro.enableAlertBeforeUnload({
       message: '返回上一页将不会保存该编辑页内容',
       success: function (res) {
         console.log('成功：', res)
@@ -454,7 +483,7 @@ function Make(props) {
         file_video.video_idx -= 1
       }
       setState((draft) => {
-        ;(draft.file_img = file_img), (draft.file_video = file_video)
+        ; (draft.file_img = file_img), (draft.file_video = file_video)
       })
     }
   }
@@ -507,12 +536,7 @@ function Make(props) {
       draft.curTagId = id
     })
   }
-  // 添加话题
-  const addword = () => {
-    Taro.navigateTo({
-      url: `/subpages/mdugc/pages/make_word/index`
-    })
-  }
+
   // 推荐商品
   const addcommodity = () => {
     Taro.navigateTo({
@@ -580,6 +604,7 @@ function Make(props) {
 
     return idx
   }
+
   // 上传笔记|草稿
   const oncreate = async (is_draft) => {
     let { md_drafts, post_id } = router.params
@@ -701,7 +726,7 @@ function Make(props) {
         duration: 1000,
         mask: true
       })
-      wx.disableAlertBeforeUnload()
+      Taro.disableAlertBeforeUnload()
       setTimeout(() => {
         Taro.navigateBack({
           delta: 1
@@ -710,8 +735,9 @@ function Make(props) {
     }
     console.log('这是信息', res)
   }
+
   // 返回上一页
-  const onugcBack =  async() => {
+  const onugcBack = async () => {
     console.log('返回上一页')
     // setState((draft) => {
     //   draft.isPopups = true
@@ -724,7 +750,7 @@ function Make(props) {
       confirmColor: colors.colorPrimary
     })
 
-    if(confirm){
+    if (confirm) {
       setState((draft) => {
         draft.isback = false
       })
@@ -780,7 +806,7 @@ function Make(props) {
                 type: 0
               }
               setState((draft) => {
-                ;(draft.isGrant = true), (draft.elastic = elastic)
+                ; (draft.isGrant = true), (draft.elastic = elastic)
               })
             }
           })
@@ -794,6 +820,7 @@ function Make(props) {
       }
     })
   }
+
   // 是否授权用户选中图片
   const isalbum = (type) => {
     // 获取是否授权选中的图片或视频
@@ -807,7 +834,7 @@ function Make(props) {
         type: 1
       }
       setState((draft) => {
-        ;(draft.elastic = elastic), (draft.isGrant = true)
+        ; (draft.elastic = elastic), (draft.isGrant = true)
       })
     } else {
       if (type) {
@@ -823,11 +850,11 @@ function Make(props) {
     let { file_video, file_img, videoenable, upload_choice, upload_img } = state
     if (file_video.url || videoenable != 1) {
       setState((draft) => {
-        ;(draft.uploadtype = upload_img), (draft.isOpened = true)
+        ; (draft.uploadtype = upload_img), (draft.isOpened = true)
       })
     } else {
       setState((draft) => {
-        ;(draft.uploadtype = upload_choice), (draft.isOpened = true)
+        ; (draft.uploadtype = upload_choice), (draft.isOpened = true)
       })
     }
   }
@@ -895,68 +922,100 @@ function Make(props) {
     }
   }
 
-  const {
-    file_video,
-    file_img,
-    occupy,
-    file_text,
-    file_word,
-    curTagId,
-    file_commodity,
-    isPopups,
-    isGrant,
-    elastic,
-    isOpened,
-    uploadtype
-  } = state
 
-  console.log('file', file_word, file_img)
+
   return (
-    <View className='makeindex'>
-      <NavBar
-        background='#ffffff'
-        color='#000'
-        iconTheme='#000'
-        onBack={onugcBack.bind(this)}
-        back
-        renderCenter={<View className='trace-rowAlignCenter'>编辑笔记</View>}
-      />
-      <View className='makeindexs'>
-        <View className='makeindex_upload'>
-          {/* <View className='makeindex_upload_video'>
-              {
-                file_video.url?(
-                  <View className='makeindex_upload_video_i'>
-                    <Video className='makeindex_upload_video_i_video' src={file_video.url} objectFit="contain" controls={false} showCenterPlayBtn={false}></Video>
-                    <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this,0,'video')}>
-                      <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                    </View>
-                  </View>
-                ):(
-                  <View onClick={this.chooseVideo.bind(this)} className='makeindex_upload_occupy icon-jiahao'>
+    <SpPage className='page-ugc-note' renderFooter={<View className='action-container'>
+      <View className='save-draft'>
+        <Text className='iconfont icon-caogaoxiang'></Text>
+        <Text className='text'>保存草稿</Text>
+      </View>
+      <View className='release-note'>
+        <AtButton circle type='primary'>发布笔记</AtButton>
+      </View>
+    </View>}>
+      <View className='container-body'>
+        <View className='note-ad'>
+          <SpUpload
+            value={imageList}
+            max={5}
+            onChange={(val) => {
+              setState((draft) => {
+                draft.imageList = val
+              })
+            }}
+          />
+        </View>
 
+        <View className='note-title'>
+          <AtInput
+            type='text'
+            placeholder='填写标题会有更多关注哦～'
+            maxLength='20'
+            value={file_text?.title}
+            onChange={handleChangetext}
+          />
+        </View>
+        <View className='note-body'>
+          <AtTextarea
+            value={file_text?.attextarea}
+            onChange={handleChangeattextarea}
+            maxLength={1000}
+            height={300}
+            placeholder='添加正文......'
+          />
+        </View>
+
+        <View className='subject-list'>
+          <View className='subject'>
+            {
+              subjectList.map((item, index) => (
+                <View>{`#${item}`}</View>
+              ))
+            }
+          </View>
+          <AtButton circle className='' onClick={() => {
+            Taro.navigateTo({
+              url: `/subpages/mdugc/subject-talk`
+            })
+          }}>#添加话题</AtButton>
+        </View>
+
+        <View className="recommend-goods">
+          <View className="label">推荐商品</View>
+          <View className="goods-list">
+            <View className='select-goods'>
+              {
+                remmendItems.map((item, index) => (
+                  <View className='file-item' key={`file-item__${index}`}>
+                    <SpImage mode='aspectFit' src={item} width={160} height={160} circle={16} />
+                    <Text
+                      className='iconfont icon-guanbi'
+                      // onClick={handleDeletePic.bind(this, index)}
+                    ></Text>
                   </View>
-                )
+                ))
               }
-            </View> */}
-          <View className='makeindex_upload_img'>
-            {/* {(file_img?.length == 0 && file_video?.url) ||
-            (file_video?.video_idx == -1 && file_video?.url) ? (
-              <View className='makeindex_upload_img_i'>
-                <SpImg
-                  img-class='makeindex_upload_img_i_img'
-                  src={'https://bbc-espier-images.amorepacific.com.cn/image/2/2023/02/27/8cb6a339f27aeaeb02669173e9a68fdeHe4tKEonZIuygGC8ZSSCWXdGJXJKeywv'||file_video?.cover}
-                  mode='widthFix'
-                  lazyLoad
-                />
-                <View
-                  className='makeindex_upload_delete'
-                  onClick={deletefile.bind(this, 0, 'video')}
-                >
-                  <Text className='makeindex_upload_delete_i iconfont icon-tianjia1'></Text>
+              {remmendItems.length == 0 && (
+                <View className='btn-upload' onClick={() => {
+                  Taro.navigateTo({
+                    url: `/subpages/mdugc/item-list`
+                  })
+                }}>
+                  <Text className='iconfont icon-tianjia1'></Text>
+                  <Text className='btn-upload-txt'>选择商品</Text>
+                  <Text className='files-length'>{`(${remmendItems.length}/${max})`}</Text>
                 </View>
-              </View>
-            ) : null} */}
+              )}
+            </View>
+          </View>
+        </View>
+      </View>
+
+
+      <View className='makeindexs'>
+        {/* <View className='makeindex_upload'>
+          <View className='makeindex_upload_img'>
             {file_img?.map((item, idx) => {
               return (
                 <Block key={idx}>
@@ -978,12 +1037,6 @@ function Make(props) {
                     </View>
                   </View>
                   {file_video.video_idx == idx && file_video?.url ? (
-                    // <View className='makeindex_upload_video_i'>
-                    //   <Video className='makeindex_upload_video_i_video' src={file_video.url} objectFit="contain" controls={false} showCenterPlayBtn={false}></Video>
-                    //   <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this,0,'video')}>
-                    //     <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                    //   </View>
-                    // </View>
                     <View className='makeindex_upload_img_i'>
                       <SpImg
                         img-class='makeindex_upload_img_i_img'
@@ -1013,29 +1066,9 @@ function Make(props) {
               <View className='makeindex_upload_img_occupy'></View>
             ))}
           </View>
-        </View>
-        <View className='makeindex_input'>
-          <View className='makeindex_input_text'>
-            <AtInput
-              title=''
-              type='text'
-              placeholder='填写标题会有更多关注哦～'
-              maxLength='20'
-              value={file_text?.title}
-              onChange={handleChangetext}
-            />
-          </View>
-          <View className='makeindex_input_textarea'>
-            <AtTextarea
-              value={file_text?.attextarea}
-              onChange={handleChangeattextarea}
-              maxLength={1000}
-              height={300}
-              placeholder='添加正文......'
-            />
-          </View>
-        </View>
-        <View className='makeindex_word'>
+        </View> */}
+
+        {/* <View className='makeindex_word'>
           <View className='makeindex_word_scroll'>
             <View className='makeindex_word_scroll_left'>
               {file_word?.length > 0 && (
@@ -1049,11 +1082,8 @@ function Make(props) {
               )}
             </View>
           </View>
-          <View className='makeindex_word_title' onClick={addword}>
-            #添加话题
-          </View>
-        </View>
-        <View className='makeindex_commodity'>
+        </View> */}
+        {/* <View className='makeindex_commodity'>
           <View className='makeindex_commodity_title'>推荐商品</View>
           <View className='makeindex_commodity_list'>
             {file_commodity?.map((item, idx) => {
@@ -1085,27 +1115,10 @@ function Make(props) {
               <View className='makeindex_upload_img_occupy'></View>
             ))}
           </View>
-        </View>
-        <View className='makeindex_footer'>
-          <View className='makeindex_footer_draft' onClick={oncreate.bind(this, true)}>
-            <View className='iconfont icon-caogaoxiang'></View>
-            <View className='makeindex_footer_draft_text'>保存草稿</View>
-          </View>
-          <View className='makeindex_footer_release' onClick={oncreate.bind(this, false)}>
-            发布笔记
-          </View>
-        </View>
+        </View> */}
       </View>
-      {/* {isPopups ? (
-        <Popups
-          title='是否退出当前编辑'
-          text='退出内容将不可保存哦'
-          closetext='确认退出'
-          showtext='继续编辑'
-          Last={onLast}
-        ></Popups>
-      ) : null} */}
-      {isGrant ? (
+
+      {/* {isGrant ? (
         <Popups
           title='申请'
           text={elastic?.title}
@@ -1113,7 +1126,8 @@ function Make(props) {
           showtext={elastic?.showtext}
           Last={ongrant}
         ></Popups>
-      ) : null}
+      ) : null} */}
+
       <AtActionSheet isOpened={isOpened} cancelText='关闭' title='' onClose={closesheet}>
         {uploadtype?.map((item) => {
           return (
@@ -1123,8 +1137,8 @@ function Make(props) {
           )
         })}
       </AtActionSheet>
-    </View>
+    </SpPage>
   )
 }
 
-export default Make
+export default UgcNote

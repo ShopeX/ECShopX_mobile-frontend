@@ -12,15 +12,17 @@ export default class SpSearchBar extends Component {
     isOpened: false,
     keyword: '',
     showDailog: true,
+    history: true,
     placeholder: '搜索',
-    onCancel: () => {},
-    onChange: () => {},
-    onClear: () => {},
-    onFocus: () => {},
-    onConfirm: () => {}
+    localStorageKey: 'searchHistory',
+    onCancel: () => { },
+    onChange: () => { },
+    onClear: () => { },
+    onFocus: () => { },
+    onConfirm: () => { }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -35,7 +37,7 @@ export default class SpSearchBar extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -47,7 +49,7 @@ export default class SpSearchBar extends Component {
       showSearchDailog: isOpened,
       isShowAction: true
     })
-    Taro.getStorage({ key: 'searchHistory' })
+    Taro.getStorage({ key: this.props.localStorageKey })
       .then((res) => {
         let stringArr = res.data.split(',').filter((item) => {
           const isHave = item.trim()
@@ -55,7 +57,7 @@ export default class SpSearchBar extends Component {
         })
         this.setState({ historyList: stringArr })
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   handleChangeSearch = (value) => {
@@ -70,27 +72,21 @@ export default class SpSearchBar extends Component {
   handleConfirm = (e) => {
     e.preventDefault && e.preventDefault()
     e.stopPropagation && e.stopPropagation()
-
-    if (e.detail.value && e.detail.value.trim()) {
-      Taro.getStorage({ key: 'searchHistory' })
-        .then((res) => {
-          let stringArr = res.data.split(',')
-          let arr = [].concat(stringArr)
-          arr.unshift(e.detail.value)
-          arr = Array.from(new Set(arr))
-          let arrString = arr.join(',')
-          Taro.setStorage({ key: 'searchHistory', data: arrString })
-        })
-        .catch(() => {
-          let arr = []
-          arr.push(this.state.searchValue)
-          let arrString = arr.join(',')
-          Taro.setStorage({ key: 'searchHistory', data: arrString })
-        })
+    const keywords = e.detail.value.trim()
+    if (keywords) {
+      const value = Taro.getStorageSync(this.props.localStorageKey)
+      let defaultValue = []
+      if (value) {
+        const array = value.split(',')
+        if (!array.includes(keywords)) {
+          array.unshift(keywords)
+        }
+        defaultValue = array
+      } else {
+        defaultValue.push(keywords)
+      }
+      Taro.setStorage({ key: this.props.localStorageKey, data: defaultValue.toString() })
       this.props.onConfirm(e.detail.value)
-      /*Taro.navigateTo({
-        url: `/pages/item/list?keywords=${this.state.searchValue}`
-      })*/
     }
     this.setState({
       showSearchDailog: false,
@@ -107,7 +103,7 @@ export default class SpSearchBar extends Component {
   }
 
   handleClickDelete = () => {
-    Taro.removeStorage({ key: 'searchHistory' }).then(() => {
+    Taro.removeStorage({ key: this.props.localStorageKey }).then(() => {
       this.setState({ historyList: [] })
     })
   }
@@ -124,8 +120,8 @@ export default class SpSearchBar extends Component {
     console.log('热门搜索', 100)
   }
 
-  render () {
-    const { isFixed, keyword, showDailog, placeholder } = this.props
+  render() {
+    const { isFixed, keyword, showDailog, placeholder, history } = this.props
     const { showSearchDailog, historyList, isShowAction, searchValue } = this.state
     return (
       <View

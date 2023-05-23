@@ -4,8 +4,8 @@ import { classNames } from '@/utils'
 
 import './index.scss'
 
-function SpTagBar (props) {
-  const { list, value, children, onChange = () => {} } = props
+function SpTagBar(props) {
+  const { list, value, children, className = '', onChange = () => { } } = props
 
   const isChecked = (item) => {
     return (
@@ -17,7 +17,7 @@ function SpTagBar (props) {
   }
 
   return (
-    <View className='sp-tag-bar'>
+    <View className={classNames('sp-tag-bar', className)}>
       <View className='tag-bar-hd'>
         <ScrollView className='tag-container' scrollX>
           {list.map((item, index) => (

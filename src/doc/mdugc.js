@@ -7,13 +7,15 @@ export const MDUGC_NLIST = {
   user_id: 'userInfo.user_id',
   likes: 'likes',
   isheart: 'like_status',
-  badges: 'badges'
+  badges: ({ badges }) => {
+    return badges || []
+  }
 }
 
 
 export const MDUGC_TOPICLIST = {
-  topic_id: 'topic_id',
-  topic_name: 'topic_name'
+  tag_id: 'topic_id',
+  tag_name: 'topic_name'
 }
 
 export const GOOD_INFO =  {

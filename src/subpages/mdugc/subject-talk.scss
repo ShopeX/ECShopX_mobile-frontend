@@ -1,0 +1,49 @@
+.page-ugc-subject-talk {
+  .search-input {
+    padding: 16px 24px;
+    background: #fff;
+    box-sizing: border-box;
+    height: auto;
+
+    .at-icon-search {
+      color: var(--color-primary);
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 34px;
+        border-right: 1px solid #BBBBBB;
+        position: relative;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .list-container {
+    background-color: #fff;
+    padding: 0 32px 32px;
+
+    .subject-item {
+      color: #222;
+      padding: 24px 0;
+
+      &::before {
+        left: 0;
+        right: 0;
+      }
+    }
+
+    .icon-zhengque-correct {
+      font-size: 32px;
+      color: var(--color-primary);
+    }
+  }
+
+  .action-container {
+    margin: 60px 0;
+    .at-button {
+      width: 260px;
+      margin-top: 40px;
+    }
+  }
+}

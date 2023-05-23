@@ -52,7 +52,7 @@
         font-size: 24px;
       }
       &__btn:nth-child(-n + 3) {
-        background: $color-brand-primary;
+        background: var(--color-primary);
         color: #fefefe;
       }
     }
@@ -76,6 +76,11 @@
     .at-icon {
       font-size: 40px;
       color: #bababa;
+    }
+  }
+  .at-search-bar {
+    &::after {
+      border-bottom-width: 0;
     }
   }
 }

@@ -2,8 +2,6 @@ import React, { useEffect, useRef } from 'react'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-import S from '@/spx'
-import { SearchBar, TagsBar, Scrollitem, TabBar } from '../../components'
 import {
   SpNote,
   BackToTop,
@@ -14,11 +12,10 @@ import {
   FloatMenuItem
 } from '@/components'
 import { pickBy } from '@/utils'
-
+import S from '@/spx'
 import api from '@/api'
-
-//import '../../font/iconfont.scss'
-import './index2.scss'
+import Scrollitem from './comps/comp-scrollitem'
+import './list.scss'
 
 const initialState = {
   list: [],
