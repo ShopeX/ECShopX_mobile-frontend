@@ -346,6 +346,7 @@ export default class GoodsReservate extends Component {
             formdata.content.map((item, index) => {
               return (
                 <View className='goods-reservate__userinfo' key={`${index}1`}>
+                {item.title&&<View className='goods-reservate__userinfo_title'>{item.title}</View>}
                   {item.formdata && item.formdata.length > 0
                     ? item.formdata.map((i_data, i_index) => {
                         return (

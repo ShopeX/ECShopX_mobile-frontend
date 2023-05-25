@@ -91,6 +91,15 @@
   &__userinfo {
     background: #ffffff;
     margin-bottom: 20px;
+    &_title{
+    background: #f5f5f5;
+    box-sizing: border-box;
+    color: #737475;
+    padding:20px 30px 20px;
+    }
+    &:first-child{
+        margin-top: 20px;
+    }
   }
   &__statement {
     padding: 30px;
