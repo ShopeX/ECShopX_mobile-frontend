@@ -29,7 +29,7 @@ function CompGoodsBuyToolbar(props) {
 
   const RenderBtns = () => {
     if (info.store == 0) {
-      btn.push(BUY_TOOL_BTNS.NO_STORE)
+      btns.push(BUY_TOOL_BTNS.NO_STORE)
       return
     }
 

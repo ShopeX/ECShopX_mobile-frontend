@@ -64,7 +64,7 @@ function SpCashier(props) {
       platform = 'wxMiniProgram'
     } else if (isAPP()) {
       platform = 'app'
-    } else if(isAlipay) {
+    } else if (isAlipay) {
       platform = 'alipaymini'
     } else if (isWeb) {
       platform = 'h5'
@@ -91,8 +91,11 @@ function SpCashier(props) {
     setState((draft) => {
       draft.list = _list
     })
-    onChange(_list[0])
-    onChangePayment(_list[0])
+    if (_list.length > 0) {
+      onChange(_list[0])
+      onChangePayment(_list[0])
+    }
+
 
     // console.log('===list===', list)
     // const isHasAlipay = list.some((item) => item.pay_type_code === 'alipayh5')

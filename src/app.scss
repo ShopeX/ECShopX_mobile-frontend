@@ -16,7 +16,6 @@ $at-button-border-color-secondary: $color-border-gray;
 @import './style/sp-comps.scss';
 @import './style/alipay-comps.scss';
 
-
 body,
 view {
   font-family: $font-family;
@@ -176,6 +175,9 @@ switch,
 
 /* wgt common styles */
 .wgt {
+  &.wgt__padded {
+    padding: 20px 0px;
+  }
   .wgt-head {
     padding: 0px 16px;
     display: flex;

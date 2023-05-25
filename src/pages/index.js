@@ -20,12 +20,15 @@ import api from '@/api'
 import {
   isWeixin,
   isAPP,
+  isEmpty,
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
   VERSION_IN_PURCHASE,
   VERSION_B2C,
-  classNames
+  classNames,
+  getCurrentPageRouteParams,
+  resolveStringifyParams
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
@@ -33,6 +36,7 @@ import { updateShopInfo } from '@/store/slices/shop'
 import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
+import qs from 'qs'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import CompAddTip from './home/comps/comp-addtip'
@@ -52,6 +56,7 @@ const initialState = {
 function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
+
   const { initState, openRecommend, openLocation, openStore, appName } = useSelector(
     (state) => state.sys
   )
@@ -144,19 +149,24 @@ function Home() {
 
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    const params = getCurrentPageRouteParams()
+    const path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
+    console.log('useShareAppMessage path:', path)
     return {
       title: title,
       imageUrl: imageUrl,
-      path: '/pages/index'
+      path
     }
   })
 
   useShareTimeline(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    const params = getCurrentPageRouteParams()
+    console.log('useShareTimeline params:', params)
     return {
       title: title,
       imageUrl: imageUrl,
-      query: '/pages/index'
+      query: resolveStringifyParams(params)
     }
   })
 
@@ -210,7 +220,7 @@ function Home() {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch />}</WgtHomeHeader>}
+        {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
         <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
           {/* 猜你喜欢 */}
           <SpRecommend className='recommend-block' info={likeList} />

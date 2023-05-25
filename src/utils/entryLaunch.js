@@ -2,7 +2,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
-import { showToast, log, isArray, VERSION_STANDARD } from '@/utils'
+import { showToast, log, isArray, VERSION_STANDARD, isWeb, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 
@@ -29,10 +29,12 @@ class EntryLaunch {
     // const { params } = $instance.router;
     const params = options?.query || $instance.router?.params || {}
     let _options = {}
+    console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
-      console.log(qs.parse(decodeURIComponent(params.scene)))
+      // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
+      console.log('params scene:', params.scene, resolveUrlParamsParse(decodeURIComponent(params.scene)))
       _options = {
-        ...qs.parse(decodeURIComponent(params.scene))
+        ...resolveUrlParamsParse(decodeURIComponent(params.scene))
       }
 
       if (_options.share_id) {
@@ -175,7 +177,7 @@ class EntryLaunch {
         my.getLocation({
           type: 0, // 获取经纬度和省市区县数据
           success: (res) => {
-            console.log(11,res);
+            console.log(11, res);
             resolve({
               lng: res.longitude,
               lat: res.latitude
@@ -189,7 +191,7 @@ class EntryLaunch {
     } else {
       console.log('getLocationInfo')
       return new Promise(async (reslove, reject) => {
-        if(!this.geolocation) {
+        if (!this.geolocation) {
           setTimeout(() => {
             this.getLocationInfo()
           }, 1000)

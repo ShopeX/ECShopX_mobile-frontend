@@ -1,7 +1,7 @@
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
-import { pickBy, classNames, linkPage } from '@/utils'
+import { pickBy, classNames, styleNames, linkPage } from '@/utils'
 import { Tracker } from '@/service'
 import { CreateIntersectionObserver } from '@/utils/platform'
 import { withLoadMore } from '@/hocs'
@@ -14,7 +14,7 @@ function WgtGoodsGrid(props) {
     return null
   }
   const { base, data, config } = info
-  const newData = Array.isArray(data)? data : []
+  const newData = Array.isArray(data) ? data : []
   const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
 
   const handleClickMore = () => {
@@ -59,20 +59,27 @@ function WgtGoodsGrid(props) {
         </View>
       )}
       <View className='wgt-body'>
-        {  config.style == 'grid' && (
+        {config.style == 'grid' && (
           <View className='container'>
             <View className='goods-item-wrap two-inrow left-container'>
               {leftFilterGoods.map((item, leftidx) => (
                 <SpGoodsItem
                   renderBrand={
                     config.brand && (
-                      <SpImage
-                        className='brand-info'
-                        src={item.brand}
-                        width={110}
-                        height={110}
-                        mode='scaleToFill'
-                      />
+                      <View className='brand-info' style={styleNames({
+                        'width': '62px',
+                        'height': '62px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
                     )
                   }
                   showPrice={config.showPrice}
@@ -86,13 +93,20 @@ function WgtGoodsGrid(props) {
                 <SpGoodsItem
                   renderBrand={
                     config.brand && (
-                      <SpImage
-                        className='brand-info'
-                        src={item.brand}
-                        width={110}
-                        height={110}
-                        mode='scaleToFill'
-                      />
+                      <View className='brand-info' style={styleNames({
+                        'width': '64px',
+                        'height': '64px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
                     )
                   }
                   showPrice={config.showPrice}
@@ -110,13 +124,20 @@ function WgtGoodsGrid(props) {
                 <SpGoodsItem
                   renderBrand={
                     config.brand && (
-                      <SpImage
-                        className='brand-info'
-                        src={item.brand}
-                        width={110}
-                        height={110}
-                        mode='scaleToFill'
-                      />
+                      <View className='brand-info' style={styleNames({
+                        'width': '64px',
+                        'height': '64px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
                     )
                   }
                   showPrice={config.showPrice}

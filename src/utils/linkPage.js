@@ -17,10 +17,10 @@ function linkPage (data) {
     case 'goods':
       url = '/pages/item/espier-detail?id=' + id
       break
-    case 'category':
     case 'sale_category':
       url = '/pages/item/list?cat_id=' + id
       break
+    case 'category':
     case 'management_category':
       url = '/pages/item/list?main_cat_id=' + id
       break

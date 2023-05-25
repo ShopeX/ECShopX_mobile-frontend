@@ -98,7 +98,7 @@ function GuideCouponIndex(props) {
   }
   console.log('list:', list)
   return (
-    <SpPage className='page-guide-coupon' navigateTheme='dark' renderFooter={<BaTabBar />}>
+    <SpPage className='page-guide-coupon' renderFooter={<BaTabBar />}>
       <SpScrollView className='coupon-list' auto={false} ref={couponRef} fetch={fetch}>
         {list.map((item, index) => (
           <View className='coupon-item__wrap' key={`coupon-item__${index}`}>

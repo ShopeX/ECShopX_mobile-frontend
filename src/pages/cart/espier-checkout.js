@@ -143,12 +143,12 @@ function CartCheckout(props) {
   }, [isNewUser])
 
   useEffect(() => {
+    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
     if (receiptType && payType) {
-      console.log('useEffect.....................', payType, point_use, address, coupon, zitiAddress)
       calcOrder()
     }
     // }, [address, payType, coupon, point_use, receiptType, zitiAddress])
-  }, [payType, point_use, address, coupon, zitiAddress])
+  }, [payType, point_use, address, coupon, zitiAddress, receiptType])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
@@ -188,6 +188,11 @@ function CartCheckout(props) {
     const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: dtid })
     if (!isValid) {
       showToast('该商品已下架')
+      return
+    }
+
+    if(!payType) {
+      showToast('请选择支付方式')
       return
     }
 
@@ -410,7 +415,7 @@ function CartCheckout(props) {
 
   // 商家留言
   const handleRemarkChange = (val) => {
-    if(val.length > 50) val = val.slice(0,50)
+    if (val.length > 50) val = val.slice(0, 50)
     console.log('handleRemarkChange:remark', remark)
     setState((draft) => {
       draft.remark = val
@@ -847,8 +852,8 @@ function CartCheckout(props) {
   }
 
   console.log(couponInfo, 'couponInfo', coupon)
-  console.log('invoiceTitle',invoiceTitle)
-  console.log('payChannel',payChannel)
+  console.log('invoiceTitle', invoiceTitle)
+  console.log('payChannel', payChannel)
   const couponText = couponInfo ? couponInfo.title : ''
   // couponInfo.type === 'member'
   //   ? '会员折扣'
@@ -1096,8 +1101,10 @@ function CartCheckout(props) {
         onChange={(value) => {
           setState((draft) => {
             console.log(`SpCashier:`, value)
-            draft.payType = value.paymentCode
-            draft.payChannel = value.paymentChannel
+            if (value) {
+              draft.payType = value.paymentCode
+              draft.payChannel = value.paymentChannel
+            }
           })
         }}
       />

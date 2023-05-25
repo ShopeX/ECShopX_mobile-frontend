@@ -17,7 +17,7 @@ import {
   SG_GUIDE_PARAMS,
   SG_GUIDE_PARAMS_UPDATETIME
 } from '@/consts'
-import { checkAppVersion, isWeixin, isNavbar, log, entryLaunch } from '@/utils'
+import { checkAppVersion, isWeixin, isWeb, isNavbar, log, entryLaunch } from '@/utils'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
 
@@ -53,15 +53,20 @@ class App extends Component {
   // }
 
   componentDidMount() {
-    if (isWeixin) {
-      checkAppVersion()
-    }
+
   }
 
   onLaunch(options) {
     console.log(`app onLaunch:`, options)
+  }
 
-    entryLaunch.getRouteParams(options).then((params) => {
+  async componentDidShow(options) {
+    if (isWeixin) {
+      checkAppVersion()
+    }
+    // isWeb环境下，H5启动时，路由携带参数在options
+    // 小程序环境，启动时，路由携带参数在options.query
+    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
 
@@ -75,7 +80,7 @@ class App extends Component {
         Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
       } else {
         // 欢迎语携带用户编号
-        if(guideParams?.gu_user_id) { delete guideParams.gu_user_id }
+        if (guideParams?.gu_user_id) { delete guideParams.gu_user_id }
         Taro.setStorageSync(SG_GUIDE_PARAMS, {
           ...guideParams,
           ...params
@@ -89,18 +94,15 @@ class App extends Component {
         entryLaunch.postGuideTask()
       }
     })
-  }
 
-  async componentDidShow(options) {
-    const {show_time} = await api.promotion.getScreenAd()
+    const { show_time } = await api.promotion.getScreenAd()
     let showAdv
-    if( show_time === 'always'){
-        showAdv = false
-        store.dispatch({
-          type: 'user/closeAdv', payload: showAdv
-        })
-      }
-    console.log(`app componentDidShow:`, options)
+    if (show_time === 'always') {
+      showAdv = false
+      store.dispatch({
+        type: 'user/closeAdv', payload: showAdv
+      })
+    }
     this.getSystemConfig()
   }
 
@@ -169,7 +171,7 @@ class App extends Component {
     }
   }
 
-  componentDidCatchError() {}
+  componentDidCatchError() { }
 
   render() {
     return <Provider store={store}>{this.props.children}</Provider>

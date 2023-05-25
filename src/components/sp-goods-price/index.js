@@ -51,9 +51,9 @@ function SpGoodsPrice(props) {
             )}
 
             {info.vipPrice > 0 &&
-              info.vipPrice < info.price &&
-              info.vipPrice > info.svipPrice &&
-              !info.svipPrice &&
+              info.vipPrice < info.memberPrice &&
+              (!info.svipPrice ||
+                info.vipPrice > info.svipPrice) &&
               enSvipPrice && (
                 <View className='vip-price'>
                   <SpPrice value={info.vipPrice} />
@@ -63,7 +63,7 @@ function SpGoodsPrice(props) {
 
             {info.svipPrice > 0 &&
               info.svipPrice < info.vipPrice &&
-              info.svipPrice < info.price &&
+              info.svipPrice < info.memberPrice &&
               enSvipPrice && (
                 <View className='svip-price'>
                   <SpPrice value={info.svipPrice} />

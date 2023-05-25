@@ -94,7 +94,6 @@ function DianWuList() {
   return (
     <SpPage
       className='page-dianwu-list'
-      navigateTheme='dark'
       scrollToTopBtn
       renderFooter={<CompTabbar />}
     >

@@ -57,7 +57,7 @@ export default class WgtStore extends Component {
             </View>
           </View>
         )}
-        {data.map((item) => (
+        {data?.map((item) => (
           <View
             className='store-wrap'
             key={item.id}

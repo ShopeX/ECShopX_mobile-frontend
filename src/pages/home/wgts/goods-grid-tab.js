@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
-import { classNames, pickBy, linkPage } from '@/utils'
+import { classNames, styleNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
 import './goods-grid-tab.scss'
 
@@ -43,7 +43,7 @@ function WgtGoodsGridTab(props) {
             <Text className='wgt-title'>{base.title}</Text>
             <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
-          {config.moreLink.linkPage && (
+          {config.moreLink?.linkPage && (
             <View className='wgt-more' onClick={handleClickMore}>
               <View className='three-dot'></View>
             </View>
@@ -92,13 +92,20 @@ function WgtGoodsGridTab(props) {
                             showPrice={config.showPrice}
                             renderBrand={
                               config.brand && (
-                                <SpImage
-                                  className='brand-info'
-                                  src={good.brand}
-                                  width={110}
-                                  height={110}
-                                  mode='scaleToFill'
-                                />
+                                <View className='brand-info' style={styleNames({
+                                  'width': '64px',
+                                  'height': '64px',
+                                  'border-radius': '32px',
+                                  'padding': '2px'
+                                })}>
+                                  <SpImage
+                                    src={data.brand}
+                                    width={120}
+                                    height={120}
+                                    circle
+                                    mode='scaleToFill'
+                                  />
+                                </View>
                               )
                             }
                           />
@@ -116,14 +123,20 @@ function WgtGoodsGridTab(props) {
                             showPrice={config.showPrice}
                             renderBrand={
                               config.brand && (
-                                <SpImage
-                                  className='brand-info'
-                                  lazyLoad
-                                  src={good.brand}
-                                  width={110}
-                                  height={110}
-                                  mode='scaleToFill'
-                                />
+                                <View className='brand-info' style={styleNames({
+                                  'width': '64px',
+                                  'height': '64px',
+                                  'border-radius': '32px',
+                                  'padding': '2px'
+                                })}>
+                                  <SpImage
+                                    src={data.brand}
+                                    width={120}
+                                    height={120}
+                                    circle
+                                    mode='scaleToFill'
+                                  />
+                                </View>
                               )
                             }
                           />
@@ -136,7 +149,7 @@ function WgtGoodsGridTab(props) {
             )
           })}
         </View>
-        {config.moreLink.id && (
+        {config.moreLink?.id && (
           <View className='btn-more' onClick={() => linkPage(config.moreLink)}>
             查看更多
           </View>

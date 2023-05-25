@@ -233,18 +233,22 @@
     }
     .params-item {
       display: flex;
-      align-items: center;
-      height: 60px;
-      line-height: 60px;
+      align-items: flex-start;
+      padding: 4px 0;
+      // height: 60px;
+      // line-height: 60px;
     }
     .params-label {
       color: #666;
+      font-size: 26px;
       // width: 100px;
     }
     .params-value {
       color: #222;
-      max-width: 550px;
-      @include text-overflow();
+      font-size: 26px;
+      flex: 1;
+      // max-width: 550px;
+      // @include text-overflow();
     }
   }
 }

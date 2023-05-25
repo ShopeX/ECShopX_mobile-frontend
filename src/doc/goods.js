@@ -149,7 +149,16 @@ export const GOODS_INFO = {
   purlimitByCart: 'purchase_limit_num_by_cart',
   purlimitByFastbuy: 'purchase_limit_num_by_fastbuy',
   isGift: 'is_gift',
-  itemParams: 'item_params',
+  itemParams: ({ regions, item_unit, item_params }) => {
+    const res = []
+    if (item_unit) {
+      res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
+    }
+    if (regions) {
+      res.push({ attribute_name: '产地', attribute_value_name: regions.join(' ') })
+    }
+    return res.concat(item_params)
+  },
   groupsList: 'groups_list',
   orderItemType: 'item_type',
   sales: 'sales',
@@ -171,7 +180,7 @@ export const GOODS_INFO = {
       })
     }
   },
-
+  specImages: 'spec_images',
   skuList: ({ item_spec_desc }) => {
     return pickBy(item_spec_desc, {
       skuName: 'spec_name',
