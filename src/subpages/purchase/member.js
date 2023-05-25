@@ -144,6 +144,7 @@ function MemberIndex(props) {
   const fetchPurchase = async () => {
     // 内购分享信息
     const { activity_id, enterprise_id } = purchase_share_info
+    if (!activity_id || !enterprise_id) return
     const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
     setState((draft) => {
       draft.purchaseInfo = data
