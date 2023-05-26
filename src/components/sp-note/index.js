@@ -24,25 +24,20 @@ export default class SpNote extends Component {
 
   navigateTo = navigateTo
 
-  handleClick = () => {}
+  handleClick = () => { }
 
-  resolveUrl (img) {
+  resolveUrl(img) {
     return `/assets/imgs/${img}`
   }
 
-  render () {
+  render() {
     const { icon, className, title, button, value, btnText, to, isUrl, img } = this.props
 
     return (
       <View className={classNames('sp-note', className)}>
         {/* {icon && <AtIcon prefixClass='sw-icon' value={value} size='60' color='#cdcdcd' />} */}
         {img && (
-          isUrl ? <SpImage className='default-img' src={img} width={292} height={224} /> :
-          <Image
-            className='sp-note__img'
-            mode='widthFix'
-            src={isUrl ? img : this.resolveUrl(img)}
-          />
+          <SpImage className='default-img' src={img} width={292} height={224} />
         )}
         <Text className='sp-note__text'>{title || this.props.children}</Text>
         {button && to && (

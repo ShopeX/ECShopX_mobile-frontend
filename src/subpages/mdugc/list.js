@@ -14,7 +14,7 @@ import {
 import { pickBy } from '@/utils'
 import S from '@/spx'
 import api from '@/api'
-import Scrollitem from './comps/comp-scrollitem'
+import Scrollitem from './comps/comp-noteitem'
 import './list.scss'
 
 const initialState = {

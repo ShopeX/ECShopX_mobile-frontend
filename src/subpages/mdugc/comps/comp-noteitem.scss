@@ -1,0 +1,72 @@
+.comp-note-item {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 24px;
+  position: relative;
+
+  .badges-list {
+    display: flex;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+
+    .badge-item {
+      background-color: var(--color-primary);
+      color: #fff;
+      padding: 0 4px;
+      font-size: 23px;
+      border-radius: 4px;
+    }
+  }
+
+  .note-item {
+    &__bd {
+      border-radius: 0;
+      padding: 16px 16px 0;
+
+      .note-title {
+        font-size: 28px;
+        color: #222;
+        @include multi-ellipsis(2);
+      }
+
+      .ugc-author {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+
+        .author-info {
+          display: flex;
+          align-items: center;
+        }
+
+        .author {
+          width: 200px;
+          font-size: 22px;
+          margin-left: 4px;
+          color: #666;
+          @include text-overflow();
+        }
+        .likes-num {
+          display: flex;
+          align-items: center;
+        }
+        .iconfont {
+          font-size: 32px;
+        }
+        .icon-dianzan {
+          color: #666;
+        }
+        .icon-dianzanFilled {
+          color: var(--color-primary);
+        }
+        .like-num {
+          font-size: 22px;
+          color: #666;
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}

@@ -47,8 +47,6 @@ function SpTabbar(props) {
     })
   }
 
-  console.log('currentIndex:', currentIndex)
-
   const handleTabbarClick = (index) => {
     const tabItem = tabList[index]
     const { path } = getCurrentRoute()

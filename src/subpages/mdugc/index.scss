@@ -55,110 +55,31 @@
     }
   }
 
+  .list-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px 16px;
+
+    .left-container {
+      width: 350px;
+    }
+
+    .right-container {
+      width: 350px;
+      // padding-left: 20px;
+    }
+
+    .note-item-wrap {
+      margin-bottom: 20px;
+      // box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      position: relative;
+    }
+  }
 
   .icon-huiyuanzhongxin,
   .icon-tianjia1 {
-    font-size: 30px;
+    font-size: 36px;
   }
 
-  &_search {
-    background-color: #fff;
-    padding: 16px 24px;
-  }
-<<<<<<< HEAD:src/subpages/mdugc/index.scss
-
-  &_tagsbar {
-    background-color: #fff;
-    padding: 20px 0;
-    min-height: 30px;
-=======
-  &_tagsbar{
-    // background-color: red !important;
-    // height: 60px;
-    // padding: 20rpx 0;
-    // min-height: 30px;
->>>>>>> b43ec81b3b06937855567cbe8793d69934f458e3:src/subpages/mdugc/pages/index/index2.scss
-  }
-
-  &_list {
-
-    font-size: 28px;
-    font-weight: 600;
-    color: #222222;
-    // border-radius: 50px 50px 0px 0px;
-    background-color: #fff;
-
-    // padding: 24rpx 56rpx;
-    &__tag {
-      display: flex;
-      // flex-direction: row-reverse;
-      // margin-bottom: 25px;
-      border-radius: 50px 50px 0px 0px;
-      background-color: #F5F5F5;
-      padding: 24rpx 56rpx;
-
-      &_i {
-        margin-right: 88rpx;
-        color: rgba($color: #000000, $alpha: 0.3)
-      }
-
-      &_iact {
-        color: rgba($color: #000000, $alpha: 1.0)
-      }
-    }
-
-    &__scroll {
-      // position: absolute;
-      // top: 270px;
-      // left: 0;
-      width: 100%;
-      padding: 0 5px;
-      margin: 0 auto;
-      bottom: 0;
-      overflow-y: auto;
-      overflow-x: hidden;
-      // z-index: 1;
-      background-color: #F5F5F5;
-
-      &_end {
-        width: 100%;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        color: #7b7b7b;
-        font-size: 25px;
-        position: relative;
-        bottom: 155px;
-      }
-
-      &_scrolls {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        padding: 0 15px;
-
-        // padding-bottom:160px;
-        &_left {
-          width: 48.7%;
-          padding-top: 10px;
-        }
-
-        &_right {
-          width: 48.7%;
-          padding-top: 10px;
-        }
-
-        &_item {
-          width: 100%;
-        }
-      }
-    }
-  }
-
-  .pay-button {
-    color: #fff;
-    width: 250rpx;
-    border-radius: 60rpx;
-    font-size: 30px;
-  }
 }

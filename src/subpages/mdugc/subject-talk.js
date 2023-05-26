@@ -19,7 +19,7 @@ const initialState = {
 
 function UgcSubjectTalk(props) {
   const [state, setState] = useImmer(initialState)
-  const [selected, setSelected] = useState(new Set())
+  const [selected, setSelected] = useState(new Map())
   const { keyword, list } = state
   const { userInfo = {} } = useSelector((state) => state.user)
   const listRef = useRef()
@@ -60,14 +60,15 @@ function UgcSubjectTalk(props) {
   }
 
   const handleClickItem = ({ topicId, topicName }) => {
+    let tempSelected
     if (selected.has(topicId)) {
       selected.delete(topicId)
-      setSelected(new Set([...selected]));
+      tempSelected = new Map([...selected])
     } else {
-      setSelected(new Set([...selected, topicId]));
+      tempSelected = new Map([...selected, [topicId, { topicId, topicName }]])
     }
-
-
+    Taro.eventCenter.trigger('onEventSubjectTalk', Array.from(tempSelected.values()))
+    setSelected(tempSelected);
   }
 
   const isChecked = ({ topicId }) => {

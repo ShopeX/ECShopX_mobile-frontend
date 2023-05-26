@@ -17,6 +17,20 @@
       color: #666666;
       z-index: 99;
     }
+    .edit-block {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      font-size: 24px;
+      height: 40px;
+      line-height: 40px;
+      background: rgba(119,119,119,0.4);
+      color: #fff;
+      text-align: center;
+      border-bottom-left-radius: 16px;
+      border-bottom-right-radius: 16px;
+    }
   }
   .btn-upload {
     width: 160px;

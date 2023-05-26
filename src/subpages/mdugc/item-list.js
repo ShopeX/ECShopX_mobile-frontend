@@ -87,12 +87,16 @@ function UgcItemList() {
   }
 
   const handleClickItem = ({ itemId, itemName, pic }) => {
+    let tempSelected
     if (selected.has(itemId)) {
       selected.delete(itemId)
-      setSelected(new Map([...selected]));
+      tempSelected = new Map([...selected]);
     } else {
-      setSelected(new Map([...selected, [itemId, { itemId, itemName, pic }]]));
+      tempSelected = new Map([...selected, [itemId, { itemId, itemName, pic }]]);
     }
+
+    Taro.eventCenter.trigger('onEventRemmendItems', Array.from(tempSelected.values()))
+    setSelected(tempSelected);
   }
 
   const isChecked = ({ itemId }) => {

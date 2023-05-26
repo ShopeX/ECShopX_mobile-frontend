@@ -112,7 +112,8 @@ function SpLogin(props, ref) {
   }, [])
 
   // 登录
-  const handleClickLogin = async () => {
+  const handleClickLogin = async (e) => {
+    e.stopPropagation()
     const { scene } = Taro.getLaunchOptionsSync()
     // 微信朋友圈打开场景
     if(scene == 1154) {

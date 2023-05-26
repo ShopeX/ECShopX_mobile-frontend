@@ -43,7 +43,7 @@ const upload = {
       header: {
         'Content-Type': 'application/x-www-form-urlencoded', // 只能是这种形式
       },
-      fail:(err)=>{
+      fail: (err) => {
         // debugger
         // console.log('aliUpload:host', host)
         console.log('aliUpload:Taro.uploadFile', err)
@@ -59,14 +59,15 @@ const upload = {
         return false
       }
       return {
-        url: `${host}${dir}`
+        url: `${host}${dir}`,
+        filetype
       }
     } catch (e) {
       throw new Error(`aliUpload:${e}`)
     }
   },
   qiNiuUpload: async (item, tokenRes) => {
-    const { token, key, domain, host } = tokenRes
+    const { token, key, domain, host, filetype } = tokenRes
 
     const uploadFile = isAlipay ? my.uploadFile : Taro.uploadFile
 
@@ -74,7 +75,8 @@ const upload = {
       const { data } = await uploadFile({
         url: host,
         filePath: item.url,
-        fileType: 'image',
+        // fileType: 'image',
+        fileType: filetype,
         withCredentials: false,
         [isAlipay ? 'fileName' : 'name']: 'file',
         formData: {
@@ -87,7 +89,8 @@ const upload = {
         return false
       }
       return {
-        url: `${domain}/${imgData.key}`
+        url: `${domain}/${imgData.key}`,
+        filetype
       }
     } catch (e) {
       console.error(e)
@@ -100,7 +103,7 @@ const upload = {
     let header = {
       Authorization: `Bearer ${S.getAuthToken()}`,
     }
-    if(isWeixin) {
+    if (isWeixin) {
       header['authorizer-appid'] = getAppId()
     }
     try {
@@ -121,7 +124,8 @@ const upload = {
         return false
       }
       return {
-        url: `${domain}/${image_url}`
+        url: `${domain}/${image_url}`,
+        filetype
       }
     } catch (e) {
       throw new Error(e)
@@ -162,7 +166,8 @@ const upload = {
         return false
       }
       return {
-        url: Location
+        url: Location,
+        filetype
       }
     } catch (e) {
       throw new Error(e)
@@ -196,7 +201,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     }
     if (exceedLimit(item.file)) {
       Taro.showToast({
-        title: '图片大小超出最大限制，请压缩后再上传',
+        title: '文件大小超出最大限制，请压缩后再上传',
         icon: 'none'
       })
       break
@@ -206,7 +211,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
-      const img = await upload[uploadType](item, { ...token, filetype })
+      const img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
       console.log('---uploadImageFn---', img)
       if (!img || !img.url) {
         continue

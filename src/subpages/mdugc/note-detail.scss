@@ -1,0 +1,234 @@
+.page-ugc-detail {
+
+  // width: 100%;
+  // margin: 0 auto;
+  // min-height: 100vh;
+  // background-color: #ffffff;
+  // position: relative;
+  .note-pic-container {
+    position: relative;
+  }
+
+  .note-swiper {
+    height: 750px;
+  }
+
+  // &_scroll {
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   width: 100%;
+  //   margin: 0 auto;
+  //   bottom: 0;
+  //   padding-bottom: 180px;
+  //   overflow-y: auto;
+  //   overflow-x: hidden;
+  //   z-index: 1;
+
+  //   &_view {
+  //     width: 100%;
+  //   }
+  // }
+
+  // .ugcdetailsr_container {
+  //   position: relative;
+  // }
+  // .ugcdetailsr_swiper {
+  //   height: 750px;
+  // }
+  // .video-container {
+  //   position: absolute;
+  //   background: #000;
+  //   top: 0;
+  //   left: 0;
+  //   right: 0;
+  //   bottom: 0;
+  //   .item-video {
+  //     width: 100%;
+  //     position: absolute;
+  //     top: 50%;
+  //     left: 50%;
+  //     transform: translate(-50%, -50%);
+  //     z-index: 100;
+  //     // height: auto;
+  //   }
+  //   .btn-play {
+  //     position: absolute;
+  //     top: 50%;
+  //     left: 50%;
+  //     transform: translate(-50%, -50%);
+  //   }
+  // }
+
+  // .btn-video {
+  //   position: absolute;
+  //   bottom: 20px;
+  //   left: 50%;
+  //   transform: translateX(-50%);
+  //   font-size: 24px;
+  //   color: #222;
+  //   display: flex;
+  //   align-items: center;
+  //   background: #e8eae7;
+  //   border-radius: 30px;
+  //   padding: 6px;
+  //   box-sizing: border-box;
+  //   z-index: 100;
+  //   .play-icon {
+  //     margin-right: 6px;
+  //   }
+  //   &.playing {
+  //     padding: 6px 20px;
+  //   }
+  // }
+  // .swiper-pagegation {
+  //   position: absolute;
+  //   right: 0;
+  //   bottom: 20px;
+  //   display: inline-block;
+  //   background: rgba(0, 0, 0, 0.5);
+  //   color: #fff;
+  //   font-size: 22px;
+  //   border-radius: 14px 0 0 14px;
+  //   height: 28px;
+  //   line-height: 28px;
+  //   padding: 0 12px;
+  //   opacity: 0.5;
+  // }
+
+  .ugc-author {
+    padding: 32px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .author-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .author {
+        margin-left: 16px;
+        color: #111;
+      }
+    }
+
+    .btn-follow {
+      width: 140px;
+      height: 60px;
+      text-align: center;
+      line-height: 60px;
+      border-radius: 30px;
+      font-size: 28px;
+      background: #F5F5F5;
+      color: #666666;
+
+      &.follow {
+        background: var(--color-primary);
+        color: #fff;
+      }
+    }
+  }
+
+  .ugc-content {
+    padding: 0 32px;
+    background-color: #fff;
+
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .content {
+      font-size: 26px;
+      color: #222;
+      margin-top: 32px;
+    }
+
+    .topic-list {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 72px 0;
+    }
+
+    .topic-item {
+      height: 40px;
+      line-height: 40px;
+      font-size: 28px;
+      color: var(--color-primary);
+      margin-right: 24px;
+      margin-bottom: 24px;
+      text-decoration: underline;
+    }
+
+    .content-datetime {
+      padding-bottom: 40px;
+      font-size: 24px;
+      color: #999;
+    }
+  }
+
+  .remmend-goods {
+    padding: 0 16px;
+    background-color: #fff;
+    overflow: hidden;
+    .wgt-floor-img {
+      border-top: 1px solid #DDDDDD;
+      margin-top: 24px;
+      padding: 40px 0;
+    }
+  }
+
+  .action-container {
+    padding: 20px;
+    display: flex;
+
+    .comment-input {
+      width: 244px;
+      height: 60px;
+      line-height: 60px;
+      background: #F5F5F5;
+      border-radius: 40px;
+      padding: 0 24px;
+
+      .icon-bianji1 {
+        font-size: 32px;
+        color: #666;
+      }
+
+      .placeholder {
+        color: #666;
+      }
+    }
+
+    .btn-action-list {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+
+      .action-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .iconfont {
+          font-size: 40px;
+          margin-right: 4px;
+        }
+
+        .icon-dianzanFilled {
+          color: var(--color-primary);
+        }
+
+        .action-item-text {
+          font-size: 24px;
+          color: #222;
+        }
+      }
+    }
+  }
+}

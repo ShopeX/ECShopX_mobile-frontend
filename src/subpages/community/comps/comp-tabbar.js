@@ -50,8 +50,6 @@ function CompTabbar(props) {
     currentIndex = TABLIST?.findIndex((tab) => tab.url == `/${currentPage}`)
   }
 
-  console.log('currentIndex:', currentIndex)
-
   const handleTabbarClick = (index) => {
     const tabItem = TABLIST[index]
     const { path } = getCurrentRoute()

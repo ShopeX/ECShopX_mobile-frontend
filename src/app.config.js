@@ -170,10 +170,12 @@ const config = {
         'index',
         'list',
         'note',
+        'note-detail',
         'subject-talk',
         'item-list',
-        'my'
-          // "pages/make_img/index",
+        'image-edit',
+        'my',
+        'follow-fans'
           // "pages/make_label/index",
           // "pages/make_word/index",
           // "pages/make_details/index2",
@@ -183,7 +185,6 @@ const config = {
           // "pages/make_follow/index",
           // "pages/make_collection/index",
           // "pages/make_system/index",
-          // "pages/make_followfans/index2"
       ]
     },
     {

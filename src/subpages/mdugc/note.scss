@@ -37,9 +37,38 @@
   }
 
   .subject-list {
-    padding: 24px 16px;
+    padding: 24px 0;
     border-top: 1PX solid #ddd;
     border-bottom: 1PX solid #ddd;
+    margin: 28px 16px 0 16px;
+    .subject {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .subject-item {
+      color: var(--color-primary);
+      margin-right: 30px;
+      margin-bottom: 16px;
+    }
+    .icon-guanbi {
+      margin-left: 4px;
+      font-size: 28px;
+      color: #666;
+    }
+    .btn-talk {
+      width: 220px;
+      margin: 0;
+    }
+  }
+
+  .recommend-goods {
+    .label {
+      margin: 25px 16px;
+      color: #222;
+    }
+    .goods-list {
+      padding: 0 16px;
+    }
   }
 
   .select-goods {
@@ -77,7 +106,7 @@
       border-radius: 16px;
       margin: 0 24px 24px 0;
 
-      .icon-xiangji {
+      .icon-tianjia1 {
         font-size: 48px;
         color: #999;
       }
