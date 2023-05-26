@@ -31,13 +31,14 @@ const initialState = {
   startDate: '',
   startTime: '',
   endDate: '',
-  endTime: ''
+  endTime: '',
+  shareImageUrl: ''
 }
 function Group(props) {
   const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
-  const { qrcode, activityName, comps, startDate, startTime, endDate, endTime } = state
+  const { qrcode, activityName, comps, startDate, startTime, endDate, endTime, shareImageUrl } = state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
 
@@ -50,7 +51,7 @@ function Group(props) {
   const fetchActivity = async () => {
     const res = await api.community.getChiefActivity($instance.router.params.id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
-    const { activityIntro, activityName, activityPics, startTime, endTime } = pickBy(
+    const { activityIntro, activityName, activityPics, startTime, endTime, shareImageUrl } = pickBy(
       res,
       doc.community.COMMUNITY_ACTIVITY_ITEM
     )
@@ -63,6 +64,7 @@ function Group(props) {
       draft.startTime = dayjs(startTime * 1000).format('HH:mm')
       draft.endDate = dayjs(endTime * 1000).format('YYYY-MM-DD')
       draft.endTime = dayjs(endTime * 1000).format('HH:mm')
+      draft.shareImageUrl = shareImageUrl
     })
     
     const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
@@ -202,7 +204,8 @@ function Group(props) {
       items: selectGoods.map((item) => item.itemId),
       ziti: selectCommunityZiti.id,
       start_time: `${startDate} ${startTime}`,
-      end_time: `${endDate} ${endTime}`
+      end_time: `${endDate} ${endTime}`,
+      share_image_url: shareImageUrl
     }
     let cur_id = $instance.router.params.id
     let act_id
@@ -227,6 +230,23 @@ function Group(props) {
         })
       }
     }, 200)
+  }
+
+  const onChooseClick = async () => {
+    const { tempFilePaths } = await Taro.chooseImage({
+      sourceType: ['camera', 'album'],
+      count: 1
+    })
+    const resultFiles = tempFilePaths.map((item) => ({
+      url: item,
+      file: item
+    }))
+    imgUploader.uploadImageFn(resultFiles).then((res) => {
+      const { url } = res[0]
+      setState((draft) => {
+        draft.shareImageUrl = url
+      })
+    })
   }
 
   return (
@@ -444,6 +464,12 @@ function Group(props) {
           </SpCell> */}
           {/* <SpCell border title="周围邻居是否可见" isLink/> */}
         </View>
+      </View>
+      <View className='card-block share'>
+        <SpCell title='活动分享卡片封面' isLink>
+          <Text className='tips'>默认为页面首屏</Text>
+          <SpImage onClick={onChooseClick} src={shareImageUrl} width={100} />
+        </SpCell>
       </View>
     </SpPage>
   )

@@ -21,14 +21,15 @@ import './group-leaderdetail.scss'
 const initialState = {
   detail: null,
   loading: true,
-  timer: {}
+  timer: {},
+  shareImageUrl: ''
 }
 function GroupLeaderDetail(props) {
   const $instance = getCurrentInstance()
   const { activity_id } = $instance.router.params
 
   const [state, setState] = useImmer(initialState)
-  const { detail, loading, timer } = state
+  const { detail, loading, timer, shareImageUrl } = state
   const { userInfo = {} } = useSelector((state) => state.user)
 
   useDidShow(() => {
@@ -45,7 +46,8 @@ function GroupLeaderDetail(props) {
     setState((draft) => {
       draft.detail = pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM)
       draft.loading = false
-      draft.timer = timer
+      draft.timer = timer,
+      draft.shareImageUrl = res.share_image_url
     })
   }
 
@@ -53,6 +55,7 @@ function GroupLeaderDetail(props) {
     const path = `/subpages/community/group-memberdetail?activity_id=${detail.activityId}`
     log.debug(`share path: ${path}`)
     return {
+      imageUrl: shareImageUrl,
       title: detail.activityName,
       // imageUrl: imgs.length > 0 ? imgs[0] : [],
       path
