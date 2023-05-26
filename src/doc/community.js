@@ -75,6 +75,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   startTime: 'start_time',
   endTime: 'end_time',
   distributorId: 'distributor_id',
+  shareImageUrl: 'share_image_url',
   showChiefGoodsList: ({ show_chief_goodslist }) => {
     if(typeof show_chief_goodslist == 'undefined') {
       return 1

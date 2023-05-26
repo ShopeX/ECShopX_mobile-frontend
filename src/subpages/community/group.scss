@@ -141,4 +141,16 @@
   .padding-20 {
     padding: 20px;
   }
+  .share {
+    .tips {
+      margin-right: 10px;
+    }
+    .sp-cell {
+      &__bd {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+      }
+    }
+  }
 }
