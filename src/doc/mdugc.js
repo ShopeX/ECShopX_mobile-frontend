@@ -1,4 +1,4 @@
-import { formatDateTime, thousandthFormat } from '@/utils'
+import { formatDateTime, pickBy } from '@/utils'
 
 export const UGC_LIST = {
   image_url: 'cover',
@@ -52,7 +52,8 @@ export const UGC_DETAIL = {
   username: ({ userInfo }) => userInfo?.username,
   created: ({ created }) => {
     return formatDateTime(created, 'YYYY-MM-DD')
-  }
+  },
+  video: 'video'
 }
 
 export const COMMENT_INFO = {
@@ -62,7 +63,22 @@ export const COMMENT_INFO = {
   created: 'created_text',
   likeStatus: 'like_status',
   likes: 'likes',
-  commentId: 'comment_id'
+  commentId: 'comment_id',
+  child: ({ child }) => {
+    if (!child) {
+      return []
+    } else {
+      return pickBy(child, {
+        headimgurl: "headimgurl",
+        username: "reply_nickname",
+        content: 'content',
+        created: 'created',
+        likeStatus: 'like_status',
+        likes: 'likes',
+        commentId: 'comment_id',
+      })
+    }
+  }
 }
 
 export const GOOD_INFO = {

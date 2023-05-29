@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
-import { View, Text, Swiper, SwiperItem, } from '@tarojs/components'
+import { View, Text, Video, Swiper, SwiperItem, } from '@tarojs/components'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import { FloatMenus, FloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView } from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
-import { classNames, isWeb, isWeixin, showToast, pickBy } from '@/utils'
+import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
 
 import api from '@/api'
 import doc from '@/doc'
@@ -19,8 +19,11 @@ const initialState = {
   commentList: [],
   commentTotal: 0,
   comment: '',
+  commentPlaceholder: '留言评论...',
   showCommentInput: false,
-  parentCommentId: ''
+  parentCommentId: '',
+  play: false,
+  curImgIdx: 0
 }
 
 function UgcNoteDetail(props) {
@@ -30,8 +33,11 @@ function UgcNoteDetail(props) {
     commentList,
     commentTotal,
     comment,
+    commentPlaceholder,
     showCommentInput,
-    parentCommentId
+    parentCommentId,
+    play,
+    curImgIdx
   } = state
   const { userInfo } = useSelector((state) => state.user)
   const router = useRouter()
@@ -56,7 +62,7 @@ function UgcNoteDetail(props) {
       return
     }
 
-    if (state.play) {
+    if (play) {
       setTimeout(() => {
         console.log('video:', video)
         video.play()
@@ -64,7 +70,7 @@ function UgcNoteDetail(props) {
     } else {
       isWeixin ? video.stop() : video.pause()
     }
-  }, [state.play])
+  }, [play])
 
   // 获取详情
   const getPostDetail = async () => {
@@ -104,9 +110,12 @@ function UgcNoteDetail(props) {
       }
     }
     const { list, total_count: total } = await api.mdugc.commentlist(params)
+    const _commentList = pickBy(list, doc.mdugc.COMMENT_INFO)
     setState(draft => {
-      draft.commentList = pickBy(list, doc.mdugc.COMMENT_INFO)
-      draft.commentTotal = total
+      draft.commentList = _commentList
+      draft.commentTotal = _commentList.reduce((previous, current) => {
+        return previous + current.child.length + 1
+      }, 0)
     })
     return {
       total
@@ -195,6 +204,30 @@ function UgcNoteDetail(props) {
     setState(draft => {
       draft.showCommentInput = true
       draft.parentCommentId = ''
+      draft.commentPlaceholder = '请输入评论'
+    })
+  }
+
+  // 点赞评论
+  const handleCommentLike = async (comment_id, pindex, index) => {
+    const { action, likes } = await api.mdugc.commentlike({
+      user_id: userInfo.user_id,
+      post_id,
+      comment_id
+    })
+
+    // 判断是否二级评论，一级评论时index为点击事件
+    const _commentList = JSON.parse(JSON.stringify(commentList))
+    if (isNumber(index)) {
+      _commentList[pindex].child[index].likeStatus = action == 'like' ? 1 : 0
+      _commentList[pindex].child[index].likes = likes
+    } else {
+      _commentList[pindex].likeStatus = action == 'like' ? 1 : 0
+      _commentList[pindex].likes = likes
+    }
+
+    setState(draft => {
+      draft.commentList = _commentList
     })
   }
 
@@ -206,7 +239,7 @@ function UgcNoteDetail(props) {
       post_id,
       content: e
     }
-    if(parentCommentId) {
+    if (parentCommentId) {
       params.parent_comment_id = parentCommentId
     }
     const res = await api.mdugc.commentcreate(params)
@@ -216,8 +249,6 @@ function UgcNoteDetail(props) {
       draft.showCommentInput = false
     })
   }
-
-
 
   return (
     <SpPage
@@ -239,7 +270,7 @@ function UgcNoteDetail(props) {
                     'icon-dianzanFilled': info?.likeStatus == 1
                   })}
                 ></View>
-                <Text className="action-item-text">{`${info?.likes}`}</Text>
+                <Text className="action-item-text">{`${info?.likes || 0}`}</Text>
               </View>
             </SpLogin>
             <SpLogin className='action-item' onChange={favoriteNote}>
@@ -250,21 +281,16 @@ function UgcNoteDetail(props) {
                     'icon-shoucanghover-01': info?.favoriteStatus == 1
                   })}
                 ></View>
-                <Text className="action-item-text">{`${info?.favoriteNums}`}</Text>
+                <Text className="action-item-text">{`${info?.favoriteNums || 0}`}</Text>
               </View>
             </SpLogin>
             <AtButton className='action-item' openType='share'>
               <View
                 className={classNames('iconfont', 'icon-fenxiang-01')}
               ></View>
-              <Text className="action-item-text">{`${info?.shareNums}`}</Text>
+              <Text className="action-item-text">{`${info?.shareNums || 0}`}</Text>
             </AtButton>
           </View>
-
-          {/* <Button openType='share' className='ugcdetailsr_footer_icon ugcdetailsr_footer_btn'>
-            <View className='iconfont icon-fenxiang-01 share'></View>
-            <Text>{file_details.share_nums ? file_details.share_nums : 0}</Text>
-          </Button> */}
         </ View>
       }
     >
@@ -289,22 +315,22 @@ function UgcNoteDetail(props) {
             ))}
           </Swiper>
 
-          {/* {file_details?.imgs?.length > 1 && (
-            <View className='swiper-pagegation'>{`${curImgIdx + 1}/${file_details.imgs.length}`}</View>
+          {info.imgList?.length > 1 && (
+            <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgList.length}`}</View>
           )}
 
-          {file_details.video && play && (
+          {info.video && play && (
             <View className='video-container'>
               <Video
                 id='goods-video'
                 className='item-video'
-                src={file_details.video}
+                src={info.video}
                 showCenterPlayBtn={false}
               />
             </View>
           )}
 
-          {file_details.video && (
+          {info.video && (
             <View
               className={classNames('btn-video', {
                 playing: play
@@ -318,7 +344,7 @@ function UgcNoteDetail(props) {
               {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
               {play ? '退出视频' : '播放视频'}
             </View>
-          )} */}
+          )}
         </View>
         <View className='ugc-author'>
           <View
@@ -402,20 +428,50 @@ function UgcNoteDetail(props) {
                     <SpImage circle src={item.headimgurl} width={60} height={60} />
                   </View>
                   <View className="item-bd">
-                    <View className="author">{item.username}</View>
-                    <View className="comment-content" onClick={() => {
-                      setState(draft => {
-                        draft.showCommentInput = true
-                        draft.parentCommentId = item.commentId
-                      })
-                    }}>{item.content}<Text className="create-time">{item.created}</Text></View>
-                  </View>
-                  <View className="item-ft">
-                    <Text className={classNames("iconfont", {
-                      'icon-dianzan': item.likeStatus == 0,
-                      'icon-dianzanFilled': item.likeStatus == 1
-                    })}></Text>
-                    <Text className="like-num">{item.likes}</Text>
+                    <View className="first-comment">
+                      <View className="comment-info">
+                        <View className="author">{item.username}</View>
+                        <View className="comment-content" onClick={() => {
+                          setState(draft => {
+                            draft.showCommentInput = true
+                            draft.parentCommentId = item.commentId
+                            draft.commentPlaceholder = `回复 @${item.username}`
+                          })
+                        }}>{item.content}<Text className="create-time">{item.created}</Text></View>
+                      </View>
+                      <View className='comment-likes'>
+                        <Text className={classNames("iconfont", {
+                          'icon-dianzan': item.likeStatus == 0,
+                          'icon-dianzanFilled': item.likeStatus == 1
+                        })} onClick={handleCommentLike.bind(this, item.commentId, index)}></Text>
+                        <Text className="like-num">{item.likes}</Text>
+                      </View>
+                    </View>
+                    {
+                      item?.child && <View className="sub-comment">
+                        {
+                          item?.child.map((citem, cindex) => (
+                            <View className="sub-comment-item" key={`sub-comment-item__${cindex}`}>
+                              <View className="sitem-hd">
+                                <SpImage circle src={citem.headimgurl} width={40} height={40} />
+                              </View>
+                              <View className="sitem-bd">
+                                <View className="author">{citem.username}</View>
+                                <View className="comment-content">{citem.content}<Text className="create-time">{citem.created}</Text></View>
+                              </View>
+                              <View className="sitem-ft">
+                                <Text className={classNames("iconfont", {
+                                  'icon-dianzan': citem.likeStatus == 0,
+                                  'icon-dianzanFilled': citem.likeStatus == 1
+                                })} onClick={handleCommentLike.bind(this, citem.commentId, index, cindex)}></Text>
+                                <Text className="like-num">{citem.likes}</Text>
+                              </View>
+                            </View>
+                          ))
+                        }
+                      </View>
+
+                    }
                   </View>
                 </View>
               ))
@@ -427,7 +483,7 @@ function UgcNoteDetail(props) {
       {
         showCommentInput && <View className="input-comment">
           <AtInput type="text" value={comment}
-            placeholder="请输入评论"
+            placeholder={commentPlaceholder}
             adjustPosition
             autoFocus
             focus={showCommentInput}

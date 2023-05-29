@@ -21,7 +21,7 @@ const getToken = (params) => {
 
 const upload = {
   aliUpload: async (item, tokenRes) => {
-    const { accessid, dir, host, policy, signature } = tokenRes
+    const { accessid, dir, host, policy, signature, filetype } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     const updata = {
       url: host,
@@ -39,7 +39,8 @@ const upload = {
         // 服务端回调
         // callback: callback
       },
-      fileType: 'image',
+      // fileType: 'image',
+      fileType: filetype,
       header: {
         'Content-Type': 'application/x-www-form-urlencoded', // 只能是这种形式
       },
@@ -60,7 +61,8 @@ const upload = {
       }
       return {
         url: `${host}${dir}`,
-        filetype
+        filetype,
+        thumb: item.thumb
       }
     } catch (e) {
       throw new Error(`aliUpload:${e}`)
@@ -90,7 +92,8 @@ const upload = {
       }
       return {
         url: `${domain}/${imgData.key}`,
-        filetype
+        filetype,
+        thumb: item.thumb
       }
     } catch (e) {
       console.error(e)
@@ -98,7 +101,7 @@ const upload = {
     }
   },
   localUpload: async (item, tokenRes) => {
-    const { filetype = 'image', domain } = tokenRes
+    const { filetype, domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     let header = {
       Authorization: `Bearer ${S.getAuthToken()}`,
@@ -125,7 +128,8 @@ const upload = {
       }
       return {
         url: `${domain}/${image_url}`,
-        filetype
+        filetype,
+        thumb: item.thumb
       }
     } catch (e) {
       throw new Error(e)
@@ -143,7 +147,8 @@ const upload = {
       },
       formAttributes = {
         action: ''
-      }
+      },
+      filetype
     } = tokenRes
     try {
       const res = await Taro.uploadFile({
@@ -167,7 +172,8 @@ const upload = {
       }
       return {
         url: Location,
-        filetype
+        filetype,
+        thumb: item.thumb
       }
     } catch (e) {
       throw new Error(e)

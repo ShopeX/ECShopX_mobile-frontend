@@ -12,7 +12,7 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max = 5, onChange = () => { }, value = [], multiple = true, mediaType = 'image', onEdit = () => { }, placeholder = '添加图片' } = props
+  const { max = 5, onChange = () => { }, value = [], multiple = true, mediaType = 'image', edit = false, onEdit = () => { }, placeholder = '添加图片' } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
@@ -37,10 +37,13 @@ function SpUpload(props) {
       const resultFiles = tempFiles.map(({ tempFilePath, fileType, thumbTempFilePath }) => ({
         url: tempFilePath,
         file: tempFilePath,
-        fileType: fileType
+        fileType: fileType,
+        thumb: thumbTempFilePath
       }))
+      Taro.showLoading()
       imgUploader.uploadImageFn(resultFiles, mediaType == 'video' ? 'videos' : 'image').then((res) => {
         console.log('---uploadImageFn res---', res)
+        Taro.hideLoading()
         const _res = mediaType == 'video' ? res : res.map((item) => item.url)
         const _files = [...files, ..._res]
         setState((draft) => {
@@ -79,9 +82,7 @@ function SpUpload(props) {
               className='iconfont icon-guanbi'
               onClick={handleDeletePic.bind(this, index)}
             ></Text>
-            <View className='edit-block' onClick={(item, index) => {
-              onEdit(item, index)
-            }}>编辑</View>
+            {edit && <View className='edit-block' onClick={onEdit.bind(this, item, index)}>编辑</View>}
           </View>
         ))}
       {((multiple && files.length < max) || (!multiple && files.length == 0)) && (

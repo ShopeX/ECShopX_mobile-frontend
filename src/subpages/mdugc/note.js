@@ -15,6 +15,7 @@ const initialState = {
   videoEnable: false,
   videoList: [],
   imageList: [],
+  moveArray: [],
   noteTitle: '',
   noteBody: '',
   subjectList: [],
@@ -25,11 +26,23 @@ function UgcNote(props) {
   const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
   const router = useRouter()
-  const { videoEnable, videoList, imageList, noteTitle, noteBody, subjectList, remmendItemList } = state
+  const { videoEnable, videoList, imageList, moveArray, noteTitle, noteBody, subjectList, remmendItemList } = state
 
   useEffect(() => {
     getNoteSetting()
     getNoteDetail()
+
+    Taro.enableAlertBeforeUnload({
+      message: "返回上一页将不会保存该编辑页内容",
+      success: function (res) {
+        console.log("成功：", res);
+      },
+      fail: function (err) {
+        console.log("失败：", err);
+      },
+    });
+
+    // 添加话题
     Taro.eventCenter.on('onEventSubjectTalk', (item) => {
       console.log('onEventSubjectTalk:', item)
       setState(draft => {
@@ -37,6 +50,7 @@ function UgcNote(props) {
       })
     })
 
+    // 添加商品
     Taro.eventCenter.on('onEventRemmendItems', (item) => {
       console.log('onEventRemmendItems:', item)
       setState(draft => {
@@ -44,9 +58,18 @@ function UgcNote(props) {
       })
     })
 
+    // 编辑图片
+    Taro.eventCenter.on('onEventImageChange', ({ movearry, index }) => {
+      console.log('onEventImageChange:', imageList, movearry, index)
+      setState(draft => {
+        draft.moveArray[index] = movearry
+      })
+    })
+
     return () => {
       Taro.eventCenter.off('onEventSubjectTalk')
       Taro.eventCenter.off('onEventRemmendItems')
+      Taro.eventCenter.off('onEventImageChange')
     }
   }, [])
 
@@ -80,9 +103,9 @@ function UgcNote(props) {
     }
   }
 
-  const onEditImage = () => {
+  const onEditImage = (item, index) => {
     Taro.navigateTo({
-      url: `/subpages/mdugc/image-edit?`
+      url: `/subpages/mdugc/image-edit?image=${item}&index=${index}&movearray=${[]}`
     })
   }
 
@@ -128,7 +151,7 @@ function UgcNote(props) {
       }
     }
     Taro.showLoading()
-    const params = {
+    let params = {
       user_id: userInfo.user_id,
       title: noteTitle,
       content: noteBody,
@@ -137,18 +160,16 @@ function UgcNote(props) {
       image_path: imageList,
       topics: subjectList.map(item => item.topicId),
       goods: remmendItemList.map(item => item.itemId),
-      // image_tag,
+      image_tag: moveArray,
       is_draft: type,
       // video: '',
       // video_ratio: '',
       // video_place: ''
     }
 
-    // if (video) {
-    //   data.video = video
-    //   data.video_ratio = video_ratio
-    //   data.video_place = video_place
-    // }
+    if (videoList.length > 0) {
+      params.video = videoList[0].url
+    }
     if (post_id) {
       if (md_drafts) {
         if (is_draft) {
@@ -168,7 +189,7 @@ function UgcNote(props) {
       Taro.navigateBack()
     }, 1000)
   }
-
+  console.log('imageList &&&&&&&&&', imageList, moveArray)
   return (
     <SpPage className='page-ugc-note' renderFooter={
       <View className='action-container'>
@@ -189,7 +210,6 @@ function UgcNote(props) {
             mediaType='video'
             placeholder="上传视频"
             onChange={(val) => {
-              debugger
               setState((draft) => {
                 draft.videoList = val
               })
@@ -199,6 +219,7 @@ function UgcNote(props) {
           <SpUpload
             value={imageList}
             max={9}
+            edit
             placeholder="上传图片"
             onChange={(val) => {
               setState((draft) => {
@@ -248,9 +269,9 @@ function UgcNote(props) {
             }
           </View>
           <AtButton circle className='btn-talk' onClick={() => {
-
+            const topicIds = subjectList.map(item => item.topicId)
             Taro.navigateTo({
-              url: `/subpages/mdugc/subject-talk?`
+              url: `/subpages/mdugc/subject-talk?topic_ids=${topicIds.toString()}&event=onEventSubjectTalk`
             })
           }}>#添加话题</AtButton>
         </View>

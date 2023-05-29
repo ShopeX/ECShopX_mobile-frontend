@@ -40,6 +40,7 @@ function SpImage(props) {
 
   const handleOnLoad = (e) => {
     // console.log('handleOnLoad:', e)
+    onLoad(e)
     setState((draft) => {
       draft.loadSuccess = true
     })

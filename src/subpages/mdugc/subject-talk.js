@@ -14,35 +14,43 @@ import './subject-talk.scss'
 
 const initialState = {
   keyword: '',
-  list: []
+  topicList: []
 }
 
 function UgcSubjectTalk(props) {
   const [state, setState] = useImmer(initialState)
   const [selected, setSelected] = useState(new Map())
-  const { keyword, list } = state
+  const { keyword, topicList } = state
   const { userInfo = {} } = useSelector((state) => state.user)
+  const router = useRouter()
   const listRef = useRef()
 
-  // const selected = new Set()
 
   useEffect(() => {
     listRef.current.reset()
   }, [keyword])
 
   const fetch = async ({ pageIndex, pageSize }) => {
+    const { topic_ids } = router.params
+    const topicIds = decodeURIComponent(topic_ids).split(',')
     const params = {
       page: pageIndex,
       pageSize,
       topic_name: keyword
     }
     const { list = [], total_count: total } = await api.mdugc.topiclist(params)
-    setState(draft => {
-      draft.list = pickBy(list, {
-        topicId: "topic_id",
-        topicName: "topic_name"
-      })
+    const _topicList = pickBy(list, {
+      topicId: "topic_id",
+      topicName: "topic_name"
     })
+    const tempValue = [...topicList, ..._topicList]
+    const _selected = tempValue.filter(item => topicIds.indexOf(item.topicId) > -1).map(item => {
+      return [item.topicId, { topicId: item.topicId, topicName: item.topicName }]
+    })
+    setState(draft => {
+      draft.topicList = [...topicList, ..._topicList]
+    })
+    setSelected(new Map(_selected));
     return { total: total || 0 }
   }
 
@@ -60,6 +68,7 @@ function UgcSubjectTalk(props) {
   }
 
   const handleClickItem = ({ topicId, topicName }) => {
+    const { event } = router.params
     let tempSelected
     if (selected.has(topicId)) {
       selected.delete(topicId)
@@ -67,7 +76,7 @@ function UgcSubjectTalk(props) {
     } else {
       tempSelected = new Map([...selected, [topicId, { topicId, topicName }]])
     }
-    Taro.eventCenter.trigger('onEventSubjectTalk', Array.from(tempSelected.values()))
+    Taro.eventCenter.trigger(event, Array.from(tempSelected.values()))
     setSelected(tempSelected);
   }
 
@@ -79,21 +88,21 @@ function UgcSubjectTalk(props) {
   const handleOnClear = async () => {
     await setState((draft) => {
       draft.keyword = ''
-      draft.list = []
+      draft.topicList = []
     })
   }
 
   const handleSearchCancel = () => {
     setState((draft) => {
       draft.keyword = ''
-      draft.list = []
+      draft.topicList = []
     })
   }
 
   const handleConfirm = async (val) => {
     await setState((draft) => {
       draft.keyword = val
-      draft.list = []
+      draft.topicList = []
     })
   }
 
@@ -121,12 +130,12 @@ function UgcSubjectTalk(props) {
           </View>
         }
       >
-        {list.length > 0 && <View className='list-container'>
+        {topicList.length > 0 && <View className='list-container'>
           {
-            list.map((item, index) => (
+            topicList.map((item, index) => (
               <SpCell className='subject-item' key={`subject-item__${index}`}
                 title={item.topicName}
-                border={index < list.length - 1}
+                border={index < topicList.length - 1}
                 value={isChecked(item)}
                 onClick={handleClickItem.bind(this, item)} />
             ))
