@@ -15,6 +15,7 @@ import api from '@/api'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
+
 @connect(({ member }) => ({
   memberData: member.member
 }))
@@ -557,7 +558,7 @@ export default class mdugcmember extends Component {
             current={curTagId}
             tabList={tab}
             onClick={this.handleTagChange.bind(this)}
-            animated={true}
+            animated
             swipeable={false}
           >
             {tab.map((idx) => {
@@ -570,7 +571,7 @@ export default class mdugcmember extends Component {
                   >
                     <View className='ugcmember_b_list'>
                       <ScrollView
-                        scrollY={true}
+                        scrollY
                         className='ugcmember_b_list__scroll'
                         scrollTop={scrollTop}
                         scrollWithAnimation
@@ -716,7 +717,7 @@ export default class mdugcmember extends Component {
         </View> */}
         <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={150} />
         {isPopups ? (
-          <Popups title='获赞' text={popnum} istext={true} Last={this.onLast.bind(this)}></Popups>
+          <Popups title='获赞' text={popnum} istext Last={this.onLast.bind(this)}></Popups>
         ) : null}
       </View>
     )

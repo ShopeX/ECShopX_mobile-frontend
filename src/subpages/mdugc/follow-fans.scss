@@ -3,12 +3,69 @@
     padding: 24px 0;
     display: flex;
     justify-content: center;
+
     .tag-bar-hd {
       width: 80%;
     }
+
     .tag-item {
       width: 50%;
       text-align: center;
+    }
+  }
+
+  .scroll-list {
+    .follow {
+      &-list {
+        padding: 16px;
+      }
+
+      &-item {
+        width: 100%;
+        height: 128px;
+        box-sizing: border-box;
+        padding: 0 24px;
+        background: #FFFFFF;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+
+        .item-lf {
+          display: flex;
+          align-items: center;
+        }
+
+        .item-bd {
+          font-size: 28px;
+          font-weight: 400;
+          color: #222222;
+          padding-left: 24px;
+          line-height: 40px;
+        }
+
+        .item-ft {
+          height: 60px;
+          border-radius: 40px;
+          line-height: 60px;
+          overflow: hidden;
+          font-weight: 400;
+
+          &__r {
+            padding: 0 28px;
+            background: #F5F5F5;
+            font-size: 28px;
+            color: #666666;
+          }
+
+          .active {
+            background: #F4811F;
+            font-size: 28px;
+            color: #FFFFFF;
+          }
+        }
+      }
     }
   }
 }

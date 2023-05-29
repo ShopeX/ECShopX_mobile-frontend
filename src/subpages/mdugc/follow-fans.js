@@ -1,75 +1,84 @@
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import React, { useEffect, useRef, useCallback } from 'react'
-import { connect } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import Taro, { usePullDownRefresh, useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { SpPage, SpTagBar, SpScrollView, SpImage } from '@/components'
-import { pickBy } from '@/utils'
-import S from '@/spx'
 import api from '@/api'
 
 import './follow-fans.scss'
 
 const initialState = {
   filterList: [
-    { tag_id: 1, tag_name: '关注' },
-    { tag_id: 2, tag_name: '粉丝' },
+    { tag_id: 1, tag_name: '关注', tag_type: 'follower' },
+    { tag_id: 2, tag_name: '粉丝', tag_type: 'user' }
   ],
-  curFilterIndex: 0,
-  followlist: []
+  curFilterIndex: -1,
+  followlist: [],
+  type: ''
 }
 
-function UgcFollowFans(props) {
+function UgcFollowFans() {
   const [state, setState] = useImmer(initialState)
-  const { filterList, curFilterIndex, followlist } = state
-  const { userInfo = {} } = useSelector((state) => state.user)
+  const { filterList, curFilterIndex, followlist, type } = state
+  const { user_id } = useSelector((state) => state.user?.userInfo)
   const router = useRouter()
-  const listRef = useRef()
+  const listRef = useRef('')
+
+  useEffect(() => {
+    const { type } = router.params
+    setState((draft) => {
+      draft.curFilterIndex = type === 'user' ? 1 : 0
+      draft.type = type
+    })
+  }, [])
 
   useEffect(() => {
     listRef.current.reset()
   }, [curFilterIndex])
-
-  // 列表
+  //刷新
+  usePullDownRefresh(() => {
+    setState((draft) => {
+      draft.followlist = []
+    })
+    listRef.current.reset()
+  })
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { type } = router.params
+    if (!type) return 0
     const params = {
       page_no: pageIndex,
       page_size: pageSize,
-      user_id: userInfo.user_id,
+      user_id: user_id,
       user_type: type
     }
     const { list, total_count: total } = await api.mdugc.followerlist(params)
-
-    setState((draft) => {
-      draft.followlist = [...followlist, ...list]
-    },
-      () => {
-        debugger
-        Taro.stopPullDownRefresh()
-      }
-    )
-
+    setState(
+      (draft) => {
+        draft.followlist = [...followlist, ...list]
+      })
+    Taro.stopPullDownRefresh()
     return { total: total || 0 }
   }
 
   const onChangeFilter = useCallback((index) => {
+    console.log(index)
     setState((draft) => {
+      draft.type = filterList[index].tag_type
       draft.curFilterIndex = index
+      draft.followlist = []
     })
   })
 
   // 关注|取消关注
   const followercreate = async (i) => {
-    let { list } = state
-    let item = list[i]
+    let item = JSON.parse(JSON.stringify(followlist[i]))
     let data = {
       user_id: item.user_id,
-      follower_user_id: memberData.memberInfo.user_id
+      follower_user_id: user_id
     }
     let res = await api.mdugc.followercreate(data)
     if (res.action == 'unfollow') {
+      console.log(item.mutal_follow)
       // 取消关注
       item.mutal_follow = 0
       Taro.showToast({
@@ -77,6 +86,7 @@ function UgcFollowFans(props) {
         title: '取消关注'
       })
     } else if (res.action == 'follow') {
+      console.log(item.mutal_follow)
       // 关注
       item.mutal_follow = 1
       Taro.showToast({
@@ -84,23 +94,14 @@ function UgcFollowFans(props) {
         title: '关注成功'
       })
     }
-    list[i] = item
     setState((draft) => {
-      draft.list = list
+      draft.followlist[i] = item
     })
   }
 
-  // 下拉刷新
-  const onPullDownRefresh = () => {
-    console.log('下拉')
-    Taro.startPullDownRefresh()
-    // this.resetPage()
-    this.setState((draft) => {
-      draft.list = []
-    })
-  }
-
-
+const topages = (url) =>{
+  Taro.navigateTo({ url })
+}
 
   return (
     <SpPage className='page-ugc-follow-fans'>
@@ -109,25 +110,26 @@ function UgcFollowFans(props) {
         value={filterList[curFilterIndex]?.tag_id}
         onChange={onChangeFilter}
       />
-      <SpScrollView className='scroll-list' auto={true} ref={listRef} fetch={fetch}>
+      <SpScrollView className='scroll-list' auto ref={listRef} fetch={fetch}>
         <View className='follow-list'>
           {followlist.map((item, index) => (
-            <View className='follow-item' key={`follow-item__${index}`}>
-              <View className="item-hd">
-                <SpImage
-                  circle
-                  src={item.headimgurl}
-                  width={80}
-                  height={80}
-                />
-              </View>
-              <View className="item-bd">
-                {item.nickname}
-              </View>
-              <View className="item-ft">
-                <View className="btn-follow">
-                  {type == 'follower'}
+            <View className='follow-item' key={`follow-item__${index}`} onClick={()=>topages(`/subpages/mdugc/my?user_id=${item.user_id}`)}>
+              <View className='item-lf'>
+                <View className='item-hd'>
+                  <SpImage circle src={item.headimgurl} width={80} height={80} />
                 </View>
+                <View className='item-bd'>{item.nickname}</View>
+              </View>
+              <View className='item-ft' onClick={() => followercreate(index)}>
+                {item.mutal_follow == 0 ? (
+                  type == 'user' ? (
+                    <View className='item-ft__r active'>+关注</View>
+                  ) : (
+                    <View className='item-ft__r'>已关注</View>
+                  )
+                ) : (
+                  <View className='item-ft__r'>互相关注</View>
+                )}
               </View>
             </View>
           ))}

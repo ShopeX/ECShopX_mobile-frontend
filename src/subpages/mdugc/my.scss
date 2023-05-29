@@ -6,15 +6,41 @@
   }
 
   .main-info {
-    padding: 16px 32px;
+    padding: 0px 32px;
     display: flex;
     align-items: center;
   }
 
-  .author-name {
+  .ugcmember_t_data {
     margin-left: 24px;
     font-size: 30px;
     font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+
+    &_r {
+      position: relative;
+
+      &_icon {
+        font-size: 40px;
+        font-weight: normal;
+        color: #000;
+      }
+
+      &_num {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        width: 10px;
+        height: 10px;
+        text-align: center;
+        background-color: #df2f2f;
+        color: #fff;
+        border-radius: 50%;
+      }
+    }
   }
 
   .info-container {
@@ -77,6 +103,35 @@
 
     .left-container {
       width: 350px;
+
+      .local_draft {
+        width: 345px;
+        height: 180px;
+        background: #000000;
+        color: #fff;
+        border-radius: 16px;
+        opacity: 0.4;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 20px;
+
+        &_icon {
+          font-size: 42px;
+        }
+
+        &_title {
+          font-size: 28px;
+          line-height: 40px;
+        }
+
+        &_text {
+          font-size: 24px;
+          ;
+          line-height: 33px;
+        }
+      }
     }
 
     .right-container {

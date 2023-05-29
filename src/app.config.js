@@ -175,7 +175,8 @@ const config = {
         'item-list',
         'image-edit',
         'my',
-        'follow-fans'
+        'follow-fans',
+        'info-notify'
           // "pages/make_label/index",
           // "pages/make_word/index",
           // "pages/make_details/index2",
