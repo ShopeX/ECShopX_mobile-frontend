@@ -8,6 +8,7 @@ import imgUploader from '@/utils/upload'
 import { AtInput, AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
 import { SpPage, SpImage, SpUpload } from '@/components'
+import doc from '@/doc'
 
 import './note.scss'
 
@@ -59,10 +60,9 @@ function UgcNote(props) {
     })
 
     // 编辑图片
-    Taro.eventCenter.on('onEventImageChange', ({ movearry, index }) => {
-      console.log('onEventImageChange:', imageList, movearry, index)
+    Taro.eventCenter.on('onEventImageChange', ({ movearray, index }) => {
       setState(draft => {
-        draft.moveArray[index] = movearry
+        draft.moveArray[index] = movearray
       })
     })
 
@@ -86,26 +86,29 @@ function UgcNote(props) {
       const { post_info } = await api.mdugc.postdetail({
         post_id
       })
-      const { images, title, content, topics } = post_info
+      const { video, video_thumb, images, title, content, topics, goods } = post_info
       setState(draft => {
-        draft.imageList = images.map(item => {
-          return {
-            url: item.url
-          }
-        })
+        draft.videoList = [{
+          filetype: "video",
+          url: video,
+          thumb: video_thumb
+        }]
+        draft.imageList = JSON.parse(images).map(item => item.url)
+        draft.moveArray = JSON.parse(images).map(item => item.topics)
         draft.noteTitle = title
         draft.noteBody = content
-        draft.subjectList = pickBy(topics, {
+        draft.subjectList = topics ? pickBy(topics, {
           topicId: 'topic_id',
           topicName: 'topic_name'
-        })
+        }) : [],
+        draft.remmendItemList = goods ? pickBy(goods, doc.goods.ITEM_LIST_GOODS) : []
       })
     }
   }
 
   const onEditImage = (item, index) => {
     Taro.navigateTo({
-      url: `/subpages/mdugc/image-edit?image=${item}&index=${index}&movearray=${[]}`
+      url: `/subpages/mdugc/image-edit?image=${item}&index=${index}&topics=${JSON.stringify(moveArray[index] || [])}`
     })
   }
 
@@ -156,11 +159,16 @@ function UgcNote(props) {
       title: noteTitle,
       content: noteBody,
       cover: imageList[0],
-      images: imageList,
+      images: JSON.stringify(imageList.map((item, i) => {
+        return {
+          url: item,
+          topics: moveArray[i] || []
+        }
+      })),
       image_path: imageList,
       topics: subjectList.map(item => item.topicId),
       goods: remmendItemList.map(item => item.itemId),
-      image_tag: moveArray,
+      // image_tag: [{ "image_id": 1, "proportion": "", "ugcwidth": "", "tags": [{ "tag_id": 1, "tag_name": "lv", "movearray": { "than_x": "1", "than_y": "2", "x": "3", "y": "4" } }, { "tag_id": 2, "tag_name": "gucci", "movearray": { "than_x": "4", "than_y": "5", "x": "6", "y": "7" } }] }],
       is_draft: type,
       // video: '',
       // video_ratio: '',
@@ -169,15 +177,17 @@ function UgcNote(props) {
 
     if (videoList.length > 0) {
       params.video = videoList[0].url
+      params.video_thumb = videoList[0].thumb
     }
+    // 编辑状态
     if (post_id) {
       if (md_drafts) {
-        if (is_draft) {
-          data.post_id = post_id
+        if (type == 1) {
+          params.post_id = post_id
         }
       } else {
-        if (!is_draft) {
-          data.post_id = post_id
+        if (type !== 1) {
+          params.post_id = post_id
         }
       }
     }

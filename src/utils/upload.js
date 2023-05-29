@@ -20,7 +20,7 @@ const getToken = (params) => {
 // }
 
 const upload = {
-  aliUpload: async (item, tokenRes) => {
+  aliUpload: async (œ, tokenRes) => {
     const { accessid, dir, host, policy, signature, filetype } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     const updata = {
@@ -61,8 +61,7 @@ const upload = {
       }
       return {
         url: `${host}${dir}`,
-        filetype,
-        thumb: item.thumb
+        filetype
       }
     } catch (e) {
       throw new Error(`aliUpload:${e}`)
@@ -92,8 +91,7 @@ const upload = {
       }
       return {
         url: `${domain}/${imgData.key}`,
-        filetype,
-        thumb: item.thumb
+        filetype
       }
     } catch (e) {
       console.error(e)
@@ -128,8 +126,7 @@ const upload = {
       }
       return {
         url: `${domain}/${image_url}`,
-        filetype,
-        thumb: item.thumb
+        filetype
       }
     } catch (e) {
       throw new Error(e)
@@ -217,7 +214,20 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
-      const img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
+      let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
+      if (filetype == 'videos' && item.thumb) {
+        const _thumb = {
+          url: item.thumb
+        }
+        const thumbFileName = _thumb.url.slice(_thumb.url.lastIndexOf('/') + 1)
+        const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName })
+        const thumbUploadType = getUploadFun(thumbRes.driver)
+
+        const thumbImg = await upload[thumbUploadType]({ url: _thumb.url }, { ...thumbRes.token, filetype: 'image' })
+        if(thumbImg) {
+          img['thumb'] = thumbImg.url
+        }
+      }
       console.log('---uploadImageFn---', img)
       if (!img || !img.url) {
         continue

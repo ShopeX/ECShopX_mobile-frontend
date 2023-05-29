@@ -250,6 +250,10 @@ function UgcNoteDetail(props) {
     })
   }
 
+  const getTopicPostion = ({ x, y }) => {
+    return { left: `${x * 100}%`, top: `${y * 100}%` }
+  }
+
   return (
     <SpPage
       className='page-ugc-detail'
@@ -311,6 +315,14 @@ function UgcNoteDetail(props) {
                   width={windowWidth * 2}
                   height={windowWidth * 2}
                 ></SpImage>
+                {
+                  item.topics.map((topic, index) => (
+                    <View className='movable-item' style={getTopicPostion(topic)} key={`movable-item__${index}`}>
+                      {topic.topicName}
+                    </View>
+                  ))
+                }
+
               </SwiperItem>
             ))}
           </Swiper>

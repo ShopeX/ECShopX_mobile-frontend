@@ -10,7 +10,7 @@ import { useDebounce } from '@/hooks'
 import './image-edit.scss'
 
 const initialState = {
-  movearry: [],
+  movearray: [],
   imageWidth: 0,
   imageHeight: 0,
 }
@@ -18,18 +18,17 @@ const initialState = {
 function UgcImageEdit(props) {
   const router = useRouter()
   const [state, setState] = useImmer(initialState)
-  const { movearry, imageWidth, imageHeight } = state
-  const { image, index } = router.params
+  const { movearray, imageWidth, imageHeight } = state
+  const { image, index, topics } = router.params
   const imageSrc = decodeURIComponent(image)
 
   useEffect(() => {
-    // initImage()
     Taro.eventCenter.on('onEventTopic', (item) => {
       console.log('onEventTopic:', item)
 
       let idx = 0
       const _item = item.map((val) => {
-        if (movearry.find(topic => topic.topicId == val.topicId)) {
+        if (movearray.find(topic => topic.topicId == val.topicId)) {
           return topic
         } else {
           const _idx = idx++
@@ -42,7 +41,7 @@ function UgcImageEdit(props) {
       })
 
       setState(draft => {
-        draft.movearry = _item
+        draft.movearray = _item
       })
     })
 
@@ -51,24 +50,20 @@ function UgcImageEdit(props) {
     }
   }, [])
 
-  // const initImage = () => {
-  //   const
-  // }
-
   // 删除当前标签
   const deleteTag = (idx) => {
-    const _movearry = JSON.parse(JSON.stringify(movearry))
-    _movearry.splice(idx, 1)
+    const _movearray = JSON.parse(JSON.stringify(movearray))
+    _movearray.splice(idx, 1)
     setState(draft => {
-      draft.movearry = _movearry
+      draft.movearray = _movearray
     })
   }
 
   const onChangeMovable = useDebounce((idx, e) => {
     const { x, y } = e.detail
     setState(draft => {
-      draft.movearry[idx] = {
-        ...movearry[idx],
+      draft.movearray[idx] = {
+        ...movearray[idx],
         x,
         y
       }
@@ -77,27 +72,34 @@ function UgcImageEdit(props) {
 
   const onLoadImage = (e) => {
     const { width, height } = e.detail
+    const { windowWidth } = Taro.getSystemInfoSync()
+
     setState(draft => {
       draft.imageWidth = width
       draft.imageHeight = height
+      draft.movearray = JSON.parse(topics).map(item => {
+        return {
+          ...item,
+          x: (windowWidth - 16) * item.x,
+          y: (windowWidth - 16) * height / width * item.y
+        }
+      })
     })
   }
 
   const drawImage = () => {
     const { windowWidth } = Taro.getSystemInfoSync()
-    movearry.map(item => {
-      return {
-        ...item,
-        x: parseFloat((item.x / (windowWidth - 32).toFixed(2))),
-        y: parseFloat((item.x / ((windowWidth - 32) * imageHeight / imageWidth)).toFixed(2)),
-      }
+    const _movearray = JSON.parse(JSON.stringify(movearray))
+    _movearray.forEach(item => {
+      item.x = parseFloat((item.x / (windowWidth - 16)).toFixed(2))
+      item.y = parseFloat((item.y / ((windowWidth - 16) * imageHeight / imageWidth)).toFixed(2))
     })
-    console.log('windowWidth:', windowWidth, movearry)
-    Taro.eventCenter.trigger('onEventImageChange', { movearry, index })
+    Taro.eventCenter.trigger('onEventImageChange', { movearray: _movearray, index })
     setTimeout(() => {
       Taro.navigateBack()
     }, 200)
   }
+
 
   return (
     <SpPage className='page-ugc-image-edit'>
@@ -106,7 +108,7 @@ function UgcImageEdit(props) {
         <SpImage src={imageSrc} onLoad={onLoadImage} />
         <MovableArea className='movable-area'>
           {
-            movearry.map((item, idx) => {
+            movearray.map((item, idx) => {
               return (
                 <MovableView
                   style='height: auto; width:auto;'
@@ -129,7 +131,7 @@ function UgcImageEdit(props) {
       </View>
       <View className="btn-container">
         <AtButton circle className='btn btn-add' onClick={() => {
-          const topicIds = movearry.map(item => item.topicId)
+          const topicIds = movearray.map(item => item.topicId)
 
           Taro.navigateTo({
             url: `/subpages/mdugc/subject-talk?topic_ids=${topicIds.toString()}&event=onEventTopic`

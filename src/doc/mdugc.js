@@ -22,7 +22,7 @@ export const MDUGC_TOPICLIST = {
 }
 
 export const UGC_DETAIL = {
-  imgList: 'images',
+  imgList: ({ images }) => JSON.parse(images),
   title: 'title',
   content: 'content',
   cover: 'cover',

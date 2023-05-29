@@ -52,6 +52,30 @@
       padding: 6px 20px;
     }
   }
+
+  .movable-item {
+    height: 40px;
+    font-size: 22px;
+    line-height: 40px;
+    color: rgb(255, 253, 253);
+    border-bottom: 2px solid #fff;
+    padding-left: 10px;
+    position: absolute;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: #fff;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: translate(0, 50%);
+    }
+  }
+
   .swiper-pagegation {
     position: absolute;
     right: 0;

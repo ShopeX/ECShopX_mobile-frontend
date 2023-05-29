@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Video } from '@tarojs/components'
 import imgUploader from '@/utils/upload'
 import { isArray, authSetting } from '@/utils'
 import { SpImage } from '@/components'
