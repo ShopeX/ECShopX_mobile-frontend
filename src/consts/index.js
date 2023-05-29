@@ -99,7 +99,8 @@ export const TABBAR_PATH = {
   member: '/subpages/member/index',
   article: '/pages/recommend/list',
   liveroom: '/pages/liveroom/index',
-  allGoods: '/pages/item/list?isTabBar=true'
+  allGoods: '/pages/item/list?isTabBar=true',
+  ugc: '/subpages/mdugc/index',
 }
 
 export const TABBAR_ICON = {
@@ -109,7 +110,8 @@ export const TABBAR_ICON = {
   member: 'huiyuan',
   article: 'zhongcao',
   liveroom: 'zhibo',
-  allGoods: 'quanbushangpin'
+  allGoods: 'quanbushangpin',
+  ugc: 'quanbushangpin'
 }
 
 export const BUY_TOOL_BTNS = {
