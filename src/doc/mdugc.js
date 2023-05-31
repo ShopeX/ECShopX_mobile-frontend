@@ -23,6 +23,7 @@ export const MDUGC_TOPICLIST = {
 }
 
 export const UGC_DETAIL = {
+  postId: 'post_id',
   imgList: ({ images }) => JSON.parse(images),
   title: 'title',
   content: 'content',

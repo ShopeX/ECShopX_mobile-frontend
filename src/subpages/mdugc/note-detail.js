@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
 import { View, Text, Video, Swiper, SwiperItem, } from '@tarojs/components'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { FloatMenus, FloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView } from '@/components'
+import { FloatMenus, SpFloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView } from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
 import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
@@ -146,7 +146,7 @@ function UgcNoteDetail(props) {
   }
 
   const isMyNote = () => {
-    return userInfo.user_id == info.userId
+    return userInfo?.user_id == info?.userId
   }
 
   // 关注|取消关注
@@ -254,11 +254,49 @@ function UgcNoteDetail(props) {
     return { left: `${x * 100}%`, top: `${y * 100}%` }
   }
 
+  const onHandleMenuItem = (url) => {
+    Taro.navigateTo({ url })
+  }
+
+  const onDeleteNote = async () => {
+    const { confirm } = await Taro.showModal({
+      title: '确定删除笔记？',
+      content: ''
+    })
+    if (confirm) {
+      await api.mdugc.postdelete({
+        post_id: [info.postId]
+      })
+      showToast('删除成功')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 700)
+    }
+  }
+
   return (
     <SpPage
       className='page-ugc-detail'
       scrollToTopBtn
       ref={pageRef}
+      renderFloat={
+        <View className='float-icon'>
+          {
+            isMyNote() && <SpLogin onChange={onHandleMenuItem.bind(this, `/subpages/mdugc/note?post_id=${info.postId}`)}>
+              <SpFloatMenuItem>
+                <Text className='iconfont icon-bianji'></Text>
+              </SpFloatMenuItem>
+            </SpLogin>
+          }
+          {
+            isMyNote() && <SpLogin onChange={onDeleteNote}>
+              <SpFloatMenuItem>
+                <Text className='iconfont icon-shanchu'></Text>
+              </SpFloatMenuItem>
+            </SpLogin>
+          }
+        </View>
+      }
       renderFooter={
         <View className='action-container'>
           <View className='comment-input' onClick={handleCommitReply}>
@@ -307,7 +345,7 @@ function UgcNoteDetail(props) {
             // current={curImgIdx}
             onChange={onChangeSwiper}
           >
-            {info.imgList?.map((item, idx) => (
+            {info?.imgList.map((item, idx) => (
               <SwiperItem key={`swiperitem__${idx}`}>
                 <SpImage
                   mode='aspectFill'
