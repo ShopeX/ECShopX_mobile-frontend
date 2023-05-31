@@ -255,7 +255,7 @@ function UgcNoteDetail(props) {
   }
 
   const onHandleMenuItem = (url) => {
-    Taro.navigateTo({ url })
+    Taro.redirectTo({ url })
   }
 
   const onDeleteNote = async () => {
@@ -268,6 +268,7 @@ function UgcNoteDetail(props) {
         post_id: [info.postId]
       })
       showToast('删除成功')
+      Taro.eventCenter.trigger('onEventRefreshFromNote')
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)

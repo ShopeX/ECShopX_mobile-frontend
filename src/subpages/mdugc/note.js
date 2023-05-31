@@ -195,11 +195,12 @@ function UgcNote(props) {
     Taro.hideLoading()
     showToast(message)
     Taro.disableAlertBeforeUnload()
+    Taro.eventCenter.trigger('onEventRefreshFromNote')
+
     setTimeout(() => {
       Taro.navigateBack()
     }, 1000)
   }
-  console.log('imageList &&&&&&&&&', imageList, moveArray)
   return (
     <SpPage className='page-ugc-note' renderFooter={
       <View className='action-container'>

@@ -55,6 +55,16 @@ function UgcIndex() {
 
   useEffect(() => {
     getTopicslist()
+
+    // 笔记编辑、删除后刷新页面
+    Taro.eventCenter.on('onEventRefreshFromNote', () => {
+      console.log('onEventRefreshFromNote:', )
+      listRef.current.reset()
+    })
+
+    return () => {
+      Taro.eventCenter.off('onEventRefreshFromNote')
+    }
   }, [])
 
   useEffect(() => {
