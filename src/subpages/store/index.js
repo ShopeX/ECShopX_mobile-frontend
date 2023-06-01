@@ -186,7 +186,7 @@ function StoreIndex() {
       </View>}
 
       <View className='header-block' style={{ background: `${pageData?.base?.pageBackgroundColor}` }}>
-        <CompShopBrand storeInfo={storeInfo} />
+        <CompShopBrand dtid={distributorId} storeInfo={storeInfo} />
       </View>
       <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
         {/* 猜你喜欢 */}
