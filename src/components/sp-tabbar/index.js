@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentPages } from '@tarojs/taro'
 import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
@@ -9,11 +9,12 @@ import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import './index.scss'
 
 function SpTabbar(props) {
+  const navipage = '/pages/item/list?isTabBar=true'
   const { colorPrimary, tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { className } = props
-
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
+  console.log("---bar---");
   const tabList = tabbar?.data.map((item) => {
     return {
       title: item.text,
@@ -51,7 +52,11 @@ function SpTabbar(props) {
     const tabItem = tabList[index]
     const { path } = getCurrentRoute()
     if (path != TABBAR_PATH[tabItem.name]) {
-      Taro.redirectTo({ url: TABBAR_PATH[tabItem.name] })
+      if(TABBAR_PATH[tabItem.name]!==navipage){
+        Taro.redirectTo({ url: TABBAR_PATH[tabItem.name] })
+      }else{
+        Taro.navigateTo({ url: TABBAR_PATH[tabItem.name] })
+      }
     }
   }
 
