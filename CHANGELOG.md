@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.2...v3.13.3) (2023-06-09)
+
+
+### Bug Fixes
+
+* ECX-4983 ([50e657d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/50e657d00d35337cbbc56d7d287fe62a004750cf))
+
 ### [3.13.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.1...v3.13.2) (2023-06-02)
 
 ### [3.13.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.0...v3.13.1) (2023-06-01)
