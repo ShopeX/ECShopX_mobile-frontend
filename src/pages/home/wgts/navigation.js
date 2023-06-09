@@ -24,7 +24,7 @@ export default class WgtNavigation extends Component {
       return null
     }
 
-    const { base, data } = info
+    const { base, data, distributor_id } = info
     const { windowWidth } = isWeb ? {
       windowWidth: window.innerWidth
     } : Taro.getSystemInfoSync()
@@ -52,7 +52,10 @@ export default class WgtNavigation extends Component {
             <View
               className='nav-item'
               key={`nav-item__${idx}`}
-              onClick={this.handleClickItem.bind(this, item)}
+              onClick={this.handleClickItem.bind(this, {
+                ...item,
+                distributor_id
+              })}
             >
               <SpImage
                 className='nav-img'

@@ -15,7 +15,7 @@ function linkPage (data) {
   let url = ''
   switch (linkPage) {
     case 'goods':
-      url = '/pages/item/espier-detail?id=' + id
+      url = `/pages/item/espier-detail?id=${id}&dtid=${distributor_id}`
       break
     case 'sale_category':
       url = '/pages/item/list?cat_id=' + id

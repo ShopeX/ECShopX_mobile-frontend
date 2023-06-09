@@ -65,7 +65,7 @@ function SpGoodsItem(props) {
       return
     }
     let query = { id: itemId }
-    if (distributorId) {
+    if (typeof distributorId != 'undefined') {
       query = {
         ...query,
         dtid: distributorId
