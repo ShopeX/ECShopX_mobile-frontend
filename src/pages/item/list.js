@@ -215,15 +215,18 @@ function ItemList() {
       v.leftList[pageIndex - 1] = resLeftList
       v.rightList[pageIndex - 1] = resRightList
       v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND)
-      if (select_tags_list.length > 0) {
-        v.tagList = [
-          {
-            tag_name: '全部',
-            tag_id: 0
-          }
-        ].concat(select_tags_list)
-        v.fixTop = fixTop + 34
+      if(v.tagList.length < 1){
+        if (select_tags_list.length > 0) {
+          v.tagList = [
+            {
+              tag_name: '全部',
+              tag_id: 0
+            }
+          ].concat(select_tags_list)
+          v.fixTop = fixTop + 34
+        }
       }
+
     })
 
     return { total: total_count }
