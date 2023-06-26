@@ -458,7 +458,9 @@ function UgcNoteDetail(props) {
             Taro.navigateTo({
               url: `/pages/item/espier-detail?id=${itemId}`
             })
-          }} />
+          }}
+          isShowDistributor={true}
+          />
         </View>
         <SpScrollView className="comment-list"
           ref={listRef}
