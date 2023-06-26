@@ -10,7 +10,8 @@ export default class WgtFloorImg extends Component {
   }
 
   static defaultProps = {
-    info: {}
+    info: {},
+    isShowDistributor: false
   }
 
   constructor(props) {
@@ -26,7 +27,7 @@ export default class WgtFloorImg extends Component {
   }
 
   render() {
-    const { info } = this.props
+    const { info, isShowDistributor } = this.props
     if (!info) {
       return null
     }
@@ -49,16 +50,28 @@ export default class WgtFloorImg extends Component {
           </View>
         )}
         <View className='wgt-bd'>
-          <ScrollView scrollX className='img-list' enhanced
-            show-scrollbar={false}>
+          <ScrollView scrollX className='img-list' enhanced show-scrollbar={false}>
             {data &&
               data.map((item, idx) => {
                 return (
                   <View className='img-item' key={idx}>
-                    <SpImage src={item.imgUrl} mode='widthFix' circle={16} onClick={this.onRoute.bind(this, item)} />
-                    {item.ImgTitle && <View className='title' style={`color: ${base && base.WordColor}`}>
-                      {item.ImgTitle}
-                    </View>}
+                    <SpImage
+                      src={item.imgUrl}
+                      mode='widthFix'
+                      circle={16}
+                      onClick={this.onRoute.bind(this, item)}
+                    />
+                    {item.ImgTitle && (
+                      <View className='title' style={`color: ${base && base.WordColor}`}>
+                        {item.ImgTitle}
+                      </View>
+                    )}
+                    { isShowDistributor && !Array.isArray(item.distributor_info) && (
+                      <View className='distributor'>
+                        <SpImage circle src={item.distributor_info.logo} width={32} height={32} />
+                        <View className='distributor-name'>{item.distributor_info.name}</View>
+                      </View>
+                    )}
                   </View>
                 )
               })}

@@ -1,4 +1,5 @@
 .wgt-floor-img {
+
   // .exclusive_list {
   //   background-size: contain;
   // }
@@ -14,6 +15,7 @@
   .wgt-bd {
     padding: 0 0 0 16px;
   }
+
   .img-list {
     height: 100%;
     white-space: nowrap;
@@ -26,6 +28,7 @@
     width: 256px;
     vertical-align: top;
   }
+
   // .lis:first-child {
   //   margin-left: 16px;
   // }
@@ -49,5 +52,15 @@
 
   .exclusive_list::-webkit-scrollbar {
     display: none;
+  }
+
+  .distributor {
+    display: flex;
+    &-name {
+      font-size: 22px;
+      margin-left: 4px;
+      color: #666;
+      @include text-overflow();
+    }
   }
 }
