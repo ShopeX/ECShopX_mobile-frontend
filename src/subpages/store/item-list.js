@@ -121,6 +121,11 @@ function StoreItemList(props) {
       params['category'] = cat_id
     }
 
+    if(main_cat_id){
+      params['category'] = main_cat_id
+    }
+
+
     const {
       list,
       total_count,

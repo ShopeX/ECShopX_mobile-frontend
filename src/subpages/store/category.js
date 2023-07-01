@@ -70,12 +70,12 @@ const CategoryIndex = (props) => {
     const { category_id = '', main_category_id, is_main_category } = item
     let url = ''
     if (category_id) {
-      url = `/subpages/store/item-list?cat_id=${category_id}&dis_id=${dtid}&tabbar=0`
+      url = `/subpages/store/item-list?cat_id=${category_id}&dtid=${dtid}&tabbar=0`
     }
     if (main_category_id || is_main_category) {
       url = `/subpages/store/item-list?main_cat_id=${
         main_category_id || category_id
-      }&dis_id=${dtid}&tabbar=0`
+      }&dtid=${dtid}&tabbar=0`
     }
     if (url) {
       Taro.navigateTo({
