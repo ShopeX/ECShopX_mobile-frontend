@@ -143,9 +143,15 @@ function Home() {
 
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-    const params = getCurrentPageRouteParams()
-    const path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
-    console.log('useShareAppMessage path:', path)
+    let params = getCurrentPageRouteParams()
+    const dtid = getDistributorId()
+    if (dtid && !('dtid' in params) ) {
+      params = Object.assign(params, { dtid })
+    }
+    let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
+
+    console.log('useShareAppMessage path:', path, params)
+
     return {
       title: title,
       imageUrl: imageUrl,
@@ -155,7 +161,13 @@ function Home() {
 
   useShareTimeline(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-    const params = getCurrentPageRouteParams()
+    let params = getCurrentPageRouteParams()
+    const dtid = getDistributorId()
+
+    if (dtid && !('dtid' in params) ) {
+      params = Object.assign(params, { dtid })
+    }
+
     console.log('useShareTimeline params:', params)
     return {
       title: title,
