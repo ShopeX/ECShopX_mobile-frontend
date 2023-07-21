@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.6...v3.13.7) (2023-07-21)
+
+
+### Features
+
+* 小程序扫码出来的店铺界面，点击【品牌介绍】后，跳转的是别的公司名字 ([447cec7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/447cec7a60b45e0b7843f3dec91af5e604d1c0b3))
+* 底部导航直接到商品列表页面后 ([6ff6cf1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6ff6cf1a1f46d4180b79b6ad712262781fb88dec))
+* 设置上架/下架到小店，页面会自动回到顶部，应该停留在当前位置 ([3401eeb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3401eeb83b6e0080c0b5c279b7a8dba273b1f6fc))
+
 ### [3.13.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.5...v3.13.6) (2023-07-18)
 
 
