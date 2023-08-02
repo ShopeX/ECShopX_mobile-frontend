@@ -7,10 +7,11 @@ import { SpPage, SpScrollView, SpAddress, SpPrivacyModal } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
+import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
+import CompShopItem from './comps/comp-shopitem'
 
 import './list.scss'
 
@@ -227,6 +228,8 @@ function NearlyShop(props) {
 
   const handleClickShop = (info) => {
     dispatch(updateShopInfo(info)) //新增非门店自提，开启distributor_id 取值为store_id
+    // 清空小程序启动时携带的参数
+    Taro.setStorageSync(SG_ROUTER_PARAMS, {})
     setTimeout(() => {
       Taro.navigateBack()
     }, 300)

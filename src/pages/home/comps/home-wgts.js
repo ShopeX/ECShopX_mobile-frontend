@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
@@ -34,8 +34,16 @@ function HomeWgts(props) {
   const { wgts, dtid, onLoad = () => { }, children } = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
+  const wgtsRef = useRef()
+
+  useEffect(() => {
+    if (wgts.length > 0) {
+      wgtsRef.current.reset()
+    }
+  }, [wgts])
 
   const fetch = ({ pageIndex, pageSize }) => {
+    console.log('首页挂件分页渲染...', pageIndex, pageSize)
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
@@ -61,7 +69,7 @@ function HomeWgts(props) {
   }
 
   return (
-    <SpScrollView className='home-wgts' fetch={fetch} pageSize={3} onLoad={onLoad}>
+    <SpScrollView className='home-wgts' ref={wgtsRef} auto={false} fetch={fetch} pageSize={3} onLoad={onLoad}>
       {localWgts.map((list) => {
         return list.map((item, idx) => (
           <View
