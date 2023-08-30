@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpLogin, SpPrivacyModal, SpAddress } from '@/components'
+import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
@@ -29,7 +29,7 @@ const initialState = {
 }
 
 function NearlyShop(props) {
-  const { isLogin, checkPolicyChange } = useLogin({
+  const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
@@ -186,15 +186,6 @@ function NearlyShop(props) {
     Taro.navigateBack()
   }
 
-  const isPolicyTime = async () => {
-    const checkRes = await checkPolicyChange()
-    if (checkRes) {
-      getLocationInfo()
-    } else {
-      setPolicyModal(true)
-    }
-  }
-
   const onPickerChange = ([{ label: province }, { label: city }, { label: area }]) => {
     setState((draft) => {
       draft.chooseValue = [province, city, area]
@@ -241,7 +232,7 @@ function NearlyShop(props) {
           <Text className='location-address' onClick={() => onLocationChange(location)}>
             {location?.address || '无法获取您的位置信息'}
           </Text>
-          <View className='btn-location' onClick={isPolicyTime}>
+          <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
                 active: state.locationIng
@@ -299,12 +290,6 @@ function NearlyShop(props) {
           draft.isSpAddressOpened = false
         })
       }} onChange={onPickerChange} />
-
-      <SpPrivacyModal
-        open={policyModal}
-        onCancel={() => setPolicyModal(false)}
-        onConfirm={getLocationInfo}
-      />
     </SpPage>
   )
 }

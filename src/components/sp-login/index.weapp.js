@@ -100,15 +100,16 @@ function SpLogin(props, ref) {
   // 同意隐私协议
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
-    if (isNewUser) {
-      return setLoginModal(true)
-    } else {
-      try {
-        await login()
-      } catch (e) {
-        setLoginModal(true)
-      }
-    }
+    handleUserLogin()
+    // if (isNewUser) {
+    //   return setLoginModal(true)
+    // } else {
+    //   try {
+    //     await login()
+    //   } catch (e) {
+    //     setLoginModal(true)
+    //   }
+    // }
   }, [])
 
   // 登录
@@ -177,10 +178,10 @@ function SpLogin(props, ref) {
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
             { isNewUser && <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
-              登录
+              登录1
             </AtButton>}
             {!isNewUser && <AtButton type='primary' onClick={handleUserLogin}>
-              登录
+              登录2
             </AtButton>}
           </View>
         </View>

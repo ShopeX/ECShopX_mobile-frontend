@@ -10,11 +10,13 @@
     </view>
     <view class="privacy__ft">
       <button
+        id="disagree-btn"
         type="default"
         class="disagree-btn"
         bindtap="handleDisagree"
       >拒绝</button>
       <button
+        id="agree-btn"
         type="default"
         open-type="agreePrivacyAuthorization"
         class="agree-btn"

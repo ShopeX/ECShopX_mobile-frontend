@@ -29,7 +29,7 @@
   padding: 30px;
 }
 .sp-wx-privacy .privacy__hd .privacy__title {
-  font-size: 28px;
+  font-size: 30px;
   font-weight: bold;
 }
 .sp-wx-privacy .privacy__bd {
@@ -39,7 +39,7 @@
   text-align: left;
 }
 .sp-wx-privacy .privacy__bd .privacy__tips {
-  font-size: 26px;
+  font-size: 28px;
   color: #666;
 }
 .sp-wx-privacy .privacy__bd .privacy-contract {
@@ -54,10 +54,11 @@
   margin-bottom: 30px;
 }
 .sp-wx-privacy .privacy__ft .disagree-btn {
-  font-size: 26px;
+  font-size: 28px;
   background: #F2F2F2;
   color: #09C160;
-  height: 70px;
+  height: 80px;
+  line-height: 80px;
   width: 200px;
 }
 .sp-wx-privacy .privacy__ft .disagree-btn:after {
@@ -65,10 +66,11 @@
 }
 
 .sp-wx-privacy .privacy__ft .agree-btn {
-  font-size: 26px;
+  font-size: 28px;
   background: #09C160;
   color: #fff;
-  height: 70px;
+  height: 80px;
+  line-height: 80px;
   width: 200px;
 }
 .sp-wx-privacy .privacy__ft .agree-btn:after {

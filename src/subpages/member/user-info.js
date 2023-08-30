@@ -218,6 +218,7 @@ function MemberUserInfo(props) {
 
   const saveUserInfo = async () => {
     const { avatar, username } = formUserInfo
+    debugger
     await api.member.updateMemberInfo({
       username,
       avatar

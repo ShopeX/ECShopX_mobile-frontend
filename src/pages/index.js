@@ -12,7 +12,6 @@ import {
   SpPage,
   SpSearch,
   SpRecommend,
-  SpPrivacyModal,
   SpTabbar,
   SpCouponPackage
 } from '@/components'
@@ -44,7 +43,6 @@ import CompFloatMenu from './home/comps/comp-floatmenu'
 import './home/index.scss'
 
 const MCompAddTip = React.memo(CompAddTip)
-const MSpPrivacyModal = React.memo(SpPrivacyModal)
 
 const initialState = {
   wgts: [],
@@ -64,7 +62,7 @@ function Home() {
   const { initState, openRecommend, openLocation, openStore, appName } = useSelector(
     (state) => state.sys
   )
-  const { isLogin, login, checkPolicyChange } = useLogin({
+  const { isLogin, login } = useLogin({
     policyUpdateHook: (isUpdate) => {
       if (isUpdate && process.env.APP_BUILD_TARGET != 'app') {
         setPolicyModal(true)
@@ -92,8 +90,7 @@ function Home() {
   }, [initState])
 
   useDidShow(() => {
-    // 检查隐私协议是否变更或同意
-    // checkPolicyChange()
+    fetchLocation()
   })
 
   const init = async () => {
@@ -131,7 +128,6 @@ function Home() {
       draft.filterWgts = filterWgts
       draft.loading = false
     })
-    // fetchLikeList()
   }
 
   const fetchLikeList = async () => {
@@ -146,11 +142,16 @@ function Home() {
   }
 
   // 定位
-  const fetchLocation = async () => {
+  const fetchLocation = () => {
     if (!location && ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM)) {
       try {
-        const res = await entryLaunch.getCurrentAddressInfo()
-        dispatch(updateLocation(res))
+        entryLaunch.isOpenPosition((res) => {
+          if (res.lat) {
+            dispatch(updateLocation(res))
+          }
+        })
+        // const res = await entryLaunch.isOpenPosition()
+        // dispatch(updateLocation(res))
       } catch (e) {
         // 定位失败，获取默认店铺
         console.error('map location fail:', e)
@@ -161,11 +162,6 @@ function Home() {
       fetchStoreInfo(location)
     }
   }
-
-  const handleConfirmModal = useCallback(async () => {
-    setPolicyModal(false)
-    fetchLocation()
-  }, [])
 
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
@@ -246,15 +242,6 @@ function Home() {
 
       {/* 开屏广告 */}
       {isWeixin && !showAdv && <SpScreenAd />}
-
-      {/* 隐私政策 */}
-      {/* <MSpPrivacyModal
-        open={policyModal}
-        onCancel={() => {
-          setPolicyModal(false)
-        }}
-        onConfirm={handleConfirmModal}
-      /> */}
 
       {/* 优惠券包 */}
       {VERSION_STANDARD && <SpCouponPackage />}

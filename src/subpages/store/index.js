@@ -7,7 +7,6 @@ import {
   SpPage,
   SpSearch,
   SpRecommend,
-  SpPrivacyModal,
   SpTabbar
 } from '@/components'
 import api from '@/api'

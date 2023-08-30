@@ -64,6 +64,7 @@ Component({
   },
   methods: {
     handleAgree(e) {
+      console.log('handleAgree:', e)
       this.disPopUp()
       privacyResolves.forEach(resolve => {
         resolve({

@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Input, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpAddress, SpPrivacyModal } from '@/components'
+import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
@@ -37,7 +37,7 @@ const initialState = {
 }
 
 function NearlyShop(props) {
-  const { isLogin, checkPolicyChange } = useLogin({
+  const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
@@ -160,7 +160,7 @@ function NearlyShop(props) {
       draft.refresh = false
     })
 
-    if(isObject(defualt_address)) {
+    if (isObject(defualt_address)) {
       dispatch(updateChooseAddress(defualt_address))
     }
 
@@ -252,17 +252,6 @@ function NearlyShop(props) {
     })
   }
 
-  const isPolicyTime = async () => {
-    const checkRes = await checkPolicyChange()
-    if (checkRes) {
-      getLocationInfo()
-    } else {
-      setPolicyModal(true)
-    }
-  }
-
-
-
   return (
     <SpPage className='page-store-list' ref={pageRef}>
       <View className='search-block'>
@@ -308,7 +297,7 @@ function NearlyShop(props) {
         <View className='block-title'>当前定位地址</View>
         <View className='location-wrap'>
           <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
-          <View className='btn-location' onClick={isPolicyTime}>
+          <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
                 active: state.locationIng
@@ -361,11 +350,6 @@ function NearlyShop(props) {
         })
       }} onChange={onPickerChange} />
 
-      <SpPrivacyModal
-        open={policyModal}
-        onCancel={() => setPolicyModal(false)}
-        onConfirm={getLocationInfo}
-      />
     </SpPage>
   )
 }
