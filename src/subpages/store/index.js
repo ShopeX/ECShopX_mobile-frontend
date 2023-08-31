@@ -104,9 +104,9 @@ function StoreIndex() {
   })
 
   const getAppShareInfo = async () => {
-    const { id } = await entryLaunch.getRouteParams()
+    const { dtid } = await entryLaunch.getRouteParams()
     const query = {
-      id
+      dtid
     }
     const path = `/subpages/store/index?${qs.stringify(query)}`
     log.debug(`share path: ${path}`)

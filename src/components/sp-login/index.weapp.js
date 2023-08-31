@@ -1,6 +1,6 @@
 import Taro from '@tarojs/taro'
 import React, { useEffect, useState, useCallback, useRef, useImperativeHandle } from 'react'
-import { View, Button } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { AtButton, AtCurtain } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import S from '@/spx'
@@ -8,10 +8,17 @@ import api from '@/api'
 import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
 import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
-import { SpPrivacyModal, SpImage } from '@/components'
+import { SpPrivacyModal, SpImage, SpCheckbox } from '@/components'
 import { useLogin } from '@/hooks'
 import './index.scss'
 
+
+const initialState = {
+  logo: '',
+  registerName: '',
+  privacyName: '',
+  agreeMentChecked: false
+}
 function SpLogin(props, ref) {
   const { children, className, onChange, newUser = false } = props
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
@@ -22,6 +29,8 @@ function SpLogin(props, ref) {
   const [isNewUser, setIsNewUser] = useState(false)
   const [policyModal, setPolicyModal] = useState(false)
   const [loginModal, setLoginModal] = useState(false)
+  const [state, setState] = useImmer(initialState)
+  const { logo, registerName, privacyName, agreeMentChecked } = state
   const codeRef = useRef()
 
   useEffect(() => {
@@ -32,6 +41,7 @@ function SpLogin(props, ref) {
 
   useEffect(() => {
     if (loginModal) {
+      fetchPrivacyData()
       Taro.login({
         success: ({ code }) => {
           codeRef.current = code
@@ -42,6 +52,17 @@ function SpLogin(props, ref) {
       })
     }
   }, [loginModal])
+
+  const fetchPrivacyData = async () => {
+    const { logo, protocol } = await api.shop.getStoreBaseInfo()
+    const { member_register, privacy } = protocol
+    setState(draft => {
+      draft.logo = logo
+      draft.registerName = member_register
+      draft.privacyName = privacy
+    })
+
+  }
 
   const handleBindPhone = async (e) => {
     const { encryptedData, iv, cloudID } = e.detail
@@ -117,14 +138,14 @@ function SpLogin(props, ref) {
     e.stopPropagation()
     const { scene } = Taro.getLaunchOptionsSync()
     // 微信朋友圈打开场景
-    if(scene == 1154) {
+    if (scene == 1154) {
       return showToast('请前往小程序使用完整服务')
     }
-    const checkRes = await checkPolicyChange()
-    if (!checkRes) {
-      setPolicyModal(true)
-      return
-    }
+    // const checkRes = await checkPolicyChange()
+    // if (!checkRes) {
+    //   setPolicyModal(true)
+    //   return
+    // }
     if (isLogin) {
       onChange && onChange()
     } else {
@@ -149,6 +170,18 @@ function SpLogin(props, ref) {
     }
   }))
 
+  const handleClickPrivacy = (type) => {
+    Taro.navigateTo({
+      url: `/subpages/auth/reg-rule?type=${type}`
+    })
+  }
+
+  const onChangePayment = (e) => {
+    setState(draft => {
+      draft.agreeMentChecked = e
+    })
+  }
+
   // eslint-disable-next-line no-undef
   const { icon, nickname } = __wxConfig.accountInfo
 
@@ -157,11 +190,11 @@ function SpLogin(props, ref) {
       <View onClick={handleClickLogin}>{children}</View>
 
       {/* 隐私协议 */}
-      <SpPrivacyModal
+      {/* <SpPrivacyModal
         open={policyModal}
         onCancel={handleCloseModal}
         onConfirm={handleConfirmModal}
-      />
+      /> */}
 
       {/* 授权登录 */}
       <AtCurtain
@@ -176,11 +209,21 @@ function SpLogin(props, ref) {
             <View className='nick-name'>{nickname}</View>
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
+          <View className='agreement-content'>
+            <SpCheckbox
+              checked={agreeMentChecked}
+              onChange={onChangePayment}
+            />
+            <View className="agreement-list">
+              <Text className='agreement-name' onClick={handleClickPrivacy.bind(this, 'member_register')}>《{registerName}》</Text>和
+              <Text className='agreement-name' onClick={handleClickPrivacy.bind(this, 'privacy')}>《{privacyName}》</Text>
+            </View>
+          </View>
           <View className='login-modal__ft'>
-            { isNewUser && <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
+            {isNewUser && <AtButton type='primary' disabled={!agreeMentChecked} openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
               登录
             </AtButton>}
-            {!isNewUser && <AtButton type='primary' onClick={handleUserLogin}>
+            {!isNewUser && <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
               登录
             </AtButton>}
           </View>

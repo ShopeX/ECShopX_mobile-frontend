@@ -31,15 +31,15 @@ export default (props = {}) => {
   useEffect(() => {
     const token = S.getAuthToken()
     if (userInfo && token) {
-      setIsLogin(true) 
+      setIsLogin(true)
     }
   }, [userInfo])
 
   const login = async () => {
     if (isWeixin || isAlipay) {
       // 隐私协议
-      const checkResult = await checkPolicyChange()
-      if (checkResult) {
+      // const checkResult = await checkPolicyChange()
+      // if (checkResult) {
         Taro.showLoading({ title: '' })
         const { code } = await getCode()
 
@@ -53,7 +53,7 @@ export default (props = {}) => {
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
-      }
+      // }
     }
   }
 

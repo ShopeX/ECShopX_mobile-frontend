@@ -1,5 +1,6 @@
 .sp-login {
   display: initial;
+
   .login-btn {
     border-width: 0;
     height: auto;
@@ -8,10 +9,12 @@
     background-color: transparent;
     display: initial;
     font-size: inherit;
+
     &:after {
       border-width: 0;
     }
   }
+
   .ali-button {
     background: transparent;
   }
@@ -19,17 +22,26 @@
   .login-modal {
     background: #fff;
     border-radius: 16px;
+
     &__hd {
       display: flex;
       flex-direction: column;
       align-items: center;
+
       &--alipay {
         height: 70px;
       }
+
       .sp-image {
         position: relative;
         top: -60px;
+
+        .sp-image-img {
+          background-color: #fff;
+          box-shadow: 0 0 6px 0px #d2cdcd;
+        }
       }
+
       .nick-name {
         font-size: 32px;
         font-weight: 500;
@@ -38,19 +50,50 @@
         top: -40px;
       }
     }
+
     &__bd {
       font-size: 28px;
       font-weight: 400;
       color: #666666;
       text-align: center;
     }
+
+    .agreement-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin: 50px 0 10px;
+
+      .sp-checkbox-new {
+        .icon-round {
+          font-size: 28px;
+        }
+        .icon-roundcheckfill {
+          font-size: 28px;
+        }
+        &__label {
+          display: none;
+        }
+      }
+      .agreement-list {
+        margin-left: 4px;
+      }
+      .agreement-name {
+        font-size: 26px;
+      }
+    }
+
     &__ft {
       text-align: center;
-      .at-button--primary,.alipay-button--primary {
+
+      .at-button--primary,
+      .alipay-button--primary {
         width: 370px;
         height: 80px;
       }
-      padding: 50px 0;
+
+      padding: 0 50px 50px;
     }
   }
 }
