@@ -178,9 +178,7 @@ const upload = {
   },
   cosv5Upload: async (item, tokenRes) => {
     const { bucket, region, token, url, filetype } = tokenRes
-    console.log('-1--')
     try {
-      console.log('-3--')
       var cos = new COS({
         getAuthorization: function (options, callback) {
           callback({ Authorization: token })
