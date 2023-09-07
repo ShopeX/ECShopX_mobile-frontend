@@ -1,9 +1,8 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
-import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
-import WxCOS from './cos/cos-wx-sdk-v5.min.js'
-import WebCOS from './cos/cos-js-sdk-v5.min.js'
+import { isAlipay, getAppId, exceedLimit, isWeixin } from '@/utils'
+import COS from './cos'
 // import * as qiniu from 'qiniu-js'
 
 const getToken = (params) => {
@@ -179,25 +178,16 @@ const upload = {
     }
   },
   cosv5Upload: async (item, tokenRes) => {
+    if(!COS) return
     const { bucket, region, token, url, filetype } = tokenRes
     try {
       var cos = null
-      if(isWeixin){
-        cos = new WxCOS({
-          getAuthorization: function (options, callback) {
-            callback({ Authorization: token })
-          },
-          SimpleUploadMethod: 'putObject'
-        })
-      }
-      if(isWeb){
-        cos = new WebCOS({
-          getAuthorization: function (options, callback) {
-            callback({ Authorization: token })
-          },
-          SimpleUploadMethod: 'putObject'
-        })
-      }
+      cos = new COS({
+        getAuthorization: function (options, callback) {
+          callback({ Authorization: token })
+        },
+        SimpleUploadMethod: 'putObject'
+      })
       const res = await cos.uploadFile({
         Bucket: bucket /* 填写自己的 bucket，必须字段 */,
         Region: region /* 存储桶所在地域，必须字段 */,
@@ -210,12 +200,12 @@ const upload = {
       })
       console.log('上传成功')
       const { Location } = res
-      console.log({ url:'https://'+Location, filetype, thumb: item.thumb })
+      console.log({ url: 'https://' + Location, filetype, thumb: item.thumb })
       if (!Location) {
         return false
       }
       return {
-        url: 'https://'+Location,
+        url: 'https://' + Location,
         filetype,
         thumb: item.thumb
       }
