@@ -104,7 +104,8 @@ function StoreIndex() {
   })
 
   const getAppShareInfo = async () => {
-    const { dtid } = await entryLaunch.getRouteParams()
+    const data = await entryLaunch.getRouteParams()
+    const dtid = data.id || data.dtid
     const query = {
       dtid
     }
