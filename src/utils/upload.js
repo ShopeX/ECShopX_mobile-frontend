@@ -260,7 +260,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     }
     try {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-      const { driver, token } = await getToken({ filetype, filename, group: 'PUT' })
+      const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
       let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
