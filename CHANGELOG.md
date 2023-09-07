@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.11](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.10...v3.13.11) (2023-09-07)
+
+
+### Bug Fixes
+
+* 店铺分享ID问题 ([257986e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/257986eb4a9f3a3353f1f9ec7548509958befd6c))
+
 ### [3.13.10](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.9...v3.13.10) (2023-08-29)
 
 
