@@ -200,9 +200,7 @@ const upload = {
         params = {...params,Body: item.file.originalFileObj /* 上传文件路径，必须字段 */}
       }
       const res = await cos.uploadFile(params)
-      console.log('上传成功')
       const { Location } = res
-      console.log({ url:'https://'+Location, filetype, thumb: item.thumb })
       if (!Location) {
         return false
       }
