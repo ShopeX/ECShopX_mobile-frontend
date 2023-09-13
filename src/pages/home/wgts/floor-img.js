@@ -22,7 +22,7 @@ export default class WgtFloorImg extends Component {
     if (this.props?.onClick) {
       this.props.onClick(item)
     } else {
-      return linkPage
+      linkPage(item)
     }
   }
 

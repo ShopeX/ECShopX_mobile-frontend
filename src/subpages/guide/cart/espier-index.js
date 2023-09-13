@@ -14,8 +14,7 @@ import {
   SpPrice,
   SpRecommend,
   SpDefault,
-  SpCheckboxNew,
-  SpPrivacyModal
+  SpCheckboxNew
 } from '@/components'
 import { BaTabBar } from '@/subpages/guide/components'
 

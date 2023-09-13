@@ -33,7 +33,14 @@ function SpGoodsPrice(props) {
         <View>
           <View className='goods-price'>
             {
-              isPoint && <SpPoint className='sale-point' value={point} />
+              isPoint && price == 0 && <SpPoint className='sale-point' value={point} />
+            }
+            {
+              isPoint && price > 0 && <View>
+                <SpPoint className='sale-point' value={point} />
+                <Text className='point-plus-price'>+</Text>
+                <SpPrice size={42} className='sale-price' value={price} />
+              </View>
             }
             {
               !isPoint && <SpPrice size={42} className='sale-price' value={price} />

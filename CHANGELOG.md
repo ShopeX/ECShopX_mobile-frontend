@@ -2,6 +2,74 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.11](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.10...v3.13.11) (2023-09-07)
+
+
+### Bug Fixes
+
+* 店铺分享ID问题 ([257986e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/257986eb4a9f3a3353f1f9ec7548509958befd6c))
+
+### [3.13.10](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.9...v3.13.10) (2023-08-29)
+
+
+### Features
+
+* 微信隐私协议 ([fb8a8b9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fb8a8b9f8e940ac9ba482c92efe29a0a11cebcd4))
+
+### [3.13.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.8...v3.13.9) (2023-08-17)
+
+
+### Bug Fixes
+
+* 首页循环滚动 ([4e22d71](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4e22d71369ce912cf8ec1b3141885af08601baac))
+
+### [3.13.8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.7...v3.13.8) (2023-08-02)
+
+### [3.13.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.6...v3.13.7) (2023-07-21)
+
+
+### Features
+
+* 小程序扫码出来的店铺界面，点击【品牌介绍】后，跳转的是别的公司名字 ([447cec7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/447cec7a60b45e0b7843f3dec91af5e604d1c0b3))
+* 底部导航直接到商品列表页面后 ([6ff6cf1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6ff6cf1a1f46d4180b79b6ad712262781fb88dec))
+* 设置上架/下架到小店，页面会自动回到顶部，应该停留在当前位置 ([3401eeb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3401eeb83b6e0080c0b5c279b7a8dba273b1f6fc))
+
+### [3.13.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.5...v3.13.6) (2023-07-18)
+
+
+### Bug Fixes
+
+* 楼层组件点击bug ([972c643](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/972c643f15b281ad5e34859e370b23e7db5d249a))
+
+### [3.13.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.4...v3.13.5) (2023-07-04)
+
+### [3.13.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.3-live...v3.13.4) (2023-06-29)
+
+### [3.13.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.2...v3.13.3) (2023-06-09)
+
+
+### Bug Fixes
+
+* ECX-4983 ([50e657d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/50e657d00d35337cbbc56d7d287fe62a004750cf))
+
+### [3.13.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.1...v3.13.2) (2023-06-02)
+
+### [3.13.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.0...v3.13.1) (2023-06-01)
+
+
+### Bug Fixes
+
+* 店铺首页关联店铺id ([9d8d3c6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9d8d3c6ce89da50bc991618d81382763fa48e9fd))
+
+## [3.13.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.12.4...v3.13.0) (2023-06-01)
+
+
+### Features
+
+* 消息列表 ([c0cce40](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c0cce4031fbebbef876372a0fa781658fdd35a18))
+* 社区 ([ed669a7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ed669a7fb98a421284e8c3668331e270be2a880e))
+* 表单内容里的【区块一标题】编辑内容后不展示 ([ee373f8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ee373f836acc9334b47c2d3fa984c6f9d80939f7))
+
 ### [3.12.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.12.0...v3.12.4) (2023-05-23)
 
 ## [3.12.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.11.4...v3.12.0) (2023-05-18)

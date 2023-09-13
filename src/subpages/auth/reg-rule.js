@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, RichText } from '@tarojs/components'
-import { SpNavBar, SpHtmlContent, SpHtml } from '@/components'
+import { View, ScrollView, RichText } from '@tarojs/components'
+import { SpNavBar, SpHtmlContent, SpHtml, SpPage } from '@/components'
 import { withPager } from '@/hocs'
 import api from '@/api'
 
-import './reg.scss'
+import './reg-rule.scss'
 
 @withPager
 export default class RegRule extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -18,11 +18,11 @@ export default class RegRule extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     let data = ''
     let navBarTitle = '协议'
     const { type } = this.$instance.router.params
@@ -65,15 +65,14 @@ export default class RegRule extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info, title } = this.state
     return (
-      <View className='page-member-integral'>
-        <SpNavBar title={title} leftIconType='chevron-left' />
+      <ScrollView enhanced scrollY showScrollbar={false} className='page-auth-reg-rule'>
         {info && (
-          <SpHtml content={info}></SpHtml>
+          <SpHtml content={info} />
         )}
-      </View>
+      </ScrollView>
     )
   }
 }

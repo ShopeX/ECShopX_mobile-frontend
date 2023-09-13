@@ -72,7 +72,7 @@ export default class Login extends Component {
     }
   }
 
-  handleTimerStop() {}
+  handleTimerStop() { }
 
   handleInputChange(name, val, error) {
     const { info } = this.state
@@ -86,9 +86,13 @@ export default class Login extends Component {
   }
 
   handleNavLeftItemClick = () => {
-    Taro.redirectTo({
-      url: process.env.APP_HOME_PAGE
-    })
+    try {
+      Taro.navigateBack()
+    } catch (e) {
+      Taro.redirectTo({
+        url: process.env.APP_HOME_PAGE
+      })
+    }
   }
 
   handleToggleLogin = () => {
@@ -314,8 +318,8 @@ export default class Login extends Component {
                   <CompPasswordInput
                     onChange={this.handleInputChange.bind(this, 'password')}
                     {...inputProp}
-                    // onFocus={this.handleRemarkFocus.bind(this)}
-                    // onBlur={this.handleRemarkBlur.bind(this)}
+                  // onFocus={this.handleRemarkFocus.bind(this)}
+                  // onBlur={this.handleRemarkBlur.bind(this)}
                   />
                 </View>
               </View>

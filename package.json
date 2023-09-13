@@ -1,12 +1,13 @@
 {
   "name": "ecshopx-vshop",
   "app_name": "ecshopx",
-  "version": "3.12.4",
+  "version": "3.13.11",
   "private": true,
   "description": "taro app for bbc",
   "scripts": {
     "clean": "rm -rf node_modules/.cache",
     "build:weapp": "taro build --type weapp --trace-warnings",
+    "build:weapp:live": "APP_LIVE=true taro build --type weapp --trace-warnings",
     "build:swan": "taro build --type swan",
     "build:alipay": "taro build --type alipay",
     "build:tt": "taro build --type tt",
@@ -15,6 +16,7 @@
     "build:app": "TARGET=app taro build --type h5",
     "build:app:server": "TARGET=app SERVER=server taro build --type h5",
     "dev:weapp": "npm run build:weapp -- --watch",
+    "dev:weapp:live": "APP_LIVE=true npm run build:weapp -- --watch",
     "dev:weapp:modules": "TARO_MODULES=true npm run build:weapp -- --watch",
     "dev:weapp:prd": "cross-env BUILD_ENV=prd npm run build:weapp -- --watch",
     "dev:swan": "npm run build:swan -- --watch",

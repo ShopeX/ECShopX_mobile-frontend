@@ -1,29 +1,35 @@
 .page-article-index {
   background: #fff;
   height: 100vh;
+
   .article {
     &-brand {
       display: block;
       width: 100%;
     }
+
     &-info {
       padding: 30px 20px;
     }
+
     &-title {
       font-size: floor($font-size * 1.6);
       padding: 0 floor($edge-size / 2);
       display: block;
     }
+
     &-time {
       color: $color-gray;
       padding: 0 floor($edge-size / 2) $edge-margin;
       text-align: right;
       display: block;
     }
+
     &-content {
       color: $color-primary-text;
     }
   }
+
   .sp-html {
     padding: 0 16px;
     color: #333;

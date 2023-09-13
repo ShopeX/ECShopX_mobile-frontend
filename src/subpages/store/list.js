@@ -3,22 +3,25 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Input, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpAddress, SpPrivacyModal } from '@/components'
+import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
+import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
+import CompShopItem from './comps/comp-shopitem'
 
 import './list.scss'
+
+const defaultChooseValue = ['北京市', '北京市', '昌平区']
 
 const initialState = {
   areaData: [],
   shopList: [],
   locationIng: false,
-  chooseValue: ['北京市', '北京市', '昌平区'],
+  chooseValue: defaultChooseValue,
   keyword: '', // 参数
   type: 0, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
   filterType: 1, // 过滤方式（前端使用）1:省市区过滤 2:经纬度定位 3:收货地址
@@ -34,7 +37,7 @@ const initialState = {
 }
 
 function NearlyShop(props) {
-  const { isLogin, checkPolicyChange } = useLogin({
+  const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
@@ -83,7 +86,7 @@ function NearlyShop(props) {
   const fetchDefaultShop = async () => {
     const res = await api.shop.getDefaultShop()
     setState((draft) => {
-      draft.chooseValue = shopInfo?.regions
+      draft.chooseValue = shopInfo?.regions || defaultChooseValue
       draft.headquarters = res
       draft.refresh = true
     })
@@ -157,7 +160,7 @@ function NearlyShop(props) {
       draft.refresh = false
     })
 
-    if(isObject(defualt_address)) {
+    if (isObject(defualt_address)) {
       dispatch(updateChooseAddress(defualt_address))
     }
 
@@ -227,6 +230,8 @@ function NearlyShop(props) {
 
   const handleClickShop = (info) => {
     dispatch(updateShopInfo(info)) //新增非门店自提，开启distributor_id 取值为store_id
+    // 清空小程序启动时携带的参数
+    Taro.setStorageSync(SG_ROUTER_PARAMS, {})
     setTimeout(() => {
       Taro.navigateBack()
     }, 300)
@@ -246,17 +251,6 @@ function NearlyShop(props) {
       draft.refresh = true
     })
   }
-
-  const isPolicyTime = async () => {
-    const checkRes = await checkPolicyChange()
-    if (checkRes) {
-      getLocationInfo()
-    } else {
-      setPolicyModal(true)
-    }
-  }
-
-
 
   return (
     <SpPage className='page-store-list' ref={pageRef}>
@@ -303,7 +297,7 @@ function NearlyShop(props) {
         <View className='block-title'>当前定位地址</View>
         <View className='location-wrap'>
           <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
-          <View className='btn-location' onClick={isPolicyTime}>
+          <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
                 active: state.locationIng
@@ -356,11 +350,6 @@ function NearlyShop(props) {
         })
       }} onChange={onPickerChange} />
 
-      <SpPrivacyModal
-        open={policyModal}
-        onCancel={() => setPolicyModal(false)}
-        onConfirm={getLocationInfo}
-      />
     </SpPage>
   )
 }

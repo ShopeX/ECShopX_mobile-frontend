@@ -21,7 +21,7 @@ const getToken = (params) => {
 // }
 
 const upload = {
-  aliUpload: async (œ, tokenRes) => {
+  aliUpload: async (item, tokenRes) => {
     const { accessid, dir, host, policy, signature, filetype } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     const updata = {
