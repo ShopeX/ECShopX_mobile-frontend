@@ -59,23 +59,15 @@ function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
 
-  const { initState, openRecommend, openLocation, openStore, appName } = useSelector(
+  const { initState, openRecommend, openLocation, openStore, appName, openScanQrcode } = useSelector(
     (state) => state.sys
   )
-  const { isLogin, login } = useLogin({
-    policyUpdateHook: (isUpdate) => {
-      if (isUpdate && process.env.APP_BUILD_TARGET != 'app') {
-        setPolicyModal(true)
-      } else {
-        fetchLocation()
-      }
-    }
-  })
+  const { shopInfo } = useSelector(
+    (state) => state.shop
+  )
 
-  const [policyModal, setPolicyModal] = useState(false)
   const showAdv = useSelector((member) => member.user.showAdv)
   const { location } = useSelector((state) => state.user)
-  const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
   const { wgts, loading, searchComp, pageData, fixedTop, filterWgts, isShowHomeHeader } = state
@@ -89,17 +81,70 @@ function Home() {
     }
   }, [initState])
 
-  useDidShow(() => {
-    fetchLocation()
+  useEffect(() => {
+    if (shopInfo && VERSION_STANDARD) {
+      fetchWgts()
+    }
+  }, [shopInfo])
+
+  useEffect(() => {
+    if (location && VERSION_STANDARD) {
+      fetchWgts()
+    }
+  }, [location])
+
+  useShareAppMessage(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    let params = getCurrentPageRouteParams()
+    const dtid = getDistributorId()
+    if (dtid && !('dtid' in params)) {
+      params = Object.assign(params, { dtid })
+    }
+    let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
+
+    console.log('useShareAppMessage path:', path, params)
+
+    return {
+      title: title,
+      imageUrl: imageUrl,
+      path
+    }
+  })
+
+  useShareTimeline(async (res) => {
+    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
+    let params = getCurrentPageRouteParams()
+    const dtid = getDistributorId()
+
+    if (dtid && !('dtid' in params)) {
+      params = Object.assign(params, { dtid })
+    }
+
+    console.log('useShareTimeline params:', params)
+    return {
+      title: title,
+      imageUrl: imageUrl,
+      query: resolveStringifyParams(params)
+    }
   })
 
   const init = async () => {
-    // if (!VERSION_STANDARD) {
-    await fetchWgts()
-    // }
+    fetchLocation()
+    // 非云店
+    if (!VERSION_STANDARD) {
+      fetchWgts()
+    } else {
+      fetchStoreInfo(location)
+    }
   }
 
   const fetchWgts = async () => {
+    setState((draft) => {
+      draft.wgts = []
+      draft.pageData = []
+      draft.filterWgts = []
+      draft.loading = true
+    })
     const { config } = await api.shop.getShopTemplate({
       distributor_id: getDistributorId()
     })
@@ -150,53 +195,11 @@ function Home() {
             dispatch(updateLocation(res))
           }
         })
-        // const res = await entryLaunch.isOpenPosition()
-        // dispatch(updateLocation(res))
       } catch (e) {
-        // 定位失败，获取默认店铺
         console.error('map location fail:', e)
       }
     }
-
-    if (VERSION_STANDARD) {
-      fetchStoreInfo(location)
-    }
   }
-
-  useShareAppMessage(async (res) => {
-    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-    let params = getCurrentPageRouteParams()
-    const dtid = getDistributorId()
-    if (dtid && !('dtid' in params)) {
-      params = Object.assign(params, { dtid })
-    }
-    let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
-
-    console.log('useShareAppMessage path:', path, params)
-
-    return {
-      title: title,
-      imageUrl: imageUrl,
-      path
-    }
-  })
-
-  useShareTimeline(async (res) => {
-    const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-    let params = getCurrentPageRouteParams()
-    const dtid = getDistributorId()
-
-    if (dtid && !('dtid' in params)) {
-      params = Object.assign(params, { dtid })
-    }
-
-    console.log('useShareTimeline params:', params)
-    return {
-      title: title,
-      imageUrl: imageUrl,
-      query: resolveStringifyParams(params)
-    }
-  })
 
   const fetchStoreInfo = async (location) => {
     let params = {
@@ -211,9 +214,7 @@ function Home() {
     const res = await api.shop.getShop(params)
     console.log('fetchStoreInfo:', res)
     dispatch(updateShopInfo(res))
-    await fetchWgts()
   }
-
 
   return (
     <SpPage
@@ -231,10 +232,12 @@ function Home() {
         })}
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
-        <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
-          {/* 猜你喜欢 */}
-          <SpRecommend className='recommend-block' info={likeList} />
-        </HomeWgts>
+        {
+          filterWgts.length > 0 && <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
+            {/* 猜你喜欢 */}
+            <SpRecommend className='recommend-block' info={likeList} />
+          </HomeWgts>
+        }
       </View>
 
       {/* 小程序搜藏提示 */}

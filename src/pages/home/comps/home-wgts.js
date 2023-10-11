@@ -36,14 +36,25 @@ function HomeWgts(props) {
   const { localWgts, searchMethod } = state
   const wgtsRef = useRef()
 
-  useEffect(() => {
-    if (wgts.length > 0) {
-      wgtsRef.current.reset()
-    }
-  }, [wgts])
+  // useEffect(() => {
+  //   if (wgts.length > 0) {
+  //     refreshWgtsList()
+  //   }
+  // }, [wgts])
+
+
+
+  // const refreshWgtsList = () => {
+  //   setState(draft => {
+  //     draft.localWgts = []
+  //   })
+  //   setTimeout(() => {
+  //     wgtsRef.current.reset()
+  //   }, 20)
+  // }
 
   const fetch = ({ pageIndex, pageSize }) => {
-    console.log('首页挂件分页渲染...', pageIndex, pageSize)
+    console.log('首页挂件分页渲染...', pageIndex, pageSize, wgts)
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
@@ -69,7 +80,7 @@ function HomeWgts(props) {
   }
 
   return (
-    <SpScrollView className='home-wgts' ref={wgtsRef} auto={false} fetch={fetch} pageSize={3} onLoad={onLoad}>
+    <SpScrollView className='home-wgts' ref={wgtsRef} fetch={fetch} pageSize={5} onLoad={onLoad}>
       {localWgts.map((list) => {
         return list.map((item, idx) => (
           <View

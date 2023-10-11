@@ -22,6 +22,7 @@
   .login-modal {
     background: #fff;
     border-radius: 16px;
+    line-height: normal;
 
     &__hd {
       display: flex;
@@ -78,9 +79,11 @@
       }
       .agreement-list {
         margin-left: 4px;
+        color: #666;
       }
       .agreement-name {
         font-size: 26px;
+        color: #666;
       }
     }
 
