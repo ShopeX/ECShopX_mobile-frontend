@@ -24,7 +24,7 @@ const rootReducer = combineReducers({
   tabBar: tabBar,
   community: communityReducer,
   dianwu: dianwuReducer,
-  purchase: purchaseReducer
+  purchase: purchaseReducer,
   member: memberReducer
 })
 

@@ -62,20 +62,30 @@ const config = {
 
   defineConstants: getDefineConstants(CONST_ENVS),
   alias: {
-    '@': path.join(__dirname, '../src')
+    'taro-ui$': 'taro-ui/lib/index',
+    '@': path.join(__dirname, '../src'),
+    'lodash': 'lodash-es'
+
   },
   copy: {
     patterns: copyPatterns
   },
   plugins: [
-    '@shopex/taro-plugin-modules',
+    // '@shopex/taro-plugin-modules',
     // path.join(__dirname, "../src/plugin/test.js")
     // path.join(__dirname, "./modify-taro.js")
   ],
 
   mini: {
+    webpackChain(chain, webpack) {
+      chain.plugin('analyzer')
+        .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+    },
     miniCssExtractPluginOption: {
       ignoreOrder: true
+    },
+    optimizeMainPackage: {
+      enable: true
     },
     // 图片转换base64
     imageUrlLoaderOption: {

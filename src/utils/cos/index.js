@@ -1,10 +1,8 @@
-const { isWeixin,isWeb } = require('@/utils')
-
-var COS = ''
-if (isWeixin) {
+let COS = ''
+if (process.env.TARO_ENV === 'weapp') {
   COS = require('./cos-wx-sdk-v5.min')
 }
-if(isWeb){
+if(process.env.TARO_ENV === 'h5'){
   COS = require('./cos-js-sdk-v5.min')
 }
 
