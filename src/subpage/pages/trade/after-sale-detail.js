@@ -608,10 +608,12 @@ export default class TradeDetail extends Component {
                   <View>
                     该订单将为您保留
                     <AtCountdown
-                      format={{ hours: ':', minutes: ':', seconds: '' }}
+                      format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                      day={timer.dd}
                       hours={timer.hh}
                       minutes={timer.mm}
                       seconds={timer.ss}
+                      isShowDay={timer.dd > 0}
                       onTimeUp={this.countDownEnd.bind(this)}
                     />
                     分钟
