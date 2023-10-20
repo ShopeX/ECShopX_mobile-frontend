@@ -7,7 +7,6 @@ import { useImmer } from 'use-immer'
 
 import { SpTab, SpScrollView, SpPage, SpCell, SpImage } from '@/components'
 import { pickBy, showToast } from '@/utils'
-import { usePage, useDepChange, useAsyncEffect } from '@/hooks'
 import doc from '@/doc'
 import api from '@/api'
 
