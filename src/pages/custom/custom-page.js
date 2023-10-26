@@ -66,8 +66,8 @@ function CustomPage(props) {
     return getAppShareInfo()
   })
 
-  const getAppShareInfo = () => {
-    const { id } = $instance.router.params
+  const getAppShareInfo = async() => {
+    const { id } = await entryLaunch.getRouteParams($instance.router.params)
     const { userId } = Taro.getStorageSync('userinfo')
     const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
     const path = `/pages/custom/custom-page${query}`
