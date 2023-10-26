@@ -282,6 +282,9 @@ function CartCheckout(props) {
         draft.submitLoading = false
       })
       Taro.hideLoading()
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 100)
       return
     }
     Taro.hideLoading()
