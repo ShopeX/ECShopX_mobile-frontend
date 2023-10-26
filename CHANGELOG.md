@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.14](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.13...v3.13.14) (2023-10-26)
+
+
+### Bug Fixes
+
+* 优化超包 ([de72932](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/de72932e7db70f86e69b31c3ff74cbdb43c9fe90))
+* 修改taro-ui高版本导致scss编译报错 ([80733a5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/80733a5683bc02944330c29fceb3e5268d2d206a))
+* 注册添加店铺id ([02298b6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/02298b67c919a77b1c336d2dd06cc3d5e6d7a3c9))
+
 ### [3.13.13](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.12...v3.13.13) (2023-10-11)
 
 ### [3.13.12](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.11...v3.13.12) (2023-09-20)
