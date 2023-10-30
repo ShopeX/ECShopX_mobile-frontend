@@ -65,6 +65,7 @@ export default (props = {}) => {
     const { pay_channel, pay_type } = params
     const { order_id, trade_source_type, order_type } = orderInfo
     try {
+      Taro.showLoading({ mask: true })
       const weappOrderInfo = await api.cashier.getPayment({
         pay_type,
         pay_channel,
