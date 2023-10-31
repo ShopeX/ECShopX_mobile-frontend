@@ -16,6 +16,8 @@ export default (props = {}) => {
   // const [state, setState] = useImmer(initialState)
   // const { params, orderInfo } = state
   const cashierResultUrl = `/pages/cart/cashier-result`
+  const $instance = getCurrentInstance()
+  const currentPath = $instance.router.path
 
   const cashierPayment = (params, orderInfo) => {
     console.log(`cashierPayment:`, params, orderInfo)
@@ -81,9 +83,7 @@ export default (props = {}) => {
       }
     } catch (e) {
       // 社区拼团订单
-      const $instance = getCurrentInstance()
-      const { path } = $instance.router
-      if (path != '/subpage/pages/trade/detail' && path != '/subpages/community/order') {
+      if (currentPath != '/subpage/pages/trade/detail' && currentPath != '/subpages/community/order') {
         if (trade_source_type == 'normal_community') {
           Taro.redirectTo({ url: `/subpages/community/order` })
         } else {
@@ -113,9 +113,7 @@ export default (props = {}) => {
       }
     } catch (e) {
       // 社区拼团订单
-      const $instance = getCurrentInstance()
-      const { path } = $instance.router
-      if (path != '/subpage/pages/trade/detail' && path != '/subpages/community/order') {
+      if (currentPath != '/subpage/pages/trade/detail' && currentPath != '/subpages/community/order') {
         if (trade_source_type == 'normal_community') {
           Taro.redirectTo({ url: `/subpages/community/order` })
         } else {
