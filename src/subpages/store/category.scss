@@ -29,8 +29,12 @@
     left: 0;
     right: 0;
     bottom: 140px;
-    top: 0;
     display: flex;
+  }
+  &.has-navbar {
+    .category-container {
+      top: $navigate-height;
+    }
   }
   .comp-series__nav {
     width: 196px;
