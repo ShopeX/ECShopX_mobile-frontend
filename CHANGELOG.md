@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.16](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.15...v3.13.16) (2023-11-10)
+
+
+### Bug Fixes
+
+* adapay支付插件 ([af1abb0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/af1abb0445548c95f9bc42c93d8489615287807c))
+* 店铺分类页面样式优化 ([9b8e0bd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9b8e0bd6621da892c27c1530463da4a34d033532))
+
 ### [3.13.15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.14...v3.13.15) (2023-11-07)
 
 
