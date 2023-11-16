@@ -7,7 +7,7 @@ import { TRANSFORM_PAYTYPE } from '@/consts'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
 
-const adapayPlugin = requirePlugin("Adapay");
+
 
 const initialState = {
   params: '',
@@ -101,6 +101,7 @@ export default (props = {}) => {
 
       // 是否开启adapay小程序插件
       if (process.env.APP_ADAPAY == 'true') {
+        const adapayPlugin = requirePlugin("Adapay");
         adapayPlugin.requestPay(weappOrderInfo.expend, () => {
           paySuccess(params, orderInfo)
         }, (e) => {
