@@ -103,7 +103,7 @@ export default class WgtGoodsScroll extends Component {
                     <View>
                       <AtCountdown
                         className='countdown__time'
-                        isShowDay
+                        isShowDay={timer.dd > 0}
                         day={timer.dd}
                         hours={timer.hh}
                         minutes={timer.mm}

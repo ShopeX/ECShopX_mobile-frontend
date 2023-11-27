@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useDidShow, usePageScroll, getCurrentInstance, useReady } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
@@ -338,6 +338,8 @@ function SpPage(props, ref) {
           )}
         </View>
       )}
+
+      <sp-wx-privacy />
     </View>
   )
 }

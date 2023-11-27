@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, ScrollView, Button, Text } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar, SpPage } from '@/components'
 import S from '@/spx'
+import { getDtidIdUrl } from '@/utils/helper'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
-import { getDtidIdUrl } from '@/utils/helper'
 
 import './goods.scss'
 
@@ -21,7 +21,7 @@ export default class DistributionGoods extends Component {
 
     this.state = {
       ...this.state,
-      shareInfo:{},
+      shareInfo: {},
       info: {},
       curFilterIdx: 0,
       filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
@@ -46,7 +46,8 @@ export default class DistributionGoods extends Component {
       paramsList: [],
       selectParams: [],
       list: [],
-      goodsIds: []
+      goodsIds: [],
+      top:0
     }
   }
 
@@ -244,7 +245,8 @@ export default class DistributionGoods extends Component {
       if (status) {
         this.setState(
           {
-            goodsIds: [...this.state.goodsIds, id]
+            goodsIds: [...this.state.goodsIds, id],
+            scrollTop:this.state.top
           },
           () => {
             S.toast('上架成功')
@@ -257,7 +259,8 @@ export default class DistributionGoods extends Component {
         goodsIds.splice(idx, 1)
         this.setState(
           {
-            goodsIds
+            goodsIds,
+            scrollTop:this.state.top
           },
           () => {
             S.toast('下架成功')
@@ -267,25 +270,25 @@ export default class DistributionGoods extends Component {
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     // const { userId } = Taro.getStorageSync('userinfo')
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-    
-    if(isAlipay){    
+
+    if (isAlipay) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           const info = Taro.getStorageSync('shareData')
           resolve({
             title: info.title,
-            imageUrl: info.img,            
+            imageUrl: info.img,
             path: getDtidIdUrl(
               `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
-              info.distributor_id 
+              info.distributor_id
             )
           })
-        },10)
-      });            
+        }, 10)
+      })
     }
 
     return {
@@ -343,8 +346,15 @@ export default class DistributionGoods extends Component {
       }
     }
   }
-  shareDataChange = (shareInfo)=>{
-    this.setState({shareInfo})
+  shareDataChange = (shareInfo) => {
+    this.setState({ shareInfo })
+  }
+  // 滚动事件
+  onScroll = (e) => {
+    const { scrollTop } = e.detail
+    this.setState({
+      top: scrollTop
+    })
   }
   render() {
     const { status } = this.$instance.router.params
@@ -369,7 +379,7 @@ export default class DistributionGoods extends Component {
             showDailog={false}
             keyword={query ? query.keywords : ''}
             onFocus={() => false}
-            onCancel={() => { }}
+            onCancel={() => {}}
             onChange={this.handleSearchChange}
             onClear={this.handleConfirm.bind(this)}
             onConfirm={this.handleConfirm.bind(this)}
@@ -387,7 +397,7 @@ export default class DistributionGoods extends Component {
             scrollY
             scrollTop={scrollTop}
             scrollWithAnimation
-            onScroll={this.handleScroll}
+            onScroll={this.onScroll}
             onScrollToLower={this.nextPage}
           >
             <View className='goods-list'>

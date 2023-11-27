@@ -369,13 +369,15 @@ const config = {
   requiredPrivateInfos: [
     "getLocation",
     "chooseAddress"
-  ]
+  ],
+  "__usePrivacyCheck__": true
 }
 
 if (process.env.TARO_ENV == 'weapp') {
   Object.assign(config, {
     usingComponents: {
-      'mp-html': './components/sp-html/mp-weixin/index'
+      'mp-html': './components/sp-html/mp-weixin/index',
+      "sp-wx-privacy": "./components/sp-wx-privacy/index"
     }
   })
 }
@@ -388,5 +390,16 @@ if (process.env.APP_LIVE == 'true') {
     }
   })
 }
+
+if(process.env.APP_ADAPAY == 'true') {
+  Object.assign(config.plugins, {
+    'Adapay': {
+      'version': 'latest', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+      'provider': 'wx308088053f4ecc3a' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+    }
+  })
+}
+
+console.log(config.plugins)
 
 export default config

@@ -2,6 +2,86 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.20](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.18...v3.13.20) (2023-11-27)
+
+### [3.13.19](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.18...v3.13.19) (2023-11-24)
+
+### [3.13.17](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.16...v3.13.17) (2023-11-16)
+
+### [3.13.16](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.15...v3.13.16) (2023-11-10)
+
+
+### Bug Fixes
+
+* adapay支付插件 ([af1abb0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/af1abb0445548c95f9bc42c93d8489615287807c))
+* 店铺分类页面样式优化 ([9b8e0bd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9b8e0bd6621da892c27c1530463da4a34d033532))
+
+### [3.13.15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.14...v3.13.15) (2023-11-07)
+
+
+### Bug Fixes
+
+* ECX-5093" ([81438f6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/81438f6e26c8ab9cc4f89d43dbbb6b2717a726a4))
+* ECX-5121 ([a87a086](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a87a086c959985db0005fc4ed8b1f1809e02cf08))
+* usepayment取消支付后，android端无法跳转到订单详情 ([4a6e00c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4a6e00c33471d4c7c11cda9f275d3c13f769da00))
+
+### [3.13.14](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.13...v3.13.14) (2023-10-26)
+
+
+### Bug Fixes
+
+* 优化超包 ([de72932](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/de72932e7db70f86e69b31c3ff74cbdb43c9fe90))
+* 修改taro-ui高版本导致scss编译报错 ([80733a5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/80733a5683bc02944330c29fceb3e5268d2d206a))
+* 注册添加店铺id ([02298b6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/02298b67c919a77b1c336d2dd06cc3d5e6d7a3c9))
+
+### [3.13.13](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.12...v3.13.13) (2023-10-11)
+
+### [3.13.12](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.11...v3.13.12) (2023-09-20)
+
+
+### Bug Fixes
+
+* 店铺关注提示 ([dd7748d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/dd7748d7fac195fdc4d4fd344a7067d6e94f3e6e))
+
+### [3.13.11](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.10...v3.13.11) (2023-09-07)
+
+
+### Bug Fixes
+
+* 店铺分享ID问题 ([257986e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/257986eb4a9f3a3353f1f9ec7548509958befd6c))
+
+### [3.13.10](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.9...v3.13.10) (2023-08-29)
+
+
+### Features
+
+* 微信隐私协议 ([fb8a8b9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fb8a8b9f8e940ac9ba482c92efe29a0a11cebcd4))
+
+### [3.13.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.8...v3.13.9) (2023-08-17)
+
+
+### Bug Fixes
+
+* 首页循环滚动 ([4e22d71](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4e22d71369ce912cf8ec1b3141885af08601baac))
+
+### [3.13.8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.7...v3.13.8) (2023-08-02)
+
+### [3.13.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.6...v3.13.7) (2023-07-21)
+
+
+### Features
+
+* 小程序扫码出来的店铺界面，点击【品牌介绍】后，跳转的是别的公司名字 ([447cec7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/447cec7a60b45e0b7843f3dec91af5e604d1c0b3))
+* 底部导航直接到商品列表页面后 ([6ff6cf1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6ff6cf1a1f46d4180b79b6ad712262781fb88dec))
+* 设置上架/下架到小店，页面会自动回到顶部，应该停留在当前位置 ([3401eeb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3401eeb83b6e0080c0b5c279b7a8dba273b1f6fc))
+
+### [3.13.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.5...v3.13.6) (2023-07-18)
+
+
+### Bug Fixes
+
+* 楼层组件点击bug ([972c643](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/972c643f15b281ad5e34859e370b23e7db5d249a))
+
 ### [3.13.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.4...v3.13.5) (2023-07-04)
 
 ### [3.13.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.3-live...v3.13.4) (2023-06-29)

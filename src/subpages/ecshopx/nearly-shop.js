@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Input } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpLogin, SpPrivacyModal, SpAddress } from '@/components'
+import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
@@ -18,7 +18,7 @@ const initialState = {
   locationIng: false,
   chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
-  type: 1, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
+  type: 0, // 0:正常流程 1:基于省市区过滤 2:基于默认收货地址强制定位
   filterType: 1, // 过滤方式（前端使用）1:省市区过滤 2:经纬度定位 3:收货地址
   queryProvice: '',
   queryCity: '',
@@ -29,7 +29,7 @@ const initialState = {
 }
 
 function NearlyShop(props) {
-  const { isLogin, checkPolicyChange } = useLogin({
+  const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
@@ -63,7 +63,9 @@ function NearlyShop(props) {
   useEffect(() => {
     const { province, city, district } = location || {}
     setState((draft) => {
-      draft.chooseValue = [province, city, district]
+      if (location) { // fix：未授权定位时不设置chooseValue
+        draft.chooseValue = [province, city, district]
+      }
       draft.refresh = true
     })
   }, [])
@@ -154,7 +156,9 @@ function NearlyShop(props) {
     await entryLaunch.isOpenPosition(async (res) => {
       if (res.lat) {
         dispatch(updateLocation(res))
+        const { province, city, district } = res
         await setState((draft) => {
+          draft.chooseValue = [province, city, district] // fix:重新定位到上海，值没有更新，导致picker里面的值还是北京
           draft.shopList = []
           draft.type = 1
           draft.filterType = 2
@@ -184,15 +188,6 @@ function NearlyShop(props) {
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))
     Taro.navigateBack()
-  }
-
-  const isPolicyTime = async () => {
-    const checkRes = await checkPolicyChange()
-    if (checkRes) {
-      getLocationInfo()
-    } else {
-      setPolicyModal(true)
-    }
   }
 
   const onPickerChange = ([{ label: province }, { label: city }, { label: area }]) => {
@@ -241,7 +236,7 @@ function NearlyShop(props) {
           <Text className='location-address' onClick={() => onLocationChange(location)}>
             {location?.address || '无法获取您的位置信息'}
           </Text>
-          <View className='btn-location' onClick={isPolicyTime}>
+          <View className='btn-location' onClick={getLocationInfo}>
             <Text
               className={classNames('iconfont icon-zhongxindingwei', {
                 active: state.locationIng
@@ -299,12 +294,6 @@ function NearlyShop(props) {
           draft.isSpAddressOpened = false
         })
       }} onChange={onPickerChange} />
-
-      <SpPrivacyModal
-        open={policyModal}
-        onCancel={() => setPolicyModal(false)}
-        onConfirm={getLocationInfo}
-      />
     </SpPage>
   )
 }

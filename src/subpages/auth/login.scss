@@ -1,4 +1,4 @@
-$border-color:#E2E4EA; 
+$border-color:#E2E4EA;
 
 .page-auth-login {
   background-color: #fff;
@@ -20,30 +20,30 @@ $border-color:#E2E4EA;
      .input-placeholder{
        color:rgba(197, 202, 213, 1);
      }
-  } 
+  }
 
   &.is-code-login{
     .auth-bd{
       .form-submit{
         margin-top: 50px;
       }
-    } 
+    }
   }
 
   &.is-full{
     .auth-bd{
-      .form-submit{ 
+      .form-submit{
         .login-button{
           background-color:var(--color-primary);
           border-color: var(--color-primary);
         }
       }
-    } 
+    }
   }
- 
+
 
   .auth-hd {
-    
+
     margin-top:80px;
 
     .title {
@@ -59,12 +59,12 @@ $border-color:#E2E4EA;
     }
   }
   .auth-bd {
-    margin-top: 100px; 
+    margin-top: 100px;
     .form-title {
       font-size: 32px;
       color: #111A34;
       padding-bottom: 20px;
-      border-bottom: 1PX solid $border-color; 
+      border-bottom: 1PX solid $border-color;
     }
     .form-tip{
       font-size: 28px;
@@ -74,17 +74,17 @@ $border-color:#E2E4EA;
     .form-field {
       display: flex;
       align-items: center;
-      border-bottom: 1PX solid $border-color; 
+      border-bottom: 1PX solid $border-color;
 
       &.noborder{
-        border-bottom: none; 
+        border-bottom: none;
       }
 
       .at-input {
         padding: 25px 0 !important;
         margin-bottom: 0;
         flex: 1;
-        
+
         &:after {
           border:none;
         }
@@ -120,7 +120,7 @@ $border-color:#E2E4EA;
       }
       .at-button--disabled{
         opacity: .5;
-      } 
+      }
       .login-button,.reg-button{
         height: 100px;
         border-radius: 50px;
@@ -142,7 +142,7 @@ $border-color:#E2E4EA;
       line-height: 100px;
       font-size: 36px;
 
-      
+
     }
   }
   .auth-ft {
@@ -157,7 +157,7 @@ $border-color:#E2E4EA;
       height: 45px;
     }
   }
-  .other-login{ 
+  .other-login{
     margin-top: 100px;
     left: 0;
     right: 0;

@@ -50,6 +50,7 @@ import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
+
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
@@ -101,24 +102,24 @@ function CartCheckout(props) {
     isPaymentOpend,
     openCashier,
     buildingNumber,
-    houseNumber // 房号
+    houseNumber, // 房号
+    routerParams // 路由参数
   } = state
 
   const {
-    type,
+    type = routerParams.type,
     order_type = 'normal',
-    shop_id: dtid = paramsInfo.distributor_id,
-    cart_type = paramsInfo.cart_type,
-    seckill_id = null,
-    ticket: seckill_ticket,
+    shop_id = routerParams.shop_id,
+    cart_type = routerParams.cart_type,
+    seckill_id = routerParams.seckill_id,
+    ticket = routerParams.ticket,
     pay_type,
-    bargain_id, // 砍价活动id
-    team_id,
-    group_id, // 团购id
-    source,
+    bargain_id = routerParams.bargain_id, // 砍价活动id
+    team_id = routerParams.team_id,
+    group_id = routerParams.group_id, // 团购id
+    source = routerParams.source,
     scene, // 情景值
-    goodType,
-    ticket = null
+    goodType = routerParams.goodType
   } = $instance?.router?.params || {}
   console.log('$instance.router?.params:', $instance.router)
   useEffect(() => {
@@ -163,6 +164,7 @@ function CartCheckout(props) {
     let data = await api.trade.tradeSetting()
     setState((draft) => {
       draft.packInfo = data
+      draft.routerParams = $instance?.router?.params || {}
     })
   }
 
@@ -185,7 +187,7 @@ function CartCheckout(props) {
     }
 
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
-    const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: dtid })
+    const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: shop_id })
     if (!isValid) {
       showToast('该商品已下架')
       return
@@ -281,6 +283,9 @@ function CartCheckout(props) {
         draft.submitLoading = false
       })
       Taro.hideLoading()
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 100)
       return
     }
     Taro.hideLoading()
@@ -319,7 +324,9 @@ function CartCheckout(props) {
       draft.distributorInfo = distributor_info
     })
 
-    dispatch(updateChooseAddress(address_info))
+    setTimeout(() => {
+      dispatch(updateChooseAddress(address_info))
+    }, 100)
   }
 
   const handleEditZitiClick = async (id) => {
@@ -396,7 +403,7 @@ function CartCheckout(props) {
       })
     let url = `/subpages/marketing/coupon-picker?items=${JSON.stringify(
       items
-    )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${dtid || id}&source=${source}`
+    )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${shop_id || id}&source=${source}`
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
     }
@@ -442,7 +449,7 @@ function CartCheckout(props) {
       receiver_state,
       receiver_city,
       receiver_district,
-      distributor_id: dtid
+      distributor_id: shop_id
     })
     if (streetCommunityList.length > 0) {
       streetCommunityList.forEach((pitem, pindex) => {
@@ -685,7 +692,7 @@ function CartCheckout(props) {
       isNostores: type == 'distributor' ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
       pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
-      distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+      distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
 
     if (receiptType === 'ziti') {
@@ -745,7 +752,7 @@ function CartCheckout(props) {
         break
       case 'seckill':
         value = 'normal_seckill'
-        activity = Object.assign(activity, { seckill_id, seckill_ticket })
+        activity = Object.assign(activity, { seckill_id, seckill_ticket: ticket })
         break
       default:
         value = 'normal'
@@ -873,7 +880,7 @@ function CartCheckout(props) {
       <View className='cart-checkout__address'>
         <CompDeliver
           ref={deliverRef}
-          distributor_id={dtid}
+          distributor_id={shop_id}
           address={address}
           onChange={handleSwitchExpress}
           onEidtZiti={handleEditZitiClick}
@@ -972,7 +979,7 @@ function CartCheckout(props) {
       )}
 
       {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
-      {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
+      {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) &&
         pointInfo?.is_open_deduct_point && (
           <SpCell
             isLink
@@ -1053,7 +1060,7 @@ function CartCheckout(props) {
         {/* <SpCell className='trade-sub__item' title='优惠金额：'>
           <SpPrice unit='cent' primary value={0 - totalInfo.discount_fee} />
         </SpCell> */}
-        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && dtid == 0)) &&
+        {(VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) &&
           pointInfo.is_open_deduct_point && (
             <SpCell
               className='trade-sub__item'

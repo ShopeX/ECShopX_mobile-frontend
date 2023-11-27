@@ -6,10 +6,8 @@ import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components'
 import { useLogin } from '@/hooks'
 import api from '@/api'
-import doc from '@/doc'
-import S from '@/spx'
 import { SG_POLICY } from '@/consts'
-import { classNames, showToast, formatTime, isArray, goToPage, isWeixin, isWeb } from '@/utils'
+import { classNames, showToast, formatTime, isWeixin, isWeb } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button } from '@tarojs/components'
 import './user-info.scss'
@@ -23,7 +21,7 @@ const initialState = {
   checkboxList: []
 }
 
-function MemberUserInfo(props) {
+function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
   const {
     formItems,
@@ -33,7 +31,7 @@ function MemberUserInfo(props) {
     checkboxKey,
     checkboxList
   } = state
-  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { userInfo = {} } = useSelector((_state) => _state.user)
   const pageRef = useRef()
   const { getUserInfo, logout } = useLogin()
 
@@ -55,23 +53,24 @@ function MemberUserInfo(props) {
     const data = await api.user.regParam({
       is_edite_page: true
     })
+    const {other_params:{custom_data}} = userInfo
     const _formItems = []
     const _formUserInfo = {
       avatar: userInfo.avatar,
-      username: userInfo.username
+      username: userInfo.username,
+      ...custom_data
     }
     Object.keys(data).forEach((key) => {
-      if (data[key].is_open) {
+    const value = custom_data[key] ||userInfo[key]
+    if (data[key].is_open) {
         if (key !== 'mobile' && key !== 'username') {
           _formItems.push(data[key])
         }
       }
       if (data[key].element_type == 'checkbox') {
-        _formUserInfo[key] = isArray(userInfo[key])
-          ? userInfo[key]
-          : []
+        _formUserInfo[key] =  value? value.split(',').map(item=>({name:item,ischecked:true})) : [];
       } else {
-        _formUserInfo[key] = userInfo[key] || ''
+        _formUserInfo[key] = value || ''
       }
       if(key === 'sex'){
         const sexType = {
@@ -79,7 +78,7 @@ function MemberUserInfo(props) {
           1:'男',
           2:'女'
         }
-        _formUserInfo[key] = sexType[userInfo[key]]
+        _formUserInfo[key] = sexType[value]
       }
     })
 
@@ -89,7 +88,7 @@ function MemberUserInfo(props) {
     })
   }
 
-  const renderText = ({ key, required_message, is_edit }) => {
+  const renderText = ({ key, required_message }) => {
     return (
       <Input
         name={key}
@@ -101,7 +100,7 @@ function MemberUserInfo(props) {
     )
   }
 
-  const renderNumber = ({ key, range: { start, end }, required_message, is_edit }) => {
+  const renderNumber = ({ key, range: { start, end }, required_message }) => {
     return (
       <Input
         name={key}
@@ -122,7 +121,7 @@ function MemberUserInfo(props) {
   }
 
   const onChangeSelectPicker = (key, e) => {
-    const item = formItems.find((item) => item.key == key)
+    const item = formItems.find((_item) => _item.key == key)
     const { select } = item
     setState((draft) => {
       draft.formUserInfo[key] = select[e.detail.value]
@@ -130,7 +129,7 @@ function MemberUserInfo(props) {
   }
 
   const getIndexBySelecValue = (key) => {
-    const item = formItems.find((item) => item.key == key)
+    const item = formItems.find((_item) => _item.key == key)
     const { select } = item
     return select.findIndex((s) => s == formUserInfo[key])
   }
@@ -175,7 +174,7 @@ function MemberUserInfo(props) {
           'placeholder': formUserInfo[key].length == 0
         })}
         onClick={() => {
-          const _checkboxList = checkbox.map((item, index) => {
+            const _checkboxList = checkbox.map((item) => {
             const fd = formUserInfo[key].find((k) => k.name == item.name)
             const isChecked = fd ? fd.ischecked : false
             return {
@@ -218,6 +217,7 @@ function MemberUserInfo(props) {
 
   const saveUserInfo = async () => {
     const { avatar, username } = formUserInfo
+    debugger
     await api.member.updateMemberInfo({
       username,
       avatar
@@ -263,7 +263,6 @@ function MemberUserInfo(props) {
         url: e.detail.avatarUrl
       }
     ])
-    console.log('onChooseAvatar:res', res)
     setState((draft) => {
       draft.formUserInfo.avatar = res[0]?.url
     })

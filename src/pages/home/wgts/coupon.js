@@ -103,7 +103,7 @@ function WgtCoupon(props) {
           data.map((item, index) => (
             <View className={classNames('wgt-coupon-item', {
               'has-img': item.imgUrl
-            })} style={styleNames(getCouponStyle(item))} onClick={handleClickItem.bind(this, item)}>
+            })} key={`coupon-item__${index}`} style={styleNames(getCouponStyle(item))} onClick={handleClickItem.bind(this, item)}>
               {
                 !item.imgUrl && <View class="coupon-bd">
                   {

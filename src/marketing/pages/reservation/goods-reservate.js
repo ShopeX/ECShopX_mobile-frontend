@@ -7,6 +7,7 @@ import { AtInput, AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
 import { SpToast, SpCheckbox } from '@/components'
 import api from '@/api'
 import { pickBy, classNames, showToast } from '@/utils'
+import _cloneDeep from 'lodash/cloneDeep'
 import S from '@/spx'
 
 import './goods-reservate.scss'
@@ -217,7 +218,6 @@ export default class GoodsReservate extends Component {
     if (this.count === 1) {
       return showToast('请勿重复提交')
     }
-    this.count = 1
 
     let _this = this
     let templeparams = {
@@ -248,11 +248,12 @@ export default class GoodsReservate extends Component {
   }
 
   handleSubmit = async () => {
-    let new_subdata = this.state.cur_activity_info
+    let new_subdata = _cloneDeep(this.state.cur_activity_info)
     if (new_subdata.formdata && new_subdata.formdata.content) {
       new_subdata.formdata.content = JSON.stringify(new_subdata.formdata.content)
     }
     try {
+      this.count = 1
       await api.user.registrationSubmit(new_subdata)
       this.setState({
         isShowSubTips: true
@@ -260,12 +261,14 @@ export default class GoodsReservate extends Component {
       if (new_subdata.formdata && new_subdata.formdata.content) {
         new_subdata.formdata.content = JSON.parse(new_subdata.formdata.content)
       }
+      this.count = 0
       showToast('提交成功')
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
     } catch (e) {
       console.log(e, 53)
+      this.count = 0
     }
   }
 
@@ -497,7 +500,7 @@ export default class GoodsReservate extends Component {
             onClick={this.handleReservate.bind(this)}
             style={`background: ${colors.data[0].primary}`}
           >
-            确定预约
+            提交
           </View>
         ) : null}
         {isShowSubTips ? (

@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Switch, Text, Button } from '@tarojs/components'
 import { AtInput, AtButton, AtTextarea } from 'taro-ui'
-import { SpCell, SpNavBar, SpAddress } from '@/components'
+import { SpCell, SpPage, SpAddress } from '@/components'
 import api from '@/api'
 import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
@@ -60,8 +60,8 @@ function AddressIndex(props) {
     list.map((a_item) => {
       if (a_item.address_id === $instance.router?.params?.address_id) {
         setState((draft) => {
-          ;(draft.info = a_item),
-            (draft.chooseValue = [a_item.province, a_item.city, a_item.county])
+          draft.info = a_item
+          draft.chooseValue = [a_item.province, a_item.city, a_item.county]
         })
       }
     })
@@ -80,11 +80,11 @@ function AddressIndex(props) {
           username: resAddress?.userName
         }
         setState((draft) => {
-          ;(draft.info = query), (draft.chooseValue = [query.province, query.city, query.county])
+          draft.info = query
+          draft.chooseValue = [query.province, query.city, query.county]
         })
       } catch (err) {
         console.error(err)
-        Taro.navigateBack()
       }
     }
 
@@ -110,12 +110,12 @@ function AddressIndex(props) {
     })
   }
 
-  const handleChange = (name,val,e) => {
-    console.log('---', name,val,e)
+  const handleChange = (name, val, e) => {
+    console.log('---', name, val, e)
     const nInfo = JSON.parse(JSON.stringify(state.info || {}))
-    if(name==='adrdetail'){
+    if (name === 'adrdetail') {
       nInfo[name] = e.detail.value
-    }else{
+    } else {
       nInfo[name] = val
     }
     setState((draft) => {
@@ -190,8 +190,7 @@ function AddressIndex(props) {
   const { info, chooseValue, isOpened } = state
 
   return (
-    <View className='page-address-edit' style={isWxWeb && { paddingTop: 0 }}>
-      <SpNavBar title={initNavigationBarTitle()} leftIconType='chevron-left' fixed='true' />
+    <SpPage className='page-address-edit'>
       <View className='page-address-edit__form'>
         <SpCell
           className='logistics-no border-bottom'
@@ -201,7 +200,7 @@ function AddressIndex(props) {
               name='username'
               value={info?.username}
               placeholder='收件人姓名'
-              onChange={(e) => handleChange('username',e)}
+              onChange={(e) => handleChange('username', e)}
             />
           }
         ></SpCell>
@@ -247,7 +246,7 @@ function AddressIndex(props) {
             value={info?.adrdetail}
             maxLength={100}
             placeholder='请填写详细地址（街道、门牌）'
-            onChange={handleChange.bind(this,'adrdetail')}
+            onChange={handleChange.bind(this, 'adrdetail')}
           />
         </SpCell>
 
@@ -296,7 +295,7 @@ function AddressIndex(props) {
           保存并使用
         </Button>
       </View>
-    </View>
+    </SpPage>
   )
 }
 

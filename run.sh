@@ -36,6 +36,7 @@ then
     ali_isvid=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^ali_isvid/{print $3}')
     dianwu_url=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^dianwu_url/{print $3}')
     merchant_url=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^merchant_url/{print $3}')
+    adapay=$(sed -n '/\['$var'\]/,/^$/p' $conf|grep -Ev '\[|\]|^$'|awk  '/^adapay/{print $3}')
     break
   done
     else
@@ -53,6 +54,7 @@ then
       ali_isvid=${12}
       dianwu_url=${13}
       merchant_url=${14}
+      adapay=${15}
     fi
 
 # version=$(git describe --tags `git rev-list --tags --max-count=1`)
@@ -108,6 +110,7 @@ APP_MAP_NAME='${map_name}'
 APP_IMAGE_CDN='${image_cdn}'
 APP_DIANWU_URL='${dianwu_url}'
 APP_MERCHANT_URL='${merchant_url}'
+APP_ADAPAY='${adapay}'
 ' > ./.env
 
 echo "请选择编译方式"

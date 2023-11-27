@@ -305,7 +305,7 @@ function PointShopEspierCheckout() {
 
   // 商家留言
   const handleRemarkChange = (val) => {
-    if(val.length > 50) val = val.slice(0,50)
+    if (val.length > 50) val = val.slice(0, 50)
     console.log('handleRemarkChange:remark', remark)
     setState((draft) => {
       draft.remark = val
@@ -402,7 +402,7 @@ function PointShopEspierCheckout() {
       member_discount,
       coupon_discount,
       freight_fee,
-      total_fee: cus_parmas.pay_type === 'point' ? 0 : total_fee,
+      total_fee,
       items_count,
       invoice_status, // 是否开启开发票
       point,
@@ -474,7 +474,7 @@ function PointShopEspierCheckout() {
       // not_use_coupon: 0,
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 ? payType: 'point'
+      pay_type: totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 ? payType : 'point'
       // pay_type: point_use > 0 && totalInfo.freight_fee > 0 ? 'point' : payType,
       // distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
     }
@@ -532,15 +532,13 @@ function PointShopEspierCheckout() {
           {`共${totalInfo.items_count}件商品 `}
           <View className='checkout-total'>
             <View>
-              {`总计: `}
+              {`积分: `}
               <SpPoint value={totalInfo.point} />
             </View>
-            {totalInfo.freight_type == 'cash' && (
-              <View>
-                {`运费: `}
-                <SpPrice value={totalInfo.freight_fee / 100} />
-              </View>
-            )}
+            <View>
+              {`支付金额: `}
+              <SpPrice value={totalInfo.total_fee} />
+            </View>
           </View>
         </View>
         <AtButton
@@ -602,7 +600,7 @@ function PointShopEspierCheckout() {
 
       {renderGoodsComp()}
 
-      {totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 && (
+      {totalInfo.freight_type == 'cash' && (totalInfo.freight_fee > 0 || totalInfo.total_fee > 0) && (
         <View>
           <SpCell
             isLink
@@ -633,6 +631,9 @@ function PointShopEspierCheckout() {
       <View className='cart-checkout__total'>
         <SpCell className='trade-sub__item' title='积分：'>
           <SpPoint value={totalInfo.item_point} />
+        </SpCell>
+        <SpCell className='trade-sub__item' title='商品金额：'>
+          <SpPrice value={totalInfo.item_fee / 100} />
         </SpCell>
         <SpCell className='trade-sub__item' title='运费：'>
           {totalInfo.freight_type == 'point' && <SpPoint value={totalInfo.freight_fee} />}

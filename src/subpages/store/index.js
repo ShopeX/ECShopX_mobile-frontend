@@ -7,7 +7,6 @@ import {
   SpPage,
   SpSearch,
   SpRecommend,
-  SpPrivacyModal,
   SpTabbar
 } from '@/components'
 import api from '@/api'
@@ -105,9 +104,10 @@ function StoreIndex() {
   })
 
   const getAppShareInfo = async () => {
-    const { id } = await entryLaunch.getRouteParams()
+    const data = await entryLaunch.getRouteParams()
+    const dtid = data.id || data.dtid
     const query = {
-      id
+      dtid
     }
     const path = `/subpages/store/index?${qs.stringify(query)}`
     log.debug(`share path: ${path}`)
@@ -118,13 +118,14 @@ function StoreIndex() {
     }
   }
 
-  const searchComp = wgts.find((wgt) => wgt.name == 'search')
+  let searchComp = wgts.find((wgt) => wgt.name == 'search')
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   let filterWgts = []
   if (searchComp && searchComp.config.fixTop) {
     filterWgts = wgts.filter((wgt) => wgt.name !== 'search')
   } else {
     filterWgts = wgts
+    searchComp = null
   }
   // const fixedTop = searchComp && searchComp.config.fixTop
 
@@ -185,8 +186,8 @@ function StoreIndex() {
         />
       </View>}
 
-      <View className='header-block' style={{ background: `${pageData?.base?.pageBackgroundColor}` }}>
-        <CompShopBrand dtid={distributorId} storeInfo={storeInfo} />
+      <View className={searchComp ? 'header-block' : 'header-block-pad'} style={{ background: `${pageData?.base?.pageBackgroundColor}` }}>
+        <CompShopBrand storeInfo={storeInfo} dtid={distributorId} />
       </View>
       <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
         {/* 猜你喜欢 */}
