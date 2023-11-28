@@ -58,6 +58,9 @@ class App extends Component {
 
   onLaunch(options) {
     console.log(`app onLaunch:`, options)
+    import('../package.json').then(res => {
+      console.log(`App Name: ${res.name}, version: ${res.version}`)
+    })
   }
 
   async componentDidShow(options) {

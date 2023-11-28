@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.17](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.16...v3.13.17) (2023-11-16)
+
+### [3.13.16](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.15...v3.13.16) (2023-11-10)
+
+
+### Bug Fixes
+
+* adapay支付插件 ([af1abb0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/af1abb0445548c95f9bc42c93d8489615287807c))
+* 店铺分类页面样式优化 ([9b8e0bd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9b8e0bd6621da892c27c1530463da4a34d033532))
+
+### [3.13.15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.14...v3.13.15) (2023-11-07)
+
+
+### Bug Fixes
+
+* ECX-5093" ([81438f6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/81438f6e26c8ab9cc4f89d43dbbb6b2717a726a4))
+* ECX-5121 ([a87a086](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a87a086c959985db0005fc4ed8b1f1809e02cf08))
+* usepayment取消支付后，android端无法跳转到订单详情 ([4a6e00c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4a6e00c33471d4c7c11cda9f275d3c13f769da00))
+
+### [3.13.14](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.13...v3.13.14) (2023-10-26)
+
+
+### Bug Fixes
+
+* 优化超包 ([de72932](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/de72932e7db70f86e69b31c3ff74cbdb43c9fe90))
+* 修改taro-ui高版本导致scss编译报错 ([80733a5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/80733a5683bc02944330c29fceb3e5268d2d206a))
+* 注册添加店铺id ([02298b6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/02298b67c919a77b1c336d2dd06cc3d5e6d7a3c9))
+
 ### [3.13.13](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.12...v3.13.13) (2023-10-11)
 
 ### [3.13.12](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.11...v3.13.12) (2023-09-20)

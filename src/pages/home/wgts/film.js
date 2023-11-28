@@ -57,7 +57,6 @@ export default class WgtFilm extends Component {
       // 16:9
       h = defaultHeight
     }
-
     return {
       width: w,
       height: `${h}px`,
@@ -74,7 +73,7 @@ export default class WgtFilm extends Component {
     }
 
     const { config = {}, base, data } = info
-    const { width, height, objectFit } = this.resolveSize(config, screenWidth, base)
+    const { width, height, objectFit } = this.resolveSize(config, screenWidth - 16, base)
 
     return (
       <View
