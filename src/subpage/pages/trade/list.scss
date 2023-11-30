@@ -2,6 +2,7 @@
 
 .page-trade-list {
   height: 100vh;
+
   .layer {
     background: rgba(#000, 0.01);
     position: fixed;
@@ -12,7 +13,7 @@
     z-index: 2;
   }
 
-  &.has-navbar{
+  &.has-navbar {
     .at-tabs {
       top: $navigate-height-h5;
 
@@ -20,6 +21,7 @@
         top: $navigate-height-h5;
       }
     }
+
     .trade-list {
       &__scroll {
         @include page-scroll($navigate-height-h5, $edge-margin);
@@ -27,52 +29,57 @@
     }
   }
 
-  .at-tabs { 
-    box-shadow: 0 10px 10px rgba(#000, 0.05); 
+  .at-tabs {
+    box-shadow: 0 10px 10px rgba(#000, 0.05);
+
     &__header {
       position: fixed;
-      left: 0; 
+      left: 0;
       width: 100%;
       z-index: $z-index-toolbar;
     }
+
     &__item {
       // height: $tabs-height;
       color: $color-brand-accent-light;
     }
+
     &__item-underline {
       width: 40%;
       left: 30%;
       background: $color-brand-primary;
     }
+
     &__item--active {
       color: $color-brand-primary;
     }
   }
 
   .trade-list {
+    &__tabs {
+      height: 88px;
+    }
+
     &__scroll {
       box-sizing: border-box;
-      @include page-scroll(0, $edge-margin); 
+      @include page-scroll(0, $edge-margin);
       z-index: 2;
+
       &.with-tabs {
-        @include page-scroll(
-          $tabs-height + 30px,
-          $edge-margin
-        );
+        @include page-scroll($tabs-height + 30px,
+          $edge-margin );
         /*  #ifdef  h5  */
-        @include page-scroll(
-          $navigate-height-h5 + $tabs-height + 30px,
-          $edge-margin
-        );
+        @include page-scroll($navigate-height-h5 + $tabs-height + 30px,
+          $edge-margin );
         /*  #endif  */
       }
+
       &.with-tabs-wx {
-        @include page-scroll(
-          $navigate-height-h5,
-          $edge-margin
-        );
+        @include page-scroll($navigate-height-h5,
+          $edge-margin );
       }
     }
+
     .trade-cont {
       .more {
         color: #d42f29;
@@ -85,6 +92,7 @@
 
   .trade-item {
     position: relative;
+
     .btn-action {
       width: auto;
       margin-left: 20px;
@@ -96,11 +104,13 @@
       color: #fff;
       background: #fff;
       margin-top: 0px;
+
       &::after {
         background: none;
         border: none;
       }
     }
+
     &__ft-drug {
       position: absolute;
       left: 30px;
@@ -112,27 +122,53 @@
       line-height: 40px;
     }
   }
+
   .order-item {
     padding: 30px 0;
     border-bottom: 1px solid #ededed;
+
     &__img {
       width: 120px;
       height: 100px;
       border-radius: 6px;
       margin-right: 30px;
     }
+
     &__title {
       font-size: 24px;
       color: #333;
     }
+
     &__num {
       margin: 12px 0 0;
       font-size: 20px;
       color: #c1c1c1;
     }
+
     &__price {
       font-size: 24px;
       color: #000;
+    }
+  }
+
+  .login-btn {
+    margin-top: 300px;
+    text-align: center;
+
+    .btn-login {
+      height: 60px;
+      font-size: 28px;
+      line-height: 60px;
+      width: 120px;
+      color: #333;
+      border: 1px solid #333;
+      border-radius: 16px;
+      margin: 0 auto;
+      &-tip {
+        font-size: 24px;
+        margin-top: 16px;
+        color: #666;
+      }
     }
   }
 }
