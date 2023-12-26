@@ -25,7 +25,6 @@ function WgtGoodsGrid(props) {
       this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
     }
   }
-  // debugger
 
   const leftFilterGoods = goods.filter((leftgoods, leftindex) => {
     if (leftindex % 2 == 0) {

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { AtTabs, AtTabsPane } from 'taro-ui'
+import { AtButton, AtTabs, AtTabsPane } from 'taro-ui'
 import _mapKeys from 'lodash/mapKeys'
-import { Loading, SpNote, SpNavBar } from '@/components'
+import { Loading, SpNote, SpNavBar, SpLogin } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import {
@@ -13,11 +13,14 @@ import {
   resolveOrderStatus,
   getCurrentRoute,
   classNames,
+  styleNames,
+  getThemeStyle,
   isNavbar,
   getBrowserEnv,
   VERSION_PLATFORM
 } from '@/utils'
 import { Tracker } from '@/service'
+import S from '@/spx'
 import TradeItem from './comps/new-item'
 
 import './list.scss'
@@ -67,6 +70,20 @@ export default class TradeList extends Component {
   }
 
   componentDidShow() {
+    if (!S.getAuthToken()) {
+      return
+    }
+
+    this.resetPage()
+    this.setState({
+      list: []
+    })
+    setTimeout(() => {
+      this.nextPage()
+    }, 500)
+  }
+
+  onLoginChange() {
     this.resetPage()
     this.setState({
       list: []
@@ -181,6 +198,10 @@ export default class TradeList extends Component {
   }
 
   handleClickTab = (idx) => {
+    if (!S.getAuthToken()) {
+      return
+    }
+
     this.hideLayer()
     if (this.state.page.isLoading) return
 
@@ -259,9 +280,8 @@ export default class TradeList extends Component {
           } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${
-                delivery_corp_name || delivery_corp
-              }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
+              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp
+                }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
             Taro.navigateTo({
@@ -307,30 +327,40 @@ export default class TradeList extends Component {
       evaluate
     } = this.state
 
+    const isLogin = S.getAuthToken()
+
     return (
       <View
         className={classNames('page-trade-list', {
           'has-navbar': isNavbar()
         })}
+        style={styleNames(getThemeStyle())}
       >
         <SpNavBar title='订单列表' leftIconType='chevron-left' fixed='true' />
         <AtTabs
-          className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
+          className={`trade-list__tabs ${colors.data?.[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
-          customStyle={{ color: colors.data[0].primary }}
+          customStyle={{ color: colors.data?.[0].primary }}
         >
           {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
-        <ScrollView
+
+        {!isLogin && <View className="login-btn">
+          <SpLogin onChange={this.onLoginChange.bind(this)}><View className="btn-login">去登录</View>
+            <View className='btn-login-tip'>登录才能查看订单信息</View></SpLogin>
+        </View>}
+
+        {isLogin && <ScrollView
           scrollY
           className={`trade-list__scroll ${getBrowserEnv().weixin ? 'with-tabs-wx' : 'with-tabs'}`}
           // onScrollToUpper={this.onPullDownRefresh.bind(this)}
           onScrollToLower={this.nextPage}
         >
+
           {list.map((item) => {
             return (
               <TradeItem
@@ -354,7 +384,7 @@ export default class TradeList extends Component {
             </SpNote>
           )}
           {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
-        </ScrollView>
+        </ScrollView>}
       </View>
     )
   }

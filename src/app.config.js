@@ -382,14 +382,14 @@ const config = {
     "getLocation",
     "chooseAddress"
   ],
-  "__usePrivacyCheck__": true
+  // "__usePrivacyCheck__": true
 }
 
 if (process.env.TARO_ENV == 'weapp') {
   Object.assign(config, {
     usingComponents: {
       'mp-html': './components/sp-html/mp-weixin/index',
-      "sp-wx-privacy": "./components/sp-wx-privacy/index"
+      // "sp-wx-privacy": "./components/sp-wx-privacy/index"
     }
   })
 }
@@ -418,6 +418,5 @@ if (process.env.APP_ADAPAY == 'true') {
   })
 }
 
-console.log(config.plugins)
 
 export default config

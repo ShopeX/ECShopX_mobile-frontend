@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
 import { View, Text, Video, Swiper, SwiperItem, } from '@tarojs/components'
 import { AtButton, AtInput, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { FloatMenus, SpFloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView } from '@/components'
+import { SpHtml, SpFloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView } from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
 import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
@@ -424,7 +424,9 @@ function UgcNoteDetail(props) {
         <View className="ugc-content">
           <View className="title">{info.title}</View>
           <View className="content">
-            {info.content}
+            {/* {info.content} */}
+
+            <SpHtml content={info.content} />
           </View>
 
           <View className="topic-list">

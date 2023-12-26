@@ -59,7 +59,6 @@ function UgcSubjectTalk(props) {
       user_id: userInfo.user_id,
       topic_name: keyword
     })
-    // debugger
     // if (status == 1) {
     //   this.topages({ topic_name, topic_id })
     // }
