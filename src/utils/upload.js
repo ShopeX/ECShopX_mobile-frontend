@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
 import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
-import COS from './cos'
+// import COS from './cos'
 import { reject } from 'lodash'
 // import * as qiniu from 'qiniu-js'
 

@@ -6,22 +6,32 @@ import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
 import { classNames } from '@/utils'
+import { useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
+import S from '@/spx'
 import { SpPage, SpTabbar, SpScrollView, SpSearchInput } from '@/components'
-import './select-company-activity.scss'
+import './auth.scss'
 
 const initialState = {
   activityList: [],
   activity_name: ''
 }
 
-function SelectComponent(props) {
+function PurchaseActivityList() {
   const [state, setState] = useImmer(initialState)
   const { activityList, activity_name } = state
+
+
   const scrollRef = useRef()
   const dispatch = useDispatch()
 
   useEffect(() => {
+    if (!S.getAuthToken()) {
+      Taro.redirectTo({
+        url: '/pages/purchase/auth'
+      })
+      return
+    }
     updataMemberInfo()
   }, [])
 
@@ -30,7 +40,7 @@ function SelectComponent(props) {
     dispatch(updateUserInfo(_userInfo))
   }
 
-  const fetch = async({ pageIndex, pageSize }) => {
+  const fetch = async ({ pageIndex, pageSize }) => {
     const { list, total_count } = await api.purchase.getEmployeeActivityList({ page: pageIndex, pageSize, activity_name })
     setState(draft => {
       draft.activityList = [...activityList, ...list]
@@ -41,7 +51,7 @@ function SelectComponent(props) {
 
   const handleToggleRole = () => {
     Taro.navigateTo({
-      url:'/subpages/purchase/select-identity'
+      url: '/subpages/purchase/select-identity'
     })
   }
 
@@ -55,7 +65,7 @@ function SelectComponent(props) {
 
   const renderFooter = () => {
     return (
-      <View className='select-component-footer' onClick={handleToggleRole}>
+      <View className='select-company-footer' onClick={handleToggleRole}>
         身份管理
       </View>
     )
@@ -71,26 +81,10 @@ function SelectComponent(props) {
 
   return (
     <SpPage
-      className='select-component'
+      className='page-purchase-activity'
       renderFooter={renderFooter()}
     >
       <View className='user-box'>
-        {/* <View className='user-flex'>
-          <Image
-            className='user-avatar'
-            src={userInfo?.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
-          />
-          <View className='user-content'>
-            <View className='user-content-account'>{userInfo?.nickname || userInfo.mobile}</View>
-            <View className='user-content-info'>
-              <View className='user-content-role'>{userInfo?.is_employee && '员工' || userInfo.is_dependent && '亲友'}</View>
-              <View className='user-content-company'>{userInfo?.company}</View>
-            </View>
-          </View>
-          <View className='user-more' onClick={handleToggleRole}>
-            <Text className='iconfont icon-qianwang-01 more'></Text>
-          </View>
-        </View> */}
         <View className='user-serach'>
           <SpSearchInput
             placeholder='活动名称'
@@ -98,13 +92,13 @@ function SelectComponent(props) {
           />
         </View>
       </View>
-      <SpScrollView ref={scrollRef} className='item-list-scroll' fetch={fetch}>
-        {activityList.map((item,index) => (
+      <SpScrollView ref={scrollRef} className='item-list-scroll' auto={false} fetch={fetch}>
+        {activityList.map((item, index) => (
           <View
             key={item.id}
             className={classNames(
               'activity-item',
-              `act${(index%4)+1}`
+              `act${(index % 4) + 1}`
             )}
             onClick={() => onClickChange(item)}
           >
@@ -126,10 +120,10 @@ function SelectComponent(props) {
   )
 }
 
-SelectComponent.options = {
+PurchaseActivityList.options = {
   addGlobalClass: true
 }
 
-export default SelectComponent
+export default PurchaseActivityList
 
 // 内购活动列表

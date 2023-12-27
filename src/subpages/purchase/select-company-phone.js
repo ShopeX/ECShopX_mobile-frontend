@@ -122,7 +122,7 @@ function SelectComponent(props) {
           className='btns-phone'
           customStyle={{ marginTop: '50%' }}
         >
-          微信授权登录
+          手机号授权登录
         </AtButton>
       }
       {VERSION_IN_PURCHASE && !isNewUser && // 无商场&老用户，直接调绑定接口
@@ -135,7 +135,7 @@ function SelectComponent(props) {
           })}
           customStyle={{ marginTop: '50%' }}
         >
-          微信授权登录
+          手机号授权登录
         </AtButton>
       }
       <CompBottomTip />

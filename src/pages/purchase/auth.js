@@ -1,7 +1,7 @@
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-import { SpFloatPrivacyShort, SpLogin } from '@/components'
+import { SpPrivacyModal, SpPage, SpLogin } from '@/components'
 import { AtButton } from 'taro-ui'
 import { showToast } from '@/utils'
 import { useLogin } from '@/hooks'
@@ -11,22 +11,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import CompBottomTip from '@/subpages/purchase/comps/comp-bottomTip'
 import { updateInviteCode } from '@/store/slices/purchase'
 
-import './index.scss'
+import './auth.scss'
 
-function SelectRole(props) {
+function PurchaseAuth() {
   const { isLogin, checkPolicyChange, isNewUser, setToken, login } = useLogin({
     autoLogin: true,
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
     }
   })
+
   const { userInfo = {} } = useSelector((state) => state.user)
   const { appName, appLogo } = useSelector((state) => state.sys)
-  const [ policyModal, setPolicyModal ] = useState(false)
-  const [ reject, setReject ] = useState(false)
-  const [ userEnterprises, setUserEnterprises ] = useState([])
-  const $instance = getCurrentInstance()
-  const { code: invite_code, type = '' } = $instance.router.params || {}
+  const [policyModal, setPolicyModal] = useState(false)
+  const [userEnterprises, setUserEnterprises] = useState([])
+  const { params } = useRouter()
+  const { code: invite_code, type = '' } = params
   const dispatch = useDispatch()
   const codeRef = useRef()
 
@@ -47,6 +47,12 @@ function SelectRole(props) {
       })
     }
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({
+      title: appName
+    })
+  }, [appName])
 
   useEffect(() => {
     if (!type && !invite_code && (userInfo?.is_relative || userInfo?.is_employee)) { // type：渠道是添加身份,不能跳转到活动列表页
@@ -70,19 +76,19 @@ function SelectRole(props) {
     }
   }
 
-  const handleCloseModal = () => {
-    setReject(true)
+  const onRejectPolicy = () => {
+    Taro.exitMiniProgram()
   }
 
   // 同意隐私协议
-  const handleConfirmModal = async () => {
-    if (!isNewUser) {
+  const onResolvePolicy = async () => {
+    if(!isNewUser) {
       await login()
     }
     setPolicyModal(false)
   }
 
-  const handleConfirmClick = async(type) => {
+  const handleConfirmClick = async (type) => {
     if (type === 'friend') {
       Taro.showModal({
         title: '亲友验证说明',
@@ -147,14 +153,10 @@ function SelectRole(props) {
   }
 
   return (
-    <View className='select-role'>
+    <SpPage className='purchase-auth'>
       {/* 隐私协议 */}
-      <SpFloatPrivacyShort
-        open={policyModal}
-        reject={reject}
-        onCancel={handleCloseModal}
-        onConfirm={handleConfirmModal}
-      />
+      <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
+
       <View className='header'>
         <Image
           className='header-avatar'
@@ -165,19 +167,18 @@ function SelectRole(props) {
         <Text className='title'>{appName}</Text>
       </View>
       <View className='btns'>
-        {/* {(!invite_code && !isLogin || !invite_code && type || !invite_code && userEnterprises.length == 0) &&  */}
+
         {!invite_code && (!isLogin || type || userEnterprises.length == 0) &&
           <>
             <AtButton circle className='btns-staff button' onClick={() => handleConfirmClick('staff')}>
-              我是员工&nbsp;
-              {/* <Text className='iconfont icon-qianwang-011 icon'></Text> */}
+              我是员工
             </AtButton>
             <AtButton circle className='btns-friend button' onClick={() => handleConfirmClick('friend')}>
-              我是亲友&nbsp;
-              {/* <Text className='iconfont icon-qianwang-011 icon'></Text> */}
+              我是亲友
             </AtButton>
           </>
         }
+
         {invite_code && isLogin && userInfo?.is_relative && // 有/无商城，已登录亲友验证、绑定
           <>
             <View className='validate-pass'>验证通过</View>
@@ -186,15 +187,17 @@ function SelectRole(props) {
             </AtButton>
           </>
         }
+
         {invite_code && isLogin && !userInfo?.is_relative &&
           <AtButton
             circle
             className='btns-weixin button'
             onClick={validatePhone}
           >
-            微信授权登录
+            手机号授权登录
           </AtButton>
         }
+
         {invite_code && isNewUser && // 有/无商城，未登录亲友验证、绑定
           <AtButton
             openType='getPhoneNumber'
@@ -202,17 +205,17 @@ function SelectRole(props) {
             circle
             className='btns-weixin button'
           >
-            微信授权登录
+            手机号授权登录
           </AtButton>
         }
       </View>
       <CompBottomTip />
-    </View>
+    </SpPage>
   )
 }
 
-SelectRole.options = {
+PurchaseAuth.options = {
   addGlobalClass: true
 }
 
-export default SelectRole
+export default PurchaseAuth

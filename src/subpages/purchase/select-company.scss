@@ -1,44 +1,44 @@
-page{
-  background-color: #fff;
-  .select-component{
-    padding: 56px 50px;
-    // background-color: #fff;
-    // height: 92vh;
-    .select-component-title{
-      font-size: 40px;
-      font-weight: 400;
-      color: #222222;
-      margin-bottom: 160px;
-    }
-    .pick-company{
-      position: relative;
-      background: #ffffff;
-      border-radius: 45px;
-      border: 1px solid #d5d5df;
-      padding-left: 34px;
-      margin-top: 24px;
-      .selecticon{
-        position: absolute;
-        right: 40px ;
-        top: 28px;
-        font-size: 28px;
-      }
-    }
-    .btns-staff{
-      background: #F4811F;
-      margin-top: 70px;
+.select-component {
+  padding: 56px 50px;
+
+  .select-component-title {
+    font-size: 40px;
+    font-weight: 400;
+    color: #222;
+    margin-bottom: 160px;
+  }
+
+  .pick-company {
+    position: relative;
+    background: #fff;
+    border-radius: 45px;
+    border: 1px solid #d5d5df;
+    padding-left: 34px;
+    margin-top: 24px;
+
+    .selecticon {
+      position: absolute;
+      right: 40px;
+      top: 28px;
       font-size: 28px;
-      color: #FFFFFF;
-      height: 80px;
-    }
-    .at-input::after{
-      content: none;
-    }
-    &-enterprise_sn {
-      color: #999;
-      height: 80px;
-      line-height: 80px;
     }
   }
-}
 
+  .btns-staff {
+    background: var(--color-primary);
+    margin-top: 70px;
+    font-size: 28px;
+    color: #FFFFFF;
+    height: 80px;
+  }
+
+  .at-input::after {
+    content: none;
+  }
+
+  &-enterprise_sn {
+    color: #999;
+    height: 80px;
+    line-height: 80px;
+  }
+}

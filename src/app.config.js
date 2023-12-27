@@ -21,7 +21,8 @@ const config = {
 
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
-    'pages/liveroom/index' // 直播间页面
+    'pages/liveroom/index', // 直播间页面
+    'pages/purchase/auth'
   ],
   subPackages: [
     // 内购
@@ -32,12 +33,10 @@ const config = {
         'espier-detail',
         'espier-checkout',
         'share', // 家属分享
-        // 'select-role',
         'select-company',
         'select-company-account',
         'select-company-email',
         'select-company-phone',
-        'select-company-activity',
         'select-identity',
         'neigou-order',
         'category',
@@ -404,9 +403,7 @@ if (process.env.APP_LIVE == 'true') {
 }
 
 if (process.env.APP_PLATFORM == 'in_purchase') {
-  config?.pages?.splice(config?.pages[0], 1, 'pages/select-role/index')
-} else {
-  config?.pages?.push('pages/select-role/index')
+  config?.pages?.splice(config?.pages[0], 1, 'pages/purchase/index')
 }
 
 if (process.env.APP_ADAPAY == 'true') {

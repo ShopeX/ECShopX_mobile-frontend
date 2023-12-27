@@ -58,7 +58,7 @@ import SpShopCoupon from './sp-shop-coupon'
 import SpFilterDrawer from './sp-filter-drawer'
 import SpButton from './sp-button'
 import SpFloatPrivacy from './sp-float-privacy'
-import SpFloatPrivacyShort from './sp-float-privacyshort'
+// import SpFloatPrivacyShort from './sp-float-privacyshort'
 import SpTagBar from './sp-tag-bar'
 import SpDrawer from './sp-drawer'
 import SpSelect from './sp-select'
@@ -155,7 +155,7 @@ export {
   SpFilterDrawer,
   SpButton,
   SpFloatPrivacy,
-  SpFloatPrivacyShort,
+  // SpFloatPrivacyShort,
   SpTagBar,
   SpDrawer,
   SpSelect,

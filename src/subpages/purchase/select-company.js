@@ -4,6 +4,7 @@ import { useImmer } from 'use-immer'
 import { View, Text, Picker } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import { SpPage } from '@/components'
 import './select-company.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 
@@ -13,7 +14,7 @@ const initialState = {
   enterpriseInfo: {}
 }
 
-function SelectComponent() {
+function SelectCompany() {
   const [state, setState] = useImmer(initialState)
   const { enterpriseInfo, enterpriseName, enterpriseList } = state
 
@@ -54,7 +55,7 @@ function SelectComponent() {
   }
 
   return (
-    <View className='select-component'>
+    <SpPage className='select-component'>
       <View className='select-component-title'>选择企业</View>
       <Picker range={enterpriseList} rangeKey='name' onChange={onPickerChange} className='pick-company'>
         <View className='select-component-enterprise_sn'>{enterpriseName || '选择企业后继续登录'}</View>
@@ -64,12 +65,12 @@ function SelectComponent() {
         继续验证
       </AtButton>
       <CompBottomTip />
-    </View>
+    </SpPage>
   )
 }
 
-SelectComponent.options = {
+SelectCompany.options = {
   addGlobalClass: true
 }
 
-export default SelectComponent
+export default SelectCompany
