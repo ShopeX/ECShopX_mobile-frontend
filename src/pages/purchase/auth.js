@@ -1,10 +1,10 @@
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
-import { View, Text, Image } from '@tarojs/components'
-import { SpPrivacyModal, SpPage, SpLogin } from '@/components'
+import { View, Text, Image, RootPortal } from '@tarojs/components'
+import { SpPrivacyModal, SpPage, SpLogin, SpModal } from '@/components'
 import { AtButton } from 'taro-ui'
 import { showToast } from '@/utils'
-import { useLogin } from '@/hooks'
+import { useLogin, useModal } from '@/hooks'
 import S from '@/spx'
 import api from '@/api'
 import { useSelector, useDispatch } from 'react-redux'
@@ -29,9 +29,9 @@ function PurchaseAuth() {
   const { code: invite_code, type = '' } = params
   const dispatch = useDispatch()
   const codeRef = useRef()
+  const { showModal } = useModal()
 
   useEffect(() => {
-    checkPrivacy()
     dispatch(updateInviteCode(invite_code))
   }, [])
 
@@ -68,21 +68,13 @@ function PurchaseAuth() {
     }
   }
 
-  const checkPrivacy = async () => {
-    const checkRes = await checkPolicyChange()
-    if (!checkRes) {
-      setPolicyModal(true)
-      return
-    }
-  }
-
   const onRejectPolicy = () => {
     Taro.exitMiniProgram()
   }
 
   // 同意隐私协议
   const onResolvePolicy = async () => {
-    if(!isNewUser) {
+    if (!isNewUser) {
       await login()
     }
     setPolicyModal(false)
@@ -90,7 +82,7 @@ function PurchaseAuth() {
 
   const handleConfirmClick = async (type) => {
     if (type === 'friend') {
-      Taro.showModal({
+      const { confirm } = await showModal({
         title: '亲友验证说明',
         content: `如果您是亲友，请通过员工分享的活动链接认证；如果您是员工，请在上一页面中点击「我是员工」验证身份`,
         showCancel: false,
@@ -118,13 +110,10 @@ function PurchaseAuth() {
       }
       const { token } = await api.wx.newlogin(params)
       setToken(token)
-      Taro.showToast({
-        icon: 'success',
-        title: '验证成功'
-      })
+      showToast('验证成功')
       setTimeout(() => {
         Taro.reLaunch({ url: `/pages/purchase/index` })
-      }, 2000)
+      }, 700)
     }
   }
 
@@ -134,7 +123,7 @@ function PurchaseAuth() {
       showToast('验证成功')
       setTimeout(() => {
         Taro.reLaunch({ url: `/pages/purchase/index` })
-      }, 2000)
+      }, 700)
     } catch (e) {
       console.log(e)
       Taro.showModal({
@@ -153,7 +142,7 @@ function PurchaseAuth() {
   }
 
   return (
-    <SpPage className='purchase-auth'>
+    <SpPage className='purchase-auth' >
       {/* 隐私协议 */}
       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
 

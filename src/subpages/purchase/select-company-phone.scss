@@ -1,6 +1,10 @@
 .page-purchase-auth-phone {
+  height: 100vh;
+  background-color: #fff;
+
   &.select-component {
     padding: 56px 50px;
+    box-sizing: border-box;
 
     .select-component-title {
       font-size: 40px;
@@ -36,7 +40,7 @@
     .btns-other {
       font-size: 28px;
       color: var(--color-primary);
-      border: var(--color-primary) 1PX solid;
+      border: 1PX solid var(--color-primary) ;
     }
   }
 }

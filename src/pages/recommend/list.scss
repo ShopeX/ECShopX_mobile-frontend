@@ -12,7 +12,7 @@
   .recommend-list {
     &__toolbar {
       position: fixed;
-      top: 0;      
+      top: 0;
       left: 0;
       width: 100%;
       z-index: $z-index-level-4;
@@ -65,7 +65,7 @@
     }
     &__tabs {
       display: flex;
-      
+
       .filter-bar__item {
         flex: 1;
         justify-content: center;
@@ -90,7 +90,7 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, $tabbar-height + floor($edge-margin / 2));
+      @include page-scroll($tabs-height + $searchbar-height + $navigate-height + 10, $tabbar-height + floor(calc($edge-margin / 2)));
       top: 155px;
     }
     &__type-grid {

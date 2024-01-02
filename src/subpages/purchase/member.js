@@ -2,7 +2,8 @@ import Taro, {
   useDidShow,
   useShareAppMessage,
   getCurrentPages,
-  getCurrentInstance
+  getCurrentInstance,
+  useRouter
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
@@ -16,7 +17,6 @@ import {
   SpImage,
   SpPrice,
   CouponModal,
-  SpModal,
   SpPrivacyModal,
   SpTabbar,
   SpPage
@@ -113,6 +113,7 @@ function MemberIndex(props) {
   const [config, setConfig] = useImmer(initialConfigState)
   const [state, setState] = useImmer(initialState)
   const [policyModal, setPolicyModal] = useState(false)
+  const router = useRouter()
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { purchase_share_info = {} } = useSelector((state) => state.purchase)
@@ -350,8 +351,8 @@ function MemberIndex(props) {
             {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
           </View>
           <View className='gradename'>
-            { userInfo?.is_employee && '员工' }
-            { userInfo?.is_dependent && '员工亲友' }
+            {userInfo?.is_employee && '员工'}
+            {userInfo?.is_dependent && '员工亲友'}
           </View>
         </View>
       )
@@ -375,7 +376,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member' renderFooter={<CompTabbar />}>
+    <SpPage className='page-purchase-member' renderFooter={router.params?.from == 'purchase_home' ? null : <CompTabbar />}>
       <View
         className='header-block'
         style={styleNames({
@@ -399,42 +400,45 @@ function MemberIndex(props) {
             <Text className='iconfont icon-qianwang-01' onClick={handleClickLink.bind(this, '/subpages/member/user-info')}></Text>
           </View>}
         </View>
-        <View className='header-bd'>
-          <View className='bd-item'>
-            <View className='bd-item-label'>总额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.limit_fee
-                  ? (purchaseInfo.limit_fee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+
+        {
+          router.params?.from != 'purchase_home' && <View className='header-bd'>
+            <View className='bd-item'>
+              <View className='bd-item-label'>总额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.limit_fee
+                    ? (purchaseInfo.limit_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          <View className='bd-item'>
-            <View className='bd-item-label'>已使用额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.aggregate_fee
-                  ? (purchaseInfo.aggregate_fee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+            <View className='bd-item'>
+              <View className='bd-item-label'>已使用额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.aggregate_fee
+                    ? (purchaseInfo.aggregate_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          <View className='bd-item deposit-item'>
-            <View className='bd-item-label'>剩余额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.left_fee
-                  ? (purchaseInfo.left_fee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+            <View className='bd-item deposit-item'>
+              <View className='bd-item-label'>剩余额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.left_fee
+                    ? (purchaseInfo.left_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
+            {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>
           </View> */}
-        </View>
+          </View>
+        }
         <View className='header-ft'>
           {/* 会员卡等级 */}
           {vipInfo.isOpen && (
@@ -509,15 +513,18 @@ function MemberIndex(props) {
           </View>
         </CompPanel>
 
-        <CompMenu
-          accessMenu={{
-            ...config.menu,
-            purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,
-            popularize: userInfo ? userInfo.popularize : false
-          }}
-          isPromoter={userInfo ? userInfo.isPromoter : false}
-          onLink={handleClickService}
-        />
+
+        {
+          router.params?.from != 'purchase_home' && <CompMenu
+            accessMenu={{
+              ...config.menu,
+              purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,
+              popularize: userInfo ? userInfo.popularize : false
+            }}
+            isPromoter={userInfo ? userInfo.isPromoter : false}
+            onLink={handleClickService}
+          />
+        }
       </View>
       {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />

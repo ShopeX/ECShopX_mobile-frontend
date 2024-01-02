@@ -1,9 +1,11 @@
 .page-purchase-auth-account {
+  height: 100vh;
+  background-color: #fff;
+
   &.select-component {
     padding: 56px 50px;
+    box-sizing: border-box;
 
-    // background-color: #fff;
-    // height: 92vh;
     .select-component-title {
       font-size: 40px;
       font-weight: 400;
@@ -12,7 +14,7 @@
 
     .select-component-prompt {
       font-size: 28px;
-      color: #AAAAAA;
+      color: #aaa;
       margin: 16px 0 100px 0;
     }
 
@@ -24,23 +26,6 @@
         right: 40px;
         top: 28px;
       }
-    }
-
-    .err {
-      border: 1px solid #EC2E3D !important;
-    }
-
-    .select-option {
-      border-radius: 40px;
-      border: 1px solid #D5D5DF;
-      padding: 15px 30px;
-      // .at-input__input{
-      //   width: auto;
-      //   flex: 0.5;
-      // }
-      // .at-icon{
-      // }
-
     }
 
     .selecte-box {
@@ -59,8 +44,34 @@
       color: #AAAAAA;
 
       .icon {
-        margin: 0 5px 0 30px;
+        margin-left: 10px;
         font-size: 24px;
+      }
+    }
+
+    .sp-form-item {
+      margin-bottom: 52px;
+      padding-left: 0;
+      padding-right: 0;
+
+      .at-input {
+        // border-width: 0;
+        flex: 1;
+        padding: 10px 0;
+        border: none;
+      }
+
+      .form-item-control {
+        display: flex;
+        align-items: center;
+        border: 1PX solid #E2E4EA;
+        border-radius: 40px;
+        padding: 8px 12px 8px 30px;
+        box-sizing: border-box;
+      }
+
+      .form-item-message {
+        color: #EC2E3D;
       }
     }
 

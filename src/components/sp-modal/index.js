@@ -6,35 +6,38 @@ import ModalPolicy from './modal-policy'
 
 import './index.scss'
 
-function SpModal (props) {
+function SpModal(props) {
   const {
     children,
-    type,
     title = '',
+    content = '',
+    contentAlign = 'left',
     cancelText = '取消',
     confirmText = '确定',
-    onCancel = () => {},
-    onConfirm = () => {}
+    showCancel = true,
+    onCancel = () => { },
+    onConfirm = () => { }
   } = props
   return (
+    // <RootPortal>
     <View className='sp-modal'>
-      <View className='sp-modal-bg' />
-      <View className='sp-modal-con'>
-        {title && <View className='sp-modal-hd'></View>}
-        <View className='sp-modal-bd'>
-          {type == 'policy' && <ModalPolicy />}
-          {children}
+      <View className='sp-modal__overlay' />
+      <View className='sp-modal__content'>
+        {title && <View className='sp-modal__content-hd'>{title}</View>}
+        <View className={classNames('sp-modal__content-bd', contentAlign)}>
+          {content}
         </View>
-        <View className='sp-modal-ft'>
-          <View className='sp-modal-btn' onClick={onCancel}>
+        <View className='sp-modal__content-ft'>
+          {showCancel && <View className='btn-cancel' onClick={onCancel}>
             {cancelText}
-          </View>
-          <View className='sp-modal-btn' onClick={onConfirm}>
+          </View>}
+          <View className='btn-confirm' onClick={onConfirm}>
             {confirmText}
           </View>
         </View>
       </View>
     </View>
+    // </RootPortal>
   )
 }
 

@@ -86,8 +86,8 @@
           }
         }
         &__cont {
-          padding-left: floor($edge-size / 2);
-          padding-right: floor($edge-size / 2);
+          padding-left: floor(calc($edge-size / 2));
+          padding-right: floor(calc($edge-size / 2));
         }
         &__bd {
           flex-direction: column;

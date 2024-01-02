@@ -69,7 +69,7 @@ const MENUS = [
     key: 'purchase',
     name: '内购',
     icon: 'm_menu_jiatingfengxiang.png',
-    link: '/pages/select-role/index'
+    link: '/pages/purchase/auth'
   },
   {
     key: 'dianwu',

@@ -16,7 +16,6 @@ import {
   SpImage,
   SpPrice,
   CouponModal,
-  SpModal,
   SpPrivacyModal,
   SpTabbar,
   SpPage
@@ -395,7 +394,7 @@ function MemberIndex(props) {
       if (data?.length > 0) {
         Taro.navigateTo({ url: '/pages/purchase/index' })
       } else {
-        Taro.navigateTo({ url: '/pages/select-role/index' })
+        Taro.navigateTo({ url: '/pages/purchase/auth' })
       }
       dispatch(updatePurchaseShareInfo())
       dispatch(updateInviteCode())

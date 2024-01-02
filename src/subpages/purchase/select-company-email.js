@@ -1,43 +1,47 @@
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
-import { useLogin } from '@/hooks'
+import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { classNames, showToast, VERSION_IN_PURCHASE } from '@/utils'
+import qs from 'qs'
 import './select-company-email.scss'
 import CompBottomTip from './comps/comp-bottomTip'
-import { SpForm, SpFormItem, SpTimer } from '@/components'
+import { SpForm, SpFormItem, SpTimer, SpPage } from '@/components'
 
-const initialState = {
-  form: {
-    email: '',
-    vcode: ''
-  },
-  rules: {
-    email: [
-      // { required: true, message: '邮箱地址不能为空' },
-      // { validate: 'mobile', message: '请输入正确的邮箱地址' }
-    ],
-    vcode: [{ required: true, message: '请输入验证码' }]
-  }
-}
 
-function SelectComponent(props) {
+function PurchaseAuthEmail(props) {
+  const router = useRouter()
   const { isNewUser } = useLogin()
-  const [state, setState] = useImmer(initialState)
+  const { showModal } = useModal()
+
+  const [state, setState] = useImmer({
+    form: {
+      email: '',
+      vcode: ''
+    },
+    rules: {
+      email: [
+        { required: true, message: '邮箱地址不能为空' },
+        { validate: 'email', message: '请输入正确的邮箱' },
+        {
+          validate: async (value) => {
+            const { enterprise_id } = router.params
+            const { status } = await api.purchase.getEmailCode({ email: value, enterprise_id, showError: false })
+            showToast(status ? '发送成功' : '发送失败')
+          }
+        }
+      ],
+      vcode: [
+        { required: true, message: '请输入验证码' }
+      ]
+    }
+  })
   const { form, rules } = state
-
-  const [isError, setIsError] = useState(false)
-  const [isErrorCode, setIsErrorCode] = useState(false)
   const formRef = useRef()
-  const $instance = getCurrentInstance()
-  const { enterprise_id, enterprise_name, enterprise_sn } = $instance.router.params
-
-  useEffect(() => {
-    //请求获取企业信息
-  }, [])
+  const { enterprise_id, enterprise_name, enterprise_sn } = router.params
 
   const onInputChange = (key, value) => {
     setState((draft) => {
@@ -46,106 +50,88 @@ function SelectComponent(props) {
   }
 
   const onFormSubmit = async () => {
-    // 有商场校验白名单，账号绑定并登录，无商场检验白名单通过手机号授权
-    formRef.current.onSubmit(async () => {
-      const { email, vcode } = form
-      if (isNewUser) {
-        // 无商场逻辑（需要调整一个页面去授权手机号）
-        Taro.navigateTo({ url: `/subpages/purchase/select-company-phone?enterprise_sn=${enterprise_sn}&enterprise_name=${enterprise_name}&enterprise_id=${enterprise_id}&email=${email}&vcode=${vcode}` }) // 有商场员工手机号登录
-      } else {
-        const params = {
+    // 有商城校验白名单，账号绑定并登录，无商城检验白名单通过手机号授权
+    const { email, vcode } = form
+    await formRef.current.onSubmitAsync(['vcode'])
+    if (isNewUser) {
+      // 无商城逻辑（需要调整一个页面去授权手机号）
+      Taro.navigateTo({
+        url: `/subpages/purchase/select-company-phone?${qs.stringify({
+          enterprise_sn,
+          enterprise_name,
           enterprise_id,
           email,
           vcode
-        }
-        try {
-          await api.purchase.setEmployeeAuth({...params, showError: false})
-          showToast('验证成功')
-          setTimeout(() => {
-            Taro.reLaunch({ url: `/pages/purchase/index` })
-          }, 700)
-        } catch (e) {
-          console.error(e)
-          Taro.showModal({
+        })}`
+      })
+    } else {
+      const params = {
+        enterprise_id,
+        email,
+        vcode,
+        showError: false
+      }
+      try {
+        await api.purchase.setEmployeeAuth(params)
+        showToast('验证成功')
+        setTimeout(() => {
+          Taro.reLaunch({ url: `/pages/purchase/index` })
+        }, 700)
+      } catch (e) {
+        if (e.message.indexOf('重复绑定') > -1) {
+          await showModal({
             title: '验证失败',
-            content: e,
-            confirmColor:'#F4811F',
+            content: e.message,
             showCancel: false,
             confirmText: '我知道了',
-            success: () => {
-              if (e.indexOf('重复绑定') > -1) {
-                Taro.reLaunch({ url: `/pages/purchase/index` })
-              }
-            }
+            contentAlign: 'center'
           })
+          Taro.reLaunch({ url: `/pages/purchase/index` })
+        } else {
+          formRef.current.setMessage({ prop: 'vcode', message: e.message })
         }
       }
-    })
+    }
   }
 
   // 获取验证码
-  const getSmsCode = async (resolve) => {
-    const { enterprise_id } = $instance.router.params
-    const { email } = form
-    if (!/^\w+@[a-z0-9]+\.[a-z]{2,4}$/.test(email)) {
-      Taro.showToast({
-        title: '请输入正确的邮箱',
-        icon: 'none'
-      })
-      return false
-    }
-    // 先检验白名单，通过以后在请求验证码
-    const res = await api.purchase.getEmailCode({ email, enterprise_id })
-    Taro.showToast({
-      title: res?.status ? '发送成功' : '发送失败',
-      icon: 'none'
-    })
+  const getSmsCode = async () => {
+    await formRef.current.onSubmitAsync(['email'])
   }
 
   return (
-    <View className='select-component'>
+    <SpPage className='page-purchase-auth-email select-component'>
       <View className='select-component-title'>{enterprise_name}</View>
       <View className='select-component-prompt'>使用已注册邮箱进行验证</View>
       <View className='selecte-box'>
         <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>
-          <View className={classNames(isError ? 'error-form-item' : '')}>
-            <SpFormItem prop='email'>
-              <AtInput
-                clear
-                focus
-                name='email'
-                value={form.email}
-                placeholder='请输入完整邮箱地址'
-                onChange={onInputChange.bind(this, 'email')}
-              />
-              <SpTimer
-                className={classNames(form.email ? '' : 'unuse')}
-                onStart={getSmsCode}
-                defaultMsg='获取验证码'
-                msg='重新获取'
-              ></SpTimer>
-            </SpFormItem>
-          </View>
+          <SpFormItem prop='email'>
+            <AtInput
+              clear
+              focus
+              name='email'
+              value={form.email}
+              placeholder='请输入完整邮箱地址'
+              onChange={onInputChange.bind(this, 'email')}
+            />
+            <SpTimer
+              className={classNames({ 'unuse': !form.email })}
+              onStart={getSmsCode}
+              defaultMsg='获取验证码'
+              msg='重新获取'
+            ></SpTimer>
+          </SpFormItem>
 
-          {isError && <View className='err-info'>验证码错误，请重新输入验证码</View>}
-
-          <View className={classNames(isError ? 'error-form-item' : '')}>
-            <SpFormItem prop='vcode'>
-              <AtInput
-                clear
-                focus
-                name='vcode'
-                value={form.vcode}
-                placeholder='请输入邮箱验证码'
-                onChange={onInputChange.bind(this, 'vcode')}
-              />
-            </SpFormItem>
-          </View>
-
-          {isError && (
-            <View className='err-info'>邮箱地址错误，请重新输入或联系企业管理员修改</View>
-          )}
-          {isErrorCode && <View className='err-info'>验证码已过期，请重新获取验证码</View>}
+          <SpFormItem prop='vcode'>
+            <AtInput
+              clear
+              focus
+              name='vcode'
+              value={form.vcode}
+              placeholder='请输入邮箱验证码'
+              onChange={onInputChange.bind(this, 'vcode')}
+            />
+          </SpFormItem>
         </SpForm>
       </View>
 
@@ -158,14 +144,14 @@ function SelectComponent(props) {
         验证
       </AtButton>
       <CompBottomTip />
-    </View>
+    </SpPage>
   )
 }
 
-SelectComponent.options = {
+PurchaseAuthEmail.options = {
   addGlobalClass: true
 }
 
-export default SelectComponent
+export default PurchaseAuthEmail
 
 // 邮箱登录

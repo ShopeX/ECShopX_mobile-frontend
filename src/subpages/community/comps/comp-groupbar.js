@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 import React, { useState } from 'react'
 import { View, Image, Text, Button } from '@tarojs/components'
-import { SpFloatLayout, SpPrice, SpModal } from '@/components'
+import { SpFloatLayout, SpPrice } from '@/components'
 import { useSelector } from 'react-redux'
 import { TABBAR_PATH } from '@/consts'
 import { useImmer } from 'use-immer'

@@ -10,7 +10,7 @@
   height: 64px;
   border-radius: 100%;
   position: fixed;
-  bottom: $tabbar-height + floor($edge-size / 2);
+  bottom: $tabbar-height + floor(calc($edge-size / 2));
   right: $edge-size;
   z-index: $z-index-tooltip;
   border: 1px solid rgba($color-brand-primary, 0.1);

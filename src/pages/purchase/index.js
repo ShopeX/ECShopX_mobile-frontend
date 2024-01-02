@@ -9,7 +9,7 @@ import { classNames } from '@/utils'
 import { useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
 import S from '@/spx'
-import { SpPage, SpNote, SpScrollView, SpSearchInput } from '@/components'
+import { SpPage, SpNote, SpScrollView, SpSearchInput, SpFloatMenuItem } from '@/components'
 import './index.scss'
 
 const initialState = {
@@ -84,6 +84,17 @@ function PurchaseActivityList() {
   return (
     <SpPage
       className='page-purchase-index'
+      renderFloat={
+        <View>
+          <SpFloatMenuItem
+            onClick={() => {
+              Taro.navigateTo({ url: `/subpages/purchase/member?from=${'purchase_home'}` })
+            }}
+          >
+            <Text className='iconfont icon-huiyuanzhongxin'></Text>
+          </SpFloatMenuItem>
+        </View>
+      }
       renderFooter={renderFooter()}
     >
       <View className='user-box'>

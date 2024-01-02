@@ -49,7 +49,7 @@
     }
   }
   &__total {
-    padding: 0 $edge-size floor($edge-size/2);
+    padding: 0 $edge-size floor(calc($edge-size/2));
     text-align: right;
   }
 

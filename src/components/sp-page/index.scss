@@ -5,10 +5,12 @@
 
   &.has-footer {
     padding-bottom: $page-footer-height;
+
     &.ipx {
       padding-bottom: $page-ipx-footer-height;
     }
   }
+
   &.has-custom-navigation {
     .countDown {
       &.right_top {
@@ -19,12 +21,15 @@
 
   &.ipx {
     padding-bottom: 20px;
+
     .sp-page-footer {
       height: $page-ipx-footer-height;
     }
+
     .sp-float-layout-ft {
       padding-bottom: 40px;
     }
+
     .at-tab-bar {
       height: $page-ipx-footer-height;
       /*  #ifdef  alipay  */
@@ -69,6 +74,7 @@
     right: 0;
     top: 0;
     z-index: 1000;
+
     .left-container,
     .right-container {
       width: 100px;
@@ -77,6 +83,7 @@
       justify-content: center;
       align-items: center;
     }
+
     .icon-wrap {
       width: 56px;
       height: 56px;
@@ -85,15 +92,20 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       .icon-home1 {
-        font-size: 32px;
+        font-size: 38px;
         color: #fff;
+        position: relative;
+        top: -2px;
       }
+
       .icon-fanhui {
         font-size: 32px;
         color: #fff;
       }
     }
+
     .title-container {
       flex: 1;
       height: 100%;
@@ -104,32 +116,41 @@
       color: #333;
       padding: 0 16px;
     }
+
     .icon-home1 {
       font-size: 40px;
       color: #fff;
     }
+
     .icon-shangyiyehoutuifanhui-xianxingyuankuang {
       font-size: 50px;
       color: #fff;
     }
+
     &.mantle {
       background: rgba(255, 255, 255, 0.5);
       transition: all 0.15s ease-in;
     }
+
     &.dark {
       background: #000;
+
       .icon-wrap {
         background: #a0a0a0;
       }
+
       .title-container {
         color: #fff;
       }
     }
+
     &.light {
       background: #fff;
+
       .icon-wrap {
         background: #a0a0a0;
       }
+
       .title-container {
         color: #333;
       }

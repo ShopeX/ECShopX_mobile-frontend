@@ -372,7 +372,8 @@ class API {
     const errMsg = (res.data && res.data?.data?.message) || msg
     const err = new Error(errMsg)
     err.res = res
-    return config?.showError ? err : errMsg // showError为false的时候 返回errMsg 用于页面中弹框内容为接口返回的报错msg
+    // return config?.showError ? err : errMsg // showError为false的时候 返回errMsg 用于页面中弹框内容为接口返回的报错msg
+    return err
   }
 
   post(url, data, config) {

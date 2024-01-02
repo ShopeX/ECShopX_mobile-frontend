@@ -99,6 +99,15 @@
     background: url('../../assets/imgs/act_end.jpg') no-repeat center / cover;
   }
 
+  .float-container {
+
+    .icon-huiyuanzhongxin,
+    .icon-headphones {
+      font-size: 38px;
+      color: #fff;
+    }
+  }
+
   .activity-item {
     border-radius: 24px;
     margin-top: 32px;
@@ -190,7 +199,7 @@
     align-items: center;
     justify-content: center;
     font-size: 30px;
-    color: #666;
+    color: var(--color-primary);
     padding-top: 30px;
   }
 }

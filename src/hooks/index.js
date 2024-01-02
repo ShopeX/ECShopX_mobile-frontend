@@ -8,6 +8,7 @@ import useNavigation from './useNavigation'
 import useDebounce from './useDebounce'
 import useThrottle from './useThrottle'
 import useDianWuLogin from './useDianWuLogin'
+import useModal from './useModal'
 
 export default {}
 
@@ -21,5 +22,6 @@ export {
   useNavigation,
   useDebounce,
   useThrottle,
-  useDianWuLogin
+  useDianWuLogin,
+  useModal
 }

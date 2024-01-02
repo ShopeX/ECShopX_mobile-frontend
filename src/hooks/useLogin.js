@@ -6,12 +6,12 @@ import { updateUserInfo, fetchUserFavs, clearUserInfo, updateIsNewUser } from '@
 import { updateCount, clearCart } from '@/store/slices/cart'
 import { purchaseClearCart } from '@/store/slices/purchase'
 import api from '@/api'
-import { isWeixin, showToast, entryLaunch,isAlipay,alipayAutoLogin } from '@/utils'
+import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => {} } = props
+  const { autoLogin = false, policyUpdateHook = () => { } } = props
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
@@ -38,8 +38,8 @@ export default (props = {}) => {
   const login = async () => {
     if (isWeixin || isAlipay) {
       // 隐私协议
-      // const checkResult = await checkPolicyChange()
-      // if (checkResult) {
+      const checkResult = await checkPolicyChange()
+      if (checkResult) {
         Taro.showLoading({ title: '' })
         const { code } = await getCode()
 
@@ -53,15 +53,15 @@ export default (props = {}) => {
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
-      // }
+      }
     }
   }
 
   const getCode = async () => {
-    if(isWeixin){
+    if (isWeixin) {
       return await Taro.login()
     }
-    if(isAlipay){
+    if (isAlipay) {
       return await alipayAutoLogin()
     }
   }
@@ -80,7 +80,7 @@ export default (props = {}) => {
 
   const setToken = async (token) => {
     const { redirect_url } = $instance.router.params
-    console.log('redirect_url',redirect_url)
+    console.log('redirect_url', redirect_url)
     S.setAuthToken(token)
     setIsLogin(true)
     await getUserInfo()

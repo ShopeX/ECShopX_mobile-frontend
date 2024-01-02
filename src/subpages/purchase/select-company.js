@@ -48,6 +48,8 @@ function SelectCompany() {
       redirectUrl = `/subpages/purchase/select-company-email`
     } else if (auth_type == 'mobile') {
       redirectUrl = `/subpages/purchase/select-company-phone`
+    } else if (auth_type == 'crm_api') {
+      redirectUrl = `/subpages/purchase/select-company-phone`
     }
     Taro.navigateTo({
       url: `${redirectUrl}?enterprise_sn=${enterprise_sn}&enterprise_name=${name}&enterprise_id=${id}`

@@ -14,13 +14,13 @@
 
     &-title {
       font-size: floor($font-size * 1.6);
-      padding: 0 floor($edge-size / 2);
+      padding: 0 floor(calc($edge-size / 2));
       display: block;
     }
 
     &-time {
       color: $color-gray;
-      padding: 0 floor($edge-size / 2) $edge-margin;
+      padding: 0 floor(calc($edge-size / 2)) $edge-margin;
       text-align: right;
       display: block;
     }
