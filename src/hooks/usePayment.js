@@ -19,7 +19,7 @@ export default (props = {}) => {
   // const { params, orderInfo } = state
   const cashierResultUrl = `/pages/cart/cashier-result`
   const $instance = getCurrentInstance()
-  const currentPath = $instance.router.path
+  const currentPath = $instance?.router?.path
 
   const cashierPayment = (params, orderInfo) => {
     console.log(`cashierPayment:`, params, orderInfo)
