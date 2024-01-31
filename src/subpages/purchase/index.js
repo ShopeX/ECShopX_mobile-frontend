@@ -6,6 +6,7 @@ import {
   SpPage,
   SpSearch,
   SpPrivacyModal,
+  SpTabbar
 } from '@/components'
 import api from '@/api'
 import {
@@ -129,6 +130,7 @@ function Home() {
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base}
       renderFooter={<CompTabbar />}
+      renderFooter={<SpTabbar />}
       loading={loading}
     >
       <View
