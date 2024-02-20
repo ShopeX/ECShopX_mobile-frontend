@@ -46,6 +46,8 @@ function linkPage (data) {
     case 'link':
       if (id == 'vipgrades') {
         url = '/subpage/pages/vip/vipgrades'
+      } else if (id == 'pointShop') {
+        url = '/subpages/pointshop/list'
       } else if (id == 'serviceH5Coach') {
         url = '/marketing/pages/service/wap-link?tp=o'
       } else if (id == 'serviceH5Sales') {
