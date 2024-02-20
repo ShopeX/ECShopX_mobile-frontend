@@ -247,7 +247,7 @@ function UgcIndex() {
               {leftList.map((list) => {
                 return list?.map((item) => {
                   return (
-                    <View className='note-item-wrap' key={item.item_id}>
+                    <View className='note-item-wrap' key={item.postId}>
                       <CompNoteItem info={item} />
                     </View>
                   )
@@ -258,7 +258,7 @@ function UgcIndex() {
               {rightList.map((list) => {
                 return list?.map((item) => {
                   return (
-                    <View className='note-item-wrap' key={item.item_id}>
+                    <View className='note-item-wrap' key={item.postId}>
                       <CompNoteItem info={item} />
                     </View>
                   )

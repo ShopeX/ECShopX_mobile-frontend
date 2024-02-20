@@ -38,6 +38,9 @@ const validate = {
   isMoney(val) {
     const reg = new RegExp('((^[1-9]\\d*)|^0)(\\.\\d{0,2}){0,1}$')
     return reg.test(val)
+  },
+  isIpx(str) {
+    return str.search(/iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*10/g) > -1
   }
 }
 

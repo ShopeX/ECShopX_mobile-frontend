@@ -6,7 +6,7 @@ import Taro, {
   useShareTimeline,
   useReady
 } from '@tarojs/taro'
-import { View, Text, Swiper, SwiperItem, Video, Canvas } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem, Video, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtCountdown } from 'taro-ui'
 import {
@@ -389,7 +389,7 @@ function EspierDetail(props) {
       {/* <Canvas id="canvas2" type="2d" onReady={onCanvasReady} /> */}
       {!info && <SpLoading />}
       {info && (
-        <View className='goods-contents'>
+        <ScrollView scrollY className='goods-contents' style="height: 100%;">
           <View className='goods-pic-container'>
             <Swiper
               className='goods-swiper'
@@ -400,10 +400,10 @@ function EspierDetail(props) {
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage
-                    mode='aspectFill'
+                    mode='widthFix'
                     src={img}
                     width={windowWidth * 2}
-                    height={windowWidth * 2}
+                    // height={windowWidth * 2}
                   ></SpImage>
                 </SwiperItem>
               ))}
@@ -490,12 +490,12 @@ function EspierDetail(props) {
               {(isWeixin || isAPP()) && (
                 // {(
                 <View className='btn-share-wrap'>
-                  <SpLogin
-                    onChange={async () => {
+                  <View
+                    onClick={async () => {
                       if (isAPP()) {
                         Taro.SAPPShare.open()
                       } else {
-                        await getUserInfoAuth()
+                        // await getUserInfoAuth()
                         setState((draft) => {
                           draft.sharePanelOpen = true
                         })
@@ -506,7 +506,7 @@ function EspierDetail(props) {
                       <Text className='iconfont icon-fenxiang-01'></Text>
                       <Text className='share-txt'>分享</Text>
                     </View>
-                  </SpLogin>
+                  </View>
                 </View>
               )}
             </View>
@@ -611,7 +611,7 @@ function EspierDetail(props) {
               <SpHtml content={info.intro} />
             )}
           </View>
-        </View>
+        </ScrollView>
       )}
 
       <SpRecommend info={recommendList} />

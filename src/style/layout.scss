@@ -1,4 +1,4 @@
-$color-brand-primary:#ff593d; 
+$color-brand-primary:#ff593d;
 $edge-margin: 16px;
 $edge-size: 15px * 2;
 $deep-color-brand-primary:#e51c23;
@@ -349,9 +349,7 @@ $content-edge:15px;
 .bg-transparent {
   background: transparent;
 }
-.has-footer {
-  padding-bottom: 100px;
-}
+
 
 .has-action-bar {
   padding-bottom: 110px;
@@ -516,7 +514,7 @@ checkbox .wx-checkbox-input.wx-checkbox-input-checked::before{
 }
 .customTabsStyle{
   .at-tabs__item--active {
-    color: inherit!important; 
+    color: inherit!important;
   }
   .at-tabs__item-underline{
     color: inherit!important;

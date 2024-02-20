@@ -215,7 +215,7 @@ function ItemList() {
       v.leftList[pageIndex - 1] = resLeftList
       v.rightList[pageIndex - 1] = resRightList
       v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND)
-      if(v.tagList.length < 1){
+      if (v.tagList.length < 1) {
         if (select_tags_list.length > 0) {
           v.tagList = [
             {
@@ -350,86 +350,58 @@ function ItemList() {
           onConfirm={handleConfirm}
         />
       </View>
-      <View className='item-list-head'>
-        {tagList.length > 0 && (
-          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
-            {/* <View
-            className="filter-btn"
-            onClick={() => {
-              setState(v => {
-                v.show = true;
-              });
-            }}
-          >
-            筛选<Text className="iconfont icon-filter"></Text>
-          </View> */}
-          </SpTagBar>
-        )}
+      <ScrollView className="list-scroll-container" scrollY >
+        <View className='item-list-head'>
+          {tagList.length > 0 && (
+            <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag} />
+          )}
 
-        <SpFilterBar
-          custom
-          current={curFilterIdx}
-          list={filterList}
-          onChange={handleFilterChange}
-        />
-      </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
-        <View className='goods-list'>
-          <View className='left-container'>
-            {leftList.map((list, idx) => {
-              return list.map((item, sidx) => (
-                <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
-                  <SpGoodsItem
-                    showFav
-                    onStoreClick={handleClickStore}
-                    info={{
-                      ...item,
-                      card_id,
-                      user_card_id
-                    }}
-                  />
-                </View>
-              ))
-            })}
-          </View>
-          <View className='right-container'>
-            {rightList.map((list, idx) => {
-              return list.map((item, sidx) => (
-                <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
-                  <SpGoodsItem
-                    showFav
-                    onStoreClick={handleClickStore}
-                    info={{
-                      ...item,
-                      card_id,
-                      user_card_id
-                    }}
-                  />
-                </View>
-              ))
-            })}
-          </View>
+          <SpFilterBar
+            custom
+            current={curFilterIdx}
+            list={filterList}
+            onChange={handleFilterChange}
+          />
         </View>
-      </SpScrollView>
-
-      {/* <SpDrawer
-        show={show}
-        onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
-        }}
-        onConfirm={onConfirmBrand}
-        onReset={onResetBrand}
-      >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
-        />
-      </SpDrawer> */}
+        <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+          <View className='goods-list'>
+            <View className='left-container'>
+              {leftList.map((list, idx) => {
+                return list.map((item, sidx) => (
+                  <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
+                    <SpGoodsItem
+                      showFav
+                      onStoreClick={handleClickStore}
+                      info={{
+                        ...item,
+                        card_id,
+                        user_card_id
+                      }}
+                    />
+                  </View>
+                ))
+              })}
+            </View>
+            <View className='right-container'>
+              {rightList.map((list, idx) => {
+                return list.map((item, sidx) => (
+                  <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
+                    <SpGoodsItem
+                      showFav
+                      onStoreClick={handleClickStore}
+                      info={{
+                        ...item,
+                        card_id,
+                        user_card_id
+                      }}
+                    />
+                  </View>
+                ))
+              })}
+            </View>
+          </View>
+        </SpScrollView>
+      </ScrollView>
     </SpPage>
   )
 }

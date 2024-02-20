@@ -5,7 +5,7 @@ import Taro, {
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   SpScreenAd,
@@ -226,10 +226,11 @@ function Home() {
       renderFooter={<SpTabbar />}
       loading={loading}
     >
-      <View
+      <ScrollView
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
+        scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
         {
@@ -238,7 +239,7 @@ function Home() {
             <SpRecommend className='recommend-block' info={likeList} />
           </HomeWgts>
         }
-      </View>
+      </ScrollView>
 
       {/* 小程序搜藏提示 */}
       {isWeixin && <MCompAddTip />}

@@ -16,7 +16,8 @@ const config = {
     'pages/item/espier-detail', // 商品详情页面
 
     'pages/article/index', // 文章页面
-    'pages/recommend/list', // 推荐软文列表
+    'pages/recommend/list', // 种草列表
+    'pages/recommend/detail', // 种草详情
     'pages/member/item-fav', // 收藏页面
 
     'pages/custom/custom-page', // 自定义页面
@@ -158,6 +159,8 @@ const config = {
     {
       root: 'subpages/trade',
       pages: [
+        'list',
+        'detail',
         'after-sale',
         'after-sale-detail',
         'logistics-info',

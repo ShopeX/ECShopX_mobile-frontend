@@ -1,6 +1,8 @@
 import { pickBy, formatDateTime, isObject } from "@/utils"
+import dayjs from "dayjs"
 
 export const TRADE_ITEM = {
+  autoCancelSeconds: 'auto_cancel_seconds',
   orderId: 'order_id',
   createDate: 'create_date',
   orderStatusMsg: 'order_status_msg',

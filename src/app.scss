@@ -27,11 +27,18 @@ body {
   background: $color-bg-gray;
   color: $color-primary-text;
 }
+
 body {
   position: inherit !important;
+  overflow: hidden;
 }
+
 .taro__modal {
   transition: opacity 0s linear 0s !important;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }
 
 #react-refresh-overlay {
@@ -56,26 +63,32 @@ body {
 .sec {
   background: #fff;
   margin: 0 0 $edge-margin;
+
   &-hd {
     display: flex;
     line-height: 1;
     align-items: center;
     padding: $edge-size;
+
     .more {
       color: $color-link;
       font-size: $font-size-small;
       margin-right: floor(-$edge-size / 4);
     }
+
     .at-icon {
       font-size: $font-size-large;
     }
   }
+
   &-title {
     flex: 1;
   }
+
   &-ft {
     color: $color-gray-light;
     margin-right: floor(-$edge-size / 4);
+
     .at-font {
       font-size: $font-size-large;
     }
@@ -83,10 +96,12 @@ body {
 }
 
 .btns {
+
   button,
   .at-button {
     margin: 0 0 $edge-margin;
   }
+
   padding: $edge-margin $edge-size;
 }
 
@@ -98,11 +113,13 @@ body {
 
 .toolbar {
   &.toolbar-inline {
+
     .at-button,
     at-button {
       width: 100%;
     }
   }
+
   background: #fff;
   font-size: $font-size;
   display: flex;
@@ -118,11 +135,13 @@ body {
   align-content: center;
   justify-content: space-between;
   z-index: $z-index-toolbar;
+
   .at-button {
     font-size: $font-size;
   }
-  &-hd {
-  }
+
+  &-hd {}
+
   &-ft {
     max-width: 120px;
   }
@@ -146,6 +165,7 @@ switch,
   .layout {
     border-radius: 15px 15px 0 0;
   }
+
   .layout-body {
     background: #efefef;
     padding: 0;
@@ -162,8 +182,7 @@ switch,
 //   }
 // }
 
-.sp-search-bar {
-}
+.sp-search-bar {}
 
 .usericon {
   border: 4px solid #fff;
@@ -182,16 +201,19 @@ switch,
   &.wgt__padded {
     padding: 20px 0px;
   }
+
   .wgt-head {
     padding: 0px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 24px;
+
     .wgt-hd {
       display: flex;
       align-items: baseline;
       flex: 1;
+
       .wgt-title {
         color: #222;
         font-size: 36px;
@@ -201,12 +223,14 @@ switch,
         @include multi-ellipsis(1);
       }
     }
+
     .wgt-subtitle {
       color: #999;
       font-size: 28px;
       max-width: 55%;
       @include multi-ellipsis(1);
     }
+
     .wgt-more {
       display: flex;
       align-items: center;
@@ -214,12 +238,14 @@ switch,
       width: 60px;
       height: 24px;
       border-radius: 60px;
+
       .three-dot {
         position: relative;
         width: 8px;
         height: 8px;
         background: #333;
         border-radius: 50%;
+
         &::before,
         &::after {
           position: absolute;
@@ -229,15 +255,18 @@ switch,
           border-radius: 50%;
           content: '';
         }
+
         &::before {
           transform: translateX(-160%);
         }
+
         &::after {
           transform: translateX(160%);
         }
       }
     }
   }
+
   // .wgt-body {
   //   margin-top: 24px;
   // }
@@ -248,6 +277,7 @@ switch,
   position: relative;
   overflow: hidden;
   display: inline-block;
+
   &::before {
     content: '';
     display: block;
@@ -262,6 +292,7 @@ switch,
     /* prettier-ignore */
     border: 1PX solid var(--color-primary);
   }
+
   &::after {
     content: '';
     display: block;
@@ -276,6 +307,7 @@ switch,
     /* prettier-ignore */
     border: 1PX solid var(--color-primary);
   }
+
   .coupon-wrap {
     /* prettier-ignore */
     border: 1PX solid var(--color-primary);
@@ -284,6 +316,7 @@ switch,
     line-height: 38px;
     padding: 0 10px;
   }
+
   .coupon-text {
     color: var(--color-primary);
     font-size: 22px;
@@ -304,6 +337,7 @@ switch,
     font-size: 26px;
     padding: 0 2px;
   }
+
   .time-fonts {
     display: inline-flex;
     padding-top: 6px;

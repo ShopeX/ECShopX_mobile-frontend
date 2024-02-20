@@ -195,45 +195,44 @@ function AddressIndex(props) {
         <SpCell
           className='logistics-no border-bottom'
           title='收件人'
-          value={
-            <AtInput
-              name='username'
-              value={info?.username}
-              placeholder='收件人姓名'
-              onChange={(e) => handleChange('username', e)}
-            />
-          }
-        ></SpCell>
+        >
+          <AtInput
+            name='username'
+            value={info?.username}
+            placeholder='收件人姓名'
+            onChange={(e) => handleChange('username', e)}
+          />
+        </SpCell>
 
         <SpCell
           className='logistics-no border-bottom'
           title='手机号码'
-          value={
-            <AtInput
-              name='telephone'
-              maxLength={11}
-              value={info?.telephone}
-              placeholder='收件人手机号'
-              onChange={(e) => handleChange('telephone', e)}
-            />
-          }
-        ></SpCell>
+        >
+          <AtInput
+            name='telephone'
+            maxLength={11}
+            value={info?.telephone}
+            placeholder='收件人手机号'
+            onChange={(e) => handleChange('telephone', e)}
+          />
+        </SpCell>
 
         <SpCell
           className='logistics-no province border-bottom'
           title='所在区域'
           isLink
           arrow
-          value={
-            <View className='picker' onClick={onPickerClick}>
-              {chooseValue?.join('') === '' ? (
-                <Text>选择省/市/区</Text>
-              ) : (
-                <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
-              )}
-            </View>
-          }
-        ></SpCell>
+          onClick={onPickerClick}
+        >
+          <View className='picker' >
+            {chooseValue?.join('') === '' ? (
+              <Text>选择省/市/区</Text>
+            ) : (
+              <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
+            )}
+          </View>
+        </SpCell>
+
         <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
 
         <SpCell
@@ -275,17 +274,9 @@ function AddressIndex(props) {
             color={colors.data[0].primary}
           />
         }
-      ></SpCell>
+      />
+
       <View className='btns'>
-        {/* <AtButton
-            circle
-            type='primary'
-            className='save-btn'
-            onClick={handleSubmit}
-            style={`background: ${colors}; border-color: ${colors};border-radius: 25px;`}
-          >
-            保存并使用
-          </AtButton> */}
         <Button
           type='primary'
           onClick={handleSubmit}

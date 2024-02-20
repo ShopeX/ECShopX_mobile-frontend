@@ -1,0 +1,163 @@
+.page-trade-detail {
+  padding: 24px 16px;
+
+  .block-container {
+    background: #ffffff;
+    padding: 24px 16px;
+    box-shadow: 0px 2px 10px 0px rgba(234, 231, 224, 1);
+    margin-bottom: 24px;
+    border-radius: 16px;
+  }
+
+  .trade-status {
+    .trade-status-desc {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .iconfont {
+      font-size: 52px;
+      color: #666;
+      margin-right: 10px;
+    }
+
+    .status-desc {
+      font-size: 40px;
+      color: #222;
+      font-weight: 500;
+    }
+
+    .order-cancel-time {
+      margin-top: 10px;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .at-countdown {
+        margin-left: 6px;
+
+        .at-countdown__time {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 28px;
+        }
+
+        .at-countdown__separator {
+          font-size: 26px;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+  }
+
+  .address-info {
+    display: flex;
+    align-items: center;
+    padding: 26px 24px;
+
+    .receiver-address {
+      margin-left: 24px;
+    }
+
+    .address-detail {
+      font-size: 30px;
+      font-weight: 600;
+      color: #222222;
+    }
+
+    .name {
+      font-size: 30px;
+      color: #222;
+      font-weight: 500;
+      margin-right: 20px;
+    }
+
+    .mobile {
+      font-size: 28px;
+      color: #222;
+    }
+
+    .detail-address {
+      font-size: 24px;
+      color: #222;
+      margin-top: 10px;
+    }
+  }
+
+  .sp-cell {
+    padding: 10px 0;
+
+    &__title {
+      color: #666;
+    }
+
+    &__value {
+      color: #222;
+    }
+  }
+
+  .trade-shop {
+    font-size: 30px;
+    font-weight: 600;
+    color: #222;
+    display: flex;
+    align-items: center;
+
+    .icon-qianwang-01 {
+      font-size: 20px;
+      color: #222;
+      margin-left: 6px;
+    }
+  }
+
+  .trade-no {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+
+    .no {
+      font-size: 24px;
+      font-weight: 600;
+      color: #222222;
+      margin-right: 20px;
+    }
+  }
+
+  .trade-goods {
+    margin-top: 24px;
+
+    .sp-trade-item {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .btn-copy {
+    width: 72px;
+    height: 34px;
+    background: #f5f5f5;
+    border-radius: 17px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #222222;
+    line-height: 34px;
+    text-align: center;
+  }
+
+  .action-button-wrap {
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    .at-button {
+      margin: 0 0 0 20px;
+      &.btn-active {
+        border: 1PX solid var(--color-primary);
+        color: #fff;
+        background-color: var(--color-primary);
+      }
+    }
+  }
+}

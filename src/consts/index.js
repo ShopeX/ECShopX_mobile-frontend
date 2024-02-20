@@ -7,6 +7,13 @@ export const STATUS_TYPES_MAP = {
   PART_PAYMENT:'WAIT_BUYER_PAY'
 }
 
+export const ORDER_STATUS_TXT = {
+  NOTPAY: {
+    label: '等待买家付款',
+    icon: 'icon-daifukuan-01'
+  }
+}
+
 export const AFTER_SALE_STATUS = {
   '0': '待处理',
   '1': '处理中',

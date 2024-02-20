@@ -2,35 +2,55 @@
   .sp-float-layout-bd {
     padding: 0;
   }
+
   .address-hd {
     display: flex;
     align-items: center;
     padding: 20px 40px 10px;
+
     .tab-item {
       margin-right: 20px;
+
       &.active {
-        font-weight: bold;
+        color: var(--color-primary);
+        font-weight: 600;
       }
     }
   }
+
   .address-bd {
-    padding: 10px 40px 20px;
-    height: 500px;
+    padding: 10px 0 20px;
+    height: 600px;
+    overflow: auto;
+
+    .address-cols {
+      display: flex;
+      transition-duration: 300ms;
+    }
+
     .address-col {
-      display: none;
-      &.active {
-        display: block;
-      }
+      width: 100%;
+      flex-shrink: 0;
+      height: 600px;
+      padding: 0 40px;
+      box-sizing: border-box;
     }
   }
+
   .address-item {
     padding: 10px 0;
-    color: #666;
-    text-align: left;
-    line-height: 1.2;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+
     &.active {
-      color: #333;
+      color: var(--color-primary);
       font-weight: 600;
+    }
+
+    .iconfont {
+      font-size: 36px;
+      color: var(--color-primary);
     }
   }
 }

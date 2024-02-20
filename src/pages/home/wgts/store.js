@@ -88,7 +88,7 @@ export default class WgtStore extends Component {
                   <SpImage
                     className='store-goods__item-thumbnail'
                     src={goods.imgUrl}
-                    mode='aspectFill'
+                    mode='widthFix'
                     width={218}
                     height={218}
                   />

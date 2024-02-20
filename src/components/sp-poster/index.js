@@ -116,7 +116,7 @@ function SpPoster(props) {
       default:
         break
     }
-    const { canvasWidth, canvasHeight } = canvasObj.getCanvasSize()
+    const { canvasWidth, canvasHeight } = await canvasObj.getCanvasSize()
     setState(
       (draft) => {
         draft.pxWidth = canvasWidth
@@ -199,7 +199,7 @@ function SpPoster(props) {
       {poster && (
         <View className='share-panel__poster'>
           <View className='poster-container'>
-            <Image className='poster' src={poster} mode='scaleToFill' />
+            <Image className='poster' src={poster} mode='widthFix' />
           </View>
           <View className='poster-ft'>
             <Text className='iconfont icon-guanbi' onClick={onClose}></Text>

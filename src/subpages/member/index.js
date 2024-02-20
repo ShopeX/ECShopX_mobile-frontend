@@ -141,7 +141,7 @@ function MemberIndex(props) {
 
 
   useDidShow(() => {
-    if(isLogin){
+    if (isLogin) {
       getMemberCenterData()
     }
   })
@@ -428,52 +428,53 @@ function MemberIndex(props) {
 
   return (
     <SpPage className='pages-member-index' renderFooter={<SpTabbar />}>
-      <View
-        className='header-block'
-        style={styleNames({
-          'background-image': `url(${`${process.env.APP_IMAGE_CDN}/m_bg.png`})`
-        })}
-      >
-        <View className='header-hd'>
-          <View className='header-hd__header'>
-            <SpImage
-              className='usericon'
-              src={(userInfo && userInfo.avatar) || 'user_icon.png'}
-              width='110'
-            />
-          </View>
-          <View className='header-hd__body'>
-            <View className='username-wrap'>
-              <View className='join-us'>{VipGradeDom()}</View>
+      <ScrollView scrollY style="height: 100%;">
+        <View
+          className='header-block'
+          style={styleNames({
+            'background-image': `url(${`${process.env.APP_IMAGE_CDN}/m_bg.png`})`
+          })}
+        >
+          <View className='header-hd'>
+            <View className='header-hd__header'>
+              <SpImage
+                className='usericon'
+                src={(userInfo && userInfo.avatar) || 'user_icon.png'}
+                width='110'
+              />
+            </View>
+            <View className='header-hd__body'>
+              <View className='username-wrap'>
+                <View className='join-us'>{VipGradeDom()}</View>
+              </View>
+            </View>
+            <View className='header-hd__footer'>
+              {config.menu.member_code && (
+                <SpLogin onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}>
+                  <Text className='iconfont icon-erweima-01'></Text>
+                </SpLogin>
+              )}
+              <SpLogin className='user-info__link' onChange={handleClickLink.bind(this, '/subpages/member/user-info')}>
+                <Text className='iconfont icon-qianwang-01'></Text>
+              </SpLogin>
             </View>
           </View>
-          <View className='header-hd__footer'>
-            {config.menu.member_code && (
-              <SpLogin onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}>
-                <Text className='iconfont icon-erweima-01'></Text>
-              </SpLogin>
-            )}
-            <SpLogin className='user-info__link' onChange={handleClickLink.bind(this, '/subpages/member/user-info')}>
-              <Text className='iconfont icon-qianwang-01'></Text>
+          <View className='header-bd'>
+            <SpLogin
+              className='bd-item'
+              onChange={handleClickLink.bind(this, '/subpages/marketing/coupon')}
+            >
+              <View className='bd-item-label'>优惠券(张)</View>
+              <View className='bd-item-value'>{state.couponCount}</View>
             </SpLogin>
-          </View>
-        </View>
-        <View className='header-bd'>
-          <SpLogin
-            className='bd-item'
-            onChange={handleClickLink.bind(this, '/subpages/marketing/coupon')}
-          >
-            <View className='bd-item-label'>优惠券(张)</View>
-            <View className='bd-item-value'>{state.couponCount}</View>
-          </SpLogin>
-          <SpLogin
-            className='bd-item'
-            onChange={handleClickLink.bind(this, '/subpages/member/point-detail')}
-          >
-            <View className='bd-item-label'>{`${pointName}`}</View>
-            <View className='bd-item-value'>{state.point}</View>
-          </SpLogin>
-          {/* {process.env.NODE_ENV === 'development' && (
+            <SpLogin
+              className='bd-item'
+              onChange={handleClickLink.bind(this, '/subpages/member/point-detail')}
+            >
+              <View className='bd-item-label'>{`${pointName}`}</View>
+              <View className='bd-item-value'>{state.point}</View>
+            </SpLogin>
+            {/* {process.env.NODE_ENV === 'development' && (
             <View className='bd-item deposit-item'>
               <View className='bd-item-label'>储值(¥)</View>
               <View className='bd-item-value'>
@@ -481,140 +482,125 @@ function MemberIndex(props) {
               </View>
             </View>
           )} */}
-          <SpLogin
-            className='bd-item'
-            onChange={handleClickLink.bind(this, '/pages/member/item-fav')}
-          >
-            <View className='bd-item-label'>收藏(个)</View>
-            <View className='bd-item-value'>{state.favCount}</View>
-          </SpLogin>
-        </View>
-        <View className='header-ft'>
-          {/* 会员卡等级 */}
-          {vipInfo.isOpen && (
-            <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/vip/vipgrades')}>
-              <CompVipCard info={vipInfo} userInfo={userInfo} memberConfig={memberConfig} />
-            </SpLogin>
-          )}
-        </View>
-      </View>
-
-      <View className='body-block'>
-        {config.banner?.isShow && (
-          <CompBanner
-            info={config.banner}
-            src={isLogin ? config.banner.loginBanner : config.banner.noLoginBanner}
-          />
-        )}
-
-        <CompPanel
-          title='订单'
-          extra={
-            <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=0')}>
-              查看全部订单
-            </SpLogin>
-          }
-        >
-          {config.menu.ziti_order && (
             <SpLogin
-              onChange={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+              className='bd-item'
+              onChange={handleClickLink.bind(this, '/pages/member/item-fav')}
             >
-              <View className='ziti-order'>
-                <View className='ziti-order-info'>
-                  <View className='title'>自提订单</View>
-                  <View className='ziti-txt'>
-                    您有<Text className='ziti-num'>{state.zitiNum}</Text>
-                    个等待自提的订单
-                  </View>
-                </View>
-                <Text className='iconfont icon-qianwang-01'></Text>
-              </View>
-            </SpLogin>
-          )}
-
-          <View className='order-con'>
-            <SpLogin
-              className='order-item'
-              onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5')}
-            >
-              <SpImage src='daizhifu.png' className='icon-style' />
-              {state.waitPayNum > 0 && (
-                <View className='order-bradge'>
-                  <Text>{state.waitPayNum}</Text>
-                </View>
-              )}
-              <Text className='order-txt'>待支付</Text>
-            </SpLogin>
-            <SpLogin
-              className='order-item'
-              onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1')}
-            >
-              <SpImage src='daishouhuo.png' className='icon-style' />
-              {state.waitRecevieNum + state.waitSendNum > 0 && (
-                <View className='order-bradge'>
-                  <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
-                </View>
-              )}
-              <Text className='order-txt'>待收货</Text>
-            </SpLogin>
-            <SpLogin
-              className='order-item'
-              onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=7')}
-            >
-              <SpImage src='pingjia.png' className='icon-style' />
-              {state.waitEvaluateNum > 0 && (
-                <View className='order-bradge'>
-                  <Text>{state.waitEvaluateNum}</Text>
-                </View>
-              )}
-              <Text className='order-txt'>待评价</Text>
-            </SpLogin>
-            <SpLogin
-              className='order-item'
-              onChange={handleClickLink.bind(this, '/subpage/pages/trade/after-sale')}
-            >
-              <SpImage src='shouhou.png' className='icon-style' />
-              {state.afterSalesNum > 0 && (
-                <View className='order-bradge'>
-                  <Text>{state.afterSalesNum}</Text>
-                </View>
-              )}
-              <Text className='order-txt'>售后</Text>
+              <View className='bd-item-label'>收藏(个)</View>
+              <View className='bd-item-value'>{state.favCount}</View>
             </SpLogin>
           </View>
-        </CompPanel>
+          <View className='header-ft'>
+            {/* 会员卡等级 */}
+            {vipInfo.isOpen && (
+              <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/vip/vipgrades')}>
+                <CompVipCard info={vipInfo} userInfo={userInfo} memberConfig={memberConfig} />
+              </SpLogin>
+            )}
+          </View>
+        </View>
 
-        <CompPanel>
-          <CompMenu
-            accessMenu={{
-              ...config.menu,
-              popularize: userInfo ? userInfo.popularize : false
-            }}
-            isPromoter={userInfo ? userInfo.isPromoter : false}
-            onLink={handleClickService}
-          />
-        </CompPanel>
+        <View className='body-block'>
+          {config.banner?.isShow && (
+            <CompBanner
+              info={config.banner}
+              src={isLogin ? config.banner.loginBanner : config.banner.noLoginBanner}
+            />
+          )}
 
-        <CompPanel>
-          <CompHelpCenter onLink={handleClickService} />
-        </CompPanel>
-      </View>
-      {/* <View className="dibiao-block">
-        <SpImage className="dibiao-image" src="dibiao.png" />
-      </View> */}
+          <CompPanel
+            title='订单'
+            extra={
+              <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=0')}>
+                查看全部订单
+              </SpLogin>
+            }
+          >
+            {config.menu.ziti_order && (
+              <SpLogin
+                onChange={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+              >
+                <View className='ziti-order'>
+                  <View className='ziti-order-info'>
+                    <View className='title'>自提订单</View>
+                    <View className='ziti-txt'>
+                      您有<Text className='ziti-num'>{state.zitiNum}</Text>
+                      个等待自提的订单
+                    </View>
+                  </View>
+                  <Text className='iconfont icon-qianwang-01'></Text>
+                </View>
+              </SpLogin>
+            )}
 
-      {/* 隐私政策 */}
-      {/* <SpPrivacyModal
-        open={policyModal}
-        onCancel={() => {
-          setPolicyModal(false)
-        }}
-        onConfirm={() => {
-          login()
-          RefLogin._setPolicyModal()
-          setPolicyModal(false)
-        }}
-      /> */}
+            <View className='order-con'>
+              <SpLogin
+                className='order-item'
+                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5')}
+              >
+                <SpImage src='daizhifu.png' className='icon-style' />
+                {state.waitPayNum > 0 && (
+                  <View className='order-bradge'>
+                    <Text>{state.waitPayNum}</Text>
+                  </View>
+                )}
+                <Text className='order-txt'>待支付</Text>
+              </SpLogin>
+              <SpLogin
+                className='order-item'
+                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1')}
+              >
+                <SpImage src='daishouhuo.png' className='icon-style' />
+                {state.waitRecevieNum + state.waitSendNum > 0 && (
+                  <View className='order-bradge'>
+                    <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
+                  </View>
+                )}
+                <Text className='order-txt'>待收货</Text>
+              </SpLogin>
+              <SpLogin
+                className='order-item'
+                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=7')}
+              >
+                <SpImage src='pingjia.png' className='icon-style' />
+                {state.waitEvaluateNum > 0 && (
+                  <View className='order-bradge'>
+                    <Text>{state.waitEvaluateNum}</Text>
+                  </View>
+                )}
+                <Text className='order-txt'>待评价</Text>
+              </SpLogin>
+              <SpLogin
+                className='order-item'
+                onChange={handleClickLink.bind(this, '/subpage/pages/trade/after-sale')}
+              >
+                <SpImage src='shouhou.png' className='icon-style' />
+                {state.afterSalesNum > 0 && (
+                  <View className='order-bradge'>
+                    <Text>{state.afterSalesNum}</Text>
+                  </View>
+                )}
+                <Text className='order-txt'>售后</Text>
+              </SpLogin>
+            </View>
+          </CompPanel>
+
+          <CompPanel>
+            <CompMenu
+              accessMenu={{
+                ...config.menu,
+                popularize: userInfo ? userInfo.popularize : false
+              }}
+              isPromoter={userInfo ? userInfo.isPromoter : false}
+              onLink={handleClickService}
+            />
+          </CompPanel>
+
+          <CompPanel>
+            <CompHelpCenter onLink={handleClickService} />
+          </CompPanel>
+        </View>
+      </ScrollView>
     </SpPage>
   )
 }
