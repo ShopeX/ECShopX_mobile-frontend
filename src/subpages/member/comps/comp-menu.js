@@ -68,8 +68,8 @@ const MENUS = [
   {
     key: 'purchase',
     name: '内购',
-    icon: 'm_menu_tuangou.png',
-    link: '/marketing/pages/member/purchase'
+    icon: 'm_menu_jiatingfengxiang.png',
+    link: '/pages/purchase/auth'
   },
   {
     key: 'dianwu',
@@ -124,7 +124,7 @@ function CompMenu(props) {
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
-  if (!config.whitelist_status) {
+  if ((VERSION_IN_PURCHASE || VERSION_B2C) && isWeixin) { // 会员中心内购只在ecx和云店展示
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
   //商家入驻是否开启

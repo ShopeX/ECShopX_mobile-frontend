@@ -10,6 +10,7 @@ import doc from '@/doc'
 import { navigateTo, pickBy, classNames, throttle } from '@/utils'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
+import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import {
   SpPage,
   SpTabbar,
@@ -58,6 +59,11 @@ function CartIndex() {
   // useDepChange(() => {
   //   fetch()
   // }, [isLogin])
+
+  useEffect(() => {
+    dispatch(updatePurchaseShareInfo())
+    dispatch(updateInviteCode())
+  }, [])
 
   useEffect(() => {
     if (isLogin) fetch()

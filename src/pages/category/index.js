@@ -4,7 +4,9 @@ import { useImmer } from 'use-immer'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { useDispatch } from 'react-redux'
 import doc from '@/doc'
+import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
 import CompSeries from './comps/comp-series'
@@ -22,9 +24,13 @@ const initialState = {
 const CategoryIndex = (props) => {
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
+  const dispatch = useDispatch()
+
   // 获取数据
   useEffect(() => {
     getConfig()
+    dispatch(updatePurchaseShareInfo())
+    dispatch(updateInviteCode())
   }, [])
 
   const getConfig = async () => {

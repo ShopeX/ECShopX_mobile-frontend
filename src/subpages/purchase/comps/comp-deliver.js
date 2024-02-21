@@ -9,7 +9,6 @@ import api from '@/api'
 
 import { deliveryList } from '../const'
 import './comp-deliver.scss'
-import { isNull } from 'lodash'
 
 const initialState = {
   distributorInfo: null,

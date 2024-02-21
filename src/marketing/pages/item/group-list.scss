@@ -29,12 +29,12 @@ $item-img-size: 240px !default;
   // }
   .groups-list__scroll {
     box-sizing: border-box;
-    @include page-scroll($tabbar-height + $edge-size/2, 0);
+    @include page-scroll($tabbar-height + calc($edge-size/2), 0);
   }
   &.has-navbar {
     .groups-list__scroll {
       @include page-scroll(
-        $tabbar-height + $edge-size/2 + $navigate-height-h5,
+        $tabbar-height + calc($edge-size/2) + $navigate-height-h5,
         0
       );
     }

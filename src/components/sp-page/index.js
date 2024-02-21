@@ -5,7 +5,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch, showToast, validate } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, VERSION_IN_PURCHASE, validate } from '@/utils'
 
 import './index.scss'
 
@@ -266,7 +266,7 @@ function SpPage(props, ref) {
               onClick={() => {
                 if (cusCurrentPage == 1) {
                   Taro.redirectTo({
-                    url: isGoodsShelves() ? '/subpages/guide/index' : '/pages/index'
+                    url: isGoodsShelves() ? '/subpages/guide/index' : VERSION_IN_PURCHASE ? '/pages/purchase/index' : '/pages/index'
                   })
                 } else {
                   Taro.navigateBack()

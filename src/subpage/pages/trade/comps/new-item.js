@@ -94,7 +94,7 @@ export default class TradeItem extends Component {
           </View>
         )}
         <View className='trade-item__msg'>
-          <View className='item lineone'>订单编号：{info.tid}</View>
+          <View className='item lineone'>{info.order_class === 'employee_purchase' && <Text className='purchase-icon'>内购</Text>}订单编号：{info.tid}</View>
           <View className='item linetwo'>下单时间：{info.create_date}</View>
         </View>
         <View className='trade-item__bd' onClick={onClick}>

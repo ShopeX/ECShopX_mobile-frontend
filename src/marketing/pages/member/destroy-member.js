@@ -5,16 +5,17 @@ import { connect } from 'react-redux'
 import { SpPage, SpCheckbox } from '@/components'
 import req from '@/api/req'
 import configStore from '@/store'
+import { VERSION_IN_PURCHASE } from '@/utils'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 import './destroy-member.scss'
 
-const {store} = configStore()
+const { store } = configStore()
 @connect(({ colors }) => ({
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       checked: false,
@@ -58,7 +59,7 @@ export default class SettingIndex extends Component {
             type: 'user/clearUserInfo'
           })
           Taro.reLaunch({
-            url: '/pages/index'
+            url: VERSION_IN_PURCHASE ? '/pages/purchase/auth' : '/pages/index'
           })
         }
       })
@@ -66,7 +67,7 @@ export default class SettingIndex extends Component {
     this.setState({ visible: false })
   }
 
-  render () {
+  render() {
     const { checked, visible, content, title, cancelBtnContent, confirmBtnContent } = this.state
     const { colors } = this.props
     return (

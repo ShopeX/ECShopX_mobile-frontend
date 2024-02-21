@@ -33,7 +33,7 @@ function CompShopBrand(props) {
     // })
     let fav = false
 
-    if(S.getAuthToken()) {
+    if (S.getAuthToken()) {
       const { is_fav } = await api.member.storeIsFav(dtid)
       fav = is_fav
     }

@@ -6,13 +6,8 @@ import { SpPrice, SpLogin } from '@/components'
 import './comp-couponlist.scss'
 
 function CompCouponList(props) {
-  const { info, onClick = () => {} } = props
+  const { info = [], onClick = () => {} } = props
   console.log(info)
-  const onChangeLogin = () => {
-    Taro.navigateTo({
-      url: `/subpage/pages/vip/vipgrades?grade_name=${info.vipgrade_name}`
-    })
-  }
 
   if (info.length == 0) {
     return null

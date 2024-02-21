@@ -7,7 +7,7 @@ import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import CompShopItem from './comps/comp-shopitem'
-import { usePage, useLogin } from '@/hooks'
+import { useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 

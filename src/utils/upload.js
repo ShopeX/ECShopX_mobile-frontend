@@ -1,7 +1,8 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
-import { isAlipay, getAppId, exceedLimit, isWeixin, log, isWeb } from '@/utils'
+import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
+// import COS from './cos'
 import { reject } from 'lodash'
 // import * as qiniu from 'qiniu-js'
 
@@ -139,7 +140,7 @@ const upload = {
     const { filetype, domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
     let header = {
-      Authorization: `Bearer ${S.getAuthToken()}`,
+      Authorization: `Bearer ${S.getAuthToken()}`
     }
     if (isWeixin) {
       header['authorizer-appid'] = getAppId()
@@ -212,6 +213,42 @@ const upload = {
     } catch (e) {
       throw new Error(e)
     }
+  },
+  cosv5Upload: async (item, tokenRes) => {
+    if(!COS) return false
+    const { bucket, region, token, url, filetype } = tokenRes
+    try {
+      var cos = new COS({
+          getAuthorization: function (options, callback) {
+            callback({ Authorization: token })
+          },
+          SimpleUploadMethod: 'putObject'
+        })
+        console.log(item.file.originalFileObj)
+      var params = {
+        Bucket: bucket /* 填写自己的 bucket，必须字段 */,
+        Region: region /* 存储桶所在地域，必须字段 */,
+        Key: url /* 存储在桶里的对象键（例如:1.jpg，a/b/test.txt，图片.jpg）支持中文，必须字段 */,
+      }
+      if(isWeixin){
+        params = {...params,FilePath: item.url /* 上传文件路径，必须字段 */}
+      }
+      if(isWeb){
+        params = {...params,Body: item.file.originalFileObj /* 上传文件路径，必须字段 */}
+      }
+      const res = await cos.uploadFile(params)
+      const { Location } = res
+      if (!Location) {
+        return false
+      }
+      return {
+        url: 'https://'+Location,
+        filetype,
+        thumb: item.thumb
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
   }
 }
 
@@ -223,6 +260,8 @@ const getUploadFun = (dirver) => {
       return 'localUpload'
     case 'aws':
       return 'awsUpload'
+    case 'cosv5':
+      return 'cosv5Upload'
     default:
       return 'qiNiuUpload'
   }
@@ -253,6 +292,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
       let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
+      console.log(uploadType)
       if (filetype == 'videos' && item.thumb) {
         const _thumb = {
           url: item.thumb

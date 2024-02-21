@@ -7,11 +7,9 @@ export const STATUS_TYPES_MAP = {
   PART_PAYMENT:'WAIT_BUYER_PAY'
 }
 
-export const ORDER_STATUS_TXT = {
-  NOTPAY: {
-    label: '等待买家付款',
-    icon: 'icon-daifukuan-01'
-  }
+export const ORDER_STATUS_ICON = {
+  NOTPAY: 'icon-daizhifu-duoduan',
+  PAYED: 'icon-daifahuo-duoduan',
 }
 
 export const AFTER_SALE_STATUS = {
@@ -120,6 +118,20 @@ export const TABBAR_ICON = {
   liveroom: 'zhibo',
   allGoods: 'quanbushangpin',
   ugc: 'shequ'
+}
+
+export const PURCHASE_TABBAR_PATH = {
+  home: '/subpages/purchase/index',
+  category: '/subpages/purchase/category',
+  cart: '/subpages/purchase/espier-index',
+  member: '/subpages/purchase/member',
+}
+
+export const PURCHASE_TABBAR_ICON = {
+  home: 'shouye',
+  category: 'fenlei',
+  cart: 'gwche',
+  member: 'huiyuan',
 }
 
 export const BUY_TOOL_BTNS = {

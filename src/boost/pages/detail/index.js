@@ -6,7 +6,7 @@ import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
 import { connect } from 'react-redux'
-import config from './index.config.js'
+// import config from './index.config.js'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
 
 import './index.scss'
@@ -315,11 +315,14 @@ export default class Detail extends Component {
 
     return (
       <View className='detail'>
-        <SpNavBar
+
+        {/* <SpNavBar
           title={config.navigationBarTitleText}
           leftIconType='chevron-left'
           fixed='true'
-        />
+        /> */}
+
+
         <View className='header'>
           <Image className='adPic' src={adPic} mode='aspectFill' />
         </View>

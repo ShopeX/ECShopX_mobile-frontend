@@ -16,7 +16,6 @@ import {
   SpImage,
   SpPrice,
   CouponModal,
-  SpModal,
   SpPrivacyModal,
   SpTabbar,
   SpPage
@@ -36,13 +35,14 @@ import {
   VERSION_STANDARD
 } from '@/utils'
 import { useLogin } from '@/hooks'
+import S from '@/spx'
+import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
-import S from '@/spx'
 
 const initialConfigState = {
   banner: {
@@ -82,7 +82,8 @@ const initialConfigState = {
   memberConfig: {
     // defaultImg: null,
     vipImg: null
-  }
+  },
+  purchaseRes: {}
 }
 
 const initialState = {
@@ -126,6 +127,7 @@ function MemberIndex(props) {
     if (isLogin) {
       getMemberCenterData()
       setMemberBackground()
+      getEmployeeIsOpen()
       const { redirect } = $instance.router.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
@@ -190,6 +192,13 @@ function MemberIndex(props) {
     })
   }
 
+  const getEmployeeIsOpen = async () => {
+    const purchaseRes = await api.purchase.getEmployeeIsOpen()
+    setConfig(draft => {
+      draft.purchaseRes = purchaseRes
+    })
+  }
+
   const getMemberCenterConfig = async () => {
     const [bannerRes, menuRes, redirectRes, pointShopRes] = await Promise.all([
       // 会员中心banner
@@ -205,7 +214,7 @@ function MemberIndex(props) {
         page_name: 'member_center_redirect_setting'
       }),
       // 积分商城
-      await api.pointitem.getPointitemSetting()
+      await api.pointitem.getPointitemSetting(),
     ])
     let banner,
       menu,
@@ -224,7 +233,7 @@ function MemberIndex(props) {
       }
     }
     if (menuRes.list.length > 0) {
-      menu = { ...menuRes.list[0].params.data, purchase: true }
+      menu = { ...menuRes.list[0].params.data }
     }
     if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_STANDARD)) {
       const { result, status } = await api.member.is_admin()
@@ -378,6 +387,17 @@ function MemberIndex(props) {
       } else {
         Taro.navigateTo({ url: `/subpages/community/order` })
       }
+    }
+
+    if (key == 'purchase') {
+      const data = await api.purchase.getUserEnterprises({ disabled: 0 })
+      if (data?.length > 0) {
+        Taro.navigateTo({ url: '/pages/purchase/index' })
+      } else {
+        Taro.navigateTo({ url: '/pages/purchase/auth' })
+      }
+      dispatch(updatePurchaseShareInfo())
+      dispatch(updateInviteCode())
     }
 
     if (link) {
@@ -589,6 +609,7 @@ function MemberIndex(props) {
             <CompMenu
               accessMenu={{
                 ...config.menu,
+                purchase: config.purchaseRes.is_open,
                 popularize: userInfo ? userInfo.popularize : false
               }}
               isPromoter={userInfo ? userInfo.isPromoter : false}

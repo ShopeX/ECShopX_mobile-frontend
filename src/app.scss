@@ -73,7 +73,7 @@ body {
     .more {
       color: $color-link;
       font-size: $font-size-small;
-      margin-right: floor(-$edge-size / 4);
+      margin-right: floor($edge-size / 4);
     }
 
     .at-icon {

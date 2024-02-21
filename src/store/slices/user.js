@@ -3,6 +3,7 @@ import api from '@/api'
 
 const initialState = {
   userInfo: null,
+  isNewUser: false,
   cardInfo: {},
   vipInfo: {
     isOpen: false,
@@ -58,6 +59,10 @@ const userSlice = createSlice({
       state.favs = favs
     },
 
+    updateIsNewUser: (state, { payload }) => {
+      state.isNewUser = payload
+    },
+
     updateChooseAddress: (state, { payload }) => {
       state.address = payload
     },
@@ -98,7 +103,7 @@ const userSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief, clearUserInfo } =
+export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief, clearUserInfo, updateIsNewUser } =
   userSlice.actions
 
 export default userSlice.reducer

@@ -23,7 +23,7 @@ function SpLogin(props, ref) {
   const { children, className, onChange, newUser = false } = props
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
-      // isUpdate && setPolicyModal(true)
+      isUpdate && setPolicyModal(true)
     }
   })
   const [isNewUser, setIsNewUser] = useState(false)
@@ -41,7 +41,7 @@ function SpLogin(props, ref) {
 
   useEffect(() => {
     if (loginModal) {
-      fetchPrivacyData()
+      // fetchPrivacyData()
       Taro.login({
         success: ({ code }) => {
           codeRef.current = code
@@ -75,14 +75,6 @@ function SpLogin(props, ref) {
         cloudID,
         user_type: 'wechat',
         auth_type: 'wxapp'
-      }
-      // 内购分享码
-      const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      if (purchaseCode) {
-        params = {
-          ...params,
-          purchanse_share_code: purchaseCode
-        }
       }
       Taro.showLoading({ title: '' })
 
@@ -146,11 +138,11 @@ function SpLogin(props, ref) {
     if (scene == 1154) {
       return showToast('请前往小程序使用完整服务')
     }
-    // const checkRes = await checkPolicyChange()
-    // if (!checkRes) {
-    //   setPolicyModal(true)
-    //   return
-    // }
+    const checkRes = await checkPolicyChange()
+    if (!checkRes) {
+      setPolicyModal(true)
+      return
+    }
     if (isLogin) {
       onChange && onChange()
     } else {
@@ -195,11 +187,11 @@ function SpLogin(props, ref) {
       <View onClick={handleClickLogin}>{children}</View>
 
       {/* 隐私协议 */}
-      {/* <SpPrivacyModal
+      <SpPrivacyModal
         open={policyModal}
         onCancel={handleCloseModal}
         onConfirm={handleConfirmModal}
-      /> */}
+      />
 
       {/* 授权登录 */}
       <AtCurtain
@@ -214,7 +206,7 @@ function SpLogin(props, ref) {
             <View className='nick-name'>{nickname}</View>
           </View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
-          <View className='agreement-content'>
+          {/* <View className='agreement-content'>
             <SpCheckbox
               checked={agreeMentChecked}
               onChange={onChangePayment}
@@ -223,12 +215,18 @@ function SpLogin(props, ref) {
               <Text className='agreement-name' onClick={handleClickPrivacy.bind(this, 'member_register')}>《{registerName}》</Text>和
               <Text className='agreement-name' onClick={handleClickPrivacy.bind(this, 'privacy')}>《{privacyName}》</Text>
             </View>
-          </View>
+          </View> */}
           <View className='login-modal__ft'>
-            {isNewUser && <AtButton type='primary' disabled={!agreeMentChecked} openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
+            {/* {isNewUser && <AtButton type='primary' disabled={!agreeMentChecked} openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
               登录
             </AtButton>}
             {!isNewUser && <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
+              登录
+            </AtButton>} */}
+             {isNewUser && <AtButton type='primary' openType='getPhoneNumber' onGetPhoneNumber={handleBindPhone}>
+              登录
+            </AtButton>}
+            {!isNewUser && <AtButton type='primary' onClick={handleUserLogin}>
               登录
             </AtButton>}
           </View>

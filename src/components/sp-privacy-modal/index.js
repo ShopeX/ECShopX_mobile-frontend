@@ -18,7 +18,7 @@ const initState = {
 
 function SpPrivacyModal(props) {
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
-  const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
+  const { open = false, onCancel = () => { }, onConfirm = () => { } } = props
   const [info, setInfo] = useImmer(initState)
   useEffect(() => {
     if (open) {
@@ -55,17 +55,14 @@ function SpPrivacyModal(props) {
   return (
     <View
       className={classNames('sp-privacy-modal', {
-        'is-hide': !open
+        'open': open
       })}
     >
+      <View className='sp-privacy-modal__overlay'></View>
       <View
         className='modal-container'
-        style={styleNames({
-          'background-image': `url(${process.env.APP_IMAGE_CDN}/bg.png)`
-        })}
       >
         <View className='modal-hd'>
-          <SpImage src='privacy_tips.png' width={40} />
           <Text className='title'>个人隐私保护指引</Text>
         </View>
         <View className='modal-bd'>
@@ -82,14 +79,14 @@ function SpPrivacyModal(props) {
           <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
         </View>
         <View className='modal-ft'>
-          <View className='btn-wrap '>
-            <AtButton className='cancel-btn' onClick={handleCancel}>
-              拒绝
+          <View className='btn-wrap'>
+            <AtButton type='primary' circle onClick={handleConfirm}>
+              同意
             </AtButton>
           </View>
           <View className='btn-wrap'>
-            <AtButton type='primary' onClick={handleConfirm}>
-              同意
+            <AtButton className='cancel-btn' onClick={handleCancel}>
+              不同意
             </AtButton>
           </View>
         </View>

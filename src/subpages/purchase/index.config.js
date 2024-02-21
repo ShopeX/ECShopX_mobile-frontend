@@ -1,3 +1,9 @@
 export default {
-  navigationBarTitleText: '内购'
+  // enablePullDownRefresh: true,
+  // backgroundTextStyle: 'dark',
+  // onReachBottomDistance: 50
+  navigationStyle: 'custom',
+  transparentTitle: 'auto',
+  titlePenetrate: 'YES',
+  navigationBarTitleText: ''
 }

@@ -22,7 +22,8 @@ const config = {
 
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
-    'pages/liveroom/index' // 直播间页面
+    'pages/liveroom/index', // 直播间页面
+    'pages/purchase/auth'
   ],
   subPackages: [
     // 内购
@@ -32,7 +33,17 @@ const config = {
         'member',
         'espier-detail',
         'espier-checkout',
-        'index' // 家属分享
+        'share', // 家属分享
+        'select-company',
+        'select-company-account',
+        'select-company-email',
+        'select-company-phone',
+        'select-identity',
+        'neigou-order',
+        'category',
+        'espier-index',
+        'index',
+        'list'
       ]
     },
     // 导购货架 guide
@@ -394,7 +405,13 @@ if (process.env.APP_LIVE == 'true') {
   })
 }
 
-if(process.env.APP_ADAPAY == 'true') {
+if (process.env.APP_PLATFORM == 'in_purchase') {
+  config?.pages?.splice(config?.pages[0], 1, 'pages/purchase/index')
+}else{
+  config?.pages?.push('pages/purchase/index')
+}
+
+if (process.env.APP_ADAPAY == 'true') {
   Object.assign(config.plugins, {
     'Adapay': {
       'version': 'latest', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）

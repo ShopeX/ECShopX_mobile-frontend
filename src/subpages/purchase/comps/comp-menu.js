@@ -1,18 +1,7 @@
-import Taro from '@tarojs/taro'
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-import {
-  classNames,
-  styleNames,
-  isWeixin,
-  isWeb,
-  VERSION_PLATFORM,
-  VERSION_STANDARD,
-  VERSION_IN_PURCHASE
-} from '@/utils'
-import { SG_APP_CONFIG } from '@/consts'
+import { isWeb } from '@/utils'
 import CompPanel from './comp-panel'
 
 import './comp-menu.scss'
@@ -26,9 +15,9 @@ const MENUS = [
   // }
   {
     key: 'purchase',
-    name: '分享家属',
+    name: '分享亲友',
     icon: 'm_menu_jiatingfengxiang.png',
-    link: '/subpages/purchase/index'
+    link: `/subpages/purchase/share`
   },
   {
     key: 'dianwu',
@@ -58,8 +47,6 @@ const MENUS = [
 
 function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
-  const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null
   }
@@ -67,18 +54,6 @@ function CompMenu(props) {
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
-  if (!config.whitelist_status) {
-    menus = menus.filter((m_item) => m_item.key != 'purchase')
-  }
-
-  // if (userInfo?.is_employee) {
-  //   menus.push({
-  //     key: 'purchase',
-  //     name: '分享家属',
-  //     icon: 'm_menu_jiatingfengxiang.png',
-  //     link: '/subpages/purchase/index'
-  //   })
-  // }
 
   if (menus.length == 0) {
     return null
