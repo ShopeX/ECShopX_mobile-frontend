@@ -69,10 +69,10 @@ function SpTabbar(props) {
         },
         className,
       )}
-      // color={colorPrimary}
+      color={color}
       iconSize='20'
       backgroundColor={backgroundColor}
-      selectedColor={colorPrimary}
+      selectedColor={selectedColor}
       tabList={tabList}
       onClick={handleTabbarClick}
       current={currentIndex}
