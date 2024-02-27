@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow, useRouter } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -46,7 +46,7 @@ function Home() {
       }
     }
   })
-  const $instance = getCurrentInstance()
+  const router = useRouter()
 
   const [policyModal, setPolicyModal] = useState(false)
   const { openScanQrcode } = useSelector((state) => state.sys)
@@ -69,7 +69,7 @@ function Home() {
   })
 
   useEffect(() => {
-    const { activity_id, enterprise_id, pages_template_id } = $instance.router.params || {}
+    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
     if (activity_id) {
       dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
     }
@@ -80,8 +80,8 @@ function Home() {
   }
 
   const fetchWgts = async () => {
-    const { pages_template_id } = purchase_share_info
-    console.log(purchase_share_info, pages_template_id, '-----purchase_share_info----')
+    const { pages_template_id } = router.params
+    // console.log(purchase_share_info, pages_template_id, '-----purchase_share_info----')
     const { config, tab_bar } = await api.shop.getShopTemplate({
       distributor_id: getDistributorId(),
       pages_template_id
