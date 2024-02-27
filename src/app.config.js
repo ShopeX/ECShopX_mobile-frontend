@@ -406,7 +406,7 @@ if (process.env.APP_LIVE == 'true') {
 
 if (process.env.APP_PLATFORM == 'in_purchase') {
   config?.pages?.splice(config?.pages[0], 1, 'pages/purchase/index')
-}else{
+} else {
   config?.pages?.push('pages/purchase/index')
 }
 

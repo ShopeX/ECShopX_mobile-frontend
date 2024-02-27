@@ -76,7 +76,7 @@ function PurchaseActivityList() {
   const onClickChange = (item) => {
     console.log(item)
     const { id, enterprise_id, pages_template_id } = item
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterprise_id}&pages_template_id=${pages_template_id}`
     })
   }
