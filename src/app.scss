@@ -350,3 +350,10 @@ switch,
     background-color: transparent !important;
   }
 }
+
+.flex {
+  display: flex;
+  &-align-center {
+    align-items: center;
+  }
+}

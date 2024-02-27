@@ -531,14 +531,14 @@ function MemberIndex(props) {
           <CompPanel
             title='订单'
             extra={
-              <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=0')}>
+              <SpLogin onChange={handleClickLink.bind(this, '/subpages/trade/list?status=0')}>
                 查看全部订单
               </SpLogin>
             }
           >
             {config.menu.ziti_order && (
               <SpLogin
-                onChange={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+                onChange={handleClickLink.bind(this, '/subpages/trade/ziti-list')}
               >
                 <View className='ziti-order'>
                   <View className='ziti-order-info'>
@@ -556,7 +556,7 @@ function MemberIndex(props) {
             <View className='order-con'>
               <SpLogin
                 className='order-item'
-                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5')}
+                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=5')}
               >
                 <SpImage src='daizhifu.png' className='icon-style' />
                 {state.waitPayNum > 0 && (
@@ -568,7 +568,7 @@ function MemberIndex(props) {
               </SpLogin>
               <SpLogin
                 className='order-item'
-                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1')}
+                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=1')}
               >
                 <SpImage src='daishouhuo.png' className='icon-style' />
                 {state.waitRecevieNum + state.waitSendNum > 0 && (
@@ -580,7 +580,7 @@ function MemberIndex(props) {
               </SpLogin>
               <SpLogin
                 className='order-item'
-                onChange={handleClickLink.bind(this, '/subpage/pages/trade/list?status=7')}
+                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=7')}
               >
                 <SpImage src='pingjia.png' className='icon-style' />
                 {state.waitEvaluateNum > 0 && (
@@ -592,7 +592,7 @@ function MemberIndex(props) {
               </SpLogin>
               <SpLogin
                 className='order-item'
-                onChange={handleClickLink.bind(this, '/subpage/pages/trade/after-sale')}
+                onChange={handleClickLink.bind(this, '/subpages/trade/after-sale-list')}
               >
                 <SpImage src='shouhou.png' className='icon-style' />
                 {state.afterSalesNum > 0 && (

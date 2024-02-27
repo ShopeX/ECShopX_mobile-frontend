@@ -1101,7 +1101,7 @@ function CartCheckout(props) {
 
       <SpCashier
         isOpened={openCashier}
-        paymentAmount={totalInfo.freight_fee}
+        // paymentAmount={totalInfo.freight_fee}
         value={payChannel}
         onClose={() => {
           setState((draft) => {

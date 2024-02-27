@@ -468,7 +468,7 @@ function MemberIndex(props) {
           {config.menu.ziti_order && (
             <View
               className='ziti-order'
-              onClick={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+              onClick={handleClickLink.bind(this, '/subpages/trade/ziti-list')}
             >
               <View className='ziti-order-info'>
                 <View className='title'>自提订单</View>

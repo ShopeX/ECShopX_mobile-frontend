@@ -172,10 +172,15 @@ const config = {
       pages: [
         'list',
         'detail',
-        'after-sale',
-        'after-sale-detail',
+        'after-sale-list', // 售后订单列表
+        'after-sale', // 申请售后
+        'after-sale-detail', // 售后详情
+        'ziti-list',
         'logistics-info',
-        'store-picker'
+        'store-picker',
+        'trade-evaluate', // 订单评价
+        'evaluate-success', // 评价结果
+        'delivery-info', // 物流详情
       ]
     },
     {
@@ -259,8 +264,6 @@ const config = {
         'pages/wheel/index', // 大转盘
         'pages/item/espier-evaluation', // 商品评论列表
         'pages/item/espier-evaluation-detail', // 商品评论详情
-        'pages/item/rate', //订单评价
-        'pages/item/success', //评价结果
 
         'pages/item/seckill-goods-list', //秒杀商品列表
         'pages/item/seckill-list', //秒杀列表
@@ -276,13 +279,9 @@ const config = {
       pages: [
         'pages/recommend/detail', //软文详情页面
         'pages/trade/list', //我的订单列表页面
-        'pages/trade/customer-pickup-list', //我的自提订单列表
         'pages/trade/drug-list', //处方药订单列表
         'pages/trade/detail', //订单详情页面
         'pages/trade/after-sale-detail', //售后详情页面
-        'pages/trade/delivery-info', //整单物流详情页面
-        'pages/trade/split-bagpack', //分单物流详情页面Ω
-        'pages/trade/rate', //订单评价页面
         'pages/trade/cancel', //取消订单页面
         'pages/trade/after-sale', //售后订单列表
         'pages/trade/refund', //售后申请提交页面

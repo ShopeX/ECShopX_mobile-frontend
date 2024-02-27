@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro from '@tarojs/taro'
+import Taro, { useRouter} from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem } from '@/components'
 import api from '@/api'
@@ -26,6 +26,25 @@ function TradeList(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, tradeList, refresherTriggered } = state
   const tradeRef = useRef()
+  const router = useRouter()
+
+  useEffect(() => {
+    const { status = 0 } = router.params
+    setState((draft) => {
+      draft.status = status
+    })
+
+    Taro.eventCenter.on('onEventOrderStatusChange', () => {
+      setState((draft) => {
+        draft.tradeList = []
+      })
+      tradeRef.current.reset()
+    })
+
+    return () => {
+      Taro.eventCenter.off('onEventOrderStatusChange')
+    }
+  }, [])
 
   useEffect(() => {
     setState((draft) => {

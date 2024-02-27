@@ -5,19 +5,16 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
-import tradeHooks from '../hooks'
-import './comp-tradeitem.scss'
+import './comp-aftertrade-item.scss'
 
 function CompTradeItem(props) {
   const { info } = props
   if (!info) {
     return null
   }
-  const { tradeActionBtns, getTradeAction } = tradeHooks()
   const { distributorInfo, orderId, createDate, orderStatusMsg, items, orderStatus, totalFee, orderClass, point, distributorId } = info
   const { pointName } = useSelector((state) => state.sys)
 
-  const btns = getTradeAction(info)
 
   const handleClickItem = ({ key, action }) => {
     if (key == 'evaluate' || key == 'logistics') {
@@ -44,7 +41,7 @@ function CompTradeItem(props) {
     }
   }
 
-  const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
+  // const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
 
   return (
     <View className='comp-tradeitem'>
@@ -54,12 +51,12 @@ function CompTradeItem(props) {
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
             <View className='shop-name'>{distributorInfo?.name}{!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}</View>
           </View>
-          <View className='trade-no'>{`订单编号: ${orderId}`}</View>
-          <View className='trade-time'>{`订单时间: ${createDate}`}</View>
+          {/* <View className='trade-no'>{`退款单号: ${orderId}`}</View>
+          <View className='trade-time'>{`订单时间: ${createDate}`}</View> */}
         </View>
-        <View className='trade-state'>{orderStatusMsg}</View>
+        {/* <View className='trade-state'>{orderStatusMsg}</View> */}
       </View>
-      <View className='trade-item-bd' onClick={onViewTradeDetail}>
+      {/* <View className='trade-item-bd' onClick={onViewTradeDetail}>
         {items.map((good) => (
           <SpTradeItem info={{
             ...good,
@@ -84,12 +81,10 @@ function CompTradeItem(props) {
             </View>
           }
         </View>
-      </View>
+      </View> */}
 
       <View className='trade-item-ft'>
-        {btns.map((item) => (
-          <AtButton circle className={`btn-${item.btnStatus}`} onClick={handleClickItem.bind(this, item)}>{item.title}</AtButton>
-        ))}
+
       </View>
     </View>
   )

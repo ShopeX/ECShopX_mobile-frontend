@@ -7,9 +7,27 @@ export const STATUS_TYPES_MAP = {
   PART_PAYMENT:'WAIT_BUYER_PAY'
 }
 
-export const ORDER_STATUS_ICON = {
-  NOTPAY: 'icon-daizhifu-duoduan',
-  PAYED: 'icon-daifahuo-duoduan',
+export const ORDER_STATUS_INFO = {
+  NOTPAY: {
+    msg: '等待买家付款',
+    icon: 'order_daizhifu'
+  },
+  PAYED: {
+    msg: '等待商家发货',
+    icon: 'order_daifahuo'
+  },
+  WAIT_BUYER_CONFIRM: {
+    msg: '商家已发货',
+    icon: 'order_daishouhuo'
+  },
+  CANCEL: {
+    msg: '订单已关闭',
+    icon: 'order_close'
+  },
+  DONE: {
+    msg: '交易完成',
+    icon: 'order_success'
+  }
 }
 
 export const AFTER_SALE_STATUS = {

@@ -9,10 +9,23 @@
   .block-container {
     padding: 24px 16px;
     border-radius: 16px;
+    background-color: #fff;
+    margin-bottom: 24px;
+
+    &-label {
+      font-size: 30px;
+      color: #222;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  }
+
+  .padding-view {
+    height: 1PX;
   }
 
   .trade-status {
-    margin: 24px 0;
+    padding: 48px 16px;
 
     .trade-status-desc {
       display: flex;
@@ -30,6 +43,7 @@
       font-size: 40px;
       color: #222;
       font-weight: 500;
+      margin-left: 16px;
     }
 
     .order-cancel-time {
@@ -93,14 +107,26 @@
   }
 
   .sp-cell {
-    padding: 10px 0;
+    padding: 16px 0;
 
     &__title {
-      color: #666;
+      color: #222;
     }
 
     &__value {
       color: #222;
+      font-weight: 600;
+    }
+
+    &__link {
+      display: none;
+    }
+  }
+
+  .order-info {
+    .sp-cell__value {
+      color: #999;
+      font-weight: normal;
     }
   }
 
@@ -133,12 +159,35 @@
 
   .trade-goods {
     margin-top: 24px;
-
+    .trade-goods-item {
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+    }
     .sp-trade-item {
       &:not(:last-child) {
         margin-bottom: 20px;
       }
     }
+
+    .item-actions {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: flex-end;
+      .at-button {
+        margin: 0 0 0 20px;
+        height: 48px;
+        line-height: 48px;
+        &.btn-active {
+          background-color: var(--color-primary);
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .trade-price-info {
+    margin-top: 32px;
   }
 
   .btn-copy {
@@ -151,6 +200,8 @@
     color: #222222;
     line-height: 34px;
     text-align: center;
+    display: inline-block;
+    margin-left: 10px;
   }
 
   .action-button-wrap {
