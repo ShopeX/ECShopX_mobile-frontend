@@ -16,7 +16,7 @@ import {
   VERSION_PLATFORM,
   classNames
 } from '@/utils'
-import { updatePurchaseShareInfo } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -81,23 +81,25 @@ function Home() {
   }
 
   const fetchWgts = async () => {
-    const { pages_template_id } = router.params
     // console.log(purchase_share_info, pages_template_id, '-----purchase_share_info----')
-    const { config, tab_bar } = await api.shop.getShopTemplate({
-      distributor_id: getDistributorId(),
-      pages_template_id
-    })
-    const tabBar = tab_bar && JSON.parse(tab_bar)
-    store.dispatch({
-      type: 'purchase/updatePurchaseTabbar',
-      payload: {
+    try {
+      const { config, tab_bar } = await api.shop.getShopTemplate({
+        distributor_id: getDistributorId(),
+        pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id
+      })
+      const tabBar = tab_bar && JSON.parse(tab_bar)
+      dispatch(updatePurchaseTabbar({
         tabbar: tabBar
-      }
-    })
-    setState((draft) => {
-      draft.wgts = config
-      draft.loading = false
-    })
+      }))
+      setState((draft) => {
+        draft.wgts = config
+        draft.loading = false
+      })
+    } catch (e) {
+      dispatch(updatePurchaseTabbar({
+        tabbar: null
+      }))
+    }
   }
 
   const handleConfirmModal = useCallback(async () => {
@@ -130,7 +132,6 @@ function Home() {
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base}
       renderFooter={<CompTabbar />}
-      renderFooter={<SpTabbar />}
       loading={loading}
     >
       <View
