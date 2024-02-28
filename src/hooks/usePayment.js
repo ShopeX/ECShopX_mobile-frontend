@@ -291,6 +291,7 @@ export default (props = {}) => {
 
   // 余额/积分支付
   const depositPay = async (params, orderInfo) => {
+    debugger
     const { activityType, pay_type } = params
     const { order_id, team_id, order_type } = orderInfo
     if (pay_type == 'deposit') {
