@@ -537,7 +537,7 @@ function PointShopEspierCheckout() {
             </View>
             <View>
               {`支付金额: `}
-              <SpPrice value={totalInfo.total_fee} />
+              <SpPrice value={totalInfo.total_fee / 100} />
             </View>
           </View>
         </View>
