@@ -106,6 +106,25 @@
     }
   }
 
+  .ziti-info {
+    line-height: 50px;
+    .label {
+      font-size: 28px;
+      color: #333;
+      margin-right: 16px;
+      font-weight: 600;
+    }
+    .value {
+      font-size: 28px;
+      color: #666;
+    }
+    .icon-dianhua {
+      font-size: 28px;
+      color: #666;
+      margin-left: 20px;
+    }
+  }
+
   .sp-cell {
     padding: 16px 0;
 

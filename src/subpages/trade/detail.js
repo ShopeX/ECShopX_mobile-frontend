@@ -35,12 +35,18 @@ function TradeDetail(props) {
   useEffect(() => {
     fetch()
 
-    Taro.eventCenter.on('onEventOrderDetailChange', () => {
+    // 提交售后事件
+    Taro.eventCenter.on('onEventAfterSalesApply', () => {
+      fetch()
+    })
+    // 撤销售后事件
+    Taro.eventCenter.on('onEventAfterSalesCancel', () => {
       fetch()
     })
 
     return () => {
-      Taro.eventCenter.off('onEventOrderDetailChange')
+      Taro.eventCenter.off('onEventAfterSalesApply')
+      Taro.eventCenter.off('onEventAfterSalesCancel')
     }
   }, [])
 
@@ -79,8 +85,9 @@ function TradeDetail(props) {
       })
     } else if (key == 'confirm') {
       const { confirm } = await Taro.showModal({
-        title: '提示',
-        content: '确认收货？'
+        content: '确认收货？',
+        cancelText: '取消',
+        confirmText: '确定'
       })
       if (confirm) {
         await api.trade.confirm(info.orderId)
@@ -172,6 +179,15 @@ function TradeDetail(props) {
     }
   }
 
+  const handleCallPhone = () => {
+    const { contract_phone } = info.zitiInfo
+    if (contract_phone) {
+      Taro.makePhoneCall({
+        phoneNumber: contract_phone
+      })
+    }
+  }
+
   const renderActionButton = () => {
     //  info.cancelStatus
     // 【WAIT_PROCESS】订单申请取消中
@@ -194,28 +210,6 @@ function TradeDetail(props) {
         return null
       }
 
-    } else {
-      return null
-    }
-  }
-
-  const renderItemActions = (goods) => {
-    const btns = []
-    if (goods.showAftersales) {
-      btns.push(tradeActionBtns.AFTER_DETAIL)
-    }
-
-    // 拆单发货时，商品状态为已发货时，显示查看物流
-    if (info?.deliveryStatus === 'PARTAIL' && goods.deliveryStatus == 'DONE') {
-      btns.push(tradeActionBtns.LOGISTICS)
-    }
-
-    if (btns.length > 0) {
-      return <View className='item-actions'>
-        {
-          btns.map(btn => <AtButton circle size="small" className={`btn-active`} onClick={handleClickItem.bind(this, btn)}>{btn.title}</AtButton>)
-        }
-      </View>
     } else {
       return null
     }
@@ -245,32 +239,32 @@ function TradeDetail(props) {
             </View>
           }
         </View>
-        <View className='block-container address-info'>
+        {info?.receiptType != 'ziti' && <View className='block-container address-info'>
           <SpImage src="shouhuodizhi.png" width={60} height={60} />
-          {
-            info?.receiptType != 'ziti' && <View className='receiver-address'>
-              <View className='name-mobile'>
-                <Text className='name'>{info?.receiverName}</Text>
-                <Text className='mobile'>{info?.receiverMobile}</Text>
-              </View>
-              <View className='detail-address'>
-                {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
-              </View>
+          <View className='receiver-address'>
+            <View className='name-mobile'>
+              <Text className='name'>{info?.receiverName}</Text>
+              <Text className='mobile'>{info?.receiverMobile}</Text>
             </View>
-          }
-          {
-            info?.receiptType == 'ziti' && <View className='receiver-address'>
-              <View className='name-mobile'>
-                <Text className='name'>{info?.receiverName}</Text>
-                <Text className='mobile'>{info?.receiverMobile}</Text>
-              </View>
-              <View className='detail-address'>
-                {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
-              </View>
+            <View className='detail-address'>
+              {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
             </View>
-          }
-
+          </View>
         </View>
+        }
+        {
+          info?.receiptType == 'ziti' && <View className='block-container ziti-info'>
+            <View><Text className='label'>自提点:</Text><Text className='value'>{info.zitiInfo.name}</Text></View>
+            <View><Text className='label'>自提地址:</Text><Text className='value'>{`${info.zitiInfo.province}${info.zitiInfo.city}${info.zitiInfo.area}${info.zitiInfo.address}`}</Text></View>
+            <View><Text className='label'>联系电话:</Text><Text className='value'>{info.zitiInfo.contract_phone}</Text><Text
+              className='iconfont icon-dianhua'
+              onClick={handleCallPhone}
+            ></Text></View>
+            <View><Text className='label'>提货人:</Text><Text className='value'>{info.receiverName}</Text></View>
+            <View><Text className='label'>提货时间:</Text><Text className='value'>{`${info.zitiInfo.pickup_date} ${info.zitiInfo.pickup_time[0]}-${info.zitiInfo.pickup_time[1]}`}</Text></View>
+            <View><Text className='label'>提货人:</Text><Text className='value'>{info.receiverMobile}</Text></View>
+          </View>
+        }
         <View className='block-container'>
           <View className='trade-shop' onClick={onViewStorePage}>
             {info?.distributorName}

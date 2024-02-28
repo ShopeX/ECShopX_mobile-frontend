@@ -29,7 +29,19 @@ function TradeAfterSaleList(props) {
   const tradeRef = useRef()
   const router = useRouter()
 
-  useEffect(() => { }, [])
+  useEffect(() => {
+    // 撤销售后事件
+    Taro.eventCenter.on('onEventAfterSalesCancel', () => {
+      setState((draft) => {
+        draft.tradeList = []
+      })
+      tradeRef.current.reset()
+    })
+
+    return () => {
+      Taro.eventCenter.off('onEventAfterSalesCancel')
+    }
+  }, [])
 
   useEffect(() => {
     setState((draft) => {
@@ -39,12 +51,11 @@ function TradeAfterSaleList(props) {
   }, [status])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { is_rate } = tradeStatus.find(item => item.value == status)
     const params = {
       page: pageIndex,
       pageSize,
       order_type: 'normal',
-      status,
+      aftersales_status: status,
     }
     const {
       list,
@@ -81,7 +92,7 @@ function TradeAfterSaleList(props) {
       refresherTriggered={refresherTriggered}
       onRefresherRefresh={onRefresherRefresh}
     >
-      <SpScrollView className='trade-list-scroll' auto={false} ref={tradeRef} fetch={fetch} emptyMsg="没有查询到订单">
+      <SpScrollView className='trade-list-scroll' auto={false} ref={tradeRef} fetch={fetch} emptyMsg="没有查询到售后单">
         {tradeList.map((item) => (
           <View className='trade-item-wrap'>
             <CompAfterTradeItem info={item} />

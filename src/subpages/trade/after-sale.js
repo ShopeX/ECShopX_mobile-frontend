@@ -193,7 +193,7 @@ function TradeAfterSale(props) {
     await api.aftersales.apply(params)
     showToast('提交成功')
     Taro.eventCenter.trigger('onEventOrderStatusChange')
-    Taro.eventCenter.trigger('onEventOrderDetailChange')
+    Taro.eventCenter.trigger('onEventAfterSalesApply')
     setTimeout(() => {
       Taro.navigateBack()
     }, 200)

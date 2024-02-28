@@ -130,7 +130,6 @@ function Home() {
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base}
       renderFooter={<CompTabbar />}
-      renderFooter={<SpTabbar />}
       loading={loading}
     >
       <View

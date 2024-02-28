@@ -5,6 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
+import { AFTER_SALE_STATUS } from '@/consts'
 import './comp-aftertrade-item.scss'
 
 function CompTradeItem(props) {
@@ -12,23 +13,13 @@ function CompTradeItem(props) {
   if (!info) {
     return null
   }
-  const { distributorInfo, orderId, createDate, orderStatusMsg, items, orderStatus, totalFee, orderClass, point, distributorId } = info
-  const { pointName } = useSelector((state) => state.sys)
+  const { aftersalesBn, distributorInfo, orderId, createdTime, aftersalesStatus, items, orderStatus, refundFee, orderClass = 'normal', point, distributorId } = info
+  // const { pointName } = useSelector((state) => state.sys)
 
-
-  const handleClickItem = ({ key, action }) => {
-    if (key == 'evaluate' || key == 'logistics') {
-      action(info)
-    } else {
-      Taro.navigateTo({
-        url: `/subpages/trade/detail?order_id=${orderId}`
-      })
-    }
-  }
 
   const onViewTradeDetail = () => {
     Taro.navigateTo({
-      url: `/subpages/trade/detail?order_id=${orderId}`
+      url: `/subpages/trade/after-sale-detail?aftersales_bn=${aftersalesBn}`
     })
   }
 
@@ -41,7 +32,7 @@ function CompTradeItem(props) {
     }
   }
 
-  // const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
+  const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
 
   return (
     <View className='comp-tradeitem'>
@@ -51,37 +42,36 @@ function CompTradeItem(props) {
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
             <View className='shop-name'>{distributorInfo?.name}{!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}</View>
           </View>
-          {/* <View className='trade-no'>{`退款单号: ${orderId}`}</View>
-          <View className='trade-time'>{`订单时间: ${createDate}`}</View> */}
+          <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
+          <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
         </View>
-        {/* <View className='trade-state'>{orderStatusMsg}</View> */}
+        <View className='trade-state'>{AFTER_SALE_STATUS[aftersalesStatus]}</View>
       </View>
-      {/* <View className='trade-item-bd' onClick={onViewTradeDetail}>
+      <View className='trade-item-bd' onClick={onViewTradeDetail}>
         {items.map((good) => (
           <SpTradeItem info={{
             ...good,
-            orderClass,
           }} />
         ))}
 
         <View className='trade-total'>
           <View className='delivery'></View>
-          {
+          {/* {
             orderClass == 'pointsmall' && <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>{pointName}</Text>
               <Text className='point-value' style="font-size: 20px;">{point}</Text>
             </View>
-          }
+          } */}
           {
             orderClass == 'normal' && <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>实付金额</Text>
-              <SpPrice value={totalFee} size={38} />
+              <Text className='label'>退款金额</Text>
+              <SpPrice value={refundFee} size={38} />
             </View>
           }
         </View>
-      </View> */}
+      </View>
 
       <View className='trade-item-ft'>
 

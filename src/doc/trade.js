@@ -67,7 +67,8 @@ export const TRADE_ITEM = {
   receiverName: "receiver_name",
   receiverState: "receiver_state",
   totalFee: ({ total_fee }) => total_fee / 100,
-  zitiStatus: 'ziti_status'
+  zitiStatus: 'ziti_status',
+  zitiInfo: 'ziti_info'
 }
 
 export const SHOP_INFO = {
@@ -75,8 +76,24 @@ export const SHOP_INFO = {
 }
 
 export const AFTER_TRADE = {
+  aftersalesBn: 'aftersales_bn',
+  aftersalesStatus: 'aftersales_status',
+  createdTime: ({ create_time }) => formatDateTime(create_time * 1000),
+  distributorId: 'distributor_id',
+  distributorName: 'distributor_name',
+  distributorInfo: 'distributor_info',
+  items: ({ detail }) => {
+    return pickBy(detail, {
+      itemId: 'item_id',
+      itemName: 'item_name',
+      num: 'num',
+      pic: 'item_pic',
+      price: ({ refund_fee }) => refund_fee / 100,
+      point: 'point',
+    })
+  },
   orderId: 'order_id',
-  distributorInfo: 'distributor_info'
+  refundFee: ({ refund_fee }) => refund_fee / 100
 }
 
 export const TRADE_AFTER_SALES_ITEM = {

@@ -8,7 +8,7 @@ import './index.scss'
 function SpTradeItem(props) {
   const { info, onClick = () => { } } = props
   if (!info) return null
-  const { pic, itemName, itemPoint, price, itemSpecDesc, num, orderClass } = info
+  const { pic, itemName, itemPoint, price, itemSpecDesc, num, orderClass = 'normal' } = info
   const { pointName } = useSelector((state) => state.sys)
 
   const onClickItem = () => {

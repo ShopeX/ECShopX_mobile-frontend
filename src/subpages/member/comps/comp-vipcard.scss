@@ -1,15 +1,10 @@
 .comp-vipcard {
   width: 750px;
-  // height: 110px;
   background-size: 100% 100%;
-  // background-position: center;
-  // margin-top: 28px;
-  // margin: 20px 25px 0 25px;
-  // border-top-left-radius: 20px;
-  //   border-top-right-radius: 20px;
   display: flex;
-  padding: 20px 60px;
+  padding: 0 60px;
   box-sizing: border-box;
+  height: 110px;
   &.is-not-default {
     margin: 20px 25px 0 25px;
     border-top-left-radius: 20px;
@@ -31,7 +26,7 @@
     }
   }
   .normal-account {
-    margin-top: 4px;
+    margin-top: 26px;
   }
   .block {
     width: 100%;

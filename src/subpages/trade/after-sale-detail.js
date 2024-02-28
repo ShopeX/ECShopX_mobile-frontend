@@ -86,6 +86,10 @@ function TradeAfterSaleDetail(props) {
       showToast('撤销申请成功')
       Taro.hideLoading()
       fetch()
+      Taro.eventCenter.trigger('onEventAfterSalesCancel')
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 200)
     }
   }
 
