@@ -90,6 +90,8 @@ import SpFormItem from './sp-form-item'
 import SpVipLabel from './sp-vip-label'
 import SpAddress from './sp-address'
 import SpSearchInput from './sp-search-input'
+import SpCategorySearch from './sp-category-search'
+
 
 export default {}
 
@@ -185,5 +187,6 @@ export {
   SpFormItem,
   SpVipLabel,
   SpAddress,
-  SpSearchInput
+  SpSearchInput,
+  SpCategorySearch
 }

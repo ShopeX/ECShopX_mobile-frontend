@@ -1,0 +1,122 @@
+$good-img-width: 70px;
+$active-good-img-width: 90px;
+
+.comp-third-category {
+  width: 100%;
+  height: 90rpx;
+  white-space: nowrap;
+  padding-right: 50px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  position: relative;
+
+  // padding-left: 24px;
+  &-filter {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    // margin-left: 10px;
+    width: fit-content;
+    height: 90rpx;
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    box-shadow: -3px 0px 6px -5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px 0px 0px 5px;
+    align-items: center;
+  }
+
+  .icon-arrowDown {
+    font-size: 20px;
+    padding: 0 18px;
+    width: 50px;
+    box-sizing: border-box;
+
+  }
+
+  &-scroll {
+    display: flex;
+  }
+
+  &-scroll-item {
+    height: 100%;
+    display: inline-grid;
+    background: #fff;
+    margin-right: 10px;
+    text-align: center;
+
+    &:first-child {
+      margin-left: 16px;
+    }
+
+  }
+
+  &-goods-desc {
+    width: 127rpx;
+    height: 60rpx;
+    background: #F5F5F5;
+    border-radius: 30rpx;
+    padding: 15px 16px;
+    margin-top: 15px;
+    font-size: 24rpx;
+    color: #999999;
+    box-sizing: border-box;
+    text-align: center;
+    display: inline-block;
+    @include text-overflow();
+  }
+
+  .active {
+    .comp-third-category-goods-desc {
+      background:#FFF2E7;
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .comp-third-category-goods-imgbox {
+      width: 128px;
+      height: 40px;
+    }
+  }
+
+  &-float {
+    display: none;
+    width: 100vw;
+    height: 78vh;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 888;
+    box-sizing: border-box;
+  }
+
+  .sp-select-box {
+    display: flex;
+    white-space: normal;
+    background: #fff;
+    padding: 14px 24px 0;
+    width: calc(100vw - 128px);
+
+    .select-item {
+      height: 45px;
+      line-height: 45px;
+      padding: 14px 40px;
+      font-size: 22px;
+      border-radius: 60px;
+      // max-width: 140px;
+      // display: inline-block;
+      // @include text-overflow();
+    }
+  }
+
+  .isshow {
+    display: block;
+  }
+
+  .rotate {
+    transform: rotate(-180deg);
+  }
+}
