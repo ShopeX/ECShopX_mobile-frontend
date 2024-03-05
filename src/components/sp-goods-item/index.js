@@ -58,6 +58,16 @@ function SpGoodsItem(props) {
     showToast(fav ? '已移出收藏' : '已加入收藏')
   }
 
+
+  const onChangeToolBar = (e) =>{
+    e.stopPropagation()
+    if (!S.getAuthToken()) {
+      showToast('请先登录')
+      return
+    }
+    
+  }
+
   const handleClick = () => {
     const { itemId, distributorId, card_id, code, user_card_id, point } = info
     if (onClick) {
@@ -193,6 +203,10 @@ function SpGoodsItem(props) {
                   isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
                 )}
                 onClick={handleFavClick}
+              />
+              <Text
+                className='iconfont icon-shoucanghover-01'
+                onClick={onChangeToolBar}
               />
             </View>
           )}

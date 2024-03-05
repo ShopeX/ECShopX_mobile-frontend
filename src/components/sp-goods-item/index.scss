@@ -56,6 +56,8 @@
         &-lf {
         }
         &-rg {
+          display: flex;
+          flex-direction:column;
           .iconfont {
             font-size: 40px;
             color: #666;
