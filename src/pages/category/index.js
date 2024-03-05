@@ -1,20 +1,20 @@
 import React, { useRef, useEffect } from 'react'
-import { useDispatch,useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
-import { Text, View,Image } from '@tarojs/components'
+import { Text, View, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpScrollView, SpPage, SpTabbar, SpCategorySearch } from '@/components'
+import { platformTemplateName } from '@/utils/platform'
 import api from '@/api'
-// import { updateCount } from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 
-import { pickBy, classNames, styleNames,showToast } from '@/utils'
+import { pickBy, classNames, styleNames, showToast } from '@/utils'
 import CompFirstCategory from './comps/comp-first-category'
 import CompSecondCategory from './comps/comp-second-category'
 import CompThirdCategory from './comps/comp-third-category'
 import GoodsItem from './comps/goods-item'
-import './index.scss' 
+import './index.scss'
 
 const initialState = {
   cusIndex: 1,
@@ -63,27 +63,52 @@ function StoreItemList(props) {
   }, [cat_id])
 
   const getCategoryList = async () => {
-    // const { activity_id ,enterprise_id} = purchase_share_info
-    const res = await api.category.get({activity_id:'12',enterprise_id:'12'})
-    const currentList = pickBy(res, {
-      name: 'category_name',
-      img: 'image_url',
-      id: 'category_id',
+    let currentList = []
+    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
+    const { list } = await api.category.getCategory(query)
+    currentList = pickBy(list[0] ? list[0].params.data[0].content : [], {
+      name: 'name',
+      img: 'img',
+      id: 'id',
       category_id: 'category_id',
       children: ({ children }) =>
         pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-          id: 'category_id',
+          name: 'name',
+          img: 'img',
+          id: 'id',
           category_id: 'category_id',
           children: ({ children: children_ }) =>
             pickBy(children_, {
-              name: 'category_name',
-              img: 'image_url',
-              id: 'category_id'
+              name: 'name',
+              img: 'img',
+              id: 'id',
+              category_id: 'category_id',
             })
         })
     })
+
+    if (currentList.length!==0) {
+      const res = await api.category.get()
+      currentList = pickBy(res, {
+        name: 'category_name',
+        img: 'image_url',
+        id: 'category_id',
+        category_id: 'category_id',
+        children: ({ children }) =>
+          pickBy(children, {
+            name: 'category_name',
+            img: 'image_url',
+            id: 'category_id',
+            category_id: 'category_id',
+            children: ({ children: children_ }) =>
+              pickBy(children_, {
+                name: 'category_name',
+                img: 'image_url',
+                id: 'category_id'
+              })
+          })
+      })
+    }
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
@@ -92,13 +117,10 @@ function StoreItemList(props) {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    // const { activity_id,enterprise_id } = purchase_share_info
     const { dis_id = null } = $instance.router.params
     const params = {
       page: pageIndex,
       pageSize,
-      // activity_id,
-      // enterprise_id,
       keywords: keywords,
       approve_status: 'onsale,only_show',
       item_type: 'normal',
@@ -109,12 +131,9 @@ function StoreItemList(props) {
       v_store: cusIndex
     }
 
-    // const { list: _list, total_count } = await api.purchase.getPurchaseActivityItems(params)
     const { list: _list, total_count } = await api.item.search(params)
 
-    
     let n_list = pickBy(_list, doc.goods.ITEM_LIST_GOODS)
-
 
     setState((draft) => {
       draft.allList = pageIndex == 1 ? n_list : [...allList, ...n_list]
@@ -177,19 +196,15 @@ function StoreItemList(props) {
     goodsRef?.current.reset()
   }
 
-  const shoppingCart = async (item,e)=>{
-    // const { activity_id, enterprise_id,distributor_id } = purchase_share_info
+  const shoppingCart = async (item, e) => {
     e.stopPropagation()
     let params = {
       item_id: item.itemId,
-      num:1,
-      // activity_id,
-      // enterprise_id,
-      // distributor_id,
+      num: 1,
       shop_type: 'distributor'
     }
-    console.log('item44444ttttttt',item)
-    if(item.cart_num>=Number(item.activity_store)){
+    console.log('item44444ttttttt', item)
+    if (item.cart_num >= Number(item.activity_store)) {
       return showToast(`最多加购${item.activity_store}件`)
     }
     await api.purchase.addPurchaseCart(params)
@@ -203,9 +218,7 @@ function StoreItemList(props) {
     // await setState((draft) => {
     //   draft.newList = changeList
     // })
-    // dispatch(updateCount({ shop_type: 'distributor', activity_id, enterprise_id }))
   }
-
 
   const changeList = async () => {
     const _secondList = [
@@ -294,8 +307,11 @@ function StoreItemList(props) {
                 <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
                   <GoodsItem onStoreClick={handleClickStore} hideStore info={item} />
                   {item.activity_store > 0 && (
-                    <View className='goods-add' onClick={shoppingCart.bind(this,item)}>
-                      <Image src='https://shangpai-pic.fn-mart.com/miniprograme/gwcsmall.png' className='ckeck2' />
+                    <View className='goods-add' onClick={shoppingCart.bind(this, item)}>
+                      <Image
+                        src='https://shangpai-pic.fn-mart.com/miniprograme/gwcsmall.png'
+                        className='ckeck2'
+                      />
                       {/* <View className='at-icon at-icon-add'></View> */}
                     </View>
                   )}
