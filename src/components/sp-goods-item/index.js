@@ -25,6 +25,8 @@ function SpGoodsItem(props) {
   } = item_page
   const {
     onClick,
+    onChange = () => {},
+    onAddToCart=()=>{},
     onStoreClick = () => { },
     showMarketPrice = true,
     showFav = false,
@@ -59,13 +61,13 @@ function SpGoodsItem(props) {
   }
 
 
-  const onChangeToolBar = (e) =>{
+  const onChangeToolBar = (id,e) =>{
     e.stopPropagation()
     if (!S.getAuthToken()) {
       showToast('请先登录')
       return
     }
-    
+    onAddToCart(id)
   }
 
   const handleClick = () => {
@@ -205,8 +207,8 @@ function SpGoodsItem(props) {
                 onClick={handleFavClick}
               />
               <Text
-                className='iconfont icon-shoucanghover-01'
-                onClick={onChangeToolBar}
+                className='iconfont icon-gouwuche1'
+                onClick={(e)=>onChangeToolBar(info.itemId,e)}
               />
             </View>
           )}

@@ -116,10 +116,13 @@
       // }
 
       .gd-price {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
         .sp-price {
           font-size: 32px;
           font-weight: bold;
-          color: #222;
+          color: var(--color-primary);
 
           &__symbol {
             margin-right: 10px;
@@ -184,6 +187,9 @@
 
         &-lf {}
 
+        .goods-price{
+          width: 100%;
+        }
         &-rg {
           .iconfont {
             font-size: 40px;
@@ -197,6 +203,7 @@
       }
     }
 
+
     &__ft {
       // margin-top: 40px;
       // padding: 0 20px 20px;
@@ -207,6 +214,12 @@
       //   overflow: hidden;
       // }
     }
+  }
+
+  .icon-gouwuche1{
+    margin-right: 24px;
+    font-size: 34px;
+    color: var(--color-primary);
   }
 
   .goods__store {

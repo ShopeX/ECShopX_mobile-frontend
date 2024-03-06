@@ -12,7 +12,8 @@ import {
   SpPage,
   SpScrollView,
   SpDrawer,
-  SpSelect
+  SpSelect,
+  SpSkuSelect
 } from '@/components'
 import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
@@ -29,6 +30,9 @@ import {
 import S from '@/spx'
 
 import './list.scss'
+import { defaultsDeep } from 'lodash'
+
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   leftList: [],
@@ -48,6 +52,9 @@ const initialState = {
   show: false,
   fixTop: 0,
   routerParams: null,
+  skuPanelOpen: false,
+  info:null,
+  selectType: 'picker',
   card_id: null // 兑换券
 }
 
@@ -58,12 +65,15 @@ function ItemList() {
     keywords,
     leftList,
     rightList,
+    selectType,
     brandList,
+    skuPanelOpen,
     brandSelect,
     curFilterIdx,
     filterList,
     tagList,
     curTagIdx,
+    info,
     show,
     fixTop,
     routerParams
@@ -74,6 +84,7 @@ function ItemList() {
   const dispatch = useDispatch()
 
   const goodsRef = useRef()
+  const pageRef = useRef()
   // console.log('$instance.router.params', $instance.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
@@ -84,21 +95,29 @@ function ItemList() {
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
     entryLaunch.getRouteParams($instance.router.params).then((params) => {
-      const { cat_id,keywords, main_cat_id, tag_id, card_id, user_card_id } = params
+      const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id } = params
 
       setState((draft) => {
-        draft.routerParams = {
+        ;(draft.routerParams = {
           cat_id,
           keywords,
           main_cat_id,
           tag_id,
           card_id,
           user_card_id
-        },
-        draft.keywords=keywords
+        }),
+          (draft.keywords = keywords)
       })
     })
   }, [])
+
+  useEffect(() => {
+    if (skuPanelOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen])
 
   useEffect(() => {
     if (routerParams) {
@@ -151,7 +170,6 @@ function ItemList() {
   const fetch = async ({ pageIndex, pageSize }) => {
     // card_id: 兑换券id
     // const { cat_id, main_cat_id, tag_id, card_id } = $instance.router.params
-    console.log(routerParams,keywords,'routerParams====routerParams')
     let params = {
       page: pageIndex,
       pageSize,
@@ -178,7 +196,6 @@ function ItemList() {
     if (curTagIdx) {
       params['tag_id'] = curTagIdx
     }
-
 
     if (cat_id) {
       params['category'] = cat_id
@@ -218,7 +235,7 @@ function ItemList() {
       v.leftList[pageIndex - 1] = resLeftList
       v.rightList[pageIndex - 1] = resRightList
       v.brandList = pickBy(brand_list?.list, doc.goods.WGT_GOODS_BRAND)
-      if(v.tagList.length < 1){
+      if (v.tagList.length < 1) {
         if (select_tags_list.length > 0) {
           v.tagList = [
             {
@@ -229,7 +246,6 @@ function ItemList() {
           v.fixTop = fixTop + 34
         }
       }
-
     })
 
     return { total: total_count }
@@ -321,12 +337,43 @@ function ItemList() {
       url
     })
   }
+
+  const addPurchase = async (id) => {
+    let data
+    Taro.showLoading({
+      title: '加载中'
+     })
+    const {dtid } = await entryLaunch.getRouteParams()
+    const itemDetail = await api.item.detail(id, {
+      showError: false,
+      distributor_id: dtid
+    })
+    Taro.hideLoading()
+    data = pickBy(itemDetail, doc.goods.GOODS_INFO)
+    // if (data.approveStatus == 'instock') {
+    //   setState((draft) => {
+    //     draft.isDefault = true
+    //     draft.defaultMsg = '商品已下架'
+    //   })
+    // }
+    setState((draft) => {
+      draft.info = {
+        ...data
+      }
+    })
+    // 获取商品详情的接口
+    setState((draft) => {
+      draft.skuPanelOpen = true
+      draft.selectType = 'addcart'
+    })
+  }
   return (
     <SpPage
       scrollToTopBtn
       className={classNames('page-item-list', {
         'has-tagbar': tagList.length > 0
       })}
+      ref={pageRef}
     >
       <View className='search-wrap'>
         {/* 兑换券选择店铺 */}
@@ -385,6 +432,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    onAddToCart={addPurchase}
                     info={{
                       ...item,
                       card_id,
@@ -402,6 +450,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    onAddToCart={addPurchase}
                     info={{
                       ...item,
                       card_id,
@@ -414,6 +463,24 @@ function ItemList() {
           </View>
         </View>
       </SpScrollView>
+
+      {/* Sku选择器 */}
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
 
       {/* <SpDrawer
         show={show}

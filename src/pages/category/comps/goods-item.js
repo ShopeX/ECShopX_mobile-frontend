@@ -19,6 +19,7 @@ function GoodsItem(props) {
   const {
     onClick,
     onStoreClick = () => {},
+    onAddToCart = () => {},
     showFav = false,
     info = null,
     renderFooter = null,
@@ -87,6 +88,16 @@ function GoodsItem(props) {
     dispatch(updateCount({ shop_type: 'distributor' }))
     Taro.hideLoading()
     showToast('成功加入购物车')
+  }
+
+
+  const onChangeToolBar = (id,e)=>{
+    e?.stopPropagation()
+    if (!S.getAuthToken()) {
+      showToast('请登录')
+      return
+    }
+    onAddToCart(id)
   }
 
   if (!info) {
@@ -181,9 +192,14 @@ function GoodsItem(props) {
               <View className='goods-price'>
                 <View className='gd-price'>
                   <SpPrice value={info.price}></SpPrice>
+                  <Text
+                    className='iconfont icon-gouwuche1'
+                    onClick={(e)=>onChangeToolBar(info.itemId,e)}
+                  />
                   {info.price-info.activityPrice>0?<Text className='unit-price'>{info.price}</Text> : ''}
-                  <Text className='unit'>{info.item_unit ? `/${info.item_unit}` : ''}</Text>
+                  {/* <Text className='unit'>{info.item_unit ? `/${info.item_unit}` : ''}</Text> */}
                 </View>
+                
                 {/* <View className='mk-price'>
                   {info.marketPrice / 100 > 0 && (
                     <SpPrice lineThrough value={info.marketPrice / 100}></SpPrice>

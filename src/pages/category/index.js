@@ -3,18 +3,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { Text, View, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpScrollView, SpPage, SpTabbar, SpCategorySearch } from '@/components'
+import { SpScrollView, SpPage, SpTabbar, SpCategorySearch,SpSkuSelect } from '@/components'
 import { platformTemplateName } from '@/utils/platform'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 
-import { pickBy, classNames, styleNames, showToast } from '@/utils'
+import { pickBy, classNames, styleNames, showToast,entryLaunch } from '@/utils'
 import CompFirstCategory from './comps/comp-first-category'
 import CompSecondCategory from './comps/comp-second-category'
 import CompThirdCategory from './comps/comp-third-category'
 import GoodsItem from './comps/goods-item'
 import './index.scss'
+
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   cusIndex: 1,
@@ -28,7 +30,10 @@ const initialState = {
   cat_id: undefined,
   show: false,
   secondList: [],
-  thirdList: []
+  thirdList: [],
+  info:null,
+  skuPanelOpen:false,
+  selectType: 'picker'
 }
 
 function StoreItemList(props) {
@@ -46,10 +51,14 @@ function StoreItemList(props) {
     categoryThirdIndex,
     cat_id,
     secondList,
-    thirdList
+    thirdList,
+    info,
+    skuPanelOpen,
+    selectType
   } = state
 
   const goodsRef = useRef()
+  const pageRef = useRef()
   const dispatch = useDispatch()
   useEffect(() => {
     getCategoryList()
@@ -62,34 +71,43 @@ function StoreItemList(props) {
     }
   }, [cat_id])
 
-  const getCategoryList = async () => {
-    let currentList = []
-    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
-    const { list } = await api.category.getCategory(query)
-    currentList = pickBy(list[0] ? list[0].params.data[0].content : [], {
-      name: 'name',
-      img: 'img',
-      id: 'id',
-      category_id: 'category_id',
-      children: ({ children }) =>
-        pickBy(children, {
-          name: 'name',
-          img: 'img',
-          id: 'id',
-          category_id: 'category_id',
-          children: ({ children: children_ }) =>
-            pickBy(children_, {
-              name: 'name',
-              img: 'img',
-              id: 'id',
-              category_id: 'category_id',
-            })
-        })
-    })
+  useEffect(() => {
+    if (skuPanelOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen])
 
-    if (currentList.length!==0) {
+  const getCategoryList = async () => {
+    //api.category.getCategory这个接口会导致必要的category_id不存在，根据汪海的建议换了下面的接口获取数据
+    // let currentList = []
+    // const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
+    // const { list } = await api.category.getCategory(query)
+    // currentList = pickBy(list[0] ? list[0].params.data[0].content : [], {
+    //   name: 'name',
+    //   img: 'img',
+    //   id: 'id',
+    //   category_id: 'category_id',
+    //   children: ({ children }) =>
+    //     pickBy(children, {
+    //       name: 'name',
+    //       img: 'img',
+    //       id: 'id',
+    //       category_id: 'category_id',
+    //       children: ({ children: children_ }) =>
+    //         pickBy(children_, {
+    //           name: 'name',
+    //           img: 'img',
+    //           id: 'id',
+    //           category_id: 'category_id',
+    //         })
+    //     })
+    // })
+
+    // if (currentList.length!==0) {
       const res = await api.category.get()
-      currentList = pickBy(res, {
+      const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',
         id: 'category_id',
@@ -108,7 +126,7 @@ function StoreItemList(props) {
               })
           })
       })
-    }
+    // }
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
@@ -220,6 +238,37 @@ function StoreItemList(props) {
     // })
   }
 
+
+  const addPurchase = async (id) => {
+    let data
+    Taro.showLoading({
+      title: '加载中'
+     })
+    const { dtid } = await entryLaunch.getRouteParams()
+    const itemDetail = await api.item.detail(id, {
+      showError: false,
+      distributor_id: dtid
+    })
+    Taro.hideLoading()
+    data = pickBy(itemDetail, doc.goods.GOODS_INFO)
+    // if (data.approveStatus == 'instock') {
+    //   setState((draft) => {
+    //     draft.isDefault = true
+    //     draft.defaultMsg = '商品已下架'
+    //   })
+    // }
+    setState((draft) => {
+      draft.info = {
+        ...data
+      }
+    })
+    // 获取商品详情的接口
+    setState((draft) => {
+      draft.skuPanelOpen = true
+      draft.selectType = 'addcart'
+    })
+  }
+
   const changeList = async () => {
     const _secondList = [
       {
@@ -252,6 +301,7 @@ function StoreItemList(props) {
       scrollToTopBtn
       className={classNames('page-category-item-list')}
       renderFooter={<SpTabbar />}
+      ref={pageRef}
     >
       <View className='page-category-item-list-head'>
         <View className='category-search'>
@@ -305,7 +355,7 @@ function StoreItemList(props) {
             >
               {allList.map((item, index) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <GoodsItem onStoreClick={handleClickStore} hideStore info={item} />
+                  <GoodsItem onStoreClick={handleClickStore} onAddToCart={addPurchase} hideStore info={item} />
                   {item.activity_store > 0 && (
                     <View className='goods-add' onClick={shoppingCart.bind(this, item)}>
                       <Image
@@ -321,6 +371,24 @@ function StoreItemList(props) {
           </View>
         </View>
       </View>
+
+      {/* Sku选择器 */}
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
     </SpPage>
   )
 }
