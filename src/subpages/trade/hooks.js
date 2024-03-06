@@ -74,6 +74,16 @@ export default (props) => {
           url: `/subpages/trade/trade-evaluate?order_id=${orderId}`
         })
       }
+    },
+    WRITE_OFF: {
+      title: '核销',
+      key: 'writeOff',
+      btnStatus: 'normal',
+      action: ({ orderId }) => {
+        Taro.navigateTo({
+          url: `/subpages/trade/trade-evaluate?order_id=${orderId}`
+        })
+      }
     }
   }
 

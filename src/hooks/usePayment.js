@@ -112,18 +112,18 @@ export default (props = {}) => {
       })
 
       // 是否开启adapay小程序插件
-      if (process.env.APP_ADAPAY == 'true') {
-        const adapayPlugin = requirePlugin("Adapay");
-        adapayPlugin.requestPay(weappOrderInfo.expend, () => {
-          paySuccess(params, orderInfo)
-        }, (e) => {
-          console.error('adapayPlugin:', e)
-          payError(orderInfo)
-        });
-      } else {
+      // if (process.env.APP_ADAPAY == 'true') {
+      //   const adapayPlugin = requirePlugin("Adapay");
+      //   adapayPlugin.requestPay(weappOrderInfo.expend, () => {
+      //     paySuccess(params, orderInfo)
+      //   }, (e) => {
+      //     console.error('adapayPlugin:', e)
+      //     payError(orderInfo)
+      //   });
+      // } else {
         await Taro.requestPayment(weappOrderInfo)
         paySuccess(params, orderInfo)
-      }
+      // }
     } catch (e) {
       Taro.hideLoading()
       payError(orderInfo)
@@ -291,6 +291,7 @@ export default (props = {}) => {
 
   // 余额/积分支付
   const depositPay = async (params, orderInfo) => {
+    debugger
     const { activityType, pay_type } = params
     const { order_id, team_id, order_type } = orderInfo
     if (pay_type == 'deposit') {

@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.25](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.24...v3.13.25) (2024-02-20)
+
+
+### Features
+
+* 装修添加积分商城跳转链接 ([0d9e307](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0d9e3077c5d8e25881f33d43ac67c5110051119b))
+
 ### [3.13.24](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.23...v3.13.24) (2024-01-15)
 
 ### [3.13.23](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.22...v3.13.23) (2023-12-25)

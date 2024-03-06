@@ -1,13 +1,16 @@
 .page-address-edit {
 
-  .sp-page-body {
-    padding-left: 16px;
-    padding-right: 16px;
+  .scroll-view-container {
+    height: 100%;
+    .scroll-view-body {
+      overflow: hidden;
+      padding: 0 16px;
+    }
   }
 
   .page-address-edit__form {
     border-radius: 16px;
-    padding: 5px 16px 0px 16px;
+    padding: 8px 32px;
     margin-top: 24px;
 
     .sp-cell {
@@ -15,6 +18,10 @@
 
       &__hd {
         width: 176px;
+      }
+
+      &__bd {
+        padding-top: 4px;
       }
 
       &__title {
@@ -35,7 +42,6 @@
   }
 
   .picker {
-    width: 350px;
 
     text {
       font-size: 28px;
@@ -73,7 +79,6 @@
   .logistics-no {
     .at-input {
       margin-bottom: 0;
-      width: 350px;
       padding: 0;
 
       &:after {

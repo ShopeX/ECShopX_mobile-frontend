@@ -1,12 +1,12 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
-function linkPage (data) {
+function linkPage(data) {
   const { id, title, linkPage, linkType, type, distributor_id } = data
   const { id: dtid } = getCurrentInstance().router.params
   // console.log('linkPage:', type, data)
   // h5链接
-  if(linkType == 1) {
+  if (linkType == 1) {
     Taro.navigateTo({
       url: `/pages/webview?url=${encodeURIComponent(data.linkUrl)}`
     })
@@ -51,6 +51,11 @@ function linkPage (data) {
       }else if (id == 'recharge') {
         url = '/others/pages/recharge/index'
       }else if (id == 'serviceH5Coach') {
+      } else if (id == 'pointShop') {
+        url = '/subpages/pointshop/list'
+      } else if(id == 'levelMemberVip') {
+        url = '/subpage/pages/vip/vipgrades'
+      } else if (id == 'serviceH5Coach') {
         url = '/marketing/pages/service/wap-link?tp=o'
       } else if (id == 'serviceH5Sales') {
         url = '/marketing/pages/service/wap-link?tp=r'
@@ -95,7 +100,7 @@ function linkPage (data) {
     url = '/subpages/pointshop/list'
   }
 
-  if(id == 'applyChief') {
+  if (id == 'applyChief') {
     url = `/subpages/community/apply-chief?distributor_id=${dtid || distributor_id}`
   }
 

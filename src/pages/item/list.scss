@@ -29,6 +29,17 @@ $search-wrap-height: 90px;
       flex: 1;
     }
   }
+  .sp-tag-bar {
+    .tag-bar-hd {
+      width: 100%;
+      .tag-container {
+        width: 100%;
+      }
+    }
+    .tag-bar-ft {
+      display: none;
+    }
+  }
   .sp-filter-bar {
     &__item {
       background: #f5f5f5;

@@ -21,6 +21,13 @@ export const TRADE_ITEM = {
   },
   deliveryCorpName: 'delivery_corp_name',
   deliveryCode: 'delivery_code',
+  dada: ({ dada }) => {
+    return pickBy(dada, {
+      dadaStatus: 'dada_status',
+      dmName: 'dm_name',
+      dmMobile: 'dm_mobile'
+    })
+  },
   freightFee: ({ freight_fee }) => freight_fee / 100,
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
   itemPoint: 'item_point',
@@ -46,6 +53,7 @@ export const TRADE_ITEM = {
       showAftersales: ({ show_aftersales }) => show_aftersales == 1
     })
   },
+  invoice: 'invoice',
   isRate: ({ is_rate }) => is_rate == "1",
   // 是否整单发货
   isAllDelivery: 'is_all_delivery',
@@ -59,6 +67,7 @@ export const TRADE_ITEM = {
   point: 'point',
   promotionDiscount: ({ promotion_discount }) => promotion_discount / 100,
   payChannel: 'pay_channel',
+  payType: 'pay_type',
   receiptType: 'receipt_type',
   receiverAddress: 'receiver_address',
   receiverCity: "receiver_city",

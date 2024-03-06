@@ -108,20 +108,146 @@
 
   .ziti-info {
     line-height: 50px;
+
     .label {
       font-size: 28px;
       color: #333;
       margin-right: 16px;
       font-weight: 600;
     }
+
     .value {
       font-size: 28px;
       color: #666;
     }
+
     .icon-dianhua {
       font-size: 28px;
       color: #666;
       margin-left: 20px;
+    }
+  }
+
+  .dada-qishou-info {
+    .qishou {
+      display: flex;
+      align-items: center;
+      padding-bottom: 24px;
+      margin-bottom: 15px;
+      border-bottom: 1PX solid #ddd;
+      .sp-image {
+        margin-right: 20px;
+      }
+
+      .qishou-name {
+        font-size: 32px;
+        color: #222;
+        font-weight: 500;
+      }
+
+      .icon-dianhua {
+        font-size: 30px;
+        color: #0091FF;
+        margin-left: 20px;
+      }
+    }
+
+    .dada-desc {
+      font-size: 24px;
+      color: #aaa;
+    }
+  }
+
+  .store-receive-address {
+    .store-address {
+      position: relative;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1PX solid #ddd;
+
+      .icon-shouhuodizhi-duoduan {
+        font-size: 38px;
+        color: #999;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &-detail {
+        margin: 10px 0 0 50px;
+
+        .store-name {
+          font-weight: 500;
+          font-size: 30px;
+          color: #222;
+        }
+
+        .store-address-desc {
+          font-weight: 400;
+          font-size: 28px;
+          color: #666;
+          margin-top: 16px;
+        }
+
+        .store-hour-phone {
+          margin-top: 16px;
+
+          .label {
+            font-size: 24px;
+            color: #999;
+          }
+
+          .value {
+            font-size: 24px;
+            color: #444;
+          }
+        }
+
+        .icon-dianhua {
+          font-size: 26px;
+          color: #666;
+          margin-left: 20px;
+        }
+      }
+    }
+
+    .receive-address {
+      position: relative;
+
+      .icon-shouhuodizhi-duoduan {
+        font-size: 38px;
+        color: #999;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &-detail {
+        margin: 10px 0 0 50px;
+
+        .address-info {
+          font-weight: 500;
+          color: #222;
+          font-size: 30px;
+        }
+
+        .receive-name-mobile {
+          margin-top: 16px;
+
+          .name {
+            font-weight: 400;
+            color: #666;
+            font-size: 28px;
+            margin-right: 20px;
+          }
+
+          .mobile {
+            font-weight: 400;
+            color: #666;
+            font-size: 28px;
+          }
+        }
+      }
     }
   }
 
@@ -178,11 +304,13 @@
 
   .trade-goods {
     margin-top: 24px;
+
     .trade-goods-item {
       &:not(:first-child) {
         margin-top: 24px;
       }
     }
+
     .sp-trade-item {
       &:not(:last-child) {
         margin-bottom: 20px;
@@ -193,10 +321,12 @@
       margin-bottom: 30px;
       display: flex;
       justify-content: flex-end;
+
       .at-button {
         margin: 0 0 0 20px;
         height: 48px;
         line-height: 48px;
+
         &.btn-active {
           background-color: var(--color-primary);
           color: #fff;

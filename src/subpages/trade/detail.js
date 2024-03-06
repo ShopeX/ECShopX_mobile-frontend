@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
@@ -7,30 +7,36 @@ import doc from '@/doc'
 import { AtButton, AtCountdown } from 'taro-ui'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpPrice, SpTradeItem, SpImage, SpCashier } from '@/components'
-import { ORDER_STATUS_INFO } from '@/consts'
+import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS } from '@/consts'
 import { pickBy, copyText, showToast, classNames, isArray, VERSION_STANDARD } from '@/utils'
 import { usePayment } from '@/hooks'
+import S from '@/spx'
 import tradeHooks from './hooks'
 import CompTradeCancel from './comps/comp-tradecancel'
+import CompWriteOffCode from './comps/comp-writeoff-code'
 import './detail.scss'
 
 const initialState = {
   info: null,
   tradeInfo: null,
   cancelData: null,
+  distirbutorInfo: null,
   loading: true,
   openCashier: false,
-  openCancelTrade: false
+  openCancelTrade: false,
+  openWriteOffCode: false,
+  webSocketOpenFlag: false
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
-  const { info, tradeInfo, cancelData, loading, openCashier, openCancelTrade } = state
+  const { info, tradeInfo, cancelData, distirbutorInfo, loading, openCashier, openCancelTrade, openWriteOffCode, webSocketOpenFlag } = state
   const { priceSetting, pointName } = useSelector((state) => state.sys)
 
   const { order_page: { market_price: enMarketPrice } } = priceSetting
   const { tradeActionBtns, getTradeAction, getItemAction } = tradeHooks()
   const { cashierPayment } = usePayment()
   const router = useRouter()
+  const websocketRef = useRef(null)
 
   useEffect(() => {
     fetch()
@@ -52,13 +58,55 @@ function TradeDetail(props) {
 
   const fetch = async () => {
     const { order_id } = router.params
-    const { orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
+    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
+    const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
+    // 自提订单未核销，开启websocket监听核销状态
+    if (_orderInfo.receiptType == 'ziti' && _orderInfo.zitiStatus == 'PENDING') {
+      onWebSocket()
+    }
     setState((draft) => {
-      draft.info = pickBy(orderInfo, doc.trade.TRADE_ITEM)
+      draft.info = _orderInfo
       draft.tradeInfo = tradeInfo
       draft.cancelData = isArray(cancelData) ? null : cancelData
+      draft.distirbutorInfo = distributor
       draft.loading = false
     })
+  }
+
+  const onWebSocket = async () => {
+    if (!websocketRef.current) {
+      websocketRef.current = await Taro.connectSocket({
+        url: process.env.APP_WEBSOCKET,
+        header: {
+          'content-type': 'application/json',
+          'authorization': `Bearer ${S.getAuthToken()}`,
+          'guard': 'h5api',
+          'x-wxapp-sockettype': 'orderzitimsg'
+        },
+        method: 'GET'
+      })
+      websocketRef.current.onOpen(() => {
+        console.log('websocket start success')
+      })
+      websocketRef.current.onError((err) => {
+        console.log('websocket start err: ', err)
+        websocketRef.current = null
+        setTimeout(() => { onWebSocket() }, 200)
+      })
+      websocketRef.current.onMessage(res => {
+        const { status } = JSON.parse(res.data)
+        if (status == 'success') {
+          showToast('核销成功')
+          setTimeout(() => { fetch() }, 200)
+        }
+      })
+      websocketRef.current.onOpen(() => {
+        console.log('websocket start success')
+      })
+      websocketRef.current.onClose(() => {
+        websocketRef.current = null
+      })
+    }
   }
 
   const hanldeCopy = async (val) => {
@@ -96,6 +144,10 @@ function TradeDetail(props) {
           Taro.eventCenter.trigger('onEventOrderStatusChange')
         }, 200)
       }
+    } else if (key == 'writeOff') {
+      setState(draft => {
+        draft.openWriteOffCode = true
+      })
     } else {
       action(info)
     }
@@ -161,6 +213,10 @@ function TradeDetail(props) {
   }
 
   const getTradeStatusIcon = () => {
+    if (info.receiptType == 'dada') { // 达达同城配，订单状态单独处理
+      return `${ORDER_DADA_STATUS[info.dada?.dadaStatus]?.icon}.png` || ''
+    }
+
     if (info.cancelStatus == 'WAIT_PROCESS') {
       return 'order_dengdai.png'
     }
@@ -168,7 +224,9 @@ function TradeDetail(props) {
   }
 
   const getTradeStatusDesc = () => {
-    if (info.zitiStatus == 'PENDING') {
+    if (info.receiptType == 'dada') { // 达达同城配，订单状态单独处理
+      return ORDER_DADA_STATUS[info.dada?.dadaStatus]?.msg
+    } else if (info.zitiStatus == 'PENDING') {
       return '等待核销'
     } else if (info.deliveryStatus == 'PARTAIL') {
       return '部分商品已发货'
@@ -179,11 +237,10 @@ function TradeDetail(props) {
     }
   }
 
-  const handleCallPhone = () => {
-    const { contract_phone } = info.zitiInfo
-    if (contract_phone) {
+  const handleCallPhone = (phone) => {
+    if (phone) {
       Taro.makePhoneCall({
-        phoneNumber: contract_phone
+        phoneNumber: phone
       })
     }
   }
@@ -198,6 +255,11 @@ function TradeDetail(props) {
       const evaluateIndex = btns.findIndex(item => item.key === 'evaluate')
       if (evaluateIndex > -1) {
         btns.splice(evaluateIndex, 1)
+      }
+
+      // 自提订单
+      if (info.receiptType == 'ziti') {
+        btns.unshift(tradeActionBtns.WRITE_OFF)
       }
 
       if (btns.length > 0) {
@@ -239,36 +301,88 @@ function TradeDetail(props) {
             </View>
           }
         </View>
-        {info?.receiptType != 'ziti' && <View className='block-container address-info'>
-          <SpImage src="shouhuodizhi.png" width={60} height={60} />
-          <View className='receiver-address'>
-            <View className='name-mobile'>
-              <Text className='name'>{info?.receiverName}</Text>
-              <Text className='mobile'>{info?.receiverMobile}</Text>
-            </View>
-            <View className='detail-address'>
-              {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
+        {
+          // 普通快递
+          info?.receiptType == 'logistics' && <View className='block-container address-info'>
+            <SpImage src="shouhuodizhi.png" width={60} height={60} />
+            <View className='receiver-address'>
+              <View className='name-mobile'>
+                <Text className='name'>{info?.receiverName}</Text>
+                <Text className='mobile'>{info?.receiverMobile}</Text>
+              </View>
+              <View className='detail-address'>
+                {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
+              </View>
             </View>
           </View>
-        </View>
         }
         {
+          // 门店自提
           info?.receiptType == 'ziti' && <View className='block-container ziti-info'>
             <View><Text className='label'>自提点:</Text><Text className='value'>{info.zitiInfo.name}</Text></View>
             <View><Text className='label'>自提地址:</Text><Text className='value'>{`${info.zitiInfo.province}${info.zitiInfo.city}${info.zitiInfo.area}${info.zitiInfo.address}`}</Text></View>
-            <View><Text className='label'>联系电话:</Text><Text className='value'>{info.zitiInfo.contract_phone}</Text><Text
-              className='iconfont icon-dianhua'
-              onClick={handleCallPhone}
-            ></Text></View>
+            <View>
+              <Text className='label'>联系电话:</Text>
+              <Text className='value'>{info.zitiInfo.contract_phone}</Text>
+              <Text className='iconfont icon-dianhua' onClick={() => {
+                const { contract_phone } = info.zitiInfo
+                handleCallPhone(contract_phone)
+              }} />
+            </View>
             <View><Text className='label'>提货人:</Text><Text className='value'>{info.receiverName}</Text></View>
             <View><Text className='label'>提货时间:</Text><Text className='value'>{`${info.zitiInfo.pickup_date} ${info.zitiInfo.pickup_time[0]}-${info.zitiInfo.pickup_time[1]}`}</Text></View>
-            <View><Text className='label'>提货人:</Text><Text className='value'>{info.receiverMobile}</Text></View>
+            <View><Text className='label'>提货人手机:</Text><Text className='value'>{info.receiverMobile}</Text></View>
+          </View>
+        }
+        {
+          // 达达同城配，骑手已接单、配送中
+          info?.receiptType == 'dada' && info.dada.dadaStatus > 1 && info.dada.dadaStatus !== 5 && <View className='block-container dada-qishou-info'>
+            <View className='qishou'>
+              <SpImage src={'qishi.png'} width={80} height={80} />
+              <Text className='qishou-name'>骑手：{info.dada.dmName}</Text>
+              <Text className='iconfont icon-dianhua' onClick={() => {
+                handleCallPhone(info.dada.dmMobile)
+              }} />
+            </View>
+            <View className='dada-desc'>本单由达达同城为您服务</View>
+          </View>
+        }
+        {
+          // 达达同城配
+          info?.receiptType == 'dada' && <View className='block-container store-receive-address'>
+            <View className='store-address'>
+              <Text className='iconfont icon-shouhuodizhi-duoduan' />
+              <View className='store-address-detail'>
+                <View className='store-name'>{`${distirbutorInfo?.store_name}`}</View>
+                <View className='store-address-desc'>{`${distirbutorInfo?.store_address}`}</View>
+                <View className='store-hour-phone'>
+                  <View className='hour'>
+                    <Text className='label'>门店营业时间：</Text><Text className='value'>{distirbutorInfo?.hour}</Text>
+                  </View>
+                  <View className='phone'>
+                    <Text className='label'>门店电话：</Text><Text className='value'>{distirbutorInfo?.phone}</Text><Text className='iconfont icon-dianhua' onClick={() => {
+                      handleCallPhone(distirbutorInfo?.phone)
+                    }} />
+                  </View>
+                </View>
+              </View>
+            </View>
+            <View className='receive-address'>
+              <Text className='iconfont icon-shouhuodizhi-duoduan' />
+              <View className='receive-address-detail'>
+                <View className='address-desc'>{`${info.receiverState}${info.receiverCity}${info.receiverDistrict}${info.receiverAddress}`}</View>
+                <View className='receive-name-mobile'>
+                  <Text className='name'>{info.receiverName}</Text>
+                  <Text className='mobile'>{info.receiverMobile}</Text>
+                </View>
+              </View>
+            </View>
           </View>
         }
         <View className='block-container'>
           <View className='trade-shop' onClick={onViewStorePage}>
             {info?.distributorName}
-            {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
+            {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01' />}
           </View>
           {/* <View className='trade-no'>
             <Text className='no'>{`订单编号: ${info?.orderId}`}</Text>
@@ -299,9 +413,9 @@ function TradeDetail(props) {
             <SpCell title='运费' value={<SpPrice value={info?.freightFee} size={28} />} />
             <SpCell title='促销' value={<SpPrice value={info?.promotionDiscount} size={28} />} />
             <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
-            {/* <SpCell title='税费' value={'fe'} /> */}
-            {/* <SpCell title='积分支付' value={'fe'} /> */}
-            <SpCell title='支付' value={'fe'} />
+            <SpCell title='支付方式' value={(() => {
+              return PAYMENT_TYPE[info?.payType] || ''
+            })()} />
             <SpCell title='实付' value={(() => {
               if (info?.orderClass === 'pointsmall') {
                 return `${pointName} ${info?.point}`
@@ -323,6 +437,12 @@ function TradeDetail(props) {
           </View>} />
           <SpCell title='下单时间' value={info?.createdTime} />
           <SpCell title='付款时间' value={tradeInfo?.payDate} />
+          {
+            info?.invoice && <SpCell title='发票信息' value={<View>
+              <View>{info?.invoice.content}</View>
+              <View>{info?.invoice.registration_number}</View>
+            </View>} />
+          }
           {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
 
         </View>
@@ -354,6 +474,12 @@ function TradeDetail(props) {
           draft.openCancelTrade = false
         })
       }} onConfirm={onCandelTrade} />
+
+      <CompWriteOffCode isOpened={openWriteOffCode} onClose={() => {
+        setState(draft => {
+          draft.openWriteOffCode = false
+        })
+      }} />
     </SpPage>
   )
 }

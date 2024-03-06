@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '自提列表'
+  navigationBarTitleText: '自提订单'
 }

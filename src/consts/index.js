@@ -30,6 +30,45 @@ export const ORDER_STATUS_INFO = {
   }
 }
 
+export const ORDER_DADA_STATUS = {
+  0: {
+    msg: '等待商家接单',
+    icon: 'order_dengdai'
+  },
+  1: {
+    msg: '门店正在拣货，等待骑手接单',
+    icon: 'order_jiedan'
+  },
+  2: {
+    msg: '门店正在拣货，等待骑手接单',
+    icon: 'order_jiedan'
+  },
+  3: {
+    msg: '骑手正在快马加鞭向您赶去',
+    icon: 'order_peisong'
+  },
+  4: {
+    msg: '此次订单已完成',
+    icon: 'order_success'
+  },
+  10: {
+    msg: '此次订单已完成',
+    icon: 'order_success'
+  },
+  5: {
+    msg: '您的订单已取消',
+    icon: 'order_close'
+  },
+  9: {
+    msg: '收货地址异常，请联系客服',
+    icon: 'order_dizhiyichang'
+  },
+  100: {
+    msg: '骑手正赶往商家',
+    icon: 'order_qishou'
+  }
+}
+
 export const AFTER_SALE_STATUS = {
   '0': '待处理',
   '1': '处理中',
@@ -224,7 +263,8 @@ export const PAYMENT_TYPE = {
   pos: '现金支付',
   wxpaypos: '微信支付',
   alipaypos: '支付宝支付',
-  alipaymini: '支付宝支付'
+  alipaymini: '支付宝支付',
+  point: '积分支付'
 }
 
 export const TRANSFORM_PAYTYPE = {
