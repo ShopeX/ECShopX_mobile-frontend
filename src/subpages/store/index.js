@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import Taro, { useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
+import Taro, { useShareAppMessage, useShareTimeline, useDidShow,getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpTabbar ,SpSkuSelect} from '@/components'
@@ -24,6 +24,8 @@ import CompTabbar from './comps/comp-tabbar'
 import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
 import CompTab from './comps/comp-tab'
+import { updateShopCartCount } from '@/store/slices/cart'
+
 
 import './index.scss'
 
@@ -39,14 +41,17 @@ const initState = {
   productSwitching: true,
   info: null,
   skuPanelOpen: false,
-  selectType: 'picker'
+  selectType: 'picker',
 }
 
 function StoreIndex() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
   const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
+  const {shopCartCount} = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
+  const $instance = getCurrentInstance()
+  const router = $instance.router
 
   const {
     wgts,
@@ -65,6 +70,7 @@ function StoreIndex() {
 
   useEffect(() => {
     fetchWgts()
+    
   }, [])
 
   useEffect(() => {
@@ -102,8 +108,26 @@ function StoreIndex() {
         draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
         draft.loading = false
       })
+      await shopping(distributor_id)
     }
   }
+
+  const shopping = async (distributor_id) => {
+    let params ={
+      distributor_id,
+      shop_type: 'distributor'
+    }
+    const {valid_cart} = await api.cart.get(params)
+      let shopCats= {
+        shop_id:valid_cart[0]?.shop_id || "",  //下单
+        cart_total_num:valid_cart[0]?.cart_total_num || "",   //数量
+        total_fee:valid_cart[0]?.total_fee || "",   //实付金额
+        discount_fee:valid_cart[0]?.discount_fee || "",   //优惠金额
+        storeDetails:valid_cart[0] || {}
+      }
+      dispatch(updateShopCartCount(shopCats))
+  }
+
 
   const fetchLikeList = async () => {
     if (openRecommend == 1) {
@@ -169,6 +193,32 @@ function StoreIndex() {
     }
   }
 
+
+  const settlement = () =>{
+    const { type = 'distributor' } = router.params
+    const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = shopCartCount.storeDetails
+    const query = {
+      cart_type: 'cart',
+      type,
+      shop_id,
+      is_delivery,
+      is_ziti,
+      name: shop_name,
+      store_address: address,
+      lat,
+      lng,
+      hour,
+      phone: mobile,
+      //购物车默认是0     0:普通商品  1:跨境商品
+      // goodType: current == 0 ? 'normal' : 'cross'
+      goodType:'normal'
+    }
+    Taro.navigateTo({
+      url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
+    })
+  }
+
+
   let searchComp = wgts.find((wgt) => wgt.name == 'search')
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   let filterWgts = []
@@ -223,7 +273,7 @@ function StoreIndex() {
           </SpFloatMenuItem>
         </View>
       }
-      renderFooter={<CompTab />}
+      renderFooter={<CompTab settlement={settlement} />}
     >
       {searchComp && (
         <View className='search'>

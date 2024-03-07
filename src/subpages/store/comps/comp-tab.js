@@ -12,19 +12,39 @@ import './comp-tab.scss'
 import { goToAuthPage } from '@/utils/platform.h5'
 
 const initialState = {
-  xx: 123,
   fav: false,
   couponList: [],
   extend: false
 }
 function CompTab(props) {
-  const { dtid = 0, storeInfo = {} } = props
+  const {shopCartCount} = useSelector((state) => state.cart)
+
+  const { settlement = {} } = props
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend, xx } = state
+
+
+
+  const formatMoney = (num)=> {
+    const numString = String(num)
+    const [integerPart, decimalPart] = numString.split('.')
+
+    let formattedInteger = ''
+    for (let i = integerPart.length - 1, j = 1; i >= 0; i--, j++) {
+      formattedInteger = integerPart[i] + formattedInteger
+      if (j % 3 === 0 && i !== 0) {
+        formattedInteger = ',' + formattedInteger
+      }
+    }
+
+    let result = decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger
+    return result
+  }
 
   return (
     <View className='comp-shop-brand'>
       <View className='comp-shop-brand-gwc'>
+        {console.log('shopCartCountshopCartCountshopCartCountshopCartCountshopCartCountshopCartCount',shopCartCount)}
         <View
           className='comp-shop-brand-gwc-num'
           onClick={() => {
@@ -34,12 +54,12 @@ function CompTab(props) {
           }}
         >
           <Text className='iconfont icon-gouwuche2' />
-          <View className='nums'>12</View>
+          {shopCartCount.cart_total_num && <View className='nums'>{shopCartCount.cart_total_num}</View>}
         </View>
-        <SpPrice value={xx}></SpPrice>
-        <Text className='money'>¥ 1,000</Text>
+        {shopCartCount.total_fee && <SpPrice value={shopCartCount.total_fee}></SpPrice>}
+        {shopCartCount.discount_fee && <Text className='money'>¥ {formatMoney(shopCartCount.discount_fee)}</Text>}
       </View>
-      <View className='settlement'>去结算</View>
+      {shopCartCount.shop_id && <View className='settlement' onClick={()=>settlement()}>去结算</View>}
     </View>
   )
 }

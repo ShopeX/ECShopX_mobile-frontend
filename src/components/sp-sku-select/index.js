@@ -16,7 +16,8 @@ import { addCart, updateCount } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, showToast } from '@/utils'
+import { classNames, showToast,entryLaunch ,getDistributorId} from '@/utils'
+import { updateShopCartCount } from '@/store/slices/cart'
 import './index.scss'
 
 // 数据类型
@@ -192,10 +193,29 @@ function SpSkuSelect(props) {
       })
     )
     onClose()
+    await shopping()
     dispatch(updateCount({ shop_type: 'distributor' }))
 
     Taro.hideLoading()
     // showToast('成功加入购物车')
+  }
+
+  const shopping = async () => {
+    const { id, dtid } = await entryLaunch.getRouteParams()
+    const distributor_id = getDistributorId(id || dtid)
+    let params ={
+      distributor_id,
+      shop_type: 'distributor'
+    }
+    const {valid_cart} = await api.cart.get(params)
+      let shopCats= {
+        shop_id:valid_cart[0]?.shop_id || "",  //下单
+        cart_total_num:valid_cart[0]?.cart_total_num || "",   //数量
+        total_fee:valid_cart[0]?.total_fee || "",   //实付金额
+        discount_fee:valid_cart[0]?.discount_fee || "",   //优惠金额
+        storeDetails:valid_cart[0] || {}
+      }
+      dispatch(updateShopCartCount(shopCats))
   }
 
   const fastBuy = async () => {
