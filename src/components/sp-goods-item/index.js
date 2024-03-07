@@ -207,7 +207,7 @@ function SpGoodsItem(props) {
                 onClick={handleFavClick}
               />
               <Text
-                className='iconfont icon-gouwuche1'
+                className='iconfont icon-gouwuche2'
                 onClick={(e)=>onChangeToolBar(info.itemId,e)}
               />
             </View>

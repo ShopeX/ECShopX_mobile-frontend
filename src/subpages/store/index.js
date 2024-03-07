@@ -23,6 +23,7 @@ import HomeWgts from '@/pages/home/comps/home-wgts'
 import CompTabbar from './comps/comp-tabbar'
 import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
+import CompTab from './comps/comp-tab'
 
 import './index.scss'
 
@@ -222,7 +223,7 @@ function StoreIndex() {
           </SpFloatMenuItem>
         </View>
       }
-      // renderFooter={<CompTabbar />}
+      renderFooter={<CompTab />}
     >
       {searchComp && (
         <View className='search'>
@@ -266,8 +267,7 @@ function StoreIndex() {
           <SpRecommend className='recommend-block' info={likeList} />
         </HomeWgts>
       ) : (
-        <Categorys addPurchases={addPurchases} />
-        // <View>111111</View>
+        <Categorys addPurchases={addPurchases} dtid={distributorId} />
       )}
 
       {/* Sku选择器 */}

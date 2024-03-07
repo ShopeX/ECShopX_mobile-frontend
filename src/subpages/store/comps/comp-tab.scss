@@ -1,0 +1,42 @@
+.comp-shop-brand {
+  padding: 24px 16px;
+  display: flex;
+  justify-content: space-between;
+  .comp-shop-brand-gwc {
+    display: flex;
+    align-items: center;
+    .comp-shop-brand-gwc-num {
+      position: relative;
+      margin-right: 44px;
+      .icon-gouwuche2 {
+        font-size: 80px;
+        color: var(--color-primary);
+      }
+      .nums {
+        padding: 2px 8px;
+        border-radius: 18px 18px 18px 0px;
+        border: 2px solid #ffffff;
+        background: linear-gradient(174deg, #eb200c 0%, #ff4a4a 100%);
+        position: absolute;
+        left: 66px;
+        bottom: 50px;
+        color: #ffffff;
+      }
+    }
+    .money {
+      margin-left: 10px;
+      color: #999;
+      font-size: 24px;
+      text-decoration: line-through;
+    }
+  }
+  .settlement {
+    width: 210px;
+    line-height: 80px;
+    background: var(--color-primary);
+    border-radius: 50px;
+    text-align: center;
+    color: #ffffff;
+    font-size: 30px;
+  }
+}

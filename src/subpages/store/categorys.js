@@ -3,19 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpScrollView, SpCategorySearch,SpSkuSelect } from '@/components'
+import { SpScrollView} from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 
-import { pickBy, classNames, styleNames, showToast,entryLaunch } from '@/utils'
+import { pickBy, classNames, styleNames, showToast } from '@/utils'
 import CompFirstCategory from './comps/comp-first-category'
 import CompSecondCategory from './comps/comp-second-category'
 import CompThirdCategory from './comps/comp-third-category'
 import GoodsItem from './comps/goods-item'
 import './categorys.scss'
 
-const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   cusIndex: 1,
@@ -29,10 +28,7 @@ const initialState = {
   cat_id: undefined,
   show: false,
   secondList: [],
-  thirdList: [],
-  info:null,
-  skuPanelOpen:false,
-  selectType: 'picker'
+  thirdList: []
 }
 
 function StoreItemList(props) {
@@ -50,15 +46,13 @@ function StoreItemList(props) {
     categoryThirdIndex,
     cat_id,
     secondList,
-    thirdList,
-    info,
-    skuPanelOpen,
-    selectType
+    thirdList
   } = state
 
 
   const {
     addPurchases = () => {},
+    dtid
   } = props
 
   const goodsRef = useRef()
@@ -102,7 +96,7 @@ function StoreItemList(props) {
     // })
 
     // if (currentList.length!==0) {
-      const res = await api.category.get()
+      const res = await api.category.get({distributor_id:dtid})
       const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',
@@ -139,10 +133,11 @@ function StoreItemList(props) {
       approve_status: 'onsale,only_show',
       item_type: 'normal',
       is_point: 'false',
-      distributor_id: dis_id || Taro.getStorageSync('distributor_id'),
+      distributor_id: dtid,
+      // distributor_id: dis_id || Taro.getStorageSync('distributor_id'),
       goodsSort,
       category_id: cat_id,
-      v_store: cusIndex
+      v_store: cusIndex,
     }
 
     const { list: _list, total_count } = await api.item.search(params)

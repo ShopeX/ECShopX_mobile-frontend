@@ -193,7 +193,7 @@ function GoodsItem(props) {
                 <View className='gd-price'>
                   <SpPrice value={info.price}></SpPrice>
                   <Text
-                    className='iconfont icon-gouwuche1'
+                    className='iconfont icon-gouwuche2'
                     onClick={(e)=>onChangeToolBar(info.itemId,e)}
                   />
                   {info.price-info.activityPrice>0?<Text className='unit-price'>{info.price}</Text> : ''}
