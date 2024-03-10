@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.13.26](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.25...v3.13.26) (2024-03-10)
+
+
+### Bug Fixes
+
+* 积分商城积分+现金支付 ([d783858](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d783858e27e6cdceaedfb0692f6f5128b2a89f74))
+* 移除汇付支付插件 ([4f09777](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4f0977760284ffb1ee2cd6a17a912ba7068f9edd))
+
 ### [3.13.25](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.24...v3.13.25) (2024-02-20)
 
 
