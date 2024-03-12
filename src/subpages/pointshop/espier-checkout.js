@@ -216,63 +216,45 @@ function PointShopEspierCheckout() {
 
     let orderInfo
     let orderId
-    if ((isWeb || isAPP()) && payType !== 'deposit') {
-      try {
-        const h5ResInfo = await api.trade.h5create({
-          ...params,
-          pay_type: params.pay_type != 'point' ? (isAPP() ? payType : TRANSFORM_PAYTYPE[payType]) : 'point'
-        })
-        orderInfo = h5ResInfo
-        orderId = h5ResInfo.order_id
-      } catch (e) {
-        setState((draft) => {
-          draft.submitLoading = false
-        })
-      }
-    } else {
-      try {
-        const { trade_info } = await api.trade.create(params)
-        orderInfo = trade_info
-        orderId = trade_info.order_id
-      } catch (e) {
-        setState((draft) => {
-          draft.submitLoading = false
-        })
-        return
-      }
+    try {
+      // 积分商城默认下单积分支付
+      const resOrderInfo = await api.trade.h5create(params)
+      orderInfo = resOrderInfo
+      orderId = resOrderInfo.order_id
+    } catch (e) {
+      setState((draft) => {
+        draft.submitLoading = false
+      })
+      Taro.hideLoading()
+      setTimeout(() => {
+        Taro.navigateBack()
+      }, 100)
+      return
     }
-
     Taro.hideLoading()
 
     setState((draft) => {
       draft.submitLoading = false
     })
 
-    const isCashPay = totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 // 是否需要现金支付
-    // 储值支付 或者 积分抵扣
-    if (payType === 'deposit' || params.pay_type == 'point' && !isCashPay) {
-      Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
+    if (
+      params.pay_type == 'wxpayjs' ||
+      (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+    ) {
+      // 微信客户端code授权
+      const loc = window.location
+      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
+      let { redirect_url } = await api.wx.getredirecturl({ url })
+      window.location.href = redirect_url
     } else {
-      if (
-        params.pay_type == 'wxpayjs' ||
-        (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
-      ) {
-        // 微信客户端code授权
-        const loc = window.location
-        // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-        const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
-        let { redirect_url } = await api.wx.getredirecturl({ url })
-        window.location.href = redirect_url
-      } else {
-        cashierPayment(
-          {
-            ...params,
-            // 活动类型：拼团
-            activityType: type
-          },
-          orderInfo
-        )
-      }
+      cashierPayment(
+        {
+          ...params,
+          // 活动类型：拼团
+          activityType: type
+        },
+        orderInfo
+      )
     }
   }
 
@@ -362,7 +344,8 @@ function PointShopEspierCheckout() {
       deduct_point_rule,
       real_use_point,
       item_fee_new,
-      market_fee
+      market_fee,
+      order_class
     } = orderRes
 
     // console.log('subdistrictRes:', subdistrictRes)
@@ -412,7 +395,8 @@ function PointShopEspierCheckout() {
       point_fee, //积分抵扣金额,
       item_point,
       freight_type,
-      promotion_discount
+      promotion_discount,
+      order_class
     }
 
     const point_info = {
@@ -425,7 +409,7 @@ function PointShopEspierCheckout() {
     }
 
     if (real_use_point && real_use_point < point_use) {
-      S.toast(`${pointName}有调整`)
+      showToast(`${pointName}有调整`)
     }
 
     Taro.hideLoading()
@@ -469,26 +453,21 @@ function PointShopEspierCheckout() {
       cart_type,
       order_type: 'normal_pointsmall',
       promotion: 'normal',
-      // member_discount: 0,
-      // coupon_discount: 0,
-      // not_use_coupon: 0,
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
-      point_use,
-      pay_type: totalInfo.freight_type == 'cash' && totalInfo.freight_fee > 0 ? payType : 'point'
-      // pay_type: point_use > 0 && totalInfo.freight_fee > 0 ? 'point' : payType,
-      // distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid
+      point_use: totalInfo.point,
+      pay_type: payType,
     }
 
     if (receiptType === 'ziti') {
       delete cus_parmas.receiver_zip
     }
 
-    // 积分不开票
-    if (payType === 'point') {
-      delete cus_parmas.invoice_type
-      delete cus_parmas.invoice_content
-      delete cus_parmas.point_use
-    }
+    // // 积分不开票
+    // if (payType === 'point') {
+    //   delete cus_parmas.invoice_type
+    //   delete cus_parmas.invoice_content
+    //   delete cus_parmas.point_use
+    // }
 
     if (VERSION_PLATFORM) {
       delete cus_parmas.isNostores
@@ -501,7 +480,6 @@ function PointShopEspierCheckout() {
       if (coupon_code) {
         cus_parmas.coupon_discount = coupon_code
       }
-      // cus_parmas.member_discount = type === 'member' && value ? 1 : 0
     }
 
     const { packName, packDes } = packInfo
@@ -509,12 +487,9 @@ function PointShopEspierCheckout() {
     if (bargain_id) {
       cus_parmas.bargain_id = bargain_id
     }
-    // if (submitLoading) {
-    // 提交时候获取参数 把留言信息传进去
+
     cus_parmas.remark = remark
-    // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
-    // }
 
     return cus_parmas
   }
@@ -537,7 +512,7 @@ function PointShopEspierCheckout() {
             </View>
             <View>
               {`支付金额: `}
-              <SpPrice value={totalInfo.total_fee} />
+              <SpPrice value={totalInfo.total_fee / 100} />
             </View>
           </View>
         </View>
@@ -600,7 +575,7 @@ function PointShopEspierCheckout() {
 
       {renderGoodsComp()}
 
-      {totalInfo.freight_type == 'cash' && (totalInfo.freight_fee > 0 || totalInfo.total_fee > 0) && (
+      {(totalInfo.freight_fee > 0 || totalInfo.total_fee > 0) && (
         <View>
           <SpCell
             isLink

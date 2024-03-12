@@ -236,7 +236,6 @@ function SpPage(props, ref) {
 
     }
     // console.log('zzz', Taro.getCurrentPages())
-    // debugger
     const navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
     return (
       <View
@@ -339,7 +338,7 @@ function SpPage(props, ref) {
         </View>
       )}
 
-      <sp-wx-privacy />
+
     </View>
   )
 }

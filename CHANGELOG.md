@@ -2,6 +2,41 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.14.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.26...v3.14.0) (2024-03-11)
+
+### [3.13.26](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.25...v3.13.26) (2024-03-10)
+
+
+### Bug Fixes
+
+* 积分商城积分+现金支付 ([d783858](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d783858e27e6cdceaedfb0692f6f5128b2a89f74))
+* 移除汇付支付插件 ([4f09777](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4f0977760284ffb1ee2cd6a17a912ba7068f9edd))
+
+### [3.13.25](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.24...v3.13.25) (2024-02-20)
+
+
+### Features
+
+* 装修添加积分商城跳转链接 ([0d9e307](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0d9e3077c5d8e25881f33d43ac67c5110051119b))
+
+### [3.13.24](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.23...v3.13.24) (2024-01-15)
+
+### [3.13.23](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.22...v3.13.23) (2023-12-25)
+
+
+### Bug Fixes
+
+* 移除自定义隐私弹窗 ([ccc22cb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ccc22cb19641e06ccbfdf118c7a26cef2a06b18a))
+
+### [3.13.22](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.21...v3.13.22) (2023-12-06)
+
+### [3.13.21](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.17...v3.13.21) (2023-11-30)
+
+
+### Features
+
+* 订单列表添加授权引导 ([fa52201](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fa522012ed01cc28424211eb13362199bd4edf34))
+
 ### [3.13.20](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.18...v3.13.20) (2023-11-27)
 
 ### [3.13.19](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.13.18...v3.13.19) (2023-11-24)

@@ -34,7 +34,7 @@ ENV APP_MERCHANT_URL ${APP_MERCHANT_URL}
 WORKDIR /app
 COPY package*.json ./
 COPY .env ./
-RUN npm config set registry https://registry.npm.taobao.org && npm config set sass_binary_site=https://npm.taobao.org/mirrors/node-sass/ && npm config set @shopex:registry http://registry.npm.ishopex.cn && npm ci
+RUN npm config set registry https://registry.npmmirror.com && npm config set sass_binary_site=https://cdn.npmmirror.com/binaries/node-sass && npm config set @shopex:registry http://registry.npm.ishopex.cn && npm ci
 
 COPY . .
 RUN ls -la

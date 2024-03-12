@@ -16,9 +16,9 @@ function SpImage(props) {
     mode = 'widthFix',
     width = 'auto',
     height,
-    onClick = () => {},
-    onError = () => {},
-    onLoad = () => {},
+    onClick = () => { },
+    onError = () => { },
+    onLoad = () => { },
     lazyLoad = false,
     circle = false,
     isShowMenuByLongpress = true
@@ -35,10 +35,14 @@ function SpImage(props) {
 
   if (diskDriver === 'qiniu') {
     if (width != 'auto') {
-      imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + Math.floor(width / 2) : ''}${
-        height ? '/h/' + Math.floor(height / 2) : ''
-      }`
+      imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + Math.floor(width / 2) : ''}${height ? '/h/' + Math.floor(height / 2) : ''
+        }`
     }
+  } else {
+    // imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + Math.floor(width / 2) : ''}${
+    //   height ? '/h/' + Math.floor(height / 2) : ''
+    // }`
+    imgUrl = `${imgUrl}?x-oss-process=image/quality,q_80`
   }
 
   const handleOnLoad = (e) => {
@@ -71,8 +75,8 @@ function SpImage(props) {
           'border-radius': isNumber(circle)
             ? `${circle / 2}px`
             : isBoolean(circle) && circle
-            ? `${width / 2}px`
-            : 0
+              ? `${width / 2}px`
+              : 0
         })}
         src={imgUrl}
         mode={mode}

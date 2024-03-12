@@ -49,7 +49,14 @@ function StoreZitiPicker(props) {
   }
 
   const onChangeSelectZiti = (item, e) => {
-    dispatch(changeZitiAddress(item))
+    const workdays = item?.workdays?.map((item) => {
+      if (item == 7) { // 管理端周日设置的是7 dayjs().day()格式化周日为0 所以会导致周日不能选择，在这里处理一下为7的时候return0
+        return '0'
+      } else {
+        return item
+      }
+    })
+    dispatch(changeZitiAddress({...item, workdays}))
 
     setTimeout(() => {
       Taro.navigateBack()

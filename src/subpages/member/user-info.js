@@ -217,7 +217,6 @@ function MemberUserInfo() {
 
   const saveUserInfo = async () => {
     const { avatar, username } = formUserInfo
-    debugger
     await api.member.updateMemberInfo({
       username,
       avatar
@@ -282,7 +281,6 @@ function MemberUserInfo() {
       })
       const res = await imgUploader.uploadImageFn(imgFiles)
       console.log('onUploadAvatarFile:res', res)
-      // debugger
       // https://resource/apml16866fa5e90bd3dd72409b11e4f68679.jpg
       setState((draft) => {
         draft.formUserInfo.avatar = res[0].url

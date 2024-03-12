@@ -53,7 +53,6 @@ export default class EditShare extends Component {
 
   // 获取分享信息
   async getShareSettingInfo() {
-    debugger
     Taro.showLoading({ title: '' })
     const { id, dtid, company_id } = this.$instance.router.params
     const data = await api.item.getShareSetting(id)
@@ -115,7 +114,6 @@ export default class EditShare extends Component {
 
   // 生成图片canvas
   generateCanvas = async () => {
-    debugger
     const { selectPics, wxappCode } = this.state
     const showPoster = []
     const codeImg = await Taro.getImageInfo({ src: wxappCode.replace('http://', 'https://') })
