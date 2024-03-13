@@ -21,30 +21,15 @@ function CompTab(props) {
 
   const { settlement = {} } = props
   const [state, setState] = useImmer(initialState)
-  const { fav, couponList, extend, xx } = state
+  const { fav, couponList, extend } = state
 
-
-
-  const formatMoney = (num)=> {
-    const numString = String(num)
-    const [integerPart, decimalPart] = numString.split('.')
-
-    let formattedInteger = ''
-    for (let i = integerPart.length - 1, j = 1; i >= 0; i--, j++) {
-      formattedInteger = integerPart[i] + formattedInteger
-      if (j % 3 === 0 && i !== 0) {
-        formattedInteger = ',' + formattedInteger
-      }
-    }
-
-    let result = decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger
-    return result
+  if(!shopCartCount) {
+    return null
   }
 
   return (
     <View className='comp-shop-brand'>
       <View className='comp-shop-brand-gwc'>
-        {console.log('shopCartCountshopCartCountshopCartCountshopCartCountshopCartCountshopCartCount',shopCartCount)}
         <View
           className='comp-shop-brand-gwc-num'
           onClick={() => {
@@ -56,8 +41,8 @@ function CompTab(props) {
           <Text className='iconfont icon-gouwuche2' />
           {shopCartCount.cart_total_num && <View className='nums'>{shopCartCount.cart_total_num}</View>}
         </View>
-        {shopCartCount.total_fee && <SpPrice value={shopCartCount.total_fee}></SpPrice>}
-        {shopCartCount.discount_fee && <Text className='money'>¥ {formatMoney(shopCartCount.discount_fee)}</Text>}
+        {shopCartCount.total_fee && <SpPrice value={shopCartCount.total_fee / 100}></SpPrice>}
+        {/* {shopCartCount.discount_fee && <Text className='money'>¥ {formatMoney(shopCartCount.discount_fee)}</Text>} */}
       </View>
       {shopCartCount.shop_id && <View className='settlement' onClick={()=>settlement()}>去结算</View>}
     </View>
