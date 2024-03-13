@@ -8,17 +8,17 @@ import './comp-third-category.scss'
 const initialState = {
   isShowFloat: false,
   scrollIntoView: 'category-0',
-  selectValue : null
+  selectValue: null
 }
 
 function CompThirdCategory(props) {
   const {
-    onClick = () => {},
+    onClick = () => { },
     list = [],
     cusIndex = 0
   } = props
   const [state, setState] = useImmer(initialState)
-  const { isShowFloat, scrollIntoView,selectValue } = state
+  const { isShowFloat, scrollIntoView, selectValue } = state
 
   useEffect(() => {
     setState((draft) => {
@@ -45,7 +45,7 @@ function CompThirdCategory(props) {
 
   const onChangeBrand = ([id]) => {
 
-    const index = list.findIndex(item=>item.id == id)
+    const index = list.findIndex(item => item.id == id)
 
     setState((draft) => {
       draft.isShowFloat = false
@@ -59,16 +59,18 @@ function CompThirdCategory(props) {
       className='comp-third-category'
     >
       <ScrollView className='comp-third-category-scroll' scrollX scrollIntoView={scrollIntoView}>
-        {list.map((el,index) => (
-          <View
-            className={`comp-third-category-scroll-item ${index == cusIndex ? 'active' : ''}`}
-            key={el.id}
-            onClick={() => onSelectClick(index)}
-            id={`category-${el.id}`}
-          >
-            <View className='comp-third-category-goods-desc'>{el.name}</View>
-          </View>
-        ))}
+        <View className='scroll-container'>
+          {list.map((el, index) => (
+            <View
+              className={`category-item ${index == cusIndex ? 'active' : ''}`}
+              key={el.id}
+              onClick={() => onSelectClick(index)}
+              id={`category-${el.id}`}
+            >
+              <View className='category-name'>{el.name}</View>
+            </View>
+          ))}
+        </View>
       </ScrollView>
       <View className='comp-third-category-filter'>
         {list.length > 0 && (

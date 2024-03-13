@@ -13,13 +13,13 @@ import { PROMOTION_TAG } from '@/consts'
 
 import './comp-goods-item.scss'
 
-function GoodsItem(props) {
+function CompGoodsItem(props) {
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const {
     onClick,
-    onStoreClick = () => {},
-    onAddToCart = () => {},
+    onStoreClick = () => { },
+    onAddToCart = () => { },
     showFav = false,
     info = null,
     renderFooter = null,
@@ -91,13 +91,9 @@ function GoodsItem(props) {
   }
 
 
-  const onChangeToolBar = (id,e)=>{
-    e?.stopPropagation()
-    if (!S.getAuthToken()) {
-      showToast('请登录')
-      return
-    }
-    onAddToCart(id)
+  const onChangeToolBar = (e) => {
+    e.stopPropagation()
+    onAddToCart(info)
   }
 
   if (!info) {
@@ -110,18 +106,10 @@ function GoodsItem(props) {
     !hideStore && VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info)
 
   return (
-    <View className={classNames('sp-category-goods-item')}>
+    <View className={classNames('comp-goods-item')}>
       <View className='goods-item__hd' onClick={handleClick.bind(this)}>
         <View className='image-wrap'>
           <SpImage className='main-image' src={info.pic} mode='aspectFill' circle={16} />
-          {info.activity_store <= 0 && (
-            <Image
-              src='https://shangpai-pic.fn-mart.com/miniprograme/replenishment.png'
-              mode='widthFix'
-              className='shouqin-icon'
-            />
-          )}
-          {/* {info.store <= 0 && <SpImage className='shouqin-icon' src='shouqin.png' circle={16} />} */}
         </View>
       </View>
       <View className='goods-item__bd'>
@@ -169,7 +157,6 @@ function GoodsItem(props) {
               <View className='goods-cart'>
                 <Text
                   className={classNames('iconfont', 'icon-gouwuche')}
-                  // onClick={handleCartClick}
                 />
               </View>
             </SpLogin>
@@ -192,26 +179,11 @@ function GoodsItem(props) {
               <View className='goods-price'>
                 <View className='gd-price'>
                   <SpPrice value={info.price}></SpPrice>
-                  <Text
-                    className='iconfont icon-gouwuche2'
-                    onClick={(e)=>onChangeToolBar(info.itemId,e)}
-                  />
-                  {info.price-info.activityPrice>0?<Text className='unit-price'>{info.price}</Text> : ''}
-                  {/* <Text className='unit'>{info.item_unit ? `/${info.item_unit}` : ''}</Text> */}
+                  {info.price - info.activityPrice > 0 ? <Text className='unit-price'>{info.price}</Text> : ''}
                 </View>
-
-                {/* <View className='mk-price'>
-                  {info.marketPrice / 100 > 0 && (
-                    <SpPrice lineThrough value={info.marketPrice / 100}></SpPrice>
-                  )}
-                </View> */}
               </View>
             )}
-            {/* {
-                isOpenCollection && <View className='bd-block-rg'>
-                  <Text className='iconfont icon-shoucang-01'></Text>
-                </View>
-              } */}
+
             {showFav && (
               <View className='bd-block-rg'>
                 <Text
@@ -223,6 +195,11 @@ function GoodsItem(props) {
                 />
               </View>
             )}
+
+            <Text
+              className='iconfont icon-gouwuche2' onClick={onChangeToolBar}
+            />
+
           </View>
         )}
         {/* 促销活动标签 */}
@@ -246,25 +223,12 @@ function GoodsItem(props) {
       </View>
 
       <View className='goods-item__ft'>{renderFooter}</View>
-
-      {/* {info.brand && (
-        <View className='goods-item__ft'>
-          <SpImage
-            className='brand-logo'
-            mode='aspectFill'
-            src={info.brand}
-            width={60}
-            height={60}
-          />
-          <View className='brand-info'></View>
-        </View>
-      )} */}
     </View>
   )
 }
 
-GoodsItem.options = {
+CompGoodsItem.options = {
   addGlobalClass: true
 }
 
-export default GoodsItem
+export default CompGoodsItem

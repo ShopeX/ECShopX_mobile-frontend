@@ -337,17 +337,22 @@ function ItemList() {
   }
 
   const handleAddToCart = async ({ itemId, distributorId }) => {
-    Taro.showLoading()
-    const itemDetail = await api.item.detail(itemId, {
-      showError: false,
-      distributor_id: distributorId
-    })
-    Taro.hideLoading()
-    setState((draft) => {
-      draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
-      draft.skuPanelOpen = true
-      draft.selectType = 'addcart'
-    })
+    try {
+      Taro.showLoading()
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
   }
   return (
     <SpPage

@@ -172,6 +172,9 @@ function SpLogin(props, ref) {
   useImperativeHandle(ref, () => ({
     _setPolicyModal: () => {
       setPolicyModal(true)
+    },
+    handleToLogin: () => {
+      setLoginModal(true)
     }
   }))
 
@@ -234,6 +237,7 @@ function SpLogin(props, ref) {
           </View>
         </View>
       </AtCurtain>
+
     </View>
   )
 }

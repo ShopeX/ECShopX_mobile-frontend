@@ -1,13 +1,13 @@
 import React, { useRef, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
-import { Text, View, Image } from '@tarojs/components'
+import { Text, View, Image, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpScrollView, SpPage, SpTabbar, SpCategorySearch, SpSkuSelect } from '@/components'
+import { SpScrollView, SpPage, SpTabbar, SpCategorySearch, SpSkuSelect, SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
-
+import S from '@/spx'
 import { pickBy, classNames, styleNames, showToast, entryLaunch } from '@/utils'
 import CompFirstCategory from './comps/comp-first-category'
 import CompSecondCategory from './comps/comp-second-category'
@@ -58,6 +58,7 @@ function StoreItemList(props) {
 
   const goodsRef = useRef()
   const pageRef = useRef()
+  const loginRef = useRef()
   const dispatch = useDispatch()
   useEffect(() => {
     getCategoryList()
@@ -238,34 +239,28 @@ function StoreItemList(props) {
   }
 
 
-  const addPurchase = async (id) => {
-    let data
-    Taro.showLoading({
-      title: '加载中'
-    })
-    const { dtid } = await entryLaunch.getRouteParams()
-    const itemDetail = await api.item.detail(id, {
-      showError: false,
-      distributor_id: dtid
-    })
-    Taro.hideLoading()
-    data = pickBy(itemDetail, doc.goods.GOODS_INFO)
-    // if (data.approveStatus == 'instock') {
-    //   setState((draft) => {
-    //     draft.isDefault = true
-    //     draft.defaultMsg = '商品已下架'
-    //   })
-    // }
-    setState((draft) => {
-      draft.info = {
-        ...data
-      }
-    })
-    // 获取商品详情的接口
-    setState((draft) => {
-      draft.skuPanelOpen = true
-      draft.selectType = 'addcart'
-    })
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    if(!S.getAuthToken()) {
+      loginRef.current?.handleToLogin()
+      return
+    }
+
+    Taro.showLoading()
+    try {
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
   }
 
   const changeList = async () => {
@@ -298,11 +293,11 @@ function StoreItemList(props) {
   return (
     <SpPage
       scrollToTopBtn
-      className={classNames('page-category-item-list')}
+      className={classNames('page-category-index')}
       renderFooter={<SpTabbar />}
       ref={pageRef}
     >
-      <View className='page-category-item-list-head'>
+      <View className='container-hd'>
         <View className='category-search'>
           <SpCategorySearch onConfirm={handleConfirm} />
         </View>
@@ -312,7 +307,8 @@ function StoreItemList(props) {
           onClick={onFirstCategoryClick}
         />
       </View>
-      <View className='page-category-item-list-container'>
+      <View className='container-bd'>
+
         <View className='left-container'>
           <CompSecondCategory
             cusIndex={categorySecondIndex}
@@ -320,6 +316,7 @@ function StoreItemList(props) {
             onClick={onSecondCategoryClick}
           />
         </View>
+
         <View
           className='right-container'
           style={styleNames({
@@ -336,21 +333,21 @@ function StoreItemList(props) {
               />
             </View>
           )}
-          <View className='goods-list goods-list__type-list'>
+          <ScrollView className='goods-list-container' scrollY>
             <SpScrollView
-              className='page-category-item-list-scroll'
-              scrollY
+              className='scroll-view-goods'
               ref={goodsRef}
               fetch={fetch}
               auto={false}
             >
               {allList.map((item, index) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <CompGoodsItem onStoreClick={handleClickStore} onAddToCart={addPurchase} hideStore info={item} />
+                  <CompGoodsItem onStoreClick={handleClickStore} onAddToCart={handleAddToCart} hideStore info={item} />
                 </View>
               ))}
             </SpScrollView>
-          </View>
+          </ScrollView>
+
         </View>
       </View>
 
@@ -371,6 +368,8 @@ function StoreItemList(props) {
           })
         }}
       />
+
+      <SpLogin ref={loginRef} />
     </SpPage>
   )
 }

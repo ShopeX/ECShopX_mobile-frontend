@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react'
-import Taro, { useShareAppMessage, useShareTimeline, useDidShow,getCurrentInstance } from '@tarojs/taro'
+import Taro, { useShareAppMessage, useShareTimeline, useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpTabbar ,SpSkuSelect} from '@/components'
+import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpTabbar, SpSkuSelect } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import {
@@ -14,12 +14,14 @@ import {
   classNames,
   entryLaunch,
   pickBy,
-  log
+  log,
+  showToast
 } from '@/utils'
 import { useImmer } from 'use-immer'
 import { useNavigation } from '@/hooks'
 import qs from 'qs'
 import HomeWgts from '@/pages/home/comps/home-wgts'
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import CompTabbar from './comps/comp-tabbar'
 import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
@@ -48,7 +50,7 @@ function StoreIndex() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
   const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
-  const {shopCartCount} = useSelector((state) => state.cart)
+  const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
   const router = $instance.router
@@ -70,7 +72,7 @@ function StoreIndex() {
 
   useEffect(() => {
     fetchWgts()
-    
+
   }, [])
 
   useEffect(() => {
@@ -113,19 +115,19 @@ function StoreIndex() {
   }
 
   const shopping = async (distributor_id) => {
-    let params ={
+    let params = {
       distributor_id,
       shop_type: 'distributor'
     }
-    const {valid_cart} = await api.cart.get(params)
-      let shopCats= {
-        shop_id:valid_cart[0]?.shop_id || "",  //下单
-        cart_total_num:valid_cart[0]?.cart_total_num || "",   //数量
-        total_fee:valid_cart[0]?.total_fee || "",   //实付金额
-        discount_fee:valid_cart[0]?.discount_fee || "",   //优惠金额
-        storeDetails:valid_cart[0] || {}
-      }
-      dispatch(updateShopCartCount(shopCats))
+    const { valid_cart } = await api.cart.get(params)
+    let shopCats = {
+      shop_id: valid_cart[0]?.shop_id || "",  //下单
+      cart_total_num: valid_cart[0]?.cart_total_num || "",   //数量
+      total_fee: valid_cart[0]?.total_fee || "",   //实付金额
+      discount_fee: valid_cart[0]?.discount_fee || "",   //优惠金额
+      storeDetails: valid_cart[0] || {}
+    }
+    dispatch(updateShopCartCount(shopCats))
   }
 
 
@@ -193,8 +195,26 @@ function StoreIndex() {
     }
   }
 
+  const onAddToCart = async ({ itemId }) => {
+    Taro.showLoading()
+    try {
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
+  }
 
-  const settlement = () =>{
+  const settlement = () => {
     const { type = 'distributor' } = router.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = shopCartCount.storeDetails
     const query = {
@@ -211,7 +231,7 @@ function StoreIndex() {
       phone: mobile,
       //购物车默认是0     0:普通商品  1:跨境商品
       // goodType: current == 0 ? 'normal' : 'cross'
-      goodType:'normal'
+      goodType: 'normal'
     }
     Taro.navigateTo({
       url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
@@ -312,10 +332,14 @@ function StoreIndex() {
       </View>
 
       {productSwitching && wgts.length > 0 ? (
-        <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
-          {/* 猜你喜欢 */}
-          <SpRecommend className='recommend-block' info={likeList} />
-        </HomeWgts>
+        <WgtsContext.Provider value={{
+          onAddToCart
+        }}>
+          <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
+            {/* 猜你喜欢 */}
+            <SpRecommend className='recommend-block' info={likeList} />
+          </HomeWgts>
+        </WgtsContext.Provider>
       ) : (
         <Categorys addPurchases={addPurchases} dtid={distributorId} />
       )}

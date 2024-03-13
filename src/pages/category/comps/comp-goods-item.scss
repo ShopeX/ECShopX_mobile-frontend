@@ -1,20 +1,8 @@
-.sp-category-goods-item {
-  background-color: #fff;
-  border-radius: 16px;
-  overflow: hidden;
-  padding-bottom: 24px;
-  position: relative;
+.comp-goods-item {
+  display: flex;
 
   .goods-item {
     &__hd {
-      // padding-top: 100%;
-      // position: relative;
-      // width: 150px;
-      // height: 150px;
-      // background: rgba(0, 0, 0, 0.4);
-      // border-radius: 8px;
-      // overflow: hidden;
-
       .sp-image {
         position: absolute;
         top: 0;
@@ -29,43 +17,24 @@
         height: 160px;
       }
 
-        
-          
 
-        .shouqin-icon {
-          width: 100%;
-          height: 100%;
-          border-radius: 8px;
-          position: absolute !important;
-          top: -18px;
-          right: 0;
-          bottom: 0;
-          left: -18px;
-          overflow: hidden;
-          padding: 20px;
-          // background: rgba(0, 0, 0, 0.5);
-         
-        }
 
-      // .replenishment{
-      //   height: 100%;
-      //   border-radius: 8px;
-      //   position: absolute !important;
-      //     top: -18px;
-      //     right: 0;
-      //     bottom: 0;
-      //     left: -18px;
-      //     overflow: hidden;
-      //     padding: 20px;
 
-      //   .shouqin-icon {
-      //     width: 100%;
-      //   height: 100%;
-      //     // background: rgba(0, 0, 0, 0.5);
-         
-      //   }
-      // }
-      
+      .shouqin-icon {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        position: absolute !important;
+        top: -18px;
+        right: 0;
+        bottom: 0;
+        left: -18px;
+        overflow: hidden;
+        padding: 20px;
+        // background: rgba(0, 0, 0, 0.5);
+
+      }
+
       .shuiyin {
         position: absolute;
         right: 0;
@@ -93,8 +62,8 @@
 
     &__bd {
       border-radius: 0;
-      padding: 0px 16px;
-
+      margin-left: 16px;
+      flex: 1;
       .goods-title {
         height: 66px;
         width: 312rpx;
@@ -119,6 +88,7 @@
         display: flex;
         justify-content: space-between;
         width: 100%;
+
         .sp-price {
           font-size: 32px;
           font-weight: bold;
@@ -128,7 +98,8 @@
             margin-right: 10px;
           }
         }
-        .unit-price{
+
+        .unit-price {
           font-size: 22px;
           font-family: PingFangSC, PingFang SC;
           font-weight: 400;
@@ -183,13 +154,14 @@
       .bd-block {
         display: flex;
         justify-content: space-between;
-        padding-top: 28px;
+        margin-top: 20px;
 
         &-lf {}
 
-        .goods-price{
+        .goods-price {
           width: 100%;
         }
+
         &-rg {
           .iconfont {
             font-size: 40px;
@@ -202,22 +174,9 @@
         }
       }
     }
-
-
-    &__ft {
-      // margin-top: 40px;
-      // padding: 0 20px 20px;
-      // display: flex;
-      // align-items: center;
-      // .brand-logo {
-      //   border-radius: 50%;
-      //   overflow: hidden;
-      // }
-    }
   }
 
-  .icon-gouwuche2{
-    margin-right: 24px;
+  .icon-gouwuche2 {
     font-size: 40px;
     color: var(--color-primary);
   }
