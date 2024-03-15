@@ -159,11 +159,11 @@ function GoodsItem(props) {
           ))}
         {info.ky_item_type == 'direct' && <Text className='promotion-tag-direct'>直供品</Text>}
 
-        <View className='goods-info-box'>
-          {/* <View className='goods-store'>
+        {/* <View className='goods-info-box'>
+          <View className='goods-store'>
             库存：{info.store}
             {info.item_unit}
-          </View> */}
+          </View>
           {info.store > 0 && info.approve_status == 'onsale' && (
             <SpLogin onChange={handleCartClick}>
               <View className='goods-cart'>
@@ -174,8 +174,18 @@ function GoodsItem(props) {
               </View>
             </SpLogin>
           )}
-        </View>
+        </View> */}
 
+{/* 促销活动标签 */}
+          {/* {showPromotion && info.promotion && info.promotion.length > 0 && ( */}
+            <View className='promotions'>
+              {info.promotion.map((item, index) => (
+                <Text className='promotion-tag' key={`promotion-tag__${index}`}>
+                  {PROMOTION_TAG[item.tag_type]}
+                </Text>
+              ))}
+            </View>
+          {/* )} */}
 
 
         {(info.is_point || (!info.is_point && showPrice) || showFav) && (
@@ -187,6 +197,7 @@ function GoodsItem(props) {
               </View>
             )}
             
+
 
             {!info.is_point && showPrice && (
               <View className='goods-price'>
@@ -225,16 +236,7 @@ function GoodsItem(props) {
             )}
           </View>
         )}
-        {/* 促销活动标签 */}
-        {showPromotion && info.promotion && info.promotion.length > 0 && (
-          <View className='promotions'>
-            {info.promotion.map((item, index) => (
-              <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                {PROMOTION_TAG[item.tag_type]}
-              </Text>
-            ))}
-          </View>
-        )}
+        
         {isShowStore && (
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}

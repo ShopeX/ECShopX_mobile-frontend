@@ -18,8 +18,8 @@ function CompGoodsItem(props) {
   const { favs = [] } = useSelector((state) => state.user)
   const {
     onClick,
-    onStoreClick = () => { },
-    onAddToCart = () => { },
+    onStoreClick = () => {},
+    onAddToCart = () => {},
     showFav = false,
     info = null,
     renderFooter = null,
@@ -90,7 +90,6 @@ function CompGoodsItem(props) {
     showToast('成功加入购物车')
   }
 
-
   const onChangeToolBar = (e) => {
     e.stopPropagation()
     onAddToCart(info)
@@ -147,23 +146,30 @@ function CompGoodsItem(props) {
           ))}
         {info.ky_item_type == 'direct' && <Text className='promotion-tag-direct'>直供品</Text>}
 
-        <View className='goods-info-box'>
-          {/* <View className='goods-store'>
+        {/* <View className='goods-info-box'>
+          <View className='goods-store'>
             库存：{info.store}
             {info.item_unit}
-          </View> */}
+          </View>
           {info.store > 0 && info.approve_status == 'onsale' && (
             <SpLogin onChange={handleCartClick}>
               <View className='goods-cart'>
-                <Text
-                  className={classNames('iconfont', 'icon-gouwuche')}
-                />
+                <Text className={classNames('iconfont', 'icon-gouwuche')} />
               </View>
             </SpLogin>
           )}
+        </View> */}
+
+        {/* 促销活动标签 */}
+        {/* {showPromotion && info.promotion && info.promotion.length > 0 && ( */}
+        <View className='promotions'>
+          {info.promotion.map((item, index) => (
+            <Text className='promotion-tag' key={`promotion-tag__${index}`}>
+              {PROMOTION_TAG[item.tag_type]}
+            </Text>
+          ))}
         </View>
-
-
+        {/* )} */}
 
         {(info.is_point || (!info.is_point && showPrice) || showFav) && (
           <View className='bd-block' onClick={handleClick.bind(this)}>
@@ -174,12 +180,15 @@ function CompGoodsItem(props) {
               </View>
             )}
 
-
             {!info.is_point && showPrice && (
               <View className='goods-price'>
                 <View className='gd-price'>
                   <SpPrice value={info.price}></SpPrice>
-                  {info.price - info.activityPrice > 0 ? <Text className='unit-price'>{info.price}</Text> : ''}
+                  {info.price - info.activityPrice > 0 ? (
+                    <Text className='unit-price'>{info.price}</Text>
+                  ) : (
+                    ''
+                  )}
                 </View>
               </View>
             )}
@@ -196,22 +205,10 @@ function CompGoodsItem(props) {
               </View>
             )}
 
-            <Text
-              className='iconfont icon-gouwuche2' onClick={onChangeToolBar}
-            />
+            <Text className='iconfont icon-gouwuche2' onClick={onChangeToolBar} />
+          </View>
+        )}
 
-          </View>
-        )}
-        {/* 促销活动标签 */}
-        {showPromotion && info.promotion && info.promotion.length > 0 && (
-          <View className='promotions'>
-            {info.promotion.map((item, index) => (
-              <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                {PROMOTION_TAG[item.tag_type]}
-              </Text>
-            ))}
-          </View>
-        )}
         {isShowStore && (
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}

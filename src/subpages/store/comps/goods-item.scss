@@ -96,12 +96,12 @@
       padding: 0px 16px;
 
       .goods-title {
-        height: 66px;
+        // height: 66px;
         width: 312rpx;
         font-size: 24px;
         color: #222;
         font-weight: bold;
-        @include multi-ellipsis(2);
+        @include multi-ellipsis(1);
         padding-top: 15px;
       }
 
@@ -166,7 +166,8 @@
       .promotions {
         display: flex;
         flex-wrap: wrap;
-        margin-top: 16px;
+        height: 32px;
+        margin-top: 22px;
 
         .promotion-tag {
           border: 1px solid var(--color-primary);

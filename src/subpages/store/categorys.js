@@ -70,32 +70,6 @@ function StoreItemList(props) {
 
 
   const getCategoryList = async () => {
-    //api.category.getCategory这个接口会导致必要的category_id不存在，根据汪海的建议换了下面的接口获取数据
-    // let currentList = []
-    // const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
-    // const { list } = await api.category.getCategory(query)
-    // currentList = pickBy(list[0] ? list[0].params.data[0].content : [], {
-    //   name: 'name',
-    //   img: 'img',
-    //   id: 'id',
-    //   category_id: 'category_id',
-    //   children: ({ children }) =>
-    //     pickBy(children, {
-    //       name: 'name',
-    //       img: 'img',
-    //       id: 'id',
-    //       category_id: 'category_id',
-    //       children: ({ children: children_ }) =>
-    //         pickBy(children_, {
-    //           name: 'name',
-    //           img: 'img',
-    //           id: 'id',
-    //           category_id: 'category_id',
-    //         })
-    //     })
-    // })
-
-    // if (currentList.length!==0) {
       const res = await api.category.get({distributor_id:dtid})
       const currentList = pickBy(res, {
         name: 'category_name',
@@ -116,7 +90,6 @@ function StoreItemList(props) {
               })
           })
       })
-    // }
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
