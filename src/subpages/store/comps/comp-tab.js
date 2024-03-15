@@ -28,7 +28,7 @@ function CompTab(props) {
   }
 
   return (
-    <View className='comp-shop-brand'>
+    <View className='comp-shop-brand-cart'>
       <View className='comp-shop-brand-gwc'>
         <View
           className='comp-shop-brand-gwc-num'
