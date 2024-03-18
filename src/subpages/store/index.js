@@ -8,13 +8,15 @@ import Taro, {
 import { View, Text } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
+import S from '@/spx'
 import {
   SpFloatMenuItem,
   SpPage,
   SpSearch,
   SpRecommend,
   SpFloatLayout,
-  SpSkuSelect
+  SpSkuSelect,
+  SpLogin
 } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
@@ -41,7 +43,7 @@ import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
 import CompTab from './comps/comp-tab'
 import CompLayout from './comps/comp-layout'
-import { updateShopCartCount ,fetchCartList,updateCount,updateCartItemNum} from '@/store/slices/cart'
+import { updateShopCartCount ,fetchCartList,updateCount,updateCartItemNum,deleteCartItem} from '@/store/slices/cart'
 
 
 import './index.scss'
@@ -67,7 +69,7 @@ const initState = {
 function StoreIndex() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
-  const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
+  const { openRecommend, openLocation, openStore ,colorPrimary} = useSelector((state) => state.sys)
   const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
@@ -90,6 +92,8 @@ function StoreIndex() {
 
   const dispatch = useDispatch()
   const pageRef = useRef()
+  const loginRef = useRef()
+
 
   useEffect(() => {
     fetchWgts()
@@ -311,13 +315,36 @@ function StoreIndex() {
     })
   }
 
+  const onDelete=async()=>{
+    const { id, dtid } = await entryLaunch.getRouteParams()
+    const distributor_id = getDistributorId(id || dtid)
+    const res = await Taro.showModal({
+      title: '提示',
+      content: '将当前商品移出购物车?',
+      showCancel: true,
+      cancel: '取消',
+      cancelText: '取消',
+      confirmText: '确认',
+      confirmColor: colorPrimary
+    })
+    if (!res.confirm) return
+    await dispatch(deleteCartItem({ distributor_id }))
+    getCartList()
+    onMaskCloses()
+  }
+
   //显示弹框
   const popFrame = () => {
+
     if(shopCartCount.storeDetails?.list?.length>0){
       setState((draft) => {
         draft.open = true
       })
     }else{
+      if(!S.getAuthToken()) {
+        loginRef.current?.handleToLogin()
+        return
+      }
       showToast('购物车暂无数据，请先加购')
     }
   }
@@ -460,8 +487,10 @@ function StoreIndex() {
         onClose={onMaskCloses}
         className='cart-layout'
       >
-        <CompLayout onChangeGoodsIsCheck={onChangeGoodsIsCheck} handleClick={handleClick} settlement={settlement} />
+        <CompLayout onChangeGoodsIsCheck={onChangeGoodsIsCheck} handleClick={handleClick} settlement={settlement} onDelete={onDelete} />
       </SpFloatLayout>
+
+      <SpLogin ref={loginRef} />
     </SpPage>
   )
 }
