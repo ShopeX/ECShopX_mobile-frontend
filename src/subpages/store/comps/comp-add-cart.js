@@ -159,12 +159,12 @@ function CompAddCart(props) {
                       </View>
                       <View className='addition-and-subtraction-btn'>
                         <Text
-                          className='iconfont icon-minus'
+                          className='iconfont icon-jianhao'
                           onClick={() => handleClick(item, item.num - 1)}
                         />
                         <Text>{item.num}</Text>
                         <Text
-                          className='iconfont icon-plus'
+                          className='iconfont icon-jiahao'
                           onClick={() => handleClick(item, item.num + 1)}
                         />
                       </View>
