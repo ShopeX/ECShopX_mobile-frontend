@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro,{getCurrentInstance} from '@tarojs/taro'
+import { AtButton } from 'taro-ui'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
@@ -68,7 +69,7 @@ function CompTab(props) {
         {shopCartCount.total_fee && <SpPrice value={shopCartCount.total_fee / 100}></SpPrice>}
         {/* {shopCartCount.discount_fee && <Text className='money'>¥ {formatMoney(shopCartCount.discount_fee)}</Text>} */}
       </View>
-      {shopCartCount.shop_id && <View className='settlement' onClick={()=>settlement()}>去结算</View>}
+      {shopCartCount.shop_id && <AtButton className='settlement'  disabled={!shopCartCount.total_fee} onClick={()=>settlement()}>去结算</AtButton>}
     </View>
   )
 }
