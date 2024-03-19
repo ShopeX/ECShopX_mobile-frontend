@@ -80,7 +80,7 @@ function compsCategoryOld(props) {
   }, [skuPanelOpen])
 
   const getCategoryList = async () => {
-    const res = await api.category.get()
+    const res = await api.category.get({is_main_category:1})
     const currentList = pickBy(res, {
       name: 'category_name',
       img: 'image_url',
@@ -118,7 +118,8 @@ function compsCategoryOld(props) {
       is_point: 'false',
       distributor_id: dis_id || Taro.getStorageSync('distributor_id'),
       goodsSort,
-      category_id: cat_id,
+      // category_id: cat_id,
+      main_category: cat_id,
       v_store: cusIndex
     }
 
