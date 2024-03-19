@@ -44,7 +44,11 @@ function SpFloatAd(props) {
     item.id && linkPage(item.register_jump_path)
   }
 
-  if (S.getAuthToken()) {
+  const isOpenItem = () => {
+    return list.find(item => item.is_open == 'true')
+  }
+
+  if (S.getAuthToken() || !isOpenItem()) {
     return null
   }
 
