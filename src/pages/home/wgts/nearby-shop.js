@@ -1,18 +1,30 @@
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView, Button } from '@tarojs/components'
-import { useEffect } from 'react'
+import React,{ useEffect ,useContext} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { useAsyncCallback } from '@/hooks'
+import doc from '@/doc'
 import api from '@/api'
-import { SpNoShop, SpImage, SpShopCoupon, SpPrice } from '@/components'
-import { classNames, styleNames, isEmpty } from '@/utils'
+import { WgtsContext } from './wgts-context'
+import { SpNoShop, SpImage, SpShopCoupon, SpPrice, SpGoodsItem ,SpSkuSelect} from '@/components'
+import { classNames, styleNames, isEmpty, entryLaunch, showToast, pickBy } from '@/utils'
+import { AtActivityIndicator } from 'taro-ui'
 import './nearby-shop.scss'
 
 const initialState = {
   activeIndex: 0,
   shopList: [],
-  scrollLeft: 0
+  scrollLeft: 0,
+  listTypes: [],
+  isFirstRender: true,
+  indicator:true,
+  noData:false,
+  page: {
+    page: 1,
+    pageSize: 4
+  },
+  total_count: 0
 }
 
 function WgtNearbyShop(props) {
@@ -21,23 +33,102 @@ function WgtNearbyShop(props) {
     return null
   }
 
-  console.log('info,我是附近商家组建拉', info)
-
   const [state, setState] = useAsyncCallback(initialState)
-  const { activeIndex, shopList } = state
+  const { activeIndex, shopList, listTypes, isFirstRender, page, total_count,indicator,noData} = state
   const { location } = useSelector((state) => state.user)
 
   const { base, seletedTags, productLabel } = info
-
-  // useEffect(() => {
-  //   console.log(state.activeIndex, location)
-  //   init()
-  // }, [state.activeIndex])
+  const MSpSkuSelect = React.memo(SpSkuSelect)
+  const { onAddToCart } = useContext(WgtsContext)
 
   useEffect(() => {
     console.log('location:', location)
-    init(activeIndex)
-  }, [location])
+    listType()
+    if (base.navigation_display == 'productLabels') {
+      commodity(true)
+    } else {
+      init(activeIndex)
+    }
+    setState((v) => {
+      v.isFirstRender = false
+    })
+  }, [])
+
+  useEffect(() => {
+    if (isFirstRender) return
+    if (listTypes[activeIndex].types == 'productLabels') {
+      commodity()
+    } else {
+      init(activeIndex)
+    }
+  }, [activeIndex, location,page])
+
+  const listType = () => {
+    let modifiedSelectedTags = []
+    let modifiedProductLabel = []
+    if (base.navigation_display == 'business') {  //商家
+      modifiedSelectedTags = seletedTags.map((obj) => ({ ...obj, types: 'business' }))
+    } else if (base.navigation_display == 'productLabels') {  //商品标签
+      modifiedProductLabel = productLabel.map((obj) => ({ ...obj, types: 'productLabels' }))
+    } else {
+      modifiedSelectedTags = seletedTags.map((obj) => ({ ...obj, types: 'business' }))
+      modifiedProductLabel = productLabel.map((obj) => ({ ...obj, types: 'productLabels' }))
+    }
+    setState((v) => {
+      v.listTypes = [...modifiedSelectedTags, ...modifiedProductLabel]
+    })
+  }
+
+  const storeData = async () => {
+    let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
+    let lat, lng, province, city, district
+    if (location) {
+      lat = location?.lat
+      lng = location?.lng
+      province = location?.province || '北京市'
+      city = location?.city || '北京市'
+      district = location?.district || '昌平区'
+    }
+    let params = {
+      distributor_tag_id: distributor_tag_id.join(','),
+      show_discount: 1,
+      // 根据经纬度或地区查询
+      type: location?.lat ? 0 : 1,
+      sort_type: 1
+    }
+    if (location) {
+      params = {
+        ...params,
+        lat,
+        lng,
+        province: province,
+        city: city,
+        area: district
+      }
+    }
+    const { list } = await api.shop.getNearbyShop(params)
+    return list
+  }
+
+  const commodity = async (val) => {
+    let res = await storeData()
+    let params = {
+      ...page,
+      approve_status: 'onsale,only_show',
+      item_type: 'normal',
+      is_point: 'false',
+      distributor_id : res.map(item=>item.distributor_id).join(","),
+      tag_id:val?productLabel[0].tag_id:listTypes[activeIndex].tag_id
+    }
+    const { total_count, list } = await api.item.search(params)
+    const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
+    setState((v) => {
+      v.shopList = [...v.shopList, ...n_list]
+      v.total_count = total_count,
+      v.indicator = false,
+      v.noData = v.shopList.length>0?false:true
+    })
+  }
 
   const init = async (idx) => {
     let lat, lng, province, city, district
@@ -50,11 +141,14 @@ function WgtNearbyShop(props) {
     }
     let params = {
       distributor_tag_id: seletedTags[idx]?.tag_id,
+      item_tag_id: productLabel.map((item) => item.tag_id),
       show_discount: 1,
       // 根据经纬度或地区查询
       type: location?.lat ? 0 : 1,
       sort_type: 1,
-      show_items: 1
+      show_items: 1,
+      show_score: 1,
+      show_sales_count: 1
     }
     if (location) {
       params = {
@@ -68,7 +162,9 @@ function WgtNearbyShop(props) {
     }
     const { list } = await api.shop.getNearbyShop(params)
     setState((v) => {
-      v.shopList = list
+      v.shopList = list,
+      v.indicator = false,
+      v.noData = list.length>0?false:true,
       v.scrollLeft = 0 + Math.random() //  //在小程序端必须这么写才能回到初始值
     })
   }
@@ -79,84 +175,176 @@ function WgtNearbyShop(props) {
     })
   }
 
-  const handleStoreClick = (id) => {
-    const url = `/subpages/store/index?id=${id}`
+  const storeList = () => {
+    return (
+      shopList.length > 0 && (
+        <View className='shop-list'>
+          {shopList.slice(0, 2).map((item, index) => {
+            return (
+              <View className='shop-list-del' key={index}>
+                <SpImage
+                  className='shop-logo'
+                  src={item.logo || 'shop_default_logo.png'}
+                  circle={16}
+                  width={100}
+                  height={100}
+                />
+                <View className='shop-del'>
+                  <View className='shop-names' onClick={() => handleClickItem(item)}>
+                    <View className='name'>{item.name}</View>
+                    {/* <View className='deliver'>商家自配</View> */}
+                  </View>
+                  <View className='score'>
+                    <View className='sales'>
+                      <Text className='monthly'>评分: {item?.scoreList.avg_star}</Text>
+                      <Text>月销：{item.sales_count}</Text>
+                    </View>
+                    {item.distance_show && (
+                      <View className='sales'>
+                        {item.distance_show.split('.')[0]}
+                        {item.distance_unit}
+                      </View>
+                    )}
+                  </View>
+
+                  {base.show_coupon && (
+                    <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
+                      {item.discountCardList.map((coupon, cindex) => {
+                        <SpShopCoupon
+                          fromStoreIndex
+                          className='coupon-index'
+                          info={coupon}
+                          key={`shop-coupon__${cindex}`}
+                          // onClick={() => {
+                          //   Taro.navigateTo({
+                          //     url: `/subpages/marketing/coupon-center?distributor_id=${0}`
+                          //   })
+                          // }}
+                        />
+                      })}
+                    </ScrollView>
+                  )}
+                  {item.itemList && (
+                    <ScrollView scrollX>
+                      {item.itemList.map((goods, gindex) => {
+                        return (
+                          <View className='coupon-commodity-all' key={gindex}>
+                            <View
+                              className='coupon-commodity-list'
+                              onClick={() => {
+                                handleGoodsClick(goods)
+                              }}
+                            >
+                              <SpImage
+                                className='shop-logo'
+                                src={goods.pics[0] || 'shop_default_logo.png'}
+                                circle={16}
+                                width={150}
+                                height={150}
+                              />
+                              <View className='coupon-commodity-title'>{goods.item_name}</View>
+                              <SpPrice
+                                className='market-price'
+                                size={32}
+                                value={goods.price}
+                              ></SpPrice>
+                              {goods.market_price > 0 && goods.pric > goods.market_price && (
+                                <View className='coupon-commodity-price'>
+                                  ¥{goods.market_price}
+                                </View>
+                              )}
+                            </View>
+                          </View>
+                        )
+                      })}
+                    </ScrollView>
+                  )}
+                </View>
+              </View>
+            )
+          })}
+
+          <View
+            className='ac_btn'
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/subpages/ecshopx/shop-list'
+              })
+            }}
+          >
+            <View className='more'>
+              <Text className='iconfont icon-spiritling-dingwei'></Text>
+              更多附近商家
+            </View>
+            <Text className='iconfont icon-qianwang-01'></Text>
+          </View>
+        </View>
+      )
+    )
+  }
+
+  const storeProducts = () => {
+    return (
+      <View className='store-products'>
+        <View className='store-products-list'>
+          {shopList.map((item, index) => {
+            return (
+              <View className='del' key={index}>
+                <SpGoodsItem
+                  showFav
+                  showAddCart={base.addCart}
+                  onStoreClick={handleClickStore}
+                  onAddToCart={handleAddToCart}
+                  info={{
+                    ...item
+                  }}
+                />
+              </View>
+            )
+          })}
+        </View>
+        {total_count - shopList.length > 0 && (
+          <View className='ac_btn'>
+            <View className='more' onClick={() => seeMore()}>
+              查看更多
+              <View className='in-icon in-icon-youjiantou'></View>
+            </View>
+          </View>
+        )}
+      </View>
+    )
+  }
+
+  const handleClickStore = (item) => {
+    const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
     Taro.navigateTo({
       url
     })
   }
 
-  const classification = (val) => {
-    if (val == 'business') {
-      //商家
-      return seletedTags.map((item, index) => (
-        <View
-          className={classNames(`tag-item`, {
-            'active': state.activeIndex == index
-          })}
-          key={item.tag_id}
-          onClick={() =>
-            setState(
-              (draft) => {
-                draft.activeIndex = index
-              },
-              ({ activeIndex }) => {
-                init(activeIndex)
-              }
-            )
-          }
-        >
-          {item.tag_name}
-        </View>
-      ))
-    } else if (val == 'productLabels') {
-      //商品标签
-      return productLabel.map((item, index) => (
-        <View
-          className={classNames(`tag-item`, {
-            'active': state.activeIndex == index
-          })}
-          key={item.tag_id}
-          onClick={() =>
-            setState(
-              (draft) => {
-                draft.activeIndex = index
-              },
-              ({ activeIndex }) => {
-                init(activeIndex)
-              }
-            )
-          }
-        >
-          {item.tag_name}
-        </View>
-      ))
-    } else {
-      // 全部
-      const modifiedSelectedTags = seletedTags.map((obj) => ({ ...obj, types: 'business' }))
-      const modifiedProductLabel = productLabel.map((obj) => ({ ...obj, types: 'productLabels' }))
-      const arr = [...modifiedSelectedTags, ...modifiedProductLabel]
-      return arr.map((item, index) => (
-        <View
-          className={classNames(`tag-item`, {
-            'active': state.activeIndex == index
-          })}
-          key={item.tag_id}
-          onClick={() =>
-            setState(
-              (draft) => {
-                draft.activeIndex = index
-              },
-              ({ activeIndex }) => {
-                init(activeIndex)
-              }
-            )
-          }
-        >
-          {item.tag_name}
-        </View>
-      ))
-    }
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    onAddToCart({ itemId, distributorId })
+  }
+
+  const handleClickItem = (item) => {
+    Taro.navigateTo({ url: `/subpages/store/index?id=${item.distributor_id}` })
+  }
+
+  const handleGoodsClick = (item) => {
+    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+    Taro.navigateTo({
+      url
+    })
+  }
+
+  const seeMore = () => {
+    setState((v) => {
+        v.page = {
+          page: v.page.page + 1,
+          pageSize: 4
+        }
+      }
+    )
   }
 
   return (
@@ -181,86 +369,44 @@ function WgtNearbyShop(props) {
       )}
 
       <View className='nearby-shop-content'>
+        {/* 头部滑动 */}
         <ScrollView className='scroll-tab' scrollX>
-          {classification(base.navigation_display)}
+          {listTypes.map((item, index) => (
+            <View
+              className={classNames(`tag-item`, {
+                'active': state.activeIndex == index
+              })}
+              key={item.tag_id}
+              onClick={() =>
+                setState((draft) => {
+                  draft.activeIndex = index
+                  draft.shopList = []
+                  draft.total_count = 0,
+                  draft.indicator = true
+                })
+              }
+            >
+              {item.tag_name}
+            </View>
+          ))}
         </ScrollView>
 
-        <View className='shop-list'>
-          {shopList.map((item, index) => {
-            return (
-              <View className='shop-list-del' key={index}>
-                <SpImage
-                  className='shop-logo'
-                  src='item.logo || shop_default_logo.png'
-                  circle={16}
-                  width={100}
-                  height={100}
-                />
-                <View className='shop-del'>
-                  <View className='shop-names'>
-                    <View className='name'>{item.name}</View>
-                    {/* <View className='deliver'>商家自配</View> */}
-                  </View>
-                  <View className='score'>
-                    <View className='sales'>
-                      {/* <Text className='monthly'>评分: 4.9</Text> */}
-                      <Text>月销8888</Text>
-                    </View>
-                    <View className='sales'>
-                      {item.distance_show.toFixed(2)}
-                      {item.distance_unit}
-                    </View>
-                  </View>
+        {listTypes.length && listTypes[activeIndex].types == 'business'
+          ? storeList()
+          : storeProducts()}
 
-                  {base.show_coupon && (
-                    <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
-                      {item.discountCardList.map((coupon, cindex) => {
-                        <SpShopCoupon
-                          fromStoreIndex
-                          className='coupon-index'
-                          info={coupon.title}
-                          key={`shop-coupon__${cindex}`}
-                          // onClick={() => {
-                          //   Taro.navigateTo({
-                          //     url: `/subpages/marketing/coupon-center?distributor_id=${0}`
-                          //   })
-                          // }}
-                        />
-                      })}
-                    </ScrollView>
-                  )}
+          { 
+            indicator &&
+            <AtActivityIndicator mode='center' size={32} content='正在拼命加载数据...' />
+          }
 
-                  <ScrollView scrollX>
-                    <View className='coupon-commodity-all'>
-                      <View className='coupon-commodity-list'>
-                        <SpImage
-                          className='shop-logo'
-                          src='shop_default_logo.png'
-                          circle={16}
-                          width={150}
-                          height={150}
-                        />
-                        <View className='coupon-commodity-title'>
-                          日本原装日本原装比日本原装比日本原装比日本原装比日本原装比
-                        </View>
-                        <SpPrice className='market-price' size={32} value='12'></SpPrice>
-                        <View className='coupon-commodity-price'>¥239.10</View>
-                      </View>
-                    </View>
-                  </ScrollView>
-                </View>
-              </View>
-            )
-          })}
-
-          <View className='ac_btn'>
-            <View className='more'>
-              <Text className='iconfont icon-spiritling-dingwei'></Text>
-              更多附近商家
-            </View>
-            <Text className='iconfont icon-qianwang-01'></Text>
+        
+        {noData && (
+          <View className='empty-con'>
+            <SpImage src='empty_data.png' width={292} height={224} />
+            <View className='empty-tip'>更多{listTypes.length && listTypes[activeIndex].types == 'business'?"商家":"商品"}接入中，敬请期待</View>
           </View>
-        </View>
+        )}
 
         {/* <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
           {state.shopList.map((item) => (

@@ -1,8 +1,12 @@
 .wgt-nearby-shop {
+  .at-activity-indicator--center {
+    top: 35%;
+  }
   .nearby-shop-content {
     // background: #fff;
     border-radius: 16px;
     margin: 0 16px;
+    min-height: 300px;
   }
 
   .scroll-tab {
@@ -190,7 +194,7 @@
       background-color: #fff;
       padding: 24px 16px;
       border-radius: 16px;
-      background: linear-gradient( 270deg, #FFFFFF 0%, #FBE5D2 80%);
+      background: linear-gradient(270deg, #ffffff 0%, #fbe5d2 80%);
       .more {
         font-family: PingFangSC, PingFang SC;
         font-weight: 500;
@@ -199,14 +203,42 @@
         line-height: 40px;
         text-align: left;
         font-style: normal;
-        .icon-spiritling-dingwei{
+        .icon-spiritling-dingwei {
           color: var(--color-primary);
           margin-right: 16px;
           font-size: 28px;
         }
       }
-      .icon-qianwang-01{
+      .icon-qianwang-01 {
         font-size: 20px;
+      }
+    }
+  }
+  .store-products {
+    .store-products-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .del {
+        width: 354px;
+        min-height: 600px;
+        background: #ffffff;
+        border-radius: 16px;
+        margin-bottom: 16px;
+      }
+    }
+    .ac_btn {
+      width: 100%;
+      .more {
+        width: 181px;
+        height: 61px;
+        line-height: 61px;
+        border-radius: 31px;
+        border: solid 2px #0b4137;
+        font-family: PingFang-SC-Medium;
+        font-size: 21px;
+        text-align: center;
+        margin: 30px auto 50px;
       }
     }
   }
