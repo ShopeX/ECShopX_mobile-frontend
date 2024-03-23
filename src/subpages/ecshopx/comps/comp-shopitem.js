@@ -19,7 +19,7 @@ function CompShopItem(props) {
       <View className='shopitem-bd'>
         <View className='shop-info'>
           <View className='name'>{info.store_name}</View>
-          <View className='distance'>{info.distance || '100km'}</View>
+          <View className='distance'>{info.distance || ''}</View>
         </View>
         <View className='business-hours'>
           <Text className='iconfont icon-clock1' />

@@ -3,11 +3,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { Text, View, Image, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpScrollView, SpPage, SpTabbar, SpCategorySearch, SpSkuSelect, SpLogin } from '@/components'
+import {
+  SpScrollView,
+  SpPage,
+  SpTabbar,
+  SpCategorySearch,
+  SpSkuSelect,
+  SpLogin
+} from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 import S from '@/spx'
+import { platformTemplateName } from '@/utils/platform'
 import { pickBy, classNames, styleNames, showToast, entryLaunch } from '@/utils'
 import CompFirstCategory from './comp-first-category'
 import CompSecondCategory from './comp-second-category'
@@ -80,26 +88,56 @@ function compsCategoryOld(props) {
   }, [skuPanelOpen])
 
   const getCategoryList = async () => {
-    const res = await api.category.get()
-    const currentList = pickBy(res, {
-      name: 'category_name',
-      img: 'image_url',
-      id: 'category_id',
-      category_id: 'category_id',
-      children: ({ children }) =>
-        pickBy(children, {
-          name: 'category_name',
-          img: 'image_url',
-          id: 'category_id',
-          category_id: 'category_id',
-          children: ({ children: children_ }) =>
-            pickBy(children_, {
-              name: 'category_name',
-              img: 'image_url',
-              id: 'category_id'
-            })
-        })
-    })
+    const currentList = []
+
+    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
+    const { list } = await api.category.getCategory(query)
+    const seriesList = list[0] ? list[0].params.data : []
+
+    if (!seriesList.length) {
+      //不存在数据读取销售分类
+      const res = await api.category.get({ is_main_category: 1 })
+      currentList = pickBy(res, {
+        name: 'category_name',
+        img: 'image_url',
+        id: 'category_id',
+        category_id: 'category_id',
+        children: ({ children }) =>
+          pickBy(children, {
+            name: 'category_name',
+            img: 'image_url',
+            id: 'category_id',
+            category_id: 'category_id',
+            children: ({ children: children_ }) =>
+              pickBy(children_, {
+                name: 'category_name',
+                img: 'image_url',
+                id: 'category_id'
+              })
+          })
+      })
+    } else {
+      currentList = pickBy(seriesList, {
+        name: 'title',
+        img: 'image_url',
+        id: 'category_id',
+        category_id: 'category_id',
+        children: ({ children:content }) =>
+          pickBy(content, {
+            name: 'title',
+            img: 'image_url',
+            id: 'category_id',
+            category_id: 'category_id',
+            children: ({ children }) =>
+              pickBy(children, {
+                name: 'title',
+                img: 'image_url',
+                id: 'category_id'
+              })
+          })
+      })
+    }
+
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
@@ -118,7 +156,8 @@ function compsCategoryOld(props) {
       is_point: 'false',
       distributor_id: dis_id || Taro.getStorageSync('distributor_id'),
       goodsSort,
-      category_id: cat_id,
+      // category_id: cat_id,
+      main_category: cat_id,
       v_store: cusIndex
     }
 
@@ -211,9 +250,8 @@ function compsCategoryOld(props) {
     // })
   }
 
-
   const handleAddToCart = async ({ itemId, distributorId }) => {
-    if(!S.getAuthToken()) {
+    if (!S.getAuthToken()) {
       loginRef.current?.handleToLogin()
       return
     }
@@ -252,13 +290,13 @@ function compsCategoryOld(props) {
       draft.thirdList =
         _thirdList.length > 0
           ? [
-            {
-              name: '全部',
-              img: '',
-              id: ''
-            },
-            ..._thirdList
-          ]
+              {
+                name: '全部',
+                img: '',
+                id: ''
+              },
+              ..._thirdList
+            ]
           : []
     })
   }
@@ -281,7 +319,6 @@ function compsCategoryOld(props) {
         />
       </View>
       <View className='container-bd'>
-
         <View className='left-container'>
           <CompSecondCategory
             cusIndex={categorySecondIndex}
@@ -307,20 +344,19 @@ function compsCategoryOld(props) {
             </View>
           )}
           <ScrollView className='goods-list-container' scrollY>
-            <SpScrollView
-              className='scroll-view-goods'
-              ref={goodsRef}
-              fetch={fetch}
-              auto={false}
-            >
+            <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
               {allList.map((item, index) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <CompGoodsItem onStoreClick={handleClickStore} onAddToCart={handleAddToCart} hideStore info={item} />
+                  <CompGoodsItem
+                    onStoreClick={handleClickStore}
+                    onAddToCart={handleAddToCart}
+                    hideStore
+                    info={item}
+                  />
                 </View>
               ))}
             </SpScrollView>
           </ScrollView>
-
         </View>
       </View>
 
