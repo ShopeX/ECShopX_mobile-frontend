@@ -73,7 +73,7 @@ function NearlyShop(props) {
     })
 
     Taro.eventCenter.on('onEventSelectReceivingAddress', (addressRes) => {
-      console.log('onEventSelectReceivingAddress...')
+      console.log(addressRes,'onEventSelectReceivingAddress...')
       setState(draft => {
         draft.filterType = addressRes.is_def ? 4 : 2
         draft.shopList = []
@@ -113,7 +113,7 @@ function NearlyShop(props) {
     } else if(filterType == 2) {
       params = {
         ...params,
-        type: 1,
+        type: 3,
         province: address.province,
         city: address.city,
         area: address.county

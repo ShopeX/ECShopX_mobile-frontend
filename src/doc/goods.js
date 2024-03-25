@@ -151,6 +151,10 @@ export const GOODS_INFO = {
   isGift: 'is_gift',
   itemParams: ({ regions, item_unit, item_params }) => {
     const res = []
+    if (!Array.isArray(regions)) {
+      // 如果 regions 不是数组，可以将它转换成数组   把 regions 转换成只包含一个元素的数组
+      regions = [regions]
+    }
     if (item_unit) {
       res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
     }
