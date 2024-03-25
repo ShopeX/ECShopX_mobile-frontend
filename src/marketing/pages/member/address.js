@@ -28,7 +28,7 @@ function AddressIndex(props) {
 
   useEffect(() => {
     fetch()
-  }, [address])
+  }, [])
 
   const updateChooseAddress = (address) => {
     dispatch({ type: 'user/updateChooseAddress', payload: address })
@@ -73,6 +73,7 @@ function AddressIndex(props) {
 
     updateChooseAddress(item)
     setTimeout(() => {
+      Taro.eventCenter.trigger('onEventSelectReceivingAddress', item)
       Taro.navigateBack()
     }, 700)
   }
