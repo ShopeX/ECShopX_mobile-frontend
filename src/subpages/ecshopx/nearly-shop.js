@@ -18,8 +18,8 @@ const initialState = {
   locationIng: false,
   chooseValue: ['北京市', '北京市', '昌平区'],
   keyword: '', // 参数
-  type: 0, // 过滤方式（接口使用）0:经纬度 1:基于省市区过滤 2:基于默认收货地址强制定位
-  filterType: 1, // 过滤方式（前端使用）1:省市区筛选过滤 2:收货地址省市区筛选 3:经纬度定位 4:默认收货地址
+  type: 0, // 过滤方式（接口使用）0:授权定位，lng、lat分别传经纬度    1:基于省市区过滤，province、city、area分别传省、市、区  2:基于默认收货地址强制定位   3：选择收货地址  province、city、area、address分别传省、市、区、详细地址
+  // filterType: 1, // 过滤方式（前端使用）1:省市区筛选过滤 2:收货地址省市区筛选 3:经纬度定位 4:默认收货地址
   queryProvice: '',
   queryCity: '',
   queryDistrict: '',
@@ -36,7 +36,7 @@ function NearlyShop(props) {
     }
   })
   const [state, setState] = useImmer(initialState)
-  const { chooseValue, isSpAddressOpened, keyword, refresh, type, filterType, queryProvice,
+  const { chooseValue, isSpAddressOpened, keyword, refresh, type, queryProvice,
     queryCity,
     queryDistrict,
     queryAddress } = state
@@ -64,10 +64,10 @@ function NearlyShop(props) {
     const { province, city, district } = location || {}
     setState((draft) => {
       if (address) {
-        draft.filterType = address.is_def ? 4 : 2
+        draft.type = address.is_def ? 2 : 3
       } else if (location) { // fix：未授权定位时不设置chooseValue
         draft.chooseValue = [province, city, district]
-        draft.filterType = 3
+        draft.type = 0
       }
       draft.refresh = true
     })
@@ -75,7 +75,7 @@ function NearlyShop(props) {
     Taro.eventCenter.on('onEventSelectReceivingAddress', (addressRes) => {
       console.log(addressRes,'onEventSelectReceivingAddress...')
       setState(draft => {
-        draft.filterType = addressRes.is_def ? 4 : 2
+        draft.type = addressRes.is_def ? 2 : 3
         draft.shopList = []
         draft.refresh = true
       })
@@ -88,21 +88,19 @@ function NearlyShop(props) {
 
 
   const fetchShop = async ({ pageIndex, pageSize }) => {
+    
     let params = {
       page: pageIndex,
       pageSize,
       search_type: 2, // 1=搜索商品；2=搜索门店
-      sort_type: 1
+      sort_type: 1,
+      type
     }
-    // filterType（1:省市区筛选过滤 2:收货地址省市区筛选 3:经纬度定位 4:默认收货地址）
-    if (filterType == 1) {
-      const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
+    if (type == 0) { //经纬度
       params = {
         ...params,
-        type: 1,
-        province: chooseProvince,
-        city: chooseCity,
-        area: chooseDistrict
+        lat: location?.lat,
+        lng: location?.lng
       }
       if (keyword) {
         params = {
@@ -110,31 +108,28 @@ function NearlyShop(props) {
           name: keyword
         }
       }
-    } else if(filterType == 2) {
+    } else if(type == 1) {  //基于省市区过滤
+      const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
+      if (keyword) {
+        params = {
+          ...params,
+          name: keyword
+        }
+      }
       params = {
         ...params,
-        type: 3,
+        province: chooseProvince,
+        city: chooseCity,
+        area: chooseDistrict,
+        
+      }
+    }  else if (type == 3) {
+      params = {
+        ...params,
         province: address.province,
         city: address.city,
-        area: address.county
-      }
-    } else if (filterType == 3) {
-      params = {
-        ...params,
-        type: 0,
-        lat: location?.lat,
-        lng: location?.lng,
-        province: location?.province,
-        city: location?.city,
-        area: location?.district
-      }
-    } else if (filterType == 4) {
-      params = {
-        ...params,
-        type: 2,
-        // province: address.province,
-        // city: address.city,
-        // area: address.county
+        area: address.county,
+        address: address.adrdetail
       }
     }
 
@@ -165,7 +160,7 @@ function NearlyShop(props) {
     await setState((draft) => {
       draft.keyword = detail.value
       draft.shopList = []
-      draft.filterType = 1
+      draft.type = 1
       draft.refresh = true
     })
   }
@@ -174,7 +169,7 @@ function NearlyShop(props) {
     await setState((draft) => {
       draft.keyword = ''
       draft.shopList = []
-      draft.filterType = 1
+      draft.type = 1
       draft.refresh = true
     })
   }
@@ -192,7 +187,7 @@ function NearlyShop(props) {
         await setState((draft) => {
           draft.chooseValue = [province, city, district] // fix:重新定位到上海，值没有更新，导致picker里面的值还是北京
           draft.shopList = []
-          draft.filterType = 3
+          draft.type = 0
           draft.refresh = true
           draft.locationIng = false
         })
@@ -226,7 +221,7 @@ function NearlyShop(props) {
     setState((draft) => {
       draft.chooseValue = [province, city, area]
       draft.shopList = []
-      draft.filterType = 1 // 省市区过滤
+      draft.type = 1 // 省市区过滤
       draft.refresh = true
     })
   }
