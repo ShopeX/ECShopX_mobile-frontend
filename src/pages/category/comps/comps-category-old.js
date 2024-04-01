@@ -88,56 +88,26 @@ function compsCategoryOld(props) {
   }, [skuPanelOpen])
 
   const getCategoryList = async () => {
-    const currentList = []
-
-    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
-    const { list } = await api.category.getCategory(query)
-    const seriesList = list[0] ? list[0].params.data : []
-
-    if (!seriesList.length) {
-      //不存在数据读取销售分类
-      const res = await api.category.get({ is_main_category: 1 })
-      currentList = pickBy(res, {
-        name: 'category_name',
-        img: 'image_url',
-        id: 'category_id',
-        category_id: 'category_id',
-        children: ({ children }) =>
-          pickBy(children, {
-            name: 'category_name',
-            img: 'image_url',
-            id: 'category_id',
-            category_id: 'category_id',
-            children: ({ children: children_ }) =>
-              pickBy(children_, {
-                name: 'category_name',
-                img: 'image_url',
-                id: 'category_id'
-              })
-          })
-      })
-    } else {
-      currentList = pickBy(seriesList, {
-        name: 'title',
-        img: 'image_url',
-        id: 'category_id',
-        category_id: 'category_id',
-        children: ({ children:content }) =>
-          pickBy(content, {
-            name: 'title',
-            img: 'image_url',
-            id: 'category_id',
-            category_id: 'category_id',
-            children: ({ children }) =>
-              pickBy(children, {
-                name: 'title',
-                img: 'image_url',
-                id: 'category_id'
-              })
-          })
-      })
-    }
-
+    const res = await api.category.get({is_main_category:1})
+    const currentList = pickBy(res, {
+      name: 'category_name',
+      img: 'image_url',
+      id: 'category_id',
+      category_id: 'category_id',
+      children: ({ children }) =>
+        pickBy(children, {
+          name: 'category_name',
+          img: 'image_url',
+          id: 'category_id',
+          category_id: 'category_id',
+          children: ({ children: children_ }) =>
+            pickBy(children_, {
+              name: 'category_name',
+              img: 'image_url',
+              id: 'category_id'
+            })
+        })
+    })
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
