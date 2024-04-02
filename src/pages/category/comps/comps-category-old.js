@@ -145,14 +145,14 @@ function compsCategoryOld(props) {
         category_id: 'id',
         children: ({ children }) =>
           pickBy(children, {
-            name: 'category_name',
+            name: 'name',
             img: 'img',
             id: 'id',
             type:'type',
             category_id: 'id',
             children: ({ children }) =>
               pickBy(children, {
-                name: 'category_name',
+                name: 'name',
                 img: 'img',
                 id: 'id',
                 type:'type'
