@@ -201,13 +201,14 @@ function WgtNearbyShop(props) {
                   circle={16}
                   width={100}
                   height={100}
+                  onClick={() => handleClickItem(item)}
                 />
                 <View className='shop-del'>
                   <View className='shop-names' onClick={() => handleClickItem(item)}>
                     <View className='name'>{item.name}</View>
                     {/* <View className='deliver'>商家自配</View> */}
                   </View>
-                  <View className='score'>
+                  <View className='score' onClick={() => handleClickItem(item)}>
                     <View className='sales'>
                       <Text className='monthly'>评分: {item?.scoreList.avg_star}</Text>
                       <Text>月销：{item.sales_count}</Text>
