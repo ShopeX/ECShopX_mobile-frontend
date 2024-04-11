@@ -191,7 +191,6 @@ function WgtNearbyShop(props) {
     return (
       shopList.length > 0 && (
         <View className='shop-list'>
-          {console.log(base,'base--------------------')}
           {shopList.slice(0, 2).map((item, index) => {
             return (
               <View className='shop-list-del' key={index}>

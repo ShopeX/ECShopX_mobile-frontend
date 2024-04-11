@@ -54,13 +54,12 @@ $active-good-img-width: 90px;
   }
 
   &-goods-desc {
-    width: 127rpx;
-    height: 60rpx;
+    width: 127px;
+    line-height: 60px;
     background: #F5F5F5;
-    border-radius: 30rpx;
-    padding: 15px 16px;
+    border-radius: 30px;
     margin-top: 15px;
-    font-size: 24rpx;
+    font-size: 30px;
     color: #999999;
     box-sizing: border-box;
     text-align: center;
@@ -104,7 +103,7 @@ $active-good-img-width: 90px;
       height: 45px;
       line-height: 45px;
       padding: 14px 40px;
-      font-size: 22px;
+      font-size: 30px;
       border-radius: 60px;
       // max-width: 140px;
       // display: inline-block;

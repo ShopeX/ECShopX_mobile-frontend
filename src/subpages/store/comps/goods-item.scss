@@ -97,8 +97,8 @@
 
       .goods-title {
         // height: 66px;
-        width: 312rpx;
-        font-size: 24px;
+        width: 312px;
+        font-size: 30px;
         color: #222;
         font-weight: bold;
         @include multi-ellipsis(1);
@@ -172,7 +172,7 @@
         .promotion-tag {
           border: 1px solid var(--color-primary);
           color: var(--color-primary);
-          font-size: 22px;
+          font-size: 28px;
           border-radius: 8px;
           padding: 0 11px;
           height: 32px;

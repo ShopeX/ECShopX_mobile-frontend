@@ -39,7 +39,7 @@ function CompFirstCategory(props) {
         id={`category-${index}`}
       >
         <View className='category-image'>
-          <SpImage src={item.img} width={76} height={76} circle={37} lazyLoad />
+          <SpImage src={item.img} width={100} height={100} circle={100} lazyLoad />
         </View>
         <View className='category-name'>{item.name}</View>
       </View>

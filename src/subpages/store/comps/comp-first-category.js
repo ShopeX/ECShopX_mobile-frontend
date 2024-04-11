@@ -39,7 +39,7 @@ function CompFirstCategory(props) {
       >
         <View className='comp-first-category-goods-imgbox'>
           {el.img ? (
-            <Image src={el.img} width={60} height={60} className='goods-img' lazyLoad />
+            <Image src={el.img} width={100} height={100} className='goods-img' lazyLoad />
           ) : (
             <Text> {el.name}</Text>
           )}
