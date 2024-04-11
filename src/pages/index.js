@@ -114,10 +114,8 @@ function Home() {
   useShareTimeline(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
-    const dtid = getDistributorId()
-
-    if (dtid && !('dtid' in params)) {
-      params = Object.assign(params, { dtid })
+    if (VERSION_STANDARD) {
+      params = Object.assign(params, { dtid: getCurrentShopId() })
     }
 
     console.log('useShareTimeline params:', params)

@@ -742,7 +742,7 @@ export function getExtConfigData() {
 const getCurrentShopId = () => {
   const { shop, sys: { openStore } } = store.getState()
   const { shopInfo: { distributor_id, shop_id = 0 } = {} } = shop
-  return openStore ? distributor_id : shop_id
+  return distributor_id
 }
 
 const getDistributorId = (_dtid) => {
