@@ -739,14 +739,20 @@ export function getExtConfigData() {
   }
 }
 
-const getDistributorId = (distribution_id) => {
+const getCurrentShopId = () => {
+  const { shop, sys: { openStore } } = store.getState()
+  const { shopInfo: { distributor_id, shop_id = 0 } = {} } = shop
+  return openStore ? distributor_id : shop_id
+}
+
+const getDistributorId = (_dtid) => {
   const { sys, shop } = store.getState()
   const { openStore } = sys
   const {
     shopInfo: { distributor_id, shop_id = 0 }
   } = shop
   if (VERSION_STANDARD) {
-    if (typeof distribution_id == 'undefined') {
+    if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
       const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
       if (dtid) {
@@ -755,10 +761,10 @@ const getDistributorId = (distribution_id) => {
         return openStore ? distributor_id : shop_id
       }
     } else {
-      return distribution_id
+      return _dtid
     }
   } else {
-    return distribution_id || 0
+    return _dtid || 0
   }
 }
 
@@ -890,7 +896,8 @@ export {
   htmlStringToNodeArray,
   getCurrentPageRouteParams,
   resolveStringifyParams,
-  resolveUrlParamsParse
+  resolveUrlParamsParse,
+  getCurrentShopId
 }
 
 export * from './platforms'

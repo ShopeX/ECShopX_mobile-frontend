@@ -27,7 +27,8 @@ import {
   VERSION_B2C,
   classNames,
   getCurrentPageRouteParams,
-  resolveStringifyParams
+  resolveStringifyParams,
+  getCurrentShopId
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
@@ -96,9 +97,8 @@ function Home() {
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
-    const dtid = getDistributorId()
-    if (dtid && !('dtid' in params)) {
-      params = Object.assign(params, { dtid })
+    if (VERSION_STANDARD) {
+      params = Object.assign(params, { dtid: getCurrentShopId() })
     }
     let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
 
