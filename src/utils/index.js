@@ -848,7 +848,7 @@ const getCurrentPageRouteParams = () => {
   const pages = Taro.getCurrentPages()
   const options = {}
   Object.keys(pages[pages.length - 1].options).forEach(key => {
-    if (key != '$taroTimestamp') {
+    if (key != '$taroTimestamp' && key != 'scene') {
       options[key] = pages[pages.length - 1].options[key]
     }
   })

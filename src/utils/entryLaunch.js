@@ -36,7 +36,6 @@ class EntryLaunch {
       _options = {
         ...resolveUrlParamsParse(params.scene)
       }
-
       if (_options.share_id) {
         const res = await api.wx.getShareId({
           share_id: _options.share_id
