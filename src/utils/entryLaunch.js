@@ -32,9 +32,9 @@ class EntryLaunch {
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
       // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
-      console.log('params scene:', params.scene, resolveUrlParamsParse(decodeURIComponent(params.scene)))
+      console.log('params scene:', params.scene, resolveUrlParamsParse(params.scene))
       _options = {
-        ...resolveUrlParamsParse(decodeURIComponent(params.scene))
+        ...resolveUrlParamsParse(params.scene)
       }
 
       if (_options.share_id) {
