@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { View, Text, ScrollView, Button,Image } from '@tarojs/components'
+import { View, Text, ScrollView, Button, Image } from '@tarojs/components'
 import React, { useEffect, useContext } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -34,7 +34,7 @@ function WgtNearbyShop(props) {
   }
 
   const [state, setState] = useAsyncCallback(initialState)
-  const { activeIndex, shopList, listTypes, isFirstRender, page, total_count, indicator, noData} =
+  const { activeIndex, shopList, listTypes, isFirstRender, page, total_count, indicator, noData } =
     state
   const { location } = useSelector((state) => state.user)
 
@@ -115,7 +115,7 @@ function WgtNearbyShop(props) {
 
   const commodity = async (val) => {
     let res = await storeData()
-    if(res.length){
+    if (res.length) {
       let params = {
         ...page,
         approve_status: 'onsale,only_show',
@@ -128,16 +128,14 @@ function WgtNearbyShop(props) {
       const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
       setState((v) => {
         v.shopList = [...v.shopList, ...n_list]
-        v.total_count = total_count,
-        v.indicator = false,
-        v.noData = v.shopList.length > 0 ? false : true
+        ;(v.total_count = total_count),
+          (v.indicator = false),
+          (v.noData = v.shopList.length > 0 ? false : true)
       })
-    }else{
+    } else {
       setState((v) => {
         v.shopList = []
-        v.total_count = 0,
-        v.indicator = false,
-        v.noData = true
+        ;(v.total_count = 0), (v.indicator = false), (v.noData = true)
       })
     }
   }
@@ -193,87 +191,85 @@ function WgtNearbyShop(props) {
         <View className='shop-list'>
           {shopList.slice(0, 2).map((item, index) => {
             return (
-              <View className='shop-list-del' key={index}>
-                <SpImage
-                  className='shop-logo'
-                  src={item.logo || 'shop_default_logo.png'}
-                  circle={16}
-                  width={100}
-                  height={100}
-                  onClick={() => handleClickItem(item)}
-                />
-                <View className='shop-del'>
-                  <View className='shop-names' onClick={() => handleClickItem(item)}>
-                    <View className='name'>{item.name}</View>
-                    {/* <View className='deliver'>商家自配</View> */}
-                  </View>
-                  <View className='score' onClick={() => handleClickItem(item)}>
-                    <View className='sales'>
-                      <Text className='monthly'>评分: {item?.scoreList.avg_star}</Text>
-                      <Text>月销：{item.sales_count}</Text>
+              <View key={index} className='shop-list-item'>
+                <View className='shop-list-item-del'>
+                  <SpImage
+                    className='shop-logo'
+                    src={item.logo || 'shop_default_logo.png'}
+                    circle={16}
+                    width={100}
+                    height={100}
+                    onClick={() => handleClickItem(item)}
+                  />
+                  <View className='shop-del'>
+                    <View className='shop-names' onClick={() => handleClickItem(item)}>
+                      <View className='name'>{item.name}</View>
+                      {/* <View className='deliver'>商家自配</View> */}
                     </View>
-                    {item.distance_show && (
+                    <View className='score' onClick={() => handleClickItem(item)}>
                       <View className='sales'>
-                        {item.distance_show.split('.')[0]}
-                        {item.distance_unit}
+                        <Text className='monthly'>评分: {item?.scoreList.avg_star}</Text>
+                        <Text>月销：{item.sales_count}</Text>
                       </View>
+                      {item.distance_show && (
+                        <View className='sales'>
+                          {item.distance_show.split('.')[0]}
+                          {item.distance_unit}
+                        </View>
+                      )}
+                    </View>
+
+                    {base.show_coupon && (
+                      <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
+                        {console.log(item.discountCardList, 'item.discountCardList1')}
+                        {item.discountCardList.slice(0, 3).map((coupon, cindex) => {
+                          return (
+                            <SpShopCoupon
+                              fromStoreIndex
+                              className='coupon-index'
+                              info={coupon}
+                              key={`shop-coupon__${cindex}`}
+                              // onClick={() => {
+                              //   Taro.navigateTo({
+                              //     url: `/subpages/marketing/coupon-center`
+                              //   })
+                              // }}
+                            />
+                          )
+                        })}
+                      </ScrollView>
                     )}
                   </View>
-                      
-                  {base.show_coupon && (
-                    <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
-                      {console.log(item.discountCardList, 'item.discountCardList1')}
-                      {item.discountCardList.slice(0, 3).map((coupon, cindex) => {
-                        return(
-                          <SpShopCoupon
-                            fromStoreIndex
-                            className='coupon-index'
-                            info={coupon}
-                            key={`shop-coupon__${cindex}`}
-                            // onClick={() => {
-                            //   Taro.navigateTo({
-                            //     url: `/subpages/marketing/coupon-center`
-                            //   })
-                            // }}
-                          />
-                        )
-                      })}
-                    </ScrollView>
-                  )}
+                </View>
+                <View>
                   {item.itemList && (
                     <ScrollView scrollX>
                       <View className='coupon-commodity-all'>
+                        <View className='coupon-commodity-nolist'></View>
                         {item.itemList.map((goods, gindex) => {
                           return (
-                            <View key={gindex}>
-                              <View>
-                                <View
-                                  className='coupon-commodity-list'
-                                  onClick={() => {
-                                    handleGoodsClick(goods)
-                                  }}
-                                >
-                                  {/* <SpImage
-                                    className='shop-logo'
-                                    src={goods.pics[0] || 'shop_default_logo.png'}
-                                    circle={16}
-                                    width={150}
-                                    height={150}
-                                  /> */}
-                                  <Image src={goods.pics || 'shop_default_logo.png'} className='shop-logo'></Image>
-                                  <View className='coupon-commodity-title'>{goods.item_name}</View>
-                                  <SpPrice
-                                    className='market-price'
-                                    size={32}
-                                    value={goods.price/100}
-                                  ></SpPrice>
-                                  {goods.market_price > 0 && goods.pric > goods.market_price && (
-                                    <View className='coupon-commodity-price'>
-                                      ¥{goods.market_price/100}
-                                    </View>
-                                  )}
+                            <View
+                              className='coupon-commodity-list'
+                              key={gindex}
+                              onClick={() => {
+                                handleGoodsClick(goods)
+                              }}
+                            >
+                              <Image
+                                src={goods.pics || 'shop_default_logo.png'}
+                                className='shop-logo'
+                              ></Image>
+                              <View className='coupon-commodity-title'>{goods.item_name}</View>
+                              <SpPrice
+                                className='market-price'
+                                size={32}
+                                value={goods.price / 100}
+                              ></SpPrice>
+                              {goods.market_price > 0 && goods.pric > goods.market_price && (
+                                <View className='coupon-commodity-price'>
+                                  ¥{goods.market_price / 100}
                                 </View>
-                              </View>
+                              )}
                             </View>
                           )
                         })}
@@ -427,63 +423,6 @@ function WgtNearbyShop(props) {
             </View>
           </View>
         )}
-
-        {/* <ScrollView className='scroll-list' scrollX scrollLeft={state.scrollLeft}>
-          {state.shopList.map((item) => (
-            <View
-              className='shop-item'
-              key={item.distributor_id}
-              onClick={() => handleStoreClick(item.distributor_id)}
-            >
-              <View
-                className='shop-banner'
-                style={styleNames({
-                  'background-image': `url(${
-                    item.banner || process.env.APP_IMAGE_CDN + 'shop_default_bg.png'
-                  })`
-                })}
-              >
-                <View
-                  className='logo-wrap'
-                  style={styleNames({
-                    'width': '50px',
-                    'height': '50px',
-                    'bottom': '-25px',
-                    'border-radius': '50px',
-                    'padding': '2px'
-                  })}
-                >
-                  <SpImage
-                    className='shop-logo'
-                    src={item.logo || 'shop_default_logo.png'}
-                    circle={92}
-                    width={92}
-                    height={92}
-                  />
-                </View>
-              </View>
-
-              <View className='shop-info-block'>
-                <View className='shop-name'>{item.name}</View>
-                {base.show_coupon && (
-                  <ScrollView className='shop-ft' scrollX>
-                    {item.discountCardList.map((coupon, index) => (
-                      <View className='coupon-item' key={`coupon-item__${index}`}>
-                        {coupon.title}
-                      </View>
-                    ))}
-                  </ScrollView>
-                )}
-              </View>
-            </View>
-          ))}
-          {state.shopList.length == 0 && (
-            <View className='empty-con'>
-              <SpImage src='empty_data.png' width={292} height={224} />
-              <View className='empty-tip'>更多商家接入中，敬请期待</View>
-            </View>
-          )}
-        </ScrollView> */}
       </View>
     </View>
   )

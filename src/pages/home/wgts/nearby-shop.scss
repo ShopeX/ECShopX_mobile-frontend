@@ -102,93 +102,108 @@
   }
 
   .shop-list {
-    &-del {
+    &-item {
       background-color: #fff;
-      display: flex;
       border-radius: 16px;
       padding: 24px 16px;
       margin-bottom: 24px;
-      .shop-logo {
-        width: 150px;
-        height: 150px;
-        margin-right: 24px;
-        border-radius: 16px;
-      }
-      .shop-del {
-        font-family: PingFangSC, PingFang SC;
-        flex: 1;
-        .shop-names {
-          display: flex;
-          justify-content: space-between;
-          .name {
-            width: 453px;
-            font-weight: 600;
-            font-size: 34px;
-            color: #111111;
-            line-height: 42px;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-          }
-          .deliver {
-            width: 82px;
-            height: 28px;
-            line-height: 28px;
-            border-radius: 8px;
-            font-size: 20px;
-            color: var(--color-primary);
-            border: 1px solid var(--color-primary);
-            text-align: center;
-          }
+      &-del {
+        display: flex;
+        .shop-logo {
+          width: 150px;
+          height: 150px;
+          margin-right: 24px;
+          border-radius: 16px;
         }
-        .score {
-          display: flex;
-          justify-content: space-between;
-          margin-top: 12px;
-          margin-bottom: 24px;
-          font-size: 28px;
-          .sales {
-            font-weight: 400;
-            color: #666666;
-            line-height: 22px;
-          }
-          .monthly {
-            color: #f4811f;
-            margin-right: 24px;
-          }
-        }
-        .coupon-list {
-          width: 100%;
-          overflow-x: auto;
-          .coupon-index {
-            margin-right: 8px;
-          }
-        }
-        .coupon-commodity-all {
-          width: 558px;
-          display: flex;
-          .coupon-commodity-list {
-            width: 150px;
-            margin-right: 24px;
-            .coupon-commodity-title {
-              width: 150px;
+        .shop-del {
+          font-family: PingFangSC, PingFang SC;
+          flex: 1;
+          .shop-names {
+            display: flex;
+            justify-content: space-between;
+            .name {
+              width: 453px;
+              font-weight: 600;
+              font-size: 34px;
+              color: #111111;
+              line-height: 42px;
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
-              padding: 16px 0;
-              box-sizing: border-box;
             }
-            .coupon-commodity-price {
+            .deliver {
+              width: 82px;
+              height: 28px;
+              line-height: 28px;
+              border-radius: 8px;
+              font-size: 20px;
+              color: var(--color-primary);
+              border: 1px solid var(--color-primary);
+              text-align: center;
+            }
+          }
+          .score {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            margin-bottom: 24px;
+            font-size: 28px;
+            .sales {
               font-weight: 400;
-              font-size: 24px;
-              color: #bbbbbb;
-              line-height: 33px;
-              text-decoration-line: line-through;
+              color: #666666;
+              line-height: 22px;
             }
+            .monthly {
+              color: #f4811f;
+              margin-right: 24px;
+            }
+          }
+          .coupon-list {
+            width: 100%;
+            overflow-x: auto;
+            .coupon-index {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+      .coupon-commodity-all {
+        width: 100%;
+        display: flex;
+        .coupon-commodity-nolist{
+          flex-shrink: 0;
+          width: 94px;
+          margin-right: 24px;
+        }
+        .coupon-commodity-list {
+          flex-shrink: 0;
+          width: 150px;
+          margin-right: 24px;
+          .shop-logo {
+            width: 150px;
+            height: 150px;
+            margin-right: 24px;
+            border-radius: 16px;
+          }
+          .coupon-commodity-title {
+            width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 16px 0;
+            box-sizing: border-box;
+          }
+          .coupon-commodity-price {
+            font-weight: 400;
+            font-size: 24px;
+            color: #bbbbbb;
+            line-height: 33px;
+            text-decoration-line: line-through;
           }
         }
       }
     }
+
     .ac_btn {
       display: flex;
       justify-content: space-between;
