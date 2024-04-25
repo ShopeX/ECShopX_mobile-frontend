@@ -1,4 +1,5 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { stringify } from 'qs' 
 // import { WGTS_NAV_MAP } from '@/consts'
 
 function linkPage (data) {
@@ -12,9 +13,9 @@ function linkPage (data) {
     return
   }
   if(navigation){
-    let seleted = JSON.stringify(seletedTags);
+    let seleted = stringify(seletedTags);
     Taro.navigateTo({
-      url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${seleted}`
+      url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${encodeURIComponent(seleted)}`
     })
     return
   }

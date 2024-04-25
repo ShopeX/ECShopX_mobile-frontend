@@ -2,7 +2,7 @@ import React, {useEffect, useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy , isWeb,} from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
@@ -84,7 +84,7 @@ function ConpNavigationClassification(props) {
    * @returns 
    */
   const storeData = async () => {
-    let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
+    let distributor_tag_id = Object.values(seletedTags).map((obj) => obj.tag_id)
     let lat, lng, province, city, district
     if (location) {
       lat = location?.lat
@@ -401,7 +401,7 @@ function ConpNavigationClassification(props) {
   return (
     <View className='navigation-classification'>
       {/* 一级分类 */}
-      <ScrollView scrollX className='first-level-scroll'>
+      <ScrollView scrollX className='first-level-scroll' style={{ top: isWeb ? '46px' : '0px' }}>
         <View className='first-level'>
           {classifyList.children.map((item, index) => {
             return (

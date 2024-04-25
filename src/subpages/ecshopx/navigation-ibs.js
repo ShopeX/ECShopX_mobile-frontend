@@ -27,6 +27,7 @@ import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import NavigationClassification from './comps/comp-navigation-classification'
+import { parse } from 'qs'
 
 import './navigation-ibs.scss'
 
@@ -82,7 +83,7 @@ function NavigationIbs() {
   useEffect(() => {
     let { content, seletedTags } = router.params
     setState((draft) => {
-      draft.seletedTags = JSON.parse(seletedTags)
+      draft.seletedTags = parse(decodeURIComponent(seletedTags))
     })
     goodsCategoryin()
     setNavigationBarTitle(content)
@@ -113,10 +114,10 @@ function NavigationIbs() {
 
   //获销售分类数据，并且处理成页面需要的数据
   const goodsCategoryin = async () => {
-    let tags = JSON.parse(router.params.seletedTags)
+    let tags = parse(decodeURIComponent(router.params.seletedTags))
     let res = await api.item.goodsCategoryinfo({ category_id: router.params.id })
     //挂件中存在商家第一层加推荐店铺
-    if (tags.length > 0) {
+    if (Object.values(tags).length > 0) {
       res.children.unshift({
         category_name: '推荐店铺',
         image_url:true,
