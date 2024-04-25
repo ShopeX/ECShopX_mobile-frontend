@@ -266,7 +266,7 @@ function ConpNavigationClassification(props) {
    */
   const storeList = () => {
     return (
-      list.length > 0 && (
+      classifyList.children[0].category_name == '推荐店铺' && statusIndex && (
         <View className='shop-list'>
           <View className='shop-list-title'>附近商家</View>
           {/* 头部滑动 */}
@@ -291,7 +291,7 @@ function ConpNavigationClassification(props) {
             </ScrollView>
           )}
 
-          {list.map((item, index) => {
+          {list.length>0 && list.map((item, index) => {
             return (
               <View key={index} className='shop-list-item'>
                 <View className='shop-list-item-del'>
