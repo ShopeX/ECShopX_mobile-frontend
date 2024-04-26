@@ -1,25 +1,19 @@
 import React, { useEffect, useRef } from 'react'
-import Taro, { useShareAppMessage, useShareTimeline, useRouter } from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpPage, SpSearch, SpRecommend, SpSkuSelect } from '@/components'
 import api from '@/api'
 import {
   isWeixin,
-  isEmpty,
-  getDistributorId,
-  VERSION_STANDARD,
   VERSION_PLATFORM,
   classNames,
-  getCurrentPageRouteParams,
-  resolveStringifyParams,
   pickBy,
   showToast
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { platformTemplateName } from '@/utils/platform'
-import { updateShopInfo } from '@/store/slices/shop'
 import { useImmer } from 'use-immer'
 import { useNavigation } from '@/hooks'
 import doc from '@/doc'
@@ -46,7 +40,8 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   seletedTags: [],
-  classifyList: null
+  classifyList: null,
+  jump:false
 }
 
 function NavigationIbs() {
@@ -54,7 +49,7 @@ function NavigationIbs() {
   const [likeList, setLikeList] = useImmer([])
   const pageRef = useRef()
   const router = useRouter()
-  const { initState, openRecommend, openLocation, openStore, openScanQrcode } = useSelector(
+  const { openRecommend } = useSelector(
     (state) => state.sys
   )
   // const { shopInfo } = useSelector((state) => state.shop)
@@ -74,7 +69,8 @@ function NavigationIbs() {
     skuPanelOpen,
     selectType,
     seletedTags,
-    classifyList
+    classifyList,
+    jump
   } = state
 
   const dispatch = useDispatch()
@@ -83,18 +79,11 @@ function NavigationIbs() {
   useEffect(() => {
     let { content, seletedTags } = router.params
     setState((draft) => {
-      draft.seletedTags = parse(decodeURIComponent(seletedTags))
+      draft.seletedTags = Object.values(parse(decodeURIComponent(seletedTags)))
     })
     goodsCategoryin()
     setNavigationBarTitle(content)
   }, [])
-
-  //非云店和地址存在请求挂件接口
-  useEffect(() => {
-    if (location && VERSION_STANDARD) {
-      fetchWgts()
-    }
-  }, [location])
 
   //弹窗出来时固定页面
   useEffect(() => {
@@ -135,49 +124,9 @@ function NavigationIbs() {
     })
   }
 
-  // useShareAppMessage(async (res) => {
-  //   const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-  //   let params = getCurrentPageRouteParams()
-  //   const dtid = getDistributorId()
-  //   if (dtid && !('dtid' in params)) {
-  //     params = Object.assign(params, { dtid })
-  //   }
-  //   let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
-
-  //   console.log('useShareAppMessage path:', path, params)
-
-  //   return {
-  //     title: title,
-  //     imageUrl: imageUrl,
-  //     path
-  //   }
-  // })
-
-  // useShareTimeline(async (res) => {
-  //   const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
-  //   let params = getCurrentPageRouteParams()
-  //   const dtid = getDistributorId()
-
-  //   if (dtid && !('dtid' in params)) {
-  //     params = Object.assign(params, { dtid })
-  //   }
-
-  //   console.log('useShareTimeline params:', params)
-  //   return {
-  //     title: title,
-  //     imageUrl: imageUrl,
-  //     query: resolveStringifyParams(params)
-  //   }
-  // })
-
   const init = async () => {
     fetchLocation()
-    // 非云店
-    if (!VERSION_STANDARD) {
-      fetchWgts()
-    } else {
-      fetchStoreInfo(location)
-    }
+    fetchWgts()
   }
 
   /**
@@ -207,10 +156,7 @@ function NavigationIbs() {
 
     const fixedTops = searchComps && searchComps.config.fixTop
     const isShowHomeHeaders =
-      VERSION_PLATFORM ||
-      (openScanQrcode == 1 && isWeixin) ||
-      (VERSION_STANDARD && openStore && openLocation == 1) ||
-      fixedTops
+      VERSION_PLATFORM || fixedTops
 
     setState((draft) => {
       draft.wgts = config
@@ -223,20 +169,10 @@ function NavigationIbs() {
     })
   }
 
-  const fetchLikeList = async () => {
-    if (openRecommend == 1) {
-      const query = {
-        page: 1,
-        pageSize: 30
-      }
-      const { list } = await api.cart.likeList(query)
-      setLikeList(list)
-    }
-  }
 
-  //判断是否开启定位，通过定位获取数据
+  //判断是否开启定位，通过定位获取数据（平台）
   const fetchLocation = () => {
-    if (!location && ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM)) {
+    if (VERSION_PLATFORM) {
       try {
         entryLaunch.isOpenPosition((res) => {
           if (res.lat) {
@@ -249,21 +185,6 @@ function NavigationIbs() {
     }
   }
 
-  //云店获取数据，并且存在redux中
-  const fetchStoreInfo = async (locations) => {
-    let params = {
-      distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
-    }
-    if (openLocation == 1 && locations) {
-      const { lat, lng } = locations
-      params.lat = lat
-      params.lng = lng
-      // params.distributor_id = undefined
-    }
-    const res = await api.shop.getShop(params)
-    console.log('fetchStoreInfo:', res)
-    dispatch(updateShopInfo(res))
-  }
 
   // 加购
   const onAddToCart = async ({ itemId, distributorId }) => {
@@ -299,9 +220,8 @@ function NavigationIbs() {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        {console.log('searchComp:', searchComp, location)}
         {isShowHomeHeader && (
-          <WgtHomeHeader className='home-header-ibs' jump={1 == 2}>
+          <WgtHomeHeader className='home-header-ibs' jump={jump}>
             {fixedTop && <SpSearch info={searchComp} />}
           </WgtHomeHeader>
         )}
@@ -312,7 +232,7 @@ function NavigationIbs() {
               onAddToCart
             }}
           >
-            <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} copywriting={false}>
+            <HomeWgts wgts={filterWgts} copywriting={false}>
               <SpRecommend className='recommend-block' info={likeList} />
             </HomeWgts>
           </WgtsContext.Provider>

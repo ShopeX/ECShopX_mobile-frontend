@@ -84,7 +84,7 @@ function ConpNavigationClassification(props) {
    * @returns 
    */
   const storeData = async () => {
-    let distributor_tag_id = Object.values(seletedTags).map((obj) => obj.tag_id)
+    let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
     let lat, lng, province, city, district
     if (location) {
       lat = location?.lat
