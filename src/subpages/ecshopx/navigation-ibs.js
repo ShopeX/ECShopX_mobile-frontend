@@ -20,7 +20,7 @@ import doc from '@/doc'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import NavigationClassification from './comps/comp-navigation-classification'
+import CompNavigationClassification from './comps/comp-navigation-classification'
 import { parse } from 'qs'
 
 import './navigation-ibs.scss'
@@ -96,19 +96,21 @@ function NavigationIbs() {
 
   //基于存在销售分类数据请求接口
   useEffect(() => {
-    if (classifyList) {
-      init()
+    if (!location) {
+      fetchLocation()
     }
-  }, [classifyList])
+  }, [])
 
   //获销售分类数据，并且处理成页面需要的数据
   const goodsCategoryin = async () => {
     let tags = parse(decodeURIComponent(router.params.seletedTags))
     let res = await api.item.goodsCategoryinfo({ category_id: router.params.id })
+    fetchWgts(res.customize_page_id)
     //挂件中存在商家第一层加推荐店铺
     if (Object.values(tags).length > 0) {
       res.children.unshift({
         category_name: '推荐店铺',
+        category_ids: 0,
         image_url:true,
       })
     }
@@ -124,15 +126,11 @@ function NavigationIbs() {
     })
   }
 
-  const init = async () => {
-    fetchLocation()
-    fetchWgts()
-  }
 
   /**
    * 获取模版装修数据
    */
-  const fetchWgts = async () => {
+  const fetchWgts = async (id) => {
     setState((draft) => {
       draft.wgts = []
       draft.pageData = []
@@ -142,7 +140,7 @@ function NavigationIbs() {
     const query = {
       template_name: platformTemplateName,
       version: 'v1.0.1',
-      page_name: `custom_${classifyList.customize_page_id}`
+      page_name: `custom_${id}`
     }
     const { config } = await api.category.getCategory(query)
     const searchComps = config.find((wgt) => wgt.name == 'search')
@@ -237,8 +235,8 @@ function NavigationIbs() {
             </HomeWgts>
           </WgtsContext.Provider>
         )}
-        {/* 定位获取数据页面    onAddToCart加购   classifyList销售分类数据   seletedTags商家 */}
-        <NavigationClassification
+        {/* onAddToCart加购   classifyList销售分类数据   seletedTags商家 */}
+        <CompNavigationClassification
           seletedTags={seletedTags}
           classifyList={classifyList}
           onAddToCart={onAddToCart}

@@ -124,7 +124,7 @@ function ConpNavigationClassification(props) {
    * @returns 
    */
   const fetch = async ({ pageIndex, pageSize }) => {
-    if (classifyList.children[0].category_name == '推荐店铺' && statusIndex) {
+    if (classifyList.children[0]?.category_ids == 0 && statusIndex) {
       //存在推荐走商家接口
       // let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
       let lat, lng, province, city, district
@@ -266,7 +266,7 @@ function ConpNavigationClassification(props) {
    */
   const storeList = () => {
     return (
-      classifyList.children[0].category_name == '推荐店铺' && statusIndex && (
+      classifyList.children[0]?.category_ids == 0 && statusIndex && (
         <View className='shop-list'>
           <View className='shop-list-title'>附近商家</View>
           {/* 头部滑动 */}
@@ -420,7 +420,7 @@ function ConpNavigationClassification(props) {
                 >
                   {item.image_url ? (
                     <Image
-                      src={item.category_name == '推荐店铺' ? recommendation : item.image_url}
+                      src={item?.category_ids == 0 ? recommendation : item.image_url}
                       className='first-level-item-image-url'
                     />
                   ) : (
@@ -469,7 +469,7 @@ function ConpNavigationClassification(props) {
         fetch={fetch}
       >
         {/* 商家storeList   商品storeProducts */}
-        {classifyList.children[0].category_name == '推荐店铺' && statusIndex
+        {classifyList.children[0]?.category_ids == 0 && statusIndex
           ? storeList()
           : storeProducts()}
       </SpScrollView>

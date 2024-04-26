@@ -13,7 +13,14 @@ function linkPage (data) {
     return
   }
   if(navigation){
-    let seleted = stringify(seletedTags);
+    let tags = []
+    seletedTags.forEach(item => {
+      tags.push({
+        tag_id: item.tag_id,
+        tag_name: item.tag_name
+      })
+    })
+    let seleted = stringify(tags);
     Taro.navigateTo({
       url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${encodeURIComponent(seleted)}`
     })
