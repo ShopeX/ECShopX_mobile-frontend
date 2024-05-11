@@ -91,6 +91,8 @@ import SpVipLabel from './sp-vip-label'
 import SpAddress from './sp-address'
 import SpSearchInput from './sp-search-input'
 import SpCategorySearch from './sp-category-search'
+import SpTime from './sp-time'
+
 
 
 export default {}
@@ -188,5 +190,6 @@ export {
   SpVipLabel,
   SpAddress,
   SpSearchInput,
-  SpCategorySearch
+  SpCategorySearch,
+  SpTime
 }

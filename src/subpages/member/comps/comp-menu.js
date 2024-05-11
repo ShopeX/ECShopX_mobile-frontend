@@ -71,12 +71,6 @@ const MENUS = [
     icon: 'm_menu_tuangou.png',
     link: '/marketing/pages/member/purchase'
   },
-  {
-    key: 'dianwu',
-    name: '店务管理',
-    icon: 'm_menu_dianwu.png',
-    link: '/subpages/dianwu/index'
-  }
 
   // {
   //   key: "complaint",
@@ -85,6 +79,16 @@ const MENUS = [
   //   link: "/marketing/pages/member/complaint-record",
   // },
 ]
+
+const MENUS_DIANWU = [
+  {
+    key: 'dianwu',
+    name: '店务管理',
+    icon: 'm_menu_dianwu.png',
+    link: '/subpages/dianwu/index'
+  }
+]
+
 
 const MENUS_CONST = [
   {
@@ -142,6 +146,9 @@ function CompMenu(props) {
     menus = menus.filter((m_item) => m_item.key != 'boost_activity' && m_item.key != 'boost_order')
   }
 
+  // 店务管理
+  menus = menus.concat(MENUS_DIANWU)
+  
   // menus = menus.concat([
   //   {
   //     key: 'pointMenu',

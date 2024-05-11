@@ -1,0 +1,37 @@
+.page-dianwu-delivery-personnel{
+    .selector{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 28px;
+        padding: 10px 24px;
+        background-color: #fff;
+        .picker{
+            margin-right: 10px;
+        }
+        .selector-sea{
+            width: 84%;
+        }
+    }
+    .classification{
+        display: flex;
+        justify-content: space-between;
+        background-color: #fff;
+        padding: 0 24px;
+        view{
+            width: 315px;
+            height: 100px;
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 400;
+            font-size: 28px;
+            color: #666F83;
+            line-height: 100px;
+            text-align: center;
+        }
+        .active{
+            color: #111A34;
+            border-bottom:4px solid var(--color-dianwu-primary) ;
+        }
+        
+    }
+}

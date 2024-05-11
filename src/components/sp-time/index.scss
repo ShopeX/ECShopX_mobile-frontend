@@ -1,0 +1,30 @@
+.sp-time {
+  .times-select {
+    display: flex;
+    color: #111a34;
+    font-weight: 600;
+    .times {
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      border-radius: 8px;
+      border: 1px solid #666f83;
+      font-size: 24px;
+      color: #111a34;
+      .iconfont {
+        margin-left: 8px;
+      }
+    }
+    .specific-time {
+      margin-left: 20px;
+      padding: 16px 24px;
+      border-radius: 8px;
+      border: 1px solid #666f83;
+      .iconfont {
+        margin-right: 8px;
+        font-size: 24px;
+        color: var(--color-dianwu-primary);
+      }
+    }
+  }
+}
