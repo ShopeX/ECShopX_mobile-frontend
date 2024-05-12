@@ -50,9 +50,16 @@ function CompDelivery(props) {
           </View>
         </View>
       </SpScrollView>
-      <View className='comp-delivery-scroll-establish'>
-            <View>创建配送员</View>
-        </View>
+      <View
+        className='comp-delivery-scroll-establish'
+        onClick={() => {
+          Taro.navigateTo({
+            url: '/subpages/dianwu/edit-deliveryman'
+          })
+        }}
+      >
+        <View>创建配送员</View>
+      </View>
     </View>
   )
 }
