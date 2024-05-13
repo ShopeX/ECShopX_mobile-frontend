@@ -10,7 +10,6 @@ import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
-import S from '@/spx'
 
 import './nearly-shop.scss'
 
@@ -27,7 +26,7 @@ const initialState = {
   queryAddress: '',
   isSpAddressOpened: false,
   refresh: false,
-  isToken:S.getAuthToken()
+  isToken:false
 }
 
 function NearlyShop(props) {
@@ -84,11 +83,21 @@ function NearlyShop(props) {
       })
     })
 
+    getTokenFromStorage()
+
     return () => {
       Taro.eventCenter.off('onEventSelectReceivingAddress')
     }
   }, [])
 
+
+  // 在需要获取 Token 的地方调用该函数
+  const getTokenFromStorage = async () => {
+      let res = await Taro.getStorage({ key: 'token' });
+      setState(draft => {
+        draft.isToken = res?.data ? true : false
+      })
+  };
 
   const fetchShop = async ({ pageIndex, pageSize }) => {
     
