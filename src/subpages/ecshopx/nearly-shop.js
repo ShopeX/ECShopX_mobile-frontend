@@ -10,6 +10,7 @@ import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
+import S from '@/spx'
 
 import './nearly-shop.scss'
 
@@ -25,7 +26,8 @@ const initialState = {
   queryDistrict: '',
   queryAddress: '',
   isSpAddressOpened: false,
-  refresh: false
+  refresh: false,
+  isToken:S.getAuthToken()
 }
 
 function NearlyShop(props) {
@@ -39,7 +41,8 @@ function NearlyShop(props) {
   const { chooseValue, isSpAddressOpened, keyword, refresh, type, queryProvice,
     queryCity,
     queryDistrict,
-    queryAddress } = state
+    queryAddress ,
+    isToken} = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const shopRef = useRef()
@@ -210,7 +213,7 @@ function NearlyShop(props) {
 
   // 根据定位地址或收货地址定位切换地址
   const onLocationChange = async (info) => {
-    let local = info.address || info.province + info.city + info.county + info.adrdetail
+    let local = info.address || info.province + info.city + info?.area + info?.county + info?.adrdetail
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))
     Taro.navigateBack()
@@ -276,7 +279,7 @@ function NearlyShop(props) {
           </View>
         </View>
         {
-          address && <View className='block-title block-flex'>
+          isToken && address && <View className='block-title block-flex'>
             <View>我的收货地址</View>
             <View
               className='arrow'
@@ -288,20 +291,23 @@ function NearlyShop(props) {
             </View>
           </View>
         }
-
-        <View className='receive-address'>
-          {!address && isLogin && (
-            <View className='btn-add-address' onClick={onAddChange}>
-              添加新地址
-            </View>
-          )}
-          {address && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
-          )}
-        </View>
+    
+            <View className='receive-address'>
+            {!address && isLogin && (
+              <View className='btn-add-address' onClick={onAddChange}>
+                添加新地址
+              </View>
+            )}
+            {address && isToken && (
+              <View
+                className='address'
+                onClick={() => onLocationChange(address)}
+              >{
+                `${address.province}${address.city}${address?.area || ''}${address?.county || ''}${address?.adrdetail || ''}`
+              }</View>
+            )}
+          </View>
+       
       </View>
 
       <View className='nearlyshop-list'>
