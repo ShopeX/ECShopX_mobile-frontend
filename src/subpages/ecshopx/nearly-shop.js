@@ -67,7 +67,8 @@ function NearlyShop(props) {
     setState((draft) => {
       if (address) {
         draft.type = address.is_def ? 2 : 3
-      } else if (location) { // fix：未授权定位时不设置chooseValue
+      } 
+      if (location) { // fix：未授权定位时不设置chooseValue
         draft.chooseValue = [province, city, district]
         draft.type = 0
       }
