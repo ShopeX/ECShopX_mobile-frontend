@@ -50,7 +50,6 @@ function DeliveryPersonnel() {
     setState((draft) => {
       draft.refreshData = !refreshData
     })
-    console.log('开始搜索')
   }
 
   const onDeliveryChange = (value) => {

@@ -2,13 +2,20 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
-import { View, Text } from '@tarojs/components'
+import { View, Text,Image } from '@tarojs/components'
 import {
   SpTime,
 } from '@/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
+import one from '@/assets/imgs/one.png'
+import two from '@/assets/imgs/two.png'
+import three from '@/assets/imgs/three.png'
+
+
 import './comp-ranking.scss'
+
+
 
 const initialState = {
   list: [],
@@ -68,6 +75,14 @@ function CompRanking(props) {
     })
   }
 
+  const ranking = (index) => {
+    if(index <= 3){
+      return <Image src={index==1?one:index==2?two:three}></Image>
+    }else{
+      return <Text>{index+1}</Text> 
+    }
+  }
+
   return (
     <View className='page-dianwu-comp-ranking'>
       <View className='comp-ranking'>
@@ -89,7 +104,7 @@ function CompRanking(props) {
                 )}
                 key={index}
               >
-                <Text>{index}</Text>
+                {ranking(index+1)}
                 <Text>{item.username}</Text>
                 <Text>{item.total_fee_count}</Text>
                 <Text>{item.order_count}</Text>
