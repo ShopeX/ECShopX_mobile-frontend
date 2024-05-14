@@ -67,8 +67,24 @@ function EditDeliveryman(props) {
     return params?.operator_id ? '创建配送员' : '编辑配送员'
   }
 
-  const edit = async () => {
-    
+  const edit = async (operator_id) => {
+    let res = await api.dianwu.getAccountManagement(operator_id)
+    let params= {
+      staff_type: 'distributor',
+      operator_type: 'self_delivery_staff',
+      staff_no: res.staff_no,
+      staff_attribute: res.staff_attribute,
+      payment_method: res.payment_method,
+      payment_fee: res.payment_fee,
+      mobile: res.mobile,
+      username: res.username,
+      password: ''
+    }
+    setState((draft) => {
+      draft.parent = params
+      draft.propertyIndex= res.payment_method == 'order' ? 0 : 1
+      draft.mannerIndex= res.staff_attribute == 'part_time' ? 0 : 1
+    })
   }
 
   const handleChange = (value, val) => {

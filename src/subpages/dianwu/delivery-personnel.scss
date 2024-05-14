@@ -34,4 +34,14 @@
         }
         
     }
+    .sp-tabs-hd .tab-item-active {
+        color: var(--color-dianwu-primary);
+    }
+
+    .sp-tabs-hd .tab-item-active .name:after {
+        background-color: var(--color-dianwu-primary);
+    }
+    .sp-tabs-hd .tab-item-active .name {
+        border-bottom: 4px solid var(--color-dianwu-primary);
+    }
 }

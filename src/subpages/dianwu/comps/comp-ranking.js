@@ -1,72 +1,70 @@
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useDidShow, useRouter } from '@tarojs/taro'
-import { AtButton, AtTabs, AtTabsPane, AtDivider } from 'taro-ui'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
-import { View, Text, Picker } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import {
-  SpPage,
   SpTime,
-  SpScrollView,
-  SpPrice,
-  SpImage,
-  SpSearchInput,
-  SpVipLabel
 } from '@/components'
-import { classNames, pickBy, showToast } from '@/utils'
+import { classNames } from '@/utils'
+import { useSyncCallback } from '@/hooks'
 import './comp-ranking.scss'
 
 const initialState = {
   list: [],
+  valList: [],
   total_count: 0,
-  page: 1,
   datas: '',
   datasType: 0
 }
 
 function CompRanking(props) {
   const [state, setState] = useImmer(initialState)
-  const { list, total_count, page, datas, datasType } = state
+  const { list, total_count, datas, datasType, valList } = state
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
 
   useEffect(() => {
-    fetch(true)
-  }, [refreshData]) // 仅在 refreshData 更改时执行
+    fetch()
+  }, [refreshData])
 
   useDidShow(() => {
-    fetch(true)
+    fetch()
   })
 
   //val 年(0)月(1)日(2)   ele 具体时间
   const onTimeChange = (val, ele) => {
-    console.log(val, ele, 'val,ele===')
     setState((draft) => {
+      draft.list = []
       draft.datas = ele
       draft.datasType = val
     })
-    fetch(true, val, ele)
+    handleRefresh()
   }
 
-  const fetch = async (val, ele, par) => {
+  const handleRefresh = useSyncCallback(() => {
+    fetch()
+  })
+
+  const fetch = async () => {
     Taro.showLoading()
     let res = {
-      page: val ? 1 : page,
-      pageSize: 10,
-      datasType: ele ? ele : datasType,
-      datas: par ? par : datas,
+      page: 1,
+      pageSize: 1000,
+      is_sort: 1,
+      year: datasType == 0 ? datas : '',
+      month: datasType == 1 ? datas : '',
+      day: datasType == 2 ? datas : '',
       distributor_id: params.distributor_id,
       username: selectorCheckedIndex == 0 ? deliverylnformation : '',
       mobile: selectorCheckedIndex == 1 ? deliverylnformation : ''
     }
-    // const { list: _list, total_count } = await api.dianwu.goodsItems(res)
     const { list: _list, total_count } = await api.dianwu.datacubeDeliverystaffdata(res)
     Taro.hideLoading()
     setState((draft) => {
-      draft.list = val ? _list : [...list, ..._list]
+      draft.list = _list.slice(0, 5)
+      draft.valList = _list
       draft.total_count = total_count
-      draft.page = val ? 2 : page + 1
     })
   }
 
@@ -104,7 +102,9 @@ function CompRanking(props) {
             <View
               className='launch'
               onClick={() => {
-                fetch(false)
+                setState((draft) => {
+                  draft.list = valList
+                })
               }}
             >
               <Text>展开更多</Text>

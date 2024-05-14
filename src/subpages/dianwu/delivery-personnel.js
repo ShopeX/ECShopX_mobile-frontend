@@ -1,23 +1,24 @@
-import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { AtButton, AtTabs, AtTabsPane, AtSearchBar } from 'taro-ui'
-import api from '@/api'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { AtSearchBar } from 'taro-ui'
 import { View, Text, Picker } from '@tarojs/components'
-import { SpPage, SpScrollView, SpPrice, SpImage, SpSearchInput, SpVipLabel } from '@/components'
-import { classNames, pickBy, showToast } from '@/utils'
+import {
+  SpPage,
+  SpTabs,
+} from '@/components'
 import CompDelivery from './comps/comp-delivery'
 import CompRanking from './comps/comp-ranking'
 import './delivery-personnel.scss'
 
 const initialState = {
-  types: true,
+  types: false,
   selector: ['姓名', '手机号'],
   selectorChecked: '姓名',
   selectorCheckedIndex: 0,
   deliverylnformation: '',
-  refreshData: false
+  refreshData: false,
+  tabList: [{ title: '我的配送员' }, { title: '配送费用排行' }]
 }
 
 function DeliveryPersonnel() {
@@ -28,14 +29,15 @@ function DeliveryPersonnel() {
     selectorChecked,
     deliverylnformation,
     selectorCheckedIndex,
-    refreshData
+    refreshData,
+    tabList
   } = state
 
-  const classification = (val) => {
-    setState((draft) => {
-      draft.types = val
-    })
-  }
+  // const classification = (val) => {
+  //   setState((draft) => {
+  //     draft.types = val
+  //   })
+  // }
 
   const onChange = (e) => {
     setState((draft) => {
@@ -81,7 +83,17 @@ function DeliveryPersonnel() {
             onClear={onClear}
           />
         </View>
-        <View className={classNames('classification', types ? 'active' : '')}>
+
+        <SpTabs
+          current={types}
+          tablist={tabList}
+          onChange={(e) => {
+            setState((draft) => {
+              draft.types = e
+            })
+          }}
+        />
+        {/* <View className={classNames('classification', types ? 'active' : '')}>
           <View onClick={() => classification(true)} className={classNames(types ? 'active' : '')}>
             我的配送员
           </View>
@@ -91,9 +103,9 @@ function DeliveryPersonnel() {
           >
             配送费用排行
           </View>
-        </View>
+        </View> */}
 
-        {types ? (
+        {!types ? (
           <CompDelivery
             selectorCheckedIndex={selectorCheckedIndex}
             deliverylnformation={deliverylnformation}
