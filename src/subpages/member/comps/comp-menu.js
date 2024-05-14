@@ -125,6 +125,7 @@ function CompMenu(props) {
     return null
   }
   let menus = MENUS.filter((item) => accessMenu[item.key])
+
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
@@ -157,6 +158,15 @@ function CompMenu(props) {
   //     link: '/subpages/pointshop/list'
   //   }
   // ])
+
+   menus = menus.concat([
+    {
+      key: 'salesman',
+      name: '业务员',
+      icon: 'm_menu_dianwu.png',
+      link: '/subpages/salesman/index'
+    }
+  ])
 
   // if (accessMenu.offline_order) {
   //   menus = menus.concat(MENUS_OFFLINE)

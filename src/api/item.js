@@ -72,3 +72,8 @@ export function getShareSetting (id) {
 export function getShareDtidSetting () {
   return req.get(`/common/setting`)
 }
+
+//  获取管理分类信息
+export function goodsCategoryinfo (params) {
+  return req.get('/goods/categoryinfo', params)
+}

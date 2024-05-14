@@ -67,7 +67,8 @@ const config = {
       root: 'subpages/ecshopx',
       pages: [
         'nearly-shop', // 店铺选择
-        'shop-list' // 商家列表
+        'shop-list', // 商家列表
+        'navigation-ibs' //lbs图片导航
       ]
     },
     {
@@ -331,6 +332,18 @@ const config = {
         'selector', //选择页面
         'audit', //审核页面
         'agreement' //协议页面
+      ]
+    },
+    //业务员
+    {
+      root: 'subpages/salesman',
+      pages: [
+        'index', //首页
+        'card',//名片
+        'cart',//购物车
+        'my',//我的
+        'selectCustomer',//选客户
+        'selectStore',//选店铺
       ]
     },
     // 授权

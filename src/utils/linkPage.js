@@ -1,14 +1,28 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { stringify } from 'qs' 
 // import { WGTS_NAV_MAP } from '@/consts'
 
 function linkPage (data) {
-  const { id, title, linkPage, linkType, type, distributor_id } = data
+  const { id, title, linkPage, linkType, type, distributor_id ,navigation = false,content,seletedTags = []} = data
   const { id: dtid } = getCurrentInstance().router.params
-  // console.log('linkPage:', type, data)
   // h5链接
   if(linkType == 1) {
     Taro.navigateTo({
       url: `/pages/webview?url=${encodeURIComponent(data.linkUrl)}`
+    })
+    return
+  }
+  if(navigation){
+    let tags = []
+    seletedTags.forEach(item => {
+      tags.push({
+        tag_id: item.tag_id,
+        tag_name: item.tag_name
+      })
+    })
+    let seleted = stringify(tags);
+    Taro.navigateTo({
+      url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${encodeURIComponent(seleted)}`
     })
     return
   }

@@ -18,7 +18,8 @@ function SpScrollView(props, ref) {
     renderEmpty,
     style,
     pageSize = 10,
-    onLoad = () => {}
+    onLoad = () => {},
+    renderMore
   } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
@@ -37,7 +38,8 @@ function SpScrollView(props, ref) {
         observeAll: true
       })
       setTimeout(() => {
-        observer.relativeToViewport({ bottom: 0 }).observe('.scrollview-bottom', (res) => {
+        // observer.relativeToViewport({ bottom: 0 }).observe('.scrollview-bottom', (res) => {
+        observer.relativeToViewport({ bottom: 0 }).observe(`.scrollview-${vid}`, (res) => {
           if (res.intersectionRatio > 0) {
             if (page.hasMore && !page.loading) {
               nextPage()
@@ -101,6 +103,8 @@ function SpScrollView(props, ref) {
     }
   }))
 
+
+
   // console.log('sp scrollview:', page.loading, page.hasMore)
   return (
     <View className={classNames('sp-scrollview', className)} style={style} ref={wrapRef}>
@@ -110,7 +114,7 @@ function SpScrollView(props, ref) {
         getTotal() == 0 &&
         (renderEmpty ? renderEmpty : <SpNote img='empty_activity.png' title='没有查询到数据' />)}
       {!page.loading && !page.hasMore && getTotal() > 0 && (
-        <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
+        renderMore?renderMore():<SpNote className='no-more' title='--没有更多数据了--'></SpNote>
       )}
       <View className={classNames('scrollview-bottom', `scrollview-${vid}`)} ></View>
     </View>
@@ -121,4 +125,4 @@ SpScrollView.options = {
   addGlobalClass: true
 }
 
-export default React.forwardRef(SpScrollView)
+export default React.memo(React.forwardRef(SpScrollView))

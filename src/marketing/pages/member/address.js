@@ -77,7 +77,6 @@ function AddressIndex(props) {
   }
 
   const handleChangeDefault = async (e, item) => {
-    debugger
     const nItem = JSON.parse(JSON.stringify(item))
     nItem.is_def = 1
     try {

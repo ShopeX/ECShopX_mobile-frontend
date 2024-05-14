@@ -40,6 +40,7 @@ function SpPage(props, ref) {
     navigateMantle = false, // 自定义导航，开启滚动蒙层
     pageConfig = null,
     fixedTopContainer = null,
+    showNavition = true,//是否展示Navition
     title = '' // 页面导航标题
   } = props
   let { renderTitle } = props
@@ -89,7 +90,7 @@ function SpPage(props, ref) {
       // customNavigation = navigationStyle === 'custom'
       // cusCurrentPage = pages.length
       setState(draft => {
-        draft.customNavigation = navigationStyle === 'custom'
+        draft.customNavigation = showNavition && (navigationStyle === 'custom')
         draft.cusCurrentPage = pages.length
       })
     }

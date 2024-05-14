@@ -71,7 +71,8 @@ const initialConfigState = {
     tenants: true, //商家入驻
     purchase: true, // 员工内购
     dianwu: false, // 店务,
-    community: false // 社区
+    community: false, // 社区
+    salesman:true
   },
   infoAppId: '',
   infoPage: '',
@@ -254,6 +255,7 @@ function MemberIndex(props) {
         pointUrlIsOpen: point_url_is_open
       }
     }
+
     setConfig((draft) => {
       draft.banner = banner
       draft.menu = {
