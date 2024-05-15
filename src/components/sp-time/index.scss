@@ -4,22 +4,26 @@
     color: #111a34;
     font-weight: 600;
     .times {
-      padding: 16px 24px;
+      padding: 12px 24px;
       display: flex;
       align-items: center;
+      justify-content: center;
       border-radius: 8px;
       border: 1px solid #666f83;
       font-size: 24px;
       color: #111a34;
+      background-color: #fff;
       .iconfont {
+        font-size: 12px;
         margin-left: 8px;
       }
     }
     .specific-time {
       margin-left: 20px;
-      padding: 16px 24px;
+      padding: 12px 24px;
       border-radius: 8px;
       border: 1px solid #666f83;
+      background-color: #fff;
       .iconfont {
         margin-right: 8px;
         font-size: 24px;

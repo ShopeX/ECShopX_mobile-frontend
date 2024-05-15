@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View } from '@tarojs/components'
 import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage } from '@/components'
+import { SpImage, SpPage,SpTime } from '@/components'
 import CompTabbar from './comps/comp-tabbar'
 import { useImmer } from 'use-immer'
 import api from '@/api'
@@ -11,17 +11,19 @@ import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'present',path:'/subpages/salesman/selectCustomer'},
-    { name: '代客下单', icon: 'present' ,path:'/subpages/salesman/selectCustomer'},
-    { name: '业务员推广', icon: 'present',path:'/subpages/salesman/selectCustomer' },
-    { name: '商家列表', icon: 'present',path:'/subpages/salesman/selectCustomer' },
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/selectCustomer' },
+    { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
+    {
+      name: '业务员推广',
+      icon: 'icon-yewuyuantuiguang',
+      path: '/subpages/salesman/selectCustomer'
+    },
+    { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectCustomer' }
   ]
 }
 
 const Index = () => {
   const [data, setData] = useImmer(initialConfigState)
-
-
 
   const handleCardClick = () => {
     Taro.navigateTo({
@@ -35,31 +37,44 @@ const Index = () => {
     })
   }
 
+  const onTimeChange = (time) => {
+    console.log(time)
+  }
+
   return (
-    <SpPage className={classNames('page-sales-index')}
-    renderFooter={<CompTabbar/>}
-    >
+    <SpPage className={classNames('page-sales-index')} renderFooter={<CompTabbar />}>
       <View className='sales-back'></View>
       <View className='sales-header'>
         <View className='sales-header-left'>
-          <View className='iconfont icon-present sales-header-icon'></View>
+          <Text className='iconfont icon-present sales-header-icon'></Text>
           <View className='sales-header-title'>业务员端</View>
         </View>
-        <View onClick={handleCardClick}>名片</View>
-
+        <View className='sales-header-left rigth'>
+          <Text className='iconfont icon-quanbu'></Text>
+          <View className='sales-header-title' onClick={handleCardClick}>
+            会员码
+          </View>
+        </View>
       </View>
       <View className='sales-content'>
         <View className='sales-content-panel'>
-          <View className='panel-header'>
-            <View className='iconfont icon-present panel-header-icon'></View>
-            <View className='panel-header-title'>实时概况</View>
+          <View className='sales-content-panel-item'>
+            <View className='panel-header'>
+              <Text className='iconfont icon-present panel-header-icon'></Text>
+              <View className='panel-header-title'>实时概况</View>
+            </View>
+            <View className='panel-header'>
+              <View className='panel-header-title'>全部配送店铺</View>
+              <Text className='iconfont icon-xialajiantou'></Text>
+            </View>
           </View>
+          <SpTime onTimeChange={onTimeChange} />
           <View className='panel-content'>
             <View className='panel-content-top'>
               <View className='panel-content-top-title'>
                 <View className='real-monet'>
-                  <View className='panel-title  mb-0'>实付金额</View>
-                  <View className='iconfont icon-present View-icon'></View>
+                  <View className='panel-title  mb-0'>实付金额（元）</View>
+                  <Text className='iconfont icon-xianshi View-icon'></Text>
                 </View>
 
                 <View className='look-detail'>查看数据总览&nbsp; &gt;</View>
@@ -90,15 +105,19 @@ const Index = () => {
         <View className='sales-content-func'>
           <View className='func-title'>常用功能</View>
           <View className='func-content'>
-            {data.funcList.map((item, idx) => (
-              <View className='func-content-item' onClick={()=>handleFuncClick(item.path)}>
-                <View
+            {data.funcList.map((item, index) => (
+              <View
+                className='func-content-item'
+                onClick={() => handleFuncClick(item.path)}
+                key={index}
+              >
+                <Text
                   className={classNames({
-                  'iconfont':true,
-                  [`icon-${item.icon}`]: true,
-                  'func-item-icon':true
+                    'iconfont': true,
+                    [item.icon]: true,
+                    'func-item-icon': true
                   })}
-                ></View>
+                ></Text>
                 <View className='func-item-name'>{item.name}</View>
               </View>
             ))}

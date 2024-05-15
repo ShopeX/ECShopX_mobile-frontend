@@ -4,13 +4,10 @@ import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import { View, Text,Image } from '@tarojs/components'
 import {
-  SpTime,
+  SpTime,SpImage
 } from '@/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
-import one from '@/assets/imgs/one.png'
-import two from '@/assets/imgs/two.png'
-import three from '@/assets/imgs/three.png'
 
 
 import './comp-ranking.scss'
@@ -77,7 +74,7 @@ function CompRanking(props) {
 
   const ranking = (index) => {
     if(index <= 3){
-      return <Image src={index==1?one:index==2?two:three}></Image>
+      return <SpImage  src={index==1?'paiming_1.png':index==2?'paiming_2.png':'paiming_3.png'}></SpImage>
     }else{
       return <Text>{index+1}</Text> 
     }

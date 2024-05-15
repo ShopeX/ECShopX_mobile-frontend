@@ -36,7 +36,7 @@ function SpTime(props) {
       <View className='times-select'>
         <Picker className='times' mode='selector' range={selector} onChange={onChange}>
           <Text>{selectorChecked}</Text>
-          <Text className='iconfont icon-arrowDown'></Text>
+          <Text className='iconfont icon-xialajiantou'></Text>
         </Picker>
 
         <Picker
@@ -45,7 +45,7 @@ function SpTime(props) {
           onChange={onDateChange}
           className='specific-time'
         >
-          <Text className='iconfont icon-arrowDown'></Text>
+          <Text className='iconfont icon-riqi'></Text>
           <Text>{timeDay}</Text>
         </Picker>
       </View>

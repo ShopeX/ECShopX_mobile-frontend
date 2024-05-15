@@ -7,27 +7,29 @@ import CompFilterBar from './comps/comp-filter-bar'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
-import CompCustomerList from "./comps/comp-customer-list"
-import './SelectCustomer.scss'
+import CompShopList from './comps/comp-shop-list'
+import './selectShop.scss'
 
 const initialConfigState = {
-  tabList: [{ title: '已购买' }, { title: '未购买' }],
-  curTabIdx: 0,
-  keywords: ''
+  keywords: '',
+  searchConditionList: [
+    { label: '手机号', value: 'phone' },
+    { label: '店铺名称', value: 'distributor_name' }
+  ]
 }
 
-const SelectCustomer = () => {
+const selectShop = () => {
   const [state, setState] = useImmer(initialConfigState)
 
-  const { curTabIdx, tabList, keywords } = state
-
+  const { searchConditionList } = state
 
   return (
-    <SpPage className={classNames('page-SelectCustomer')}>
+    <SpPage className={classNames('page-selectShop')}>
       <SpSearchInput
         placeholder='输入内容'
         isShowArea
         isShowSearchCondition
+        searchConditionList={searchConditionList}
         onConfirm={(val) => {
           console.log(666, val)
         }}
@@ -35,20 +37,10 @@ const SelectCustomer = () => {
           console.log('666area', val)
         }}
       />
-      <SpTabs
-        current={curTabIdx}
-        tablist={tabList}
-        onChange={(e) => {
-          setState((draft) => {
-            draft.curTabIdx = e
-          })
-        }}
-      />
 
-      <CompCustomerList />
-
+      <CompShopList />
     </SpPage>
   )
 }
 
-export default SelectCustomer
+export default selectShop
