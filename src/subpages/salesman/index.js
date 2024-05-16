@@ -18,7 +18,7 @@ const initialConfigState = {
     {
       name: '业务员推广',
       icon: 'icon-yewuyuantuiguang',
-      path: '/subpages/salesman/selectCustomer'
+      path: '/subpages/salesman/distribution/index'
     },
     { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectCustomer' }
   ],

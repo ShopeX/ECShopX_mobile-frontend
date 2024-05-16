@@ -1,0 +1,104 @@
+@import "@/style/imports";
+
+.page-distribution-statistics {
+  /*  #ifdef  h5  */
+  box-sizing: border-box;
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .header {
+    color: #fff;
+    background-image: linear-gradient(to top left, #cca76a, #e8cb97);
+    .header-top {
+      font-size: 24px;
+      padding-bottom: 30px;
+      .cash-btn {
+        height: 70px;
+        line-height: 70px;
+        padding: 0 50px;
+        margin: 20px 0;
+        font-size: 28px;
+        color: #cdb17c;
+        text-align: center;
+        border-radius: 70px;
+        background: #fff;
+      }
+      .record-btn {
+        padding: 0 10px;
+        border-radius: 60px;
+      }
+    }
+    .header-bottom {
+      padding-top: 30px;
+      border-top: 1px solid #e9d0a5;
+      .with-border {
+        border-right: 1px solid #e9d0a5;
+      }
+      .assets-label {
+        padding: 0 20px;
+        margin-bottom: 15px;
+        background: #e5cc99;
+        font-size: 24px;
+        line-height: 40px;
+        border-radius: 30px;
+      }
+    }
+  }
+
+  .tips {
+    position: relative;
+    padding-left: 30px;
+    color: #666;
+    font-size: 24px;
+    line-height: 1.5;
+    &::after {
+      position: absolute;
+      left: 10px;
+      top: 13px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #ccc;
+      content: "";
+    }
+  }
+
+  .analysis {
+    color: #999;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 30px;
+    .data-amount {
+      font-size: 42px;
+      color: #ff0000;
+      margin-bottom: 30px;
+    }
+    .data-count {
+      font-size: 30px;
+      color: #333;
+    }
+    .data-label {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .analysis-footer {
+      position: relative;
+      padding: 20px 0;
+      background: #f7f6f8;
+      font-size: 24px;
+      border-radius: 0 0 10px 10px;
+      &::after {
+        position: absolute;
+        top: -20px;
+        right: 40%;
+        border-style: solid;
+        border-color: transparent;
+        border-width: 20px;
+        border-top-width: 0;
+        border-bottom-color: #f7f6f8;
+        content: "";
+      }
+      .footer-item {
+        padding: 6px 0;
+      }
+    }
+  }
+}

@@ -344,7 +344,29 @@ const config = {
         'my',//我的
         'selectCustomer',//选客户
         'selectStore',//选店铺
-        'selectShop'//选店铺
+        'selectShop',//选店铺
+
+        'distribution/index', // 推广管理首页
+        'distribution/setting', // 推广管理会员资料
+        'distribution/shop-home', // 小店首页
+        'distribution/statistics', // 推广费详情页面
+        'distribution/trade', // 推广订单列表
+        'distribution/subordinate', // 我的会员列表
+        'distribution/withdraw', // 提现页面
+        'distribution/withdrawals-record', // 提现记录
+        'distribution/withdrawals-acount', // 提现绑定账户
+        'distribution/goods', // 推广商品列表
+        'distribution/shop', // 我的小店概览页面
+        'distribution/shop-setting', // 小店设置页面
+        'distribution/shop-form', // 小店设置编辑页面
+        'distribution/qrcode', // 小店二维码
+        'distribution/shop-category', // 小店商品分类
+        'distribution/good-category', // 推广商品分类页面
+        'distribution/shop-goods', // 小店商品页面
+        'distribution/shop-trade', // 小店订单页面
+        'distribution/shop-achievement', // 小店业绩页面
+
+        'distribution/point-platform',
       ]
     },
     // 授权
@@ -358,7 +380,8 @@ const config = {
         'bindPhone', //绑定手机页面
         'auth-loading', //授权加载页
         'forgotpwd', //找回密码页面
-        'edit-phone' //修改密码页面
+        'edit-phone', //修改密码页面
+
       ]
     }
   ],
