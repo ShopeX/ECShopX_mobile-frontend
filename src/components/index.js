@@ -92,6 +92,7 @@ import SpAddress from './sp-address'
 import SpSearchInput from './sp-search-input'
 import SpCategorySearch from './sp-category-search'
 import SpTime from './sp-time'
+import SpNavFilter from './sp-nav-filter'
 
 
 
@@ -191,5 +192,6 @@ export {
   SpAddress,
   SpSearchInput,
   SpCategorySearch,
-  SpTime
+  SpTime,
+  SpNavFilter
 }
