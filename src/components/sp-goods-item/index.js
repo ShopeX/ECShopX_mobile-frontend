@@ -2,7 +2,7 @@ import React, { Component, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpImage, SpPoint, SpPrice, SpVipLabel } from '@/components'
+import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import qs from 'qs'
 import api from '@/api'
@@ -25,9 +25,12 @@ function SpGoodsItem(props) {
   } = item_page
   const {
     onClick,
+    onChange = () => { },
+    onAddToCart = () => { },
     onStoreClick = () => { },
     showMarketPrice = true,
     showFav = false,
+    showAddCart = false,
     showSku = false,
     noCurSymbol = false,
     info = null,
@@ -40,13 +43,7 @@ function SpGoodsItem(props) {
     mode = 'widthFix'
   } = props
 
-  const handleFavClick = async (e) => {
-    e.stopPropagation()
-    if (!S.getAuthToken()) {
-      showToast('请先登录')
-      return
-    }
-
+  const handleFavClick = async () => {
     const { itemId, is_fav } = info
     const fav = favs.findIndex((item) => item.item_id == itemId) > -1
     if (!fav) {
@@ -56,6 +53,11 @@ function SpGoodsItem(props) {
     }
     await dispatch(fetchUserFavs())
     showToast(fav ? '已移出收藏' : '已加入收藏')
+  }
+
+
+  const onChangeToolBar = () => {
+    onAddToCart(info)
   }
 
   const handleClick = () => {
@@ -185,17 +187,23 @@ function SpGoodsItem(props) {
             </View>
           )}
 
-          {showFav && !VERSION_IN_PURCHASE && (
-            <View className='bd-block-rg'>
-              <Text
-                className={classNames(
-                  'iconfont',
-                  isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
-                )}
-                onClick={handleFavClick}
-              />
-            </View>
-          )}
+
+          <View className='bd-block-rg'>
+            {showFav && !VERSION_IN_PURCHASE && (
+              <SpLogin onChange={handleFavClick}>
+                <Text
+                  className={classNames(
+                    'iconfont',
+                    isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
+                  )}
+                />
+              </SpLogin>
+            )}
+
+            {showAddCart && <SpLogin onChange={onChangeToolBar}><Text
+              className='iconfont icon-gouwuche2'
+            /></SpLogin>}
+          </View>
         </View>
 
         {isShowStore && (

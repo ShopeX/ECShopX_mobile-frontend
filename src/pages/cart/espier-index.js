@@ -212,7 +212,7 @@ function CartIndex() {
   }
 
   const onChangeCartGoodsItem = useDebounce(async (item, num) => {
-    console.log(`onChangeCartGoodsItem:`, num)
+    console.log(`onChangeCartGoodsItem:`, item,num)
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))

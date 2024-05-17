@@ -7,7 +7,8 @@ const initialState = {
   validCart: [],
   invalidCart: [],
   coupon: null,
-  zitiAddress: null
+  zitiAddress: null,
+  shopCartCount:{}
 }
 
 export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (params) => {
@@ -54,6 +55,10 @@ const cartSlice = createSlice({
       // 更新购物车数量
       state.cartCount = payload
     },
+    updateShopCartCount: (state, { payload }) => {
+      //跟新店铺购物车全部数据
+      state.shopCartCount = payload
+    },
     clear: (state, { payload }) => {
       state.coupon = null
     },
@@ -84,6 +89,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart, changeZitiAddress } = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart, changeZitiAddress ,updateShopCartCount} = cartSlice.actions
 
 export default cartSlice.reducer

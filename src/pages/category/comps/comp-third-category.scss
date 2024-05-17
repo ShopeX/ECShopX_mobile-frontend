@@ -1,0 +1,111 @@
+$good-img-width: 70px;
+$active-good-img-width: 90px;
+
+.comp-third-category {
+  width: 100%;
+  height: 80px;
+  white-space: nowrap;
+  padding-right: 50px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  position: relative;
+
+  &-filter {
+    position: absolute;
+    right: 0px;
+    bottom: 0px;
+    width: fit-content;
+    height: 80px;
+    background: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    box-shadow: -3px 0px 6px -5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px 0px 0px 5px;
+    align-items: center;
+  }
+
+  .icon-arrowDown {
+    font-size: 20px;
+    padding: 0 18px;
+    width: 50px;
+    box-sizing: border-box;
+
+  }
+
+  &-scroll {
+    .scroll-container {
+      height: 80px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+
+      .category-item {
+        background: #fff;
+        height: 40px;
+        line-height: 40px;
+        margin: 0 8px;
+
+        &.active {
+          .category-name {
+            color: var(--color-primary);
+            background-color: rgba(var(--color-rgb), .2);
+            font-weight: 600;
+          }
+        }
+      }
+
+      .category-name {
+        background: #f3f3f3;
+        border-radius: 20px;
+        padding: 0 20px;
+        font-size: 22px;
+        color: #666;
+      }
+    }
+  }
+
+
+
+  &-float {
+    display: none;
+    width: 100vw;
+    height: 78vh;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    z-index: 888;
+    box-sizing: border-box;
+  }
+
+  .sp-select-box {
+    display: flex;
+    white-space: normal;
+    background: #fff;
+    width: calc(100vw - 128px);
+
+    .sp-select {
+      width: 100%;
+      padding: 16px 0 0 16px;
+    }
+
+    .select-item {
+      height: 40px;
+      line-height: 40px;
+      font-size: 22px;
+      border-radius: 20px;
+      margin: 0 16px 16px 0;
+      padding: 0 20px;
+    }
+  }
+
+  .isshow {
+    display: block;
+  }
+
+  .rotate {
+    transform: rotate(-180deg);
+  }
+}

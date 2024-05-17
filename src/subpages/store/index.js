@@ -1,13 +1,22 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import Taro, { useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
+import React, { useEffect, useState, useRef, useCallback } from 'react'
+import Taro, {
+  useShareAppMessage,
+  useShareTimeline,
+  useDidShow,
+  getCurrentInstance
+} from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
+import { AtFloatLayout } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
+import S from '@/spx'
 import {
   SpFloatMenuItem,
   SpPage,
   SpSearch,
   SpRecommend,
-  SpTabbar
+  SpFloatLayout,
+  SpSkuSelect,
+  SpLogin
 } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
@@ -20,16 +29,31 @@ import {
   classNames,
   entryLaunch,
   pickBy,
-  log
+  log,
+  showToast
 } from '@/utils'
 import { useImmer } from 'use-immer'
-import { useNavigation } from '@/hooks'
+import { useNavigation, useDebounce } from '@/hooks'
+import _toString from 'lodash/toString'
 import qs from 'qs'
 import HomeWgts from '@/pages/home/comps/home-wgts'
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import CompTabbar from './comps/comp-tabbar'
 import CompShopBrand from './comps/comp-shopbrand'
+import Categorys from './categorys'
+import CompTab from './comps/comp-tab'
+import CompAddCart from './comps/comp-add-cart'
+import {
+  updateShopCartCount,
+  fetchCartList,
+  updateCount,
+  updateCartItemNum,
+  deleteCartItem
+} from '@/store/slices/cart'
 
 import './index.scss'
+
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initState = {
   wgts: [],
@@ -37,22 +61,76 @@ const initState = {
   loading: true,
   isDefault: false,
   storeInfo: null,
-  distributorId: 0
+  distributorId: 0,
+  productSwitching: true,
+  info: null,
+  skuPanelOpen: false,
+  selectType: 'picker',
+  statusBarHeight: '',
+  open: false,
+  hideClose: true
 }
 
 function StoreIndex() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
-  const { openRecommend, openLocation, openStore } = useSelector((state) => state.sys)
+  const { openRecommend, openLocation, openStore, colorPrimary } = useSelector((state) => state.sys)
+  const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
+  const $instance = getCurrentInstance()
+  const router = $instance.router
 
-  const { wgts, loading, isDefault, distributorId, storeInfo } = state
+  const {
+    wgts,
+    loading,
+    isDefault,
+    distributorId,
+    productSwitching,
+    storeInfo,
+    info,
+    skuPanelOpen,
+    selectType,
+    statusBarHeight,
+    open,
+    hideClose
+  } = state
 
   const dispatch = useDispatch()
+  const pageRef = useRef()
+  const loginRef = useRef()
+
+
+  useDidShow(() => {
+    fetchWgts()
+    init()
+  })
+
+  // useEffect(() => {
+  //   fetchWgts()
+  //   init()
+  // }, [])
 
   useEffect(() => {
-    fetchWgts()
-  }, [])
+    if(S.getAuthToken()){
+      fetchWgts()
+    }
+  }, [S.getAuthToken()])
+
+  useEffect(() => {
+    if (skuPanelOpen || open) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen,open])
+
+  const init = async () => {
+    const { statusBarHeight } = await Taro.getSystemInfoSync()
+    setState((draft) => {
+      draft.statusBarHeight = statusBarHeight
+    })
+    console.log('MenuButton:', statusBarHeight)
+  }
 
   const fetchWgts = async () => {
     const { id, dtid } = await entryLaunch.getRouteParams()
@@ -81,7 +159,24 @@ function StoreIndex() {
         draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
         draft.loading = false
       })
+      await shopping(distributor_id)
     }
+  }
+
+  const shopping = async (distributor_id) => {
+    let params = {
+      distributor_id,
+      shop_type: 'distributor'
+    }
+    const { valid_cart } = await api.cart.get(params)
+    let shopCats = {
+      shop_id: valid_cart===undefined?'':valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart===undefined?'':valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart===undefined?'':valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart===undefined?'':valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart===undefined?'':valid_cart[0] || {}
+    }
+    dispatch(updateShopCartCount(shopCats))
   }
 
   const fetchLikeList = async () => {
@@ -103,6 +198,36 @@ function StoreIndex() {
     return getAppShareInfo()
   })
 
+  const tabbarSwitching = (val) => {
+    setState((draft) => {
+      draft.productSwitching = val
+    })
+  }
+
+  const addPurchases = async (id) => {
+    let data
+    Taro.showLoading({
+      title: '加载中'
+    })
+    const { dtid } = await entryLaunch.getRouteParams()
+    const itemDetail = await api.item.detail(id, {
+      showError: false,
+      distributor_id: dtid
+    })
+    Taro.hideLoading()
+    data = pickBy(itemDetail, doc.goods.GOODS_INFO)
+    setState((draft) => {
+      draft.info = {
+        ...data
+      }
+    })
+    // 获取商品详情的接口
+    setState((draft) => {
+      draft.skuPanelOpen = true
+      draft.selectType = 'addcart'
+    })
+  }
+
   const getAppShareInfo = async () => {
     const data = await entryLaunch.getRouteParams()
     const dtid = data.id || data.dtid
@@ -118,6 +243,65 @@ function StoreIndex() {
     }
   }
 
+  const onAddToCart = async ({ itemId }) => {
+    Taro.showLoading()
+    try {
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
+  }
+
+  // const settlement = () => {
+  //   const { type = 'distributor' } = router.params
+  //   const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } =
+  //     shopCartCount.storeDetails
+  //   const query = {
+  //     cart_type: 'cart',
+  //     type,
+  //     shop_id,
+  //     is_delivery,
+  //     is_ziti,
+  //     name: shop_name,
+  //     store_address: address,
+  //     lat,
+  //     lng,
+  //     hour,
+  //     phone: mobile,
+  //     //购物车默认是0     0:普通商品  1:跨境商品
+  //     // goodType: current == 0 ? 'normal' : 'cross'
+  //     goodType: 'normal'
+  //   }
+  //   Taro.navigateTo({
+  //     url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
+  //   })
+  // }
+
+  //显示弹框
+  const popFrame = () => {
+    if (!S.getAuthToken()) {
+      loginRef.current?.handleToLogin()
+      return
+    }
+    if (shopCartCount.storeDetails?.list?.length > 0) {
+      setState((draft) => {
+        draft.open = true
+      })
+    } else {
+      showToast('购物车暂无数据，请先加购')
+    }
+  }
+
   let searchComp = wgts.find((wgt) => wgt.name == 'search')
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   let filterWgts = []
@@ -129,7 +313,6 @@ function StoreIndex() {
   }
   // const fixedTop = searchComp && searchComp.config.fixTop
 
-
   return (
     <SpPage
       className='page-store-index'
@@ -137,6 +320,7 @@ function StoreIndex() {
       defaultMsg='该店铺已注销，在别的店铺看看吧'
       loading={loading}
       scrollToTopBtn
+      ref={pageRef}
       // navigateMantle
       pageConfig={pageData?.base}
       // renderTitle={
@@ -172,27 +356,94 @@ function StoreIndex() {
           </SpFloatMenuItem>
         </View>
       }
-      renderFooter={<CompTabbar />}
+      renderFooter={<CompTab popFrame={popFrame} />}
     >
-      {searchComp && <View className='search' >
-        <SpSearch
-          // isFixTop={searchComp?.config?.fixTop}
-          info={searchComp}
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/subpages/store/item-list?dtid=${distributorId}`
-            })
-          }}
-        />
-      </View>}
+      {searchComp && (
+        <View className='search'>
+          <SpSearch
+            // isFixTop={searchComp?.config?.fixTop}
+            info={searchComp}
+            onClick={() => {
+              Taro.navigateTo({
+                url: `/subpages/store/item-list?dtid=${distributorId}`
+              })
+            }}
+          />
+        </View>
+      )}
 
-      <View className={searchComp ? 'header-block' : 'header-block-pad'} style={{ background: `${pageData?.base?.pageBackgroundColor}` }}>
+      <View
+        className={searchComp ? 'header-block' : 'header-block-pad'}
+        style={{ background: `${pageData?.base?.pageBackgroundColor}` }}
+      >
         <CompShopBrand storeInfo={storeInfo} dtid={distributorId} />
       </View>
-      <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
-        {/* 猜你喜欢 */}
-        <SpRecommend className='recommend-block' info={likeList} />
-      </HomeWgts>
+
+      <View
+        className='switchs'
+        style={{
+          background: `${pageData?.base?.pageBackgroundColor || '#fff'}`,
+          top: `${statusBarHeight + 40}px`
+        }}
+      >
+        <Text
+          className={classNames(productSwitching ? 'switchings' : 'switching')}
+          onClick={() => tabbarSwitching(true)}
+        >
+          首页
+        </Text>
+        <Text
+          className={classNames('switched', productSwitching ? 'switching' : 'switchings')}
+          onClick={() => tabbarSwitching(false)}
+        >
+          商品分类
+        </Text>
+      </View>
+
+      {productSwitching && wgts.length > 0 ? (
+        <WgtsContext.Provider
+          value={{
+            onAddToCart
+          }}
+        >
+          <HomeWgts wgts={filterWgts} dtid={distributorId} onLoad={fetchLikeList}>
+            {/* 猜你喜欢 */}
+            <SpRecommend className='recommend-block' info={likeList} />
+          </HomeWgts>
+        </WgtsContext.Provider>
+      ) : (
+        <Categorys addPurchases={addPurchases} dtid={distributorId} />
+      )}
+
+      {/* Sku选择器 */}
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
+
+      {/* 购物车弹框 */}
+      <CompAddCart
+        open={open}
+        onMaskCloses={() =>
+          setState((draft) => {
+            draft.open = false
+          })
+        }
+      />
+
+      <SpLogin ref={loginRef} />
     </SpPage>
   )
 }

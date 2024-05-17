@@ -21,15 +21,18 @@ import {
   SpPage,
   SpScrollView,
   SpDrawer,
-  SpSelect
+  SpSelect,
+  SpSkuSelect
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, getDistributorId, styleNames } from '@/utils'
+import { pickBy, classNames, isWeixin, getDistributorId, styleNames, showToast } from '@/utils'
 import { Tracker } from '@/service'
 import CompTabbar from './comps/comp-tabbar'
 
 import './item-list.scss'
+
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   leftList: [],
@@ -47,7 +50,10 @@ const initialState = {
   curTagIdx: 0,
   keywords: '',
   show: false,
-  fixTop: 0
+  fixTop: 0,
+  info: null,
+  skuPanelOpen: false,
+  selectType: 'picker',
 }
 
 function StoreItemList(props) {
@@ -64,13 +70,17 @@ function StoreItemList(props) {
     tagList,
     curTagIdx,
     show,
-    fixTop
+    fixTop,
+    info,
+    skuPanelOpen,
+    selectType
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { tabbar = 1 } = $instance.router.params
   const goodsRef = useRef()
+  const pageRef = useRef()
 
-  useEffect(() => {}, [])
+  useEffect(() => { }, [])
 
   // useDidShow(() => {
   //   setTimeout(() => {
@@ -88,6 +98,14 @@ function StoreItemList(props) {
   //       .exec()
   //   }, 200)
   // })
+
+  useEffect(() => {
+    if (skuPanelOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { cat_id, main_cat_id, dtid } = $instance.router.params
@@ -121,7 +139,7 @@ function StoreItemList(props) {
       params['category'] = cat_id
     }
 
-    if(main_cat_id){
+    if (main_cat_id) {
       params['category'] = main_cat_id
     }
 
@@ -254,6 +272,26 @@ function StoreItemList(props) {
       url
     })
   }
+
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    try {
+      Taro.showLoading()
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
+  }
+
   console.log('page-store-item-list', fixTop)
   return (
     <SpPage
@@ -261,7 +299,8 @@ function StoreItemList(props) {
       className={classNames('page-store-item-list', {
         'has-tagbar': tagList.length > 0
       })}
-      renderFooter={tabbar == 1 && <CompTabbar />}
+      ref={pageRef}
+    // renderFooter={tabbar == 1 && <CompTabbar />}
     >
       <View className='search-wrap'>
         <SpSearchBar
@@ -304,7 +343,7 @@ function StoreItemList(props) {
             {leftList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                  <SpGoodsItem showFav showAddCart onStoreClick={handleClickStore} onAddToCart={handleAddToCart} info={item} />
                 </View>
               ))
             })}
@@ -313,13 +352,31 @@ function StoreItemList(props) {
             {rightList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav onStoreClick={handleClickStore} info={item} />
+                  <SpGoodsItem showFav showAddCart onStoreClick={handleClickStore} onAddToCart={handleAddToCart} info={item} />
                 </View>
               ))
             })}
           </View>
         </View>
       </SpScrollView>
+
+      {/* Sku选择器 */}
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
     </SpPage>
   )
 }

@@ -3,6 +3,7 @@
   border-radius: 16px;
   overflow: hidden;
   padding-bottom: 24px;
+
   .goods-item {
     &__hd {
       // padding-top: 100%;
@@ -15,9 +16,11 @@
       //   left: 0;
       // }
     }
+
     &__bd {
       border-radius: 0;
       padding: 16px 16px 0;
+
       .goods-title {
         font-size: 24px;
         color: #222;
@@ -26,6 +29,7 @@
         // padding-top: 15px;
         // padding: 15px;
       }
+
       .goods-desc {
         font-size: 24px;
         color: $color-hint-text;
@@ -36,6 +40,7 @@
         display: flex;
         flex-wrap: wrap;
         margin-top: 16px;
+
         .promotion-tag {
           /* prettier-ignore */
           border: 1PX solid var(--color-primary);
@@ -53,19 +58,35 @@
         display: flex;
         justify-content: space-between;
         padding-top: 16px;
-        &-lf {
-        }
+
+
         &-rg {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          align-items: flex-end;
+          justify-content: flex-end;
           .iconfont {
             font-size: 40px;
             color: #666;
           }
+
+          .icon-shoucang-01 {
+          }
+
           .icon-shoucanghover-01 {
+            color: var(--color-primary);
+          }
+
+          .icon-gouwuche2 {
+            margin-top: 10px;
+            font-size: 38px;
             color: var(--color-primary);
           }
         }
       }
     }
+
     &__ft {
       // margin-top: 40px;
       // padding: 0 20px 20px;
@@ -77,20 +98,25 @@
       // }
     }
   }
+
   .goods-brand-wrap {
     height: 50px;
   }
+
   .mkt-price {
     margin-left: 8px;
   }
+
   .goods__store {
     margin-top: 30px;
     display: flex;
     align-items: center;
+
     .sp-image-img {
       border-radius: 60px;
       object-fit: cover;
     }
+
     .store-name {
       color: #222;
       font-weight: 400;
@@ -98,10 +124,12 @@
       margin-left: 8px;
     }
   }
+
   .vip-price,
   .svip-price {
     display: flex;
     align-items: center;
+
     .sp-price__symbol,
     .sp-price__int,
     .sp-price__decimal {

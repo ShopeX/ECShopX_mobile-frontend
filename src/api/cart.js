@@ -33,8 +33,8 @@ export function fastBuy(params, isPointitem) {
   return req.post('/cart', query)
 }
 
-export function del({ cart_id }) {
-  return req.delete('/cartdel', { cart_id })
+export function del({ cart_id,distributor_id }) {
+  return req.delete('/cartdel', { cart_id ,distributor_id})
 }
 
 export function select({ cart_id, is_checked }) {

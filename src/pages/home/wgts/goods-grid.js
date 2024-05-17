@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import Taro, { Component } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
@@ -5,6 +6,7 @@ import { pickBy, classNames, styleNames, linkPage } from '@/utils'
 import { Tracker } from '@/service'
 import { CreateIntersectionObserver } from '@/utils/platform'
 import { withLoadMore } from '@/hocs'
+import { WgtsContext } from './wgts-context'
 import doc from '@/doc'
 import './goods-grid.scss'
 
@@ -16,6 +18,8 @@ function WgtGoodsGrid(props) {
   const { base, data, config } = info
   const newData = Array.isArray(data) ? data : []
   const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
+
+  const { onAddToCart } = useContext(WgtsContext)
 
   const handleClickMore = () => {
     const { moreLink } = config
@@ -38,6 +42,11 @@ function WgtGoodsGrid(props) {
   })
   console.log(config, 'config')
   console.log(goods, 'goods')
+
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    onAddToCart({ itemId, distributorId })
+  }
+
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -82,8 +91,10 @@ function WgtGoodsGrid(props) {
                     )
                   }
                   showPrice={config.showPrice}
+                  showAddCart={config.addCart}
                   info={item}
                   key={`left_${leftidx}`}
+                  onAddToCart={handleAddToCart}
                 />
               ))}
             </View>
@@ -109,8 +120,10 @@ function WgtGoodsGrid(props) {
                     )
                   }
                   showPrice={config.showPrice}
+                  showAddCart={config.addCart}
                   info={item}
                   key={`right_${rightidx}`}
+                  onAddToCart={handleAddToCart}
                 />
               ))}
             </View>
@@ -140,9 +153,11 @@ function WgtGoodsGrid(props) {
                     )
                   }
                   showPrice={config.showPrice}
+                  showAddCart={config.addCart}
                   showPromotion={false}
                   info={item}
                   mode='aspectFill'
+                  onAddToCart={handleAddToCart}
                 />
               </View>
             ))}

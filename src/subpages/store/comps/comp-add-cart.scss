@@ -1,0 +1,103 @@
+.comp-add-cart{
+  .sp-checkbox-new .icon-roundcheckfill {
+    font-size: 30px;
+}
+  .sp-checkbox-new .icon-round {
+    font-size: 30px;
+  }
+  .sp-checkbox-new__label {
+    font-size: 28px;
+    color: #222222;
+    font-weight: 600;
+    margin-top: -6px;
+  }
+
+  .selec-atll {
+    padding-bottom: 22px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+    font-family: PingFangSC, PingFang SC;
+    &-num {
+      display: flex;
+      align-items: center;
+      &-commodity {
+        font-weight: 400;
+        font-size: 24px;
+        color: #999999;
+        margin-top: -2rpx;
+      }
+    }
+    .icon-shanchu-01 {
+      font-size: 30px;
+      color: #777777;
+    }
+    .empty-cart {
+      font-weight: 400;
+      font-size: 26px;
+      color: #777777;
+      line-height: 26px;
+      margin-left: 14px;
+    }
+  }
+  .tabulation {
+    height: 484px;
+
+
+    &-list {
+      padding: 0 16px;
+      display: flex;
+      height: 160px;
+      border-bottom: 1px solid #e5e5e5;
+      .sp-checkbox-new {
+        margin-left: 4px;
+      }
+      &-details {
+        display: flex;
+        align-items: center;
+        &-img {
+          width: 110px;
+          height: 110px;
+          margin-right: 18px;
+        }
+        &-text {
+          width: 510px;
+          font-family: PingFangSC, PingFang SC;
+          .name {
+            font-weight: 400;
+            font-size: 28px;
+            color: #222222;
+            line-height: 28px;
+          }
+          .addition-and-subtraction{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            .details-name {
+              &-ml {
+                height: 26px;
+                margin: 10px 0;
+                font-weight: 400;
+                font-size: 26px;
+                color: #999999;
+                line-height: 26px;
+              }
+            }
+            &-btn{
+              margin-top: 30px;
+              width: 126px;
+              display: flex;
+              justify-content: space-between;
+              align-items: flex-end;
+              .iconfont{
+                color:var(--color-primary);
+                font-size:36px;
+              }
+            }
+          }
+          
+        }
+      }
+    }
+  }
+}

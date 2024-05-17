@@ -1,14 +1,16 @@
-import React, { Component } from 'react'
+import React, { Component, useContext } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { SpGoodsItem, SpImage } from '@/components'
 import { calcTimer, classNames, isWeb, linkPage, getDistributorId, pickBy } from '@/utils'
 import doc from '@/doc'
-
+import { WgtsContext } from './wgts-context'
 import './goods-scroll.scss'
 
 export default class WgtGoodsScroll extends Component {
+  static contextType = WgtsContext;
+
   static options = {
     addGlobalClass: true,
     info: null
@@ -36,7 +38,6 @@ export default class WgtGoodsScroll extends Component {
 
   componentDidMount() {
     this.setTimer()
-    // if (this.props.info.data.length > 0) this.getDom()
   }
 
   navigateTo(url) {
@@ -77,6 +78,10 @@ export default class WgtGoodsScroll extends Component {
     } else {
       this.navigateToList(config.type, config.seckillId)
     }
+  }
+
+  handleAddToCart = async ({ itemId, distributorId }) => {
+    this.context.onAddToCart({ itemId, distributorId })
   }
 
   render() {
@@ -141,10 +146,12 @@ export default class WgtGoodsScroll extends Component {
                 )}
                 <SpGoodsItem
                   showPrice={config.showPrice}
+                  showAddCart={config.addCart}
                   info={item}
                   key={`scroll-goods-item__${idx}`}
                   mode='aspectFill'
                   lazyLoad
+                  onAddToCart={this.handleAddToCart.bind(this)}
                 />
               </View>
             ))}

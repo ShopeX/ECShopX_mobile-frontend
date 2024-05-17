@@ -17,13 +17,14 @@ function SpFloatLayout(props) {
     onClose = () => {}
   } = props
 
+
   return (
     <View
       className={classNames('sp-float-layout', className, {
         active: open
       })}
     >
-      <View className='sp-float-layout__overlay'></View>
+      <View className='sp-float-layout__overlay' onClick={onClose}></View>
       <View className='sp-float-layout__body'>
         {!hideClose && <Text className='iconfont icon-guanbi' onClick={onClose}></Text>}
         {title && (

@@ -8,3 +8,7 @@ export function get (params) {
 export function getCategory (params = {}) {
   return req.get('/pageparams/setting', params)
 }
+
+export function getCommonSetting (params = {}) {
+  return req.get('/common/setting', params)
+}

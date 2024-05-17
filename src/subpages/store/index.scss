@@ -1,3 +1,29 @@
+.sp-page.ipx .sp-page-footer {
+  height: 160px !important;
+}
+// .at-float-layout .layout-body {
+//   font-size: 28px;
+//   padding:0;
+//   height: 556px;
+// }
+.sale-price {
+ 
+}
+.sale-price {
+  .sp-price__symbol {
+    color: var(--color-primary);
+    font-size: 28px;
+  }
+  .sp-price__int {
+    color: var(--color-primary);
+    font-size: 42px;
+  }
+  .sp-price__decimal {
+    color: var(--color-primary);
+    font-size: 28px;
+  }
+}
+
 .page-store-index {
   .search {
     width: 100%;
@@ -7,6 +33,7 @@
     z-index: 2;
     background: transparent;
   }
+ 
   .sp-search {
     width: 100%;
     padding: 0 15px;
@@ -30,6 +57,70 @@
     .sp-search {
       width: 75%;
       background: transparent;
+    }
+  }
+  .switchs {
+    position: sticky;
+    z-index: 99;
+    height: 50px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 600;
+    font-size: 36px;
+    color: #222222;
+    line-height: 50px;
+    padding: 20px 24px;
+    .switching {
+      font-weight: 500;
+      // font-size: 28px;
+      color: #444444;
+    }
+    .switchings{
+      border-bottom: 8px solid var(--color-primary);
+    }
+    .switched {
+      margin-left: 60px;
+    }
+  }
+  .cart-layout{
+    .sp-price__symbol {
+      color: #E50113;
+      font-size: 28px;
+    }
+    .sp-price__int {
+      color: #E50113;
+      font-size: 42px;
+    }
+    .sp-price__decimal {
+      color: #E50113;
+      font-size: 28px;
+    }
+  }
+  .sp-page-footer{
+    .sp-price__symbol {
+      color: #E50113;
+      font-weight: 600;
+    }
+    .sp-price__int {
+      color: #E50113;
+      font-weight: 600;
+    }
+    .sp-price__decimal {
+      color: #E50113;
+      font-weight: 600;
+    }
+  }
+  .comp-shop-brand-cart{
+    .sp-price__symbol {
+      color: #E50113;
+      font-weight: 600;
+    }
+    .sp-price__int {
+      color: #E50113;
+      font-weight: 600;
+    }
+    .sp-price__decimal {
+      color: #E50113;
+      font-weight: 600;
     }
   }
 }

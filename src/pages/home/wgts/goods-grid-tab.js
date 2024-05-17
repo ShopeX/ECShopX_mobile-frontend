@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
 import { classNames, styleNames, pickBy, linkPage } from '@/utils'
 import doc from '@/doc'
+import { WgtsContext } from './wgts-context'
 import './goods-grid-tab.scss'
 
 function WgtGoodsGridTab(props) {
@@ -13,6 +14,7 @@ function WgtGoodsGridTab(props) {
   }
 
   const [current, setCurrent] = useState(0)
+  const { onAddToCart } = useContext(WgtsContext)
 
   const { base, config, list } = info
 
@@ -23,6 +25,10 @@ function WgtGoodsGridTab(props) {
     } else {
       this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
     }
+  }
+
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    onAddToCart({ itemId, distributorId })
   }
 
   return (
@@ -90,6 +96,7 @@ function WgtGoodsGridTab(props) {
                           <SpGoodsItem
                             info={data}
                             showPrice={config.showPrice}
+                            showAddCart={config.addCart}
                             renderBrand={
                               config.brand && (
                                 <View className='brand-info' style={styleNames({
@@ -108,6 +115,7 @@ function WgtGoodsGridTab(props) {
                                 </View>
                               )
                             }
+                            onAddToCart={handleAddToCart}
                           />
                         </View>
                       )
@@ -121,6 +129,7 @@ function WgtGoodsGridTab(props) {
                           <SpGoodsItem
                             info={data}
                             showPrice={config.showPrice}
+                            showAddCart={config.addCart}
                             renderBrand={
                               config.brand && (
                                 <View className='brand-info' style={styleNames({
@@ -139,6 +148,7 @@ function WgtGoodsGridTab(props) {
                                 </View>
                               )
                             }
+                            onAddToCart={handleAddToCart}
                           />
                         </View>
                       )

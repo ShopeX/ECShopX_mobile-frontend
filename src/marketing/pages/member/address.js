@@ -27,7 +27,7 @@ function AddressIndex(props) {
 
   useEffect(() => {
     fetch()
-  }, [address])
+  }, [])
 
   const updateChooseAddress = (address) => {
     dispatch({ type: 'user/updateChooseAddress', payload: address })
@@ -65,18 +65,19 @@ function AddressIndex(props) {
   }
 
   const handleClickChecked = (e, item) => {
-
     setState(draft=>{
       draft.selectedId = item[ADDRESS_ID]
     })
 
     updateChooseAddress(item)
     setTimeout(() => {
+      Taro.eventCenter.trigger('onEventSelectReceivingAddress', item)
       Taro.navigateBack()
     }, 700)
   }
 
   const handleChangeDefault = async (e, item) => {
+    debugger
     const nItem = JSON.parse(JSON.stringify(item))
     nItem.is_def = 1
     try {
