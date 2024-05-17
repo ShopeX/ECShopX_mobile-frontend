@@ -54,7 +54,7 @@ const Index = () => {
       <View className='sales-back'></View>
       <View className='sales-header'>
         <View className='sales-header-left'>
-          <Text className='iconfont icon-present sales-header-icon'></Text>
+          <Text className='iconfont icon-yewuyuan sales-header-icon'></Text>
           <View className='sales-header-title'>业务员端</View>
         </View>
         <View className='sales-header-left rigth' onClick={handleCardClick}>
@@ -66,7 +66,7 @@ const Index = () => {
         <View className='sales-content-panel'>
           <View className='sales-content-panel-item'>
             <View className='panel-header'>
-              <Text className='iconfont icon-present panel-header-icon'></Text>
+              <Text className='iconfont icon-gaikuang panel-header-icon'></Text>
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-header'>

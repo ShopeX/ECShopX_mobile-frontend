@@ -344,7 +344,8 @@ const config = {
         'my',//我的
         'selectCustomer',//选客户
         'selectStore',//选店铺
-        'selectShop'//选店铺
+        'selectShop',//选店铺
+        'purchasing' //选商品
       ]
     },
     // 授权

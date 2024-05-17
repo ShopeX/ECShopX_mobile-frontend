@@ -48,7 +48,7 @@ function CompShopList(props) {
               className='comp-customer-list-scroll-list'
               onClick={() => {
                 Taro.navigateTo({
-                  url: `/subpages/salesman/selectShop`
+                  url: `/subpages/salesman/purchasing`
                 })
               }}
             >
