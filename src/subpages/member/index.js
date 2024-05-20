@@ -99,7 +99,8 @@ const initialState = {
   waitEvaluateNum: 0,
   afterSalesNum: 0,
   zitiNum: 0,
-  deposit: 0
+  deposit: 0,
+  salesPersonList:{}
 }
 
 function MemberIndex(props) {
@@ -282,6 +283,7 @@ function MemberIndex(props) {
     })
     setState((draft) => {
       draft.deposit = memberRes.deposit / 100
+      draft.salesPersonList = memberRes?.salesPersonList
     })
     dispatch(updateUserInfo(memberRes))
   }
@@ -585,12 +587,12 @@ function MemberIndex(props) {
             </SpLogin>
           </View>
         </CompPanel>
-
         <CompPanel>
           <CompMenu
             accessMenu={{
               ...config.menu,
-              popularize: userInfo ? userInfo.popularize : false
+              popularize: userInfo ? userInfo.popularize : false,
+              salesPersonList:state.salesPersonList
             }}
             isPromoter={userInfo ? userInfo.isPromoter : false}
             onLink={handleClickService}
