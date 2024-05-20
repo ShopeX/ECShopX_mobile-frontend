@@ -26,12 +26,14 @@ const MyPage = () => {
           title='手机号'
           iconPrefix={'iconfont icon-shoujihao my-icon'}
           icon='icon'
+          border
           value={13888888888}
         ></SpCell>
         <SpCell
           iconPrefix={'iconfont icon-id my-icon'}
           icon='icon'
           title='业务员编码'
+          border
           value={343422}
         ></SpCell>
         <SpCell
@@ -39,6 +41,7 @@ const MyPage = () => {
           icon='icon'
           title='业务员姓名'
           value={'WecomID'}
+          border
         ></SpCell>
         <SpCell
           iconPrefix={'iconfont icon-shilileixing my-icon'}
@@ -51,6 +54,7 @@ const MyPage = () => {
         <SpCell
           isLink
           title='用户服务协议'
+          border
           onClick={() => {
             // Taro.navigateTo({
             //   url: '/subpages/auth/reg-rule?type=privacyAndregister'
@@ -70,6 +74,10 @@ const MyPage = () => {
       </View>
     </SpPage>
   )
+}
+
+MyPage.options = {
+  addGlobalClass: true
 }
 
 export default MyPage

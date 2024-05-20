@@ -29,5 +29,14 @@
       border-radius: 16px;
       overflow: hidden;
     }
+
+    .sp-cell::before{
+      background: #E2E4EA ;
+    }
+
+    .sp-cell__no-border::before{
+      background: none ;
+    }
+
   }
 }
