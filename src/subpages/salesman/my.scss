@@ -1,158 +1,42 @@
-.page-sales-index{
-  position: relative;
-  .sales-back{
-    width: 100%;
-    height: 170px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: -1;
-    background: linear-gradient(to bottom, #BFD3FF, #F3F3F3);
-  }
-  .sales-header{
-    height: 66px;
-    width: 100%;
-    display: flex;
-    padding: 0 23px;
+.page-my-index{
+  .my-content{
+    height: 85vh;
+    background: linear-gradient(to bottom, #bfd3ff, #f3f3f3);
+    padding: 0 24px;
     box-sizing: border-box;
-    align-items: center;
-    &-icon{
-      font-size: 61px;
-    }
-    &-title{
-      font-weight: 600;
-      font-size: 32px;
-      color: #111A34;
-      margin-left: 10px;
-    }
-  }
-  .sales-content{
-    width: 100%;
-    padding: 24px;
-    box-sizing: border-box;
-    &-panel{
-      width: 100%;
-      border-radius: 20px;
-      background: var(--color-dianwu-primary);
-      padding: 32px;
+    &-header{
+      padding: 16px 0;
       box-sizing: border-box;
-      .panel-header{
-        display: flex;
-        align-items: center;
-        &-icon{
-          margin-right: 18px;
-          color: #fff;
-          font-size: 40px;
-        }
-        &-title{
-          font-weight: 400;
-          font-size: 28px;
-          color: #FFFFFF;
-          font-family: PingFangSC, PingFang SC;
-        }
+      background: #fff;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      .sp-cell__title{
+        color: #aaa !important;
       }
-
-      .panel-content{
-        color: #fff;
-        margin-top: 32px;
-
-        .panel-title{
-          font-family: PingFangSC, PingFang SC;
-          font-weight: 400;
-          font-size: 24px;
-          color: rgba(255,255,255,0.6);
-          margin-bottom: 12px;
-        }
-
-        .panel-num{
-          font-family: PingFangSC, PingFang SC;
-          font-weight: 600;
-          font-size: 42px;
-          color: #FFFFFF;
-        }
-
-        .look-detail{
-          font-weight: 400;
-          font-size: 24px;
-          color: #FFFFFF;
-        }
-
-        .mb-0{
-          margin-bottom: 0;
-        }
-
-        .mt-12{
-          margin-top: 12px;
-        }
-
-        &-top{
-          align-items: center;
-          .view-icon{
-            margin-left: 48px;
-            font-size: 38px;
-          }
-
-          &-title{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            .real-monet{
-              display: flex;
-              align-items: center;
-            }
-          }
-
-
-        }
-
-
-        &-btm{
-          display: flex;
-          flex-wrap: wrap;
-          &-item{
-            width: 50%;
-            margin-top: 48px;
-
-          }
-        }
+      .sp-cell__value{
+        color: #333 !important;
       }
     }
-
-    &-func{
-      margin-top: 32px;
-      .func-title{
-        font-weight: 600;
-        font-size: 36px;
-        color: #111A34;
-        margin-bottom: 24px;
-      }
-      .func-content{
-        width: 100%;
-        background: #FFFFFF;
-        border-radius: 16px;
-        display: flex;
-        flex-wrap: wrap;
-
-        &-item{
-          width: 25%;
-          display: flex;
-          flex-direction: column;
-          padding: 27px 0;
-          align-items: center;
-
-          .func-item-icon{
-            font-size: 80px;
-          }
-
-          .func-item-name{
-            font-weight: 400;
-            font-size: 24px;
-            color: #4A4A4A;
-          }
-        }
-      }
+    .my-icon{
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+
+    &-btm{
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .sp-cell::before{
+      background: #E2E4EA ;
+    }
+
+    .sp-cell__no-border::before{
+      background: none ;
+    }
+
   }
-
 }
