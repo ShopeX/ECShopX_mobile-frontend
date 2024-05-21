@@ -5,6 +5,7 @@ import api from '@/api'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpScrollView } from '@/components'
 import CompInvitationCode from './comp-invitation-code'
+import { formatTime, log } from '@/utils'
 import './comp-shop-list.scss'
 
 const initialState = {
@@ -17,7 +18,7 @@ function CompShopList(props) {
   const [state, setState] = useImmer(initialState)
   const { list, codeStatus, information } = state
   const { params } = useRouter()
-  const { selectorCheckedIndex, deliverylnformation, refreshData } = props
+  const { selectorCheckedIndex, deliverylnformation, refreshData,basis,address } = props
   const goodsRef = useRef()
 
   useEffect(() => {
@@ -25,7 +26,7 @@ function CompShopList(props) {
       draft.list = []
     })
     goodsRef.current.reset()
-  }, [refreshData])
+  }, [basis,address])
 
   useDidShow(() => {
     setState((draft) => {
@@ -35,47 +36,80 @@ function CompShopList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    // return {
-    //   total: total_count
-    // }
+    console.log(basis,'basis=====7')
+    let params = {
+      page: pageIndex,
+      page_size: pageSize,
+      mobile:"",
+      name:'',
+      province: address[0],
+      city: address[1],
+      area: address[2]
+    }
+    params[basis.key] = basis.keywords
+
+    const { total_count, list: lists } = await api.salesman.getSalespersonSalemanShopList(params)
+    lists.map(item=>{
+      item.updated = formatTime(item.updated * 1000, 'YYYY-MM-DD')
+    })
+    console.log(lists, 'lists---')
+    setState((draft) => {
+      draft.list = [...list, ...lists]
+    })
+    return {
+      total: total_count
+    }
+  }
+
+  const storeCode = (item) => {
+    let params = {
+      name:item.name,
+      distributor_name:item.name
+    }
+    setState((draft) => {
+      draft.codeStatus = true
+      draft.information = params
+    })
   }
   return (
     <View className='comp-customer'>
       <SpScrollView auto={false} ref={goodsRef} fetch={fetch}>
-        <View className='comp-customer-list'>
-          <View className='comp-customer-list-scroll'>
-            <View
-              className='comp-customer-list-scroll-list'
-              onClick={() => {
-                Taro.navigateTo({
-                  url: `/subpages/salesman/purchasing`
-                })
-              }}
-            >
-              <SpImage src='https://img1.baidu.com/it/u=2258757342,2341804200&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1715792400&t=2c7ab1fef2e148eb141ea60f8e07baf0'></SpImage>
-              <View className='details'>
-                <View className='customer'>徐家汇港汇恒隆旗舰店</View>
-                <View className='source'>电话：13888888888</View>
-                <View className='source'>地址：上海市徐汇区虹桥路1号</View>
-                <View className='address'>
-                  <Text>2024-09-02</Text>
-                  <Text>北京市</Text>
+        {list.map((item, index) => {
+          return (
+            <View className='comp-customer-list' key={index}>
+              <View className='comp-customer-list-scroll'>
+                <View
+                  className='comp-customer-list-scroll-list'
+                  onClick={() => {
+                    Taro.navigateTo({
+                      url: `/subpages/salesman/purchasing`
+                    })
+                  }}
+                >
+                  <SpImage src={item.logo} />
+                  <View className='details'>
+                    <View className='customer'>{item.name}</View>
+                    <View className='source'>电话：{item.mobile}</View>
+                    <View className='source'>
+                      地址：{`${item.province}${item.city}${item.area}${item.address}`}{' '}
+                    </View>
+                    <View className='address'>
+                      <Text>{item.updated}</Text>
+                      <Text>{item.province}</Text>
+                    </View>
+                  </View>
+                </View>
+                <View
+                  className='comp-customer-list-scroll-store-code'
+                  onClick={() => storeCode(item)}
+                >
+                  <Text>查看店铺码</Text>
+                  <Text className='iconfont icon-qianwang-01'></Text>
                 </View>
               </View>
             </View>
-            <View
-              className='comp-customer-list-scroll-store-code'
-              onClick={() => {
-                setState((draft) => {
-                  draft.codeStatus = true
-                })
-              }}
-            >
-              <Text>查看店铺码</Text>
-              <Text className='iconfont icon-qianwang-01'></Text>
-            </View>
-          </View>
-        </View>
+          )
+        })}
       </SpScrollView>
       {codeStatus && (
         <CompInvitationCode

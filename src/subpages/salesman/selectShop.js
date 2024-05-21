@@ -12,16 +12,18 @@ import './selectShop.scss'
 
 const initialConfigState = {
   codeStatus: false,
+  address:{},
+  basis:{},
   searchConditionList: [
-    { label: '手机号', value: 'phone' },
-    { label: '店铺名称', value: 'distributor_name' }
+    { label: '手机号', value: 'mobile' },
+    { label: '店铺名称', value: 'name' }
   ],
 }
 
 const SelectShop = () => {
   const [state, setState] = useImmer(initialConfigState)
 
-  const { searchConditionList ,codeStatus} = state
+  const { searchConditionList ,codeStatus ,basis,address} = state
 
   return (
     <SpPage className={classNames('page-selectShop')}>
@@ -31,14 +33,18 @@ const SelectShop = () => {
         isShowSearchCondition
         searchConditionList={searchConditionList}
         onConfirm={(val) => {
-          console.log(666, val)
+          setState((draft) => {
+            draft.basis = val
+          })
         }}
         onSelectArea={(val) => {
-          console.log('666area', val)
+          setState((draft) => {
+            draft.address = val.value
+          })
         }}
       />
       
-      <CompShopList />
+      <CompShopList basis={basis} address={address} />
     </SpPage>
   )
 }
