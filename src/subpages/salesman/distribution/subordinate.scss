@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .page-distribution-subordinate {
   height: 100%;
@@ -13,8 +13,10 @@
     /*  #ifdef  h5  */
     @include page-scroll($tabs-height + $navigate-height-h5, 0);
     height: calc(100vh - #{$tabs-height + $navigate-height-h5});
+    top: 160px;
     /*  #endif  */
   }
+
   .list {
     min-height: calc(100vh - #{$tabs-height + $navigate-height});
     /*  #ifdef  h5  */
@@ -58,5 +60,9 @@
     .avatar {
       border-color: #d8eef5;
     }
+  }
+  .sp-tabs-hd .tab-item-active .name {
+    border-bottom: 4px solid var(--color-dianwu-primary);
+    color: var(--color-dianwu-primary);
   }
 }

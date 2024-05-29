@@ -12,18 +12,22 @@ export default class DistributionStatistics extends Component {
     this.state = {
       info: {},
       searchConditionList: [
-        { label: '手机号', value: 'mobile' },
-        { label: '店铺名称', value: 'name' }
-      ]
+        { label: '全部店铺', value: '' }
+      ],
+      parameter: {
+        distributor_id: '',
+        keywords: ''
+      }
     }
   }
 
   componentDidMount() {
     this.fetch()
+    this.distributor()
   }
 
   async fetch() {
-    const res = await api.distribution.statistics()
+    const res = await api.distribution.statistics({ ...this.state.parameter })
     const info = pickBy(res, {
       payedRebate: 'payedRebate',
       rebateTotal: 'rebateTotal',
@@ -43,8 +47,36 @@ export default class DistributionStatistics extends Component {
     })
   }
 
-  handleConfirm(val) {
-    console.log(val)
+  distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    this.setState({
+      searchConditionList: list
+    })
+  }
+
+  handleConfirm = (val) => {
+    this.setState(
+      {
+        parameter: {
+          keywords: val.keywords,
+          distributor_id: val.key
+        }
+      },
+      () => {
+        this.fetch()
+      }
+    )
   }
 
   render() {

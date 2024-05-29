@@ -36,7 +36,8 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.searchCondition = searchConditionDefault
     })
-  }, [])
+  }, [searchConditionList])
+
 
   const handleChangeSearch = (e) => {
     setState((draft) => {

@@ -24,8 +24,8 @@ export function commission(params = {}) {
   return req.get('/promoter/brokerages', params)
 }
 
-export function statistics() {
-  return req.get('/promoter/brokerage/count')
+export function statistics(params) {
+  return req.get('/promoter/brokerage/count',params)
 }
 
 export function withdrawRecord(params) {

@@ -67,9 +67,12 @@ export default class DistributionShopHome extends Component {
       // 是否首页
       isHome: false,
       searchConditionList: [
-        { label: '手机号', value: 'mobile' },
-        { label: '店铺名称', value: 'name' }
-      ]
+        { label: '全部店铺', value: '' }
+      ],
+      parameter: {
+        keywords: '',
+        distributor_id: ''
+      }
     }
   }
 
@@ -84,11 +87,31 @@ export default class DistributionShopHome extends Component {
     // } else {
     this.getShopInfo()
     this.init()
+    this.distributor()
     // }
   }
 
   componentDidShow() {
     this.handleCloseSearch()
+  }
+
+
+  distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    this.setState({
+      searchConditionList:list
+    })
   }
 
   // 分享
@@ -243,13 +266,14 @@ export default class DistributionShopHome extends Component {
 
   // 获取小店商品列表
   fetch = async (params) => {
-    const { userId } = this.state
+    const { userId,parameter } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize,
       ...this.state.params,
-      shop_user_id: userId
+      shop_user_id: userId,
+      ...parameter
     }
 
     const { list, total_count: total, goods_total = 0 } = await api.distribution.getShopGoods(query)
@@ -430,8 +454,18 @@ export default class DistributionShopHome extends Component {
     )
   }
 
-  handleConfirm(val){
-    console.log(val);
+  onConfirms(val){
+    this.setState(
+      {
+        parameter: {
+          keywords: val.keywords,
+          distributor_id: val.key
+        }
+      },
+      () => {
+        this.resetGet()
+      }
+    )
   }
 
   render() {
@@ -520,7 +554,7 @@ export default class DistributionShopHome extends Component {
             placeholder='输入内容'
             isShowSearchCondition
             searchConditionList={searchConditionList}
-            onConfirm={this.handleConfirm.bind(this)}
+            onConfirm={this.onConfirms.bind(this)}
           />
           <View className='filterMain'>
             {filterList.map((item) => (

@@ -1,0 +1,129 @@
+.comp-goodsitems {
+  margin: 36px 24px;
+  &-checkbox {
+    margin-bottom: 24px;
+  }
+  &-item {
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 36px 24px;
+
+    &-del {
+      display: flex;
+      margin-bottom: 48px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      &-info {
+        flex: 1;
+        margin-left: 22px;
+        .name {
+          display: flex;
+          justify-content: space-between;
+          font-weight: 400;
+          font-size: 28px;
+          color: #111a34;
+          line-height: 28px;
+          text-align: left;
+          font-style: normal;
+          .icon-shanchu-01 {
+            font-size: 30px;
+          }
+        }
+        .new {
+          width: 60px;
+          background: #ffffff;
+          border-radius: 4px;
+          border: 1px solid #eb4045;
+          line-height: 32px;
+          color: #eb4045;
+          margin: 14px 0 0 0;
+          font-size: 22px;
+          text-align: center;
+        }
+        .money {
+          display: flex;
+          justify-content: space-between;
+          font-size: 32px;
+          .mkt-price {
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
+
+  .sp-checkbox-new__label {
+    margin-left: 16px;
+    font-weight: 600;
+  }
+
+  .at-input-number__btn {
+    color: #222222;
+  }
+
+  .sp-checkbox-new .icon-roundcheckfill {
+    font-size: 40px;
+    color: var(--color-dianwu-primary) !important;
+  }
+  .sp-checkbox-new {
+    justify-content: inherit !important;
+  }
+}
+.comp-goodsitems-invalid {
+  margin: 46px 24px;
+  &-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 600;
+    font-size: 28px;
+    color: #111a34;
+    line-height: 28px;
+    margin-bottom:24px;
+    view:nth-child(2) {
+      font-weight: 400;
+      font-size: 24px;
+      color: var(--color-dianwu-primary) !important;
+      line-height: 33px;
+    }
+  }
+  .comp-goodsitems-item {
+    border-radius: 20px;
+    background-color: #fff;
+    padding: 36px 24px;
+
+    &-del {
+      display: flex;
+      margin-bottom: 48px;
+      &:last-child {
+        margin-bottom: 0px;
+      }
+      &-info {
+        flex: 1;
+        margin-left: 22px;
+        .name {
+          display: flex;
+          justify-content: space-between;
+          font-weight: 400;
+          font-size: 28px;
+          color: #111a34;
+          line-height: 28px;
+          text-align: left;
+          font-style: normal;
+          .icon-shanchu-01 {
+            font-size: 30px;
+          }
+        }
+        .reason {
+          margin-top: 60px;
+          font-weight: 400;
+          font-size: 24px;
+          color: #eb4045;
+          line-height: 28px;
+        }
+      }
+    }
+  }
+}

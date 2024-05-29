@@ -58,8 +58,7 @@ export default class DistributionGoods extends Component {
       goodsIds: [],
       top: 0,
       searchConditionList: [
-        { label: '手机号', value: 'mobile' },
-        { label: '店铺名称', value: 'name' }
+        { label: '全部店铺', value: '' }
       ],
       navFilterList: [
         {
@@ -141,6 +140,7 @@ export default class DistributionGoods extends Component {
         this.nextPage()
       }
     )
+    this.distributor()
   }
 
   async fetch(params) {
@@ -213,8 +213,26 @@ export default class DistributionGoods extends Component {
     }
   }
 
+
+  distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    this.setState({
+      searchConditionList:list
+    })
+  }
+
   handleFilterChange = (data) => {
-    console.log('===handleFilterChange====', data)
     const { current, sort } = data
 
     const query = {
@@ -378,13 +396,13 @@ export default class DistributionGoods extends Component {
     })
   }
 
-  handleConfirm = (val = '') => {
-    console.log(val,'llllllllllll');
+  handleConfirm = (val) => {
     this.setState(
       {
         query: {
           ...this.state.query,
-          keywords: val.keywords
+          keywords: val.keywords,
+          distributor_id: val.key
         }
       },
       () => {

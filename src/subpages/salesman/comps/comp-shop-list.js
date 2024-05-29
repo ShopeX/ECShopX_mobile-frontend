@@ -36,7 +36,6 @@ function CompShopList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    console.log(basis,'basis=====7')
     let params = {
       page: pageIndex,
       page_size: pageSize,
@@ -52,7 +51,6 @@ function CompShopList(props) {
     lists.map(item=>{
       item.updated = formatTime(item.updated * 1000, 'YYYY-MM-DD')
     })
-    console.log(lists, 'lists---')
     setState((draft) => {
       draft.list = [...list, ...lists]
     })

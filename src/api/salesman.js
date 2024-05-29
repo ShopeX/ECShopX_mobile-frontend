@@ -17,3 +17,8 @@ export function getSalesmanCount (params = {}) {
 export function promoterInfo (params = {}) {
   return req.get('/promoter/info', params)
 }
+
+// 业务员业绩
+export function promoterGetSalesmanStatic (params = {}) {
+  return req.get('/promoter/getSalesmanStatic', params)
+}

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar,SpSearchInput } from '@/components'
+import { Loading, SpNote, SpNavBar, SpSearchInput,SpTabs,SpPage } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -10,7 +10,7 @@ import './subordinate.scss'
 
 @withPager
 export default class DistributionSubordinate extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,24 +22,27 @@ export default class DistributionSubordinate extends Component {
         { title: '未购买', num: 0, type: 'not_buy' }
       ],
       searchConditionList: [
-        { label: '手机号', value: 'mobile' },
-        { label: '店铺名称', value: 'name' }
-      ]
+        { label: '会员名称', value: 'vipname' },
+        { label: '店铺名称', value: 'name' },
+        { label: '手机号', value: 'mobile' }
+      ],
+      parameter: {}
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
-    const { curTabIdx, tabList } = this.state
+  async fetch(params) {
+    const { curTabIdx, tabList, parameter } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
       pageSize: 15,
       buy_type: tabList[curTabIdx].type
     }
+    query[parameter.key] = parameter.keywords
 
     const { list, total_count } = await api.distribution.subordinate(query)
     const total = total_count
@@ -64,6 +67,7 @@ export default class DistributionSubordinate extends Component {
   }
 
   handleClickTab = (idx) => {
+    console.log(idx,'lllll')
     if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {
@@ -84,14 +88,26 @@ export default class DistributionSubordinate extends Component {
     )
   }
 
-  handleConfirm(val){
-    console.log(val);
+  handleConfirm(val) {
+    console.log('handleConfirm', val)
+    this.setState(
+      {
+        parameter: val,
+        list: [],
+        scrollTop: 0
+      },
+      () => {
+        this.resetPage()
+        this.nextPage()
+      }
+    )
   }
 
-  render () {
-    const { list, page, curTabIdx, tabList, scrollTop,searchConditionList } = this.state
+  render() {
+    const { list, page, curTabIdx, tabList, scrollTop, searchConditionList } = this.state
 
     return (
+      <SpPage scrollToTopBtn>
       <View className='page-distribution-subordinate'>
         <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
         <SpSearchInput
@@ -101,7 +117,15 @@ export default class DistributionSubordinate extends Component {
           searchConditionList={searchConditionList}
           onConfirm={this.handleConfirm.bind(this)}
         />
-        <AtTabs
+        <SpTabs
+          current={curTabIdx}
+          tablist={tabList}
+          onChange={(e)=>{
+            console.log(e,'llonChange');
+            this.handleClickTab(e)
+          }}
+        />
+        {/* <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
           tabList={tabList}
@@ -110,7 +134,7 @@ export default class DistributionSubordinate extends Component {
           {tabList.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.type} index={pIdx}></AtTabsPane>
           ))}
-        </AtTabs>
+        </AtTabs> */}
         <ScrollView
           className='subordinate-list__scroll'
           scrollY
@@ -161,6 +185,7 @@ export default class DistributionSubordinate extends Component {
           )}
         </ScrollView>
       </View>
+      </SpPage>
     )
   }
 }

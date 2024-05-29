@@ -1,15 +1,14 @@
-import Taro,{ useRouter, useDidShow } from '@tarojs/taro'
-import { useEffect, useState } from 'react'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
-import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage, SpTime } from '@/components'
-import CompTabbar from './comps/comp-tabbar'
 import { useImmer } from 'use-immer'
+import { classNames } from '@/utils'
+import { SpPage, SpTime } from '@/components'
+import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
+import CompTabbar from './comps/comp-tabbar'
 import CompInvitationCode from './comps/comp-invitation-code'
-import { useSyncCallback } from '@/hooks'
-
+import CompCustomPicker from './comps/comp-custom-picker'
 
 import './index.scss'
 
@@ -22,28 +21,37 @@ const initialConfigState = {
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
-    { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' }
+    { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' },
+    { name: '选购商品', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/purchasing' },
+    { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
   ],
   codeStatus: false,
-  information: { },
-  info:{},
+  information: { name: 'cx' },
+  info: {},
   parameter: {
     datetype: '',
     date: '',
     distributor_id: ''
-  }
+  },
+  selector: []
 }
 
 const Index = () => {
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, information, funcList,info,parameter } = state
+  const { codeStatus, information, funcList, info, parameter, selector } = state
 
   useDidShow(() => {
     fetch()
+    distributor()
   })
 
   const fetch = async () => {
-    const res = await api.salesman.getSalesmanCount({...parameter})
+    Taro.showLoading({
+      title: '加载中',
+      icon: 'none'
+    })
+    const res = await api.salesman.getSalesmanCount({ ...parameter })
+    Taro.hideLoading()
     res.total_Fee = S.formatMoney(res.total_Fee / 100)
     res.refund_Fee = S.formatMoney(res.refund_Fee / 100)
     setState((draft) => {
@@ -51,7 +59,23 @@ const Index = () => {
     })
   }
 
-  
+  const distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    setState((draft) => {
+      draft.selector = list
+    })
+  }
 
   const handleCardClick = () => {
     // Taro.navigateTo({
@@ -68,7 +92,7 @@ const Index = () => {
     })
   }
 
-  const onTimeChange = (time,val) => {
+  const onTimeChange = (time, val) => {
     let params = {
       ...parameter,
       datetype: time == 0 ? 'y' : time == 1 ? 'm' : 'd',
@@ -78,13 +102,22 @@ const Index = () => {
       draft.parameter = params
     })
     handleRefresh()
-    console.log(params)
   }
 
   const handleRefresh = useSyncCallback(() => {
     fetch()
   })
 
+  const cancel = (index, val) => {
+    let params = {
+      ...parameter,
+      distributor_id: val.value
+    }
+    setState((draft) => {
+      draft.parameter = params
+    })
+    handleRefresh()
+  }
 
   return (
     <SpPage className={classNames('page-sales-index')} renderFooter={<CompTabbar />}>
@@ -94,10 +127,10 @@ const Index = () => {
           <Text className='iconfont icon-yewuyuan sales-header-icon'></Text>
           <View className='sales-header-title'>业务员端</View>
         </View>
-        <View className='sales-header-left rigth' onClick={handleCardClick}>
+        {/* <View className='sales-header-left rigth' onClick={handleCardClick}>
           <Text className='iconfont icon-quanbu'></Text>
           <View className='sales-header-title'>会员码</View>
-        </View>
+        </View> */}
       </View>
       <View className='sales-content'>
         <View className='sales-content-panel'>
@@ -106,9 +139,8 @@ const Index = () => {
               <Text className='iconfont icon-gaikuang panel-header-icon'></Text>
               <View className='panel-header-title'>实时概况</View>
             </View>
-            <View className='panel-header'>
-              <View className='panel-header-title'>全部配送店铺</View>
-              <Text className='iconfont icon-xialajiantou'></Text>
+            <View className='panel-headers'>
+              <CompCustomPicker selector={selector} cancel={cancel} />
             </View>
           </View>
           <SpTime onTimeChange={onTimeChange} />

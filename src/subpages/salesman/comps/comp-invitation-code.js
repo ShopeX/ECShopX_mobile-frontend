@@ -3,24 +3,48 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage } from '@/components'
+import { getExtConfigData } from '@/utils'
+import api from '@/api'
 import './comp-invitation-code.scss'
 
 const initialState = {
   list: [],
+  wxappCode: ''
 }
 
 function CompInvitationCode(props) {
   const [state, setState] = useImmer(initialState)
   const {
     status = true,
-    information = { name: '分销员名称', distributor_name: '分销员店铺名称' },
+    information = { },
     cancel = () => {}
   } = props
-  const { list } = state
+  const { list, wxappCode } = state
+  const { appid, company_id } = getExtConfigData()
+  const { userId } = Taro.getStorageSync('userinfo')
+
+  useEffect(() => {
+    feach()
+  })
+
+  const feach = async () => {
+    const path = `subpages/store/index` //如果开了小店，进小店的页面，否则进店铺首页
+    let params = {
+      path,
+      appid,
+      company_id,
+      user_id: userId,
+      distributor_id:information.distributor_id
+    }
+    const res = await api.distribution.qrcode({ ...params })
+    console.log(res,information, 'kkkkfeach')
+    // const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${userId}`
+    // console.log('wxappCode1',wxappCode);
+  }
 
   const preserves = () => {
     Taro.downloadFile({
-      url: 'https://example.com/path/to/image.jpg', // 网络图片链接
+      url: wxappCode, // 网络图片链接
       success: function (res) {
         // 下载成功，保存图片到相册
         Taro.saveImageToPhotosAlbum({
@@ -65,7 +89,9 @@ function CompInvitationCode(props) {
               <View className='names'>{information.name}</View>
             )}
 
-            <View className='img'></View>
+            <View className='img'>
+              <SpImage src={wxappCode} />
+            </View>
             <View className='preserve' onClick={preserves}>
               <Text className='iconfont icon-baocuntupian'></Text>
               <Text>保存图片</Text>

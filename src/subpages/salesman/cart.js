@@ -7,20 +7,23 @@ import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
+import CompGoodsItems from './comps/comp-goodsitems'
 
-import './card.scss'
+import './cart.scss'
 
-const initialConfigState = {}
+const initialConfigState = {
+  allChecked: true
+}
 
-const Index = () => {
+const Cart = () => {
   const [state, setState] = useImmer(initialConfigState)
-  const {} = state
+  const { allChecked } = state
 
   return (
-    <SpPage className={classNames('page-sales-index')} renderFooter={<CompTabbar />}>
-      购物车
+    <SpPage classNames='page-cart' renderFooter={<CompTabbar />}>
+      <CompGoodsItems />
     </SpPage>
   )
 }
 
-export default Index
+export default Cart

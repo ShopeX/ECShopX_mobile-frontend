@@ -46,6 +46,15 @@
         }
       }
     }
+    &-table{
+      display: flex;
+      &-custom{
+        padding: 12px 24px;
+        border: 1px solid #666F83;
+        border-radius: 8px;
+        margin-left: 10px;
+      }
+    }
     .launch {
       display: flex;
       justify-content: center;
@@ -55,6 +64,11 @@
         font-size: 18px;
       }
     }
+    .comp-custom-picker .picker-box {
+      color: #111A34;
+      font-weight: 600;
+      font-size: 24px;
+  }
     .one {
       background: linear-gradient(270deg, #fffbf7 0%, #fcdfc6 100%);
     }

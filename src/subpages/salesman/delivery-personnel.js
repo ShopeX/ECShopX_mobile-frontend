@@ -2,11 +2,7 @@ import React from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {
-  SpPage,
-  SpTabs,
-  SpSearchInput
-} from '@/components'
+import { SpPage, SpTabs, SpSearchInput } from '@/components'
 import CompDelivery from './comps/comp-delivery'
 import CompRanking from './comps/comp-ranking'
 import './delivery-personnel.scss'
@@ -21,17 +17,11 @@ const initialState = {
 
 function DeliveryPersonnel() {
   const [state, setState] = useImmer(initialState)
-  const {
-    types,
-    deliverylnformation,
-    selectorCheckedIndex,
-    refreshData,
-    tabList
-  } = state
+  const { types, deliverylnformation, selectorCheckedIndex, refreshData, tabList } = state
 
   const onDeliveryActionClick = (val) => {
     setState((draft) => {
-      draft.selectorCheckedIndex = val.key=='phone'?1:0
+      draft.selectorCheckedIndex = val.key == 'phone' ? 1 : 0
       draft.deliverylnformation = val.keywords
       draft.refreshData = !refreshData
     })
@@ -40,13 +30,13 @@ function DeliveryPersonnel() {
   return (
     <SpPage className='page-dianwu-delivery-personnel' scrollToTopBtn>
       <View>
-      <SpSearchInput
-        placeholder='输入内容'
-        isShowSearchCondition
-        onConfirm={(val) => {
-          onDeliveryActionClick(val)
-        }}
-      />
+        <SpSearchInput
+          placeholder='输入内容'
+          isShowSearchCondition
+          onConfirm={(val) => {
+            onDeliveryActionClick(val)
+          }}
+        />
 
         <SpTabs
           current={types}

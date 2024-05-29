@@ -21,7 +21,7 @@ function CompTable(props) {
 
   useEffect(() => {
     handleList()
-  }, [])
+  }, [listData])
 
   const handleList = () => {
     let res = []
