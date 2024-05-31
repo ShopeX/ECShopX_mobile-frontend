@@ -19,7 +19,12 @@ const initialState = {
 
 function CompCustomPicker(props) {
   const [state, setState] = useImmer(initialState)
-  const { selector = [{ label: '手机号', value: 'phone' }],customStatus=false ,customName,cancel = () => {} } = props
+  const {
+    selector,
+    customStatus = false,
+    customName,
+    cancel = () => {}
+  } = props
   const { selectorChecked } = state
 
   const onChange = (e) => {
@@ -28,14 +33,14 @@ function CompCustomPicker(props) {
     setState((draft) => {
       draft.selectorChecked = selector[index].label
     })
-    cancel(index,selector[index])
+    cancel(index, selector[index])
   }
 
   return (
     <View className='comp-custom-picker'>
       <Picker mode='selector' rangeKey='label' range={selector} onChange={onChange}>
         <View className='picker-box'>
-          <Text>{customStatus?customName:selectorChecked}</Text>
+          <Text>{customStatus ? customName : selectorChecked}</Text>
           <Text className='iconfont icon-xialajiantou'></Text>
         </View>
       </Picker>
@@ -45,6 +50,10 @@ function CompCustomPicker(props) {
 
 CompCustomPicker.options = {
   addGlobalClass: true
+}
+
+CompCustomPicker.defaultProps = {
+  selector: [{ label: '手机号', value: 'phone' }]
 }
 
 export default CompCustomPicker

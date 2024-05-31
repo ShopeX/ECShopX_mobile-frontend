@@ -166,7 +166,7 @@ function CompMenu(props) {
   // ]
 
 
-  if(accessMenu.salesPersonList){
+  if(accessMenu.salesPersonList?.total_count>0){
     menus = menus.concat([
       {
         key: 'salesman',

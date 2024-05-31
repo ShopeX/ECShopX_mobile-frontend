@@ -106,7 +106,8 @@ function CompGoodsItem(props) {
         </View>
         <View className='comp-goodsitems-item'>
           <View className='comp-goodsitems-item-del'>
-            <SpCheckboxNew checked={allChecked} onChange={onChangeGoodsIsCheck()} />
+            <Text className='iconfont icon-shanchu1'></Text>
+            {/* <SpCheckboxNew checked={allChecked} onChange={onChangeGoodsIsCheck()} /> */}
             <SpImage
               className='comp-goodsitem-item-del-image'
               mode='aspectFill'
@@ -115,6 +116,53 @@ function CompGoodsItem(props) {
               width={130}
               height={130}
             />
+            {/* <SpImage
+              className='pimage'
+              circle={16}
+              src='buhuozhong.png'
+              width={130}
+              height={130}
+            /> */}
+            <SpImage
+              className='pimage'
+              circle={16}
+              src='bukeshou.png'
+              width={130}
+              height={130}
+            />
+            <View className='comp-goodsitems-item-del-info'>
+              <View className='name'>
+                <Text>斗罗第100弹六一特别款</Text>
+                <Text className='iconfont icon-shanchu-01' />
+              </View>
+              <View className='reason'>所在地区该商品无法配送</View>
+            </View>
+          </View>
+          <View className='comp-goodsitems-item-del'>
+            <Text className='iconfont icon-shanchu1'></Text>
+            {/* <SpCheckboxNew checked={allChecked} onChange={onChangeGoodsIsCheck()} /> */}
+            <SpImage
+              className='comp-goodsitem-item-del-image'
+              mode='aspectFill'
+              circle={16}
+              src='https://img2.baidu.com/it/u=3976722208,1729629707&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716915600&t=9ca8874bd9a1a056913a5d41488bf99e'
+              width={130}
+              height={130}
+            />
+            <SpImage
+              className='pimage'
+              circle={16}
+              src='buhuozhong.png'
+              width={130}
+              height={130}
+            />
+            {/* <SpImage
+              className='pimage'
+              circle={16}
+              src='bukeshou.png'
+              width={130}
+              height={130}
+            /> */}
             <View className='comp-goodsitems-item-del-info'>
               <View className='name'>
                 <Text>斗罗第100弹六一特别款</Text>

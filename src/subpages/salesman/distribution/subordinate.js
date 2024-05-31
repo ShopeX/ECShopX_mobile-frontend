@@ -22,8 +22,8 @@ export default class DistributionSubordinate extends Component {
         { title: '未购买', num: 0, type: 'not_buy' }
       ],
       searchConditionList: [
-        { label: '会员名称', value: 'vipname' },
-        { label: '店铺名称', value: 'name' },
+        { label: '会员名称', value: 'userName' },
+        { label: '店铺名称', value: 'shopName' },
         { label: '手机号', value: 'mobile' }
       ],
       parameter: {}
@@ -67,7 +67,6 @@ export default class DistributionSubordinate extends Component {
   }
 
   handleClickTab = (idx) => {
-    console.log(idx,'lllll')
     if (this.state.page.isLoading) return
 
     if (idx !== this.state.curTabIdx) {

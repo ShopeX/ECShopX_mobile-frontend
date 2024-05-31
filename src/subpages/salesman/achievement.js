@@ -22,7 +22,7 @@ const initialConfigState = {
     { title: '销售额（元）', width: '120px', id: 'total_Fee' },
     { title: '订单数', id: 'order_num' },
     { title: '新增顾客', id: 'member_num' },
-    { title: '销售业绩（元）', width: '120px', id: 'tr' }
+    { title: '销售佣金（元）', width: '120px', id: 'total_rebate' }
   ],
   parameter: {
     page: 1,
