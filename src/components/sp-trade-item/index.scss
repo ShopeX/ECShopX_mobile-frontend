@@ -1,0 +1,30 @@
+.sp-trade-item {
+  display: flex;
+  .tradeitem-hd {
+    margin-right: 24px;
+  }
+  .tradeitem-bd {
+    flex: 1;
+  }
+  .goods-info-hd {
+    display: flex;
+    justify-content: space-between;
+    .name {
+      font-size: 28px;
+      color: #222;
+      margin-right: 40px;
+      @include multi-ellipsis(2);
+    }
+  }
+  .goods-info-bd {
+    display: flex;
+    justify-content: space-between;
+
+    .spec-desc,
+    .num {
+      font-size: 24px;
+      color: #999;
+      margin-top: 10px;
+    }
+  }
+}

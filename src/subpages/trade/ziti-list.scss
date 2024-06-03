@@ -1,0 +1,16 @@
+
+.page-trade-ziti-list {
+  .list-scroll-container {
+    height: 100%;
+  }
+
+  .trade-list-scroll {
+    .trade-item-wrap {
+      margin: 0 20px 24px;
+      &:first-child {
+        margin-top: 24px;
+      }
+    }
+
+  }
+}

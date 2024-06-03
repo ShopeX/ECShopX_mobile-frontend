@@ -6,7 +6,7 @@ import './index.scss'
 
 function SpSearch(props) {
   const { info, onClick } = props
-  const { padded } = info.base
+  const { padded } = info?.base || {}
   const { placeholder = '搜索', fixTop = false } = info.config
 
   const handleClick = () => {

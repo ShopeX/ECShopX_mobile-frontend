@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView } from '@tarojs/components'
 import api from '@/api'
-import { classNames } from '@/utils'
+import { classNames, styleNames } from '@/utils'
 import { SpFloatLayout } from '@/components'
 import { useAsyncCallback } from '@/hooks'
 import './index.scss'
@@ -76,11 +76,14 @@ function SpAddress(props) {
         return areaList[1].find((item) => item.id == id).children
       }
     })()
+
     setState((draft) => {
       if (_areaList) {
         draft.areaList[level] = _areaList
       }
-      draft.pindex = level
+      if (level < 3) {
+        draft.pindex = level
+      }
 
       if (selectValue.length < level) {
         draft.selectValue[level - 1] = {
@@ -108,21 +111,16 @@ function SpAddress(props) {
 
   const handleClickSelectItem = ({ parent_id, label, id, level }) => {
     setState((draft) => {
-      // draft.areaList[level] = areaList[level - 1]
-      // draft.pindex = level
       draft.areaList[level - 1] = areaList[level - 1]
       draft.pindex = level - 1
-      if (level < selectValue.length) {
-        draft.selectValue.splice(level, selectValue.length - level)
-      }
     })
   }
 
-  const randomKey = () => new Date+Math.random()
+  const randomKey = () => new Date + Math.random()
 
-  console.log('pindex',pindex);
-  console.log('selectValue',selectValue);
-  console.log('areaList',areaList);
+  console.log('pindex', pindex);
+  console.log('selectValue', selectValue);
+  console.log('areaList', areaList);
 
   return (
     <View className='sp-address'>
@@ -132,36 +130,39 @@ function SpAddress(props) {
           {selectValue.map((vitem, vindex) => (
             <View
               className={classNames(`tab-item`,
-              {
-                active: pindex === vindex || vindex === 2 && pindex === 3
-              })}
+                {
+                  active: pindex === vindex || vindex === 2 && pindex === 3
+                })}
               key={`tab-item__${randomKey()}`}
               onClick={handleClickSelectItem.bind(this, vitem)}
             >
               {vitem.label}
             </View>
           ))}
-          {(selectValue.length < areaList.length && pindex > 0) && <View className='tab-item active'>请选择</View>}
+          {(selectValue.length < areaList.length) && <View className='tab-item active'>请选择</View>}
         </View>
-        <ScrollView className='address-bd' scrollY>
-          {areaList?.map((item, index) => (
-            <View className={classNames('address-col', {
-              active: pindex === index || index === 2 && pindex === 3  // 保留区的选项
-            })} key={`address-col__${index}`}>
-              {item.map((sitem, sindex) => (
-                <View
-                  className={classNames('address-item', {
-                    active: selectValue?.[pindex - 1]?.id == sitem.id
-                  })}
-                  key={`address-item__${sindex}`}
-                  onClick={handleClickItem.bind(this, sitem)}
-                >
-                  {sitem.label}
-                </View>
-              ))}
-            </View>
-          ))}
-        </ScrollView>
+        <View className='address-bd'>
+          <View className="address-cols" style={styleNames({
+            transform: `translate3d(${-100 * pindex}%, 0px, 0px)`
+          })}>
+            {areaList?.map((item, index) => (
+              <ScrollView className='address-col' scrollY key={`address-col__${index}`}>
+                {item.map((sitem, sindex) => (
+                  <View
+                    className={classNames('address-item', {
+                      active: selectValue?.[index]?.id == sitem.id
+                    })}
+                    key={`address-item__${sindex}`}
+                    onClick={handleClickItem.bind(this, sitem)}
+                  >
+                    {sitem.label}
+                    {selectValue?.[index]?.id == sitem.id && <Text className="iconfont icon-zhengque-correct"></Text>}
+                  </View>
+                ))}
+              </ScrollView>
+            ))}
+          </View>
+        </View>
       </SpFloatLayout>
     </View>
   )

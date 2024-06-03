@@ -6,7 +6,7 @@ import api from "@/api"
 import doc from "@/doc"
 import { AtButton, AtInput, AtTextarea } from 'taro-ui'
 import { SpPage, SpTabs, SpCell, SpCheckbox, SpImage, SpInputNumber, SpFloatLayout, SpUpload, SpPrice, SpHtml } from '@/components'
-import { View, Text, Picker } from "@tarojs/components"
+import { View, Text, Picker, ScrollView } from "@tarojs/components"
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
 import "./after-sale.scss";
@@ -75,7 +75,7 @@ function TradeAfterSale(props) {
     const { orderInfo, offline_aftersales_is_open, distributor } = await api.trade.detail(id)
     const reasons = await api.aftersales.reasonList()
     const { intro, is_open } = await api.aftersales.remindDetail()
-    const { offline_aftersales } =  distributor
+    const { offline_aftersales } = distributor
     const _info = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     setState(draft => {
       draft.info = _info
@@ -192,10 +192,10 @@ function TradeAfterSale(props) {
     }
     await api.aftersales.apply(params)
     showToast('提交成功')
+    Taro.eventCenter.trigger('onEventOrderStatusChange')
+    Taro.eventCenter.trigger('onEventAfterSalesApply')
     setTimeout(() => {
-      Taro.redirectTo({
-        url: `/subpage/pages/trade/detail?id=${id}`
-      })
+      Taro.navigateBack()
     }, 200)
   }
 
@@ -205,141 +205,145 @@ function TradeAfterSale(props) {
     </View>
   }
   >
-    <SpTabs current={curTabIdx} tablist={tabList} onChange={(e) => {
-      setState(draft => {
-        draft.curTabIdx = e
-      })
-    }} />
-
-    <View className='refund-items'>
-      <View className='items-container'>
-        {
-          info?.items.map((item, index) => (
-            <View className='item-wrap' key={`item-wrap__${index}`}>
-              <View className='item-hd'>
-                <SpCheckbox disabled={!item.leftAftersalesNum} checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
-              </View>
-              <View className='item-bd'>
-                <SpImage src={item.pic} width={128} height={128} radius={8} circle={8} />
-                <View className='goods-info'>
-                  <View className='goods-info-hd'>
-                    <Text className='goods-title'>{item.itemName}</Text>
-                  </View>
-                  <View className='goods-info-bd'>
-                    <View>{item.itemSpecDesc && <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>}</View>
-                    <View><SpPrice size={28} value={item.price / item.num} /> x <Text className='num'>{item.num}</Text></View>
-                  </View>
-                  <View className='goods-info-ft'>
-                    <Text>退款数量</Text>
-                    <SpInputNumber
-                      disabled={!item.leftAftersalesNum}
-                      value={item.refundNum}
-                      max={item.leftAftersalesNum}
-                      min={1}
-                      onChange={(e) => onChangeItemNum(e, index)}
-                    />
-                  </View>
-                </View>
-              </View>
-            </View>
-          ))
-        }
-      </View>
-    </View>
-
-    <View className='picker-reason'>
-      <Picker
-        mode='selector'
-        range={reasons}
-        onChange={(e) => {
+    <ScrollView scrollY className='scroll-view'>
+      <View className="scroll-view-body">
+        <SpTabs current={curTabIdx} tablist={tabList} onChange={(e) => {
           setState(draft => {
-            draft.reasonIndex = e.detail.value
-          })
-        }}
-      >
-        <SpCell title='退款原因' isLink value={<Text>{`${reasons?.[reasonIndex] || '请选择取消原因'}`}</Text>}></SpCell>
-      </Picker>
-    </View>
-
-    <View className='refund-detail'>
-      <View className='refund-amount'>
-        <SpCell title='退款金额' value={getRealRefundFee()} />
-      </View>
-
-      <View className='refund-point'>
-        {/* <SpCell title='退积分' value={info?.point} /> */}
-        <SpCell title='退积分' value={getRealRefundPoint()} />
-      </View>
-    </View>
-
-    {curTabIdx == 1 && <View className='return-goods-type'>
-      <SpCell border title='退货方式' value={getRefundTypeName()} isLink onClick={() => {
-        setState(draft => {
-          draft.openRefundType = true
-          draft.selectRefundValue = refundType
-        })
-      }}></SpCell>
-      {
-        refundType == 'offline' && ((offlineAftersalesIsOpen && VERSION_STANDARD) || (VERSION_PLATFORM && offlineAftersales)) && <>
-          <SpCell border title='退货门店' isLink value={<Text className={classNames({
-            'placeholder': !refundStore
-          })}>{refundStore ? refundStore.name : '请选择退货门店'}</Text>} onClick={() => {
-            Taro.navigateTo({
-              url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}&refund_store=${refundStore?.address_id}`
-            })
-          }} />
-          <SpCell border title='联系人' value={<AtInput
-            name='contact'
-            value={contact}
-            placeholder='请填写联系人姓名'
-            onChange={(e) => {
-              setState(draft => {
-                draft.contact = e
-              })
-            }}
-          />}>
-          </SpCell>
-          <SpCell title='联系电话' value={<AtInput
-            name='mobile'
-            value={mobile}
-            placeholder='请填写联系人电话'
-            onChange={(e) => {
-              setState(draft => {
-                draft.mobile = e
-              })
-            }}
-          />}></SpCell>
-        </>
-      }
-    </View>}
-
-    <View className='desc-container'>
-      <View className='title'>补充描述</View>
-      <View className='desc-content'>
-        <Text className='iconfont icon-bianji1'></Text>
-        <AtTextarea type='textarea' name='description' value={description} placeholder='请输入您的补充描述（选填）' maxLength={200} onChange={(e) => {
-          setState(draft => {
-            draft.description = e
+            draft.curTabIdx = e
           })
         }} />
-      </View>
-      <SpUpload
-        value={pic}
-        max={3}
-        onChange={(val) => {
-          setState((draft) => {
-            draft.pic = val
-          })
-        }}
-      />
-    </View>
 
-    {
-      afterSaleDesc.is_open && <View className='after-sale-desc'>
-        <View className='desc-title'><Text className='iconfont icon-xinxi'></Text>售后提醒</View>
-        <SpHtml content={afterSaleDesc.intro} />
+        <View className='refund-items'>
+          <View className='items-container'>
+            {
+              info?.items.map((item, index) => (
+                <View className='item-wrap' key={`item-wrap__${index}`}>
+                  <View className='item-hd'>
+                    <SpCheckbox disabled={!item.leftAftersalesNum} checked={item.checked} onChange={onChangeItemCheck.bind(this, item, index)} />
+                  </View>
+                  <View className='item-bd'>
+                    <SpImage src={item.pic} width={128} height={128} radius={8} circle={8} />
+                    <View className='goods-info'>
+                      <View className='goods-info-hd'>
+                        <Text className='goods-title'>{item.itemName}</Text>
+                      </View>
+                      <View className='goods-info-bd'>
+                        <View>{item.itemSpecDesc && <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>}</View>
+                        <View><SpPrice size={28} value={item.price / item.num} /> x <Text className='num'>{item.num}</Text></View>
+                      </View>
+                      <View className='goods-info-ft'>
+                        <Text>退款数量</Text>
+                        <SpInputNumber
+                          disabled={!item.leftAftersalesNum}
+                          value={item.refundNum}
+                          max={item.leftAftersalesNum}
+                          min={1}
+                          onChange={(e) => onChangeItemNum(e, index)}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                </View>
+              ))
+            }
+          </View>
+        </View>
+
+        <View className='picker-reason'>
+          <Picker
+            mode='selector'
+            range={reasons}
+            onChange={(e) => {
+              setState(draft => {
+                draft.reasonIndex = e.detail.value
+              })
+            }}
+          >
+            <SpCell title='退款原因' isLink value={<Text>{`${reasons?.[reasonIndex] || '请选择取消原因'}`}</Text>}></SpCell>
+          </Picker>
+        </View>
+
+        <View className='refund-detail'>
+          <View className='refund-amount'>
+            <SpCell title='退款金额' value={getRealRefundFee()} />
+          </View>
+
+          <View className='refund-point'>
+            {/* <SpCell title='退积分' value={info?.point} /> */}
+            <SpCell title='退积分' value={getRealRefundPoint()} />
+          </View>
+        </View>
+
+        {curTabIdx == 1 && <View className='return-goods-type'>
+          <SpCell border title='退货方式' value={getRefundTypeName()} isLink onClick={() => {
+            setState(draft => {
+              draft.openRefundType = true
+              draft.selectRefundValue = refundType
+            })
+          }}></SpCell>
+          {
+            refundType == 'offline' && ((offlineAftersalesIsOpen && VERSION_STANDARD) || (VERSION_PLATFORM && offlineAftersales)) && <>
+              <SpCell border title='退货门店' isLink value={<Text className={classNames({
+                'placeholder': !refundStore
+              })}>{refundStore ? refundStore.name : '请选择退货门店'}</Text>} onClick={() => {
+                Taro.navigateTo({
+                  url: `/subpages/trade/store-picker?distributor_id=${info.distributorId}&refund_store=${refundStore?.address_id}`
+                })
+              }} />
+              <SpCell border title='联系人' value={<AtInput
+                name='contact'
+                value={contact}
+                placeholder='请填写联系人姓名'
+                onChange={(e) => {
+                  setState(draft => {
+                    draft.contact = e
+                  })
+                }}
+              />}>
+              </SpCell>
+              <SpCell title='联系电话' value={<AtInput
+                name='mobile'
+                value={mobile}
+                placeholder='请填写联系人电话'
+                onChange={(e) => {
+                  setState(draft => {
+                    draft.mobile = e
+                  })
+                }}
+              />}></SpCell>
+            </>
+          }
+        </View>}
+
+        <View className='desc-container'>
+          <View className='title'>补充描述</View>
+          <View className='desc-content'>
+            <Text className='iconfont icon-bianji1'></Text>
+            <AtTextarea type='textarea' name='description' value={description} placeholder='请输入您的补充描述（选填）' maxLength={200} onChange={(e) => {
+              setState(draft => {
+                draft.description = e
+              })
+            }} />
+          </View>
+          <SpUpload
+            value={pic}
+            max={3}
+            onChange={(val) => {
+              setState((draft) => {
+                draft.pic = val
+              })
+            }}
+          />
+        </View>
+
+        {
+          afterSaleDesc.is_open && <View className='after-sale-desc'>
+            <View className='desc-title'><Text className='iconfont icon-xinxi'></Text>售后提醒</View>
+            <SpHtml content={afterSaleDesc.intro} />
+          </View>
+        }
       </View>
-    }
+    </ScrollView>
 
     <SpFloatLayout
       title='选择退货方式'

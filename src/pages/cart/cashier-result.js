@@ -112,7 +112,7 @@ function CashierResult(props) {
                   Taro.redirectTo({ url: '/pages/index' })
                 }}
                 onConfirm={() => {
-                  Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${orderId}` })
+                  Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${orderId}` })
                 }}
               ></SpButton>
             </View>
@@ -129,7 +129,7 @@ function CashierResult(props) {
                   Taro.redirectTo({ url: '/pages/index' })
                 }}
                 onConfirm={() => {
-                  Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${orderId}&type=pointitem` })
+                  Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${orderId}&type=pointitem` })
                 }}
               ></SpButton>
             </View>

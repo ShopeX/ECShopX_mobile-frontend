@@ -1,4 +1,10 @@
 .page-trade-after-sale-detail {
+  .scrollview-container {
+    height: 100%;
+    .scrollview-body {
+      overflow: hidden;
+    }
+  }
   .btn-wrap {
     padding: 20px;
     display: flex;

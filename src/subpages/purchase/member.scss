@@ -24,20 +24,34 @@
     &__body {
       line-height: 40px;
       width: 80%;
+      display: flex;
+      justify-content: space-between;
       /*  #ifdef  h5  */
       margin-top: 20px;
       /*  #endif  */
     }
+    &__footer {
+      .user-info__link {
+        margin-top: 20px;
+        display: inline-block;
+      }
+      .icon-qianwang-01 {
+        font-size: 28px;
+      }
+    }
     .username-wrap {
-      display: flex;
-      justify-content: space-between;
+      // display: flex;
+      // justify-content: space-between;
+    }
+    .user-grade-name {
+      line-height: 35px;
     }
     .username {
       font-size: 32px;
       color: #222;
-      width: 90%;
+      // width: 90%;
       font-weight: bold;
-      @include multi-ellipsis(1);
+      // @include multi-ellipsis(1);
     }
     .gradename {
       display: inline-block;

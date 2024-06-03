@@ -1,0 +1,29 @@
+.page-evaluate-success {
+  background-color: #fff;
+  .evaluate-result {
+    height: 280px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  .icon-roundcheckfill {
+    font-size: 40px;
+    color: var(--color-primary);
+  }
+  .evaluate-txt {
+    color: #333;
+  }
+
+  .btn-block {
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+    .btn-wrap {
+      width: 250px;
+      &.cz-order {
+        width: 250px;
+      }
+    }
+  }
+}

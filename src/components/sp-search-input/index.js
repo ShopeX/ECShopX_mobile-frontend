@@ -31,7 +31,8 @@ function SpSearchInput(props) {
         name='keywords'
         placeholder={placeholder}
         onChange={handleChangeSearch}
-        onBlur={handleConfirm}
+        // onBlur={handleConfirm}
+        onConfirm={handleConfirm}
       />
     </View>
   )

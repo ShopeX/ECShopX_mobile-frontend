@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Switch, Text, Button } from '@tarojs/components'
+import { View, Switch, Text, Button, ScrollView } from '@tarojs/components'
 import { AtInput, AtButton, AtTextarea } from 'taro-ui'
 import { SpCell, SpPage, SpAddress } from '@/components'
 import api from '@/api'
@@ -191,66 +191,67 @@ function AddressIndex(props) {
 
   return (
     <SpPage className='page-address-edit'>
-      <View className='page-address-edit__form'>
-        <SpCell
-          className='logistics-no border-bottom'
-          title='收件人'
-          value={
-            <AtInput
-              name='username'
-              value={info?.username}
-              placeholder='收件人姓名'
-              onChange={(e) => handleChange('username', e)}
-            />
-          }
-        ></SpCell>
+      <ScrollView className='scroll-view-container'>
+        <View className='scroll-view-body'>
+          <View className='page-address-edit__form'>
+            <SpCell
+              className='logistics-no border-bottom'
+              title='收件人'
+            >
+              <AtInput
+                name='username'
+                value={info?.username}
+                placeholder='收件人姓名'
+                onChange={(e) => handleChange('username', e)}
+              />
+            </SpCell>
 
-        <SpCell
-          className='logistics-no border-bottom'
-          title='手机号码'
-          value={
-            <AtInput
-              name='telephone'
-              maxLength={11}
-              value={info?.telephone}
-              placeholder='收件人手机号'
-              onChange={(e) => handleChange('telephone', e)}
-            />
-          }
-        ></SpCell>
+            <SpCell
+              className='logistics-no border-bottom'
+              title='手机号码'
+            >
+              <AtInput
+                name='telephone'
+                maxLength={11}
+                value={info?.telephone}
+                placeholder='收件人手机号'
+                onChange={(e) => handleChange('telephone', e)}
+              />
+            </SpCell>
 
-        <SpCell
-          className='logistics-no province border-bottom'
-          title='所在区域'
-          isLink
-          arrow
-          value={
-            <View className='picker' onClick={onPickerClick}>
-              {chooseValue?.join('') === '' ? (
-                <Text>选择省/市/区</Text>
-              ) : (
-                <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
-              )}
-            </View>
-          }
-        ></SpCell>
-        <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
+            <SpCell
+              className='logistics-no province border-bottom'
+              title='所在区域'
+              isLink
+              arrow
+              onClick={onPickerClick}
+            >
+              <View className='picker' >
+                {chooseValue?.join('') === '' ? (
+                  <Text>选择省/市/区</Text>
+                ) : (
+                  <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
+                )}
+              </View>
+            </SpCell>
 
-        <SpCell
-          className='logistics-no detail-address'
-          title='详细地址'
-        >
-          <AtTextarea
-            count={false}
-            // name='adrdetail'
-            value={info?.adrdetail}
-            maxLength={100}
-            placeholder='请填写详细地址（街道、门牌）'
-            onChange={handleChange.bind(this, 'adrdetail')}
-          />
-        </SpCell>
 
-        {/* <SpCell
+
+            <SpCell
+              className='logistics-no detail-address'
+              title='详细地址'
+            >
+              <AtTextarea
+                count={false}
+                // name='adrdetail'
+                value={info?.adrdetail}
+                maxLength={100}
+                placeholder='请填写详细地址（街道、门牌）'
+                onChange={handleChange.bind(this, 'adrdetail')}
+              />
+            </SpCell>
+
+            {/* <SpCell
             className='logistics-no'
             title='邮政编码'
             value={
@@ -261,40 +262,36 @@ function AddressIndex(props) {
               />
             }
           ></SpCell> */}
-      </View>
+          </View>
 
-      <SpCell
-        title='设为默认收货地址'
-        iisLink
-        className='default_address'
-        value={
-          <Switch
-            checked={info?.is_def}
-            className='def-switch'
-            onChange={handleDefChange}
-            color={colors.data[0].primary}
+          <SpCell
+            title='设为默认收货地址'
+            iisLink
+            className='default_address'
+            value={
+              <Switch
+                checked={info?.is_def}
+                className='def-switch'
+                onChange={handleDefChange}
+                color={colors.data[0].primary}
+              />
+            }
           />
-        }
-      ></SpCell>
-      <View className='btns'>
-        {/* <AtButton
-            circle
-            type='primary'
-            className='save-btn'
-            onClick={handleSubmit}
-            style={`background: ${colors}; border-color: ${colors};border-radius: 25px;`}
-          >
-            保存并使用
-          </AtButton> */}
-        <Button
-          type='primary'
-          onClick={handleSubmit}
-          className='submit-btn'
-          style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};border-radius: 25px;`}
-        >
-          保存并使用
-        </Button>
-      </View>
+
+          <View className='btns'>
+            <Button
+              type='primary'
+              onClick={handleSubmit}
+              className='submit-btn'
+              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};border-radius: 25px;`}
+            >
+              保存并使用
+            </Button>
+          </View>
+        </View>
+      </ScrollView>
+
+      <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
     </SpPage>
   )
 }

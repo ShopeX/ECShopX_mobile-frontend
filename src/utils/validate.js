@@ -4,7 +4,7 @@ const pass_rule = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,20}$/
 const num_rule = /^[0-9]*$/
 const letter_rule = /^[A-Za-z]+$/
 
-const email_rule = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/
+const email_rule = /^[a-zA-Z0-9_.+-]+(\.[a-zA-Z0-9_.+-]+)*@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/
 
 const validate = {
   isRequired: function (val) {
@@ -15,6 +15,9 @@ const validate = {
   },
   isMobileNum: function (val) {
     return phone_rule.test(val)
+  },
+  isEmail: (val) => {
+    return email_rule.test(val)
   },
   validatePass2: function (val, val1) {
     let message = null
@@ -38,6 +41,9 @@ const validate = {
   isMoney(val) {
     const reg = new RegExp('((^[1-9]\\d*)|^0)(\\.\\d{0,2}){0,1}$')
     return reg.test(val)
+  },
+  isIpx(str) {
+    return str.search(/iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*10/g) > -1
   }
 }
 

@@ -2,19 +2,19 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useState, useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import dayjs from 'dayjs'
-import { updateUserInfo, fetchUserFavs, clearUserInfo } from '@/store/slices/user'
+import { updateUserInfo, fetchUserFavs, clearUserInfo, updateIsNewUser } from '@/store/slices/user'
 import { updateCount, clearCart } from '@/store/slices/cart'
+import { purchaseClearCart } from '@/store/slices/purchase'
 import api from '@/api'
-import { isWeixin, showToast, entryLaunch,isAlipay,alipayAutoLogin } from '@/utils'
+import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => {} } = props
+  const { autoLogin = false, policyUpdateHook = () => { } } = props
   const [isLogin, setIsLogin] = useState(false)
-  const [isNewUser, setIsNewUser] = useState(false)
   const dispatch = useDispatch()
-  const { userInfo } = useSelector((state) => state.user)
+  const { userInfo, isNewUser } = useSelector((state) => state.user)
   const $instance = getCurrentInstance()
   // const policyTime = useRef(0)
 
@@ -38,8 +38,8 @@ export default (props = {}) => {
   const login = async () => {
     if (isWeixin || isAlipay) {
       // 隐私协议
-      // const checkResult = await checkPolicyChange()
-      // if (checkResult) {
+      const checkResult = await checkPolicyChange()
+      if (checkResult) {
         Taro.showLoading({ title: '' })
         const { code } = await getCode()
 
@@ -48,20 +48,20 @@ export default (props = {}) => {
           Taro.hideLoading()
           setToken(token)
         } catch (e) {
-          setIsNewUser(true)
+          dispatch(updateIsNewUser(true))
           Taro.hideLoading()
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
-      // }
+      }
     }
   }
 
   const getCode = async () => {
-    if(isWeixin){
+    if (isWeixin) {
       return await Taro.login()
     }
-    if(isAlipay){
+    if (isAlipay) {
       return await alipayAutoLogin()
     }
   }
@@ -75,17 +75,19 @@ export default (props = {}) => {
     S.clearAuthToken()
     dispatch(clearUserInfo())
     dispatch(clearCart())
+    dispatch(purchaseClearCart())
   }
 
   const setToken = async (token) => {
     const { redirect_url } = $instance.router.params
-    console.log('redirect_url',redirect_url)
+    console.log('redirect_url', redirect_url)
     S.setAuthToken(token)
     setIsLogin(true)
     await getUserInfo()
     // 导购UV统计
     entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
+    dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
@@ -197,6 +199,13 @@ export default (props = {}) => {
         resolve()
       }
     })
+  }
+
+  /**
+   * @function 新用户注册
+   */
+  const registerUser = () => {
+
   }
 
   return {

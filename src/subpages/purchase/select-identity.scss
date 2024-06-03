@@ -1,0 +1,107 @@
+
+  .select-identity{
+    font-family: PingFangSC-Regular, PingFang SC;
+    padding: 0 32px;
+    padding-top: 32px;
+    .identity-item{
+      width: 686px;
+      height: 154px;
+      background: #FFFFFF;
+      border-radius: 24px;
+      display: flex;
+      padding: 32px;
+      box-sizing: border-box;
+      margin: 0 auto 32px auto;
+      &-avatar{
+        margin-right: 20px;
+        .avatar{
+          display: inline-block;
+          width: 90px;
+          height: 90px;
+          background: #FFFFFF;
+          border-radius: 16px;
+          border: 1px solid #DDDDDD;
+          background: #EEEEEE;
+          text-align: center;
+          line-height: 90px;
+        }
+        .add-icon{
+          font-size: 32px;
+          color: #999;
+          font-weight: bold;
+        }
+      }
+      &-content{
+        flex: 1;
+        .content-top{
+          display: flex;
+          justify-content: space-between;
+          .company{
+            width: 75%;
+            font-size: 32px;
+            font-weight: 500;
+            color: #222222;
+            @include multi-ellipsis(1);
+          }
+          .nowuse{
+            font-size: 24px;
+            font-weight: 400;
+            color: #666666;
+            &::before{
+              content: '';
+              display: inline-block;
+              width: 10px;
+              height: 10px;
+              background: #1AAD19;
+              margin: 0 10px 5px 0;
+              border-radius: 50%;
+            }
+          }
+
+        }
+        .content-bottom{
+          display: flex;
+          margin-top: 5px;
+          .role{
+            width: 70px;
+            height: 35px;
+            font-size: 22px;
+            text-align: center;
+            line-height: 41px;
+            background-color: #fbf2e9;
+            color: #F4811F;
+            margin-right: 8px;
+            border-radius: 6px;
+          }
+          .friend{
+            background-color: #F5F5F5;
+            color: #999999;
+          }
+          .account{
+            font-size: 24px;
+            font-weight: 400;
+            color: #999999
+          }
+        }
+      }
+      .add-identity{
+        font-size: 32px;
+        font-weight: 500;
+        color: #999999;
+        line-height: 90px;
+      }
+    }
+    .invalid-identity{
+      .title{
+        color: #999999;
+        font-size: 32px;
+        font-weight: 400;
+        margin-bottom: 40px;
+      }
+      .identity-item{
+        opacity: 0.5;
+      }
+    }
+
+  }
+

@@ -18,7 +18,8 @@ function SpScrollView(props, ref) {
     renderEmpty,
     style,
     pageSize = 10,
-    onLoad = () => {}
+    onLoad = () => {},
+    emptyMsg = '没有查询到数据'
   } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
@@ -108,7 +109,7 @@ function SpScrollView(props, ref) {
       {page.hasMore && <SpLoading>正在加载...</SpLoading>}
       {!page.hasMore &&
         getTotal() == 0 &&
-        (renderEmpty ? renderEmpty : <SpNote img='empty_activity.png' title='没有查询到数据' />)}
+        (renderEmpty ? renderEmpty : <SpNote img='empty_activity.png' title={emptyMsg} />)}
       {!page.loading && !page.hasMore && getTotal() > 0 && (
         <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
       )}

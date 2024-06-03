@@ -1,0 +1,87 @@
+.sp-modal {
+  position: absolute;
+  bottom: 0;
+  top: 0;
+  z-index: 5000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  // opacity: 1;
+  // transform: scale3d(1, 1, 1);
+  // transition: all .2s ease-in;
+  // pointer-events: auto;
+
+  &__overlay {
+    @include overlay();
+    opacity: 1;
+  }
+
+  &__content {
+    width: 650px;
+    background: #fff;
+    border-radius: 20px;
+    z-index: 5001;
+
+    &-hd {
+      height: 50px;
+      font-size: 36px;
+      font-weight: 400;
+      color: #666;
+      line-height: 50px;
+      padding: 48px 0 20px;
+      text-align: center;
+    }
+
+    &-bd {
+      padding: 40px 60px 80px;
+      font-size: 28px;
+      font-weight: 400;
+      color: #333333;
+      &.center {
+        text-align: center;
+      }
+    }
+
+    &-ft {
+      height: 93px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-top: 1PX solid #ddd;
+
+      .btn-cancel {
+        flex: 1;
+        font-size: 32px;
+        font-weight: 400;
+        color: #777;
+        line-height: 90px;
+        text-align: center;
+        position: relative;
+        height: 100%;
+
+        &::after {
+          content: '';
+          position: absolute;
+          width: 1PX;
+          background-color: #ddd;
+          top: 4px;
+          right: 0;
+          bottom: 4px;
+        }
+      }
+
+      .btn-confirm {
+        flex: 1;
+        font-size: 32px;
+        font-weight: 400;
+        color: var(--color-primary);
+        line-height: 90px;
+        text-align: center;
+        color: #222;
+        height: 100%;
+      }
+    }
+  }
+}

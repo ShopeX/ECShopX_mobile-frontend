@@ -1,0 +1,68 @@
+.page-trade-evaluate {
+  .sp-page-body {
+    overflow: auto;
+  }
+
+  .goods-item-wrap {
+    padding: 24px 16px;
+    background-color: #fff;
+    border-radius: 16px;
+    margin: 24px 16px 0;
+  }
+
+  .goods-info {
+    display: flex;
+
+    .goods-name {
+      font-size: 24px;
+      color: #666;
+      margin: 16px 0 0 24px;
+    }
+  }
+
+  .goods-rate {
+    display: flex;
+    align-items: center;
+    margin-top: 32px;
+    border-bottom: 1PX solid #ddd;
+    padding-bottom: 24px;
+
+    .label {
+      font-size: 28px;
+      color: #222;
+      margin-right: 40px;
+    }
+
+    .at-rate__icon {
+      &--on {
+        color: #D92128;
+      }
+    }
+  }
+
+  .goods-textarea {
+    .at-textarea {
+      border-width: 0;
+      padding: 20px 0;
+    }
+
+    .at-textarea__textarea {
+      font-size: 24px;
+      color: #aaa;
+    }
+
+  }
+
+  .goods-rate-images {
+    .file-item {
+      margin-bottom: 0;
+    }
+    .btn-upload {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn-wraps {
+    padding: 20px;
+  }
+}

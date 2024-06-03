@@ -1,7 +1,7 @@
 .page-cart-index {
-  &.has-tabbar {
-    padding-bottom: $tabbar-height;
-  }
+  // &.has-tabbar {
+  //   padding-bottom: $tabbar-height;
+  // }
   .login-header {
     display: flex;
     justify-content: center;
@@ -30,11 +30,7 @@
   }
   .shop-cart-item {
     padding: 0 16px;
-    margin-top: 40px;
-    /*  #ifdef  alipay  */
-    margin-top: 0;
     padding-top: 40px;
-    /*  #endif  */
     &-shadow {
       box-shadow: 0px 2px 10px 0px #eae7e0;
     }

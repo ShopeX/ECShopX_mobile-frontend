@@ -4,7 +4,7 @@ import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
 const canvasWidth = 600
-const canvasHeight = 960
+// const canvasHeight = 960
 
 class GoodsDetailPoster {
   constructor(props) {
@@ -17,10 +17,19 @@ class GoodsDetailPoster {
     this.toRpx = toRpx
   }
 
-  getCanvasSize() {
+  async getCanvasSize() {
+    const { imgs } = this.info
+    const pic = imgs[0].replace('http:', 'https:')
+    const { width: goodsImageWidth, height: goodsImageHeight } = await Taro.getImageInfo({ src: pic })
+    this.canvasWidth = canvasWidth
+    this.canvasImgHeight = parseInt(
+      (canvasWidth * goodsImageHeight) / goodsImageWidth
+    )
+    this.canvasHeight = this.canvasImgHeight + 360
+
     return {
-      canvasWidth: canvasWidth,
-      canvasHeight: canvasHeight
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
     }
   }
 
@@ -28,7 +37,7 @@ class GoodsDetailPoster {
     const host = process.env.APP_BASE_URL.replace('/api/h5app/wxapp', '')
     const { appid, company_id } = getExtConfigData()
     const { itemId, imgs, price, distributorId } = this.info
-    const { user_id, avatar } = this.userInfo
+    const { user_id, avatar } = this.userInfo || {}
 
     const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}&dtid=${distributorId}`
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
@@ -54,13 +63,13 @@ class GoodsDetailPoster {
       toRpx: this.toRpx
     }
     this.drawOptions = drawOptions
-    const { username } = this.userInfo
+    const { username = '' } = this.userInfo || {}
     drawBlock(
       {
         x: 0,
         y: 0,
-        width: canvasWidth,
-        height: canvasHeight,
+        width: this.canvasWidth,
+        height: this.canvasHeight,
         backgroundColor: '#fff'
       },
       drawOptions
@@ -71,8 +80,8 @@ class GoodsDetailPoster {
         imgPath: this.goodsImg.path,
         x: 0,
         y: 0,
-        w: canvasWidth,
-        h: canvasWidth,
+        w: this.canvasWidth,
+        h: this.canvasImgHeight,
         sx: 0,
         sy: 0,
         sw: this.goodsImg.width,
@@ -84,7 +93,7 @@ class GoodsDetailPoster {
     drawBlock(
       {
         x: 24,
-        y: 624,
+        y: this.canvasImgHeight + 24,
         width: 312,
         height: 80,
         backgroundColor: '#efefef',
@@ -93,11 +102,11 @@ class GoodsDetailPoster {
       drawOptions
     )
     // 头像
-    avatar && drawImage(
+    drawImage(
       {
         imgPath: this.avatar.path,
         x: 24,
-        y: 624,
+        y: this.canvasImgHeight + 24,
         w: 80,
         h: 80,
         sx: 0,
@@ -112,7 +121,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: 112,
-        y: 656,
+        y: this.canvasImgHeight + 56,
         fontSize: 24,
         color: '#000',
         text: username
@@ -123,7 +132,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: 112,
-        y: 688,
+        y: this.canvasImgHeight + 88,
         fontSize: 22,
         color: '#999',
         text: '推荐一个好物给你'
@@ -136,7 +145,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: 24,
-        y: 815,
+        y: this.canvasImgHeight + 215,
         color: '#222',
         text: [
           {
@@ -162,7 +171,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: 24,
-        y: 887,
+        y: this.canvasImgHeight + 287,
         fontSize: 24,
         width: 312,
         color: '#666',
@@ -176,7 +185,7 @@ class GoodsDetailPoster {
       {
         imgPath: this.codeImg.path,
         x: 416,
-        y: 742,
+        y: this.canvasImgHeight + 142,
         w: 160,
         h: 160,
         sx: 0,
@@ -189,7 +198,7 @@ class GoodsDetailPoster {
     drawText(
       {
         x: 433,
-        y: 928,
+        y: this.canvasImgHeight + 328,
         fontSize: 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',

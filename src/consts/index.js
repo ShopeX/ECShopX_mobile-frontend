@@ -7,6 +7,68 @@ export const STATUS_TYPES_MAP = {
   PART_PAYMENT:'WAIT_BUYER_PAY'
 }
 
+export const ORDER_STATUS_INFO = {
+  NOTPAY: {
+    msg: '等待买家付款',
+    icon: 'order_daizhifu'
+  },
+  PAYED: {
+    msg: '等待商家发货',
+    icon: 'order_daifahuo'
+  },
+  WAIT_BUYER_CONFIRM: {
+    msg: '商家已发货',
+    icon: 'order_daishouhuo'
+  },
+  CANCEL: {
+    msg: '订单已关闭',
+    icon: 'order_close'
+  },
+  DONE: {
+    msg: '交易完成',
+    icon: 'order_success'
+  }
+}
+
+export const ORDER_DADA_STATUS = {
+  0: {
+    msg: '等待商家接单',
+    icon: 'order_dengdai'
+  },
+  1: {
+    msg: '门店正在拣货，等待骑手接单',
+    icon: 'order_jiedan'
+  },
+  2: {
+    msg: '门店正在拣货，等待骑手接单',
+    icon: 'order_jiedan'
+  },
+  3: {
+    msg: '骑手正在快马加鞭向您赶去',
+    icon: 'order_peisong'
+  },
+  4: {
+    msg: '此次订单已完成',
+    icon: 'order_success'
+  },
+  10: {
+    msg: '此次订单已完成',
+    icon: 'order_success'
+  },
+  5: {
+    msg: '您的订单已取消',
+    icon: 'order_close'
+  },
+  9: {
+    msg: '收货地址异常，请联系客服',
+    icon: 'order_dizhiyichang'
+  },
+  100: {
+    msg: '骑手正赶往商家',
+    icon: 'order_qishou'
+  }
+}
+
 export const AFTER_SALE_STATUS = {
   '0': '待处理',
   '1': '处理中',
@@ -115,6 +177,20 @@ export const TABBAR_ICON = {
   ugc: 'shequ'
 }
 
+export const PURCHASE_TABBAR_PATH = {
+  home: '/subpages/purchase/index',
+  category: '/subpages/purchase/category',
+  cart: '/subpages/purchase/espier-index',
+  member: '/subpages/purchase/member',
+}
+
+export const PURCHASE_TABBAR_ICON = {
+  home: 'shouye',
+  category: 'fenlei',
+  cart: 'gwche',
+  member: 'huiyuan',
+}
+
 export const BUY_TOOL_BTNS = {
   NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
   SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
@@ -187,7 +263,8 @@ export const PAYMENT_TYPE = {
   pos: '现金支付',
   wxpaypos: '微信支付',
   alipaypos: '支付宝支付',
-  alipaymini: '支付宝支付'
+  alipaymini: '支付宝支付',
+  point: '积分支付'
 }
 
 export const TRANSFORM_PAYTYPE = {

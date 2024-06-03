@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useDispatch, useSelector } from 'react-redux'
 import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import { classNames, isWeixin } from '@/utils'
 
 import './address.scss'
 
@@ -36,7 +37,7 @@ function AddressIndex(props) {
   const fetch = async (isDelete = false) => {
     const { isPicker, receipt_type = '', city = '' } = $instance.router.params
     if (isPicker) {
-      setState(draft=>{
+      setState(draft => {
         draft.isPicker = true
       })
     }
@@ -58,14 +59,14 @@ function AddressIndex(props) {
     } else {
       selectedId = list.find((addr) => addr.is_def > 0) || null
     }
-    setState(draft=>{
+    setState(draft => {
       draft.list = newList,
-      draft.selectedId = selectedId
+        draft.selectedId = selectedId
     })
   }
 
   const handleClickChecked = (e, item) => {
-    setState(draft=>{
+    setState(draft => {
       draft.selectedId = item[ADDRESS_ID]
     })
 
@@ -168,24 +169,13 @@ function AddressIndex(props) {
         </View>
       }
     >
-      <View>
-        {process.env.TARO_ENV === 'weapp' ? (
+      <ScrollView className='scroll-view-container' scrollY>
+        {isWeixin && (
           <SpCell
             isLink
-            iconPrefix='sp-icon'
             className='address-harvest'
-            icon='weixin'
             title='获取微信收货地址'
             onClick={wxAddress}
-          />
-        ) : (
-          <SpNavBar
-            title='收货地址'
-            className='address-harvest'
-            leftIconType='chevron-left'
-            fixed='true'
-            onClickLeftIcon={handleClickLeftIcon}
-
           />
         )}
 
@@ -210,58 +200,48 @@ function AddressIndex(props) {
                     </View>
 
                     {isPicker && !item.disabled && (
-                      <View className='address-item__check' onClick={e=>handleClickChecked(e,item)}>
+                      <View className='address-item__check' onClick={e => handleClickChecked(e, item)}>
                         {item[ADDRESS_ID] === selectedId ? (
-                          <Text
-                            className='iconfont icon-check address-item__checked'
-                            style={{ color: colors.colorPrimary }}
-                          ></Text>
+                          <Text className='iconfont icon-roundcheckfill' />
                         ) : (
-                          <Text
-                            className='address-item__unchecked'
-                            style={{ borderColor: colors.colorPrimary }}
-                          >
-                            {' '}
-                          </Text>
+                          <Text className='iconfont icon-round' />
                         )}
                       </View>
                     )}
                   </View>
 
                   <View className='address-item__footer'>
-                    <View
-                      className='address-item__footer_default'
-                      onClick={(e) => handleChangeDefault(e, item)}
-                    >
-                      {item.is_def ? (
-                        <>
-                          <Text
-                            className='iconfont icon-check default__icon default__checked'
-                            style={{ color: colors.colorPrimary }}
-                          >
-                            {' '}
-                          </Text>
-                          <Text className='default-text'>已设为默认</Text>
-                        </>
-                      ) : (
-                        <>
-                          <Text
-                            className='address-item__unchecked'
-                            style={{ borderColor: colors.colorPrimary }}
-                          >
-                            {' '}
-                          </Text>
-                          <Text className='default-text'>设为默认</Text>
-                        </>
-                      )}
-                    </View>
+                    {
+                      !isPicker && <View
+                        className='address-item__footer_default'
+                        onClick={(e) => handleChangeDefault(e, item)}
+                      >
+                        <Text
+                          className={classNames({
+                            iconfont: true,
+                            'icon-roundcheckfill': item.is_def,
+                            'icon-round': !item.is_def
+                          })}
+                        />
+                        <Text className='default-text'>{item.is_def ? '已设为默认' : '设为默认'}</Text>
+                      </View>
+                    }
+
+                    {
+                      isPicker && <View
+                        className='address-item__footer_default'
+                      >
+                        {item.is_def && <Text className='picker-default-text'>默认</Text>}
+                      </View>
+                    }
+
                     <View className='address-item__footer_edit'>
                       <View className='footer-text' onClick={(e) => handleDelete(e, item)}>
-                        <Text className='iconfont icon-trashCan footer-icon'> </Text>
+                        <Text className='iconfont icon-trashCan footer-icon' />
                         <Text>删除</Text>
                       </View>
                       <View className='footer-text' onClick={(e) => handleClickToEdit(e, item)}>
-                        <Text className='iconfont icon-edit footer-icon'> </Text>
+                        <Text className='iconfont icon-edit footer-icon' />
                         <Text>编辑</Text>
                       </View>
                     </View>
@@ -271,8 +251,7 @@ function AddressIndex(props) {
             )
           })}
         </View>
-        <SpToast />
-      </View>
+      </ScrollView>
     </SpPage>
   )
 }

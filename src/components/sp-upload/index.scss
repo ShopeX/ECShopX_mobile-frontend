@@ -9,6 +9,10 @@
     border-radius: 16px;
     margin: 0 20px 20px 0;
     position: relative;
+    .sp-image {
+      width: 100% !important;
+      height: 100% !important;
+    }
     .icon-guanbi {
       position: absolute;
       top: -18px;

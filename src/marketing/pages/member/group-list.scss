@@ -8,7 +8,7 @@ $item-img-size: 240px !default;
 .page-my-group-list {
   .groups-list__scroll {
     box-sizing: border-box;
-    @include page-scroll($tabbar-height + $edge-size/2, 0);
+    @include page-scroll($tabbar-height + calc($edge-size/2), 0);
   }
   .group-item {
     $self: &;
@@ -27,7 +27,7 @@ $item-img-size: 240px !default;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: $edge-size/1.5 $edge-size;
+      padding: calc($edge-size/1.5) $edge-size;
       flex: 1;
       position: relative;
       .iconfont {

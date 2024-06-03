@@ -43,6 +43,8 @@ export default (props) => {
     setPage((v) => {
       if (!total || total <= page.pageSize * page.pageIndex) {
         v.hasMore = false
+      } else {
+        v.hasMore = true
       }
       v.loading = false
       v.reset = false

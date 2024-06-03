@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { useDidShow, usePageScroll, getCurrentInstance, useReady } from '@tarojs/taro'
+import Taro, { useDidShow, usePageScroll, useRouter, getCurrentInstance, useReady } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, entryLaunch, isObject } from '@/utils'
+import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, VERSION_IN_PURCHASE, validate } from '@/utils'
 
 import './index.scss'
 
@@ -16,13 +16,18 @@ const initialState = {
   isTabBarPage: true,
   customNavigation: false,
   cusCurrentPage: 0,
-  showLeftContainer: false
+  showLeftContainer: false,
+  pageBackground: {},
+  ipx: false,
+  windowHeight: 0,
+  gNavbarH: 0,
+  gStatusBarHeight: 0
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage, showLeftContainer } = state
+  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage, showLeftContainer, pageBackground, ipx, windowHeight, gNavbarH, gStatusBarHeight } = state
   const {
     className,
     children,
@@ -83,21 +88,54 @@ function SpPage(props, ref) {
   }, [lock])
 
   useEffect(() => {
+    const { page } = $instance
+    const pages = Taro.getCurrentPages()
+    const { navigationStyle } = page.config
+
+    let ipx = false
+    let _gNavbarH = 0, _gStatusBarHeight = 0
+    const { screenHeight, windowHeight } = Taro.getSystemInfoSync()
+    // showToast(`${screenHeight},${windowHeight}`)
     if (isWeixin || isAlipay) {
-      const pages = Taro.getCurrentPages()
-      const { navigationStyle } = page.config
-      // customNavigation = navigationStyle === 'custom'
-      // cusCurrentPage = pages.length
-      setState(draft => {
-        draft.customNavigation = navigationStyle === 'custom'
-        draft.cusCurrentPage = pages.length
-      })
+      const deviceInfo = Taro.getSystemInfoSync()
+      ipx = validate.isIpx(deviceInfo.model)
+      const menuButton = Taro.getMenuButtonBoundingClientRect()
+      const { statusBarHeight } = Taro.getSystemInfoSync()
+      _gNavbarH = Math.floor(statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2)
+      _gStatusBarHeight = statusBarHeight
     }
+
+    setState(draft => {
+      draft.customNavigation = isWeixin ? navigationStyle === 'custom' : false
+      draft.cusCurrentPage = pages.length
+      draft.ipx = ipx
+      draft.windowHeight = windowHeight
+      draft.pageTitle = page?.config?.navigationBarTitleText
+      draft.gNavbarH = _gNavbarH
+      draft.gStatusBarHeight = _gStatusBarHeight
+    })
   }, [])
 
   useEffect(() => {
     if (pageConfig) {
-      const { navigateBackgroundColor } = pageConfig
+      const { pageBackgroundStyle, pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } = pageConfig
+      let _pageBackground = {}
+      if (pageBackgroundStyle == '1') {
+        _pageBackground = {
+          'background-color': pageBackgroundColor
+        }
+      } else {
+        _pageBackground = {
+          'background-image': `url(${pageBackgroundImage})`,
+          'background-size': '100% 100%',
+          'background-position': 'center'
+        }
+      }
+
+      setState(draft => {
+        draft.pageBackground = _pageBackground
+      })
+
       if (isAlipay) {
         my.setNavigationBar({
           backgroundColor: navigateBackgroundColor
@@ -107,15 +145,14 @@ function SpPage(props, ref) {
   }, [pageConfig])
 
   useDidShow(() => {
-    const { page, router } = getCurrentInstance()
-    const pageTitle = page?.config?.navigationBarTitleText
+    const { page, router } = $instance
 
     const fidx = Object.values(TABBAR_PATH).findIndex(
       (v) => v == $instance.router?.path.split('?')[0]
     )
     const isTabBarPage = fidx > -1
     setState((draft) => {
-      draft.pageTitle = pageTitle
+      // draft.pageTitle = pageTitle
       draft.isTabBarPage = isTabBarPage,
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
     })
@@ -169,39 +206,9 @@ function SpPage(props, ref) {
           duration: 0
         })
       }, 0)
-
-      // console.log('scrollTopRef.current:', scrollTopRef.current)
     }
   }))
 
-  let model = ''
-  let ipx = false
-  let gNavbarH = 0, gStatusBarHeight = 0
-  // let customNavigation = false
-  // let cusCurrentPage = 0
-
-  if (isWeixin || isAlipay) {
-    const deviceInfo = Taro.getSystemInfoSync()
-    // console.log('deviceInfo:', deviceInfo)
-    model = deviceInfo.model
-    ipx = model.search(/iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*10/g) > -1
-
-    const menuButton = Taro.getMenuButtonBoundingClientRect()
-    const { statusBarHeight } = Taro.getSystemInfoSync()
-    gNavbarH = Math.floor(statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2)
-    gStatusBarHeight = statusBarHeight
-  }
-
-  const { page, route } = getCurrentInstance()
-  const _pageTitle = page?.config?.navigationBarTitleText
-
-  // if (isWeixin) {
-  //   const pages = Taro.getCurrentPages()
-  //   // const currentPage = pages[pages.length - 1]
-  //   const { navigationStyle } = page.config
-  //   customNavigation = navigationStyle === 'custom'
-  //   cusCurrentPage = pages.length
-  // }
 
   const CustomNavigation = () => {
     const { page, route } = getCurrentInstance()
@@ -261,7 +268,7 @@ function SpPage(props, ref) {
               onClick={() => {
                 if (cusCurrentPage == 1) {
                   Taro.redirectTo({
-                    url: isGoodsShelves() ? '/subpages/guide/index' : '/pages/index'
+                    url: isGoodsShelves() ? '/subpages/guide/index' : VERSION_IN_PURCHASE ? '/pages/purchase/index' : '/pages/index'
                   })
                 } else {
                   Taro.navigateBack()
@@ -281,22 +288,6 @@ function SpPage(props, ref) {
     )
   }
 
-  let pageBackground = {}
-  if (pageConfig) {
-    const { pageBackgroundStyle, pageBackgroundColor, pageBackgroundImage } = pageConfig
-
-    if (pageBackgroundStyle == '1') {
-      pageBackground = {
-        'background-color': pageBackgroundColor
-      }
-    } else {
-      pageBackground = {
-        'background-image': `url(${pageBackgroundImage})`,
-        'background-size': '100% 100%',
-        'background-position': 'center'
-      }
-    }
-  }
   return (
     <View
       className={classNames('sp-page', className, {
@@ -309,7 +300,7 @@ function SpPage(props, ref) {
       ref={wrapRef}
     >
       {hasNavbar && !isTabBarPage && navbar && (
-        <SpNavBar title={pageTitle || _pageTitle} onClickLeftIcon={onClickLeftIcon} />
+        <SpNavBar title={pageTitle} onClickLeftIcon={onClickLeftIcon} />
       )}
 
       {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} isUrl={true} />)}
@@ -317,13 +308,12 @@ function SpPage(props, ref) {
       {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
       {customNavigation && CustomNavigation()}
 
-      {/* {loading && <SpNote img='loading.gif' />} */}
       {loading && <SpLoading />}
 
 
-
       {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        'margin-top': `${customNavigation ? gNavbarH : 0}px`
+        'margin-top': `${customNavigation ? gNavbarH : 0}px`,
+        'height': `${windowHeight - (customNavigation ? gNavbarH : 0)}px`
       })}>{children}</View>}
 
       {/* 置底操作区 */}

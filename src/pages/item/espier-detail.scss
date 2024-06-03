@@ -75,7 +75,7 @@
       margin: 24px 16px;
       background-color: #fff;
       padding: 19px 16px;
-      box-shadow: 0px 2px 10px 0px #eae7e0;
+      // box-shadow: 0px 2px 10px 0px #eae7e0;
       &-title {
         display: flex;
         align-items: center;
@@ -88,12 +88,13 @@
     }
     .goods-desc {
       margin: 24px 16px;
-      background-color: #fff;
-      box-shadow: 0px 2px 10px 0px #eae7e0;
+      padding-bottom: 24px;
+      // box-shadow: 0px 2px 10px 0px #eae7e0;
       .desc-hd {
         height: 80px;
         text-align: center;
         line-height: 80px;
+        background-color: #fff;
       }
       .desc-title {
         color: #222;
@@ -183,7 +184,7 @@
     // padding: 16px;
     margin: 0px 16px 24px;
     background: #fff;
-    box-shadow: 0px 2px 10px 0px #eae7e0;
+    // box-shadow: 0px 2px 10px 0px #eae7e0;
     .sp-cell {
       padding: 24rpx 16rpx;
       position: relative;
@@ -225,7 +226,7 @@
     margin: 0px 16px 24px;
     padding: 0 16px 20px;
     background: #fff;
-    box-shadow: 0px 2px 10px 0px #eae7e0;
+    // box-shadow: 0px 2px 10px 0px #eae7e0;
     .params-hd {
       color: #666;
       font-size: 28px;

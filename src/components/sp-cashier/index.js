@@ -129,7 +129,7 @@ function SpCashier(props) {
 
   const onConfirm = () => {
     onClose()
-    onChange(selectItem)
+    onChange(selectItem, 'confirm')
   }
 
   const onCloseFloatLayout = () => {

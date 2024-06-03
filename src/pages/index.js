@@ -5,7 +5,7 @@ import Taro, {
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   SpScreenAd,
@@ -36,6 +36,7 @@ import {
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
+import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import doc from '@/doc'
@@ -97,7 +98,12 @@ function Home() {
   }, [initState])
 
   useEffect(() => {
-    if (shopInfo && VERSION_STANDARD) {
+    dispatch(updatePurchaseShareInfo())
+    dispatch(updateInviteCode())
+  }, [])
+
+  useEffect(() => {
+    if(shopInfo && VERSION_STANDARD) {
       fetchWgts()
     }
   }, [shopInfo])
@@ -266,10 +272,11 @@ function Home() {
       loading={loading}
       ref={pageRef}
     >
-      <View
+      <ScrollView
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
+        scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
         {
@@ -282,9 +289,9 @@ function Home() {
             </HomeWgts>
           </WgtsContext.Provider>
         }
-      </View>
+      </ScrollView>
 
-      {/* 小程序搜藏提示 */}
+      {/* 小程序收藏提示 */}
       {isWeixin && <MCompAddTip />}
 
       {/* 开屏广告 */}

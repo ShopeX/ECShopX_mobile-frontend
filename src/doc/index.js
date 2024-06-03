@@ -13,6 +13,7 @@ import * as member from './member'
 import * as dianwu from './dianwu'
 import * as trade from './trade'
 import * as mdugc from './mdugc'
+import * as purchase from './purchase'
 
 export default {
   address,
@@ -29,5 +30,6 @@ export default {
   member,
   dianwu,
   trade,
-  mdugc
+  mdugc,
+  purchase
 }

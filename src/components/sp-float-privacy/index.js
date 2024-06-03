@@ -23,24 +23,24 @@ export default class SpFloatPrivacy extends Component {
   static defaultProps = {
     isOpened: false,
     wxUserInfo: true,
-    callback: () => {},
-    onClose: () => {},
-    onConfirm: () => {},
-    onChange: () => {}
+    callback: () => { },
+    onClose: () => { },
+    onConfirm: () => { },
+    onChange: () => { }
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       info: null
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       info: data
@@ -49,7 +49,7 @@ export default class SpFloatPrivacy extends Component {
 
   navigateTo = navigateTo
 
-  handleCancel () {
+  handleCancel() {
     this.props.onClose()
   }
 
@@ -63,7 +63,7 @@ export default class SpFloatPrivacy extends Component {
     Taro.setStorageSync('Privacy_agress', '1')
   }
 
-  handleConfirm () {
+  handleConfirm() {
     this.handleValidate(() => {
       S.OAuthWxUserProfile(() => {
         this.props.onChange()
@@ -78,7 +78,7 @@ export default class SpFloatPrivacy extends Component {
         return
       }
       my.getOpenUserInfo({
-        fail: (res) => {},
+        fail: (res) => { },
         success: async (res) => {
           let userInfo = JSON.parse(res.response).response
           await api.member.updateMemberInfo({
@@ -92,7 +92,7 @@ export default class SpFloatPrivacy extends Component {
     })
   }
 
-  render () {
+  render() {
     const { isOpened } = this.props
     const { info } = this.state
     if (!info) {

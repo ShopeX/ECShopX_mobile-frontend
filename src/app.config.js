@@ -16,12 +16,14 @@ const config = {
     'pages/item/espier-detail', // 商品详情页面
 
     'pages/article/index', // 文章页面
-    'pages/recommend/list', // 推荐软文列表
+    'pages/recommend/list', // 种草列表
+    'pages/recommend/detail', // 种草详情
     'pages/member/item-fav', // 收藏页面
 
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
-    'pages/liveroom/index' // 直播间页面
+    'pages/liveroom/index', // 直播间页面
+    'pages/purchase/auth'
   ],
   subPackages: [
     // 内购
@@ -31,7 +33,17 @@ const config = {
         'member',
         'espier-detail',
         'espier-checkout',
-        'index' // 家属分享
+        'share', // 家属分享
+        'select-company',
+        'select-company-account',
+        'select-company-email',
+        'select-company-phone',
+        'select-identity',
+        'neigou-order',
+        'category',
+        'espier-index',
+        'index',
+        'list'
       ]
     },
     // 导购货架 guide
@@ -158,10 +170,17 @@ const config = {
     {
       root: 'subpages/trade',
       pages: [
-        'after-sale',
-        'after-sale-detail',
+        'list',
+        'detail',
+        'after-sale-list', // 售后订单列表
+        'after-sale', // 申请售后
+        'after-sale-detail', // 售后详情
+        'ziti-list',
         'logistics-info',
-        'store-picker'
+        'store-picker',
+        'trade-evaluate', // 订单评价
+        'evaluate-success', // 评价结果
+        'delivery-info', // 物流详情
       ]
     },
     {
@@ -245,8 +264,6 @@ const config = {
         'pages/wheel/index', // 大转盘
         'pages/item/espier-evaluation', // 商品评论列表
         'pages/item/espier-evaluation-detail', // 商品评论详情
-        'pages/item/rate', //订单评价
-        'pages/item/success', //评价结果
 
         'pages/item/seckill-goods-list', //秒杀商品列表
         'pages/item/seckill-list', //秒杀列表
@@ -262,13 +279,9 @@ const config = {
       pages: [
         'pages/recommend/detail', //软文详情页面
         'pages/trade/list', //我的订单列表页面
-        'pages/trade/customer-pickup-list', //我的自提订单列表
         'pages/trade/drug-list', //处方药订单列表
         'pages/trade/detail', //订单详情页面
         'pages/trade/after-sale-detail', //售后详情页面
-        'pages/trade/delivery-info', //整单物流详情页面
-        'pages/trade/split-bagpack', //分单物流详情页面Ω
-        'pages/trade/rate', //订单评价页面
         'pages/trade/cancel', //取消订单页面
         'pages/trade/after-sale', //售后订单列表
         'pages/trade/refund', //售后申请提交页面
@@ -391,14 +404,20 @@ if (process.env.APP_LIVE == 'true') {
   })
 }
 
-// if(process.env.APP_ADAPAY == 'true') {
-//   Object.assign(config.plugins, {
-//     'Adapay': {
-//       'version': 'latest',
-//       'provider': 'wx308088053f4ecc3a'
-//     }
-//   })
-// }
+if (process.env.APP_PLATFORM == 'in_purchase') {
+  config?.pages?.splice(config?.pages[0], 1, 'pages/purchase/index')
+} else {
+  config?.pages?.push('pages/purchase/index')
+}
+
+if (process.env.APP_ADAPAY == 'true') {
+  Object.assign(config.plugins, {
+    'Adapay': {
+      'version': 'latest', // 注意填写该直播组件最新版本号，微信开发者工具调试时可获取最新版本号（复制时请去掉注释）
+      'provider': 'wx308088053f4ecc3a' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
+    }
+  })
+}
 
 
 export default config

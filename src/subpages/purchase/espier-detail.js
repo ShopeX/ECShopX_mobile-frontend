@@ -3,37 +3,25 @@ import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { AtCountdown } from 'taro-ui'
 import {
-  SpPrice,
   SpCell,
   SpImage,
   SpLoading,
   SpRecommend,
   SpHtml,
   SpPage,
-  SpSkuSelect,
   SpPoster,
-  SpLogin,
   SpFloatMenuItem,
-  SpChat,
   SpGoodsPrice
 } from '@/components'
 import api from '@/api'
-import req from '@/api/req'
 import {
   log,
-  calcTimer,
   isArray,
-  canvasExp,
-  normalizeQuerys,
-  isAlipay,
   isWeixin,
   isWeb,
-  linkPage,
   pickBy,
   classNames,
-  navigateTo,
   VERSION_PLATFORM,
   isAPP
 } from '@/utils'
@@ -42,9 +30,9 @@ import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
-import { Tracker } from '@/service'
 import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
@@ -55,11 +43,11 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
+import CompSkuSelect from './comps/comp-skuselect'
 
 import './espier-detail.scss'
 
-const MSpSkuSelect = React.memo(SpSkuSelect)
+const MSpSkuSelect = React.memo(CompSkuSelect)
 
 const initialState = {
   id: null,
@@ -70,7 +58,7 @@ const initialState = {
   play: false,
   isDefault: false,
   defaultMsg: '',
-  promotionPackage: [], // 组合优惠
+  // promotionPackage: [], // 组合优惠
   mainGoods: {},
   makeUpGoods: [], // 组合商品
   packageOpen: false,
@@ -97,6 +85,7 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const { setNavigationBarTitle } = useNavigation()
 
   const [state, setState] = useImmer(initialState)
@@ -107,7 +96,7 @@ function EspierDetail(props) {
     defaultMsg,
     evaluationList,
     curImgIdx,
-    promotionPackage,
+    // promotionPackage,
     packageOpen,
     skuPanelOpen,
     promotionOpen,
@@ -138,7 +127,7 @@ function EspierDetail(props) {
   useEffect(() => {
     if (id) {
       fetch()
-      getPackageList()
+      // getPackageList()
       getEvaluationList()
     }
   }, [id])
@@ -173,31 +162,31 @@ function EspierDetail(props) {
     }
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
-  useShareAppMessage(async (res) => {
-    return getAppShareInfo()
-  })
+  // useShareAppMessage(async (res) => {
+  //   return getAppShareInfo()
+  // })
 
-  useShareTimeline(async (res) => {
-    return getAppShareInfo()
-  })
+  // useShareTimeline(async (res) => {
+  //   return getAppShareInfo()
+  // })
 
-  const getAppShareInfo = () => {
-    const { itemName, imgs } = info
-    const query = {
-      id,
-      dtid
-    }
-    if (userInfo) {
-      query['uid'] = userInfo.user_id
-    }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
-    log.debug(`share path: ${path}`)
-    return {
-      title: itemName,
-      imageUrl: imgs.length > 0 ? imgs[0] : [],
-      path
-    }
-  }
+  // const getAppShareInfo = () => {
+  //   const { itemName, imgs } = info
+  //   const query = {
+  //     id,
+  //     dtid
+  //   }
+  //   if (userInfo) {
+  //     query['uid'] = userInfo.user_id
+  //   }
+  //   const path = `/subpages/purchase/espier-detail?${qs.stringify(query)}`
+  //   log.debug(`share path: ${path}`)
+  //   return {
+  //     title: itemName,
+  //     imageUrl: imgs.length > 0 ? imgs[0] : [],
+  //     path
+  //   }
+  // }
 
   const init = async () => {
     const { type, id, dtid } = await entryLaunch.getRouteParams()
@@ -209,13 +198,16 @@ function EspierDetail(props) {
   }
 
   const fetch = async () => {
+    const { activity_id, enterprise_id } = purchase_share_info
     let data
     if (type == 'pointitem') {
     } else {
       try {
-        const itemDetail = await api.item.detail(id, {
+        const itemDetail = await api.purchase.getPurchaseDetail(id, {
           showError: false,
-          distributor_id: dtid
+          distributor_id: dtid,
+          activity_id,
+          enterprise_id
         })
         data = pickBy(itemDetail, doc.goods.GOODS_INFO)
         if (data.approveStatus == 'instock') {
@@ -263,8 +255,8 @@ function EspierDetail(props) {
           title: data.itemName,
           content: data.brief,
           pic: `${data.img}?time=${new Date().getTime()}`,
-          link: `${process.env.APP_CUSTOM_SERVER}/pages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
-          path: `/pages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
+          link: `${process.env.APP_CUSTOM_SERVER}/subpages/purchase/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
+          path: `/subpages/purchase/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
           price: data.price,
           weibo: false,
           miniApp: true
@@ -290,13 +282,13 @@ function EspierDetail(props) {
     })
   }
 
-  // 获取包裹
-  const getPackageList = async () => {
-    const { list } = await api.item.packageList({ item_id: id, showError: false })
-    setState((draft) => {
-      draft.promotionPackage = list
-    })
-  }
+  // // 获取包裹
+  // const getPackageList = async () => {
+  //   const { list } = await api.item.packageList({ item_id: id, showError: false })
+  //   setState((draft) => {
+  //     draft.promotionPackage = list
+  //   })
+  // }
 
   // 获取评论
   const getEvaluationList = async () => {
@@ -349,17 +341,6 @@ function EspierDetail(props) {
       isDefault={isDefault}
       defaultMsg={defaultMsg}
       ref={pageRef}
-      renderFloat={
-        <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/index' })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-        </View>
-      }
       renderFooter={
         <CompBuytoolbar
           info={info}
@@ -457,9 +438,9 @@ function EspierDetail(props) {
 
             <CompCouponList
               info={
-                info.couponList.list.length > 3
-                  ? info.couponList.list.slice(0, 3)
-                  : info.couponList.list
+                info?.couponList?.list.length > 3
+                  ? info?.couponList?.list.slice(0, 3)
+                  : info?.couponList?.list
               }
               onClick={handleReceiveCoupon}
             />
@@ -493,7 +474,7 @@ function EspierDetail(props) {
           )}
 
           <View className='sku-block'>
-            {promotionPackage.length > 0 && (
+            {/* {promotionPackage.length > 0 && (
               <SpCell
                 title='组合优惠'
                 isLink
@@ -508,7 +489,7 @@ function EspierDetail(props) {
               >
                 <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
               </SpCell>
-            )}
+            )} */}
             {promotionActivity.length > 0 && (
               <SpCell
                 title='优惠活动'

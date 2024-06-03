@@ -2,7 +2,8 @@ import Taro, {
   useDidShow,
   useShareAppMessage,
   getCurrentPages,
-  getCurrentInstance
+  getCurrentInstance,
+  useRouter
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
@@ -16,7 +17,6 @@ import {
   SpImage,
   SpPrice,
   CouponModal,
-  SpModal,
   SpPrivacyModal,
   SpTabbar,
   SpPage
@@ -33,8 +33,7 @@ import {
   normalizeQuerys,
   log,
   isEmpty,
-  VERSION_IN_PURCHASE,
-  VERSION_PLATFORM
+  VERSION_IN_PURCHASE
 } from '@/utils'
 import { useLogin } from '@/hooks'
 import S from '@/spx'
@@ -42,7 +41,7 @@ import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
-import CompHelpCenter from './comps/comp-helpcenter'
+import CompTabbar from './comps/comp-tabbar'
 import './member.scss'
 
 const initialConfigState = {
@@ -84,7 +83,6 @@ const initialConfigState = {
     defaultImg: false,
     vipImg: false
   },
-  whitelist_status: false
 }
 
 const initialState = {
@@ -115,8 +113,10 @@ function MemberIndex(props) {
   const [config, setConfig] = useImmer(initialConfigState)
   const [state, setState] = useImmer(initialState)
   const [policyModal, setPolicyModal] = useState(false)
+  const router = useRouter()
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
@@ -131,7 +131,6 @@ function MemberIndex(props) {
 
   useEffect(() => {
     getMemberCenterConfig()
-    getSettings()
   }, [])
 
   useDidShow(() => {
@@ -144,29 +143,15 @@ function MemberIndex(props) {
   })
 
   const fetchPurchase = async () => {
-    // 内购分享码
-    const { code: purchaseCode } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    // 员工、家属
-    const { is_employee, is_dependent } = userInfo
-    if (purchaseCode && !is_employee && !is_dependent) {
-      await api.purchase.purchaseBind({ code: purchaseCode })
-    }
-    const data = await api.purchase.purchaseInfo()
+    // 内购分享信息
+    const { activity_id, enterprise_id } = purchase_share_info
+    if (!activity_id || !enterprise_id) return
+    const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
     setState((draft) => {
       draft.purchaseInfo = data
     })
   }
 
-  async function getSettings() {
-    const { whitelist_status = false } = await api.shop.homeSetting()
-    setState((draft) => {
-      draft.whitelist_status = whitelist_status
-    })
-    // 白名单配置
-    Taro.setStorageSync(SG_APP_CONFIG, {
-      whitelist_status
-    })
-  }
 
   // 分享
   useShareAppMessage(async (res) => {
@@ -216,7 +201,7 @@ function MemberIndex(props) {
       }
     }
     if (menuRes.list.length > 0) {
-      menu = { ...menuRes.list[0].params.data, purchase: true }
+      menu = { ...menuRes.list[0].params.data }
     }
     // if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_IN_PURCHASE)) {
     //   const { result, status } = await api.dianwu.is_admin()
@@ -353,10 +338,6 @@ function MemberIndex(props) {
         })
       }
     }
-    if ((isEmpty(purchaseInfo) || !whitelist_status) && VERSION_IN_PURCHASE && key == 'purchase') {
-      showToast('暂无权限，请联系管理员')
-      return
-    }
     if (link) {
       Taro.navigateTo({ url: link })
     }
@@ -365,13 +346,14 @@ function MemberIndex(props) {
   const VipGradeDom = () => {
     if (isLogin) {
       return (
-        <View className='gradename'>
-          {
-            userInfo?.is_employee && '员工'
-          }
-          {
-            userInfo?.is_dependent && '员工亲友'
-          }
+        <View className='user-grade-name'>
+          <View className='username'>
+            {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
+          </View>
+          <View className='gradename'>
+            {userInfo?.is_employee && '员工'}
+            {userInfo?.is_dependent && '员工亲友'}
+          </View>
         </View>
       )
     } else {
@@ -394,7 +376,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member' renderFooter={<SpTabbar />}>
+    <SpPage className='page-purchase-member' renderFooter={router.params?.from == 'purchase_home' ? null : <CompTabbar />}>
       <View
         className='header-block'
         style={styleNames({
@@ -402,57 +384,61 @@ function MemberIndex(props) {
         })}
       >
         <View className='header-hd'>
-          <SpImage
-            className='usericon'
-            src={(userInfo && userInfo.avatar) || 'default_user.png'}
-            width='110'
-            onClick={handleClickLink.bind(this, '/marketing/pages/member/userinfo')}
-          />
+          <View className='header-hd__header'>
+            <SpImage
+              className='usericon'
+              width='110'
+              src={(userInfo && userInfo.avatar) || 'default_user.png'}
+            />
+          </View>
           <View className='header-hd__body'>
             <View className='username-wrap'>
-              <Text className='username'>
-                {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
-              </Text>
+              <View className='join-us'>{VipGradeDom()}</View>
             </View>
-            <View className='join-us'>{VipGradeDom()}</View>
           </View>
+          {isLogin && <View className='header-hd__footer'>
+            <Text className='iconfont icon-qianwang-01' onClick={handleClickLink.bind(this, '/subpages/member/user-info')}></Text>
+          </View>}
         </View>
-        <View className='header-bd'>
-          <View className='bd-item'>
-            <View className='bd-item-label'>总额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.total_limitfee
-                  ? (purchaseInfo.total_limitfee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+
+        {
+          router.params?.from != 'purchase_home' && <View className='header-bd'>
+            <View className='bd-item'>
+              <View className='bd-item-label'>总额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.limit_fee
+                    ? (purchaseInfo.limit_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          <View className='bd-item'>
-            <View className='bd-item-label'>已使用额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.used_limitfee
-                  ? (purchaseInfo.used_limitfee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+            <View className='bd-item'>
+              <View className='bd-item-label'>已使用额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.aggregate_fee
+                    ? (purchaseInfo.aggregate_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          <View className='bd-item deposit-item'>
-            <View className='bd-item-label'>剩余额度</View>
-            <View className='bd-item-value'>
-              {isLogin
-                ? purchaseInfo.surplus_limitfee
-                  ? (purchaseInfo.surplus_limitfee / 100).toFixed(2)
-                  : '0.00'
-                : '****'}
+            <View className='bd-item deposit-item'>
+              <View className='bd-item-label'>剩余额度</View>
+              <View className='bd-item-value'>
+                {isLogin
+                  ? purchaseInfo.left_fee
+                    ? (purchaseInfo.left_fee / 100).toFixed(2)
+                    : '0.00'
+                  : '****'}
+              </View>
             </View>
-          </View>
-          {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
+            {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>
           </View> */}
-        </View>
+          </View>
+        }
         <View className='header-ft'>
           {/* 会员卡等级 */}
           {vipInfo.isOpen && (
@@ -482,7 +468,7 @@ function MemberIndex(props) {
           {config.menu.ziti_order && (
             <View
               className='ziti-order'
-              onClick={handleClickLink.bind(this, '/subpage/pages/trade/customer-pickup-list')}
+              onClick={handleClickLink.bind(this, '/subpages/trade/ziti-list')}
             >
               <View className='ziti-order-info'>
                 <View className='title'>自提订单</View>
@@ -527,19 +513,18 @@ function MemberIndex(props) {
           </View>
         </CompPanel>
 
-        <CompMenu
-          accessMenu={{
-            ...config.menu,
-            purchase: (purchaseInfo.used_roles ? purchaseInfo.used_roles.indexOf('dependents') > -1 : false) && userInfo?.is_employee,
-            popularize: userInfo ? userInfo.popularize : false
-          }}
-          isPromoter={userInfo ? userInfo.isPromoter : false}
-          onLink={handleClickService}
-        />
 
-        <CompPanel title='帮助中心'>
-          <CompHelpCenter onLink={handleClickService} />
-        </CompPanel>
+        {
+          router.params?.from != 'purchase_home' && <CompMenu
+            accessMenu={{
+              ...config.menu,
+              purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,
+              popularize: userInfo ? userInfo.popularize : false
+            }}
+            isPromoter={userInfo ? userInfo.isPromoter : false}
+            onLink={handleClickService}
+          />
+        }
       </View>
       {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />

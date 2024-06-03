@@ -1,32 +1,22 @@
+$search-wrap-height: 90px;
+
 .page-item-list {
   // background: $color-bg-gray;
-  &.has-navbar {
-    .search-wrap {
-      top: $navigate-height;
-    }
-  }
+  // &.has-navbar {
+  //   .search-wrap {
+  //     top: $navigate-height;
+  //   }
+  // }
   .item-list-head {
     background: #fff;
-    margin-top: $searchbar-height + 32;
-    // position: fixed;
-    // left: 0;
-    // top: 0;
-    // /*  #ifdef  h5  */
-    // top: $navigate-height;
-    // /*  #endif  */
-    // z-index: 999;
-    // width: 100%;
+    // margin-top: $searchbar-height + 32;
   }
   .search-wrap {
-    padding: 16px 28px;
-    position: fixed;
-    left: 0;
-    right: 0;
-    top: 0;
-    background: #fff;
-    z-index: 1000;
+    padding: 0 20px;
+    height: $search-wrap-height;
     display: flex;
     align-items: center;
+    background-color: #fff;
     .store-picker {
       display: flex;
       align-items: center;
@@ -37,6 +27,17 @@
     }
     .search-input {
       flex: 1;
+    }
+  }
+  .sp-tag-bar {
+    .tag-bar-hd {
+      width: 100%;
+      .tag-container {
+        width: 100%;
+      }
+    }
+    .tag-bar-ft {
+      display: none;
     }
   }
   .sp-filter-bar {
@@ -51,19 +52,8 @@
     }
   }
 
-  &.has-tagbar {
-    .item-list-scroll {
-      // /*  #ifdef h5 */
-      // @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height * 2+10, 0);
-      // /*  #endif  */
-    }
-  }
-
-  .item-list-scroll {
-    // @include page-scroll($tabs-height + $navigate-height + 10, 0);
-    // /*  #ifdef  h5  */
-    // @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height + 10, 0);
-    // /*  #endif  */
+  .list-scroll-container {
+    height: calc(100% - #{$search-wrap-height});
   }
   .filter-btn {
     font-size: 28px;
@@ -111,44 +101,6 @@
       overflow: hidden;
     }
   }
-
-  // .goods-tabs {
-  //   background: #fff;
-  //   .sp-filter-bar__item {
-  //     border-radius: 0;
-  //     background: #f5f5f5;
-  //     &:first-child {
-  //       border-radius: 50px 0 0 0;
-  //     }
-  //     &:last-child {
-  //       border-radius: 0 50px 0 0;
-  //     }
-  //   }
-  // }
-
-  // .tag-block {
-  //   padding: 0 20px 16px;
-  //   display: flex;
-  //   align-items: center;
-  //   background: #fff;
-  //   .tag-container {
-  //     flex: 1;
-  //   }
-  //   .filter-btn {
-  //     width: 100px;
-  //     display: flex;
-  //     align-items: center;
-  //     .filter-text {
-  //       color: var(--color-primary);
-  //     }
-  //     .icon-shaixuan-01 {
-  //       color: var(--color-primary);
-  //       font-size: 32px;
-  //       position: relative;
-  //       top: 2px;
-  //     }
-  //   }
-  // }
 
   .brand-title {
     font-size: 32px;
