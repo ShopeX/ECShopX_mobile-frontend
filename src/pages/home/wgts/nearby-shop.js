@@ -128,14 +128,16 @@ function WgtNearbyShop(props) {
       const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
       setState((v) => {
         v.shopList = [...v.shopList, ...n_list]
-        ;(v.total_count = total_count),
-          (v.indicator = false),
-          (v.noData = v.shopList.length > 0 ? false : true)
+        v.total_count = total_count
+        v.indicator = false
+        v.noData = v.shopList.length > 0 ? false : true
       })
     } else {
       setState((v) => {
         v.shopList = []
-        ;(v.total_count = 0), (v.indicator = false), (v.noData = true)
+        v.total_count = 0
+        v.indicator = false
+        v.noData = true
       })
     }
   }
@@ -408,11 +410,12 @@ function WgtNearbyShop(props) {
           ))}
         </ScrollView>
 
+          
         {listTypes.length && listTypes[activeIndex].types == 'business'
           ? storeList()
           : storeProducts()}
 
-        {indicator && <AtActivityIndicator mode='center' size={32} content='正在拼命加载数据...' />}
+        {indicator && <AtActivityIndicator size={32} content='正在拼命加载数据...' />}
 
         {noData && (
           <View className='empty-con'>
