@@ -222,8 +222,19 @@ function WgtNearbyShop(props) {
                     </View>
                     {item?.selfDeliveryRule?.is_open && (
                       <View className='freight'>
-                        <Text>起送¥20 ｜ 满¥39元免运费</Text>
-                        <Text className='freight-money'>¥5</Text>
+                        <Text>
+                          起送¥{item.selfDeliveryRule.min_amount} ｜
+                          {item.selfDeliveryRule.rule[0].selected == 'true'
+                            ? item.selfDeliveryRule.rule[0].freight_fee == '0'
+                              ? `满¥${item.selfDeliveryRule.rule[0].full}元免运费`
+                              : `满¥${item.selfDeliveryRule.rule[0].full}元运费${item.selfDeliveryRule.rule[0].freight_fee}元`
+                            : item.selfDeliveryRule.rule[1].freight_fee == '0'
+                            ? `满¥${item.selfDeliveryRule.rule[1].full}元免运费`
+                            : `满¥${item.selfDeliveryRule.rule[1].full}元运费${item.selfDeliveryRule.rule[1].freight_fee}元`}
+                        </Text>
+                        <Text class='freight-money'>
+                          ¥{item.selfDeliveryRule.freight_fee}
+                        </Text>
                       </View>
                     )}
                     {base.show_coupon && (
