@@ -71,18 +71,18 @@ const MyPage = () => {
             title='用户服务协议'
             border
             onClick={() => {
-              // Taro.navigateTo({
-              //   url: '/subpages/auth/reg-rule?type=privacyAndregister'
-              // })
+              Taro.navigateTo({
+                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+              })
             }}
           />
           <SpCell
             isLink
             title='隐私协议'
             onClick={() => {
-              // Taro.navigateTo({
-              //   url: '/subpages/auth/reg-rule?type=privacyAndregister'
-              // })
+              Taro.navigateTo({
+                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+              })
             }}
           />
         </View>
