@@ -1,9 +1,10 @@
 import Taro from '@tarojs/taro'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
+import { updateCartSalesman } from '@/store/slices/cart'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -26,8 +27,18 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
+  const dispatch = useDispatch()
   const { colorPrimary } = useSelector((state) => state.sys)
   const { cartSalesman = 0 } = useSelector((state) => state.cart)
+
+  useEffect(() => {
+    // 初始化购物车数量
+    cartSalesmanNumber()
+  })
+
+  const cartSalesmanNumber = async () => {
+    await dispatch(updateCartSalesman(11))
+  }
 
   const tabList = TABBAR_LIST.map((item) => {
     return {

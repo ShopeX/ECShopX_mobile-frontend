@@ -56,6 +56,10 @@ const cartSlice = createSlice({
       // 更新购物车数量
       state.cartCount = payload
     },
+    updateCartSalesman: (state, { payload }) => {
+      // 更新业务员购物车数量
+      state.cartSalesman = payload
+    },
     updateShopCartCount: (state, { payload }) => {
       //跟新店铺购物车全部数据
       state.shopCartCount = payload
@@ -90,6 +94,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum, changeCoupon, clearCart, changeZitiAddress ,updateShopCartCount} = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum,updateCartSalesman, changeCoupon, clearCart, changeZitiAddress ,updateShopCartCount} = cartSlice.actions
 
 export default cartSlice.reducer
