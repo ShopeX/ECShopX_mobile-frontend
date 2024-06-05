@@ -12,11 +12,11 @@ const TABBAR_LIST = [
     iconType: 'dianpushouye',
     url: '/subpages/salesman/index'
   },
-  {
-    title: '购物车',
-    iconType: 'dianpushangpinlist',
-    url: '/subpages/salesman/cart'
-  },
+  // {
+  //   title: '购物车',
+  //   iconType: 'dianpushangpinlist',
+  //   url: '/subpages/salesman/cart'
+  // },
   {
     title: '我的信息',
     iconType: 'dianpufenlei',

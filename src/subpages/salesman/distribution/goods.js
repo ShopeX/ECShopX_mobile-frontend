@@ -499,16 +499,15 @@ export default class DistributionGoods extends Component {
             searchConditionList={searchConditionList}
             onConfirm={this.handleConfirm.bind(this)}
           />
-          {/* <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} /> */}
+          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
 
-
-          <FilterBar
+          {/* <FilterBar
             className='goods-list__tabs'
             custom
             current={curFilterIdx}
             list={filterList}
             onChange={this.handleFilterChange}
-          ></FilterBar>
+          ></FilterBar> */}
 
           <ScrollView
             className='goods-list__scroll'

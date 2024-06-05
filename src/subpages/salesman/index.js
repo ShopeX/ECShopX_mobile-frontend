@@ -14,16 +14,16 @@ import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/selectCustomer' },
-    { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
+    // { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/selectCustomer' },
+    // { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
     {
       name: '业务员推广',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
     { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' },
-    { name: '选购商品', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/purchasing' },
-    { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
+    // { name: '选购商品', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/purchasing' }
+    // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
   ],
   codeStatus: false,
   information: { name: 'cx' },
