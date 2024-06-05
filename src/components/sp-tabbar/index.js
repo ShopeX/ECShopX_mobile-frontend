@@ -14,7 +14,6 @@ function SpTabbar(props) {
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { className } = props
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
-  console.log("---bar---");
   const tabList = tabbar?.data.map((item) => {
     return {
       title: item.text,

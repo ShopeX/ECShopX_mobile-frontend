@@ -4,6 +4,7 @@ import api from '@/api'
 
 const initialState = {
   cartCount: 0,
+  cartSalesman: 0,
   validCart: [],
   invalidCart: [],
   coupon: null,
