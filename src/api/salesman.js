@@ -22,3 +22,8 @@ export function promoterInfo (params = {}) {
 export function promoterGetSalesmanStatic (params = {}) {
   return req.get('/promoter/getSalesmanStatic', params)
 }
+
+// 协议
+export function shopsProtocolsaleman (params = {}) {
+  return req.get('/shops/protocolsaleman', params)
+}

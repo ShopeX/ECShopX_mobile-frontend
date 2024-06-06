@@ -19,13 +19,11 @@ export default class DistributionGoodsItem extends Component {
 
   render () {
     const { info, onClick, className, isRelease, status, shareDataChange } = this.props
-    console.log('DistributionGoodsItem', this.props)
     if (!info) {
       return null
     }
 
     const img = info.img || info.image_default_id
-    console.log('DistributionGoodsItem:info', info)
     return (
       <View className={classNames('goods-item', className)}>
         <View className='goods-item__bd'>

@@ -78,6 +78,19 @@ export default class DistributionStatistics extends Component {
       }
     )
   }
+  onHandleSearch(item){
+    this.setState(
+      {
+        parameter: {
+          ...this.state.parameter,
+          distributor_id: item.distributor_id
+        }
+      },
+      () => {
+        this.fetch()
+      }
+    )
+  }
 
   render() {
     const { info, searchConditionList } = this.state
@@ -91,6 +104,7 @@ export default class DistributionStatistics extends Component {
           isShowSearchCondition
           searchConditionList={searchConditionList}
           onConfirm={this.handleConfirm.bind(this)}
+          onHandleSearch={this.onHandleSearch.bind(this)}
         />
         <View className='header content-padded-b'>
           <View className='header-top'>
