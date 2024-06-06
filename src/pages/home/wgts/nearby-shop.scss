@@ -145,8 +145,7 @@
           .score {
             display: flex;
             justify-content: space-between;
-            margin-top: 12px;
-            margin-bottom: 24px;
+            margin: 12px 0;
             font-size: 28px;
             .sales {
               font-weight: 400;
@@ -156,6 +155,19 @@
             .monthly {
               color: #f4811f;
               margin-right: 24px;
+            }
+          }
+          .freight{
+            margin-top: 10px;
+            margin-bottom: 24px;
+            font-weight: 400;
+            font-size: 28px;
+            color: #666;
+            line-height: 33px;
+            &-money{
+              color: #999;
+              margin-left: 10px;
+              text-decoration-line: line-through;
             }
           }
           .coupon-list {

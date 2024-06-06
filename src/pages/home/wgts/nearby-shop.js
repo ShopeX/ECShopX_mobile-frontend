@@ -206,7 +206,7 @@ function WgtNearbyShop(props) {
                   <View className='shop-del'>
                     <View className='shop-names' onClick={() => handleClickItem(item)}>
                       <View className='name'>{item.name}</View>
-                      {/* <View className='deliver'>商家自配</View> */}
+                      {item?.selfDeliveryRule?.is_open && <View className='deliver'>商家自配</View>}
                     </View>
                     <View className='score' onClick={() => handleClickItem(item)}>
                       <View className='sales'>
@@ -220,7 +220,23 @@ function WgtNearbyShop(props) {
                         </View>
                       )}
                     </View>
-
+                    {item?.selfDeliveryRule?.is_open && (
+                      <View className='freight'>
+                        <Text>
+                          起送¥{item.selfDeliveryRule.min_amount} ｜
+                          {item.selfDeliveryRule.rule[0].selected == 'true'
+                            ? item.selfDeliveryRule.rule[0].freight_fee == '0'
+                              ? `满¥${item.selfDeliveryRule.rule[0].full}元免运费`
+                              : `满¥${item.selfDeliveryRule.rule[0].full}元运费${item.selfDeliveryRule.rule[0].freight_fee}元`
+                            : item.selfDeliveryRule.rule[1].freight_fee == '0'
+                            ? `满¥${item.selfDeliveryRule.rule[1].full}元免运费`
+                            : `满¥${item.selfDeliveryRule.rule[1].full}元运费${item.selfDeliveryRule.rule[1].freight_fee}元`}
+                        </Text>
+                        <Text class='freight-money'>
+                          ¥{item.selfDeliveryRule.freight_fee}
+                        </Text>
+                      </View>
+                    )}
                     {base.show_coupon && (
                       <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
                         {console.log(item.discountCardList, 'item.discountCardList1')}
@@ -410,7 +426,6 @@ function WgtNearbyShop(props) {
           ))}
         </ScrollView>
 
-          
         {listTypes.length && listTypes[activeIndex].types == 'business'
           ? storeList()
           : storeProducts()}
