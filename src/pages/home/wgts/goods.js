@@ -136,7 +136,7 @@ export default class WgtGoods extends Component {
       if (!item_data.favStatus) {
         await api.member.addFav(item_data.item_id)
 
-        !isAlipay && Tracker.dispatch('GOODS_COLLECT', info)
+        // !isAlipay && Tracker.dispatch('GOODS_COLLECT', info)
 
         this.props.onAddFav(item_data)
         Taro.showToast({
