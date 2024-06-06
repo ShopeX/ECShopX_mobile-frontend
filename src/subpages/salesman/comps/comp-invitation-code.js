@@ -14,11 +14,7 @@ const initialState = {
 
 function CompInvitationCode(props) {
   const [state, setState] = useImmer(initialState)
-  const {
-    status = true,
-    information = { },
-    cancel = () => {}
-  } = props
+  const { status = true, information = {}, cancel = () => {} } = props
   const { list, wxappCode } = state
   const { appid, company_id } = getExtConfigData()
   const { userId } = Taro.getStorageSync('userinfo')
@@ -34,10 +30,10 @@ function CompInvitationCode(props) {
       appid,
       company_id,
       user_id: userId,
-      distributor_id:information.distributor_id
+      did: information.distributor_id
     }
     const res = await api.distribution.qrcode({ ...params })
-    console.log(res,information, 'kkkkfeach')
+    console.log(res, information, 'kkkkfeach')
     // const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${userId}`
     // console.log('wxappCode1',wxappCode);
   }
