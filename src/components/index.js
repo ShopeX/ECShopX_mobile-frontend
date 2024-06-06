@@ -94,6 +94,7 @@ import SpSearchInput from './sp-search-input'
 import SpCategorySearch from './sp-category-search'
 import SpTradeItem from './sp-trade-item'
 import SpModal from './sp-modal'
+import SpTimePicker from './sp-time-picker'
 
 export default {}
 
@@ -193,5 +194,6 @@ export {
   SpSearchInput,
   SpCategorySearch,
   SpTradeItem,
-  SpModal
+  SpModal,
+  SpTimePicker
 }

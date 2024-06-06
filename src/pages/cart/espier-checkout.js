@@ -103,7 +103,8 @@ function CartCheckout(props) {
     openCashier,
     buildingNumber,
     houseNumber, // 房号
-    routerParams // 路由参数
+    routerParams, // 路由参数
+    deliveryTimeList //自配送时间
   } = state
 
   const {
@@ -491,7 +492,6 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
-
     const orderRes = await api.cart.total(cus_parmas)
     Taro.hideLoading()
     const {
@@ -532,7 +532,8 @@ function CartCheckout(props) {
       receiver_district,
       item_fee_new,
       market_fee,
-      items_promotion
+      items_promotion,
+      deliveryTimeList
     } = orderRes
 
     let subdistrictRes
@@ -634,6 +635,7 @@ function CartCheckout(props) {
       draft.totalInfo = total_info
       draft.paramsInfo = { ...paramsInfo, ...cus_parmas }
       draft.pointInfo = point_info
+      draft.deliveryTimeList = deliveryTimeList
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
       if (openStreet) {
@@ -710,6 +712,12 @@ function CartCheckout(props) {
       delete cus_parmas.receiver_district
       delete cus_parmas.receiver_address
       delete cus_parmas.receiver_zip
+    }
+
+    //自配送需要传送达时间
+    if(receiptType == 'merchant'){
+      const { selfDeliveryTime } = await deliverRef.current.geSelfDeliveryTime()
+      cus_parmas.self_delivery_time  = selfDeliveryTime
     }
 
     // 积分不开票
@@ -892,6 +900,7 @@ function CartCheckout(props) {
             ref={deliverRef}
             distributor_id={shop_id}
             address={address}
+            deliveryTimeList={deliveryTimeList}
             onChange={handleSwitchExpress}
             onEidtZiti={handleEditZitiClick}
           />

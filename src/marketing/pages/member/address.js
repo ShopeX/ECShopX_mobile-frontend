@@ -45,7 +45,7 @@ function AddressIndex(props) {
     const { list } = await api.member.addressList()
     Taro.hideLoading()
     let newList = [...list]
-    if (receipt_type === 'dada' && city) {
+    if (['dada','merchant'].includes(receipt_type) && city) {
       newList = list
         .map((item) => {
           item.disabled = item.city !== city
