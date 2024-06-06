@@ -59,6 +59,14 @@ function SpSkuSelect(props) {
     if (info && !info.nospec) {
       init()
     }
+    // 防止列表页遗留其他商品信息
+    if (info && info.nospec) {
+      setState((draft) => {
+        draft.curItem = null
+        draft.skuText = ''
+        draft.num = 1
+      })
+    }
   }, [info])
 
   const init = () => {
