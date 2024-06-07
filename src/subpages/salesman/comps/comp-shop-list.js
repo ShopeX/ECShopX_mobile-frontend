@@ -18,9 +18,11 @@ function CompShopList(props) {
 
   const storeCode = (val) => {
     let params = {
-      name: val.merchant_name,
-      distributor_name: val.name,
-      distributor_id: val.distributor_id
+      name: val?.merchant_name,
+      distributor_name: val?.name,
+      distributor_id: val?.distributor_id,
+      is_valid: val?.salesperson?.is_valid,
+      user_id: val?.user_id
     }
     setState((draft) => {
       draft.codeStatus = true

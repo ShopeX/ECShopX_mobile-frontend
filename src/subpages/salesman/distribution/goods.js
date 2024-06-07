@@ -144,16 +144,16 @@ export default class DistributionGoods extends Component {
     let seriesList = list[0] ? list[0].params.data : []
     let nav = JSON.parse(JSON.stringify(this.state.navFilterList))
     seriesList[0]?.content?.forEach((item) => {
-      item.category_name = item.name
+      item.category_name = item.name  || item.category_name
       item.category_id = item.category_id || item.main_category_id
       item.statusNum = item.category_id ? true : false
       item?.children?.forEach((item1) => {
-        item1.category_name = item1.name
-        item1.category_id = item1.category_id || item.main_category_id
+        item1.category_name = item1.name|| item1.category_name
+        item1.category_id = item1.category_id || item1.main_category_id
         item1.statusNum = item1.category_id ? true : false
         item1?.children?.forEach((item2) => {
-          item2.category_name = item2.name
-          item2.category_id = item2.category_id || item.main_category_id
+          item2.category_name = item2.name|| item2.category_name
+          item2.category_id = item2.category_id || item2.main_category_id
           item2.statusNum = item2.category_id ? true : false
         })
       })
@@ -491,34 +491,58 @@ export default class DistributionGoods extends Component {
     })
   }
 
+  
+  // findDataById = (data, id) => {
+  //   let result = null
+
+  //   data.find((item) => {
+  //     if (item.category_id == id) {
+  //       result = item
+  //     } else {
+  //       item?.children?.find((item1) => {
+  //         if (item1.category_id == id) {
+  //           result = item1
+  //         } else {
+  //           item1?.children?.find((item2) => {
+  //             if (item2.category_id == id) {
+  //               result = item2
+  //             }
+  //           })
+  //         }
+  //       })
+  //     }
+  //   })
+
+  //   return result
+  // }
+  
   // 递归函数用于查找指定ID的数据
   findDataById = (data, id) => {
-    let result = null
+    let result = null;
 
-    data.find((item) => {
-      if (item.category_id == id) {
-        result = item
-      } else {
-        item?.children?.find((item1) => {
-          if (item1.category_id == id) {
-            result = item1
-          } else {
-            item1?.children?.find((item2) => {
-              if (item2.category_id == id) {
-                result = item2
-              }
-            })
-          }
-        })
-      }
-    })
+    const searchById = (items) => {
+        for (const item of items) {
+            if (item.category_id === id) {
+                result = item;
+                return;
+            }
+            if (item.children) {
+                searchById(item.children);
+                if (result) return;
+            }
+        }
+    };
 
-    return result
-  }
+    searchById(data);
+    return result;
+};
 
   handleFilterChanges = async (key, value) => {
     console.log(789, key, value)
-    let params = {}
+    let params = {
+      category_id:'',
+      main_category:''
+    }
     if (key == 'category') {
       let res = this.findDataById(this.state.navFilterList[1].option, value)
       if (res?.statusNum) {
