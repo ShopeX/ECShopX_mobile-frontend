@@ -8,20 +8,19 @@ import api from '@/api'
 import './comp-invitation-code.scss'
 
 const initialState = {
-  list: [],
   wxappCode: ''
 }
 
 function CompInvitationCode(props) {
   const [state, setState] = useImmer(initialState)
   const { status = true, information = {}, cancel = () => {} } = props
-  const { list, wxappCode } = state
+  const { wxappCode } = state
   const { appid, company_id } = getExtConfigData()
   const { userId } = Taro.getStorageSync('userinfo')
 
   useEffect(() => {
     feach()
-  })
+  },[])
 
   const feach = async () => {
     const path = information?.is_valid
@@ -29,16 +28,9 @@ function CompInvitationCode(props) {
       : `subpages/store/index?id=${information?.distributor_id}` //如果开了小店，进小店的页面，否则进店铺首页
     const codeUrl = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=${path}&appid=${appid}&company_id=${company_id}&uid=${information.user_id}&dtid=${information.distributor_id}`
     const codeImg = await Taro.getImageInfo({ src: codeUrl })
-    // let params = {
-    //   path,
-    //   appid,
-    //   company_id,
-    //   user_id: userId,
-    //   did: information.distributor_id
-    // }
-    // const res = await api.distribution.qrcode({ ...params })
+   
     setState((draft) => {
-      draft.wxappCode = codeImg
+      draft.wxappCode = codeImg.path
     })
   }
 
