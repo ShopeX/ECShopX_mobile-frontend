@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component,useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { platformTemplateName } from '@/utils/platform'
@@ -45,7 +45,7 @@ export default class DistributionGoods extends Component {
         },
         {
           title: '分类',
-          iconType: 'category',
+          iconType: 'category_id',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/good-category',
           urlRedirect: true
@@ -105,6 +105,7 @@ export default class DistributionGoods extends Component {
       isLoading: true,
       first: true
     }
+    this.listRef = React.createRef();
   }
 
   componentDidMount() {
@@ -138,32 +139,16 @@ export default class DistributionGoods extends Component {
       template_name: platformTemplateName,
       version: 'v1.0.1',
       page_name: 'category',
-      isSalesmanPage: 1
+      isSalesmanPage: 1,
+      distributor_id:this.state.query.distributor_id
     }
-    const { list } = await api.category.getCategory(query)
-    let seriesList = list[0] ? list[0].params.data : []
+    const seriesList = await api.salesman.get(query)
     let nav = JSON.parse(JSON.stringify(this.state.navFilterList))
-    // seriesList[0]?.content?.forEach((item) => {
-    //   item.category_name = item.name  || item.category_name
-    //   item.category_id = item.category_id || item.main_category_id
-    //   item.statusNum = item.category_id ? true : false
-    //   item?.children?.forEach((item1) => {
-    //     item1.category_name = item1.name|| item1.category_name
-    //     item1.category_id = item1.category_id || item1.main_category_id
-    //     item1.statusNum = item1.category_id ? true : false
-    //     item1?.children?.forEach((item2) => {
-    //       item2.category_name = item2.name|| item2.category_name
-    //       item2.category_id = item2.category_id || item2.main_category_id
-    //       item2.statusNum = item2.category_id ? true : false
-    //     })
-    //   })
-    // })
 
     const classification = (item) => {
       item.forEach((l, i) => {
-        l.category_name = l.name || l.category_name
-        l.category_id = l.category_id || l.main_category_id
-        l.statusNum = l.category_id ? true : false
+        l.category_name = l.category_name
+        l.category_id = l.category_id
         if (l?.children) {
           classification(l.children)
         }
@@ -171,7 +156,7 @@ export default class DistributionGoods extends Component {
       return item
     }
 
-    let res = classification(seriesList[0]?.content ?? [])
+    let res = classification(seriesList)
 
     nav[1].option = [...nav[1].option, ...(res ?? [])]
     this.setState({
@@ -213,11 +198,10 @@ export default class DistributionGoods extends Component {
 
     let nav = JSON.parse(JSON.stringify(navFilterList))
 
-    // navFilterList
     select_tags_list?.map((item) => {
       nav[0].option.push({
         label: item.tag_name,
-        value: item.item_id
+        value: item.tag_id
       })
     })
 
@@ -467,6 +451,7 @@ export default class DistributionGoods extends Component {
         isLoading: true
       },
       () => {
+        this.listRef.current.onSubmit()
         this.resetPage()
         this.setState(
           {
@@ -505,30 +490,6 @@ export default class DistributionGoods extends Component {
     })
   }
 
-  // findDataById = (data, id) => {
-  //   let result = null
-
-  //   data.find((item) => {
-  //     if (item.category_id == id) {
-  //       result = item
-  //     } else {
-  //       item?.children?.find((item1) => {
-  //         if (item1.category_id == id) {
-  //           result = item1
-  //         } else {
-  //           item1?.children?.find((item2) => {
-  //             if (item2.category_id == id) {
-  //               result = item2
-  //             }
-  //           })
-  //         }
-  //       })
-  //     }
-  //   })
-
-  //   return result
-  // }
-
   // 递归函数用于查找指定ID的数据
   findDataById = (data, id) => {
     let result = null
@@ -552,20 +513,19 @@ export default class DistributionGoods extends Component {
 
   handleFilterChanges = async (key, value) => {
     console.log(789, key, value)
-    let params = {
-      category_id: '',
-      main_category: ''
-    }
+    let params = {}
     if (key == 'category') {
-      let res = this.findDataById(this.state.navFilterList[1].option, value)
-      if (res?.statusNum) {
-        params['category_id'] = value
-      } else {
-        params['main_category'] = value
-      }
+      // let res = this.findDataById(this.state.navFilterList[1].option, value)
+      // if (res?.statusNum) {
+      //   params['category_id'] = value
+      // } else {
+      //   params['main_category'] = value
+      // }
+      params['category_id'] = value
     } else {
       params[key] = value
     }
+    
     this.setState(
       {
         query: {
@@ -589,22 +549,37 @@ export default class DistributionGoods extends Component {
   }
 
   onHandleSearch(item) {
+    let res = JSON.parse(JSON.stringify(this.state.navFilterList))
+    res[1]=   {
+          key: 'category',
+          name: '分类',
+          label: '分类',
+          activeIndex: null,
+          option: [
+            { category_name: '全部', category_id: 'all' }
+          ]
+        }
     this.setState(
       {
         query: {
-          ...this.state.query,
+          // ...this.state.query,
+          tag_id:'',
+          category_id:'',
+          store_status:'',
           distributor_id: item.distributor_id
         },
-        isLoading: true
+        isLoading: true,
+        navFilterList:res
       },
-      () => {
-        this.resetPage()
+      async () => {
+        await this.resetPage()
+        await this.getCategory()
         this.setState(
           {
             list: []
           },
-          () => {
-            this.nextPage()
+          async () => {
+            await this.nextPage()
           }
         )
       }
@@ -651,7 +626,7 @@ export default class DistributionGoods extends Component {
             onConfirm={this.handleConfirm.bind(this)}
             onHandleSearch={this.onHandleSearch.bind(this)}
           />
-          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
+          <SpNavFilter ref={this.listRef} info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
 
           {/* <FilterBar
             className='goods-list__tabs'

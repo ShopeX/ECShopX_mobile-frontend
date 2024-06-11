@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useImperativeHandle } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text } from '@tarojs/components'
@@ -19,7 +19,7 @@ const initState = {
   init: true,
   offsetHight:140,
 }
-function SpNavFilter(props) {
+function SpNavFilter(props,ref) {
   const [state, setState] = useImmer(initState)
 
   const {
@@ -60,6 +60,13 @@ function SpNavFilter(props) {
     console.log('----', info)
     initDynamicData()
   }, [info])
+
+
+  useImperativeHandle(ref, () => ({
+    onSubmit: () => {
+      initDynamicData()
+    }
+  }))
 
   const initDynamicData = async () => {
     const _typeList = JSON.parse(JSON.stringify(info))

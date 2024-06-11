@@ -27,3 +27,8 @@ export function promoterGetSalesmanStatic (params = {}) {
 export function shopsProtocolsaleman (params = {}) {
   return req.get('/shops/protocolsaleman', params)
 }
+
+//分类
+export function get (params={}) {
+  return req.get('/goods/category', params)
+}
