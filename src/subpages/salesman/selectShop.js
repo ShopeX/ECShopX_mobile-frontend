@@ -65,7 +65,7 @@ const SelectShop = () => {
     <SpPage className={classNames('page-selectShop')}>
       <SpSearchInput
         placeholder='输入内容'
-        isShowArea
+        // isShowArea
         isShowSearchCondition
         searchConditionList={searchConditionList}
         onConfirm={(val) => {
@@ -73,11 +73,11 @@ const SelectShop = () => {
             draft.basis = val
           })
         }}
-        onSelectArea={(val) => {
-          setState((draft) => {
-            draft.address = val.value
-          })
-        }}
+        // onSelectArea={(val) => {
+        //   setState((draft) => {
+        //     draft.address = val.value
+        //   })
+        // }}
       />
       <SpScrollView auto={false} ref={goodsRef} fetch={fetch}>
         {list.map((item, index) => {
