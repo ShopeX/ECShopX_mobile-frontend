@@ -105,7 +105,6 @@ export default class DistributionGoods extends Component {
       isLoading: true,
       first: true
     }
-    this.listRef = React.createRef();
   }
 
   componentDidMount() {
@@ -451,7 +450,6 @@ export default class DistributionGoods extends Component {
         isLoading: true
       },
       () => {
-        this.listRef.current.onSubmit()
         this.resetPage()
         this.setState(
           {
@@ -626,7 +624,7 @@ export default class DistributionGoods extends Component {
             onConfirm={this.handleConfirm.bind(this)}
             onHandleSearch={this.onHandleSearch.bind(this)}
           />
-          <SpNavFilter ref={this.listRef} info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
+          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
 
           {/* <FilterBar
             className='goods-list__tabs'

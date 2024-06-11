@@ -62,12 +62,6 @@ function SpNavFilter(props,ref) {
   }, [info])
 
 
-  useImperativeHandle(ref, () => ({
-    onSubmit: () => {
-      initDynamicData()
-    }
-  }))
-
   const initDynamicData = async () => {
     const _typeList = JSON.parse(JSON.stringify(info))
     setState((v) => {
