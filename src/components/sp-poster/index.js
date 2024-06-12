@@ -12,14 +12,15 @@ import GuideGoodsDetailPosterWx from './dw-guidegoodsdetail'
 import GuideGoodsDetailPosterAli from './dw-guidegoodsdetail.alipay'
 import GuideCheckoutWx from './dw-guidecheckout'
 import GuideCheckoutAli from './dw-guidecheckout.alipay'
+import StoreCode from './dw-storeCode'
 
 
 import './index.scss'
 
-const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout] = isAlipay ? [
-  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli
+const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes] = isAlipay ? [
+  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode
 ] : [
-  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx
+  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode
 ]
 
 const initialState = {
@@ -104,6 +105,15 @@ function SpPoster(props) {
           toRpx
         })
         break
+        case 'storeCode':
+          canvasObj = new StoreCodes({
+            ctx,
+            info,
+            userInfo: guideInfo,
+            toPx,
+            toRpx
+          })
+          break
       case 'distribution':
         canvasObj = new Distribution({
           ctx,

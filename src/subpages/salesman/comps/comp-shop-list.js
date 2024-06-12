@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage } from '@/components'
+import { SpImage ,SpPoster} from '@/components'
 import CompInvitationCode from './comp-invitation-code'
 import './comp-shop-list.scss'
 
@@ -61,7 +61,7 @@ function CompShopList(props) {
         </View>
       </View>
 
-      {codeStatus && (
+      {/* {codeStatus && (
         <CompInvitationCode
           status
           information={information}
@@ -71,7 +71,21 @@ function CompShopList(props) {
             })
           }}
         />
+      )} */}
+
+      {codeStatus && (
+        <SpPoster
+          info={information}
+          type='storeCode'
+          onClose={() => {
+            setState((draft) => {
+              draft.codeStatus = false
+            })
+          }}
+        />
       )}
+
+      
     </View>
   )
 }
