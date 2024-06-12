@@ -15,13 +15,20 @@ function CompGoodsItem(props) {
   const [state, setState] = useImmer(initialState)
   const { allChecked } = state
 
+  const {} = props
+
   const onChangeGoodsIsCheck = () => {}
 
   const onChangeInputNumber = (value) => {}
 
+  // 商品结算
   const handleCheckout = () => {}
 
+  // 商品全选
   const onChangeGoodsIsChecks = () => {}
+
+  // 清除无效商品
+  const handleClearInvalidGoods = () => {}
 
   return (
     <View>
@@ -49,7 +56,7 @@ function CompGoodsItem(props) {
               <View className='new'>新品</View>
               <View className='money'>
                 <SpPrice className='mkt-price' value='1000' />
-                <SpInputNumber value='7' max='8' min={1} onChange={onChangeInputNumber} />
+                <SpInputNumber value='8' max='8' min={1} onChange={onChangeInputNumber} />
               </View>
             </View>
           </View>
@@ -72,7 +79,7 @@ function CompGoodsItem(props) {
               <View className='new'>新品</View>
               <View className='money'>
                 <SpPrice className='mkt-price' value='1000' />
-                <SpInputNumber value='7' max='8' min={1} onChange={onChangeInputNumber} />
+                <SpInputNumber value='1' max='8' min={1} onChange={onChangeInputNumber} />
               </View>
             </View>
           </View>
@@ -131,7 +138,7 @@ function CompGoodsItem(props) {
       <View className='comp-goodsitems-invalid'>
         <View className='comp-goodsitems-invalid-title'>
           <View>失效商品2件</View>
-          <View>清空失效商品</View>
+          <View onClick={handleClearInvalidGoods()}>清空失效商品</View>
         </View>
         <View className='comp-goodsitems-item'>
           <View className='comp-goodsitems-item-del'>
