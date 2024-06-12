@@ -93,14 +93,13 @@ export default class DistributionTrade extends Component {
   }
 
   handleConfirm(val) {
-    console.log('handleConfirm', val)
+    this.resetPage()
     this.setState(
       {
         parameter: val,
         list: []
       },
       () => {
-        this.resetPage()
         this.nextPage()
       }
     )
