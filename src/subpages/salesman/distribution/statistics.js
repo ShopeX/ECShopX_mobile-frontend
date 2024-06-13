@@ -37,7 +37,8 @@ export default class DistributionStatistics extends Component {
       orderNoCloseRebate: 'orderNoCloseRebate',
       orderTeamCloseRebate: 'orderTeamCloseRebate',
       orderTeamNoCloseRebate: 'orderTeamNoCloseRebate',
-      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee'
+      taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee',
+      noCloseRebate:'noCloseRebate'
     })
 
     this.setState({
@@ -152,13 +153,13 @@ export default class DistributionStatistics extends Component {
                 <View className='view-flex-item'>
                   <View className='data-label'>未确认</View>
                   <View className='data-count'>
-                    {info.orderNoCloseRebate ? info.orderNoCloseRebate / 100 : '0'}
+                    {info.noCloseRebate ? info.noCloseRebate / 100 : '0'}
                   </View>
                 </View>
                 <View className='view-flex-item'>
                   <View className='data-label'>已确认</View>
                   <View className='data-count'>
-                    {info.orderCloseRebate ? info.orderNoCloseRebate / 100 : '0'}
+                    {info.orderCloseRebate ? info.orderCloseRebate / 100 : '0'}
                   </View>
                 </View>
               </View>
@@ -182,7 +183,7 @@ export default class DistributionStatistics extends Component {
                 <View className='view-flex-item'>
                   <View className='data-label'>已确认</View>
                   <View className='data-count'>
-                    {info.orderTeamNoCloseRebate ? info.orderTeamNoCloseRebate / 100 : '0'}
+                    {info.orderTeamCloseRebate ? info.orderTeamCloseRebate / 100 : '0'}
                   </View>
                 </View>
               </View>
