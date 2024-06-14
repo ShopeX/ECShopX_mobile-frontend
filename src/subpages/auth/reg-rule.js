@@ -42,6 +42,22 @@ export default class RegRule extends Component {
       })
       data = registerContent + privacyContent
       navBarTitle = `${registerTitle}和${privactTitle}`
+    }else if (type === 'x') {
+      // 隐私和注册协议
+      const {salesman_service} = await api.salesman.shopsProtocolsaleman({
+        type: 'x'
+      })
+      const { content: privacyContent, title: privactTitle } = salesman_service
+      data = privacyContent
+      navBarTitle = privactTitle
+    }else if (type === 'y') {
+      // 隐私和注册协议
+      const {salesman_privacy} = await api.salesman.shopsProtocolsaleman({
+        type: 'x'
+      })
+      const { content: privacyContent, title: privactTitle } = salesman_privacy
+      data = privacyContent
+      navBarTitle = privactTitle
     } else if (type) {
       // 隐私政策
       const { content, title = '充值协议' } = await api.shop.getRuleInfo({

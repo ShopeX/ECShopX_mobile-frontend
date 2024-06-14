@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useImperativeHandle } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text } from '@tarojs/components'
@@ -19,7 +19,7 @@ const initState = {
   init: true,
   offsetHight:140,
 }
-function SpNavFilter(props) {
+function SpNavFilter(props,ref) {
   const [state, setState] = useImmer(initState)
 
   const {
@@ -61,12 +61,14 @@ function SpNavFilter(props) {
     initDynamicData()
   }, [info])
 
+
   const initDynamicData = async () => {
     const _typeList = JSON.parse(JSON.stringify(info))
     setState((v) => {
       v.cateListFirst = _typeList.find((item) => item.key === 'category')?.option || []
-      _typeList[1]?.option
+      // _typeList[1]?.option
       v.typeList = _typeList
+      v.init = true
     })
   }
 
@@ -216,6 +218,8 @@ function SpNavFilter(props) {
     })
     onChange && onChange('category', categoryId)
   }
+
+  console.log('--------',cateListSecond)
 
   return (
     <View className='sp-nav-filter' >

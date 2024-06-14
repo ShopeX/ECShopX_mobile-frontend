@@ -73,10 +73,5 @@ export const deliveryList = [
     type: 'ziti',
     name: '到店自提',
     key: 'is_ziti'
-  },
-  {
-    type: 'selfDelivery',
-    name: '商家自配',
-    key: 'is_self_delivery'
   }
 ]

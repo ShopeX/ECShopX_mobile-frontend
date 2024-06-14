@@ -72,7 +72,7 @@ const MyPage = () => {
             border
             onClick={() => {
               Taro.navigateTo({
-                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+                url: '/subpages/auth/reg-rule?type=x'
               })
             }}
           />
@@ -81,7 +81,7 @@ const MyPage = () => {
             title='隐私协议'
             onClick={() => {
               Taro.navigateTo({
-                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+                url: '/subpages/auth/reg-rule?type=y'
               })
             }}
           />

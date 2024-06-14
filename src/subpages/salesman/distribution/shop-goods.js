@@ -207,7 +207,6 @@ export default class DistributionShopGoods extends Component {
   onShareAppMessage (res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-
     return {
       title: info.title,
       imageUrl: info.img,
@@ -337,7 +336,7 @@ export default class DistributionShopGoods extends Component {
                     </View>
                     <Button
                       className='shop-goods__footer-item'
-                      dataInfo={item}
+                      data-info={item}
                       openType='share'
                       size='small'
                     >

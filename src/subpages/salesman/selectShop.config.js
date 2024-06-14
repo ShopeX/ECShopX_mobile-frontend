@@ -1,4 +1,4 @@
 export default {
-    navigationBarTitleText: '代客下单'
+    navigationBarTitleText: '商家列表'
   }
   

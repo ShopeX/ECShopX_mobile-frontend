@@ -256,10 +256,10 @@ export default class DistributionDashboard extends Component {
           </Navigator>
           <View className='content-padded-b view-flex content-center member'>
             <View className='view-flex-item'>
-              已购买会员 <Text className='mark'>{info.isbuy_promoter}</Text> 人
+              销售客户 <Text className='mark'>{info.isbuy_promoter}</Text> 人
             </View>
             <View className='view-flex-item'>
-              未购买会员 <Text className='mark'>{info.notbuy_promoter}</Text> 人
+              推广客户 <Text className='mark'>{info.notbuy_promoter}</Text> 人
             </View>
           </View>
         </View>

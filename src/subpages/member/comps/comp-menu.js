@@ -175,6 +175,7 @@ function CompMenu(props) {
         link: '/subpages/salesman/index'
       }
     ])
+    menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
 
 

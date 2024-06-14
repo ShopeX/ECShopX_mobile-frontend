@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, { Component,useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { platformTemplateName } from '@/utils/platform'
 import { AtTabBar } from 'taro-ui'
 import {
   SpToast,
@@ -44,7 +45,7 @@ export default class DistributionGoods extends Component {
         },
         {
           title: '分类',
-          iconType: 'category',
+          iconType: 'category_id',
           iconPrefixClass: 'iconfont icon',
           url: '/subpages/salesman/distribution/good-category',
           urlRedirect: true
@@ -57,28 +58,14 @@ export default class DistributionGoods extends Component {
       list: [],
       goodsIds: [],
       top: 0,
-      searchConditionList: [
-        { label: '全部店铺', value: '' }
-      ],
+      searchConditionList: [{ label: '全部店铺', value: '' }],
       navFilterList: [
         {
           key: 'tag_id',
           name: '标签',
           label: '标签',
           activeIndex: null,
-          option: [
-            { label: '最新', value: 1 },
-            { label: '促销', value: 0 },
-            { label: '最新', value: 1 },
-            { label: '热门', value: 2 },
-            { label: '秒杀', value: 3 },
-            { label: 'VIP', value: 4 },
-            { label: '清仓', value: 5 },
-            { label: '儿童', value: 6 },
-            { label: '中老年人', value: 7 },
-            { label: '端午节', value: 8 },
-            { label: '专属最强打工人的无敌福利', value: 9 }
-          ]
+          option: []
         },
         {
           key: 'category',
@@ -86,23 +73,23 @@ export default class DistributionGoods extends Component {
           label: '分类',
           activeIndex: null,
           option: [
-            { category_name: '全部', category_id: 'all' },
-            {
-              category_name: '男装',
-              category_id: '1',
-              children: [
-                {
-                  category_name: '上衣',
-                  category_id: '3',
-                  children: [{ category_name: '卫衣', category_id: '4' }]
-                }
-              ]
-            },
-            { category_name: '女装', category_id: '2' }
+            { category_name: '全部', category_id: 'all' }
+            // {
+            //   category_name: '男装',
+            //   category_id: '1',
+            //   children: [
+            //     {
+            //       category_name: '上衣',
+            //       category_id: '3',
+            //       children: [{ category_name: '卫衣', category_id: '4' }]
+            //     }
+            //   ]
+            // },
+            // { category_name: '女装', category_id: '2' }
           ]
         },
         {
-          key: 'status',
+          key: 'store_status',
           label: '状态',
           name: '状态',
           activeIndex: null,
@@ -114,7 +101,9 @@ export default class DistributionGoods extends Component {
       ],
       tag_id: '',
       category: '',
-      statused: ''
+      statused: '',
+      isLoading: true,
+      first: true
     }
   }
 
@@ -134,7 +123,8 @@ export default class DistributionGoods extends Component {
           approve_status: 'onsale,only_show',
           is_promoter: true
         },
-        tabList
+        tabList,
+        isLoading: true
       },
       () => {
         this.nextPage()
@@ -143,18 +133,53 @@ export default class DistributionGoods extends Component {
     this.distributor()
   }
 
+  async getCategory() {
+    const query = {
+      template_name: platformTemplateName,
+      version: 'v1.0.1',
+      page_name: 'category',
+      isSalesmanPage: 1,
+      distributor_id:this.state.query.distributor_id
+    }
+    const seriesList = await api.salesman.get(query)
+    let nav = JSON.parse(JSON.stringify(this.state.navFilterList))
+
+    const classification = (item) => {
+      item.forEach((l, i) => {
+        l.category_name = l.category_name
+        l.category_id = l.category_id
+        if (l?.children) {
+          classification(l.children)
+        }
+      })
+      return item
+    }
+
+    let res = classification(seriesList)
+
+    nav[1].option = [...nav[1].option, ...(res ?? [])]
+    this.setState({
+      navFilterList: nav
+    })
+  }
+
   async fetch(params) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { page_no: page, page_size: pageSize } = params
-    const { selectParams } = this.state
+    const { selectParams, navFilterList, first } = this.state
     const query = {
       ...this.state.query,
       page,
       pageSize,
-      isSalesmanPage:1
+      isSalesmanPage: 1
     }
 
-    const { list, total_count: total, item_params_list = [] } = await api.item.search(query)
+    const {
+      list,
+      total_count: total,
+      item_params_list = [],
+      select_tags_list
+    } = await api.item.search(query)
 
     item_params_list.map((item) => {
       if (selectParams.length < 4) {
@@ -167,6 +192,15 @@ export default class DistributionGoods extends Component {
         attribute_value_id: 'all',
         attribute_value_name: '全部',
         isChooseParams: true
+      })
+    })
+
+    let nav = JSON.parse(JSON.stringify(navFilterList))
+
+    select_tags_list?.map((item) => {
+      nav[0].option.push({
+        label: item.tag_name,
+        value: item.tag_id
       })
     })
 
@@ -198,7 +232,9 @@ export default class DistributionGoods extends Component {
     this.setState({
       list: [...this.state.list, ...nList],
       goodsIds: [...this.state.goodsIds, ...goods_id],
-      query
+      query,
+      isLoading: false,
+      first: false
     })
 
     if (this.firstStatus) {
@@ -208,12 +244,16 @@ export default class DistributionGoods extends Component {
       })
       this.firstStatus = false
     }
-
+    if (first) {
+      this.setState({
+        navFilterList: nav
+      })
+      await this.getCategory()
+    }
     return {
       total
     }
   }
-
 
   distributor = async () => {
     const { list } = await api.salesman.getSalespersonSalemanShopList({
@@ -229,7 +269,7 @@ export default class DistributionGoods extends Component {
       label: '全部店铺'
     })
     this.setState({
-      searchConditionList:list
+      searchConditionList: list
     })
   }
 
@@ -258,7 +298,8 @@ export default class DistributionGoods extends Component {
     this.setState(
       {
         curFilterIdx: current,
-        query
+        query,
+        isLoading: true
       },
       () => {
         this.nextPage()
@@ -314,7 +355,8 @@ export default class DistributionGoods extends Component {
     this.resetPage()
     this.setState(
       {
-        list: []
+        list: [],
+        isLoading: true
       },
       () => {
         this.nextPage()
@@ -404,7 +446,8 @@ export default class DistributionGoods extends Component {
           ...this.state.query,
           keywords: val.keywords,
           distributor_id: val.key
-        }
+        },
+        isLoading: true
       },
       () => {
         this.resetPage()
@@ -445,19 +488,100 @@ export default class DistributionGoods extends Component {
     })
   }
 
-  handleFilterChanges = ()=>{
-    const {
-      tag_id,
-      category,
-      statused
-    } = this.state
-    async (key, value) => {
-      console.log(789, key, value)
-      this.setState((v) => {
-        v[key] = value
-      })
-    },
-    [tag_id, category, statused]
+  // 递归函数用于查找指定ID的数据
+  findDataById = (data, id) => {
+    let result = null
+
+    const searchById = (items) => {
+      for (const item of items) {
+        if (item.category_id === id) {
+          result = item
+          return
+        }
+        if (item.children) {
+          searchById(item.children)
+          if (result) return
+        }
+      }
+    }
+
+    searchById(data)
+    return result
+  }
+
+  handleFilterChanges = async (key, value) => {
+    console.log(789, key, value)
+    let params = {}
+    if (key == 'category') {
+      // let res = this.findDataById(this.state.navFilterList[1].option, value)
+      // if (res?.statusNum) {
+      //   params['category_id'] = value
+      // } else {
+      //   params['main_category'] = value
+      // }
+      params['category_id'] = value
+    } else {
+      params[key] = value
+    }
+    
+    this.setState(
+      {
+        query: {
+          ...this.state.query,
+          ...params
+        },
+        isLoading: true
+      },
+      () => {
+        this.resetPage()
+        this.setState(
+          {
+            list: []
+          },
+          () => {
+            this.nextPage()
+          }
+        )
+      }
+    )
+  }
+
+  onHandleSearch(item) {
+    let res = JSON.parse(JSON.stringify(this.state.navFilterList))
+    res[1]=   {
+          key: 'category',
+          name: '分类',
+          label: '分类',
+          activeIndex: null,
+          option: [
+            { category_name: '全部', category_id: 'all' }
+          ]
+        }
+    this.setState(
+      {
+        query: {
+          // ...this.state.query,
+          tag_id:'',
+          category_id:'',
+          store_status:'',
+          distributor_id: item.distributor_id
+        },
+        isLoading: true,
+        navFilterList:res
+      },
+      async () => {
+        await this.resetPage()
+        await this.getCategory()
+        this.setState(
+          {
+            list: []
+          },
+          async () => {
+            await this.nextPage()
+          }
+        )
+      }
+    )
   }
   render() {
     const { status } = this.$instance.router.params
@@ -475,9 +599,9 @@ export default class DistributionGoods extends Component {
       navFilterList,
       tag_id,
       category,
-      statused
+      statused,
+      isLoading
     } = this.state
-    console.log(list)
 
     return (
       <SpPage className='page-distribution-shop'>
@@ -498,17 +622,17 @@ export default class DistributionGoods extends Component {
             isShowSearchCondition
             searchConditionList={searchConditionList}
             onConfirm={this.handleConfirm.bind(this)}
+            onHandleSearch={this.onHandleSearch.bind(this)}
           />
-          {/* <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} /> */}
+          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
 
-
-          <FilterBar
+          {/* <FilterBar
             className='goods-list__tabs'
             custom
             current={curFilterIdx}
             list={filterList}
             onChange={this.handleFilterChange}
-          ></FilterBar>
+          ></FilterBar> */}
 
           <ScrollView
             className='goods-list__scroll'
@@ -533,9 +657,9 @@ export default class DistributionGoods extends Component {
                 )
               })}
             </View>
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
-            {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            {isLoading && <Loading>正在加载...{isLoading}</Loading>}
+            {!isLoading && list.length == 0 && (
+              <SpNote img='trades_empty.png'>暂无数据~{isLoading}</SpNote>
             )}
           </ScrollView>
           <SpToast />

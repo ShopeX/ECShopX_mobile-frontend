@@ -273,7 +273,8 @@ export default class DistributionShopHome extends Component {
       pageSize,
       ...this.state.params,
       shop_user_id: userId,
-      ...parameter
+      ...parameter,
+      isSalesmanPage:1
     }
 
     const { list, total_count: total, goods_total = 0 } = await api.distribution.getShopGoods(query)
@@ -468,6 +469,20 @@ export default class DistributionShopHome extends Component {
     )
   }
 
+  onHandleSearch(item){
+    this.setState(
+      {
+        parameter: {
+          ...this.state.parameter,
+          distributor_id: item.distributor_id
+        }
+      },
+      () => {
+        this.resetGet()
+      }
+    )
+  }
+
   render() {
     const {
       showBackToTop,
@@ -555,6 +570,7 @@ export default class DistributionShopHome extends Component {
             isShowSearchCondition
             searchConditionList={searchConditionList}
             onConfirm={this.onConfirms.bind(this)}
+            onHandleSearch={this.onHandleSearch.bind(this)}
           />
           <View className='filterMain'>
             {filterList.map((item) => (
@@ -570,7 +586,7 @@ export default class DistributionShopHome extends Component {
               </View>
             ))}
 
-            <View
+            {/* <View
               className={`searchContent ${showSearch && 'unfold'}`}
               onClick={this.handleShowSearch.bind(this)}
             >
@@ -595,7 +611,7 @@ export default class DistributionShopHome extends Component {
                   ></View>
                 </View>
               )}
-            </View>
+            </View> */}
           </View>
         </View>
         <View className='main'>

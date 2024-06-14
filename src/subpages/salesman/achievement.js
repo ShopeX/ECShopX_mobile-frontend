@@ -52,6 +52,10 @@ const Achievement = () => {
     const res = await api.salesman.promoterGetSalesmanStatic({
       ...parameter
     })
+    res.forEach((element) => {
+      element.total_Fee = element.total_Fee / 100
+      element.total_rebate = element.total_rebate / 100
+    })
     Taro.hideLoading()
     setState((draft) => {
       draft.listData = res

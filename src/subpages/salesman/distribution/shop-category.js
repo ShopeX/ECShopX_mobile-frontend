@@ -118,7 +118,8 @@ export default class DistributionShopCategory extends Component {
       item_type: 'normal',
       page,
       shop_user_id: distributionShopId || userId,
-      pageSize
+      pageSize,
+      isSalesmanPage:1
     }
 
     if (options.featuredshop || options.uid) {

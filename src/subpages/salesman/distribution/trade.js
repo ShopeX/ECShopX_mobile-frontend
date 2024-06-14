@@ -25,6 +25,7 @@ export default class DistributionTrade extends Component {
       ],
       list: [],
       searchConditionList: [
+        { label: '订单号', value: 'order_id' },
         { label: '店铺名称', value: 'shopName' },
         { label: '手机号', value: 'mobile' }
       ],
@@ -92,14 +93,13 @@ export default class DistributionTrade extends Component {
   }
 
   handleConfirm(val) {
-    console.log('handleConfirm', val)
+    this.resetPage()
     this.setState(
       {
         parameter: val,
         list: []
       },
       () => {
-        this.resetPage()
         this.nextPage()
       }
     )

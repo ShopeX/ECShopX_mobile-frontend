@@ -24,7 +24,8 @@ function SpSearchInput(props) {
       { label: '客户名称', value: 'custonmerName' }
     ],
     onConfirm = () => {},
-    onSelectArea = () => {}
+    onSelectArea = () => {},
+    onHandleSearch=()=>{}
   } = props
   const [state, setState] = useImmer(initialState)
 
@@ -71,6 +72,8 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.searchCondition = searchConditionNew
     })
+    console.log(searchConditionList[e.target.value],'llllll');
+    onHandleSearch(searchConditionList[e.target.value])
   }
 
   const handleAreaDelet = (e) => {
