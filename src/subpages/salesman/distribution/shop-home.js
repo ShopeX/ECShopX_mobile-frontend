@@ -639,6 +639,7 @@ export default class DistributionShopHome extends Component {
                     <Text className='symbol'>¥</Text>
                     {item.price}
                   </View>
+                  <View className='goodName'>店铺名称</View>
                 </View>
               </View>
             </View>
