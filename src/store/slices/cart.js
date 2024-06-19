@@ -7,12 +7,22 @@ const initialState = {
   cartSalesman: 0,
   validCart: [],
   invalidCart: [],
+  validSalesmanCart: [],
+  invalidSalesmanCart: [],
   coupon: null,
   zitiAddress: null,
   shopCartCount:{}
 }
 
 export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (params) => {
+  const { valid_cart, invalid_cart } = await api.cart.get(params)
+  return {
+    valid_cart,
+    invalid_cart
+  }
+})
+
+export const fetchSalesmanCartList = createAsyncThunk('cart/fetchSalesmanCartList', async (params) => {
   const { valid_cart, invalid_cart } = await api.cart.get(params)
   return {
     valid_cart,
@@ -38,6 +48,12 @@ export const updateCartItemNum = createAsyncThunk(
 
 export const updateCount = createAsyncThunk('cart/updateCount', async (params) => {
   // 获取购物车数量接口
+  const { item_count, cart_count } = await api.cart.count(params)
+  return { item_count, cart_count }
+})
+
+export const updateSalesmanCount = createAsyncThunk('cart/updateSalesmanCount', async (params) => {
+  // 获取业务员购物车数量接口
   const { item_count, cart_count } = await api.cart.count(params)
   return { item_count, cart_count }
 })
@@ -80,14 +96,25 @@ const cartSlice = createSlice({
       state.zitiAddress = payload
     }
   },
-  extraReducers: (builder) => {
+  extraReducers: (builder) => { 
     builder.addCase(fetchCartList.fulfilled, (state, action) => {
       const { valid_cart, invalid_cart } = action.payload
       state.validCart = valid_cart
       state.invalidCart = invalid_cart
     })
 
+    builder.addCase(fetchSalesmanCartList.fulfilled, (state, action) => {
+      const { valid_cart, invalid_cart } = action.payload
+      state.validSalesmanCart = valid_cart
+      state.invalidSalesmanCart = invalid_cart
+    })
+
     builder.addCase(updateCount.fulfilled, (state, action) => {
+      const { item_count, cart_count } = action.payload
+      state.cartCount = item_count
+    })
+
+    builder.addCase(updateSalesmanCount.fulfilled, (state, action) => {
       const { item_count, cart_count } = action.payload
       state.cartCount = item_count
     })

@@ -1,9 +1,17 @@
-import Taro from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View } from '@tarojs/components'
-import { classNames, validate, showToast } from '@/utils'
-import { SpPage, SpGoodsInvalidItems, SpGoodsItems } from '@/components'
+import { navigateTo, validate, showToast } from '@/utils'
+import { useSelector, useDispatch } from 'react-redux'
+import { SpPage, SpGoodsInvalidItems, SpGoodsItems, SpDefault } from '@/components'
 import { useImmer } from 'use-immer'
+import {
+  fetchSalesmanCartList,
+  deleteCartItem,
+  updateCartItemNum,
+  updateSalesmanCount
+} from '@/store/slices/cart'
+import { AtButton } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
@@ -14,9 +22,29 @@ const initialConfigState = {
   allChecked: true
 }
 
-const Cart = () => {
+function Cart() {
   const [state, setState] = useImmer(initialConfigState)
   const { allChecked } = state
+  const dispatch = useDispatch()
+  const $instance = getCurrentInstance()
+  const router = $instance.router
+  const { validSalesmanCart = [], invalidSalesmanCart = [] } = useSelector((state) => state.cart)
+
+  useEffect(() => {
+    getCartList()
+  }, [])
+
+  const getCartList = async () => {
+    Taro.showLoading({ title: '' })
+    const { type = 'distributor' } = router?.params || {}
+    const params = {
+      shop_type: type,
+      isSalesmanPage: 1
+    }
+    await dispatch(fetchSalesmanCartList(params))
+    await dispatch(updateSalesmanCount(params))
+    Taro.hideLoading()
+  }
 
   //全选
   const onSelectAll = (val, value) => {
@@ -56,14 +84,48 @@ const Cart = () => {
 
   return (
     <SpPage classNames='page-cart' renderFooter={<CompTabbar />}>
-      <SpGoodsItems
-        deletes={deletesItem}
-        onSelectAll={onSelectAll}
-        onSingleChoice={onSingleChoice}
-        onChangeInputNumber={onChangeInputNumber}
-        balance={balance}
-      />
-      <SpGoodsInvalidItems empty={handleClearInvalidGoods} deletes={deletesItem} />
+      {/* 有效商品 */}
+      {validSalesmanCart.map((item, index) => {
+        return (
+          <SpGoodsItems
+            deletes={deletesItem}
+            onSelectAll={onSelectAll}
+            onSingleChoice={onSingleChoice}
+            onChangeInputNumber={onChangeInputNumber}
+            balance={balance}
+            key={index}
+            items={item}
+          />
+        )
+      })}
+
+      {/* 失效商品 */}
+      {invalidSalesmanCart.map((item, index) => {
+        return (
+          <SpGoodsInvalidItems
+            empty={handleClearInvalidGoods}
+            deletes={deletesItem}
+            key={index}
+            items={item}
+          />
+        )
+      })}
+
+      {validSalesmanCart.length == 0 && invalidSalesmanCart.length == 0 && (
+        <SpDefault type='cart' message='购物车内暂无商品～'>
+          <AtButton
+            type='primary'
+            circle
+            onClick={() =>
+              Taro.navigateTo({
+                url: `/subpages/salesman/purchasing`
+              })
+            }
+          >
+            去选购
+          </AtButton>
+        </SpDefault>
+      )}
     </SpPage>
   )
 }

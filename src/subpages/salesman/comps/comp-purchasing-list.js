@@ -16,7 +16,9 @@ function CompPurchasingList(props) {
           <View className='new'>新品</View>
           <View>
             <SpPrice className='current' value={items.price} size={30} />
-            <SpPrice lineThrough value={items.market_price} size={26} />
+            {items.market_price - items.price > 0 && (
+              <SpPrice lineThrough value={items.market_price} size={26} />
+            )}
           </View>
           <View className='selector'>
             <View>

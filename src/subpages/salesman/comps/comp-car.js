@@ -17,31 +17,6 @@ function CompCar(props) {
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
 
-  const settlement = () => {
-    // const { type = 'distributor' } = router.params
-    // const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } =
-    //   shopCartCount.storeDetails
-    // const query = {
-    //   cart_type: 'cart',
-    //   type,
-    //   shop_id,
-    //   is_delivery,
-    //   is_ziti,
-    //   name: shop_name,
-    //   store_address: address,
-    //   lat,
-    //   lng,
-    //   hour,
-    //   phone: mobile,
-    //   //购物车默认是0     0:普通商品  1:跨境商品
-    //   // goodType: current == 0 ? 'normal' : 'cross'
-    //   goodType: 'normal'
-    // }
-    // Taro.navigateTo({
-    //   url: `/pages/cart/espier-checkout?${qs.stringify(query)}`
-    // })
-  }
-
   return (
     <View className='comp-shop-brand-cart'>
       <View className='comp-shop-brand-gwc'>
@@ -55,8 +30,15 @@ function CompCar(props) {
           <View className='free-delivery'>免配送费</View>
         </View>
       </View>
-      <AtButton className='settlement' onClick={() => settlement()}>
-        代客下单
+      <AtButton
+        className='settlement'
+        onClick={() => {
+          Taro.navigateTo({
+            url: '/subpages/salesman/cart'
+          })
+        }}
+      >
+        去购物车
       </AtButton>
     </View>
   )

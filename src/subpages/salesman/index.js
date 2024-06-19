@@ -23,7 +23,7 @@ const initialConfigState = {
     },
     { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' },
     { name: '选购商品', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/purchasing' },
-    { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
+    // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
   ],
   codeStatus: false,
   information: { name: 'cx' },

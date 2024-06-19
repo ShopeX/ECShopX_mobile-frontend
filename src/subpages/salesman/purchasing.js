@@ -59,12 +59,12 @@ const initialConfigState = {
   status: '',
   lists: [],
   first: true,
-  querys:null
+  querys: null
 }
 
 const Purchasing = () => {
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, navFilterList, tag_id, category, status, lists, first,querys } = state
+  const { codeStatus, navFilterList, tag_id, category, status, lists, first, querys } = state
   const { params } = useRouter()
   const goodsRef = useRef()
 
@@ -90,7 +90,7 @@ const Purchasing = () => {
       item_type: 'normal',
       approve_status: 'onsale,only_show',
       is_promoter: true,
-      // distributor_id: params.distributor_id,
+      distributor_id: params.distributor_id,
       ...querys
     }
     const {
@@ -129,7 +129,6 @@ const Purchasing = () => {
   }
 
   const getCategory = async (select_tags_list) => {
-    {console.log(params,'paramspppp-------')}
     const query = {
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -185,22 +184,21 @@ const Purchasing = () => {
       params[key] = value
     }
     setState((draft) => {
-      draft.querys = {...querys,...params}
+      draft.querys = { ...querys, ...params }
     })
   }
 
   return (
     <SpPage className={classNames('page-selectShop')} renderFooter={<CompCar />}>
-      <SpSearchInput
-        placeholder='输入内容'
-        onConfirm={(val) => {
-          console.log(666, val)
-        }}
-        onSelectArea={(val) => {
-          console.log('666area', val)
-        }}
-      />
-      <SpNavFilter info={navFilterList} onChange={handleFilterChange} />
+      <View className='page-selectShop-header'>
+        <SpSearchInput
+          placeholder='输入内容'
+          onConfirm={(val) => {
+            console.log(666, val)
+          }}
+        />
+        <SpNavFilter info={navFilterList} onChange={handleFilterChange} />
+      </View>
 
       <SpScrollView auto={false} ref={goodsRef} fetch={fetch}>
         {lists.map((item, index) => {
