@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
 import Taro, { useRouter } from "@tarojs/taro";
-import { View } from "@tarojs/components"
+import { View, Textarea } from "@tarojs/components"
 import { SpPage, SpButton, SpImage, SpUpload } from '@/components'
 import { AtRate, AtTextarea } from "taro-ui"
 import { useImmer } from "use-immer"
@@ -47,8 +47,9 @@ function TradeEvaluate(props) {
   }
 
   const onChangeContent = (e, index) => {
+    // console.log("🚀🚀🚀 ~ file: trade-evaluate.js:51 ~ onChangeContent ~ e:", e, index)
     setState(draft => {
-      draft.formList[index].content = e
+      draft.formList[index].content = e.detail.value
     })
   }
 
@@ -104,12 +105,12 @@ function TradeEvaluate(props) {
             />
           </View>
           <View className="goods-textarea">
-            <AtTextarea
+            <Textarea
               type='textarea'
               placeholder='快分享您的使用心得吧...'
               value={formList[index].content}
               count={false}
-              onChange={(e) => {
+              onInput={(e) => {
                 onChangeContent(e, index)
               }}
             />

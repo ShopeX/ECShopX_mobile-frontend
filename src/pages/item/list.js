@@ -409,7 +409,9 @@ function ItemList() {
                   <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
                     <SpGoodsItem
                       showFav
+                      showAddCart
                       onStoreClick={handleClickStore}
+                      onAddToCart={handleAddToCart}
                       info={{
                         ...item,
                         card_id,
@@ -426,7 +428,9 @@ function ItemList() {
                   <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
                     <SpGoodsItem
                       showFav
+                      showAddCart
                       onStoreClick={handleClickStore}
+                      onAddToCart={handleAddToCart}
                       info={{
                         ...item,
                         card_id,
@@ -440,6 +444,23 @@ function ItemList() {
           </View>
         </SpScrollView>
       </ScrollView>
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
+
     </SpPage>
   )
 }
