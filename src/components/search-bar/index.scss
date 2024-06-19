@@ -4,10 +4,14 @@
   border-bottom: 0;
   box-sizing: border-box;
   &__focus {
-    height: 100vh;
     z-index: $z-index-dropdown;
-    position: absolute;
+    position: fixed;
+    height: 100vh;
     top: 0;
+    /*  #ifdef  h5  */
+    height: calc(100vh - #{$navigate-height});
+    top: $navigate-height;
+    /*  #endif  */
     left: 0;
     right: 0;
     bottom: 0;
