@@ -20,6 +20,7 @@ const initialState = {
     staff_no: '',
     staff_attribute: 'part_time',
     payment_method: 'order',
+    payment_fee: 1,
     mobile: '',
     username: '',
     password: ''
@@ -37,20 +38,21 @@ const initialState = {
   manner: [
     {
       label: 'order',
-      name: '是'
+      name: '按单笔订单'
     },
     {
       label: 'amount',
-      name: '否'
+      name: '按订单金额比例'
     }
   ],
   propertyIndex: 0,
   mannerIndex: 0,
+  paymentTitle: '（元/每单）'
 }
 
 function EditDeliveryman(props) {
   const [state, setState] = useImmer(initialState)
-  const { isOpened, parent, property, manner, propertyIndex, mannerIndex } = state
+  const { isOpened, parent, property, manner, propertyIndex, mannerIndex, paymentTitle } = state
   const { params } = useRouter()
   const { setNavigationBarTitle } = useNavigation()
 
@@ -62,7 +64,7 @@ function EditDeliveryman(props) {
   }, [])
 
   const initNavigationBarTitle = () => {
-    return params.operator_id ? '编辑业务员' : '创建业务员'
+    return params.operator_id ? '编辑配送员':'创建配送员'
   }
 
   const edit = async (operator_id) => {
@@ -73,14 +75,15 @@ function EditDeliveryman(props) {
       staff_no: res.staff_no,
       staff_attribute: res.staff_attribute,
       payment_method: res.payment_method,
+      payment_fee: res.payment_fee/100,
       mobile: res.mobile,
       username: res.username,
       password: ''
     }
     setState((draft) => {
       draft.parent = params
-      draft.propertyIndex= res.payment_method == 'order' ? 0 : 1
-      draft.mannerIndex= res.staff_attribute == 'part_time' ? 0 : 1
+      draft.propertyIndex= res.staff_attribute == 'part_time' ? 1 : 0
+      draft.mannerIndex= res.payment_method == 'order' ? 1 : 0
     })
   }
 
@@ -103,26 +106,28 @@ function EditDeliveryman(props) {
       setState((draft) => {
         draft.parent.payment_method = manner[index].label
         draft.propertyIndex = index
+        draft.paymentTitle = index == 0 ? '（元/每单）' : '（%/每单）'
       })
     }
   }
 
   const preserve = async () => {
     const validations = [
-      { field: 'staff_no', regex: /.+/, message: '请输入业务员编码' },
-      { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的业务员手机号' },
-      { field: 'username', regex: /.+/, message: '请输入业务员姓名' },
+      { field: 'staff_no', regex: /.+/, message: '请输入配送员编码' },
+      { field: 'payment_fee', regex: /^\d+$/, message: '结算费用只能输入数字' },
+      { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的配送员手机号' },
+      { field: 'username', regex: /.+/, message: '请输入配送员姓名' },
       { field: 'password', regex: /.+/, message: '请输入登录密码' },
       { field: 'password', regex: /^[0-9a-zA-Z]\w{5,17}$/, message: '登录密码只能输入数字和字母' }
     ]
 
-    const requiredFields = [ 'mobile', 'password']
+    const requiredFields = ['payment_fee', 'mobile', 'password']
 
     for (const field of requiredFields) {
       if (parent[field] === '') {
         showToast(
           `请输入${
-            field === 'mobile' ? '业务员手机号' : '登录密码'
+            field === 'payment_fee' ? '结算费用' : field === 'mobile' ? '配送员手机号' : '登录密码'
           }`
         )
         return
@@ -166,15 +171,15 @@ function EditDeliveryman(props) {
       <View className='page-address-edit-content'>
         <AtInput
           name='staff_no'
-          title='业务员编码'
+          title='配送员编码'
           type='text'
-          placeholder='请输入业务员编码'
+          placeholder='请输入配送员编码'
           value={parent.staff_no}
           onChange={(e) => handleChange('staff_no', e)}
         />
         {/* staff_attribute */}
         <View className='attribute'>
-          <Text>业务员属性</Text>
+          <Text>配送员属性</Text>
           {property.map((item, index) => {
             return (
               <View
@@ -189,7 +194,7 @@ function EditDeliveryman(props) {
         </View>
         {/* payment_method */}
         <View className='attribute'>
-          <Text>是否成为分销员</Text>
+          <Text>配送员结算方式</Text>
           {manner.map((item, index) => {
             return (
               <View
@@ -203,19 +208,30 @@ function EditDeliveryman(props) {
           })}
         </View>
         <AtInput
+          name='payment_fee'
+          title='结算费用'
+          type='number'
+          maxLength='5'
+          placeholder='请输入结算费用'
+          value={parent.payment_fee}
+          onChange={(e) => handleChange('payment_fee', e)}
+        >
+          <View className='remarks'>{paymentTitle}</View>
+        </AtInput>
+        <AtInput
           name='mobile'
-          title='业务员手机号'
+          title='配送员手机号'
           type='phone'
           maxLength='11'
-          placeholder='请输入业务员手机号'
+          placeholder='请输入配送员手机号'
           value={parent.mobile}
           onChange={(e) => handleChange('mobile', e)}
         />
         <AtInput
           name='username'
-          title='业务员姓名'
+          title='配送员姓名'
           type='text'
-          placeholder='请输入业务员姓名'
+          placeholder='请输入配送员姓名'
           value={parent.username}
           onChange={(e) => handleChange('username', e)}
         />

@@ -155,17 +155,6 @@ function CompMenu(props) {
   //   menus = menus.concat(MENUS_OFFLINE)
   // }
 
-  // menus = menus.concat(MENUS_DIANWU)
-  // const MENUS_DIANWU = [
-  //   {
-  //     key: 'dianwu',
-  //     name: '店务管理',
-  //     icon: 'm_menu_dianwu.png',
-  //     link: '/subpages/dianwu/index'
-  //   }
-  // ]
-
-
   if(accessMenu.salesPersonList?.total_count>0){
     menus = menus.concat([
       {
@@ -177,9 +166,6 @@ function CompMenu(props) {
     ])
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
-
-
-
 
   return (
     <View className='comp-menu'>

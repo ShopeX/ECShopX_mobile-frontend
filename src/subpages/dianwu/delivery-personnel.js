@@ -2,11 +2,7 @@ import React from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {
-  SpPage,
-  SpTabs,
-  SpSearchInput
-} from '@/components'
+import { SpPage, SpTabs, SpSearchInput } from '@/components'
 import CompDelivery from './comps/comp-delivery'
 import CompRanking from './comps/comp-ranking'
 import './delivery-personnel.scss'
@@ -16,7 +12,11 @@ const initialState = {
   selectorCheckedIndex: 0,
   deliverylnformation: '',
   refreshData: false,
-  tabList: [{ title: '我的配送员' }, { title: '配送费用排行' }]
+  tabList: [{ title: '我的配送员' }, { title: '配送费用排行' }],
+  searchConditionList: [
+    { label: '手机号', value: 'mobile' },
+    { label: '客户名称', value: 'username' }
+  ]
 }
 
 function DeliveryPersonnel() {
@@ -26,12 +26,13 @@ function DeliveryPersonnel() {
     deliverylnformation,
     selectorCheckedIndex,
     refreshData,
-    tabList
+    tabList,
+    searchConditionList
   } = state
 
   const onDeliveryActionClick = (val) => {
     setState((draft) => {
-      draft.selectorCheckedIndex = val.key=='phone'?1:0
+      draft.selectorCheckedIndex = val.key == 'mobile' ? 1 : 0
       draft.deliverylnformation = val.keywords
       draft.refreshData = !refreshData
     })
@@ -40,13 +41,14 @@ function DeliveryPersonnel() {
   return (
     <SpPage className='page-dianwu-delivery-personnel' scrollToTopBtn>
       <View>
-      <SpSearchInput
-        placeholder='输入内容'
-        isShowSearchCondition
-        onConfirm={(val) => {
-          onDeliveryActionClick(val)
-        }}
-      />
+        <SpSearchInput
+          placeholder='输入内容'
+          isShowSearchCondition
+          searchConditionList={searchConditionList}
+          onConfirm={(val) => {
+            onDeliveryActionClick(val)
+          }}
+        />
 
         <SpTabs
           current={types}
