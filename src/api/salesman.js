@@ -32,3 +32,8 @@ export function shopsProtocolsaleman (params = {}) {
 export function get (params={}) {
   return req.get('/goods/promoter/category', params)
 }
+
+//实名认证
+export function tradePaymentListInfo (params={}) {
+  return req.get('/trade/payment/listInfo', params)
+}

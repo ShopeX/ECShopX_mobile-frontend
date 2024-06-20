@@ -21,7 +21,8 @@ export default class DistributionDashboard extends Component {
       showPoster: false,
       poster: null,
       posterImgs: null,
-      adapay_status: null
+      adapay_status: null,
+      is_adapay: false
     }
   }
 
@@ -36,6 +37,14 @@ export default class DistributionDashboard extends Component {
   componentDidShow() {
     this.getAdapayInfo()
     this.fetch()
+    this.tradePaymentListInfo()
+  }
+
+  async tradePaymentListInfo() {
+    const { is_adapay } = await api.salesman.tradePaymentListInfo()
+    this.setState({
+      is_adapay
+    })
   }
 
   async fetch() {
@@ -143,7 +152,7 @@ export default class DistributionDashboard extends Component {
 
   render() {
     const { colors } = this.props
-    const { info, showPoster, adapay_status } = this.state
+    const { info, showPoster, adapay_status, is_adapay } = this.state
     const { userId } = Taro.getStorageSync('userinfo')
     if (!info) {
       return <Loading />
@@ -317,25 +326,27 @@ export default class DistributionDashboard extends Component {
               <View className='iconfont icon-arrowRight icon-right' />
             </Navigator>
           )}
-          <Navigator
-            className='list-item'
-            open-type='navigateTo'
-            url='/subpages/salesman/distribution/certification'
-          >
-            <View className='iconfont item-icon icon-shimingrenzheng' />
-            <View className='list-item-txt'>实名认证</View>
-            <View
-              className={classNames(
-                'cicle',
-                (adapay_status == '审核中' && 'approve') ||
-                  (adapay_status == '未认证' && 'NotCertified') ||
-                  (adapay_status == '认证失败' && 'fail') ||
-                  (adapay_status == '已认证' && 'success')
-              )}
-            />
-            <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
-            <View className='iconfont icon-arrowRight icon-right' />
-          </Navigator>
+          {is_adapay && (
+            <Navigator
+              className='list-item'
+              open-type='navigateTo'
+              url='/subpages/salesman/distribution/certification'
+            >
+              <View className='iconfont item-icon icon-shimingrenzheng' />
+              <View className='list-item-txt'>实名认证</View>
+              <View
+                className={classNames(
+                  'cicle',
+                  (adapay_status == '审核中' && 'approve') ||
+                    (adapay_status == '未认证' && 'NotCertified') ||
+                    (adapay_status == '认证失败' && 'fail') ||
+                    (adapay_status == '已认证' && 'success')
+                )}
+              />
+              <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
+              <View className='iconfont icon-arrowRight icon-right' />
+            </Navigator>
+          )}
         </View>
 
         {/* {showPoster && (

@@ -284,6 +284,7 @@ export default class DistributionShopHome extends Component {
       title: 'itemName',
       distributor_id: 'distributor_id',
       type: 'type',
+      distributor_info:'distributor_info',
       isOutSale: ({ store }) => !store || store <= 0,
       price: ({ price }) => (price / 100).toFixed(2),
       member_price: ({ member_price }) => (member_price / 100).toFixed(2),
@@ -639,7 +640,7 @@ export default class DistributionShopHome extends Component {
                     <Text className='symbol'>¥</Text>
                     {item.price}
                   </View>
-                  <View className='goodName'>店铺名称</View>
+                  <View className='goodName'>{item.distributor_info.name}</View>
                 </View>
               </View>
             </View>
