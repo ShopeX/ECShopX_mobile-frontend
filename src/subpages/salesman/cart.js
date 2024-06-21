@@ -120,7 +120,13 @@ function Cart() {
       })}
 
       {/* 失效商品 */}
-      <SpGoodsInvalidItems empty={handleClearInvalidGoods} deletes={deletesItem} lists={invalidSalesmanCart} />
+      {invalidSalesmanCart.length > 0 && (
+        <SpGoodsInvalidItems
+          empty={handleClearInvalidGoods}
+          deletes={deletesItem}
+          lists={invalidSalesmanCart}
+        />
+      )}
 
       {validSalesmanCart.length == 0 && invalidSalesmanCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
