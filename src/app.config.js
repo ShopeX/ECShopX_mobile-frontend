@@ -342,6 +342,9 @@ const config = {
         'card',//名片
         'cart',//购物车
         'my',//我的
+        'list',//订单
+        'detail',//订单详情
+        'cancel',//取消订单
         'selectCustomer',//选客户
         'selectStore',//选店铺
         'selectShop',//选店铺

@@ -14,7 +14,7 @@ import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/selectCustomer' },
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/list' },
     { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
     {
       name: '业务员推广',

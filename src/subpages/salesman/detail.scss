@@ -1,0 +1,597 @@
+$custabs: 80px;
+$paddingBottom: 100px;
+
+.page-trade-detail {
+  box-sizing: border-box;
+  height: 100vh;
+  overflow: hidden;
+  &.paddingBottom {
+    padding-bottom: $paddingBottom;
+  }
+
+  .custabs {
+    display: flex;
+    position: fixed;
+    width: 100%;
+    background: #fff;
+    top: 0;
+    z-index: 99;
+    .online,
+    .offline {
+      height: $custabs;
+      line-height: $custabs;
+      flex: 1;
+      text-align: center;
+    }
+  }
+
+  .scroll-view {
+    @include page-scroll(0, $tabbar-height);
+  }
+
+  &.has-navbar {
+    .scroll-view {
+      top: $navigate-height;
+    }
+  }
+
+  &.islog {
+    .scroll-view {
+      top: $custabs;
+    }
+  }
+
+  &.has-navbar.islog {
+    .scroll-view {
+      top: $navigate-height + $custabs;
+    }
+  }
+
+  &.trade-close {
+    .scroll-view {
+      bottom: 0;
+    }
+  }
+
+  .trade-detail-header {
+    padding: 30px 20px;
+    background: #c4c4c4;
+    margin-bottom: 20px;
+    &__waitpay {
+      text-align: center;
+      font-size: 26px;
+      line-height: 150px;
+      .count-down {
+        font-size: 36px;
+        margin: 0 20px;
+      }
+    }
+    .at-countdown__time {
+      color: #333;
+      font-weight: bold;
+    }
+    .at-countdown__time-box {
+      font-family: $font-family;
+    }
+  }
+  .trade-detail-waitdeliver {
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    color: #222;
+    background: #fff;
+    border-radius: 10px;
+    padding: 10px 30px;
+    min-height: 120px;
+    align-items: center;
+    font-weight: bold;
+    .oneline {
+      width: 100%;
+      margin-left: 23px;
+    }
+    &.column {
+      flex-direction: column;
+      .line {
+        font-size: 26px;
+        margin-left: 23px;
+      }
+    }
+    .delivery-infos {
+      flex: 1;
+      margin-left: 23px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .delivery-infos__text {
+      display: block;
+      font-size: 22px;
+    }
+    .delivery-infos__status {
+      width: 100%;
+    }
+    .text-status {
+      font-size: 28px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      color: #222;
+      &.red {
+        color: red;
+      }
+      .statusImg {
+        width: 60px;
+        height: 60px;
+      }
+    }
+  }
+  .ziti-content {
+    padding-top: 20px;
+    margin: 0 20px;
+    background: #fff;
+    border-radius: 6px 6px 0 0;
+    .ziti-qrcode {
+      display: block;
+      margin: 50px auto 50px;
+      width: 200px;
+      height: 200px;
+    }
+    .ziti-text {
+      text-align: center;
+      font-size: 24px;
+      color: #666;
+      .ziti-text-name {
+        margin-bottom: 15px;
+        font-size: 30px;
+        font-weight: bold;
+        color: #333;
+      }
+    }
+    .sendCode {
+      width: 208px;
+      height: 60px;
+      line-height: 60px;
+      background: #101010;
+      color: #fff;
+      border-radius: 100px;
+      text-align: center;
+      margin: 20px auto 34px;
+    }
+    .sendCodeTips {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 24px;
+      color: #666;
+    }
+  }
+  .trade-detail-address {
+    margin: 0 20px 20px 20px;
+    padding: 30px;
+    border-radius: 6px;
+    box-sizing: border-box;
+    background: #fff;
+    /*.trade-info {
+      font-size: 20px;
+      line-height: 36px;
+      color: #999999;
+    }*/
+    .store {
+      display: flex;
+      &.border {
+        margin-bottom: 24px;
+        padding-bottom: 24px;
+        border-bottom: 2px solid #ddd;
+      }
+      .storeName {
+        font-size: 32px;
+        color: #333;
+        font-weight: bold;
+      }
+      .storeAddress {
+        font-size: 28px;
+        color: #666;
+        margin-top: 24px;
+      }
+      .storeHour {
+        margin-top: 16px;
+        font-size: 24px;
+      }
+      .storeMobile {
+        font-size: 24px;
+        margin-top: 5px;
+        display: flex;
+        align-items: center;
+        .icon-dianhua {
+          margin-left: 10px;
+          color: #0091ff;
+          font-size: 24px;
+        }
+      }
+      .title {
+        color: #999;
+      }
+    }
+    .icon-shangjiadizhi-01,
+    .icon-shouhuodizhi-01,
+    .icon-dizhi-01 {
+      margin-right: 10px;
+      font-size: 42px;
+      color: #999;
+    }
+    .address-receive {
+      display: flex;
+      justify-content: flex-start;
+      color: #555555;
+      font-size: 22px;
+    }
+    .info-trade {
+      flex: 1;
+    }
+    .user-info-trade {
+      display: flex;
+      justify-content: flex-start;
+      font-size: 28px;
+      color: #666;
+      align-items: center;
+      margin-top: 24px;
+      .receiverName {
+        margin-right: 20px;
+      }
+    }
+    .address-detail {
+      font-size: 32px;
+      color: #333;
+      font-weight: bold;
+    }
+  }
+  .trade-detail-goods {
+    margin: 0 20px;
+    padding-top: 16px;
+    min-height: 100px;
+    background: #fff;
+    border-radius: 6px 6px 0 0;
+    .line {
+      display: flex;
+      padding: 20px;
+      font-size: 24px;
+      color: #333;
+      .fuzhi {
+        margin-left: 20px;
+        color: #28a1ff;
+      }
+    }
+  }
+  .order-item__pay-type {
+    display: none;
+  }
+  .trade-money {
+    box-sizing: border-box;
+    text-align: right;
+    padding: 10px 38px;
+    margin: 0 20px 20px 20px;
+    font-size: 26px;
+    color: #5b5b5b;
+    background: #fff;
+    border-radius: 0 0 6px 6px;
+    &__num {
+      font-size: 36px;
+      color: $color-brand-primary;
+    }
+
+    &__point {
+      font-size: 36px;
+      color: $color-brand-primary;
+
+      .cash {
+        font-size: 30px;
+        color: $color-brand-accent;
+      }
+    }
+    .cancel__btn {
+      display: flex;
+      justify-content: flex-end;
+      margin: 20px 0;
+      .btn {
+        width: 140px;
+        height: 50px;
+        line-height: 50px;
+        border-radius: 30px;
+        font-size: 24px;
+        text-align: center;
+        color: #999;
+        border: 2px solid #bbb;
+      }
+    }
+  }
+  .trade-detail-info {
+    margin: 20px 20px 0 20px;
+    box-sizing: border-box;
+    font-size: $font-size-small;
+    padding: 15px 20px;
+    background: #fff;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    .line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      .left {
+        font-size: 30px;
+        color: #333;
+      }
+      .right {
+        color: #333;
+        font-size: 26px;
+        &.red {
+          color: red;
+        }
+        .info-text-btn {
+          margin-left: 15px;
+          color: #0091ff;
+        }
+      }
+    }
+    .icon-fuzhi {
+      margin-left: 20px;
+    }
+  }
+  .trade-detail-remark {
+    margin: 0 20px 20px 20px;
+    border-radius: 6px;
+    padding-top: 21px;
+    &__header {
+      padding: 20px 30px;
+      font-size: 26px;
+      background: #fff;
+      border-bottom: 1px solid #efefef;
+    }
+    &__body {
+      padding: 20px 30px;
+      font-size: 24px;
+      background: #fff;
+    }
+  }
+  .trade-detail__footer {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    bottom: 0;
+    background: #fff;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    &__btn {
+      width: 338px;
+      height: 84px;
+      flex-shrink: 0;
+      line-height: 84px;
+      text-align: center;
+      border-radius: 40px;
+      color: #333;
+      border: 2px solid #bbb;
+      overflow: hidden;
+      font-size: 26px;
+      flex: 1;
+      margin: 0 20rpx;
+      &.left {
+        margin-left: 7%;
+        width: 396px;
+        padding-right: 84px;
+        position: relative;
+        z-index: 9;
+        background: #fff;
+      }
+      &.right {
+        // margin-right: 7%;
+        // color: #fff;
+        // border: none;
+        // position: relative;
+        // z-index: 99;
+        // transform: translateX(-84px);
+      }
+      &:before {
+        border: none;
+      }
+    }
+    &_active {
+      color: #ffffff;
+    }
+    &_allWidthBtn {
+      // width: 100%;
+      // height: 100px;
+      // line-height: 100px;
+      // transform: translateX(0) !important;
+      // border-radius: 0;
+    }
+    &.WAIT_BUYER_CONFIRM {
+      .trade-detail__footer__btn {
+        margin-right: 0;
+        position: initial;
+        transform: inherit;
+        margin: 0 20px;
+        width: calc(100% - 40px);
+      }
+    }
+  }
+  .allFooter_btn {
+    width: 100%;
+  }
+  .contact {
+    width: 100%;
+    background: inherit;
+    color: #fff;
+    font-size: 26px;
+    line-height: normal;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    &::after {
+      display: none;
+    }
+  }
+
+  .delivery-btn {
+    margin-right: 15px;
+  }
+  .at-input-number {
+    $input-size: 40px;
+    border: none;
+    border-radius: 0;
+    height: $input-size;
+    overflow: hidden;
+    &__btn {
+      border: 1px solid $color-border-gray;
+      &:before,
+      &:after {
+        border: none;
+      }
+      width: $input-size;
+      height: $input-size;
+      box-sizing: border-box;
+      padding: 0;
+      text-align: center;
+      overflow: hidden;
+      &-subtract,
+      &-add {
+        font-size: 20px;
+      }
+    }
+    &__input,
+    input {
+      line-height: $input-size;
+      height: $input-size !important;
+      min-height: $input-size;
+      padding-top: 0;
+      padding-bottom: 0;
+      box-sizing: border-box;
+      font-size: $font-size-small;
+      border: none;
+    }
+  }
+  .kefuBtn {
+    width: 50%;
+    box-sizing: border-box;
+  }
+  .logConfirm {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px;
+    .btn {
+      width: 240px;
+      height: 70px;
+      line-height: 70px;
+      border-radius: 30px;
+      text-align: center;
+      color: #fff;
+    }
+  }
+
+  // 同城配送
+  .dadaInfo {
+    margin: 0 20px 20px 20px;
+    background: #fff;
+    border-radius: 6px;
+    padding: 20px;
+    .name {
+      display: flex;
+      font-size: 32px;
+      color: #333;
+      padding-bottom: 24px;
+      align-items: center;
+      border-bottom: 2px solid #ddd;
+      width: 100%;
+      .avatar {
+        width: 80px;
+        height: 80px;
+        margin-right: 30px;
+      }
+      .icon-dianhua {
+        margin-left: 16px;
+        font-size: 32px;
+        color: #0091ff;
+      }
+    }
+    .tip {
+      color: #999;
+      font-size: 24px;
+      padding-top: 15px;
+    }
+  }
+
+  // 取消理由
+  .cancelData {
+    margin: 0 20px 20px 20px;
+    background: #fff;
+    padding: 30px 20px;
+    display: flex;
+    .title {
+      flex-shrink: 0;
+    }
+    .reason {
+      margin-left: 10px;
+    }
+  }
+
+  // 商品样式重置
+  .detail-item {
+    padding: 0;
+    .detail-item__title {
+      padding: 10px 0;
+    }
+    .order-item__bd {
+      margin-bottom: 0;
+    }
+    .order-item__ft {
+      position: relative;
+      display: block;
+      left: auto;
+      top: auto;
+      right: auto;
+      bottom: auto;
+    }
+  }
+
+  .qrcode-page {
+    position: absolute;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 9;
+    .qrcode-bgc {
+      width: 640px;
+      height: 640px;
+      min-width: 440px;
+      min-height: 440px;
+      background: #fff;
+      position: absolute;
+      padding: 20px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      .qrcode {
+        width: 600px;
+        height: 600px;
+        min-width: 400px;
+        min-height: 400px;
+      }
+    }
+  }
+  .num-code {
+    text-align: center;
+    font-size: 34px;
+    font-weight: 600;
+  }
+
+  .icon-dianhua {
+    margin-left: 10px;
+    color: #0091ff;
+    font-size: 28px;
+  }
+}
