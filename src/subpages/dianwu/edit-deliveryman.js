@@ -114,14 +114,18 @@ function EditDeliveryman(props) {
   const preserve = async () => {
     const validations = [
       { field: 'staff_no', regex: /.+/, message: '请输入配送员编码' },
-      { field: 'payment_fee', regex: /^\d+$/, message: '结算费用只能输入数字' },
+      { field: 'payment_fee', regex: /^\d+(\.\d+)?$/, message: '结算费用只能输入数字' },
       { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的配送员手机号' },
-      { field: 'username', regex: /.+/, message: '请输入配送员姓名' },
-      { field: 'password', regex: /.+/, message: '请输入登录密码' },
-      { field: 'password', regex: /^[0-9a-zA-Z]\w{5,17}$/, message: '登录密码只能输入数字和字母' }
+      { field: 'username', regex: /.+/, message: '请输入配送员姓名' }
     ]
+    if(parent.password)(
+      validations.push(
+        { field: 'password', regex: /^[0-9a-zA-Z]\w{5,17}$/, message: '登录密码只能输入数字和字母并且长度为6-18位' }
+      )
+    )
 
-    const requiredFields = ['payment_fee', 'mobile', 'password']
+    // const requiredFields = ['payment_fee', 'mobile', 'password']
+    const requiredFields = ['payment_fee', 'mobile']
 
     for (const field of requiredFields) {
       if (parent[field] === '') {
@@ -239,7 +243,6 @@ function EditDeliveryman(props) {
           name='password'
           title='登录密码'
           type='text'
-          placeholder='请输入登录密码'
           value={parent.password}
           onChange={(e) => handleChange('password', e)}
         />
