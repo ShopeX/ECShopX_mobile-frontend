@@ -100,14 +100,14 @@ function EditDeliveryman(props) {
   const propertySwitch = (val, index) => {
     if (val) {
       setState((draft) => {
-        draft.parent.staff_attribute = property[index].label
+        draft.paymentTitle = index == 0 ? '（元/每单）' : '（%/每单）'
+        draft.parent.payment_method = manner[index].label
         draft.mannerIndex = index
       })
     } else {
       setState((draft) => {
-        draft.parent.payment_method = manner[index].label
+        draft.parent.staff_attribute = property[index].label
         draft.propertyIndex = index
-        draft.paymentTitle = index == 0 ? '（元/每单）' : '（%/每单）'
       })
     }
   }
@@ -189,8 +189,8 @@ function EditDeliveryman(props) {
             return (
               <View
                 key={index}
-                onClick={() => propertySwitch(true, index)}
-                className={classNames(mannerIndex == index ? 'active' : '')}
+                onClick={() => propertySwitch(false, index)}
+                className={classNames(propertyIndex == index ? 'active' : '')}
               >
                 {item.name}
               </View>
@@ -204,8 +204,8 @@ function EditDeliveryman(props) {
             return (
               <View
                 key={index}
-                onClick={() => propertySwitch(false, index)}
-                className={classNames(propertyIndex == index ? 'active' : '')}
+                onClick={() => propertySwitch(true, index)}
+                className={classNames(mannerIndex == index ? 'active' : '')}
               >
                 {item.name}
               </View>
