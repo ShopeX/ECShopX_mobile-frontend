@@ -57,33 +57,33 @@ function EditDeliveryman(props) {
   const { setNavigationBarTitle } = useNavigation()
 
   useEffect(() => {
-    if(params?.operator_id){
+    if (params?.operator_id) {
       edit(params?.operator_id)
     }
     setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
   const initNavigationBarTitle = () => {
-    return params.operator_id ? '编辑配送员':'创建配送员'
+    return params.operator_id ? '编辑配送员' : '创建配送员'
   }
 
   const edit = async (operator_id) => {
     let res = await api.dianwu.getAccountManagement(operator_id)
-    let params= {
+    let params = {
       staff_type: 'distributor',
       operator_type: 'self_delivery_staff',
       staff_no: res.staff_no,
       staff_attribute: res.staff_attribute,
       payment_method: res.payment_method,
-      payment_fee: res.payment_fee/100,
+      payment_fee: res.payment_fee / 100,
       mobile: res.mobile,
       username: res.username,
       password: ''
     }
     setState((draft) => {
       draft.parent = params
-      draft.propertyIndex= res.staff_attribute == 'part_time' ? 0:1
-      draft.mannerIndex= res.payment_method == 'order' ? 0:1
+      draft.propertyIndex = res.staff_attribute == 'part_time' ? 0 : 1
+      draft.mannerIndex = res.payment_method == 'order' ? 0 : 1
       draft.paymentTitle = res.payment_method == 'order' ? '（元/每单）' : '（%/每单）'
     })
   }
@@ -119,14 +119,19 @@ function EditDeliveryman(props) {
       { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的配送员手机号' },
       { field: 'username', regex: /.+/, message: '请输入配送员姓名' }
     ]
-    if(parent.password)(
-      validations.push(
-        { field: 'password', regex: /^[0-9a-zA-Z]\w{5,17}$/, message: '登录密码只能输入数字和字母并且长度为6-18位' }
-      )
-    )
+    if (parent.password)
+      validations.push({
+        field: 'password',
+        regex: /^[0-9a-zA-Z]\w{5,17}$/,
+        message: '登录密码只能输入数字和字母并且长度为6-18位'
+      })
 
-    // const requiredFields = ['payment_fee', 'mobile', 'password']
-    const requiredFields = ['payment_fee', 'mobile']
+    let requiredFields = []
+    if (params?.operator_id) {
+      requiredFields = ['payment_fee', 'mobile']
+    } else {
+      requiredFields = ['payment_fee', 'mobile', 'password']
+    }
 
     for (const field of requiredFields) {
       if (parent[field] === '') {
@@ -157,10 +162,10 @@ function EditDeliveryman(props) {
         }
       ]
     }
-    if(params?.operator_id){
-      await api.dianwu.patchAccountManagement(params.operator_id,par)
+    if (params?.operator_id) {
+      await api.dianwu.patchAccountManagement(params.operator_id, par)
       showToast('编辑成功')
-    }else{
+    } else {
       await api.dianwu.accountManagement(par)
       showToast('添加成功')
     }
