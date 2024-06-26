@@ -54,6 +54,14 @@
       display: flex;
       margin-left: 8px;
       align-items: center;
+      &-name{
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
       &-phone{
         color: #666;
         font-size: 24px;
@@ -384,5 +392,9 @@
         background-color: var(--color-primary);
       }
     }
+  }
+
+  .time-line-item:last-child{
+    border: none !important;
   }
 }

@@ -97,6 +97,7 @@ import SpModal from './sp-modal'
 import SpTimePicker from './sp-time-picker'
 import SpTime from './sp-time'
 import SpNavFilter from './sp-nav-filter'
+import SpTimeLineItem from './sp-time-line-item'
 
 
 
@@ -201,5 +202,6 @@ export {
   SpModal,
   SpTimePicker,
   SpTime,
-  SpNavFilter
+  SpNavFilter,
+  SpTimeLineItem
 }
