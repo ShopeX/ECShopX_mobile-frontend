@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { View, Text, Picker } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
@@ -15,7 +15,7 @@ const initialState = {
 function SpTime(props) {
   const [state, setState] = useImmer(initialState)
   const { selector, selectorChecked, seleIndex, timeDay } = state
-  const { onTimeChange = () => {} } = props
+  const { onTimeChange = () => {}, selects = 0, nowTimeDa = '请选择' } = props
   const onChange = (e) => {
     setState((draft) => {
       draft.selectorChecked = selector[e.detail.value]
@@ -23,6 +23,14 @@ function SpTime(props) {
       draft.timeDay = '请选择'
     })
   }
+
+  useEffect(() => {
+    setState((draft) => {
+      draft.seleIndex = selects
+      draft.selectorChecked = selector[selects]
+      draft.timeDay = nowTimeDa
+    })
+  }, [])
 
   const onDateChange = (e) => {
     setState((draft) => {
@@ -34,7 +42,7 @@ function SpTime(props) {
   return (
     <View className='sp-time'>
       <View className='times-select'>
-        <Picker mode='selector' range={selector} onChange={onChange}>
+        <Picker mode='selector' range={selector} onChange={onChange} value={seleIndex}>
           <View className='times'>
             <Text>{selectorChecked}</Text>
             <Text className='iconfont icon-xialajiantou'></Text>

@@ -320,6 +320,23 @@ export class Spx {
     let result = decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger
     return result
   }
+
+  //获取当前年月日
+  getNowDate(val) {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+  
+    if (val === 'year') {
+      return year;
+    } else if (val === 'month') {
+      return `${year}-${month.toString().padStart(2, '0')}`;
+    } else {
+      return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    }
+  }
+
 }
 
 export default new Spx()
