@@ -206,7 +206,7 @@ function WgtNearbyShop(props) {
                   <View className='shop-del'>
                     <View className='shop-names' onClick={() => handleClickItem(item)}>
                       <View className='name'>{item.name}</View>
-                      {item?.selfDeliveryRule?.is_open && <View className='deliver'>商家自配</View>}
+                      {item?.is_self_delivery && <View className='deliver'>商家自配</View>}
                     </View>
                     <View className='score' onClick={() => handleClickItem(item)}>
                       <View className='sales'>
@@ -220,7 +220,7 @@ function WgtNearbyShop(props) {
                         </View>
                       )}
                     </View>
-                    {item?.selfDeliveryRule?.is_open && (
+                    {item?.is_self_delivery && (
                       <View className='freight'>
                         <Text>
                           起送¥{item.selfDeliveryRule.min_amount} ｜
@@ -426,7 +426,7 @@ function WgtNearbyShop(props) {
           ))}
         </ScrollView>
 
-          
+
         {listTypes.length && listTypes[activeIndex].types == 'business'
           ? storeList()
           : storeProducts()}
