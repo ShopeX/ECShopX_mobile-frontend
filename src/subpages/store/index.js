@@ -129,7 +129,7 @@ function StoreIndex() {
 
   const salesmanShare = async() => {
     let params = await entryLaunch.getRouteParams()
-    if (params?.share) {
+    if (params?.qr=='Y') {
       let param = {
         promoter_user_id: params?.uid,
         promoter_shop_id:params?.dtid || params?.id

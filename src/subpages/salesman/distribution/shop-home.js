@@ -96,7 +96,7 @@ export default class DistributionShopHome extends Component {
 
   async salesmanShare() {
     let params = this.$instance.router.params
-    if (params?.share) {
+    if (params?.qr=='Y') {
       const { userId } = Taro.getStorageSync('userinfo')
       let param = {
         promoter_user_id: params?.featuredshop || userId
@@ -132,7 +132,7 @@ export default class DistributionShopHome extends Component {
     return {
       title: shopInfo.share_title || title,
       imageUrl: shopInfo.applets_share_img || shopInfo.shop_pic,
-      path: `/subpages/salesman/distribution/shop-home?uid=${userId}&share=true`
+      path: `/subpages/salesman/distribution/shop-home?uid=${userId}&qr=Y`
     }
   }
 

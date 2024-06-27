@@ -102,7 +102,8 @@ function CartCheckout(props) {
     openCashier,
     buildingNumber,
     houseNumber, // 房号
-    routerParams // 路由参数
+    routerParams, // 路由参数
+    salespersonInfo // 导购员信息
   } = state
 
   const {
@@ -523,7 +524,8 @@ function CartCheckout(props) {
       receiver_district,
       item_fee_new,
       market_fee,
-      items_promotion
+      items_promotion,
+      salespersonInfo
     } = orderRes
 
     let subdistrictRes
@@ -627,6 +629,7 @@ function CartCheckout(props) {
       draft.pointInfo = point_info
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
+      draft.salespersonInfo = salespersonInfo
       if (openStreet) {
         const {
           multiValue,
@@ -933,6 +936,16 @@ function CartCheckout(props) {
         </View>
       )}
 
+      {salespersonInfo?.user_id && (
+        <View className='shopping'>
+          <View className='shopping_guide'>导购员信息:</View>
+          <View className='shopping_guides'>
+            <Text>{salespersonInfo?.name}</Text>
+            <Text>{salespersonInfo?.mobile}</Text>
+          </View>
+        </View>
+      )}
+
       {renderGoodsComp()}
 
       {type !== 'limited_time_sale' && type !== 'group' && type !== 'seckill' && !bargain_id && (
@@ -1029,16 +1042,6 @@ function CartCheckout(props) {
             </View>
           )}
         </View>
-      )}
-
-      {true && (
-        <SpCell
-          isLink
-          title='业务员'
-          className='cart-checkout__invoice'
-          onClick={handleInvoiceClick}
-          value={<View className='invoice-title'>cx</View>}
-        />
       )}
 
       <View className='cart-checkout__total'>

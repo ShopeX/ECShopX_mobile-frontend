@@ -413,20 +413,16 @@ export default class DistributionGoods extends Component {
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path:`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&share=true`
+            path:`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
           })
         }, 10)
       })
     }
-    console.log(
-      `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&share=true`,
-      'path----------'
-    )
 
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&share=true`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
     }
   }
 
