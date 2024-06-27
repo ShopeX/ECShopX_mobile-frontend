@@ -316,7 +316,7 @@ function TradeDetail(props) {
                     <Text className='deliver-opreator-phone' onClick={handleCallOpreator}>拨打电话</Text>
                   </View>
                   <View >
-                    <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>查看物流</Text>
+                    <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>订单跟踪</Text>
                   </View>
                 </View>
               )}
