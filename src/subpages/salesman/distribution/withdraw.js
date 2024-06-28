@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
-import { isArray } from '@/utils'
+import { isArray,showToast } from '@/utils'
 import { AtInput } from 'taro-ui'
 import { SpPage, SpSearchInput } from '@/components'
 import api from '@/api'
@@ -96,7 +96,6 @@ export default class DistributionWithdraw extends Component {
     // }
 
     const { alipay_account, config } = await api.distribution.info()
-    //const dataInfo = await api.distribution.info()
 
     if (alipay_account) {
       this.setState({
@@ -121,11 +120,17 @@ export default class DistributionWithdraw extends Component {
     })
   }
   goWithdraw = async () => {
-    const { amount, curIdx } = this.state
+    const { amount, curIdx,parameter } = this.state
     const query = {
       money: amount * 100,
-      pay_type: curIdx
+      pay_type: curIdx,
+      ...parameter
       //money:(amount/100).toFixed(2)
+    }
+
+    if(!parameter.distributor_id){
+      showToast('选择店铺才可提现哦')
+      return
     }
 
     if (!this.state.bank_code && this.state.payText[curIdx] == '银行卡') {
@@ -138,7 +143,7 @@ export default class DistributionWithdraw extends Component {
       content: ''
     })
     if (confirm) {
-      await api.distribution.getCash(query)
+      await api.salesman.salespersonApplyCashWithdrawal(query)
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)

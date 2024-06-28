@@ -9,10 +9,10 @@
   }
   .subordinate-list__scroll {
     @include page-scroll(94px, 0);
-    height: calc(100vh - #{$tabs-height + $navigate-height});
+    // height: calc(100vh - #{$tabs-height + $navigate-height});
     /*  #ifdef  h5  */
     @include page-scroll($tabs-height + $navigate-height-h5, 0);
-    height: calc(100vh - #{$tabs-height + $navigate-height-h5});
+    // height: calc(100vh - #{$tabs-height + $navigate-height-h5});
     top: 160px;
     /*  #endif  */
   }

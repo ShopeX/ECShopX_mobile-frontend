@@ -42,3 +42,13 @@ export function tradePaymentListInfo (params={}) {
 export function salespersonBindusersalesperson (data) {
   return req.post('/salesperson/bindusersalesperson', data)
 }
+
+//提现
+export function salespersonApplyCashWithdrawal (data) {
+  return req.post('/salesman/applyCashWithdrawal', data)
+}
+
+//提现记录
+export function salesmanGetCashWithdrawalList (params={}) {
+  return req.get('/salesman/getCashWithdrawalList', params)
+}

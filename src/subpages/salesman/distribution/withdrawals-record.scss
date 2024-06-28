@@ -1,4 +1,4 @@
-@import "@/style/imports";
+@import '@/style/imports';
 
 .page-distribution-record {
   .record-list__scroll {
@@ -34,4 +34,15 @@
       height: auto;
     }
   }
+}
+
+.sp-search-input {
+  position: sticky;
+  top: 0;
+  z-index: 11;
+}
+
+.page-distribution-record .record-list__scroll {
+  position: static;
+  height: 100vh;
 }

@@ -215,7 +215,7 @@ export default class DistributionGoods extends Component {
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       commission_type: 'commission_type',
       promoter_point: 'promoter_point',
-      distributor_id:'distributor_id'
+      distributor_id: 'distributor_id'
     })
 
     let ids = []
@@ -404,7 +404,7 @@ export default class DistributionGoods extends Component {
     // const { userId } = Taro.getStorageSync('userinfo')
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-    console.log(info,'kkkkkkkkk')
+    console.log(info, 'kkkkkkkkk')
 
     if (isAlipay) {
       return new Promise((resolve, reject) => {
@@ -413,7 +413,7 @@ export default class DistributionGoods extends Component {
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path:`/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
+            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
           })
         }, 10)
       })
@@ -652,8 +652,8 @@ export default class DistributionGoods extends Component {
               })}
             </View>
             {isLoading && <Loading>正在加载...{isLoading}</Loading>}
-            {!isLoading && list.length == 0 && (
-              <SpNote img='trades_empty.png'>暂无数据~{isLoading}</SpNote>
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
             )}
           </ScrollView>
           <SpToast />

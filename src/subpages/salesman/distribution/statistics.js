@@ -19,10 +19,11 @@ export default class DistributionStatistics extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidShow() {
     this.fetch()
     this.distributor()
   }
+
 
   async fetch() {
     const res = await api.distribution.statistics({ ...this.state.parameter, isSalesmanPage: 1 })
