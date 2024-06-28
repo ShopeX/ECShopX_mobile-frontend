@@ -97,12 +97,12 @@ export default class DistributionShopHome extends Component {
   async salesmanShare() {
     let params = this.$instance.router.params
     if (params?.qr=='Y') {
-      const { userId } = Taro.getStorageSync('userinfo')
       let param = {
-        promoter_user_id: params?.featuredshop || userId
+        promoter_user_id: params?.featuredshop
       }
       await api.salesman.salespersonBindusersalesperson(param)
-      console.log('分享成功，业务员已存储')
+      Taro.setStorageSync('salesmanUserinfo', param)
+      console.log(param,'分享成功，业务员已存储2')
     }
   }
 
@@ -126,13 +126,13 @@ export default class DistributionShopHome extends Component {
 
   // 分享
   onShareAppMessage() {
-    const { info: shopInfo, userId } = this.state
+    const { info: shopInfo } = this.state
+    const { userId } = Taro.getStorageSync('userinfo')
     const title = shopInfo.shop_name || `${shopInfo.username}的小店`
-
     return {
       title: shopInfo.share_title || title,
       imageUrl: shopInfo.applets_share_img || shopInfo.shop_pic,
-      path: `/subpages/salesman/distribution/shop-home?uid=${userId}&qr=Y`
+      path: `/subpages/salesman/distribution/shop-home?featuredshop=${userId}&qr=Y`
     }
   }
 

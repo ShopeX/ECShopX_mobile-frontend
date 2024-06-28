@@ -200,7 +200,8 @@ function EspierDetail(props) {
         promoter_item_id:params?.id
       }
       await api.salesman.salespersonBindusersalesperson(param)
-      console.log('分享成功，业务员已存储')
+      Taro.setStorageSync('salesmanUserinfo', param)
+      console.log(param,'分享成功，业务员已存储1')
     }
   }
 
