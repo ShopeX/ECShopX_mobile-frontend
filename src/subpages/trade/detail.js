@@ -323,6 +323,11 @@ function TradeDetail(props) {
             </View>
           }
           {
+            info?.selfDeliveryTime && <View className='self-delivery-time'>
+              <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
+            </View>
+          }
+          {
             info?.orderStatus == 'NOTPAY' && <View className='order-cancel-time'>
               该订单将为您保留
               <AtCountdown
