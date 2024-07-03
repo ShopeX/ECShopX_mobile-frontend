@@ -103,7 +103,7 @@ function CartCheckout(props) {
     buildingNumber,
     houseNumber, // 房号
     routerParams, // 路由参数
-    salespersonInfo // 导购员信息
+    salespersonInfo // 业务员信息
   } = state
 
   const {
@@ -938,7 +938,7 @@ function CartCheckout(props) {
 
       {salespersonInfo?.user_id && (
         <View className='shopping'>
-          <View className='shopping_guide'>导购员信息:</View>
+          <View className='shopping_guide'>业务员信息:</View>
           <View className='shopping_guides'>
             <Text>{salespersonInfo?.name}</Text>
             <Text>{salespersonInfo?.mobile}</Text>

@@ -954,11 +954,10 @@ export default class TradeDetail extends Component {
               )}
           </View>
 
-
           {
             info?.salespersonInfo?.user_id && 
             <View className='shopping'>
-              <View className='shopping_guide'>导购员信息:</View>
+              <View className='shopping_guide'>业务员信息:</View>
               <View className='shopping_guides'>
                 <Text>{info?.salespersonInfo?.name}</Text>
                 <Text>{info?.salespersonInfo?.mobile}</Text>
