@@ -1,16 +1,18 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { usePullDownRefresh, useRouter, useDidShow } from '@tarojs/taro'
+import { useSelector, useDispatch } from 'react-redux'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
+import { updateCustomerLnformation } from '@/store/slices/cart'
 import './comp-customer-list.scss'
 
 const initialState = {}
 
 function CompCustomerList(props) {
+  const dispatch = useDispatch()
   const [state, setState] = useImmer(initialState)
   const { items } = props
   const {} = state
@@ -20,7 +22,16 @@ function CompCustomerList(props) {
       <View className='comp-customer-list-scroll'>
         <View
           className='comp-customer-list-scroll-list'
-          onClick={() => {
+          onClick={async() => {
+            const { userId } = Taro.getStorageSync('userinfo')
+            let params = {
+              isSalesmanPage: 1,
+              promoter_user_id: userId,
+              buy_user_id: items.user_id
+            }
+            //存在用户信息
+            await dispatch(updateCustomerLnformation(params))
+            // 跳转至选择店铺
             Taro.navigateTo({
               url: `/subpages/salesman/selectShop`
             })

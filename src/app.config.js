@@ -386,6 +386,7 @@ const config = {
         'distribution/shop-achievement', // 小店业绩页面
         'distribution/point-platform',
         'distribution/certification',//实名认证
+        'delivery-info',//查看物流
       ]
     },
     // 授权

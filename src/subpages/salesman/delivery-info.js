@@ -30,7 +30,13 @@ function TradeDeliveryInfo(props) {
     const { order_id, delivery_id, delivery_corp_name, delivery_code } = router.params
     // 拆单发货
     if (order_id) {
-      const data = await api.trade.deliveryLists({ order_id })
+      const { userId } = Taro.getStorageSync('userinfo')
+      let params = {
+        isSalesmanPage:1,
+        promoter_user_id:userId,
+        order_id
+      }
+      const data = await api.trade.deliveryLists(params)
       setState((draft) => {
         draft.packageList = data.list
         draft.deliveryCorpName = data.list[curIndex]?.delivery_corp_name || '未发货'

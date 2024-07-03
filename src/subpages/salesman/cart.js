@@ -103,7 +103,7 @@ function Cart() {
   }
 
   return (
-    <SpPage classNames='page-cart' renderFooter={<CompTabbar />}>
+    <SpPage classNames='page-cart' >
       {/* 有效商品 */}
       {validSalesmanCart.map((item, index) => {
         return (

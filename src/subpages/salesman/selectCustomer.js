@@ -69,7 +69,8 @@ const SelectCustomer = () => {
       promoter_grade_name: 'promoter_grade_name',
       mobile: 'mobile',
       bind_date: 'bind_date',
-      name: 'name'
+      name: 'name',
+      user_id:"user_id"
     })
 
     setState((draft) => {

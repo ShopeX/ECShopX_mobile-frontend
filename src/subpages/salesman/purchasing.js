@@ -11,8 +11,10 @@ import {
   SpSkuSelect,
   SpScrollView
 } from '@/components'
+import { updateSalesmanCount,updateShopSalesmanCartCount } from '@/store/slices/cart'
 import CompFilterBar from './comps/comp-filter-bar'
 import { platformTemplateName } from '@/utils/platform'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
@@ -98,10 +100,12 @@ const Purchasing = () => {
     first,
     querys
   } = state
+  const dispatch = useDispatch()
+  const { customerLnformation } = useSelector((state) => state.cart)
   const { params } = useRouter()
   const goodsRef = useRef()
   const pageRef = useRef()
-
+  
   useEffect(() => {
     setState((draft) => {
       draft.lists = []
@@ -118,11 +122,32 @@ const Purchasing = () => {
   }, [skuPanelOpen])
 
   useDidShow(() => {
+    carNumber()
     setState((draft) => {
       draft.lists = []
     })
     goodsRef.current.reset()
   })
+
+  const carNumber =async () =>{
+    Taro.setStorageSync('distributorSalesman', { distributor_id: params.distributor_id } )
+    let data = {
+      shop_type: 'distributor',
+      ...customerLnformation,
+      distributor_id: params.distributor_id
+    }
+    await dispatch(updateSalesmanCount(data)) //更新购物车数量
+    const { valid_cart } = await api.cart.get(data)
+    let shopCats = {
+      shop_id: valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart[0] || {}
+    }
+    await dispatch(updateShopSalesmanCartCount(shopCats))  //更新购物车价格
+    
+  }
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const query = {

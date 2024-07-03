@@ -36,11 +36,11 @@ export default (props) => {
       title: '查看物流', key: 'logistics', btnStatus: 'normal', action: ({ orderId, isAllDelivery, ordersDeliveryId, deliveryCorpName, deliveryCode }) => {
         if (isAllDelivery) {
           Taro.navigateTo({
-            url: `/subpages/trade/delivery-info?delivery_corp_name=${deliveryCorpName}&delivery_code=${deliveryCode}&delivery_id=${ordersDeliveryId}`
+            url: `/subpages/salesman/delivery-info?delivery_corp_name=${deliveryCorpName}&delivery_code=${deliveryCode}&delivery_id=${ordersDeliveryId}`
           })
         } else {
           Taro.navigateTo({
-            url: `/subpages/trade/delivery-info?order_id=${orderId}`
+            url: `/subpages/salesman/delivery-info?order_id=${orderId}`
           })
         }
       }

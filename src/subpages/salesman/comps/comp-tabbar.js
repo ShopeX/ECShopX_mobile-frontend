@@ -13,12 +13,12 @@ const TABBAR_LIST = [
     iconType: 'dianpushouye',
     url: '/subpages/salesman/index'
   },
-  {
-    title: '购物车',
-    iconType: 'dianpushangpinlist',
-    url: '/subpages/salesman/cart',
-    text: true
-  },
+  // {
+  //   title: '购物车',
+  //   iconType: 'dianpushangpinlist',
+  //   url: '/subpages/salesman/cart',
+  //   text: true
+  // },
   {
     title: '我的信息',
     iconType: 'dianpufenlei',
@@ -33,8 +33,8 @@ function CompTabbar(props) {
 
   useEffect(() => {
     // 初始化购物车数量
-    cartSalesmanNumber()
-  })
+    // cartSalesmanNumber()
+  },[])
 
   const cartSalesmanNumber = async () => {
     await dispatch(updateSalesmanCount({ shop_type: 'distributor',isSalesmanPage: 1 }))

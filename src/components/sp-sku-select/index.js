@@ -12,12 +12,11 @@ import {
   SpInputNumber,
   SpGoodsPrice
 } from '@/components'
-import { addCart, updateCount, updateSalesmanCount } from '@/store/slices/cart'
+import { addCart, updateCount, updateSalesmanCount,updateShopCartCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
 import { classNames, showToast, entryLaunch, getDistributorId } from '@/utils'
-import { updateShopCartCount } from '@/store/slices/cart'
 import './index.scss'
 
 // 数据类型
@@ -53,6 +52,7 @@ function SpSkuSelect(props) {
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, curImage, disabledSet, curItem, skuText, num, loading } = state
+  const { customerLnformation } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
@@ -191,22 +191,34 @@ function SpSkuSelect(props) {
       return
     }
     Taro.showLoading({ title: '' })
+
+    const { userId } = Taro.getStorageSync('userinfo')
+    let params = {}
+    if (salesman) {
+      params = {
+        shop_type: 'distributor',
+        ...customerLnformation
+      }
+    } else {
+      params = {
+        shop_type: 'distributor'
+      }
+    }
     await dispatch(
       addCart({
         item_id: curItem ? curItem.itemId : info.itemId,
         num,
         distributor_id: info.distributorId,
-        shop_type: 'distributor',
-        isSalesmanPage: salesman ? 1 : ''
+        ...params
       })
     )
     onClose()
-    await shopping()
     if (salesman) {
-      dispatch(updateSalesmanCount({ shop_type: 'distributor', isSalesmanPage: 1 }))
-    }else{
-      dispatch(updateCount({ shop_type: 'distributor' }))
+      await shoppings()
+    } else {
+      await shopping()
     }
+    dispatch(updateSalesmanCount(params))
     Taro.hideLoading()
     // showToast('成功加入购物车')
   }
@@ -227,6 +239,26 @@ function SpSkuSelect(props) {
       storeDetails: valid_cart[0] || {}
     }
     dispatch(updateShopCartCount(shopCats))
+  }
+
+  const shoppings = async () => {
+    const res = Taro.getStorageSync('distributorSalesman')
+    console.log(res,'distributorSalesman')
+
+    let params = {
+      distributor_id:res.distributor_id,
+      shop_type: 'distributor',
+      ...customerLnformation
+    }
+    const { valid_cart } = await api.cart.get(params)
+    let shopCats = {
+      shop_id: valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart[0] || {}
+    }
+    dispatch(updateShopSalesmanCartCount(shopCats))
   }
 
   const fastBuy = async () => {
@@ -406,7 +438,7 @@ function SpSkuSelect(props) {
                   key={`sku-values-item__${idx}`}
                 >
                   {spec.specImgs.length > 0 && (
-                    <SpImage src={spec.specImgs[0]} width={260} height={260} mode="aspectFit" />
+                    <SpImage src={spec.specImgs[0]} width={260} height={260} mode='aspectFit' />
                   )}
                   <View className='spec-name'>{spec.specName}</View>
                 </View>
