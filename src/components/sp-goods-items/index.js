@@ -106,7 +106,7 @@ function CompGoodsItem(props) {
                 type='primary'
                 circle
                 disabled={lists.cart_total_num <= 0}
-                onClick={() => balance()}
+                onClick={() => balance(lists)}
               >
                 结算({lists.cart_total_num})
               </AtButton>

@@ -14,22 +14,24 @@ import {
 } from '@/store/slices/cart'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import qs from 'qs'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
 
 import './cart.scss'
 
 const initialConfigState = {
-  allChecked: true
+  allChecked: true,
+  current:0 // 0:普通商品  1:跨境商品
 }
 
 function Cart() {
   const [state, setState] = useImmer(initialConfigState)
-  const { allChecked } = state
+  const { allChecked,current } = state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
   const router = $instance.router
-  const { validSalesmanCart = [], invalidSalesmanCart = [] } = useSelector((state) => state.cart)
+  const { validSalesmanCart = [], invalidSalesmanCart = [],customerLnformation } = useSelector((state) => state.cart)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
 
   useEffect(() => {
@@ -41,9 +43,12 @@ function Cart() {
     const { type = 'distributor' } = router?.params || {}
     const params = {
       shop_type: type,
-      isSalesmanPage: 1
+      isSalesmanPage: 1,
+      ...customerLnformation
     }
-    await dispatch(fetchSalesmanCartList(params))
+    //获取购物车列表
+    await dispatch(fetchSalesmanCartList(params)) 
+    //获取购物车数量
     await dispatch(updateSalesmanCount(params))
     Taro.hideLoading()
   }
@@ -59,25 +64,42 @@ function Cart() {
       parmas['cart_id'] = item.cart_id
     }
     try {
-      await api.cart.select({ ...parmas, isSalesmanPage: 1 })
+      await api.cart.select({ ...parmas, isSalesmanPage: 1,...customerLnformation })
     } catch (e) {
       console.log(e)
     }
-    getCartList()
+    await getCartList()
   }
 
   // 商品数量变化
   const onChangeInputNumber = useDebounce(async (num, item) => {
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
-    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1 }))
-    await dispatch(updateSalesmanCount({ shop_type: 'distributor', isSalesmanPage: 1 }))
-    getCartList()
+    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1,...customerLnformation }))
+    await getCartList()
   }, 200)
 
   //结算
-  const balance = () => {
-    console.log('结算')
+  const balance = (item) => {
+    const { type = 'distributor' } = router.params
+    const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
+    const query = {
+      cart_type: 'cart',
+      type,
+      shop_id,
+      is_delivery,
+      is_ziti,
+      name: shop_name,
+      store_address: address,
+      lat,
+      lng,
+      hour,
+      phone: mobile,
+      goodType: current == 0 ? 'normal' : 'cross'
+    }
+    Taro.navigateTo({
+      url: `/subpages/salesman/espier-checkout?${qs.stringify(query)}`
+    })
   }
 
   // 清除无效商品（失效）
@@ -97,9 +119,8 @@ function Cart() {
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
-    await dispatch(deleteCartItem({ cart_id, isSalesmanPage: 1 }))
-    await dispatch(updateSalesmanCount({ shop_type: 'distributor', isSalesmanPage: 1 }))
-    getCartList()
+    await dispatch(deleteCartItem({ cart_id, isSalesmanPage: 1,...customerLnformation }))
+    await getCartList()
   }
 
   return (

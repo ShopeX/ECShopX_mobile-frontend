@@ -43,8 +43,8 @@ export const deleteCartItem = createAsyncThunk('cart/deleteCartItem', async (par
 
 export const updateCartItemNum = createAsyncThunk(
   'cart/updateCartItemNum',
-  async ({ shop_id, cart_id, num, shop_type ,isSalesmanPage}) => {
-    await api.cart.updateNum(shop_id, cart_id, num, shop_type,isSalesmanPage)
+  async (params) => {
+    await api.cart.updateNum(params)
   }
 )
 

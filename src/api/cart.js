@@ -33,23 +33,16 @@ export function fastBuy(params, isPointitem) {
   return req.post('/cart', query)
 }
 
-export function del({ cart_id,distributor_id, isSalesmanPage}) {
-  return req.delete('/cartdel', { cart_id ,distributor_id,isSalesmanPage})
+export function del(params = {}) {
+  return req.delete('/cartdel', params)
 }
 
-export function select({ cart_id, is_checked,isSalesmanPage }) {
-  return req.put('/cartupdate/checkstatus', { cart_id, is_checked,isSalesmanPage })
+export function select(params = {}) {
+  return req.put('/cartupdate/checkstatus', params)
 }
 
-export function updateNum(shop_id, cart_id, num, shop_type,isSalesmanPage) {
-  return req.put(`/cartupdate/num`, {
-    shop_id,
-    cart_id,
-    num,
-    isAccumulate: false,
-    shop_type,
-    isSalesmanPage
-  })
+export function updateNum(params = {}) {
+  return req.put(`/cartupdate/num`, params)
   // return req.put('/cartupdate/num', { cart_id, num })
 }
 
