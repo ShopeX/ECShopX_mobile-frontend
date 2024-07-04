@@ -388,62 +388,73 @@ function ItemList() {
           onConfirm={handleConfirm}
         />
       </View>
-      <ScrollView className="list-scroll-container" scrollY >
-        <View className='item-list-head'>
-          {tagList.length > 0 && (
-            <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag} />
-          )}
+      <View className='item-list-head'>
+        {tagList.length > 0 && (
+          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
+            {/* <View
+            className="filter-btn"
+            onClick={() => {
+              setState(v => {
+                v.show = true;
+              });
+            }}
+          >
+            筛选<Text className="iconfont icon-filter"></Text>
+          </View> */}
+          </SpTagBar>
+        )}
 
-          <SpFilterBar
-            custom
-            current={curFilterIdx}
-            list={filterList}
-            onChange={handleFilterChange}
-          />
-        </View>
-        <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
-          <View className='goods-list'>
-            <View className='left-container'>
-              {leftList.map((list, idx) => {
-                return list.map((item, sidx) => (
-                  <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
-                    <SpGoodsItem
-                      showFav
-                      showAddCart
-                      onStoreClick={handleClickStore}
-                      onAddToCart={handleAddToCart}
-                      info={{
-                        ...item,
-                        card_id,
-                        user_card_id
-                      }}
-                    />
-                  </View>
-                ))
-              })}
-            </View>
-            <View className='right-container'>
-              {rightList.map((list, idx) => {
-                return list.map((item, sidx) => (
-                  <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
-                    <SpGoodsItem
-                      showFav
-                      showAddCart
-                      onStoreClick={handleClickStore}
-                      onAddToCart={handleAddToCart}
-                      info={{
-                        ...item,
-                        card_id,
-                        user_card_id
-                      }}
-                    />
-                  </View>
-                ))
-              })}
-            </View>
+        <SpFilterBar
+          custom
+          current={curFilterIdx}
+          list={filterList}
+          onChange={handleFilterChange}
+        />
+      </View>
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+        <View className='goods-list'>
+          <View className='left-container'>
+            {leftList.map((list, idx) => {
+              return list.map((item, sidx) => (
+                <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
+                  <SpGoodsItem
+                    showFav
+                    showAddCart
+                    onStoreClick={handleClickStore}
+                    onAddToCart={handleAddToCart}
+                    info={{
+                      ...item,
+                      card_id,
+                      user_card_id
+                    }}
+                  />
+                </View>
+              ))
+            })}
           </View>
-        </SpScrollView>
-      </ScrollView>
+          <View className='right-container'>
+            {rightList.map((list, idx) => {
+              return list.map((item, sidx) => (
+                <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
+                  <SpGoodsItem
+                    showFav
+                    showAddCart
+                    onStoreClick={handleClickStore}
+                    onAddToCart={handleAddToCart}
+                    info={{
+                      ...item,
+                      card_id,
+                      user_card_id
+                    }}
+                  />
+                </View>
+              ))
+            })}
+          </View>
+        </View>
+      </SpScrollView>
+
+      {/* Sku选择器 */}
       <MSpSkuSelect
         open={skuPanelOpen}
         type={selectType}
@@ -461,6 +472,24 @@ function ItemList() {
         }}
       />
 
+      {/* <SpDrawer
+        show={show}
+        onClose={() => {
+          setState(v => {
+            v.show = false;
+          });
+        }}
+        onConfirm={onConfirmBrand}
+        onReset={onResetBrand}
+      >
+        <View className="brand-title">品牌</View>
+        <SpSelect
+          multiple
+          info={brandList}
+          value={brandSelect}
+          onChange={onChangeBrand}
+        />
+      </SpDrawer> */}
     </SpPage>
   )
 }

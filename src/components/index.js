@@ -95,7 +95,6 @@ import SpTradeItem from './sp-trade-item'
 import SpModal from './sp-modal'
 import SpCategorySearch from './sp-category-search'
 
-
 export default {}
 
 export {
@@ -194,5 +193,5 @@ export {
   SpSearchInput,
   SpTradeItem,
   SpModal,
-  SpCategorySearch
+  SpCategorySearch,
 }

@@ -4,6 +4,7 @@ import {View} from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import CompsCategoryOld from './comps/comps-category-old'
+// import CompsCategoryNew from './comps/comps-category-new'
 
 import './index.scss'
 

@@ -70,7 +70,7 @@ function AddressIndex(props) {
   }
 
   const handleClickChecked = (e, item) => {
-    setState(draft=>{
+    setState(draft => {
       draft.selectedId = item[ADDRESS_ID]
     })
 
