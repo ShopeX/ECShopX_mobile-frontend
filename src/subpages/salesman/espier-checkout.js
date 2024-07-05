@@ -412,7 +412,7 @@ function CartCheckout(props) {
           price
         }
       })
-    let url = `/subpages/marketing/coupon-picker?items=${JSON.stringify(
+    let url = `/subpages/salesman/coupon-picker?items=${JSON.stringify(
       items
     )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${shop_id || id}&source=${source}`
     if (couponInfo?.coupon_code) {

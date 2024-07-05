@@ -267,7 +267,7 @@ function CompDeliver(props, ref) {
     // 自定义选择店铺跳转事件
     let city = distributorInfo.city
     Taro.navigateTo({
-      url: `/marketing/pages/member/address?isPicker=${choose}&city=${city}&receipt_type=${receiptType}`
+      url: `/subpages/salesman/address?isPicker=${choose}&city=${city}&receipt_type=${receiptType}`
     })
   }
 
@@ -374,7 +374,7 @@ function CompDeliver(props, ref) {
         </View>
       </View>
       {/** 普通快递 */}
-      {receiptType === 'logistics' && <AddressChoose isAddress={address} />}
+      {receiptType === 'logistics' && <AddressChoose isAddress={address} salesman />}
       {/** 同城配 */}
       {['dada','merchant'].includes(receiptType)  && (
         <View className='store-module'>
@@ -394,7 +394,7 @@ function CompDeliver(props, ref) {
         <View className='address-module'>
           <View className='ziti-title' onClick={() => {
             Taro.navigateTo({
-              url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}`
+              url: `/subpages/salesman/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}`
             })
           }}>{zitiAddress?.name || '选择自提地址'}
             <Text className='iconfont icon-arrowRight'></Text>

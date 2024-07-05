@@ -391,6 +391,7 @@ const config = {
         'address', // 收货地址
         'edit-address',//添加收获地址
         'coupon-picker', //优惠券选择器
+        'ziti-picker', //自提选择器
       ]
     },
     // 授权
