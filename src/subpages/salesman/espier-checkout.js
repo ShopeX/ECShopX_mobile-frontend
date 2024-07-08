@@ -10,7 +10,8 @@ import {
   SpCashier,
   SpGoodsCell,
   SpFloatLayout,
-  SpNumberKeyBoard
+  SpNumberKeyBoard,
+  SpPoster
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
@@ -49,7 +50,6 @@ import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
-
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
@@ -66,7 +66,9 @@ function CartCheckout(props) {
   const deliverRef = useRef()
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
-  const { coupon, zitiAddress,customerLnformation } = useSelector((state) => state.cart)
+  const { coupon, zitiAddress, customerLnformation, customerSalesman } = useSelector(
+    (state) => state.cart
+  )
   const shop = useSelector((state) => state.shop)
 
   const {
@@ -103,7 +105,9 @@ function CartCheckout(props) {
     buildingNumber,
     houseNumber, // 房号
     routerParams, // 路由参数
-    deliveryTimeList //自配送时间
+    deliveryTimeList, //自配送时间
+    codeStatus,
+    cutomer
   } = state
 
   const {
@@ -144,7 +148,9 @@ function CartCheckout(props) {
   }, [isNewUser])
 
   useEffect(() => {
-    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
+    console.log(
+      `useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`
+    )
     if (receiptType && payType) {
       calcOrder()
     }
@@ -161,7 +167,7 @@ function CartCheckout(props) {
 
   // 是否需要包装
   const getTradeSetting = async () => {
-    let data = await api.trade.tradeSetting({...customerLnformation})
+    let data = await api.trade.tradeSetting({ ...customerLnformation })
     setState((draft) => {
       draft.packInfo = data
       draft.routerParams = $instance?.router?.params || {}
@@ -191,7 +197,10 @@ function CartCheckout(props) {
     })
 
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
-    const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: shop_id ,...customerLnformation})
+    const { status: isValid } = await api.distribution.merchantIsvaild({
+      distributor_id: shop_id,
+      ...customerLnformation
+    })
     if (!isValid) {
       showToast('该商品已下架')
       setState((draft) => {
@@ -275,9 +284,6 @@ function CartCheckout(props) {
       }
     }
 
-    console.log(params,'params=======')
-    return
-
     Taro.showLoading({
       title: '正在提交',
       mask: true
@@ -286,7 +292,7 @@ function CartCheckout(props) {
     let orderInfo
     let orderId
     try {
-      const resOrderInfo = await api.trade.h5create(params)
+      const resOrderInfo = await api.trade.h5create({ ...params, ...customerLnformation })
       orderInfo = resOrderInfo
       orderId = resOrderInfo.order_id
     } catch (e) {
@@ -303,28 +309,34 @@ function CartCheckout(props) {
 
     setState((draft) => {
       draft.submitLoading = false
+      draft.codeStatus = true
+      draft.cutomer = {
+        orderId,
+        detailInfo,
+        totalInfo
+      }
     })
 
-    if (
-      params.pay_type == 'wxpayjs' ||
-      (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
-    ) {
-      // 微信客户端code授权
-      const loc = window.location
-      // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
-      let { redirect_url } = await api.wx.getredirecturl({ url })
-      window.location.href = redirect_url
-    } else {
-      cashierPayment(
-        {
-          ...params,
-          // 活动类型：拼团
-          activityType: type
-        },
-        orderInfo
-      )
-    }
+    // if (
+    //   params.pay_type == 'wxpayjs' ||
+    //   (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+    // ) {
+    //   // 微信客户端code授权
+    //   const loc = window.location
+    //   // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
+    //   const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
+    //   let { redirect_url } = await api.wx.getredirecturl({ url })
+    //   window.location.href = redirect_url
+    // } else {
+    //   cashierPayment(
+    //     {
+    //       ...params,
+    //       // 活动类型：拼团
+    //       activityType: type
+    //     },
+    //     orderInfo
+    //   )
+    // }
   }
 
   const handleSwitchExpress = ({ receipt_type, distributor_info, address_info }) => {
@@ -496,7 +508,7 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
-    const orderRes = await api.cart.total({...cus_parmas,...customerLnformation})
+    const orderRes = await api.cart.total({ ...cus_parmas, ...customerLnformation })
     Taro.hideLoading()
     const {
       items,
@@ -629,7 +641,7 @@ function CartCheckout(props) {
           ...i_el.activity_rule
         })
       }
-      if(itmesid.indexOf(i_el.item_id)!== -1){
+      if (itmesid.indexOf(i_el.item_id) !== -1) {
         items[itmesid.indexOf(i_el.item_id)].cusActivity = activity_arr
       }
     })
@@ -719,9 +731,9 @@ function CartCheckout(props) {
     }
 
     //自配送需要传送达时间
-    if(receiptType == 'merchant'){
+    if (receiptType == 'merchant') {
       const { selfDeliveryTime } = await deliverRef.current.geSelfDeliveryTime()
-      cus_parmas.self_delivery_time  = selfDeliveryTime
+      cus_parmas.self_delivery_time = selfDeliveryTime
     }
 
     // 积分不开票
@@ -956,6 +968,14 @@ function CartCheckout(props) {
           </View>
         )}
 
+        <View className='cart-checkout__info'>
+          <View className='cart-checkout__info_guide'>下单顾客：</View>
+          <View className='cart-checkout__info_guides'>
+            <Text>{customerSalesman.username}</Text>
+            <Text>{customerSalesman.mobile}</Text>
+          </View>
+        </View>
+
         {renderGoodsComp()}
 
         {type !== 'limited_time_sale' && type !== 'group' && type !== 'seckill' && !bargain_id && (
@@ -1141,6 +1161,21 @@ function CartCheckout(props) {
           })
         }}
       />
+
+      {codeStatus && (
+        <SpPoster
+          info={cutomer}
+          type='placeAnOrder'
+          onClose={() => {
+            setState((draft) => {
+              draft.codeStatus = false
+            })
+            Taro.reLaunch({
+              url: '/subpages/salesman/index'
+            })
+          }}
+        />
+      )}
     </SpPage>
   )
 }

@@ -56,7 +56,8 @@ export const initialState = {
   openCashier: false,
   isPointOpenModal: false,
   routerParams: {},
-  deliveryTimeList:{}
+  deliveryTimeList:{},
+  codeStatus: false
 }
 
 export const deliveryList = [

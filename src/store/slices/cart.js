@@ -10,6 +10,7 @@ const initialState = {
   validSalesmanCart: [],
   invalidSalesmanCart: [],
   customerLnformation:{},
+  customerSalesman:{},
   coupon: null,
   zitiAddress: null,
   shopCartCount:{},
@@ -90,6 +91,10 @@ const cartSlice = createSlice({
       // 更新业务员顾客信息
       state.customerLnformation = payload
     },
+    updateCustomerSalesman:(state, { payload }) => {
+      // 更新下单顾客信息
+      state.customerSalesman = payload
+    },
     clear: (state, { payload }) => {
       state.coupon = null
     },
@@ -131,6 +136,6 @@ const cartSlice = createSlice({
   }
 })
 
-export const { deleteCart, updateCart, updateCartNum,updateCartSalesman,updateCustomerLnformation, updateShopSalesmanCartCount,changeCoupon, clearCart, changeZitiAddress ,updateShopCartCount} = cartSlice.actions
+export const { deleteCart, updateCart, updateCartNum,updateCartSalesman,updateCustomerLnformation,updateCustomerSalesman, updateShopSalesmanCartCount,changeCoupon, clearCart, changeZitiAddress ,updateShopCartCount} = cartSlice.actions
 
 export default cartSlice.reducer

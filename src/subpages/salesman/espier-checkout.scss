@@ -260,6 +260,29 @@ $margin24: 24px;
     // }
   }
 
+ 
+  .cart-checkout__info {
+    background-color: #fff;
+    margin-bottom: 20px;
+    padding: 24px 16px;
+    border-radius: 6px;
+    &_guide {
+      line-height: 40px;
+      color: #222;
+      font-size: 30px;
+      font-weight: 600;
+    }
+    &_guides {
+      line-height: 40px;
+      color: #333;
+      font-size: 30px;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 170px;
+    }
+  }
+
+
   .point-float-layout {
     .sp-float-layout-bd {
       padding: 0;
@@ -272,3 +295,5 @@ $margin24: 24px;
     }
   }
 }
+
+

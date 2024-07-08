@@ -6,7 +6,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
-import { updateCustomerLnformation } from '@/store/slices/cart'
+import { updateCustomerLnformation,updateCustomerSalesman } from '@/store/slices/cart'
 import './comp-customer-list.scss'
 
 const initialState = {}
@@ -29,8 +29,10 @@ function CompCustomerList(props) {
               promoter_user_id: userId,
               buy_user_id: items.user_id
             }
-            //存在用户信息
+            //存必传参数
             await dispatch(updateCustomerLnformation(params))
+            //存用户信息
+            await dispatch(updateCustomerSalesman(items))
             // 跳转至选择店铺
             Taro.navigateTo({
               url: `/subpages/salesman/selectShop`
