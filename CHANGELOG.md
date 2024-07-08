@@ -2,6 +2,42 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.15.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.14.3...v3.15.0) (2024-07-08)
+
+
+### Features
+
+* cos上传 ([edec857](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/edec857e5d41438c0b5c5383df39acb4be731f9e))
+* 腾讯云上传 ([3b18f26](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3b18f26752eeca9f28ed823ffc6fc2e3d49d624c))
+* 腾讯云上传 ([987ddba](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/987ddba055a0dfdef1aa9a8a8399172efed29789))
+* 腾讯云上传 ([c5acc0b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c5acc0b3c18e0e15b69a2db73077607eaf8e9d8a))
+* 阿里云上传 ([0bd962d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0bd962d78e8cc456bc9398b4c415ae087b4b159d))
+
+
+### Bug Fixes
+
+* 【ECX-5561】评价内容  AtTextarea 没有内容问题修复 ([6b60667](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6b606678627378e8eaa979d9fbfc8b9b91236c5f))
+* cos上传 ([1e6db2c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1e6db2cc86846be025be918fdddb6c2bd67e4b69))
+* ECX-5536 h5 列表商品点击加购按钮，直接进入商品详情了，返回到商品列表弹出加购弹框 ([405cf2e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/405cf2e5788a257bc36ca0b0aae43b7ed26bbeda))
+* ECX-5536 列表页加入购物车直接进入商详页了 ([97c3f21](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/97c3f21f6e95144e1d6f6f3c46c3351cb9bc1182))
+* ECX-5539  【小程序/H5】软文详情，商品点击加入心愿，Console有报错 ([e9d9fd0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e9d9fd0c6bd141cfe1ffa70f1ccc20e4c6b10982))
+* ECX-5541 【小程序/H5】个人信息页面，未显示当前的昵称 ([ca90820](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ca90820e476fc06b46729ee8e2b61c9be6d97166))
+* ECX-5543 【H5】查看物流页面，顶部物流公司被遮挡 ([c15e488](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c15e48855f32238b3727d21314d20d2f08449ee1))
+* ECX-5546  【小程序/h5】商品列表页，点击多规格商品加购，再点击单规格商品加购，加购信息显示错误 ([a365f35](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a365f3522af5675ff9213698e1715b1cdf6e8d05))
+* 代码合并问题 ([aa34f90](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/aa34f905ec0c0cc96a6816cd191203ac93460526))
+* 优化店铺关注 ([4039cde](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4039cdedc856ae9091fde3f73dfe4fed9baef108))
+* 优化登录授权 ([4e0d37c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4e0d37ca155c700df4a6d2703ed5c82538bb81c9))
+* 修复新增地址后，列表不更新问题 ([909ae42](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/909ae42813b811e4fb55a2135fcf5a09a59a4b48))
+* 修复移动端真机滚动加载问题 ([5f0d0a1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5f0d0a1423e206df6699ccdee9cf8a034d06fe8c))
+* 内购首页搜索临时注释 ([f1d29bc](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f1d29bc7f461dd5af8688ec317051a5a51106819))
+* 列表页报错 ([c649a25](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c649a25ba9d21a2e5203bdfb6a1583b194d7cbb8))
+* 取消会员中心企业购接口 ([1a9ba5b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1a9ba5b6f3d2f830f9bc2eeb6563d3d0cc11676d))
+* 店铺首页页面背景 ([a181c17](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a181c1716bb912ea81d2b1e84af9e14a5ee6f04c))
+* 搜索样式优化 ([f343e39](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f343e390c4f3fd4403f1912fe0707b9fff841d94))
+* 附近商家搜索店铺结果重复 ([641a09b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/641a09beeebcba8276ec00fbd569f08a24bcb985))
+* 附近门店列表搜索问题 ([e031bc7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e031bc73539d3b1ab7583c9422555c2ea69365f0))
+* 页面性能体验优化 ([201626c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/201626c4001f97d7e5d59277342c6a9db586d651))
+
 ### [3.14.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.14.2...v3.14.3) (2024-05-13)
 
 
