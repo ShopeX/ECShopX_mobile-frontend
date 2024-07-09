@@ -394,6 +394,14 @@ const config = {
         'ziti-picker', //自提选择器
       ]
     },
+    //配送员
+    {
+      root: 'subpages/delivery',
+      pages: [
+        'index', //首页
+        'achievement',//业绩
+      ]
+    },
     // 授权
     {
       root: 'subpages/auth',

@@ -167,6 +167,15 @@ function CompMenu(props) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
 
+  menus = menus.concat([
+    {
+      key: 'delivery',
+      name: '配送员',
+      icon: 'm_menu_dianwu.png',
+      link: '/subpages/delivery/index'
+    }
+  ])
+
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (
