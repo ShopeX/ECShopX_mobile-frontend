@@ -19,10 +19,11 @@ export default class DistributionStatistics extends Component {
     }
   }
 
-  componentDidMount() {
+  componentDidShow() {
     this.fetch()
     this.distributor()
   }
+
 
   async fetch() {
     const res = await api.distribution.statistics({ ...this.state.parameter, isSalesmanPage: 1 })
@@ -124,7 +125,7 @@ export default class DistributionStatistics extends Component {
           </View>
           <View className='header-bottom view-flex'>
             <View className='view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center with-border'>
-              <View className='assets-label'>推广费总额</View>
+              <View className='assets-label'>业绩总额</View>
               <View>¥ {info.rebateTotal ? info.rebateTotal / 100 : '0'}</View>
             </View>
             <View className='view-flex-item view-flex view-flex-vertical view-flex-middle view-flex-center'>
@@ -134,13 +135,13 @@ export default class DistributionStatistics extends Component {
           </View>
         </View>
         <View>
-          <View className='content-padded'>
+          {/* <View className='content-padded'>
             <View className='tips'>
               提成和津贴订单需要确认收货
               {info.limit_time > 0 && <Text>{info.limit_time}天</Text>}
               后方可提取推广费
             </View>
-          </View>
+          </View> */}
           <View className='section section-card analysis'>
             <View className='content-padded-b'>
               <View>
@@ -165,7 +166,7 @@ export default class DistributionStatistics extends Component {
               </View>
             </View>
           </View>
-          <View className='section section-card analysis'>
+          {/* <View className='section section-card analysis'>
             <View className='content-padded-b'>
               <View>
                 <View className='data-label'>津贴</View>
@@ -188,8 +189,8 @@ export default class DistributionStatistics extends Component {
                 </View>
               </View>
             </View>
-          </View>
-          <View className='section section-card analysis'>
+          </View> */}
+          {/* <View className='section section-card analysis'>
             <View className='content-padded-b'>
               <View>
                 <View className='data-label'>小店提成</View>
@@ -198,7 +199,7 @@ export default class DistributionStatistics extends Component {
                 </View>
               </View>
             </View>
-          </View>
+          </View> */}
         </View>
       </View>
     )

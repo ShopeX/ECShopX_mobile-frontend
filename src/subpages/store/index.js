@@ -79,6 +79,7 @@ function StoreIndex() {
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
   const router = $instance.router
+  console.log('routerqqqq:', router.params)
 
   const {
     wgts,
@@ -99,10 +100,10 @@ function StoreIndex() {
   const pageRef = useRef()
   const loginRef = useRef()
 
-
   useDidShow(() => {
     fetchWgts()
     init()
+    salesmanShare()
   })
 
   // useEffect(() => {
@@ -111,8 +112,9 @@ function StoreIndex() {
   // }, [])
 
   useEffect(() => {
-    if(S.getAuthToken()){
+    if (S.getAuthToken()) {
       fetchWgts()
+      salesmanShare()
     }
   }, [S.getAuthToken()])
 
@@ -122,7 +124,20 @@ function StoreIndex() {
     } else {
       pageRef.current.pageUnLock()
     }
-  }, [skuPanelOpen,open])
+  }, [skuPanelOpen, open])
+
+  const salesmanShare = async () => {
+    let params = await entryLaunch.getRouteParams()
+    if (params?.qr == 'Y') {
+      let param = {
+        promoter_user_id: params?.uid,
+        promoter_shop_id: params?.dtid || params?.id
+      }
+      await api.salesman.salespersonBindusersalesperson(param)
+      Taro.setStorageSync('salesmanUserinfo', param)
+      console.log(param,'分享成功，业务员已存储3')
+    }
+  }
 
   const init = async () => {
     const { statusBarHeight } = await Taro.getSystemInfoSync()
@@ -170,11 +185,11 @@ function StoreIndex() {
     }
     const { valid_cart } = await api.cart.get(params)
     let shopCats = {
-      shop_id: valid_cart===undefined?'':valid_cart[0]?.shop_id || '', //下单
-      cart_total_num: valid_cart===undefined?'':valid_cart[0]?.cart_total_num || '', //数量
-      total_fee: valid_cart===undefined?'':valid_cart[0]?.total_fee || '', //实付金额
-      discount_fee: valid_cart===undefined?'':valid_cart[0]?.discount_fee || '', //优惠金额
-      storeDetails: valid_cart===undefined?'':valid_cart[0] || {}
+      shop_id: valid_cart === undefined ? '' : valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart === undefined ? '' : valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart === undefined ? '' : valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart === undefined ? '' : valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart === undefined ? '' : valid_cart[0] || {}
     }
     dispatch(updateShopCartCount(shopCats))
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Icon, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { BackToTop, Loading, SpNote } from '@/components'
+import { BackToTop, Loading, SpNote, SpSearchInput } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -11,35 +11,43 @@ import './withdrawals-record.scss'
 @withPager
 @withBackToTop
 export default class DistributionWithdrawalsRecord extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       ...this.state,
       curIdx: -1,
-      list: []
+      list: [],
+      searchConditionList: [{ label: '全部店铺', value: '' }],
+      parameter: {
+        distributor_id: '',
+        keywords: ''
+      }
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
+    this.distributor()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { curIdx } = this.state
     const { page_no: page, page_size: pageSize } = params
     const query = {
       page,
-      pageSize
+      pageSize,
+      ...this.state.parameter
     }
 
-    const { list, total_count } = await api.distribution.withdrawRecord(query)
+    const { list, total_count } = await api.salesman.salesmanGetCashWithdrawalList(query)
 
     const nList = pickBy(list, {
       status: 'status',
       money: 'money',
       created_date: 'created_date',
       remarks: 'remarks',
+      distributor_name: 'distributor_name',
       isopen: true
     })
 
@@ -48,8 +56,68 @@ export default class DistributionWithdrawalsRecord extends Component {
     })
 
     return {
-      total_count
+      total: total_count
     }
+  }
+
+  // 重新获取
+  resetGet = () => {
+    this.resetPage(() => {
+      this.setState(
+        {
+          list: []
+        },
+        () => {
+          this.nextPage()
+        }
+      )
+    })
+  }
+
+  handleConfirm(val) {
+    this.setState(
+      {
+        parameter: {
+          keywords: val.keywords,
+          distributor_id: val.key
+        }
+      },
+      () => {
+        this.resetGet()
+      }
+    )
+  }
+
+  handSearch = (val) => {
+    this.setState(
+      {
+        parameter: {
+          ...this.state.parameter,
+          distributor_id: val.distributor_id
+        }
+      },
+      () => {
+        this.resetGet()
+      }
+    )
+  }
+
+  distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    this.setState({
+      searchConditionList: list
+    })
   }
 
   handleToggle = (idx) => {
@@ -72,9 +140,8 @@ export default class DistributionWithdrawalsRecord extends Component {
     )
   }
 
-  render () {
-    const { list, page, scrollTop } = this.state
-
+  render() {
+    const { list, page, scrollTop, searchConditionList } = this.state
     return (
       <View className='page-distribution-record'>
         <ScrollView
@@ -83,10 +150,21 @@ export default class DistributionWithdrawalsRecord extends Component {
           scrollTop={scrollTop}
           onScrollToLower={this.nextPage}
         >
+          <SpSearchInput
+            placeholder='输入内容'
+            isShowSearchCondition
+            searchConditionList={searchConditionList}
+            onConfirm={this.handleConfirm.bind(this)}
+            onHandleSearch={this.handSearch.bind(this)}
+          />
           <View className='section list'>
             {list.map((item, idx) => {
               return (
-                <View className='list-item no-flex' onClick={this.handleToggle.bind(this, idx)}>
+                <View
+                  className='list-item no-flex'
+                  onClick={this.handleToggle.bind(this, idx)}
+                  key={idx}
+                >
                   <View
                     className={classNames(
                       'view-flex-item',
@@ -122,6 +200,9 @@ export default class DistributionWithdrawalsRecord extends Component {
                         申请驳回：{item.remarks}
                       </View>
                     )}
+                    <View className={classNames('status-content', item.isopen && 'open')}>
+                      {item.distributor_name}
+                    </View>
                   </View>
                 </View>
               )

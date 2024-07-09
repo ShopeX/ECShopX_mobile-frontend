@@ -50,7 +50,6 @@ import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
-
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
@@ -104,7 +103,8 @@ function CartCheckout(props) {
     buildingNumber,
     houseNumber, // 房号
     routerParams, // 路由参数
-    deliveryTimeList //自配送时间
+    deliveryTimeList, //自配送时间
+    salespersonInfo // 业务员信息
   } = state
 
   const {
@@ -145,7 +145,6 @@ function CartCheckout(props) {
   }, [isNewUser])
 
   useEffect(() => {
-    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
     if (receiptType && payType) {
       calcOrder()
     }
@@ -533,7 +532,8 @@ function CartCheckout(props) {
       item_fee_new,
       market_fee,
       items_promotion,
-      deliveryTimeList
+      deliveryTimeList,
+      salespersonInfo
     } = orderRes
 
     let subdistrictRes
@@ -625,7 +625,7 @@ function CartCheckout(props) {
           ...i_el.activity_rule
         })
       }
-      if(itmesid.indexOf(i_el.item_id)!== -1){
+      if (itmesid.indexOf(i_el.item_id) !== -1) {
         items[itmesid.indexOf(i_el.item_id)].cusActivity = activity_arr
       }
     })
@@ -638,6 +638,7 @@ function CartCheckout(props) {
       draft.deliveryTimeList = deliveryTimeList
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
+      draft.salespersonInfo = salespersonInfo
       if (openStreet) {
         const {
           multiValue,

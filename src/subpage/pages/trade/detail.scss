@@ -608,4 +608,25 @@ $paddingBottom: 100px;
       border: 2px solid #bbb;
     }
   }
+
+  .shopping {
+    background-color: #fff;
+    margin: 20px;
+    padding: 24px 16px;
+    border-radius: 6px;
+    .shopping_guide {
+      line-height: 40px;
+      color: #222;
+      font-size: 30px;
+      font-weight: 600;
+    }
+    .shopping_guides {
+      line-height: 40px;
+      color: #333;
+      font-size: 30px;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 170px;
+    }
+  }
 }

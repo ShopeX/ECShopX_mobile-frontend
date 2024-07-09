@@ -271,4 +271,24 @@ $margin24: 24px;
       max-width: 580px;
     }
   }
+
+  .shopping {
+    background-color: #fff;
+    margin: 24px 0;
+    padding: 24px 16px;
+    .shopping_guide {
+      line-height: 40px;
+      color: #222;
+      font-size: 30px;
+      font-weight: 600;
+    }
+    .shopping_guides {
+      line-height: 40px;
+      color: #333;
+      font-size: 30px;
+      display: flex;
+      justify-content: space-between;
+      padding-left: 170px;
+    }
+  }
 }

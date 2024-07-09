@@ -25,11 +25,8 @@ class StoreCode {
 
   async drawPoster() {
     const { appid, company_id } = getExtConfigData()
-    // const path = this.info?.is_valid
-    //   ? `subpages/salesman/distribution/shop-home?featuredshop=${this.info?.user_id}`
-    //   : `subpages/store/index?id=${this.info?.distributor_id}` //如果开了小店，进小店的页面，否则进店铺首页
-    const path = `subpages/store/index?id=${this.info?.distributor_id}` //如果开了小店，进小店的页面，否则进店铺首页
-    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=${path}&appid=${appid}&company_id=${company_id}&uid=${this.info.user_id}&dtid=${this.info.distributor_id}`
+    const path = `subpages/store/index?id=${this.info?.distributor_id}`
+    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=${path}&appid=${appid}&company_id=${company_id}&uid=${this.info.user_id}&dtid=${this.info.distributor_id}&qr=Y`
 
     const pic = `${process.env.APP_IMAGE_CDN}/bg_fxhb.png`
     console.log('goods pic:', pic)

@@ -21,7 +21,8 @@ export default class DistributionDashboard extends Component {
       showPoster: false,
       poster: null,
       posterImgs: null,
-      adapay_status: null
+      adapay_status: null,
+      is_adapay: false
     }
   }
 
@@ -36,13 +37,21 @@ export default class DistributionDashboard extends Component {
   componentDidShow() {
     this.getAdapayInfo()
     this.fetch()
+    this.tradePaymentListInfo()
+  }
+
+  async tradePaymentListInfo() {
+    const { is_adapay } = await api.salesman.tradePaymentListInfo()
+    this.setState({
+      is_adapay
+    })
   }
 
   async fetch() {
     const resUser = Taro.getStorageSync('userinfo')
     const { username, avatar } = resUser
 
-    const res = await api.distribution.dashboard({isSalesmanPage:1})
+    const res = await api.distribution.dashboard({ isSalesmanPage: 1 })
     const base = pickBy(res, {
       itemTotalPrice: 'itemTotalPrice',
       cashWithdrawalRebate: 'cashWithdrawalRebate',
@@ -143,7 +152,8 @@ export default class DistributionDashboard extends Component {
 
   render() {
     const { colors } = this.props
-    const { info, showPoster, adapay_status } = this.state
+    const { info, showPoster, adapay_status, is_adapay } = this.state
+    const { userId } = Taro.getStorageSync('userinfo')
     if (!info) {
       return <Loading />
     }
@@ -152,10 +162,14 @@ export default class DistributionDashboard extends Component {
         <SpNavBar title='推广管理' leftIconType='chevron-left' />
         <View className='header' style={'background: ' + colors.data[0].marketing}>
           <View className='view-flex view-flex-middle'>
-            <Image className='header-avatar' src={info.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`} mode='aspectFill' />
+            <Image
+              className='header-avatar'
+              src={info.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
+              mode='aspectFill'
+            />
             <View className='header-info view-flex-item'>
               {info.username}
-              {info.is_open_promoter_grade && <Text>（{info.promoter_grade_name}）</Text>}
+              {/* {info.is_open_promoter_grade && <Text>（{info.promoter_grade_name}）</Text>} */}
             </View>
             <Navigator
               className='view-flex view-flex-middle'
@@ -190,7 +204,7 @@ export default class DistributionDashboard extends Component {
             </View>
           </View>
         ) : null}
-        <View className='section achievement'>
+        {/* <View className='section achievement'>
           <View className='section-body view-flex'>
             <View className='view-flex-item content-center'>
               <View className='amount'>
@@ -205,7 +219,7 @@ export default class DistributionDashboard extends Component {
               <View>可提现</View>
             </View>
           </View>
-        </View>
+        </View> */}
         <View className='section analysis'>
           <View className='section-body view-flex content-center'>
             <Navigator
@@ -214,7 +228,7 @@ export default class DistributionDashboard extends Component {
               url='/subpages/salesman/distribution/trade?type=order'
             >
               <View className='iconfont icon-list3 icon-fontsize' />
-              <View className='label'>提成订单</View>
+              <View className='label'>销售订单</View>
               <View>{info.promoter_order_count}</View>
             </Navigator>
             {/* <Navigator
@@ -232,7 +246,7 @@ export default class DistributionDashboard extends Component {
               url='/subpages/salesman/distribution/statistics'
             >
               <View className='iconfont icon-money icon-fontsize' />
-              <View className='label'>推广费</View>
+              <View className='label'>销售奖金</View>
               <View className='mark'>{info.rebateTotal / 100}</View>
             </Navigator>
             {/* <Navigator
@@ -256,10 +270,10 @@ export default class DistributionDashboard extends Component {
           </Navigator>
           <View className='content-padded-b view-flex content-center member'>
             <View className='view-flex-item'>
-              销售客户 <Text className='mark'>{info.isbuy_promoter}</Text> 人
+              已购买 <Text className='mark'>{info.isbuy_promoter}</Text> 人
             </View>
             <View className='view-flex-item'>
-              推广客户 <Text className='mark'>{info.notbuy_promoter}</Text> 人
+              未购买 <Text className='mark'>{info.notbuy_promoter}</Text> 人
             </View>
           </View>
         </View>
@@ -267,25 +281,27 @@ export default class DistributionDashboard extends Component {
           {info.disabled == 0 && (
             <View className='list-item' onClick={this.handleClick}>
               <View className='iconfont icon-qrcode1 icon-fontsize' />
-              <View className='list-item-txt'>我的二维码</View>
+              <View className='list-item-txt'>我的销售店铺</View>
               <View className='iconfont icon-arrowRight icon-right' />
             </View>
           )}
           <Navigator
             className='list-item'
             open-type='navigateTo'
-            url={`/subpages/salesman/distribution/goods?status=${info.isOpenShop && info.shop_status === 1
-              }`}
+            url={`/subpages/salesman/distribution/goods?status=${
+              info.isOpenShop && info.shop_status === 1
+            }`}
           >
             <View className='iconfont icon-weChat icon-fontsize' />
-            <View className='list-item-txt'>推广商品</View>
+            <View className='list-item-txt'>销售商品</View>
             <View className='iconfont icon-arrowRight icon-right' />
           </Navigator>
           {info.isOpenShop && info.shop_status === 1 && (
             <Navigator
               className='list-item'
               open-type='navigateTo'
-              url={`/subpages/salesman/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}&disabled=${info.disabled}`}
+              url={`/subpages/salesman/distribution/shop-home?featuredshop=${userId}`}
+              // url={`/subpages/salesman/distribution/shop?turnover=${info.taskBrokerageItemTotalFee}&point=${info.taskBrokerageItemTotalPoint}&disabled=${info.disabled}`}
             >
               <View className='iconfont icon-shop icon-fontsize' />
               <View className='list-item-txt'>我的小店</View>
@@ -310,25 +326,27 @@ export default class DistributionDashboard extends Component {
               <View className='iconfont icon-arrowRight icon-right' />
             </Navigator>
           )}
-          <Navigator
-            className='list-item'
-            open-type='navigateTo'
-            url='/subpages/salesman/distribution/certification'      
-          >
-            <View className='iconfont item-icon icon-shimingrenzheng' />
-            <View className='list-item-txt'>实名认证</View>
-            <View
-              className={classNames(
-                'cicle',
-                (adapay_status == '审核中' && 'approve') ||
-                (adapay_status == '未认证' && 'NotCertified') ||
-                (adapay_status == '认证失败' && 'fail') ||
-                (adapay_status == '已认证' && 'success')
-              )}
-            />
-            <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
-            <View className='iconfont icon-arrowRight icon-right' />
-          </Navigator>
+          {is_adapay && (
+            <Navigator
+              className='list-item'
+              open-type='navigateTo'
+              url='/subpages/salesman/distribution/certification'
+            >
+              <View className='iconfont item-icon icon-shimingrenzheng' />
+              <View className='list-item-txt'>实名认证</View>
+              <View
+                className={classNames(
+                  'cicle',
+                  (adapay_status == '审核中' && 'approve') ||
+                    (adapay_status == '未认证' && 'NotCertified') ||
+                    (adapay_status == '认证失败' && 'fail') ||
+                    (adapay_status == '已认证' && 'success')
+                )}
+              />
+              <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>
+              <View className='iconfont icon-arrowRight icon-right' />
+            </Navigator>
+          )}
         </View>
 
         {/* {showPoster && (

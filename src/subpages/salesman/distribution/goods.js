@@ -1,4 +1,4 @@
-import React, { Component,useRef } from 'react'
+import React, { Component, useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { platformTemplateName } from '@/utils/platform'
@@ -139,7 +139,7 @@ export default class DistributionGoods extends Component {
       version: 'v1.0.1',
       page_name: 'category',
       isSalesmanPage: 1,
-      distributor_id:this.state.query.distributor_id
+      distributor_id: this.state.query.distributor_id
     }
     const seriesList = await api.salesman.get(query)
     let nav = JSON.parse(JSON.stringify(this.state.navFilterList))
@@ -214,7 +214,8 @@ export default class DistributionGoods extends Component {
       promoter_price: ({ promoter_price }) => (promoter_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       commission_type: 'commission_type',
-      promoter_point: 'promoter_point'
+      promoter_point: 'promoter_point',
+      distributor_id: 'distributor_id'
     })
 
     let ids = []
@@ -403,6 +404,7 @@ export default class DistributionGoods extends Component {
     // const { userId } = Taro.getStorageSync('userinfo')
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
+    console.log(info, 'kkkkkkkkk')
 
     if (isAlipay) {
       return new Promise((resolve, reject) => {
@@ -411,10 +413,7 @@ export default class DistributionGoods extends Component {
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path: getDtidIdUrl(
-              `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
-              info.distributor_id
-            )
+            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
           })
         }, 10)
       })
@@ -423,10 +422,7 @@ export default class DistributionGoods extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: getDtidIdUrl(
-        `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
-        info.distributor_id
-      )
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
     }
   }
 
@@ -523,7 +519,7 @@ export default class DistributionGoods extends Component {
     } else {
       params[key] = value
     }
-    
+
     this.setState(
       {
         query: {
@@ -548,26 +544,24 @@ export default class DistributionGoods extends Component {
 
   onHandleSearch(item) {
     let res = JSON.parse(JSON.stringify(this.state.navFilterList))
-    res[1]=   {
-          key: 'category',
-          name: '分类',
-          label: '分类',
-          activeIndex: null,
-          option: [
-            { category_name: '全部', category_id: 'all' }
-          ]
-        }
+    res[1] = {
+      key: 'category',
+      name: '分类',
+      label: '分类',
+      activeIndex: null,
+      option: [{ category_name: '全部', category_id: 'all' }]
+    }
     this.setState(
       {
         query: {
           // ...this.state.query,
-          tag_id:'',
-          category_id:'',
-          store_status:'',
+          tag_id: '',
+          category_id: '',
+          store_status: '',
           distributor_id: item.distributor_id
         },
         isLoading: true,
-        navFilterList:res
+        navFilterList: res
       },
       async () => {
         await this.resetPage()
@@ -658,8 +652,8 @@ export default class DistributionGoods extends Component {
               })}
             </View>
             {isLoading && <Loading>正在加载...{isLoading}</Loading>}
-            {!isLoading && list.length == 0 && (
-              <SpNote img='trades_empty.png'>暂无数据~{isLoading}</SpNote>
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
             )}
           </ScrollView>
           <SpToast />

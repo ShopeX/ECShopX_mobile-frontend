@@ -17,7 +17,7 @@ const initialConfigState = {
     { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/list' },
     { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
     {
-      name: '业务员推广',
+      name: '业务员销售',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
@@ -30,8 +30,8 @@ const initialConfigState = {
   information: { name: 'cx' },
   info: {},
   parameter: {
-    datetype: '',
-    date: '',
+    datetype: 2,
+    date: S.getNowDate(),
     distributor_id: ''
   },
   selector: []
@@ -51,7 +51,11 @@ const Index = () => {
       title: '加载中',
       icon: 'none'
     })
-    const res = await api.salesman.getSalesmanCount({ ...parameter })
+    let params = {
+      ...parameter,
+      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd'
+    }
+    const res = await api.salesman.getSalesmanCount(params)
     Taro.hideLoading()
     res.total_Fee = S.formatMoney(res.total_Fee / 100)
     res.refund_Fee = S.formatMoney(res.refund_Fee / 100)
@@ -96,7 +100,7 @@ const Index = () => {
   const onTimeChange = (time, val) => {
     let params = {
       ...parameter,
-      datetype: time == 0 ? 'y' : time == 1 ? 'm' : 'd',
+      datetype: time,
       date: val
     }
     setState((draft) => {
@@ -144,7 +148,11 @@ const Index = () => {
               <CompCustomPicker selector={selector} cancel={cancel} />
             </View>
           </View>
-          <SpTime onTimeChange={onTimeChange} />
+          <SpTime
+            onTimeChange={onTimeChange}
+            selects={parameter.datetype}
+            nowTimeDa={parameter.date}
+          />
           <View className='panel-content'>
             <View className='panel-content-top'>
               <View className='panel-content-top-title'>

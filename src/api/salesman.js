@@ -32,3 +32,23 @@ export function shopsProtocolsaleman (params = {}) {
 export function get (params={}) {
   return req.get('/goods/promoter/category', params)
 }
+
+//实名认证
+export function tradePaymentListInfo (params={}) {
+  return req.get('/trade/payment/listInfo', params)
+}
+
+//实名认证
+export function salespersonBindusersalesperson (data) {
+  return req.post('/salesperson/bindusersalesperson', data)
+}
+
+//提现
+export function salespersonApplyCashWithdrawal (data) {
+  return req.post('/salesman/applyCashWithdrawal', data)
+}
+
+//提现记录
+export function salesmanGetCashWithdrawalList (params={}) {
+  return req.get('/salesman/getCashWithdrawalList', params)
+}
