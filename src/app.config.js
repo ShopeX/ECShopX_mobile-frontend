@@ -400,6 +400,9 @@ const config = {
       pages: [
         'index', //首页
         'achievement',//业绩
+        'my',//我的
+        'after-sale-list', // 售后列表
+        'selectShop', // 店铺
       ]
     },
     // 授权

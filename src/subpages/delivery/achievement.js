@@ -27,8 +27,8 @@ const initialConfigState = {
   parameter: {
     page: 1,
     pageSize: 1000,
-    datetype: '',
-    date: '',
+    datetype: 2,
+    date: S.getNowDate(),
     distributor_id: '',
     tab: 'all'
   },
@@ -49,9 +49,11 @@ const Achievement = () => {
       title: '加载中',
       icon: 'none'
     })
-    const res = await api.salesman.promoterGetSalesmanStatic({
-      ...parameter
-    })
+    let params = {
+      ...parameter,
+      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd'
+    }
+    const res = await api.salesman.promoterGetSalesmanStatic(params)
     res.forEach((element) => {
       element.total_Fee = element.total_Fee / 100
       element.total_rebate = element.total_rebate / 100
@@ -94,7 +96,7 @@ const Achievement = () => {
   const onTimeChange = (time, val) => {
     let params = {
       ...parameter,
-      datetype: time == 0 ? 'y' : time == 1 ? 'm' : 'd',
+      datetype: time,
       date: val
     }
     setState((draft) => {
@@ -115,7 +117,11 @@ const Achievement = () => {
       </View>
       <View className='page-achievement-list'>
         <View className='page-achievement-list-picker'>
-          <SpTime onTimeChange={onTimeChange} />
+          <SpTime
+            onTimeChange={onTimeChange}
+            selects={parameter.datetype}
+            nowTimeDa={parameter.date}
+          />
           <CompCustomPicker selector={selector} cancel={cancel} />
         </View>
         {/* <SpTabs

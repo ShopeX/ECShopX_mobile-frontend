@@ -1,0 +1,42 @@
+.page-my-index{
+  .my-content{
+    height: 85vh;
+    background: linear-gradient(to bottom, #bfd3ff, #f3f3f3);
+    padding: 0 24px;
+    box-sizing: border-box;
+    &-header{
+      padding: 16px 0;
+      box-sizing: border-box;
+      background: #fff;
+      border-radius: 16px;
+      margin-bottom: 24px;
+      .sp-cell__title{
+        color: #aaa !important;
+      }
+      .sp-cell__value{
+        color: #333 !important;
+      }
+    }
+    .my-icon{
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    &-btm{
+      background: #fff;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .sp-cell::before{
+      background: #E2E4EA ;
+    }
+
+    .sp-cell__no-border::before{
+      background: none ;
+    }
+
+  }
+}
