@@ -55,7 +55,8 @@ export const initialState = {
   isNeedPackage: false, // 是否需要打包
   openCashier: false,
   isPointOpenModal: false,
-  routerParams: {}
+  routerParams: {},
+  deliveryTimeList:{}
 }
 
 export const deliveryList = [
@@ -68,6 +69,11 @@ export const deliveryList = [
     type: 'dada',
     name: '同城配',
     key: 'is_dada'
+  },
+  {
+    type: 'merchant',
+    name: '同城配',
+    key: 'is_self_delivery'//自配送也展示同城配文字，自配送和达达只展示一个
   },
   {
     type: 'ziti',

@@ -205,7 +205,7 @@ function GoodsItem(props) {
             {!info.is_point && showPrice && (
               <View className='goods-price'>
                 <View className='gd-price'>
-                  <SpPrice value={info.price}></SpPrice>
+                  <SpPrice value={info.price} size={36}></SpPrice>
                   <Text
                     className='iconfont icon-gouwuche2'
                     onClick={(e)=>onChangeToolBar(info.itemId,e)}

@@ -79,7 +79,8 @@ const config = {
       root: 'subpages/ecshopx',
       pages: [
         'nearly-shop', // 店铺选择
-        'shop-list' // 商家列表
+        'shop-list', // 商家列表
+        'navigation-ibs' //lbs图片导航
       ]
     },
     {
@@ -121,7 +122,9 @@ const config = {
         'trade/change-price', // 订单改价
         'trade/cancel-trade', // 取消订单
         'trade/sale-after', // 订单售后
-        'trade/result' // 订单操作结果
+        'trade/result', // 订单操作结果
+        'delivery-personnel', // 配送员
+        'edit-deliveryman' // 配送员创建
       ]
     },
     // 积分商城
@@ -344,6 +347,44 @@ const config = {
         'agreement' //协议页面
       ]
     },
+    //业务员
+    {
+      root: 'subpages/salesman',
+      pages: [
+        'index', //首页
+        'card',//名片
+        'cart',//购物车
+        'my',//我的
+        'selectCustomer',//选客户
+        'selectStore',//选店铺
+        'selectShop',//选店铺
+        'achievement',//业绩
+        'delivery-personnel',//业务员管理
+        'edit-deliveryman',//创建业务员
+        'purchasing', //选商品
+        'distribution/index', // 推广管理首页
+        'distribution/setting', // 推广管理会员资料
+        'distribution/shop-home', // 小店首页
+        'distribution/statistics', // 推广费详情页面
+        'distribution/trade', // 推广订单列表
+        'distribution/subordinate', // 我的会员列表
+        'distribution/withdraw', // 提现页面
+        'distribution/withdrawals-record', // 提现记录
+        'distribution/withdrawals-acount', // 提现绑定账户
+        'distribution/goods', // 推广商品列表
+        'distribution/shop', // 我的小店概览页面
+        'distribution/shop-setting', // 小店设置页面
+        'distribution/shop-form', // 小店设置编辑页面
+        'distribution/qrcode', // 小店二维码
+        'distribution/shop-category', // 小店商品分类
+        'distribution/good-category', // 推广商品分类页面
+        'distribution/shop-goods', // 小店商品页面
+        'distribution/shop-trade', // 小店订单页面
+        'distribution/shop-achievement', // 小店业绩页面
+        'distribution/point-platform',
+        'distribution/certification',//实名认证
+      ]
+    },
     // 授权
     {
       root: 'subpages/auth',
@@ -355,7 +396,8 @@ const config = {
         'bindPhone', //绑定手机页面
         'auth-loading', //授权加载页
         'forgotpwd', //找回密码页面
-        'edit-phone' //修改密码页面
+        'edit-phone', //修改密码页面
+
       ]
     }
   ],

@@ -14,6 +14,7 @@ import S from '@/spx'
 import tradeHooks from './hooks'
 import CompTradeCancel from './comps/comp-tradecancel'
 import CompWriteOffCode from './comps/comp-writeoff-code'
+import CompTrackDetail from './comps/comp-track-detail'
 import './detail.scss'
 
 const initialState = {
@@ -25,11 +26,13 @@ const initialState = {
   openCashier: false,
   openCancelTrade: false,
   openWriteOffCode: false,
-  webSocketOpenFlag: false
+  webSocketOpenFlag: false,
+  openTrackDetail: false,
+  trackDetailList:[]
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
-  const { info, tradeInfo, cancelData, distirbutorInfo, loading, openCashier, openCancelTrade, openWriteOffCode, webSocketOpenFlag } = state
+  const { info, tradeInfo, cancelData, distirbutorInfo, loading, openCashier, openCancelTrade, openWriteOffCode, webSocketOpenFlag,openTrackDetail,trackDetailList } = state
   const { priceSetting, pointName } = useSelector((state) => state.sys)
 
   const { order_page: { market_price: enMarketPrice } } = priceSetting
@@ -277,6 +280,23 @@ function TradeDetail(props) {
     }
   }
 
+  const handleCallOpreator = () => {
+    Taro.makePhoneCall({
+      phoneNumber: info.selfDeliveryOperatorMobile
+    })
+  }
+
+  const handleTrackDetail = async() => {
+    const { orderId } = info
+    const res = await api.trade.getTrackerpull({order_id:orderId})
+    console.log(res)
+
+    setState(v=>{
+      v.openTrackDetail = true
+      v.trackDetailList = res
+    })
+  }
+
   return (
     <SpPage className='page-trade-detail' loading={loading} scrollToTopBtn
       renderFooter={renderActionButton()}
@@ -285,8 +305,26 @@ function TradeDetail(props) {
         <View className='trade-status'>
           {
             info && <View className='trade-status-desc'>
-              <SpImage src={getTradeStatusIcon()} width={50} height={50} />
-              <Text className="status-desc">{getTradeStatusDesc()}</Text>
+              <View className='trade-status-desc-box'>
+                <SpImage src={getTradeStatusIcon()} width={50} height={50} />
+                <Text className="status-desc">{getTradeStatusDesc()}</Text>
+              </View>
+              { (info?.selfDeliveryOperatorName && info?.selfDeliveryOperatorMobile ) && (
+                <View className='deliver-opreator'>
+                  <View className='deliver-opreator-name'>配送员:{info?.selfDeliveryOperatorName}</View>
+                  <View >
+                    <Text className='deliver-opreator-phone' onClick={handleCallOpreator}>拨打电话</Text>
+                  </View>
+                  <View >
+                    <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>订单跟踪</Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          }
+          {
+            info?.selfDeliveryTime && <View className='self-delivery-time'>
+              <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
             </View>
           }
           {
@@ -480,6 +518,16 @@ function TradeDetail(props) {
           draft.openWriteOffCode = false
         })
       }} />
+
+      <CompTrackDetail
+        selfDeliveryOperatorName={info?.selfDeliveryOperatorName}
+        selfDeliveryOperatorMobile={info?.selfDeliveryOperatorMobile}
+        trackDetailList={trackDetailList}
+        isOpened={openTrackDetail} onClose={() => {
+        setState(draft => {
+          draft.openTrackDetail = false
+        })
+      }}  />
     </SpPage>
   )
 }

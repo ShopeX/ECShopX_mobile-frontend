@@ -45,6 +45,7 @@ function SpPage(props, ref) {
     navigateMantle = false, // 自定义导航，开启滚动蒙层
     pageConfig,
     fixedTopContainer = null,
+    showNavition = true,//是否展示Navition
     title = '' // 页面导航标题
   } = props
   let { renderTitle } = props
@@ -312,9 +313,9 @@ function SpPage(props, ref) {
 
 
       {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        'margin-top': `${customNavigation ? gNavbarH : 0}px`,
-        'height': `${windowHeight - (customNavigation ? gNavbarH : 0)}px`
+        'margin-top': `${customNavigation ? gNavbarH : 0}px`
       })}>{children}</View>}
+
 
       {/* 置底操作区 */}
       {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}

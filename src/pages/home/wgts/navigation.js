@@ -54,7 +54,8 @@ export default class WgtNavigation extends Component {
               key={`nav-item__${idx}`}
               onClick={this.handleClickItem.bind(this, {
                 ...item,
-                distributor_id
+                distributor_id,
+                navigation:base.navigation
               })}
             >
               <SpImage

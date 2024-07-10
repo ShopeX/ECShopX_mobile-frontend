@@ -1,0 +1,23 @@
+.page-navigation-ibs{
+  background: #F2F2F2 !important;
+  padding-bottom: 0;
+  .home-body {
+    // overflow-x: hidden;
+    &.has-home-header {
+      margin-top:0  !important;
+    }
+    /*  #ifdef  h5  */
+    &.has-home-header {
+      margin-top: 0
+      
+    }
+    .home-header{
+      background: #FFF !important;
+    }
+    /*  #endif  */
+
+    /*  #ifdef  alipay  */
+    
+    /*  #endif  */
+  }
+}

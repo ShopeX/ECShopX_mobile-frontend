@@ -1,0 +1,671 @@
+import React, { Component,useRef } from 'react'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, ScrollView } from '@tarojs/components'
+import { platformTemplateName } from '@/utils/platform'
+import { AtTabBar } from 'taro-ui'
+import {
+  SpToast,
+  Loading,
+  FilterBar,
+  SpNote,
+  SpSearchInput,
+  SpNavBar,
+  SpNavFilter,
+  SpPage
+} from '@/components'
+import S from '@/spx'
+import { getDtidIdUrl } from '@/utils/helper'
+import api from '@/api'
+import { withPager, withBackToTop } from '@/hocs'
+import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
+import DistributionGoodsItem from './comps/goods-item'
+
+import './goods.scss'
+
+@withPager
+@withBackToTop
+export default class DistributionGoods extends Component {
+  $instance = getCurrentInstance()
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      ...this.state,
+      shareInfo: {},
+      info: {},
+      curFilterIdx: 0,
+      filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
+      tabList: [
+        {
+          title: '推广商品',
+          iconType: 'home',
+          iconPrefixClass: 'iconfont icon',
+          url: '/subpages/salesman/distribution/goods',
+          urlRedirect: true
+        },
+        {
+          title: '分类',
+          iconType: 'category_id',
+          iconPrefixClass: 'iconfont icon',
+          url: '/subpages/salesman/distribution/good-category',
+          urlRedirect: true
+        }
+      ],
+      localCurrent: 0,
+      query: null,
+      paramsList: [],
+      selectParams: [],
+      list: [],
+      goodsIds: [],
+      top: 0,
+      searchConditionList: [{ label: '全部店铺', value: '' }],
+      navFilterList: [
+        {
+          key: 'tag_id',
+          name: '标签',
+          label: '标签',
+          activeIndex: null,
+          option: []
+        },
+        {
+          key: 'category',
+          name: '分类',
+          label: '分类',
+          activeIndex: null,
+          option: [
+            { category_name: '全部', category_id: 'all' }
+            // {
+            //   category_name: '男装',
+            //   category_id: '1',
+            //   children: [
+            //     {
+            //       category_name: '上衣',
+            //       category_id: '3',
+            //       children: [{ category_name: '卫衣', category_id: '4' }]
+            //     }
+            //   ]
+            // },
+            // { category_name: '女装', category_id: '2' }
+          ]
+        },
+        {
+          key: 'store_status',
+          label: '状态',
+          name: '状态',
+          activeIndex: null,
+          option: [
+            { label: '有货', value: 1 },
+            { label: '无货', value: 0 }
+          ]
+        }
+      ],
+      tag_id: '',
+      category: '',
+      statused: '',
+      isLoading: true,
+      first: true
+    }
+  }
+
+  componentDidMount() {
+    Taro.hideShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+    this.firstStatus = true
+    const { status } = this.$instance.router.params
+    const { tabList } = this.state
+    tabList[1].url += `?status=${status}`
+    this.setState(
+      {
+        query: {
+          item_type: 'normal',
+          approve_status: 'onsale,only_show',
+          is_promoter: true
+        },
+        tabList,
+        isLoading: true
+      },
+      () => {
+        this.nextPage()
+      }
+    )
+    this.distributor()
+  }
+
+  async getCategory() {
+    const query = {
+      template_name: platformTemplateName,
+      version: 'v1.0.1',
+      page_name: 'category',
+      isSalesmanPage: 1,
+      distributor_id:this.state.query.distributor_id
+    }
+    const seriesList = await api.salesman.get(query)
+    let nav = JSON.parse(JSON.stringify(this.state.navFilterList))
+
+    const classification = (item) => {
+      item.forEach((l, i) => {
+        l.category_name = l.category_name
+        l.category_id = l.category_id
+        if (l?.children) {
+          classification(l.children)
+        }
+      })
+      return item
+    }
+
+    let res = classification(seriesList)
+
+    nav[1].option = [...nav[1].option, ...(res ?? [])]
+    this.setState({
+      navFilterList: nav
+    })
+  }
+
+  async fetch(params) {
+    const { userId } = Taro.getStorageSync('userinfo')
+    const { page_no: page, page_size: pageSize } = params
+    const { selectParams, navFilterList, first } = this.state
+    const query = {
+      ...this.state.query,
+      page,
+      pageSize,
+      isSalesmanPage: 1
+    }
+
+    const {
+      list,
+      total_count: total,
+      item_params_list = [],
+      select_tags_list
+    } = await api.item.search(query)
+
+    item_params_list.map((item) => {
+      if (selectParams.length < 4) {
+        selectParams.push({
+          attribute_id: item.attribute_id,
+          attribute_value_id: 'all'
+        })
+      }
+      item.attribute_values.unshift({
+        attribute_value_id: 'all',
+        attribute_value_name: '全部',
+        isChooseParams: true
+      })
+    })
+
+    let nav = JSON.parse(JSON.stringify(navFilterList))
+
+    select_tags_list?.map((item) => {
+      nav[0].option.push({
+        label: item.tag_name,
+        value: item.tag_id
+      })
+    })
+
+    const nList = pickBy(list, {
+      img: 'pics[0]',
+      item_id: 'item_id',
+      goods_id: 'goods_id',
+      title: 'item_name',
+      desc: 'brief',
+      price: ({ price }) => (price / 100).toFixed(2),
+      promoter_price: ({ promoter_price }) => (promoter_price / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      commission_type: 'commission_type',
+      promoter_point: 'promoter_point'
+    })
+
+    let ids = []
+    list.map((item) => {
+      ids.push(item.goods_id)
+    })
+
+    const param = {
+      goods_id: ids,
+      user_id: userId
+    }
+
+    const { goods_id } = await api.distribution.items(param)
+
+    this.setState({
+      list: [...this.state.list, ...nList],
+      goodsIds: [...this.state.goodsIds, ...goods_id],
+      query,
+      isLoading: false,
+      first: false
+    })
+
+    if (this.firstStatus) {
+      this.setState({
+        paramsList: item_params_list,
+        selectParams
+      })
+      this.firstStatus = false
+    }
+    if (first) {
+      this.setState({
+        navFilterList: nav
+      })
+      await this.getCategory()
+    }
+    return {
+      total
+    }
+  }
+
+  distributor = async () => {
+    const { list } = await api.salesman.getSalespersonSalemanShopList({
+      page: 1,
+      page_size: 1000
+    })
+    list.forEach((element) => {
+      element.value = element.distributor_id
+      element.label = element.name
+    })
+    list.unshift({
+      value: '',
+      label: '全部店铺'
+    })
+    this.setState({
+      searchConditionList: list
+    })
+  }
+
+  handleFilterChange = (data) => {
+    const { current, sort } = data
+
+    const query = {
+      ...this.state.query,
+      goodsSort: current === 0 ? null : current === 1 ? 1 : sort > 0 ? 3 : 2
+    }
+
+    if (current == this.state.curFilterIdx && current !== 2) {
+      return
+    }
+
+    if (
+      current !== this.state.curFilterIdx ||
+      (current === this.state.curFilterIdx && query.goodsSort !== this.state.query.goodsSort)
+    ) {
+      this.resetPage()
+      this.setState({
+        list: []
+      })
+    }
+
+    this.setState(
+      {
+        curFilterIdx: current,
+        query,
+        isLoading: true
+      },
+      () => {
+        this.nextPage()
+      }
+    )
+  }
+
+  handleClickParmas = (id, child_id) => {
+    const { paramsList, selectParams } = this.state
+    paramsList.map((item) => {
+      if (item.attribute_id === id) {
+        item.attribute_values.map((v_item) => {
+          if (v_item.attribute_value_id === child_id) {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      }
+    })
+    selectParams.map((item) => {
+      if (item.attribute_id === id) {
+        item.attribute_value_id = child_id
+      }
+    })
+    this.setState({
+      paramsList,
+      selectParams
+    })
+  }
+
+  handleClickSearchParams = (type) => {
+    if (type === 'reset') {
+      const { paramsList, selectParams } = this.state
+      this.state.paramsList.map((item) => {
+        item.attribute_values.map((v_item) => {
+          if (v_item.attribute_value_id === 'all') {
+            v_item.isChooseParams = true
+          } else {
+            v_item.isChooseParams = false
+          }
+        })
+      })
+      selectParams.map((item) => {
+        item.attribute_value_id = 'all'
+      })
+      this.setState({
+        paramsList,
+        selectParams
+      })
+    }
+
+    this.resetPage()
+    this.setState(
+      {
+        list: [],
+        isLoading: true
+      },
+      () => {
+        this.nextPage()
+      }
+    )
+  }
+
+  handleClickItem = async (id) => {
+    const { goodsIds } = this.state
+    const goodsId = { goods_id: id }
+    const idx = goodsIds.findIndex((item) => id === item)
+    const isRelease = idx !== -1
+    if (!isRelease) {
+      const { status } = await api.distribution.release(goodsId)
+      if (status) {
+        this.setState(
+          {
+            goodsIds: [...this.state.goodsIds, id],
+            scrollTop: this.state.top
+          },
+          () => {
+            S.toast('上架成功')
+          }
+        )
+      }
+    } else {
+      const { status } = await api.distribution.unreleased(goodsId)
+      if (status) {
+        goodsIds.splice(idx, 1)
+        this.setState(
+          {
+            goodsIds,
+            scrollTop: this.state.top
+          },
+          () => {
+            S.toast('下架成功')
+          }
+        )
+      }
+    }
+  }
+
+  onShareAppMessage(res) {
+    // const { userId } = Taro.getStorageSync('userinfo')
+    const { userId } = Taro.getStorageSync('userinfo')
+    const { info } = res.target.dataset
+
+    if (isAlipay) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          const info = Taro.getStorageSync('shareData')
+          resolve({
+            title: info.title,
+            imageUrl: info.img,
+            path: getDtidIdUrl(
+              `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+              info.distributor_id
+            )
+          })
+        }, 10)
+      })
+    }
+
+    return {
+      title: info.title,
+      imageUrl: info.img,
+      path: getDtidIdUrl(
+        `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+        info.distributor_id
+      )
+    }
+  }
+
+  handleSearchChange = (val) => {
+    this.setState({
+      query: {
+        ...this.state.query,
+        keywords: val
+      }
+    })
+  }
+
+  handleConfirm = (val) => {
+    this.setState(
+      {
+        query: {
+          ...this.state.query,
+          keywords: val.keywords,
+          distributor_id: val.key
+        },
+        isLoading: true
+      },
+      () => {
+        this.resetPage()
+        this.setState(
+          {
+            list: []
+          },
+          () => {
+            this.nextPage()
+          }
+        )
+      }
+    )
+  }
+
+  handleClick = (current) => {
+    const cur = this.state.localCurrent
+
+    if (cur !== current) {
+      const curTab = this.state.tabList[current]
+      const { url } = curTab
+
+      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
+
+      if (url && fullPath !== url) {
+        Taro.redirectTo({ url })
+      }
+    }
+  }
+  shareDataChange = (shareInfo) => {
+    this.setState({ shareInfo })
+  }
+  // 滚动事件
+  onScroll = (e) => {
+    const { scrollTop } = e.detail
+    this.setState({
+      top: scrollTop
+    })
+  }
+
+  // 递归函数用于查找指定ID的数据
+  findDataById = (data, id) => {
+    let result = null
+
+    const searchById = (items) => {
+      for (const item of items) {
+        if (item.category_id === id) {
+          result = item
+          return
+        }
+        if (item.children) {
+          searchById(item.children)
+          if (result) return
+        }
+      }
+    }
+
+    searchById(data)
+    return result
+  }
+
+  handleFilterChanges = async (key, value) => {
+    console.log(789, key, value)
+    let params = {}
+    if (key == 'category') {
+      // let res = this.findDataById(this.state.navFilterList[1].option, value)
+      // if (res?.statusNum) {
+      //   params['category_id'] = value
+      // } else {
+      //   params['main_category'] = value
+      // }
+      params['category_id'] = value
+    } else {
+      params[key] = value
+    }
+    
+    this.setState(
+      {
+        query: {
+          ...this.state.query,
+          ...params
+        },
+        isLoading: true
+      },
+      () => {
+        this.resetPage()
+        this.setState(
+          {
+            list: []
+          },
+          () => {
+            this.nextPage()
+          }
+        )
+      }
+    )
+  }
+
+  onHandleSearch(item) {
+    let res = JSON.parse(JSON.stringify(this.state.navFilterList))
+    res[1]=   {
+          key: 'category',
+          name: '分类',
+          label: '分类',
+          activeIndex: null,
+          option: [
+            { category_name: '全部', category_id: 'all' }
+          ]
+        }
+    this.setState(
+      {
+        query: {
+          // ...this.state.query,
+          tag_id:'',
+          category_id:'',
+          store_status:'',
+          distributor_id: item.distributor_id
+        },
+        isLoading: true,
+        navFilterList:res
+      },
+      async () => {
+        await this.resetPage()
+        await this.getCategory()
+        this.setState(
+          {
+            list: []
+          },
+          async () => {
+            await this.nextPage()
+          }
+        )
+      }
+    )
+  }
+  render() {
+    const { status } = this.$instance.router.params
+    const {
+      list,
+      page,
+      scrollTop,
+      goodsIds,
+      curFilterIdx,
+      filterList,
+      query,
+      tabList,
+      localCurrent,
+      searchConditionList,
+      navFilterList,
+      tag_id,
+      category,
+      statused,
+      isLoading
+    } = this.state
+
+    return (
+      <SpPage className='page-distribution-shop'>
+        <View>
+          <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
+          {/* <SearchBar
+            showDailog={false}
+            keyword={query ? query.keywords : ''}
+            onFocus={() => false}
+            onCancel={() => {}}
+            onChange={this.handleSearchChange}
+            onClear={this.handleConfirm.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+          /> */}
+          <SpSearchInput
+            placeholder='输入内容'
+            // isShowArea
+            isShowSearchCondition
+            searchConditionList={searchConditionList}
+            onConfirm={this.handleConfirm.bind(this)}
+            onHandleSearch={this.onHandleSearch.bind(this)}
+          />
+          <SpNavFilter info={navFilterList} onChange={this.handleFilterChanges.bind(this)} />
+
+          {/* <FilterBar
+            className='goods-list__tabs'
+            custom
+            current={curFilterIdx}
+            list={filterList}
+            onChange={this.handleFilterChange}
+          ></FilterBar> */}
+
+          <ScrollView
+            className='goods-list__scroll'
+            scrollY
+            scrollTop={scrollTop}
+            scrollWithAnimation
+            onScroll={this.onScroll}
+            onScrollToLower={this.nextPage}
+          >
+            <View className='goods-list'>
+              {list.map((item) => {
+                const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
+                return (
+                  <DistributionGoodsItem
+                    key={item.goods_id}
+                    info={item}
+                    isRelease={isRelease}
+                    shareDataChange={this.shareDataChange}
+                    status={status}
+                    onClick={() => this.handleClickItem(item.goods_id)}
+                  />
+                )
+              })}
+            </View>
+            {isLoading && <Loading>正在加载...{isLoading}</Loading>}
+            {!isLoading && list.length == 0 && (
+              <SpNote img='trades_empty.png'>暂无数据~{isLoading}</SpNote>
+            )}
+          </ScrollView>
+          <SpToast />
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        </View>
+      </SpPage>
+    )
+  }
+}

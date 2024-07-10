@@ -25,7 +25,8 @@ const initialState = {
   queryDistrict: '',
   queryAddress: '',
   isSpAddressOpened: false,
-  refresh: false
+  refresh: false,
+  isToken:false
 }
 
 function NearlyShop(props) {
@@ -39,7 +40,8 @@ function NearlyShop(props) {
   const { chooseValue, isSpAddressOpened, keyword, refresh, type, queryProvice,
     queryCity,
     queryDistrict,
-    queryAddress } = state
+    queryAddress ,
+    isToken} = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const shopRef = useRef()
@@ -65,7 +67,8 @@ function NearlyShop(props) {
     setState((draft) => {
       if (address) {
         draft.type = address.is_def ? 2 : 3
-      } else if (location) { // fix：未授权定位时不设置chooseValue
+      } 
+      if (location) { // fix：未授权定位时不设置chooseValue
         draft.chooseValue = [province, city, district]
         draft.type = 0
       }
@@ -81,11 +84,21 @@ function NearlyShop(props) {
       })
     })
 
+    getTokenFromStorage()
+
     return () => {
       Taro.eventCenter.off('onEventSelectReceivingAddress')
     }
   }, [])
 
+
+  // 在需要获取 Token 的地方调用该函数
+  const getTokenFromStorage = async () => {
+      let res = await Taro.getStorage({ key: 'token' });
+      setState(draft => {
+        draft.isToken = res?.data ? true : false
+      })
+  };
 
   const fetchShop = async ({ pageIndex, pageSize }) => {
     
@@ -210,7 +223,7 @@ function NearlyShop(props) {
 
   // 根据定位地址或收货地址定位切换地址
   const onLocationChange = async (info) => {
-    let local = info.address || info.province + info.city + info.county + info.adrdetail
+    let local = info.address || info.province + info.city + info?.area + info?.county + info?.adrdetail
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))
     Taro.navigateBack()
@@ -276,7 +289,7 @@ function NearlyShop(props) {
           </View>
         </View>
         {
-          address && <View className='block-title block-flex'>
+          isToken && address && <View className='block-title block-flex'>
             <View>我的收货地址</View>
             <View
               className='arrow'
@@ -288,20 +301,23 @@ function NearlyShop(props) {
             </View>
           </View>
         }
-
-        <View className='receive-address'>
-          {!address && isLogin && (
-            <View className='btn-add-address' onClick={onAddChange}>
-              添加新地址
-            </View>
-          )}
-          {address && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
-          )}
-        </View>
+    
+            <View className='receive-address'>
+            {!address && isLogin && (
+              <View className='btn-add-address' onClick={onAddChange}>
+                添加新地址
+              </View>
+            )}
+            {address && isToken && (
+              <View
+                className='address'
+                onClick={() => onLocationChange(address)}
+              >{
+                `${address.province}${address.city}${address?.area || ''}${address?.county || ''}${address?.adrdetail || ''}`
+              }</View>
+            )}
+          </View>
+       
       </View>
 
       <View className='nearlyshop-list'>

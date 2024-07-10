@@ -33,16 +33,11 @@ function SpImage(props) {
 
   let imgUrl = /^http/.test(src) || isBase64(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
 
-  if (!isBase64(src)) {
-    if (diskDriver === 'qiniu') {
-      if (width != 'auto') {
-        imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + Math.floor(width / 2) : ''}${height ? '/h/' + Math.floor(height / 2) : ''}`
-      }
-    } else {
-      // imgUrl = `${imgUrl}?imageView2/1${width ? '/w/' + Math.floor(width / 2) : ''}${
-      //   height ? '/h/' + Math.floor(height / 2) : ''
-      // }`
-      imgUrl = `${imgUrl}?x-oss-process=image/quality,q_60`
+  if (diskDriver === 'qiniu') {
+    if (width != 'auto') {
+      imgUrl = `${imgUrl}?imageView2/2/q/60${width ? '/w/' + Math.floor(width / 2) : ''}${
+        height ? '/h/' + Math.floor(height / 2) : ''
+      }`
     }
   }
 

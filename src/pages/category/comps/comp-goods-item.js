@@ -186,7 +186,7 @@ function CompGoodsItem(props) {
             {!info.is_point && showPrice && (
               <View className='goods-price'>
                 <View className='gd-price'>
-                  <SpPrice value={info.price}></SpPrice>
+                  <SpPrice value={info.price} size={36}></SpPrice>
                   {info.price - info.activityPrice > 0 ? (
                     <Text className='unit-price'>{info.price}</Text>
                   ) : (

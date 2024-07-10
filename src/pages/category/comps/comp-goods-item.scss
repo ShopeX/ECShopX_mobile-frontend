@@ -66,12 +66,11 @@
       flex: 1;
       .goods-title {
         // height: 66px;
-        width: 312rpx;
-        font-size: 24px;
+        width: 312px;
+        font-size: 30px;
         color: #222;
         font-weight: bold;
         @include multi-ellipsis(1);
-        padding-top: 15px;
       }
 
       .goods-desc {
@@ -138,12 +137,12 @@
         display: flex;
         flex-wrap: wrap;
         height: 32px;
-        margin-top: 16px;
+        margin-top: 22px;
 
         .promotion-tag {
           border: 1px solid var(--color-primary);
           color: var(--color-primary);
-          font-size: 22px;
+          font-size: 28px;
           border-radius: 8px;
           padding: 0 11px;
           height: 32px;
@@ -155,7 +154,7 @@
       .bd-block {
         display: flex;
         justify-content: space-between;
-        margin-top: 20px;
+        margin-top: 28px;
 
         &-lf {}
 

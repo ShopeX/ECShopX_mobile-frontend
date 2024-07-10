@@ -33,6 +33,11 @@ export function deliveryInfo (order_type, order_id) {
 export function deliveryInfoNew (params) {
   return req.get(`/delivery/trackerpull`, params)
 }
+
+export function getTrackerpull (params) {
+  return req.get(`/trackerpull`, params)
+}
+
 export function tradeQuery (trade_id) {
   return req.get(`/tradequery`, { trade_id })
 }

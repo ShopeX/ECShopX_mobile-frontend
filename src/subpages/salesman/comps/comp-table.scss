@@ -1,0 +1,34 @@
+.list-all {
+  display: flex;
+  //   justify-content: space-between;
+  &-item {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text {
+      width: 140px;
+      line-height: 84px;
+      height: 84px;
+      display: block;
+      text-align: center;
+      border-bottom: 1px solid #dddddd;
+      &:last-child {
+        border-bottom: 0px solid #dddddd;
+      }
+    }
+    text:nth-child(1) {
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 400;
+      font-size: 24px;
+      color: #666f83;
+      border-bottom: 0px solid #dddddd;
+    }
+  }
+}
+.nodata {
+  text-align: center;
+  line-height: 100px;
+  color: #666f83;
+}

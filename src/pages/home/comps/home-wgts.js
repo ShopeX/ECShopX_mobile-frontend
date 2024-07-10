@@ -31,7 +31,7 @@ const initialState = {
   searchMethod: null
 }
 function HomeWgts(props) {
-  const { wgts, dtid, onLoad = () => { }, children } = props
+  const { wgts, dtid, onLoad = () => { }, children ,copywriting = true} = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
   const wgtsRef = useRef()
@@ -80,7 +80,7 @@ function HomeWgts(props) {
   }
 
   return (
-    <SpScrollView className='home-wgts' ref={wgtsRef} fetch={fetch} pageSize={5} onLoad={onLoad}>
+    <SpScrollView className='home-wgts' ref={wgtsRef} fetch={fetch} pageSize={5} onLoad={onLoad} renderMore={copywriting?null:()=>{}}>
       {localWgts.map((list) => {
         return list.map((item, idx) => (
           <View

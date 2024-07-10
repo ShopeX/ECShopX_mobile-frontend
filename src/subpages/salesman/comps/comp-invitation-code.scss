@@ -1,0 +1,151 @@
+.comp-invitation {
+  .comp-invitation-code {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    z-index: 10;
+    width: 100%;
+    height: 100%;
+    background: rgba(#000000, 0.3);
+    &-pop {
+      position: absolute;
+      margin: 28% 0 50px 50px;
+      width: 650px;
+      height: 900px;
+      background-color: #fff;
+      border-radius: 16px;
+      .fxy_bk {
+        width: 100%;
+        position: absolute;
+      }
+      &-text {
+        position: absolute;
+        padding: 0 100px;
+        .name {
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 500;
+          text-align: center;
+          color: #111a34;
+          margin-top: 60px;
+          view:nth-child(1) {
+            font-weight: 600;
+            font-size: 36px;
+            line-height: 50px;
+          }
+          view:nth-child(2) {
+            margin-top: 16px;
+            font-weight: 400;
+            font-size: 28px;
+            line-height: 40px;
+          }
+        }
+        .names{
+            font-family: PingFangSC, PingFang SC;
+            font-weight: 600;
+            font-size: 36px;
+            color: #111A34;
+            line-height: 50px;
+            text-align: center;
+            margin: 90px 0 16px 0;
+        }
+        .img {
+          margin: 60px 0;
+          width: 450px;
+          height: 450px;
+          background: #ffffff;
+          border-radius: 16px;
+        }
+        .preserve {
+          width: 250px;
+          height: 80px;
+          background: #4980ff;
+          border-radius: 40px;
+          text-align: center;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0 auto;
+          font-size: 30px;
+          color: #ffffff;
+          .icon-baocuntupian {
+            font-size: 30px;
+            margin-right: 10px;
+          }
+        }
+      }
+    }
+  }
+  .icon-guanbi3 {
+    margin-left: 360px;
+    margin-top: 1150px;
+    font-size: 50px;
+    color: #fff;
+    display: block;
+  }
+  //   width: 100%;
+  //   height: 100%;
+  //   background-color: RGBA(46, 48, 61, 1);
+  //   &-pop {
+  //     position: fixed;
+  //     bottom: 0;
+  //     left: 0;
+  //     right: 0;
+  //     top: 0;
+  //     margin: auto;
+  //     width: 650px;
+  //     height: 900px;
+  //     background-color: #fff;
+  //     border-radius: 8px;
+  //     image {
+  //       position: absolute;
+  //     }
+  //     &-text {
+  //       padding: 0 100px;
+  //       position: absolute;
+  //       .name {
+  //         font-family: PingFangSC, PingFang SC;
+  //         font-weight: 500;
+  //         text-align: center;
+  //         color: #111a34;
+  //         margin-top: 60px;
+  //         view:nth-child(1) {
+  //           font-size: 36px;
+  //           line-height: 50px;
+  //         }
+  //         view:nth-child(2) {
+  //           margin-top: 16px;
+  //           font-weight: 400;
+  //           font-size: 28px;
+  //           line-height: 40px;
+  //         }
+  //       }
+  //       .img {
+  //         margin: 60px 0;
+  //         width: 450px;
+  //         height: 450px;
+  //         background: #ffffff;
+  //         border-radius: 16px;
+  //       }
+  //       .preserve {
+  //         width: 250px;
+  //         height: 80px;
+  //         background: #4980ff;
+  //         border-radius: 40px;
+  //         text-align: center;
+  //         display: flex;
+  //         justify-content: center;
+  //         align-items: center;
+  //         margin: 0 auto;
+  //         font-size: 30px;
+  //         color: #ffffff;
+  //         .icon-baocuntupian {
+  //           font-size: 30px;
+  //           margin-right: 10px;
+  //         }
+  //       }
+  //     }
+  //   }
+}

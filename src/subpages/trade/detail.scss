@@ -29,8 +29,12 @@
 
     .trade-status-desc {
       display: flex;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
+      &-box{
+        display: flex;
+        align-items: center;
+      }
     }
 
     .iconfont {
@@ -44,6 +48,27 @@
       color: #222;
       font-weight: 500;
       margin-left: 16px;
+    }
+
+    .deliver-opreator{
+      display: flex;
+      margin-left: 8px;
+      align-items: center;
+      &-name{
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      &-phone{
+        color: #666;
+        font-size: 24px;
+        border: 1px #ccc solid;
+        margin-left: 8px;
+        border-radius: 10px;
+      }
     }
 
     .order-cancel-time {
@@ -367,5 +392,13 @@
         background-color: var(--color-primary);
       }
     }
+  }
+
+  .time-line-item:last-child{
+    border: none !important;
+  }
+
+  .self-delivery-time .sp-cell{
+    background: transparent;
   }
 }

@@ -17,7 +17,12 @@ const initialState = {
   address: null,
   location: null,
   chiefInfo: {}, // 团长信息
-  checkIsChief: true // 检查是否是团长
+  checkIsChief: true, // 检查是否是团长
+  address:{
+    province:'北京市',
+    city:'北京市',
+    area:'昌平区',
+  }
 }
 
 export const fetchUserFavs = createAsyncThunk('user/fetchUserFavs', async (params) => {

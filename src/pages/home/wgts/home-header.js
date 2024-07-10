@@ -7,7 +7,7 @@ import { VERSION_PLATFORM, classNames, isWeixin, VERSION_STANDARD } from '@/util
 import './home-header.scss'
 
 function WgtHomeHeader(props) {
-  const { children, isSetHight } = props
+  const { children, jump = true, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
   const { openScanQrcode, openStore, openLocation } = useSelector((state) => state.sys)
   const {
@@ -36,9 +36,11 @@ function WgtHomeHeader(props) {
         <View
           className='left-block'
           onClick={() => {
-            Taro.navigateTo({
-              url: '/subpages/ecshopx/nearly-shop'
-            })
+            if (jump) {
+              Taro.navigateTo({
+                url: '/subpages/ecshopx/nearly-shop'
+              })
+            }
           }}
         >
           <View className='address'>{location?.address || '北京市北京市昌平区'}</View>
@@ -48,11 +50,11 @@ function WgtHomeHeader(props) {
 
       <View className='children-block'>{children}</View>
 
-      {/* {isWeixin && openScanQrcode == 1 && (
+      {isWeixin && openScanQrcode == 1 && jump && (
         <View className='scancode' onClick={handleScanCode}>
           <Text className='iconfont icon-scan'></Text>
         </View>
-      )} */}
+      )}
     </View>
   )
 }

@@ -127,3 +127,28 @@ export function salesAfterApply(params) {
 export function openBill(params) {
   return req.post('/invoice/invoiced', params)
 }
+
+//配送员列表
+export function accountaManagement(params) {
+  return req.get('/account/management', params)
+}
+
+//配送员排行
+export function datacubeDeliverystaffdata(params) {
+  return req.get('/datacube/deliverystaffdata', params)
+}
+
+//添加配送员
+export function accountManagement(params) {
+  return req.post('/account/management', params) 
+}
+
+//编辑配送员
+export function patchAccountManagement(operator_id,params) {
+  return req.patch(`/account/management/${operator_id}`, params)
+}
+
+//编辑配送员
+export function getAccountManagement(operator_id,params) {
+  return req.get(`/account/management/${operator_id}`, params)
+}

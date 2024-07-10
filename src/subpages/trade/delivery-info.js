@@ -15,11 +15,11 @@ const initialState = {
   curIndex: 0,
   deliveryCorpName: '',
   deliveryCode: '',
-  deliverPointList: []
+  deliverPointList: [],
 }
 function TradeDeliveryInfo(props) {
   const [state, setState] = useImmer(initialState)
-  const { packageList, curIndex, deliveryCorpName, deliveryCode, deliverPointList } = state
+  const { packageList, curIndex, deliveryCorpName, deliveryCode, deliverPointList} = state
   const router = useRouter()
 
   useEffect(() => {
@@ -72,6 +72,12 @@ function TradeDeliveryInfo(props) {
     })
 
     getLogisticsInfo(delivery_id)
+  }
+
+  const handleCallOpreator = () => {
+    Taro.makePhoneCall({
+      phoneNumber: selfDeliveryOperatorMobile
+    })
   }
 
   return <SpPage className="page-trade-delivery-info">

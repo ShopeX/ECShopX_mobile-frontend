@@ -1,0 +1,88 @@
+.page-dianwu-comp-ranking {
+  .comp-ranking {
+    background-color: #fff;
+    margin: 24px;
+    padding: 36px 24px;
+    border-radius: 16px;
+    &-list {
+      &-title {
+        margin: 40px 0 10px 0;
+        display: flex;
+        justify-content: space-between;
+        background: #fff !important;
+        color: #666f83;
+        padding: 10px !important;
+      }
+      &-item {
+        padding: 20px 24px;
+        background: linear-gradient(270deg, #fcfdff 0%, #edf1f9 100%);
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 24px;
+        text {
+          text-align: center;
+          display: block;
+          font-size: 26px;
+        }
+        image{
+          width: 32px;
+          height: 30px;
+        }
+        text:nth-child(1) {
+          width: 10%;
+        }
+        text:nth-child(2) {
+          width: 15%;
+        }
+        text:nth-child(3) {
+          width: 23%;
+        }
+        text:nth-child(4) {
+          width: 30%;
+        }
+        text:nth-child(5) {
+          width: 23%;
+        }
+      }
+    }
+    &-table{
+      display: flex;
+      &-custom{
+        padding: 12px 24px;
+        border: 1px solid #666F83;
+        border-radius: 8px;
+        margin-left: 10px;
+      }
+    }
+    .launch {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .iconfont {
+        margin-left: 10px;
+        font-size: 18px;
+      }
+    }
+    .comp-custom-picker .picker-box {
+      color: #111A34;
+      font-weight: 600;
+      font-size: 24px;
+  }
+    .one {
+      background: linear-gradient(270deg, #fffbf7 0%, #fcdfc6 100%);
+    }
+    .two {
+      background: linear-gradient(270deg, #fffbf7 0%, #fef0e3 100%);
+    }
+    .three {
+      background: linear-gradient(270deg, #fefded 0%, #fff4d4 100%);
+    }
+  }
+
+  .end {
+    color: #999;
+    margin-top: 20px;
+    text-align: center;
+  }
+}

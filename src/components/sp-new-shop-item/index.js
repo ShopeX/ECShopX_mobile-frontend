@@ -197,9 +197,10 @@ const SpNewShopItem = (props) => {
             {discountCardList.length !== 0 && (
               <View className='activity-line-one'>
                 <View className='left'>
-                  {discountCardList.map((item) => {
+                  {discountCardList.map((item,index) => {
                     return (
                       <SpNewCoupon
+                        key={index}
                         text={item.title}
                         className='in-new-shop-item'
                         isReceive={false}
@@ -222,6 +223,7 @@ const SpNewShopItem = (props) => {
             )}
             {marketingActivityList.map((item, index) => (
               <View
+                key={index}
                 className={classNames('activity-line-two discount', {
                   noDiscount: discountCardList.length === 0 && index === 0
                 })}

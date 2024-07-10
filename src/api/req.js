@@ -402,6 +402,15 @@ class API {
       method: 'DELETE'
     })
   }
+
+  patch(url, data, config) {
+    return this.makeReq({
+      ...config,
+      url,
+      data,
+      method: 'PATCH'
+    })
+  }
 }
 
 if (process.env.NODE_ENV === 'production' && !isWeb) {

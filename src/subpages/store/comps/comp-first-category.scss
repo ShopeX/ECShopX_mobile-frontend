@@ -1,11 +1,11 @@
 @import "@/style/imports";
 
-$good-img-width: 80px;
+$good-img-width: 100px;
 $active-good-img-width: 80px;
 
 .comp-first-category {
   width: 100%;
-  height: 150px;
+  // height: 150px;
   background-color: #F5F5F5;
   display: flex;
   justify-content: space-between;
@@ -13,7 +13,7 @@ $active-good-img-width: 80px;
   position: relative;
 
   &-content {
-    height: 150px;
+    // height: 150px;
     display: flex;
     white-space: nowrap;
     align-items: center;
@@ -24,9 +24,9 @@ $active-good-img-width: 80px;
   &-scrollX {}
 
   &-scroll-item {
-    width: 110px;
-    min-width: 110px;
-    max-width: 110px;
+    width: 18%;
+    // min-width: 110px;
+    // max-width: 110px;
     background-color: #F5F5F5;
     display: flex;
     flex-direction: column;
@@ -52,7 +52,6 @@ $active-good-img-width: 80px;
     margin: 0 auto;
     box-sizing: border-box;
     background: #FFFFFF;
-
     text {
       font-size: 18rpx;
       text-align: center;
@@ -69,11 +68,11 @@ $active-good-img-width: 80px;
   }
 
   &-goods-desc {
-    padding: 0 10px;
+    padding: 4px 10px;
     margin-top: 14px;
-    font-size: 20px;
+    font-size: 22px;
     margin-top: 15px;
-    height: 36rpx;
+    // height: 36rpx;
     line-height: 36rpx;
     color: #444444;
     border-radius: 5px;
@@ -88,19 +87,21 @@ $active-good-img-width: 80px;
     .comp-first-category-goods-desc {
       width: 110px;
       background: var(--color-primary);
-      font-size: 20px;
+      font-size: 22px;
       border-radius: 35px;
       color: #FFFFFF;
+      margin-left: 14px;
     }
 
     .comp-first-category-goods-imgbox {
       // border-color: var(--color-primary);
-      transform: scale(1.1);
+      // transform: scale(1.1);
+      border: 4px solid var(--color-primary);
     }
   }
 
   &-filter {
-    height: 150px;
+    height: 100%;
     // margin-left: 10px;
     width: 50px;
     box-sizing: border-box;
@@ -111,7 +112,7 @@ $active-good-img-width: 80px;
     top: 0;
     background: #fff;
     text-align: center;
-    padding: 0px 13px;
+    padding: 16px 13px;
 
     text {
       font-size: 24rpx;
@@ -161,7 +162,7 @@ $active-good-img-width: 80px;
 
       .comp-first-category-goods-imgbox {
         width: $good-img-width;
-        height: $good-img-width;
+        height: $good-img-width; 
         transform: scale(1);
       }
 

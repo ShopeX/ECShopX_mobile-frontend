@@ -9,6 +9,7 @@ import useDebounce from './useDebounce'
 import useThrottle from './useThrottle'
 import useDianWuLogin from './useDianWuLogin'
 import useModal from './useModal'
+import useSyncCallback from './useSyncCallback'
 
 export default {}
 
@@ -23,5 +24,6 @@ export {
   useDebounce,
   useThrottle,
   useDianWuLogin,
-  useModal
+  useModal,
+  useSyncCallback
 }

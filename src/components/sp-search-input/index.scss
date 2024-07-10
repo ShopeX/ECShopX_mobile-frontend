@@ -1,27 +1,69 @@
 .sp-search-input {
+  padding: 10px 24px;
+  box-sizing: border-box;
+  height: 70px;
   display: flex;
   align-items: center;
-  height: 60px;
   background: #fff;
-  border-radius: 30px;
-  padding: 10px 20px;
-  box-sizing: border-box;
-  width: 100%;
-  .icon-sousuo-01 {
-    font-size: 32px;
-    color: #666F83;
-  }
-  .at-input {
-    margin: 0 20px;
-    padding: 0;
-    background: transparent;
-    flex: 1;
-    &:after {
-      display: none;
+  .area{
+    display: flex;
+    align-items: center;
+    margin-right: 26px;
+
+
+    &-val{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+      max-width: 200px;
     }
-    &__input {
-      font-size: 26px;
-      color: #666;
+
+    &-icon{
+      margin-left: 10px;
+    }
+    .area-clear-icon{
+      font-size: 18px;
     }
   }
+  .search-input{
+    display: flex;
+    align-items: center;
+
+    background: #f5f5f5;
+    border-radius: 30px;
+    padding: 10px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    .icon-sousuo-01 {
+      font-size: 32px;
+      color: #666F83;
+    }
+    .at-input {
+      margin: 0 20px;
+      padding: 0;
+      background: transparent;
+      flex: 1;
+      &:after {
+        display: none;
+      }
+      &__input {
+        font-size: 26px;
+        color: #666;
+      }
+    }
+    .search-condition{
+      display: flex;
+      align-items: center;
+      flex-wrap: nowrap;
+      white-space: nowrap;
+      border-right: 1px #E2E4EA solid;
+      padding-right: 17px;
+
+      &-icon{
+        margin-left: 10px;
+      }
+    }
+
+  }
+
 }

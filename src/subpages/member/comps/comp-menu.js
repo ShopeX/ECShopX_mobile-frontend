@@ -155,6 +155,18 @@ function CompMenu(props) {
   //   menus = menus.concat(MENUS_OFFLINE)
   // }
 
+  if(accessMenu.salesPersonList?.total_count>0){
+    menus = menus.concat([
+      {
+        key: 'salesman',
+        name: '业务员',
+        icon: 'm_menu_dianwu.png',
+        link: '/subpages/salesman/index'
+      }
+    ])
+    menus = menus.filter((m_item) => m_item.key != 'popularize')
+  }
+
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (
