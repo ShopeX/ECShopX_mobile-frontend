@@ -13,14 +13,14 @@ import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '' },
-    { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list' },
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: ''},
+    { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list'},
     {
       name: '配送业绩',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/delivery/achievement'
     },
-    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop' }
+    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop'}
   ],
   codeStatus: false,
   information: { name: 'cx' },
@@ -153,7 +153,7 @@ const Index = () => {
             <View className='panel-content-top'>
               <View className='panel-content-top-title'>
                 <View className='real-monet'>
-                  <View className='panel-title  mb-0'>实付金额（元）</View>
+                  <View className='panel-title  mb-0'>配送订单额（元）</View>
                   <Text className='iconfont icon-xianshi View-icon'></Text>
                 </View>
                 <View
@@ -171,11 +171,11 @@ const Index = () => {
             </View>
             <View className='panel-content-btm'>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>支付订单（笔）</View>
+                <View className='panel-title'>配送订单量（单）</View>
                 <View className='panel-num'>{info.order_num}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>退款订单（笔）</View>
+                <View className='panel-title'>配送费用（元）</View>
                 <View className='panel-num'>{info.aftersales_num}</View>
               </View>
               <View className='panel-content-btm-item'>
@@ -183,7 +183,7 @@ const Index = () => {
                 <View className='panel-num'>{info.refund_Fee}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>实付会员（人）</View>
+                <View className='panel-title'>退款订单（笔）</View>
                 <View className='panel-num'>{info.member_num}</View>
               </View>
             </View>
