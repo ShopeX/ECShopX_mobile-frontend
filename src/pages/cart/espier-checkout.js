@@ -698,7 +698,8 @@ function CartCheckout(props) {
       // 云店店铺商铺下单这个参数应该是0
       isNostores: type == 'distributor' ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
+      pay_type:payType,
+      // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
 
