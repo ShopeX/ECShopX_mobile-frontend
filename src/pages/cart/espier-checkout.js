@@ -50,7 +50,6 @@ import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
-
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
@@ -104,7 +103,8 @@ function CartCheckout(props) {
     buildingNumber,
     houseNumber, // 房号
     routerParams, // 路由参数
-    deliveryTimeList //自配送时间
+    deliveryTimeList, //自配送时间
+    salespersonInfo // 业务员信息
   } = state
 
   const {
@@ -145,7 +145,6 @@ function CartCheckout(props) {
   }, [isNewUser])
 
   useEffect(() => {
-    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
     if (receiptType && payType) {
       calcOrder()
     }
@@ -533,7 +532,8 @@ function CartCheckout(props) {
       item_fee_new,
       market_fee,
       items_promotion,
-      deliveryTimeList
+      deliveryTimeList,
+      salespersonInfo
     } = orderRes
 
     let subdistrictRes
@@ -625,7 +625,7 @@ function CartCheckout(props) {
           ...i_el.activity_rule
         })
       }
-      if(itmesid.indexOf(i_el.item_id)!== -1){
+      if (itmesid.indexOf(i_el.item_id) !== -1) {
         items[itmesid.indexOf(i_el.item_id)].cusActivity = activity_arr
       }
     })
@@ -638,6 +638,7 @@ function CartCheckout(props) {
       draft.deliveryTimeList = deliveryTimeList
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
+      draft.salespersonInfo = salespersonInfo
       if (openStreet) {
         const {
           multiValue,
@@ -715,9 +716,9 @@ function CartCheckout(props) {
     }
 
     //自配送需要传送达时间
-    if(receiptType == 'merchant'){
+    if (receiptType == 'merchant') {
       const { selfDeliveryTime } = await deliverRef.current.geSelfDeliveryTime()
-      cus_parmas.self_delivery_time  = selfDeliveryTime
+      cus_parmas.self_delivery_time = selfDeliveryTime
     }
 
     // 积分不开票
@@ -906,24 +907,71 @@ function CartCheckout(props) {
           />
         </View>
 
-        {/* 街道、社区信息填写 */}
-        {openStreet && (
-          <View className='cart-checkout__stree'>
-            <SpCell isLink title='街道居委'>
-              <Picker
-                mode='multiSelector'
-                onChange={bindMultiPickerChange}
-                onColumnChange={bindMultiPickerColumnChange}
-                value={multiIndex}
-                range={multiValue}
+        {openBuilding && (
+          <View className='cart-checkout__building'>
+            <SpCell border title='楼号'>
+              <AtInput
+                name='buildingNumber'
+                placeholder='请输入楼号'
+                value={buildingNumber}
+                onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
               >
-                <View className='picker-value'>{streetCommunityTxt}</View>
-              </Picker>
+                楼/栋
+              </AtInput>
             </SpCell>
-            <View className='cart-checkout__stree-desc'>
-              <Text className='required'>*</Text>疫情期间按小区统一配送！
+
+            <SpCell border title='房号'>
+              <AtInput
+                name='houseNumber'
+                placeholder='请输入房号'
+                value={houseNumber}
+                onChange={onChangeBuildInput.bind(this, 'houseNumber')}
+              >
+                号/室
+              </AtInput>
+            </SpCell>
+          </View>
+        )}
+
+        {salespersonInfo?.user_id && (
+          <View className='shopping'>
+            <View className='shopping_guide'>业务员信息:</View>
+            <View className='shopping_guides'>
+              <Text>{salespersonInfo?.name}</Text>
+              <Text>{salespersonInfo?.mobile}</Text>
             </View>
           </View>
+        )}
+
+        {renderGoodsComp()}
+
+        {type !== 'limited_time_sale' && type !== 'group' && type !== 'seckill' && !bargain_id && (
+          <SpCell
+            isLink
+            className='cart-checkout__coupons'
+            title='优惠券'
+            onClick={handleCouponsClick}
+            value={couponText || '请选择'}
+          />
+        )}
+        {isWeixin && !bargain_id && totalInfo.invoice_status && (
+          <SpCell
+            isLink
+            title='开发票'
+            className='cart-checkout__invoice'
+            onClick={handleInvoiceClick}
+            value={
+              <View className='invoice-title'>
+                {invoiceTitle && (
+                  <View
+                    onClick={(e) => resetInvoice(e)}
+                    className='iconfont icon-close invoice-close'
+                  />
+                )}
+                {invoiceTitle || '否'}
+              </View>
+            }
+          />
         )}
 
         {openBuilding && (

@@ -60,7 +60,9 @@ export default class DistributionTrade extends Component {
       username: 'username',
       mobile: 'mobile',
       commission_type: 'commission_type',
-      rebate_point: 'rebate_point'
+      rebate_point: 'rebate_point',
+      store_name:'store_name',
+      promote_type:'promote_type'
     })
 
     this.setState({
@@ -150,6 +152,14 @@ export default class DistributionTrade extends Component {
                       <View className='order-no'>
                         <Text className='key'>单号：</Text>
                         {item.order_id}
+                      </View>
+                      <View className='order-no'>
+                        <Text className='key'>来源店铺：</Text>
+                        {item.store_name}
+                      </View>
+                      <View className='order-no'>
+                        <Text className='key'>类型打标：</Text>
+                        {item.promote_type}
                       </View>
                       <View className='order-no'>
                         <Text className='key'>佣金：</Text>

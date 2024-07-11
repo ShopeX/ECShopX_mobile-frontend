@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '推广管理'
+  navigationBarTitleText: '业务员销售'
 }
