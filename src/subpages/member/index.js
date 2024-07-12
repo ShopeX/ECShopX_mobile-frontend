@@ -35,7 +35,7 @@ import {
   VERSION_PLATFORM,
   VERSION_STANDARD
 } from '@/utils'
-import { useLogin,useLocation } from '@/hooks'
+import { useLogin, useLocation } from '@/hooks'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
@@ -104,15 +104,15 @@ const initialState = {
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const $instance = getCurrentInstance()
-  const { getCode } = useLocation
+  const { getCode } = useLocation()
   const { isLogin, isNewUser, login, getUserInfoAuth } = useLogin({
-     autoLogin: true,
+    autoLogin: true,
     // policyUpdateHook: (isUpdate) => {
     //   // isUpdate && setPolicyModal(true)
     //   if (isUpdate) {
     //     RefLogin.current._setPolicyModal()
     //   }
-    
+
     loginSuccess: () => {
       getCode()
     }
@@ -143,9 +143,8 @@ function MemberIndex(props) {
     getSettings()
   }, [])
 
-
   useDidShow(() => {
-    if(isLogin){
+    if (isLogin) {
       getMemberCenterData()
     }
   })
@@ -296,7 +295,6 @@ function MemberIndex(props) {
     // const resTurntable = await api.wheel.getTurntableconfig()
     const resAssets = await api.member.memberAssets()
     const { discount_total_count, fav_total_count, point_total_count } = resAssets
-
 
     const {
       aftersales, // 待处理售后
@@ -457,7 +455,10 @@ function MemberIndex(props) {
                 <Text className='iconfont icon-erweima-01'></Text>
               </SpLogin>
             )}
-            <SpLogin className='user-info__link' onChange={handleClickLink.bind(this, '/subpages/member/user-info')}>
+            <SpLogin
+              className='user-info__link'
+              onChange={handleClickLink.bind(this, '/subpages/member/user-info')}
+            >
               <Text className='iconfont icon-qianwang-01'></Text>
             </SpLogin>
           </View>

@@ -1,19 +1,18 @@
 import Taro from '@tarojs/taro'
 import api from '@/api'
 import entryLaunch from '@/utils/entryLaunch'
-import { useSelector,useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { updateLocation } from '@/store/slices/user'
 import S from '@/spx'
 
 export default (props) => {
   const dispatch = useDispatch()
-  const { location } = useSelector((state) => state.user)
   /**
    * 未登录状态 && 授权定位  == 定位
    * 未登录状态  && 不授权定位  == 默认值
    */
   const getCode = async () => {
-    if (Taro.getStorageSync('token')) {
+    if (S.getAuthToken()) {
       await addressLogic()
     } else {
       const res1 = await fetchLocation()
@@ -58,27 +57,59 @@ export default (props) => {
     }
   }
 
-  // 地址距离比较
-  const addressDistance = (ele, arr) => {
-    let newarr = []
-    let newarrs = []
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371 // 地球半径（单位：千米）
 
-    arr.forEach((item) => {
-      if (ele.province == item.province && ele.district == item.district && ele.city == item.city) {
-        newarr.push(item)
-      }
-    })
-    if (newarr.length > 0) {
-      newarr.forEach((item) => {
-        let res = S.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
-        newarrs.push(res)
+    const dLat = (lat2 - lat1) * (Math.PI / 180)
+    const dLon = (lon2 - lon1) * (Math.PI / 180)
+
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2)
+
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
+
+    const distance = R * c // 距离（单位：千米）
+    return distance
+  }
+
+  // 地址距离比较
+  const addressDistance = (ele, addressList) => {
+    // let newarr = []
+    // let newarrs = []
+
+    // addressList.forEach((item) => {
+    //   if (ele.province == item.province && ele.district == item.district && ele.city == item.city) {
+    //     newarr.push(item)
+    //   }
+    // })
+    // if (newarr.length > 0) {
+    //   newarr.forEach((item) => {
+    //     let res = S.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
+    //     newarrs.push(res)
+    //   })
+    //   const minNumber = Math.min(...newarrs)
+    //   const minIndex = newarrs.indexOf(minNumber)
+    //   return newarr[minIndex]
+    // } else {
+    //   return ele
+    // }
+    let filteredList = addressList
+      .filter(
+        (item) =>
+          ele.province == item.province && ele.district == item.district && ele.city == item.city
+      )
+      .map((item) => {
+        item['distance'] = calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
+        return item
       })
-      const minNumber = Math.min(...newarrs)
-      const minIndex = newarrs.indexOf(minNumber)
-      return newarr[minIndex]
-    } else {
-      return ele
-    }
+
+    filteredList.sort((item1, item2) => item1.distance - item2.distance)
+
+    return filteredList.length > 0 ? filteredList[0] : ele
   }
 
   /**
@@ -96,7 +127,7 @@ export default (props) => {
     const { list } = await api.member.addressList()
     const arr = await processingAddress(list)
     const res = await fetchLocation()
-
+    // 开启定位
     if (res instanceof Object && res.lat) {
       if (arr.length == 0) {
         dispatch(updateLocation(res))

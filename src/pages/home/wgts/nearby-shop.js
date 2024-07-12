@@ -84,31 +84,36 @@ function WgtNearbyShop(props) {
 
   const storeData = async () => {
     let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
-    let lat, lng, province, city, district
-    if (location) {
-      lat = location?.lat
-      lng = location?.lng
-      province = location?.province || address?.province
-      city = location?.city || address?.city
-      district = location?.district || address?.district
-    }
+    // let lat, lng, province, city, district
+    // if (location) {
+    //   lat = location?.lat
+    //   lng = location?.lng
+    //   province = location?.province || address?.province
+    //   city = location?.city || address?.city
+    //   district = location?.district || address?.district
+    // }
     let params = {
       distributor_tag_id: distributor_tag_id.join(','),
       show_discount: 1,
       // 根据经纬度或地区查询
       type: location?.lat ? 0 : 1,
-      sort_type: 1
+      sort_type: 1,
+      lat : location?.lat || address?.lat,
+      lng : location?.lng || address?.lng,
+      province : location?.province || address?.province,
+      city : location?.city || address?.city,
+      district : location?.district || address?.district,
     }
-    if (location) {
-      params = {
-        ...params,
-        lat,
-        lng,
-        province: province,
-        city: city,
-        area: district
-      }
-    }
+    // if (location) {
+    //   params = {
+    //     ...params,
+    //     lat,
+    //     lng,
+    //     province: province,
+    //     city: city,
+    //     area: district
+    //   }
+    // }
     const { list } = await api.shop.getNearbyShop(params)
     return list
   }
@@ -141,14 +146,14 @@ function WgtNearbyShop(props) {
   }
 
   const init = async (idx) => {
-    let lat, lng, province, city, district
-    if (location) {
-      lat = location?.lat
-      lng = location?.lng
-      province = location?.province || address?.province
-      city = location?.city || address?.city
-      district = location?.district || address?.district
-    }
+    // let lat, lng, province, city, district
+    // if (location) {
+    //   lat = location?.lat || address?.province
+    //   lng = location?.lng || address?.province
+    //   province = location?.province || address?.province
+    //   city = location?.city || address?.city
+    //   district = location?.district || address?.district
+    // }
     let params = {
       distributor_tag_id: seletedTags[idx]?.tag_id,
       item_tag_id: productLabel.map((item) => item.tag_id),
@@ -158,18 +163,23 @@ function WgtNearbyShop(props) {
       sort_type: 1,
       show_items: 1,
       show_score: 1,
-      show_sales_count: 1
+      show_sales_count: 1,
+      lat : location?.lat || address?.lat,
+      lng : location?.lng || address?.lng,
+      province : location?.province || address?.province,
+      city : location?.city || address?.city,
+      district : location?.district || address?.district,
     }
-    if (location) {
-      params = {
-        ...params,
-        lat,
-        lng,
-        province,
-        city,
-        area: district
-      }
-    }
+    // if (location) {
+    //   params = {
+    //     ...params,
+    //     lat,
+    //     lng,
+    //     province,
+    //     city,
+    //     area: district
+    //   }
+    // }
     const { list } = await api.shop.getNearbyShop(params)
     setState((v) => {
       v.shopList = list

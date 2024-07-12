@@ -218,13 +218,10 @@ function Home() {
 
   // 定位
   const fetchLocation = () => {
-    getCode()
-
-    console.log(
-      !location ==true,'lllllll1l3'
-    )
-    if ( ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM)) {
+    console.log(!location && ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM), 'lllllll1l3')
+    if (!location && ((VERSION_STANDARD && openLocation == 1) || VERSION_PLATFORM)) {
       try {
+        getCode()
         // entryLaunch.isOpenPosition((res) => {
         //   if (res.lat) {
         //     dispatch(updateLocation(res))
