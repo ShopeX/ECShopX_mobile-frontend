@@ -100,6 +100,8 @@ import SpNavFilter from './sp-nav-filter'
 import SpGoodsInvalidItems from './sp-goods-invalid-items'
 import SpGoodsItems from './sp-goods-items'
 import SpTimeLineItem from './sp-time-line-item'
+import SpCustomPicker from './sp-custom-picker'
+import SpTable from './sp-table'
 
 
 
@@ -207,5 +209,7 @@ export {
   SpNavFilter,
   SpGoodsInvalidItems,
   SpGoodsItems,
-  SpTimeLineItem
+  SpTimeLineItem,
+  SpCustomPicker,
+  SpTable
 }

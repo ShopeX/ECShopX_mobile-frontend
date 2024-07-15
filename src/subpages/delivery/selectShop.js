@@ -4,7 +4,7 @@ import { classNames, formatTime} from '@/utils'
 import {  SpPage, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
-import CompShopList from '../salesman/comps/comp-shop-list'
+import CompShopList from './comps/comp-shop-list'
 import './selectShop.scss'
 
 const initialConfigState = {

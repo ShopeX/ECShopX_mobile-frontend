@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import './comp-table.scss'
+import './index.scss'
 
 const initialState = {
   newList: []
@@ -14,7 +14,7 @@ const initialState = {
  * listHeader: [{ title: '头部信息', id: '当前头部信息对应的字断',width: '当前头部信息对应的字段宽度||默认80px' }]
  */
 
-function CompTable(props) {
+function Table(props) {
   const [state, setState] = useImmer(initialState)
   const { listHeader, listData } = props
   const { newList } = state
@@ -39,7 +39,7 @@ function CompTable(props) {
   }
 
   return (
-    <View className='comp-table'>
+    <View className='table'>
       {/* 列表 */}
       <ScrollView scrollX>
         <View className='list-all'>
@@ -65,8 +65,8 @@ function CompTable(props) {
   )
 }
 
-CompTable.options = {
+Table.options = {
   addGlobalClass: true
 }
 
-export default CompTable
+export default Table

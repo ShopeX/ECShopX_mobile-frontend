@@ -2,13 +2,11 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime } from '@/components'
+import { SpPage, SpTime,SpCustomPicker } from '@/components'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-import CompInvitationCode from './comps/comp-invitation-code'
-import CompCustomPicker from './comps/comp-custom-picker'
 
 import './index.scss'
 
@@ -145,7 +143,7 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <CompCustomPicker selector={selector} cancel={cancel} />
+              <SpCustomPicker selector={selector} cancel={cancel} />
             </View>
           </View>
           <SpTime
@@ -217,17 +215,6 @@ const Index = () => {
         </View>
       </View>
 
-      {codeStatus && (
-        <CompInvitationCode
-          status={false}
-          information={information}
-          cancel={() => {
-            setState((draft) => {
-              draft.codeStatus = false
-            })
-          }}
-        />
-      )}
     </SpPage>
   )
 }

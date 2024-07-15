@@ -15,19 +15,19 @@ function CompShopList(props) {
   const { codeStatus, information } = state
   const { item } = props
 
-  const storeCode = (val) => {
-    let params = {
-      name: val?.merchant_name,
-      distributor_name: val?.name,
-      distributor_id: val?.distributor_id,
-      is_valid: val?.salesperson?.is_valid,
-      user_id: val?.user_id
-    }
-    setState((draft) => {
-      draft.codeStatus = true
-      draft.information = params
-    })
-  }
+  // const storeCode = (val) => {
+  //   let params = {
+  //     name: val?.merchant_name,
+  //     distributor_name: val?.name,
+  //     distributor_id: val?.distributor_id,
+  //     is_valid: val?.salesperson?.is_valid,
+  //     user_id: val?.user_id
+  //   }
+  //   setState((draft) => {
+  //     draft.codeStatus = true
+  //     draft.information = params
+  //   })
+  // }
   return (
     <View className='comp-customer'>
       <View className='comp-customer-list'>
@@ -53,10 +53,10 @@ function CompShopList(props) {
               </View>
             </View>
           </View>
-          <View className='comp-customer-list-scroll-store-code' onClick={() => storeCode(item)}>
+          {/* <View className='comp-customer-list-scroll-store-code' onClick={() => storeCode(item)}>
             <Text>查看店铺码</Text>
             <Text className='iconfont icon-qianwang-01'></Text>
-          </View>
+          </View> */}
         </View>
       </View>
 

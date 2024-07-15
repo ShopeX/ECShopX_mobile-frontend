@@ -2,18 +2,17 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime } from '@/components'
+import { SpPage, SpTime,SpCustomPicker } from '@/components'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-import CompCustomPicker from './comps/comp-custom-picker'
 
 import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: ''},
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/delivery/list'},
     { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list'},
     {
       name: '配送业绩',
@@ -141,7 +140,7 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <CompCustomPicker selector={selector} cancel={cancel} />
+              <SpCustomPicker selector={selector} cancel={cancel} />
             </View>
           </View>
           <SpTime

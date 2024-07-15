@@ -403,6 +403,8 @@ const config = {
         'my',//我的
         'after-sale-list', // 售后列表
         'selectShop', // 店铺
+        'list',//订单
+        'send-out-goods', // 发货
       ]
     },
     // 授权

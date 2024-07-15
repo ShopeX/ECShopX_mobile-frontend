@@ -3,10 +3,9 @@ import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import { View, Text, Image } from '@tarojs/components'
-import { SpTime, SpImage } from '@/components'
+import { SpTime, SpImage,SpCustomPicker } from '@/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
-import CompCustomPicker from './comp-custom-picker'
 
 import './comp-ranking.scss'
 
@@ -99,7 +98,7 @@ function CompRanking(props) {
         <View className='comp-ranking-table'>
           <SpTime onTimeChange={onTimeChange} />
           <View className='comp-ranking-table-custom'>
-            <CompCustomPicker
+            <SpCustomPicker
               customStatus
               customName={customName}
               cancel={cancel}
