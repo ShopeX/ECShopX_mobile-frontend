@@ -9,7 +9,7 @@ import tradeHooks from '../hooks'
 import './comp-tradeitem.scss'
 
 function CompTradeItem(props) {
-  const { info } = props
+  const { info, updateDelivery = () => {} } = props
   if (!info) {
     return null
   }
@@ -38,7 +38,11 @@ function CompTradeItem(props) {
     //     url: `/subpages/trade/detail?order_id=${orderId}`
     //   })
     // }
-    action(info)
+    if (key == 'update_delivery') {
+      updateDelivery(info)
+    } else {
+      action(info)
+    }
   }
 
   const onViewTradeDetail = () => {

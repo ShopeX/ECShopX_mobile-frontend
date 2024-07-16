@@ -424,8 +424,8 @@ function TradeDetail(props) {
             </View>
           </View> */}
           <View className='trade-goods'>
-            {info?.items.map((goods) => (
-              <View className='trade-goods-item'>
+            {info?.items.map((goods,doodsInx) => (
+              <View className='trade-goods-item' key={doodsInx}>
                 <SpTradeItem info={{
                   ...goods,
                   orderClass: info.orderClass

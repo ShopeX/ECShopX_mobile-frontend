@@ -3,11 +3,13 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem } from '@/components'
+import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem, SpFloatLayout } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import { AtButton } from 'taro-ui'
 import { pickBy } from '@/utils'
 import CompTradeItem from './comps/comp-tradeitem'
+import CompShippingInformation from './comps/comp-shipping-information'
 import './list.scss'
 
 const initialState = {
@@ -19,13 +21,63 @@ const initialState = {
   ],
   status: '0',
   tradeList: [],
-  refresherTriggered: false
+  refresherTriggered: false,
+  statusDelivery: false,
+  list: [
+    {
+      title: '快递公司',
+      selector: [{ label: '商家自配送', value: 'all', status: true }],
+      extraText: '商家自配送',
+      status: 'select'
+    },
+    {
+      title: '配送员',
+      selector: [{ label: '张三', value: 'all', status: true }],
+      extraText: '张三',
+      status: 'select'
+    },
+    {
+      title: '配送员编号',
+      selector: [{ label: 'erdh123', value: 'all', status: true }],
+      extraText: 'erdh123',
+      status: 'select'
+    },
+    {
+      title: '配送员手机号',
+      selector: [{ label: '13456789009', value: 'all', status: true }],
+      extraText: '13456789009',
+      status: 'select'
+    },
+    {
+      title: '配送状态',
+      selector: [
+        { label: '全部业绩排行1', value: 'all', status: true },
+        { label: '直推业绩排行2', value: 'lv1', status: false },
+        { label: '间推业绩排行3', value: 'lv2', status: false }
+      ],
+      extraText: '全部业绩排行1',
+      status: 'select'
+    },
+    {
+      title: '配送备注',
+      selector: '',
+      extraText: '全部业绩排行1',
+      status: 'textarea'
+    },
+    {
+      title: '照片上传',
+      selector: [],
+      extraText: '全部业绩排行1',
+      status: 'image'
+    }
+  ]
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { tradeStatus, status, tradeList, refresherTriggered, statusDelivery, list } = state
   const tradeRef = useRef()
   const router = useRouter()
+  const pageRef = useRef()
 
   useEffect(() => {
     const { status = 0 } = router.params
@@ -44,6 +96,14 @@ function TradeList(props) {
       Taro.eventCenter.off('onEventOrderStatusChange')
     }
   }, [])
+
+  useEffect(() => {
+    if (statusDelivery) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [statusDelivery])
 
   useEffect(() => {
     setState((draft) => {
@@ -90,9 +150,20 @@ function TradeList(props) {
     tradeRef.current.reset()
   }
 
+  const updateDelivery = (item) => {
+    console.log(item, 'lllupdateDelivery')
+    setState((draft) => {
+      draft.statusDelivery = true
+    })
+  }
+
+  const deliveryItem = (item) => {
+    console.log(item, 'hhhhhhhh')
+  }
+
   return (
-    <SpPage scrollToTopBtn className='page-delivery-list'>
-      <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
+    <SpPage scrollToTopBtn className='page-delivery-list' ref={pageRef}>
+      <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} /> {statusDelivery}
       <ScrollView
         className='list-scroll-container'
         scrollY
@@ -110,11 +181,27 @@ function TradeList(props) {
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
-              <CompTradeItem info={item} />
+              <CompTradeItem info={item} updateDelivery={updateDelivery} />
             </View>
           ))}
         </SpScrollView>
       </ScrollView>
+      <SpFloatLayout
+        title='选择地址'
+        open={statusDelivery}
+        onClose={() => {
+          setState((draft) => {
+            draft.statusDelivery = false
+          })
+        }}
+        renderFooter={
+          <AtButton circle type='primary'>
+            确定
+          </AtButton>
+        }
+      >
+        <CompShippingInformation selector={list} deliveryItem={deliveryItem} />
+      </SpFloatLayout>
     </SpPage>
   )
 }

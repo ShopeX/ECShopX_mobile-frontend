@@ -11,7 +11,7 @@ const CompShippingInformation = (props) => {
   const onChange = (item, index, e) => {
     console.log('取消', item, index, e)
     let newSelector = JSON.parse(JSON.stringify(selector))
-    if(item.status == 'input'){
+    if(item.status == 'select'){
       newSelector[index].selector.forEach((element) => {
         element.status = false
       })
@@ -27,7 +27,7 @@ const CompShippingInformation = (props) => {
       {selector.map((item, index) => {
         return (
           <View key={index}>
-            {item.status == 'input' && (
+            {item.status == 'select' && (
               <Picker
                 mode='selector'
                 rangeKey='label'

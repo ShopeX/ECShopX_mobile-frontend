@@ -142,12 +142,7 @@ export default (props) => {
     UPDATE_DELIVERY: {
       title: '更新配送状态',
       key: 'update_delivery',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
-        })
-      }
+      btnStatus: 'normal'
     }
   }
 
@@ -195,6 +190,7 @@ export default (props) => {
       if (!isRate) {
         btns.push(tradeActionBtns.EVALUATE)
         btns.push(tradeActionBtns.SEND_OUT_GOODS)
+        btns.push(tradeActionBtns.UPDATE_DELIVERY)
       }
     }
 

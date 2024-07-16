@@ -1,0 +1,23 @@
+.page-detail {
+  .trade-status-desc-box {
+    display: flex;
+    align-items: center;
+    margin: 20px 24px;
+    padding: 24px 20px;
+    .status-desc {
+      margin-left: 20px;
+      font-size: 42px;
+      // color: #fff;
+    }
+  }
+  .trade-item-wrap {
+    margin: 20px 24px;
+    border-radius: 8px;
+    padding: 24px 20px;
+    background-color: #fff;
+  }
+  .btn-wrap {
+    padding: 20px 40px;
+    border: transparent 1px solid;
+  }
+}

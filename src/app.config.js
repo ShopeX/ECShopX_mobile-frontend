@@ -405,6 +405,7 @@ const config = {
         'selectShop', // 店铺
         'list',//订单
         'send-out-goods', // 发货
+        'detail',//订单详情
       ]
     },
     // 授权
