@@ -30,6 +30,7 @@ function SpCashier(props) {
     isOpened = true,
     value,
     userPoint,
+    pointPayFirst = false,
     onClose = () => { },
     onChange = () => { },
     paymentAmount = 0
@@ -94,7 +95,7 @@ function SpCashier(props) {
     })
     if (_list.length > 0) {
       //默认积分
-      const defaultItem = userPoint > 0 ?  _list.find(item=>item.paymentChannel ==  "point") : _list[0]
+      const defaultItem = (pointPayFirst && (userPoint > 0)) ?  _list.find(item=>item.paymentChannel ==  "point") : _list.find(item=>item.paymentChannel ==  "wxpay")
       onChange(defaultItem)
       onChangePayment(defaultItem)
     }

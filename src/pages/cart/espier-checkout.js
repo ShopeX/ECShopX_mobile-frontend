@@ -103,7 +103,8 @@ function CartCheckout(props) {
     openCashier,
     buildingNumber,
     houseNumber, // 房号
-    routerParams // 路由参数
+    routerParams, // 路由参数
+    pointPayFirst
   } = state
 
   const {
@@ -532,7 +533,8 @@ function CartCheckout(props) {
       receiver_district,
       item_fee_new,
       market_fee,
-      items_promotion
+      items_promotion,
+      point_rule
     } = orderRes
 
     let subdistrictRes
@@ -634,6 +636,7 @@ function CartCheckout(props) {
       draft.pointInfo = point_info
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
+      draft.pointPayFirst = !!point_rule?.point_pay_first
       if (openStreet) {
         const {
           multiValue,
@@ -1112,6 +1115,7 @@ function CartCheckout(props) {
         // paymentAmount={totalInfo.freight_fee}
         value={payChannel}
         userPoint={pointInfo?.user_point}
+        pointPayFirst={pointPayFirst}
         onClose={() => {
           setState((draft) => {
             draft.openCashier = false

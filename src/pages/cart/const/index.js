@@ -55,7 +55,8 @@ export const initialState = {
   isNeedPackage: false, // 是否需要打包
   openCashier: false,
   isPointOpenModal: false,
-  routerParams: {}
+  routerParams: {},
+  pointPayFirst:null
 }
 
 export const deliveryList = [
