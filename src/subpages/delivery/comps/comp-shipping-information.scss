@@ -1,0 +1,27 @@
+.comp-shipping-information {
+  .at-list__item-extra {
+    max-width: 435rpx;
+    text-align: right;
+  }
+  .at-list::after {
+    position: unset;
+  }
+  .textarea-name {
+    display: flex;
+    margin: 20px 0;
+    .title {
+      width: 200px;
+      margin-left: 24px;
+      margin-top: 20px;
+    }
+    // border-bottom: 1px solid #d6e4ef;
+  }
+  .image-name {
+    display: flex;
+    .title {
+      width: 150px;
+      margin-left: 24px;
+      margin-top: 20px;
+    }
+  }
+}

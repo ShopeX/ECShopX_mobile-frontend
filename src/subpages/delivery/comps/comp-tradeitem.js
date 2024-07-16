@@ -31,13 +31,14 @@ function CompTradeItem(props) {
   const btns = getTradeAction(info)
 
   const handleClickItem = ({ key, action }) => {
-    if (key == 'evaluate' || key == 'logistics') {
-      action(info)
-    } else {
-      Taro.navigateTo({
-        url: `/subpages/trade/detail?order_id=${orderId}`
-      })
-    }
+    // if (key == 'evaluate' || key == 'logistics') {
+    //   action(info)
+    // } else {
+    //   Taro.navigateTo({
+    //     url: `/subpages/trade/detail?order_id=${orderId}`
+    //   })
+    // }
+    action(info)
   }
 
   const onViewTradeDetail = () => {

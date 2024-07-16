@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View, ScrollView } from '@tarojs/components'
 import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage, SpTime, SpCustomPicker,SpTable } from '@/components'
+import { SpImage, SpPage, SpTime, SpCustomPicker, SpTable } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
@@ -18,7 +18,7 @@ const initialConfigState = {
     { title: '时间', id: 'date_brokerage' },
     // { title: '业务员', id: 'salesName' },
     { title: '订单额（元）', width: '120px', id: 'total_Fee' },
-    { title: '订单配送量（单）', width: '120px',id: 'order_num' },
+    { title: '订单配送量（单）', width: '120px', id: 'order_num' },
     // { title: '新增顾客', id: 'member_num' },
     { title: '配送费（元）', width: '120px', id: 'total_rebate' }
   ],

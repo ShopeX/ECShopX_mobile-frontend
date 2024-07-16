@@ -105,7 +105,7 @@ export default (props) => {
       btnStatus: 'normal',
       action: ({ orderId }) => {
         Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
+          url: `/subpages/delivery/send-out-goods?order_id=${orderId}`
         })
       }
     },
@@ -194,6 +194,7 @@ export default (props) => {
       }
       if (!isRate) {
         btns.push(tradeActionBtns.EVALUATE)
+        btns.push(tradeActionBtns.SEND_OUT_GOODS)
       }
     }
 
