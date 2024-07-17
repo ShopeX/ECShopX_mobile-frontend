@@ -178,22 +178,22 @@ export default class DistributionDashboard extends Component {
               <Text className='iconfont icon-info'></Text>
             </Navigator>
           </View>
-          {info.isOpenShop && info.shop_status === 0 ? (
+          {/* {info.isOpenShop && info.shop_status === 0 ? (
             <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>
               申请开启我的小店
             </View>
-          ) : null}
-          {info.isOpenShop && info.shop_status === 4 ? (
+          ) : null} */}
+          {/* {info.isOpenShop && info.shop_status === 4 ? (
             <View>
               <View className='mini-store-apply' onClick={this.handleOpenApply.bind(this)}>
                 审核驳回，再次申请开启小店
               </View>
               <View className='mini-store-reason'>驳回理由：{info.reason}</View>
             </View>
-          ) : null}
-          {info.isOpenShop && info.shop_status === 2 && (
+          ) : null} */}
+          {/* {info.isOpenShop && info.shop_status === 2 && (
             <View className='mini-store-apply'>申请开店审核中</View>
-          )}
+          )} */}
         </View>
         {info.applyStatus != 3 && info.isHf ? (
           <View className='bandCardInfo'>
