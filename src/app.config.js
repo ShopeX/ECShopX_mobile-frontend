@@ -124,7 +124,9 @@ const config = {
         'trade/sale-after', // 订单售后
         'trade/result', // 订单操作结果
         'delivery-personnel', // 配送员
-        'edit-deliveryman' // 配送员创建
+        'edit-deliveryman', // 配送员创建
+        'salesman-personnel', // 业务员
+        'edit-deliveryman-salesman', // 业务员创建
       ]
     },
     // 积分商城

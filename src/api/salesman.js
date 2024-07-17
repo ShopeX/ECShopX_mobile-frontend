@@ -52,3 +52,23 @@ export function salespersonApplyCashWithdrawal (data) {
 export function salesmanGetCashWithdrawalList (params={}) {
   return req.get('/salesman/getCashWithdrawalList', params)
 }
+
+//业务员列表
+export function salespersonadminSalespersonlist(params) {
+  return req.get('/salespersonadmin/salespersonlist', params)
+}
+
+//业务员添加
+export function salespersonadminAddsalesperson (data) {
+  return req.post('/salespersonadmin/addsalesperson', data)
+}
+
+//业务员编辑
+export function salespersonadminUpdatesalesperson (data) {
+  return req.post('/salespersonadmin/updatesalesperson', data)
+}
+
+//业务员业绩查询
+export function salespersonadminBrokagestaticlist(params) {
+  return req.get('/salespersonadmin/brokagestaticlist', params)
+}

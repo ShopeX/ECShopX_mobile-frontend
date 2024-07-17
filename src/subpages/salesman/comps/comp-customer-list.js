@@ -6,7 +6,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
-import { updateCustomerLnformation,updateCustomerSalesman } from '@/store/slices/cart'
+import { updateCustomerLnformation, updateCustomerSalesman } from '@/store/slices/cart'
 import './comp-customer-list.scss'
 
 const initialState = {}
@@ -22,7 +22,7 @@ function CompCustomerList(props) {
       <View className='comp-customer-list-scroll'>
         <View
           className='comp-customer-list-scroll-list'
-          onClick={async() => {
+          onClick={async () => {
             const { userId } = Taro.getStorageSync('userinfo')
             let params = {
               isSalesmanPage: 1,
@@ -50,7 +50,7 @@ function CompCustomerList(props) {
               </View>
               <Text>{items.mobile}</Text>
             </View>
-            <View className='source'>来源店铺：{items.name}</View>
+            {items?.name && <View className='source'>来源店铺：{items.name}</View>}
             <View className='source'>绑定时间：{items.bind_date}</View>
           </View>
         </View>
