@@ -306,6 +306,9 @@ export default (props = {}) => {
         payError(orderInfo)
       }
     }
+    if (pay_type == 'point') {
+      paySuccess(params, orderInfo)
+    }
   }
 
 
