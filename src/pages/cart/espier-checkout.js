@@ -1000,37 +1000,6 @@ function CartCheckout(props) {
           </View>
         )}
 
-        {renderGoodsComp()}
-
-        {type !== 'limited_time_sale' && type !== 'group' && type !== 'seckill' && !bargain_id && (
-          <SpCell
-            isLink
-            className='cart-checkout__coupons'
-            title='优惠券'
-            onClick={handleCouponsClick}
-            value={couponText || '请选择'}
-          />
-        )}
-        {isWeixin && !bargain_id && totalInfo.invoice_status && (
-          <SpCell
-            isLink
-            title='开发票'
-            className='cart-checkout__invoice'
-            onClick={handleInvoiceClick}
-            value={
-              <View className='invoice-title'>
-                {invoiceTitle && (
-                  <View
-                    onClick={(e) => resetInvoice(e)}
-                    className='iconfont icon-close invoice-close'
-                  />
-                )}
-                {invoiceTitle || '否'}
-              </View>
-            }
-          />
-        )}
-
         {packInfo.is_open && (
           <SpCell
             isLink
