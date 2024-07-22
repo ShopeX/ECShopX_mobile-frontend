@@ -57,7 +57,9 @@ export const initialState = {
   isPointOpenModal: false,
   routerParams: {},
   deliveryTimeList:{},
-  salespersonInfo:{}// 导购信息
+  salespersonInfo:{},// 导购信息
+  pointPayFirst:null,
+  isFirstCalc:true
 }
 
 export const deliveryList = [

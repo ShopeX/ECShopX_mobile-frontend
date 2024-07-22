@@ -104,7 +104,9 @@ function CartCheckout(props) {
     houseNumber, // 房号
     routerParams, // 路由参数
     deliveryTimeList, //自配送时间
-    salespersonInfo // 业务员信息
+    salespersonInfo, // 业务员信息
+    pointPayFirst,
+    isFirstCalc,//开启优先积分第一次需要填充积分抵扣
   } = state
 
   const {
@@ -533,7 +535,8 @@ function CartCheckout(props) {
       market_fee,
       items_promotion,
       deliveryTimeList,
-      salespersonInfo
+      salespersonInfo,
+      point_rule
     } = orderRes
 
     let subdistrictRes
@@ -639,6 +642,7 @@ function CartCheckout(props) {
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
       draft.salespersonInfo = salespersonInfo
+      draft.pointPayFirst = !!point_rule?.point_pay_first
       if (openStreet) {
         const {
           multiValue,
@@ -654,6 +658,17 @@ function CartCheckout(props) {
         draft.streetCommunityTxt = streetCommunityTxt
         draft.street = street
         draft.community = community
+      }
+
+      if(isFirstCalc && !!point_rule?.point_pay_first){
+        let firstPoint = Math.min(max_point,user_point)
+
+        draft.point_use = firstPoint
+        draft.pointInfo = {
+          ...point_info,
+          real_use_point:firstPoint
+        }
+        draft.isFirstCalc = false
       }
     })
     // calc.current = false
@@ -703,7 +718,8 @@ function CartCheckout(props) {
       // 云店店铺商铺下单这个参数应该是0
       isNostores: type == 'distributor' ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
+      pay_type:payType,
+      // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
 
@@ -1106,10 +1122,10 @@ function CartCheckout(props) {
             )}
         </View>
       </ScrollView>
-
       <CompPointUse
         isOpened={isPointOpenModal}
         info={pointInfo}
+        pointPayFirst={pointPayFirst}
         onClose={() => {
           setState((draft) => {
             draft.isPointOpenModal = false
@@ -1139,6 +1155,7 @@ function CartCheckout(props) {
         // paymentAmount={totalInfo.freight_fee}
         value={payChannel}
         userPoint={pointInfo?.user_point}
+        pointPayFirst={pointPayFirst}
         onClose={() => {
           setState((draft) => {
             draft.openCashier = false

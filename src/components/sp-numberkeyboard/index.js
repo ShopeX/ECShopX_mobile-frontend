@@ -13,11 +13,17 @@ const initialState = {
 }
 
 function SpNumberKeyBoard(props) {
-  const { 
+  const {
     maxValue = 0,
-    value = 0, onClose = () => {}, onConfirm = () => {} } = props
+    value = 0,isShowDefault=false , onClose = () => {}, onConfirm = () => {} } = props
   const [state, setState] = useImmer(initialState)
   const { currentValue } = state
+
+  useEffect(()=>{
+    setState((draft) => {
+      draft.currentValue = isShowDefault ? Math.min(maxValue,value) : 0
+    })
+  },[value])
 
   const handleClickItem = (key) => {
     let _currentValue = currentValue

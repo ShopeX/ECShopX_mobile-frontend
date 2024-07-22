@@ -13,7 +13,7 @@ const initialState = {
 
 function CompPointUse(props) {
   const [state, setState] = useImmer(initialState)
-  const { info, isOpened, onClose, onChange } = props
+  const { info, isOpened,pointPayFirst ,onClose, onChange } = props
   const { pointName } = useSelector((state) => state.sys)
   const { isOpenRule } = state
 
@@ -35,7 +35,7 @@ function CompPointUse(props) {
             })
           }}>使用规则</Text>
         </View>
-        <SpNumberKeyBoard maxValue={info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
+        <SpNumberKeyBoard isShowDefault={pointPayFirst} maxValue={info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
       </SpFloatLayout>
 
       <AtModal isOpened={isOpenRule}>
