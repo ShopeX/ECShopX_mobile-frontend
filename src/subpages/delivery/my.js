@@ -4,6 +4,7 @@ import { useImmer } from 'use-immer'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { SpPage, SpCell } from '@/components'
+import { useSelector } from 'react-redux'
 import api from '@/api'
 import CompTabbar from './comps/comp-tabbar'
 import './my.scss'
@@ -15,6 +16,7 @@ const initialConfigState = {
 const MyPage = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { information } = state
+  const { self_delivery_operator_id } = useSelector((state) => state.cart)
 
   useEffect(() => {
     // 获取个人信息
@@ -26,7 +28,7 @@ const MyPage = () => {
       title: '加载中',
       icon: 'none'
     })
-    const res = await api.salesman.promoterInfo()
+    const res = await api.delivery.selfdeliveryList({self_delivery_operator_id})
     setState((draft) => {
       draft.information = res
     })
@@ -47,21 +49,21 @@ const MyPage = () => {
           <SpCell
             iconPrefix='iconfont icon-id my-icon'
             icon='icon'
-            title='业务员编码'
+            title='配送员编码'
             border
             value={information.promoter_id}
           />
           <SpCell
             iconPrefix='iconfont icon-yewuyuanxingming my-icon'
             icon='icon'
-            title='业务员姓名'
+            title='配送员姓名'
             value={information.username}
             border
           />
           <SpCell
             iconPrefix='iconfont icon-shilileixing my-icon'
             icon='icon'
-            title='业务员类型'
+            title='配送员类型'
             value={information.type_promoter}
           />
         </View>

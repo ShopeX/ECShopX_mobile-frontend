@@ -5,6 +5,7 @@ import { classNames, validate, showToast } from '@/utils'
 import { SpImage, SpPage, SpTime, SpCustomPicker, SpTable } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
+import { useSelector } from 'react-redux'
 import api from '@/api'
 import S from '@/spx'
 import './achievement.scss'
@@ -15,12 +16,12 @@ const initialConfigState = {
   types: 0,
   listData: [],
   listHeader: [
-    { title: '时间', id: 'date_brokerage' },
+    { title: '时间', id: 'date_time' },
     // { title: '业务员', id: 'salesName' },
-    { title: '订单额（元）', width: '120px', id: 'total_Fee' },
-    { title: '订单配送量（单）', width: '120px', id: 'order_num' },
+    { title: '订单额（元）', width: '120px', id: 'total_fee_count' },
+    { title: '订单配送量（单）', width: '120px', id: 'order_count' },
     // { title: '新增顾客', id: 'member_num' },
-    { title: '配送费（元）', width: '120px', id: 'total_rebate' }
+    { title: '配送费（元）', width: '120px', id: 'self_delivery_fee_count' }
   ],
   parameter: {
     page: 1,
@@ -36,6 +37,7 @@ const initialConfigState = {
 const Achievement = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { list, tabList, types, listData, listHeader, parameter, selector } = state
+  const { self_delivery_operator_id } = useSelector((state) => state.cart)
 
   useEffect(() => {
     fetch()
@@ -49,23 +51,42 @@ const Achievement = () => {
     })
     let params = {
       ...parameter,
-      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd'
+      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
+      self_delivery_operator_id
     }
-    const res = await api.salesman.promoterGetSalesmanStatic(params)
+    const res = await api.delivery.datacubeDeliverystaffdataDetail(params)
     res.forEach((element) => {
       element.total_Fee = element.total_Fee / 100
       element.total_rebate = element.total_rebate / 100
     })
+    //生成对应的年月日
+    let res1 = time(res)
     Taro.hideLoading()
     setState((draft) => {
-      draft.listData = res
+      draft.listData = res1
     })
   }
 
+  const time = (res) => {
+    res?.forEach((item, index) => {
+      if (parameter.datetype == 0) {
+        //y 年
+        item['date_time'] = `${index + 1}月`
+      } else if (parameter.datetype == 1) {
+        //m  月
+        item['date_time'] = `${parameter.data}-${index + 1}`
+      } else {
+        item['date_time'] = parameter.data
+      }
+    })
+    return res
+  }
+
   const distributor = async () => {
-    const { list } = await api.salesman.getSalespersonSalemanShopList({
+    const { list } = await api.delivery.getDistributorList({
       page: 1,
-      page_size: 1000
+      page_size: 1000,
+      self_delivery_operator_id
     })
     list.forEach((element) => {
       element.value = element.distributor_id

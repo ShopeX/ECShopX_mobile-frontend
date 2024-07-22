@@ -296,7 +296,7 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let memberRes = await api.member.memberInfo()
-    let deliveryPersonnel = memberRes?.deliveryStaffList?.list. map((item) => (item.distributor_id)) ?? []
+    let deliveryPersonnel = memberRes?.deliveryStaffList?.list. map((item) => (item.operator_id)) ?? []
     setConfig((draft) => {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,

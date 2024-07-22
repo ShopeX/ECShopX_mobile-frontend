@@ -2,25 +2,25 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime,SpCustomPicker } from '@/components'
+import { SpPage, SpTime, SpCustomPicker } from '@/components'
+import { useSelector } from 'react-redux'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-
 import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/delivery/list'},
-    { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list'},
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/delivery/list' },
+    { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list' },
     {
       name: '配送业绩',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/delivery/achievement'
     },
-    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop'},
-    { name: '详情', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/detail'}
+    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop' },
+    { name: '详情', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/detail' }
   ],
   codeStatus: false,
   information: { name: 'cx' },
@@ -36,6 +36,7 @@ const initialConfigState = {
 const Index = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { codeStatus, information, funcList, info, parameter, selector } = state
+  const { self_delivery_operator_id } = useSelector((state) => state.cart)
 
   useDidShow(() => {
     fetch()
@@ -49,21 +50,23 @@ const Index = () => {
     })
     let params = {
       ...parameter,
-      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd'
+      datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
+      self_delivery_operator_id
     }
-    const res = await api.salesman.getSalesmanCount(params)
+    const res = await api.delivery.datacubeDeliverystaffdata(params)
     Taro.hideLoading()
-    res.total_Fee = S.formatMoney(res.total_Fee / 100)
-    res.refund_Fee = S.formatMoney(res.refund_Fee / 100)
+    res.self_delivery_fee_count = S.formatMoney(res.self_delivery_fee_count / 100)
+    res.refund_fee_count = S.formatMoney(res.refund_fee_count / 100)
     setState((draft) => {
       draft.info = res
     })
   }
 
   const distributor = async () => {
-    const { list } = await api.salesman.getSalespersonSalemanShopList({
+    const { list } = await api.delivery.getDistributorList({
       page: 1,
-      page_size: 1000
+      page_size: 1000,
+      self_delivery_operator_id
     })
     list.forEach((element) => {
       element.value = element.distributor_id
@@ -167,24 +170,24 @@ const Index = () => {
                   查看数据总览&nbsp; &gt;
                 </View>
               </View>
-              <View className='panel-num mt-12'>{info.total_Fee}</View>
+              <View className='panel-num mt-12'>{info.total_fee_count}</View>
             </View>
             <View className='panel-content-btm'>
               <View className='panel-content-btm-item'>
                 <View className='panel-title'>配送订单量（单）</View>
-                <View className='panel-num'>{info.order_num}</View>
+                <View className='panel-num'>{info.order_count}</View>
               </View>
               <View className='panel-content-btm-item'>
                 <View className='panel-title'>配送费用（元）</View>
-                <View className='panel-num'>{info.aftersales_num}</View>
+                <View className='panel-num'>{info.self_delivery_fee_count}</View>
               </View>
               <View className='panel-content-btm-item'>
                 <View className='panel-title'>退款（元）</View>
-                <View className='panel-num'>{info.refund_Fee}</View>
+                <View className='panel-num'>{info.refund_fee_count}</View>
               </View>
               <View className='panel-content-btm-item'>
                 <View className='panel-title'>退款订单（笔）</View>
-                <View className='panel-num'>{info.member_num}</View>
+                <View className='panel-num'>{info.aftersales_count}</View>
               </View>
             </View>
           </View>
