@@ -37,11 +37,11 @@ const initialConfigState = {
 const Achievement = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { list, tabList, types, listData, listHeader, parameter, selector } = state
-  const { self_delivery_operator_id } = useSelector((state) => state.cart)
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
 
   useEffect(() => {
     fetch()
-    distributor()
+    // distributor()
   }, [])
 
   const fetch = async () => {
@@ -52,7 +52,7 @@ const Achievement = () => {
     let params = {
       ...parameter,
       datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
-      self_delivery_operator_id
+      ...deliveryPersonnel
     }
     const res = await api.delivery.datacubeDeliverystaffdataDetail(params)
     res.forEach((element) => {
@@ -82,24 +82,24 @@ const Achievement = () => {
     return res
   }
 
-  const distributor = async () => {
-    const { list } = await api.delivery.getDistributorList({
-      page: 1,
-      page_size: 1000,
-      self_delivery_operator_id
-    })
-    list.forEach((element) => {
-      element.value = element.distributor_id
-      element.label = element.name
-    })
-    list.unshift({
-      value: '',
-      label: '全部店铺'
-    })
-    setState((draft) => {
-      draft.selector = list
-    })
-  }
+  // const distributor = async () => {
+  //   const { list } = await api.delivery.getDistributorList({
+  //     page: 1,
+  //     page_size: 1000,
+  //     self_delivery_operator_id:deliveryPersonnel.self_delivery_operator_id
+  //   })
+  //   list.forEach((element) => {
+  //     element.value = element.distributor_id
+  //     element.label = element.name
+  //   })
+  //   list.unshift({
+  //     value: '',
+  //     label: '全部店铺'
+  //   })
+  //   setState((draft) => {
+  //     draft.selector = list
+  //   })
+  // }
 
   const cancel = (index, val) => {
     let params = {
@@ -141,7 +141,7 @@ const Achievement = () => {
             selects={parameter.datetype}
             nowTimeDa={parameter.date}
           />
-          <SpCustomPicker selector={selector} cancel={cancel} />
+          {/* <SpCustomPicker selector={selector} cancel={cancel} /> */}
         </View>
         {/* <SpTabs
           current={types}

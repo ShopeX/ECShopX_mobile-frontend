@@ -16,6 +16,7 @@ const initialState = {
   datas: '',
   datasType: 0,
   customName: '全部业绩排行',
+  customValue:'all',
   selector: [
     { label: '全部业绩排行', value: 'all' },
     { label: '直推业绩排行', value: 'lv1' },
@@ -25,7 +26,7 @@ const initialState = {
 
 function CompRanking(props) {
   const [state, setState] = useImmer(initialState)
-  const { list, total_count, datas, datasType, valList, customName, selector } = state
+  const { list, total_count, datas, datasType, valList, customName,customValue, selector } = state
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
 
@@ -88,6 +89,7 @@ function CompRanking(props) {
   const cancel = (index, val) => {
     setState((draft) => {
       draft.customName = val.label
+      draft.customValue = val.value
     })
     console.log(index, val)
   }
@@ -100,7 +102,7 @@ function CompRanking(props) {
           <View className='comp-ranking-table-custom'>
             <SpCustomPicker
               customStatus
-              customName={customName}
+              id={customValue}
               cancel={cancel}
               selector={selector}
             />

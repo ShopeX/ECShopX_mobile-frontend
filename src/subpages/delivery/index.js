@@ -3,11 +3,12 @@ import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
 import { SpPage, SpTime, SpCustomPicker } from '@/components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
+import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import './index.scss'
 
 const initialConfigState = {
@@ -36,7 +37,8 @@ const initialConfigState = {
 const Index = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { codeStatus, information, funcList, info, parameter, selector } = state
-  const { self_delivery_operator_id } = useSelector((state) => state.cart)
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
+  const dispatch = useDispatch()
 
   useDidShow(() => {
     fetch()
@@ -51,7 +53,7 @@ const Index = () => {
     let params = {
       ...parameter,
       datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
-      self_delivery_operator_id
+      ...deliveryPersonnel
     }
     const res = await api.delivery.datacubeDeliverystaffdata(params)
     Taro.hideLoading()
@@ -66,7 +68,7 @@ const Index = () => {
     const { list } = await api.delivery.getDistributorList({
       page: 1,
       page_size: 1000,
-      self_delivery_operator_id
+      self_delivery_operator_id: deliveryPersonnel.self_delivery_operator_id
     })
     list.forEach((element) => {
       element.value = element.distributor_id
@@ -74,7 +76,8 @@ const Index = () => {
     })
     list.unshift({
       value: '',
-      label: '全部店铺'
+      label: '全部店铺',
+      distributor_id: ''
     })
     setState((draft) => {
       draft.selector = list
@@ -120,6 +123,7 @@ const Index = () => {
     setState((draft) => {
       draft.parameter = params
     })
+    dispatch(updateDeliveryPersonnel({ ...deliveryPersonnel, distributor_id: val.value }))
     handleRefresh()
   }
 
@@ -144,7 +148,14 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <SpCustomPicker selector={selector} cancel={cancel} />
+              {selector && (
+                <SpCustomPicker
+                  selector={selector}
+                  cancel={cancel}
+                  customStatus
+                  id={deliveryPersonnel.distributor_id}
+                />
+              )}
             </View>
           </View>
           <SpTime

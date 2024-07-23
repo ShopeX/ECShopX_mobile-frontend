@@ -15,7 +15,10 @@ const initialState = {
   zitiAddress: null,
   shopCartCount: {},
   shopSalesmanCartCount: {},
-  self_delivery_operator_id: [] //配送员信息
+  deliveryPersonnel: { //配送员信息
+    self_delivery_operator_id:[],
+    distributor_id:''
+  }
 }
 
 export const fetchCartList = createAsyncThunk('cart/fetchCartList', async (params) => {
@@ -98,7 +101,7 @@ const cartSlice = createSlice({
     },
     updateDeliveryPersonnel: (state, { payload }) => {
       // 更新配送员信息（存在等多个账号id）
-      state.self_delivery_operator_id = payload
+      state.deliveryPersonnel = payload
     },
     clear: (state, { payload }) => {
       state.coupon = null

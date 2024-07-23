@@ -26,7 +26,7 @@ const initialState = {
 function TradeAfterSaleList(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, tradeList, refresherTriggered } = state
-  const { self_delivery_operator_id } = useSelector((state) => state.cart)
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -57,7 +57,7 @@ function TradeAfterSaleList(props) {
       pageSize,
       order_type: 'normal',
       aftersales_status: status,
-      self_delivery_operator_id
+      ...deliveryPersonnel
     }
     const { list, total_count } = await api.aftersales.list(params)
     const tempList = pickBy(list, doc.trade.AFTER_TRADE)

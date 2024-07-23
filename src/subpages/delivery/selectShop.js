@@ -22,7 +22,7 @@ const initialConfigState = {
 const SelectShop = () => {
   const [state, setState] = useImmer(initialConfigState)
   const { searchConditionList, codeStatus, basis, address, list } = state
-  const { self_delivery_operator_id } = useSelector((state) => state.cart)
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
   const goodsRef = useRef()
 
   useEffect(() => {
@@ -48,7 +48,7 @@ const SelectShop = () => {
       province: address[0],
       city: address[1],
       area: address[2],
-      self_delivery_operator_id
+      self_delivery_operator_id:deliveryPersonnel.self_delivery_operator_id
     }
     params[basis.key] = basis.keywords
 

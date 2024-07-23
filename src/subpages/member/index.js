@@ -300,7 +300,7 @@ function MemberIndex(props) {
       draft.deliveryStaffList = memberRes?.deliveryStaffList
     })
 
-    dispatch(updateDeliveryPersonnel(deliveryPersonnel)) //存配送员信息
+    dispatch(updateDeliveryPersonnel({self_delivery_operator_id:deliveryPersonnel,distributor_id:''})) //存配送员信息
     dispatch(updateUserInfo(memberRes))
   }
 
