@@ -20,7 +20,8 @@ import {
   isAlipay,
   isGoodsShelves,
   VERSION_IN_PURCHASE,
-  validate
+  validate,
+  hex2rgb
 } from '@/utils'
 
 import './index.scss'
@@ -44,6 +45,7 @@ const initialState = {
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
+
   const {
     pageTheme,
     lock,
@@ -202,30 +204,40 @@ function SpPage(props, ref) {
   })
 
   const updatePageTheme = (res) => {
-    //配送员   业务员
-    const prefixes = ['/subpages/delivery', '/subpages/salesman']
-    let updatedTheme = {
-      '--color-primary': colorPrimary,
-      '--color-marketing': colorMarketing,
-      '--color-accent': colorAccent,
-      '--color-rgb': rgb,
-      '--color-dianwu-primary': '#4980FF'
-    } // 用于存储更新后的主题（如果有的话）
-
-    for (let prefix of prefixes) {
-      if (res.startsWith(prefix)) {
-        updatedTheme = {
-          '--color-primary': '#4980FF',
-          '--color-marketing': '#4980FF',
-          '--color-accent': '#4980FF',
-          '--color-rgb': '#4980FF',
-          '--color-dianwu-primary': '#4980FF'
-        }
-        break
+    // 使用对象来定义路由前缀和对应的主题色
+    const prefixes = {
+      '/subpages/delivery/': {
+        primary: '#4980FF',
+        marketing: '#4980FF',
+        accent: '#4980FF'
+      },
+      '/subpages/salesman/': {
+        primary: '#4980FF',
+        marketing: '#4980FF',
+        accent: '#4980FF'
       }
     }
+
+    // 使用正则表达式匹配路由前缀
+    const regex = res.split('/').length >= 4 ? res.match(/(?:[^\/]*\/){2}([^\/]+)(?:\/|$)/)[0] : null
+    
+    // 检查是否找到匹配项
+    const status = regex !== null && prefixes[regex]
+    const newPrefixes = prefixes[regex]
+
+    // 查找与给定路由匹配的主题
+    const theme = {
+      // 如果没有找到匹配项，则使用默认主题
+      '--color-primary': status ? newPrefixes.primary : colorPrimary,
+      '--color-marketing': status ? newPrefixes.marketing : colorMarketing,
+      '--color-accent': status ? newPrefixes.accent : colorAccent,
+      '--color-rgb': status ? hex2rgb(newPrefixes.primary).join(',') : rgb,
+      '--color-dianwu-primary': '#4980FF'
+    }
+
+    // 更新状态
     setState((draft) => {
-      draft.pageTheme = updatedTheme
+      draft.pageTheme = theme
     })
   }
 
