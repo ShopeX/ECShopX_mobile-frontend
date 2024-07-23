@@ -1,11 +1,27 @@
 import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { useDidShow, usePageScroll, useRouter, getCurrentInstance, useReady } from '@tarojs/taro'
+import Taro, {
+  useDidShow,
+  usePageScroll,
+  useRouter,
+  getCurrentInstance,
+  useReady
+} from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
+import { useSyncCallback } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
-import { classNames, styleNames, hasNavbar, isWeixin, isAlipay, isGoodsShelves, VERSION_IN_PURCHASE, validate } from '@/utils'
+import {
+  classNames,
+  styleNames,
+  hasNavbar,
+  isWeixin,
+  isAlipay,
+  isGoodsShelves,
+  VERSION_IN_PURCHASE,
+  validate
+} from '@/utils'
 
 import './index.scss'
 
@@ -21,13 +37,28 @@ const initialState = {
   ipx: false,
   windowHeight: 0,
   gNavbarH: 0,
-  gStatusBarHeight: 0
+  gStatusBarHeight: 0,
+  pageTheme: {}
 }
 
 function SpPage(props, ref) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { lock, lockStyle, pageTitle, isTabBarPage, customNavigation, cusCurrentPage, showLeftContainer, pageBackground, ipx, windowHeight, gNavbarH, gStatusBarHeight } = state
+  const {
+    pageTheme,
+    lock,
+    lockStyle,
+    pageTitle,
+    isTabBarPage,
+    customNavigation,
+    cusCurrentPage,
+    showLeftContainer,
+    pageBackground,
+    ipx,
+    windowHeight,
+    gNavbarH,
+    gStatusBarHeight
+  } = state
   const {
     className,
     children,
@@ -45,7 +76,7 @@ function SpPage(props, ref) {
     navigateMantle = false, // 自定义导航，开启滚动蒙层
     pageConfig,
     fixedTopContainer = null,
-    showNavition = true,//是否展示Navition
+    showNavition = true, //是否展示Navition
     title = '' // 页面导航标题
   } = props
   let { renderTitle } = props
@@ -55,14 +86,6 @@ function SpPage(props, ref) {
   const [showToTop, setShowToTop] = useState(false)
   const [mantle, setMantle] = useState(false)
   const { colorPrimary, colorMarketing, colorAccent, rgb, appName } = sys
-
-  const pageTheme = {
-    '--color-primary': colorPrimary,
-    '--color-marketing': colorMarketing,
-    '--color-accent': colorAccent,
-    '--color-rgb': rgb,
-    '--color-dianwu-primary': '#4980FF'
-  }
 
   useReady(() => {
     // 导购货架数据上报
@@ -94,7 +117,8 @@ function SpPage(props, ref) {
     const { navigationStyle } = page.config
 
     let ipx = false
-    let _gNavbarH = 0, _gStatusBarHeight = 0
+    let _gNavbarH = 0,
+      _gStatusBarHeight = 0
     const { screenHeight, windowHeight } = Taro.getSystemInfoSync()
     // showToast(`${screenHeight},${windowHeight}`)
     if (isWeixin || isAlipay) {
@@ -102,11 +126,13 @@ function SpPage(props, ref) {
       ipx = validate.isIpx(deviceInfo.model)
       const menuButton = Taro.getMenuButtonBoundingClientRect()
       const { statusBarHeight } = Taro.getSystemInfoSync()
-      _gNavbarH = Math.floor(statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2)
+      _gNavbarH = Math.floor(
+        statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
+      )
       _gStatusBarHeight = statusBarHeight
     }
 
-    setState(draft => {
+    setState((draft) => {
       draft.customNavigation = isWeixin ? navigationStyle === 'custom' : false
       draft.cusCurrentPage = pages.length
       draft.ipx = ipx
@@ -119,7 +145,12 @@ function SpPage(props, ref) {
 
   useEffect(() => {
     if (pageConfig) {
-      const { pageBackgroundStyle, pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } = pageConfig
+      const {
+        pageBackgroundStyle,
+        pageBackgroundColor,
+        pageBackgroundImage,
+        navigateBackgroundColor
+      } = pageConfig
       let _pageBackground = {}
       if (pageBackgroundStyle == '1') {
         _pageBackground = {
@@ -133,7 +164,7 @@ function SpPage(props, ref) {
         }
       }
 
-      setState(draft => {
+      setState((draft) => {
         draft.pageBackground = _pageBackground
       })
 
@@ -148,23 +179,55 @@ function SpPage(props, ref) {
   useDidShow(() => {
     const { page, router } = $instance
 
+    //更新主题色
+    updatePageTheme(router?.path)
     const fidx = Object.values(TABBAR_PATH).findIndex(
       (v) => v == $instance.router?.path.split('?')[0]
     )
     const isTabBarPage = fidx > -1
     setState((draft) => {
       // draft.pageTitle = pageTitle
-      draft.isTabBarPage = isTabBarPage,
-        draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(`/${page?.route}`)
+      ;(draft.isTabBarPage = isTabBarPage),
+        (draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
+          `/${page?.route}`
+        ))
     })
 
     // 导购货架分包路由，隐藏所有分享入口
     if (router.path.indexOf('/subpages/guide') > -1) {
       Taro.hideShareMenu({
-        menus: ["shareAppMessage", "shareTimeline"]
-      });
+        menus: ['shareAppMessage', 'shareTimeline']
+      })
     }
   })
+
+  const updatePageTheme = (res) => {
+    //配送员   业务员
+    const prefixes = ['/subpages/delivery', '/subpages/salesman']
+    let updatedTheme = {
+      '--color-primary': colorPrimary,
+      '--color-marketing': colorMarketing,
+      '--color-accent': colorAccent,
+      '--color-rgb': rgb,
+      '--color-dianwu-primary': '#4980FF'
+    } // 用于存储更新后的主题（如果有的话）
+
+    for (let prefix of prefixes) {
+      if (res.startsWith(prefix)) {
+        updatedTheme = {
+          '--color-primary': '#4980FF',
+          '--color-marketing': '#4980FF',
+          '--color-accent': '#4980FF',
+          '--color-rgb': '#4980FF',
+          '--color-dianwu-primary': '#4980FF'
+        }
+        break
+      }
+    }
+    setState((draft) => {
+      draft.pageTheme = updatedTheme
+    })
+  }
 
   usePageScroll((res) => {
     if (!lock) {
@@ -210,14 +273,22 @@ function SpPage(props, ref) {
     }
   }))
 
-
   const CustomNavigation = () => {
     const { page, route } = getCurrentInstance()
-    let pageStyle = {}, pageTitleStyle = {}
+    let pageStyle = {},
+      pageTitleStyle = {}
     let navigationBarTitleText = ''
 
     if (pageConfig) {
-      const { navigateBackgroundColor, navigateStyle, navigateBackgroundImage, titleStyle, titleColor, titleBackgroundImage, titlePosition } = pageConfig
+      const {
+        navigateBackgroundColor,
+        navigateStyle,
+        navigateBackgroundImage,
+        titleStyle,
+        titleColor,
+        titleBackgroundImage,
+        titlePosition
+      } = pageConfig
       // 导航颜色背景
       if (navigateStyle == '1') {
         pageStyle = {
@@ -233,9 +304,15 @@ function SpPage(props, ref) {
       }
       // 页面标题
       if (titleStyle == '1') {
-        renderTitle = <Text style={styleNames({
-          color: titleColor
-        })}>{appName}</Text>
+        renderTitle = (
+          <Text
+            style={styleNames({
+              color: titleColor
+            })}
+          >
+            {appName}
+          </Text>
+        )
       } else if (titleStyle == '2') {
         renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
       }
@@ -250,40 +327,52 @@ function SpPage(props, ref) {
 
     return (
       <View
-        className={classNames('custom-navigation', {
-          'mantle': mantle,
-        }, navigateTheme)}
+        className={classNames(
+          'custom-navigation',
+          {
+            'mantle': mantle
+          },
+          navigateTheme
+        )}
         style={styleNames({
           height: `${gNavbarH}px`,
           'padding-top': `${gStatusBarHeight}px`,
           ...pageStyle
         })}
       >
-        {showLeftContainer && <View className='left-container'>
-          <View className='icon-wrap'>
-            <Text
-              className={classNames('iconfont', {
-                'icon-home1': cusCurrentPage == 1,
-                'icon-fanhui': cusCurrentPage != 1
-              })}
-              onClick={() => {
-                if (cusCurrentPage == 1) {
-                  Taro.redirectTo({
-                    url: isGoodsShelves() ? '/subpages/guide/index' : VERSION_IN_PURCHASE ? '/pages/purchase/index' : '/pages/index'
-                  })
-                } else {
-                  Taro.navigateBack()
-                }
-              }}
-            />
+        {showLeftContainer && (
+          <View className='left-container'>
+            <View className='icon-wrap'>
+              <Text
+                className={classNames('iconfont', {
+                  'icon-home1': cusCurrentPage == 1,
+                  'icon-fanhui': cusCurrentPage != 1
+                })}
+                onClick={() => {
+                  if (cusCurrentPage == 1) {
+                    Taro.redirectTo({
+                      url: isGoodsShelves()
+                        ? '/subpages/guide/index'
+                        : VERSION_IN_PURCHASE
+                        ? '/pages/purchase/index'
+                        : '/pages/index'
+                    })
+                  } else {
+                    Taro.navigateBack()
+                  }
+                }}
+              />
+            </View>
           </View>
-        </View>}
+        )}
 
-        {isWeixin && <View className='title-container' style={styleNames(pageTitleStyle)}>
-          {renderTitle || title || navigationBarTitleText}
-          {/* 吸顶区域 */}
-          {fixedTopContainer}
-        </View>}
+        {isWeixin && (
+          <View className='title-container' style={styleNames(pageTitleStyle)}>
+            {renderTitle || title || navigationBarTitleText}
+            {/* 吸顶区域 */}
+            {fixedTopContainer}
+          </View>
+        )}
         {showLeftContainer && <View className='right-container'></View>}
       </View>
     )
@@ -311,11 +400,16 @@ function SpPage(props, ref) {
 
       {loading && <SpLoading />}
 
-
-      {!isDefault && !loading && <View className='sp-page-body' style={styleNames({
-        'margin-top': `${customNavigation ? gNavbarH : 0}px`
-      })}>{children}</View>}
-
+      {!isDefault && !loading && (
+        <View
+          className='sp-page-body'
+          style={styleNames({
+            'margin-top': `${customNavigation ? gNavbarH : 0}px`
+          })}
+        >
+          {children}
+        </View>
+      )}
 
       {/* 置底操作区 */}
       {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
@@ -331,8 +425,6 @@ function SpPage(props, ref) {
           )}
         </View>
       )}
-
-
     </View>
   )
 }

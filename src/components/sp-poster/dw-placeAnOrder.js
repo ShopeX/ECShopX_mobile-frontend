@@ -37,18 +37,13 @@ class StoreCode {
     this.codeImg = await Taro.getImageInfo({ src: wxappCode })
     // 头像
 
-    let xxxx = JSON.parse(JSON.stringify(detailInfo))
+    let newNetailInfo = JSON.parse(JSON.stringify(detailInfo))
     //处理数据
-    xxxx.unshift({
+    newNetailInfo.unshift({
       itemName: '商品',
       num: '数量',
       price: '单价'
     })
-    // xxxx = [{
-    //       itemName: '商品',
-    //       num: '数量',
-    //       price: '单价'
-    //     }]
 
     const drawOptions = {
       ctx: this.ctx,
@@ -85,7 +80,7 @@ class StoreCode {
 
     // 商品列表
     let yOffset = 80 // 初始y坐标
-    xxxx.map((item, index) => {
+    newNetailInfo.map((item, index) => {
       const text1 = drawText(
         {
           x: yOffset,
@@ -134,7 +129,7 @@ class StoreCode {
     drawText(
       {
         x: yOffset,
-        y: yOffset + (xxxx.length + 1) * 50, // 调整y坐标，增加间距
+        y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
         fontSize: 30,
         w: canvasWidth,
         color: '#111A34',
@@ -148,7 +143,7 @@ class StoreCode {
     drawText(
       {
         x: yOffset + 300,
-        y: yOffset + (xxxx.length + 1) * 50, // 调整y坐标，增加间距
+        y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
         fontSize: 30,
         w: canvasWidth,
         color: '#111A34',
@@ -161,7 +156,7 @@ class StoreCode {
     drawText(
       {
         x: yOffset,
-        y: yOffset + (xxxx.length + 2) * 50, // 调整y坐标，增加间距
+        y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
         fontSize: 30,
         w: canvasWidth,
         color: '#111A34',
@@ -174,7 +169,7 @@ class StoreCode {
     drawText(
       {
         x: yOffset + 300,
-        y: yOffset + (xxxx.length + 2) * 50, // 调整y坐标，增加间距
+        y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
         fontSize: 30,
         w: canvasWidth,
         color: '#111A34',

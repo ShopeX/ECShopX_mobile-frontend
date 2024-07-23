@@ -324,7 +324,6 @@ function CartCheckout(props) {
   }
 
   const handleSwitchExpress = ({ receipt_type, distributor_info, address_info }) => {
-    console.log('xxxxxxx:', receipt_type, address_info)
     // 切换配送模式
     setState((draft) => {
       draft.receiptType = receipt_type

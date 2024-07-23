@@ -7,6 +7,7 @@ import doc from '@/doc'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
 import { updateCustomerLnformation, updateCustomerSalesman } from '@/store/slices/cart'
+import { SG_USER_INFO } from '@/consts/localstorage'
 import './comp-customer-list.scss'
 
 const initialState = {}
@@ -23,7 +24,7 @@ function CompCustomerList(props) {
         <View
           className='comp-customer-list-scroll-list'
           onClick={async () => {
-            const { userId } = Taro.getStorageSync('userinfo')
+            const { userId } = Taro.getStorageSync(SG_USER_INFO)
             let params = {
               isSalesmanPage: 1,
               promoter_user_id: userId,
@@ -39,9 +40,7 @@ function CompCustomerList(props) {
             })
           }}
         >
-          <SpImage
-            src={items.headimgurl ? items.headimgurl : `${process.env.APP_IMAGE_CDN}/logo.png`}
-          />
+          <SpImage src={items.headimgurl ? items.headimgurl : 'logo.png'} />
           <View className='details'>
             <View className='customer'>
               <View>
