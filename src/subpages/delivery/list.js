@@ -75,6 +75,7 @@ const initialState = {
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, tradeList, refresherTriggered, statusDelivery, list } = state
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
   const tradeRef = useRef()
   const router = useRouter()
   const pageRef = useRef()
@@ -119,7 +120,8 @@ function TradeList(props) {
       pageSize,
       order_type: 'normal',
       status,
-      is_rate
+      is_rate,
+      ...deliveryPersonnel
     }
     const {
       list,
