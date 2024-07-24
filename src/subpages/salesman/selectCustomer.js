@@ -8,7 +8,7 @@ import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
 import CompCustomerList from './comps/comp-customer-list'
-import './SelectCustomer.scss'
+import './selectCustomer.scss'
 
 const initialConfigState = {
   tabList: [{ title: '已购买' }, { title: '未购买' }],
