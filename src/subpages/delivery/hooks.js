@@ -5,7 +5,6 @@ import api from '@/api'
 
 export default (props) => {
   const [state, setState] = useImmer(props)
-  const callbackRef = useRef()
 
   const tradeActionBtns = {
     CANCEL: {
@@ -15,16 +14,6 @@ export default (props) => {
       action: ({ orderId }) => {
         Taro.navigateTo({
           url: `/subpage/pages/trade/cancel?order_id=${orderId}`
-        })
-      }
-    },
-    PAY: {
-      title: '立即支付',
-      key: 'pay',
-      btnStatus: 'active',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpage/pages/trade/detail?order_id=${orderId}`
         })
       }
     },
@@ -38,22 +27,6 @@ export default (props) => {
         })
       }
     },
-    LOGISTICS: {
-      title: '查看物流',
-      key: 'logistics',
-      btnStatus: 'normal',
-      action: ({ orderId, isAllDelivery, ordersDeliveryId, deliveryCorpName, deliveryCode }) => {
-        if (isAllDelivery) {
-          Taro.navigateTo({
-            url: `/subpages/trade/delivery-info?delivery_corp_name=${deliveryCorpName}&delivery_code=${deliveryCode}&delivery_id=${ordersDeliveryId}`
-          })
-        } else {
-          Taro.navigateTo({
-            url: `/subpages/trade/delivery-info?order_id=${orderId}`
-          })
-        }
-      }
-    },
     AFTER_SALES: {
       title: '申请售后',
       key: 'after_sales',
@@ -63,11 +36,6 @@ export default (props) => {
           url: `/subpages/trade/after-sale?id=${orderId}`
         })
       }
-    },
-    CONFIRM: {
-      title: '确认收货',
-      key: 'confirm',
-      btnStatus: 'normal'
     },
     AFTER_DETAIL: {
       title: '售后详情',
@@ -79,30 +47,10 @@ export default (props) => {
         })
       }
     },
-    EVALUATE: {
-      title: '评价',
-      key: 'evaluate',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/trade-evaluate?order_id=${orderId}`
-        })
-      }
-    },
-    WRITE_OFF: {
-      title: '核销',
-      key: 'writeOff',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/trade-evaluate?order_id=${orderId}`
-        })
-      }
-    },
     SEND_OUT_GOODS: {
       title: '发货',
       key: 'send_out_goods',
-      btnStatus: 'normal',
+      btnStatus: 'active',
       action: ({ orderId }) => {
         Taro.navigateTo({
           url: `/subpages/delivery/send-out-goods?order_id=${orderId}`
@@ -112,17 +60,7 @@ export default (props) => {
     PACK: {
       title: '打包',
       key: 'pack',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
-        })
-      }
-    },
-    NOTES: {
-      title: '备注',
-      key: 'notes',
-      btnStatus: 'normal',
+      btnStatus: 'active',
       action: ({ orderId }) => {
         Taro.navigateTo({
           url: `/subpages/trade/after-sale-list?order_id=${orderId}`
@@ -132,65 +70,45 @@ export default (props) => {
     CANCEL_DELIVERY: {
       title: '取消配送',
       key: 'cancel_delivery',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
-        })
-      }
+      btnStatus: 'normal'
     },
     UPDATE_DELIVERY: {
       title: '更新配送状态',
       key: 'update_delivery',
-      btnStatus: 'normal'
+      btnStatus: 'active'
     }
   }
 
-  const getTradeAction = ({
-    orderStatus,
-    isLogistics,
-    canApplyCancel,
-    canApplyAftersales,
-    deliveryStatus,
-    receiptType,
-    isRate,
-    items
-  }) => {
-    const btns = []
-    const isData = receiptType == 'dada'
+  // 一级是 订单状态 order_status
+  // 二级是配送状态  self_delivery_status
+  //
+  // PAYED  待发货
+  //            RECEIVEORDER  已接单（确认打包，取消配送）
+  //            PACKAGED  已打包（发货，取消配送）
+  //            CONFIRMING  配送取消
+  //
+  // WAIT_BUYER_CONFIRM  已发货
+  //            DELIVERING  配送中（更新状态）
+  //            DONE  已送达 （申请售后）
 
-    if (orderStatus == 'NOTPAY') {
-      // 未支付
-      if (canApplyCancel) {
-        btns.push(tradeActionBtns.CANCEL)
-      }
-      btns.push(tradeActionBtns.PAY)
-    } else if (orderStatus == 'PAYED') {
-      if (canApplyCancel && deliveryStatus != 'PARTAIL') {
-        // 拆单发货，不能取消订单
-        btns.push(tradeActionBtns.CANCEL)
-      }
-      if (deliveryStatus != 'PENDING' && !isData) {
-        btns.push(tradeActionBtns.LOGISTICS)
-      }
-      if (canApplyAftersales) {
-        btns.push(tradeActionBtns.AFTER_SALES)
+  //取消配送（弹框暂时不写原因）
+
+  const getTradeAction = ({ orderStatus, items, selfDeliveryStatus }) => {
+    const btns = []
+    console.log('orderStatus111', orderStatus, selfDeliveryStatus)
+    if (orderStatus == 'PAYED') {
+      if (selfDeliveryStatus == 'RECEIVEORDER') {
+        btns.push(tradeActionBtns.PACK)
+        btns.push(tradeActionBtns.CANCEL_DELIVERY)
+      } else if (selfDeliveryStatus == 'PACKAGED') {
+        btns.push(tradeActionBtns.SEND_OUT_GOODS)
+        btns.push(tradeActionBtns.CANCEL_DELIVERY)
       }
     } else if (orderStatus == 'WAIT_BUYER_CONFIRM') {
-      btns.push(tradeActionBtns.LOGISTICS)
-      btns.push(tradeActionBtns.CONFIRM)
-      if (canApplyAftersales) {
-        btns.push(tradeActionBtns.AFTER_SALES)
-      }
-    } else if (orderStatus == 'DONE') {
-      // btns.push(tradeActionBtns.LOGISTICS)
-      if (canApplyAftersales) {
-        btns.push(tradeActionBtns.AFTER_SALES)
-      }
-      if (!isRate) {
-        btns.push(tradeActionBtns.EVALUATE)
-        btns.push(tradeActionBtns.SEND_OUT_GOODS)
+      if (selfDeliveryStatus == 'DELIVERING') {
         btns.push(tradeActionBtns.UPDATE_DELIVERY)
+      } else if (selfDeliveryStatus == 'DONE') {
+        btns.push(tradeActionBtns.AFTER_SALES)
       }
     }
 
@@ -207,11 +125,6 @@ export default (props) => {
     const btns = []
     if (item.showAftersales) {
       btns.push(tradeActionBtns.AFTER_DETAIL)
-    }
-    // 拆单发货，商品已发货
-    if (item.deliveryStatus == 'DONE') {
-      tradeActionBtns.LOGISTICS.btnStatus = 'active'
-      btns.push(tradeActionBtns.LOGISTICS)
     }
     return btns
   }

@@ -80,7 +80,9 @@ export const TRADE_ITEM = {
   receiverState: "receiver_state",
   totalFee: ({ total_fee }) => total_fee / 100,
   zitiStatus: 'ziti_status',
-  zitiInfo: 'ziti_info'
+  zitiInfo: 'ziti_info',
+  selfDeliveryFee:({ self_delivery_fee }) => self_delivery_fee / 100,
+  selfDeliveryStatus:'self_delivery_status'
 }
 
 export const SHOP_INFO = {

@@ -53,7 +53,8 @@ const Index = () => {
     let params = {
       ...parameter,
       datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
-      ...deliveryPersonnel
+      ...deliveryPersonnel,
+      from: 'api'
     }
     const res = await api.delivery.datacubeDeliverystaffdata(params)
     Taro.hideLoading()

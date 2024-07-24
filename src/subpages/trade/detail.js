@@ -34,6 +34,7 @@ function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
   const { info, tradeInfo, cancelData, distirbutorInfo, loading, openCashier, openCancelTrade, openWriteOffCode, webSocketOpenFlag,openTrackDetail,trackDetailList } = state
   const { priceSetting, pointName } = useSelector((state) => state.sys)
+  const { deliveryPersonnel } = useSelector((state) => state.cart)
 
   const { order_page: { market_price: enMarketPrice } } = priceSetting
   const { tradeActionBtns, getTradeAction, getItemAction } = tradeHooks()
@@ -61,7 +62,7 @@ function TradeDetail(props) {
 
   const fetch = async () => {
     const { order_id } = router.params
-    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
+    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id,{ from: 'api',self_delivery_operator_id:deliveryPersonnel.self_delivery_operator_id})
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态
     if (_orderInfo.receiptType == 'ziti' && _orderInfo.zitiStatus == 'PENDING') {

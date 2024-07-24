@@ -24,7 +24,15 @@ function CompTradeItem(props) {
     totalFee,
     orderClass,
     point,
-    distributorId
+    distributorId,
+    receiverMobile,
+    receiverName,
+    receiverState,
+    receiverCity,
+    receiverDistrict,
+    receiverAddress,
+    selfDeliveryFee,
+    selfDeliveryStatus
   } = info
   const { pointName } = useSelector((state) => state.sys)
 
@@ -91,21 +99,23 @@ function CompTradeItem(props) {
 
         <View className='trade-address'>
           <View className='distance'>
-            <Text>收货信息</Text>
-            <Text>距离2.5km</Text>
+            <Text>收货信息：</Text>
+            {/* <Text>距离2.5km</Text> */}
           </View>
           <View className='name'>
-            <Text>张三</Text>
-            <Text>13469793903</Text>
+            <Text>{receiverName}</Text>
+            <Text>{receiverMobile}</Text>
           </View>
-          <View className='details'>上海商场拍摄纠纷司空见惯就拉司空见惯；拉</View>
+          <View className='details'>
+            {`${receiverState}${receiverCity}${receiverDistrict}${receiverAddress}`}
+          </View>
         </View>
 
         <View className='trade-total'>
           {/* <View className='delivery'></View> */}
           <View className='delivery'>
             <Text>配送费</Text>
-            <SpPrice value='3' size={38} />
+            <SpPrice value={selfDeliveryFee} size={38} />
           </View>
           {orderClass == 'pointsmall' && (
             <View>
