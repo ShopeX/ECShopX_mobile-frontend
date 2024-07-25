@@ -56,7 +56,7 @@ export const TRADE_ITEM = {
   selfDeliveryOperatorName:'self_delivery_operator_name',
   selfDeliveryOperatorMobile:'self_delivery_operator_mobile',
   selfDeliveryOperatorId:'self_delivery_operator_id',
-  selfDeliveryTime:({ self_delivery_time }) => formatDateTime(self_delivery_time * 1000),
+  selfDeliveryTime:({ self_delivery_time }) => self_delivery_time && formatDateTime(self_delivery_time * 1000),
   invoice: 'invoice',
   isRate: ({ is_rate }) => is_rate == "1",
   // 是否整单发货
