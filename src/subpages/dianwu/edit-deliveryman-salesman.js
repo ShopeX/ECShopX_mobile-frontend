@@ -111,6 +111,7 @@ function EditDeliverymanSalesman(props) {
           placeholder='请输入业务员手机号'
           value={parent.mobile}
           onChange={(e) => handleChange('mobile', e)}
+          disabled={params?.salesperson_id}
         />
         <AtInput
           name='username'
