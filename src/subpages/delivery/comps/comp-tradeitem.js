@@ -13,7 +13,7 @@ import './comp-tradeitem.scss'
 function CompTradeItem(props) {
   const {
     info,
-    butn = false,
+    showButton = false,
     updateDelivery = () => {},
     cancelDelivery = () => {},
     pack = () => {}
@@ -90,14 +90,14 @@ function CompTradeItem(props) {
             </View>
           </View>
           
-            {!butn && <View className='trade-no'>{`订单编号: ${orderId}`}</View>
+            {!showButton && <View className='trade-no'>{`订单编号: ${orderId}`}</View>
            }
 
-           {!butn &&  <View className='trade-time'>{`订单时间: ${createDate}`}</View>}
+           {!showButton &&  <View className='trade-time'>{`订单时间: ${createDate}`}</View>}
           
           
         </View>
-        {!butn && <View className='trade-state'>{orderState(info)}</View>}
+        {!showButton && <View className='trade-state'>{orderState(info)}</View>}
       </View>
       <View className='trade-item-bd' onClick={onViewTradeDetail}>
         {items.map((good, goodIndex) => (
@@ -149,7 +149,7 @@ function CompTradeItem(props) {
         </View>
       </View>
 
-      {!butn && (
+      {!showButton && (
         <View className='trade-item-ft'>
           {btns.map((item, index) => (
             <AtButton

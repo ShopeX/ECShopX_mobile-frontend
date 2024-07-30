@@ -8,6 +8,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { pickBy, showToast } from '@/utils'
+import { DELIVERY_PERSONNEL_INFORMATION} from '@/consts'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompShippingInformation from './comps/comp-shipping-information'
 import btnHooks from './btn-hooks'
@@ -27,50 +28,7 @@ const initialState = {
   tradeList: [],
   refresherTriggered: false,
   statusDelivery: false,
-  list: [
-    {
-      title: '快递公司',
-      selector: [{ label: '商家自配送', status: true }],
-      extraText: '商家自配送',
-      status: 'select',
-      value: 'all'
-    },
-    {
-      title: '配送员',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_name'
-    },
-    {
-      title: '配送员手机号',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_mobile'
-    },
-    {
-      title: '配送状态',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_status'
-    },
-    {
-      title: '配送备注',
-      selector: '',
-      extraText: '',
-      status: 'textarea',
-      value: 'delivery_remark'
-    },
-    {
-      title: '照片上传',
-      selector: [],
-      extraText: '',
-      status: 'image',
-      value: 'delivery_pics'
-    }
-  ]
+  list: DELIVERY_PERSONNEL_INFORMATION
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)

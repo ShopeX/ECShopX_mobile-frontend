@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux'
 import { SpPage, SpImage, SpScrollView, SpCell, SpFloatLayout } from '@/components'
 import CompShippingInformation from './comps/comp-shipping-information'
 import { pickBy, showToast, classNames, isArray } from '@/utils'
-import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS } from '@/consts'
+import { ORDER_STATUS_INFO, DELIVERY_PERSONNEL_INFORMATION, ORDER_DADA_STATUS } from '@/consts'
 import { AtButton } from 'taro-ui'
 import CompTradeItem from './comps/comp-tradeitem'
 import tradeHooks from './hooks'
@@ -19,50 +19,7 @@ import './detail.scss'
 const initialConfigState = {
   information: {},
   statusDelivery: false,
-  list: [
-    {
-      title: '快递公司',
-      selector: [{ label: '商家自配送', status: true }],
-      extraText: '商家自配送',
-      status: 'select',
-      value: 'all'
-    },
-    {
-      title: '配送员',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_name'
-    },
-    {
-      title: '配送员手机号',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_mobile'
-    },
-    {
-      title: '配送状态',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_status'
-    }
-    // {
-    //   title: '配送备注',
-    //   selector: '',
-    //   extraText: '',
-    //   status: 'textarea',
-    //   value: 'delivery_remark'
-    // },
-    // {
-    //   title: '照片上传',
-    //   selector: [],
-    //   extraText: '',
-    //   status: 'image',
-    //   value: 'delivery_pics'
-    // }
-  ]
+  list: DELIVERY_PERSONNEL_INFORMATION
 }
 
 const Detail = () => {
@@ -202,7 +159,13 @@ const Detail = () => {
       renderFooter={information.orderId && butFooter()}
       ref={pageRef}
     >
-      <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false} renderMore={()=>{}}>
+      <SpScrollView
+        className='scroll-view-goods'
+        ref={goodsRef}
+        fetch={fetch}
+        auto={false}
+        renderMore={() => {}}
+      >
         {information.orderId && (
           <View>
             <View className='trade-status-desc-box'>
@@ -215,7 +178,7 @@ const Detail = () => {
                 updateDelivery={updateDelivery}
                 cancelDelivery={(e) => butStatus(e, 'cancelDelivery')}
                 pack={(e) => butStatus(e, 'pack')}
-                butn
+                showButton
               />
             </View>
             <View className='trade-item-wrap'>
@@ -233,6 +196,7 @@ const Detail = () => {
                 selector={list}
                 delivery={information}
                 deliveryItem={deliveryItem}
+                showSelect
               />
             </View>
           </View>

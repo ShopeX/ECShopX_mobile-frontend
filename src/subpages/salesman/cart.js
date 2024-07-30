@@ -34,16 +34,18 @@ function Cart() {
   const { validSalesmanCart = [], invalidSalesmanCart = [],customerLnformation } = useSelector((state) => state.cart)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
 
+
   useEffect(() => {
     getCartList()
   }, [])
 
   const getCartList = async () => {
     Taro.showLoading({ title: '' })
-    const { type = 'distributor' } = router?.params || {}
+    const { type = 'distributor',distributor_id = '' } = router?.params || {}
     const params = {
       shop_type: type,
       isSalesmanPage: 1,
+      distributor_id,
       ...customerLnformation
     }
     //获取购物车列表
@@ -103,8 +105,16 @@ function Cart() {
   }
 
   // 清除无效商品（失效）
-  const handleClearInvalidGoods = (val) => {
-    console.log(val, '清除无效商品（失效）')
+  const handleClearInvalidGoods = async (val) => {
+    let cart_id_list = val.map(item=>item.cart_id).join(","); 
+    let params = {
+      cart_id_list,
+      isSalesmanPage: 1,
+      ...customerLnformation
+    }
+    // await api.delivery.cartdelbat(params)
+    await getCartList()
+    console.log(val, '清除无效商品（失效）',params)
   }
 
   // 删除商品（失效和可下单）

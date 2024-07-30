@@ -20,8 +20,8 @@ const initialConfigState = {
       path: '/subpages/salesman/distribution/index'
     },
     { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' },
-    { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
-    { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
+    // { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
+    // { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
     // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
   ],
   codeStatus: false,

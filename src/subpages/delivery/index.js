@@ -194,14 +194,14 @@ const Index = () => {
                 <View className='panel-title'>配送费用（元）</View>
                 <View className='panel-num'>{info.self_delivery_fee_count}</View>
               </View>
-              <View className='panel-content-btm-item'>
+              {/* <View className='panel-content-btm-item'>
                 <View className='panel-title'>退款（元）</View>
                 <View className='panel-num'>{info.refund_fee_count}</View>
               </View>
               <View className='panel-content-btm-item'>
                 <View className='panel-title'>退款订单（笔）</View>
                 <View className='panel-num'>{info.aftersales_count}</View>
-              </View>
+              </View> */}
             </View>
           </View>
         </View>

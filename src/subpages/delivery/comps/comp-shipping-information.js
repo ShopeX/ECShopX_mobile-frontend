@@ -12,11 +12,11 @@ import './comp-shipping-information.scss'
 
 // list: [
 // {
-//   title: '快递公司',
-//   selector: [{ label: '商家自配送',  status: true }],
-//   extraText: '商家自配送',
-//   status: 'select',
-//   value: 'all'
+//   title: '快递公司',   //名称
+//   selector: [{ label: '商家自配送',  status: true }],  //显示数据
+//   extraText: '商家自配送',   //默认显示数据
+//   status: 'select',    //状态  3种  select   textarea   image
+//   value: 'all'    //给接口传的值（不涉及到逻辑，只是返回让使用者好判断）
 // },
 // {
 //   title: '配送备注',
@@ -42,10 +42,13 @@ const CompShippingInformation = (props) => {
   const [state, setState] = useImmer(initialConfigState)
   const { list } = state
 
-  const { selector, delivery, deliveryItem = () => {} } = props
+  const { selector, delivery, showSelect = false, deliveryItem = () => {} } = props
 
   useEffect(() => {
-    const newlist = JSON.parse(JSON.stringify(selector))
+    let newlist = showSelect
+      ? JSON.parse(JSON.stringify(selector)).slice(0, selector.length - 2)
+      : JSON.parse(JSON.stringify(selector))
+
     newlist.forEach((item, index) => {
       if (item.value == 'self_delivery_operator_name') {
         item.selector[0].label = delivery.selfDeliveryOperatorName
@@ -122,7 +125,7 @@ const CompShippingInformation = (props) => {
                 </AtList>
               </Picker>
             )}
-            {item.status == 'textarea' && (
+            {item.status == 'textarea' && !showSelect && (
               <View className='textarea-name'>
                 <Text className='title'>{item.title}</Text>
                 <AtTextarea
@@ -133,7 +136,7 @@ const CompShippingInformation = (props) => {
                 />
               </View>
             )}
-            {item.status == 'image' && (
+            {item.status == 'image' && !showSelect && (
               <View className='image-name'>
                 <Text className='title'>{item.title}</Text>
                 <SpUpload

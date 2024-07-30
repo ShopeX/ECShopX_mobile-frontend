@@ -39,3 +39,8 @@ export function orderDelivery(params) {
 export function orderUpdateDelivery(delivery_id,params) {
   return req.post(`/order/updateDelivery/${delivery_id}`, params)
 }
+
+//购物车批量删除
+export function cartdelbat(params) {
+  return req.delete('/cartdelbat', params)
+}

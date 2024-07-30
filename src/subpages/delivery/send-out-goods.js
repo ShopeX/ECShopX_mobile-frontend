@@ -8,6 +8,8 @@ import { pickBy, showToast, classNames } from '@/utils'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { SpPage, SpScrollView } from '@/components'
+import { DELIVERY_PERSONNEL_INFORMATION} from '@/consts'
+
 import CompShippingInformation from './comps/comp-shipping-information'
 import CompTradeItem from './comps/comp-tradeitem'
 
@@ -15,50 +17,7 @@ import './send-out-goods.scss'
 
 const initialConfigState = {
   information: {},
-  list: [
-    {
-      title: '快递公司',
-      selector: [{ label: '商家自配送', status: true }],
-      extraText: '商家自配送',
-      status: 'select',
-      value: 'all'
-    },
-    {
-      title: '配送员',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_name'
-    },
-    {
-      title: '配送员手机号',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_operator_mobile'
-    },
-    {
-      title: '配送状态',
-      selector: [{ label: '', status: true }],
-      extraText: '',
-      status: 'select',
-      value: 'self_delivery_status'
-    },
-    {
-      title: '配送备注',
-      selector: '',
-      extraText: '',
-      status: 'textarea',
-      value: 'delivery_remark'
-    },
-    {
-      title: '照片上传',
-      selector: [],
-      extraText: '',
-      status: 'image',
-      value: 'delivery_pics'
-    }
-  ]
+  list: DELIVERY_PERSONNEL_INFORMATION
 }
 
 const SendOutGoods = () => {
@@ -143,7 +102,7 @@ const SendOutGoods = () => {
         {information.orderId && (
           <View>
             <View className='trade-item-wrap'>
-              <CompTradeItem info={information} butn />
+              <CompTradeItem info={information} showButton />
             </View>
             <View className='trade-item-wrap'>
               <CompShippingInformation
