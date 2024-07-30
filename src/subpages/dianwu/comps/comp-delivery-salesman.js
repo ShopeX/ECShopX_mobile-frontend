@@ -70,7 +70,7 @@ function CompDeliverySalesman(props) {
                     className='edit'
                     onClick={() => {
                       Taro.navigateTo({
-                        url: `/subpages/dianwu/edit-deliveryman-salesman?&salesperson_id=${params.salesperson_id}`
+                        url: `/subpages/dianwu/edit-deliveryman-salesman?&salesperson_id=${item.salesperson_id}&distributor_id=${item.storeInfo.distributor_id}`
                       })
                     }}
                   >

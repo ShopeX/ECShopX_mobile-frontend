@@ -29,7 +29,7 @@ function Table(props) {
       res.push({
         title: item.title,
         width: item?.width ? item.width : '80px',
-        list: listData.map((data) => (data[item.id] ? data[item.id] : ''))
+        list: convertValuesToStrings(listData).map((data) => (data[item.id] ? data[item.id] : ''))
       })
     })
 
@@ -37,6 +37,11 @@ function Table(props) {
       draft.newList = res
     })
   }
+
+  const convertValuesToStrings = (objects) =>
+    objects.map((obj) =>
+      Object.fromEntries(Object.entries(obj).map(([key, value]) => [key, String(value)]))
+    )
 
   return (
     <View className='table'>

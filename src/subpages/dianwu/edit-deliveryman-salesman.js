@@ -7,6 +7,7 @@ import { AtInput, AtButton, AtTextarea, AtSwitch } from 'taro-ui'
 import { SpCell, SpPage, SpAddress } from '@/components'
 import api from '@/api'
 import { classNames, isWxWeb, showToast } from '@/utils'
+import { SG_USER_INFO } from '@/consts/localstorage'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
 
@@ -28,7 +29,7 @@ function EditDeliverymanSalesman(props) {
 
   useEffect(() => {
     if (params?.salesperson_id) {
-      edit(params?.salesperson_id)
+      edit(params)
     }
     setNavigationBarTitle(initNavigationBarTitle())
   }, [])
@@ -37,8 +38,15 @@ function EditDeliverymanSalesman(props) {
     return params.salesperson_id ? '编辑业务员' : '创建业务员'
   }
 
-  const edit = async (salesperson_id) => {
-    let res = await api.dianwu.salespersonadminUpdatesalesperson(salesperson_id)
+  const edit = async (val) => {
+    const { userId } = Taro.getStorageSync(SG_USER_INFO)
+    let params = {
+      page:1,
+      pageSize: 10,
+      distributor_id: val.distributor_id,
+      user_id:userId,
+    }
+    let res = await api.salesman.salespersonadminSalespersoninfo(params)
     setState((draft) => {
       draft.parent = {
         mobile: res.mobile,

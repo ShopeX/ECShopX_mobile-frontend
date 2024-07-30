@@ -161,7 +161,7 @@ function CompMenu(props) {
       {
         key: 'salesman',
         name: '业务员',
-        icon: 'm_menu_dianwu.png',
+        icon: 'salesman.png',
         link: '/subpages/salesman/index'
       }
     ])
@@ -173,7 +173,7 @@ function CompMenu(props) {
       {
         key: 'delivery',
         name: '配送员',
-        icon: 'm_menu_dianwu.png',
+        icon: 'delivery_personnel.png',
         link: '/subpages/delivery/index'
       }
     ])

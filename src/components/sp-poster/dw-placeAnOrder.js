@@ -79,111 +79,170 @@ class StoreCode {
     )
 
     // 商品列表
-    let yOffset = 80 // 初始y坐标
-    newNetailInfo.map((item, index) => {
-      const text1 = drawText(
-        {
-          x: yOffset,
-          y: yOffset + (index + 1) * 50,
-          fontSize: 30,
-          width: canvasWidth,
-          height: canvasHeight,
-          color: '#111A34',
-          text: item.itemName,
-          backgroundColor: '#858b9c',
-          borderbottom:'1px solid red'
-        },
-        drawOptions
-      )
+    // let yOffset = 80 // 初始y坐标
+    // newNetailInfo.map((item, index) => {
+    //   const text1 = drawText(
+    //     {
+    //       x: yOffset,
+    //       y: yOffset + (index + 1) * 50,
+    //       fontSize: 30,
+    //       width: canvasWidth,
+    //       height: canvasHeight,
+    //       color: '#111A34',
+    //       text: item.itemName,
+    //       backgroundColor: '#858b9c',
+    //       borderbottom:'1px solid red'
+    //     },
+    //     drawOptions
+    //   )
 
-      const text2 = drawText(
-        {
-          x: yOffset + 300,
-          y: yOffset + (index + 1) * 50, // 调整y坐标，增加间距
-          fontSize: 30,
-          w: canvasWidth,
-          color: '#111A34',
-          text: item.price+'/元',
-          backgroundColor: '#858b9c' 
-        },
-        drawOptions
-      )
+    //   const text2 = drawText(
+    //     {
+    //       x: yOffset + 300,
+    //       y: yOffset + (index + 1) * 50, // 调整y坐标，增加间距
+    //       fontSize: 30,
+    //       w: canvasWidth,
+    //       color: '#111A34',
+    //       text: item.price+'/元',
+    //       backgroundColor: '#858b9c'
+    //     },
+    //     drawOptions
+    //   )
 
-      const text3 = drawText(
-        {
-          x: yOffset + 450,
-          y: yOffset + (index + 1) * 50, // 调整y坐标，增加间距
-          fontSize: 30,
-          w: canvasWidth,
-          color: '#111A34',
-          text: item.num,
-          backgroundColor: '#858b9c' 
-        },
-        drawOptions
-      )
+    //   const text3 = drawText(
+    //     {
+    //       x: yOffset + 450,
+    //       y: yOffset + (index + 1) * 50, // 调整y坐标，增加间距
+    //       fontSize: 30,
+    //       w: canvasWidth,
+    //       color: '#111A34',
+    //       text: item.num,
+    //       backgroundColor: '#858b9c'
+    //     },
+    //     drawOptions
+    //   )
 
-      return [text1, text2, text3]
-    })
+    //   return [text1, text2, text3]
+    // })
+
+    // 支付信息
+    // drawText(
+    //   {
+    //     x: yOffset,
+    //     y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
+    //     fontSize: 30,
+    //     w: canvasWidth,
+    //     color: '#111A34',
+    //     text: '商品金额：' + totalInfo.market_fee/100,
+    //     backgroundColor: '#858b9c',
+    //     zIndex: 99
+    //   },
+    //   drawOptions
+    // )
+
+    // drawText(
+    //   {
+    //     x: yOffset + 300,
+    //     y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
+    //     fontSize: 30,
+    //     w: canvasWidth,
+    //     color: '#111A34',
+    //     text: '优惠：' + (totalInfo.market_fee-totalInfo.item_fee_new)/100,
+    //     backgroundColor: '#858b9c'
+    //   },
+    //   drawOptions
+    // )
+
+    // drawText(
+    //   {
+    //     x: yOffset,
+    //     y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
+    //     fontSize: 30,
+    //     w: canvasWidth,
+    //     color: '#111A34',
+    //     text: '运费：' + totalInfo.freight_fee/100,
+    //     backgroundColor: '#858b9c'
+    //   },
+    //   drawOptions
+    // )
+
+    // drawText(
+    //   {
+    //     x: yOffset + 300,
+    //     y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
+    //     fontSize: 30,
+    //     w: canvasWidth,
+    //     color: '#111A34',
+    //     text: '实付：' + totalInfo.total_fee/100,
+    //     backgroundColor: '#858b9c'
+    //   },
+    //   drawOptions
+    // )
 
     // 支付信息
     drawText(
       {
-        x: yOffset,
-        y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
+        x: 100,
+        y: 100, // 调整y坐标，增加间距
         fontSize: 30,
         w: canvasWidth,
-        color: '#111A34',
-        text: '商品金额：' + totalInfo.market_fee/100,
-        backgroundColor: '#858b9c',
-        zIndex: 99
+        color: '#666',
+        text: '原价：' + totalInfo.market_fee,
+      },
+      drawOptions
+    )
+    drawText(
+      {
+        x: 400,
+        y: 100, // 调整y坐标，增加间距
+        fontSize: 30,
+        w: canvasWidth,
+        color: '#666',
+        text: '总价：' + totalInfo.item_fee_new,
+      },
+      drawOptions
+    )
+    drawText(
+      {
+        x: 100,
+        y: 200, // 调整y坐标，增加间距
+        fontSize: 30,
+        w: canvasWidth,
+        color: '#666',
+        text: '运费：' + totalInfo.freight_fee,
+      },
+      drawOptions
+    )
+    drawText(
+      {
+        x: 400,
+        y: 200, // 调整y坐标，增加间距
+        fontSize: 30,
+        w: canvasWidth,
+        color: '#666',
+        text: '促销：' + totalInfo.promotion_discount,
+      },
+      drawOptions
+    )
+    drawText(
+      {
+        x: 100,
+        y: 300, // 调整y坐标，增加间距
+        fontSize: 30,
+        w: canvasWidth,
+        color: '#666',
+        text: '优惠券：' + totalInfo.coupon_discount,
       },
       drawOptions
     )
 
-    drawText(
-      {
-        x: yOffset + 300,
-        y: yOffset + (newNetailInfo.length + 1) * 50, // 调整y坐标，增加间距
-        fontSize: 30,
-        w: canvasWidth,
-        color: '#111A34',
-        text: '优惠：' + (totalInfo.market_fee-totalInfo.item_fee_new)/100,
-        backgroundColor: '#858b9c' 
-      },
-      drawOptions
-    )
 
-    drawText(
-      {
-        x: yOffset,
-        y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
-        fontSize: 30,
-        w: canvasWidth,
-        color: '#111A34',
-        text: '运费：' + totalInfo.freight_fee/100,
-        backgroundColor: '#858b9c' 
-      },
-      drawOptions
-    )
-
-    drawText(
-      {
-        x: yOffset + 300,
-        y: yOffset + (newNetailInfo.length + 2) * 50, // 调整y坐标，增加间距
-        fontSize: 30,
-        w: canvasWidth,
-        color: '#111A34',
-        text: '实付：' + totalInfo.total_fee/100,
-        backgroundColor: '#858b9c' 
-      },
-      drawOptions
-    )
     // 太阳码
     drawImage(
       {
         imgPath: this.codeImg.path,
         x: 100,
-        y: 400,
+        y: 370,
         w: 450,
         h: 450,
         sx: 0,

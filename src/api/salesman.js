@@ -72,3 +72,8 @@ export function salespersonadminUpdatesalesperson (data) {
 export function salespersonadminBrokagestaticlist(params) {
   return req.get('/salespersonadmin/brokagestaticlist', params)
 }
+
+//业务员编辑数据回显
+export function salespersonadminSalespersoninfo(params) {
+  return req.get('/salespersonadmin/salespersoninfo', params)
+}

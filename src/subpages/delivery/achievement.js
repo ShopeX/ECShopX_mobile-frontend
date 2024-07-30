@@ -16,9 +16,9 @@ const initialConfigState = {
   types: 0,
   listData: [],
   listHeader: [
-    { title: '时间', id: 'date_time' },
+    { title: '时间', width: '120px',id: 'date_time' },
     // { title: '业务员', id: 'salesName' },
-    { title: '订单额（元）', width: '120px', id: 'total_fee_count' },
+   { title: '订单额（元）', width: '120px', id: 'total_fee_count' },
     { title: '订单配送量（单）', width: '120px', id: 'order_count' },
     // { title: '新增顾客', id: 'member_num' },
     { title: '配送费（元）', width: '120px', id: 'self_delivery_fee_count' }
@@ -56,8 +56,8 @@ const Achievement = () => {
     }
     const res = await api.delivery.datacubeDeliverystaffdataDetail(params)
     res.forEach((element) => {
-      element.total_Fee = element.total_Fee / 100
-      element.total_rebate = element.total_rebate / 100
+      element.order_count = element.order_count / 100
+      element.total_fee_count = element.total_fee_count / 100
     })
     //生成对应的年月日
     let res1 = time(res)
@@ -74,9 +74,9 @@ const Achievement = () => {
         item['date_time'] = `${index + 1}月`
       } else if (parameter.datetype == 1) {
         //m  月
-        item['date_time'] = `${parameter.data}-${index + 1}`
+        item['date_time'] = `${parameter.date}-${index + 1}`
       } else {
-        item['date_time'] = parameter.data
+        item['date_time'] = parameter.date
       }
     })
     return res
@@ -155,8 +155,11 @@ const Achievement = () => {
             handleRefresh()
           }}
         /> */}
+        {
+          listData.length>0 && <SpTable listData={listData} listHeader={listHeader} />
+        }
 
-        <SpTable listData={listData} listHeader={listHeader} />
+        
       </View>
     </SpPage>
   )
