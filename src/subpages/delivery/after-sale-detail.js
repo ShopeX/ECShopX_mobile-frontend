@@ -83,7 +83,7 @@ function TradeAfterSaleDetail(props) {
     })
     if (confirm) {
       Taro.showLoading()
-      await api.aftersales.close({ aftersales_bn })
+      await api.aftersales.close({ aftersales_bn,user_id })
       showToast('撤销申请成功')
       Taro.hideLoading()
       fetch()
