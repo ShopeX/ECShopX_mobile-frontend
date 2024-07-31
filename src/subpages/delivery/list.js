@@ -155,6 +155,9 @@ function TradeList(props) {
 
   const butStatus = async (item, val) => {
     await popUpStatus(item, val)
+    setState((draft) => {
+      draft.tradeList = []
+    })
     tradeRef.current.reset()
   }
 
