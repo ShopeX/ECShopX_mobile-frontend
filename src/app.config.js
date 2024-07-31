@@ -408,6 +408,7 @@ const config = {
         'list',//订单
         'send-out-goods', // 发货
         'detail',//订单详情
+        'after-sale', // 售后
       ]
     },
     // 授权

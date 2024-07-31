@@ -33,7 +33,7 @@ export default (props) => {
       btnStatus: 'normal',
       action: ({ orderId }) => {
         Taro.navigateTo({
-          url: `/subpages/trade/after-sale?id=${orderId}`
+          url: `/subpages/delivery/after-sale?id=${orderId}`
         })
       }
     },
