@@ -12,7 +12,7 @@ const initialState = {
   selectorCheckedIndex: 0,
   deliverylnformation: '',
   refreshData: false,
-  tabList: [{ title: '我的业务员' }, { title: '业务费用排行' }],
+  tabList: [{ title: '我的业务员' }, { title: '业绩排行' }],
   searchConditionList: [
     { label: '手机号', value: 'mobile' },
     { label: '姓名', value: 'username' }

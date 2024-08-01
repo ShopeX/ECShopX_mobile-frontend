@@ -17,8 +17,8 @@ const initialState = {
     { title: '排名', id: 'ranking' },
     { title: '业务员', width: '120px', id: 'username' },
     { title: '销售额（元）', width: '120px', id: 'total_fee' },
-    { title: '订单数（单）', width: '120px', id: 'member_num' },
-    { title: '顾客数', width: '120px', id: 'order_num' },
+    { title: '订单数（单）', width: '120px', id: 'order_num' },
+    // { title: '顾客数', width: '120px', id: 'order_num' },
     { title: '销售业绩（元）', width: '120px', id: 'rebate_sum' }
   ],
   listData: []
