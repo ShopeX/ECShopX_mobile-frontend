@@ -29,15 +29,7 @@
       margin-top: 20px;
       /*  #endif  */
     }
-    &__footer {
-      .user-info__link {
-        margin-top: 20px;
-        display: inline-block;
-      }
-      .icon-qianwang-01 {
-        font-size: 28px;
-      }
-    }
+   
     .username-wrap {
     }
     .user-grade-name {
@@ -92,6 +84,18 @@
     .bd-item-value {
       color: #333;
       font-size: 36px;
+    }
+  }
+  .header-hd__footer {
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    .user-info__link {
+      margin-top: 20px;
+      display: inline-block;
+    }
+    .icon-qianwang-01 {
+      font-size: 28px;
     }
   }
   .header-ft {
