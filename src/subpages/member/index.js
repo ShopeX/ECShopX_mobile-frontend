@@ -491,8 +491,8 @@ function MemberIndex(props) {
               </SpLogin>
             </View>
           </View>
-          <View className='header-hd__footer'>
-            {config.menu.member_code && (
+          <View className='header-hd__footer1'>
+            {/* {config.menu.member_code && (
               <SpLogin onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}>
                 <Text className='iconfont icon-erweima-01'></Text>
               </SpLogin>
@@ -502,6 +502,13 @@ function MemberIndex(props) {
               onChange={handleClickLink.bind(this, '/subpages/member/user-info')}
             >
               <Text className='iconfont icon-qianwang-01'></Text>
+            </SpLogin> */}
+            <SpLogin
+              className='bd-item'
+              onChange={handleClickLink.bind(this, '/subpages/marketing/coupon')}
+            >
+              <View className='bd-item-label'>优惠券(张)</View>
+              <View className='bd-item-value'>{state.couponCount}</View>
             </SpLogin>
             <SpLogin
               className='bd-item'
