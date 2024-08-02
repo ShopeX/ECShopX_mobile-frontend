@@ -112,9 +112,8 @@ function Cart() {
       isSalesmanPage: 1,
       ...customerLnformation
     }
-    // await api.delivery.cartdelbat(params)
+    await api.delivery.cartdelbat(params)
     await getCartList()
-    console.log(val, '清除无效商品（失效）',params)
   }
 
   // 删除商品（失效和可下单）
