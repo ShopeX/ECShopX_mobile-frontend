@@ -197,6 +197,7 @@ function SpSkuSelect(props) {
     if (salesman) {
       params = {
         shop_type: 'distributor',
+        distributor_id: info.distributorId,
         ...customerLnformation
       }
     } else {
