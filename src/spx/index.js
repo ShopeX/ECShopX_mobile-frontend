@@ -1,6 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
-import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule ,formatDateTime} from '@/utils'
+import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule } from '@/utils'
 import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
 import qs from 'qs'
 import configStore from '@/store'
@@ -302,6 +302,39 @@ export class Spx {
 
   closeToast() {
     Taro.eventCenter.trigger('sp-toast:close')
+  }
+
+  // 处理价格
+  formatMoney(num) {
+    const numString = String(num)
+    const [integerPart, decimalPart] = numString.split('.')
+
+    let formattedInteger = ''
+    for (let i = integerPart.length - 1, j = 1; i >= 0; i--, j++) {
+      formattedInteger = integerPart[i] + formattedInteger
+      if (j % 3 === 0 && i !== 0) {
+        formattedInteger = ',' + formattedInteger
+      }
+    }
+
+    let result = decimalPart ? `${formattedInteger}.${decimalPart}` : formattedInteger
+    return result
+  }
+
+  //获取当前年月日
+  getNowDate(val) {
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+  
+    if (val === 'year') {
+      return year;
+    } else if (val === 'month') {
+      return `${year}-${month.toString().padStart(2, '0')}`;
+    } else {
+      return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    }
   }
 
 }
