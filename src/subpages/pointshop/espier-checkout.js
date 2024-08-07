@@ -463,7 +463,6 @@ function PointShopEspierCheckout() {
       isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use: totalInfo.point,
       pay_type: payType,
-      distributor_id: VERSION_STANDARD ? shopInfo.distributor_id : distributorInfo.distributor_id,
     }
 
     if (receiptType === 'ziti') {
