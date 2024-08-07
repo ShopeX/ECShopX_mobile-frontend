@@ -18,7 +18,8 @@ import {
   isWxWeb,
   log,
   isEmpty,
-  VERSION_PLATFORM
+  VERSION_PLATFORM,
+  VERSION_STANDARD
 } from '@/utils'
 import { useAsyncCallback, useLogin, usePayment,useLocation } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
@@ -54,7 +55,7 @@ function PointShopEspierCheckout() {
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
   const { coupon, zitiAddress } = useSelector((state) => state.cart)
-  const shop = useSelector((state) => state.shop)
+  const { shopInfo } = useSelector((state) => state.shop)
 
   const {
     detailInfo,
