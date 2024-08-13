@@ -25,17 +25,18 @@ import {
 } from '@/store/slices/cart'
 
 const initialState = {
-  hideClose: true
+  hideClose: true,
 }
 
 function CompAddCart(props) {
   const { shopCartCount } = useSelector((state) => state.cart)
   const { openRecommend, openLocation, openStore, colorPrimary } = useSelector((state) => state.sys)
-  const { open = false, onMaskCloses = {} } = props
+  const { open = false, onMaskCloses = {},parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state
   const $instance = getCurrentInstance()
   const router = $instance.router
+
 
   const allChecked =
     shopCartCount.storeDetails?.cart_total_count == shopCartCount.storeDetails?.list?.length
@@ -60,7 +61,7 @@ function CompAddCart(props) {
   }
 
   const onDelete = async () => {
-    const { id, dtid } = await entryLaunch.getRouteParams()
+    const { id, dtid } = await parameter()
     const distributor_id = getDistributorId(id || dtid)
     const res = await Taro.showModal({
       title: '提示',
@@ -90,7 +91,7 @@ function CompAddCart(props) {
   }
 
   const shopping = async () => {
-    const { id, dtid } = await entryLaunch.getRouteParams()
+    const { id, dtid } = await parameter()
     const distributor_id = getDistributorId(id || dtid)
     let params = {
       distributor_id,

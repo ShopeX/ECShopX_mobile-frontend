@@ -232,7 +232,7 @@ export default class DistributionDashboard extends Component {
               <View className='label'>推广费</View>
               <View className='mark'>{info.rebateTotal / 100}</View>
             </Navigator>
-            <Navigator
+            {/* <Navigator
               className='view-flex-item'
               hover-class='none'
               url='/marketing/pages/distribution/point-platform'
@@ -240,7 +240,7 @@ export default class DistributionDashboard extends Component {
               <View className='iconfont icon-jifen icon-fontsize' />
               <View className='label'>推广积分</View>
               <View className='mark'>{info.pointTotal || 0}</View>
-            </Navigator>
+            </Navigator> */}
           </View>
         </View>
         <View className='section'>

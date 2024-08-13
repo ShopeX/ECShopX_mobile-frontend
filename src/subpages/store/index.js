@@ -8,6 +8,7 @@ import Taro, {
 import { View, Text } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
+import { SG_ROUTER_PARAMS } from '@/consts'
 import S from '@/spx'
 import {
   SpFloatMenuItem,
@@ -79,7 +80,6 @@ function StoreIndex() {
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
   const router = $instance.router
-  console.log('routerqqqq:', router.params)
 
   const {
     wgts,
@@ -127,7 +127,8 @@ function StoreIndex() {
   }, [skuPanelOpen, open])
 
   const salesmanShare = async () => {
-    let params = await entryLaunch.getRouteParams()
+    let params = await parameter()
+    console.log(params, 'params====')
     if (params?.qr == 'Y') {
       let param = {
         promoter_user_id: params?.uid,
@@ -135,7 +136,18 @@ function StoreIndex() {
       }
       await api.salesman.salespersonBindusersalesperson(param)
       Taro.setStorageSync('salesmanUserinfo', param)
-      console.log(param,'分享成功，业务员已存储3')
+      console.log(param, '分享成功，业务员已存储3')
+    }
+  }
+
+  const parameter = async () => {
+    const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    // 检查是否返回了非空对象
+    if (storedData && typeof storedData === 'object' && Object.keys(storedData).length > 0) {
+      return storedData
+    } else {
+      const routeParams = await entryLaunch.getRouteParams()
+      return routeParams
     }
   }
 
@@ -148,8 +160,9 @@ function StoreIndex() {
   }
 
   const fetchWgts = async () => {
-    const { id, dtid } = await entryLaunch.getRouteParams()
-    const distributor_id = getDistributorId(id || dtid)
+    const { id, dtid, uid } = await parameter()
+    console.log(await parameter(), 'parameter')
+    const distributor_id = getDistributorId(id || dtid || uid)
     const { status } = await api.distribution.merchantIsvaild({
       distributor_id
     })
@@ -224,7 +237,7 @@ function StoreIndex() {
     Taro.showLoading({
       title: '加载中'
     })
-    const { dtid } = await entryLaunch.getRouteParams()
+    const { dtid } = await parameter()
     const itemDetail = await api.item.detail(id, {
       showError: false,
       distributor_id: dtid
@@ -244,7 +257,7 @@ function StoreIndex() {
   }
 
   const getAppShareInfo = async () => {
-    const data = await entryLaunch.getRouteParams()
+    const data = await parameter()
     const dtid = data.id || data.dtid
     const query = {
       dtid

@@ -25,9 +25,9 @@ function SpGoodsItem(props) {
   } = item_page
   const {
     onClick,
-    onChange = () => { },
-    onAddToCart = () => { },
-    onStoreClick = () => { },
+    onChange = () => {},
+    onAddToCart = () => {},
+    onStoreClick = () => {},
     showMarketPrice = true,
     showFav = false,
     showAddCart = false,
@@ -43,7 +43,8 @@ function SpGoodsItem(props) {
     mode = 'widthFix'
   } = props
 
-  const handleFavClick = async () => {
+  const handleFavClick = async (e) => {
+    e.stopPropagation()
     const { itemId, is_fav } = info
     const fav = favs.findIndex((item) => item.item_id == itemId) > -1
     if (!fav) {
@@ -52,11 +53,14 @@ function SpGoodsItem(props) {
       await dispatch(deleteUserFav(itemId))
     }
     await dispatch(fetchUserFavs())
-    showToast(fav ? '已移出收藏' : '已加入收藏')
+    console.log('fav', fav)
+    if (S.getAuthToken()) {
+      showToast(fav ? '已移出收藏' : '已加入收藏')
+    }
   }
 
-
-  const onChangeToolBar = () => {
+  const onChangeToolBar = (e) => {
+    e.stopPropagation()
     onAddToCart(info)
   }
 
@@ -82,7 +86,9 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${!!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'}?${qs.stringify(query)}`
+    const url = `${
+      !!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
+    }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -164,8 +170,7 @@ function SpGoodsItem(props) {
 
                   {info.vipPrice > 0 &&
                     info.vipPrice < info.memberPrice &&
-                    (!info.svipPrice ||
-                      info.vipPrice > info.svipPrice) &&
+                    (!info.svipPrice || info.vipPrice > info.svipPrice) &&
                     enSvipPrice && (
                       <View className='vip-price'>
                         <SpPrice value={info.vipPrice} />
@@ -187,22 +192,23 @@ function SpGoodsItem(props) {
             </View>
           )}
 
-
           <View className='bd-block-rg'>
             {showFav && !VERSION_IN_PURCHASE && (
-              <SpLogin onChange={handleFavClick}>
+              <View onClick={(e) => handleFavClick(e)}>
                 <Text
                   className={classNames(
                     'iconfont',
                     isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
                   )}
                 />
-              </SpLogin>
+              </View>
             )}
 
-            {showAddCart && <SpLogin onChange={onChangeToolBar}><Text
-              className='iconfont icon-gouwuche2'
-            /></SpLogin>}
+            {showAddCart && (
+              <View onClick={(e) => onChangeToolBar(e)}>
+                <Text className='iconfont icon-gouwuche2' />
+              </View>
+            )}
           </View>
         </View>
 

@@ -161,29 +161,27 @@ export default class DistributionShopCategory extends Component {
   //   })
   //  // console.warn(categoryId)
   // }
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
-    console.log(info)
 
-    if(isAlipay){
+    if (isAlipay) {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           const info = Taro.getStorageSync('shareData')
-          console.log('shareData', info)
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
           })
-        },10)
-      });
+        }, 10)
+      })
     }
 
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
     }
   }
 
@@ -356,7 +354,7 @@ export default class DistributionShopCategory extends Component {
                               </View>
                               <Button
                                 className='itemShareBtn goods-item__share-btn'
-                                dataInfo={item}
+                                data-info={item}
                                 openType='share'
                                 size='small'
                                 onClick={()=>Taro.setStorageSync('shareData',item)}

@@ -18,7 +18,8 @@ import {
   isWxWeb,
   log,
   isEmpty,
-  VERSION_PLATFORM
+  VERSION_PLATFORM,
+  VERSION_STANDARD
 } from '@/utils'
 import { useAsyncCallback, useLogin, usePayment,useLocation } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
@@ -54,7 +55,7 @@ function PointShopEspierCheckout() {
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
   const { coupon, zitiAddress } = useSelector((state) => state.cart)
-  const shop = useSelector((state) => state.shop)
+  const { shopInfo } = useSelector((state) => state.shop)
 
   const {
     detailInfo,
@@ -72,7 +73,8 @@ function PointShopEspierCheckout() {
     point_use,
     isNeedPackage,
     isPackageOpend,
-    openCashier
+    openCashier,
+    pointInfo
   } = state
 
   const {
@@ -118,7 +120,7 @@ function PointShopEspierCheckout() {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [payType, address, zitiAddress, receiptType])
+  }, [payType, point_use, address, zitiAddress, receiptType])
 
   useEffect(() => {
     if (isPackageOpend || isPointOpenModal) {
@@ -424,6 +426,7 @@ function PointShopEspierCheckout() {
       draft.totalInfo = total_info
       draft.paramsInfo = { ...paramsInfo, ...cus_parmas }
       draft.pointInfo = point_info
+      draft.point_use = point_use
     })
     // calc.current = false
     if (extraTips) {
@@ -622,7 +625,8 @@ function PointShopEspierCheckout() {
 
       <SpCashier
         isOpened={openCashier}
-        paymentAmount={totalInfo.freight_fee}
+        // paymentAmount={totalInfo.freight_fee}
+        userPoint={pointInfo?.point_use}
         value={payChannel}
         onClose={() => {
           setState((draft) => {
