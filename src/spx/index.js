@@ -2,6 +2,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule } from '@/utils'
 import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
+import dayjs from 'dayjs'
 import qs from 'qs'
 import configStore from '@/store'
 
@@ -323,20 +324,17 @@ export class Spx {
 
   //获取当前年月日
   getNowDate(val) {
-    const date = new Date();
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-  
+    const now = dayjs() // 获取当前时间
+    const year = now.year() // 获取年份
+
     if (val === 'year') {
-      return year;
+      return year.toString()
     } else if (val === 'month') {
-      return `${year}-${month.toString().padStart(2, '0')}`;
+      return now.format('YYYY-MM')
     } else {
-      return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+      return now.format('YYYY-MM-DD')
     }
   }
-
 }
 
 export default new Spx()
