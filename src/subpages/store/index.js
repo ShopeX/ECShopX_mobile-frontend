@@ -141,14 +141,15 @@ function StoreIndex() {
   }
 
   const parameter = async () => {
-    const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    // const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    // console.log(storedData, 'storedData')
     // 检查是否返回了非空对象
-    if (storedData && typeof storedData === 'object' && Object.keys(storedData).length > 0) {
-      return storedData
-    } else {
+    // if (storedData && typeof storedData === 'object' && Object.keys(storedData).length > 0) {
+    //   return storedData
+    // } else {
       const routeParams = await entryLaunch.getRouteParams()
       return routeParams
-    }
+    // }
   }
 
   const init = async () => {

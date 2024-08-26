@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter} from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem } from '@/components'
 import api from '@/api'
@@ -19,8 +19,7 @@ const initialState = {
   ],
   status: '0',
   tradeList: [],
-  refresherTriggered: false,
-
+  refresherTriggered: false
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
@@ -54,7 +53,7 @@ function TradeList(props) {
   }, [status])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { is_rate } = tradeStatus.find(item => item.value == status)
+    const { is_rate } = tradeStatus.find((item) => item.value == status)
     const params = {
       page: pageIndex,
       pageSize,
@@ -91,18 +90,26 @@ function TradeList(props) {
     tradeRef.current.reset()
   }
 
-
   return (
     <SpPage scrollToTopBtn className='page-trade-list'>
       <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
-      <ScrollView className="list-scroll-container" scrollY refresherEnabled
+      <ScrollView
+        className='list-scroll-container'
+        scrollY
+        refresherEnabled
         refresherBackground='#f5f5f7'
         refresherTriggered={refresherTriggered}
         onRefresherRefresh={onRefresherRefresh}
       >
-        <SpScrollView className='trade-list-scroll' auto={false} ref={tradeRef} fetch={fetch} emptyMsg="没有查询到订单">
-          {tradeList.map((item) => (
-            <View className='trade-item-wrap'>
+        <SpScrollView
+          className='trade-list-scroll'
+          auto={false}
+          ref={tradeRef}
+          fetch={fetch}
+          emptyMsg='没有查询到订单'
+        >
+          {tradeList.map((item, index) => (
+            <View className='trade-item-wrap' key={index}>
               <CompTradeItem info={item} />
             </View>
           ))}
