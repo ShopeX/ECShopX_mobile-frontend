@@ -6,7 +6,7 @@ import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import { View } from '@tarojs/components'
-import { SpPage, SpSearch } from '@/components'
+import { SpPage, SpSearch,SpTabbar } from '@/components'
 import { getDistributorId, log, entryLaunch } from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 import { useNavigation } from '@/hooks'
@@ -17,20 +17,22 @@ import './custom-page.scss'
 const initialState = {
   wgts: [],
   loading: true,
-  shareInfo: null
+  shareInfo: null,
+  shareInfo: null,
+  isShowTabBar:false
 }
 function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { setNavigationBarTitle } = useNavigation()
-  const { wgts, loading, shareInfo } = state
+  const { wgts, loading, shareInfo,isShowTabBar } = state
 
   useEffect(() => {
     fetch()
   }, [])
 
   const fetch = async () => {
-    const { id } = await entryLaunch.getRouteParams($instance.router.params)
+    const { id,isTabBar } = await entryLaunch.getRouteParams($instance.router.params)
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -43,6 +45,7 @@ function CustomPage(props) {
       draft.wgts = config
       draft.loading = false
       draft.shareInfo = share
+      draft.isShowTabBar = isTabBar
     })
     // setNavigationBarTitle(share?.page_name)
     // Taro.setNavigationBarTitle({
@@ -96,6 +99,7 @@ function CustomPage(props) {
       loading={loading}
       title={shareInfo?.page_name}
       fixedTopContainer={fixedTop && <SpSearch info={searchComp} />}
+      renderFooter={isShowTabBar && <SpTabbar />}
       >
       <HomeWgts wgts={filterWgts} />
     </SpPage>

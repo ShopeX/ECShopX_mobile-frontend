@@ -164,6 +164,7 @@ export const TABBAR_PATH = {
   liveroom: '/pages/liveroom/index',
   allGoods: '/pages/item/list?isTabBar=true',
   ugc: '/subpages/mdugc/index',
+  customPage:'/pages/custom/custom-page'
 }
 
 export const TABBAR_ICON = {
