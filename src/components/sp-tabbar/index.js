@@ -36,22 +36,34 @@ function SpTabbar(props) {
   if (pages.length > 0) {
     let currentPage = pages[pages.length - 1].route
     currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
+    const { params:{id:customPageId} } = getCurrentRoute()
     currentIndex = tabList?.findIndex((tab) => {
-      if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
+      if(currentPage == '/pages/custom/custom-page'){
         return (
-          routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
-          currentPage
+          tab.customPageId && (customPageId == tab.customPageId)
         )
-      } else {
-        return TABBAR_PATH[tab.name] == currentPage
-      }
+       }else{
+        if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
+          return(
+            routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
+            currentPage
+          )
+        }else{
+          return TABBAR_PATH[tab.name] == currentPage
+        }
+
+       }
+
     })
   }
 
   const handleTabbarClick = (index) => {
     const tabItem = tabList[index]
-    const { path } = getCurrentRoute()
-    if (path != TABBAR_PATH[tabItem.name]) {
+    const { path,params:{id:customPageId} } = getCurrentRoute()
+
+    // 如果是跳转自定义页面则判断id是否一致
+    let otherCustomPage = ((path == '/pages/custom/custom-page') && (path == TABBAR_PATH[tabItem.name]) && (tabItem.customPageId != customPageId) )
+    if (path != TABBAR_PATH[tabItem.name] || otherCustomPage ) {
       if(TABBAR_PATH[tabItem.name]!==navipage){
         let url = tabItem.name == 'customPage' ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}` :  TABBAR_PATH[tabItem.name]
         Taro.redirectTo({ url })
