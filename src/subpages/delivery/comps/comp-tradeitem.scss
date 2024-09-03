@@ -1,0 +1,142 @@
+.comp-tradeitem {
+  background: #fff;
+  box-shadow: 0px 2px 10px 0px #eae7e0;
+  padding: 24px 16px;
+
+  .trade-item-hd {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .trade-no {
+    font-size: 24px;
+    color: #333;
+    margin-top: 24px;
+  }
+
+  .trade-time {
+    font-size: 24px;
+    color: #999;
+  }
+
+  .trade-state {
+    color: var(--color-primary);
+  }
+
+  .trade-item-bd {
+    margin-top: 30px;
+
+    .sp-trade-item {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+  }
+
+  .trade-address {
+    background-color: #f8f8f8;
+    padding: 24px 20px;
+    color: #222;
+    font-size: 24px;
+    border-radius: 8px;
+    .distance {
+      font-size: 22px;
+      color: #666666;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .name {
+      font-weight: 600;
+      margin-bottom: 16px;
+      text:nth-child(1) {
+        margin-right: 10px;
+      }
+    }
+  }
+
+  .trade-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f8f8;
+    height: 80px;
+    padding: 0 20px;
+    margin-top: 30px;
+
+    .delivery {
+      color: var(--color-primary);
+      font-size: 24px;
+      text:nth-child(1) {
+        margin-right: 20px;
+      }
+      .sp-price__symbol,.sp-price__int,.sp-price__decimal{
+        color: var(--color-primary);
+        margin-right: 2px !important;
+      }
+    }
+
+    .num {
+      font-size: 24px;
+      color: #666666;
+      margin-right: 20px;
+    }
+
+    .label {
+      font-size: 24px;
+      color: #333;
+      margin-right: 20px;
+    }
+
+    .point-value {
+      font-family: PingFangSC-Regular, PingFang SC;
+      color: #222;
+      position: relative;
+      top: 2px;
+    }
+  }
+
+  .shop-info {
+    display: flex;
+    align-items: flex-start;
+
+    .sp-image {
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .shop-name {
+      font-size: 30px;
+      color: #111;
+      font-weight: bold;
+      margin-left: 24px;
+      display: flex;
+      align-items: center;
+
+      .icon-qianwang-01 {
+        font-size: 20px;
+        color: #222;
+        margin-left: 6px;
+      }
+    }
+  }
+
+  .trade-item-ft {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 30px;
+
+    .at-button {
+      height: 56px;
+      line-height: 54px;
+      margin: 0 0 0 16px;
+      padding: 0 24px;
+    }
+
+    .btn-active {
+      color: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+  }
+}

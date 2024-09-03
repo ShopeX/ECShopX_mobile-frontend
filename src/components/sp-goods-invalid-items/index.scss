@@ -1,0 +1,81 @@
+.comp-goodsinvaliditems-invalid {
+    margin: 46px 24px;
+    &-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: PingFangSC, PingFang SC;
+      font-weight: 600;
+      font-size: 28px;
+      color: #111a34;
+      line-height: 28px;
+      margin-bottom: 24px;
+      view:nth-child(2) {
+        font-weight: 400;
+        font-size: 24px;
+        color: var(--color-dianwu-primary) !important;
+        line-height: 33px;
+      }
+    }
+    .comp-goodsinvaliditems-item {
+      border-radius: 20px;
+      background-color: #fff;
+      padding: 36px 24px;
+  
+      &-del {
+        display: flex;
+        margin-bottom: 48px;
+        .icon-shanchu1 {
+          display: flex;
+          align-items: center;
+          font-size: 30px;
+          color: #666666;
+          margin-right: 20px;
+        }
+  
+        &:last-child {
+          margin-bottom: 0px;
+        }
+        &-info {
+          flex: 1;
+          margin-left: 22px;
+          .name {
+            display: flex;
+            justify-content: space-between;
+            font-weight: 400;
+            font-size: 28px;
+            color: #111a34;
+            line-height: 28px;
+            text-align: left;
+            font-style: normal;
+            .names{
+              width:400px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .icon-shanchu-01 {
+              font-size: 30px;
+            }
+          }
+          .reason {
+            margin-top: 60px;
+            font-weight: 400;
+            font-size: 24px;
+            color: #eb4045;
+            line-height: 28px;
+          }
+        }
+      }
+    }
+  }
+  .pimage {
+    position: absolute;
+    left: 97px;
+  }
+  .at-button--primary {
+    background: var(--color-dianwu-primary) !important;
+    border-color: var(--color-dianwu-primary) !important;
+    color: #fff !important;
+  }
+  

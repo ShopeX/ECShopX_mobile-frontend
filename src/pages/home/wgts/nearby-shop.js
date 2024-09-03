@@ -216,7 +216,9 @@ function WgtNearbyShop(props) {
                   <View className='shop-del'>
                     <View className='shop-names' onClick={() => handleClickItem(item)}>
                       <View className='name'>{item.name}</View>
-                      {item?.selfDeliveryRule?.is_open == 'true' && item?.is_self_delivery && <View className='deliver'>商家自配</View>}
+                      {item?.selfDeliveryRule?.is_open && item?.is_self_delivery && (
+                        <View className='deliver'>商家自配</View>
+                      )}
                     </View>
                     <View className='score' onClick={() => handleClickItem(item)}>
                       <View className='sales'>
@@ -242,9 +244,7 @@ function WgtNearbyShop(props) {
                             ? `满¥${item.selfDeliveryRule.rule[1].full}元免运费`
                             : `满¥${item.selfDeliveryRule.rule[1].full}元运费${item.selfDeliveryRule.rule[1].freight_fee}元`}
                         </Text>
-                        <Text class='freight-money'>
-                          ¥{item.selfDeliveryRule.freight_fee}
-                        </Text>
+                        <Text class='freight-money'>¥{item.selfDeliveryRule.freight_fee}</Text>
                       </View>
                     )}
                     {base.show_coupon && (
@@ -309,20 +309,22 @@ function WgtNearbyShop(props) {
             )
           })}
 
-          <View
-            className='ac_btn'
-            onClick={() => {
-              Taro.navigateTo({
-                url: '/subpages/ecshopx/shop-list'
-              })
-            }}
-          >
-            <View className='more'>
-              <Text className='iconfont icon-spiritling-dingwei'></Text>
-              更多附近商家
+          {base.show_nearby_merchants && (
+            <View
+              className='ac_btn'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: '/subpages/ecshopx/shop-list'
+                })
+              }}
+            >
+              <View className='more'>
+                <Text className='iconfont icon-spiritling-dingwei'></Text>
+                更多附近商家
+              </View>
+              <Text className='iconfont icon-qianwang-01'></Text>
             </View>
-            <Text className='iconfont icon-qianwang-01'></Text>
-          </View>
+          )}
         </View>
       )
     )
@@ -436,7 +438,6 @@ function WgtNearbyShop(props) {
           ))}
         </ScrollView>
 
-
         {listTypes.length && listTypes[activeIndex].types == 'business'
           ? storeList()
           : storeProducts()}
@@ -444,6 +445,7 @@ function WgtNearbyShop(props) {
         {indicator && <AtActivityIndicator size={32} content='正在拼命加载数据...' />}
 
         {noData && (
+          // {base.show_nearby_merchants && (
           <View className='empty-con'>
             <SpImage src='empty_data.png' width={292} height={224} />
             <View className='empty-tip'>

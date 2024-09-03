@@ -37,6 +37,7 @@ import {
 import S from '@/spx'
 import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
+import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
@@ -85,7 +86,8 @@ const initialConfigState = {
     // defaultImg: null,
     vipImg: null
   },
-  purchaseRes: {}
+  purchaseRes: {},
+  
 }
 
 const initialState = {
@@ -102,7 +104,8 @@ const initialState = {
   afterSalesNum: 0,
   zitiNum: 0,
   deposit: 0,
-  salesPersonList: {}
+  salesPersonList: {},
+  deliveryStaffList:[] //配送员
 }
 
 function MemberIndex(props) {
@@ -287,17 +290,21 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let memberRes = await api.member.memberInfo()
+    let deliveryPersonnel = memberRes?.deliveryStaffList?.list. map((item) => (item.operator_id)) ?? []
     setConfig((draft) => {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,
         vipImg: memberRes?.vipgrade?.background_pic_url,
-        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
+        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url,
       }
     })
     setState((draft) => {
       draft.deposit = memberRes.deposit / 100
       draft.salesPersonList = memberRes?.salesPersonList
+      draft.deliveryStaffList = memberRes?.deliveryStaffList
     })
+
+    dispatch(updateDeliveryPersonnel({self_delivery_operator_id:deliveryPersonnel,distributor_id:''})) //存配送员信息
     dispatch(updateUserInfo(memberRes))
   }
 
@@ -625,14 +632,14 @@ function MemberIndex(props) {
               </SpLogin>
             </View>
           </CompPanel>
-
           <CompPanel>
             <CompMenu
               accessMenu={{
                 ...config.menu,
                 purchase: config.purchaseRes.is_open,
                 popularize: userInfo ? userInfo.popularize : false,
-                salesPersonList: state.salesPersonList
+                salesPersonList: state.salesPersonList,
+                deliveryStaffList:state.deliveryStaffList
               }}
               isPromoter={userInfo ? userInfo.isPromoter : false}
               onLink={handleClickService}

@@ -12,12 +12,11 @@ import {
   SpInputNumber,
   SpGoodsPrice
 } from '@/components'
-import { addCart, updateCount } from '@/store/slices/cart'
+import { addCart, updateCount, updateSalesmanCount,updateShopCartCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, showToast,entryLaunch ,getDistributorId} from '@/utils'
-import { updateShopCartCount } from '@/store/slices/cart'
+import { classNames, showToast, entryLaunch, getDistributorId } from '@/utils'
 import './index.scss'
 
 // 数据类型
@@ -43,15 +42,17 @@ function SpSkuSelect(props) {
   const {
     info,
     open = false,
-    onClose = () => { },
-    onChange = () => { },
+    onClose = () => {},
+    onChange = () => {},
     type,
-    hideInputNumber = false
+    hideInputNumber = false,
+    salesman = false
   } = props
   console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, curImage, disabledSet, curItem, skuText, num, loading } = state
+  const { customerLnformation } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
@@ -78,7 +79,9 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale'].includes(item.approveStatus))
+    const defaultSpecItem = specItems.find(
+      (item) => item.store > 0 && ['onsale'].includes(item.approveStatus)
+    )
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -100,7 +103,11 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale'].includes(skuDictRef.current[key].approveStatus)
+        return (
+          key.match(reg) &&
+          skuDictRef.current[key].store > 0 &&
+          ['onsale'].includes(skuDictRef.current[key].approveStatus)
+        )
       })
     }
 
@@ -157,7 +164,7 @@ function SpSkuSelect(props) {
   const getImgs = () => {
     let img = info.imgs[0]
     if (curItem) {
-      const { specImgs } = curItem.specItem.find(item => item.specImgs.length > 0) || {}
+      const { specImgs } = curItem.specItem.find((item) => item.specImgs.length > 0) || {}
       if (specImgs && specImgs.length > 0) {
         img = specImgs[0]
       }
@@ -169,7 +176,7 @@ function SpSkuSelect(props) {
   const handlePreviewImage = () => {
     let imgUrls = info.imgs
     if (curItem) {
-      const { specImgs } = curItem.specItem.find(item => item.specImgs.length > 0) || {}
+      const { specImgs } = curItem.specItem.find((item) => item.specImgs.length > 0) || {}
       if (specImgs && specImgs.length > 0) {
         imgUrls = specImgs
       }
@@ -192,18 +199,35 @@ function SpSkuSelect(props) {
       return
     }
     Taro.showLoading({ title: '' })
+
+    const { userId } = Taro.getStorageSync('userinfo')
+    let params = {}
+    if (salesman) {
+      params = {
+        shop_type: 'distributor',
+        distributor_id: info.distributorId,
+        ...customerLnformation
+      }
+    } else {
+      params = {
+        shop_type: 'distributor'
+      }
+    }
     await dispatch(
       addCart({
         item_id: curItem ? curItem.itemId : info.itemId,
         num,
         distributor_id: info.distributorId,
-        shop_type: 'distributor'
+        ...params
       })
     )
     onClose()
-    await shopping()
-    dispatch(updateCount({ shop_type: 'distributor' }))
-
+    if (salesman) {
+      await shoppings()
+    } else {
+      await shopping()
+    }
+    dispatch(updateSalesmanCount(params))
     Taro.hideLoading()
     // showToast('成功加入购物车')
   }
@@ -211,19 +235,39 @@ function SpSkuSelect(props) {
   const shopping = async () => {
     const { id, dtid } = await entryLaunch.getRouteParams()
     const distributor_id = getDistributorId(id || dtid)
-    let params ={
+    let params = {
       distributor_id,
       shop_type: 'distributor'
     }
-    const {valid_cart} = await api.cart.get(params)
-      let shopCats= {
-        shop_id:valid_cart[0]?.shop_id || "",  //下单
-        cart_total_num:valid_cart[0]?.cart_total_num || "",   //数量
-        total_fee:valid_cart[0]?.total_fee || "",   //实付金额
-        discount_fee:valid_cart[0]?.discount_fee || "",   //优惠金额
-        storeDetails:valid_cart[0] || {}
-      }
-      dispatch(updateShopCartCount(shopCats))
+    const { valid_cart } = await api.cart.get(params)
+    let shopCats = {
+      shop_id: valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart[0] || {}
+    }
+    dispatch(updateShopCartCount(shopCats))
+  }
+
+  const shoppings = async () => {
+    const res = Taro.getStorageSync('distributorSalesman')
+    console.log(res,'distributorSalesman')
+
+    let params = {
+      distributor_id:res.distributor_id,
+      shop_type: 'distributor',
+      ...customerLnformation
+    }
+    const { valid_cart } = await api.cart.get(params)
+    let shopCats = {
+      shop_id: valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart[0] || {}
+    }
+    dispatch(updateShopSalesmanCartCount(shopCats))
   }
 
   const fastBuy = async () => {
@@ -236,12 +280,17 @@ function SpSkuSelect(props) {
     onClose()
     const { distributorId, activityType, activityInfo } = info
     const itemId = curItem ? curItem.itemId : info.itemId
-    await api.cart.fastBuy({
-      item_id: curItem ? curItem.itemId : info.itemId,
-      num,
-      distributor_id: distributorId
-    }, !!info.point) // info.point 有积分值时是积分商品
-    let url = !!info.point ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0' : `/pages/cart/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
+    await api.cart.fastBuy(
+      {
+        item_id: curItem ? curItem.itemId : info.itemId,
+        num,
+        distributor_id: distributorId
+      },
+      !!info.point
+    ) // info.point 有积分值时是积分商品
+    let url = !!info.point
+      ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0'
+      : `/pages/cart/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
     if (activityType == 'seckill' || activityType === 'limited_time_sale') {
       const { seckill_id } = activityInfo
       const { ticket } = await api.item.seckillCheck({
@@ -328,14 +377,11 @@ function SpSkuSelect(props) {
       limitTxt = `（限购${purlimitByFastbuy}件）`
     }
 
-
     if (limitNum) {
       max = parseInt(limitNum)
     } else {
       max = parseInt(curItem ? curItem.store : info.store)
     }
-
-
 
     return (
       <View className='buy-count'>
@@ -380,7 +426,9 @@ function SpSkuSelect(props) {
           </View> */}
           <SpGoodsPrice info={curItem || info} />
           <View className='goods-sku-txt'>{skuText}</View>
-          {info.store_setting && <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>}
+          {info.store_setting && (
+            <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>
+          )}
         </View>
       </View>
       <View className='sku-list'>
@@ -399,7 +447,7 @@ function SpSkuSelect(props) {
                   key={`sku-values-item__${idx}`}
                 >
                   {spec.specImgs.length > 0 && (
-                    <SpImage src={spec.specImgs[0]} width={260} height={260} mode="aspectFit" />
+                    <SpImage src={spec.specImgs[0]} width={260} height={260} mode='aspectFit' />
                   )}
                   <View className='spec-name'>{spec.specName}</View>
                 </View>

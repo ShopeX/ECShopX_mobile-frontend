@@ -8,7 +8,7 @@ import { AtButton, AtCountdown } from 'taro-ui'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpPrice, SpTradeItem, SpImage, SpCashier } from '@/components'
 import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS } from '@/consts'
-import { pickBy, copyText, showToast, classNames, isArray, VERSION_STANDARD } from '@/utils'
+import { pickBy, copyText, showToast, classNames, isArray, VERSION_STANDARD,entryLaunch } from '@/utils'
 import { usePayment } from '@/hooks'
 import S from '@/spx'
 import tradeHooks from './hooks'
@@ -60,7 +60,7 @@ function TradeDetail(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = await entryLaunch.getRouteParams()
     const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态

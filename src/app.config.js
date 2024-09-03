@@ -124,7 +124,9 @@ const config = {
         'trade/sale-after', // 订单售后
         'trade/result', // 订单操作结果
         'delivery-personnel', // 配送员
-        'edit-deliveryman' // 配送员创建
+        'edit-deliveryman', // 配送员创建
+        'salesman-personnel', // 业务员
+        'edit-deliveryman-salesman', // 业务员创建
       ]
     },
     // 积分商城
@@ -355,6 +357,9 @@ const config = {
         'card',//名片
         'cart',//购物车
         'my',//我的
+        'list',//订单
+        'detail',//订单详情
+        'cancel',//取消订单
         'selectCustomer',//选客户
         'selectStore',//选店铺
         'selectShop',//选店铺
@@ -383,6 +388,28 @@ const config = {
         'distribution/shop-achievement', // 小店业绩页面
         'distribution/point-platform',
         'distribution/certification',//实名认证
+        'delivery-info',//查看物流
+        'espier-checkout', // 结算页面
+        'address', // 收货地址
+        'edit-address',//添加收获地址
+        'coupon-picker', //优惠券选择器
+        'ziti-picker', //自提选择器
+      ]
+    },
+    //配送员
+    {
+      root: 'subpages/delivery',
+      pages: [
+        'index', //首页
+        'achievement',//业绩
+        'my',//我的
+        'after-sale-list', // 售后列表
+        'selectShop', // 店铺
+        'list',//订单
+        'send-out-goods', // 发货
+        'detail',//订单详情
+        'after-sale', // 售后
+        'after-sale-detail', // 售后详情
       ]
     },
     // 授权

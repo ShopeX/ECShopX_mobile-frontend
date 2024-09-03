@@ -1,0 +1,41 @@
+.comp-trade-cancel {
+  .reason-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 6px;
+
+    .reason-item {
+      height: 60px;
+      line-height: 60px;
+      font-size: 24px;
+      font-size: #222;
+      background: #F5F5F5;
+      border-radius: 16px;
+      margin-right: 16px;
+      padding: 0 24px;
+
+      &.active {
+        background: rgba(var(--color-rgb), 0.2);
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  .reason-other {
+    margin-top: 30px;
+
+    .at-textarea {
+      border: 1PX solid #f5f5f5;
+
+      .at-textarea__textarea {
+        font-size: 26px;
+        color: #666;
+
+      }
+
+      &.disabled {
+        background-color: #f5f5f5;
+      }
+    }
+  }
+}

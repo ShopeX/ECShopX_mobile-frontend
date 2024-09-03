@@ -13,14 +13,15 @@ import GuideGoodsDetailPosterAli from './dw-guidegoodsdetail.alipay'
 import GuideCheckoutWx from './dw-guidecheckout'
 import GuideCheckoutAli from './dw-guidecheckout.alipay'
 import StoreCode from './dw-storeCode'
+import PlaceAnOrder from './dw-placeAnOrder'
 
 
 import './index.scss'
 
-const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes] = isAlipay ? [
-  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode
+const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes,PlaceAnOrders] = isAlipay ? [
+  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode,PlaceAnOrder
 ] : [
-  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode
+  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode,PlaceAnOrder
 ]
 
 const initialState = {
@@ -39,6 +40,8 @@ function SpPoster(props) {
   const [state, setState] = useAsyncCallback(initialState)
 
   const { poster, pxWidth, pxHeight, eleId, ctx } = state
+
+  console.log('info--------',info)
 
   useEffect(() => {
     handleCreatePoster()
@@ -107,6 +110,15 @@ function SpPoster(props) {
         break
         case 'storeCode':
           canvasObj = new StoreCodes({
+            ctx,
+            info,
+            userInfo: guideInfo,
+            toPx,
+            toRpx
+          })
+          break
+        case 'placeAnOrder':
+          canvasObj = new PlaceAnOrders({
             ctx,
             info,
             userInfo: guideInfo,

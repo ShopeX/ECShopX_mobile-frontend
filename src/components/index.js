@@ -97,7 +97,11 @@ import SpCategorySearch from './sp-category-search'
 import SpTimePicker from './sp-time-picker'
 import SpTime from './sp-time'
 import SpNavFilter from './sp-nav-filter'
+import SpGoodsInvalidItems from './sp-goods-invalid-items'
+import SpGoodsItems from './sp-goods-items'
 import SpTimeLineItem from './sp-time-line-item'
+import SpCustomPicker from './sp-custom-picker'
+import SpTable from './sp-table'
 
 
 
@@ -203,5 +207,9 @@ export {
   SpTimePicker,
   SpTime,
   SpNavFilter,
-  SpTimeLineItem
+  SpGoodsInvalidItems,
+  SpGoodsItems,
+  SpTimeLineItem,
+  SpCustomPicker,
+  SpTable
 }

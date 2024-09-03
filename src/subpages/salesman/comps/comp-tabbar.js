@@ -1,9 +1,10 @@
 import Taro from '@tarojs/taro'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId,isWeb } from '@/utils'
+import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
+import { updateCartSalesman,updateSalesmanCount } from '@/store/slices/cart'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -15,7 +16,8 @@ const TABBAR_LIST = [
   // {
   //   title: '购物车',
   //   iconType: 'dianpushangpinlist',
-  //   url: '/subpages/salesman/cart'
+  //   url: '/subpages/salesman/cart',
+  //   text: true
   // },
   {
     title: '我的信息',
@@ -25,7 +27,18 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
+  const dispatch = useDispatch()
   const { colorPrimary } = useSelector((state) => state.sys)
+  const { cartSalesman = 0 } = useSelector((state) => state.cart)
+
+  useEffect(() => {
+    // 初始化购物车数量
+    // cartSalesmanNumber()
+  },[])
+
+  const cartSalesmanNumber = async () => {
+    await dispatch(updateSalesmanCount({ shop_type: 'distributor',isSalesmanPage: 1 }))
+  }
 
   const tabList = TABBAR_LIST.map((item) => {
     return {
@@ -34,7 +47,8 @@ function CompTabbar(props) {
       iconType: item.iconType,
       selectedIconType: `${item.iconType}-fill`,
       iconPrefixClass: 'iconfont icon',
-      url: item.url
+      url: item.url,
+      text: item?.text ? (cartSalesman > 0 ? cartSalesman : null) : null
     }
   })
 
@@ -61,11 +75,9 @@ function CompTabbar(props) {
   return (
     <AtTabBar
       fixed
-      classNames={classNames(
-        {
-          'comp-tabbar': true
-        }
-      )}
+      classNames={classNames({
+        'comp-tabbar': true
+      })}
       iconSize='20'
       selectedColor={'#4980FF'}
       tabList={tabList}

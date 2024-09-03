@@ -41,8 +41,6 @@ function SpOrderItem(props) {
 
   const img = info.pic_path ? info.pic_path : Array.isArray(info.pics) ? info.pics[0] : info.pics
 
-  console.log('order item info:', info)
-
   return (
     <View className='sp-order-item' onClick={onClick}>
       <View className='sp-order-item__hd'>

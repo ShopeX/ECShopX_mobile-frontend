@@ -2,13 +2,11 @@ import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View, ScrollView } from '@tarojs/components'
 import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage, SpTime, SpTabs } from '@/components'
+import { SpImage, SpPage, SpTime, SpTabs,SpCustomPicker ,SpTable} from '@/components'
 import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
-import CompCustomPicker from './comps/comp-custom-picker'
-import CompTable from './comps/comp-table'
 import './achievement.scss'
 
 const initialConfigState = {
@@ -122,7 +120,7 @@ const Achievement = () => {
             selects={parameter.datetype}
             nowTimeDa={parameter.date}
           />
-          <CompCustomPicker selector={selector} cancel={cancel} />
+          <SpCustomPicker selector={selector} cancel={cancel} />
         </View>
         <SpTabs
           current={types}
@@ -137,7 +135,7 @@ const Achievement = () => {
           }}
         />
 
-        <CompTable listData={listData} listHeader={listHeader} />
+        <SpTable listData={listData} listHeader={listHeader} />
       </View>
     </SpPage>
   )

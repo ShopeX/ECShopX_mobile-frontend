@@ -1,3 +1,8 @@
 .page-cart {
-    margin: 24px;
+  margin: 24px;
+}
+.at-button--primary {
+  background: var(--color-dianwu-primary) !important;
+  border-color: var(--color-dianwu-primary) !important;
+  color: #fff !important;
 }

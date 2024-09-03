@@ -164,6 +164,7 @@ export const TABBAR_PATH = {
   liveroom: '/pages/liveroom/index',
   allGoods: '/pages/item/list?isTabBar=true',
   ugc: '/subpages/mdugc/index',
+  customPage:'/pages/custom/custom-page'
 }
 
 export const TABBAR_ICON = {
@@ -347,6 +348,51 @@ export const infotype = {
   FAVORITEPOST: 'favoritePost',
   FOLLOWERUSER: 'followerUser'
 }
+
+export const  DELIVERY_PERSONNEL_INFORMATION = [
+  {
+    title: '快递公司',
+    selector: [{ label: '商家自配送', status: true }],
+    extraText: '商家自配送',
+    status: 'select',
+    value: 'all'
+  },
+  {
+    title: '配送员',
+    selector: [{ label: '', status: true }],
+    extraText: '',
+    status: 'select',
+    value: 'self_delivery_operator_name'
+  },
+  {
+    title: '配送员手机号',
+    selector: [{ label: '', status: true }],
+    extraText: '',
+    status: 'select',
+    value: 'self_delivery_operator_mobile'
+  },
+  {
+    title: '配送状态',
+    selector: [{ label: '', status: true }],
+    extraText: '',
+    status: 'select',
+    value: 'self_delivery_status'
+  },
+  {
+    title: '配送备注',
+    selector: '',
+    extraText: '',
+    status: 'textarea',
+    value: 'delivery_remark'
+  },
+  {
+    title: '照片上传',
+    selector: [],
+    extraText: '',
+    status: 'image',
+    value: 'delivery_pics'
+  }
+]
 
 export * from './localstorage'
 

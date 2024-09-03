@@ -81,7 +81,14 @@ export const TRADE_ITEM = {
   receiverState: "receiver_state",
   totalFee: ({ total_fee }) => total_fee / 100,
   zitiStatus: 'ziti_status',
-  zitiInfo: 'ziti_info'
+  zitiInfo: 'ziti_info',
+  selfDeliveryFee:({ self_delivery_fee }) => self_delivery_fee / 100,
+  selfDeliveryStatus:'self_delivery_status',
+  createTime:'create_time',
+  payDate:'pay_date',
+  deliveryTime:'delivery_time',
+  tradeId:'trade_id',
+  userId:'user_id',
 }
 
 export const SHOP_INFO = {
@@ -106,7 +113,8 @@ export const AFTER_TRADE = {
     })
   },
   orderId: 'order_id',
-  refundFee: ({ refund_fee }) => refund_fee / 100
+  refundFee: ({ refund_fee }) => refund_fee / 100,
+  userId:'user_id',
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
