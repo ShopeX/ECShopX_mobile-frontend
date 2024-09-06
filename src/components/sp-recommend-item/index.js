@@ -25,10 +25,10 @@ function SpRecommendItem(props) {
           <Text className='author-name'>{author}</Text>
         </View>
       </View>
-      <View className='recommend-item-fd'>
+      {/* <View className='recommend-item-fd'>
         <Text className='iconfont icon-like'></Text>
         <Text className='num'>{articlePraiseNum}</Text>
-      </View>
+      </View> */}
     </View>
   )
 }
