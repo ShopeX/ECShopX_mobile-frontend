@@ -17,8 +17,8 @@ export default class DistributionGoodsItem extends Component {
     addGlobalClass: true
   }
 
-  render () {
-    const { info, onClick, className, isRelease, status, shareDataChange } = this.props
+  render() {
+    const { info, onClick, className, isRelease, status, shareDataChange,integral=false } = this.props
     if (!info) {
       return null
     }
@@ -37,14 +37,23 @@ export default class DistributionGoodsItem extends Component {
                 <Text className='cur'>¥</Text>
                 {info.price}
               </View>
-              <View className='goods-item__promoter-price'>
-                预计收益：
-                {info.commission_type === 'money' ? (
-                  <Text className='cur'>¥{info.promoter_price}</Text>
-                ) : (
-                  <Text className='cur'>{info.promoter_point} 积分</Text>
-                )}
-              </View>
+              {integral ? (
+                info.commission_type === 'money' && (
+                  <View className='goods-item__promoter-price'>
+                    预计收益：
+                    <Text className='cur'>¥{info.promoter_price}</Text>
+                  </View>
+                )
+              ) : (
+                <View className='goods-item__promoter-price'>
+                  预计收益：
+                  {info.commission_type === 'money' ? (
+                    <Text className='cur'>¥{info.promoter_price}</Text>
+                  ) : (
+                    <Text className='cur'>{info.promoter_point} 积分</Text>
+                  )}
+                </View>
+              )}
             </View>
             <View className='goods-item__extra'>
               <View className='goods-item__author'>
@@ -62,7 +71,7 @@ export default class DistributionGoodsItem extends Component {
                   className='goods-item__share-btn'
                   data-info={info}
                   openType='share'
-                  onClick={()=>Taro.setStorageSync('shareData',info)}
+                  onClick={() => Taro.setStorageSync('shareData', info)}
                   size='small'
                 >
                   <Text class='iconfont icon-share2'></Text>
