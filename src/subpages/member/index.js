@@ -137,7 +137,7 @@ function MemberIndex(props) {
     if (isLogin) {
       getMemberCenterData()
       setMemberBackground()
-      // getEmployeeIsOpen()
+      getEmployeeIsOpen()
       const { redirect } = $instance.router.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
@@ -418,7 +418,6 @@ function MemberIndex(props) {
       Taro.navigateTo({ url: link })
     }
   }
-
   const VipGradeDom = () => {
     if (isLogin) {
       return (
