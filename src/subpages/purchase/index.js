@@ -21,6 +21,7 @@ import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import configStore from '@/store'
 import CompTabbar from './comps/comp-tabbar'
 
@@ -141,7 +142,15 @@ function Home() {
         scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
-        <HomeWgts wgts={filterWgts} />
+        {filterWgts.length > 0 && (
+          <WgtsContext.Provider
+            value={{
+              onAddToCart: () => {}
+            }}
+          >
+            <HomeWgts wgts={filterWgts} />
+          </WgtsContext.Provider>
+        )}
       </ScrollView>
 
       {/* 隐私政策 */}
