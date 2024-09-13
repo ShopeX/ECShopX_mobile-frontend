@@ -142,9 +142,15 @@ function Home() {
         scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
-        <WgtsContext.Provider value={{ onAddToCart }}>
-        <HomeWgts wgts={filterWgts} />
-        </WgtsContext.Provider>
+        {filterWgts.length > 0 && (
+          <WgtsContext.Provider
+            value={{
+              onAddToCart: () => {}
+            }}
+          >
+            <HomeWgts wgts={filterWgts} />
+          </WgtsContext.Provider>
+        )}
       </ScrollView>
 
       {/* 隐私政策 */}
