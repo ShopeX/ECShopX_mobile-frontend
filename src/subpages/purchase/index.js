@@ -23,7 +23,7 @@ import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import configStore from '@/store'
 import CompTabbar from './comps/comp-tabbar'
-
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
@@ -122,9 +122,10 @@ function Home() {
     (openScanQrcode == 1 && isWeixin) ||
     (VERSION_STANDARD && openStore && openLocation == 1) ||
     fixedTop
-
+    const onAddToCart =async (item) => {
+      console.log('Item added to cart:', item);
+    };
   console.log('pageData:', pageData)
-
   return (
     <SpPage
       className='page-purchase-index'
@@ -141,7 +142,9 @@ function Home() {
         scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
+        <WgtsContext.Provider value={{ onAddToCart }}>
         <HomeWgts wgts={filterWgts} />
+        </WgtsContext.Provider>
       </ScrollView>
 
       {/* 隐私政策 */}
