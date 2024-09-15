@@ -142,12 +142,13 @@
     border-radius: 16px;
     background-color: #fff;
     overflow: hidden;
-    padding-bottom: 20px;
+    // padding-bottom: 20px;
+    padding: 0 30px;
   }
 
   .refund-amount,
   .refund-point {
-    position: relative;
+    // position: relative;
 
     .at-input {
       margin-bottom: 0;
@@ -164,7 +165,8 @@
     }
 
     .sp-cell {
-      padding: 12px 30px;
+      // padding: 12px 30px;
+      padding: 24px 0;
     }
 
     .sp-cell__value {
@@ -178,7 +180,10 @@
   }
 
   .refund-amount {
-    margin-top: 20px;
+    // margin-top: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f5f5f5;
+
 
     &::after {
       content: '';
@@ -192,15 +197,24 @@
     }
   }
 
-  .refund-point {
-    margin-top: 40px;
+  .sp-cell::before {
+    position: unset;
   }
+  .refund-amount:last-child {
+    border-bottom: none;
+  }
+
+  .refund-freight {
+    padding-top: 40px;
+    margin-bottom: 40px;
+  }
+
 
   .return-goods-type {
     margin: 24px 16px 0;
-    border-radius: 16px;
+    border-radius: 6px;
     background-color: #fff;
-    border-radius: 16px;
+    // border-radius: 16px;
     overflow: hidden;
 
     .at-input {
