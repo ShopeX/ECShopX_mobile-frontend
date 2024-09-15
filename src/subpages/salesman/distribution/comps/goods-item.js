@@ -38,12 +38,10 @@ export default class DistributionGoodsItem extends Component {
                 {info.price}
               </View>
               {integral ? (
-                info.commission_type === 'money' && (
                   <View className='goods-item__promoter-price'>
                     预计收益：
-                    <Text className='cur'>¥{info.promoter_price}</Text>
+                    <Text className='cur'>¥{info.commission_type === 'money'?info.promoter_price:'0.00'}</Text>
                   </View>
-                )
               ) : (
                 <View className='goods-item__promoter-price'>
                   预计收益：
