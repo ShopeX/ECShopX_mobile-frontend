@@ -101,6 +101,16 @@ const Index = () => {
     })
   }
 
+  const onFormatChange = ()=>{
+    let params = {
+      ...parameter,
+      date: ''
+    }
+    setState((draft) => {
+      draft.parameter = params
+    })
+  }
+
   const onTimeChange = (time, val) => {
     let params = {
       ...parameter,
@@ -162,6 +172,7 @@ const Index = () => {
           </View>
           <SpTime
             onTimeChange={onTimeChange}
+            onFormatChange={onFormatChange}
             selects={parameter.datetype}
             nowTimeDa={parameter.date}
           />
