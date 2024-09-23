@@ -121,7 +121,9 @@ export default class TradeList extends Component {
         ...params,
         order_type: 'normal',
         status: tabList[curTabIdx].status,
-        is_rate: tabList[curTabIdx].is_rate
+        is_rate: tabList[curTabIdx].is_rate,
+        order_class: 'employee_purchase',
+        activity_id: 20
       },
       function (val, key) {
         if (key === 'page_no') return 'page'
