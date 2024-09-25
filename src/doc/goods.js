@@ -15,9 +15,9 @@ export const WGT_GOODS_GRID = {
   promotion: 'promotion_activity',
   distributorId: 'distributor_id',
   isPoint: 'is_point',
-  // price: ({ act_price, member_price, price }) => {
-  //   if (act_price > 0) {
-  //     return act_price
+  // price: ({ activity_price, member_price, price }) => {
+  //   if (activity_price > 0) {
+  //     return activity_price
   //   } else if (member_price > 0) {
   //     return member_price
   //   } else {
@@ -26,7 +26,7 @@ export const WGT_GOODS_GRID = {
   // },
   // marketPrice: 'market_price',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
+  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
@@ -43,9 +43,9 @@ export const WGT_GOODS_GRID_TAB = {
   promotion: 'promotion_activity',
   distributorId: 'distributor_id',
   isPoint: 'is_point',
-  // price: ({ act_price, member_price, price }) => {
-  //   if (act_price > 0) {
-  //     return act_price
+  // price: ({ activity_price, member_price, price }) => {
+  //   if (activity_price > 0) {
+  //     return activity_price
   //   } else if (member_price > 0) {
   //     return member_price
   //   } else {
@@ -54,7 +54,7 @@ export const WGT_GOODS_GRID_TAB = {
   // },
   // marketPrice: 'market_price',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
+  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
@@ -224,11 +224,11 @@ export const GOODS_INFO = {
       //     return member_price / 100
       //   }
       // },
-      // activityPrice: ({ act_price }) => act_price / 100
+      // activityPrice: ({ activity_price }) => activity_price / 100
       point: 'point',
       isPoint: () => is_point,
       price: ({ price }) => price / 100, // 销售价
-      activityPrice: ({ act_price }) => act_price / 100, // 秒杀价
+      activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
       marketPrice: ({ market_price }) => market_price / 100, // 原价
       memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
