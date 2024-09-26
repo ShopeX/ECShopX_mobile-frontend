@@ -58,6 +58,13 @@ function Home() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
+    if (activity_id) {
+      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
+    }
+  }, [])
+
+  useEffect(() => {
     if (initState) {
       init()
       setNavigationBarTitle(appName)
@@ -69,12 +76,6 @@ function Home() {
     checkPolicyChange()
   })
 
-  useEffect(() => {
-    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
-    if (activity_id) {
-      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
-    }
-  }, [])
 
   const init = async () => {
     await fetchWgts()
@@ -85,7 +86,7 @@ function Home() {
       const { config, tab_bar } = await api.shop.getShopTemplate({
         distributor_id: getDistributorId(),
         pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id,
-        e_activity_id: purchase_share_info?.activity_id
+        e_activity_id: router.params?.activity_id ||purchase_share_info?.activity_id
       })
       const tabBar = tab_bar && JSON.parse(tab_bar)
       dispatch(updatePurchaseTabbar({
