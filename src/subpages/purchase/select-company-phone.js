@@ -14,7 +14,8 @@ import './select-company-phone.scss'
 
 const initialState = {
   wxCode: '',
-  enterprise_id: ''
+  enterprise_id: '',
+  auth_type: ''
 }
 
 function PurchaseAuthPhone(props) {
@@ -26,7 +27,7 @@ function PurchaseAuthPhone(props) {
   })
   const [state, setState] = useImmer(initialState)
   const [policyModal, setPolicyModal] = useState(false)
-  const { enterprise_id } = state
+  const { enterprise_id, auth_type } = state
   const { userInfo = {} } = useSelector((state) => state.user)
   const { params } = useRouter()
   let { enterprise_name, auth_code, account, email, vcode } = params
@@ -46,11 +47,13 @@ function PurchaseAuthPhone(props) {
       if (eid) {
         setState(draft => {
           draft.enterprise_id = eid
+          draft.auth_type = 'qrcode'
         })
       }
     } else {
       setState(draft => {
         draft.enterprise_id = params.enterprise_id
+        draft.auth_type = ''
       })
     }
   }
@@ -61,10 +64,10 @@ function PurchaseAuthPhone(props) {
 
   // 同意隐私协议
   const onResolvePolicy = async () => {
+    setPolicyModal(false)
     if (!isNewUser) {
       await login()
     }
-    setPolicyModal(false)
   }
   
 
@@ -92,7 +95,8 @@ function PurchaseAuthPhone(props) {
             account,
             auth_code,
             email,
-            vcode
+            vcode,
+            auth_type
           }
         }
         const { token } = await api.wx.newlogin(params)
@@ -141,6 +145,7 @@ function PurchaseAuthPhone(props) {
   }
 
   console.log('enterprise_id',enterprise_id)
+  console.log('auth_type',auth_type)
   return (
     <SpPage className='page-purchase-auth-phone select-component'>
       <View className='select-component-title'>{enterprise_name}</View>
@@ -179,6 +184,7 @@ function PurchaseAuthPhone(props) {
           className='btns-phone'
           onClick={() => validatePhone({
             enterprise_id,
+            auth_type,
             mobile: 'member_mobile'
           })}
           customStyle={{ marginTop: '50%' }}
