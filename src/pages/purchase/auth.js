@@ -127,7 +127,7 @@ function PurchaseAuth() {
     } catch (e) {
       console.log(e)
       Taro.showModal({
-        content: e,
+        content: e.message || e,
         confirmText: '我知道了',
         showCancel: false,
         success: () => {
