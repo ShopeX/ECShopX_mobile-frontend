@@ -288,7 +288,7 @@ export default class TradeList extends Component {
             })
           } else {
             Taro.navigateTo({
-              url: `/subpages/trade/split-bagpack?order_type=${order_type}&order_id=${tid}`
+              url: `/subpages/community/trade/split-bagpack?order_type=${order_type}&order_id=${tid}`
             })
           }
         }
