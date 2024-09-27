@@ -8,6 +8,7 @@ import api from '@/api'
 import { classNames, pickBy } from '@/utils'
 import { useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
+import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
 import doc from '@/doc'
 import S from '@/spx'
 import { SpPage, SpNote, SpScrollView, SpSearchInput, SpFloatMenuItem, SpImage } from '@/components'
@@ -90,6 +91,7 @@ function PurchaseActivityList() {
         <View>
           <SpFloatMenuItem
             onClick={() => {
+              dispatch(updatePurchaseShareInfo(null))
               Taro.navigateTo({ url: `/subpages/purchase/member?from=${'purchase_home'}` })
             }}
           >

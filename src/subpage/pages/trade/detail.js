@@ -167,7 +167,7 @@ export default class TradeDetail extends Component {
         console.log(dada)
         return dada
       },
-      salespersonInfo:'salespersonInfo',
+      salespersonInfo: 'salespersonInfo',
       receiver_city: 'receiver_city',
       receiver_district: 'receiver_district',
       receiver_address: 'receiver_address',
@@ -329,76 +329,38 @@ export default class TradeDetail extends Component {
       return
     }
 
-    let payErr
-    try {
-      const params = {
-        activityType: activity_type,
-        pay_channel: pay_channel,
-        pay_type: pay_type
-      }
-      const orderInfo = {
-        order_id,
-        order_type: order_type,
-        pay_type
-      }
-      const paymentFn = usePayment()
-      paymentFn.cashierPayment(params, orderInfo)
-    } catch (e) {
-      console.error(e)
-      payErr = e
+    const params = {
+      activityType: activity_type,
+      pay_channel: pay_channel,
+      pay_type: pay_type
     }
-    // try {
+    const orderInfo = {
+      order_id,
+      order_type: order_type,
+      pay_type
+    }
 
-    //   if (isAPP()) {
-    //     const AppPayType = {
-    //       alipayapp: 'alipay',
-    //       wxpayapp: 'wxpay'
-    //     }
-    //     try {
-    //       await Taro.SAPPPay.payment({
-    //         id: AppPayType[pay_type],
-    //         order_params: config.config
-    //       })
-    //     } catch (e) {
-    //       console.error(e)
-    //       payErr = e
-    //     }
-    //   } else {
-    //     // const resObj = await payPlatform(config)
-    //     const { cashierPayment } = usePayment()
-    //     cashierPayment(params, orderInfo)
-    //     payErr = resObj.payErr
-    //     // 支付上报
-    //     log.debug(`[order pay]: `, resObj.payRes)
-    //   }
-    // } catch (e) {
-    //   payErr = e
-    //   if (e.errMsg.indexOf('cancel') < 0) {
-    //     Taro.showToast({
-    //       title: e.err_desc || e.errMsg || '支付失败',
-    //       icon: 'none'
-    //     })
-    //   } else {
-    //     Tracker.dispatch('CANCEL_PAY', {
-    //       ...info,
-    //       item_fee: parseInt(info.item_fee) * 100,
-    //       total_fee: parseInt(info.total_fee) * 100,
-    //       ...config,
-    //       timeStamp: config.order_info.create_time
-    //     })
-    //   }
-    // }
-    // if (!payErr) {
-    //   await Taro.showToast({
-    //     title: '支付成功',
-    //     icon: 'success'
-    //   })
+    this.weappPay(params, orderInfo)
 
-    //   const { fullPath } = getCurrentRoute(this.$instance.router)
-    //   Taro.redirectTo({
-    //     url: fullPath
-    //   })
-    // }
+  }
+
+  async weappPay(params, orderInfo) {
+    const { pay_channel, pay_type } = params
+    const { order_id, trade_source_type, order_type } = orderInfo
+    try {
+      Taro.showLoading({ mask: true })
+      const weappOrderInfo = await api.cashier.getPayment({
+        pay_type,
+        pay_channel,
+        order_id,
+        order_type: order_type || trade_source_type
+      })
+      await Taro.requestPayment(weappOrderInfo)
+      Taro.hideLoading()
+      this.fetch()
+    } catch (e) {
+      Taro.hideLoading()
+    }
   }
 
   async handleClickBtn(type, e) {
@@ -639,7 +601,7 @@ export default class TradeDetail extends Component {
   }
 
   computedPayType = () => {
-     const {
+    const {
       info: { pay_type, pay_channel }
     } = this.state
     if (pay_type == 'bspay') {
@@ -970,7 +932,7 @@ export default class TradeDetail extends Component {
           </View>
 
           {
-            info?.salespersonInfo?.user_id && 
+            info?.salespersonInfo?.user_id &&
             <View className='shopping'>
               <View className='shopping_guide'>业务员信息:</View>
               <View className='shopping_guides'>
@@ -980,7 +942,7 @@ export default class TradeDetail extends Component {
             </View>
           }
 
-        
+
 
           {info.remark && (
             <View className='trade-detail-remark'>
@@ -1165,8 +1127,7 @@ export default class TradeDetail extends Component {
                 </View>
               )
             }
-            {
-              // 继续购物
+            {/* {
               (info.status === 'WAIT_SELLER_SEND_GOODS' ||
                 (info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
                   info.receipt_type === 'dada' &&
@@ -1185,7 +1146,7 @@ export default class TradeDetail extends Component {
                   继续购物
                 </View>
               )
-            }
+            } */}
             {
               // 确认收货
               info.order_class !== 'excard' &&
