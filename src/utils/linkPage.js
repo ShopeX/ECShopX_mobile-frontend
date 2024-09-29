@@ -118,10 +118,10 @@ function linkPage(data) {
     url = `/subpages/community/apply-chief?distributor_id=${dtid || distributor_id}`
   }
 
-  if (type === 'other_wxapp') {
+  if (linkPage === 'other_wxapp') {
     Taro.navigateToMiniProgram({
-      appId: id,
-      path: title
+      appId: data.extra.appid,
+      path: data.extra.path
     })
   } else {
     Taro.navigateTo({
