@@ -202,14 +202,14 @@ function TradeAfterSale(props) {
       description,
       evidence_pic: pic
     }
+    if (offline_freight_status) {
+      params.is_refund_freight = offline_freight * 100
+    }
     // 退货退款
     if (aftersales_type == 'REFUND_GOODS') {
       params = {
         ...params,
         return_type: refundType
-      }
-      if (info?.freightFee != 0 && offline_freight_status) {
-        params.is_refund_freight = offline_freight * 100
       }
       if (offline_freight > info?.freightFee) {
         return showToast(`退款金额不能大于¥${info?.freightFee}`)
@@ -234,6 +234,8 @@ function TradeAfterSale(props) {
         }
       }
     }
+    console.log('params1111', params, offline_freight_status, offline_freight)
+    return
     await api.aftersales.apply(params)
     showToast('提交成功')
     Taro.eventCenter.trigger('onEventOrderStatusChange')
@@ -332,7 +334,7 @@ function TradeAfterSale(props) {
 
           <View className='refund-detail'>
             {/* 输入的运费不能大于可退款的运费 */}
-            {curTabIdx == 1 && info?.freightFee != 0 && offline_freight_status && (
+            {info?.freightFee != 0 && offline_freight_status && (
               <View className='refund-amount'>
                 <SpCell
                   border
