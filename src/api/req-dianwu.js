@@ -392,7 +392,6 @@ if (process.env.NODE_ENV === 'production' && !isWeb) {
   Taro.addInterceptor(Taro.interceptors.logInterceptor)
 }
 
-console.log('xxxx:', process.env.APP_BASE_URL.replace('/h5app/wxapp', ''))
 export default new API({
   baseURL: process.env.APP_BASE_URL.replace('/h5app/wxapp', '')
 })

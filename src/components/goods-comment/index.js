@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text,Textarea } from '@tarojs/components'
 import { classNames } from '@/utils'
-import { AtTextarea } from 'taro-ui'
 import './index.scss'
 
 export default class GoodsComment extends Component {
@@ -20,6 +19,7 @@ export default class GoodsComment extends Component {
     this.state = {
       isActive: props.isOpened,
       comment: '',
+      input_bottom:0,
       count: 0
     }
   }
@@ -51,12 +51,21 @@ export default class GoodsComment extends Component {
     this.props.onReplyRate && this.props.onReplyRate(comment)
     this.setState({
       comment: '',
-      isActive: false
+      isActive: false,
+      count:0
+    })
+  }
+
+  setinputtop=(e)=>{
+    console.log("键盘高度变化",e,e.detail.height)
+    let het=e.detail.height-0
+    this.setState({
+      input_bottom:het
     })
   }
 
   handleChange (e) {
-    let comment = e
+    let comment = e.detail.value
     this.setState({
       comment,
       count: comment ? comment.length : 0
@@ -64,7 +73,7 @@ export default class GoodsComment extends Component {
   }
 
   render () {
-    const { isActive, comment, count } = this.state
+    const { isActive, comment, count,input_bottom } = this.state
 
     return (
       <View
@@ -79,17 +88,14 @@ export default class GoodsComment extends Component {
         ></View>
 
         <View className='goods-comment-panel__wrap'>
-          <View className='goods-comment-panel__bd'>
-            <AtTextarea
+          <View className='goods-comment-panel__bd' style={{paddingBottom:`${input_bottom-0+10}px`}}>
+            <Textarea
               className='comment'
-              count={false}
+              adjustPosition={false}
               value={comment}
-              onChange={this.handleChange.bind(this)}
-              maxLength={500}
-              height={60}
-              autoFocus
-              fixed
+              onInput={this.handleChange.bind(this)}
               placeholder='请输入您的评论'
+              onKeyboardHeightChange={this.setinputtop.bind(this)}
             />
             <View className='reply-btns'>
               <Text className='count'>{count}/500</Text>

@@ -31,6 +31,8 @@ import * as community from './community'
 import * as im from './im'
 import * as mdugc from './mdugc'
 import * as salesman from './salesman'
+import * as delivery from './delivery'
+
 
 export default {
   article,
@@ -65,5 +67,6 @@ export default {
   community,
   im,
   mdugc,
-  salesman
+  salesman,
+  delivery
 }

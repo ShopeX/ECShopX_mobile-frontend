@@ -2,27 +2,26 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime } from '@/components'
+import { SpPage, SpTime,SpCustomPicker } from '@/components'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-import CompInvitationCode from './comps/comp-invitation-code'
-import CompCustomPicker from './comps/comp-custom-picker'
 
 import './index.scss'
 
 const initialConfigState = {
   funcList: [
-    // { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/selectCustomer' },
-    // { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
+    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/list' },
+    { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
     {
       name: '业务员销售',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
-    { name: '商家列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/selectShop' }
-    // { name: '选购商品', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/purchasing' },
+    { name: '商家列表', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop?status=true` },
+    // { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
+    // { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
     // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
   ],
   codeStatus: false,
@@ -144,7 +143,7 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <CompCustomPicker selector={selector} cancel={cancel} />
+              <SpCustomPicker selector={selector} cancel={cancel} />
             </View>
           </View>
           <SpTime
@@ -216,17 +215,6 @@ const Index = () => {
         </View>
       </View>
 
-      {codeStatus && (
-        <CompInvitationCode
-          status={false}
-          information={information}
-          cancel={() => {
-            setState((draft) => {
-              draft.codeStatus = false
-            })
-          }}
-        />
-      )}
     </SpPage>
   )
 }

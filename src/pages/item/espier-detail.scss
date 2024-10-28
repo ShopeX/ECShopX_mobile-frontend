@@ -4,6 +4,13 @@
   }
   .goods-swiper {
     height: 750px;
+    .sp-image {
+      box-sizing: border-box;
+      height: 750px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    } 
   }
   .video-container {
     position: absolute;

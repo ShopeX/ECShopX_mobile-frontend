@@ -1,15 +1,15 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux"
-import Taro, { useRouter } from "@tarojs/taro";
-import { View, ScrollView } from "@tarojs/components"
-import { AtButton } from "taro-ui"
-import { useImmer } from "use-immer"
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import Taro, { useRouter } from '@tarojs/taro'
+import { View, ScrollView } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { useImmer } from 'use-immer'
 import { SpPage, SpTagBar, SpScrollView } from '@/components'
-import api from "@/api"
-import doc from "@/doc"
+import api from '@/api'
+import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompAfterTradeItem from './comps/comp-aftertrade-item'
-import "./after-sale-list.scss";
+import './after-sale-list.scss'
 
 const initialState = {
   tradeStatus: [
@@ -21,7 +21,7 @@ const initialState = {
   ],
   status: '0',
   tradeList: [],
-  refresherTriggered: false,
+  refresherTriggered: false
 }
 function TradeAfterSaleList(props) {
   const [state, setState] = useImmer(initialState)
@@ -55,12 +55,9 @@ function TradeAfterSaleList(props) {
       page: pageIndex,
       pageSize,
       order_type: 'normal',
-      aftersales_status: status,
+      aftersales_status: status
     }
-    const {
-      list,
-      total_count
-    } = await api.aftersales.list(params)
+    const { list, total_count } = await api.aftersales.list(params)
     const tempList = pickBy(list, doc.trade.AFTER_TRADE)
     setState((draft) => {
       draft.tradeList = [...tradeList, ...tempList]
@@ -84,30 +81,39 @@ function TradeAfterSaleList(props) {
     tradeRef.current.reset()
   }
 
-
-  return <SpPage className="page-trade-aftersale-list">
-    <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
-    <ScrollView className="list-scroll-container" scrollY refresherEnabled
-      refresherBackground='#f5f5f7'
-      refresherTriggered={refresherTriggered}
-      onRefresherRefresh={onRefresherRefresh}
-    >
-      <SpScrollView className='trade-list-scroll' auto={false} ref={tradeRef} fetch={fetch} emptyMsg="没有查询到售后单">
-        {tradeList.map((item) => (
-          <View className='trade-item-wrap'>
-            <CompAfterTradeItem info={item} />
-          </View>
-        ))}
-      </SpScrollView>
-    </ScrollView>
-  </SpPage>;
+  return (
+    <SpPage className='page-trade-aftersale-list'>
+      <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
+      <ScrollView
+        className='list-scroll-container'
+        scrollY
+        refresherEnabled
+        refresherBackground='#f5f5f7'
+        refresherTriggered={refresherTriggered}
+        onRefresherRefresh={onRefresherRefresh}
+      >
+        <SpScrollView
+          className='trade-list-scroll'
+          auto={false}
+          ref={tradeRef}
+          fetch={fetch}
+          emptyMsg='没有查询到售后单'
+        >
+          {tradeList.map((item, index) => (
+            <View className='trade-item-wrap' key={index}>
+              <CompAfterTradeItem info={item} />
+            </View>
+          ))}
+        </SpScrollView>
+      </ScrollView>
+    </SpPage>
+  )
 }
 
 TradeAfterSaleList.options = {
   addGlobalClass: true
 }
 
-TradeAfterSaleList.defaultProps = {
-}
+TradeAfterSaleList.defaultProps = {}
 
 export default TradeAfterSaleList

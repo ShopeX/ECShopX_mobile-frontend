@@ -32,10 +32,12 @@ function SpCashier(props) {
     userPoint,
     onClose = () => { },
     onChange = () => { },
-    paymentAmount = 0
+    paymentAmount = 0,
+    salesman = false
   } = props
   const $instance = getCurrentInstance()
   const { userInfo } = useSelector((state) => state.user)
+  const { customerLnformation } = useSelector((state) => state.cart)
   const [state, setState] = useImmer(initialState)
   const { list, selectPayment, selectItem } = state
   // console.log('isAPP:', isAPP(), Taro.getEnv(), Taro.ENV_TYPE.APP)
@@ -71,9 +73,18 @@ function SpCashier(props) {
       platform = 'h5'
     }
     const { shop_id } = $instance.router.params
-    const params = {
-      distributor_id: getDistributorId(shop_id),
-      platform
+    let params = {}
+    if(salesman){
+      params = {
+        distributor_id: getDistributorId(shop_id),
+        platform,
+        ...customerLnformation
+      }
+    }else{
+      params = {
+        distributor_id: getDistributorId(shop_id),
+        platform
+      }
     }
     const res = await api.member.getTradePaymentList(params)
     const list = pickBy(res, doc.payment.PAYMENT_ITEM)

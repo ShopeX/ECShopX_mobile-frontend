@@ -74,10 +74,10 @@ function PurchaseAuth() {
 
   // 同意隐私协议
   const onResolvePolicy = async () => {
+    setPolicyModal(false)
     if (!isNewUser) {
       await login()
     }
-    setPolicyModal(false)
   }
 
   const handleConfirmClick = async (type) => {
@@ -127,7 +127,7 @@ function PurchaseAuth() {
     } catch (e) {
       console.log(e)
       Taro.showModal({
-        content: e,
+        content: e.message || e,
         confirmText: '我知道了',
         showCancel: false,
         success: () => {

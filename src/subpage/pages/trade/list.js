@@ -25,8 +25,9 @@ import TradeItem from './comps/new-item'
 
 import './list.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
+@connect(({ colors, purchase }) => ({
+  colors: colors.current,
+  purchase_share_info: purchase.purchase_share_info
 }))
 @withPager
 export default class TradeList extends Component {
@@ -121,7 +122,9 @@ export default class TradeList extends Component {
         ...params,
         order_type: 'normal',
         status: tabList[curTabIdx].status,
-        is_rate: tabList[curTabIdx].is_rate
+        is_rate: tabList[curTabIdx].is_rate,
+        order_class: 'employee_purchase',
+        activity_id: this.props.purchase_share_info?.activity_id
       },
       function (val, key) {
         if (key === 'page_no') return 'page'
@@ -280,12 +283,12 @@ export default class TradeList extends Component {
           } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpage/pages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp
+              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp
                 }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
             Taro.navigateTo({
-              url: `/subpage/pages/trade/split-bagpack?order_type=${order_type}&order_id=${tid}`
+              url: `/subpages/community/trade/split-bagpack?order_type=${order_type}&order_id=${tid}`
             })
           }
         }

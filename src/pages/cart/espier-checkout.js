@@ -330,7 +330,6 @@ function CartCheckout(props) {
   }
 
   const handleSwitchExpress = ({ receipt_type, distributor_info, address_info }) => {
-    console.log('xxxxxxx:', receipt_type, address_info)
     // 切换配送模式
     setState((draft) => {
       draft.receiptType = receipt_type
@@ -926,6 +925,26 @@ function CartCheckout(props) {
             onEidtZiti={handleEditZitiClick}
           />
         </View>
+
+        {/* 街道、社区信息填写 */}
+        {openStreet && (
+          <View className='cart-checkout__stree'>
+            <SpCell isLink title='街道居委'>
+              <Picker
+                mode='multiSelector'
+                onChange={bindMultiPickerChange}
+                onColumnChange={bindMultiPickerColumnChange}
+                value={multiIndex}
+                range={multiValue}
+              >
+                <View className='picker-value'>{streetCommunityTxt}</View>
+              </Picker>
+            </SpCell>
+            <View className='cart-checkout__stree-desc'>
+              <Text className='required'>*</Text>疫情期间按小区统一配送！
+            </View>
+          </View>
+        )}
 
         {openBuilding && (
           <View className='cart-checkout__building'>

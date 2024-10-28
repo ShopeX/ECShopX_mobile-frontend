@@ -190,14 +190,26 @@ function AddressIndex(props) {
   const { info, chooseValue, isOpened } = state
 
   return (
-    <SpPage className='page-address-edit'>
+    <SpPage
+      className='page-address-edit'
+      renderFooter={
+        <View className='btns'>
+          <AtButton
+            circle
+            type='primary'
+            className='submit-btn'
+            style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+            onClick={handleSubmit}
+          >
+            +保存并使用
+          </AtButton>
+        </View>
+      }
+    >
       <ScrollView className='scroll-view-container'>
         <View className='scroll-view-body'>
           <View className='page-address-edit__form'>
-            <SpCell
-              className='logistics-no border-bottom'
-              title='收件人'
-            >
+            <SpCell className='logistics-no border-bottom' title='收件人'>
               <AtInput
                 name='username'
                 value={info?.username}
@@ -206,10 +218,7 @@ function AddressIndex(props) {
               />
             </SpCell>
 
-            <SpCell
-              className='logistics-no border-bottom'
-              title='手机号码'
-            >
+            <SpCell className='logistics-no border-bottom' title='手机号码'>
               <AtInput
                 name='telephone'
                 maxLength={11}
@@ -226,7 +235,7 @@ function AddressIndex(props) {
               arrow
               onClick={onPickerClick}
             >
-              <View className='picker' >
+              <View className='picker'>
                 {chooseValue?.join('') === '' ? (
                   <Text>选择省/市/区</Text>
                 ) : (
@@ -235,12 +244,7 @@ function AddressIndex(props) {
               </View>
             </SpCell>
 
-
-
-            <SpCell
-              className='logistics-no detail-address'
-              title='详细地址'
-            >
+            <SpCell className='logistics-no detail-address' title='详细地址'>
               <AtTextarea
                 count={false}
                 // name='adrdetail'
@@ -277,17 +281,6 @@ function AddressIndex(props) {
               />
             }
           />
-
-          <View className='btns'>
-            <Button
-              type='primary'
-              onClick={handleSubmit}
-              className='submit-btn'
-              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary};border-radius: 25px;`}
-            >
-              保存并使用
-            </Button>
-          </View>
         </View>
       </ScrollView>
 

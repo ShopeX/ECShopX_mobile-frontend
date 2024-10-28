@@ -1,0 +1,159 @@
+.page-address-index {
+  background: #f5f5f5;
+
+  .scroll-view-container {
+    height: 100%;
+    padding: 24px 16px;
+    box-sizing: border-box;
+  }
+
+  .btn-wrap {
+    padding: 20px 40px;
+    border: transparent 1px solid;
+  }
+
+  .member-address-list {
+    .address-item__content {
+      .address-item__detail_box {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1PX solid #ddd;
+
+        .address-item__unchecked {
+          margin-top: 0;
+        }
+      }
+    }
+
+  }
+
+  .address-harvest {
+    border-radius: 16px;
+    margin-bottom: 24px;
+  }
+
+  .address-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    &.disabled {
+      opacity: 0.6;
+    }
+
+    &__check {
+      .iconfont {
+        font-size: 38px;
+      }
+
+      .icon-roundcheckfill {
+        color: var(--color-primary);
+      }
+
+      .icon-round {
+        color: #ccc;
+      }
+    }
+
+    &__content {
+      flex: 1;
+      background: #ffffff;
+      box-shadow: 0px 8px 26px 0px rgba(0, 0, 0, 0.07);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    &__title {
+      margin-bottom: 16px;
+    }
+
+    &__info {
+      margin-right: 16px;
+      font-size: 32px;
+      color: #222;
+
+      &_tel {
+        font-size: 24px;
+        color: #666;
+      }
+    }
+
+    &__detail {
+      @include multi-ellipsis(2);
+      width: 550px;
+      margin-bottom: 24px;
+      color: #222;
+      font-size: 28px;
+    }
+  }
+
+  .address-item__footer {
+    display: flex;
+    justify-content: space-between;
+    color: #9d9d9d;
+    padding-top: 19px;
+
+    &_default {
+      display: flex;
+      align-items: center;
+
+      .iconfont {
+        font-size: 38px;
+        margin-right: 8px;
+      }
+
+      .icon-roundcheckfill {
+        color: var(--color-primary);
+      }
+
+      .icon-round {
+        color: #ccc;
+      }
+    }
+
+    .default-text {
+      font-size: 23px;
+      color: #999;
+    }
+
+    .picker-default-text {
+      font-size: 23px;
+      color: #fff;
+      background-color: var(--color-primary);
+      padding: 0 8px;
+      border-radius: 8px;
+    }
+
+    &_edit {
+      font-size: 23px;
+      display: flex;
+    }
+
+    .footer-text {
+      margin-right: 27px;
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+
+      &:last-child {
+        margin-right: 0px;
+      }
+    }
+
+    .footer-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+  }
+
+  .member-address-add {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    height: 80px;
+    color: #ffffff;
+    text-align: center;
+    line-height: 80px;
+    font-size: 26px;
+  }
+}

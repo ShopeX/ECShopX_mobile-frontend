@@ -124,7 +124,8 @@ function CompMenu(props) {
   if (isWeb) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
-  if ((VERSION_IN_PURCHASE || VERSION_B2C) && isWeixin) { // 会员中心内购只在ecx和云店展示
+  if ((VERSION_IN_PURCHASE || VERSION_B2C) && isWeixin) {
+    // 会员中心内购只在ecx和云店展示
     menus = menus.filter((m_item) => m_item.key != 'purchase')
   }
   //商家入驻是否开启
@@ -134,7 +135,7 @@ function CompMenu(props) {
 
   // 社区团购
   if (!VERSION_IN_PURCHASE && isWeixin) {
-    menus = menus.concat(MENUS_COMMUNITY.filter(item => accessMenu[item.key]))
+    menus = menus.concat(MENUS_COMMUNITY.filter((item) => accessMenu[item.key]))
   }
 
   if (VERSION_PLATFORM || VERSION_B2C) {
@@ -155,7 +156,7 @@ function CompMenu(props) {
   //   menus = menus.concat(MENUS_OFFLINE)
   // }
 
-  if(accessMenu.salesPersonList?.total_count>0){
+  if (accessMenu.salesPersonList?.total_count > 0) {
     menus = menus.concat([
       {
         key: 'salesman',
@@ -167,10 +168,25 @@ function CompMenu(props) {
     menus = menus.filter((m_item) => m_item.key != 'popularize')
   }
 
+  if (accessMenu.deliveryStaffList?.total_count > 0) {
+    menus = menus.concat([
+      {
+        key: 'delivery',
+        name: '配送员',
+        icon: 'delivery_personnel.png',
+        link: '/subpages/delivery/index'
+      }
+    ])
+  }
+
   return (
     <View className='comp-menu'>
       {menus.map((item, index) => (
-        <SpLogin className='menu-item' key={`menu-item__${index}`} onChange={onLink.bind(this, item)}>
+        <SpLogin
+          className='menu-item'
+          key={`menu-item__${index}`}
+          onChange={onLink.bind(this, item)}
+        >
           <SpImage className='menu-image' src={item.icon} width={100} height={100} />
           <Text className='menu-name'>
             {item.key == 'popularize' ? (isPromoter ? item.name : '我要推广') : item.name}

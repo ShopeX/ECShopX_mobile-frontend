@@ -17,7 +17,8 @@ import './address.scss'
 )
 export default class AddressChoose extends Component {
   static defaultProps = {
-    onClickBack: () => {}
+    onClickBack: () => {},
+    salesman : false
   }
 
   constructor (props) {
@@ -34,9 +35,15 @@ export default class AddressChoose extends Component {
     if (this.props.onCustomChosse) {
       this.props.onCustomChosse(choose)
     } else {
-      Taro.navigateTo({
-        url: `/marketing/pages/member/address?isPicker=${choose}`
-      })
+      if(this.props.salesman){
+        Taro.navigateTo({
+          url: `/subpages/salesman/address?isPicker=${choose}`
+        })
+      }else{
+        Taro.navigateTo({
+          url: `/marketing/pages/member/address?isPicker=${choose}`
+        })
+      }
     }
   }
 

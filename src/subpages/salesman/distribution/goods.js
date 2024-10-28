@@ -647,6 +647,7 @@ export default class DistributionGoods extends Component {
                     shareDataChange={this.shareDataChange}
                     status={status}
                     onClick={() => this.handleClickItem(item.goods_id)}
+                    integral
                   />
                 )
               })}

@@ -23,7 +23,7 @@ import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import configStore from '@/store'
 import CompTabbar from './comps/comp-tabbar'
-
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
@@ -58,6 +58,13 @@ function Home() {
   const dispatch = useDispatch()
 
   useEffect(() => {
+    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
+    if (activity_id) {
+      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
+    }
+  }, [])
+
+  useEffect(() => {
     if (initState) {
       init()
       setNavigationBarTitle(appName)
@@ -69,23 +76,17 @@ function Home() {
     checkPolicyChange()
   })
 
-  useEffect(() => {
-    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
-    if (activity_id) {
-      dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
-    }
-  }, [])
 
   const init = async () => {
     await fetchWgts()
   }
 
   const fetchWgts = async () => {
-    // console.log(purchase_share_info, pages_template_id, '-----purchase_share_info----')
     try {
       const { config, tab_bar } = await api.shop.getShopTemplate({
         distributor_id: getDistributorId(),
-        pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id
+        pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id,
+        e_activity_id: router.params?.activity_id ||purchase_share_info?.activity_id
       })
       const tabBar = tab_bar && JSON.parse(tab_bar)
       dispatch(updatePurchaseTabbar({
@@ -122,9 +123,10 @@ function Home() {
     (openScanQrcode == 1 && isWeixin) ||
     (VERSION_STANDARD && openStore && openLocation == 1) ||
     fixedTop
-
+    const onAddToCart =async (item) => {
+      console.log('Item added to cart:', item);
+    };
   console.log('pageData:', pageData)
-
   return (
     <SpPage
       className='page-purchase-index'
@@ -141,7 +143,15 @@ function Home() {
         scrollY
       >
         {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
-        <HomeWgts wgts={filterWgts} />
+        {filterWgts.length > 0 && (
+          <WgtsContext.Provider
+            value={{
+              onAddToCart: () => {}
+            }}
+          >
+            <HomeWgts wgts={filterWgts} />
+          </WgtsContext.Provider>
+        )}
       </ScrollView>
 
       {/* 隐私政策 */}

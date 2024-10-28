@@ -5,9 +5,9 @@ export function list (params) {
   return req.get('/orders', params)
 }
 
-export function detail (tid) {
+export function detail (tid,params) {
   // return req.get('/trade.get', { tid })
-  return req.get(`/order/${tid}`)
+  return req.get(`/order/${tid}`,params)
 }
 
 export function create (data) {

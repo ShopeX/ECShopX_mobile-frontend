@@ -2,13 +2,11 @@ import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View, ScrollView } from '@tarojs/components'
 import { classNames, validate, showToast } from '@/utils'
-import { SpImage, SpPage, SpTime, SpTabs } from '@/components'
+import { SpImage, SpPage, SpTime, SpTabs, SpCustomPicker, SpTable } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
-import CompCustomPicker from './comps/comp-custom-picker'
-import CompTable from './comps/comp-table'
 import './achievement.scss'
 
 const initialConfigState = {
@@ -55,8 +53,8 @@ const Achievement = () => {
     }
     const res = await api.salesman.promoterGetSalesmanStatic(params)
     res.forEach((element) => {
-      element.total_Fee = element.total_Fee / 100
-      element.total_rebate = element.total_rebate / 100
+      element.total_Fee = element.total_Fee ? element.total_Fee / 100 : 0
+      element.total_rebate = element.total_rebate ? element.total_rebate / 100 : 0
     })
     Taro.hideLoading()
     setState((draft) => {
@@ -122,7 +120,7 @@ const Achievement = () => {
             selects={parameter.datetype}
             nowTimeDa={parameter.date}
           />
-          <CompCustomPicker selector={selector} cancel={cancel} />
+          <SpCustomPicker selector={selector} cancel={cancel} />
         </View>
         <SpTabs
           current={types}
@@ -137,7 +135,7 @@ const Achievement = () => {
           }}
         />
 
-        <CompTable listData={listData} listHeader={listHeader} />
+        <SpTable listData={listData} listHeader={listHeader} />
       </View>
     </SpPage>
   )
