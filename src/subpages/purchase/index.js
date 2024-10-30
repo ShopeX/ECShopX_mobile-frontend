@@ -167,7 +167,7 @@ function Home() {
         })}
         scrollY
       >
-        {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
+        {isShowHomeHeader && process.env.APP_PLATFORM === 'standard' && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
         {filterWgts.length > 0 && (
           <WgtsContext.Provider
             value={{
