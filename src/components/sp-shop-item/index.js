@@ -11,7 +11,7 @@ function SpShopItem (props) {
   if (!info) {
     return null
   }
-  const { logo, name, cardList, salesCount, distance, is_dada, scoreList, marketingActivityList } =
+  const { logo, name, cardList, salesCount, distance, is_dada, scoreList, marketingActivityList,selfDeliveryRule,is_self_delivery } =
     info
   const rate = !!(scoreList || {}).avg_star ? <Text>评分：{(scoreList || {}).avg_star}</Text> : ''
   const [unfold, setUnfold] = useState(false)
@@ -42,6 +42,7 @@ function SpShopItem (props) {
               {rate} 月销：{salesCount}
             </View>
             {is_dada && <View className='express'>达达配送</View>}
+            {selfDeliveryRule?.is_open && is_self_delivery && <View className='expressed'>商家自配</View>}
           </View>
           <View className='item-bd-bd' onClick={showMore}>
             {(unfold ? cardList : cardList.slice(0, 3)).map((item, index) => (

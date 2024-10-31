@@ -30,7 +30,9 @@ export const SHOP_ITEM = {
   is_delivery: 'is_delivery',
   is_ziti: 'is_ziti',
   lat: 'lat',
-  lng: 'lng'
+  lng: 'lng',
+  selfDeliveryRule:'selfDeliveryRule',
+  is_self_delivery:"is_self_delivery"
 }
 
 export const BUSINESS_SORT = {
