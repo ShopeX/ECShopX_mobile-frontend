@@ -10,7 +10,7 @@ function CompPurchasingList(props) {
   return (
     <View className='comp-purchasing-list'>
       <View className='comp-purchasing-list-item'>
-        <SpImage src='https://img2.baidu.com/it/u=3227619927,365499885&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1715965200&t=660d198a9636f02a2f0f591142128c1a' />
+        <SpImage src={items?.pics} />
         <View className='details'>
           <View>{items.title}</View>
           {/* <View className='new'>新品</View> */}
