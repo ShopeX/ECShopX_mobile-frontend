@@ -278,13 +278,13 @@ export default class DistributionDashboard extends Component {
           </View>
         </View>
         <View className='section list share'>
-          {info.disabled == 0 && (
+          {/* {info.disabled == 0 && (
             <View className='list-item' onClick={this.handleClick}>
               <View className='iconfont icon-qrcode1 icon-fontsize' />
               <View className='list-item-txt'>我的销售店铺</View>
               <View className='iconfont icon-arrowRight icon-right' />
             </View>
-          )}
+          )} */}
           <Navigator
             className='list-item'
             open-type='navigateTo'

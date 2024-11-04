@@ -30,7 +30,7 @@
     .sp-search-input {
       // width: 290px;
       flex: 1;
-      margin-right: 20px;
+      // margin-right: 20px;
       height: 90px;
     }
     .g-button {
@@ -50,7 +50,7 @@
       }
     }
     .btn-adduser {
-      width: 280px;
+      width: 200px;
       height: 90px;
       display: flex;
       align-items: center;
@@ -108,6 +108,17 @@
     }
     .icon-camera {
       color: var(--color-dianwu-primary);
+    }
+  }
+  .code-to-cart{
+    color: var(--color-dianwu-primary);
+    margin-left: 10px;
+    &-icon {
+      font-size: 60px;
+      text-align: center;
+    }
+    &-text{
+      font-size: 24px;
     }
   }
 

@@ -15,11 +15,11 @@ const initialConfigState = {
     { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/salesman/list' },
     { name: '代客下单', icon: 'icon-daikexiadan', path: '/subpages/salesman/selectCustomer' },
     {
-      name: '业务员销售',
+      name: '业务员分销',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
-    { name: '商家列表', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop?status=true` },
+    { name: '我的商家', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop` },
     // { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
     // { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
     // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
@@ -32,15 +32,15 @@ const initialConfigState = {
     date: S.getNowDate(),
     distributor_id: ''
   },
-  selector: []
+  selector: [],
+  pickerId:""
 }
 
 const Index = () => {
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, information, funcList, info, parameter, selector } = state
+  const { codeStatus, information, funcList, info, parameter, selector,pickerId} = state
 
   useDidShow(() => {
-    fetch()
     distributor()
   })
 
@@ -77,7 +77,10 @@ const Index = () => {
     })
     setState((draft) => {
       draft.selector = list
+      draft.parameter = {...parameter, distributor_id: list[1].value}
+      draft.pickerId = list[1].value
     })
+    handleRefresh()
   }
 
   const handleCardClick = () => {
@@ -118,6 +121,7 @@ const Index = () => {
     }
     setState((draft) => {
       draft.parameter = params
+      draft.pickerId = val.value
     })
     handleRefresh()
   }
@@ -143,7 +147,7 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <SpCustomPicker selector={selector} cancel={cancel} />
+              <SpCustomPicker selector={selector} cancel={cancel} customStatus id={pickerId}  />
             </View>
           </View>
           <SpTime

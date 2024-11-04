@@ -16,7 +16,7 @@ const initialConfigState = {
     { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/delivery/list' },
     { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list' },
     {
-      name: '配送业绩',
+      name: '配送统计',
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/delivery/achievement'
     },
