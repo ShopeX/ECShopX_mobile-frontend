@@ -203,7 +203,7 @@ function TradeAfterSale(props) {
       evidence_pic: pic
     }
     if (offline_freight_status) {
-      params.is_refund_freight = offline_freight * 100
+      params.freight = offline_freight * 100
     }
     // 退货退款
     if (aftersales_type == 'REFUND_GOODS') {
@@ -235,7 +235,6 @@ function TradeAfterSale(props) {
       }
     }
     console.log('params1111', params, offline_freight_status, offline_freight)
-    return
     await api.aftersales.apply(params)
     showToast('提交成功')
     Taro.eventCenter.trigger('onEventOrderStatusChange')

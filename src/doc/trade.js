@@ -146,5 +146,6 @@ export const TRADE_AFTER_SALES_ITEM = {
   description: 'description',
   evidencePic: 'evidence_pic',
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
-  returnType: 'return_type'
+  returnType: 'return_type',
+  freight: ({ freight }) => freight / 100
 }
