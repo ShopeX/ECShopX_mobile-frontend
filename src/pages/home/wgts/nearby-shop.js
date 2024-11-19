@@ -338,7 +338,7 @@ function WgtNearbyShop(props) {
             return (
               <View className='del' key={index}>
                 <SpGoodsItem
-                  showFav
+                  showFav={false}
                   showAddCart={base.addCart}
                   onStoreClick={handleClickStore}
                   onAddToCart={handleAddToCart}

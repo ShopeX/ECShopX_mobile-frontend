@@ -182,7 +182,8 @@ const Purchasing = () => {
       promoter_price: ({ promoter_price }) => (promoter_price / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       commission_type: 'commission_type',
-      promoter_point: 'promoter_point'
+      promoter_point: 'promoter_point',
+      pics: ({ pics }) => pics[0],
     })
 
     setState((draft) => {

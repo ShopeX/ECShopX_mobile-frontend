@@ -18,8 +18,8 @@ export default class DistributionSubordinate extends Component {
       list: [],
       curTabIdx: 0,
       tabList: [
-        { title: '已购买', num: 0, type: 'buy' },
-        { title: '未购买', num: 0, type: 'not_buy' }
+        { title: '已购买会员', num: 0, type: 'buy' },
+        { title: '未购买会员', num: 0, type: 'not_buy' }
       ],
       searchConditionList: [
         { label: '会员名称', value: 'userName' },

@@ -128,7 +128,7 @@ function StoreIndex() {
 
   const salesmanShare = async () => {
     let params = await parameter()
-    console.log(params, 'params====')
+
     if (params?.qr == 'Y') {
       let param = {
         promoter_user_id: params?.uid,
@@ -142,7 +142,6 @@ function StoreIndex() {
 
   const parameter = async () => {
     const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
-   
     // 检查是否返回了非空对象
     // if (storedData && typeof storedData === 'object' && Object.keys(storedData).length > 0) {
     //   return storedData
@@ -169,7 +168,7 @@ function StoreIndex() {
 
   const fetchWgts = async () => {
     const { id, dtid, uid } = await parameter()
-    console.log(await parameter(), 'parameter')
+
     const distributor_id = getDistributorId(id || dtid || uid)
     const { status } = await api.distribution.merchantIsvaild({
       distributor_id
@@ -477,6 +476,7 @@ function StoreIndex() {
             draft.open = false
           })
         }
+        parameter={parameter}
       />
 
       <SpLogin ref={loginRef} />

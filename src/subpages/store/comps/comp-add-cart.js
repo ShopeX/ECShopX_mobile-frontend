@@ -25,18 +25,21 @@ import {
 } from '@/store/slices/cart'
 
 const initialState = {
-  hideClose: true,
+  hideClose: true
 }
 
 function CompAddCart(props) {
   const { shopCartCount } = useSelector((state) => state.cart)
   const { openRecommend, openLocation, openStore, colorPrimary } = useSelector((state) => state.sys)
-  const { open = false, onMaskCloses = {},parameter = {} } = props
+  const { open = false, onMaskCloses = {}, parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state
   const $instance = getCurrentInstance()
   const router = $instance.router
-
+  const plus_buy_activity = shopCartCount?.storeDetails?.plus_buy_activity?.[0]
+  const exchange_item = plus_buy_activity?.plus_item
+    ? pickBy(plus_buy_activity?.plus_item, { ...doc.cart.PLUS_BUY_ITEM })
+    : ''
 
   const allChecked =
     shopCartCount.storeDetails?.cart_total_count == shopCartCount.storeDetails?.list?.length
@@ -99,11 +102,11 @@ function CompAddCart(props) {
     }
     const { valid_cart } = await api.cart.get(params)
     let shopCats = {
-      shop_id: valid_cart===undefined?'':valid_cart[0]?.shop_id || '', //下单
-      cart_total_num: valid_cart===undefined?'':valid_cart[0]?.cart_total_num || '', //数量
-      total_fee: valid_cart===undefined?'':valid_cart[0]?.total_fee || '', //实付金额
-      discount_fee: valid_cart===undefined?'':valid_cart[0]?.discount_fee || '', //优惠金额
-      storeDetails: valid_cart===undefined?'':valid_cart[0] || {}
+      shop_id: valid_cart === undefined ? '' : valid_cart[0]?.shop_id || '', //下单
+      cart_total_num: valid_cart === undefined ? '' : valid_cart[0]?.cart_total_num || '', //数量
+      total_fee: valid_cart === undefined ? '' : valid_cart[0]?.total_fee || '', //实付金额
+      discount_fee: valid_cart === undefined ? '' : valid_cart[0]?.discount_fee || '', //优惠金额
+      storeDetails: valid_cart === undefined ? '' : valid_cart[0] || {}
     }
     dispatch(updateShopCartCount(shopCats))
   }
@@ -136,6 +139,37 @@ function CompAddCart(props) {
             <Text className='empty-cart'>清空购物车</Text>
           </View>
         </View>
+        {/** 换购开始 */}
+        {plus_buy_activity?.discount_desc && (
+          <View className='shop-cart-activity'>
+            <View className='shop-cart-activity-item'>
+              <View
+                className='shop-cart-activity-item-left'
+                onClick={() =>
+                  Taro.navigateTo({
+                    url: `/marketing/pages/plusprice/detail-plusprice-list?marketing_id=${plus_buy_activity?.activity_id}`
+                  })
+                }
+              >
+                <Text className='shop-cart-activity-label'>换购</Text>
+                <Text>{plus_buy_activity?.discount_desc?.info}</Text>
+              </View>
+              <View
+                className='shop-cart-activity-item-right'
+                onClick={() =>
+                  Taro.navigateTo({
+                    url: `/marketing/pages/plusprice/cart-plusprice-list?marketing_id=${plus_buy_activity?.activity_id}`
+                  })
+                }
+              >
+                去选择
+                <Text className='at-icon at-icon-chevron-right'></Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/** 换购结束 */}
         {/* 列表 */}
         <ScrollView className='tabulation' scrollY>
           {shopCartCount.storeDetails?.list?.map((item) => {
@@ -175,6 +209,38 @@ function CompAddCart(props) {
               </View>
             )
           })}
+          {plus_buy_activity?.discount_desc && (
+            <View className='exchange-purchase'>
+              <SpImage
+                className='exchange-purchase-img'
+                src={exchange_item?.pics}
+                width={120}
+                height={120}
+              />
+              <View className='exchange-purchase-details'>
+                <View className='details-title'>
+                  <Text className='details-title-jiagou'>加购价</Text>
+                  <Text>{exchange_item?.item_name}</Text>
+                </View>
+                <View className='exchange-purchase-desc'>{exchange_item?.item_spec_desc}</View>
+                <View className='exchange-purchase-price'>
+                  <View>
+                    <SpPrice value={exchange_item?.price / 100} />
+                    {exchange_item?.market_price > exchange_item?.price && (
+                      <Text className='goods-price-wrap'>
+                        <SpPrice
+                          className='mkt-price'
+                          lineThrough
+                          value={exchange_item?.market_price / 100}
+                        />
+                      </Text>
+                    )}
+                  </View>
+                  <View>x {exchange_item?.num}</View>
+                </View>
+              </View>
+            </View>
+          )}
         </ScrollView>
         {/* 底部 */}
         <CompTab />
