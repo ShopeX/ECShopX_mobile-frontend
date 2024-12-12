@@ -44,7 +44,7 @@ function SpLogin(props, ref) {
 
   useEffect(() => {
     if (loginModal) {
-      // fetchPrivacyData()
+      fetchPrivacyData()
       Taro.login({
         success: ({ code }) => {
           codeRef.current = code
