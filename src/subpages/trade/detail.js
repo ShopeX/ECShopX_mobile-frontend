@@ -276,7 +276,7 @@ function TradeDetail(props) {
       return '订单取消，退款处理中'
     } else if (
       info.orderStatus == 'NOTPAY' &&
-      info.payChannel == 'offline_pay' &&
+      info.payType == 'offline_pay' &&
       info.offlinePayCheckStatus == '0'
     ) {
       //展示线下审核的一些状态 0 待处理;1 已审核;2 已拒绝;9 已取消
