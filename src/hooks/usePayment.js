@@ -78,6 +78,8 @@ export default (props = {}) => {
         break
       case 'alipaymini':
         alipaymini(params, orderInfo)
+      case 'offline_pay':
+        offlinePay(params,orderInfo)
     }
   }
 
@@ -345,6 +347,25 @@ export default (props = {}) => {
     if (pay_type == 'point') {
       paySuccess(params, orderInfo)
     }
+  }
+
+  const offlinePay = async (params, orderInfo) => {
+    console.log('offlinePay',params, orderInfo,isTradeDetaiPage())
+    const { pay_channel, pay_type } = params
+    const { order_id, order_type, has_check} = orderInfo
+     await api.cashier.getPayment({
+        pay_type,
+        pay_channel,
+        order_id,
+        order_type: order_type
+      })
+    if (isTradeDetaiPage()) {
+      Taro.navigateTo({url:`/pages/cart/offline-transfer?isDetail=true&order_id=${order_id}&has_check=${has_check}`})
+    }else{
+      Taro.redirectTo({url:'/pages/cart/offline-transfer?order_id='+order_id})
+    }
+
+
   }
 
 

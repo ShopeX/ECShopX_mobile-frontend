@@ -332,6 +332,19 @@ function DianwuCheckout(props) {
     Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
   }
 
+  //线下转账
+  const handleClickOfflinePay = async() => {
+    const order_id = await createOrder()
+    // await api.dianwu.orderPayment({
+    //   order_id,
+    //   pay_type: 'pos'
+    // })
+    dispatch(selectMember(null))
+    onEventCreateOrder()
+    Taro.navigateTo({url:`/pages/cart/offline-transfer?has_check=false&isDianwu=true&order_id=${order_id}`})
+    // Taro.redirectTo({ url: `/subpages/dianwu/collection-result?order_id=${order_id}&pay_type=pos` })
+  }
+
   const onEventCreateOrder = () => {
     const pages = Taro.getCurrentPages()
     const current = pages[pages.length - 1]
@@ -543,6 +556,10 @@ function DianwuCheckout(props) {
           <SpCell isLink onClick={handleClickCash}>
             <Text className='iconfont icon-money1'></Text>
             <Text>现金收款</Text>
+          </SpCell>
+          <SpCell isLink onClick={handleClickOfflinePay}>
+            <Text className='iconfont icon-money1'></Text>
+            <Text>线下银行转账</Text>
           </SpCell>
         </AtModalContent>
       </AtModal>

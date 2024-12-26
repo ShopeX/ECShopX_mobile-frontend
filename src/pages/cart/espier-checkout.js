@@ -77,6 +77,7 @@ function CartCheckout(props) {
     detailInfo,
     payType,
     payChannel,
+    paymentName,
     submitLoading,
     totalInfo,
     shoppingGuideData,
@@ -835,6 +836,14 @@ function CartCheckout(props) {
     })
   }
 
+  const getPayChannelLabel = () => {
+    if(payChannel == 'offline_pay'){
+      return  paymentName
+    }else{
+      return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
+    }
+  }
+
   const orderSubmitDisabled = () => {
     if (receiptType == 'ziti') {
       return !zitiAddress
@@ -1091,7 +1100,7 @@ function CartCheckout(props) {
                     </Text>
                   )}
                   <Text className='invoice-title'>
-                    {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+                    {getPayChannelLabel()}
                   </Text>
                 </View>
               }
@@ -1190,6 +1199,7 @@ function CartCheckout(props) {
             if (value) {
               draft.payType = value.paymentCode
               draft.payChannel = value.paymentChannel
+              draft.paymentName = value.paymentName
             }
           })
         }}

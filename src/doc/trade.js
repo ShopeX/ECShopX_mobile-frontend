@@ -19,6 +19,8 @@ export const TRADE_ITEM = {
       logo: 'logo'
     })
   },
+  offlinePayCheckStatus:'offline_pay_check_status',
+  offlinePayName:'offline_pay_name',
   deliveryCorpName: 'delivery_corp_name',
   deliveryCode: 'delivery_code',
   dada: ({ dada }) => {

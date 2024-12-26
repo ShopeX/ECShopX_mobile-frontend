@@ -452,7 +452,7 @@ function TradeDetail(props) {
             <SpCell title='促销' value={<SpPrice value={info?.promotionDiscount} size={28} />} />
             <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
             <SpCell title='支付方式' value={(() => {
-              return PAYMENT_TYPE[info?.payType] || ''
+              return info?.payType == 'offline_pay' ? info?.offlinePayName : PAYMENT_TYPE[info?.payType] || ''
             })()} />
             <SpCell title='实付' value={(() => {
               if (info?.orderClass === 'pointsmall') {
