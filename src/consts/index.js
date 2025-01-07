@@ -27,6 +27,10 @@ export const ORDER_STATUS_INFO = {
   DONE: {
     msg: '交易完成',
     icon: 'order_success'
+  },
+  PART_PAYMENT:{
+    msg: '部分付款',
+    icon: 'partial_payment'
   }
 }
 
