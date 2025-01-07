@@ -224,7 +224,7 @@ function PointShopEspierCheckout() {
     let orderId
     try {
       // 积分商城默认下单积分支付
-      const resOrderInfo = await api.trade.h5create({...params,pay_type: "point"})
+      const resOrderInfo = await api.trade.h5create({...params,pay_type: "point",pay_channel: 'point'})
       orderInfo = resOrderInfo
       orderId = resOrderInfo.order_id
     } catch (e) {
