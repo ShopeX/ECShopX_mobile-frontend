@@ -37,8 +37,11 @@ export default class DistributionSubordinate extends Component {
       buy_type: tabList[curTabIdx].type
     }
 
-    const { list, total_count } = await api.distribution.subordinate(query)
-    const total = total_count
+    const { buy, not_buy } = await api.distribution.subordinate(query)
+
+    let list = tabList[curTabIdx].type == 'buy' ? buy.list : not_buy.list
+    let total_count = tabList[curTabIdx].type == 'buy' ? buy.total_count : not_buy.total_count
+
 
     const nList = pickBy(list, {
       relationship_depth: 'relationship_depth',
@@ -55,7 +58,7 @@ export default class DistributionSubordinate extends Component {
     })
 
     return {
-      total
+      total: total_count
     }
   }
 
