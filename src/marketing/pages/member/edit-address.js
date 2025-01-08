@@ -118,9 +118,9 @@ function AddressIndex(props) {
     } else {
       nInfo[name] = val
     }
-    setState((draft) => {
-      draft.info = nInfo
-    })
+    // setState((draft) => {
+    //   draft.info = nInfo
+    // })
   }
 
   const handleDefChange = (e) => {
