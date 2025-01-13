@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
-import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker } from '@/components'
-import { AtButton, AtInput, AtTextarea } from 'taro-ui'
+import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker, SpInput as AtInput } from '@/components'
+import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
 import api from '@/api'
@@ -66,10 +66,10 @@ function Group(props) {
       draft.endTime = dayjs(endTime * 1000).format('HH:mm')
       draft.shareImageUrl = shareImageUrl
     })
-    
+
     const _ziti = pickBy(res.ziti[0], doc.community.COMMUNITY_ZITI)
     dispatch(updateSelectCommunityZiti(_ziti))
-    
+
     const _items = pickBy(res.items, doc.community.COMMUNITY_GOODS_ITEM)
     console.log(`_items:`, _items)
     dispatch(updateSelectGoods(_items))
@@ -269,13 +269,15 @@ function Group(props) {
       <View className='card-block'>
         <View className='card-block-hd'>团购介绍</View>
         <View className='card-block-bd padding-20'>
-          <AtInput
-            name='activityName'
-            value={activityName}
-            className='group-name'
-            placeholder='请输入团购活动标题'
-            onChange={onInputChange.bind(this, 'activityName')}
-          />
+          <View className='tipas'>
+            <AtInput
+              name='activityName'
+              value={activityName}
+              className='group-name'
+              placeholder='请输入团购活动标题'
+              onChange={onInputChange.bind(this, 'activityName')}
+            />
+          </View>
           <View className='tip'>添加群或个人微信二维码，方便团员取得联系</View>
 
           <View className='teamhead-barcode'>
