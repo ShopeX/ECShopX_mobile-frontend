@@ -9,6 +9,7 @@ export const initialState = {
   defalutPaytype: isWxWeb ? 'wxpayjs' : isWeb ? 'wxpayh5' : 'wxpay', // 默认支付方式
   payType: '', // wxpay 微信支付 point 积分支付 deposit 储值支付  alipaymini 支付宝小程序支付
   payChannel: '', // 支付渠道
+  paymentName:'',//支付label
   isPointitemGood: false, // 是否为积分商城的商品
   shoppingGuideData: {}, //代客下单导购信息
   totalInfo: {

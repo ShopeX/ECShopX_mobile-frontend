@@ -269,7 +269,8 @@ export const PAYMENT_TYPE = {
   wxpaypos: '微信支付',
   alipaypos: '支付宝支付',
   alipaymini: '支付宝支付',
-  point: '积分支付'
+  point: '积分支付',
+  offline_pay:'线下转账'
 }
 
 export const TRANSFORM_PAYTYPE = {

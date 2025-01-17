@@ -78,3 +78,25 @@ export function sendCode (orderId) {
 export function bindOrder (data) {
   return req.post(`/order/bind/${data.order_id}`, data)
 }
+
+export function getAackaccountList () {
+  return req.get('/order/offline/backaccount')
+}
+
+//上传线下转账凭证
+export function uploadVoucher (data) {
+  return req.post(`/order/offline/upload/voucher`, data)
+}
+
+//更新线下转账凭证
+export function updateVoucher (data) {
+  return req.post(`/order/offline/update/voucher`, data)
+}
+
+//获取线下转账凭证
+export function getVoucher (data) {
+  return req.get(`/order/offline/get/voucher`, data)
+}
+
+
+

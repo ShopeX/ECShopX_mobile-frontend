@@ -33,6 +33,7 @@ function SpCashier(props) {
     onClose = () => { },
     onChange = () => { },
     paymentAmount = 0,
+    defaultVal,
     salesman = false
   } = props
   const $instance = getCurrentInstance()
@@ -58,6 +59,8 @@ function SpCashier(props) {
       })
     }
   }, [value, isOpened])
+
+  console.log('selectPayment',selectPayment)
 
   const fetchPaymentList = async () => {
     let platform = ''
@@ -104,8 +107,9 @@ function SpCashier(props) {
       draft.list = _list
     })
     if (_list.length > 0) {
+
       // const defaultItem = (pointPayFirst && (userPoint > 0)) ?  _list.find(item=>item.paymentChannel ==  "point") : _list.find(item=>item.paymentChannel ==  "wxpay")
-      const defaultItem = _list.find(item=>item.paymentChannel ==  "wxpay")
+      const defaultItem = _list.find(item=>item.paymentChannel == (defaultVal || "wxpay"))
       onChange(defaultItem)
       onChangePayment(defaultItem)
     }

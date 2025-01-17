@@ -225,7 +225,7 @@ function SpPage(props, ref) {
 
     // 使用正则表达式匹配路由前缀
     const regex = res.split('/').length >= 4 ? res.match(/(?:[^\/]*\/){2}([^\/]+)(?:\/|$)/)[0] : null
-    
+
     // 检查是否找到匹配项
     const status = regex !== null && prefixes[regex]
     const newPrefixes = prefixes[regex]
@@ -237,7 +237,8 @@ function SpPage(props, ref) {
       '--color-marketing': status ? newPrefixes.marketing : colorMarketing,
       '--color-accent': status ? newPrefixes.accent : colorAccent,
       '--color-rgb': status ? hex2rgb(newPrefixes.primary).join(',') : rgb,
-      '--color-dianwu-primary': '#4980FF'
+      '--color-dianwu-primary': '#4980FF',
+      '--color-dianwu-rgb': hex2rgb('#4980FF').join(','),
     }
 
     // 更新状态

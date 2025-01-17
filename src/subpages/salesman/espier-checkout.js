@@ -107,7 +107,8 @@ function CartCheckout(props) {
     routerParams, // 路由参数
     deliveryTimeList, //自配送时间
     codeStatus,
-    cutomer
+    cutomer,
+    paymentName,
   } = state
 
   const {
@@ -810,6 +811,14 @@ function CartCheckout(props) {
     })
   }
 
+  const getPayChannelLabel = () => {
+    if(payChannel == 'offline_pay'){
+      return  paymentName
+    }else{
+      return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
+    }
+  }
+
   // 街道社区
   const bindMultiPickerColumnChange = (e) => {
     const { column, value } = e.detail
@@ -1058,7 +1067,7 @@ function CartCheckout(props) {
                     </Text>
                   )}
                   <Text className='invoice-title'>
-                    {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+                    {getPayChannelLabel()}
                   </Text>
                 </View>
               }
@@ -1156,6 +1165,7 @@ function CartCheckout(props) {
             if (value) {
               draft.payType = value.paymentCode
               draft.payChannel = value.paymentChannel
+              draft.paymentName = value.paymentName
             }
           })
         }}

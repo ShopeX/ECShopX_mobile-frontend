@@ -52,10 +52,18 @@ function TradeDetail(props) {
     Taro.eventCenter.on('onEventAfterSalesCancel', () => {
       fetch()
     })
+    //线下转账
+    Taro.eventCenter.on('onEventOfflineApply', () => {
+      fetch()
+      setTimeout(() => {
+        Taro.eventCenter.trigger('onEventOrderStatusChange')
+      }, 200)
+    })
 
     return () => {
       Taro.eventCenter.off('onEventAfterSalesApply')
       Taro.eventCenter.off('onEventAfterSalesCancel')
+      Taro.eventCenter.off('onEventOfflineApply')
     }
   }, [])
 
@@ -240,7 +248,14 @@ function TradeDetail(props) {
       return '部分商品已发货'
     } else if (info.cancelStatus == 'WAIT_PROCESS') {
       return '订单取消，退款处理中'
-    } else {
+    }else if (
+      info.orderStatus == 'NOTPAY' &&
+      info.payType == 'offline_pay' &&
+      info.offlinePayCheckStatus == '0'
+    ) {
+      //展示线下审核的一些状态 0 待处理;1 已审核;2 已拒绝;9 已取消
+      return '待商家确认'
+    }  else {
       return ORDER_STATUS_INFO[info.orderStatus]?.msg
     }
   }
@@ -452,7 +467,7 @@ function TradeDetail(props) {
             <SpCell title='促销' value={<SpPrice value={info?.promotionDiscount} size={28} />} />
             <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
             <SpCell title='支付方式' value={(() => {
-              return PAYMENT_TYPE[info?.payType] || ''
+              return info?.payType == 'offline_pay' ? info?.offlinePayName : PAYMENT_TYPE[info?.payType] || ''
             })()} />
             <SpCell title='实付' value={(() => {
               if (info?.orderClass === 'pointsmall') {

@@ -84,7 +84,27 @@ export default (props) => {
           url: `/subpages/trade/trade-evaluate?order_id=${orderId}`
         })
       }
-    }
+    },
+    CHANGE_OFFLINE: {
+      title: '修改付款凭证',
+      key: 'changeOffline',
+      btnStatus: 'normal',
+      action: ({ orderId }) => {
+        Taro.navigateTo({
+          url: `/pages/cart/offline-transfer?isDetail=true&order_id=${orderId}&has_check=true&isDianwu=1`
+        })
+      }
+    },
+    UPLOAD__OFFLINE: {
+      title: '上传付款凭证',
+      key: 'changeOffline',
+      btnStatus: 'normal',
+      action: ({ orderId }) => {
+        Taro.navigateTo({
+          url: `/pages/cart/offline-transfer?isDetail=true&order_id=${orderId}&has_check=false&isDianwu=1`
+        })
+      }
+    },
   }
 
   const getTradeAction = ({
@@ -95,12 +115,26 @@ export default (props) => {
     deliveryStatus,
     receiptType,
     isRate,
-    items
+    items,
+    payChannel,
+    offlinePayCheckStatus
   }) => {
     const btns = []
     const isData = receiptType == 'dada'
 
-    if (orderStatus == 'NOTPAY') { // 未支付
+    if(payChannel == 'offline_pay' && orderStatus == 'NOTPAY'){
+      if(offlinePayCheckStatus == null){
+        //上传凭证
+        btns.push(tradeActionBtns.UPLOAD__OFFLINE)
+      }
+
+      if(offlinePayCheckStatus == '2' ){
+        //线下转账拒绝时修改付款凭证
+        btns.push(tradeActionBtns.CHANGE_OFFLINE)
+      }
+    }
+
+    if (orderStatus == 'NOTPAY' && offlinePayCheckStatus != '0') { // 未支付
       if (canApplyCancel) {
         btns.push(tradeActionBtns.CANCEL)
       }

@@ -1,0 +1,256 @@
+.page-address-edit {
+
+  .scroll-view-container {
+    height: 100%;
+
+    .scroll-view-body {
+      overflow: hidden;
+      padding:  24px;
+    }
+  }
+
+  .submit-btn {
+    font-size: 30px;
+    color: #fff;
+  }
+
+  .dianwu-primary {
+    border-color: var(--color-dianwu-primary) !important;
+    background: var(--color-dianwu-primary) !important;
+
+  }
+
+  .normal-primary{
+    border-color: var(--color-primary) !important;
+    background: var(--color-primary) !important;
+  }
+
+  .page-address-edit__form {
+    border-radius: 16px;
+    padding: 24px 24px 36px 24px;
+    box-sizing: border-box;
+
+    .required .sp-cell__hd::before {
+      content: '*';
+      display: inline-block;
+      color: #b50303;
+      width: 28px;
+      position: absolute;
+      left: -16px;
+    }
+
+    .sp-cell {
+      padding: 26px 0;
+
+      &__hd {
+        width: 176px;
+      }
+
+
+      &__bd {
+        padding-top: 4px;
+        text-align: right;
+      }
+
+      &__title {
+        color: #666;
+        font-size: 28px;
+      }
+    }
+  }
+
+  .offline-voucher-pc{
+    display: flex;
+    flex-direction: column;
+    .sp-cell__hd{
+      width: 100%;
+    }
+    .sp-cell__bd{
+      width: 100%;
+      font-size: 28px;
+      color: #111111;
+    }
+  }
+
+  .sp-cell__ft {
+    color: #ccc;
+  }
+
+  &__form {
+    background: #fff;
+    padding: $edge-size;
+    margin: 0 0 24px;
+  }
+
+  .picker {
+
+    text {
+      font-size: 28px;
+    }
+
+    &__title {
+      font-size: $font-size;
+      margin-right: 16px;
+      width: 172px;
+    }
+
+    .pick-value {
+      color: #333;
+    }
+
+    span.pick-value-null {
+      color: #ccc;
+    }
+
+    text.pick-value-null {
+      color: #808080;
+    }
+  }
+
+  .border-bottom {
+    border-bottom: 1PX solid #DDDDDD;
+  }
+
+  .offline-item {
+    .at-input {
+      margin-bottom: 0;
+      padding: 0;
+
+      &:after {
+        border-color: transparent;
+      }
+
+      &__input {
+        padding-right: 0;
+      }
+    }
+
+    .at-textarea {
+      overflow: hidden;
+      border: none;
+      width: 100%;
+      height: 100px;
+      padding: 0 18px 12px 0;
+
+      &__textarea {
+        color: #333;
+        font-size: 28px;
+        height: 100%;
+      }
+    }
+
+    .taro-textarea {
+      font-size: 30px !important;
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
+  }
+
+  .default_address {
+    border-radius: 16px;
+    margin: 22px 0;
+    padding-right: 0px;
+
+    .sp-cell__title {
+      font-size: 28px;
+    }
+
+  }
+
+  .at-input input {
+    font-size: 28px;
+  }
+
+  .detail-address {
+    padding-bottom: 0 !important;
+    align-items: flex-start !important;
+  }
+
+  .placeholder-txt {
+    color: #ccc;
+  }
+
+  .pic-tips {
+    font-size: 24px;
+    color: #666666;
+    width: 100%;
+    text-align: left;
+    margin: 7px 0 41px 0;
+  }
+
+  .head-box {
+    width: 100%;
+    box-sizing: border-box;
+    padding-bottom: 24px;
+    &-title {
+      font-weight: 600;
+      font-size: 32px;
+      color: #111111;
+      display: flex;
+      align-items: center;
+
+      // &::before {
+      //   content: '';
+      //   display: block;
+      //   width: 10px;
+      //   height: 32px;
+      //   border-radius: 16px;
+      //   background: linear-gradient(to bottom, red, #fff);
+      //   margin-right: 16px;
+      // }
+    }
+
+    &-subtitle {
+      margin-top: 11px;
+      font-size: 24px;
+      color: #666666;
+    }
+  }
+
+  .pic-box{
+    display: flex;
+    flex-wrap: wrap;
+    &-item{
+      margin-right: 26px;
+      margin-bottom: 36px;
+    }
+  }
+
+  .account-item{
+    width: 100%;
+    padding: 33px 36px;
+    box-sizing: border-box;
+    border: 1px solid #979797;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    margin-top: 24px;
+
+    &-active{
+      border-color:var(--color-primary);
+      background: rgba(var(--color-rgb), 0.2);
+    }
+    &-dianwu-active{
+      border-color:var(--color-dianwu-primary);
+      background: rgba(var(--color-dianwu-rgb), 0.2);
+    }
+    &-content{
+      margin-left: 36px;
+      font-weight: 400;
+      font-size: 28px;
+      color: #666666;
+      &-bank{
+        font-weight: 500;
+        font-size: 32px;
+        color: #111111;
+      }
+      &-name{
+        margin: 11px 0;
+        font-size: 26px;
+      }
+      &-no{
+        font-size: 28px;
+        margin-top: 11px;
+      }
+    }
+  }
+}
