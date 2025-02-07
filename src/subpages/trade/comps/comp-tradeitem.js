@@ -31,7 +31,7 @@ function CompTradeItem(props) {
   const btns = getTradeAction(info)
 
   const handleClickItem = ({ key, action }) => {
-    if (key == 'evaluate' || key == 'logistics') {
+    if (key == 'evaluate' || key == 'logistics' || key == 'changeOffline') {
       action(info)
     } else {
       Taro.navigateTo({

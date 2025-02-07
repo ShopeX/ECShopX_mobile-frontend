@@ -181,6 +181,7 @@ function OfflineTransfer() {
       setTimeout(() => {
         if (params.isDetail) {
           Taro.eventCenter.trigger('onEventOfflineApply')
+          Taro.eventCenter.trigger('onEventOrderStatusChange')
           Taro.navigateBack()
         } else if (params.isDianwu) {
           Taro.redirectTo({
