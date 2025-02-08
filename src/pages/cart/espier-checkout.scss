@@ -142,7 +142,6 @@ $margin24: 24px;
     padding: 30px 16px;
   }
 
-
   // .cart-checkout__pay {
   //   .pay__hint {
   //     padding: 0 $edge-size;
@@ -290,5 +289,9 @@ $margin24: 24px;
       justify-content: space-between;
       padding-left: 170px;
     }
+  }
+  .sp-input {
+    border: 1px #ccc solid;
+    padding: 16px 24px;
   }
 }
