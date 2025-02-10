@@ -101,7 +101,7 @@ function CompTradeItem(props) {
               </Text>
             </View>
           )}
-          {orderClass == 'normal' && (
+          {orderClass != 'pointsmall' && (
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>实付金额</Text>
