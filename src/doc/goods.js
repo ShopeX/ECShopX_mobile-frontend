@@ -355,6 +355,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
   },
   specItems: ({ spec_items, is_point }) => {
     return pickBy(spec_items, {
+      activity_type: 'activity_type',
       approveStatus: 'approve_status',
       specItem: ({ item_spec }) => {
         return pickBy(item_spec, {
