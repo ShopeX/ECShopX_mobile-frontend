@@ -362,6 +362,18 @@ function TradeDetail(props) {
     })
   }
 
+  const isShowCancleTime = () => {
+    if(info?.orderStatus == 'NOTPAY' ){
+      if(info.offlinePayCheckStatus == '0' && info?.orderStatus == 'NOTPAY' ){
+        return false
+      }else{
+        return true
+      }
+    }else{
+      return false
+    }
+  }
+
   return (
     <SpPage
       className='page-trade-detail'
@@ -401,7 +413,8 @@ function TradeDetail(props) {
               <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
             </View>
           )}
-          {info?.orderStatus == 'NOTPAY' && (
+
+          {isShowCancleTime() && (
             <View className='order-cancel-time'>
               该订单将为您保留
               <AtCountdown
