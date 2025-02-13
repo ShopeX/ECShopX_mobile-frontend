@@ -2,13 +2,14 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
-import { showToast, log, isArray, VERSION_STANDARD, isWeb, resolveUrlParamsParse } from '@/utils'
+import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
 
-const geocodeUrl = 'https://restapi.amap.com/v3/geocode'
+const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
+// const geocodeUrl = 'https://restapi.amap.com/v3/geocode' //高德
 const $instance = getCurrentInstance()
 const { store } = configStore()
 class EntryLaunch {
@@ -73,28 +74,63 @@ class EntryLaunch {
   }
 
   /**
-   * @function 初始化高德地图配置
+   * @function 初始化腾讯地图配置
    */
-  async initAMap(callback) {
-    return new Promise((reslove, reject) => {
-      MapLoader().then((amap) => {
-        amap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
-          this.geolocation = new amap.Geolocation({
-            enableHighAccuracy: true, //是否使用高精度定位，默认:true
-            timeout: 10000, //超过10秒后停止定位，默认：5s
-            position: 'RB', //定位按钮的停靠位置
-            buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-            zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-          })
-          this.geocoder = new AMap.Geocoder({
-            radius: 1000 //范围，默认：500
-          })
-          console.log('entryLaunch', this)
-          reslove('ok')
+  async initAMap() {
+    return new Promise((resolve, reject) => {
+      MapLoader().then((qq) => {
+        // 初始化地图对象
+        this.geolocation = new qq.maps.Geolocation({
+          key: process.env.APP_MAP_KEY,
+          complete: function(result) {
+            console.log('complete', result)
+          },
+          error: function(error) {
+            console.error('error', error)
+          }
         })
+        
+        // 初始化地址解析对象
+        this.geocoder = new qq.maps.Geocoder({
+          complete: function(result) {
+            console.log('complete', result)
+          },
+          error: function(error) {
+            console.error('error', error)
+          }
+        })
+        
+        console.log('entryLaunch', this)
+        resolve('ok')
+      }).catch(err => {
+        reject(err)
       })
     })
   }
+
+  /**
+   * @function 初始化高德地图配置
+   */
+  // async initAMap(callback) {
+  //   return new Promise((reslove, reject) => {
+  //     MapLoader().then((amap) => {
+  //       amap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
+  //         this.geolocation = new amap.Geolocation({
+  //           enableHighAccuracy: true, //是否使用高精度定位，默认:true
+  //           timeout: 10000, //超过10秒后停止定位，默认：5s
+  //           position: 'RB', //定位按钮的停靠位置
+  //           buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
+  //           zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
+  //         })
+  //         this.geocoder = new AMap.Geocoder({
+  //           radius: 1000 //范围，默认：500
+  //         })
+  //       console.log('entryLaunch', this)
+  //         reslove('ok')
+  //       })
+  //     })
+  //   })
+  // }
 
   /**
    * @function 获取当前店铺
@@ -221,34 +257,63 @@ class EntryLaunch {
     return res
   }
 
+    /**
+   * @function 高德根据地址解析经纬度
+   */
+    // async getLnglatByAddress(address) {
+    //   const res = await Taro.request({
+    //     url: `${geocodeUrl}/geo`,
+    //     data: {
+    //       key: process.env.APP_MAP_KEY,
+    //       address
+    //     }
+    //   })
+  
+    //   // console.log(0,res);
+    //   if (res.data.status == 1) {
+    //     const { geocodes } = res.data
+    //     if (geocodes.length > 0) {
+    //     return {
+    //         address: geocodes[0].formatted_address,
+    //         province: geocodes[0].province,
+    //         city: geocodes[0].city,
+    //         district: geocodes[0].district,
+    //         lng: geocodes[0].location.split(',')[0],
+    //         lat: geocodes[0].location.split(',')[1]
+    //       }
+    //     } else {
+    //       return {
+    //         error: '没有搜索到地址'
+    //       }
+    //     }
+    //   } else {
+    //     return {
+    //       error: '地址解析错误'
+    //     }
+    //   }
+    // }
+
   /**
-   * @function 根据地址解析经纬度
+   * @function 根据地址解析经纬度--腾讯
    */
   async getLnglatByAddress(address) {
     const res = await Taro.request({
-      url: `${geocodeUrl}/geo`,
+      url: `${geocodeUrl}`,
       data: {
         key: process.env.APP_MAP_KEY,
-        address
+        address,
+        output: 'json'
       }
     })
-
-    // console.log(0,res);
-    if (res.data.status == 1) {
-      const { geocodes } = res.data
-      if (geocodes.length > 0) {
-        return {
-          address: geocodes[0].formatted_address,
-          province: geocodes[0].province,
-          city: geocodes[0].city,
-          district: geocodes[0].district,
-          lng: geocodes[0].location.split(',')[0],
-          lat: geocodes[0].location.split(',')[1]
-        }
-      } else {
-        return {
-          error: '没有搜索到地址'
-        }
+    if (res.data.status === 0) {
+      const { result } = res.data
+      return {
+        address: result.title,
+        province: result.address_components.province,
+        city: result.address_components.city,
+        district: result.address_components.district,
+        lng: result.location.lng,
+        lat: result.location.lat
       }
     } else {
       return {
@@ -273,24 +338,63 @@ class EntryLaunch {
     })
   }
 
+
+  /**
+   * @function 根据经纬度解析地址 -- 高德
+   * @params lnglat Array
+   */
+  // async getAddressByLnglatWebAPI(lng, lat) {
+  //   const res = await Taro.request({
+  //     url: `${geocodeUrl}/regeo`,
+  //     data: {
+  //       key: process.env.APP_MAP_KEY,
+  //       location: `${lng},${lat}`
+  //     }
+  //   })
+
+  //   if (res.data.status == 1) {
+  //     const {
+  //       formatted_address,
+  //       addressComponent: { province, city, district }
+  //     } = res.data.regeocode
+  //     return {
+  //       lng,
+  //       lat,
+  //       address: formatted_address,
+  //       province: province,
+  //       city: isArray(city) ? province : city,
+  //       district: district
+  //     }
+  //   } else {
+  //     return {
+  //       error: '地址解析错误'
+  //     }
+  //   }
+  // }
+  
+
+  
+  /**
+   * @function 根据经纬度解析地址 -- 腾讯
+   * @params lnglat Array
+   */
   async getAddressByLnglatWebAPI(lng, lat) {
     const res = await Taro.request({
-      url: `${geocodeUrl}/regeo`,
+      url: `${geocodeUrl}`,
       data: {
         key: process.env.APP_MAP_KEY,
-        location: `${lng},${lat}`
+        location: `${lat},${lng}`
       }
     })
-
-    if (res.data.status == 1) {
+    if (res.data.status ==0) {
       const {
-        formatted_address,
-        addressComponent: { province, city, district }
-      } = res.data.regeocode
+        address,
+        address_component: { province, city, district }
+      } = res.data.result
       return {
         lng,
         lat,
-        address: formatted_address,
+        address: address,
         province: province,
         city: isArray(city) ? province : city,
         district: district
