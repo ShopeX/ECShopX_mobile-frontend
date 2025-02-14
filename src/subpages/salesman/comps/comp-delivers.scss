@@ -113,7 +113,7 @@
         color: #444;
         font-size: 28px;
       }
-  
+
     }
     .store-module {
       .store {
@@ -134,6 +134,11 @@
           color: var(--color-primary);
         }
       }
+    }
+    .sp-input {
+      border: 1PX solid #DDDDDD;
+      padding: 16px 24px;
+      font-size: 28px;
     }
     // .ziti-time-floatlayout {
     //   .sp-float-layout-bd {
@@ -186,4 +191,3 @@
     //   }
     // }
   }
-  

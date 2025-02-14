@@ -92,7 +92,7 @@ export default class WgtGoodsScroll extends Component {
 
     const { base, data, config, more } = info
     const { timer, boxHeight } = this.state
-    const goods = pickBy(data, doc.goods.WGT_GOODS_GRID)
+    const goods = pickBy(data, doc.goods.WGT_GOODS_SCROLL)
 
     return (
       <View className={`wgt wgt-goods-scroll ${base.padded ? 'wgt__padded' : null}`}>

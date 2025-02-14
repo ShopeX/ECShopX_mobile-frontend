@@ -414,6 +414,10 @@ function DianWuCashier() {
             </View>
           </View>
         )}
+        <View className='code-to-cart' onClick={handleScanGoodsBN}>
+          <View className='iconfont icon-saoma code-to-cart-icon'></View>
+          <View className='code-to-cart-text'>扫码加购</View>
+        </View>
       </View>
       {/* {isCameraOpend && (
         <View class='scan-code-wrap' >
@@ -430,7 +434,7 @@ function DianWuCashier() {
           </View>
         </View>
       )} */}
-      <View
+      {/* <View
         className='camera-placeholder'
         onClick={handleScanGoodsBN}
         // onClick={() => {
@@ -443,7 +447,7 @@ function DianWuCashier() {
           <View className='iconfont icon-camera'></View>
           <View>点击开启摄像头扫码</View>
         </View>
-      </View>
+      </View> */}
 
       {/* <View className='block-promation'>
         {[1, 2, 3].map((item, index) => (
@@ -458,7 +462,7 @@ function DianWuCashier() {
           </View>
         ))}
       </View> */}
-      <ScrollView className='item-list-scroll' scrollY>
+      <ScrollView className='item-list' scrollY>
         {cartList[0]?.list.length == 0 && <SpNote img='empty_data.png' title='暂时还没有商品' />}
         {cartList[0]?.list.length > 0 && (
           <View className='block-goods'>

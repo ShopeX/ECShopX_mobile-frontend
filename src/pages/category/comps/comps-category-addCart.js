@@ -16,12 +16,12 @@ import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 import S from '@/spx'
 import { platformTemplateName } from '@/utils/platform'
-import { pickBy, classNames, styleNames, showToast, entryLaunch } from '@/utils'
+import { pickBy, classNames, styleNames, showToast, VERSION_PLATFORM, entryLaunch } from '@/utils'
 import CompFirstCategory from './comp-first-category'
 import CompSecondCategory from './comp-second-category'
 import CompThirdCategory from './comp-third-category'
 import CompGoodsItem from './comp-goods-item'
-import './comps-category-old.scss'
+import './comps-category-addCart.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
 
@@ -35,7 +35,7 @@ const initialState = {
   goodsSort: 0,
   seriesList: [],
   cat_id: undefined,
-  cat_type:undefined,
+  cat_type: undefined,
   show: false,
   secondList: [],
   thirdList: [],
@@ -44,7 +44,7 @@ const initialState = {
   selectType: 'picker'
 }
 
-function compsCategoryOld(props) {
+function CompsCategoryAddCart(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   // const { purchase_share_info = {} } = useSelector((state) => state.purchase)
@@ -89,87 +89,125 @@ function compsCategoryOld(props) {
     }
   }, [skuPanelOpen])
 
-  const getCategoryList = async () => {
-    let currentList = []
 
-    const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
-    const { list } = await api.category.getCategory(query)
-    const seriesList = (list[0] && list[0].params.data[0]?.content) || []
-    if(seriesList){
-      //type  false:main_category 管理分类  true:category_id 销售分类
-      seriesList.forEach(element => {
-        element.id = element.category_id || element.main_category_id
-        element.name = element.name || element.category_name
-        element.type = element.category_id?true:false
-        element?.children.forEach(val => {
-          val.id = val.category_id || val.main_category_id
-          val.name = val.name || val.category_name
-          val.type = val.category_id?true:false
-          val?.children.forEach(ele => {
-            ele.id = ele.category_id || ele.main_category_id
-            ele.name = ele.name || ele.category_name
-            ele.type = ele.category_id?true:false
-          });
-        });
-      });
-    }
-    console.log(seriesList, '.......seriesList......seriesList')
-    if (!seriesList.length) {
-      //不存在数据读取销售分类
-      const res = await api.category.get()
-      currentList = pickBy(res, {
-        name: 'category_name',
-        img: 'image_url',
-        id: 'category_id',
-        type:true,
-        category_id: 'category_id',
-        children: ({ children }) =>
-          pickBy(children, {
-            name: 'category_name',
-            img: 'image_url',
-            id: 'category_id',
-            type:true,
-            category_id: 'category_id',
-            children: ({ children: children_ }) =>
-              pickBy(children_, {
-                name: 'category_name',
-                img: 'image_url',
-                type:true,
-                id: 'category_id'
-              })
-          })
-      })
-    } else {
-      currentList = pickBy(seriesList, {
-        name: 'name',
-        img: 'img',
-        id: 'id',
-        type:'type',
-        category_id: 'id',
-        children: ({ children }) =>
-          pickBy(children, {
-            name: 'name',
-            img: 'img',
-            id: 'id',
-            type:'type',
-            category_id: 'id',
-            children: ({ children }) =>
-              pickBy(children, {
-                name: 'name',
-                img: 'img',
-                id: 'id',
-                type:'type'
-              })
-          })
-      })
-    }
-    console.log(currentList,'currentList==========');
+  // 上个版本的分类逻辑，不删除保留，防止后面产品变卦
+  // const getCategoryList = async () => {
+  //   let currentList = []
+
+  //   const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
+  //   const { list } = await api.category.getCategory(query)
+  //   const seriesList = (list[0] && list[0].params.data[0]?.content) || []
+  //   if(seriesList){
+  //     //type  false:main_category 管理分类  true:category_id 销售分类
+  //     seriesList.forEach(element => {
+  //       element.id = element.category_id || element.main_category_id
+  //       element.name = element.name || element.category_name
+  //       element.type = element.category_id?true:false
+  //       element?.children.forEach(val => {
+  //         val.id = val.category_id || val.main_category_id
+  //         val.name = val.name || val.category_name
+  //         val.type = val.category_id?true:false
+  //         val?.children.forEach(ele => {
+  //           ele.id = ele.category_id || ele.main_category_id
+  //           ele.name = ele.name || ele.category_name
+  //           ele.type = ele.category_id?true:false
+  //         });
+  //       });
+  //     });
+  //   }
+  //   console.log(seriesList, '.......seriesList......seriesList')
+  //   if (!seriesList.length) {
+  //     //不存在数据读取销售分类
+  //     const res = await api.category.get()
+  //     currentList = pickBy(res, {
+  //       name: 'category_name',
+  //       img: 'image_url',
+  //       id: 'category_id',
+  //       type:true,
+  //       category_id: 'category_id',
+  //       children: ({ children }) =>
+  //         pickBy(children, {
+  //           name: 'category_name',
+  //           img: 'image_url',
+  //           id: 'category_id',
+  //           type:true,
+  //           category_id: 'category_id',
+  //           children: ({ children: children_ }) =>
+  //             pickBy(children_, {
+  //               name: 'category_name',
+  //               img: 'image_url',
+  //               type:true,
+  //               id: 'category_id'
+  //             })
+  //         })
+  //     })
+  //   } else {
+  //     currentList = pickBy(seriesList, {
+  //       name: 'name',
+  //       img: 'img',
+  //       id: 'id',
+  //       type:'type',
+  //       category_id: 'id',
+  //       children: ({ children }) =>
+  //         pickBy(children, {
+  //           name: 'name',
+  //           img: 'img',
+  //           id: 'id',
+  //           type:'type',
+  //           category_id: 'id',
+  //           children: ({ children }) =>
+  //             pickBy(children, {
+  //               name: 'name',
+  //               img: 'img',
+  //               id: 'id',
+  //               type:'type'
+  //             })
+  //         })
+  //     })
+  //   }
+  //   console.log(currentList,'currentList==========');
+  //   setState((draft) => {
+  //     draft.seriesList = currentList
+  //     draft.hasSeries = true
+  //     draft.cat_id = currentList[0].id
+  //     draft.cat_type = currentList[0]?.type
+  //   })
+  // }
+
+  const getCategoryList = async () => {
+    // ecsahopex ：商品管理分类   云店/官网/内购：商品销售分类
+    const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
+
+    const currentList = pickBy(res, {
+      name: 'category_name',
+      img: 'image_url',
+      id: 'category_id',
+      type: !VERSION_PLATFORM,
+      category_id: 'category_id',
+      children: ({ children }) =>
+        pickBy(children, {
+          name: 'category_name',
+          img: 'image_url',
+          id: 'category_id',
+          type: !VERSION_PLATFORM,
+          category_id: 'category_id',
+          children: ({ children: children_ }) =>
+            pickBy(children_, {
+              name: 'category_name',
+              img: 'image_url',
+              type: !VERSION_PLATFORM,
+              id: 'category_id'
+            })
+        })
+    })
+
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
       draft.cat_id = currentList[0].id
       draft.cat_type = currentList[0]?.type
     })
+
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -186,9 +224,9 @@ function compsCategoryOld(props) {
       // category_id: cat_id,
       v_store: cusIndex
     }
-    if(cat_type){
+    if (cat_type) {
       params.category_id = cat_id
-    }else{
+    } else {
       params.main_category = cat_id
     }
 
@@ -267,7 +305,6 @@ function compsCategoryOld(props) {
       num: 1,
       shop_type: 'distributor'
     }
-    console.log('item44444ttttttt', item)
     if (item.cart_num >= Number(item.activity_store)) {
       return showToast(`最多加购${item.activity_store}件`)
     }
@@ -324,13 +361,13 @@ function compsCategoryOld(props) {
       draft.thirdList =
         _thirdList.length > 0
           ? [
-              {
-                name: '全部',
-                img: '',
-                id: ''
-              },
-              ..._thirdList
-            ]
+            {
+              name: '全部',
+              img: '',
+              id: ''
+            },
+            ..._thirdList
+          ]
           : []
     })
   }
@@ -417,4 +454,4 @@ function compsCategoryOld(props) {
   )
 }
 
-export default compsCategoryOld
+export default CompsCategoryAddCart

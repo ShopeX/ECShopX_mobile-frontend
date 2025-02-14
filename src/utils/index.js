@@ -92,7 +92,7 @@ export const isAPP = () => Taro.getEnv() == Taro.ENV_TYPE.APP
 
 // 云店
 export const VERSION_STANDARD = process.env.APP_PLATFORM == 'standard'
-// exc
+// ecshopx
 export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
 // 官方商城
 export const VERSION_B2C = process.env.APP_PLATFORM == 'b2c'

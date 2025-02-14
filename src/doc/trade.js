@@ -19,6 +19,8 @@ export const TRADE_ITEM = {
       logo: 'logo'
     })
   },
+  offlinePayCheckStatus:'offline_pay_check_status',
+  offlinePayName:'offline_pay_name',
   deliveryCorpName: 'delivery_corp_name',
   deliveryCode: 'delivery_code',
   dada: ({ dada }) => {
@@ -115,6 +117,7 @@ export const AFTER_TRADE = {
   orderId: 'order_id',
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId:'user_id',
+  freight: ({ freight }) => freight / 100,
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
@@ -146,5 +149,6 @@ export const TRADE_AFTER_SALES_ITEM = {
   description: 'description',
   evidencePic: 'evidence_pic',
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
-  returnType: 'return_type'
+  returnType: 'return_type',
+  freight: ({ freight }) => freight / 100
 }

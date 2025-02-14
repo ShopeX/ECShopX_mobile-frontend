@@ -8,6 +8,7 @@ const config = {
     'pages/cart/cashier-result', // 支付结果页面
     // 'pages/cart/cashier-alipay', // 支付宝收银台（adapay）
     'pages/cart/cashier-weapp', // 微信收银台（adapay）
+    'pages/cart/offline-transfer',//线下转账
 
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面

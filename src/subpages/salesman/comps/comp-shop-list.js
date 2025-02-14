@@ -18,7 +18,8 @@ function CompShopList(props) {
 
   const storeCode = (val) => {
     let par = {
-      name: val?.merchant_name || '自营店铺',
+      // name: val?.name || '自营店铺',
+      name: val?.name,
       distributor_name: val?.name,
       distributor_id: val?.distributor_id,
       is_valid: val?.salesperson?.is_valid,

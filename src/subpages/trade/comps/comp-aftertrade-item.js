@@ -13,7 +13,7 @@ function CompTradeItem(props) {
   if (!info) {
     return null
   }
-  const { aftersalesBn, distributorInfo, orderId, createdTime, aftersalesStatus, items, orderStatus, refundFee, orderClass = 'normal', point, distributorId } = info
+  const { aftersalesBn, distributorInfo, orderId, createdTime, aftersalesStatus, items, orderStatus, refundFee, orderClass = 'normal', point, distributorId ,freight} = info
   // const { pointName } = useSelector((state) => state.sys)
 
 
@@ -33,6 +33,8 @@ function CompTradeItem(props) {
   }
 
   const totalNum = items.reduce((preVal, item) => preVal + item.num, 0)
+
+  const totalPrice = Number(refundFee) + Number(freight)
 
   return (
     <View className='comp-tradeitem'>
@@ -67,7 +69,7 @@ function CompTradeItem(props) {
             orderClass == 'normal' && <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>退款金额</Text>
-              <SpPrice value={refundFee} size={38} />
+              <SpPrice value={totalPrice} size={38} />
             </View>
           }
         </View>

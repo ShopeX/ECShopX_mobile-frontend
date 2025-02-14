@@ -23,7 +23,7 @@ function DianwuCollectionResult(props) {
   const { distributor, info, operatorInfo } = state
 
   useEffect(() => {
-    if (pay_type == 'pos') {
+    if (pay_type == 'pos' || pay_type == 'offline_pay') {
       fetchOrderInfo()
     } else {
       getPaymentResultByOrder()
@@ -61,6 +61,8 @@ function DianwuCollectionResult(props) {
       member_discount,
       coupon_discount,
       promotion_discount,
+      offline_pay_name,
+      offline_pay_check_status,
       remark,
       user_id,
       pay_status
@@ -90,10 +92,23 @@ function DianwuCollectionResult(props) {
         remark: remark,
         username: username,
         mobile: mobile,
-        payStatus: pay_status
+        payStatus: pay_status,
+        offlinePayName: offline_pay_name,
+        offlinePayCheckStatus: offline_pay_check_status
       }
       draft.operatorInfo = operatorInfo
     })
+  }
+
+  const payTypeLabel = () => {
+    const payTypeMap = {
+      'pos': '现金支付',
+      'wxpaypos': '微信支付',
+      'alipaypos': '支付宝支付',
+      'offline_pay': info?.offlinePayName
+    }
+
+    return payTypeMap[info.payType]
   }
 
   return (
@@ -110,17 +125,22 @@ function DianwuCollectionResult(props) {
         </View>
       }
     >
-      {(!info || (info && info?.payStatus == 'NOTPAY')) && (
+      {(!info || (info && info?.payStatus == 'NOTPAY' && pay_type != 'offline_pay')) && (
         <View className='result-hd'>
           <Text>等待支付中...</Text>
         </View>
       )}
 
-      {info && info?.payStatus == 'PAYED' && (
+      {info && (info?.payStatus == 'PAYED' || pay_type == 'offline_pay') && (
         <View>
           <View className='result-hd'>
             <View className='checkout-result'>
-              <Text className='iconfont icon-correct'></Text>收款成功
+              {info?.payStatus == 'PAYED' && (
+                <>
+                  <Text className='iconfont icon-correct'></Text>收款成功
+                </>
+              )}
+              {pay_type == 'offline_pay' && info.offlinePayCheckStatus == 0 && <>待商家确认</>}
             </View>
             {info.username && (
               <View className='user-info'>
@@ -195,17 +215,7 @@ function DianwuCollectionResult(props) {
           <View className='extr-info'>
             <SpCell border title='收款门店' value={distributor?.name}></SpCell>
             <SpCell border title='操作人' value={operatorInfo?.username}></SpCell>
-            <SpCell
-              border
-              title='支付方式'
-              value={
-                {
-                  'pos': '现金支付',
-                  'wxpaypos': '微信支付',
-                  'alipaypos': '支付宝支付'
-                }[info.payType]
-              }
-            ></SpCell>
+            <SpCell border title='支付方式' value={payTypeLabel()}></SpCell>
             <SpCell border title='操作时间' value={formatDateTime(info.createTime)}></SpCell>
             <SpCell title='备注' value={info.remark}></SpCell>
           </View>

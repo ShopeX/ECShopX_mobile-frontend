@@ -78,7 +78,7 @@ function ItemList() {
     routerParams
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
-  const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
+  const { cat_id, main_cat_id, tag_id, card_id, user_card_id, all } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
   const dispatch = useDispatch()
 
@@ -94,18 +94,19 @@ function ItemList() {
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
     entryLaunch.getRouteParams($instance.router.params).then((params) => {
-      const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id } = params
+      const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id, all = false } = params
 
       setState((draft) => {
-        ; (draft.routerParams = {
+        draft.routerParams = {
           cat_id,
           keywords,
           main_cat_id,
           tag_id,
           card_id,
-          user_card_id
-        }),
-          (draft.keywords = keywords)
+          user_card_id,
+          all
+        }
+        draft.keywords = keywords
       })
     })
   }, [])
@@ -158,7 +159,6 @@ function ItemList() {
     //         }
     //       })
     //       .exec()
-    //     // setState((draft) => {
     //     //   draft.fixTop = document.getElementById('item-list-head').clientHeight
     //     //   console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
     //     // })
@@ -205,8 +205,14 @@ function ItemList() {
     }
 
     if (VERSION_STANDARD) {
-      // 有兑换券的时候，店铺ID传当前选中的店铺
-      params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
+      if (all) {
+        //如果从平铺分类跳转过来就查询所有的商品
+        params.distributor_id = 0
+      } else {
+        // 有兑换券的时候，店铺ID传当前选中的店铺
+        params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
+      }
+
     }
 
     const {

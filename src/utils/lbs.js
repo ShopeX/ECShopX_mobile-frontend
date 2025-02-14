@@ -1,4 +1,4 @@
-export default function MapLoader () {   
+export default function MapLoader() {
   return new Promise((resolve, reject) => {
     if (window.AMap) {
       resolve(window.AMap)
@@ -6,7 +6,8 @@ export default function MapLoader () {
       var script = document.createElement('script')
       script.type = 'text/javascript'
       script.async = true
-      script.src = `https://webapi.amap.com/maps?v=2.0&key=${process.env.APP_MAP_KEY}&callback=amapOnLoad`
+      script.src = `https://map.qq.com/api/js?v=2.exp&key=${process.env.APP_MAP_KEY}&callback=qqMapOnLoad&libraries=place,geometry,geocoder`
+      // script.src = `https://webapi.amap.com/maps?v=2.0&key=${process.env.APP_MAP_KEY}&callback=amapOnLoad` //高德
       script.onerror = reject
       document.head.appendChild(script)
     }

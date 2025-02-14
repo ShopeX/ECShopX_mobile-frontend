@@ -78,15 +78,29 @@ $prefixCls: "sp-shop-item";
 
   .express {
     // width: 85px;
-    @include hairline($blue-color,0,left,right,top,bottom);
+    // @include hairline($blue-color,0,left,right,top,bottom);
+    border: 1px solid $blue-color;
     height: 30px;
     padding: 1px 4px;
     font-size: 20px;
     font-weight: 400;
+    border-radius: 8px;
     color: $blue-color;
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     opacity: 0.8;
+  }
+  .expressed{
+    width: 82px;
+    height: 28px;
+    line-height: 28px;
+    padding: 1px 4px;
+    border-radius: 8px;
+    font-size: 20px;
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+    text-align: center;
   }
 
   .item-bd-bd {

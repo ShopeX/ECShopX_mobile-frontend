@@ -4,6 +4,7 @@
   display: flex;
   padding: 0 60px;
   box-sizing: border-box;
+  align-items: center;
   height: 110px;
   &.is-not-default {
     margin: 20px 25px 0 25px;
@@ -26,7 +27,7 @@
     }
   }
   .normal-account {
-    margin-top: 26px;
+    margin-top: 10px;
   }
   .block {
     width: 100%;

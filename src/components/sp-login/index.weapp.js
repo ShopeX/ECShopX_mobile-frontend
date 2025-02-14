@@ -44,7 +44,7 @@ function SpLogin(props, ref) {
 
   useEffect(() => {
     if (loginModal) {
-      // fetchPrivacyData()
+      fetchPrivacyData()
       Taro.login({
         success: ({ code }) => {
           codeRef.current = code
@@ -67,6 +67,7 @@ function SpLogin(props, ref) {
   }
 
   const handleBindPhone = async (e) => {
+    debugger
     const { encryptedData, iv, cloudID } = e.detail
     if (encryptedData && iv) {
       const code = codeRef.current
@@ -87,7 +88,7 @@ function SpLogin(props, ref) {
         // 分销绑定
         params['uid'] = uid
       }
-      if (dtid) {
+      if (dtid && dtid !== 'undefined') {
         params['distributor_id'] = dtid
       }
       // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
@@ -186,6 +187,18 @@ function SpLogin(props, ref) {
 
   // eslint-disable-next-line no-undef
   const { icon, nickname } = __wxConfig.accountInfo
+
+  const handleClick = async () => {
+    if (isLogin) {
+      onChange && onChange()
+    } else {
+      Taro.showLoading()
+      await handleUserLogin()
+      Taro.hideLoading()
+      // 自动
+      setLoginModal(true)
+    }
+  }
 
   return (
     <View className={classNames('sp-login', className)}>

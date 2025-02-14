@@ -31,7 +31,7 @@ function CompTradeItem(props) {
   const btns = getTradeAction(info)
 
   const handleClickItem = ({ key, action }) => {
-    if (key == 'evaluate' || key == 'logistics') {
+    if (key == 'evaluate' || key == 'logistics' || key == 'changeOffline') {
       action(info)
     } else {
       Taro.navigateTo({
@@ -101,7 +101,7 @@ function CompTradeItem(props) {
               </Text>
             </View>
           )}
-          {orderClass == 'normal' && (
+          {orderClass != 'pointsmall' && (
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>实付金额</Text>

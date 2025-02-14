@@ -1,0 +1,48 @@
+.login-modal {
+  background: #fff;
+  border-radius: 24px 24px 0 0;
+  padding: 60px 40px;
+
+  &__hd {
+    text-align: center;
+    margin-bottom: 40px;
+
+    .nick-name {
+      font-size: 32px;
+      color: #333;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+  }
+
+  &__bd {
+    font-size: 28px;
+    color: #666;
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .agreement-content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 40px;
+
+    .agreement-list {
+      flex: 1;
+      font-size: 24px;
+      color: #999;
+      margin-left: 10px;
+      line-height: 1.5;
+    }
+
+    .agreement-name {
+      color: #333;
+    }
+  }
+
+  &__ft {
+    .at-button {
+      border-radius: 44px;
+    }
+  }
+}

@@ -3,13 +3,13 @@ import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy,VERSION_PLATFORM } from '@/utils'
 import doc from '@/doc'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
 import CompSeries from './comp-series'
 
-import './comps-category-new.scss'
+import './comps-category-tile.scss'
 
 const initialState = {
   currentList: [], //当前系列
@@ -19,7 +19,7 @@ const initialState = {
   hasSeries: false //是否有多级
 }
 
-const CategoryIndex = (props) => {
+const CompsCategoryTile = (props) => {
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
   // 获取数据
@@ -33,7 +33,7 @@ const CategoryIndex = (props) => {
     let seriesList = list[0] ? list[0].params.data : []
 
     if (!seriesList.length) {
-      const res = await api.category.get()
+      const res = await api.category.get(VERSION_PLATFORM?{is_main_category:1}:{})
       const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',
@@ -106,4 +106,4 @@ const CategoryIndex = (props) => {
   )
 }
 
-export default CategoryIndex
+export default CompsCategoryTile

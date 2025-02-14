@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.17.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.16.0...v3.17.0) (2025-02-14)
+
+
+### Features
+
+* 价格显示修改 ([04844a2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/04844a29f991e690eefe8d6c7e393d7a58ef625b))
+* 样式微调 ([0750e73](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/0750e736494931879ee397e2c5c1097459f8a1ee))
+* 样式调整 ([bf7d561](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/bf7d5612ea4f24640d2c0b2cd43d07d5c69a9347))
+* 样式调整 ([fa7e885](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fa7e8851c90165e967d1ad04142f11361fdb2e56))
+
+
+### Bug Fixes
+
+* splogin 没有显示注册协议和政策名称 ([f2afbaa](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f2afbaa6513db26d26ab8f0ac219bbd12efa55e4))
+* 优化企业购模板配置内购链接需要授权问题 ([1c8c209](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1c8c209f0d183e42c45cfd4e7d1171f1d0ffc7d7))
+* 优化分销会员列表 ([ddaa9de](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ddaa9de25547c50c933b752563b5ea8ba17b400f))
+* 分享卡片dtid参数 ([00d0b9b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/00d0b9b4803ebc5f6e6be3ebebbb7110bc5c4ff7))
+* 秒杀活动，没有参加秒杀的SKU也能下单 ([faebfde](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/faebfde3de20cac990960a23ef6e012a50343ff7))
+
 ## [3.16.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.15.15...v3.16.0) (2024-10-28)
 
 ### [3.15.15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.15.14...v3.15.15) (2024-09-29)

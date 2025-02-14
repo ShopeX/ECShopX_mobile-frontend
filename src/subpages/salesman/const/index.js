@@ -57,6 +57,7 @@ export const initialState = {
   isPointOpenModal: false,
   routerParams: {},
   deliveryTimeList:{},
+  paymentName:'',
   codeStatus: false
 }
 

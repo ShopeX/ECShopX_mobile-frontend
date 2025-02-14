@@ -10,6 +10,8 @@ $active-good-img-width: 90px;
     height: 78px;
     line-height: 78px;
     position: relative;
+    display: flex;
+    justify-content: center;
 
     &.active {
       background: #fff;
@@ -35,6 +37,10 @@ $active-good-img-width: 90px;
     .category-name {
       font-size: 30px;
       color: #666666;
+      width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 

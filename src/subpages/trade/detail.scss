@@ -24,6 +24,13 @@
     height: 1PX;
   }
 
+  .pay-way{
+    display: flex;
+    &-detail{
+      margin-right: 16px;
+    }
+  }
+
   .trade-status {
     padding: 48px 16px;
 

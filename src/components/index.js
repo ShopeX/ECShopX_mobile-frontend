@@ -102,6 +102,7 @@ import SpGoodsItems from './sp-goods-items'
 import SpTimeLineItem from './sp-time-line-item'
 import SpCustomPicker from './sp-custom-picker'
 import SpTable from './sp-table'
+import SpInput from './sp-input'
 
 
 
@@ -211,5 +212,6 @@ export {
   SpGoodsItems,
   SpTimeLineItem,
   SpCustomPicker,
-  SpTable
+  SpTable,
+  SpInput
 }

@@ -27,6 +27,10 @@ export const ORDER_STATUS_INFO = {
   DONE: {
     msg: '交易完成',
     icon: 'order_success'
+  },
+  PART_PAYMENT:{
+    msg: '部分付款',
+    icon: 'partial_payment'
   }
 }
 
@@ -265,7 +269,8 @@ export const PAYMENT_TYPE = {
   wxpaypos: '微信支付',
   alipaypos: '支付宝支付',
   alipaymini: '支付宝支付',
-  point: '积分支付'
+  point: '积分支付',
+  offline_pay:'线下转账'
 }
 
 export const TRANSFORM_PAYTYPE = {

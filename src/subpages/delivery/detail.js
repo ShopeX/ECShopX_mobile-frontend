@@ -182,7 +182,7 @@ const Detail = () => {
               />
             </View>
             <View className='trade-item-wrap'>
-              <SpCell title='下单时间' value={information.createTime} />
+              <SpCell title='下单时间' value={information.createdTime} />
               <SpCell title='付款时间' value={information.payDate} />
               {information.deliveryTime && (
                 <SpCell title='发货时间' value={information.deliveryTime} />

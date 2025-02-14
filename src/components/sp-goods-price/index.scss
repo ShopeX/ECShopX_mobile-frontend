@@ -15,8 +15,11 @@
   .activity {
     display: flex;
     align-items: center;
+    margin-top: 10px;
   }
   .activity-wrap {
+    display: flex;
+    align-items: center;
     background: #fff;
     border-radius: 32px;
     height: 62px;
@@ -28,6 +31,15 @@
     .sp-price__int,
     .sp-price__decimal {
       color: var(--color-primary);
+    }
+    .activity-label {
+      margin-right: 4px;
+    }
+    .activity-price {
+      height: 62px;
+      line-height: 62px;
+      display: flex;
+      align-items: center;
     }
   }
   .point-plus-price {

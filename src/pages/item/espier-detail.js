@@ -244,7 +244,7 @@ function EspierDetail(props) {
           showError: false,
           distributor_id: dtid
         })
-        data = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        data = pickBy(itemDetail, doc.goods.ESPIER_DETAIL_GOODS_INFO)
         if (data.approveStatus == 'instock') {
           setState((draft) => {
             draft.isDefault = true

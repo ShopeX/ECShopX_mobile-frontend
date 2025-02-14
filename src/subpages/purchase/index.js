@@ -6,7 +6,8 @@ import {
   SpPage,
   SpSearch,
   SpPrivacyModal,
-  SpTabbar
+  SpTabbar,
+  SpSkuSelect
 } from '@/components'
 import api from '@/api'
 import {
@@ -14,9 +15,12 @@ import {
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
-  classNames
+  classNames,
+  pickBy,
+  showToast
 } from '@/utils'
 import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
+import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -27,10 +31,14 @@ import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
+const MSpSkuSelect = React.memo(SpSkuSelect)
 
 const initialState = {
   wgts: [],
-  loading: true
+  loading: true,
+  info: null,
+  skuPanelOpen: false,
+  selectType: 'picker'
 }
 
 const { store } = configStore()
@@ -53,7 +61,7 @@ function Home() {
   const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
-  const { wgts, loading } = state
+  const { wgts, loading ,info ,skuPanelOpen ,selectType} = state
 
   const dispatch = useDispatch()
 
@@ -86,7 +94,7 @@ function Home() {
       const { config, tab_bar } = await api.shop.getShopTemplate({
         distributor_id: getDistributorId(),
         pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id,
-        e_activity_id: router.params?.activity_id ||purchase_share_info?.activity_id
+        e_activity_id: router.params?.activity_id || purchase_share_info?.activity_id
       })
       const tabBar = tab_bar && JSON.parse(tab_bar)
       dispatch(updatePurchaseTabbar({
@@ -123,9 +131,26 @@ function Home() {
     (openScanQrcode == 1 && isWeixin) ||
     (VERSION_STANDARD && openStore && openLocation == 1) ||
     fixedTop
-    const onAddToCart =async (item) => {
-      console.log('Item added to cart:', item);
-    };
+
+  const onAddToCart = async ({ itemId, distributorId }) => {
+    Taro.showLoading()
+    try {
+      const itemDetail = await api.item.detail(itemId, {
+        showError: false,
+        distributor_id: distributorId
+      })
+      Taro.hideLoading()
+      setState((draft) => {
+        draft.info = pickBy(itemDetail, doc.goods.GOODS_INFO)
+        draft.skuPanelOpen = true
+        draft.selectType = 'addcart'
+      })
+    } catch (e) {
+      showToast(e.message)
+      Taro.hideLoading()
+    }
+  }
+
   console.log('pageData:', pageData)
   return (
     <SpPage
@@ -142,17 +167,35 @@ function Home() {
         })}
         scrollY
       >
-        {isShowHomeHeader && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
+        {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
         {filterWgts.length > 0 && (
           <WgtsContext.Provider
             value={{
-              onAddToCart: () => {}
+              onAddToCart
             }}
           >
             <HomeWgts wgts={filterWgts} />
           </WgtsContext.Provider>
         )}
       </ScrollView>
+
+      {/* Sku选择器 */}
+      <MSpSkuSelect
+        open={skuPanelOpen}
+        type={selectType}
+        info={info}
+        onClose={() => {
+          setState((draft) => {
+            draft.skuPanelOpen = false
+          })
+        }}
+        onChange={(skuText, curItem) => {
+          setState((draft) => {
+            draft.skuText = skuText
+            draft.curItem = curItem
+          })
+        }}
+      />
 
       {/* 隐私政策 */}
       <MSpPrivacyModal

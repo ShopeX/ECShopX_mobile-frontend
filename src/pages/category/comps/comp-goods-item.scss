@@ -85,7 +85,8 @@
 
       .gd-price {
         display: flex;
-        justify-content: space-between;
+        // justify-content: space-between;
+        align-items: center;
         width: 100%;
 
         .sp-price {
