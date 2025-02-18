@@ -16,9 +16,9 @@ export const WGT_GOODS_GRID = {
   distributorId: 'distributor_id',
   isPoint: 'is_point',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ promotionActivity }) => promotionActivity[0]?.activity_price / 100, // 秒杀价
-  marketPrice: ({ promotionActivity }) => promotionActivity[0]?.market_price / 100, // 原价
-  memberPrice: ({ promotionActivity }) => promotionActivity[0]?.member_price / 100, // 当前会员等级价
+  activityPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.activity_price / 100, // 秒杀价
+  marketPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.market_price / 100, // 原价
+  memberPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
 }
