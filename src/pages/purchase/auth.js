@@ -1,8 +1,8 @@
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, RootPortal } from '@tarojs/components'
-import { SpPrivacyModal, SpPage, SpLogin, SpModal } from '@/components'
-import { AtButton } from 'taro-ui'
+import { SpPrivacyModal, SpPage, SpLogin, SpModal,SpCheckbox } from '@/components'
+import { AtButton,AtIcon } from 'taro-ui'
 import { showToast } from '@/utils'
 import { useLogin, useModal } from '@/hooks'
 import S from '@/spx'
@@ -24,6 +24,7 @@ function PurchaseAuth() {
   const { userInfo = {} } = useSelector((state) => state.user)
   const { appName, appLogo } = useSelector((state) => state.sys)
   const [policyModal, setPolicyModal] = useState(false)
+  const [checked, setChecked] = useState(false)
   const [userEnterprises, setUserEnterprises] = useState([])
   const { params } = useRouter()
   const { code: invite_code, type = '' } = params
@@ -55,7 +56,8 @@ function PurchaseAuth() {
   }, [appName])
 
   useEffect(() => {
-    if (!type && !invite_code && (userInfo?.is_relative || userInfo?.is_employee)) { // type：渠道是添加身份,不能跳转到活动列表页
+    if (!type && !invite_code && (userInfo?.is_relative || userInfo?.is_employee)) {
+      // type：渠道是添加身份,不能跳转到活动列表页
       getUserEnterprises()
     }
   }, [userInfo])
@@ -81,18 +83,31 @@ function PurchaseAuth() {
   }
 
   const handleConfirmClick = async (type) => {
-    if (type === 'friend') {
-      const { confirm } = await showModal({
-        title: '亲友验证说明',
-        content: `如果您是亲友，请通过员工分享的活动链接认证；如果您是员工，请在上一页面中点击「我是员工」验证身份`,
-        showCancel: false,
-        confirmText: '我知道了'
-      })
-    } else {
-      Taro.navigateTo({
-        url: `/subpages/purchase/select-company`
-      })
+    // if (type === 'friend') {
+    //   const { confirm } = await showModal({
+    //     title: '亲友验证说明',
+    //     content: `如果您是亲友，请通过员工分享的活动链接认证；如果您是员工，请在上一页面中点击「我是员工」验证身份`,
+    //     showCancel: false,
+    //     confirmText: '我知道了'
+    //   })
+    // } else {
+    //   Taro.navigateTo({
+    //     url: `/subpages/purchase/select-company`
+    //   })
+    // }
+    let redirectUrl;
+    if (type == 'account') {
+      redirectUrl = `/subpages/purchase/select-company-account`
+    } else if (type == 'email') {
+      redirectUrl = `/subpages/purchase/select-company-email`
+    } else if (type == 'mobile') {
+      redirectUrl = `/subpages/purchase/select-company-phone`
+    } else if (type == 'crm_api') {
+      redirectUrl = `/subpages/purchase/select-company-phone`
     }
+    Taro.navigateTo({
+      url: redirectUrl
+    })
   }
 
   const handleBindPhone = async (e) => {
@@ -141,63 +156,133 @@ function PurchaseAuth() {
     Taro.reLaunch({ url: `/pages/purchase/index` })
   }
 
+  const handleClickPrivacy = (type) => {
+    Taro.navigateTo({
+      url: `/subpages/auth/reg-rule?type=${type}`
+    })
+  }
+
   return (
-    <SpPage className='purchase-auth' >
+    <SpPage className='purchase-auth'>
       {/* 隐私协议 */}
       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
 
       <View className='header'>
-        <Image
-          className='header-avatar'
-          src={appLogo}
-          mode='aspectFill'
-        />
+        <Image className='header-avatar' src={appLogo} mode='aspectFill' />
         <Text className='welcome'>欢迎登录</Text>
         <Text className='title'>{appName}</Text>
       </View>
       <View className='btns'>
-
-        {!invite_code && (!isLogin || type || userEnterprises.length == 0) &&
+        {!invite_code && (!isLogin || type || userEnterprises.length == 0) && (
           <>
-            <AtButton circle className='btns-staff button' onClick={() => handleConfirmClick('staff')}>
+            {/* <AtButton circle className='btns-staff button' onClick={() => handleConfirmClick('staff')}>
               我是员工
             </AtButton>
             <AtButton circle className='btns-friend button' onClick={() => handleConfirmClick('friend')}>
               我是亲友
+            </AtButton> */}
+
+            <AtButton
+              circle
+              disabled={!checked}
+              className='button btns-phone'
+              onClick={() => handleConfirmClick('mobile')}
+            >
+              手机号登录&nbsp;
+              <AtIcon
+                size={16}
+                prefixClass='icon-drf'
+                value='denglujiantou'
+                className='icondrf btns-icon sp--allown'
+              ></AtIcon>
+            </AtButton>
+            <AtButton
+              circle
+              disabled={!checked}
+              className='button btns-account'
+              onClick={() => handleConfirmClick('account')}
+            >
+              账号密码登录&nbsp;
+              <AtIcon
+                size={16}
+                prefixClass='icon-drf'
+                value='denglujiantou'
+                className='icondrf btns-icon sp--allown'
+              ></AtIcon>
+            </AtButton>
+            <AtButton
+              circle
+              disabled={!checked}
+              className='button btns-email'
+              onClick={() => handleConfirmClick('email')}
+            >
+              使用邮箱登录
             </AtButton>
           </>
-        }
+        )}
 
-        {invite_code && isLogin && userInfo?.is_relative && // 有/无商城，已登录亲友验证、绑定
-          <>
-            <View className='validate-pass'>验证通过</View>
-            <AtButton circle className='btns-staff button login' onClick={handlePassClick}>
-              继续
+        {invite_code &&
+          isLogin &&
+          userInfo?.is_relative && ( // 有/无商城，已登录亲友验证、绑定
+            <>
+              <View className='validate-pass'>验证通过</View>
+              <AtButton circle className='btns-staff button login' onClick={handlePassClick}>
+                继续
+              </AtButton>
+            </>
+          )}
+
+        {invite_code && isLogin && !userInfo?.is_relative && (
+          <AtButton circle className='btns-weixin button' onClick={validatePhone}>
+            手机号授权登录
+          </AtButton>
+        )}
+
+        {invite_code &&
+          isNewUser && ( // 有/无商城，未登录亲友验证、绑定
+            <AtButton
+              openType='getPhoneNumber'
+              onGetPhoneNumber={handleBindPhone}
+              circle
+              className='btns-weixin button'
+            >
+              手机号授权登录
             </AtButton>
-          </>
-        }
-
-        {invite_code && isLogin && !userInfo?.is_relative &&
-          <AtButton
-            circle
-            className='btns-weixin button'
-            onClick={validatePhone}
-          >
-            手机号授权登录
-          </AtButton>
-        }
-
-        {invite_code && isNewUser && // 有/无商城，未登录亲友验证、绑定
-          <AtButton
-            openType='getPhoneNumber'
-            onGetPhoneNumber={handleBindPhone}
-            circle
-            className='btns-weixin button'
-          >
-            手机号授权登录
-          </AtButton>
-        }
+          )}
       </View>
+
+      <View className='auth--footer'>
+          <SpCheckbox
+            onChange={() => {
+              setChecked(!checked)
+            }}
+            checked={checked}
+          />
+          <Text className='auth--footer-text'>
+            我已阅读并接受{' '}
+            <Text onClick={() => handleClickPrivacy('privacy')} className='content'>
+              隐私政策
+            </Text>
+            及
+            <Text className='content' onClick={() => handleClickPrivacy('member_register')}>
+              用户协议
+            </Text>
+          </Text>
+        </View>
+
+        <View className='service-footer'>
+          <View
+            className='toolbar-item'
+            onClick={() => {
+              S.phoneNumber('021-60662088')
+            }}
+          >
+            <Text className='iconfont icon-lianxi'></Text>
+            <Text className='toolbar-item-txt'>客服电话：</Text>
+            <Text className='toolbar-item-content'>021-60662088</Text>
+          </View>
+        </View>
+
       <CompBottomTip />
     </SpPage>
   )
