@@ -11,20 +11,21 @@ export function requestIntercept() {
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
       // console.log('getCurrentInstance params:', path)
-      if (path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order`) {
-        const { gu, gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+      if (path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order_new`) {
+        const { gu, gu_user_id, smid } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
         let work_userid = gu_user_id
         if (gu) {
           work_userid = gu.split('_')[0]
         }
         if (work_userid) {
           const _data = qs.parse(data)
-          _data['work_userid'] = work_userid
+          _data['salesman_id'] = smid
           requestParams.data = qs.stringify(_data)
         }
+        console.log('requestIntercept:', requestParams)
       }
     }
-    // console.log('requestIntercept:', $instance)
+     
     return chain.proceed(requestParams).then((res) => {
       // console.log(`http <-- ${url} request:`, res)
       return res
