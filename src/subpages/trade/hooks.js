@@ -110,7 +110,8 @@ export default (props) => {
   }) => {
     const btns = []
     const isData = receiptType == 'dada'
-
+    const isMerchant = receiptType == 'merchant'
+    
     if(offlinePayCheckStatus == '2' && orderStatus == 'NOTPAY'){
       //线下转账拒绝时修改付款凭证
       btns.push(tradeActionBtns.CHANGE_OFFLINE)
@@ -132,7 +133,9 @@ export default (props) => {
         btns.push(tradeActionBtns.AFTER_SALES)
       }
     } else if (orderStatus == 'WAIT_BUYER_CONFIRM') {
-      btns.push(tradeActionBtns.LOGISTICS)
+      if(!isMerchant){
+        btns.push(tradeActionBtns.LOGISTICS)
+      }
       btns.push(tradeActionBtns.CONFIRM)
       if (canApplyAftersales) {
         btns.push(tradeActionBtns.AFTER_SALES)
