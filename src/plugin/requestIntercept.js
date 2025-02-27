@@ -10,14 +10,15 @@ export function requestIntercept() {
     // console.log('getCurrentInstance:', getCurrentInstance())
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
+      debugger
       // console.log('getCurrentInstance params:', path)
-      if (path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order_new`) {
+      if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
         const { gu, gu_user_id, smid } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
         let work_userid = gu_user_id
         if (gu) {
           work_userid = gu.split('_')[0]
         }
-        if (work_userid) {
+        if (smid) {
           const _data = qs.parse(data)
           _data['salesman_id'] = smid
           requestParams.data = qs.stringify(_data)
