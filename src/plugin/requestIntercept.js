@@ -1,6 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
-import { SG_GUIDE_PARAMS } from '@/consts'
+import { SG_GUIDE_PARAMS, SG_ROUTER_PARAMS } from '@/consts'
 import { isObject } from '@/utils'
 
 export function requestIntercept() {
@@ -13,7 +13,11 @@ export function requestIntercept() {
       debugger
       // console.log('getCurrentInstance params:', path)
       if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
-        const { gu, gu_user_id, smid } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+        let smid = ''
+        const { gu, gu_user_id, smid: smid_1 } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+        const { smid: smid_2 } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
+        smid = smid_1 || smid_2
+        
         let work_userid = gu_user_id
         if (gu) {
           work_userid = gu.split('_')[0]
