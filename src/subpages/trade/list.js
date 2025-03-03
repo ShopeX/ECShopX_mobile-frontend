@@ -8,6 +8,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompTradeItem from './comps/comp-tradeitem'
+import CompTrackDetail from './comps/comp-track-detail'
 import './list.scss'
 
 const initialState = {
@@ -19,11 +20,14 @@ const initialState = {
   ],
   status: '0',
   tradeList: [],
-  refresherTriggered: false
+  refresherTriggered: false,
+  trackDetailList:[],
+  openTrackDetail:false,
+  info:null
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { tradeStatus, status, tradeList, refresherTriggered,trackDetailList,openTrackDetail,info } = state
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -110,11 +114,31 @@ function TradeList(props) {
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
-              <CompTradeItem info={item} />
+              <CompTradeItem info={item} onClick={async(_info)=>{
+                  const { orderId } = _info
+                  const res = await api.trade.getTrackerpull({ order_id: orderId })
+                  setState((v) => {
+                    v.openTrackDetail = true
+                    v.trackDetailList = res
+                    v.info = _info
+                })
+              }}
+              />
             </View>
           ))}
         </SpScrollView>
       </ScrollView>
+      <CompTrackDetail
+        selfDeliveryOperatorName={info?.selfDeliveryOperatorName}
+        selfDeliveryOperatorMobile={info?.selfDeliveryOperatorMobile}
+        trackDetailList={trackDetailList}
+        isOpened={openTrackDetail}
+        onClose={() => {
+          setState((draft) => {
+            draft.openTrackDetail = false
+          })
+        }}
+      />
     </SpPage>
   )
 }

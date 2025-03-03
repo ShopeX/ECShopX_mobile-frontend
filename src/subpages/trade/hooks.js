@@ -95,6 +95,9 @@ export default (props) => {
         })
       }
     },
+    TRACK: {
+      title: '订单追踪', key: 'track', btnStatus: 'normal'
+    },
   }
 
   const getTradeAction = ({
@@ -135,6 +138,8 @@ export default (props) => {
     } else if (orderStatus == 'WAIT_BUYER_CONFIRM') {
       if(!isMerchant){
         btns.push(tradeActionBtns.LOGISTICS)
+      }else{
+        btns.push(tradeActionBtns.TRACK)
       }
       btns.push(tradeActionBtns.CONFIRM)
       if (canApplyAftersales) {
