@@ -188,7 +188,7 @@ function TradeDetail(props) {
         draft.openWriteOffCode = true
       })
     } else if (key == 'track') {
-      handleTrackDetail
+      handleTrackDetail()
     } else {
       action(info)
     }
