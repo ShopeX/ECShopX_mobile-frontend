@@ -10,7 +10,6 @@ export function requestIntercept() {
     // console.log('getCurrentInstance:', getCurrentInstance())
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
-      debugger
       // console.log('getCurrentInstance params:', path)
       if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
         let smid = ''

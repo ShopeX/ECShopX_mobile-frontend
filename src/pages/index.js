@@ -239,7 +239,7 @@ function Home() {
 
   const fetchStoreInfo = async (location) => {
     let params = {
-      distributor_id: getDistributorId() // 如果店铺id和经纬度都传会根据哪个去定位传参
+      distributor_id: getDistributorId() || 0 // 如果店铺id和经纬度都传会根据哪个去定位传参
     }
     if (openLocation == 1 && location) {
       const { lat, lng } = location
