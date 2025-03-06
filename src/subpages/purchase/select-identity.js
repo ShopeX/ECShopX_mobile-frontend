@@ -1,7 +1,7 @@
-import Taro from '@tarojs/taro'
+import Taro,{useRouter} from '@tarojs/taro'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text, Image,  } from '@tarojs/components'
 import api from '@/api'
 import { classNames } from '@/utils'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
@@ -22,30 +22,36 @@ function SelectIdentity(props) {
   const { identity, invalidIdentity, loading} = state
   const dispatch = useDispatch()
 
+  const { params } = useRouter()
+  let { activity_id } = params
+
 
   useEffect(() => {
     getUserEnterprises()
   }, [])
 
   const getUserEnterprises = async () => {
-    const data = await api.purchase.getUserEnterprises()
+    const data = await api.purchase.getUserEnterprises({activity_id})
     const _identity = data.filter(item => item.disabled == 0)
 
-    //如果没有企业跳认证首页，只有一个选择这个跳活动列表,多个则用户去选择
-    if(_identity.length  <= 1){
-      let url;
-      if(_identity.length == 0){
-        //认证首页
-        url = '/pages/purchase/auth?type=addIdentity'
-      }else{
-        //活动列表
-        url = '/pages/purchase/index'
-      }
+    // 没有企业跳认证首页
+    if(_identity.length == 0){
       Taro.redirectTo({
-        url
+        url:'/pages/purchase/auth?type=addIdentity'
       })
       return
     }
+
+    //一个选择这个跳活动列表
+    if(_identity.length == 1){
+      dispatch(updateEnterpriseId(_identity[0]?.enterprise_id))
+      Taro.redirectTo({
+        url:`/pages/purchase/index?activity_id=${activity_id}`
+      })
+      return
+    }
+
+    //多个则用户去选择
 
     //多个企业展示身份切换tab
     dispatch(updateValidIdentity(true))
@@ -65,8 +71,11 @@ function SelectIdentity(props) {
     })
   }
 
-  const handleItemClick = (enterprise_id) => {
+  const handleItemClick = ({enterprise_id}) => {
     dispatch(updateEnterpriseId(enterprise_id))
+    Taro.navigateTo({
+      url: `/pages/purchase/index?activity_id=${activity_id}`
+    })
   }
 
   return (
@@ -81,7 +90,7 @@ function SelectIdentity(props) {
         <View className='identity'>
           {identity.map((item, index) => {
             return (
-              <View key={index} className='identity-item' onClick={()=>handleItemClick()}>
+              <View key={index} className='identity-item' onClick={()=>handleItemClick(item)}>
                 <View className='identity-item-avatar'>
                   <Image src={item?.logo} className='avatar' />
                 </View>

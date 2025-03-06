@@ -7,33 +7,36 @@ import api from '@/api'
 import { useLogin, useModal } from '@/hooks'
 import { classNames, showToast, VERSION_IN_PURCHASE } from '@/utils'
 import qs from 'qs'
-import { SpForm, SpFormItem, SpPage, SpInput as AtInput } from '@/components'
+import { SpForm, SpFormItem, SpPage, SpInput as AtInput, SpPrivacyModal } from '@/components'
 import { updateEnterpriseId } from '@/store/slices/purchase'
 import CompBottomTip from './comps/comp-bottomTip'
 import CompSelectCompany from './comps/comp-select-company'
 import './select-company-account.scss'
 import { useDispatch } from 'react-redux'
 
-
 function PurchaseAuthAccount() {
-  const { isNewUser } = useLogin()
+  const { isNewUser, login } = useLogin({
+    autoLogin: true,
+    policyUpdateHook: (isUpdate) => {
+      isUpdate && setPolicyModal(true)
+    }
+  })
+  const [policyModal, setPolicyModal] = useState(false)
   const [state, setState] = useImmer({
     form: {
       account: '',
       auth_code: ''
     },
     rules: {
-      account: [
-        { required: true, message: '账号不能为空' }
-      ],
+      account: [{ required: true, message: '账号不能为空' }],
       auth_code: [{ required: true, message: '请输入登录密码' }]
     },
-    isOpened:false,
-    companyList:[],
-    curActiveIndex:undefined
+    isOpened: false,
+    companyList: [],
+    curActiveIndex: undefined
   })
   const formRef = useRef()
-  const { form, rules, isOpened, companyList,curActiveIndex } = state
+  const { form, rules, isOpened, companyList, curActiveIndex } = state
   const { params } = useRouter()
   const { enterprise_id, enterprise_name, enterprise_sn } = params
   const { showModal } = useModal()
@@ -55,7 +58,8 @@ function PurchaseAuthAccount() {
           enterprise_sn,
           enterprise_name,
           enterprise_id,
-          account, auth_code
+          account,
+          auth_code
         })}`
       })
     } else {
@@ -63,70 +67,55 @@ function PurchaseAuthAccount() {
         enterprise_id,
         account,
         auth_code,
-        auth_type:'account',
-        showError: false
+        auth_type: 'account'
       }
-      try {
-        const {list} = await api.purchase.employeeCheck(_params)
-        if(list.length > 1){
-          //选择企业
-          setState(draft=>{
-            draft.isOpened = true
-            draft.companyList = list
-          })
-          return
-        }
 
-        _params.enterprise_id = list[0]?.enterprise_id
-        _params.employee_id = list[0]?.id
-        await api.purchase.setEmployeeAuth(_params)
-        showToast('验证成功')
-        dispatch(updateEnterpriseId(_params.enterprise_id))
-        setTimeout(() => {
-          Taro.reLaunch({ url: `/pages/purchase/index` })
-        }, 700)
-      } catch (e) {
-        if (e.message.indexOf('重复绑定') > -1) {
-          await showModal({
-            title: '验证失败',
-            content: e.message,
-            showCancel: false,
-            confirmText: '我知道了',
-            contentAlign: 'center'
-          })
-          Taro.reLaunch({ url: `/pages/purchase/index` })
-        } else {
-          showToast(e.message)
-        }
+      const { list } = await api.purchase.employeeCheck(_params)
+      if (list.length > 1) {
+        //选择企业
+        setState((draft) => {
+          draft.isOpened = true
+          draft.companyList = list
+        })
+        return
       }
+      _params.enterprise_id = list[0]?.enterprise_id
+      _params.employee_id = list[0]?.id
+      _params.showError = false
+      employeeAuthFetch(_params)
     }
   }
 
-  const handleSelctCompany = async() => {
+  const handleSelctCompany = async () => {
     const { account, auth_code } = form
-    const { enterprise_id :_enterprise_id, id : employee_id} = companyList[curActiveIndex] || {}
+    const { enterprise_id: _enterprise_id, id: employee_id } = companyList[curActiveIndex] || {}
     const _params = {
-      enterprise_id:_enterprise_id,
+      enterprise_id: _enterprise_id,
       employee_id,
       account,
       auth_code,
-      auth_type:'account',
+      auth_type: 'account',
       showError: false
     }
+    employeeAuthFetch(_params)
+  }
 
+  const employeeAuthFetch = async (_params) => {
     try {
       await api.purchase.setEmployeeAuth(_params)
       showToast('验证成功')
-      dispatch(updateEnterpriseId(_params,enterprise_id))
-      setState(draft=>{
-        draft.isOpened = false
-      })
+      dispatch(updateEnterpriseId(_params.enterprise_id))
+      if(isOpened){
+        setState((draft) => {
+          draft.isOpened = false
+        })
+      }
       setTimeout(() => {
         Taro.reLaunch({ url: `/pages/purchase/index` })
       }, 700)
-
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
+        dispatch(updateEnterpriseId(_params.enterprise_id))
         await showModal({
           title: '验证失败',
           content: e.message,
@@ -139,8 +128,18 @@ function PurchaseAuthAccount() {
         showToast(e.message)
       }
     }
+  }
 
+  // 同意隐私协议
+  const onResolvePolicy = async () => {
+    setPolicyModal(false)
+    if (!isNewUser) {
+      await login()
+    }
+  }
 
+  const onRejectPolicy = () => {
+    Taro.exitMiniProgram()
   }
 
   return (
@@ -176,7 +175,12 @@ function PurchaseAuthAccount() {
         <Text>如忘记密码，请联系企业管理员处理</Text>
       </View>
 
-      <AtButton circle className='btns-staff' disabled={!(form.account || form.auth_code)} onClick={onFormSubmit}>
+      <AtButton
+        circle
+        className='btns-staff'
+        disabled={!(form.account || form.auth_code)}
+        onClick={onFormSubmit}
+      >
         验证
       </AtButton>
       <CompBottomTip />
@@ -185,18 +189,21 @@ function PurchaseAuthAccount() {
         isOpened={isOpened}
         list={companyList}
         curIndex={curActiveIndex}
-        handleItemClick={(idx)=>{
-          setState(draft=>{
+        handleItemClick={(idx) => {
+          setState((draft) => {
             draft.curActiveIndex = idx
           })
         }}
-        onClose={()=>{
-          setState(draft=>{
+        onClose={() => {
+          setState((draft) => {
             draft.isOpened = false
           })
         }}
         onConfirm={handleSelctCompany}
-       />
+      />
+
+      {/* 隐私协议 */}
+      <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
     </SpPage>
   )
 }

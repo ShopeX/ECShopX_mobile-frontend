@@ -1,4 +1,4 @@
-import Taro from '@tarojs/taro'
+import Taro,{useRouter} from '@tarojs/taro'
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -34,16 +34,20 @@ const initialState = {
     { title: '活动进行中', value: 1 },
     { title: '未开始', value: 2 },
     { title: '已结束', value: 3 }
-  ]
+  ],
+  loading:true
 }
 
 function PurchaseActivityList() {
   const [state, setState] = useImmer(initialState)
-  const { activityList, activity_name, tabList, currentIndex } = state
+  const { activityList, activity_name, tabList, currentIndex,loading} = state
   const { curEnterpriseId } = useSelector((_state) => _state.purchase)
 
   const scrollRef = useRef()
   const dispatch = useDispatch()
+
+  const { params } = useRouter()
+  let { activity_id } = params
 
   useEffect(() => {
     if (!S.getAuthToken()) {
@@ -52,12 +56,31 @@ function PurchaseActivityList() {
       })
       return
     } else {
-      scrollRef.current.reset()
+      verfiyActivityNums()
     }
-    //更新底部tabbar是否有身份切换
-    updateIdentity()
-    updataMemberInfo()
   }, [])
+
+  const verfiyActivityNums = async() => {
+    const { list, total_count } = await api.purchase.getEmployeeActivityList({
+      page: 1,
+      pageSize:1,
+      enterprise_id:curEnterpriseId,
+      activity_id
+    })
+     // 如果只有一条数据，直接进入活动首页
+     if(total_count == 1){
+      const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
+      onClickChange(_list[0],'redirectTo')
+    }else{
+      setState(draft=>{
+        draft.loading = false
+      })
+      scrollRef.current.reset()
+      //更新底部tabbar是否有身份切换
+      updateIdentity()
+      updataMemberInfo()
+    }
+  }
 
 
   const updateIdentity = async() => {
@@ -73,14 +96,15 @@ function PurchaseActivityList() {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const type = tabList[currentIndex]?.value
+    // const type = tabList[currentIndex]?.value
     const { list, total_count } = await api.purchase.getEmployeeActivityList({
       page: pageIndex,
       pageSize,
       activity_name,
-      type,
+      // type,
       enterprise_id:curEnterpriseId
     })
+
     const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
     setState((draft) => {
       draft.activityList = [...activityList, ..._list]
@@ -111,12 +135,15 @@ function PurchaseActivityList() {
     )
   }
 
-  const onClickChange = (item) => {
+  const onClickChange = (item,isRedirectTo) => {
     console.log(item)
     const { id, enterpriseId, pages_template_id } = item
-    Taro.navigateTo({
-      url: `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
-    })
+    const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
+    if(isRedirectTo){
+      Taro.redirectTo({url})
+    }else{
+      Taro.navigateTo({url})
+    }
   }
 
   const handleTypeChange = (e) => {
@@ -143,7 +170,8 @@ function PurchaseActivityList() {
       //   </View>
       // }
       // renderFooter={renderFooter()}
-      renderFooter={<CompTabbar />}
+      loading={loading}
+      renderFooter={!loading && <CompTabbar />}
     >
       <View className='user-box'>
         <View className='user-serach'>

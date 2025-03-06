@@ -57,11 +57,15 @@ function linkPage(data) {
     case 'seckill':
       url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id
       break
+    case "purchase_activity":
+      url = '/subpages/purchase/select-identity?activity_id='+id
+      break
     case 'link':
       if (id == 'vipgrades') {
         url = '/subpage/pages/vip/vipgrades'
       } else if (id == 'purchase') {
-        url = '/pages/purchase/index'
+        url = '/subpages/purchase/select-identity'
+
       } else if (id == 'recharge') {
         url = '/others/pages/recharge/index'
       } else if (id == 'serviceH5Coach') {
