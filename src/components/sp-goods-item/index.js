@@ -123,9 +123,12 @@ function SpGoodsItem(props) {
 
         <View className='goods-info'>
           <View className='goods-title'>
-            <Text className='prescription-drug'>
-              处方药1
-            </Text>
+            {
+              info?.isPrescription == 1 &&
+              <Text className='prescription-drug'>
+                处方药
+              </Text>
+            }
             {info.itemName}
           </View>
           <View className='goods-desc'>{info.brief}</View>

@@ -100,7 +100,9 @@ export const TRADE_ITEM = {
   tradeId: 'trade_id',
   userId: 'user_id',
   diagnosisData:'diagnosis_data',
-  prescriptionData:'prescription_data'
+  prescriptionData:'prescription_data',
+  prescriptionStatus:'prescription_status',
+  diagnosisData:'diagnosis_data',
 }
 
 export const SHOP_INFO = {

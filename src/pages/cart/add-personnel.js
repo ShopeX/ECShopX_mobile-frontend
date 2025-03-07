@@ -45,8 +45,8 @@ function AddPersonnel() {
       let res = await api.prescriptionDrug.medicationPersonnelDetail({ id })
       res.relationship = res.relationship - 1
       setState((draft) => {
-        draft.info = res,
-          draft.handlechecked = res.user_family_gender
+        draft.info = res
+        draft.handlechecked = res.user_family_gender
       })
     }
   }
@@ -228,7 +228,6 @@ function AddPersonnel() {
               </View>
             </SpCell>
 
-
             <Picker mode='selector' range={selector} rangeKey='value' onChange={pickerChange}>
               <SpCell
                 className='logistics-no province border-bottom'
@@ -239,7 +238,7 @@ function AddPersonnel() {
               >
                 <View className='picker'>
                   {
-                    info.relationship ? selector[info.relationship].value : '请选择就诊人与认诊人关系'
+                    selector?.[info.relationship]?.value ? selector[info.relationship].value : '请选择就诊人与认诊人关系'
                   }
                 </View>
               </SpCell>
