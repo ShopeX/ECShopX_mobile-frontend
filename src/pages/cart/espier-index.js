@@ -34,7 +34,8 @@ import './espier-index.scss'
 const initialState = {
   recommendList: [], // 猜你喜欢
   current: 0, // 0:普通商品  1:跨境商品
-  policyModal: false // 隐私弹框
+  policyModal: false ,// 隐私弹框
+  cartRemind: null,//购物车提示
 }
 
 function CartIndex() {
@@ -54,7 +55,7 @@ function CartIndex() {
   const router = $instance.router
 
   const [state, setState] = useImmer(initialState)
-  const { current, recommendList, policyModal } = state
+  const { current, recommendList, policyModal,cartRemind } = state
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
@@ -93,8 +94,13 @@ function CartIndex() {
     const params = {
       shop_type: type
     }
+     
     await dispatch(fetchCartList(params))
     await dispatch(updateCount(params))
+    let cartRemindres = await api.cart.getCartRemind(params)
+    setState({
+      cartRemind: cartRemindres
+    })
     Taro.hideLoading()
   }
 
@@ -274,6 +280,11 @@ function CartIndex() {
       renderFooter={tabbar == 1 && <SpTabbar />}
     >
       <ScrollView scrollY style="height: 100%;">
+        {cartRemind&&cartRemind?.is_open && (
+          <View className='cart-remind'>
+            <Text>{cartRemind.remind_content}</Text>
+          </View>
+        )}
         {!isLogin && (
           <View className='login-header'>
             <View className='login-txt'>授权登录后同步购物车的商品</View>
