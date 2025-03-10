@@ -9,7 +9,7 @@ const initialState = {
   validCart: [],
   invalidCart: [],
   cartCount: 0,
-  hasValidIdentity:false,
+  hasValidIdentity:true,
   curEnterpriseId:null
 }
 

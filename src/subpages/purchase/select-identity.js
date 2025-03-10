@@ -1,9 +1,9 @@
-import Taro,{useRouter} from '@tarojs/taro'
+import Taro,{useDidShow, useRouter} from '@tarojs/taro'
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, Image,  } from '@tarojs/components'
 import api from '@/api'
-import { classNames } from '@/utils'
+import { classNames, getDistributorId } from '@/utils'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
 import './select-identity.scss'
 import { SpPage } from '@/components'
@@ -23,7 +23,7 @@ function SelectIdentity(props) {
   const dispatch = useDispatch()
 
   const { params } = useRouter()
-  let { activity_id } = params
+  let { activity_id, is_select  } = params
 
 
   useEffect(() => {
@@ -31,11 +31,11 @@ function SelectIdentity(props) {
   }, [])
 
   const getUserEnterprises = async () => {
-    const data = await api.purchase.getUserEnterprises({activity_id})
+    const data = await api.purchase.getUserEnterprises({activity_id,distributor_id: getDistributorId()})
     const _identity = data.filter(item => item.disabled == 0)
-
     // 没有企业跳认证首页
     if(_identity.length == 0){
+
       Taro.redirectTo({
         url:'/pages/purchase/auth?type=addIdentity'
       })
@@ -43,7 +43,7 @@ function SelectIdentity(props) {
     }
 
     //一个选择这个跳活动列表
-    if(_identity.length == 1){
+    if(_identity.length == 1 && !is_select){
       dispatch(updateEnterpriseId(_identity[0]?.enterprise_id))
       Taro.redirectTo({
         url:`/pages/purchase/index?activity_id=${activity_id}`
@@ -52,17 +52,14 @@ function SelectIdentity(props) {
     }
 
     //多个则用户去选择
-
     //多个企业展示身份切换tab
-    dispatch(updateValidIdentity(true))
+    // dispatch(updateValidIdentity(true))
 
     setState(draft => {
       draft.loading = false
       draft.identity = _identity
       draft.invalidIdentity = data.filter(item => item.disabled == 1)
     })
-
-
   }
 
   const onAddIdentityChange = () => {
@@ -73,7 +70,7 @@ function SelectIdentity(props) {
 
   const handleItemClick = ({enterprise_id}) => {
     dispatch(updateEnterpriseId(enterprise_id))
-    Taro.navigateTo({
+    Taro.redirectTo({
       url: `/pages/purchase/index?activity_id=${activity_id}`
     })
   }

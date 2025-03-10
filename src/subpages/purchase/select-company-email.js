@@ -6,14 +6,13 @@ import { AtButton, AtInput } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
-import { classNames, showToast, VERSION_IN_PURCHASE } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE,getDistributorId } from '@/utils'
 import qs from 'qs'
 
 import './select-company-email.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 import { updateEnterpriseId } from '@/store/slices/purchase'
 import { SpForm, SpFormItem, SpTimer, SpPage, SpPrivacyModal } from '@/components'
-
 
 function PurchaseAuthEmail(props) {
   const router = useRouter()
@@ -39,14 +38,12 @@ function PurchaseAuthEmail(props) {
         {
           validate: async (value) => {
             // const { enterprise_id } = router.params
-            const { status } = await api.purchase.getEmailCode({ email: value})
+            const { status } = await api.purchase.getEmailCode({ email: value,distributor_id: getDistributorId() })
             showToast(status ? '发送成功' : '发送失败')
           }
         }
       ],
-      vcode: [
-        { required: true, message: '请输入验证码' }
-      ]
+      vcode: [{ required: true, message: '请输入验证码' }]
     }
   })
   const { form, rules } = state
@@ -63,49 +60,61 @@ function PurchaseAuthEmail(props) {
     // 有商城校验白名单，账号绑定并登录，无商城检验白名单通过手机号授权
     const { email, vcode } = form
     await formRef.current.onSubmitAsync(['vcode'])
-    if (isNewUser) {
-      // 无商城逻辑（需要调整一个页面去授权手机号）
-      Taro.navigateTo({
-        url: `/subpages/purchase/select-company-phone?${qs.stringify({
-          enterprise_sn,
-          enterprise_name,
-          enterprise_id,
-          email,
-          vcode
-        })}`
-      })
-    } else {
-      const params = {
-        enterprise_id,
-        email,
-        vcode,
-        showError: false,
-        auth_type:'email'
+    // if (isNewUser) {
+    //   // 无商城逻辑（需要调整一个页面去授权手机号）
+    //   Taro.navigateTo({
+    //     url: `/subpages/purchase/select-company-phone?${qs.stringify({
+    //       enterprise_sn,
+    //       enterprise_name,
+    //       enterprise_id,
+    //       email,
+    //       vcode
+    //     })}`
+    //   })
+    //   return
+    // }
+
+    const params = {
+      enterprise_id,
+      email,
+      vcode,
+      showError: false,
+      auth_type: 'email'
+    }
+    try {
+      const { list } = await api.purchase.employeeCheck({...params,distributor_id: getDistributorId()})
+      //一个邮箱后缀只有一个企业
+      params.enterprise_id = list[0].enterprise_id
+
+      if(isNewUser){
+        Taro.navigateTo({
+          url: `/subpages/purchase/select-company-phone?${qs.stringify({
+            ...params,
+            enterprise_name:list[0].enterprise_name
+          })}`
+        })
+        return
       }
-      try {
-        const {list} = await api.purchase.employeeCheck(params)
-        //只有一个企业
-        params.enterprise_id = list[0].enterprise_id
-        await api.purchase.setEmployeeAuth(params)
+
+      await api.purchase.setEmployeeAuth(params)
+      dispatch(updateEnterpriseId(params.enterprise_id))
+      showToast('验证成功')
+      setTimeout(() => {
+        Taro.reLaunch({ url: `/pages/purchase/index` })
+      }, 700)
+    } catch (e) {
+      if (e.message.indexOf('重复绑定') > -1) {
         dispatch(updateEnterpriseId(params.enterprise_id))
-        showToast('验证成功')
-        setTimeout(() => {
-          Taro.reLaunch({ url: `/pages/purchase/index` })
-        }, 700)
-      } catch (e) {
-        if (e.message.indexOf('重复绑定') > -1) {
-        dispatch(updateEnterpriseId(params.enterprise_id))
-          await showModal({
-            title: '验证失败',
-            content: e.message,
-            showCancel: false,
-            confirmText: '我知道了',
-            contentAlign: 'center'
-          })
-          Taro.reLaunch({ url: `/pages/purchase/index` })
-        } else {
-          formRef.current.setMessage({ prop: 'vcode', message: e.message })
-        }
+        await showModal({
+          title: '验证失败',
+          content: e.message,
+          showCancel: false,
+          confirmText: '我知道了',
+          contentAlign: 'center'
+        })
+        Taro.reLaunch({ url: `/pages/purchase/index` })
+      } else {
+        formRef.current.setMessage({ prop: 'vcode', message: e.message })
       }
     }
   }
@@ -126,7 +135,6 @@ function PurchaseAuthEmail(props) {
   const onRejectPolicy = () => {
     Taro.exitMiniProgram()
   }
-
 
   return (
     <SpPage className='page-purchase-auth-email select-component'>
@@ -174,8 +182,8 @@ function PurchaseAuthEmail(props) {
       </AtButton>
       <CompBottomTip />
 
-       {/* 隐私协议 */}
-       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
+      {/* 隐私协议 */}
+      <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
     </SpPage>
   )
 }

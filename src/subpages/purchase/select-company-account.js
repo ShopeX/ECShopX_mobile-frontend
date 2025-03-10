@@ -5,7 +5,7 @@ import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { useLogin, useModal } from '@/hooks'
-import { classNames, showToast, VERSION_IN_PURCHASE } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
 import qs from 'qs'
 import { SpForm, SpFormItem, SpPage, SpInput as AtInput, SpPrivacyModal } from '@/components'
 import { updateEnterpriseId } from '@/store/slices/purchase'
@@ -51,61 +51,75 @@ function PurchaseAuthAccount() {
   const onFormSubmit = async () => {
     await formRef.current.onSubmitAsync()
     const { account, auth_code } = form
-    // 无商城逻辑（需要调整一个页面去授权手机号）
-    if (isNewUser) {
-      Taro.navigateTo({
-        url: `/subpages/purchase/select-company-phone?${qs.stringify({
-          enterprise_sn,
-          enterprise_name,
-          enterprise_id,
-          account,
-          auth_code
-        })}`
-      })
-    } else {
-      const _params = {
-        enterprise_id,
-        account,
-        auth_code,
-        auth_type: 'account'
-      }
-
-      const { list } = await api.purchase.employeeCheck(_params)
-      if (list.length > 1) {
-        //选择企业
-        setState((draft) => {
-          draft.isOpened = true
-          draft.companyList = list
-        })
-        return
-      }
-      _params.enterprise_id = list[0]?.enterprise_id
-      _params.employee_id = list[0]?.id
-      _params.showError = false
-      employeeAuthFetch(_params)
+    // // 无商城逻辑（需要调整一个页面去授权手机号）
+    // if (isNewUser) {
+    //   Taro.navigateTo({
+    //     url: `/subpages/purchase/select-company-phone?${qs.stringify({
+    //       enterprise_sn,
+    //       enterprise_name,
+    //       enterprise_id,
+    //       account,
+    //       auth_code
+    //     })}`
+    //   })
+    //   return
+    // }
+    const _params = {
+      enterprise_id,
+      account,
+      auth_code,
+      auth_type: 'account'
     }
+
+    const { list } = await api.purchase.employeeCheck({..._params,distributor_id: getDistributorId()})
+    if (list.length > 1) {
+      //选择企业
+      setState((draft) => {
+        draft.isOpened = true
+        draft.companyList = list
+      })
+      return
+    }
+    _params.enterprise_id = list[0]?.enterprise_id
+    _params.employee_id = list[0]?.id
+    _params.enterprise_name = list[0]?.enterprise_name
+
+    employeeAuth(_params)
   }
 
   const handleSelctCompany = async () => {
     const { account, auth_code } = form
-    const { enterprise_id: _enterprise_id, id: employee_id } = companyList[curActiveIndex] || {}
+    const { enterprise_id: _enterprise_id, id: employee_id,enterprise_name:_enterprise_name } = companyList[curActiveIndex] || {}
     const _params = {
       enterprise_id: _enterprise_id,
       employee_id,
       account,
       auth_code,
       auth_type: 'account',
-      showError: false
+      enterprise_name:_enterprise_name,
     }
-    employeeAuthFetch(_params)
+    employeeAuth(_params)
+  }
+
+  const employeeAuth = (_params) => {
+    if (isNewUser) {
+      //新用户需要跳到授权手机号页面
+      Taro.navigateTo({
+        url: `/subpages/purchase/select-company-phone?${qs.stringify({
+          ..._params
+        })}`
+      })
+    } else {
+      employeeAuthFetch(_params)
+    }
   }
 
   const employeeAuthFetch = async (_params) => {
     try {
-      await api.purchase.setEmployeeAuth(_params)
+      await api.purchase.setEmployeeAuth({..._params,showError:false})
       showToast('验证成功')
       dispatch(updateEnterpriseId(_params.enterprise_id))
-      if(isOpened){
+      if (isOpened) {
         setState((draft) => {
           draft.isOpened = false
         })
