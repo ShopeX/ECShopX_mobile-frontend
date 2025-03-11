@@ -358,6 +358,7 @@ function MemberIndex(props) {
           <View className='gradename'>
             {userInfo?.is_employee && '员工'}
             {userInfo?.is_dependent && '员工亲友'}
+            <Text className='identity-change' onClick={handleIdentityChange}>切换身份</Text>
           </View>
         </View>
       )
@@ -368,6 +369,12 @@ function MemberIndex(props) {
         </SpLogin>
       )
     }
+  }
+
+  const handleIdentityChange = () => {
+    Taro.reLaunch({
+      url:'/subpages/purchase/select-identity?is_select=1'
+    })
   }
 
   if (!config) {

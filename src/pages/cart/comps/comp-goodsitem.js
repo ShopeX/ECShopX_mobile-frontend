@@ -16,6 +16,7 @@ function CompGoodsItem(props) {
     children,
     isShowAddInput = true,
     isShowDeleteIcon = true,
+    isPurchase = false,
     goodType,
     onDelete = () => {},
     onChange = () => {},
@@ -25,6 +26,9 @@ function CompGoodsItem(props) {
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
   const { cart_page } = priceSetting
   const { market_price: enMarketPrice } = cart_page
+  const { priceDisplayConfig } = useSelector((state) => state.purchase)
+  const { cart_page:pcart_page } = priceDisplayConfig
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = pcart_page
   const [state, setState] = useImmer(initialState)
   const { localNum } = state
 
@@ -56,6 +60,7 @@ function CompGoodsItem(props) {
   } else {
     _price = price
   }
+
 
   let limitTxt = ''
   let limitNum = ''
@@ -118,7 +123,13 @@ function CompGoodsItem(props) {
             <View className='item-fd-hd'></View>
             <View className='item-ft-bd'>
               <View className='goods-price-wrap'>
-                <SpPrice value={_price / 100} />
+                {isPurchase && <>
+                  <SpPrice value={info.sale_price / 100} />
+                  {enPurActivityPrice && <View className='act-price'>
+                    活动价格<SpPrice value={info.price / 100} />
+                  </View>}
+                  </>}
+                {!isPurchase && <SpPrice value={_price / 100} />}
                 {info.market_price > 0 && enMarketPrice && (
                   <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />
                 )}

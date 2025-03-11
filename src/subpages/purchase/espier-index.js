@@ -319,6 +319,7 @@ function CartIndex() {
                                 />
                                 <CompGoodsItem
                                   info={c_sitem}
+                                  isPurchase
                                   onDelete={onDeleteCartGoodsItem.bind(this, c_sitem)}
                                   onChange={onChangeCartGoodsItem.bind(this, c_sitem)}
                                   onClickImgAndTitle={onClickImgAndTitle.bind(this, c_sitem)}

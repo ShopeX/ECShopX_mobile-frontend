@@ -382,6 +382,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    isPurchase
                     info={{
                       ...item,
                       card_id,
@@ -399,6 +400,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    isPurchase
                     info={{
                       ...item,
                       card_id,

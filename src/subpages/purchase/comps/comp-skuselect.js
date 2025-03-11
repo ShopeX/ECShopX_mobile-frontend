@@ -358,7 +358,7 @@ function SpSkuSelect(props) {
             <SpPrice value={curItem ? curItem.price : info.price}></SpPrice>
             <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View> */}
-          <SpGoodsPrice info={curItem || info} />
+          <SpGoodsPrice isPurchase info={curItem || info} />
           <View className='goods-sku-txt'>{skuText}</View>
           {info.store_setting && <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>}
         </View>

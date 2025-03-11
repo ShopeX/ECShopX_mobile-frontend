@@ -78,7 +78,7 @@ export default class TradeItem extends Component {
       showActions,
       colors,
       rateStatus,
-      isShowDistributorInfo
+      isShowDistributorInfo,
     } = this.props
 
     if (!info) {
@@ -104,6 +104,7 @@ export default class TradeItem extends Component {
               <SpOrderItem
                 key={`${idx}1`}
                 info={item}
+                isPurchase={info.order_class === 'employee_purchase'}
                 payType={payType}
                 isPointitemGood={info.order_class === 'pointsmall'}
                 isShowPointTag={info.order_class === 'pointsmall'}

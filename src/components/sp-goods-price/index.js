@@ -7,7 +7,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpGoodsPrice(props) {
-  const { info } = props
+  const { info, isPurchase = false } = props
   const { priceSetting } = useSelector((state) => state.sys)
   const { cart_page, item_page, order_page } = priceSetting
   const {
@@ -15,37 +15,42 @@ function SpGoodsPrice(props) {
     member_price: enMemberPrice,
     svip_price: enSvipPrice
   } = item_page
+  const { priceDisplayConfig } = useSelector((state) => state.purchase)
+  const { items_page } = priceDisplayConfig
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
+
   if (!info) {
     return null
   }
-  const { price, memberPrice, marketPrice, activityPrice, vipPrice, svipPrice, isPoint, point } = info
+  const { price, memberPrice, marketPrice, activityPrice, vipPrice, svipPrice, isPoint, point } =
+    info
+
   return (
     <View className={classNames('sp-goods-price')}>
       {!isNaN(activityPrice) && (
         <View className='activity'>
           <SpPrice size={30} className='sale-price' value={price} />
-          <View className='activity-wrap'>
-            <Text className='activity-label'>活动价</Text>
-            <SpPrice size={36} className='activity-price' value={activityPrice} />
-          </View>
+          {/* 内购 && !enPurActivityPrice 不展示,其他情况都展示 */}
+          {!(isPurchase && !enPurActivityPrice) && (
+            <View className='activity-wrap'>
+              <Text className='activity-label'>活动价</Text>
+              <SpPrice size={36} className='activity-price' value={activityPrice} />
+            </View>
+          )}
         </View>
       )}
       {isNaN(activityPrice) && (
         <View>
           <View className='goods-price'>
-            {
-              isPoint && price == 0 && <SpPoint className='sale-point' value={point} />
-            }
-            {
-              isPoint && price > 0 && <View>
+            {isPoint && price == 0 && <SpPoint className='sale-point' value={point} />}
+            {isPoint && price > 0 && (
+              <View>
                 <SpPoint className='sale-point' value={point} />
                 <Text className='point-plus-price'>+</Text>
                 <SpPrice size={42} className='sale-price' value={price} />
               </View>
-            }
-            {
-              !isPoint && <SpPrice size={42} className='sale-price' value={price} />
-            }
+            )}
+            {!isPoint && <SpPrice size={42} className='sale-price' value={price} />}
             {marketPrice > 0 && enMarketPrice && (
               <SpPrice className='mkt-price' lineThrough value={marketPrice} />
             )}
@@ -60,8 +65,7 @@ function SpGoodsPrice(props) {
 
             {info.vipPrice > 0 &&
               info.vipPrice < info.memberPrice &&
-              (!info.svipPrice ||
-                info.vipPrice > info.svipPrice) &&
+              (!info.svipPrice || info.vipPrice > info.svipPrice) &&
               enSvipPrice && (
                 <View className='vip-price'>
                   <SpPrice value={info.vipPrice} />

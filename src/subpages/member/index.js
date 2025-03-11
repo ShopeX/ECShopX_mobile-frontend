@@ -87,7 +87,7 @@ const initialConfigState = {
     vipImg: null
   },
   purchaseRes: {},
-  
+
 }
 
 const initialState = {
@@ -404,9 +404,9 @@ function MemberIndex(props) {
     }
 
     if (key == 'purchase') {
-      const data = await api.purchase.getUserEnterprises({ disabled: 0 })
+      const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
       if (data?.length > 0) {
-        Taro.navigateTo({ url: '/pages/purchase/index' })
+        Taro.navigateTo({ url: '/subpages/purchase/select-identity' })
       } else {
         Taro.navigateTo({ url: '/pages/purchase/auth' })
       }

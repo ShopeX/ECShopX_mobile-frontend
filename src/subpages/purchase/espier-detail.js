@@ -416,7 +416,7 @@ function EspierDetail(props) {
                 fetch()
               }}
             >
-              <SpGoodsPrice info={curItem ? curItem : info} />
+              <SpGoodsPrice isPurchase info={curItem ? curItem : info} />
             </CompActivityBar>
           )}
 
@@ -424,7 +424,7 @@ function EspierDetail(props) {
             <View className='goods-info-title'>
               {/* 拼团、秒杀、限时特惠不显示 */}
               {!ACTIVITY_LIST[info.activityType] && (
-                <SpGoodsPrice info={curItem ? curItem : info} />
+                <SpGoodsPrice isPurchase info={curItem ? curItem : info} />
               )}
               {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>

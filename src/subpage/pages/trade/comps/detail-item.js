@@ -12,6 +12,7 @@ export default class DetailItem extends Component {
     // customHeader: false
     customFooter: false,
     showType: 'orders',
+    isPurchase:false,
     // customRender: false,
     // noHeader: false,
     // showActions: false,
@@ -85,7 +86,7 @@ export default class DetailItem extends Component {
   }
 
   render() {
-    const { customFooter, info, isPointitem, showType } = this.props
+    const { customFooter, info, isPointitem, showType, isPurchase } = this.props
     return (
       <View className='detail-item' style={styleNames(getThemeStyle())}>
         {info &&
@@ -109,6 +110,7 @@ export default class DetailItem extends Component {
               <SpOrderItem
                 key={`${idx}1`}
                 info={item}
+                isPurchase={isPurchase}
                 isShowNational
                 isPointitemGood={isPointitem}
                 onClick={() => {

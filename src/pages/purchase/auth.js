@@ -1,7 +1,7 @@
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, RootPortal } from '@tarojs/components'
-import { SpPrivacyModal, SpPage, SpLogin, SpModal,SpCheckbox } from '@/components'
+import { SpPrivacyModal, SpPage, SpLogin, SpModal,SpCheckbox, SpImage } from '@/components'
 import { AtButton,AtIcon } from 'taro-ui'
 import { showToast, normalizeQuerys, getCurrentPageRouteParams } from '@/utils'
 import { useLogin, useModal } from '@/hooks'
@@ -89,16 +89,24 @@ function PurchaseAuth() {
       const query = await normalizeQuerys($instance.router.params)
       let { eid, cid, t, c } = query
       t = 'm'
-      eid = '10'
+      eid = '5'
 
       t = 'a'
-      eid = '11'
+      eid = '6'
 
       t = 'e'
-      eid = '12'
+      eid = '24'
 
-      t = 'm'
-      eid = '19'
+      // t = 'm'
+      // eid = '19'
+
+
+      // eid = "21"; cid = "34" ; t = "q"; c = "1"
+      //  eid = "13"; cid = "34" ; t = "q"; c = ""
+
+      //肉松小贝
+      // eid = "26"; cid = "34" ; t = "q"; c = ""
+      eid = "8"; cid = "34" ; t = "q"; c = "1"
 
       console.log( '扫码参数',eid, cid, t, c)
       const tMap = {
@@ -113,7 +121,7 @@ function PurchaseAuth() {
           auth_type:tMap[t],
         }
         if(c){
-          sparams.isVerify = c
+          sparams.is_verify = c
         }
         //跳转
         handleConfirmClick(tMap[t],sparams)
@@ -169,8 +177,6 @@ function PurchaseAuth() {
         url: redirectUrl
       })
     }
-
-
   }
 
   const handleBindPhone = async (e) => {
@@ -235,7 +241,7 @@ function PurchaseAuth() {
       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
 
       <View className='header'>
-        <Image className='header-avatar' src={appLogo} mode='aspectFill' />
+      <Image className='header-avatar' src={appLogo} mode='aspectFill' />
         <Text className='welcome'>欢迎登录</Text>
         <Text className='title'>{appName}</Text>
       </View>

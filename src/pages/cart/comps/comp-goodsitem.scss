@@ -23,8 +23,16 @@
     // right: 0;
 
     .goods-price-wrap {
-      display: flex;
-      align-items: center;
+      // display: flex;
+      // align-items: center;
+    }
+    .act-price{
+      color: var(--color-primary);
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        color: var(--color-primary);
+      }
     }
     .mkt-price {
       margin-left: 8px;

@@ -68,7 +68,7 @@ function PurchaseCheckout(props) {
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, isDiscountDescriptionEnabled, discountDescription } = useSelector((state) => state.purchase)
 
   const {
     detailInfo,
@@ -601,11 +601,17 @@ function PurchaseCheckout(props) {
             <View className='goods-list'>
               {detailInfo.map((item, idx) => (
                 <View className='sp-order-item__wrap' key={idx}>
-                  <SpGoodsCell info={item} />
+                  <SpGoodsCell isPurchase info={item} />
                 </View>
               ))}
             </View>
           </View>
+          {
+            isDiscountDescriptionEnabled && discountDescription &&
+            <View className='cart-checkout__title'>
+              {discountDescription}
+            </View>
+          }
           <View className='cart-group__cont cus-input'>
             <SpCell className='trade-remark' border={false}>
               <AtInput

@@ -5,10 +5,10 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
+import { classNames, pickBy, getDistributorId } from '@/utils'
 import { useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
-import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo } from '@/store/slices/purchase'
 import { updateValidIdentity } from '@/store/slices/purchase'
 
 import doc from '@/doc'
@@ -47,7 +47,7 @@ function PurchaseActivityList() {
   const dispatch = useDispatch()
 
   const { params } = useRouter()
-  let { activity_id } = params
+  let { activity_id, is_select } = params
 
   useEffect(() => {
     if (!S.getAuthToken()) {
@@ -68,23 +68,24 @@ function PurchaseActivityList() {
       activity_id
     })
      // 如果只有一条数据，直接进入活动首页
-     if(total_count == 1){
+    if(total_count == 1 && !is_select){
       const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
       onClickChange(_list[0],'redirectTo')
+
     }else{
       setState(draft=>{
         draft.loading = false
       })
       scrollRef.current.reset()
       //更新底部tabbar是否有身份切换
-      updateIdentity()
+      // updateIdentity()
       updataMemberInfo()
     }
   }
 
 
   const updateIdentity = async() => {
-    const data = await api.purchase.getUserEnterprises()
+    const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
     const hasValidIdentity = data.filter(item => item.disabled == 0).length > 1
     //多个企业展示身份切换tab
     dispatch(updateValidIdentity(hasValidIdentity));
@@ -102,7 +103,8 @@ function PurchaseActivityList() {
       pageSize,
       activity_name,
       // type,
-      enterprise_id:curEnterpriseId
+      enterprise_id:curEnterpriseId,
+      activity_id
     })
 
     const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
@@ -137,13 +139,29 @@ function PurchaseActivityList() {
 
   const onClickChange = (item,isRedirectTo) => {
     console.log(item)
-    const { id, enterpriseId, pages_template_id } = item
+    const { id, enterpriseId, pages_template_id, priceDisplayConfig = {}, isDiscountDescriptionEnabled, discountDescription } = item
     const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
+    const _priceDisplayConfig = handlePriceConfig(priceDisplayConfig)
+    //需要存活动价格展示
+    dispatch(updateActivityInfo({priceDisplayConfig:_priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription}))
     if(isRedirectTo){
       Taro.redirectTo({url})
     }else{
       Taro.navigateTo({url})
     }
+  }
+
+  const handlePriceConfig = (val) => {
+    const priceConfig = JSON.parse(JSON.stringify(val))
+    Object.keys(priceConfig).forEach(key=>{
+      const c_config = priceConfig[key]
+      if(c_config){
+        for(let ckey in c_config){
+          c_config[ckey] = c_config[ckey] == 'true'
+        }
+      }
+    })
+    return priceConfig
   }
 
   const handleTypeChange = (e) => {

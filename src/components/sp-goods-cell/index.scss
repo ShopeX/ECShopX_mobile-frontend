@@ -65,4 +65,12 @@
     display: inline-block;
     margin: 5px 10px 4px 0;
   }
+  .act-price{
+    color: var(--color-primary);
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: var(--color-primary);
+    }
+  }
 }

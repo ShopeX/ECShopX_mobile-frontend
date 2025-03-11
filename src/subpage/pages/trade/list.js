@@ -47,7 +47,8 @@ export default class TradeList extends Component {
       evaluate: 1,
       list: [],
       rate_status: false,
-      curItemActionsId: null
+      curItemActionsId: null,
+
     }
   }
 
@@ -181,6 +182,8 @@ export default class TradeList extends Component {
           type: 'type',
           item_spec_desc: 'item_spec_desc',
           price: ({ item_fee_new }) => (item_fee_new / 100).toFixed(2),
+          salePrice: ({sale_price}) => (sale_price / 100).toFixed(2),
+          activityPrice: ({price}) => (price / 100).toFixed(2),
           item_fee: 'item_fee',
           point: 'item_point',
           num: 'num',
@@ -327,7 +330,7 @@ export default class TradeList extends Component {
       list = [],
       page,
       rateStatus,
-      evaluate
+      evaluate,
     } = this.state
 
     const isLogin = S.getAuthToken()
