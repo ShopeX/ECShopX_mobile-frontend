@@ -995,13 +995,13 @@ export default class TradeDetail extends Component {
             )}
             {enMarketPrice && info.market_fee > 0 && (
               <View className='line'>
-                <View className='left'>原价</View>
+                <View className='left'>商品总金额</View>
                 <View className='right'>{`¥${info.market_fee}`}</View>
               </View>
             )}
 
             <View className='line'>
-              <View className='left'>总价</View>
+              <View className='left'>实付</View>
               <View className='right'>
                 {transformTextByPoint(this.isPointitemGood(), info.item_fee_new, info.item_point)}
               </View>

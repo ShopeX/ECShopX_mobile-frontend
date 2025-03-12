@@ -15,6 +15,7 @@ export default class WgtGoodsScroll extends Component {
     addGlobalClass: true,
     info: null
   }
+  $instance = getCurrentInstance()
 
   constructor(props) {
     super(props)
@@ -24,6 +25,7 @@ export default class WgtGoodsScroll extends Component {
       // boxHeight: null
     }
   }
+
 
   setTimer() {
     const { info } = this.props
@@ -92,6 +94,7 @@ export default class WgtGoodsScroll extends Component {
 
     const { base, data, config, more } = info
     const { timer, boxHeight } = this.state
+    const isPurchase = this.$instance.router.path == "/subpages/purchase/index"
     const goods = pickBy(data, doc.goods.WGT_GOODS_SCROLL)
 
     return (
@@ -148,6 +151,7 @@ export default class WgtGoodsScroll extends Component {
                   showPrice={config.showPrice}
                   showAddCart={config.addCart}
                   info={item}
+                  isPurchase={isPurchase}
                   key={`scroll-goods-item__${idx}`}
                   mode='aspectFill'
                   lazyLoad

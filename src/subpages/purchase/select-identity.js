@@ -70,7 +70,7 @@ function SelectIdentity(props) {
 
   const handleItemClick = ({enterprise_id}) => {
     dispatch(updateEnterpriseId(enterprise_id))
-    Taro.redirectTo({
+    Taro.navigateTo({
       url: `/pages/purchase/index?activity_id=${activity_id}`
     })
   }

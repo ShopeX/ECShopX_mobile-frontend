@@ -125,6 +125,7 @@ function MemberIndex(props) {
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
+  const isPurchaseHome = router.params?.from == 'purchase_home'
 
   useEffect(() => {
     if (isLogin) {
@@ -275,7 +276,11 @@ function MemberIndex(props) {
   }
 
   const getMemberCenterData = async () => {
-    const resTrade = await api.trade.getCount()
+    const params = {order_class:'employee_purchase',order_type:'normal'}
+    // if(!isPurchaseHome){
+    //   params.activity_id = purchase_share_info.activity_id
+    // }
+    const resTrade = await api.trade.getCount(params)
     // 大转盘
 
     // await setHeaderBlock()
@@ -388,7 +393,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member' renderFooter={router.params?.from == 'purchase_home' ? <CompTabbarActivity /> : <CompTabbar />}>
+    <SpPage className='page-purchase-member' renderFooter={isPurchaseHome ? <CompTabbarActivity /> : <CompTabbar />}>
       <View
         className='header-block'
         style={styleNames({
@@ -414,7 +419,7 @@ function MemberIndex(props) {
         </View>
 
         {
-          router.params?.from != 'purchase_home' && <View className='header-bd'>
+          !isPurchaseHome && <View className='header-bd'>
             <View className='bd-item'>
               <View className='bd-item-label'>总额度</View>
               <View className='bd-item-value'>
@@ -451,7 +456,7 @@ function MemberIndex(props) {
           </View> */}
           </View>
         }
-        {router.params?.from != 'purchase_home' && <View className='header-ft'>
+        {!isPurchaseHome && <View className='header-ft'>
           {/* 会员卡等级 */}
           {vipInfo.isOpen && (
             <CompVipCard
@@ -527,7 +532,7 @@ function MemberIndex(props) {
 
 
         {
-          router.params?.from != 'purchase_home' && <CompMenu
+          !isPurchaseHome && <CompMenu
             accessMenu={{
               ...config.menu,
               purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,

@@ -27,7 +27,7 @@ function CompGoodsItem(props) {
   const { cart_page } = priceSetting
   const { market_price: enMarketPrice } = cart_page
   const { priceDisplayConfig } = useSelector((state) => state.purchase)
-  const { cart_page:pcart_page } = priceDisplayConfig
+  const { cart_page:pcart_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = pcart_page
   const [state, setState] = useImmer(initialState)
   const { localNum } = state
@@ -126,7 +126,8 @@ function CompGoodsItem(props) {
                 {isPurchase && <>
                   <SpPrice value={info.sale_price / 100} />
                   {enPurActivityPrice && <View className='act-price'>
-                    活动价格<SpPrice value={info.price / 100} />
+                    活动价¥{(info.price / 100).toFixed(2)}
+                    {/* <SpPrice value={info.price / 100} /> */}
                   </View>}
                   </>}
                 {!isPurchase && <SpPrice value={_price / 100} />}

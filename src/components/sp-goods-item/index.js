@@ -24,7 +24,7 @@ function SpGoodsItem(props) {
     svip_price: enSvipPrice
   } = item_page
   const { priceDisplayConfig } = useSelector((state) => state.purchase)
-  const { items_page } = priceDisplayConfig
+  const { items_page = {} } = priceDisplayConfig
   const {
     activity_price:enPurActivityPrice,
     sale_price:enPurSalePrice,
@@ -160,8 +160,8 @@ function SpGoodsItem(props) {
                 { isPurchase && <View>
                   <SpPrice size={36} value={info.price}></SpPrice>
                   {info.activityPrice && enPurActivityPrice && <View className='act-price'>
-                    活动价
-                    <SpPrice className='mkt-price' size={36} value={info.activityPrice}></SpPrice>
+                    活动价¥{info.activityPrice.toFixed(2)}
+                    {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
                     </View>}
                 </View>}
                {!isPurchase && <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>}

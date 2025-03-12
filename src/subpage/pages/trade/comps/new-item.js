@@ -45,15 +45,15 @@ export default class TradeItem extends Component {
 
     if (order_class === 'pointsmall') {
       if (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)) {
-        total = `合计：${point} ${pointName}`
+        total = `实付：${point} ${pointName}`
       } else if (freight_type === 'cash' && freight_fee != 0) {
-        total = `合计：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
+        total = `实付：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
       }
     } else {
       if (payType === 'dhpoint') {
-        total = `合计：${total_fee}${pointName}`
+        total = `实付：${total_fee}${pointName}`
       } else {
-        total = `合计：￥${payment}`
+        total = `实付：￥${payment}`
       }
     }
     return (

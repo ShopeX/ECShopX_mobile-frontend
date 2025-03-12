@@ -6,9 +6,9 @@ import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
 import { classNames, pickBy, getDistributorId } from '@/utils'
-import { useLogin } from '@/hooks'
+import { useAsyncCallback, useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
-import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo, updateCount } from '@/store/slices/purchase'
 import { updateValidIdentity } from '@/store/slices/purchase'
 
 import doc from '@/doc'
@@ -137,13 +137,19 @@ function PurchaseActivityList() {
     )
   }
 
-  const onClickChange = (item,isRedirectTo) => {
+  const onClickChange = async(item,isRedirectTo) => {
     console.log(item)
     const { id, enterpriseId, pages_template_id, priceDisplayConfig = {}, isDiscountDescriptionEnabled, discountDescription } = item
     const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
     const _priceDisplayConfig = handlePriceConfig(priceDisplayConfig)
     //需要存活动价格展示
     dispatch(updateActivityInfo({priceDisplayConfig:_priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription}))
+    //更新活动购物车
+    await dispatch(updateCount({
+      shop_type:'distributor',
+      enterprise_id:enterpriseId,
+      activity_id:id
+    }))
     if(isRedirectTo){
       Taro.redirectTo({url})
     }else{
