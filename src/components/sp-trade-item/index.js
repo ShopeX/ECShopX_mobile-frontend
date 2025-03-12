@@ -8,7 +8,7 @@ import './index.scss'
 function SpTradeItem(props) {
   const { info, onClick = () => { } } = props
   if (!info) return null
-  const { pic, itemName, itemPoint, price, itemSpecDesc, num, orderClass = 'normal' } = info
+  const { pic, itemName, itemPoint, price, itemSpecDesc, num, orderClass = 'normal',isPrescription } = info
   const { pointName } = useSelector((state) => state.sys)
 
   const onClickItem = () => {
@@ -18,11 +18,19 @@ function SpTradeItem(props) {
   return (
     <View className='sp-trade-item' onClick={onClickItem}>
       <View className='tradeitem-hd'>
-        <SpImage src={pic} width={130}  />
+        <SpImage src={pic} width={130} />
       </View>
       <View className='tradeitem-bd'>
         <View className='goods-info-hd'>
-          <Text className='name'>{itemName}</Text>
+          <View className='name'>
+            {
+              isPrescription == 1 &&
+              <Text className='prescription-drug'>
+                处方药
+              </Text>
+            }
+            {itemName}
+          </View>
           {
             orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`}</Text>
           }

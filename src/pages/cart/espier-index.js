@@ -370,7 +370,7 @@ function CartIndex() {
                                 {/**组合商品开始 */}
                               </View>
                             ))}
-                            {/**普通商品开始 */}
+                            {/**普通商品结束 */}
                             {/**换购商品开始 */}
                             {cus_plus_exchange_item_list && (
                               <View className='cart-item-wrap plus_items_bck'>

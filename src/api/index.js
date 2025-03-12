@@ -32,6 +32,7 @@ import * as im from './im'
 import * as mdugc from './mdugc'
 import * as salesman from './salesman'
 import * as delivery from './delivery'
+import * as prescriptionDrug from './prescriptionDrug'
 
 
 export default {
@@ -68,5 +69,6 @@ export default {
   im,
   mdugc,
   salesman,
-  delivery
+  delivery,
+  prescriptionDrug
 }

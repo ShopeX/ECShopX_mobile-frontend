@@ -215,6 +215,7 @@ function CartCheckout(props) {
       return
     }
 
+
     if (isWeixin) {
       const templeparams = {
         temp_name: 'yykweishop',
@@ -307,6 +308,14 @@ function CartCheckout(props) {
     setState((draft) => {
       draft.submitLoading = false
     })
+
+    if(!totalInfo?.prescription_status == 0){
+      Taro.redirectTo({
+        url: `/pages/cart/prescription-information?order_id=${orderId}`
+      })
+      console.log('我要跳转到新的页面啦:', payType)
+      return
+    }
 
     if (
       params.pay_type == 'wxpayjs' ||
@@ -540,7 +549,8 @@ function CartCheckout(props) {
       items_promotion,
       deliveryTimeList,
       salespersonInfo,
-      point_rule
+      point_rule,
+      prescription_status
     } = orderRes
 
     let subdistrictRes
@@ -600,7 +610,8 @@ function CartCheckout(props) {
       point_fee, //积分抵扣金额,
       item_point,
       freight_type,
-      promotion_discount
+      promotion_discount,
+      prescription_status
     }
 
     const point_info = {
@@ -1153,6 +1164,14 @@ function CartCheckout(props) {
               />
             )}
         </View>
+
+        {
+          !totalInfo?.prescription_status == 0 &&
+          <View className='cart-checkout__title'>
+          订单中包含处方药，提交订单后请补充处方信息
+        </View>
+        }
+
       </ScrollView>
       <CompPointUse
         isOpened={isPointOpenModal}

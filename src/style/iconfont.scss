@@ -1,8 +1,8 @@
 @font-face {
   font-family: "iconfont"; /* Project id 869421 */
-  src: url('//at.alicdn.com/t/c/font_869421_jnf2bz3qz8.woff2?t=1717049335724') format('woff2'),
-       url('//at.alicdn.com/t/c/font_869421_jnf2bz3qz8.woff?t=1717049335724') format('woff'),
-       url('//at.alicdn.com/t/c/font_869421_jnf2bz3qz8.ttf?t=1717049335724') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_869421_jx8es1cv8lb.woff2?t=1740638014611') format('woff2'),
+       url('//at.alicdn.com/t/c/font_869421_jx8es1cv8lb.woff?t=1740638014611') format('woff'),
+       url('//at.alicdn.com/t/c/font_869421_jx8es1cv8lb.ttf?t=1740638014611') format('truetype');
 }
 
 .iconfont {
@@ -11,6 +11,30 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-bg-security:before {
+  content: "\e66d";
+}
+
+.icon-weichengniannan:before {
+  content: "\e6ad";
+}
+
+.icon-weichengniannv:before {
+  content: "\e6af";
+}
+
+.icon-chengniannan:before {
+  content: "\e6b1";
+}
+
+.icon-chengniannv:before {
+  content: "\e6b2";
+}
+
+.icon-xiaoshouyuan:before {
+  content: "\e66c";
 }
 
 .icon-shanchu1:before {

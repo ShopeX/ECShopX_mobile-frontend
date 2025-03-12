@@ -345,7 +345,22 @@ export default (props = {}) => {
       }
     }
     if (pay_type == 'point') {
+      isTradeDetaiPage() ? orderPoints(params, orderInfo) : paySuccess(params, orderInfo)
+    }
+  }
+
+  const orderPoints = async (params, orderInfo) => {
+    const { activityType, pay_type } = params
+    const { order_id, team_id, order_type } = orderInfo
+    try {
+      await api.cashier.getPayment({
+        pay_type,
+        order_id,
+        order_type: order_type
+      })
       paySuccess(params, orderInfo)
+    } catch (e) {
+      payError(orderInfo)
     }
   }
 

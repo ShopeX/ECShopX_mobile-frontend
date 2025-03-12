@@ -18,6 +18,53 @@
       font-weight: 600;
       margin-bottom: 16px;
     }
+
+    &-link{
+      display: flex;
+      align-items: center;
+      .icon-qianwang-01{
+        margin-left: 4px;
+      }
+    }
+  }
+
+  .information {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    .title {
+      font-size: 24px;
+      &-num {
+        margin-right: 8px;
+        background-color: var(--color-primary);
+        padding: 0 14px;
+        border-radius: 50%;
+        color: #fff;
+      }
+      &-text {
+        font-size: 26px;
+        color: #000;
+      }
+    }
+    .titled {
+      font-size: 26px;
+      color: #999;
+      .title-text{
+        color: #000;
+      }
+      &-num {
+        margin-right: 8px;
+        background-color: #999;
+        padding: 0 12px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 24px;
+      }
+    }
   }
 
   .padding-view {
@@ -41,6 +88,19 @@
       &-box{
         display: flex;
         align-items: center;
+      }
+      &-name{
+        font-size: 28px;
+        text-align: center;
+        padding:16px 20px ;
+        border: 1px solid var(--color-primary);
+        background-color: var(--color-primary);
+        color: #fff;
+        border-radius: 40px;
+        .iconfont{
+          font-size: 28px;
+          color: #fff;
+        }
       }
     }
 
@@ -407,5 +467,15 @@
 
   .self-delivery-time .sp-cell{
     background: transparent;
+  }
+  .at-float-layout .layout-header__title {
+    text-align: center;
+    padding: 0 80px;
+  }
+  .long-press{
+    font-size: 24px;
+    color: #999;
+    margin-top: 10px;
+    text-align: center;
   }
 }

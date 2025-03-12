@@ -106,7 +106,8 @@ export default (props) => {
     receiptType,
     isRate,
     items,
-    offlinePayCheckStatus
+    offlinePayCheckStatus,
+    prescriptionStatus
   }) => {
     const btns = []
     const isData = receiptType == 'dada'
@@ -120,7 +121,9 @@ export default (props) => {
       if (canApplyCancel) {
         btns.push(tradeActionBtns.CANCEL)
       }
-      btns.push(tradeActionBtns.PAY)
+      if (prescriptionStatus == 2 || prescriptionStatus == 0) {
+        btns.push(tradeActionBtns.PAY)
+      }
     } else if (orderStatus == 'PAYED') {
       if (canApplyCancel && deliveryStatus != 'PARTAIL') { // 拆单发货，不能取消订单
         btns.push(tradeActionBtns.CANCEL)

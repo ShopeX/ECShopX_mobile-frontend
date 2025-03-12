@@ -24,7 +24,9 @@ const config = {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index', // 直播间页面
-    'pages/purchase/auth'
+    'pages/purchase/auth',
+    'pages/cart/prescription-information',//补充处方信息
+    'pages/cart/add-personnel', // 添加用药人员
   ],
   subPackages: [
     // 内购
