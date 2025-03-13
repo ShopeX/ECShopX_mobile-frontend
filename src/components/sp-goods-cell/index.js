@@ -68,7 +68,15 @@ function SpGoodsCell(props) {
       </View>
       <View className='goods-item-bd'>
         <View className='item-hd'>
-          <View className='goods-title'>{info.itemName}</View>
+          <View className='goods-title'>
+          {
+            info?.isMedicine == 1 && info?.isPrescription == 1 &&
+            <Text className='prescription-drug'>
+              处方药
+            </Text>
+          }
+            {info.itemName}
+            </View>
         </View>
         <View className='item-bd'>
           <View>

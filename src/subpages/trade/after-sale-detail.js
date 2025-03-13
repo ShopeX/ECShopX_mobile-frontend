@@ -190,7 +190,15 @@ function TradeAfterSaleDetail(props) {
                     <SpImage src={item.pic} width={128} height={128} radius={8} circle={8} />
                     <View className='goods-info'>
                       <View className='goods-info-hd'>
-                        <Text className='goods-title'>{item.itemName}</Text>
+                        <Text className='goods-title'>
+                          {
+                            item?.isPrescription == 1 &&
+                            <Text className='prescription-drug'>
+                            处方药
+                          </Text>
+                          }
+
+                          {item.itemName}</Text>
                       </View>
                       <View className='goods-info-bd'>
                         <View>{item.itemSpecDesc && <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>}</View>
@@ -212,12 +220,11 @@ function TradeAfterSaleDetail(props) {
             <SpCell title='退积分' value={info?.refundPoint}></SpCell>
           </View>
           {
-            info?.freight > 0 && 
+            info?.freight > 0 &&
             <View className='refund-point'>
-            <SpCell title='退运费' value={info?.freight}></SpCell>
-          </View>
+              <SpCell title='退运费' value={info?.freight}></SpCell>
+            </View>
           }
-          
         </View>
 
         <View className='refund-type'>

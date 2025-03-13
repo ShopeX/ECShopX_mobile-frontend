@@ -400,6 +400,27 @@ export const  DELIVERY_PERSONNEL_INFORMATION = [
   }
 ]
 
+export const relationship = [{
+  key: 1,
+  value: '本人'
+},
+{
+  key: 2,
+  value: '父母'
+},
+{
+  key: 3,
+  value: '配偶'
+},
+{
+  key: 4,
+  value: '子女'
+},
+{
+  key: 5,
+  value: '其他'
+}]
+
 export * from './localstorage'
 
 export default {}
