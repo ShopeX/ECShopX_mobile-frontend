@@ -1,6 +1,21 @@
 .sp-input {
   color: #333;
   font-size: 32px;
+  display: flex;
+  align-items: center;
+  input{
+    flex: 1;
+  }
+  &__clear{
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #D8D8D8;
+    color: #fff;
+    text-align: center;
+    line-height: 33px;
+    font-size: 24px;
+  }
   .input-placeholder {
     color: #ccc;
   }

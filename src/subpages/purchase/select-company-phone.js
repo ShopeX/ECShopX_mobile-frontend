@@ -192,7 +192,7 @@ function PurchaseAuthPhone(props) {
   return (
     <SpPage className='page-purchase-auth-phone select-component'>
       {enterprise_name && <View className='select-component-title'>{decodeURIComponent(enterprise_name)}</View>}
-      {auth_type == 'mobile' && <View className='select-component-prompt'>使用手机号进行验证</View>}
+      {(auth_type == 'mobile' || auth_type == 'qr_code') && <View className='select-component-prompt'>使用手机号进行验证</View>}
       {!VERSION_IN_PURCHASE && (
         <>
           {!isNewUser && (

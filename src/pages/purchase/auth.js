@@ -88,25 +88,6 @@ function PurchaseAuth() {
     if ($instance.router.params.scene) {
       const query = await normalizeQuerys($instance.router.params)
       let { eid, cid, t, c } = query
-      t = 'm'
-      eid = '5'
-
-      t = 'a'
-      eid = '6'
-
-      t = 'e'
-      eid = '24'
-
-      // t = 'm'
-      // eid = '19'
-
-
-      // eid = "21"; cid = "34" ; t = "q"; c = "1"
-      //  eid = "13"; cid = "34" ; t = "q"; c = ""
-
-      //肉松小贝
-      // eid = "26"; cid = "34" ; t = "q"; c = ""
-      eid = "8"; cid = "34" ; t = "q"; c = "1"
 
       console.log( '扫码参数',eid, cid, t, c)
       const tMap = {
