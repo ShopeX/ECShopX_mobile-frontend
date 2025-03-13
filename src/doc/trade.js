@@ -124,6 +124,7 @@ export const AFTER_TRADE = {
       pic: 'item_pic',
       price: ({ refund_fee }) => refund_fee / 100,
       point: 'point',
+      isPrescription: 'is_prescription',
     })
   },
   orderId: 'order_id',
@@ -147,6 +148,7 @@ export const TRADE_AFTER_SALES_ITEM = {
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
       num: ({ orderItem }) => orderItem.num,
       price: ({ orderItem }) => orderItem.total_fee / 100,
+      isPrescription: ({ orderItem }) => orderItem.is_prescription,
     })
   },
   hasAftersalesAddress: ({ aftersales_address }) => isObject(aftersales_address),
