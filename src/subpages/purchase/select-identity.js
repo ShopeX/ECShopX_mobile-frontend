@@ -4,7 +4,9 @@ import { useImmer } from 'use-immer'
 import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { classNames } from '@/utils'
+import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
 import './select-identity.scss'
+import { SpPage } from '@/components'
 
 const initialState = {
   identity: [],
@@ -33,13 +35,13 @@ function SelectIdentity(props) {
   }
 
   return (
-    <View className='select-identity'>
-      <View className='identity-item' onClick={onAddIdentityChange}>
+    <SpPage className='select-identity' renderFooter={<CompTabbarActivity />}>
+      {/* <View className='identity-item' onClick={onAddIdentityChange}>
         <View className='identity-item-avatar'>
           <Text className='iconfont icon-tianjia1 add-icon avatar'></Text>
         </View>
         <View className='add-identity'>添加身份</View>
-      </View>
+      </View> */}
       <View className='content'>
         <View className='identity'>
           {state.identity.map((item, index) => {
@@ -87,7 +89,7 @@ function SelectIdentity(props) {
           </View>
         }
       </View>
-    </View>
+    </SpPage>
   )
 }
 

@@ -21,6 +21,7 @@ export const WGT_GOODS_GRID = {
   memberPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
+  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
 }
 
 export const WGT_GOODS_SCROLL = {
@@ -82,7 +83,8 @@ export const WGT_GOODS_GRID_TAB = {
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
-  brand: 'brand'
+  brand: 'brand',
+  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
 }
 
 export const WGT_GOODS_BRAND = {
@@ -114,7 +116,11 @@ export const ITEM_LIST_GOODS = {
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
 
   // is_fav: ({ item_id }) => Boolean(favs[item_id]),
-  store: 'store'
+  store: 'store',
+  isPrescription: 'is_prescription',
+  medicineData: 'medicine_data',
+  isMedicine: 'is_medicine',
+  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
 }
 
 export const ITEM_LIST_POINT_GOODS = {
@@ -400,7 +406,10 @@ export const ESPIER_DETAIL_GOODS_INFO = {
     })
   },
   distributorId: 'distributor_id',
-  video: 'videos'
+  video: 'videos',
+  isPrescription: 'is_prescription',
+  medicineData: 'medicine_data',
+  isMedicine: 'is_medicine',
 }
 
 export const PACKGOODS_INFO = {

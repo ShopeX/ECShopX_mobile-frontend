@@ -24,7 +24,9 @@ const config = {
     'pages/custom/custom-page', // 自定义页面
     'pages/chat/index', // 客服
     'pages/liveroom/index', // 直播间页面
-    'pages/purchase/auth'
+    'pages/purchase/auth',
+    'pages/cart/prescription-information',//补充处方信息
+    'pages/cart/add-personnel', // 添加用药人员
   ],
   subPackages: [
     // 内购
@@ -44,7 +46,7 @@ const config = {
         'category',
         'espier-index',
         'index',
-        'list'
+        'list' //商品列表
       ]
     },
     // 导购货架 guide
@@ -426,6 +428,14 @@ const config = {
         'forgotpwd', //找回密码页面
         'edit-phone', //修改密码页面
 
+      ]
+    },
+    //处方药
+    {
+      root: 'subpages/prescription',
+      pages: [
+        'add-personnel',// 添加用药人员
+        'prescription-information', //补充处方信息
       ]
     }
   ],

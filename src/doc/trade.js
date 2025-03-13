@@ -19,8 +19,8 @@ export const TRADE_ITEM = {
       logo: 'logo'
     })
   },
-  offlinePayCheckStatus:'offline_pay_check_status',
-  offlinePayName:'offline_pay_name',
+  offlinePayCheckStatus: 'offline_pay_check_status',
+  offlinePayName: 'offline_pay_name',
   deliveryCorpName: 'delivery_corp_name',
   deliveryCode: 'delivery_code',
   dada: ({ dada }) => {
@@ -52,13 +52,21 @@ export const TRADE_ITEM = {
       refundNum: 1,
       point: 'point',
       checked: () => false,
-      showAftersales: ({ show_aftersales }) => show_aftersales == 1
+      showAftersales: ({ show_aftersales }) => show_aftersales == 1,
+      isPrescription: 'is_prescription',
+      medicineSymptomSet: ({ medicine_symptom_set }) => medicine_symptom_set?.map((item1, index1) => {
+        return {
+          key: index1,
+          value: item1,
+          show: false
+        }
+      })
     })
   },
-  selfDeliveryOperatorName:'self_delivery_operator_name',
-  selfDeliveryOperatorMobile:'self_delivery_operator_mobile',
-  selfDeliveryOperatorId:'self_delivery_operator_id',
-  selfDeliveryTime:({ self_delivery_time }) => self_delivery_time && formatDateTime(self_delivery_time * 1000),
+  selfDeliveryOperatorName: 'self_delivery_operator_name',
+  selfDeliveryOperatorMobile: 'self_delivery_operator_mobile',
+  selfDeliveryOperatorId: 'self_delivery_operator_id',
+  selfDeliveryTime: ({ self_delivery_time }) => self_delivery_time && formatDateTime(self_delivery_time * 1000),
   invoice: 'invoice',
   isRate: ({ is_rate }) => is_rate == "1",
   // 是否整单发货
@@ -84,13 +92,17 @@ export const TRADE_ITEM = {
   totalFee: ({ total_fee }) => total_fee / 100,
   zitiStatus: 'ziti_status',
   zitiInfo: 'ziti_info',
-  selfDeliveryFee:({ self_delivery_fee }) => self_delivery_fee / 100,
-  selfDeliveryStatus:'self_delivery_status',
-  createTime:'create_time',
-  payDate:'pay_date',
-  deliveryTime:'delivery_time',
-  tradeId:'trade_id',
-  userId:'user_id',
+  selfDeliveryFee: ({ self_delivery_fee }) => self_delivery_fee / 100,
+  selfDeliveryStatus: 'self_delivery_status',
+  createTime: 'create_time',
+  payDate: 'pay_date',
+  deliveryTime: 'delivery_time',
+  tradeId: 'trade_id',
+  userId: 'user_id',
+  diagnosisData:'diagnosis_data',
+  prescriptionData:'prescription_data',
+  prescriptionStatus:'prescription_status',
+  diagnosisData:'diagnosis_data',
 }
 
 export const SHOP_INFO = {
@@ -116,7 +128,7 @@ export const AFTER_TRADE = {
   },
   orderId: 'order_id',
   refundFee: ({ refund_fee }) => refund_fee / 100,
-  userId:'user_id',
+  userId: 'user_id',
   freight: ({ freight }) => freight / 100,
 }
 

@@ -9,20 +9,36 @@ import { classNames, pickBy } from '@/utils'
 import { useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
 import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
+
 import doc from '@/doc'
 import S from '@/spx'
-import { SpPage, SpNote, SpScrollView, SpSearchInput, SpFloatMenuItem, SpImage } from '@/components'
+import {
+  SpPage,
+  SpNote,
+  SpScrollView,
+  SpSearchInput,
+  SpFloatMenuItem,
+  SpImage,
+  SpTabs
+} from '@/components'
+import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const initialState = {
   activityList: [],
-  activity_name: ''
+  activity_name: '',
+  currentIndex: 0,
+  tabList: [
+    { title: '全部', value: 0 },
+    { title: '活动进行中', value: 1 },
+    { title: '未开始', value: 2 },
+    { title: '已结束', value: 3 }
+  ]
 }
 
 function PurchaseActivityList() {
   const [state, setState] = useImmer(initialState)
-  const { activityList, activity_name } = state
-
+  const { activityList, activity_name, tabList, currentIndex } = state
 
   const scrollRef = useRef()
   const dispatch = useDispatch()
@@ -45,9 +61,15 @@ function PurchaseActivityList() {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { list, total_count } = await api.purchase.getEmployeeActivityList({ page: pageIndex, pageSize, activity_name })
+    const type = tabList[currentIndex]?.value
+    const { list, total_count } = await api.purchase.getEmployeeActivityList({
+      page: pageIndex,
+      pageSize,
+      activity_name,
+      type
+    })
     const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
-    setState(draft => {
+    setState((draft) => {
       draft.activityList = [...activityList, ..._list]
     })
 
@@ -61,7 +83,7 @@ function PurchaseActivityList() {
   }
 
   const onConfirm = (value) => {
-    setState(draft => {
+    setState((draft) => {
       draft.activity_name = value
       draft.activityList = []
     })
@@ -84,45 +106,55 @@ function PurchaseActivityList() {
     })
   }
 
+  const handleTypeChange = (e) => {
+    setState((draft) => {
+      draft.currentIndex = e
+      draft.activityList = []
+    })
+    scrollRef.current.reset()
+  }
+
   return (
     <SpPage
       className='page-purchase-index'
-      renderFloat={
-        <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              dispatch(updatePurchaseShareInfo(null))
-              Taro.navigateTo({ url: `/subpages/purchase/member?from=${'purchase_home'}` })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-        </View>
-      }
-      renderFooter={renderFooter()}
+      // renderFloat={
+      //   <View>
+      //     <SpFloatMenuItem
+      //       onClick={() => {
+      //         dispatch(updatePurchaseShareInfo(null))
+      //         Taro.navigateTo({ url: `/subpages/purchase/member?from=${'purchase_home'}` })
+      //       }}
+      //     >
+      //       <Text className='iconfont icon-huiyuanzhongxin'></Text>
+      //     </SpFloatMenuItem>
+      //   </View>
+      // }
+      // renderFooter={renderFooter()}
+      renderFooter={<CompTabbar />}
     >
-      <View className='user-box'>
+      {/* <View className='user-box'>
         <View className='user-serach'>
           <SpSearchInput
             placeholder='活动名称'
             onConfirm={onConfirm}
           />
         </View>
-      </View>
-      <ScrollView className="item-list-scroll" scrollY >
-        <SpScrollView ref={scrollRef} className='' auto={false} fetch={fetch} renderEmpty={
-          <SpNote img='empty_activity.png' title='没有查询到内购活动' />
-        } >
+      </View> */}
+      <SpTabs current={currentIndex} tablist={tabList} onChange={handleTypeChange} />
+      <ScrollView className='item-list-scroll' scrollY>
+        <SpScrollView
+          ref={scrollRef}
+          className=''
+          auto={false}
+          fetch={fetch}
+          renderEmpty={<SpNote img='empty_activity.png' title='没有查询到内购活动' />}
+        >
           <View className='scroll-view-container'>
             {activityList.map((item, index) => (
-              <View
-                key={item.id}
-                className='activity-item'
-                onClick={() => onClickChange(item)}
-              >
+              <View key={item.id} className='activity-item' onClick={() => onClickChange(item)}>
                 <View className='activity-item-hd'>
                   <View className='activity-title'>{item.name}</View>
-                  <View className='role'>{item.role}</View>
+                  {/* <View className='role'>{item.role}</View> */}
                 </View>
                 <View className='activity-time'>
                   {`活动时间：${item.employeeBeginTime} - ${item.employeeEndTime}`}
@@ -133,7 +165,6 @@ function PurchaseActivityList() {
           </View>
         </SpScrollView>
       </ScrollView>
-
     </SpPage>
   )
 }
