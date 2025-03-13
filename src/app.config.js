@@ -429,6 +429,14 @@ const config = {
         'edit-phone', //修改密码页面
 
       ]
+    },
+    //处方药
+    {
+      root: 'subpages/prescription',
+      pages: [
+        'add-personnel',// 添加用药人员
+        'prescription-information', //补充处方信息
+      ]
     }
   ],
   permission: {

@@ -311,7 +311,7 @@ function CartCheckout(props) {
 
     if(!totalInfo?.prescription_status == 0){
       Taro.redirectTo({
-        url: `/pages/cart/prescription-information?order_id=${orderId}`
+        url: `/subpages/prescription/prescription-information?order_id=${orderId}`
       })
       console.log('我要跳转到新的页面啦:', payType)
       return

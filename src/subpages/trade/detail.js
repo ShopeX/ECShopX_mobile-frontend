@@ -399,7 +399,7 @@ function TradeDetail(props) {
 
   const onSupplement = () => {
     Taro.redirectTo({
-      url: `/pages/cart/prescription-information?order_id=${info?.orderId}`
+      url: `/subpages/prescription/prescription-information?order_id=${info?.orderId}`
     })
   }
 
