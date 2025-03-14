@@ -12,11 +12,11 @@ import {
   SpInputNumber,
   SpGoodsPrice
 } from '@/components'
-import { addCart, updateCount, updateSalesmanCount,updateShopCartCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
+import { addCart, updateCount, updateSalesmanCount, updateShopCartCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
 import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, showToast, entryLaunch, getDistributorId } from '@/utils'
+import { classNames, showToast, entryLaunch, getDistributorId, VERSION_STANDARD } from '@/utils'
 import './index.scss'
 
 // 数据类型
@@ -42,8 +42,8 @@ function SpSkuSelect(props) {
   const {
     info,
     open = false,
-    onClose = () => {},
-    onChange = () => {},
+    onClose = () => { },
+    onChange = () => { },
     type,
     hideInputNumber = false,
     salesman = false
@@ -252,10 +252,10 @@ function SpSkuSelect(props) {
 
   const shoppings = async () => {
     const res = Taro.getStorageSync('distributorSalesman')
-    console.log(res,'distributorSalesman')
+    console.log(res, 'distributorSalesman')
 
     let params = {
-      distributor_id:res.distributor_id,
+      distributor_id: res.distributor_id,
       shop_type: 'distributor',
       ...customerLnformation
     }
@@ -280,7 +280,7 @@ function SpSkuSelect(props) {
     onClose()
     let activityType = ''
     const { distributorId, activityInfo } = info
-    if(!info.nospec) {
+    if (!info.nospec) {
       activityType = curItem.activity_type
     } else {
       activityType = info.activityType
@@ -298,6 +298,11 @@ function SpSkuSelect(props) {
     let url = !!info.point
       ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0'
       : `/pages/cart/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
+
+    if (VERSION_STANDARD) {
+      url += 'type=distributor'
+    }
+
     if (activityType == 'seckill' || activityType === 'limited_time_sale') {
       const { seckill_id } = activityInfo
       const { ticket } = await api.item.seckillCheck({
