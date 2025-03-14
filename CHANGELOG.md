@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.17.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.17.2...v3.17.3) (2025-03-14)
+
+
+### Bug Fixes
+
+* 解决云店立即购买店铺商品结算传参问题 ([1d3564c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1d3564c185d6203a61f44a2059b7b29d034c92f0))
+
 ### [3.17.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.17.1...v3.17.2) (2025-03-11)
 
 ### [3.17.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.17.0...v3.17.1) (2025-03-11)
