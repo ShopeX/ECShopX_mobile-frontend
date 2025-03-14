@@ -280,7 +280,6 @@ function SpSkuSelect(props) {
     onClose()
     let activityType = ''
     const { distributorId, activityInfo } = info
-    debugger
     if(!info.nospec) {
       activityType = curItem.activity_type
     } else {

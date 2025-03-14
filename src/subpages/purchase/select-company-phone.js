@@ -220,7 +220,7 @@ function PurchaseAuthPhone(props) {
           {isNewUser && (
             <AtButton
               circle
-              className='btns-phone'
+              className='btns-phone new-in-btns'
               openType='getPhoneNumber'
               onGetPhoneNumber={handleBindPhone}
             >
