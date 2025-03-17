@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
-import Taro from "@tarojs/taro";
-import { View, Input } from "@tarojs/components"
-import { classNames } from "@/utils"
-import "./index.scss";
-
+import React, { useEffect, useState } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Input } from '@tarojs/components'
+import { classNames } from '@/utils'
+import './index.scss'
 
 function SpInput(props) {
+  const { required, title } = props
   const [cursor, setCursor] = useState(-1)
 
   useEffect(() => {
@@ -18,9 +18,32 @@ function SpInput(props) {
     props.onChange(e.detail.value)
   }
 
+  const handleClear = () => {
+    console.log('claer')
+    setCursor(-1)
+    props.onChange('')
+  }
 
-  return <Input className={classNames("sp-input", props.className)} value={props.value} maxLength={props.maxLength} placeholder={props.placeholder} cursor={cursor} onInput={handleInput}>
-  </Input>;
+  return (
+    <View className={classNames('at-input', props.className)}>
+      <View className="at-input__container">
+        {<View className={classNames('at-input__title', {
+          "at-input__title--required": required
+        })}>
+          {title}
+        </View>}
+        <Input
+          className='at-input__input'
+          value={props.value}
+          maxLength={props.maxLength}
+          placeholder={props.placeholder}
+          cursor={cursor}
+          onInput={handleInput}
+        ></Input>
+        {props.value && props.clear && <View className='sp-input__clear' onClick={handleClear}>x</View>}
+      </View>
+    </View>
+  )
 }
 
 SpInput.options = {
@@ -29,7 +52,10 @@ SpInput.options = {
 
 SpInput.defaultProps = {
   className: '',
+  required: false,
+  title: '',
   value: '',
+  clear: false,
   placeholder: '',
   maxLength: null,
   onChange: () => { }

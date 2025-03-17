@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
+import { SpInput as AtInput } from '@/components'
 import { showToast } from '@/utils'
 import api from '@/api'
 
@@ -27,8 +27,8 @@ export default class DistributionWithdrawalsAcount extends Component {
   async fetch() {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
-      name: alipay_name,
-      acount: alipay_account,
+      name: alipay_name || "",
+      acount: alipay_account || "",
       hasBind: !!alipay_name && !!alipay_account
     })
   }
@@ -78,7 +78,7 @@ export default class DistributionWithdrawalsAcount extends Component {
         <View className='section list message'>
           <AtInput
             className='message-input'
-            title='开户人姓名：'
+            title='开户人姓名'
             type='text'
             maxLength='30'
             name='name'
