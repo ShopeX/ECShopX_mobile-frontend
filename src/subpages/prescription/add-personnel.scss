@@ -16,12 +16,12 @@
 
   .gender {
     display: flex;
-    .genders{
+    .genders {
       margin-left: 24px;
     }
   }
 
-  .ages{
+  .ages {
     color: #ccc;
     font-size: 28rpx;
   }
@@ -29,14 +29,14 @@
   .sp-input {
     color: #333;
     font-size: 28px;
-}
+  }
 
   .scroll-view-container {
     background: #fff;
     border-radius: 8px;
     .scroll-view-body {
       overflow: hidden;
-      padding: 0  24px;
+      padding: 0 24px;
     }
   }
 
@@ -149,5 +149,9 @@
   .detail-address {
     padding-bottom: 0 !important;
     align-items: flex-start !important;
+  }
+  .at-input__title {
+    margin-right: 0;
+    width: auto;
   }
 }
