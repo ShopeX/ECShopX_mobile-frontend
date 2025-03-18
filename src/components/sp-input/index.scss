@@ -1,6 +1,42 @@
-.sp-input {
-  color: #333;
-  font-size: 32px;
+.at-input {
+  padding: 16px 0;
+  margin: 0 0 30px;
+  color: #222;
+  background-color: #FFF;
+  margin-left: 32px;
+  margin-bottom: 1PX;
+  position: relative;
+
+  &:after {
+    border-width: 0;
+  }
+
+  &__container {
+    display: flex;
+    align-items: center;
+
+  }
+
+  &__input {
+    margin-right: 16px;
+    width: 172px;
+    font-size: 32px;
+    line-height: 1.5;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  &__clear {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #D8D8D8;
+    color: #fff;
+    text-align: center;
+    line-height: 33px;
+    font-size: 24px;
+  }
+
   .input-placeholder {
     color: #ccc;
   }

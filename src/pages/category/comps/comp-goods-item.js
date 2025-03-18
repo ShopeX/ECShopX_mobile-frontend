@@ -129,9 +129,16 @@ function CompGoodsItem(props) {
             <Text className='nationalTitle'>{info.origincountry_name}</Text>
           </View>
         )}
-
         <View className='goods-info' onClick={handleClick.bind(this)}>
-          <View className='goods-title'>{info.itemName}</View>
+          <View className='goods-title'>
+          {
+            info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 &&
+            <Text className='prescription-drug'>
+              处方药
+            </Text>
+          }
+            {info.itemName}
+            </View>
           {/* <View className='goods-desc'>{info.brief}</View> */}
         </View>
 

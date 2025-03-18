@@ -25,9 +25,9 @@ function SpGoodsItem(props) {
   } = item_page
   const {
     onClick,
-    onChange = () => {},
-    onAddToCart = () => {},
-    onStoreClick = () => {},
+    onChange = () => { },
+    onAddToCart = () => { },
+    onStoreClick = () => { },
     showMarketPrice = true,
     showFav = false,
     showAddCart = false,
@@ -86,9 +86,8 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${
-      !!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
-    }?${qs.stringify(query)}`
+    const url = `${!!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
+      }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -123,7 +122,15 @@ function SpGoodsItem(props) {
         )}
 
         <View className='goods-info'>
-          <View className='goods-title'>{info.itemName}</View>
+          <View className='goods-title'>
+            {
+              info?.isPrescription == 1 &&
+              <Text className='prescription-drug'>
+                处方药
+              </Text>
+            }
+            {info.itemName}
+          </View>
           <View className='goods-desc'>{info.brief}</View>
         </View>
 

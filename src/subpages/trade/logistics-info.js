@@ -2,12 +2,12 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux"
 import { useImmer } from "use-immer"
 import Taro, { getCurrentInstance } from "@tarojs/taro";
-import { AtButton, AtInput } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import api from "@/api"
 import doc from "@/doc"
 import { View, Picker } from "@tarojs/components"
 import { LOGISTICS_CODE } from '@/consts'
-import { SpPage, SpCell } from '@/components'
+import { SpPage, SpCell,SpInput as AtInput } from '@/components'
 import { showToast } from '@/utils'
 import "./logistics-info.scss";
 

@@ -42,6 +42,7 @@ import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
+import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
 import './member.scss'
 
 const initialConfigState = {
@@ -380,7 +381,7 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member' renderFooter={router.params?.from == 'purchase_home' ? null : <CompTabbar />}>
+    <SpPage className='page-purchase-member' renderFooter={router.params?.from == 'purchase_home' ? <CompTabbarActivity /> : <CompTabbar />}>
       <View
         className='header-block'
         style={styleNames({

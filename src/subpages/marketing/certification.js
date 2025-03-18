@@ -2,10 +2,11 @@ import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Form, Button, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { AtInput } from 'taro-ui'
+
+
 import { useImmer } from 'use-immer'
 import S from '@/spx'
-import { SpPage, SpNavBar, SpToast } from '@/components'
+import { SpPage, SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
 
@@ -161,32 +162,32 @@ function Certification(props) {
         <Form onSubmit={handleSubmit}>
           <View className='page-certification-form'>
             <AtInput
-              title='开户人姓名'
+              title='姓名'
               type='text'
               // clear={isEdit}
               required
               name='card_name'
               editable={isEdit}
-              placeholder='请输入姓名'
+              placeholder='请输入开户人姓名'
               value={info.card_name}
               onChange={handleInputChange('card_name')}
             />
             <AtInput
-              title='银行预留手机号'
+              title='手机号'
               type='phone'
               // clear={isEdit}
               required
               name='tel_no'
               editable={isEdit}
               maxLength={11}
-              placeholder='请输入手机号'
+              placeholder='请输入银行预留手机号'
               value={info.tel_no}
               onChange={handleInputChange('tel_no')}
             />
             <AtInput
-              title='开户结算卡号'
+              title='结算卡号'
               type='number'
-              placeholder='请输入结算卡号'
+              placeholder='请输入开户结算卡号'
               // clear={isEdit}
               name='card_id'
               required
@@ -195,13 +196,13 @@ function Certification(props) {
               onChange={handleInputChange('card_id')}
             />
             <AtInput
-              title='开户人证件号码'
+              title='证件号码'
               type='idcard'
               name='cert_id'
               // clear={isEdit}
               required
               editable={isEdit}
-              placeholder='请输入证件号码'
+              placeholder='请输入开户人证件号码'
               value={info.cert_id}
               maxLength={18}
               onChange={handleInputChange('cert_id')}

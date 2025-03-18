@@ -86,6 +86,12 @@ function CompGoodsItem(props) {
             <View className='goods-title'>
               {/* {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>} */}
               {info.is_plus_buy && <Text className='goods-title__tag'>加价购</Text>}
+              {
+                info?.is_medicine == 1 && info?.is_prescription == 1 &&
+                <Text className='prescription-drug'>
+                  处方药
+                </Text>
+              }
               {info.item_name}
             </View>
             {isShowDeleteIcon && (

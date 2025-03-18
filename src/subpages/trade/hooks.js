@@ -95,6 +95,9 @@ export default (props) => {
         })
       }
     },
+    TRACK: {
+      title: '订单追踪', key: 'track', btnStatus: 'normal'
+    },
   }
 
   const getTradeAction = ({
@@ -106,11 +109,13 @@ export default (props) => {
     receiptType,
     isRate,
     items,
-    offlinePayCheckStatus
+    offlinePayCheckStatus,
+    prescriptionStatus
   }) => {
     const btns = []
     const isData = receiptType == 'dada'
-
+    const isMerchant = receiptType == 'merchant'
+    
     if(offlinePayCheckStatus == '2' && orderStatus == 'NOTPAY'){
       //线下转账拒绝时修改付款凭证
       btns.push(tradeActionBtns.CHANGE_OFFLINE)
@@ -120,7 +125,9 @@ export default (props) => {
       if (canApplyCancel) {
         btns.push(tradeActionBtns.CANCEL)
       }
-      btns.push(tradeActionBtns.PAY)
+      if (prescriptionStatus == 2 || prescriptionStatus == 0) {
+        btns.push(tradeActionBtns.PAY)
+      }
     } else if (orderStatus == 'PAYED') {
       if (canApplyCancel && deliveryStatus != 'PARTAIL') { // 拆单发货，不能取消订单
         btns.push(tradeActionBtns.CANCEL)
@@ -132,7 +139,11 @@ export default (props) => {
         btns.push(tradeActionBtns.AFTER_SALES)
       }
     } else if (orderStatus == 'WAIT_BUYER_CONFIRM') {
-      btns.push(tradeActionBtns.LOGISTICS)
+      if(!isMerchant){
+        btns.push(tradeActionBtns.LOGISTICS)
+      }else{
+        btns.push(tradeActionBtns.TRACK)
+      }
       btns.push(tradeActionBtns.CONFIRM)
       if (canApplyAftersales) {
         btns.push(tradeActionBtns.AFTER_SALES)

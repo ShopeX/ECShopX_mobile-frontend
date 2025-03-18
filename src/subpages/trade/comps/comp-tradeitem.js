@@ -9,7 +9,7 @@ import tradeHooks from '../hooks'
 import './comp-tradeitem.scss'
 
 function CompTradeItem(props) {
-  const { info } = props
+  const { info,onClick=()=>{} } = props
   if (!info) {
     return null
   }
@@ -33,6 +33,8 @@ function CompTradeItem(props) {
   const handleClickItem = ({ key, action }) => {
     if (key == 'evaluate' || key == 'logistics' || key == 'changeOffline') {
       action(info)
+    }else if(key == 'track'){
+      onClick(info)
     } else {
       Taro.navigateTo({
         url: `/subpages/trade/detail?order_id=${orderId}`
