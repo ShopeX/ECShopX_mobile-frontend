@@ -26,12 +26,16 @@ function SpInput(props) {
 
   return (
     <View className={classNames('at-input', props.className)}>
-      <View className="at-input__container">
-        {<View className={classNames('at-input__title', {
-          "at-input__title--required": required
-        })}>
-          {title}
-        </View>}
+      <View className='at-input__container'>
+        {title && (
+          <View
+            className={classNames('at-input__title', {
+              'at-input__title--required': required
+            })}
+          >
+            {title}
+          </View>
+        )}
         <Input
           className='at-input__input'
           value={props.value}
@@ -40,7 +44,11 @@ function SpInput(props) {
           cursor={cursor}
           onInput={handleInput}
         ></Input>
-        {props.value && props.clear && <View className='sp-input__clear' onClick={handleClear}>x</View>}
+        {props.value && props.clear && (
+          <View className='sp-input__clear' onClick={handleClear}>
+            x
+          </View>
+        )}
       </View>
     </View>
   )

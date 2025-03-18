@@ -62,7 +62,7 @@
         border: none;
       }
 
-      .form-item-control {
+      .at-input__container {
         display: flex;
         align-items: center;
         border: 1PX solid #707078;
@@ -73,6 +73,16 @@
         height: 88px;
         font-size: 28px;
         line-height: 88px;
+      }
+
+      .sp-input__clear{
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        color: #fff;
+        background: #D8D8D8;
+        text-align: center;
+        line-height: 28px;
       }
 
       .form-item-message {
