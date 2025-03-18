@@ -5,6 +5,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpInput(props) {
+  const { required, title } = props
   const [cursor, setCursor] = useState(-1)
 
   useEffect(() => {
@@ -24,15 +25,23 @@ function SpInput(props) {
   }
 
   return (
-    <View className={classNames('sp-input', props.className)}>
-      <Input
-        value={props.value}
-        maxLength={props.maxLength}
-        placeholder={props.placeholder}
-        cursor={cursor}
-        onInput={handleInput}
-      ></Input>
-      {props.value && props.clear && <View className='sp-input__clear' onClick={handleClear}>x</View>}
+    <View className={classNames('at-input', props.className)}>
+      <View className="at-input__container">
+        {<View className={classNames('at-input__title', {
+          "at-input__title--required": required
+        })}>
+          {title}
+        </View>}
+        <Input
+          className='at-input__input'
+          value={props.value}
+          maxLength={props.maxLength}
+          placeholder={props.placeholder}
+          cursor={cursor}
+          onInput={handleInput}
+        ></Input>
+        {props.value && props.clear && <View className='sp-input__clear' onClick={handleClear}>x</View>}
+      </View>
     </View>
   )
 }
@@ -43,8 +52,10 @@ SpInput.options = {
 
 SpInput.defaultProps = {
   className: '',
+  required: false,
+  title: '',
   value: '',
-  clear:false,
+  clear: false,
   placeholder: '',
   maxLength: null,
   onChange: () => {}

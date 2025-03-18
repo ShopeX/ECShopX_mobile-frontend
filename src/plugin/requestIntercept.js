@@ -1,6 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
-import { SG_GUIDE_PARAMS } from '@/consts'
+import { SG_GUIDE_PARAMS, SG_ROUTER_PARAMS } from '@/consts'
 import { isObject } from '@/utils'
 
 export function requestIntercept() {
@@ -11,20 +11,25 @@ export function requestIntercept() {
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
       // console.log('getCurrentInstance params:', path)
-      if (path === '/pages/cart/espier-checkout' && url === `${process.env.APP_BASE_URL}/order`) {
-        const { gu, gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+      if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
+        let smid = ''
+        const { gu, gu_user_id, smid: smid_1 } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+        const { smid: smid_2 } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
+        smid = smid_1 || smid_2
+        
         let work_userid = gu_user_id
         if (gu) {
           work_userid = gu.split('_')[0]
         }
-        if (work_userid) {
+        if (smid) {
           const _data = qs.parse(data)
-          _data['work_userid'] = work_userid
+          _data['salesman_id'] = smid
           requestParams.data = qs.stringify(_data)
         }
+        console.log('requestIntercept:', requestParams)
       }
     }
-    // console.log('requestIntercept:', $instance)
+     
     return chain.proceed(requestParams).then((res) => {
       // console.log(`http <-- ${url} request:`, res)
       return res

@@ -240,7 +240,7 @@ function MemberUserInfo() {
       })
     } else {
       Taro.navigateTo({
-        url: `/marketing/pages/member/destroy-member?phone=${formUserInfo.mobile}`
+        url: `/marketing/pages/member/destroy-member?phone=${userInfo?.mobile}`
       })
     }
   }

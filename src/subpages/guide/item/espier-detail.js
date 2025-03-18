@@ -195,6 +195,7 @@ function EspierDetail(props) {
       subtask_id: subtaskId
     }
     const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    console.log('gu---------------------',path)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,

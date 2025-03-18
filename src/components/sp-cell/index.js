@@ -13,7 +13,8 @@ export default class SpCell extends Component {
     title: '',
     arrow: 'right',
     onClick: () => {},
-    commonStyle: ''
+    commonStyle: '',
+    certainly:false
   }
 
   static options = {
@@ -32,7 +33,8 @@ export default class SpCell extends Component {
       arrow,
       border,
       className,
-      commonStyle
+      commonStyle,
+      certainly
     } = this.props
 
     let linkClassName = `iconfont icon-arrowRight`
@@ -59,6 +61,7 @@ export default class SpCell extends Component {
           ></View>
         )}
         <View className='sp-cell__hd'>
+          {certainly && <Text className='sp-cell__xin'>* </Text> }
           {title && <Text className='sp-cell__title'>{title}</Text>}
         </View>
         <View className='sp-cell__bd'>{this.props.children}</View>

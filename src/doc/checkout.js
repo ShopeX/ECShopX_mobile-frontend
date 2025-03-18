@@ -26,7 +26,10 @@ export const CHECKOUT_GOODS_ITEM = {
     return !item_spec_desc
   },
   distributor_id: 'distributor_id',
-  cusActivity: 'cusActivity'
+  cusActivity: 'cusActivity',
+  isPrescription: 'is_prescription',
+  medicineData: 'medicine_data',
+  isMedicine: 'is_medicine',
 }
 
 export const INVOICE_TITLE = {
