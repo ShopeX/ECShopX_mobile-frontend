@@ -2,17 +2,17 @@ import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components'
-import { AtButton, AtInput } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
-import { classNames, showToast, VERSION_IN_PURCHASE,getDistributorId } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
 import qs from 'qs'
 
 import './select-company-email.scss'
 import CompBottomTip from './comps/comp-bottomTip'
 import { updateEnterpriseId } from '@/store/slices/purchase'
-import { SpForm, SpFormItem, SpTimer, SpPage, SpPrivacyModal } from '@/components'
+import { SpForm, SpFormItem, SpTimer, SpPage, SpPrivacyModal, SpInput as AtInput } from '@/components'
 
 function PurchaseAuthEmail(props) {
   const router = useRouter()
@@ -38,7 +38,10 @@ function PurchaseAuthEmail(props) {
         {
           validate: async (value) => {
             // const { enterprise_id } = router.params
-            const { status } = await api.purchase.getEmailCode({ email: value,distributor_id: getDistributorId() })
+            const { status } = await api.purchase.getEmailCode({
+              email: value,
+              distributor_id: getDistributorId()
+            })
             showToast(status ? '发送成功' : '发送失败')
           }
         }
@@ -82,15 +85,18 @@ function PurchaseAuthEmail(props) {
       auth_type: 'email'
     }
     try {
-      const { list } = await api.purchase.employeeCheck({...params,distributor_id: getDistributorId()})
+      const { list } = await api.purchase.employeeCheck({
+        ...params,
+        distributor_id: getDistributorId()
+      })
       //一个邮箱后缀只有一个企业
       params.enterprise_id = list[0].enterprise_id
 
-      if(isNewUser){
+      if (isNewUser) {
         Taro.navigateTo({
           url: `/subpages/purchase/select-company-phone?${qs.stringify({
             ...params,
-            enterprise_name:list[0].enterprise_name
+            enterprise_name: list[0].enterprise_name
           })}`
         })
         return
@@ -120,8 +126,9 @@ function PurchaseAuthEmail(props) {
   }
 
   // 获取验证码
-  const getSmsCode = async () => {
+  const getSmsCode = async (resolve) => {
     await formRef.current.onSubmitAsync(['email'])
+    resolve()
   }
 
   // 同意隐私协议
@@ -138,8 +145,8 @@ function PurchaseAuthEmail(props) {
 
   return (
     <SpPage className='page-purchase-auth-email select-component'>
-      <View className='select-component-title'>{enterprise_name}</View>
-      <View className='select-component-prompt'>使用已注册邮箱进行验证</View>
+      <View className='select-component-title'>企业邮箱登录</View>
+      <View className='select-component-prompt'>使用企业邮箱登录验证</View>
       <View className='selecte-box'>
         <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>
           <SpFormItem prop='email'>
@@ -148,26 +155,31 @@ function PurchaseAuthEmail(props) {
               focus
               name='email'
               value={form.email}
-              placeholder='请输入完整邮箱地址'
+              className='email-input'
+              placeholder='请输入邮箱账号'
               onChange={onInputChange.bind(this, 'email')}
             />
-            <SpTimer
-              className={classNames({ 'unuse': !form.email })}
-              onStart={getSmsCode}
-              defaultMsg='获取验证码'
-              msg='重新获取'
-            ></SpTimer>
           </SpFormItem>
 
           <SpFormItem prop='vcode'>
-            <AtInput
-              clear
-              focus
-              name='vcode'
-              value={form.vcode}
-              placeholder='请输入邮箱验证码'
-              onChange={onInputChange.bind(this, 'vcode')}
-            />
+            <View className='code-box'>
+              <AtInput
+                clear
+                focus
+                name='vcode'
+                className='code-box-input'
+                value={form.vcode}
+                placeholder='请输入验证码'
+                onChange={onInputChange.bind(this, 'vcode')}
+              />
+              <SpTimer
+                className={classNames({ 'unuse': !form.email })}
+                onStart={getSmsCode}
+                onStop={()=>{}}
+                defaultMsg='获取验证码'
+                msg='重新获取'
+              ></SpTimer>
+            </View>
           </SpFormItem>
         </SpForm>
       </View>
@@ -178,7 +190,7 @@ function PurchaseAuthEmail(props) {
         disabled={!(form.email && form.vcode)}
         onClick={onFormSubmit}
       >
-        验证
+        登录
       </AtButton>
       <CompBottomTip />
 

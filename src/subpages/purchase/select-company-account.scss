@@ -14,8 +14,8 @@
 
     .select-component-prompt {
       font-size: 28px;
-      color: #aaa;
-      margin: 16px 0 100px 0;
+      color: #999;
+      margin: 16px 0 128px 0;
     }
 
     .pick-company {
@@ -42,6 +42,7 @@
     .info {
       font-size: 24px;
       color: #AAAAAA;
+      margin-left: 25px;
 
       .icon {
         margin-left: 10px;
@@ -50,7 +51,7 @@
     }
 
     .sp-form-item {
-      margin-bottom: 52px;
+      margin-bottom: 48px;
       padding-left: 0;
       padding-right: 0;
 
@@ -64,11 +65,14 @@
       .form-item-control {
         display: flex;
         align-items: center;
-        border: 1PX solid #E2E4EA;
-        border-radius: 40px;
+        border: 1PX solid #707078;
+        border-radius: 44px;
         // padding: 8px 12px 8px 30px;
         box-sizing: border-box;
-        padding: 16px 24px;
+        padding: 0 36px;
+        height: 88px;
+        font-size: 28px;
+        line-height: 88px;
       }
 
       .form-item-message {
@@ -100,7 +104,7 @@
 
     .btns-staff {
       background: var(--color-primary);
-      margin-top: 70px;
+      margin-top: 79px;
       font-size: 28px;
       color: #FFFFFF;
       height: 80px;
@@ -114,5 +118,6 @@
   }
   .sp-input {
     font-size: 28px;
-}
+    width: 100%;
+  }
 }

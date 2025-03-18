@@ -58,7 +58,7 @@ SpInput.defaultProps = {
   clear: false,
   placeholder: '',
   maxLength: null,
-  onChange: () => { }
+  onChange: () => {}
 }
 
 export default SpInput

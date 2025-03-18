@@ -10,18 +10,20 @@
       font-size: 40px;
       font-weight: 400;
       color: #222;
+      margin-bottom: 16px;
     }
 
     .select-component-prompt {
       font-size: 28px;
-      color: #aaa;
-      margin: 16px 0 100px 0;
+      color: #999;
+
     }
 
     .phone-box {
       font-size: 32px;
       color: #222;
       font-weight: 400;
+      margin-top: 128px;
 
       .phone-number {
         font-weight: bold;
@@ -35,6 +37,10 @@
       color: #fff;
       height: 80px;
       border: none;
+    }
+
+    .new-in-btns{
+      margin-top: 128px;
     }
 
     .btns-other {

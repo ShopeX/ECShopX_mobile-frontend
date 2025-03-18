@@ -158,7 +158,7 @@ function PurchaseAuthAccount() {
 
   return (
     <SpPage className='page-purchase-auth-account select-component'>
-      <View className='select-component-title'>{enterprise_name}</View>
+      <View className='select-component-title'>账号登录</View>
       <View className='select-component-prompt'>使用已注册账号密码进行验证</View>
       <View className='selecte-box'>
         <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>

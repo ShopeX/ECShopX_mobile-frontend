@@ -59,8 +59,13 @@
       .at-button__text{
         font-weight: 500 ;
         font-size: 32px ;
+        display: flex;
+        align-items: center;
+        .icon-shuangjiantou {
+          font-size: 18px;
+          margin-left: 8px;
+        }
       }
-
     }
 
     .login {
@@ -176,4 +181,5 @@
       }
     }
   }
+
 }
