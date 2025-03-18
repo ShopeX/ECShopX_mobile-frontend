@@ -75,3 +75,7 @@ export function purchaseSelect(params) {
 export function employeeCheck(params) { // 员工验证
   return req.post('/employee/check', params)
 }
+
+export function getPurchaseDistributor( params) { // 获取活动商品详情
+  return req.get(`/user/enterprise/distributor`, params)
+}

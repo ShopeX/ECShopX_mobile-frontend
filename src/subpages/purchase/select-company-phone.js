@@ -128,6 +128,11 @@ function PurchaseAuthPhone(props) {
 
   const validatePhone = async (para) => {
     const _params = { ...para }
+
+    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
+    if (enterprise_id) {
+      const res = await api.purchase.getPurchaseDistributor({enterprise_id})
+    }
     //二维码不需要验证则不需要check接口
     if(!(auth_type == 'qr_code' && !is_verify)){
       const { list } = await api.purchase.employeeCheck({..._params,distributor_id: getDistributorId()})
