@@ -245,4 +245,38 @@
   .sp-goods-price .activity{
     margin-top: 0 !important;
   }
+  .item-pre{
+    padding: 16px 0;
+    width: 100%;
+    overflow: hidden;
+    &-title{
+      font-size: 24px;
+      color: #999999;
+      margin-bottom: 10px;
+      .medicine{
+        color: var(--color-primary);
+        margin-right: 8px;
+      }
+    }
+    &-content{
+      width: 97%;
+      background-color: #f1f1f1;
+      padding: 20px;
+      display: flex;
+      .title{
+        width: 70px;
+        border-right: 1px solid #666;
+        font-size: 26px;
+      }
+      .content{
+        padding: 0 20px;
+        flex: 1;
+        font-size: 26px;
+        &-title{
+          color: #666666;
+        }
+      }
+
+    }
+  }
 }

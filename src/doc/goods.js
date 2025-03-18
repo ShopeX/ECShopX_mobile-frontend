@@ -123,10 +123,10 @@ export const ITEM_LIST_GOODS = {
 
   // is_fav: ({ item_id }) => Boolean(favs[item_id]),
   store: 'store',
-  isPrescription: 'is_prescription',
+  // isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
-  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
+  isPrescription:({medicine_data,is_prescription}) => is_prescription?is_prescription:medicine_data?.is_prescription,
 }
 
 export const ITEM_LIST_POINT_GOODS = {
@@ -280,7 +280,9 @@ export const GOODS_INFO = {
     })
   },
   distributorId: 'distributor_id',
-  video: 'videos'
+  video: 'videos',
+  medicineData: 'medicine_data',
+  isMedicine: 'is_medicine',
 }
 
 export const ESPIER_DETAIL_GOODS_INFO = {
