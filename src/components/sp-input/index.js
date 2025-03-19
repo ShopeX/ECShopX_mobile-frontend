@@ -27,7 +27,7 @@ function SpInput(props) {
   return (
     <View className={classNames('at-input', props.className)}>
       <View className="at-input__container">
-        {<View className={classNames('at-input__title', {
+        {title && <View className={classNames('at-input__title', {
           "at-input__title--required": required
         })}>
           {title}
