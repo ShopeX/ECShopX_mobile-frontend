@@ -70,19 +70,15 @@ function PurchaseAuthAccount() {
       auth_code,
       auth_type: 'account'
     }
-    let curDistributorId = null;
 
-    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
-    if (enterprise_id) {
-      const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
-      curDistributorId = distributor_id
-      //后续身份切换需要用
-      dispatch(updateCurDistributorId(distributor_id))
-    }
-
-    const checkParams = {..._params,distributor_id: curDistributorId ?? getDistributorId()}
+    const checkParams = {..._params}
     if(activity_id){
       checkParams.activity_id = activity_id
+    }
+
+    if(!enterprise_id){
+      //不是扫码进来，check接口要传当前店铺ID
+      checkParams.distributor_id = getDistributorId()
     }
     const { list } = await api.purchase.employeeCheck(checkParams)
     if (list.length > 1) {
@@ -130,6 +126,7 @@ function PurchaseAuthAccount() {
   const employeeAuthFetch = async (_params) => {
     try {
       await api.purchase.setEmployeeAuth({..._params,showError:false})
+      await getQrCodeDtid()
       showToast('验证成功')
       dispatch(updateEnterpriseId(_params.enterprise_id))
       if (isOpened) {
@@ -143,6 +140,7 @@ function PurchaseAuthAccount() {
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
         dispatch(updateEnterpriseId(_params.enterprise_id))
+        await getQrCodeDtid()
         await showModal({
           title: '验证失败',
           content: e.message,
@@ -155,6 +153,14 @@ function PurchaseAuthAccount() {
         showToast(e.message)
       }
     }
+  }
+
+  const getQrCodeDtid = async() => {
+    if(!enterprise_id)return
+    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
+    const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
+    //后续身份切换需要用
+    dispatch(updateCurDistributorId(distributor_id))
   }
 
   // 同意隐私协议

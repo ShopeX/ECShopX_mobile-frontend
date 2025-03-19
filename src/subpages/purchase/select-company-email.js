@@ -84,17 +84,13 @@ function PurchaseAuthEmail(props) {
       showError: false,
       auth_type: 'email'
     }
-    let curDistributorId = null;
 
-    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
-    if (enterprise_id) {
-      const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
-      curDistributorId = distributor_id
-      //后续身份切换需要用
-      dispatch(updateCurDistributorId(distributor_id))
-    }
     try {
-      const checkParams = {...params,distributor_id: curDistributorId ?? getDistributorId()}
+      const checkParams = {...params}
+      if(!enterprise_id){
+        //不是扫码进来，check接口要传当前店铺ID
+        checkParams.distributor_id = getDistributorId()
+      }
       if(activity_id){
         checkParams.activity_id = activity_id
       }
@@ -113,14 +109,17 @@ function PurchaseAuthEmail(props) {
       }
 
       await api.purchase.setEmployeeAuth(params)
+      await getQrCodeDtid()
       dispatch(updateEnterpriseId(params.enterprise_id))
       showToast('验证成功')
+
       setTimeout(() => {
         Taro.reLaunch({ url: `/pages/purchase/index` })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
         dispatch(updateEnterpriseId(params.enterprise_id))
+        await getQrCodeDtid()
         await showModal({
           title: '验证失败',
           content: e.message,
@@ -133,6 +132,14 @@ function PurchaseAuthEmail(props) {
         formRef.current.setMessage({ prop: 'vcode', message: e.message })
       }
     }
+  }
+
+  const getQrCodeDtid = async() => {
+    if(!enterprise_id)return
+    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
+    const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
+    //后续身份切换需要用
+    dispatch(updateCurDistributorId(distributor_id))
   }
 
   // 获取验证码
