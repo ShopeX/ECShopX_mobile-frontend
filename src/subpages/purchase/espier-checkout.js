@@ -705,6 +705,7 @@ function PurchaseCheckout(props) {
       <SpCashier
         isOpened={openCashier}
         paymentAmount={totalInfo.freight_fee}
+        isPurchase
         value={payChannel}
         onClose={() => {
           setState((draft) => {

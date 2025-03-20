@@ -34,7 +34,8 @@ function SpCashier(props) {
     onChange = () => { },
     paymentAmount = 0,
     defaultVal,
-    salesman = false
+    salesman = false,
+    isPurchase = false
   } = props
   const $instance = getCurrentInstance()
   const { userInfo } = useSelector((state) => state.user)
@@ -88,6 +89,10 @@ function SpCashier(props) {
         distributor_id: getDistributorId(shop_id),
         platform
       }
+    }
+
+    if(isPurchase){
+      params.order_type = 'normal_employee_purchase'
     }
     const res = await api.member.getTradePaymentList(params)
     const list = pickBy(res, doc.payment.PAYMENT_ITEM)
