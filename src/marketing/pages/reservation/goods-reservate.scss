@@ -40,30 +40,18 @@
   }
 
 
+
+
   .submit-btn {
     font-size: 30px;
   }
 
-  .page-good-reservate__form {
+  &__form {
+    padding: 86px 24px 48px 24px;
+    box-sizing: border-box;
+    background: #FFFFFF;
     border-radius: 16px;
-    padding: 8px 32px;
 
-    .sp-cell {
-      padding: 26px 0;
-
-      &__hd {
-        width: 176px;
-      }
-
-      &__bd {
-        padding-top: 4px;
-      }
-
-      &__title {
-        color: #666;
-        font-size: 24px;
-      }
-    }
   }
 
   .sp-cell__ft {

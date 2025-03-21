@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import { View, Switch, Text, Button, ScrollView } from '@tarojs/components'
 import { AtButton, AtTextarea } from 'taro-ui'
-import { SpCell, SpPage, SpAddress , SpInput as AtInput } from '@/components'
+import { SpCell, SpPage, SpAddress, SpInput as AtInput, SpForm, SpFormItem } from '@/components'
 import api from '@/api'
 import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
@@ -19,7 +19,20 @@ const initialState = {
   areaIndexArray: [0, 0, 0],
   areaData: [],
   chooseValue: ['', '', ''],
-  isOpened: false
+  isOpened: false,
+  formList: [],
+  form: {},
+  rules: [],
+  formElementMap: {
+    'text': AtInput,
+    'number': AtInput,
+    'radio': AtInput,
+    'select': AtInput,
+    'checkbox': AtInput,
+    'textarea': AtInput,
+    'address': AtInput,
+    'birthday': AtInput
+  }
 }
 
 function GoodReservate(props) {
@@ -27,11 +40,15 @@ function GoodReservate(props) {
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
   const dispatch = useDispatch()
+  const router = useRouter()
+  const { formList, form, rules, formElementMap } = state
   const { setNavigationBarTitle } = useNavigation()
+  const formRef = useRef()
 
   useEffect(() => {
     fetchAddressList()
     fetch()
+    fetchActivity()
     setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
@@ -44,6 +61,114 @@ function GoodReservate(props) {
     setState((draft) => {
       draft.areaData = areaData
     })
+  }
+
+  const fetchActivity = async () => {
+    const { activity_info } = await api.user.registrationActivity({
+      activity_id: router.params.activity_id
+    })
+    console.log(111, activity_info)
+    setState((draft) => {
+      // draft.formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+    })
+  }
+
+  const onChange = () => {}
+
+  const renderFormItem = (item) => {
+    const { field_title, field_name, form_element } = item
+    switch (form_element) {
+      case 'text':
+      case 'number':
+        return (
+          <AtInput
+            name={field_name}
+            value={form.field_name}
+            type={form_element}
+            placeholder={`请填写${field_title}`}
+            onChange={onChange}
+          />
+        )
+        break
+      case 'radio':
+      case 'select':
+        return (
+          <AtInput
+            name={field_name}
+            value={form.field_name}
+            type={form_element}
+            placeholder={`请填写${field_title}`}
+            onChange={onChange}
+          />
+        )
+        break
+      case 'textarea':
+        return (
+          <AtTextarea
+            count={false}
+            name={field_name}
+            value={form.field_name}
+            cursor={form?.field_name?.length}
+            placeholder={`请填写${field_title}`}
+            onChange={onChange}
+          />
+        )
+        break
+
+      default:
+        break
+    }
+  }
+
+  console.log('formList', formList)
+
+  const renderFormList = (list = []) => {
+    return (
+      <>
+        <SpForm ref={formRef} className='form-list' formData={form} rules={rules}>
+          {/* {list.map((item, idx) => (
+            <SpFormItem label={item.field_title} prop={item.field_name}>
+              {renderFormItem(item)}
+            </SpFormItem>
+          ))} */}
+          {/* <SpFormItem label='提货时间' prop='pickerTime'>
+            <SpCell
+              className='picker-time'
+              isLink
+              onClick={() => {
+                setState((draft) => {
+                  draft.showTimePicker = true
+                })
+              }}
+            >
+              <Text
+                className={classNames({
+                  'placeholder': !form.pickerTime
+                })}
+              >
+                {getPickerTime()}
+              </Text>
+            </SpCell>
+          </SpFormItem>
+          <SpFormItem label='提货人' prop='pickerName'>
+            <AtInput
+              name='pickerName'
+              value={form.pickerName}
+              placeholder='请输入提货人姓名'
+              onChange={onInputChange.bind(this, 'pickerName')}
+            />
+          </SpFormItem>
+          <SpFormItem label='手机号码' prop='pickerPhone'>
+            <AtInput
+              name='pickerPhone'
+              value={form.pickerPhone}
+              placeholder='请输入提货人手机号码'
+              onChange={onInputChange.bind(this, 'pickerPhone')}
+            />
+          </SpFormItem> */}
+        </SpForm>
+      </>
+    )
   }
 
   const fetch = async () => {
@@ -205,9 +330,13 @@ function GoodReservate(props) {
         <View className='scroll-view-body'>
           <View className='page-good-reservate__welcome'>欢迎来到达仁堂2025年年度股东大会</View>
           <View className='page-good-reservate__title'>S股股东出席天津会场</View>
-          <View className='page-good-reservate__tips'>提示：欲在天津会场出席的s大家看我喝点酒哈我觉得回家啊我活动空间啊我和贷记卡文化科技大会。</View>
+          <View className='page-good-reservate__tips'>
+            提示：欲在天津会场出席的s大家看我喝点酒哈我觉得回家啊我活动空间啊我和贷记卡文化科技大会。
+          </View>
 
-          <View className='page-good-reservate__form'>
+          <View className='page-good-reservate__form'>{renderFormList(formList)}</View>
+
+          <View className='page-good-reservate__forms'>
             <SpCell className='logistics-no border-bottom' title='收件人'>
               <AtInput
                 name='username'

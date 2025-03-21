@@ -5,7 +5,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpInput(props) {
-  const { required, title } = props
+  const { required, title, type = 'text' } = props
   const [cursor, setCursor] = useState(-1)
 
   useEffect(() => {
@@ -35,6 +35,7 @@ function SpInput(props) {
         <Input
           className='at-input__input'
           value={props.value}
+          type={type}
           maxLength={props.maxLength}
           placeholder={props.placeholder}
           cursor={cursor}
