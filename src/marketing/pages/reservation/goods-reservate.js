@@ -3,8 +3,16 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import { View, Switch, Text, Button, ScrollView, Picker } from '@tarojs/components'
-import { AtButton, AtTextarea } from 'taro-ui'
-import { SpCell, SpPage, SpAddress, SpInput as AtInput, SpForm, SpFormItem } from '@/components'
+import { AtButton, AtTextarea, AtFloatLayout, AtCheckbox } from 'taro-ui'
+import {
+  SpCell,
+  SpPage,
+  SpAddress,
+  SpInput as AtInput,
+  SpForm,
+  SpFormItem,
+  SpFloatLayout
+} from '@/components'
 import api from '@/api'
 import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
@@ -35,7 +43,10 @@ const initialState = {
     'idcard': 1,
     'otherfile': 2
   },
-  currentField:''
+  currentField: '',
+  showCheckboxPanel: false,
+  optionList: [],
+  checkedList: []
 }
 
 function GoodReservate(props) {
@@ -44,7 +55,16 @@ function GoodReservate(props) {
   const colors = useSelector((state) => state.colors.current)
   const dispatch = useDispatch()
   const router = useRouter()
-  const { formList, form, rules, formElementMap, currentField } = state
+  const {
+    formList,
+    form,
+    rules,
+    formElementMap,
+    currentField,
+    showCheckboxPanel,
+    optionList,
+    checkedList
+  } = state
   const { setNavigationBarTitle } = useNavigation()
   const formRef = useRef()
 
@@ -76,8 +96,7 @@ function GoodReservate(props) {
     let _rules = []
     if (_formList.length) {
       _formList.forEach((item) => {
-
-        _form[item.field_name] = item.form_element == 'area' ? [] : ''
+        _form[item.field_name] = ['checkbox', 'area'].includes(item.form_element) ? [] : ''
         if (item.is_required) {
           _rules[item.field_name] = [{ required: true, message: `${item.field_title}不能为空` }]
         }
@@ -100,23 +119,51 @@ function GoodReservate(props) {
     })
   }
 
-  const handleSelectChange = (e, key, options,form_element) => {
-    console.log(e, key, options,form_element)
-    let value;
-    if(form_element == 'date'){
+  const handleSelectChange = (e, key, options, form_element) => {
+    console.log(e, key, options, form_element)
+    let value
+    if (form_element == 'date') {
       value = e.detail?.value
-    }else{
+    } else {
       value = options[e.target.value]?.value
     }
     onChange(value, key)
   }
 
-
   const onPickerChange = (selectValue) => {
     const chooseValue = [selectValue[0]?.label, selectValue[1]?.label, selectValue[2]?.label]
-    if(currentField){
+    if (currentField) {
       onChange(chooseValue, currentField)
     }
+  }
+
+  const handleShowCheckbox = (options, field_name) => {
+    console.log('options', options)
+    const _options = JSON.parse(JSON.stringify(options))
+    _options.forEach((item) => {
+      item.label = item.value
+    })
+    setState((draft) => {
+      draft.optionList = _options
+      draft.currentField = field_name
+      draft.showCheckboxPanel = true
+      draft.checkedList = form[field_name]
+    })
+  }
+
+  const handleSelectionChange = (e) => {
+    setState((draft) => {
+      draft.checkedList = e
+    })
+  }
+
+  const handleCheckboxBtnClick = (isCancle) => {
+    if (!isCancle) {
+      onChange(checkedList, currentField)
+    }
+    setState((draft) => {
+      draft.showCheckboxPanel = false
+    })
   }
 
   console.log('form', form, 'rules', rules)
@@ -135,7 +182,6 @@ function GoodReservate(props) {
             onChange={(e) => onChange(e, field_name)}
           />
         )
-        break
       case 'textarea':
         return (
           <AtTextarea
@@ -147,16 +193,15 @@ function GoodReservate(props) {
             onChange={(e) => onChange(e, field_name)}
           />
         )
-        break
       case 'radio':
       case 'select':
-        case 'date':
+      case 'date':
         return (
           <Picker
             mode={form_element == 'date' ? 'date' : 'selector'}
             rangeKey='value'
             range={options}
-            onChange={(e) => handleSelectChange(e, field_name, options,form_element)}
+            onChange={(e) => handleSelectChange(e, field_name, options, form_element)}
           >
             <View className='search-condition'>
               {form[field_name] || <Text className='search-condition-empty'>请选择</Text>}
@@ -164,23 +209,31 @@ function GoodReservate(props) {
             </View>
           </Picker>
         )
-        break
-        case 'area':
+      case 'area':
         return (
           <View
-         className='search-condition'
-          onClick={() => {
-            setState((draft) => {
-              draft.isOpened = true
-              draft.currentField = field_name
-            })
-          }}
-        >
-          {form[field_name]?.join('') || <Text className='search-condition-empty'>请选择</Text>}
-          <View className='iconfont icon-arrowDown area-icon'></View>
-        </View>
+            className='search-condition'
+            onClick={() => {
+              setState((draft) => {
+                draft.isOpened = true
+                draft.currentField = field_name
+              })
+            }}
+          >
+            {form[field_name]?.join('') || <Text className='search-condition-empty'>请选择</Text>}
+            <View className='iconfont icon-arrowDown area-icon'></View>
+          </View>
         )
-        break
+      case 'checkbox':
+        return (
+          <View
+            className='search-condition'
+            onClick={() => handleShowCheckbox(options, field_name)}
+          >
+            {form[field_name]?.join('') || <Text className='search-condition-empty'>请选择</Text>}
+            <View className='iconfont icon-arrowDown area-icon'></View>
+          </View>
+        )
 
       default:
         break
@@ -244,19 +297,12 @@ function GoodReservate(props) {
     Taro.hideLoading()
   }
 
-  const onPickerClick = () => {
-    setState((draft) => {
-      draft.isOpened = true
-    })
-  }
 
   const handleClickClose = () => {
     setState((draft) => {
       draft.isOpened = false
     })
   }
-
-
 
   const handleChange = (name, val, e) => {
     console.log('---', name, val, e)
@@ -271,16 +317,6 @@ function GoodReservate(props) {
     })
   }
 
-  const handleDefChange = (e) => {
-    const info = {
-      ...state.info,
-      is_def: e.detail.value ? 1 : 0
-    }
-
-    setState((draft) => {
-      draft.info = info
-    })
-  }
 
   const handleSubmit = async (e) => {
     const { value } = e.detail || {}
@@ -362,75 +398,33 @@ function GoodReservate(props) {
           </View>
 
           <View className='page-good-reservate__form'>{renderFormList(formList)}</View>
-
-          <View className='page-good-reservate__forms'>
-            <SpCell className='logistics-no border-bottom' title='收件人'>
-              <AtInput
-                name='username'
-                value={info?.username}
-                cursor={info?.username?.length}
-                placeholder='收件人姓名'
-                onChange={(e) => handleChange('username', e)}
-              />
-            </SpCell>
-
-            <SpCell className='logistics-no border-bottom' title='手机号码'>
-              <AtInput
-                name='telephone'
-                maxLength={11}
-                value={info?.telephone}
-                cursor={info?.telephone?.length}
-                placeholder='收件人手机号'
-                onChange={(e) => handleChange('telephone', e)}
-              />
-            </SpCell>
-
-            <SpCell
-              className='logistics-no province border-bottom'
-              title='所在区域'
-              isLink
-              arrow
-              onClick={onPickerClick}
-            >
-              <View className='picker'>
-                {chooseValue?.join('') === '' ? (
-                  <Text>选择省/市/区</Text>
-                ) : (
-                  <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
-                )}
-              </View>
-            </SpCell>
-
-            <SpCell className='logistics-no detail-address' title='详细地址'>
-              <AtTextarea
-                count={false}
-                // name='adrdetail'
-                value={info?.adrdetail}
-                cursor={info?.adrdetail?.length}
-                maxLength={100}
-                placeholder='请填写详细地址（街道、门牌）'
-                onChange={handleChange.bind(this, 'adrdetail')}
-              />
-            </SpCell>
-          </View>
-
-          <SpCell
-            title='设为默认收货地址'
-            iisLink
-            className='default_address'
-            value={
-              <Switch
-                checked={info?.is_def}
-                className='def-switch'
-                onChange={handleDefChange}
-                color={colors.data[0].primary}
-              />
-            }
-          />
         </View>
       </ScrollView>
 
       <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
+
+      <SpFloatLayout
+        title='选择地址'
+        open={showCheckboxPanel}
+        onClose={() => handleCheckboxBtnClick('cancle')}
+        renderFooter={
+          <AtButton
+            circle
+            type='primary'
+            className='submit-btn'
+            style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+            onClick={() => handleCheckboxBtnClick()}
+          >
+            确定
+          </AtButton>
+        }
+      >
+        <AtCheckbox
+          options={optionList}
+          selectedList={checkedList}
+          onChange={handleSelectionChange}
+        />
+      </SpFloatLayout>
     </SpPage>
   )
 }
