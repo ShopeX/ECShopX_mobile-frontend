@@ -106,8 +106,17 @@ function ActivityDetail(props) {
     }
   }
 
+  const renderFooter = () => {
+    return (
+      <View className='activity-detail__footer'>
+        <View className='activity-detail__footer-btn'>取消报名</View>
+        <View className='activity-detail__footer-btn refill-btn'>重新填写</View>
+      </View>
+    )
+  }
+
   return (
-    <SpPage scrollToTopBtn className='page-activity-detail'>
+    <SpPage scrollToTopBtn className='page-activity-detail' renderFooter={renderFooter()}>
       {/* <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} /> */}
       <View className='activity-detail'>
         <View className='activity-detail__hd'></View>

@@ -17,7 +17,7 @@ import api from '@/api'
 import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
-
+import CompImgPicker from './comps/comp-img-picker'
 import './goods-reservate.scss'
 
 const initialState = {
@@ -46,7 +46,8 @@ const initialState = {
   currentField: '',
   showCheckboxPanel: false,
   optionList: [],
-  checkedList: []
+  checkedList: [],
+  currentFieldTitle: ''
 }
 
 function GoodReservate(props) {
@@ -63,7 +64,8 @@ function GoodReservate(props) {
     currentField,
     showCheckboxPanel,
     optionList,
-    checkedList
+    checkedList,
+    currentFieldTitle
   } = state
   const { setNavigationBarTitle } = useNavigation()
   const formRef = useRef()
@@ -91,14 +93,40 @@ function GoodReservate(props) {
       activity_id: router.params.activity_id
     })
     console.log(111, activity_info)
-    const _formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+    let _formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+    _formList = _formList.concat([
+      {
+        company_id: '34',
+        field_name: 'idcard',
+        field_title: '身份证',
+        form_element: 'idcard',
+        id: '222',
+        image_url: '',
+        is_required: true,
+        options: null,
+        sort: 1,
+        status: 1
+      },
+      {
+        company_id: '34',
+        field_name: 'otherfile',
+        field_title: '其他文件',
+        form_element: 'otherfile',
+        id: '212',
+        image_url: '',
+        is_required: true,
+        options: null,
+        sort: 1,
+        status: 1
+      }
+    ])
     let _form = {}
     let _rules = []
     if (_formList.length) {
       _formList.forEach((item) => {
-        _form[item.field_name] = ['checkbox', 'area'].includes(item.form_element) ? [] : ''
+        _form[item.field_name] = ['checkbox', 'area','idcard','otherfile'].includes(item.form_element) ? [] : ''
         if (item.is_required) {
-          _rules[item.field_name] = [{ required: true, message: `${item.field_title}不能为空` }]
+            _rules[item.field_name] = [{ required: true, message: `${item.field_title}不能为空` }]
         }
       })
     }
@@ -137,7 +165,7 @@ function GoodReservate(props) {
     }
   }
 
-  const handleShowCheckbox = (options, field_name) => {
+  const handleShowCheckbox = (options, field_name, field_title) => {
     console.log('options', options)
     const _options = JSON.parse(JSON.stringify(options))
     _options.forEach((item) => {
@@ -148,6 +176,7 @@ function GoodReservate(props) {
       draft.currentField = field_name
       draft.showCheckboxPanel = true
       draft.checkedList = form[field_name]
+      draft.currentFieldTitle = field_title
     })
   }
 
@@ -228,13 +257,25 @@ function GoodReservate(props) {
         return (
           <View
             className='search-condition'
-            onClick={() => handleShowCheckbox(options, field_name)}
+            onClick={() => handleShowCheckbox(options, field_name, field_title)}
           >
-            {form[field_name]?.join('') || <Text className='search-condition-empty'>请选择</Text>}
+            {form[field_name]?.join('、') || <Text className='search-condition-empty'>请选择</Text>}
             <View className='iconfont icon-arrowDown area-icon'></View>
           </View>
         )
-
+      case 'idcard':
+      case 'otherfile':
+        return (
+          <CompImgPicker
+            info={
+              form_element == 'idcard'
+                ? ['上传身份证人像面', '上传身份证国徽面']
+                : [`上传${field_title}`]
+            }
+            value={form[field_name]}
+            onChange={(e) => onChange(e, field_name)}
+          />
+        )
       default:
         break
     }
@@ -297,7 +338,6 @@ function GoodReservate(props) {
     Taro.hideLoading()
   }
 
-
   const handleClickClose = () => {
     setState((draft) => {
       draft.isOpened = false
@@ -317,8 +357,8 @@ function GoodReservate(props) {
     })
   }
 
-
   const handleSubmit = async (e) => {
+    await formRef.current.onSubmitAsync()
     const { value } = e.detail || {}
     const { chooseValue } = state
     const data = {
@@ -404,7 +444,7 @@ function GoodReservate(props) {
       <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
 
       <SpFloatLayout
-        title='选择地址'
+        title={`选择${currentFieldTitle}`}
         open={showCheckboxPanel}
         onClose={() => handleCheckboxBtnClick('cancle')}
         renderFooter={

@@ -47,6 +47,7 @@
     border: 1PX solid #e0e0e0;
     border-radius: 16px;
     margin: 0 24px 24px 0;
+    position: relative;
     .icon-xiangji {
       font-size: 48px;
       color: #999;
@@ -58,6 +59,12 @@
     .files-length {
       font-size: 24px;
       color: #999;
+    }
+    &-bg{
+      width: 100%;
+    }
+    .hasBackground{
+      position: absolute;
     }
   }
 }

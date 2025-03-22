@@ -113,4 +113,29 @@
       margin:0 0 16px 25px;
     }
   }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 24px 0;
+    box-sizing: border-box;
+
+    &-btn {
+      width: 240px;
+      height: 64px;
+      text-align: center;
+      line-height: 64px;
+      border-radius: 40px;
+      border: 1px solid #979797;
+      font-weight: 500;
+      font-size: 28px;
+      color: #333333;
+      margin-left: 24px;
+    }
+    .refill-btn{
+      background:  linear-gradient( to right, #F67F70 0%, #CD352A 100%);
+      border: none;
+      color: #fff;
+    }
+  }
 }
