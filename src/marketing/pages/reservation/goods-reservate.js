@@ -47,7 +47,8 @@ const initialState = {
   showCheckboxPanel: false,
   optionList: [],
   checkedList: [],
-  currentFieldTitle: ''
+  currentFieldTitle: '',
+  backUrl: ''
 }
 
 function GoodReservate(props) {
@@ -65,7 +66,8 @@ function GoodReservate(props) {
     showCheckboxPanel,
     optionList,
     checkedList,
-    currentFieldTitle
+    currentFieldTitle,
+    backUrl
   } = state
   const { setNavigationBarTitle } = useNavigation()
   const formRef = useRef()
@@ -157,6 +159,8 @@ function GoodReservate(props) {
       draft.formList = _formList
       draft.form = _form
       draft.rules = _rules
+      draft.backUrl =
+        'https://daogou-public.oss-cn-hangzhou.aliyuncs.com/image/34/2025/03/06/0692a3466aebad18311e1ee1ff844fae1741246377016.企业微信截图_8a0f14af-d310-4bbc-9a49-addd5a0fb883.png'
     })
   }
 
@@ -258,7 +262,11 @@ function GoodReservate(props) {
             mode={form_element == 'date' ? 'date' : 'selector'}
             rangeKey='value'
             range={options}
-            value={form_element == 'date' ? form[field_name] :[options.findIndex((item) => item.value == form[field_name])]}
+            value={
+              form_element == 'date'
+                ? form[field_name]
+                : [options.findIndex((item) => item.value == form[field_name])]
+            }
             onChange={(e) => handleSelectChange(e, field_name, options, form_element)}
           >
             <View className='search-condition'>
@@ -445,7 +453,6 @@ function GoodReservate(props) {
 
   return (
     <SpPage
-      className='page-good-reservate'
       renderFooter={
         <View className='btns'>
           <AtButton
@@ -460,17 +467,19 @@ function GoodReservate(props) {
         </View>
       }
     >
-      <ScrollView className='scroll-view-container'>
-        <View className='scroll-view-body'>
-          <View className='page-good-reservate__welcome'>欢迎来到达仁堂2025年年度股东大会</View>
-          <View className='page-good-reservate__title'>S股股东出席天津会场</View>
-          <View className='page-good-reservate__tips'>
-            提示：欲在天津会场出席的s大家看我喝点酒哈我觉得回家啊我活动空间啊我和贷记卡文化科技大会。
-          </View>
+      <View className='page-good-reservate' style={{ 'backgroundImage': `url(${backUrl})` }}>
+        <ScrollView className='scroll-view-container'>
+          <View className='scroll-view-body'>
+            <View className='page-good-reservate__welcome'>欢迎来到达仁堂2025年年度股东大会</View>
+            <View className='page-good-reservate__title'>S股股东出席天津会场</View>
+            <View className='page-good-reservate__tips'>
+              提示：欲在天津会场出席的s大家看我喝点酒哈我觉得回家啊我活动空间啊我和贷记卡文化科技大会。
+            </View>
 
-          <View className='page-good-reservate__form'>{renderFormList(formList)}</View>
-        </View>
-      </ScrollView>
+            <View className='page-good-reservate__form'>{renderFormList(formList)}</View>
+          </View>
+        </ScrollView>
+      </View>
 
       <SpAddress isOpened={isOpened} onClose={handleClickClose} onChange={onPickerChange} />
 
