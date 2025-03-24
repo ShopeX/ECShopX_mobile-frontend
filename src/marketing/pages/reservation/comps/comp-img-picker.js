@@ -6,18 +6,15 @@ import { SpUpload } from '@/components'
 import './comp-img-picker.scss'
 
 const IMG_MAP = {
-  //营业执照
-  'businessLicense': 'bussniess_license.png',
-  'bankCard': 'bank_card.png',
-  'idCard': 'id_card_1.png'
+  'shareholderCertificate': 'share_certify.png',
+  'idCard': ['idcard_front.png', 'idcard_reverse.png']
 }
 
 const ImgPicker = (props) => {
   const {
     className,
     onClick = () => {},
-    //默认是营业执照
-    mode = 'businessLicense',
+    mode = 'shareholderCertificate',
     info = [],
     onChange = () => {},
     value
@@ -51,7 +48,7 @@ const ImgPicker = (props) => {
             >
               <SpUpload
                 max={1}
-                backgroundSrc={IMG_MAP[mode]}
+                backgroundSrc={Array.isArray(IMG_MAP[mode]) ? IMG_MAP[mode][index] : IMG_MAP[mode]}
                 value={uploadSuccess(index)}
                 onChange={(e) => handleChange(e, index)}
               />

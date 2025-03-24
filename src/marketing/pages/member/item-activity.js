@@ -86,6 +86,7 @@ function ItemActivity(props) {
       activityName: 'activity_name',
       status: 'status',
       startDate: 'start_date',
+      createDate:'create_date',
       endDate: 'end_date',
       reason: 'reason',
       statusName:({activity_info})=>activity_info?.status_name,
@@ -104,9 +105,9 @@ function ItemActivity(props) {
     })
   }
 
-  const handleItemClick = ({ activityId }) => {
+  const handleItemClick = ({ recordId }) => {
     Taro.navigateTo({
-      url: `/marketing/pages/member/activity-detail?activity_id=${activityId}`
+      url: `/marketing/pages/member/activity-detail?record_id=${recordId}`
     })
   }
 
@@ -116,7 +117,7 @@ function ItemActivity(props) {
       case 'reFill':
         //重新填写
         Taro.navigateTo({
-          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&recordId=${recordId}`
+          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&record_id=${recordId}`
         })
         break
       case 'sign':

@@ -9,9 +9,15 @@
   &__title{
     font-size: 36px;
     color: #31973F;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-bottom: 24px;
     font-weight: 600;
+    .icon-wancheng{
+      font-size: 48px;
+      margin-right: 16px;
+    }
   }
 
   &__subtitle{
@@ -29,6 +35,7 @@
     font-size: 24px;
     color: #333333;
     margin-bottom: 100px;
+    text-align: center;
   }
   &__btn{
     width: 458px;

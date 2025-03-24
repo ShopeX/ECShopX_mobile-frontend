@@ -25,9 +25,25 @@
     margin-bottom: 42px;
 
     &-left {
-      font-weight: 600;
-      font-size: 32px;
-      color: #FFFFFF;
+      &-status {
+        font-weight: 600;
+        font-size: 32px;
+        color: #FFFFFF;
+        display: flex;
+        align-items: center;
+
+        .iconfont {
+          font-size: 62px;
+          margin-right: 10px;
+        }
+      }
+
+      &-reason {
+        margin-left: 72px;
+        font-weight: 400;
+        font-size: 28px;
+        color: #FFFFFF;
+      }
     }
 
     &-right {
@@ -38,6 +54,12 @@
       font-size: 28px;
       color: #31973F;
     }
+  }
+
+  &__reason {
+    font-weight: 400;
+    font-size: 28px;
+    color: #FFFFFF;
   }
 
   &__info {
@@ -67,6 +89,7 @@
       display: flex;
       font-size: 26px;
       margin-bottom: 24px;
+
       &-label {
         font-weight: 500;
         color: #333333;
@@ -79,38 +102,43 @@
         color: #999999;
       }
     }
-    .no-margin{
+
+    .no-margin {
       margin: 0;
     }
   }
 
-  &__form{
+  &__form {
     padding: 46px 24px;
     background: #FFFFFF;
     border-radius: 16px;
-    &-item{
+
+    &-item {
       display: flex;
       justify-content: space-between;
       font-size: 28px;
       font-weight: 400;
       margin-bottom: 48px;
       white-space: nowrap;
-      &-lable{
+
+      &-lable {
         color: #333333;
       }
-      &-value{
+
+      &-value {
         font-weight: 400;
         color: #999999;
       }
     }
   }
 
-  .pic-item{
+  .pic-item {
     display: flex;
     flex-wrap: wrap;
     justify-content: flex-end;
-    .sp-image{
-      margin:0 0 16px 25px;
+
+    .sp-image {
+      margin: 0 0 16px 25px;
     }
   }
 
@@ -132,10 +160,17 @@
       color: #333333;
       margin-left: 24px;
     }
-    .refill-btn{
-      background:  linear-gradient( to right, #F67F70 0%, #CD352A 100%);
+
+    .refill-btn {
+      background: linear-gradient(to right, #F67F70 0%, #CD352A 100%);
       border: none;
       color: #fff;
+    }
+
+    .disabled-btn {
+      border: none;
+      color: #fff;
+      background: #D8D8D8;
     }
   }
 }

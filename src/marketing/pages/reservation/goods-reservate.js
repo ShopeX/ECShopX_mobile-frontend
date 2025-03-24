@@ -2,8 +2,8 @@ import React, { useEffect, useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import { View, Switch, Text, Button, ScrollView, Picker } from '@tarojs/components'
-import { AtButton, AtTextarea, AtFloatLayout, AtCheckbox } from 'taro-ui'
+import { View, Text, ScrollView, Picker } from '@tarojs/components'
+import { AtButton, AtTextarea, AtCheckbox } from 'taro-ui'
 import {
   SpCell,
   SpPage,
@@ -14,8 +14,7 @@ import {
   SpFloatLayout
 } from '@/components'
 import api from '@/api'
-import { isWxWeb, showToast } from '@/utils'
-import S from '@/spx'
+import { showToast, getDistributorId } from '@/utils'
 import { useNavigation } from '@/hooks'
 import CompImgPicker from './comps/comp-img-picker'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -36,8 +35,9 @@ const initialState = {
   optionList: [],
   checkedList: [],
   currentFieldTitle: '',
-  backUrl: '',
-  submitLoading:false,
+  headerBgPic: '',
+  headerHeight: 0,
+  submitLoading: false
 }
 
 function GoodReservate(props) {
@@ -55,7 +55,8 @@ function GoodReservate(props) {
     optionList,
     checkedList,
     currentFieldTitle,
-    backUrl,
+    headerBgPic,
+    headerHeight,
     submitLoading,
     isOpened,
     info
@@ -65,29 +66,66 @@ function GoodReservate(props) {
 
   useEffect(() => {
     fetchActivity()
-    setNavigationBarTitle(initNavigationBarTitle())
-  }, [])
 
-  const initNavigationBarTitle = () => {
-    return '啊我的好季节啊我喝点酒哈我的卡'
-  }
+  }, [])
 
 
   const fetchActivity = async () => {
-    const { activity_info } = await api.user.registrationActivity({
+    let activity_info = {}
+    let recordInfo = {}
+    const res = await api.user.registrationActivity({
       activity_id: router.params.activity_id
     })
-    console.log(111, activity_info)
-    let _formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+    activity_info = res.activity_info
+
+    if (router.params.record_id) {
+      //编辑
+      recordInfo = await api.user.registrationRecordInfo({
+        record_id: router.params.record_id
+      })
+    }
+
+    console.log(111, activity_info, recordInfo)
+
+    let _formList = []
+
+    if (router.params.record_id) {
+      //编辑
+      _formList = recordInfo?.content?.[0]?.formdata ?? []
+    } else {
+      //新增
+      _formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+    }
     let _form = {}
     let _rules = []
     if (_formList.length) {
       _formList.forEach((item) => {
-        _form[item.field_name] = ['checkbox', 'area', 'idcard', 'otherfile'].includes(
-          item.form_element
-        )
-          ? []
-          : ''
+        if (item.options && !router.params.record_id) {
+          //新增才需要转换
+          item.options = JSON.parse(item.options)
+        }
+
+        if (router.params.record_id) {
+          //编辑
+          if(item.form_element == 'otherfile'){
+            _form[item.field_name] = []
+          }else if(item.form_element == 'idcard'){
+            _form[item.field_name] = []
+          }else if(['checkbox', 'area'].includes(item.form_element)){
+            _form[item.field_name] = item?.answer.split(',')
+          }else{
+            _form[item.field_name] =item?.answer
+          }
+
+        } else {
+          //新增
+          _form[item.field_name] = ['checkbox', 'area', 'idcard', 'otherfile'].includes(
+            item.form_element
+          )
+            ? []
+            : ''
+        }
+
         if (item.is_required) {
           if (['idcard', 'otherfile'].includes(item.form_element)) {
             _rules[item.field_name] = [
@@ -114,13 +152,15 @@ function GoodReservate(props) {
 
     const _info = activity_info
 
+    setNavigationBarTitle(_info.activity_name)
+
     setState((draft) => {
       draft.formList = _formList
       draft.form = _form
       draft.rules = _rules
       draft.info = _info
-      draft.backUrl =
-        'https://daogou-public.oss-cn-hangzhou.aliyuncs.com/image/34/2025/03/06/0692a3466aebad18311e1ee1ff844fae1741246377016.企业微信截图_8a0f14af-d310-4bbc-9a49-addd5a0fb883.png'
+      draft.headerBgPic = _info.formdata?.header_bg_pic
+      draft.headerHeight = _info.formdata?.header_height
     })
   }
 
@@ -190,7 +230,7 @@ function GoodReservate(props) {
   console.log('form', form, 'rules', rules)
 
   const renderFormItem = (item) => {
-    const { field_title, field_name, form_element, options } = item
+    const { field_title, field_name, form_element, options = [] } = item
     switch (form_element) {
       case 'text':
       case 'number':
@@ -225,7 +265,7 @@ function GoodReservate(props) {
             value={
               form_element == 'date'
                 ? form[field_name]
-                : [options.findIndex((item) => item.value == form[field_name])]
+                : [options?.findIndex((item) => item.value == form[field_name]) ?? 0]
             }
             onChange={(e) => handleSelectChange(e, field_name, options, form_element)}
           >
@@ -269,6 +309,7 @@ function GoodReservate(props) {
                 ? ['上传身份证人像面', '上传身份证国徽面']
                 : [`上传${field_title}`]
             }
+            mode={form_element == 'idcard' ? 'idCard' : 'shareholderCertificate'}
             value={form[field_name]}
             onChange={(e) => onChange(e, field_name)}
           />
@@ -302,27 +343,32 @@ function GoodReservate(props) {
     })
   }
 
-
-  const handleSubmit = async() => {
-    const {activity_id} = info
-    let new_subdata = {activity_id,formdata:{content:[]}}
+  const handleSubmit = async () => {
+    const { activity_id } = info
+    let new_subdata = { activity_id, formdata: { content: [] },distributor_id:getDistributorId() }
     const _content = formList.map((item) => ({
       ...item,
-      answer:['idcard', 'otherfile'].includes(item.form_element) ? flatArray(form[item.field_name]) : form[item.field_name]
+      answer: ['idcard', 'otherfile'].includes(item.form_element)
+        ? flatArray(form[item.field_name])
+        : form[item.field_name]
     }))
-    let formDatacontent = _cloneDeep(info.formdata?.content);
+    let formDatacontent = _cloneDeep(info.formdata?.content)
 
     formDatacontent[0].formdata = _content
     new_subdata.formdata.content = JSON.stringify(formDatacontent)
-    console.log('new_subdata',new_subdata,_content)
+    console.log('new_subdata', new_subdata, _content)
     setState((draft) => {
       draft.submitLoading = true
     })
+    if (router.params.record_id) {
+      //编辑
+      new_subdata.record_id = router.params.record_id
+    }
     try {
       const res = await api.user.registrationSubmit(new_subdata)
       console.log(res)
       showToast('提交成功')
-      // Taro.navigateTo({url:`/marketing/pages/reservation/goods-reservate-result?id=`})
+      Taro.redirectTo({url:`/marketing/pages/reservation/goods-reservate-result?activity_id=${activity_id}`})
       setState((draft) => {
         draft.submitLoading = false
       })
@@ -369,7 +415,6 @@ function GoodReservate(props) {
     }
   }
 
-
   return (
     <SpPage
       renderFooter={
@@ -387,7 +432,10 @@ function GoodReservate(props) {
         </View>
       }
     >
-      <View className='page-good-reservate' style={{ 'backgroundImage': `url(${backUrl})`,paddingTop: '200px' }}>
+      <View
+        className='page-good-reservate'
+        style={{ 'backgroundImage': `url(${headerBgPic})`, paddingTop: `${headerHeight}px` }}
+      >
         <ScrollView className='scroll-view-container'>
           <View className='scroll-view-body'>
             {/* <View className='page-good-reservate__welcome'>欢迎来到达仁堂2025年年度股东大会</View>

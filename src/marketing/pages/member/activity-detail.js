@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
-import { View, ScrollView } from '@tarojs/components'
+import { View, ScrollView, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
@@ -11,16 +11,10 @@ import CompActivityItem from './comps/comp-activity-item'
 import './activity-detail.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '玩的', value: '0' },
-    { tag_name: '他人1', value: '1' },
-    { tag_name: '他人2', value: '2' }
-  ],
-  status: '0',
   tradeList: [],
   trackDetailList: [],
   openTrackDetail: false,
-  info: null,
+  info: {},
   formData: [
     { label: '昵称', value: 'dbajw' },
     { label: '手机号', value: 'dbajw' },
@@ -50,28 +44,47 @@ const initialState = {
 }
 function ActivityDetail(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, trackDetailList, openTrackDetail, info, formData } = state
+  const {  tradeList, trackDetailList, openTrackDetail, info, formData } = state
   const tradeRef = useRef()
   const router = useRouter()
 
+  const statusMap = {
+    'pending': 'daishenhe1',
+    'passed': 'yibaoming',
+    'rejected': 'yijujue',
+    'verified': 'yihexiao',
+    'canceled': 'yiquxiao'
+  }
+
   useEffect(() => {
-    const { status = 0 } = router.params
-    setState((draft) => {
-      draft.status = status
-    })
+    fetch()
   }, [])
 
   const fetch = async () => {
-    const { content } = await api.user.registrationRecordInfo({
-      record_id: this.$instance.router.params.record_id
+    const res = await api.user.registrationRecordInfo({
+      record_id: router.params.record_id
+    })
+    console.log(res)
+    const _info = pickBy(res, {
+      activityId: 'activity_id',
+      recordId: 'record_id',
+      activityName: 'activity_name',
+      status: 'status',
+      startDate: 'start_date',
+      createDate: 'create_date',
+      endDate: 'end_date',
+      reason: 'reason',
+      statusName: ({ activity_info }) => activity_info?.status_name,
+      area: 'area',
+      intro: ({ activity_info }) => activity_info?.intro,
+      formData: ({ content }) => content?.[0]?.formdata
+    })
+    setState((draft) => {
+      draft.info = _info
     })
   }
 
-  const onChangeTradeState = (e) => {
-    setState((draft) => {
-      draft.status = tradeStatus[e].value
-    })
-  }
+
 
   const renderFormItemValue = (value) => {
     if (Array.isArray(value)) {
@@ -90,24 +103,40 @@ function ActivityDetail(props) {
   const renderFooter = () => {
     return (
       <View className='activity-detail__footer'>
+        {/* 配置能取消，且状态不能为已取消、已核销 */}
         <View className='activity-detail__footer-btn'>取消报名</View>
+        {/* 已拒绝 */}
         <View className='activity-detail__footer-btn refill-btn'>重新填写</View>
+        {/* 未开启报名，状态为已报名 */}
+        <View className='activity-detail__footer-btn disabled-btn'>已报名</View>
+        {/* 开启重复报名，且状态不能为已取消、已核销 */}
+        <View className='activity-detail__footer-btn refill-btn'>立即报名</View>
       </View>
     )
   }
 
+  console.log('info',info)
   return (
     <SpPage scrollToTopBtn className='page-activity-detail' renderFooter={renderFooter()}>
-      {/* <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} /> */}
       <View className='activity-detail'>
         <View className='activity-detail__hd'></View>
         <View className='activity-detail__header'>
-          <View className='activity-detail__header-left'>已报名</View>
+          <View className='activity-detail__header-left'>
+            <View className='activity-detail__header-left-status'>
+              <Text className={`iconfont icon-${statusMap['canceled']}`}></Text>
+              已报名
+            </View>
+
+            {info.reason && (
+              <View className='activity-detail__header-left-reason'>{info.reason}</View>
+            )}
+          </View>
           <View className='activity-detail__header-right'>报名序号：0010</View>
         </View>
+
         <View className='activity-detail__info'>
-          <View className='activity-detail__info-title'>达仁堂2025年度大会</View>
-          <View className='activity-detail__info-time'>2025-02-34 周四 10:00:00</View>
+          <View className='activity-detail__info-title'>{info.activityName}</View>
+          <View className='activity-detail__info-time'>{info?.intro}</View>
           <View className='activity-detail__info-area'>
             <View className='activity-detail__info-area-label'>活动地点：</View>
             <View className='activity-detail__info-area-content'>北辰三角洲</View>
@@ -120,16 +149,18 @@ function ActivityDetail(props) {
           </View>
         </View>
 
-        <View className='activity-detail__form'>
-          {formData.map((item, idx) => (
-            <View className='activity-detail__form-item' key={idx}>
-              <View className='activity-detail__form-item-label'>{item.label}</View>
-              <View className='activity-detail__form-item-value'>
-                {renderFormItemValue(item.value)}
+        {info?.formData?.length > 0 && (
+          <View className='activity-detail__form'>
+            {info?.formData.map((item, idx) => (
+              <View className='activity-detail__form-item' key={idx}>
+                <View className='activity-detail__form-item-label'>{item.field_title}</View>
+                <View className='activity-detail__form-item-value'>
+                  {renderFormItemValue(item.answer)}
+                </View>
               </View>
-            </View>
-          ))}
-        </View>
+            ))}
+          </View>
+        )}
       </View>
     </SpPage>
   )
