@@ -288,7 +288,7 @@ export default class TradeList extends Component {
           } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp
+              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_corp_name=${delivery_corp_name || delivery_corp
                 }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {

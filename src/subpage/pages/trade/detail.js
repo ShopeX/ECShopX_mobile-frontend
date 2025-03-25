@@ -469,9 +469,16 @@ export default class TradeDetail extends Component {
   }
 
   handleClickDelivery = () => {
-    Taro.navigateTo({
-      url: `/subpage/pages/trade/delivery-info?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}&delivery_code=${this.state.info.delivery_code}&delivery_corp=${this.state.info.delivery_corp}&delivery_name=${this.state.info.delivery_name}`
-    })
+    if (this.state.info.is_all_delivery || this.state.info.delivery_type === 'old') {
+      Taro.navigateTo({
+        url: `/subpages/trade/delivery-info?delivery_id=${this.state.info.orders_delivery_id}&delivery_code=${this.state.info.delivery_code}&delivery_corp_name=${this.state.info.delivery_corp_name || this.state.info.delivery_corp
+          }&order_id=${this.state.info.tid}`
+      })
+    } else {
+      Taro.navigateTo({
+        url: `/subpages/community/trade/split-bagpack?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}`
+      })
+    }
   }
 
   handleClickCopy = (val) => {
