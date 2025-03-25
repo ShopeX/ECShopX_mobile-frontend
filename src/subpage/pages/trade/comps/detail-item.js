@@ -37,7 +37,7 @@ export default class DetailItem extends Component {
     } = this.props
 
     Taro.navigateTo({
-      url: `/subpage/pages/trade/after-sale?order_id=${item.order_id}`
+      url: `/subpages/trade/after-sale-detail?aftersales_bn=${item.aftersales_bn}`
     })
     // if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
     //   Taro.navigateTo({

@@ -158,6 +158,7 @@ export default class TradeDetail extends Component {
       show_aftersales: 'show_aftersales',
       distributor_id: 'distributor_id',
       isPrescription: 'is_prescription',
+      aftersales_bn: ({ aftersales_detail }) => aftersales_detail?.aftersales_bn,
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
