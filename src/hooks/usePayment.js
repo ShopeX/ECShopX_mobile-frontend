@@ -88,6 +88,11 @@ export default (props = {}) => {
     return router.path?.split('?')[0] == '/subpages/trade/detail'
   }
 
+  // 当前路由是内购
+  const isPurchasePage = () => {
+    return router.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
+  }
+
   const paySuccess = (params, orderInfo) => {
     const { activityType } = params
     const { order_id } = orderInfo
@@ -104,6 +109,10 @@ export default (props = {}) => {
 
   const payError = (orderInfo) => {
     const { order_id, trade_source_type } = orderInfo
+    if(isPurchasePage()){
+      Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
+      return
+    }
     // 社区拼团订单
     if (!isTradeDetaiPage() && router.path != '/subpages/community/order') {
       if (trade_source_type == 'normal_community') {
