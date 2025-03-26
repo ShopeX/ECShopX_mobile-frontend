@@ -68,8 +68,7 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   policyModal: false,
-  whiteShop: 0, // 1 没有白名单店铺 2 有白名单店铺
-  shopList: []
+  whiteShop: 0, // 0 没有白名单店铺 1 有白名单店铺
 }
 
 function Home() {
@@ -117,6 +116,7 @@ function Home() {
     skuPanelOpen,
     selectType,
     policyModal,
+    whiteShop
   } = state
 
   const dispatch = useDispatch()
@@ -133,14 +133,17 @@ function Home() {
     dispatch(updateInviteCode())
   }, [])
 
-  useEffect(() => {
-    if(shopInfo && VERSION_STANDARD) {
+  useEffect( () => {
+    
+    if (shopInfo && VERSION_STANDARD) {
+      console.log("🚀🚀🚀 ~ Home ~ shopInfo useEffect:", shopInfo)
       fetchWgts()
     }
   }, [shopInfo])
 
   useEffect(() => {
     if (location && VERSION_STANDARD) {
+      console.log("🚀🚀🚀 ~ Home ~ location useEffect:")
       fetchWgts()
     }
   }, [location])
@@ -193,9 +196,9 @@ function Home() {
 
     // 非云店
     if (!VERSION_STANDARD) {
-      fetchWgts()
+      await fetchWgts()
     } else {
-      fetchStoreInfo(location)
+      await fetchStoreInfo(location)
     }
   }
 
@@ -208,7 +211,8 @@ function Home() {
     })
     // 如果开启了店铺隔离并且配置了店铺隔离模版，则先获取店铺隔离模版
     let config = {}
-    if (open_divided && open_divided_templateId) {
+    console.log("🚀🚀🚀 ~ fetchWgts ~ whiteShop:", whiteShop)
+    if (open_divided && open_divided_templateId && VERSION_STANDARD && whiteShop === 0)  {
       const pathparams = qs.stringify({
         template_name: platformTemplateName,
         version: 'v1.0.1',
@@ -222,11 +226,16 @@ function Home() {
       const { config: dividedConfig } = await req.get(url)
       config = dividedConfig
     } else {
+      console.log("🚀🚀🚀 ~ fetchWgts ~ defaultConfig:")
       const { config: defaultConfig } = await api.shop.getShopTemplate({
         distributor_id: getDistributorId()
       })
       config = defaultConfig
+
+
     }
+    console.log("🚀🚀🚀 ~ fetchWgts ~ config:", config)
+
     const searchComp = config.find((wgt) => wgt.name == 'search')
     const pageData = config.find((wgt) => wgt.name == 'page')
     let filterWgts = []
@@ -346,7 +355,35 @@ function Home() {
 
               return
             } else {
-              // 没有绑定的店铺
+              // 找附近未开启白名单的店铺
+              delete params.show_type
+              delete params.distributor_id
+            
+              const defalutShop = await api.shop.getShop(params)
+              if (!defalutShop.store_name) {
+                Taro.showModal({
+                  content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+                  confirmText: '去其他店',
+                  cancelText: '关闭',
+                  success: async (res) => {
+                    console.log("🚀🚀🚀 ~ success: ~ res:", res)
+                    if (res.confirm) {
+                      // 联系店铺
+                      Taro.makePhoneCall({
+                        // phoneNumber: res.phoneNumber todozm 对接接口
+                        phoneNumber: shopInfo.phone
+                      })
+                    }
+    
+                    if (res.cancel) {
+                      // 关闭退出小程序
+                      Taro.exitMiniProgram()
+                    }
+                  }
+                })
+                return
+              }
+              // 没任何绑定的店铺
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
                 confirmText: '联系店铺',
@@ -445,6 +482,9 @@ function Home() {
           }
         } else {
           // 找到店铺了
+          setState((draft) => {
+            draft.whiteShop = 1
+          });
           dispatch(updateShopInfo(whiteShop))
         }
       } else {
@@ -469,7 +509,7 @@ function Home() {
       const nearestShop = findNearestWhiteListShop(shopList, location);
       if (nearestShop) {
         setState((draft) => {
-          draft.whiteShop = 2
+          draft.whiteShop = 1
         });
         // 使用最近的白名单店铺信息
         return nearestShop;
@@ -479,7 +519,7 @@ function Home() {
       const latestShop = findLatestCreatedShop(shopList);
       if (latestShop) {
         setState((draft) => {
-          draft.whiteShop = 2
+          draft.whiteShop =1
         });
       }
       return latestShop;
@@ -568,28 +608,28 @@ function Home() {
   }
 
 
-  // 判断是否还有其他白名单店铺 
+  // 获取店铺列表，主要用于查找白名单店铺
   const fetchShop = async () => {
     let params = {
       page: 1,
       pageSize: 50,
-      type: 0,
-      search_type: 2, // 1=搜索商品；2=搜索门店
-      sort_type: 1,
-      show_type: 'self' // 白名单店铺
+      type: 0,           // 店铺类型，0表示所有类型
+      search_type: 2,    // 1=搜索商品；2=搜索门店
+      sort_type: 1,      // 排序方式
+      show_type: 'self'  // 'self'表示只获取白名单店铺
     }
-    // const defaultChooseValue = ['北京市', '北京市', '昌平区']
-    // const chooseValue = shopInfo?.regions || defaultChooseValue
-    // const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
-      params = {
-        ...params,
-        // province: chooseProvince,
-        // city: chooseCity,
-        // area: chooseDistrict
-      }
 
     console.log(`fetchShop query: ${JSON.stringify(params)}`)
-    const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+    
+    // 调用店铺列表API
+    const { 
+      list,              // 店铺列表
+      total_count: total,// 总数
+      defualt_address,   // 默认地址
+      is_recommend       // 是否推荐
+    } = await api.shop.list(params)
+
+    // 使用 pickBy 函数按照 doc.shop.SHOP_ITEM 的格式处理店铺数据
     const shopList = pickBy(list, doc.shop.SHOP_ITEM)
 
     console.log("🚀🚀🚀 ~ fetchShop ~ list:", shopList)
