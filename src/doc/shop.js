@@ -33,7 +33,8 @@ export const SHOP_ITEM = {
   lng: 'lng',
   selfDeliveryRule:'selfDeliveryRule',
   is_self_delivery:"is_self_delivery",
-  created: 'created' // 创建时间
+  created: 'created', // 创建时间
+  isOpenDivided: 'isOpenDivided' // 是否开启店铺隔离  
 }
 
 export const BUSINESS_SORT = {

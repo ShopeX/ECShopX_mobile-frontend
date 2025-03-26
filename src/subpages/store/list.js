@@ -61,6 +61,7 @@ function NearlyShop(props) {
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const { shopInfo } = useSelector((state) => state.shop)
+  const { open_divided } = useSelector((state) => state.sys)
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
@@ -100,6 +101,8 @@ function NearlyShop(props) {
       search_type: 2, // 1=搜索商品；2=搜索门店
       sort_type: 1
     }
+
+    // 构建位置相关参数
     if (filterType == 1) {
       const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
       params = {
@@ -114,15 +117,6 @@ function NearlyShop(props) {
           name: keyword
         }
       }
-      // const locationRes = await entryLaunch.getLnglatByAddress(`${chooseProvince}${chooseCity}${chooseDistrict}`)
-      // const { lng, lat, error } = locationRes
-      // if (!error) {
-      //   params = {
-      //     ...params,
-      //     lng,
-      //     lat
-      //   }
-      // }
     } else if (filterType == 2) {
       params = {
         ...params,
@@ -151,7 +145,25 @@ function NearlyShop(props) {
     }
 
     log.debug(`fetchShop query: ${JSON.stringify(params)}`)
-    const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+    
+    let list = []
+    const open_divided_page_size = 20  // 取前20个绑定的店铺
+    if (open_divided && pageIndex === 1) { // 是否开启店铺隔离模式
+      const selfResult = await api.shop.list({
+        ...params,
+        pageSize: open_divided_page_size,
+        show_type: 'self' // self 表示获取用户绑定的店铺
+      })
+      list = selfResult.list
+      list = list.map((item) => {
+        item.isOpenDivided = true  // 标识绑定的店铺
+        return item
+      })
+    }
+    const { list: resultList, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+
+    // 未开启店铺隔离时，直接获取所有店铺数据
+    list = [...list, ...resultList]
 
     setState((draft) => {
       draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
