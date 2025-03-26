@@ -46,7 +46,9 @@ import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
-
+import { platformTemplateName } from '@/utils/platform'
+import req from '@/api/req'
+import qs from 'qs'
 
 import './home/index.scss'
 
@@ -95,7 +97,7 @@ function Home() {
   const pageRef = useRef()
   const loginRef = useRef()
 
-  const { initState, openRecommend, openLocation, openStore, appName, openScanQrcode, storeIsolation } =
+  const { initState, openRecommend, openLocation, openStore, appName, openScanQrcode, open_divided, open_divided_templateId } =
     useSelector((state) => state.sys)
   const { shopInfo } = useSelector((state) => state.shop)
 
@@ -115,7 +117,6 @@ function Home() {
     skuPanelOpen,
     selectType,
     policyModal,
-    whiteShop
   } = state
 
   const dispatch = useDispatch()
@@ -205,9 +206,27 @@ function Home() {
       draft.filterWgts = []
       draft.loading = true
     })
-    const { config } = await api.shop.getShopTemplate({
-      distributor_id: getDistributorId()
-    })
+    // 如果开启了店铺隔离并且配置了店铺隔离模版，则先获取店铺隔离模版
+    let config = {}
+    if (open_divided && open_divided_templateId) {
+      const pathparams = qs.stringify({
+        template_name: platformTemplateName,
+        version: 'v1.0.1',
+        page_name: `custom_${open_divided_templateId}`,
+        distributor_id: getDistributorId()
+      })
+      const url = `/pageparams/setting?${pathparams}`
+  
+      console.log("🚀🚀🚀 ~ fetchWgtsDivided ~ pathparams:", pathparams)
+  
+      const { config: dividedConfig } = await req.get(url)
+      config = dividedConfig
+    } else {
+      const { config: defaultConfig } = await api.shop.getShopTemplate({
+        distributor_id: getDistributorId()
+      })
+      config = defaultConfig
+    }
     const searchComp = config.find((wgt) => wgt.name == 'search')
     const pageData = config.find((wgt) => wgt.name == 'page')
     let filterWgts = []
@@ -279,7 +298,7 @@ function Home() {
     // 开启了店铺隔离并且登录，直接获取白名单店铺
     let res, whiteShop
     
-    if (storeIsolation) {
+    if (open_divided) {
       // 开启店铺隔离
       if (S.getAuthToken()) {
         // updateAddress()
@@ -471,11 +490,11 @@ function Home() {
    * 
    *  */ 
   const showWhiteLogin = async () => {
-    if(!storeIsolation) return
+    if(!open_divided) return
     // 开启了店铺隔离 && 未登录，提示用户登录
     console.log("🚀🚀🚀 ~ showWhiteLogin ~ S.getAuthToken():", S.getAuthToken())
 
-    if (storeIsolation && !S.getAuthToken()) {
+    if (open_divided && !S.getAuthToken()) {
         Taro.showModal({
           content: '你还未登录，请先登录',
           confirmText: '立即登录',
@@ -496,7 +515,7 @@ function Home() {
         })
     }
     // 未登录，未开启定位，进入默认店铺，需要弹窗提示用户登录
-    // if (storeIsolation == 1 && whiteList.length == 0) {
+    // if (open_divided == 1 && whiteList.length == 0) {
     //   showToast('店铺未开启白名单，请联系管理员开通')
     // }
   }
@@ -551,7 +570,6 @@ function Home() {
 
   // 判断是否还有其他白名单店铺 
   const fetchShop = async () => {
-    // const filterType = 1
     let params = {
       page: 1,
       pageSize: 50,
@@ -560,57 +578,15 @@ function Home() {
       sort_type: 1,
       show_type: 'self' // 白名单店铺
     }
-    // if (filterType == 1) {
-      // const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
-      // todozm 确定这个省市区是否有影响？
-      const [chooseProvince, chooseCity, chooseDistrict] =  ['北京市', '北京市', '昌平区']
+    // const defaultChooseValue = ['北京市', '北京市', '昌平区']
+    // const chooseValue = shopInfo?.regions || defaultChooseValue
+    // const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
       params = {
         ...params,
-        province: chooseProvince,
-        city: chooseCity,
-        area: chooseDistrict
+        // province: chooseProvince,
+        // city: chooseCity,
+        // area: chooseDistrict
       }
-      // if (keyword) {
-      //   params = {
-      //     ...params,
-      //     name: keyword
-      //   }
-      // }
-      // const locationRes = await entryLaunch.getLnglatByAddress(`${chooseProvince}${chooseCity}${chooseDistrict}`)
-      // const { lng, lat, error } = locationRes
-      // if (!error) {
-      //   params = {
-      //     ...params,
-      //     lng,
-      //     lat
-      //   }
-      // }
-    // } else if (filterType == 2) {
-    //   params = {
-    //     ...params,
-    //     lat: location?.lat,
-    //     lng: location?.lng,
-    //     province: location?.province,
-    //     city: location?.city,
-    //     area: location?.district
-    //   }
-    // } else if (filterType == 3) {
-    //   params = {
-    //     ...params,
-    //     province: queryProvice,
-    //     city: queryCity,
-    //     area: queryDistrict
-    //   }
-    //   const locationRes = await entryLaunch.getLnglatByAddress(`${queryProvice}${queryCity}${queryDistrict}${queryAddress}`)
-    //   const { lng, lat, error } = locationRes
-    //   if (!error) {
-    //     params = {
-    //       ...params,
-    //       lng,
-    //       lat
-    //     }
-    //   }
-    // }
 
     console.log(`fetchShop query: ${JSON.stringify(params)}`)
     const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
