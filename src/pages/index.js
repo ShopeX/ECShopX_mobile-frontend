@@ -103,7 +103,7 @@ function Home() {
   const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
-  const { location, whiteList } = useSelector((state) => state.user)
+  const { location } = useSelector((state) => state.user)
   const { setNavigationBarTitle } = useNavigation()
   const { findNearestWhiteListShop,findLatestCreatedShop, updateAddress } = useLocation()
   const {
@@ -584,10 +584,6 @@ function Home() {
           }
         })
     }
-    // 未登录，未开启定位，进入默认店铺，需要弹窗提示用户登录
-    // if (open_divided == 1 && whiteList.length == 0) {
-    //   showToast('店铺未开启白名单，请联系管理员开通')
-    // }
   }
 
   // 关闭隐私协议弹窗
