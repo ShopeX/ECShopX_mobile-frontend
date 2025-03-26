@@ -40,29 +40,7 @@ function ActivityDetail(props) {
       record_id: router.params.record_id
     })
     console.log(res)
-    const _info = pickBy(res, {
-      activityId: 'activity_id',
-      recordId: 'record_id',
-      activityName: 'activity_name',
-      status: 'status',
-      startDate: 'start_date',
-      createDate: 'create_date',
-      endDate: 'end_date',
-      reason: 'reason',
-      statusName: 'status_name',
-      activityStatus: ({ activity_info }) => activity_info?.status_name,
-      area: 'area',
-      intro: ({ start_date, end_date }) => start_date + ' - ' + end_date,
-      activityPlace: ({ activity_info }) => activity_info?.place,
-      activityAddress: ({ activity_info }) => activity_info?.address,
-      formData: ({ content }) => content?.[0]?.formdata,
-      recordNo: 'record_no',
-      mobile: 'mobile',
-      actionCancel: ({ action }) => action?.cancel == 1,
-      actionEdit: ({ action }) => action?.edit == 1,
-      actionApply: ({ action }) => action?.apply == 1,
-      getPoints:'get_points'
-    })
+    const _info = pickBy(res,doc.activity.RECORD_DETAIL)
     setState((draft) => {
       draft.info = _info
     })

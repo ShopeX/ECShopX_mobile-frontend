@@ -11,15 +11,8 @@ import CompActivityItem from './comps/comp-activity-item'
 import './activity-list.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '当前活动', value: '0' },
-    { tag_name: '精彩回顾', value: '1' }
-  ],
-  status: '0',
-  recordList: [],
-  trackDetailList: [],
-  openTrackDetail: false,
-  info: null,
+
+  info: {},
   isOpened: false,
   selectOptions: [
     { label: '编辑报名信息', value: '0' },
@@ -31,11 +24,6 @@ const initialState = {
 function ItemActivity(props) {
   const [state, setState] = useImmer(initialState)
   const {
-    tradeStatus,
-    status,
-    recordList,
-    trackDetailList,
-    openTrackDetail,
     info,
     isOpened,
     selectOptions,
@@ -46,70 +34,27 @@ function ItemActivity(props) {
   const router = useRouter()
 
   useEffect(() => {
-    Taro.eventCenter.on('onEventRecordStatusChange', () => {
-      setState((draft) => {
-        draft.recordList = []
-      })
-
-      recordRef.current.reset()
-    })
-
-    return () => {
-      Taro.eventCenter.off('onEventRecordStatusChange')
-    }
+    fetch()
   }, [])
 
-  useEffect(() => {
-    setState((draft) => {
-      draft.recordList = []
-    })
-    recordRef.current.reset()
-  }, [status,keyword])
 
-  const fetch = async ({ pageIndex, pageSize }) => {
-    const params = {
-      page: pageIndex,
-      pageSize,
-      order_type: 'normal',
-      status,
-      keyword
-    }
-    const { list, total_count: total } = await api.user.registrationRecordList(params)
-    const nList = pickBy(list, {
-      activityId: 'activity_id',
-      recordId: 'record_id',
-      activityName: 'activity_name',
-      status: 'status',
-      startDate: 'start_date',
-      createDate: 'create_date',
-      endDate: 'end_date',
-      reason: 'reason',
-      statusName: ({ activity_info }) => activity_info?.status_name,
-      pics: ({ activity_info }) => activity_info?.pics,
-      area: 'area',
-      actionCancel: ({ action }) => action?.cancel == 1,
-      actionEdit: ({ action }) => action?.edit == 1,
-      actionApply: ({ action }) => action?.apply == 1,
-      activityStatus: ({ activity_info }) => activity_info?.status_name,
-      activityStartTime: ({ activity_info }) => activity_info?.start_time
+
+  const fetch = async () => {
+    const { activity_info } = await api.user.registrationActivity({
+      activity_id: router.params.activity_id
     })
-    setState((draft) => {
-      draft.recordList = [...recordList, ...nList]
+
+    console.log(888,activity_info)
+
+    setState(draft => {
+      draft.info = activity_info
     })
-    return { total }
+
   }
 
-  const onChangeTradeState = (e) => {
-    setState((draft) => {
-      draft.status = tradeStatus[e].value
-    })
-  }
 
-  const handleItemClick = ({ recordId }) => {
-    Taro.navigateTo({
-      url: `/marketing/pages/member/activity-detail?record_id=${recordId}`
-    })
-  }
+
+
 
   const onBtnAction = (item, type) => {
     const { activityId, recordId } = item
@@ -151,46 +96,10 @@ function ItemActivity(props) {
     handleSelectClose()
   }
 
-  const handleOnClear = async () => {
-    await setState((draft) => {
-      draft.keyword = ''
-    })
-  }
-
-  const handleConfirm = async (val) => {
-    await setState((draft) => {
-      draft.keyword = val
-    })
-  }
 
   return (
     <SpPage scrollToTopBtn className='page-activity-info'>
-      <SpSearchBar
-        keyword={keyword}
-        placeholder='搜索活动'
-        showDailog={false}
-        onFocus={() => {}}
-        onChange={() => {}}
-        onClear={handleOnClear}
-        onCancel={handleOnClear}
-        onConfirm={handleConfirm}
-      />
-      <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
-      <ScrollView className='list-scroll-container' scrollY>
-        <SpScrollView
-          className='trade-list-scroll'
-          auto={false}
-          ref={recordRef}
-          fetch={fetch}
-          emptyMsg='没有查询到订单'
-        >
-          {recordList.map((item, index) => (
-            <View className='trade-item-wrap' key={index}>
-              <CompActivityItem isActivity info={item} onClick={handleItemClick} onBtnAction={onBtnAction} />
-            </View>
-          ))}
-        </SpScrollView>
-      </ScrollView>
+
 
       <SpSelectModal
         isOpened={isOpened}

@@ -21,8 +21,6 @@ const initialState = {
   ],
   status: '',
   recordList: [],
-  trackDetailList: [],
-  openTrackDetail: false,
   info: null,
   isOpened: false,
   selectOptions: [
@@ -38,9 +36,6 @@ function ItemActivity(props) {
     tradeStatus,
     status,
     recordList,
-    trackDetailList,
-    openTrackDetail,
-    info,
     isOpened,
     selectOptions,
     activityInfo,
@@ -89,24 +84,7 @@ function ItemActivity(props) {
       status
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
-    const nList = pickBy(list, {
-      activityId: 'activity_id',
-      recordId: 'record_id',
-      activityName: 'activity_name',
-      status: 'status',
-      startDate: 'start_date',
-      createDate:'create_date',
-      endDate: 'end_date',
-      reason: 'reason',
-      statusName:'status_name',
-      pics:({activity_info})=>activity_info?.pics,
-      areaName:({activity_info})=>activity_info?.area_name,
-      actionCancel:({action})=>action?.cancel == 1,
-      actionEdit:({action})=>action?.edit == 1,
-      actionApply:({action})=>action?.apply == 1,
-      activityStatus:({activity_info})=>activity_info?.status_name,
-      activityStartTime:({activity_info})=>activity_info?.start_time,
-    })
+    const nList = pickBy(list,doc.activity.RECORD_LIST)
     setState((draft) => {
       draft.recordList = [...recordList, ...nList]
     })

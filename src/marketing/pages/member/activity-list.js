@@ -105,19 +105,19 @@ function ItemActivity(props) {
     })
   }
 
-  const handleItemClick = ({ recordId }) => {
+  const handleItemClick = ({ activityId }) => {
     Taro.navigateTo({
-      url: `/marketing/pages/member/activity-detail?record_id=${recordId}`
+      url: `/marketing/pages/member/activity-info?activity_id=${activityId}`
     })
   }
 
   const onBtnAction = (item, type) => {
-    const { activityId, recordId } = item
+    const { activityId } = item
     switch (type) {
       case 'reFill':
         //重新填写
         Taro.navigateTo({
-          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&record_id=${recordId}`
+          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
         })
         break
       case 'sign':
