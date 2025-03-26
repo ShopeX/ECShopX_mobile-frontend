@@ -41,6 +41,7 @@ import S from '@/spx'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal } from '@/hooks'
 import doc from '@/doc'
+import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
@@ -319,42 +320,88 @@ function Home() {
       params.lng = lng
       // params.distributor_id = undefined
     }
-    // 开启了店铺隔离并且登录，直接获取白名单店铺
-    let res, whiteShop
     
     if (open_divided) {
-      // 开启店铺隔离
-      if (S.getAuthToken()) {
-        // updateAddress()
-        params.show_type = 'self'
-        // 带self，返回店铺内容store_name => 是绑定的店铺
-        whiteShop = await api.shop.getShop(params) 
-        /**
-         * 店铺隔离逻辑
-         * is_valid 接口逻辑
-         * show_type = 'self' && distributor_id=0 && location，返回最近的且开启白名单的店铺
-         * show_type = 'self' && distributor_id=0 && !location，不能返回店铺，因为不知道最近的店铺
-         * show_type = 'self' && distributor_id>0 ，如果有返回店铺信息，表示这个店铺已经有绑定白名单，没有则没有绑定白名单
-         * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺
-         * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店 或者 不能返回店铺，因为没有location？
-         * 
-         * 找合适店铺的逻辑
-         * 1、开启定位，找最近的
-         * 2、没有开启定位，找创建时间最晚的
-         * 3、店铺列表没有，表示都没有绑定白名单
-         */
-        if (!whiteShop.store_name) {
-          // 没有找到店铺
+      checkStoreIsolation(params)
+    } else {
+      res = await api.shop.getShop(params)
+      dispatch(updateShopInfo(res))
+    }
+    // showWhiteLogin()
+  }
+
+  const checkStoreIsolation = async () => { 
+    const distributorId = getDistributorId() || 0
+    let params = {
+      distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
+    }
+    if (openLocation == 1 && location) {
+      const { lat, lng } = location
+      params.lat = lat
+      params.lng = lng
+      // params.distributor_id = undefined
+    }
+    // 开启了店铺隔离并且登录，获取白名单店铺
+    let res, whiteShop
+    if (S.getAuthToken()) {
+      // updateAddress()
+      params.show_type = 'self'
+      // 带self，返回店铺内容store_name => 是绑定的店铺
+      whiteShop = await api.shop.getShop(params) 
+      /**
+       * 店铺隔离逻辑
+       * is_valid 接口逻辑
+       * show_type = 'self' && distributor_id=0 && location，返回最近的且开启白名单的店铺
+       * show_type = 'self' && distributor_id=0 && !location，不能返回店铺，因为不知道最近的店铺
+       * show_type = 'self' && distributor_id>0 ，如果有返回店铺信息，表示这个店铺已经有绑定白名单，没有则没有绑定白名单
+       * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺
+       * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店 或者 不能返回店铺，因为没有location？
+       * 
+       * 找合适店铺的逻辑
+       * 1、开启定位，找最近的
+       * 2、没有开启定位，找创建时间最晚的
+       * 3、店铺列表没有，表示都没有绑定白名单
+       */
+      if (!whiteShop.store_name) {
+        // 没有找到店铺
+        
+        if (distributorId) {
+          // 有店铺码 但是这个店铺不是在白名单里, 找其他店铺
+          const shop = await getWhiteShop() // 已经加入的最优店铺
+          if (shop) {
+            params.distributor_id = shop.distributor_id
+            Taro.showModal({
+              content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
+              confirmText: '联系店铺',  
+              cancelText: '回我的店',
+              success: async (res) => {
+                if (res.confirm) {
+                  Taro.makePhoneCall({
+                    phoneNumber: shopInfo.phone
+                  })
+                }
+                if (res.cancel) {
+                  // 清空小程序启动时携带的参数
+                  Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                  res = await api.shop.getShop(params)
+                  dispatch(updateShopInfo(res))
+                }
+              }
+            })
+
+            return
+          } else {
+            // 找附近未开启白名单的店铺
+            delete params.show_type
+            delete params.distributor_id
           
-          if (distributorId) {
-            // 有店铺码 但是这个店铺不是在白名单里, 找其他店铺
-            const shop = await getWhiteShop() // 已经加入的最优店铺
-            if (shop) {
-              params.distributor_id = shop.distributor_id
+            const defalutShop = await api.shop.getShop(params)
+            params.distributor_id = shop.distributor_id
+            if (defalutShop.store_name) {
               Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
+                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
                 confirmText: '联系店铺',  
-                cancelText: '回我的店',
+                cancelText: '去其他店',
                 success: async (res) => {
                   if (res.confirm) {
                     Taro.makePhoneCall({
@@ -362,83 +409,93 @@ function Home() {
                     })
                   }
                   if (res.cancel) {
+                    // 清空小程序启动时携带的参数
+                    Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                     res = await api.shop.getShop(params)
                     dispatch(updateShopInfo(res))
                   }
                 }
               })
-
               return
-            } else {
-              // 找附近未开启白名单的店铺
-              delete params.show_type
-              delete params.distributor_id
-            
-              const defalutShop = await api.shop.getShop(params)
-              if (!defalutShop.store_name) {
-                Taro.showModal({
-                  content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                  confirmText: '去其他店',
-                  cancelText: '关闭',
-                  success: async (res) => {
-                    console.log("🚀🚀🚀 ~ success: ~ res:", res)
-                    if (res.confirm) {
-                      // 联系店铺
-                      Taro.makePhoneCall({
-                        // phoneNumber: res.phoneNumber todozm 对接接口
-                        phoneNumber: shopInfo.phone
-                      })
-                    }
-    
-                    if (res.cancel) {
-                      // 关闭退出小程序
-                      Taro.exitMiniProgram()
-                    }
-                  }
-                })
-                return
-              }
-              // 没任何绑定的店铺
-              Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '联系店铺',
-                cancelText: '关闭',
-                success: async (res) => {
-                  if (res.confirm) {
-                    // 联系店铺
-                    Taro.makePhoneCall({
-                      phoneNumber: shopInfo.phone
-                    })
-                  }
-
-                  if (res.cancel) {
-                    // 关闭退出小程序
-                    Taro.exitMiniProgram()
-                  }
-                }
-              })
             }
-            return
+            // 没任何绑定的店铺
+            Taro.showModal({
+              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+              confirmText: '联系店铺',
+              cancelText: '关闭',
+              success: async (res) => {
+                if (res.confirm) {
+                  // 联系店铺
+                  Taro.makePhoneCall({
+                    phoneNumber: shopInfo.phone
+                  })
+                }
+
+                if (res.cancel) {
+                  // 关闭退出小程序
+                  Taro.exitMiniProgram()
+                }
+              }
+            })
           }
+          return
+        }
 
-          if (!distributorId && params.lat) {
-            // 已定位
+        if (!distributorId && params.lat) {
+          // 已定位
 
+          delete params.show_type
+          
+          // 未开启白名单的店铺
+          const defalutShop = await api.shop.getShop(params)
+          if (!defalutShop.store_name) {
+            Taro.showModal({
+              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+              confirmText: '联系店铺',
+              cancelText: '关闭',
+              success: async (res) => {
+                console.log("🚀🚀🚀 ~ success: ~ res:", res)
+                if (res.confirm) {
+                  // 联系店铺
+                  Taro.makePhoneCall({
+                    // phoneNumber: res.phoneNumber todozm 对接接口
+                    phoneNumber: shopInfo.phone
+                  })
+                }
+
+                if (res.cancel) {
+                  // 关闭退出小程序
+                  Taro.exitMiniProgram()
+                }
+              }
+            })
+          } else {
+            // 有定位，存在没有开启白名单的店铺
+            dispatch(updateShopInfo(defalutShop))
+          }
+          
+          return
+        }
+
+        if (!params.lat) {
+          // 未定位
+          const shop = await getWhiteShop()
+          if (!shop) {
+            // 未加入店铺
             delete params.show_type
-            
-            // 未开启白名单的店铺
-            const defalutShop = await api.shop.getShop(params)
-            if (!defalutShop.store_name) {
+            res = await api.shop.getShop(params)
+            if (res.store_name) {
+              // 部分门店未开启白名单
+              dispatch(updateShopInfo(res))
+            } else {
+              // 全部开启白名单
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
                 confirmText: '联系店铺',
                 cancelText: '关闭',
                 success: async (res) => {
-                  console.log("🚀🚀🚀 ~ success: ~ res:", res)
                   if (res.confirm) {
-                    // 联系店铺
                     Taro.makePhoneCall({
-                      // phoneNumber: res.phoneNumber todozm 对接接口
                       phoneNumber: shopInfo.phone
                     })
                   }
@@ -449,70 +506,28 @@ function Home() {
                   }
                 }
               })
-            } else {
-              // 有定位，存在没有开启白名单的店铺
-              dispatch(updateShopInfo(defalutShop))
             }
-            
             return
+          } else {
+            // 加入最近时间的店铺
+            params.distributor_id = shop.distributor_id
+            res = await api.shop.getShop(params)
+            dispatch(updateShopInfo(res))
           }
-
-          if (!params.lat) {
-            // 未定位
-            const shop = await getWhiteShop()
-            if (!shop) {
-              // 未加入店铺
-              delete params.show_type
-              res = await api.shop.getShop(params)
-              if (res.store_name) {
-                // 部分门店未开启白名单
-                dispatch(updateShopInfo(res))
-              } else {
-                // 全部开启白名单
-                Taro.showModal({
-                  content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                  confirmText: '联系店铺',
-                  cancelText: '关闭',
-                  success: async (res) => {
-                    if (res.confirm) {
-                      Taro.makePhoneCall({
-                        phoneNumber: shopInfo.phone
-                      })
-                    }
-    
-                    if (res.cancel) {
-                      // 关闭退出小程序
-                      Taro.exitMiniProgram()
-                    }
-                  }
-                })
-              }
-              return
-            } else {
-              // 加入最近时间的店铺
-              params.distributor_id = shop.distributor_id
-              res = await api.shop.getShop(params)
-              dispatch(updateShopInfo(res))
-            }
-          }
-        } else {
-          // 找到店铺了
-          setState((draft) => {
-            draft.whiteShop = 1
-          });
-          dispatch(updateShopInfo(whiteShop))
         }
       } else {
-        // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
-        res = await api.shop.getShop(params)
-        dispatch(updateShopInfo(res))
-        showWhiteLogin()
+        // 找到店铺了
+        setState((draft) => {
+          draft.whiteShop = 1
+        });
+        dispatch(updateShopInfo(whiteShop))
       }
     } else {
+      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
       res = await api.shop.getShop(params)
       dispatch(updateShopInfo(res))
+      showWhiteLogin()
     }
-    // showWhiteLogin()
   }
 
 
