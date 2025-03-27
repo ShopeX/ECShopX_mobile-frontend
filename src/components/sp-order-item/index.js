@@ -23,7 +23,7 @@ function SpOrderItem(props) {
   const { priceSetting } = useSelector((state) => state.sys)
   const { order_page } = priceSetting
   const { market_price: enMarketPrice } = order_page
-  const { priceDisplayConfig } = useSelector((state) => state.purchase)
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { order_detail_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = order_detail_page
 

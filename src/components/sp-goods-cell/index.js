@@ -10,7 +10,7 @@ import './index.scss'
 function SpGoodsCell(props) {
   const { info, isPurchase = false, onSelectSku } = props
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const { priceDisplayConfig } = useSelector((state) => state.purchase)
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { checkout_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = checkout_page
   if (!info) {
