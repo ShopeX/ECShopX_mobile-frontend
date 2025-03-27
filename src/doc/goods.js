@@ -16,7 +16,10 @@ export const WGT_GOODS_GRID = {
   distributorId: 'distributor_id',
   isPoint: 'is_point',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.activity_price / 100, // 秒杀价
+  activityPrice: ({ promotionActivity,act_price }) => {
+   let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price
+   return _aprice/ 100
+  }, // 秒杀价
   marketPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.market_price / 100, // 原价
   memberPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
@@ -55,6 +58,7 @@ export const WGT_GOODS_SCROLL = {
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
+  isPrescription:'isPrescription',
 }
 
 export const WGT_GOODS_GRID_TAB = {
@@ -78,7 +82,10 @@ export const WGT_GOODS_GRID_TAB = {
   // },
   // marketPrice: 'market_price',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
+  activityPrice: ({ activity_price, act_price }) => {
+    let _aprice = activity_price || act_price
+    return _aprice / 100
+  }, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
@@ -274,7 +281,9 @@ export const GOODS_INFO = {
     })
   },
   distributorId: 'distributor_id',
-  video: 'videos'
+  video: 'videos',
+  medicineData: 'medicine_data',
+  isMedicine: 'is_medicine',
 }
 
 export const ESPIER_DETAIL_GOODS_INFO = {

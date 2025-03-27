@@ -23,7 +23,8 @@ import {
   pickBy,
   classNames,
   VERSION_PLATFORM,
-  isAPP
+  isAPP,
+  getDistributorId
 } from '@/utils'
 
 import doc from '@/doc'
@@ -74,7 +75,9 @@ const initialState = {
   evaluationTotal: 0,
   // 多规格商品选中的规格
   curItem: null,
-  recommendList: []
+  recommendList: [],
+  activityId:'',
+  enterpriseId:''
 }
 
 function EspierDetail(props) {
@@ -85,7 +88,7 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
   const { setNavigationBarTitle } = useNavigation()
 
   const [state, setState] = useImmer(initialState)
@@ -111,7 +114,9 @@ function EspierDetail(props) {
     type,
     dtid,
     curItem,
-    recommendList
+    recommendList,
+    activityId,
+    enterpriseId
   } = state
 
   useEffect(() => {
@@ -189,23 +194,34 @@ function EspierDetail(props) {
   // }
 
   const init = async () => {
-    const { type, id, dtid } = await entryLaunch.getRouteParams()
+    const { type, id, dtid,activity_id,enterprise_id } = await entryLaunch.getRouteParams()
     setState((draft) => {
       draft.id = id
       draft.type = type
-      draft.dtid = dtid
+      // draft.dtid = dtid
+      draft.dtid = curDistributorId ?? getDistributorId()
+      draft.activityId = activity_id
+      draft.enterpriseId = enterprise_id
+
     })
   }
 
   const fetch = async () => {
-    const { activity_id, enterprise_id } = purchase_share_info
+    let { activity_id, enterprise_id } = purchase_share_info
+
+    //参数传来
+    if(activityId && enterpriseId){
+      activity_id = activityId
+      enterprise_id = enterpriseId
+    }
+
     let data
     if (type == 'pointitem') {
     } else {
       try {
         const itemDetail = await api.purchase.getPurchaseDetail(id, {
           showError: false,
-          distributor_id: dtid,
+          // distributor_id: dtid,
           activity_id,
           enterprise_id
         })
@@ -416,7 +432,7 @@ function EspierDetail(props) {
                 fetch()
               }}
             >
-              <SpGoodsPrice info={curItem ? curItem : info} />
+              <SpGoodsPrice isPurchase info={curItem ? curItem : info} />
             </CompActivityBar>
           )}
 
@@ -424,7 +440,7 @@ function EspierDetail(props) {
             <View className='goods-info-title'>
               {/* 拼团、秒杀、限时特惠不显示 */}
               {!ACTIVITY_LIST[info.activityType] && (
-                <SpGoodsPrice info={curItem ? curItem : info} />
+                <SpGoodsPrice isPurchase info={curItem ? curItem : info} />
               )}
               {info.store_setting && <View className='kc'>库存：{info.store}</View>}
             </View>
@@ -450,6 +466,23 @@ function EspierDetail(props) {
                 <View className='title'>{info.itemName}</View>
                 <View className='brief'>{info.brief}</View>
               </View>
+              {
+                info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 &&
+                <View className='item-pre'>
+                  <View className='item-pre-title'>
+                    <Text className='medicine'>处方药</Text>
+                    <Text>处方药须凭处方在药师指导下购买和使用</Text>
+                  </View>
+                  <View className='item-pre-content'>
+                    <View className='title'>用药提示</View>
+                    <View className='content'>
+                      {/* <Text>功能主治：</Text> */}
+                      {/* <Text className='content-title'>根据法规要求，请咨询药师了解处方药详细信息</Text> */}
+                      <Text className='content-title'>{info?.medicineData?.use_tip}</Text>
+                    </View>
+                  </View>
+                </View>
+              }
               <View className='item-bn'>{`货号：${info.itemBn}`}</View>
             </View>
           </View>

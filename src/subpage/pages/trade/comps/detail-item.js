@@ -12,6 +12,7 @@ export default class DetailItem extends Component {
     // customHeader: false
     customFooter: false,
     showType: 'orders',
+    isPurchase: false,
     // customRender: false,
     // noHeader: false,
     // showActions: false,
@@ -36,7 +37,7 @@ export default class DetailItem extends Component {
     } = this.props
 
     Taro.navigateTo({
-      url: `/subpage/pages/trade/after-sale?order_id=${item.order_id}`
+      url: `/subpages/trade/after-sale-detail?aftersales_bn=${item.aftersales_bn}`
     })
     // if (!item.aftersales_status || item.aftersales_status === 'SELLER_REFUSE_BUYER') {
     //   Taro.navigateTo({
@@ -85,7 +86,7 @@ export default class DetailItem extends Component {
   }
 
   render() {
-    const { customFooter, info, isPointitem, showType } = this.props
+    const { customFooter, info, isPointitem, showType, isPurchase } = this.props
     return (
       <View className='detail-item' style={styleNames(getThemeStyle())}>
         {info &&
@@ -109,15 +110,16 @@ export default class DetailItem extends Component {
               <SpOrderItem
                 key={`${idx}1`}
                 info={item}
+                isPurchase={isPurchase}
                 isShowNational
                 isPointitemGood={isPointitem}
                 onClick={() => {
-                  if(info.order_class == 'pointsmall') {
+                  if (info.order_class == 'pointsmall') {
                     Taro.navigateTo({
                       url: `/subpages/pointshop/espier-detail?id=${item.good_id}`
                     })
                   } else {
-                    JumpGoodDetail(item.good_id, item.distributor_id)
+                    JumpGoodDetail(item.good_id, item.distributor_id, info?.activity_id, info?.enterprise_id)
                   }
                 }}
               />

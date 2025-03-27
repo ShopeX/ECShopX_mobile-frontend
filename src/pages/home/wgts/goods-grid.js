@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import Taro, { Component } from '@tarojs/taro'
+import Taro, { Component, useRouter } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
 import { pickBy, classNames, styleNames, linkPage } from '@/utils'
@@ -18,6 +18,8 @@ function WgtGoodsGrid(props) {
   const { base, data, config } = info
   const newData = Array.isArray(data) ? data : []
   const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
+  const router = useRouter()
+  const isPurchase = router.path == "/subpages/purchase/index"
 
   const { onAddToCart } = useContext(WgtsContext)
 
@@ -47,6 +49,7 @@ function WgtGoodsGrid(props) {
     onAddToCart({ itemId, distributorId })
   }
 
+
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -72,6 +75,7 @@ function WgtGoodsGrid(props) {
             <View className='goods-item-wrap two-inrow left-container'>
               {leftFilterGoods.map((item, leftidx) => (
                 <SpGoodsItem
+                  isPurchase={isPurchase}
                   renderBrand={
                     config.brand && (
                       <View className='brand-info' style={styleNames({
@@ -101,6 +105,7 @@ function WgtGoodsGrid(props) {
             <View className='goods-item-wrap two-inrow right-container'>
               {rightFilterGoods.map((item, rightidx) => (
                 <SpGoodsItem
+                  isPurchase={isPurchase}
                   renderBrand={
                     config.brand && (
                       <View className='brand-info' style={styleNames({

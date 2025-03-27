@@ -35,7 +35,7 @@ import {
   VERSION_STANDARD
 } from '@/utils'
 import S from '@/spx'
-import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId } from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompVipCard from './comps/comp-vipcard'
@@ -87,7 +87,7 @@ const initialConfigState = {
     vipImg: null
   },
   purchaseRes: {},
-  
+
 }
 
 const initialState = {
@@ -404,14 +404,15 @@ function MemberIndex(props) {
     }
 
     if (key == 'purchase') {
-      const data = await api.purchase.getUserEnterprises({ disabled: 0 })
+      const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
       if (data?.length > 0) {
-        Taro.navigateTo({ url: '/pages/purchase/index' })
+        Taro.navigateTo({ url: '/subpages/purchase/select-identity' })
       } else {
         Taro.navigateTo({ url: '/pages/purchase/auth' })
       }
       dispatch(updatePurchaseShareInfo())
       dispatch(updateInviteCode())
+      dispatch(updateCurDistributorId(null))
     }
 
     if (link) {

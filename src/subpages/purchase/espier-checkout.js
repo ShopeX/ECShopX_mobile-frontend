@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import { AtButton, AtInput } from 'taro-ui'
 import {
   SpPage,
@@ -32,7 +32,7 @@ import {
   VERSION_B2C,
   VERSION_PLATFORM
 } from '@/utils'
-import { useAsyncCallback, useLogin,useLocation, usePayment } from '@/hooks'
+import { useAsyncCallback, useLogin, useLocation, usePayment } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
@@ -56,6 +56,8 @@ function PurchaseCheckout(props) {
     }
   })
 
+  const router = useRouter()
+
 
   const { cashierPayment } = usePayment()
 
@@ -68,7 +70,7 @@ function PurchaseCheckout(props) {
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
   const { coupon } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, isDiscountDescriptionEnabled, discountDescription } = useSelector((state) => state.purchase)
 
   const {
     detailInfo,
@@ -280,6 +282,14 @@ function PurchaseCheckout(props) {
       draft.submitLoading = false
     })
 
+    if (!totalInfo?.prescription_status == 0) {
+      Taro.redirectTo({
+        url: `/subpages/prescription/prescription-information?order_id=${orderId}`
+      })
+      console.log('我要跳转到新的页面啦:', payType)
+      return
+    }
+
     // 储值支付 或者 积分抵扣
     if (payType === 'deposit' || params.pay_type == 'point') {
       Taro.redirectTo({ url: `/pages/cart/cashier-result?order_id=${orderId}` })
@@ -317,11 +327,11 @@ function PurchaseCheckout(props) {
     })
 
     // 收货地址为空时，需要触发calcOrder
-    if(receipt_type == 'logistics' && !address_info) {
+    if (receipt_type == 'logistics' && !address_info) {
       calcOrder()
     }
     // if (address_info) {
-      dispatch(updateChooseAddress(address_info))
+    dispatch(updateChooseAddress(address_info))
     // }
   }
 
@@ -350,7 +360,7 @@ function PurchaseCheckout(props) {
 
   // 商家留言
   const handleRemarkChange = (val) => {
-    if(val.length > 50) val = val.slice(0,50)
+    if (val.length > 50) val = val.slice(0, 50)
     console.log('handleRemarkChange:remark', remark)
     setState((draft) => {
       draft.remark = val
@@ -401,7 +411,8 @@ function PurchaseCheckout(props) {
       receiver_city,
       receiver_district,
       item_fee_new,
-      market_fee
+      market_fee,
+      prescription_status
     } = orderRes
 
     if (coupon_info) {
@@ -445,7 +456,8 @@ function PurchaseCheckout(props) {
       point_fee, //积分抵扣金额,
       item_point,
       freight_type,
-      promotion_discount
+      promotion_discount,
+      prescription_status
     }
 
     const point_info = {
@@ -483,6 +495,15 @@ function PurchaseCheckout(props) {
     const { activity_id, enterprise_id } = purchase_share_info
     const { value, activity } = getActivityValue() || {}
 
+    let _activity_id = activity_id;
+    let _enterprise_id = enterprise_id;
+    // 订单详情点进来的商品
+    if(router.params.activity_id && router.params.enterprise_id){
+      _activity_id = router.params.activity_id
+      _enterprise_id = router.params.enterprise_id
+    }
+
+
     let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
@@ -505,8 +526,8 @@ function PurchaseCheckout(props) {
       point_use,
       pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid,
-      activity_id,
-      enterprise_id
+      activity_id: _activity_id,
+      enterprise_id: _enterprise_id
     }
 
     if (receiptType === 'ziti') {
@@ -601,11 +622,17 @@ function PurchaseCheckout(props) {
             <View className='goods-list'>
               {detailInfo.map((item, idx) => (
                 <View className='sp-order-item__wrap' key={idx}>
-                  <SpGoodsCell info={item} />
+                  <SpGoodsCell isPurchase info={item} />
                 </View>
               ))}
             </View>
           </View>
+          {
+            isDiscountDescriptionEnabled && discountDescription &&
+            <View className='cart-checkout__title'>
+              {discountDescription}
+            </View>
+          }
           <View className='cart-group__cont cus-input'>
             <SpCell className='trade-remark' border={false}>
               <AtInput
@@ -696,9 +723,18 @@ function PurchaseCheckout(props) {
           )}
       </View>
 
+
+      {
+        !totalInfo?.prescription_status == 0 &&
+        <View className='cart-checkout__title'>
+          订单中包含处方药，提交订单后请补充处方信息
+        </View>
+      }
+
       <SpCashier
         isOpened={openCashier}
         paymentAmount={totalInfo.freight_fee}
+        isPurchase
         value={payChannel}
         onClose={() => {
           setState((draft) => {

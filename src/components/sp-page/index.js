@@ -10,7 +10,7 @@ import Taro, {
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
-import { useSyncCallback } from '@/hooks'
+import { useThemsColor } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
 import {
   classNames,
@@ -88,6 +88,7 @@ function SpPage(props, ref) {
   const [showToTop, setShowToTop] = useState(false)
   const [mantle, setMantle] = useState(false)
   const { colorPrimary, colorMarketing, colorAccent, rgb, appName } = sys
+  const { themeColor } = useThemsColor()
 
   useReady(() => {
     // 导购货架数据上报
@@ -181,18 +182,18 @@ function SpPage(props, ref) {
   useDidShow(() => {
     const { page, router } = $instance
 
-    //更新主题色
-    updatePageTheme(router?.path)
     const fidx = Object.values(TABBAR_PATH).findIndex(
       (v) => v == $instance.router?.path.split('?')[0]
     )
     const isTabBarPage = fidx > -1
     setState((draft) => {
       // draft.pageTitle = pageTitle
-      ;(draft.isTabBarPage = isTabBarPage),
-        (draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
-          `/${page?.route}`
-        ))
+      draft.isTabBarPage = isTabBarPage
+      draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
+        `/${page?.route}`
+      )
+      //更新主题色
+      draft.pageTheme = themeColor()
     })
 
     // 导购货架分包路由，隐藏所有分享入口
@@ -203,49 +204,6 @@ function SpPage(props, ref) {
     }
   })
 
-  const updatePageTheme = (res) => {
-    // 使用对象来定义路由前缀和对应的主题色
-    const prefixes = {
-      '/subpages/delivery/': {
-        primary: '#4980FF',
-        marketing: '#4980FF',
-        accent: '#4980FF'
-      },
-      '/subpages/salesman/': {
-        primary: '#4980FF',
-        marketing: '#4980FF',
-        accent: '#4980FF'
-      },
-      '/subpages/dianwu/': {
-        primary: '#4980FF',
-        marketing: '#4980FF',
-        accent: '#4980FF'
-      }
-    }
-
-    // 使用正则表达式匹配路由前缀
-    const regex = res.split('/').length >= 4 ? res.match(/(?:[^\/]*\/){2}([^\/]+)(?:\/|$)/)[0] : null
-
-    // 检查是否找到匹配项
-    const status = regex !== null && prefixes[regex]
-    const newPrefixes = prefixes[regex]
-
-    // 查找与给定路由匹配的主题
-    const theme = {
-      // 如果没有找到匹配项，则使用默认主题
-      '--color-primary': status ? newPrefixes.primary : colorPrimary,
-      '--color-marketing': status ? newPrefixes.marketing : colorMarketing,
-      '--color-accent': status ? newPrefixes.accent : colorAccent,
-      '--color-rgb': status ? hex2rgb(newPrefixes.primary).join(',') : rgb,
-      '--color-dianwu-primary': '#4980FF',
-      '--color-dianwu-rgb': hex2rgb('#4980FF').join(','),
-    }
-
-    // 更新状态
-    setState((draft) => {
-      draft.pageTheme = theme
-    })
-  }
 
   usePageScroll((res) => {
     if (!lock) {

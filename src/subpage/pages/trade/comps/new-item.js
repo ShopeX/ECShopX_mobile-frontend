@@ -45,15 +45,15 @@ export default class TradeItem extends Component {
 
     if (order_class === 'pointsmall') {
       if (freight_type === 'point' || (freight_type === 'cash' && freight_fee == 0)) {
-        total = `合计：${point} ${pointName}`
+        total = `实付：${point} ${pointName}`
       } else if (freight_type === 'cash' && freight_fee != 0) {
-        total = `合计：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
+        total = `实付：${point} ${pointName} + ￥${formatPriceToHundred(freight_fee)}`
       }
     } else {
       if (payType === 'dhpoint') {
-        total = `合计：${total_fee}${pointName}`
+        total = `实付：${total_fee}${pointName}`
       } else {
-        total = `合计：￥${payment}`
+        total = `实付：￥${payment}`
       }
     }
     return (
@@ -78,7 +78,7 @@ export default class TradeItem extends Component {
       showActions,
       colors,
       rateStatus,
-      isShowDistributorInfo
+      isShowDistributorInfo,
     } = this.props
 
     if (!info) {
@@ -104,6 +104,7 @@ export default class TradeItem extends Component {
               <SpOrderItem
                 key={`${idx}1`}
                 info={item}
+                isPurchase={info.order_class === 'employee_purchase'}
                 payType={payType}
                 isPointitemGood={info.order_class === 'pointsmall'}
                 isShowPointTag={info.order_class === 'pointsmall'}
@@ -129,13 +130,17 @@ export default class TradeItem extends Component {
                   取消订单
                 </Button>
               ) : null}
-              <Button
-                className='btn-action'
-                style={`background: ${colors.data[0].primary}`}
-                onClick={this.handleClickBtn.bind(this, 'pay')}
-              >
-                立即支付
-              </Button>
+              {
+                (info.prescription_status == 0 || info.prescription_status == 2) &&
+                <Button
+                  className='btn-action'
+                  style={`background: ${colors.data[0].primary}`}
+                  onClick={this.handleClickBtn.bind(this, 'pay')}
+                >
+                  立即支付
+                </Button>
+              }
+
             </View>
           </View>
         )}

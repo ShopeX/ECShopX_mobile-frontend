@@ -66,6 +66,19 @@ $paddingBottom: 100px;
         margin: 0 20px;
       }
     }
+    &-name{
+      font-size: 28px;
+      text-align: center;
+      padding:16px 20px ;
+      border: 1px solid #222;
+      // background-color: #222;
+      // color: #fff;
+      border-radius: 40px;
+      .iconfont{
+        font-size: 28px;
+        // color: #fff;
+      }
+    }
     .at-countdown__time {
       color: #333;
       font-weight: bold;
@@ -86,6 +99,7 @@ $paddingBottom: 100px;
     min-height: 120px;
     align-items: center;
     font-weight: bold;
+    justify-content: space-between;
     .oneline {
       width: 100%;
       margin-left: 23px;
@@ -628,5 +642,75 @@ $paddingBottom: 100px;
       justify-content: space-between;
       padding-left: 170px;
     }
+  }
+  .information {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    .title {
+      font-size: 24px;
+      &-num {
+        margin-right: 8px;
+        background-color: var(--color-primary);
+        padding: 0 14px;
+        border-radius: 50%;
+        color: #fff;
+      }
+      &-text {
+        font-size: 26px;
+        color: #000;
+      }
+    }
+    .titled {
+      font-size: 26px;
+      color: #999;
+      .title-text{
+        color: #000;
+      }
+      &-num {
+        margin-right: 8px;
+        background-color: #999;
+        padding: 0 12px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .block-container {
+    padding: 24px 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    margin: 24px;
+
+    &-label {
+      font-size: 30px;
+      color: #222;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    &-link{
+      display: flex;
+      align-items: center;
+      .icon-qianwang-01{
+        margin-left: 4px;
+      }
+    }
+  }
+  .at-float-layout .layout-header__title {
+    text-align: center;
+    padding: 0 80px;
+  }
+  .long-press{
+    font-size: 24px;
+    color: #999;
+    margin-top: 10px;
+    text-align: center;
   }
 }

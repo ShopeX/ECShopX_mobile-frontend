@@ -71,7 +71,7 @@ function ItemList() {
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
   const dispatch = useDispatch()
 
   const goodsRef = useRef()
@@ -190,7 +190,7 @@ function ItemList() {
 
     if (VERSION_STANDARD) {
       // 有兑换券的时候，店铺ID传当前选中的店铺
-      params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
+      params.distributor_id = curDistributorId ?? (card_id ? shopInfo?.distributor_id : getDistributorId());
     }
 
     const {
@@ -382,6 +382,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    isPurchase
                     info={{
                       ...item,
                       card_id,
@@ -399,6 +400,7 @@ function ItemList() {
                   <SpGoodsItem
                     showFav
                     onStoreClick={handleClickStore}
+                    isPurchase
                     info={{
                       ...item,
                       card_id,

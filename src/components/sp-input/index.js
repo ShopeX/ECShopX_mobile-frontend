@@ -5,7 +5,7 @@ import { classNames } from '@/utils'
 import './index.scss'
 
 function SpInput(props) {
-  const { required, title } = props
+  const { required, title, type = 'text' } = props
   const [cursor, setCursor] = useState(-1)
 
   useEffect(() => {
@@ -26,21 +26,30 @@ function SpInput(props) {
 
   return (
     <View className={classNames('at-input', props.className)}>
-      <View className="at-input__container">
-        {<View className={classNames('at-input__title', {
-          "at-input__title--required": required
-        })}>
-          {title}
-        </View>}
+      <View className='at-input__container'>
+        {title && (
+          <View
+            className={classNames('at-input__title', {
+              'at-input__title--required': required
+            })}
+          >
+            {title}
+          </View>
+        )}
         <Input
           className='at-input__input'
           value={props.value}
+          type={type}
           maxLength={props.maxLength}
           placeholder={props.placeholder}
           cursor={cursor}
           onInput={handleInput}
         ></Input>
-        {props.value && props.clear && <View className='sp-input__clear' onClick={handleClear}>x</View>}
+        {props.value && props.clear && (
+          <View className='sp-input__clear' onClick={handleClear}>
+            x
+          </View>
+        )}
       </View>
     </View>
   )
@@ -58,7 +67,7 @@ SpInput.defaultProps = {
   clear: false,
   placeholder: '',
   maxLength: null,
-  onChange: () => { }
+  onChange: () => {}
 }
 
 export default SpInput

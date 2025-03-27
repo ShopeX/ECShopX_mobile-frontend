@@ -1,0 +1,78 @@
+$tag-bar-height: 90px;
+
+.page-activity-list {
+
+  .sp-tag-bar .tag-item.active{
+    color: var(--color-primary);
+  }
+  .sp-tag-bar .tag-item {
+    height: 90rpx;
+    line-height: 90rpx;
+    position: relative;
+  }
+
+  .sp-tag-bar .tag-item.active::after{
+    content:'';
+    width: 56px;
+    height: 7px;
+    background: var(--color-primary);
+    position: absolute;
+    left: 30%;
+    bottom: 0;
+  }
+
+
+  .search-input {
+    padding: 16px;
+    background: #fff;
+    box-sizing: border-box;
+    height: auto;
+
+    .at-icon-search {
+      color: #999;
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 34px;
+        border-right: 1px solid #BBBBBB;
+        position: relative;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .sp-tag-bar {
+    background: #fff;
+    height: $tag-bar-height;
+    padding: 0;
+    align-items: center;
+  }
+
+  .list-scroll-container {
+    height: calc(100% - #{$tag-bar-height});
+    padding-top: 48px;
+  }
+
+  .tag-bar-hd {
+    flex: 1;
+  }
+
+  .trade-list-scroll {
+    .trade-item-wrap {
+      margin: 0 20px 24px;
+    }
+  }
+
+  .comp-tradeitem .shop-info {
+    width: 530px;
+  }
+
+  .activity-item__content-btn{
+    border-radius: 28px;
+  }
+
+  .activity-item__content-btns{
+    justify-content: space-between;
+  }
+}

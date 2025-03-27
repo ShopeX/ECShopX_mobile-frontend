@@ -7,7 +7,7 @@ import { useImmer } from 'use-immer'
 import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
-import { navigateTo, pickBy, classNames, throttle } from '@/utils'
+import { navigateTo, pickBy, classNames, throttle, getDistributorId } from '@/utils'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/purchase'
 import {
@@ -45,7 +45,7 @@ function CartIndex() {
   const { current, policyModal } = state
 
   const { colorPrimary } = useSelector((state) => state.sys)
-  const { validCart = [], invalidCart = [], purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { validCart = [], invalidCart = [], purchase_share_info = {},curDistributorId } = useSelector((state) => state.purchase)
   const { tabbar = 1 } = router?.params || {}
 
 
@@ -73,7 +73,7 @@ function CartIndex() {
       enterprise_id,
       activity_id
     }
-    await dispatch(fetchCartList(params))
+    await dispatch(fetchCartList({...params,distributor_id: curDistributorId ?? getDistributorId()}))
     await dispatch(updateCount(params))
     Taro.hideLoading()
   }
@@ -319,6 +319,7 @@ function CartIndex() {
                                 />
                                 <CompGoodsItem
                                   info={c_sitem}
+                                  isPurchase
                                   onDelete={onDeleteCartGoodsItem.bind(this, c_sitem)}
                                   onChange={onChangeCartGoodsItem.bind(this, c_sitem)}
                                   onClickImgAndTitle={onClickImgAndTitle.bind(this, c_sitem)}
@@ -427,7 +428,7 @@ function CartIndex() {
 
       {validCart.length == 0 && invalidCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
-          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
+          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/subpages/purchase/index', true)}>
             去选购
           </AtButton>
         </SpDefault>

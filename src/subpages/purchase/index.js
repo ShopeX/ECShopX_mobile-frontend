@@ -46,7 +46,7 @@ const { store } = configStore()
 function Home() {
   const [state, setState] = useImmer(initialState)
   const { initState, openLocation, openStore, appName } = useSelector((state) => state.sys)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
   const { isLogin, login, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       if (isUpdate) {
@@ -92,7 +92,7 @@ function Home() {
   const fetchWgts = async () => {
     try {
       const { config, tab_bar } = await api.shop.getShopTemplate({
-        distributor_id: getDistributorId(),
+        distributor_id: curDistributorId ?? getDistributorId(),
         pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id,
         e_activity_id: router.params?.activity_id || purchase_share_info?.activity_id
       })

@@ -248,8 +248,11 @@ const config = {
         'pages/reservation/brand-result', // 预约结果
         'pages/reservation/reservation-list', // 预约（代码逻辑显示）
         'pages/reservation/goods-reservate', // 预约报名
+        'pages/reservation/goods-reservate-result', // 预约结果
         'pages/reservation/reservation-detail', // 预约详情
 
+        'pages/member/activity-list', // 报名活动列表
+        'pages/member/activity-info', // 报名活动详情
         'pages/member/item-activity', // 活动列表
         'pages/member/activity-detail', // 活动详情
         'pages/member/user-info', // 用户注册

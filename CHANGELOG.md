@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.19.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.4...v3.19.0) (2025-03-27)
+
+### [3.18.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.3...v3.18.4) (2025-03-27)
+
+### [3.18.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.2...v3.18.3) (2025-03-27)
+
+### [3.18.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.0...v3.18.1) (2025-03-19)
+
+
+### Bug Fixes
+
+* 修复订单未支付没有支付入口、sp-input样式问题 ([f38dd34](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f38dd348b28e273a8fe35702a85bb0a4352e76dd))
+
 ## [3.18.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.17.4...v3.18.0) (2025-03-18)
 
 ### [3.17.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.17.3...v3.17.4) (2025-03-17)

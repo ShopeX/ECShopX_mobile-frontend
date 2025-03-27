@@ -8,8 +8,11 @@ import { VERSION_IN_PURCHASE } from '@/utils'
 import './index.scss'
 
 function SpGoodsCell(props) {
-  const { info, onSelectSku } = props
+  const { info, isPurchase = false, onSelectSku } = props
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
+  const { checkout_page = {} } = priceDisplayConfig
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = checkout_page
   if (!info) {
     return null
   }
@@ -41,6 +44,20 @@ function SpGoodsCell(props) {
     _price = t_memberPrice
   } else {
     _price = t_price
+  }
+
+  const renderPurchasePrice = () => {
+    return (
+      <>
+        <SpPrice value={info.salePrice}></SpPrice>
+        {enPurActivityPrice && (
+          <View className='act-price'>
+            活动价¥{(info.price).toFixed(2)}
+            {/* <SpPrice value={info.price}></SpPrice> */}
+          </View>
+        )}
+      </>
+    )
   }
 
   // console.log('isNaN(memberPrice):', info.orderItemType)
@@ -121,7 +138,12 @@ function SpGoodsCell(props) {
         <View className='item-ft'>
           <View className='price-gp'>
             {isPoint && <SpPoint value={point} />}
-            {!isPoint && <SpPrice value={_price}></SpPrice>}
+            {!isPoint && (
+              <>
+                {isPurchase && renderPurchasePrice()}
+                {!isPurchase && <SpPrice value={_price}></SpPrice>}
+              </>
+            )}
             {info.marketPrice > 0 && (
               <SpPrice
                 className='market-price'

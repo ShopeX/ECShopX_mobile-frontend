@@ -1,14 +1,15 @@
-import Taro from '@tarojs/taro'
+import Taro,{useRouter} from '@tarojs/taro'
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
-import { classNames, pickBy } from '@/utils'
-import { useLogin } from '@/hooks'
+import { classNames, pickBy, getDistributorId } from '@/utils'
+import { useAsyncCallback, useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
-import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo, updateCount } from '@/store/slices/purchase'
+import { updateValidIdentity } from '@/store/slices/purchase'
 
 import doc from '@/doc'
 import S from '@/spx'
@@ -33,15 +34,20 @@ const initialState = {
     { title: '活动进行中', value: 1 },
     { title: '未开始', value: 2 },
     { title: '已结束', value: 3 }
-  ]
+  ],
+  loading:true
 }
 
 function PurchaseActivityList() {
   const [state, setState] = useImmer(initialState)
-  const { activityList, activity_name, tabList, currentIndex } = state
+  const { activityList, activity_name, tabList, currentIndex,loading} = state
+  const { curEnterpriseId } = useSelector((_state) => _state.purchase)
 
   const scrollRef = useRef()
   const dispatch = useDispatch()
+
+  const { params } = useRouter()
+  let { activity_id, is_select } = params
 
   useEffect(() => {
     if (!S.getAuthToken()) {
@@ -50,10 +56,40 @@ function PurchaseActivityList() {
       })
       return
     } else {
-      scrollRef.current.reset()
+      verfiyActivityNums()
     }
-    updataMemberInfo()
   }, [])
+
+  const verfiyActivityNums = async() => {
+    const { list, total_count } = await api.purchase.getEmployeeActivityList({
+      page: 1,
+      pageSize:1,
+      enterprise_id:curEnterpriseId,
+      activity_id
+    })
+     // 如果只有一条数据，直接进入活动首页
+    if(total_count == 1 && !is_select){
+      const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
+      onClickChange(_list[0],'redirectTo')
+
+    }else{
+      setState(draft=>{
+        draft.loading = false
+      })
+      scrollRef.current.reset()
+      //更新底部tabbar是否有身份切换
+      // updateIdentity()
+      updataMemberInfo()
+    }
+  }
+
+
+  const updateIdentity = async() => {
+    const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
+    const hasValidIdentity = data.filter(item => item.disabled == 0).length > 1
+    //多个企业展示身份切换tab
+    dispatch(updateValidIdentity(hasValidIdentity));
+  }
 
   const updataMemberInfo = async () => {
     const _userInfo = await api.member.memberInfo()
@@ -61,13 +97,16 @@ function PurchaseActivityList() {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const type = tabList[currentIndex]?.value
+    // const type = tabList[currentIndex]?.value
     const { list, total_count } = await api.purchase.getEmployeeActivityList({
       page: pageIndex,
       pageSize,
       activity_name,
-      type
+      // type,
+      enterprise_id:curEnterpriseId,
+      activity_id
     })
+
     const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
     setState((draft) => {
       draft.activityList = [...activityList, ..._list]
@@ -98,12 +137,37 @@ function PurchaseActivityList() {
     )
   }
 
-  const onClickChange = (item) => {
+  const onClickChange = async(item,isRedirectTo) => {
     console.log(item)
-    const { id, enterpriseId, pages_template_id } = item
-    Taro.navigateTo({
-      url: `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
+    const { id, enterpriseId, pages_template_id, priceDisplayConfig = {}, isDiscountDescriptionEnabled, discountDescription } = item
+    const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
+    const _priceDisplayConfig = handlePriceConfig(priceDisplayConfig)
+    //需要存活动价格展示
+    dispatch(updateActivityInfo({priceDisplayConfig:_priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription}))
+    //更新活动购物车
+    await dispatch(updateCount({
+      shop_type:'distributor',
+      enterprise_id:enterpriseId,
+      activity_id:id
+    }))
+    if(isRedirectTo){
+      Taro.redirectTo({url})
+    }else{
+      Taro.navigateTo({url})
+    }
+  }
+
+  const handlePriceConfig = (val) => {
+    const priceConfig = JSON.parse(JSON.stringify(val))
+    Object.keys(priceConfig).forEach(key=>{
+      const c_config = priceConfig[key]
+      if(c_config){
+        for(let ckey in c_config){
+          c_config[ckey] = c_config[ckey] == 'true'
+        }
+      }
     })
+    return priceConfig
   }
 
   const handleTypeChange = (e) => {
@@ -130,17 +194,18 @@ function PurchaseActivityList() {
       //   </View>
       // }
       // renderFooter={renderFooter()}
-      renderFooter={<CompTabbar />}
+      loading={loading}
+      renderFooter={!loading && <CompTabbar />}
     >
-      {/* <View className='user-box'>
+      <View className='user-box'>
         <View className='user-serach'>
           <SpSearchInput
             placeholder='活动名称'
             onConfirm={onConfirm}
           />
         </View>
-      </View> */}
-      <SpTabs current={currentIndex} tablist={tabList} onChange={handleTypeChange} />
+      </View>
+      {/* <SpTabs current={currentIndex} tablist={tabList} onChange={handleTypeChange} /> */}
       <ScrollView className='item-list-scroll' scrollY>
         <SpScrollView
           ref={scrollRef}
@@ -175,4 +240,3 @@ PurchaseActivityList.options = {
 
 export default PurchaseActivityList
 
-// 内购活动列表

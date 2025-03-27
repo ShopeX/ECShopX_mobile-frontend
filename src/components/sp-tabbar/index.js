@@ -1,17 +1,19 @@
 import Taro, { getCurrentPages } from '@tarojs/taro'
 import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH, TABBAR_ICON } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, isWeb } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
+import { updateCurDistributorId } from '@/store/slices/purchase'
 import './index.scss'
 
 function SpTabbar(props) {
   const navipage = '/pages/item/list?isTabBar=true'
   const { colorPrimary, tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
+  const dispatch = useDispatch()
   const { className } = props
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
   const tabList = tabbar?.data.map((item) => {
@@ -60,10 +62,12 @@ function SpTabbar(props) {
   const handleTabbarClick = (index) => {
     const tabItem = tabList[index]
     const { path,params:{id:customPageId} } = getCurrentRoute()
-
     // 如果是跳转自定义页面则判断id是否一致
     let otherCustomPage = ((path == '/pages/custom/custom-page') && (path == TABBAR_PATH[tabItem.name]) && (tabItem.customPageId != customPageId) )
     if (path != TABBAR_PATH[tabItem.name] || otherCustomPage ) {
+      if(tabItem.name == 'purchase'){
+        dispatch(updateCurDistributorId(null))
+      }
       if(TABBAR_PATH[tabItem.name]!==navipage){
         let url = tabItem.name == 'customPage' ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}` :  TABBAR_PATH[tabItem.name]
         Taro.redirectTo({ url })

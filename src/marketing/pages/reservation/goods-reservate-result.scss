@@ -1,0 +1,52 @@
+.good-reservate-result {
+  padding: 108px 24px;
+  box-sizing: border-box;
+  background: #fff;
+  min-height: 100vh;
+  &__title-box{
+    padding: 0 54px;
+  }
+  &__title{
+    font-size: 36px;
+    color: #31973F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 24px;
+    font-weight: 600;
+    .icon-wancheng{
+      font-size: 48px;
+      margin-right: 16px;
+    }
+  }
+
+  &__subtitle{
+    font-weight: 400;
+    font-size: 28px;
+    color: #666666;
+    margin-bottom: 108px;
+    text-align: center;
+  }
+  &__tips{
+    background: #F5F5F5;
+    border-radius: 16px;
+    padding: 36px 24px;
+    box-sizing: border-box;
+    font-size: 24px;
+    color: #333333;
+    margin-bottom: 100px;
+    text-align: center;
+  }
+  &__btn{
+    width: 458px;
+    height: 80px;
+    background: linear-gradient( to right, #F67F70 0%, #CD352A 100%);
+    border-radius: 40px;
+    font-weight: 500;
+    font-size: 32px;
+    color: #FFFFFF;
+    text-align: center;
+    line-height: 80px;
+    margin: 0 auto;
+  }
+}

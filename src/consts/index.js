@@ -168,7 +168,8 @@ export const TABBAR_PATH = {
   liveroom: '/pages/liveroom/index',
   allGoods: '/pages/item/list?isTabBar=true',
   ugc: '/subpages/mdugc/index',
-  customPage:'/pages/custom/custom-page'
+  customPage:'/pages/custom/custom-page',
+  purchase:'/subpages/purchase/select-identity'
 }
 
 export const TABBAR_ICON = {
@@ -420,6 +421,13 @@ export const relationship = [{
   value: '其他'
 }]
 
+export const ACTIVITY_STATUS_MAP = {
+    'pending': '待审核',
+    'passed': '已通过',
+    'rejected': '已拒绝',
+    'verified': '已核销',
+    'canceled': '已取消'
+  }
 export * from './localstorage'
 
 export default {}

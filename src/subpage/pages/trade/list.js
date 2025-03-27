@@ -47,7 +47,8 @@ export default class TradeList extends Component {
       evaluate: 1,
       list: [],
       rate_status: false,
-      curItemActionsId: null
+      curItemActionsId: null,
+
     }
   }
 
@@ -124,7 +125,7 @@ export default class TradeList extends Component {
         status: tabList[curTabIdx].status,
         is_rate: tabList[curTabIdx].is_rate,
         order_class: 'employee_purchase',
-        activity_id: this.props.purchase_share_info?.activity_id
+        // activity_id: this.props.purchase_share_info?.activity_id
       },
       function (val, key) {
         if (key === 'page_no') return 'page'
@@ -170,6 +171,7 @@ export default class TradeList extends Component {
       orders_delivery_id: 'orders_delivery_id',
       order_type: 'order_type',
       can_apply_cancel: 'can_apply_cancel',
+      prescription_status:'prescription_status',
       order: ({ items }) =>
         pickBy(items, {
           order_id: 'order_id',
@@ -181,10 +183,13 @@ export default class TradeList extends Component {
           type: 'type',
           item_spec_desc: 'item_spec_desc',
           price: ({ item_fee_new }) => (item_fee_new / 100).toFixed(2),
+          salePrice: ({sale_price}) => (sale_price / 100).toFixed(2),
+          activityPrice: ({price}) => (price / 100).toFixed(2),
           item_fee: 'item_fee',
           point: 'item_point',
           num: 'num',
-          order_item_type: 'order_item_type'
+          order_item_type: 'order_item_type',
+          isPrescription: 'is_prescription',
         })
     })
 
@@ -283,7 +288,7 @@ export default class TradeList extends Component {
           } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_name=${delivery_corp_name || delivery_corp
+              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_corp_name=${delivery_corp_name || delivery_corp
                 }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
@@ -327,7 +332,7 @@ export default class TradeList extends Component {
       list = [],
       page,
       rateStatus,
-      evaluate
+      evaluate,
     } = this.state
 
     const isLogin = S.getAuthToken()

@@ -1,111 +1,193 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { Loading, SpNote, SpNavBar } from '@/components'
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
+import { View, ScrollView, Button } from '@tarojs/components'
+import { SpPage, SpScrollView, SpTagBar, SpImage, SpSelectModal } from '@/components'
 import api from '@/api'
-import { withPager } from '@/hocs'
+import doc from '@/doc'
 import { pickBy } from '@/utils'
-
+import CompActivityItem from './comps/comp-activity-item'
 import './item-activity.scss'
 
-@withPager
-export default class ItemActivity extends Component {
-  constructor (props) {
-    super(props)
+const initialState = {
+  tradeStatus: [
+    { tag_name: '全部', value: '' },
+    { tag_name: '待审核', value: 'pending' },
+    { tag_name: '已报名', value: 'passed' },
+    { tag_name: '已拒绝', value: 'rejected' },
+    { tag_name: '已取消', value: 'canceled' },
+    { tag_name: '已核销', value: 'verified' }
+  ],
+  status: '',
+  recordList: [],
+  info: null,
+  isOpened: false,
+  selectOptions: [
+    { label: '编辑报名信息', value: '0' },
+    { label: '代他人报名', value: '1' }
+  ],
+  activityInfo: {},
+  hasReFreash:false
+}
+function ItemActivity(props) {
+  const [state, setState] = useImmer(initialState)
+  const {
+    tradeStatus,
+    status,
+    recordList,
+    isOpened,
+    selectOptions,
+    activityInfo,
+    hasReFreash
+  } = state
+  const recordRef = useRef()
+  const router = useRouter()
 
-    this.state = {
-      ...this.state,
-      list: []
-    }
-  }
+  // useEffect(() => {
+  //   Taro.eventCenter.on('onEventRecordStatusChange', () => {
+  //     setState((draft) => {
+  //       draft.recordList = []
+  //       draft.hasReFreash = true
+  //     });
 
-  componentDidMount () {
-    this.nextPage()
-  }
+  //     recordRef.current.reset()
+  //   })
 
-  async fetch (params) {
-    const { page_no: page, page_size: pageSize } = params
-    params = {
-      page,
-      pageSize
+  //   return () => {
+  //     Taro.eventCenter.off('onEventRecordStatusChange')
+  //   }
+  // }, [])
+
+  useDidShow(()=>{
+    // if(hasReFreash){
+    //   setState((draft) => {
+    //     draft.recordList = []
+    //     draft.hasReFreash = false
+    //   });
+    //   recordRef.current.reset()
+    // }
+
+    setState((draft) => {
+      draft.recordList = []
+    });
+    recordRef.current.reset()
+  })
+
+  useEffect(() => {
+    setState((draft) => {
+      draft.recordList = []
+    })
+    recordRef.current.reset()
+  }, [status])
+
+  const fetch = async ({ pageIndex, pageSize }) => {
+    const params = {
+      page: pageIndex,
+      pageSize,
+      order_type: 'normal',
+      status
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
-    console.log(list, total, 22)
-
-    const nList = pickBy(list, {
-      activity_id: 'activity_id',
-      record_id: 'record_id',
-      activity_name: 'activity_name',
-      status: 'status',
-      start_date: 'start_date',
-      end_date: 'end_date'
+    const nList = pickBy(list,doc.activity.RECORD_LIST)
+    setState((draft) => {
+      draft.recordList = [...recordList, ...nList]
     })
-
-    this.setState({
-      list: [...this.state.list, ...nList]
-    })
-
     return { total }
   }
 
-  handleClickDetail = (id) => {
-    Taro.navigateTo({
-      url: `/marketing/pages/member/activity-detail?record_id=${id}`
+  const onChangeTradeState = (e) => {
+    setState((draft) => {
+      draft.status = tradeStatus[e].value
     })
   }
 
-  render () {
-    const { list, page } = this.state
-
-    return (
-      <View className='reservation-list'>
-        <SpNavBar title='活动预约' leftIconType='chevron-left' fixed='true' />
-        <ScrollView scrollY className='reservation-list__scroll' onScrollToLower={this.nextPage}>
-          <View className='reservation-list__list'>
-            {list.map((item) => {
-              return (
-                // eslint-disable-next-line react/jsx-key
-                <View className='reservation-list__item'>
-                  <View className='reservation-list__item_title'>
-                    <Text></Text>
-                    <Text>
-                      {item.status === 'rejected'
-                        ? '本次活动太火爆了，很遗憾名额已满，请您持续关注！'
-                        : ''}
-                      {item.status === 'pending' ? '待审核' : ''}
-                      {item.status === 'passed' ? '通过' : ''}
-                    </Text>
-                  </View>
-                  <View className='reservation-list__item_content'>
-                    <View className='content_data'>
-                      <Text>活动名称</Text>
-                      <Text>{item.activity_name}</Text>
-                    </View>
-                    <View className='content_data'>
-                      <Text>活动时间</Text>
-                      <Text>
-                        {item.start_date} ~ {item.end_date}
-                      </Text>
-                    </View>
-                  </View>
-                  <Text
-                    className='reservation-list__item_btn'
-                    onClick={this.handleClickDetail.bind(this, item.record_id)}
-                  >
-                    查看详情
-                  </Text>
-                </View>
-              )
-            })}
-            {page.isLoading && <Loading>正在加载...</Loading>}
-            {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_activity.png`}>
-                您还未报名任何活动哦，快去报名吧!
-              </SpNote>
-            )}
-          </View>
-        </ScrollView>
-      </View>
-    )
+  const handleItemClick = ({ recordId }) => {
+    Taro.navigateTo({
+      url: `/marketing/pages/member/activity-detail?record_id=${recordId}`
+    })
   }
+
+  const onBtnAction = (item, type) => {
+    const { activityId, recordId, status } = item
+    switch (type) {
+      case 'reFill':
+        //重新填写
+        Taro.navigateTo({
+          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&record_id=${recordId}`
+        })
+        break
+      case 'sign':
+        //立即报名
+        if(['passed','canceled','verified'].includes(status)){
+          Taro.navigateTo({
+            url:`/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
+          })
+        } else{
+          //有编辑
+          setState((draft) => {
+            draft.isOpened = true
+            draft.activityInfo = item
+          })
+        }
+
+        break
+      default:
+        break
+    }
+  }
+
+  const handleSelectClose = () => {
+    setState((draft) => {
+      draft.isOpened = false
+    })
+  }
+
+  const handleSlectConfirm = (value) => {
+    const { activityId,recordId } = activityInfo
+    let url = `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
+    if (value == '0') {
+      // 编辑
+      url += `&record_id=${recordId}`
+    }
+    Taro.navigateTo({
+      url
+    })
+    handleSelectClose()
+  }
+
+  return (
+    <SpPage scrollToTopBtn className='page-item-activity'>
+      <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
+      <ScrollView className='list-scroll-container' scrollY>
+        <SpScrollView
+          className='trade-list-scroll'
+          auto={false}
+          ref={recordRef}
+          fetch={fetch}
+          emptyMsg='没有查询到订单'
+
+        >
+          {recordList.map((item, index) => (
+            <View className='trade-item-wrap' key={index}>
+              <CompActivityItem info={item} onClick={handleItemClick} onBtnAction={onBtnAction} />
+            </View>
+          ))}
+        </SpScrollView>
+      </ScrollView>
+
+      <SpSelectModal
+        isOpened={isOpened}
+        options={selectOptions}
+        onClose={handleSelectClose}
+        onConfirm={handleSlectConfirm}
+      />
+    </SpPage>
+  )
 }
+
+ItemActivity.options = {
+  addGlobalClass: true
+}
+
+export default ItemActivity

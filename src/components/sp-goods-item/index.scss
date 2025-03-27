@@ -116,6 +116,15 @@
   .mkt-price {
     margin-left: 8px;
   }
+  .act-price{
+    color: var(--color-primary);
+    font-size: 24px;
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: var(--color-primary);
+    }
+  }
 
   .goods__store {
     margin-top: 30px;

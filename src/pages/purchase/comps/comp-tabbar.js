@@ -1,10 +1,10 @@
-import Taro from '@tarojs/taro'
-import React, { useEffect, useState,memo } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
+import React, { useEffect, useState, memo } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
-import { updateCartSalesman,updateSalesmanCount } from '@/store/slices/cart'
+import { updateCartSalesman, updateSalesmanCount } from '@/store/slices/cart'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -15,6 +15,7 @@ const TABBAR_LIST = [
   },
   {
     title: '身份切换',
+    key: 'identity',
     iconType: 'dianpushangpinlist',
     url: '/subpages/purchase/select-identity',
     text: true
@@ -26,42 +27,74 @@ const TABBAR_LIST = [
   }
 ]
 
-
 function CompTabbar(props) {
   const dispatch = useDispatch()
   const { colorPrimary } = useSelector((state) => state.sys)
   const { cartSalesman = 0 } = useSelector((state) => state.cart)
+  const { hasValidIdentity } = useSelector((state) => state.purchase)
 
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   useEffect(() => {
     // 初始化购物车数量
     // cartSalesmanNumber()
-  },[])
+  }, [])
 
   const cartSalesmanNumber = async () => {
-    await dispatch(updateSalesmanCount({ shop_type: 'distributor',isSalesmanPage: 1 }))
+    await dispatch(updateSalesmanCount({ shop_type: 'distributor', isSalesmanPage: 1 }))
   }
 
-  const tabList = TABBAR_LIST.map((item) => {
+  let tabbarList = JSON.parse(JSON.stringify(TABBAR_LIST))
+  // if(!hasValidIdentity){
+  //   tabbarList = tabbarList.filter(item=>item.key != 'identity')
+  // }
+
+  const tabList = tabbarList.map((item) => {
     return {
       title: item.title,
       name: item.title,
       iconType: item.iconType,
       selectedIconType: `${item.iconType}-fill`,
       iconPrefixClass: 'iconfont icon',
-      url: item.url,
+      url: item.url
       // text: item?.text ? (cartSalesman > 0 ? cartSalesman : null) : null
     }
   })
 
-  let currentIndex = 0
-  const pages = Taro.getCurrentPages()
-  if (pages.length > 0) {
-    let currentPage = pages[pages.length - 1].route
-    currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
-    currentIndex = TABBAR_LIST.findIndex((tab) => {
-      return tab.url.split('?')[0] == currentPage
-    })
+  // let currentIndex = 0
+
+  // const pages = Taro.getCurrentPages()
+  // if (pages.length > 0) {
+  //   let currentPage = pages[pages.length - 1].route
+  //   currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage.split('?')[0]}`
+  //   const _currentIndex =  tabbarList.findIndex((tab) => {
+  //     return tab.url.split('?')[0] == currentPage
+  //   })
+  //   if(_currentIndex != -1){
+  //     currentIndex = _currentIndex
+  //   }
+  // }
+
+  useDidShow(() => {
+    changeIndex()
+  })
+
+  useEffect(() => {
+    changeIndex()
+  }, [])
+
+  const changeIndex = () => {
+    const pages = Taro.getCurrentPages()
+    if (pages.length > 0) {
+      let currentPage = pages[pages.length - 1].route
+      currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage.split('?')[0]}`
+      const _currentIndex = tabbarList.findIndex((tab) => {
+        return tab.url.split('?')[0] == currentPage
+      })
+      if (_currentIndex != -1) {
+        setCurrentIndex(_currentIndex)
+      }
+    }
   }
 
   console.log('comp-tabbar currentIndex:', currentIndex)
@@ -70,7 +103,11 @@ function CompTabbar(props) {
     const tabItem = tabList[index]
     const { path } = getCurrentRoute()
     if (path != tabItem.url) {
-      Taro.redirectTo({ url: `${tabItem.url}` })
+      let url = `${tabItem.url}`
+      if (['/subpages/purchase/select-identity', '/pages/purchase/index'].includes(tabItem.url)) {
+        url = `${tabItem.url}?is_select=1`
+      }
+      Taro.reLaunch({ url })
     }
   }
 
@@ -93,4 +130,4 @@ CompTabbar.options = {
   addGlobalClass: true
 }
 
-export default (CompTabbar)
+export default CompTabbar

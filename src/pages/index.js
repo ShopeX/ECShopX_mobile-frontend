@@ -101,10 +101,10 @@ function Home() {
     }
   }, [initState])
 
-  useEffect(() => {
+  useDidShow(() => {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
-  }, [])
+  })
 
   useEffect(() => {
     if(shopInfo && VERSION_STANDARD) {

@@ -3,7 +3,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, Video } from '@tarojs/components'
 import imgUploader from '@/utils/upload'
-import { isArray, authSetting } from '@/utils'
+import { isArray, authSetting, classNames } from '@/utils'
 import { SpImage } from '@/components'
 import './index.scss'
 
@@ -12,10 +12,11 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max = 5, onChange = () => { }, value = [], multiple = true, mediaType = 'image', edit = false, onEdit = () => { }, placeholder = '添加图片' } = props
+  const { max = 5, onChange = () => { }, value = [], multiple = true,backgroundSrc = '', mediaType = 'image', edit = false, onEdit = () => { }, placeholder = '添加图片' } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
+
 
   useEffect(() => {
     if (value?.length > 0) {
@@ -36,7 +37,7 @@ function SpUpload(props) {
           url: item.path,
           file: item
         }))
-      
+
       Taro.showLoading()
       // console.log("🚀🚀🚀 ~ file: index.js:93 ~ resultFiles ~ resultFiles:", resultFiles)
 
@@ -109,9 +110,12 @@ function SpUpload(props) {
         ))}
       {((multiple && files.length < max) || (!multiple && files.length == 0)) && (
         <View className='btn-upload' onClick={handleUploadFile}>
-          <Text className='iconfont icon-xiangji'></Text>
-          <Text className='btn-upload-txt'>{placeholder}</Text>
-          {max && <Text className='files-length'>{`(${files.length}/${max})`}</Text>}
+         {backgroundSrc && <SpImage src={backgroundSrc}  className='btn-upload-bg' />}
+          <View className={classNames('btn-upload-icon',{'hasBackground':backgroundSrc})}>
+            <Text className='iconfont icon-xiangji'></Text>
+          </View>
+          {!backgroundSrc && <Text className='btn-upload-txt'>{placeholder}</Text>}
+          {!backgroundSrc && max && <Text className='files-length'>{`(${files.length}/${max})`}</Text>}
         </View>
       )}
     </View>

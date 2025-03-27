@@ -1,0 +1,139 @@
+.activity-item {
+  background: #FFFFFF;
+  border-radius: 16px;
+  overflow: hidden;
+  position: relative;
+
+  &__pic {
+    .sp-image-img {
+      height: 314px !important;
+    }
+
+  }
+
+  &__status {
+    width: 98px;
+    height: 36px;
+    text-align: center;
+    line-height: 36px;
+    background: #31973F;
+    border-radius: 16px 0px 16px 0px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-weight: 600;
+    font-size: 22px;
+    color: #FFFFFF;
+    z-index: 2;
+
+  }
+
+  .flex-between-center {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__content {
+    padding: 24px 16px;
+
+    &-title {
+      font-weight: 600;
+      font-size: 28px;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    &-status {
+      font-weight: 400;
+      font-size: 28px;
+      color: #31973F;
+      margin-bottom: 16px;
+    }
+
+    &-time {
+      font-weight: 400;
+      font-size: 26px;
+      color: #999999;
+      margin-bottom: 24px;
+    }
+
+    &-address {
+      font-weight: 400;
+      font-size: 24px;
+      color: #333333;
+      margin-bottom: 24px;
+    }
+
+    &-reject {
+      font-weight: 500;
+      font-size: 26px;
+      color: #333333;
+      @include multi-ellipsis(1);
+      margin-bottom: 24px;
+
+      &-reason {
+        font-weight: 400;
+      }
+    }
+
+    &-btns {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    &-btn {
+      padding: 12px 24px;
+      box-sizing: border-box;
+      background: linear-gradient(to right, #F67F70 0%, #CD352A 100%);
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 24px;
+      color: #FFFFFF;
+      margin-left: 16px;
+    }
+
+    .disabled-btn {
+      background: #D8D8D8;
+    }
+
+    .activity-btn {
+      background: #fff;
+      border: 1PX solid var(--color-primary);
+      color: var(--color-primary);
+      margin-left: 0;
+    }
+  }
+
+  .sp-scrollview-body {
+    background: #f5f5f5;
+  }
+
+  &.has-end {
+
+    .activity-item {
+      &__status {
+        background: #333;
+      }
+
+      &__content {
+
+        &-title,
+        &-time {
+          color: #C7C7C7;
+        }
+
+        &-btn {
+          background: #C7C7C7;
+        }
+
+        .activity-btn
+            {
+            color: #C7C7C7;
+            border-color: #C7C7C7;
+            background: #fff;
+          }
+        }
+      }
+    }
+  }

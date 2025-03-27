@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { AtCountdown } from 'taro-ui'
-import { Loading, SpNavBar, FloatMenuMeiQia, SpNewShopItem } from '@/components'
+import { AtCountdown, AtFloatLayout } from 'taro-ui'
+import { Loading, SpNavBar, FloatMenuMeiQia, SpNewShopItem, SpCell, SpImage } from '@/components'
 import {
   pickBy,
   formatDateTime,
@@ -17,7 +17,10 @@ import {
   VERSION_PLATFORM,
   VERSION_IN_PURCHASE,
   isWxWeb,
-  isWeixin
+  isWeixin,
+  isArray,
+  styleNames,
+  getThemeStyle
 } from '@/utils'
 import { transformTextByPoint } from '@/utils/helper'
 import { PAYTYPE, PAYMENT_TYPE } from '@/consts'
@@ -80,7 +83,11 @@ export default class TradeDetail extends Component {
       cancelData: {},
       tradeInfo: {},
       showQRcode: false,
-      distributor: {}
+      distributor: {},
+      squareRoot: false,  //待开方
+      supplement: false,  //待补充
+      prescriptionStatus: false,
+      prescriptionUrl: ""
     }
   }
 
@@ -140,6 +147,8 @@ export default class TradeDetail extends Component {
       price: ({ total_fee }) => (total_fee / 100).toFixed(2),
       total_fee_new: ({ total_fee_new }) => (total_fee_new / 100).toFixed(2),
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
+      salePrice: ({ sale_price }) => (sale_price / 100).toFixed(2),
+      activityPrice: ({ price }) => (price / 100).toFixed(2),
       point: 'item_point',
       item_point: 'item_point',
       num: 'num',
@@ -147,7 +156,9 @@ export default class TradeDetail extends Component {
       item_spec_desc: 'item_spec_desc',
       order_item_type: 'order_item_type',
       show_aftersales: 'show_aftersales',
-      distributor_id: 'distributor_id'
+      distributor_id: 'distributor_id',
+      isPrescription: 'is_prescription',
+      aftersales_bn: ({ aftersales_detail }) => aftersales_detail?.aftersales_bn,
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -217,7 +228,13 @@ export default class TradeDetail extends Component {
       market_fee: ({ market_fee }) => market_fee / 100,
       item_fee_new: ({ item_fee_new }) => item_fee_new / 100,
       promotion_discount: ({ promotion_discount }) => promotion_discount / 100,
-      ziti_info: 'ziti_info'
+      ziti_info: 'ziti_info',
+      diagnosisData: 'diagnosis_data',
+      orderStatus: 'order_status',
+      prescriptionStatus: 'prescription_status',
+      prescriptionData: 'prescription_data',
+      enterprise_id:'enterprise_id',
+      activity_id:'activity_id'
     })
 
     const ziti = pickBy(data.distributor, {
@@ -288,7 +305,9 @@ export default class TradeDetail extends Component {
       ziti,
       cancelData,
       tradeInfo,
-      distributor: data.distributor
+      distributor: data.distributor,
+      supplement: info.orderStatus == 'NOTPAY' && info.prescriptionStatus == 1 && isArray(info?.diagnosisData),
+      squareRoot: info.orderStatus == 'NOTPAY' && info.prescriptionStatus == 1 && info?.diagnosisData?.id
     })
   }
 
@@ -423,6 +442,19 @@ export default class TradeDetail extends Component {
     }
   }
 
+  dstFilePath(url) {
+    this.setState({
+      prescriptionStatus: true,
+      prescriptionUrl: url
+    })
+  }
+
+  handleClose() {
+    this.setState({
+      prescriptionStatus: false
+    })
+  }
+
   async handleClickRefund(type, item_id) {
     const {
       info: { tid: order_id }
@@ -440,9 +472,16 @@ export default class TradeDetail extends Component {
   }
 
   handleClickDelivery = () => {
-    Taro.navigateTo({
-      url: `/subpage/pages/trade/delivery-info?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}&delivery_code=${this.state.info.delivery_code}&delivery_corp=${this.state.info.delivery_corp}&delivery_name=${this.state.info.delivery_name}`
-    })
+    if (this.state.info.is_all_delivery || this.state.info.delivery_type === 'old') {
+      Taro.navigateTo({
+        url: `/subpages/trade/delivery-info?delivery_id=${this.state.info.orders_delivery_id}&delivery_code=${this.state.info.delivery_code}&delivery_corp_name=${this.state.info.delivery_corp_name || this.state.info.delivery_corp
+          }&order_id=${this.state.info.tid}`
+      })
+    } else {
+      Taro.navigateTo({
+        url: `/subpages/community/trade/split-bagpack?order_type=${this.state.info.order_type}&order_id=${this.state.info.tid}`
+      })
+    }
   }
 
   handleClickCopy = (val) => {
@@ -455,6 +494,13 @@ export default class TradeDetail extends Component {
 
   countDownEnd = () => {
     this.fetch()
+  }
+
+  onSupplement = () => {
+    const { info } = this.state
+    Taro.redirectTo({
+      url: `/subpages/prescription/prescription-information?order_id=${info?.tid}`
+    })
   }
 
   zitiWebsocket = () => {
@@ -631,7 +677,11 @@ export default class TradeDetail extends Component {
       tradeInfo,
       showQRcode,
       pickup_code,
-      distributor
+      distributor,
+      supplement,
+      squareRoot,
+      prescriptionUrl,
+      prescriptionStatus
     } = this.state
 
     if (!info) {
@@ -664,6 +714,7 @@ export default class TradeDetail extends Component {
           'trade-close': info.status == 'TRADE_CLOSED',
           'has-navbar': isNavbar()
         })}
+        style={styleNames(getThemeStyle())}
       >
         <SpNavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
 
@@ -705,6 +756,14 @@ export default class TradeDetail extends Component {
                   分钟
                 </View>
               )}
+              {
+                supplement &&
+                <View className='trade-detail-header-name' onClick={this.onSupplement.bind(this)}>
+                  <Text className='iconfont icon-bianji1'></Text>
+                  前往补充
+                </View>
+              }
+
               {info.status !== 'WAIT_BUYER_PAY' && (
                 <View className='delivery-infos'>
                   <View className='delivery-infos__status'>
@@ -775,6 +834,25 @@ export default class TradeDetail extends Component {
               )}
             </View>
           )}
+          {
+            info?.prescriptionStatus > 0 &&
+            <View className='information'>
+              <View className='title'>
+                <Text className='title-num'>1</Text>
+                <Text className='title-text'>填写信息</Text>
+              </View>
+              <View className='titled'>-----</View>
+              <View className='titled'>
+                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>2</Text>
+                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>医生开方</Text>
+              </View>
+              <View className='titled'>-----</View>
+              <View className='titled'>
+                <Text className={info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>3</Text>
+                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
+              </View>
+            </View>
+          }
           <View className='trade-detail-address'>
             {info.dada && info.dada.id && (
               <View className={`store ${info.dada && info.dada.id ? 'border' : ''}`}>
@@ -869,7 +947,7 @@ export default class TradeDetail extends Component {
                 </Text>
               </View>
             </View>
-            <DetailItem info={info} isPointitem={this.isPointitemGood()} />
+            <DetailItem info={info} isPurchase={info.order_class == 'employee_purchase'} isPointitem={this.isPointitemGood()} />
           </View>
           {info.is_logistics && (
             <View className='logConfirm'>
@@ -942,6 +1020,60 @@ export default class TradeDetail extends Component {
             </View>
           }
 
+          {
+            info?.prescriptionStatus > 0 && !supplement &&
+            <View className='block-container order-info'>
+              <View className='block-container-label'>处方信息</View>
+              {
+                info?.diagnosisData?.doctor_name &&
+                <SpCell
+                  title='开方医生'
+                  value={(() => {
+                    return (
+                      <View>
+                        {info?.diagnosisData?.doctor_name}
+                      </View>
+                    )
+                  })()}
+                />
+              }
+              {
+                info?.diagnosisData?.location_url &&
+                <SpCell title='开方记录' value={(() => {
+                  return (
+                    <View className='block-container-link' onClick={() => {
+                      const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
+                      Taro.redirectTo({
+                        url: `/pages/webview?url=${webviewSrc}`
+                      })
+                    }}>
+                      查看 <Text className='iconfont icon-qianwang-01' />
+                    </View>
+                  )
+                })()}
+                />
+              }
+              {info?.prescriptionData?.audit_apothecary_name &&
+                <SpCell title='审方药师' value={(() => {
+                  return (
+                    <View>
+                      {info?.prescriptionData?.audit_apothecary_name}
+                    </View>
+                  )
+                })()}
+                />
+              }
+              {info?.prescriptionData?.dst_file_path && <SpCell title='电子处方' value={(() => {
+                return (
+                  <View className='block-container-link' onClick={this.dstFilePath.bind(this, info?.prescriptionData?.dst_file_path)}>
+                    查看 <Text className='iconfont icon-qianwang-01' />
+                  </View>
+                )
+              })()}
+              />}
+            </View>
+          }
+
 
 
           {info.remark && (
@@ -993,13 +1125,13 @@ export default class TradeDetail extends Component {
             )}
             {enMarketPrice && info.market_fee > 0 && (
               <View className='line'>
-                <View className='left'>原价</View>
+                <View className='left'>商品总金额</View>
                 <View className='right'>{`¥${info.market_fee}`}</View>
               </View>
             )}
 
             <View className='line'>
-              <View className='left'>总价</View>
+              <View className='left'>实付</View>
               <View className='right'>
                 {transformTextByPoint(this.isPointitemGood(), info.item_fee_new, info.item_point)}
               </View>
@@ -1090,7 +1222,8 @@ export default class TradeDetail extends Component {
           <View className={classNames('trade-detail__footer', info.order_status_des)}>
             {
               // 立即支付
-              info.status === 'WAIT_BUYER_PAY' && (
+              //prescriptionStatus 2:是处方药并且已开方 0:不是处方药
+              info.status === 'WAIT_BUYER_PAY' && (info.prescriptionStatus == 2 || info.prescriptionStatus == 0) && (
                 <Button
                   className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
                   type='primary'
@@ -1208,6 +1341,15 @@ export default class TradeDetail extends Component {
             </View>
           </View>
         )}
+
+        <AtFloatLayout title="电子处方" isOpened={prescriptionStatus} onClose={this.handleClose.bind(this)}>
+          <View className='long-press'>长按可保存处方图片</View>
+          <SpImage src={prescriptionUrl} onClick={() => {
+            Taro.previewImage({
+              urls: prescriptionUrl
+            })
+          }}></SpImage>
+        </AtFloatLayout>
       </View>
     )
   }

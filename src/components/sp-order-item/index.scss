@@ -4,23 +4,28 @@
   display: flex;
   align-items: flex-start;
   padding: $edge-size;
+
   &__hd {
     margin-right: 20px;
   }
+
   &__bd {
     width: 50%;
     margin-bottom: 40px;
     position: relative;
   }
+
   &__ft {
     flex: 1;
     text-align: right;
     font-size: $font-size-small;
   }
+
   &__title {
     // font-size: floor(0.95 * $font-size);
     @include multi-ellipsis(1);
     line-height: 1.4;
+
     // margin: 0 0 15px;
     &-tag {
       display: inline-block;
@@ -31,11 +36,13 @@
       margin-right: 10px;
     }
   }
+
   &__desc {
     color: $color-gray;
     font-size: $font-size-small;
     // margin-bottom: 10px;
   }
+
   &__spec {
     color: $color-gray;
     font-size: $font-size-small;
@@ -44,20 +51,63 @@
     display: inline-block;
     @include text-overflow();
   }
+
   &__price {
     color: $color-primary-text;
   }
+
   &__point {
     color: $color-primary-text;
   }
+
   &__num {
     display: block;
     color: $color-gray;
   }
+
   &__pay-type {
     display: block;
     margin-top: 42px;
     font-size: 20px;
     color: #c1c1c1;
+  }
+
+  .act-price {
+    color: var(--color-primary);
+
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: var(--color-primary);
+    }
+  }
+
+  &__pruchase {
+    &-price {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+      color: #818181;
+      font-size: 24px;
+      margin-right: -10px;
+
+      &-label {
+        margin-right: 8px;
+      }
+    }
+    &-sprice {
+      color: #818181;
+      font-size: 24px;
+      text-decoration: line-through;
+    }
+  }
+  .prescription-drug {
+    font-size: 24px;
+    color: var(--color-primary);
+    padding: 0 4px;
+    border-radius: 4px;
+    border: 1px solid var(--color-primary);
+    line-height: 34px;
+    margin-right: 8px;
   }
 }

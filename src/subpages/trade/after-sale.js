@@ -234,7 +234,6 @@ function TradeAfterSale(props) {
         }
       }
     }
-    console.log('params1111', params, offline_freight_status, offline_freight)
     await api.aftersales.apply(params)
     showToast('提交成功')
     Taro.eventCenter.trigger('onEventOrderStatusChange')
@@ -283,7 +282,14 @@ function TradeAfterSale(props) {
                     <SpImage src={item.pic} width={128} height={128} radius={8} circle={8} />
                     <View className='goods-info'>
                       <View className='goods-info-hd'>
-                        <Text className='goods-title'>{item.itemName}</Text>
+                        <Text className='goods-title'>
+                          {
+                            item?.isPrescription == 1 &&
+                            <Text className='prescription-drug'>
+                              处方药
+                            </Text>
+                          }
+                          {item.itemName}</Text>
                       </View>
                       <View className='goods-info-bd'>
                         <View>

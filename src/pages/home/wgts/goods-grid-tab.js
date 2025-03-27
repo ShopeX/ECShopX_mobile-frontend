@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
 import { classNames, styleNames, pickBy, linkPage } from '@/utils'
@@ -15,6 +15,8 @@ function WgtGoodsGridTab(props) {
 
   const [current, setCurrent] = useState(0)
   const { onAddToCart } = useContext(WgtsContext)
+  const router = useRouter()
+  const isPurchase = router.path == "/subpages/purchase/index"
 
   const { base, config, list } = info
 
@@ -95,6 +97,7 @@ function WgtGoodsGridTab(props) {
                         <View className='goodgrid-item' key={`goods-item__${index}`}>
                           <SpGoodsItem
                             info={data}
+                            isPurchase={isPurchase}
                             showPrice={config.showPrice}
                             showAddCart={config.addCart}
                             renderBrand={
@@ -128,6 +131,7 @@ function WgtGoodsGridTab(props) {
                         <View className='goodgrid-item' key={`goods-item__${index}`}>
                           <SpGoodsItem
                             info={data}
+                            isPurchase={isPurchase}
                             showPrice={config.showPrice}
                             showAddCart={config.addCart}
                             renderBrand={

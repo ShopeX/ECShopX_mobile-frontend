@@ -99,10 +99,12 @@ export const TRADE_ITEM = {
   deliveryTime: 'delivery_time',
   tradeId: 'trade_id',
   userId: 'user_id',
-  diagnosisData:'diagnosis_data',
-  prescriptionData:'prescription_data',
-  prescriptionStatus:'prescription_status',
-  diagnosisData:'diagnosis_data',
+  diagnosisData: 'diagnosis_data',
+  prescriptionData: 'prescription_data',
+  prescriptionStatus: ({ prescription_status }) => {
+    return prescription_status || 0
+  },
+  diagnosisData: 'diagnosis_data',
 }
 
 export const SHOP_INFO = {

@@ -23,6 +23,13 @@ function SpGoodsItem(props) {
     member_price: enMemberPrice,
     svip_price: enSvipPrice
   } = item_page
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
+  const { items_page = {} } = priceDisplayConfig
+  const {
+    activity_price:enPurActivityPrice,
+    sale_price:enPurSalePrice,
+  } = items_page
+
   const {
     onClick,
     onChange = () => { },
@@ -40,6 +47,7 @@ function SpGoodsItem(props) {
     showPrice = true,
     hideStore = false,
     renderBrand,
+    isPurchase = false,
     mode = 'widthFix'
   } = props
 
@@ -156,7 +164,14 @@ function SpGoodsItem(props) {
           {!info.point && showPrice && (
             <View className='goods-price'>
               <View className='gd-price'>
-                <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                { isPurchase && <View>
+                  <SpPrice size={36} value={info.price}></SpPrice>
+                  {info.activityPrice && enPurActivityPrice && <View className='act-price'>
+                    活动价¥{info.activityPrice.toFixed(2)}
+                    {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
+                    </View>}
+                </View>}
+               {!isPurchase && <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>}
                 {info.marketPrice > 0 && enMarketPrice && (
                   <SpPrice
                     size={26}

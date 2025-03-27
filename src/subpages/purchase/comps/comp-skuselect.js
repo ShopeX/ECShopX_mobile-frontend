@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro from '@tarojs/taro'
+import Taro, {useRouter} from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
@@ -54,6 +54,7 @@ function SpSkuSelect(props) {
   const { selection, curImage, disabledSet, curItem, skuText, num, loading } = state
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
+  const router = useRouter()
 
   useEffect(() => {
     if (info && !info.nospec) {
@@ -179,6 +180,14 @@ function SpSkuSelect(props) {
 
   const addToCart = async () => {
     const { activity_id, enterprise_id } = purchase_share_info
+    let _activity_id = activity_id;
+    let _enterprise_id = enterprise_id;
+    // 订单详情点进来的商品
+    if(router.params.activity_id && router.params.enterprise_id){
+      _activity_id = router.params.activity_id
+      _enterprise_id = router.params.enterprise_id
+    }
+
     const { nospec } = info
     if (!nospec && !curItem) {
       showToast('请选择规格')
@@ -191,12 +200,12 @@ function SpSkuSelect(props) {
         num,
         distributor_id: info.distributorId,
         shop_type: 'distributor',
-        activity_id,
-        enterprise_id
+        activity_id: _activity_id,
+        enterprise_id: _enterprise_id
       })
     )
     onClose()
-    dispatch(updateCount({ shop_type: 'distributor', activity_id, enterprise_id }))
+    dispatch(updateCount({ shop_type: 'distributor', activity_id: _activity_id, enterprise_id: _enterprise_id }))
 
     Taro.hideLoading()
     // showToast('成功加入购物车')
@@ -212,13 +221,21 @@ function SpSkuSelect(props) {
     onClose()
     const { activity_id, enterprise_id } = purchase_share_info
     const { distributorId, activityType, activityInfo } = info
+    let _activity_id = activity_id;
+    let _enterprise_id = enterprise_id;
+    // 订单详情点进来的商品
+    if(router.params.activity_id && router.params.enterprise_id){
+      _activity_id = router.params.activity_id
+      _enterprise_id = router.params.enterprise_id
+    }
+
     const itemId = curItem ? curItem.itemId : info.itemId
     await api.purchase.addPurchaseCart({
       item_id: curItem ? curItem.itemId : info.itemId,
       num,
       distributor_id: distributorId,
-      activity_id,
-      enterprise_id,
+      activity_id: _activity_id,
+      enterprise_id: _enterprise_id,
       cart_type: 'fastbuy'
     }, !!info.point) // info.point 有积分值时是积分商品
     let url = !!info.point ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0' : `/subpages/purchase/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
@@ -234,6 +251,12 @@ function SpSkuSelect(props) {
       const { groups_activity_id } = activityInfo
       url += `&type=${activityType}&group_id=${groups_activity_id}`
     }
+
+    // 订单详情点进来的商品去结算
+    if(router.params.activity_id && router.params.enterprise_id){
+      url += `&activity_id=${_activity_id}&enterprise_id=${_enterprise_id}`
+    }
+
     Taro.hideLoading()
     console.log('navigateTo:url', url)
     Taro.navigateTo({
@@ -358,7 +381,7 @@ function SpSkuSelect(props) {
             <SpPrice value={curItem ? curItem.price : info.price}></SpPrice>
             <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View> */}
-          <SpGoodsPrice info={curItem || info} />
+          <SpGoodsPrice isPurchase info={curItem || info} />
           <View className='goods-sku-txt'>{skuText}</View>
           {info.store_setting && <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>}
         </View>

@@ -1,9 +1,9 @@
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, RootPortal } from '@tarojs/components'
-import { SpPrivacyModal, SpPage, SpLogin, SpModal,SpCheckbox } from '@/components'
+import { SpPrivacyModal, SpPage, SpLogin, SpModal,SpCheckbox, SpImage } from '@/components'
 import { AtButton,AtIcon } from 'taro-ui'
-import { showToast } from '@/utils'
+import { showToast, normalizeQuerys, getCurrentPageRouteParams } from '@/utils'
 import { useLogin, useModal } from '@/hooks'
 import S from '@/spx'
 import api from '@/api'
@@ -14,11 +14,11 @@ import { updateInviteCode } from '@/store/slices/purchase'
 import './auth.scss'
 
 function PurchaseAuth() {
-  const { isLogin, checkPolicyChange, isNewUser, setToken, login } = useLogin({
-    autoLogin: true,
-    policyUpdateHook: (isUpdate) => {
-      isUpdate && setPolicyModal(true)
-    }
+  const { isLogin, checkPolicyChange, isNewUser,updatePolicyTime, setToken, login } = useLogin({
+    autoLogin: false,
+    // policyUpdateHook: (isUpdate) => {
+    //   isUpdate && setPolicyModal(true)
+    // }
   })
 
   const { userInfo = {} } = useSelector((state) => state.user)
@@ -27,13 +27,16 @@ function PurchaseAuth() {
   const [checked, setChecked] = useState(false)
   const [userEnterprises, setUserEnterprises] = useState([])
   const { params } = useRouter()
-  const { code: invite_code, type = '' } = params
+  const { code: invite_code, type = '', activity_id = '' } = params
   const dispatch = useDispatch()
   const codeRef = useRef()
   const { showModal } = useModal()
+  const $instance = getCurrentInstance()
 
   useEffect(() => {
     dispatch(updateInviteCode(invite_code))
+    getQrcodeEid()
+    checkPolicyChangeFunc()
   }, [])
 
   useEffect(() => {
@@ -55,18 +58,55 @@ function PurchaseAuth() {
     })
   }, [appName])
 
-  useEffect(() => {
-    if (!type && !invite_code && (userInfo?.is_relative || userInfo?.is_employee)) {
-      // type：渠道是添加身份,不能跳转到活动列表页
-      getUserEnterprises()
-    }
-  }, [userInfo])
+  // useEffect(() => {
+  //   if (!type && !invite_code && (userInfo?.is_relative || userInfo?.is_employee)) {
+  //     // type：渠道是添加身份,不能跳转到活动列表页
+  //     getUserEnterprises()
+  //   }
+  // }, [userInfo])
 
-  const getUserEnterprises = async () => {
-    const data = await api.purchase.getUserEnterprises({ disabled: 0 })
-    setUserEnterprises(data)
-    if (data?.length > 0) {
-      Taro.reLaunch({ url: '/pages/purchase/index' })
+  // const getUserEnterprises = async () => {
+  //   const data = await api.purchase.getUserEnterprises({ disabled: 0 })
+  //   setUserEnterprises(data)
+  //   if (data?.length > 0) {
+  //     Taro.reLaunch({ url: '/pages/purchase/index' })
+  //   }
+  // }
+
+  const checkPolicyChangeFunc =  async()=>{
+    const res = await checkPolicyChange()
+    setChecked(res)
+  }
+
+  // 企业二维码扫码登录
+  const getQrcodeEid = async () => {
+    // eid=18&cid=34&t=m&c=1
+    // eid:员工企业ID--enterpriseId
+    // cid:企业ID--companyId
+    // t:认证方式 取了第一个字符 mobile=m；email=e；account=a；qr_code=q
+    // c:是否验证白名单 1=验证
+    if ($instance.router.params.scene) {
+      const query = await normalizeQuerys($instance.router.params)
+      let { eid, cid, t, c } = query
+
+      console.log( '扫码参数',eid, cid, t, c)
+      const tMap = {
+        m:'mobile',
+        e:'email',
+        a:'account',
+        q:'qr_code'
+      }
+      if (eid) {
+        const sparams = {
+          enterprise_id:eid,
+          auth_type:tMap[t],
+        }
+        if(c){
+          sparams.is_verify = c
+        }
+        //跳转
+        handleConfirmClick(tMap[t],sparams)
+      }
     }
   }
 
@@ -82,7 +122,7 @@ function PurchaseAuth() {
     }
   }
 
-  const handleConfirmClick = async (type) => {
+  const handleConfirmClick = async (rtype,rparmas) => {
     // if (type === 'friend') {
     //   const { confirm } = await showModal({
     //     title: '亲友验证说明',
@@ -96,18 +136,31 @@ function PurchaseAuth() {
     //   })
     // }
     let redirectUrl;
-    if (type == 'account') {
+    if (rtype == 'account') {
       redirectUrl = `/subpages/purchase/select-company-account`
-    } else if (type == 'email') {
+    } else if (rtype == 'email') {
       redirectUrl = `/subpages/purchase/select-company-email`
-    } else if (type == 'mobile') {
-      redirectUrl = `/subpages/purchase/select-company-phone`
-    } else if (type == 'crm_api') {
+    } else if (rtype == 'mobile' || rtype == 'qr_code') {
       redirectUrl = `/subpages/purchase/select-company-phone`
     }
-    Taro.navigateTo({
-      url: redirectUrl
-    })
+
+    if(rparmas){
+      //扫码传参数
+      redirectUrl += Object.keys(rparmas).reduce((pre,cur)=>{
+        return pre + `${cur}=${rparmas[cur]}&`
+      },'?').slice(0, -1);
+      console.log(redirectUrl,rparmas)
+      Taro.reLaunch({
+        url: redirectUrl
+      })
+    }else{
+      if(activity_id){
+        redirectUrl = `${redirectUrl}?activity_id=${activity_id}`
+      }
+      Taro.navigateTo({
+        url: redirectUrl
+      })
+    }
   }
 
   const handleBindPhone = async (e) => {
@@ -162,13 +215,17 @@ function PurchaseAuth() {
     })
   }
 
+  const handleSelectPrivacy = async() => {
+    setChecked(!checked)
+  }
+
   return (
     <SpPage className='purchase-auth'>
       {/* 隐私协议 */}
       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
 
       <View className='header'>
-        <Image className='header-avatar' src={appLogo} mode='aspectFill' />
+      <Image className='header-avatar' src={appLogo} mode='aspectFill' />
         <Text className='welcome'>欢迎登录</Text>
         <Text className='title'>{appName}</Text>
       </View>
@@ -189,12 +246,7 @@ function PurchaseAuth() {
               onClick={() => handleConfirmClick('mobile')}
             >
               手机号登录&nbsp;
-              <AtIcon
-                size={16}
-                prefixClass='icon-drf'
-                value='denglujiantou'
-                className='icondrf btns-icon sp--allown'
-              ></AtIcon>
+              <Text className='iconfont icon-shuangjiantou'></Text>
             </AtButton>
             <AtButton
               circle
@@ -203,12 +255,7 @@ function PurchaseAuth() {
               onClick={() => handleConfirmClick('account')}
             >
               账号密码登录&nbsp;
-              <AtIcon
-                size={16}
-                prefixClass='icon-drf'
-                value='denglujiantou'
-                className='icondrf btns-icon sp--allown'
-              ></AtIcon>
+              <Text className='iconfont icon-shuangjiantou'></Text>
             </AtButton>
             <AtButton
               circle
@@ -253,9 +300,7 @@ function PurchaseAuth() {
 
       <View className='auth--footer'>
           <SpCheckbox
-            onChange={() => {
-              setChecked(!checked)
-            }}
+            onChange={handleSelectPrivacy}
             checked={checked}
           />
           <Text className='auth--footer-text'>

@@ -12,7 +12,8 @@ function SpOrderItem(props) {
     info = null,
     isPointitemGood = false,
     isShowPointTag = false,
-    onClick = () => {},
+    isPurchase = false,
+    onClick = () => { },
     customFooter,
     showDesc,
     renderDesc,
@@ -22,6 +23,9 @@ function SpOrderItem(props) {
   const { priceSetting } = useSelector((state) => state.sys)
   const { order_page } = priceSetting
   const { market_price: enMarketPrice } = order_page
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
+  const { order_detail_page = {} } = priceDisplayConfig
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = order_detail_page
 
   if (!info) return null
 
@@ -41,6 +45,8 @@ function SpOrderItem(props) {
 
   const img = info.pic_path ? info.pic_path : Array.isArray(info.pics) ? info.pics[0] : info.pics
 
+  console.log(123, isPurchase)
+
   return (
     <View className='sp-order-item' onClick={onClick}>
       <View className='sp-order-item__hd'>
@@ -55,6 +61,12 @@ function SpOrderItem(props) {
           {info.order_item_type === 'gift' && (
             <Text className='sp-order-item__title-tag'>赠品</Text>
           )}
+          {
+            info.isPrescription == 1 &&
+            <Text className='prescription-drug'>
+              处方药
+            </Text>
+          }
           {info.title}
         </View>
         {showDesc && info.item_spec_desc && (
@@ -77,7 +89,18 @@ function SpOrderItem(props) {
             />
           ) : (
             <View>
-              <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
+              {isPurchase && (
+                <View className='sp-order-item__pruchase'>
+                  <View className='sp-order-item__pruchase-price'>
+                    <Text className='sp-order-item__pruchase-price-label'>优惠后</Text>
+                    <SpPrice value={info.price}></SpPrice>
+                  </View>
+                  <View className='sp-order-item__pruchase-sprice'>¥{info.salePrice}</View>
+                </View>
+              )}
+              {!isPurchase && (
+                <SpPrice className='sp-order-item__price' value={info.price}></SpPrice>
+              )}
               {/* {info.market_price > 0 && enMarketPrice && (
                 <SpPrice lineThrough value={info.market_price}></SpPrice>
               )} */}

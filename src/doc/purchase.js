@@ -17,5 +17,8 @@ export const ACTIVITY_ITEM = {
     } else if (is_relative == 1) {
       return '亲友'
     }
-  }
+  },
+  isDiscountDescriptionEnabled:({is_discount_description_enabled}) => is_discount_description_enabled == 'true',
+  discountDescription:'discount_description',
+  priceDisplayConfig:'price_display_config'
 }

@@ -23,7 +23,7 @@
     background: #fff;
     border-radius: 32px;
     height: 62px;
-    line-height: 62px;
+    // line-height: 62px;
     padding: 0 16px;
     margin-left: 10px;
     color: var(--color-primary);
@@ -34,6 +34,7 @@
     }
     .activity-label {
       margin-right: 4px;
+      font-size: 24px;
     }
     .activity-price {
       height: 62px;

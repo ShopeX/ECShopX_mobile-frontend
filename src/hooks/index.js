@@ -11,6 +11,7 @@ import useDianWuLogin from './useDianWuLogin'
 import useModal from './useModal'
 import useSyncCallback from './useSyncCallback'
 import useLocation from './useLocation'
+import useThemsColor from './themeColor'
 
 export default {}
 
@@ -27,5 +28,6 @@ export {
   useDianWuLogin,
   useModal,
   useSyncCallback,
-  useLocation
+  useLocation,
+  useThemsColor
 }

@@ -115,17 +115,20 @@ export default (props) => {
     const btns = []
     const isData = receiptType == 'dada'
     const isMerchant = receiptType == 'merchant'
-    
-    if(offlinePayCheckStatus == '2' && orderStatus == 'NOTPAY'){
+
+    if (offlinePayCheckStatus == '2' && orderStatus == 'NOTPAY') {
       //线下转账拒绝时修改付款凭证
       btns.push(tradeActionBtns.CHANGE_OFFLINE)
     }
 
-    if (orderStatus == 'NOTPAY' &&  offlinePayCheckStatus != '0') { // 未支付
+    // offline_pay_check_status审核状态。可选值有 0 待处理;1 已审核;2 已拒绝;9 已取
+    if (orderStatus == 'NOTPAY' && offlinePayCheckStatus != '0') { // 未支付
       if (canApplyCancel) {
         btns.push(tradeActionBtns.CANCEL)
       }
       if (prescriptionStatus == 2 || prescriptionStatus == 0) {
+        // 0: 商品不是处方药
+        // 2: 商品是处方药，并且已经开方
         btns.push(tradeActionBtns.PAY)
       }
     } else if (orderStatus == 'PAYED') {
@@ -139,9 +142,9 @@ export default (props) => {
         btns.push(tradeActionBtns.AFTER_SALES)
       }
     } else if (orderStatus == 'WAIT_BUYER_CONFIRM') {
-      if(!isMerchant){
+      if (!isMerchant) {
         btns.push(tradeActionBtns.LOGISTICS)
-      }else{
+      } else {
         btns.push(tradeActionBtns.TRACK)
       }
       btns.push(tradeActionBtns.CONFIRM)
@@ -160,7 +163,7 @@ export default (props) => {
 
     // 判断是否已经提交售后，展示售后详情入口
     const isShowAftersales = items.find(item => item.showAftersales)
-    if(isShowAftersales) {
+    if (isShowAftersales) {
       btns.push(tradeActionBtns.AFTER_DETAIL)
     }
 

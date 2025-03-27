@@ -76,6 +76,11 @@ export function registrationSubmit (data) {
   return req.post('/registrationSubmit', data)
 }
 
+
+export function registrationActivityList (data) {
+  return req.get('/registrationActivityList', data)
+}
+
 export function registrationRecordList (data) {
   return req.get('/registrationRecordList', data)
 }
@@ -179,4 +184,12 @@ export function uniquevisito (params) {
 // 是否需要开启初次授权填写个人信息
 export function getIsMustOauth (params) {
   return req.get('/espier/config/request_field_setting', params)
+}
+
+
+//取消活动记录
+export function cancelRecord (params) {
+  return req.post('/cancelRecord', {
+    ...params
+  })
 }

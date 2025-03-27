@@ -56,7 +56,7 @@ const MENUS = [
   // community_order: { name: "社区团购", icon: "m_menu_tuangou.png" },
   {
     key: 'activity',
-    name: '活动预约',
+    name: '我的活动',
     icon: 'm_menu_baoming.png',
     link: '/marketing/pages/member/item-activity'
   },
