@@ -15,7 +15,7 @@ import {
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
-import { changeZitiStore } from '@/store/slices/shop'
+import { changeZitiStore, changeInWhite } from '@/store/slices/shop'
 import {
   isObjectsValue,
   isWeixin,
@@ -297,6 +297,7 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.submitLoading = false
       })
+      dispatch(changeInWhite())
       Taro.hideLoading()
       setTimeout(() => {
         Taro.navigateBack()
@@ -506,7 +507,13 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
-    const orderRes = await api.cart.total(cus_parmas)
+    let orderRes
+    try {
+      orderRes = await api.cart.total(cus_parmas)
+    } catch (e) {
+      console.log('e:', e)
+      dispatch(changeInWhite())
+    }
     Taro.hideLoading()
     const {
       items,
