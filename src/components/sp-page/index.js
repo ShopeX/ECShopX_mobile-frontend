@@ -12,6 +12,8 @@ import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { useSyncCallback } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
+import api from '@/api'
+import S from '@/spx'
 import {
   classNames,
   styleNames,
@@ -21,8 +23,11 @@ import {
   isGoodsShelves,
   VERSION_IN_PURCHASE,
   validate,
-  hex2rgb
+  hex2rgb,
+  VERSION_STANDARD,
+  getDistributorId
 } from '@/utils'
+import { changeInWhite } from '@/store/slices/shop'
 
 import './index.scss'
 
@@ -85,10 +90,11 @@ function SpPage(props, ref) {
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
   const sys = useSelector((state) => state.sys)
+  const { shopInfo, shopInWhite } = useSelector((state) => state.shop)
   const [showToTop, setShowToTop] = useState(false)
   const [mantle, setMantle] = useState(false)
-  const { colorPrimary, colorMarketing, colorAccent, rgb, appName } = sys
-
+  const { colorPrimary, colorMarketing, colorAccent, rgb, appName, open_divided, open_divided_templateId } = sys
+  const dispatch = useDispatch()
   useReady(() => {
     // 导购货架数据上报
     // const router = $instance.router
@@ -201,8 +207,98 @@ function SpPage(props, ref) {
         menus: ['shareAppMessage', 'shareTimeline']
       })
     }
+    console.log("🚀🚀🚀 ~ sppage useDidShow ~ open_divided:", open_divided)
+    if (open_divided && VERSION_STANDARD) {
+      checkInWhite()
+    }
   })
 
+  const checkInWhite = async () => {
+    const { router } = $instance
+    // 白名单直接登录的页面，不需要弹窗
+    const whiteLoginPage = ['/pages/index', '/pages/item/espier-detail', '/pages/custom/custom-page']
+    // 导购货架分包路由，隐藏所有分享入口
+    // 白名单直接登录的页面，不需要弹窗
+    if (whiteLoginPage.includes(router.path)) {
+      return
+    }
+
+    if (S.getAuthToken()) {
+      const distributorId = getDistributorId() || 0
+      let params = {
+        distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
+      }
+      let inWhite;
+      if (shopInWhite === undefined) {
+        const { status } = await api.shop.checkUserInWhite(params)
+        inWhite = status
+        if (status) { 
+          dispatch(changeInWhite(status))
+        }
+      } else {
+        inWhite = shopInWhite
+      }
+      
+
+      if (inWhite) {
+        // 在白名单的店铺，不需要弹窗
+        return
+      } else {
+        // 不在白名单的店铺，
+        Taro.showModal({
+          content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+          confirmText: '联系店铺',
+          cancelText: '关闭',
+          success: async (res) => {
+            if (res.confirm) {
+              connectWhiteShop()
+            }
+            if (res.cancel) {
+              // 去首页
+              const path = `/pages/index`
+              Taro.navigateTo({
+                url: path
+              })
+            }
+          }
+        })
+      }
+    } else {
+      // 未登录，跳首页登录
+      Taro.showModal({
+        content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
+        confirmText: '联系店铺',  
+        cancelText: '去登录',
+        success: async (res) => {
+          if (res.confirm) {
+            connectWhiteShop()
+          }
+          if (res.cancel) {
+            console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
+            const path = `/pages/index`
+            Taro.navigateTo({
+              url: path
+            })
+          }
+        }
+      })
+    }
+  }
+  // 联系店铺
+  const connectWhiteShop = () => { 
+    if (open_divided_templateId) {
+      const query = `?id=${open_divided_templateId}`
+      const path = `/pages/custom/custom-page${query}`
+      Taro.navigateTo({
+        url: path
+      })
+    } else {
+      Taro.makePhoneCall({
+        phoneNumber: shopInfo.phone
+      })
+    }
+  }
+  
   const updatePageTheme = (res) => {
     // 使用对象来定义路由前缀和对应的主题色
     const prefixes = {

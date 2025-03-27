@@ -48,8 +48,6 @@ import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
 import { platformTemplateName } from '@/utils/platform'
-import req from '@/api/req'
-import qs from 'qs'
 
 import './home/index.scss'
 
@@ -69,7 +67,7 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   policyModal: false,
-  whiteShop: 0, // 0 没有白名单店铺 1 有白名单店铺
+  whiteShop: 0, // 0 未进入店铺  1 进入店铺
 }
 
 function Home() {
@@ -88,7 +86,7 @@ function Home() {
       console.log("🚀🚀🚀 ~ Home ~ loginSuccess:")
       // 登录成功后获取店铺信息
       updateAddress()
-      fetchStoreInfo(location)
+      checkStoreIsolation()
     }
   })
   const { showModal } = useModal()
@@ -97,6 +95,7 @@ function Home() {
   const pageRef = useRef()
   const loginRef = useRef()
   const requestIdRef = useRef(0);
+  const isFirstRender = useRef(true);
 
   const { initState, openRecommend, openLocation, openStore, appName, openScanQrcode, open_divided, open_divided_templateId } =
     useSelector((state) => state.sys)
@@ -158,6 +157,22 @@ function Home() {
     }
   }, [skuPanelOpen])
 
+  useEffect(() => {
+    if (open_divided && VERSION_STANDARD) {
+      checkStoreIsolation();
+    }
+  }, [open_divided]);
+  
+  // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
+  useDidShow(() => {
+    console.log("🚀🚀🚀 ~ useDidShow ~ useDidShow:", whiteShop)
+    if (VERSION_STANDARD && openLocation == 1 && !isFirstRender.current) {
+      checkStoreIsolation()
+    }
+    // 标记第一次渲染已完成
+    isFirstRender.current = false;
+  })
+
   useShareAppMessage(async (res) => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
@@ -215,37 +230,14 @@ function Home() {
     })
 
     try {
-      let config = {}
-      if (open_divided && open_divided_templateId && VERSION_STANDARD && whiteShop === 0) {
-        const pathparams = qs.stringify({
-          template_name: platformTemplateName,
-          version: 'v1.0.1',
-          page_name: `custom_${open_divided_templateId}`,
-          distributor_id: getDistributorId()
-        })
-        const url = `/pageparams/setting?${pathparams}`
-        
-        const { config: dividedConfig } = await req.get(url)
-        
-        // 如果这不是最新的请求,直接返回
-        if (currentRequestId !== requestIdRef.current) {
-          return;
-        }
-        
-        config = dividedConfig
-      } else {
-        const { config: defaultConfig } = await api.shop.getShopTemplate({
-          distributor_id: getDistributorId()
-        })
-        
-        // 如果这不是最新的请求,直接返回
-        if (currentRequestId !== requestIdRef.current) {
-          return;
-        }
-        
-        config = defaultConfig
+      const { config } = await api.shop.getShopTemplate({
+        distributor_id: getDistributorId()
+      })
+      
+      // 如果这不是最新的请求,直接返回，避免前一次请求影响渲染结果
+      if (currentRequestId !== requestIdRef.current) {
+        return;
       }
-
       const searchComp = config.find((wgt) => wgt.name == 'search')
       const pageData = config.find((wgt) => wgt.name == 'page')
       let filterWgts = []
@@ -309,8 +301,6 @@ function Home() {
 
   const fetchStoreInfo = async (location, showWhiteStore = false) => {
     const distributorId = getDistributorId() || 0
-
-
     let params = {
       distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
     }
@@ -320,17 +310,15 @@ function Home() {
       params.lng = lng
       // params.distributor_id = undefined
     }
-    
-    if (open_divided) {
-      checkStoreIsolation(params)
-    } else {
-      res = await api.shop.getShop(params)
+    // 非店铺隔离，获取店铺信息
+    if ((!open_divided && VERSION_STANDARD) || !VERSION_STANDARD) {
+      const res = await api.shop.getShop(params)
       dispatch(updateShopInfo(res))
     }
-    // showWhiteLogin()
   }
 
   const checkStoreIsolation = async () => { 
+    console.log("🚀🚀🚀 ~ useDidShow ~ checkStoreIsolation:")
     const distributorId = getDistributorId() || 0
     let params = {
       distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
@@ -342,12 +330,12 @@ function Home() {
       // params.distributor_id = undefined
     }
     // 开启了店铺隔离并且登录，获取白名单店铺
-    let res, whiteShop
+    let res, shopDetail
     if (S.getAuthToken()) {
       // updateAddress()
       params.show_type = 'self'
       // 带self，返回店铺内容store_name => 是绑定的店铺
-      whiteShop = await api.shop.getShop(params) 
+      shopDetail = await api.shop.getShop(params) 
       /**
        * 店铺隔离逻辑
        * is_valid 接口逻辑
@@ -362,7 +350,7 @@ function Home() {
        * 2、没有开启定位，找创建时间最晚的
        * 3、店铺列表没有，表示都没有绑定白名单
        */
-      if (!whiteShop.store_name) {
+      if (!shopDetail.store_name) {
         // 没有找到店铺
         
         if (distributorId) {
@@ -376,14 +364,16 @@ function Home() {
               cancelText: '回我的店',
               success: async (res) => {
                 if (res.confirm) {
-                  Taro.makePhoneCall({
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
                 if (res.cancel) {
+                  console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
                   // 清空小程序启动时携带的参数
                   Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                   res = await api.shop.getShop(params)
+                  setState((draft) => {
+                    draft.whiteShop = 1
+                  })
                   dispatch(updateShopInfo(res))
                 }
               }
@@ -404,14 +394,15 @@ function Home() {
                 cancelText: '去其他店',
                 success: async (res) => {
                   if (res.confirm) {
-                    Taro.makePhoneCall({
-                      phoneNumber: shopInfo.phone
-                    })
+                    connectWhiteShop()
                   }
                   if (res.cancel) {
                     // 清空小程序启动时携带的参数
                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                     res = await api.shop.getShop(params)
+                    setState((draft) => {
+                      draft.whiteShop = 1
+                    })
                     dispatch(updateShopInfo(res))
                   }
                 }
@@ -425,10 +416,7 @@ function Home() {
               cancelText: '关闭',
               success: async (res) => {
                 if (res.confirm) {
-                  // 联系店铺
-                  Taro.makePhoneCall({
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
 
                 if (res.cancel) {
@@ -456,11 +444,7 @@ function Home() {
               success: async (res) => {
                 console.log("🚀🚀🚀 ~ success: ~ res:", res)
                 if (res.confirm) {
-                  // 联系店铺
-                  Taro.makePhoneCall({
-                    // phoneNumber: res.phoneNumber todozm 对接接口
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
 
                 if (res.cancel) {
@@ -471,6 +455,9 @@ function Home() {
             })
           } else {
             // 有定位，存在没有开启白名单的店铺
+            setState((draft) => {
+              draft.whiteShop = 1
+            })
             dispatch(updateShopInfo(defalutShop))
           }
           
@@ -495,9 +482,7 @@ function Home() {
                 cancelText: '关闭',
                 success: async (res) => {
                   if (res.confirm) {
-                    Taro.makePhoneCall({
-                      phoneNumber: shopInfo.phone
-                    })
+                    connectWhiteShop()
                   }
   
                   if (res.cancel) {
@@ -512,6 +497,9 @@ function Home() {
             // 加入最近时间的店铺
             params.distributor_id = shop.distributor_id
             res = await api.shop.getShop(params)
+            setState((draft) => {
+              draft.whiteShop = 1
+            })
             dispatch(updateShopInfo(res))
           }
         }
@@ -520,7 +508,7 @@ function Home() {
         setState((draft) => {
           draft.whiteShop = 1
         });
-        dispatch(updateShopInfo(whiteShop))
+        dispatch(updateShopInfo(shopDetail))
       }
     } else {
       // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
@@ -530,6 +518,20 @@ function Home() {
     }
   }
 
+  // 联系店铺
+  const connectWhiteShop = () => { 
+    if (open_divided_templateId) {
+      const query = `?id=${open_divided_templateId}`
+      const path = `/pages/custom/custom-page${query}`
+      Taro.navigateTo({
+        url: path
+      })
+    } else {
+      Taro.makePhoneCall({
+        phoneNumber: shopInfo.phone
+      })
+    }
+  }
 
   const getWhiteShop = async () => {
     // 获取用户已经加入的白名单店铺，筛选合适的店铺
@@ -538,9 +540,6 @@ function Home() {
     if (location) {
       const nearestShop = findNearestWhiteListShop(shopList, location);
       if (nearestShop) {
-        setState((draft) => {
-          draft.whiteShop = 1
-        });
         // 使用最近的白名单店铺信息
         return nearestShop;
       }
@@ -548,9 +547,6 @@ function Home() {
       // 找到创建时间最晚的白名单店铺
       const latestShop = findLatestCreatedShop(shopList);
       if (latestShop) {
-        setState((draft) => {
-          draft.whiteShop =1
-        });
       }
       return latestShop;
     }
@@ -759,7 +755,7 @@ function Home() {
           // 登录成功后需要获取店铺信息，然后查看店铺
           updateAddress()
           console.log("🚀🚀🚀 ~ onChange: ~ location:", location)
-          fetchStoreInfo(location,true)
+          checkStoreIsolation()
         }}
         onPolicyClose={() => {
           onPolicyChange(false)

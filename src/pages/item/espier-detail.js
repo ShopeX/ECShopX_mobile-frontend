@@ -108,7 +108,7 @@ function EspierDetail(props) {
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
-  const { colorPrimary, openRecommend, open_divided, openLocation } = useSelector((state) => state.sys)
+  const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
   const dispatch = useDispatch()
   const { isLogin, checkPolicyChange, isNewUser, updatePolicyTime, setToken, login } = useLogin({
@@ -285,14 +285,14 @@ function EspierDetail(props) {
       // params.distributor_id = undefined
     }
     // 开启了店铺隔离并且登录，获取白名单店铺
-    let whiteShop, res
+    let shopDetail, res
     console.log("🚀🚀🚀 ~ checkStoreIsolation ~ S.getAuthToken():", S.getAuthToken())
     
     if (S.getAuthToken()) {
       // updateAddress()
       params.show_type = 'self'
       // 带self，返回店铺内容store_name => 是绑定的店铺
-      whiteShop = await api.shop.getShop(params) 
+      shopDetail = await api.shop.getShop(params) 
       /**
        * 店铺隔离逻辑
        * is_valid 接口逻辑
@@ -307,7 +307,7 @@ function EspierDetail(props) {
        * 2、没有开启定位，找创建时间最晚的
        * 3、店铺列表没有，表示都没有绑定白名单
        */
-      if (!whiteShop.store_name) {
+      if (!shopDetail.store_name) {
         // 没有找到店铺
         
         if (distributorId) {
@@ -321,9 +321,7 @@ function EspierDetail(props) {
               cancelText: '回我的店',
               success: async (res) => {
                 if (res.confirm) {
-                  Taro.makePhoneCall({
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
                 if (res.cancel) {
                   // 清空小程序启动时携带的参数
@@ -352,9 +350,7 @@ function EspierDetail(props) {
                 cancelText: '去其他店',
                 success: async (res) => {
                   if (res.confirm) {
-                    Taro.makePhoneCall({
-                      phoneNumber: shopInfo.phone
-                    })
+                    connectWhiteShop()
                   }
                   if (res.cancel) {
                     // 清空小程序启动时携带的参数
@@ -374,9 +370,7 @@ function EspierDetail(props) {
               success: async (res) => {
                 if (res.confirm) {
                   // 联系店铺
-                  Taro.makePhoneCall({
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
 
                 if (res.cancel) {
@@ -404,11 +398,7 @@ function EspierDetail(props) {
               success: async (res) => {
                 console.log("🚀🚀🚀 ~ success: ~ res:", res)
                 if (res.confirm) {
-                  // 联系店铺
-                  Taro.makePhoneCall({
-                    // phoneNumber: res.phoneNumber todozm 对接接口
-                    phoneNumber: shopInfo.phone
-                  })
+                  connectWhiteShop()
                 }
 
                 if (res.cancel) {
@@ -443,9 +433,7 @@ function EspierDetail(props) {
                 cancelText: '关闭',
                 success: async (res) => {
                   if (res.confirm) {
-                    Taro.makePhoneCall({
-                      phoneNumber: shopInfo.phone
-                    })
+                    connectWhiteShop()
                   }
   
                   if (res.cancel) {
@@ -468,7 +456,7 @@ function EspierDetail(props) {
         setState((draft) => {
           draft.whiteShop = 1
         });
-        dispatch(updateShopInfo(whiteShop))
+        dispatch(updateShopInfo(shopDetail))
       }
     } else {
       // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
@@ -478,6 +466,20 @@ function EspierDetail(props) {
     }
   }
 
+  // 联系店铺
+  const connectWhiteShop = () => { 
+    if (open_divided_templateId) {
+      const query = `?id=${open_divided_templateId}`
+      const path = `/pages/custom/custom-page${query}`
+      Taro.navigateTo({
+        url: path
+      })
+    } else {
+      Taro.makePhoneCall({
+        phoneNumber: shopInfo.phone
+      })
+    }
+  }
 
   const getWhiteShop = async () => {
     // 获取用户已经加入的白名单店铺，筛选合适的店铺
@@ -486,9 +488,6 @@ function EspierDetail(props) {
     if (location) {
       const nearestShop = findNearestWhiteListShop(shopList, location);
       if (nearestShop) {
-        setState((draft) => {
-          draft.whiteShop = 1
-        });
         // 使用最近的白名单店铺信息
         return nearestShop;
       }
@@ -496,9 +495,6 @@ function EspierDetail(props) {
       // 找到创建时间最晚的白名单店铺
       const latestShop = findLatestCreatedShop(shopList);
       if (latestShop) {
-        setState((draft) => {
-          draft.whiteShop =1
-        });
       }
       return latestShop;
     }
