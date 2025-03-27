@@ -67,7 +67,6 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   policyModal: false,
-  whiteShop: 0, // 0 未进入店铺  1 进入店铺
 }
 
 function Home() {
@@ -118,7 +117,6 @@ function Home() {
     skuPanelOpen,
     selectType,
     policyModal,
-    whiteShop
   } = state
 
   const dispatch = useDispatch()
@@ -166,7 +164,6 @@ function Home() {
   
   // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
   useDidShow(() => {
-    console.log("🚀🚀🚀 ~ useDidShow ~ useDidShow:", whiteShop)
     if (VERSION_STANDARD && openLocation == 1 && !isFirstRender.current) {
       checkStoreIsolation()
     }
@@ -332,6 +329,14 @@ function Home() {
     }
     // 开启了店铺隔离并且登录，获取白名单店铺
     let res, shopDetail
+    if (!S.getAuthToken()) { 
+      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
+      res = await api.shop.getShop(params)
+      dispatch(updateShopInfo(res))
+      showWhiteLogin()
+      return
+    }
+
     if (S.getAuthToken()) {
       // updateAddress()
       params.show_type = 'self'
@@ -351,6 +356,14 @@ function Home() {
        * 2、没有开启定位，找创建时间最晚的
        * 3、店铺列表没有，表示都没有绑定白名单
        */
+
+      if (shopDetail.store_name) { 
+        // 找到店铺了
+        dispatch(updateShopInfo(shopDetail))
+        dispatch(changeInWhite(true))
+        return
+      }
+
       if (!shopDetail.store_name) {
         // 没有找到店铺
         
@@ -372,9 +385,6 @@ function Home() {
                   // 清空小程序启动时携带的参数
                   Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                   res = await api.shop.getShop(params)
-                  setState((draft) => {
-                    draft.whiteShop = 1
-                  })
                   dispatch(updateShopInfo(res))
                   dispatch(changeInWhite(true))
                 }
@@ -389,7 +399,11 @@ function Home() {
           
             const defalutShop = await api.shop.getShop(params)
             params.distributor_id = shop.distributor_id
-            if (defalutShop.store_name) {
+            if(!defalutShop.store_name) {
+              // 没任何绑定的店铺
+              showNoShopModal()
+              return
+            } else {
               // 部分门店未开启白名单
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
@@ -403,9 +417,6 @@ function Home() {
                     // 清空小程序启动时携带的参数
                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                     res = await api.shop.getShop(params)
-                    setState((draft) => {
-                      draft.whiteShop = 1
-                    })
                     dispatch(updateShopInfo(res))
                     dispatch(changeInWhite(true))
                   }
@@ -413,10 +424,7 @@ function Home() {
               })
               return
             }
-            // 没任何绑定的店铺
-            showNoShopModal()
           }
-          return
         }
 
         if (!distributorId && params.lat) {
@@ -430,9 +438,6 @@ function Home() {
             showNoShopModal()
           } else {
             // 有定位，存在没有开启白名单的店铺
-            setState((draft) => {
-              draft.whiteShop = 1
-            })
             dispatch(updateShopInfo(defalutShop))
             dispatch(changeInWhite(true))
           }
@@ -447,14 +452,14 @@ function Home() {
             // 未加入店铺
             delete params.show_type
             res = await api.shop.getShop(params)
-            if (res.store_name) {
+            if (!res.store_name) {
+              // 全部开启白名单
+              showNoShopModal()
+            } else {
               // 有部分门店未开启白名单
               dispatch(updateShopInfo(res))
               dispatch(changeInWhite(true))
               return
-            } else {
-              // 全部开启白名单
-              showNoShopModal()
             }
             return
           } else {
@@ -468,24 +473,8 @@ function Home() {
             dispatch(changeInWhite(true))
           }
         }
-      } else {
-        // 找到店铺了
-        setState((draft) => {
-          draft.whiteShop = 1
-        });
-        dispatch(updateShopInfo(shopDetail))
-        dispatch(changeInWhite(true))
       }
-    } else {
-      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
-      res = await api.shop.getShop(params)
-      dispatch(updateShopInfo(res))
-      showWhiteLogin()
     }
-
-    
-
-    
   }
 
   /***

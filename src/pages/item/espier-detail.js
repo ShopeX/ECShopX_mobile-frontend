@@ -99,7 +99,6 @@ const initialState = {
   curItem: null,
   recommendList: [],
   policyModal: false, // 添加隐私协议弹窗状态  todozm 如果商品是已下架状态，隐私无法展示
-  whiteShop: 0, // 0 没有白名单店铺 1 有白名单店铺
 }
 
 function EspierDetail(props) {
@@ -306,6 +305,14 @@ function EspierDetail(props) {
     let shopDetail, res
     console.log("🚀🚀🚀 ~ checkStoreIsolation ~ S.getAuthToken():", S.getAuthToken())
     
+    if (!S.getAuthToken()) { 
+      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
+      res = await api.shop.getShop(params)
+      dispatch(updateShopInfo(res))
+      showWhiteLogin()
+      return
+    }
+
     if (S.getAuthToken()) {
       // updateAddress()
       params.show_type = 'self'
@@ -325,6 +332,14 @@ function EspierDetail(props) {
        * 2、没有开启定位，找创建时间最晚的
        * 3、店铺列表没有，表示都没有绑定白名单
        */
+
+      if (shopDetail.store_name) {
+        // 找到店铺了
+        dispatch(updateShopInfo(shopDetail))
+        dispatch(changeInWhite(true))
+        return
+      }
+
       if (!shopDetail.store_name) {
         // 没有找到店铺
         
@@ -431,19 +446,7 @@ function EspierDetail(props) {
             dispatch(changeInWhite(true))
           }
         }
-      } else {
-        // 找到店铺了
-        setState((draft) => {
-          draft.whiteShop = 1
-        });
-        dispatch(updateShopInfo(shopDetail))
-        dispatch(changeInWhite(true))
-      }
-    } else {
-      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
-      res = await api.shop.getShop(params)
-      dispatch(updateShopInfo(res))
-      showWhiteLogin()
+      } 
     }
   }
 
