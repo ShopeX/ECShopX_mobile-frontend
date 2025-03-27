@@ -330,7 +330,6 @@ function Home() {
     // 开启了店铺隔离并且登录，获取白名单店铺
     let res, shopDetail
     if (!S.getAuthToken()) { 
-      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
       res = await api.shop.getShop(params)
       dispatch(updateShopInfo(res))
       showWhiteLogin()
@@ -425,52 +424,54 @@ function Home() {
               return
             }
           }
-        }
-
-        if (!distributorId && params.lat) {
-          // 已定位
-
-          delete params.show_type
-          
-          // 未开启白名单的店铺
-          const defalutShop = await api.shop.getShop(params)
-          if (!defalutShop.store_name) {
-            showNoShopModal()
-          } else {
-            // 有定位，存在没有开启白名单的店铺
-            dispatch(updateShopInfo(defalutShop))
-            dispatch(changeInWhite(true))
-          }
-          
           return
         }
 
-        if (!params.lat) {
-          // 未定位
-          const shop = await getWhiteShop()
-          if (!shop) {
-            // 未加入店铺
+        if (!distributorId) {
+          // 已定位
+          if (params.lat) {
             delete params.show_type
-            res = await api.shop.getShop(params)
-            if (!res.store_name) {
-              // 全部开启白名单
+          
+            // 未开启白名单的店铺
+            const defalutShop = await api.shop.getShop(params)
+            if (!defalutShop.store_name) {
               showNoShopModal()
             } else {
-              // 有部分门店未开启白名单
+              // 有定位，存在没有开启白名单的店铺
+              dispatch(updateShopInfo(defalutShop))
+              dispatch(changeInWhite(true))
+            }
+            
+            return
+          }
+
+          if (!params.lat) {
+            // 未定位
+            const shop = await getWhiteShop()
+            if (!shop) {
+              // 未加入店铺
+              delete params.show_type
+              res = await api.shop.getShop(params)
+              if (!res.store_name) {
+                // 全部开启白名单
+                showNoShopModal()
+              } else {
+                // 有部分门店未开启白名单
+                dispatch(updateShopInfo(res))
+                dispatch(changeInWhite(true))
+                return
+              }
+              return
+            } else {
+              // 加入最近时间的店铺
+              params.distributor_id = shop.distributor_id
+              res = await api.shop.getShop(params)
+              setState((draft) => {
+                draft.whiteShop = 1
+              })
               dispatch(updateShopInfo(res))
               dispatch(changeInWhite(true))
-              return
             }
-            return
-          } else {
-            // 加入最近时间的店铺
-            params.distributor_id = shop.distributor_id
-            res = await api.shop.getShop(params)
-            setState((draft) => {
-              draft.whiteShop = 1
-            })
-            dispatch(updateShopInfo(res))
-            dispatch(changeInWhite(true))
           }
         }
       }

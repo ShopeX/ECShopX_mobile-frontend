@@ -303,12 +303,8 @@ function EspierDetail(props) {
     }
     // 开启了店铺隔离并且登录，获取白名单店铺
     let shopDetail, res
-    console.log("🚀🚀🚀 ~ checkStoreIsolation ~ S.getAuthToken():", S.getAuthToken())
     
     if (!S.getAuthToken()) { 
-      // 店铺隔离未登录，先用默认店铺，进行登录弹窗的展示, 这个拿到的应该是没开启白名单的店铺 todozm，应该要改成后台的模版id
-      res = await api.shop.getShop(params)
-      dispatch(updateShopInfo(res))
       showWhiteLogin()
       return
     }
@@ -398,52 +394,55 @@ function EspierDetail(props) {
               })
               return
             }
-            // 没任何绑定的店铺
+            // 没任何店铺可以进
             showNoShopModal()
           }
           return
         }
 
-        if (!distributorId && params.lat) {
-          // 已定位
-
-          delete params.show_type
-          
-          // 未开启白名单的店铺
-          const defalutShop = await api.shop.getShop(params)
-          if (!defalutShop.store_name) {
-            showNoShopModal()
-          } else {
-            // 有定位，存在没有开启白名单的店铺
-            dispatch(updateShopInfo(defalutShop))
-            dispatch(changeInWhite(true))
-          }
-          
-          return
-        }
-
-        if (!params.lat) {
-          // 未定位
-          const shop = await getWhiteShop()
-          if (!shop) {
-            // 未加入店铺
+        if (!distributorId) {
+          if (params.lat) {
+            // 已定位 但是还是没返回店铺信息，说明没有绑定过任何一家店铺白名单
+            // 取 附近未开白名单的店铺
             delete params.show_type
-            res = await api.shop.getShop(params)
-            if (res.store_name) {
-              // 部分门店未开启白名单
+            
+            // 未开启白名单的店铺
+            const defalutShop = await api.shop.getShop(params)
+            if (!defalutShop.store_name) {
+              // 没任何店铺可以进
+              showNoShopModal()
+            } else {
+              // 有定位，存在没有开启白名单的店铺
+              dispatch(updateShopInfo(defalutShop))
+              dispatch(changeInWhite(true))
+            }
+            
+            return
+          }
+
+          if (!params.lat) {
+            // 未定位，从 vaild 接口，就拿不到白名单店铺信息的
+            const shop = await getWhiteShop() // 已经加入的最优店铺
+            if (!shop) {
+              // 没有找到加入的店铺，找没有开白名单的店铺
+              delete params.show_type
+              res = await api.shop.getShop(params) // ?todozm这里是不是应该取不到？因为没有定位信息
+              if (res.store_name) {
+                // 部分门店未开启白名单
+                dispatch(updateShopInfo(res))
+                dispatch(changeInWhite(true))
+              } else {
+                // 没任何店铺可以进
+                showNoShopModal()
+              }
+              return
+            } else {
+              // 加入最近时间的店铺
+              params.distributor_id = shop.distributor_id
+              res = await api.shop.getShop(params)
               dispatch(updateShopInfo(res))
               dispatch(changeInWhite(true))
-            } else {
-              // 全部开启白名单
-              showNoShopModal()
             }
-            return
-          } else {
-            // 加入最近时间的店铺
-            params.distributor_id = shop.distributor_id
-            res = await api.shop.getShop(params)
-            dispatch(updateShopInfo(res))
-            dispatch(changeInWhite(true))
           }
         }
       } 
