@@ -105,7 +105,7 @@ function Home() {
   const { location } = useSelector((state) => state.user)
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
-  const { getWhiteShop } = useWhiteShop()
+  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop()
   const {
     wgts,
     loading,
@@ -318,7 +318,7 @@ function Home() {
     }
   }
 
-  const checkStoreIsolation = async () => { 
+  const checkStoreIsolation = async () => {
     console.log("🚀🚀🚀 ~ useDidShow ~ checkStoreIsolation:")
     const distributorId = getDistributorId() || 0
     let params = {
@@ -336,7 +336,7 @@ function Home() {
       // updateAddress()
       params.show_type = 'self'
       // 带self，返回店铺内容store_name => 是绑定的店铺
-      shopDetail = await api.shop.getShop(params) 
+      shopDetail = await api.shop.getShop(params)
       /**
        * 店铺隔离逻辑
        * is_valid 接口逻辑
@@ -361,7 +361,7 @@ function Home() {
             params.distributor_id = shop.distributor_id
             Taro.showModal({
               content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-              confirmText: '联系店铺',  
+              confirmText: '联系店铺',
               cancelText: '回我的店',
               success: async (res) => {
                 if (res.confirm) {
@@ -393,7 +393,7 @@ function Home() {
               // 部分门店未开启白名单
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '联系店铺',  
+                confirmText: '联系店铺',
                 cancelText: '去其他店',
                 success: async (res) => {
                   if (res.confirm) {
@@ -414,21 +414,7 @@ function Home() {
               return
             }
             // 没任何绑定的店铺
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-              confirmText: '联系店铺',
-              cancelText: '关闭',
-              success: async (res) => {
-                if (res.confirm) {
-                  connectWhiteShop()
-                }
-
-                if (res.cancel) {
-                  // 关闭退出小程序
-                  Taro.exitMiniProgram()
-                }
-              }
-            })
+            showNoShopModal()
           }
           return
         }
@@ -441,22 +427,7 @@ function Home() {
           // 未开启白名单的店铺
           const defalutShop = await api.shop.getShop(params)
           if (!defalutShop.store_name) {
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-              confirmText: '联系店铺',
-              cancelText: '关闭',
-              success: async (res) => {
-                console.log("🚀🚀🚀 ~ success: ~ res:", res)
-                if (res.confirm) {
-                  connectWhiteShop()
-                }
-
-                if (res.cancel) {
-                  // 关闭退出小程序
-                  Taro.exitMiniProgram()
-                }
-              }
-            })
+            showNoShopModal()
           } else {
             // 有定位，存在没有开启白名单的店铺
             setState((draft) => {
@@ -483,21 +454,7 @@ function Home() {
               return
             } else {
               // 全部开启白名单
-              Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '联系店铺',
-                cancelText: '关闭',
-                success: async (res) => {
-                  if (res.confirm) {
-                    connectWhiteShop()
-                  }
-  
-                  if (res.cancel) {
-                    // 关闭退出小程序
-                    Taro.exitMiniProgram()
-                  }
-                }
-              })
+              showNoShopModal()
             }
             return
           } else {
@@ -525,23 +482,11 @@ function Home() {
       dispatch(updateShopInfo(res))
       showWhiteLogin()
     }
-  }
 
-  // 联系店铺
-  const connectWhiteShop = () => { 
-    if (open_divided_templateId) {
-      const query = `?id=${open_divided_templateId}`
-      const path = `/pages/custom/custom-page${query}`
-      Taro.navigateTo({
-        url: path
-      })
-    } else {
-      Taro.makePhoneCall({
-        phoneNumber: shopInfo.phone
-      })
-    }
-  }
+    
 
+    
+  }
 
   /***
    * 未注册，开启店铺隔离后需要登录

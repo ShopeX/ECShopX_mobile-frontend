@@ -4,11 +4,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import S from '@/spx'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
-import { useLocation } from '@/hooks'
+import { useLocation, useShopInfo } from '@/hooks'
 
 export default (props) => {
   const dispatch = useDispatch()
-
+  const { initState, openRecommend, openLocation, openStore, appName, openScanQrcode, open_divided, open_divided_templateId } =
+    useSelector((state) => state.sys)
+  const { shopInfo } = useSelector((state) => state.shop)
   const { calculateDistance } = useLocation()
   const { location } = useSelector((state) => state.user)
   // 找到最近的白名单店铺
@@ -106,6 +108,40 @@ export default (props) => {
 
   }
 
+  // 联系店铺
+  const connectWhiteShop = () => { 
+    if (open_divided_templateId) {
+      const query = `?id=${open_divided_templateId}`
+      const path = `/pages/custom/custom-page${query}`
+      Taro.navigateTo({
+        url: path
+      })
+    } else {
+      Taro.makePhoneCall({
+        phoneNumber: shopInfo.phone
+      })
+    }
+  }
 
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop }
+  // 没有店铺
+  const showNoShopModal = () => {
+    Taro.showModal({
+      content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+      confirmText: '联系店铺',
+      cancelText: '关闭',
+      success: async (res) => {
+        if (res.confirm) {
+          connectWhiteShop()
+        }
+
+        if (res.cancel) {
+          // 关闭退出小程序
+          Taro.exitMiniProgram()
+        }
+      }
+    })
+  }
+
+
+  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, showNoShopModal, connectWhiteShop }
 }

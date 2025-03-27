@@ -52,7 +52,7 @@ import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
-import { useNavigation, useLogin, useLocation } from '@/hooks'
+import { useNavigation, useLogin, useLocation, useWhiteShop } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import CompActivityBar from './comps/comp-activitybar'
@@ -97,7 +97,7 @@ const initialState = {
   // 多规格商品选中的规格
   curItem: null,
   recommendList: [],
-  policyModal: false, // 添加隐私协议弹窗状态
+  policyModal: false, // 添加隐私协议弹窗状态  todozm 如果商品是已下架状态，隐私无法展示
   whiteShop: 0, // 0 没有白名单店铺 1 有白名单店铺
 }
 
@@ -109,6 +109,8 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
+  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop()
+
   const { setNavigationBarTitle } = useNavigation()
   const dispatch = useDispatch()
   const { isLogin, checkPolicyChange, isNewUser, updatePolicyTime, setToken, login } = useLogin({
@@ -129,7 +131,7 @@ function EspierDetail(props) {
       checkStoreIsolation()
     }
   })
-  const { findNearestWhiteListShop, findLatestCreatedShop, updateAddress } = useLocation()
+  const { updateAddress } = useLocation()
   const { location } = useSelector((state) => state.user)
 
   const loginRef = useRef()
@@ -157,7 +159,8 @@ function EspierDetail(props) {
     type,
     dtid,
     curItem,
-    recommendList
+    recommendList,
+    policyModal
   } = state
 
   useEffect(() => {
@@ -329,9 +332,9 @@ function EspierDetail(props) {
                   res = await api.shop.getShop(params)
                   dispatch(updateShopInfo(res))
                   dispatch(changeInWhite(true))
-                  Taro.navigateTo({
-                    url: `/pages/index`
-                  })
+                  // Taro.navigateTo({
+                  //   url: `/pages/index`
+                  // })
                 }
               }
             })
@@ -366,22 +369,7 @@ function EspierDetail(props) {
               return
             }
             // 没任何绑定的店铺
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-              confirmText: '联系店铺',
-              cancelText: '关闭',
-              success: async (res) => {
-                if (res.confirm) {
-                  // 联系店铺
-                  connectWhiteShop()
-                }
-
-                if (res.cancel) {
-                  // 关闭退出小程序
-                  Taro.exitMiniProgram()
-                }
-              }
-            })
+            showNoShopModal()
           }
           return
         }
@@ -394,22 +382,7 @@ function EspierDetail(props) {
           // 未开启白名单的店铺
           const defalutShop = await api.shop.getShop(params)
           if (!defalutShop.store_name) {
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-              confirmText: '联系店铺',
-              cancelText: '关闭',
-              success: async (res) => {
-                console.log("🚀🚀🚀 ~ success: ~ res:", res)
-                if (res.confirm) {
-                  connectWhiteShop()
-                }
-
-                if (res.cancel) {
-                  // 关闭退出小程序
-                  Taro.exitMiniProgram()
-                }
-              }
-            })
+            showNoShopModal()
           } else {
             // 有定位，存在没有开启白名单的店铺
             dispatch(updateShopInfo(defalutShop))
@@ -432,21 +405,7 @@ function EspierDetail(props) {
               dispatch(changeInWhite(true))
             } else {
               // 全部开启白名单
-              Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '联系店铺',
-                cancelText: '关闭',
-                success: async (res) => {
-                  if (res.confirm) {
-                    connectWhiteShop()
-                  }
-  
-                  if (res.cancel) {
-                    // 关闭退出小程序
-                    Taro.exitMiniProgram()
-                  }
-                }
-              })
+              showNoShopModal()
             }
             return
           } else {
@@ -473,39 +432,6 @@ function EspierDetail(props) {
     }
   }
 
-  // 联系店铺
-  const connectWhiteShop = () => { 
-    if (open_divided_templateId) {
-      const query = `?id=${open_divided_templateId}`
-      const path = `/pages/custom/custom-page${query}`
-      Taro.navigateTo({
-        url: path
-      })
-    } else {
-      Taro.makePhoneCall({
-        phoneNumber: shopInfo.phone
-      })
-    }
-  }
-
-  const getWhiteShop = async () => {
-    // 获取用户已经加入的白名单店铺，筛选合适的店铺
-    const shopList = await fetchShop()
-    // 找到最近的白名单店铺
-    if (location) {
-      const nearestShop = findNearestWhiteListShop(shopList, location);
-      if (nearestShop) {
-        // 使用最近的白名单店铺信息
-        return nearestShop;
-      }
-    } else {
-      // 找到创建时间最晚的白名单店铺
-      const latestShop = findLatestCreatedShop(shopList);
-      if (latestShop) {
-      }
-      return latestShop;
-    }
-  }
   /***
    * 未注册，开启店铺隔离后需要登录
    * 
@@ -584,34 +510,6 @@ function EspierDetail(props) {
     }
   }
 
-
-  // 获取店铺列表，主要用于查找白名单店铺
-  const fetchShop = async () => {
-    let params = {
-      page: 1,
-      pageSize: 50,
-      type: 0,           // 店铺类型，0表示所有类型
-      search_type: 2,    // 1=搜索商品；2=搜索门店
-      sort_type: 1,      // 排序方式
-      show_type: 'self'  // 'self'表示只获取白名单店铺
-    }
-
-    console.log(`fetchShop query: ${JSON.stringify(params)}`)
-    
-    // 调用店铺列表API
-    const { 
-      list,              // 店铺列表
-      total_count: total,// 总数
-      defualt_address,   // 默认地址
-      is_recommend       // 是否推荐
-    } = await api.shop.list(params)
-
-    // 使用 pickBy 函数按照 doc.shop.SHOP_ITEM 的格式处理店铺数据
-    const shopList = pickBy(list, doc.shop.SHOP_ITEM)
-
-    console.log("🚀🚀🚀 ~ fetchShop ~ list:", shopList)
-    return shopList
-  }
 
   // 店铺隔离end
 
@@ -1109,7 +1007,7 @@ function EspierDetail(props) {
 
       {/* 添加隐私协议弹窗 */}
       <SpPrivacyModal 
-        open={state.policyModal} 
+        open={policyModal} 
         onCancel={() => onPolicyChange(false)} 
         onConfirm={handlePolicyConfirm} 
       />
