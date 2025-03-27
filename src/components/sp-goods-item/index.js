@@ -23,7 +23,7 @@ function SpGoodsItem(props) {
     member_price: enMemberPrice,
     svip_price: enSvipPrice
   } = item_page
-  const { priceDisplayConfig } = useSelector((state) => state.purchase)
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
   const {
     activity_price:enPurActivityPrice,
