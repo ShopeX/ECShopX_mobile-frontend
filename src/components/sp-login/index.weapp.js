@@ -26,7 +26,7 @@ function SpLogin(props, ref) {
       // isUpdate && setPolicyModal(true)
     },
     loginSuccess: () => {
-      updateAddress()
+      updateAddress && updateAddress()
     }
   })
   const [isNewUser, setIsNewUser] = useState(false)
@@ -160,7 +160,8 @@ function SpLogin(props, ref) {
       setLoginModal(false)
       onChange && onChange()
     } catch (e) {
-      setIsNewUser(true)
+      setIsNewUser(true);
+      !loginModal && setLoginModal(true);
     }
   }
 
