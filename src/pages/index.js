@@ -379,13 +379,14 @@ function Home() {
             params.distributor_id = shop.distributor_id
             Taro.showModal({
               content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-              confirmText: '联系店铺',
-              cancelText: '回我的店',
+              confirmText: '回我的店',
+              cancelText: '联系店铺',
+              showCancel: !!(open_divided_templateId || shopInfo?.phone),
               success: async (res) => {
-                if (res.confirm) {
+                if (res.cancel) {
                   connectWhiteShop()
                 }
-                if (res.cancel) {
+                if (res.confirm) {
                   console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
                   // 清空小程序启动时携带的参数
                   Taro.setStorageSync(SG_ROUTER_PARAMS, {})
@@ -412,13 +413,14 @@ function Home() {
               // 部分门店未开启白名单
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '联系店铺',
-                cancelText: '去其他店',
+                confirmText: '去其他店',
+                cancelText: '联系店铺',
+                showCancel: !!(open_divided_templateId || shopInfo?.phone),
                 success: async (res) => {
-                  if (res.confirm) {
+                  if (res.cancel) {
                     connectWhiteShop()
                   }
-                  if (res.cancel) {
+                  if (res.confirm) {
                     // 清空小程序启动时携带的参数
                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                     // res = await api.shop.getShop(params)

@@ -127,14 +127,15 @@ export default (props) => {
   const showNoShopModal = () => {
     Taro.showModal({
       content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-      confirmText: '联系店铺',
-      cancelText: '关闭',
+      confirmText: '关闭',
+      cancelText: '联系店铺',
+      showCancel: !!(open_divided_templateId || shopInfo?.phone),
       success: async (res) => {
-        if (res.confirm) {
+        if (res.cancel) {
           connectWhiteShop()
         }
 
-        if (res.cancel) {
+        if (res.confirm) {
           // 关闭退出小程序
           Taro.exitMiniProgram()
         }

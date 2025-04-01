@@ -249,13 +249,14 @@ function SpPage(props, ref) {
         // 不在白名单的店铺，
         Taro.showModal({
           content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-          confirmText: '联系店铺',
-          cancelText: '关闭',
+          confirmText: '关闭',
+          cancelText: '联系店铺',
+          showCancel: !!(open_divided_templateId || shopInfo?.phone),
           success: async (res) => {
-            if (res.confirm) {
+            if (res.cancel) {
               connectWhiteShop()
             }
-            if (res.cancel) {
+            if (res.confirm) {
               // 去首页
               const path = `/pages/index`
               Taro.navigateTo({
@@ -264,18 +265,23 @@ function SpPage(props, ref) {
             }
           }
         })
+
+
       }
     } else {
+      console.log("🚀🚀🚀 ~ checkInWhite ~ open_divided_templateId || shopInfo?.phone,:",!!(open_divided_templateId || shopInfo?.phone))
+
       // 未登录，跳首页登录
       Taro.showModal({
         content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-        confirmText: '联系店铺',  
-        cancelText: '去登录',
+        confirmText: '去登录',  
+        cancelText: '联系店铺',
+        showCancel: !!(open_divided_templateId || shopInfo?.phone),
         success: async (res) => {
-          if (res.confirm) {
+          if (res.cancel) {
             connectWhiteShop()
           }
-          if (res.cancel) {
+          if (res.confirm) {
             console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
             const path = `/pages/index`
             Taro.navigateTo({
