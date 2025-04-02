@@ -1,0 +1,27 @@
+@import "@/style/imports";
+
+.page-activity-code {
+  padding: 88px 24px;
+  box-sizing: border-box;
+
+  .activity-code{
+    background: #fff;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px;
+    box-sizing: border-box;
+    &__icon{
+      font-size: 108px;
+      margin-bottom: 24px;
+      color: var(--color-dianwu-primary);
+    }
+    &__text{
+      font-size: 36px;
+      font-weight: 500;
+      color: var(--color-dianwu-primary);
+    }
+  }
+}

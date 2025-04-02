@@ -4,23 +4,24 @@ export const RECORD_LIST = {
   activityName: 'activity_name',
   status: 'status',
   startDate: 'start_date',
-  createDate:'create_date',
+  createDate: 'create_date',
   endDate: 'end_date',
   reason: 'reason',
-  statusName:'status_name',
-  pics:({activity_info})=>{
-    if(typeof activity_info?.pics == 'string'){
+  statusName: 'status_name',
+  pics: ({ activity_info }) => {
+    if (typeof activity_info?.pics == 'string') {
       return activity_info.pics.split(',')
-    }else{
+    } else {
       return activity_info?.pics
     }
   },
-  areaName:({activity_info})=>activity_info?.area_name,
-  actionCancel:({action})=>action?.cancel == 1,
-  actionEdit:({action})=>action?.edit == 1,
-  actionApply:({action})=>action?.apply == 1,
-  activityStatus:({activity_info})=>activity_info?.status_name,
-  activityStartTime:({activity_info})=>activity_info?.start_time,
+  hasTemp: ({ form_id }) => form_id != 0,
+  areaName: ({ activity_info }) => activity_info?.area_name,
+  actionCancel: ({ action }) => action?.cancel == 1,
+  actionEdit: ({ action }) => action?.edit == 1,
+  actionApply: ({ action }) => action?.apply == 1,
+  activityStatus: ({ activity_info }) => activity_info?.status_name,
+  activityStartTime: ({ activity_info }) => activity_info?.start_time
 }
 
 export const RECORD_DETAIL = {
@@ -41,10 +42,11 @@ export const RECORD_DETAIL = {
   formData: ({ content }) => content?.[0]?.formdata,
   recordNo: 'record_no',
   mobile: 'mobile',
+  hasTemp: ({ form_id }) => form_id != 0,
   actionCancel: ({ action }) => action?.cancel == 1,
   actionEdit: ({ action }) => action?.edit == 1,
   actionApply: ({ action }) => action?.apply == 1,
-  getPoints:'get_points',
-  verifyCode:'verify_code',
-  isOfflineVerify: ({ activity_info }) => activity_info?.is_offline_verify == 1 ,
+  getPoints: 'get_points',
+  verifyCode: 'verify_code',
+  isOfflineVerify: ({ activity_info }) => activity_info?.is_offline_verify == 1
 }

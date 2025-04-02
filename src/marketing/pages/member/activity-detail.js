@@ -24,6 +24,7 @@ function ActivityDetail(props) {
   const [state, setState] = useImmer(initialState)
   const { info, isOpened, selectOptions, qrcode } = state
   const router = useRouter()
+  const verifyRef = useRef()
 
   const statusMap = {
     'pending': 'daishenhe1',
@@ -37,22 +38,47 @@ function ActivityDetail(props) {
     fetch()
   })
 
-  const getQrCode = ({ verifyCode }) => {
+  useEffect(() => {
+    return () => {
+      verifyRef.current && clearInterval(verifyRef.current)
+    }
+  }, [])
+
+  const getQrCode = ({ verifyCode, recordId }) => {
     if (!verifyCode) return
-    QRCode.toDataURL(verifyCode).then((res) => {
+    const params = {
+      verify_code:verifyCode,
+      record_id:recordId
+    }
+    QRCode.toDataURL(JSON.stringify(params)).then((res) => {
       console.log('getQrCode', res)
       setState((draft) => {
         draft.qrcode = res
       })
+      verifyRef.current = setInterval(() => {
+        fetch('isVerify')
+      }, 3000)
     })
   }
 
-  const fetch = async () => {
+  const fetch = async (isVerify) => {
     const res = await api.user.registrationRecordInfo({
       record_id: router.params.record_id
     })
+
     console.log(res)
     const _info = pickBy(res, doc.activity.RECORD_DETAIL)
+    if (isVerify) {
+      if (_info.status == 'passed') return
+      if (_info.status == 'verified' && verifyRef.current) {
+        clearInterval(verifyRef.current)
+      }
+    }
+
+    if (!isVerify) {
+      verifyRef.current && clearInterval(verifyRef.current)
+    }
+
     if (_info.isOfflineVerify && _info.status == 'passed') {
       getQrCode(_info)
     }
@@ -119,8 +145,21 @@ function ActivityDetail(props) {
     handleSelectClose()
   }
 
+  const registrationSubmitFetch = async ({ activityId }) => {
+    await api.user.joinActivity({ activity_id: activityId })
+    Taro.showToast({
+      icon: 'none',
+      title: '报名成功'
+    })
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
+      })
+    }, 400)
+  }
+
   const onBtnAction = (type) => {
-    const { activityId, recordId, status } = info
+    const { activityId, recordId, status, hasTemp } = info
     switch (type) {
       case 'reFill':
         //重新填写
@@ -130,16 +169,23 @@ function ActivityDetail(props) {
         break
       case 'sign':
         //立即报名
-        if (['passed', 'canceled', 'verified'].includes(status)) {
-          Taro.navigateTo({
-            url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
-          })
+        if (hasTemp) {
+          //有模板
+          if (['passed', 'canceled', 'verified'].includes(status)) {
+            Taro.navigateTo({
+              url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
+            })
+          } else {
+            //有编辑
+            setState((draft) => {
+              draft.isOpened = true
+            })
+          }
         } else {
-          //有编辑
-          setState((draft) => {
-            draft.isOpened = true
-          })
+          // 没有模板
+          registrationSubmitFetch(info)
         }
+
         break
       default:
         break
@@ -212,7 +258,7 @@ function ActivityDetail(props) {
             <View className='activity-detail__info-area-content'>{info?.activityAddress}</View>
           </View>
 
-          {qrcode && (
+          {qrcode && info?.status == 'passed' && (
             <View className='activity-detail__info-code'>
               <View className='activity-detail__info-code-box'>
                 <View className='activity-detail__info-code-title'>请凭二维码进行签到</View>
@@ -224,18 +270,18 @@ function ActivityDetail(props) {
           )}
         </View>
 
-        {info?.formData?.length > 0 && (
-          <View className='activity-detail__form'>
-            <View className='activity-detail__form-item'>
-              <View className='activity-detail__form-item-label'>手机号</View>
-              <View className='activity-detail__form-item-value'>{info?.mobile}</View>
-            </View>
-            <View className='activity-detail__form-item'>
-              <View className='activity-detail__form-item-label'>获取积分</View>
-              <View className='activity-detail__form-item-value'>{info?.getPoints}</View>
-            </View>
-            {/* 动态表单 */}
-            {info?.formData.map((item, idx) => (
+        <View className='activity-detail__form'>
+          <View className='activity-detail__form-item'>
+            <View className='activity-detail__form-item-label'>手机号</View>
+            <View className='activity-detail__form-item-value'>{info?.mobile}</View>
+          </View>
+          <View className='activity-detail__form-item'>
+            <View className='activity-detail__form-item-label'>获取积分</View>
+            <View className='activity-detail__form-item-value'>{info?.getPoints}</View>
+          </View>
+          {/* 动态表单 */}
+          {info?.formData?.length > 0 &&
+            info.formData.map((item, idx) => (
               <View className='activity-detail__form-item' key={idx}>
                 <View className='activity-detail__form-item-label'>{item.field_title}</View>
                 <View className='activity-detail__form-item-value'>
@@ -243,8 +289,7 @@ function ActivityDetail(props) {
                 </View>
               </View>
             ))}
-          </View>
-        )}
+        </View>
       </View>
 
       <SpSelectModal

@@ -71,14 +71,17 @@ function ItemActivity(props) {
     })
     const { activityId } = info
     try {
-      await api.user.registrationSubmit({ activity_id: info.activityId })
-      S.toast('报名成功')
+      await api.user.joinActivity({ activity_id: info.activityId })
+      Taro.showToast({
+        icon: 'none',
+        title: '报名成功'
+      })
       setState((draft) => {
         draft.loading = false
       })
       setTimeout(() => {
         Taro.navigateTo({
-          url: `marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
+          url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
         })
       }, 400)
     } catch (error) {
@@ -93,22 +96,6 @@ function ItemActivity(props) {
 
     const { recordId, hasTemp, recordStatus } = info
 
-    if (!recordId) {
-      //新用户
-      handleToGoodsReservate()
-    } else {
-      //老用户
-      if (['pending', 'rejected'].includes(recordStatus)) {
-        //选择立即报名
-        setState((draft) => {
-          draft.isOpened = true
-        })
-      } else {
-        // 不能编辑
-        handleToGoodsReservate()
-      }
-    }
-
     //如果自己第一次报名，则判断是否有模板
     //有模板跳表单页面
     //没有模板 直接请求跳结果页面
@@ -117,29 +104,33 @@ function ItemActivity(props) {
     //编辑：有模板跳转表单 / 没有模板则不能编辑
     //代新人:有模板跳转表单 / 直接请求跳结果页面
     //  info.hasTemp  是否有模板
-    //此次不考虑没有模板的情况
-    // if (!recordId) {
-    //   //新用户
-    //   if (hasTemp) {
-    //     //有模板
-    //     handleToGoodsReservate()
-    //   } else {
-    //     //没模板
-    //     registrationSubmitFetch()
-    //   }
-    // } else {
-    //   //老用户
-    //   if (hasTemp) {
-    //     //有模板
-    //     //选择立即报名
-    //     setState((draft) => {
-    //       draft.isOpened = true
-    //     })
-    //   } else {
-    //     //没有模板，不能编辑，只能代他人报名
-    //     handleToGoodsReservate()
-    //   }
-    // }
+    if (!recordId) {
+      //新用户
+      if (hasTemp) {
+        //有模板：去表单页面
+        handleToGoodsReservate()
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch()
+      }
+    } else {
+      //老用户
+      if (hasTemp) {
+        //有模板：选择编辑还是代他人
+        if (['pending', 'rejected'].includes(recordStatus)) {
+          //选择编辑还是代他人
+          setState((draft) => {
+            draft.isOpened = true
+          })
+        } else {
+          // 不能编辑
+          handleToGoodsReservate()
+        }
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch()
+      }
+    }
   }
 
   const handleSelectClose = () => {

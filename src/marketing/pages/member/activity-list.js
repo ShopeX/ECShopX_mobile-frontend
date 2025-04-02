@@ -8,6 +8,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
+import S from '@/spx'
 import './activity-list.scss'
 
 const initialState = {
@@ -82,6 +83,7 @@ function ItemActivity(props) {
       areaName: 'area_name',
       activityStatus: 'status_name',
       pics: ({ pics }) => pics?.split(','),
+      hasTemp: ({ temp_id }) => temp_id != '0',
       area: 'area',
       showPlace: ({ show_fields }) => JSON.parse(show_fields)?.place == 1,
       showAddress: ({ show_fields }) => JSON.parse(show_fields)?.address == 1,
@@ -110,23 +112,47 @@ function ItemActivity(props) {
     })
   }
 
+  const registrationSubmitFetch = async ({ activityId }) => {
+    await api.user.joinActivity({ activity_id: activityId})
+    Taro.showToast({
+      icon: 'none',
+      title: '报名成功'
+    })
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
+      })
+    }, 400)
+  }
+
   const onBtnAction = (item, type) => {
-    const { recordId, recordStatus } = item
-    if (recordId) {
-      //老用户
-      if (['pending', 'rejected'].includes(recordStatus)) {
-        //立即报名
-        setState((draft) => {
-          draft.isOpened = true
-          draft.activityInfo = item
-        })
-      } else {
-        // 不能编辑
+    const { recordId, hasTemp, recordStatus } = item
+    if (!recordId) {
+      //新用户
+      if (hasTemp) {
+        //有模板：去表单页面
         handleToGoodsReservate(false, item)
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch(item)
       }
     } else {
-      //新用户
-      handleToGoodsReservate(false, item)
+      //老用户
+      if (hasTemp) {
+        if (['pending', 'rejected'].includes(recordStatus)) {
+          //立即报名
+          setState((draft) => {
+            draft.isOpened = true
+            draft.activityInfo = item
+          })
+        } else {
+          // 不能编辑
+          handleToGoodsReservate(false, item)
+        }
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch(item)
+      }
     }
   }
 
