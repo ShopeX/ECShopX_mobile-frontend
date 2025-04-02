@@ -411,6 +411,7 @@ function EspierDetail(props) {
             const defalutShop = await api.shop.getShop(params)
             if (defalutShop.white_hidden == 1) {
               // 没任何店铺可以进
+              dispatch(updateShopInfo(defalutShop))
               showNoShopModal()
             } else {
               // 有定位，存在没有开启白名单的店铺
@@ -430,6 +431,7 @@ function EspierDetail(props) {
               res = await api.shop.getShop(params) // ?todozm这里是不是应该取不到？因为没有定位信息
               if (res.white_hidden == 1) {
                 // 全部开启白名单
+                dispatch(updateShopInfo(defalutShop))
                 showNoShopModal()
               } else {
                 // 有部分门店未开启白名单

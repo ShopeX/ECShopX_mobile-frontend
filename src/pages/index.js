@@ -337,10 +337,13 @@ function Home() {
     let res, shopDetail
       // 渲染默认的模版和联系店铺的手机号
       // 没有带id，就返回默认店铺或者之前存的店铺 作为背景和手机号
-      // 有带id，就用带id的店铺作为背景和手机号
-      res = await api.shop.getShop(params)
-      dispatch(updateShopInfo(res))
+    // 有带id，就用带id的店铺作为背景和手机号
+      // res = await api.shop.getShop(params)
+      // dispatch(updateShopInfo(res))
+    if (!S.getAuthToken()) { 
       showWhiteLogin()
+      return
+    }
 
     if (S.getAuthToken()) {
       // updateAddress()
@@ -406,7 +409,8 @@ function Home() {
             const defalutShop = await api.shop.getShop(params)
             // console.log("🚀🚀🚀 ~ checkStoreIsolation ~ defalutShop:", defalutShop)
             if(defalutShop.white_hidden == 1) {
-              // 没任何绑定的店铺
+              // 没匹配到任何店铺，取默认的模版渲染背景和电话
+              // dispatch(updateShopInfo(defalutShop))
               showNoShopModal()
               return
             } else {
@@ -442,6 +446,7 @@ function Home() {
             // 未开启白名单的店铺
             const defalutShop = await api.shop.getShop(params)
             if (defalutShop.white_hidden == 1) {
+              dispatch(updateShopInfo(defalutShop))
               showNoShopModal()
             } else {
               // 有定位，存在没有开启白名单的店铺
@@ -461,6 +466,7 @@ function Home() {
               res = await api.shop.getShop(params)
               if (res.white_hidden == 1) {
                 // 全部开启白名单
+                dispatch(updateShopInfo(res))
                 showNoShopModal()
               } else {
                 // 有部分门店未开启白名单
