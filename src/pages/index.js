@@ -325,8 +325,7 @@ function Home() {
   const checkStoreIsolation = async () => {
     if(shopInWhite) return // 已经在白名单店铺了
     console.log("🚀🚀🚀 ~ useDidShow ~ checkStoreIsolation:")
-    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS) 
-    const distributorId = dtid || getDistributorId() || 0
+    const distributorId = getDistributorId() || 0
     // console.log("🚀🚀🚀 ~ checkStoreIsolation ~ 分享进来的 dtid:", dtid)
     let params = {
       distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
@@ -341,8 +340,9 @@ function Home() {
     // 开启了店铺隔离并且登录，获取白名单店铺
     let res, shopDetail
     // 渲染默认的模版和联系店铺的手机号
-    // 没有带id，就返回默认店铺 作为背景和手机号
-    // 有带id，就用带id的店铺作为背景和手机号
+
+    // 有带id，就用带id的店铺的模版和手机号
+    // 没有带id，在后面的逻辑内，用默认店铺的模版和手机号
     if (distributorId) {
       res = await api.shop.getShop(params)
       dispatch(updateShopInfo(res))
@@ -362,17 +362,23 @@ function Home() {
        * 店铺隔离逻辑
        * is_valid 接口逻辑
        * show_type = 'self' && distributor_id=0 && location，返回最近的且开启白名单的店铺
-       * show_type = 'self' && distributor_id=0 && !location，返回默认店铺，是否是白名单店铺
+       * show_type = 'self' && distributor_id=0 && !location，返回默认店铺，是否是白名单店铺？？这个有改掉了，和后端确认中
        * show_type = 'self' && distributor_id>0 ，如果有返回店铺信息，表示这个店铺已经有绑定白名单，没有则没有绑定白名单
-       * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺
-       * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店 或者 不能返回店铺，因为没有location？
+       * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺，如果没有，返回默认店铺， white_hidden==1，表示是默认的店铺，不能进店，但是给我店铺信息用来加载模版和手机号
+       * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店，如果没有，返回默认店铺， white_hidden==1，表示是默认的店铺，不能进店，但是给我店铺信息用来加载模版和手机号
+       * 没有 show_type && distributor_id>0, 如果这个店铺没有启用，返回默认店铺
+       * 没有 show_type && distributor_id>0, 如果这个有启用，返回的是这个店铺是否是白名单的店铺
        * 
        * 找合适店铺的逻辑
-       * 1、开启定位，找最近的
-       * 2、没有开启定位，找创建时间最晚的
-       * 3、店铺列表没有，表示都没有绑定白名单
+       * 1、找最近开启白名单的店铺 
+       * 2、没有找到，从所有开启白名单店铺里的找，
+       *    2.1 开启定位，找最近的
+       *    2.2 没有开启定位，找创建时间最晚的
+       * 3、还没找到，找没开启白名单的店铺
+       * 4、都没有找到，就用默认的店铺渲染电话和模版
        * 
        * 返回 white_hidden ==1  说明是默认店铺 ，不进店，但是需要取店铺信息作为模版背景和手机号
+       * 
        */
 
       if (shopDetail.store_name && shopDetail.white_hidden != 1) { 

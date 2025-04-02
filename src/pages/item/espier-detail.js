@@ -109,9 +109,12 @@ function EspierDetail(props) {
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
-  const { shopInWhite } = useSelector((state) => state.shop)
-  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop()
-
+  const { shopInWhite , shopInfo} = useSelector((state) => state.shop)
+  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop({
+    onPhoneCallComplete: () => {
+      checkStoreIsolation()
+    }
+  })
   const { setNavigationBarTitle } = useNavigation()
   const dispatch = useDispatch()
   const { isLogin, checkPolicyChange, isNewUser, updatePolicyTime, setToken, login } = useLogin({
@@ -161,8 +164,11 @@ function EspierDetail(props) {
     dtid,
     curItem,
     recommendList,
-    policyModal
+    policyModal,
   } = state
+
+  // 添加一个 ref 来追踪是否是首次渲染
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
     init()
@@ -220,6 +226,29 @@ function EspierDetail(props) {
     }
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
+  // 添加一个新的 useEffect 来监听 dtid 变化
+  useEffect(() => {
+    if (dtid) {
+      console.log("🚀🚀🚀 ~ useEffect ~ dtid:", dtid)
+      fetch()
+    }
+  }, [dtid])
+
+  // 修改监听 shopInfo 的 useEffect
+  useEffect(() => {
+    // 跳过首次渲染时的 shopInfo
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
+    }
+
+    if (shopInfo?.distributor_id) {
+      setState((draft) => {
+        draft.dtid = shopInfo.distributor_id
+      })
+    }
+  }, [shopInfo])
+
   useShareAppMessage(async (res) => {
     return getAppShareInfo()
   })
@@ -227,7 +256,6 @@ function EspierDetail(props) {
   useShareTimeline(async (res) => {
     return getAppShareInfo()
   })
-
 
   const salesmanShare = async() => {
     let params = $instance.router.params
@@ -293,7 +321,7 @@ function EspierDetail(props) {
 
     const distributorId = getDistributorId() || 0
     let params = {
-      distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
+      distributor_id: distributorId
     }
     if (openLocation == 1 && location) {
       const { lat, lng } = location
@@ -302,8 +330,17 @@ function EspierDetail(props) {
       // params.distributor_id = undefined
     }
     // 开启了店铺隔离并且登录，获取白名单店铺
-    let shopDetail, res
-    
+    let res, shopDetail, distributorPhone;
+    // 渲染默认联系店铺的手机号
+    // 没有带id，就返回默认店铺 作为背景和手机号
+    // 有带id，就用带id的店铺作为背景和手机号
+    if (distributorId) {
+      res = await api.shop.getShop(params)
+      // dispatch(updateShopInfo(res)) // 
+      // 只存手机，避免多次调用接口
+      distributorPhone = res.phone
+    }
+
     if (!S.getAuthToken()) { 
       showWhiteLogin()
       return
@@ -313,21 +350,14 @@ function EspierDetail(props) {
       // updateAddress()
       params.show_type = 'self'
       // 带self，返回店铺内容store_name => 是绑定的店铺
-      shopDetail = await api.shop.getShop(params) 
-      /**
-       * 店铺隔离逻辑
-       * is_valid 接口逻辑
-       * show_type = 'self' && distributor_id=0 && location，返回最近的且开启白名单的店铺
-       * show_type = 'self' && distributor_id=0 && !location，不能返回店铺，因为不知道最近的店铺
-       * show_type = 'self' && distributor_id>0 ，如果有返回店铺信息，表示这个店铺已经有绑定白名单，没有则没有绑定白名单
-       * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺
-       * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店 或者 不能返回店铺，因为没有location？
-       * 
-       * 找合适店铺的逻辑
-       * 1、开启定位，找最近的
-       * 2、没有开启定位，找创建时间最晚的
-       * 3、店铺列表没有，表示都没有绑定白名单
-       */
+      try {
+        shopDetail = await api.shop.getShop(params) 
+      } catch (e) {
+        console.log("🚀🚀🚀 ~ checkStoreIsolation ~ shopDetail:", e)
+        shopDetail = []
+      }
+
+      console.log("🚀🚀🚀 ~ checkStoreIsolation ~ shopDetail:", shopDetail)
 
       if (shopDetail.store_name && shopDetail.white_hidden != 1) {
         // 找到店铺了
@@ -348,10 +378,10 @@ function EspierDetail(props) {
               content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
               confirmText: '回我的店',  
               cancelText: '联系店铺',
-              showCancel: !!(open_divided_templateId || shopInfo?.phone),
+              showCancel: !!(open_divided_templateId || distributorPhone),
               success: async (res) => {
                 if (res.cancel) {
-                  connectWhiteShop()
+                  connectWhiteShop(distributorPhone)
                 }
                 if (res.confirm) {
                   // 清空小程序启动时携带的参数
@@ -375,17 +405,17 @@ function EspierDetail(props) {
             const defalutShop = await api.shop.getShop(params)
             if ( defalutShop.white_hidden == 1) {
               // 没任何店铺可以进
-              showNoShopModal()
+              showNoShopModal(distributorPhone)
               return
             } else { 
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
                 confirmText: '去其他店',  
                 cancelText: '联系店铺',
-                showCancel: !!(open_divided_templateId || shopInfo?.phone),
+                showCancel: !!(open_divided_templateId || distributorPhone),
                 success: async (res) => {
                   if (res.cancel) {
-                    connectWhiteShop()
+                    connectWhiteShop(distributorPhone)
                   }
                   if (res.confirm) {
                     // 清空小程序启动时携带的参数
@@ -412,7 +442,7 @@ function EspierDetail(props) {
             if (defalutShop.white_hidden == 1) {
               // 没任何店铺可以进
               dispatch(updateShopInfo(defalutShop))
-              showNoShopModal()
+              showNoShopModal(defalutShop.phone)
             } else {
               // 有定位，存在没有开启白名单的店铺
               dispatch(updateShopInfo(defalutShop))
@@ -432,7 +462,7 @@ function EspierDetail(props) {
               if (res.white_hidden == 1) {
                 // 全部开启白名单
                 dispatch(updateShopInfo(defalutShop))
-                showNoShopModal()
+                showNoShopModal(res.phone)
               } else {
                 // 有部分门店未开启白名单
                 dispatch(updateShopInfo(res))
@@ -539,6 +569,8 @@ function EspierDetail(props) {
     if (type == 'pointitem') {
     } else {
       try {
+        console.log("🚀🚀🚀 ~ fetch ~ dtid:", dtid)
+
         const itemDetail = await api.item.detail(id, {
           showError: false,
           distributor_id: dtid
