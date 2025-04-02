@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text, Swiper, SwiperItem } from '@tarojs/components'
@@ -10,7 +9,6 @@ import { AtButton } from 'taro-ui'
 import { pickBy, isArray, classNames } from '@/utils'
 import { useNavigation } from '@/hooks'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeadline } from '@/pages/home/wgts'
-import S from '@/spx'
 import './activity-info.scss'
 
 const initialState = {
@@ -23,7 +21,7 @@ const initialState = {
   keyword: '',
   loading: false
 }
-function ItemActivity(props) {
+function ActivityInfo(props) {
   const [state, setState] = useImmer(initialState)
   const { info, isOpened, selectOptions, keyword, loading } = state
   const router = useRouter()
@@ -39,25 +37,7 @@ function ItemActivity(props) {
       activity_id: router.params.activity_id
     })
 
-    let _info = pickBy(activity_info, {
-      pics: ({ pics }) => pics.split(','),
-      activityId: 'activity_id',
-      activityName: 'activity_name',
-      content: 'content',
-      place: 'place',
-      address: 'address',
-      startDate: 'start_date',
-      endDate: 'end_date',
-      joinLimit: 'join_limit',
-      status: 'status',
-      recordId: ({ record_info }) => record_info?.[0]?.record_id,
-      recordStatus: ({ record_info }) => record_info?.[0]?.status,
-      isAllowDuplicate: ({ is_allow_duplicate }) => is_allow_duplicate == 1,
-      hasTemp: ({ temp_id }) => temp_id != '0',
-      showPlace: ({ show_fields }) => JSON.parse(show_fields)?.place == 1,
-      showAddress: ({ show_fields }) => JSON.parse(show_fields)?.address == 1,
-      showTime: ({ show_fields }) => JSON.parse(show_fields)?.time == 1
-    })
+    let _info = pickBy(activity_info, doc.activity.ACTIVITY_DETAIL)
     _info.totalJoinNum = total_join_num
     setNavigationBarTitle(_info?.activityName)
     setState((draft) => {
@@ -166,8 +146,6 @@ function ItemActivity(props) {
     return (joinLimit <= totalJoinNum && joinLimit != 0) || (!isAllowDuplicate && recordId)
   }, [info])
 
-  console.log(888, info)
-
   const renderFooter = () => {
     return (
       <View className='activity-info__footer'>
@@ -266,8 +244,8 @@ function ItemActivity(props) {
   )
 }
 
-ItemActivity.options = {
+ActivityInfo.options = {
   addGlobalClass: true
 }
 
-export default ItemActivity
+export default ActivityInfo

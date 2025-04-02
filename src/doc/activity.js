@@ -50,3 +50,48 @@ export const RECORD_DETAIL = {
   verifyCode: 'verify_code',
   isOfflineVerify: ({ activity_info }) => activity_info?.is_offline_verify == 1
 }
+
+export const ACTIVITY_LIST = {
+  activityId: 'activity_id',
+  recordId: 'record_id',
+  activityName: 'activity_name',
+  status: 'status',
+  intro: 'intro',
+  activityStartTime: 'start_date',
+  createDate: 'create_date',
+  endDate: 'end_date',
+  reason: 'reason',
+  areaName: 'area_name',
+  activityStatus: 'status_name',
+  pics: ({ pics }) => pics?.split(','),
+  hasTemp: ({ temp_id }) => temp_id != '0',
+  area: 'area',
+  showPlace: ({ show_fields }) => JSON.parse(show_fields)?.place == 1,
+  showAddress: ({ show_fields }) => JSON.parse(show_fields)?.address == 1,
+  showCity: ({ show_fields }) => JSON.parse(show_fields)?.city == 1,
+  joinLimit: 'join_limit',
+  totalJoinNum: 'total_join_num',
+  isAllowDuplicate: ({ is_allow_duplicate }) => is_allow_duplicate == 1,
+  recordId: ({ record_info }) => record_info?.[0]?.record_id,
+  recordStatus: ({ record_info }) => record_info?.[0]?.status
+}
+
+export const ACTIVITY_DETAIL = {
+  pics: ({ pics }) => pics.split(','),
+  activityId: 'activity_id',
+  activityName: 'activity_name',
+  content: 'content',
+  place: 'place',
+  address: 'address',
+  startDate: 'start_date',
+  endDate: 'end_date',
+  joinLimit: 'join_limit',
+  status: 'status',
+  recordId: ({ record_info }) => record_info?.[0]?.record_id,
+  recordStatus: ({ record_info }) => record_info?.[0]?.status,
+  isAllowDuplicate: ({ is_allow_duplicate }) => is_allow_duplicate == 1,
+  hasTemp: ({ temp_id }) => temp_id != '0',
+  showPlace: ({ show_fields }) => JSON.parse(show_fields)?.place == 1,
+  showAddress: ({ show_fields }) => JSON.parse(show_fields)?.address == 1,
+  showTime: ({ show_fields }) => JSON.parse(show_fields)?.time == 1
+}
