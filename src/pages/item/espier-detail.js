@@ -385,6 +385,9 @@ function EspierDetail(props) {
           const shop = await getWhiteShop() // 已经加入的最优店铺
           if (shop) {
             if (shop.distributor_id == shopInfo.distributor_id) {
+              Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+              dispatch(updateShopInfo(shop))
+              dispatch(changeInWhite(true))
               // 从其他页面返回到首页的时候,已经在当前店铺了
               return
             }
@@ -424,6 +427,9 @@ function EspierDetail(props) {
               return
             } else { 
               if (defalutShop.distributor_id == shopInfo.distributor_id) {
+                Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                dispatch(updateShopInfo(defalutShop))
+                dispatch(changeInWhite(true))
                 // 从其他页面返回到首页的时候,已经在当前店铺了
                 return
               }
