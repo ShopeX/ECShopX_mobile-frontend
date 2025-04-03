@@ -379,7 +379,6 @@ function EspierDetail(props) {
               Taro.setStorageSync(SG_ROUTER_PARAMS, {})
               dispatch(updateShopInfo(shopInfo))
               dispatch(changeInWhite(true))
-              // 从其他页面返回到首页的时候,已经在当前店铺了
               return
             }
             params.distributor_id = shop.distributor_id
@@ -418,10 +417,10 @@ function EspierDetail(props) {
               return
             } else { 
               if (!routerDtid && defalutShop.distributor_id == shopInfo.distributor_id) {
+                // 必须有，重新渲染商品信息
                 Taro.setStorageSync(SG_ROUTER_PARAMS, {})
                 dispatch(updateShopInfo(shopInfo))
                 dispatch(changeInWhite(true))
-                // 从其他页面返回到首页的时候,已经在当前店铺了
                 return
               }
               Taro.showModal({

@@ -374,7 +374,7 @@ function Home() {
        * show_type = 'self' && distributor_id=0 && !location，返回默认店铺，是否是白名单店铺？？这个有改掉了，和后端确认中
        * show_type = 'self' && distributor_id>0 ，如果有返回店铺信息，表示这个店铺已经有绑定白名单，没有则没有绑定白名单
        * 没有 show_type  && distributor_id=0 && location，返回没有开启白名单的店铺，如果没有，返回默认店铺， white_hidden==1，表示是默认的店铺，不能进店，但是给我店铺信息用来加载模版和手机号
-       * 没有 show_type  && distributor_id=0 && !location，返回没有开启白名单的店，如果没有，返回默认店铺， white_hidden==1，表示是默认的店铺，不能进店，但是给我店铺信息用来加载模版和手机号
+       * 没有 show_type  && distributor_id=0 && !location，同上
        * 没有 show_type && distributor_id>0, 如果这个店铺没有启用，返回默认店铺
        * 没有 show_type && distributor_id>0, 如果这个有启用，返回的是这个店铺是否是白名单的店铺
        * 
