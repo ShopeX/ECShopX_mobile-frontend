@@ -170,7 +170,7 @@ function Home() {
   
   // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
   useDidShow(() => {
-    if (VERSION_STANDARD && openLocation == 1 && !isFirstRender.current) {
+    if (VERSION_STANDARD && open_divided && !isFirstRender.current) {
       // console.log("🚀🚀🚀 ~ useDidShow ~ useDidShow:")
       checkStoreIsolation()
     }
@@ -393,6 +393,10 @@ function Home() {
           // 有店铺码 但是这个店铺不是在白名单里, 找其他店铺
           const shop = await getWhiteShop() // 已经加入的最优店铺
           if (shop) {
+            if (shop.distributor_id == shopInfo.distributor_id) {
+              // 从其他页面返回到首页的时候,已经在当前店铺了
+              return
+            }
             params.distributor_id = shop.distributor_id
             Taro.showModal({
               content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
@@ -427,6 +431,10 @@ function Home() {
               showNoShopModal(shopInfo?.phone)
               return
             } else {
+              if (defalutShop.distributor_id == shopInfo.distributor_id) {
+                // 从其他页面返回到首页的时候,已经在当前店铺了
+                return
+              }
               // 部分门店未开启白名单
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',

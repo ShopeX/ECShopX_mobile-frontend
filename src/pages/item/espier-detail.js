@@ -384,6 +384,10 @@ function EspierDetail(props) {
           // 有店铺码 但是这个店铺不是在白名单里, 找其他店铺
           const shop = await getWhiteShop() // 已经加入的最优店铺
           if (shop) {
+            if (shop.distributor_id == shopInfo.distributor_id) {
+              // 从其他页面返回到首页的时候,已经在当前店铺了
+              return
+            }
             params.distributor_id = shop.distributor_id
             Taro.showModal({
               content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
@@ -419,6 +423,10 @@ function EspierDetail(props) {
               showNoShopModal(distributorPhone)
               return
             } else { 
+              if (defalutShop.distributor_id == shopInfo.distributor_id) {
+                // 从其他页面返回到首页的时候,已经在当前店铺了
+                return
+              }
               Taro.showModal({
                 content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
                 confirmText: '去其他店',  
