@@ -316,7 +316,6 @@ function EspierDetail(props) {
 
   // 店铺隔离start
   const checkStoreIsolation = async () => { 
-    if(shopInWhite) return // 已经在白名单店铺了
     console.log("🚀🚀🚀 ~ checkStoreIsolation ~ checkStoreIsolation:")
 
     const distributorId = getDistributorId() || 0

@@ -323,7 +323,6 @@ function Home() {
   }
 
   const checkStoreIsolation = async () => {
-    if(shopInWhite) return // 已经在白名单店铺了
     console.log("🚀🚀🚀 ~ useDidShow ~ checkStoreIsolation:")
     const distributorId = getDistributorId() || 0
     // console.log("🚀🚀🚀 ~ checkStoreIsolation ~ 分享进来的 dtid:", dtid)
