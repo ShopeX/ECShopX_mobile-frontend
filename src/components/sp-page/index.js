@@ -96,9 +96,9 @@ function SpPage(props, ref) {
   const { colorPrimary, colorMarketing, colorAccent, rgb, appName, open_divided, open_divided_templateId } = sys
   const dispatch = useDispatch()
   const { connectWhiteShop } = useWhiteShop({
-    onPhoneCallComplete: () => {
-      checkInWhite()
-    }
+    // onPhoneCallComplete: () => {
+    //   checkInWhite()
+    // }
   })
   useReady(() => {
     // 导购货架数据上报
@@ -230,48 +230,34 @@ function SpPage(props, ref) {
 
     if (S.getAuthToken()) {
       const distributorId = getDistributorId() || 0
-      let params = {
-        distributor_id: distributorId// 如果店铺id和经纬度都传会根据哪个去定位传参
-      }
-      let inWhite;
       // 在其他页面有进了白名单店铺的话，需要changeInWhite = true
-      if (shopInWhite === undefined || !shopInWhite) {
-        const { status } = await api.shop.checkUserInWhite(params)
-        inWhite = status
+      if (!shopInWhite) {
+        const { status } = await api.shop.checkUserInWhite({distributor_id: distributorId})
+        dispatch(changeInWhite(status))
         if (status) { 
-          dispatch(changeInWhite(status))
+          return
+        } else {
+          // 不在白名单的店铺，
+          Taro.showModal({
+            content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+            confirmText: '关闭',
+            cancelText: '联系店铺',
+            showCancel: !!(open_divided_templateId || shopInfo?.phone),
+            success: async (res) => {
+              if (res.cancel) {
+                connectWhiteShop()
+              }
+              if (res.confirm) {
+                // 去首页
+                const path = `/pages/index`
+                Taro.navigateTo({
+                  url: path
+                })
+              }
+            }
+          })
         }
-      } else {
-        inWhite = shopInWhite
-      }
-      
-
-      if (inWhite) {
-        // 在白名单的店铺，不需要弹窗
-        return
-      } else {
-        // 不在白名单的店铺，
-        Taro.showModal({
-          content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-          confirmText: '关闭',
-          cancelText: '联系店铺',
-          showCancel: !!(open_divided_templateId || shopInfo?.phone),
-          success: async (res) => {
-            if (res.cancel) {
-              connectWhiteShop()
-            }
-            if (res.confirm) {
-              // 去首页
-              const path = `/pages/index`
-              Taro.navigateTo({
-                url: path
-              })
-            }
-          }
-        })
-
-
-      }
+      } 
     } else {
       // 未登录，跳首页登录
       Taro.showModal({

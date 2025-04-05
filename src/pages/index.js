@@ -107,9 +107,9 @@ function Home() {
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
   const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop({
-    onPhoneCallComplete: () => {
-      checkStoreIsolation()
-    }
+    // onPhoneCallComplete: () => {
+      // checkStoreIsolation()
+    // }
   })
   const {
     wgts,
@@ -360,10 +360,22 @@ function Home() {
     }
 
     if (S.getAuthToken()) {
-      if (shopInWhite && !routerDtid) {
+      if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
+        // 在有效店铺，如果店铺没变，直接进店
+        // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
         return
       }
-      // updateAddress()
+
+      // 分享带有tdid访问，每次都应该判断提示
+      if (routerDtid && (shopInWhite && routerDtid != shopInfo.distributor_id)) {
+        // 虽然是在有效店铺，如果店铺变化，判断是否可以进店, 
+        // 可能是没开启白名单的店铺，直接进店，如果继续走下面的逻辑，会提示回我的店的问题
+        const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
+        dispatch(changeInWhite(status))
+        if (status) { 
+          return
+        }
+      }
       params.show_type = 'self'
       // 带self，返回店铺内容store_name => 是绑定的店铺
       const shopDetail = await api.shop.getShop(params)
