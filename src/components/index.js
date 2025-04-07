@@ -103,6 +103,7 @@ import SpTimeLineItem from './sp-time-line-item'
 import SpCustomPicker from './sp-custom-picker'
 import SpTable from './sp-table'
 import SpInput from './sp-input'
+import SpModalDivided from './sp-modal-divided'
 
 
 
@@ -213,5 +214,6 @@ export {
   SpTimeLineItem,
   SpCustomPicker,
   SpTable,
-  SpInput
+  SpInput,
+  SpModalDivided
 }

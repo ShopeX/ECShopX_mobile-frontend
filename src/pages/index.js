@@ -16,7 +16,8 @@ import {
   SpCouponPackage,
   SpSkuSelect,
   SpPrivacyModal,
-  SpLogin
+  SpLogin,
+  SpModalDivided
 } from '@/components'
 import api from '@/api'
 import {
@@ -68,6 +69,14 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   policyModal: false,
+  modalDivided: {
+    isShow: false,
+    content: '',
+    confirmText: '',
+    showCancel: true,
+    onCancel: null,
+    onConfirm: null
+  }
 }
 
 function Home() {
@@ -107,7 +116,7 @@ function Home() {
   const { location } = useSelector((state) => state.user)
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
-  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop({
+  const { getWhiteShop, connectWhiteShop } = useWhiteShop({
     onPhoneCallComplete: () => {
       isFromPhoneCallBack.current = true
       checkStoreIsolation()
@@ -125,6 +134,7 @@ function Home() {
     skuPanelOpen,
     selectType,
     policyModal,
+    modalDivided,
   } = state
 
   const dispatch = useDispatch()
@@ -434,26 +444,33 @@ function Home() {
           const shop = await getWhiteShop() // 已经加入的最优店铺
           if (shop) {
             params.distributor_id = shop.distributor_id
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-              confirmText: '回我的店',
-              cancelText: '联系店铺',
-              showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
-              success: async (res) => {
-                if (res.cancel) {
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: true,
+                confirmText: '回我的店',
+                showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
+                onCancel: () => { 
                   connectWhiteShop(defalutShop?.phone || shopInfo?.phone)
-                }
-                if (res.confirm) {
-                  console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
+                },
+                onConfirm: async () => {
                   // 清空小程序启动时携带的参数
                   Taro.setStorageSync(SG_ROUTER_PARAMS, {})
-                  res = await api.shop.getShop(params)
+                  const res = await api.shop.getShop(params)
                   dispatch(updateShopInfo(res))
                   dispatch(changeInWhite(true))
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
                 }
               }
             })
-
             return
           } else {
             // 找附近未开启白名单的店铺
@@ -468,21 +485,29 @@ function Home() {
               return
             } else {
               // 部分门店未开启白名单
-              Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '去其他店',
-                cancelText: '联系店铺',
-                showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
-                success: async (res) => {
-                  if (res.cancel) {
+              setState((draft) => {
+                draft.modalDivided = {
+                  isShow: true,
+                  confirmText: '去其他店',
+                  showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
+                  onCancel: () => { 
                     connectWhiteShop(defalutShop?.phone || shopInfo?.phone)
-                  }
-                  if (res.confirm) {
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
+                  },
+                  onConfirm: async () => {
                     // 清空小程序启动时携带的参数
                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
-                    // res = await api.shop.getShop(params)
                     dispatch(updateShopInfo(reslut))
                     dispatch(changeInWhite(true))
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
                   }
                 }
               })
@@ -492,49 +517,29 @@ function Home() {
         }
 
         if (!routerDtid) {
-          // 已定位
-          if (params.lat) {
+          // 没有携带店铺码，直接进店铺，不提示
+          const shop = await getWhiteShop()
+          if (!shop) {
+            // 未加入店铺，找没开启白名单的店
             delete params.show_type
-          
-            // 未开启白名单的店铺
-            const reslut = await api.shop.getShop(params)
-            if (reslut.white_hidden == 1) {
-              dispatch(updateShopInfo(reslut))
-              showNoShopModal(reslut.phone)
+            const res = await api.shop.getShop(params)
+            if (res.white_hidden == 1) {
+              // 全部开启白名单
+              dispatch(updateShopInfo(res))
+              showNoShopModal(res.phone)
             } else {
-              // 有定位，存在没有开启白名单的店铺
-              dispatch(updateShopInfo(reslut))
-              dispatch(changeInWhite(true))
-            }
-            
-            return
-          }
-
-          // 未定位
-          if (!params.lat) {
-            const shop = await getWhiteShop()
-            if (!shop) {
-              // 未加入店铺
-              delete params.show_type
-              const res = await api.shop.getShop(params)
-              if (res.white_hidden == 1) {
-                // 全部开启白名单
-                dispatch(updateShopInfo(res))
-                showNoShopModal(res.phone)
-              } else {
-                // 有部分门店未开启白名单
-                dispatch(updateShopInfo(res))
-                dispatch(changeInWhite(true))
-                return
-              }
-              return
-            } else {
-              // 加入最近时间的店铺
-              params.distributor_id = shop.distributor_id
-              const res = await api.shop.getShop(params)
+              // 有部分门店未开启白名单
               dispatch(updateShopInfo(res))
               dispatch(changeInWhite(true))
+              return
             }
+            return
+          } else {
+            // 加入最近时间的店铺
+            params.distributor_id = shop.distributor_id
+            const res = await api.shop.getShop(params)
+            dispatch(updateShopInfo(res))
+            dispatch(changeInWhite(true))
           }
         }
       }
@@ -618,6 +623,34 @@ function Home() {
       }
     }
   }
+
+    // 没有店铺
+  const showNoShopModal = (phone) => {
+    setState((draft) => {
+      draft.modalDivided = {
+        isShow: true,
+        confirmText: '关闭',
+        showCancel: !!(open_divided_templateId || phone),
+        onCancel: () => { 
+          connectWhiteShop(phone)
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        },
+        onConfirm: async () => {
+          Taro.exitMiniProgram()
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        }
+      }
+    })
+  }
+  
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
@@ -719,7 +752,14 @@ function Home() {
         }}
       >
       </SpLogin>
-
+      { modalDivided.isShow && <SpModalDivided 
+        content={modalDivided.content}
+        cancelText={modalDivided.cancelText} 
+        confirmText={modalDivided.confirmText}
+        showCancel={modalDivided.showCancel}
+        onCancel={modalDivided.onCancel}
+        onConfirm={modalDivided.onConfirm}
+      />}
     </SpPage>
   )
 }
