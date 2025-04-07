@@ -389,9 +389,7 @@ function Home() {
           return
         }
       }
-      params.show_type = 'self'
-      // 带self，返回店铺内容store_name => 是绑定的店铺
-      const shopDetail = await api.shop.getShop(params)
+
       /**
        * 店铺隔离逻辑
        * is_valid 接口逻辑
@@ -415,21 +413,20 @@ function Home() {
        * 
        */
 
-      if (shopDetail.store_name && shopDetail.white_hidden != 1) { 
-        // 找到店铺了
-        dispatch(updateShopInfo(shopDetail))
-        dispatch(changeInWhite(true))
-        return
-      }
-
-
-
-      if (!shopDetail.store_name || shopDetail.white_hidden == 1) {
-        // 不是店铺白名单店铺
-        console.log(distributorId, 'distributorId')
-        console.log('shopInWhite && !routerDtid', shopInWhite , routerDtid)
         
         if (routerDtid) {
+          params.show_type = 'self'
+          // 带self，返回店铺内容store_name => 是绑定的店铺
+          const shopDetail = await api.shop.getShop(params)
+
+          // 不是店铺白名单店铺
+          if (shopDetail.store_name && shopDetail.white_hidden != 1) { 
+            // 找到店铺了
+            dispatch(updateShopInfo(shopDetail))
+            dispatch(changeInWhite(true))
+            return
+          }
+
           /**
            * 1、路由带了tdid，非自然浏览进来，首次必须弹窗
            *  1.1 带了tdid，但是没有进店，需要弹
@@ -518,6 +515,21 @@ function Home() {
 
         if (!routerDtid) {
           // 没有携带店铺码，直接进店铺，不提示
+          params.show_type = 'self'
+          params.distributor_id = 0
+          // 带self，返回店铺内容store_name => 是绑定的店铺
+          const shopDetail = await api.shop.getShop(params)
+
+
+          // 不是店铺白名单店铺
+          if (shopDetail.store_name && shopDetail.white_hidden != 1) { 
+            // 找到店铺了
+            dispatch(updateShopInfo(shopDetail))
+            dispatch(changeInWhite(true))
+            return
+          }
+
+
           const shop = await getWhiteShop()
           if (!shop) {
             // 未加入店铺，找没开启白名单的店
@@ -543,7 +555,6 @@ function Home() {
             dispatch(changeInWhite(true))
           }
         }
-      }
     }
   }
 
