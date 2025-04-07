@@ -9,7 +9,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
+import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
 import { useSyncCallback, useWhiteShop } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
 import api from '@/api'
@@ -44,7 +44,15 @@ const initialState = {
   windowHeight: 0,
   gNavbarH: 0,
   gStatusBarHeight: 0,
-  pageTheme: {}
+  pageTheme: {},
+  modalDivided: {
+    isShow: false,
+    content: '',
+    confirmText: '',
+    showCancel: true,
+    onCancel: null,
+    onConfirm: null
+  }
 }
 
 function SpPage(props, ref) {
@@ -64,7 +72,8 @@ function SpPage(props, ref) {
     ipx,
     windowHeight,
     gNavbarH,
-    gStatusBarHeight
+    gStatusBarHeight,
+    modalDivided
   } = state
   const {
     className,
@@ -215,7 +224,7 @@ function SpPage(props, ref) {
       })
     }
     console.log("🚀🚀🚀 ~ sppage useDidShow ~ open_divided:", open_divided)
-    if (open_divided && !isFromPhoneCallBack) {
+    if (open_divided && !isFromPhoneCallBack.current) {
       checkInWhite()
     }
     isFromPhoneCallBack.current = false
@@ -241,20 +250,29 @@ function SpPage(props, ref) {
           return
         } else {
           // 不在白名单的店铺，
-          Taro.showModal({
-            content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-            confirmText: '关闭',
-            cancelText: '联系店铺',
-            showCancel: !!(open_divided_templateId || shopInfo?.phone),
-            success: async (res) => {
-              if (res.cancel) {
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: true,
+              confirmText: '关闭',
+              showCancel: !!(open_divided_templateId || shopInfo?.phone),
+              onCancel: () => { 
                 connectWhiteShop()
-              }
-              if (res.confirm) {
+                setState((draft) => {
+                  draft.modalDivided = {
+                    isShow: false
+                  }
+                })
+              },
+              onConfirm: async () => {
                 // 去首页
                 const path = `/pages/index`
                 Taro.navigateTo({
                   url: path
+                })
+                setState((draft) => {
+                  draft.modalDivided = {
+                    isShow: false
+                  }
                 })
               }
             }
@@ -262,25 +280,35 @@ function SpPage(props, ref) {
         }
       } 
     } else {
-      // 未登录，跳首页登录
-      Taro.showModal({
-        content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-        confirmText: '去登录',  
-        cancelText: '联系店铺',
-        showCancel: !!(open_divided_templateId || shopInfo?.phone),
-        success: async (res) => {
-          if (res.cancel) {
+
+      setState((draft) => {
+        draft.modalDivided = {
+          isShow: true,
+          confirmText: '去登录',
+          showCancel: !!(open_divided_templateId || shopInfo?.phone),
+          onCancel: () => { 
             connectWhiteShop()
-          }
-          if (res.confirm) {
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: false
+              }
+            })
+          },
+          onConfirm: async () => {
             console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
             const path = `/pages/index`
             Taro.navigateTo({
               url: path
             })
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: false
+              }
+            })
           }
         }
       })
+
     }
   }
   
@@ -524,6 +552,15 @@ function SpPage(props, ref) {
           )}
         </View>
       )}
+
+    { modalDivided.isShow && <SpModalDivided 
+      content={modalDivided.content}
+      cancelText={modalDivided.cancelText} 
+      confirmText={modalDivided.confirmText}
+      showCancel={modalDivided.showCancel}
+      onCancel={modalDivided.onCancel}
+      onConfirm={modalDivided.onConfirm}
+    />}
     </View>
   )
 }

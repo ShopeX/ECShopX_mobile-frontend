@@ -185,7 +185,7 @@ function Home() {
   
   // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
   useDidShow(() => {
-    if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack) {
+    if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack.current) {
       // console.log("🚀🚀🚀 ~ useDidShow ~ useDidShow:")
       checkStoreIsolation()
     }

@@ -108,7 +108,7 @@ export default ({ onPhoneCallComplete } = {}) => {
 
   }
 
-  // 联系店铺
+  // 打店铺电话
   const connectWhiteShop = (phone) => { 
     if (open_divided_templateId) {
       const query = `?id=${open_divided_templateId}`
@@ -130,25 +130,25 @@ export default ({ onPhoneCallComplete } = {}) => {
   }
 
   // 没有店铺
-  const showNoShopModal = (phone) => {
-    Taro.showModal({
-      content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-      confirmText: '关闭',
-      cancelText: '联系店铺',
-      showCancel: !!(open_divided_templateId || phone),
-      success: async (res) => {
-        if (res.cancel) {
-          connectWhiteShop(phone)
-        }
+  // const showNoShopModal = (phone) => {
+  //   Taro.showModal({
+  //     content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
+  //     confirmText: '关闭',
+  //     cancelText: '联系店铺',
+  //     showCancel: !!(open_divided_templateId || phone),
+  //     success: async (res) => {
+  //       if (res.cancel) {
+  //         connectWhiteShop(phone)
+  //       }
 
-        if (res.confirm) {
-          // 关闭退出小程序
-          Taro.exitMiniProgram()
-        }
-      }
-    })
-  }
+  //       if (res.confirm) {
+  //         // 关闭退出小程序
+  //         Taro.exitMiniProgram()
+  //       }
+  //     }
+  //   })
+  // }
 
 
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, showNoShopModal, connectWhiteShop }
+  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop }
 }

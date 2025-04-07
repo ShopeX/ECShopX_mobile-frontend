@@ -23,7 +23,8 @@ import {
   SpFloatMenuItem,
   SpChat,
   SpGoodsPrice,
-  SpPrivacyModal
+  SpPrivacyModal,
+  SpModalDivided
 } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -99,6 +100,14 @@ const initialState = {
   curItem: null,
   recommendList: [],
   policyModal: false, // 添加隐私协议弹窗状态  todozm 如果商品是已下架状态，隐私无法展示
+  modalDivided: {
+    isShow: false,
+    content: '',
+    confirmText: '',
+    showCancel: true,
+    onCancel: null,
+    onConfirm: null
+  }
 }
 
 function EspierDetail(props) {
@@ -112,7 +121,7 @@ function EspierDetail(props) {
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
   const { shopInWhite , shopInfo} = useSelector((state) => state.shop)
-  const { getWhiteShop, showNoShopModal, connectWhiteShop } = useWhiteShop({
+  const { getWhiteShop, connectWhiteShop } = useWhiteShop({
     onPhoneCallComplete: () => {
       isFromPhoneCallBack.current = true
       checkStoreIsolation()
@@ -168,6 +177,7 @@ function EspierDetail(props) {
     curItem,
     recommendList,
     policyModal,
+    modalDivided
   } = state
 
   // 添加一个 ref 来追踪是否是首次渲染
@@ -257,7 +267,7 @@ function EspierDetail(props) {
 
   // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
   useDidShow(() => {
-    if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack) {
+    if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack.current) {
       checkStoreIsolation()
     }
     // 标记第一次渲染已完成
@@ -406,28 +416,34 @@ function EspierDetail(props) {
               return
             }
             params.distributor_id = shop.distributor_id
-            Taro.showModal({
-              content: '抱歉，本店会员才可以访问，如有需要可联系店铺',
-              confirmText: '回我的店',  
-              cancelText: '联系店铺',
-              showCancel: !!(open_divided_templateId || distributorPhone),
-              success: async (res) => {
-                if (res.cancel) {
+
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: true,
+                confirmText: '回我的店',
+                showCancel: !!(open_divided_templateId || distributorPhone),
+                onCancel: () => { 
                   connectWhiteShop(distributorPhone)
-                }
-                if (res.confirm) {
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
+                },
+                onConfirm: async () => {
                   // 清空小程序启动时携带的参数
                   Taro.setStorageSync(SG_ROUTER_PARAMS, {})
-                  res = await api.shop.getShop(params)
+                  const res = await api.shop.getShop(params)
                   dispatch(updateShopInfo(res))
                   dispatch(changeInWhite(true))
-                  // Taro.navigateTo({
-                  //   url: `/pages/index`
-                  // })
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
                 }
               }
             })
-
             return
           } else {
             // 找附近未开启白名单的店铺
@@ -447,21 +463,31 @@ function EspierDetail(props) {
                 dispatch(changeInWhite(true))
                 return
               }
-              Taro.showModal({
-                content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-                confirmText: '去其他店',  
-                cancelText: '联系店铺',
-                showCancel: !!(open_divided_templateId || distributorPhone),
-                success: async (res) => {
-                  if (res.cancel) {
+
+              setState((draft) => {
+                draft.modalDivided = {
+                  isShow: true,
+                  confirmText: '去其他店',
+                  showCancel: !!(open_divided_templateId || distributorPhone),
+                  onCancel: () => { 
                     connectWhiteShop(distributorPhone)
-                  }
-                  if (res.confirm) {
-                    // 清空小程序启动时携带的参数
-                    Taro.setStorageSync(SG_ROUTER_PARAMS, {})
-                    // res = await api.shop.getShop(params)
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
+                  },
+                  onConfirm: async () => {
+                     // 清空小程序启动时携带的参数
+                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                     // res = await api.shop.getShop(params)
                     dispatch(updateShopInfo(defalutShop))
                     dispatch(changeInWhite(true))
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
                   }
                 }
               })
@@ -598,6 +624,33 @@ function EspierDetail(props) {
         loginRef.current.handleToLogin()
       }
     }
+  }
+
+  // 没有店铺
+  const showNoShopModal = (phone) => {
+    setState((draft) => {
+      draft.modalDivided = {
+        isShow: true,
+        confirmText: '关闭',
+        showCancel: !!(open_divided_templateId || phone),
+        onCancel: () => { 
+          connectWhiteShop(phone)
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        },
+        onConfirm: async () => {
+          Taro.exitMiniProgram()
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        }
+      }
+    })
   }
 
 
@@ -1116,6 +1169,14 @@ function EspierDetail(props) {
           onPolicyChange(false)
         }}
       />
+      { modalDivided.isShow && <SpModalDivided 
+        content={modalDivided.content}
+        cancelText={modalDivided.cancelText} 
+        confirmText={modalDivided.confirmText}
+        showCancel={modalDivided.showCancel}
+        onCancel={modalDivided.onCancel}
+        onConfirm={modalDivided.onConfirm}
+      />}
     </SpPage>
   )
 }
