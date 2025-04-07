@@ -522,6 +522,7 @@ function Home() {
           if (!shop) {
             // 未加入店铺，找没开启白名单的店
             delete params.show_type
+            params.distributor_id = 0
             const res = await api.shop.getShop(params)
             if (res.white_hidden == 1) {
               // 全部开启白名单
@@ -624,7 +625,7 @@ function Home() {
     }
   }
 
-    // 没有店铺
+  // 没有店铺
   const showNoShopModal = (phone) => {
     setState((draft) => {
       draft.modalDivided = {
