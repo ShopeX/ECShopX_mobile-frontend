@@ -1,5 +1,5 @@
 .sp-modal-divided {
-  position: absolute;
+  position: fixed;
   bottom: 0;
   top: 0;
   z-index: 5000;
@@ -8,6 +8,9 @@
   justify-content: center;
   align-items: center;
   width: 100vw;
+  height: 100%;
+  overflow: hidden;
+  overflow-y: hidden;
   // opacity: 1;
   // transform: scale3d(1, 1, 1);
   // transition: all .2s ease-in;
