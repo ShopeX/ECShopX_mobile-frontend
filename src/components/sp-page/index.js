@@ -9,9 +9,11 @@ import Taro, {
 } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
-import { useThemsColor } from '@/hooks'
+import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
+import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
+import api from '@/api'
+import S from '@/spx'
 import {
   classNames,
   styleNames,
@@ -21,8 +23,11 @@ import {
   isGoodsShelves,
   VERSION_IN_PURCHASE,
   validate,
-  hex2rgb
+  hex2rgb,
+  VERSION_STANDARD,
+  getDistributorId
 } from '@/utils'
+import { changeInWhite } from '@/store/slices/shop'
 
 import './index.scss'
 
@@ -39,7 +44,15 @@ const initialState = {
   windowHeight: 0,
   gNavbarH: 0,
   gStatusBarHeight: 0,
-  pageTheme: {}
+  pageTheme: {},
+  modalDivided: {
+    isShow: false,
+    content: '',
+    confirmText: '',
+    showCancel: true,
+    onCancel: null,
+    onConfirm: null
+  }
 }
 
 function SpPage(props, ref) {
@@ -59,7 +72,8 @@ function SpPage(props, ref) {
     ipx,
     windowHeight,
     gNavbarH,
-    gStatusBarHeight
+    gStatusBarHeight,
+    modalDivided
   } = state
   const {
     className,
@@ -84,12 +98,21 @@ function SpPage(props, ref) {
   let { renderTitle } = props
   const wrapRef = useRef(null)
   const scrollTopRef = useRef(0)
+  const isFromPhoneCallBack = useRef(false);
   const sys = useSelector((state) => state.sys)
+  const { shopInfo, shopInWhite } = useSelector((state) => state.shop)
   const [showToTop, setShowToTop] = useState(false)
   const [mantle, setMantle] = useState(false)
-  const { colorPrimary, colorMarketing, colorAccent, rgb, appName } = sys
+  const { colorPrimary, colorMarketing, colorAccent, rgb, appName, open_divided, open_divided_templateId} = sys
   const { themeColor } = useThemsColor()
 
+  const dispatch = useDispatch()
+  const { connectWhiteShop } = useWhiteShop({
+    onPhoneCallComplete: () => {
+      isFromPhoneCallBack.current = true
+      checkInWhite()
+    }
+  })
   useReady(() => {
     // 导购货架数据上报
     // const router = $instance.router
@@ -202,8 +225,95 @@ function SpPage(props, ref) {
         menus: ['shareAppMessage', 'shareTimeline']
       })
     }
+    console.log("🚀🚀🚀 ~ sppage useDidShow ~ open_divided:", open_divided)
+    if (open_divided && !isFromPhoneCallBack.current) {
+      checkInWhite()
+    }
+    isFromPhoneCallBack.current = false
   })
 
+  const checkInWhite = async () => {
+    const { router } = $instance
+    // 白名单直接登录的页面，不需要弹窗
+    const whiteLoginPage = ['/pages/index', '/pages/item/espier-detail', '/pages/custom/custom-page']
+    // 导购货架分包路由，隐藏所有分享入口
+    // 白名单直接登录的页面，不需要弹窗
+    if (whiteLoginPage.includes(router.path)) {
+      return
+    }
+
+    if (S.getAuthToken()) {
+      const distributorId = getDistributorId() || 0
+      // 在其他页面有进了白名单店铺的话，需要changeInWhite = true
+      if (!shopInWhite) {
+        const { status } = await api.shop.checkUserInWhite({distributor_id: distributorId})
+        dispatch(changeInWhite(status))
+        if (status) { 
+          return
+        } else {
+          // 不在白名单的店铺，
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: true,
+              confirmText: '关闭',
+              showCancel: !!(open_divided_templateId || shopInfo?.phone),
+              onCancel: () => { 
+                connectWhiteShop(shopInfo?.phone)
+                setState((draft) => {
+                  draft.modalDivided = {
+                    isShow: false
+                  }
+                })
+              },
+              onConfirm: async () => {
+                // 去首页
+                const path = `/pages/index`
+                Taro.navigateTo({
+                  url: path
+                })
+                setState((draft) => {
+                  draft.modalDivided = {
+                    isShow: false
+                  }
+                })
+              }
+            }
+          })
+        }
+      } 
+    } else {
+
+      setState((draft) => {
+        draft.modalDivided = {
+          isShow: true,
+          confirmText: '去登录',
+          showCancel: !!(open_divided_templateId || shopInfo?.phone),
+          onCancel: () => { 
+            connectWhiteShop(shopInfo?.phone)
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: false
+              }
+            })
+          },
+          onConfirm: async () => {
+            console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
+            const path = `/pages/index`
+            Taro.navigateTo({
+              url: path
+            })
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: false
+              }
+            })
+          }
+        }
+      })
+
+    }
+  }
+  
 
   usePageScroll((res) => {
     if (!lock) {
@@ -401,6 +511,15 @@ function SpPage(props, ref) {
           )}
         </View>
       )}
+
+    { modalDivided.isShow && <SpModalDivided 
+      content={modalDivided.content}
+      cancelText={modalDivided.cancelText} 
+      confirmText={modalDivided.confirmText}
+      showCancel={modalDivided.showCancel}
+      onCancel={modalDivided.onCancel}
+      onConfirm={modalDivided.onConfirm}
+    />}
     </View>
   )
 }

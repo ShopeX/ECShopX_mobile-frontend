@@ -17,7 +17,7 @@ import {
   SG_GUIDE_PARAMS,
   SG_GUIDE_PARAMS_UPDATETIME
 } from '@/consts'
-import { checkAppVersion, isWeixin, isWeb, isNavbar, log, entryLaunch } from '@/utils'
+import { checkAppVersion, isWeixin, isWeb, isNavbar, log, entryLaunch, VERSION_STANDARD } from '@/utils'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
 
@@ -157,7 +157,9 @@ class App extends Component {
           meiqia,
           openStore: !nostores_status, // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
           priceSetting,
-          appLogo: appSettingInfo?.logo
+          appLogo: appSettingInfo?.logo,
+          open_divided: appSettingInfo?.open_divided?.status && VERSION_STANDARD, // 店铺隔离开关
+          open_divided_templateId: appSettingInfo?.open_divided?.template // 店铺隔离自定义模版id
         }
       })
       // 兼容老的主题方式

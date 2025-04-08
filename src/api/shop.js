@@ -5,6 +5,11 @@ export function getShop (params = {}) {
   return req.get('/distributor/is_valid', params)
 }
 
+// 获取白名单店铺
+export function checkUserInWhite (params = {}) {
+  return req.get('/distributor/checkUserInWhite', params)
+}
+
 export function list (params = {}) {
   return req.get('/distributor/list', params)
 }

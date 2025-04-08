@@ -73,7 +73,9 @@ const initialState = {
     order_page: {
       market_price: false
     }
-  }
+  },
+  open_divided: false,// 店铺隔离开关
+  open_divided_templateId: '' // 店铺隔离自定义模版id
 }
 
 const sysSlice = createSlice({
