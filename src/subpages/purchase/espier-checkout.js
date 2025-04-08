@@ -10,10 +10,11 @@ import {
   SpCashier,
   SpGoodsCell,
   SpFloatLayout,
-  SpNumberKeyBoard
+  SpNumberKeyBoard,
+  SpDeliver
 } from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
-import { changeCoupon } from '@/store/slices/cart'
+import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
 import { changeZitiStore } from '@/store/slices/shop'
 import {
@@ -39,7 +40,6 @@ import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import S from '@/spx'
-
 import { initialState } from './const'
 
 import CompDeliver from './comps/comp-deliver'
@@ -65,10 +65,11 @@ function PurchaseCheckout(props) {
 
   const dispatch = useDispatch()
   const pageRef = useRef()
+  const deliverRef = useRef()
   const calc = useRef(false)
   const { userInfo, address } = useSelector((state) => state.user)
   const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
-  const { coupon } = useSelector((state) => state.cart)
+  const { coupon, zitiAddress } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
   const { purchase_share_info = {}, isDiscountDescriptionEnabled, discountDescription } = useSelector((state) => state.purchase)
 
@@ -129,6 +130,7 @@ function PurchaseCheckout(props) {
       // tode 此处应有埋点
       return () => {
         dispatch(changeCoupon()) // 清空优惠券信息
+        dispatch(changeZitiAddress(null)) // 清空自提地址信息
         // dispatch(updateChooseAddress(null)) // 清空地址信息
         dispatch(changeZitiStore()) // 清空编辑自提列表选中的数据
       }
@@ -149,7 +151,7 @@ function PurchaseCheckout(props) {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [address, payType, point_use])
+  }, [address, payType,zitiAddress, point_use])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
@@ -161,6 +163,15 @@ function PurchaseCheckout(props) {
 
   const onSubmitPayChange = async () => {
     if (submitLoading) return
+
+    if (receiptType == 'ziti') {
+      if (zitiAddress) {
+        await deliverRef.current.validateZitiInfo()
+      } else {
+        showToast('请选择自提地址')
+      }
+    }
+
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     const { status: isValid } = await api.distribution.merchantIsvaild({ distributor_id: dtid })
     if (!isValid) {
@@ -507,12 +518,21 @@ function PurchaseCheckout(props) {
     let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
     if (receiptType === 'ziti') {
-      receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
-      if (shop.zitiShop) {
-        const { distributor_id } = shop.zitiShop
-        ziti_shopid = distributor_id
-        receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
+      // receiver = pickBy(distributorInfo, doc.checkout.ZITI_ADDRESS)
+      const { pickerTime, pickerName, pickerPhone } = await deliverRef.current.getZitiInfo()
+
+      receiver = {
+        receiver_name: pickerName,
+        receiver_mobile: pickerPhone,
+        pickup_date: pickerTime.date,
+        pickup_time: pickerTime.time,
+        pickup_location: zitiAddress?.id
       }
+      // if (shop.zitiShop) {
+      //   const { distributor_id } = shop.zitiShop
+      //   ziti_shopid = distributor_id
+      //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
+      // }
     }
     let cus_parmas = {
       ...paramsInfo,
@@ -589,6 +609,15 @@ function PurchaseCheckout(props) {
     }
   }
 
+  const orderSubmitDisabled = () => {
+    if (receiptType == 'ziti') {
+      return !zitiAddress
+    } else {
+      return !address
+    }
+    // receiptType !== 'ziti' && !isObjectsValue(address)
+  }
+
   const renderFooter = () => {
 
     // console.log('renderFooter:', receiptType, address , !isObjectsValue(address))
@@ -602,7 +631,8 @@ function PurchaseCheckout(props) {
           circle
           type='primary'
           loading={submitLoading}
-          disabled={receiptType !== 'ziti' && !isObjectsValue(address)}
+          // disabled={receiptType !== 'ziti' && !isObjectsValue(address)}
+          disabled={orderSubmitDisabled()}
           onClick={onSubmitPayChange}
         >
           提交订单
@@ -658,12 +688,20 @@ function PurchaseCheckout(props) {
       )}
 
       <View className='cart-checkout__address'>
-        <CompDeliver
+        {/* <CompDeliver
           distributor_id={dtid}
           address={address}
           onChange={handleSwitchExpress}
           onEidtZiti={handleEditZitiClick}
-        />
+        /> */}
+          <SpDeliver
+            isPurchase
+            ref={deliverRef}
+            distributor_id={dtid}
+            address={address}
+            onChange={handleSwitchExpress}
+            onEidtZiti={handleEditZitiClick}
+          />
       </View>
 
       {renderGoodsComp()}

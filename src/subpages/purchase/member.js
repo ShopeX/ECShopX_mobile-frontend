@@ -127,6 +127,10 @@ function MemberIndex(props) {
   const dispatch = useDispatch()
   const isPurchaseHome = router.params?.from == 'purchase_home'
 
+  useDidShow(()=>{
+    getMemberCenterData()
+  })
+
   useEffect(() => {
     if (isLogin) {
       getMemberCenterData()

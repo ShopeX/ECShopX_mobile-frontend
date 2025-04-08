@@ -10,7 +10,8 @@ import {
   SpCashier,
   SpGoodsCell,
   SpFloatLayout,
-  SpNumberKeyBoard
+  SpNumberKeyBoard,
+  SpDeliver
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
@@ -42,7 +43,6 @@ import qs from 'qs'
 import S from '@/spx'
 
 import { initialState } from './const'
-
 import CompDeliver from './comps/comp-deliver'
 import CompSelectPackage from './comps/comp-selectpackage'
 import CompPaymentPicker from './comps/comp-paymentpicker'
@@ -936,7 +936,15 @@ function CartCheckout(props) {
         )}
 
         <View className='cart-checkout__address'>
-          <CompDeliver
+          {/* <CompDeliver
+            ref={deliverRef}
+            distributor_id={shop_id}
+            address={address}
+            deliveryTimeList={deliveryTimeList}
+            onChange={handleSwitchExpress}
+            onEidtZiti={handleEditZitiClick}
+          /> */}
+          <SpDeliver
             ref={deliverRef}
             distributor_id={shop_id}
             address={address}
