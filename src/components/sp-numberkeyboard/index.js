@@ -15,15 +15,17 @@ const initialState = {
 function SpNumberKeyBoard(props) {
   const {
     maxValue = 0,
-    value = 0,isShowDefault=false , onClose = () => {}, onConfirm = () => {} } = props
+    value = 0,isShowDefault=false , onClose = () => {}, onConfirm = () => {}, isOpened = false } = props
   const [state, setState] = useImmer(initialState)
   const { currentValue } = state
 
   useEffect(()=>{
-    setState((draft) => {
-      draft.currentValue = isShowDefault ? Math.min(maxValue,value) : 0
-    })
-  },[value])
+    if (isOpened) {
+      setState((draft) => {
+        draft.currentValue = isShowDefault ? Math.min(maxValue,value) : 0
+      })
+    }
+  },[value, isOpened])
 
   const handleClickItem = (key) => {
     let _currentValue = currentValue
