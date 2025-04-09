@@ -28,14 +28,14 @@ function CompPointUse(props) {
     <View className='comp-pointuse'>
       <SpFloatLayout className='point-float-layout' open={isOpened} hideClose>
         <View className='point-hd'>
-          <View className='point-info'>{`可用${pointName}：${info.user_point}，本单可用${pointName}：${info.max_point}`}</View>
+          <View className='point-info'>{`可用${pointName}：${info.user_point}，本单可用${pointName}：${info?.receiptType == 'ziti' ? info.max_point_ziti : info.max_point}`}</View>
           <Text className="point-rule" onClick={() => {
             setState((draf) => {
               draf.isOpenRule = true
             })
           }}>使用规则</Text>
         </View>
-        <SpNumberKeyBoard isOpened={isOpened} isShowDefault={pointPayFirst} maxValue={info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
+        <SpNumberKeyBoard realUsePoint={info.real_use_point} isShowDefault={pointPayFirst} maxValue={info?.receiptType == 'ziti' ? info.max_point_ziti : info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
       </SpFloatLayout>
 
       <AtModal isOpened={isOpenRule}>
