@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { AtButton, AtCountdown, AtFloatLayout } from 'taro-ui'
@@ -41,7 +41,7 @@ const initialState = {
   squareRoot: false,  //待开方
   supplement: false,  //待补充
   prescriptionUrl: '',
-  prescriptionStatus: false
+  prescriptionStatus: false,
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
@@ -72,8 +72,16 @@ function TradeDetail(props) {
   const router = useRouter()
   const websocketRef = useRef(null)
 
+  const isMounted = useRef(true)  // 添加组件挂载状态标志
+
+  useDidShow(()=>{
+
+  })
+
   useEffect(() => {
     fetch()
+
+    isMounted.current = true  // 组件挂载时设置为true
 
     // 提交售后事件
     Taro.eventCenter.on('onEventAfterSalesApply', () => {
@@ -96,6 +104,8 @@ function TradeDetail(props) {
       Taro.eventCenter.off('onEventAfterSalesApply')
       Taro.eventCenter.off('onEventAfterSalesCancel')
       Taro.eventCenter.off('onEventOfflineApply')
+
+      isMounted.current = false  // 组件卸载时设置为false
     }
   }, [])
 
@@ -136,9 +146,11 @@ function TradeDetail(props) {
       websocketRef.current.onError((err) => {
         console.log('websocket start err: ', err)
         websocketRef.current = null
-        setTimeout(() => {
-          onWebSocket()
-        }, 200)
+        if (isMounted.current) {
+          setTimeout(() => {
+            onWebSocket()
+          }, 200)
+        }
       })
       websocketRef.current.onMessage((res) => {
         const { status } = JSON.parse(res.data)
@@ -360,8 +372,10 @@ function TradeDetail(props) {
 
   const parameter = async () => {
     const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    const routeParams = await entryLaunch.getRouteParams()
-    return routeParams && routeParams.order_id ? routeParams : storedData
+    // const routeParams = await entryLaunch.getRouteParams()
+    // return routeParams && routeParams.order_id ? routeParams : storedData
+    const order_id = router.params?.order_id
+    return  order_id ? {order_id} : storedData
   }
 
   const handleCallOpreator = () => {
@@ -625,7 +639,7 @@ function TradeDetail(props) {
             </View>
           </View> */}
           <View className='trade-goods'>
-            {info?.items.map((goods, goodsIndex) => (
+            {info?.items?.map((goods, goodsIndex) => (
               <View className='trade-goods-item' key={goodsIndex}>
                 <SpTradeItem
                   info={{

@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
 import { SG_ROUTER_PARAMS, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
 import { updateUserInfo } from '@/store/slices/user'
+import { updateIsOpenPurchase } from '@/store/slices/purchase'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 
@@ -43,6 +44,7 @@ import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
+
 import './member.scss'
 
 const initialConfigState = {
@@ -136,6 +138,7 @@ function MemberIndex(props) {
       getMemberCenterData()
       setMemberBackground()
       fetchPurchase()
+      getEmployeeIsOpen()
     }
   }, [isLogin])
 
@@ -151,6 +154,11 @@ function MemberIndex(props) {
       setHeaderBlock()
     }
   })
+
+  const getEmployeeIsOpen = async () => {
+    const purchaseRes = await api.purchase.getEmployeeIsOpen()
+    dispatch(updateIsOpenPurchase(purchaseRes.is_open))
+  }
 
   const fetchPurchase = async () => {
     // 内购分享信息

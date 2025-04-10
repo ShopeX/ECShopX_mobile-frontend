@@ -279,7 +279,7 @@ function TradeAfterSale(props) {
                     />
                   </View>
                   <View className='item-bd'>
-                    <SpImage src={item.pic} width={128} height={128} radius={8} circle={8} />
+                    <SpImage  mode='aspectFit' src={item.pic} width={128} height={128} radius={8} circle={8} />
                     <View className='goods-info'>
                       <View className='goods-info-hd'>
                         <Text className='goods-title'>

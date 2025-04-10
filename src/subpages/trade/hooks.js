@@ -162,7 +162,7 @@ export default (props) => {
     }
 
     // 判断是否已经提交售后，展示售后详情入口
-    const isShowAftersales = items.find(item => item.showAftersales)
+    const isShowAftersales = items?.find(item => item.showAftersales)
     if (isShowAftersales) {
       btns.push(tradeActionBtns.AFTER_DETAIL)
     }

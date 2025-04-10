@@ -3,6 +3,7 @@ import { showToast } from '@/utils'
 import api from '@/api'
 
 const initialState = {
+  isOpen: false,
   tabbar: null,
   purchase_share_info: {},
   invite_code: '',
@@ -79,7 +80,9 @@ const purchaseSlice = createSlice({
     updateCurDistributorId:(state, { payload = '' }) => {
       state.curDistributorId = payload
     },
-
+    updateIsOpenPurchase:(state, { payload = false }) => {
+      state.isOpen = payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCartList.fulfilled, (state, action) => {
@@ -95,6 +98,6 @@ const purchaseSlice = createSlice({
   }
 })
 
-export const { updatePurchaseTabbar, updatePurchaseShareInfo, updateInviteCode, purchaseClearCart,updateValidIdentity,updateEnterpriseId,updateActivityInfo, updateCurDistributorId } = purchaseSlice.actions
+export const { updatePurchaseTabbar, updatePurchaseShareInfo, updateInviteCode, purchaseClearCart,updateValidIdentity,updateEnterpriseId,updateActivityInfo, updateCurDistributorId, updateIsOpenPurchase } = purchaseSlice.actions
 
 export default purchaseSlice.reducer
