@@ -9,15 +9,17 @@ import api from "@/api"
 import doc from "@/doc"
 import { pickBy } from '@/utils'
 import CompTradeItem from './comps/comp-tradeitem'
+import CompTrackType from './comps/comp-trade-type'
 import "./ziti-list.scss";
 
 const initialState = {
   tradeList: [],
   refresherTriggered: false,
+  typeVal:'0',
 }
 function TradeZitiList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { tradeStatus, status, tradeList, refresherTriggered, typeVal } = state
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -34,6 +36,13 @@ function TradeZitiList(props) {
     }
   }, [])
 
+  useEffect(() => {
+    setState((draft) => {
+      draft.tradeList = []
+    })
+    tradeRef.current.reset()
+  }, [typeVal])
+
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
       page: pageIndex,
@@ -41,6 +50,7 @@ function TradeZitiList(props) {
       order_type: 'normal',
       status: 4, // 自提订单
     }
+    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
     const {
       list,
       pager: { count: total },
@@ -55,6 +65,7 @@ function TradeZitiList(props) {
     return { total }
   }
 
+
   const onRefresherRefresh = () => {
     setState((draft) => {
       draft.refresherTriggered = true
@@ -64,13 +75,20 @@ function TradeZitiList(props) {
     tradeRef.current.reset()
   }
 
+  const onChangeTradeType = (e) => {
+    setState((draft) => {
+      draft.typeVal = e
+    })
+  }
+
   return <SpPage scrollToTopBtn className='page-trade-ziti-list'>
+    <CompTrackType value={typeVal} onChange={onChangeTradeType} />
     <ScrollView className="list-scroll-container" scrollY refresherEnabled
       refresherBackground='#f5f5f7'
       refresherTriggered={refresherTriggered}
       onRefresherRefresh={onRefresherRefresh}
     >
-      <SpScrollView className='trade-list-scroll' ref={tradeRef} fetch={fetch} emptyMsg="没有查询到订单">
+      <SpScrollView className='trade-list-scroll' ref={tradeRef} auto={false} fetch={fetch} emptyMsg="没有查询到订单">
         {tradeList.map((item) => (
           <View className='trade-item-wrap'>
             <CompTradeItem info={item} />

@@ -19,11 +19,7 @@ const initialState = {
     { tag_name: '待收货', value: '1' },
     { tag_name: '待评价', value: '7', is_rate: 0 }
   ],
-  tradeType: [
-    { tag_name: '商城', value: '1' },
-    { tag_name: '内购', value: '2' }
-  ],
-  typeVal:'1',
+  typeVal:'0',
   status: '0',
   tradeList: [],
   refresherTriggered: false,
@@ -71,7 +67,8 @@ function TradeList(props) {
       status,
       is_rate
     }
-    params.order_class = typeVal == '2' ? 'employee_purchase' : 'normal'
+    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
+
     const {
       list,
       pager: { count: total },
@@ -88,13 +85,13 @@ function TradeList(props) {
 
   const onChangeTradeState = (e) => {
     setState((draft) => {
-      draft.status = tradeStatus[e].value
+      draft.status = e
     })
   }
 
   const onChangeTradeType = (e) => {
     setState((draft) => {
-      draft.typeVal = tradeType[e].value
+      draft.typeVal = e
     })
   }
 
@@ -108,6 +105,8 @@ function TradeList(props) {
 
     tradeRef.current.reset()
   }
+
+
 
   return (
     <SpPage scrollToTopBtn className='page-trade-list'>

@@ -14,12 +14,12 @@ function CompTrackType(props) {
   const { isOpen:isPurchaseOpen } = useSelector((state) => state.purchase)
 
   const list = useMemo(()=>{
-    onChange(router.params.is_purchase == '1' ? 1 : 0)
+    onChange(router.params.is_purchase == '1' ? '1' : '0')
     //内购+商城 开启内购模块则展示
     if(!VERSION_IN_PURCHASE && !isPurchaseOpen){
       return [
-        { tag_name: '商城', value: '1' },
-        { tag_name: '内购', value: '2' }
+        { tag_name: '商城', value: '0' },
+        { tag_name: '内购', value: '1' }
       ]
     }
     return []

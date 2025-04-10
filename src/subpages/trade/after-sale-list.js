@@ -9,6 +9,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompAfterTradeItem from './comps/comp-aftertrade-item'
+import CompTrackType from './comps/comp-trade-type'
 import './after-sale-list.scss'
 
 const initialState = {
@@ -20,12 +21,13 @@ const initialState = {
     { tag_name: '已关闭', value: '4' }
   ],
   status: '0',
+  typeVal:'0',
   tradeList: [],
   refresherTriggered: false
 }
 function TradeAfterSaleList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { tradeStatus, status, tradeList, refresherTriggered, typeVal } = state
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -48,7 +50,7 @@ function TradeAfterSaleList(props) {
       draft.tradeList = []
     })
     tradeRef.current.reset()
-  }, [status])
+  }, [status,typeVal])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -57,6 +59,7 @@ function TradeAfterSaleList(props) {
       order_type: 'normal',
       aftersales_status: status
     }
+    params.order_type = typeVal == '1' ? 'employee_purchase' : 'normal'
     const { list, total_count } = await api.aftersales.list(params)
     const tempList = pickBy(list, doc.trade.AFTER_TRADE)
     setState((draft) => {
@@ -81,8 +84,15 @@ function TradeAfterSaleList(props) {
     tradeRef.current.reset()
   }
 
+  const onChangeTradeType = (e) => {
+    setState((draft) => {
+      draft.typeVal = e
+    })
+  }
+
   return (
     <SpPage className='page-trade-aftersale-list'>
+    <CompTrackType value={typeVal} onChange={onChangeTradeType} />
       <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
       <ScrollView
         className='list-scroll-container'
