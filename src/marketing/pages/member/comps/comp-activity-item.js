@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -9,17 +9,12 @@ import './comp-activity-item.scss'
 import classNames from 'classnames'
 
 function CompActivityItem(props) {
-  const { info, isActivity = false, onClick = () => {}, onBtnAction = () => {} } = props
+  const { info = {}, isActivity = false, onClick = () => {}, onBtnAction = () => {} } = props
+
   if (!info) {
     return null
   }
 
-  const handleBtnClick = (e, type) => {
-    e.stopPropagation()
-    onBtnAction(info, type)
-  }
-
-  console.log('info', info)
   const {
     activityName,
     reason,
@@ -28,13 +23,44 @@ function CompActivityItem(props) {
     activityStatus,
     pics,
     actionCancel,
+    showCity,
     actionEdit,
     actionApply,
-    activityStartTime
+    activityStartTime,
+    joinLimit,
+    totalJoinNum,
+    isAllowDuplicate,
+    recordId,
+    status
   } = info
 
+  const activityAreaShow = useMemo(() => {
+    if (!isActivity) return true
+    return showCity
+  }, [info, isActivity])
+
+  const signDisabled = useMemo(() => {
+    // 活动结束
+    //已报名次数 == 报名次数上限
+    //不能重复报名，有报名记录了
+    if (!info || status == 'end') return true
+
+    return (joinLimit <= totalJoinNum && joinLimit != 0) || (!isAllowDuplicate && recordId)
+  }, [info])
+
+  const handleBtnClick = (e, type) => {
+    e.stopPropagation()
+    if (isActivity && signDisabled) return
+    onBtnAction(info, type)
+  }
+
+  console.log('info', info)
+
   return (
-    <View className={classNames('activity-item',{'has-end':false})} onClick={() => onClick(info)}>
+    <View
+      className={classNames('activity-item', { 'has-end': status == 'end' })}
+      onClick={() => onClick(info)}
+    >
       <SpImage className='activity-item__pic' src={pics?.[0]} />
       <View className='activity-item__status'>{activityStatus}</View>
       <View className='activity-item__content'>
@@ -44,7 +70,7 @@ function CompActivityItem(props) {
         </View>
         <View className='flex-between-center'>
           <View className='activity-item__content-time'>{activityStartTime}</View>
-          <View className='activity-item__content-address'>{areaName}</View>
+          {activityAreaShow && <View className='activity-item__content-address'>{areaName}</View>}
         </View>
         {reason && !isActivity && (
           <View className='activity-item__content-reject'>
@@ -62,8 +88,19 @@ function CompActivityItem(props) {
               重新填写
             </View>
           )}
-          {actionApply && (
+          {!isActivity && actionApply && (
             <View className='activity-item__content-btn' onClick={(e) => handleBtnClick(e, 'sign')}>
+              立即报名
+            </View>
+          )}
+
+          {isActivity && (
+            <View
+              className={classNames('activity-item__content-btn', {
+                ' disabled-btn': signDisabled
+              })}
+              onClick={(e) => handleBtnClick(e, 'sign')}
+            >
               立即报名
             </View>
           )}

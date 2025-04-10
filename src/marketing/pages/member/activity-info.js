@@ -1,22 +1,14 @@
 import React, { useEffect, useRef, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpPage, SpHtml, SpLoading, SpImage, SpSelectModal } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import { AtButton } from 'taro-ui'
 import { pickBy, isArray, classNames } from '@/utils'
 import { useNavigation } from '@/hooks'
-import CompActivityItem from './comps/comp-activity-item'
-import {
-  WgtFilm,
-  WgtSlider,
-  WgtWriting,
-  WgtGoods,
-  WgtHeading,
-  WgtHeadline
-} from '@/pages/home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeadline } from '@/pages/home/wgts'
 import './activity-info.scss'
 
 const initialState = {
@@ -26,58 +18,98 @@ const initialState = {
     { label: '编辑报名信息', value: '0' },
     { label: '代他人报名', value: '1' }
   ],
-  activityInfo: {},
-  keyword: ''
+  keyword: '',
+  loading: false
 }
-function ItemActivity(props) {
+function ActivityInfo(props) {
   const [state, setState] = useImmer(initialState)
-  const { info, isOpened, selectOptions, activityInfo, keyword } = state
-  const recordRef = useRef()
+  const { info, isOpened, selectOptions, keyword, loading } = state
   const router = useRouter()
   const { windowWidth } = Taro.getSystemInfoSync()
   const { setNavigationBarTitle } = useNavigation()
 
-  useEffect(() => {
+  useDidShow(() => {
     fetch()
-  }, [])
+  })
 
   const fetch = async () => {
-    const { activity_info } = await api.user.registrationActivity({
+    const { activity_info, total_join_num } = await api.user.registrationActivity({
       activity_id: router.params.activity_id
     })
 
-    console.log(888, activity_info)
-
-    let _info = pickBy(activity_info, {
-      pics: ({ pics }) => pics.split(','),
-      activityName: 'activity_name',
-      content: 'content'
-    })
+    let _info = pickBy(activity_info, doc.activity.ACTIVITY_DETAIL)
+    _info.totalJoinNum = total_join_num
     setNavigationBarTitle(_info?.activityName)
     setState((draft) => {
       draft.info = _info
     })
   }
 
-  const onBtnAction = (item, type) => {
-    if (signDisabled) return
-    const { activityId, recordId } = item
-    switch (type) {
-      case 'reFill':
-        //重新填写
+  const registrationSubmitFetch = async () => {
+    setState((draft) => {
+      draft.loading = true
+    })
+    const { activityId } = info
+    try {
+      await api.user.joinActivity({ activity_id: info.activityId })
+      Taro.showToast({
+        icon: 'none',
+        title: '报名成功'
+      })
+      setState((draft) => {
+        draft.loading = false
+      })
+      setTimeout(() => {
         Taro.navigateTo({
-          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&record_id=${recordId}`
+          url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
         })
-        break
-      case 'sign':
-        //立即报名
-        setState((draft) => {
-          draft.isOpened = true
-          draft.activityInfo = item
-        })
-        break
-      default:
-        break
+      }, 400)
+    } catch (error) {
+      setState((draft) => {
+        draft.loading = false
+      })
+    }
+  }
+
+  const onBtnAction = () => {
+    if (signDisabled) return
+
+    const { recordId, hasTemp, recordStatus } = info
+
+    //如果自己第一次报名，则判断是否有模板
+    //有模板跳表单页面
+    //没有模板 直接请求跳结果页面
+    //如果老用户
+    //选择编辑/代新人
+    //编辑：有模板跳转表单 / 没有模板则不能编辑
+    //代新人:有模板跳转表单 / 直接请求跳结果页面
+    //  info.hasTemp  是否有模板
+    if (!recordId) {
+      //新用户
+      if (hasTemp) {
+        //有模板：去表单页面
+        handleToGoodsReservate()
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch()
+      }
+    } else {
+      //老用户
+      if (hasTemp) {
+        //有模板：选择编辑还是代他人
+        if (['pending', 'rejected'].includes(recordStatus)) {
+          //选择编辑还是代他人
+          setState((draft) => {
+            draft.isOpened = true
+          })
+        } else {
+          // 不能编辑
+          handleToGoodsReservate()
+        }
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch()
+      }
     }
   }
 
@@ -88,33 +120,48 @@ function ItemActivity(props) {
   }
 
   const handleSlectConfirm = (value) => {
-    const { activityId, recordId } = activityInfo
+    const isEdit = value == '0'
+    handleToGoodsReservate(isEdit)
+    handleSelectClose()
+  }
+
+  const handleToGoodsReservate = (isEdit = false) => {
+    const { activityId, recordId } = info
     let url = `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
-    if (value == '0') {
+    if (isEdit) {
       // 编辑
       url += `&record_id=${recordId}`
     }
     Taro.navigateTo({
       url
     })
-    handleSelectClose()
   }
 
-  const signDisabled = useMemo(() => 0, [activityInfo])
+  const signDisabled = useMemo(() => {
+    const { joinLimit, totalJoinNum, isAllowDuplicate, recordId, status } = info || {}
+    if (!info || status == 'end') return true
+
+    //已报名次数 == 报名次数上限
+    //不能重复报名，有报名记录了
+    return (joinLimit <= totalJoinNum && joinLimit != 0) || (!isAllowDuplicate && recordId)
+  }, [info])
 
   const renderFooter = () => {
     return (
       <View className='activity-info__footer'>
         <View className='activity-info__footer-num'>
           已报名
-          <Text className='activity-info__footer-num-active'>2</Text>家
+          <Text className='activity-info__footer-num-active'>{info?.totalJoinNum}</Text>家
         </View>
-        <View
-          className={classNames('activity-info__footer-btn', { 'is-disabled': signDisabled })}
-          onClick={() => onBtnAction(activityInfo, 'sign')}
+        <AtButton
+          circle
+          type='primary'
+          className='activity-info__footer-btn'
+          disabled={signDisabled}
+          onClick={onBtnAction}
         >
           立即报名
-        </View>
+        </AtButton>
       </View>
     )
   }
@@ -143,17 +190,27 @@ function ItemActivity(props) {
             </View>
           </View>
 
-          <View className='activity-info__content'>
-            <View className='activity-info__address'>
-              <Text className='iconfont icon-didian'></Text>
-              {info.activityName}
+          {(info.showPlace || info.showAddress || info.showTime) && (
+            <View className='activity-info__content'>
+              {info.showPlace && (
+                <View className='activity-info__address'>
+                  <Text className='iconfont icon-didian'></Text>
+                  {info.place}
+                </View>
+              )}
+              {info.showAddress && (
+                <View className='activity-info__address detail-address'>
+                  <Text className='iconfont icon-dizhi'></Text>
+                  {info.address}
+                </View>
+              )}
+              {info.showTime && (
+                <View className='activity-info__time'>
+                  活动时间：{info?.startDate} 至 {info?.endDate}
+                </View>
+              )}
             </View>
-            <View className='activity-info__address detail-address'>
-              <Text className='iconfont icon-dizhi'></Text>
-              {info.activityName}
-            </View>
-            <View className='activity-info__time'>活动时间：ddddwadwa</View>
-          </View>
+          )}
 
           <View className='activity-info__content'>
             <View className='activity-info__detail'>活动详情</View>
@@ -187,8 +244,8 @@ function ItemActivity(props) {
   )
 }
 
-ItemActivity.options = {
+ActivityInfo.options = {
   addGlobalClass: true
 }
 
-export default ItemActivity
+export default ActivityInfo

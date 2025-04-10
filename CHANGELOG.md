@@ -2,6 +2,63 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.19.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.3...v3.19.4) (2025-04-09)
+
+### [3.19.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.1...v3.19.2) (2025-04-08)
+
+
+### Features
+
+* 白名单进店后changeInWhite ([5a31dc1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5a31dc174d0af4d7b9f00b151117cfeb29ad1873))
+* 代码优化 ([4fb2c72](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4fb2c725f4dfe8fd55fc0bbf01d237849f2725ba))
+* 代码优化 ([a8bb931](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a8bb9318d4a365de6686f261dcee25dc251a608f))
+* 代码优化 ([55d7e29](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/55d7e2909e9fc571bfe575db470239c68d38a167))
+* 代码优化，封装useWhiteShop ([91b5b34](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/91b5b345ebac074bb88e36fd1ecd126a32e5fccd))
+* 第一次进商品详情页需要定位找白名单店铺 ([3ffc4af](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3ffc4af4f8d5321282f704e34adb449400900f95))
+* 店铺隔离带有id，增加有未开启白名单的店铺 ([92d2847](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/92d284791320ad7433a4c3448d5ff6941bb22622))
+* 店铺隔离开关，店铺隔离模版 ([1b73a97](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1b73a97d83a3cc5e7ea806ecd44496add67b9814))
+* 店铺隔离联系我们加进自定义页面判断，sppage 增加全局页面的店铺隔离判断 ([f99d8d7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f99d8d70e6a39f507566a547871bcd96108f959a))
+* 店铺列表去除默认店铺显示 ([b2e4749](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b2e4749309326080e106710d8ea32df944906104))
+* 首页店铺逻辑整理，回其他店逻辑纠正 ([e1cf294](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e1cf2949e94e629d547ad0440df62789d390d314))
+* 首页支持店铺隔离 ([152c97a](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/152c97ac97c6967aab2f36854ca4462cbc57da8a))
+* 下单页如果被拦截，清空 changeInWhite ([68b0b23](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/68b0b23827ec0010ce95e3c5f1d6c0366239ad80))
+* 详情页加入店铺隔离登录逻辑 ([3e073fe](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3e073fe4b065407c2ca41647b600bbf7ff06c71f))
+* 优化代码。修复首次自然进店铺，模版不渲染，不能登录的问题。修复联系店铺号码不正确的问题 ([c663725](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c663725cb3c1c1b8047d32700d5b965edf112e7e))
+* 优化注释 ([7311b35](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7311b3588f2b7c13faf422c337663e7c7b837e8a))
+* 注释修改 ([ed50f15](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ed50f15ec42bb2d562491b78caa35372d62f97b7))
+* 自定义页增加店铺隔离逻辑 ([1fa6398](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/1fa639885d262b1b7b304af38eedab55f75da184))
+* fetchWgts 请求多次，返回不是最新模版优化 ([980ccf8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/980ccf8437d0807472cade683cb9a09016e82e40))
+* list 增加 已加入 店铺 ([b006621](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b006621e62578f9f81f7e8342d3c08e668a0f602))
+* pdp 页 店铺隔离逻辑同步修改 ([d71a773](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d71a773b9fb0c5bd67b220ca3148dd29386e4cf5))
+* pdp 页逻辑 ([67437ca](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/67437ca4d6b0216f9bf318c3289addb768cb19b2))
+
+
+### Bug Fixes
+
+* 不带id 逻辑 ([107fdb0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/107fdb0cb4fe2243a640fb56d8ddf391b22586a0))
+* 弹窗样式 ([897185c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/897185c2e3baaadf49af1bde49d878114d8e4ed1))
+* 店铺隔离，点击分享卡片后，店铺模版不正确,商品下单tdid错误的问题，必须每次进店铺判断tdid回到店铺 ([d486e6b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d486e6bf4be91672d0d8f0a60515c1d7bb309a95))
+* 店铺隔离第一次进店 不请求 is_valid 接口 ([b0bb56f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b0bb56fee12f6ebe583e358e6b98e2fe21fff675))
+* 店铺隔离提示组件替换，首页不带店铺id逻辑修复 ([af82315](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/af82315505652fe686c47b3c6ed78e323e0846bd))
+* 店铺列表已加入icon未对齐 ([320b085](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/320b085e0ce98ff8104927af7d43009f6bace1db))
+* 返回首页，重复请求，联系电话错误 ([eaca8ac](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/eaca8accbb979d9f66fee6672e39891e0fd0be21))
+* 进入未开启白名单店铺后，进入店铺列表再返回店铺首页，又提示非本店会员 ([a545fc9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a545fc9a28cb845d29110b2ae5ecb1a0d14c2ad6))
+* 联系店铺返回详情页没有弹窗 ([5bb08c2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/5bb08c2dd8947a2d0b01d036c37e3fd99366a187))
+* 联系店铺跳自定义页增加标识 ([70bcbba](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/70bcbba076e30987df88eb971a5cc8d15e9bf2eb))
+* 联系店铺组件修改 ([ea63be3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ea63be3b1b29159030b9facf51001b37fe32b4e8))
+* 没有配置店铺隔离模版，也没有店铺电话，联系店铺不展示 ([a1b4e79](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a1b4e79cad383a458e380c49554a87dac5a31ac9))
+* 没有携带店铺id，找店铺逻辑 ([20548db](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/20548dbfc4d7751a5af2341719726ece6d5df655))
+* 每次携带店铺id进店。必弹窗 ([7b82ba2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7b82ba253087f1aa5c80d681984fca67545038a0))
+* 默认店铺增加 white_hidden 字段 ([9c4c54e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/9c4c54e71858394b531ef61f95120b8987969163))
+* 苹果手机取消打电话和安卓手机冲突处理 ([390935d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/390935d9feda9be6dec7664f4f73af7c6df954ff))
+* 首页模板重复加载优化 ([69a84f1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/69a84f10ba513a24017e190dfb55e81a8b547ad6))
+* 未授权定位，但是is_valid传参有经纬度数据。再次进入小程序 店铺id丢失问题 ([3c6b618](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3c6b6187d7f5ea6954e94e0b65f90037713c9a85))
+* 自定义分享增加 tdid ([2e6ea07](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2e6ea07775915f9263ce65aef619de0f058a8da2))
+* connectWhiteShop 传 phone ([4b95783](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4b9578354362d8d7f30c0cf53f19c05ef02610fe))
+* ios 手机取消电话后，弹窗消失 ([3b139ee](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3b139ee24b2bd34e3f17b2f9811cded2e8474ea1))
+* pdp 页 店铺隔离，展示当前店铺商品 ([4c88b25](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4c88b254a52c747897b71a9a259119ce0a9a147c))
+* sp-page 打电话返回后，弹窗 ([a6524d8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a6524d81db42accbff7508f9385c61123841c216))
+
 ## [3.19.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.4...v3.19.0) (2025-03-27)
 
 ### [3.18.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.18.3...v3.18.4) (2025-03-27)

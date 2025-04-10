@@ -140,7 +140,7 @@ export function datacubeDeliverystaffdata(params) {
 
 //添加配送员
 export function accountManagement(params) {
-  return req.post('/account/management', params) 
+  return req.post('/account/management', params)
 }
 
 //编辑配送员
@@ -151,4 +151,9 @@ export function patchAccountManagement(operator_id,params) {
 //编辑配送员
 export function getAccountManagement(operator_id,params) {
   return req.get(`/account/management/${operator_id}`, params)
+}
+
+//核销活动
+export function registrationVerify(params) {
+  return req.post('/selfhelp/registrationVerify', params)
 }

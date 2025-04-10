@@ -4,7 +4,7 @@ import Taro, {
   getCurrentInstance,
   useShareAppMessage,
   useShareTimeline,
-  useReady
+  useDidShow
 } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
@@ -22,7 +22,9 @@ import {
   SpLogin,
   SpFloatMenuItem,
   SpChat,
-  SpGoodsPrice
+  SpGoodsPrice,
+  SpPrivacyModal,
+  SpModalDivided
 } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
@@ -40,7 +42,10 @@ import {
   classNames,
   navigateTo,
   VERSION_PLATFORM,
-  isAPP
+  isAPP,
+  showToast,
+  getDistributorId,
+  VERSION_STANDARD
 } from '@/utils'
 import { fetchUserFavs } from '@/store/slices/user'
 
@@ -49,8 +54,9 @@ import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
 import S from '@/spx'
 import { Tracker } from '@/service'
-import { useNavigation, useLogin } from '@/hooks'
+import { useNavigation, useLogin, useLocation, useWhiteShop } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
+import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
@@ -62,7 +68,7 @@ import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtHeadline } from '../home/wgts'
-
+import { updateShopInfo, changeInWhite} from '@/store/slices/shop'
 import './espier-detail.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -93,6 +99,15 @@ const initialState = {
   // 多规格商品选中的规格
   curItem: null,
   recommendList: [],
+  policyModal: false, // 添加隐私协议弹窗状态  todozm 如果商品是已下架状态，隐私无法展示
+  modalDivided: {
+    isShow: false,
+    content: '',
+    confirmText: '',
+    showCancel: true,
+    onCancel: null,
+    onConfirm: null
+  }
 }
 
 function EspierDetail(props) {
@@ -101,11 +116,42 @@ function EspierDetail(props) {
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
+  const isFromPhoneCallBack = useRef(false);     // 防止苹果手机返回不展示弹窗，但是安卓展示多次弹窗
+
   const { userInfo } = useSelector((state) => state.user)
-  const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
+  const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
+  const { shopInWhite , shopInfo} = useSelector((state) => state.shop)
+  const { getWhiteShop, connectWhiteShop } = useWhiteShop({
+    onPhoneCallComplete: () => {
+      isFromPhoneCallBack.current = true
+      checkStoreIsolation()
+    }
+  })
   const { setNavigationBarTitle } = useNavigation()
   const dispatch = useDispatch()
+  const { isLogin, checkPolicyChange, isNewUser, updatePolicyTime, setToken, login } = useLogin({
+    autoLogin: false,
+    // 隐私协议变更
+    policyUpdateHook: (isUpdate) => {
 
+      console.log("🚀🚀🚀 ~ Home ~ policyUpdateHook:")
+
+      isUpdate && onPolicyChange(true)
+    },
+    // // 登录成功后获取店铺信息
+    loginSuccess: () => {
+      // 老用户登录成功
+      console.log("🚀🚀🚀 ~ Home ~ loginSuccess:")
+      // 登录成功后获取店铺信息
+      updateAddress()
+      checkStoreIsolation()
+    }
+  })
+  const { updateAddress } = useLocation()
+  const { location } = useSelector((state) => state.user)
+
+  const loginRef = useRef()
+  
   const [state, setState] = useImmer(initialState)
   const {
     info,
@@ -129,12 +175,23 @@ function EspierDetail(props) {
     type,
     dtid,
     curItem,
-    recommendList
+    recommendList,
+    policyModal,
+    modalDivided
   } = state
+
+  // 添加一个 ref 来追踪是否是首次渲染
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
     init()
   }, [])
+
+  useEffect(() => {
+    if (open_divided) {
+      checkStoreIsolation()
+    }
+  }, [open_divided])
 
   useEffect(() => {
     const { path } = $instance.router
@@ -182,6 +239,42 @@ function EspierDetail(props) {
     }
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen])
 
+  // 添加一个新的 useEffect 来监听 dtid 变化
+  useEffect(() => {
+    if (dtid) {
+      console.log("🚀🚀🚀 ~ useEffect ~ dtid:", dtid)
+      fetch()
+    }
+  }, [dtid])
+
+  // 修改监听 shopInfo 的 useEffect
+  useEffect(() => {
+    if (!VERSION_STANDARD && !open_divided) {
+      return
+    }
+    // 跳过首次渲染时的 shopInfo
+    if (isFirstRender.current) {
+      return
+    }
+
+    if (shopInfo?.distributor_id) {
+      setState((draft) => {
+        draft.dtid = shopInfo.distributor_id
+      })
+    }
+  }, [shopInfo])
+
+
+  // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
+  useDidShow(() => {
+    if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack.current) {
+      checkStoreIsolation()
+    }
+    // 标记第一次渲染已完成
+    isFirstRender.current = false;
+    isFromPhoneCallBack.current = false
+  })
+
   useShareAppMessage(async (res) => {
     return getAppShareInfo()
   })
@@ -189,7 +282,6 @@ function EspierDetail(props) {
   useShareTimeline(async (res) => {
     return getAppShareInfo()
   })
-
 
   const salesmanShare = async() => {
     let params = $instance.router.params
@@ -233,13 +325,346 @@ function EspierDetail(props) {
     if (S.getAuthToken()) {
       await dispatch(fetchUserFavs())
     }
+    open_divided && fetchLocation()
   }
+
+  // 店铺隔离需要 定位
+  const fetchLocation = () => {
+    // 开启了店铺隔离，且还没有进入过店铺，说明是第一次进店，需要定位
+    if (!location && (VERSION_STANDARD && openLocation == 1)) {
+      try {
+        updateAddress()
+      } catch (e) {
+        console.error('map location fail:', e)
+      }
+    }
+  }
+
+  // 店铺隔离start
+  const checkStoreIsolation = async () => { 
+    console.log("🚀🚀🚀 ~ checkStoreIsolation ~ checkStoreIsolation:")
+    const { dtid: routerDtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    const distributorId = getDistributorId() || 0
+    let params = {
+      distributor_id: distributorId
+    }
+    if (openLocation == 1 && location) {
+      const { lat, lng } = location
+      params.lat = lat
+      params.lng = lng
+      // params.distributor_id = undefined
+    }
+    // 开启了店铺隔离并且登录，获取白名单店铺
+    let res, distributorPhone;
+    // 渲染路由携带的店铺id的手机号
+    if (distributorId) {
+      res = await api.shop.getShop(params)
+      distributorPhone = res.phone
+    }
+
+    if (!S.getAuthToken()) { 
+      showWhiteLogin()
+      return
+    }
+
+    if (S.getAuthToken()) {
+      // updateAddress()
+      // 分享带有tdid访问，每次都应该判断提示 要切换店铺，但是如果分享的tdid是没开启店铺隔离的店，那么应该可以进店才对。
+      // 除非之前已经在白名单的店铺里了
+      // 如果分享的店铺id不是现在的店铺id，
+      if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
+        // 在有效店铺，如果店铺没变，直接进店
+        // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
+        return
+      }
+
+      // 分享带有tdid访问，每次都应该判断提示
+      if (routerDtid && (shopInWhite && routerDtid != shopInfo.distributor_id)) {
+        // 虽然是在有效店铺，如果店铺变化，判断是否可以进店, 
+        // 可能是没开启白名单的店铺，直接进店，如果继续走下面的逻辑，会提示回我的店的问题
+        const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
+        dispatch(changeInWhite(status))
+        if (status) { 
+          return
+        }
+      }
+
+      params.show_type = 'self'
+      // 带self，返回店铺内容store_name => 是绑定的店铺
+      const shopDetail = await api.shop.getShop(params) 
+      console.log("🚀🚀🚀 ~ checkStoreIsolation ~ shopDetail:", shopDetail)
+
+      if (shopDetail.store_name && shopDetail.white_hidden != 1) {
+        // 找到店铺了
+        dispatch(updateShopInfo(shopDetail))
+        dispatch(changeInWhite(true))
+        return
+      }
+
+      if (!shopDetail.store_name || defalutShop.white_hidden == 1) {
+        // 没有找到店铺
+        
+        if (distributorId) {
+          // 有店铺码 这个码一定是商品页的路由参数店铺ID） 但是这个店铺不是在白名单里, 找其他店铺
+          const shop = await getWhiteShop() // 已经加入的最优店铺
+          if (shop) {
+            if (!routerDtid && shop.distributor_id == shopInfo.distributor_id) {
+              // 必须有，重新渲染商品信息
+              Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+              dispatch(updateShopInfo(shopInfo))
+              dispatch(changeInWhite(true))
+              return
+            }
+            params.distributor_id = shop.distributor_id
+
+            setState((draft) => {
+              draft.modalDivided = {
+                isShow: true,
+                confirmText: '回我的店',
+                showCancel: !!(open_divided_templateId || distributorPhone),
+                onCancel: () => { 
+                  connectWhiteShop(distributorPhone)
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
+                },
+                onConfirm: async () => {
+                  // 清空小程序启动时携带的参数
+                  Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                  const res = await api.shop.getShop(params)
+                  dispatch(updateShopInfo(res))
+                  dispatch(changeInWhite(true))
+                  setState((draft) => {
+                    draft.modalDivided = {
+                      isShow: false
+                    }
+                  })
+                }
+              }
+            })
+            return
+          } else {
+            // 找附近未开启白名单的店铺
+            delete params.show_type
+            params.distributor_id = 0
+          
+            const defalutShop = await api.shop.getShop(params)
+            if ( defalutShop.white_hidden == 1) {
+              // 没任何店铺可以进
+              showNoShopModal(distributorPhone)
+              return
+            } else { 
+              if (!routerDtid && defalutShop.distributor_id == shopInfo.distributor_id) {
+                // 必须有，重新渲染商品信息
+                Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                dispatch(updateShopInfo(shopInfo))
+                dispatch(changeInWhite(true))
+                return
+              }
+
+              setState((draft) => {
+                draft.modalDivided = {
+                  isShow: true,
+                  confirmText: '去其他店',
+                  showCancel: !!(open_divided_templateId || distributorPhone),
+                  onCancel: () => { 
+                    connectWhiteShop(distributorPhone)
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
+                  },
+                  onConfirm: async () => {
+                     // 清空小程序启动时携带的参数
+                     Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+                     // res = await api.shop.getShop(params)
+                    dispatch(updateShopInfo(defalutShop))
+                    dispatch(changeInWhite(true))
+                    setState((draft) => {
+                      draft.modalDivided = {
+                        isShow: false
+                      }
+                    })
+                  }
+                }
+              })
+              return
+            }
+          }
+        }
+
+        // 下面的逻辑正常是走不到的
+        console.error('没有 distributorId')
+        if (!distributorId) {
+          if (params.lat) {
+            // 已定位 但是还是没返回店铺信息，说明没有绑定过任何一家店铺白名单
+            // 取 附近未开白名单的店铺
+            delete params.show_type
+            
+            // 未开启白名单的店铺
+            const defalutShop = await api.shop.getShop(params)
+            if (defalutShop.white_hidden == 1) {
+              // 没任何店铺可以进
+              dispatch(updateShopInfo(defalutShop))
+              showNoShopModal(defalutShop.phone)
+            } else {
+              // 有定位，存在没有开启白名单的店铺
+              dispatch(updateShopInfo(defalutShop))
+              dispatch(changeInWhite(true))
+            }
+            
+            return
+          }
+
+          if (!params.lat) {
+            // 未定位，从 vaild 接口，就拿不到白名单店铺信息的
+            const shop = await getWhiteShop() // 已经加入的最优店铺
+            if (!shop) {
+              // 没有找到加入的店铺，找没有开白名单的店铺
+              delete params.show_type
+              res = await api.shop.getShop(params) // ?todozm这里是不是应该取不到？因为没有定位信息
+              if (res.white_hidden == 1) {
+                // 全部开启白名单
+                dispatch(updateShopInfo(defalutShop))
+                showNoShopModal(res.phone)
+              } else {
+                // 有部分门店未开启白名单
+                dispatch(updateShopInfo(res))
+                dispatch(changeInWhite(true))
+                return
+              }
+              return
+            } else {
+              // 加入最近时间的店铺
+              params.distributor_id = shop.distributor_id
+              res = await api.shop.getShop(params)
+              dispatch(updateShopInfo(res))
+              dispatch(changeInWhite(true))
+            }
+          }
+        }
+      } 
+    }
+  }
+
+  /***
+   * 未注册，开启店铺隔离后需要登录
+   * 
+   *  */ 
+  const showWhiteLogin = async () => {
+    if(!open_divided) return
+    // 开启了店铺隔离 && 未登录，提示用户登录
+    console.log("🚀🚀🚀 ~ showWhiteLogin ~ S.getAuthToken():", S.getAuthToken())
+
+    if (open_divided && !S.getAuthToken()) {
+        Taro.showModal({
+          content: '你还未登录，请先登录',
+          confirmText: '立即登录',
+          showCancel: false,
+          success: async (res) => {
+            if (res.confirm) {
+              try {
+                await login()
+                console.log('login 下面')
+              } catch {
+                console.log("登录失败，走新用户注册")
+                if (loginRef.current && loginRef.current.handleToLogin) {
+                  loginRef.current.handleToLogin()
+                }
+              }
+            }
+          }
+        })
+    }
+  }
+
+  // 关闭隐私协议弹窗
+  const onPolicyChange = async(isShow = false) => {
+    setState((draft) => {
+      draft.policyModal = isShow
+    })
+    
+    // 如果用户取消隐私协议，仍然需要显示登录提示
+    if (!isShow) {
+      Taro.showModal({
+        content: '你还未登录，请先登录',
+        confirmText: '立即登录',
+        showCancel: false,
+        success: async (res) => {
+          if (res.confirm) {
+            try {
+              await login()
+            } catch {
+              console.log("登录失败，走新用户注册")
+              if (loginRef.current && loginRef.current.handleToLogin) {
+                loginRef.current.handleToLogin()
+              }
+            }
+          }
+        }
+      })
+    }
+  }
+
+  // 处理隐私协议确认
+  const handlePolicyConfirm = async () => {
+    // 更新隐私协议同意时间
+    updatePolicyTime()
+    // 关闭隐私协议弹窗
+    setState((draft) => {
+      draft.policyModal = false
+    })
+    // 继续登录流程
+    try {
+      await login()
+    } catch {
+      console.log("登录失败，走新用户注册")
+      if (loginRef.current && loginRef.current.handleToLogin) {
+        loginRef.current.handleToLogin()
+      }
+    }
+  }
+
+  // 没有店铺
+  const showNoShopModal = (phone) => {
+    setState((draft) => {
+      draft.modalDivided = {
+        isShow: true,
+        confirmText: '关闭',
+        showCancel: !!(open_divided_templateId || phone),
+        onCancel: () => { 
+          connectWhiteShop(phone)
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        },
+        onConfirm: async () => {
+          Taro.exitMiniProgram()
+          setState((draft) => {
+            draft.modalDivided = {
+              isShow: false
+            }
+          })
+        }
+      }
+    })
+  }
+
+
+  // 店铺隔离end
 
   const fetch = async () => {
     let data
     if (type == 'pointitem') {
     } else {
       try {
+        console.log("🚀🚀🚀 ~ fetch ~ dtid:", dtid)
+
         const itemDetail = await api.item.detail(id, {
           showError: false,
           distributor_id: dtid
@@ -726,6 +1151,34 @@ function EspierDetail(props) {
           }}
         />
       )}
+
+      {/* 添加隐私协议弹窗 */}
+      <SpPrivacyModal 
+        open={policyModal} 
+        onCancel={() => onPolicyChange(false)} 
+        onConfirm={handlePolicyConfirm} 
+      />
+
+      {/* 登录组件 */}
+      <SpLogin
+        ref={loginRef}
+        newUser={true}
+        onChange={() => {
+          updateAddress()
+          checkStoreIsolation()
+        }}
+        onPolicyClose={() => {
+          onPolicyChange(false)
+        }}
+      />
+      { modalDivided.isShow && <SpModalDivided 
+        content={modalDivided.content}
+        cancelText={modalDivided.cancelText} 
+        confirmText={modalDivided.confirmText}
+        showCancel={modalDivided.showCancel}
+        onCancel={modalDivided.onCancel}
+        onConfirm={modalDivided.onConfirm}
+      />}
     </SpPage>
   )
 }

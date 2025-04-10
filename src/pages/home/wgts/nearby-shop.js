@@ -8,7 +8,7 @@ import doc from '@/doc'
 import api from '@/api'
 import { WgtsContext } from './wgts-context'
 import { SpNoShop, SpImage, SpShopCoupon, SpPrice, SpGoodsItem, SpSkuSelect } from '@/components'
-import { classNames, styleNames, isEmpty, entryLaunch, showToast, pickBy } from '@/utils'
+import { classNames, styleNames, isEmpty, entryLaunch, showToast, pickBy, isString } from '@/utils'
 import { AtActivityIndicator } from 'taro-ui'
 import './nearby-shop.scss'
 
@@ -227,7 +227,7 @@ function WgtNearbyShop(props) {
                       </View>
                       {item.distance_show && (
                         <View className='sales'>
-                          {item.distance_show.split('.')[0]}
+                          { isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
                           {item.distance_unit}
                         </View>
                       )}

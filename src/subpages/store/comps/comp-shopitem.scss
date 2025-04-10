@@ -62,22 +62,24 @@
     margin-right: 5px;
   }
 
-  // .shop-tag {
-  //   display: flex;
-  //   align-items: center;
-  //   margin-top: 8px;
-  //   overflow: auto;
-  //   white-space: nowrap;
-  //   .tag {
-  //     /* prettier-ignore */
-  //     border: 1PX solid var(--color-primary);
-  //     padding: 2px 6px;
-  //     color: var(--color-primary);
-  //     font-size: 22px;
-  //     border-radius: 10px;
-  //     margin-right: 10px;
-  //   }
-  // }
+  .shop-tag {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 8px;
+    overflow: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    .tag {
+      /* prettier-ignore */
+      border: 1PX solid var(--color-primary);
+      padding: 2px 6px;
+      color: var(--color-primary);
+      font-size: 22px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+  }
   // .shop-tag::-webkit-scrollbar {
   //   display: none;
   // }

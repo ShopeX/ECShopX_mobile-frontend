@@ -12,6 +12,7 @@ import useModal from './useModal'
 import useSyncCallback from './useSyncCallback'
 import useLocation from './useLocation'
 import useThemsColor from './themeColor'
+import useWhiteShop from './useWhiteShop'
 
 export default {}
 
@@ -29,5 +30,6 @@ export {
   useModal,
   useSyncCallback,
   useLocation,
-  useThemsColor
+  useThemsColor,
+  useWhiteShop
 }

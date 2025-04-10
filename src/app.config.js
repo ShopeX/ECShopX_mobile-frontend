@@ -130,6 +130,7 @@ const config = {
         'edit-deliveryman', // 配送员创建
         'salesman-personnel', // 业务员
         'edit-deliveryman-salesman', // 业务员创建
+        'activity-code', // 活动扫码核销
       ]
     },
     // 积分商城

@@ -76,6 +76,9 @@ export function registrationSubmit (data) {
   return req.post('/registrationSubmit', data)
 }
 
+export function joinActivity (data) {
+  return req.post('/joinActivity', data)
+}
 
 export function registrationActivityList (data) {
   return req.get('/registrationActivityList', data)

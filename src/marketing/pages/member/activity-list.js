@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Button } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpSearchBar, SpSelectModal } from '@/components'
 import api from '@/api'
@@ -12,10 +11,10 @@ import './activity-list.scss'
 
 const initialState = {
   tradeStatus: [
-    { tag_name: '当前活动', value: '0' },
-    { tag_name: '精彩回顾', value: '1' }
+    { tag_name: '当前活动', value: '1' },
+    { tag_name: '精彩回顾', value: '2' }
   ],
-  status: '0',
+  status: '1',
   recordList: [],
   trackDetailList: [],
   openTrackDetail: false,
@@ -26,17 +25,14 @@ const initialState = {
     { label: '代他人报名', value: '1' }
   ],
   activityInfo: {},
-  keyword:''
+  keyword: ''
 }
-function ItemActivity(props) {
+function ActivityIist(props) {
   const [state, setState] = useImmer(initialState)
   const {
     tradeStatus,
     status,
     recordList,
-    trackDetailList,
-    openTrackDetail,
-    info,
     isOpened,
     selectOptions,
     activityInfo,
@@ -45,26 +41,20 @@ function ItemActivity(props) {
   const recordRef = useRef()
   const router = useRouter()
 
-  useEffect(() => {
-    Taro.eventCenter.on('onEventRecordStatusChange', () => {
-      setState((draft) => {
-        draft.recordList = []
-      })
-
-      recordRef.current.reset()
+  useDidShow(() => {
+    setState((draft) => {
+      draft.recordList = []
     })
 
-    return () => {
-      Taro.eventCenter.off('onEventRecordStatusChange')
-    }
-  }, [])
+    recordRef.current.reset()
+  })
 
   useEffect(() => {
     setState((draft) => {
       draft.recordList = []
     })
     recordRef.current.reset()
-  }, [status,keyword])
+  }, [status, keyword])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -72,28 +62,11 @@ function ItemActivity(props) {
       pageSize,
       order_type: 'normal',
       status,
-      keyword
+      activity_name: keyword
     }
-    // registrationActivityList
-    const { list, total_count: total } = await api.user.registrationRecordList(params)
-    const nList = pickBy(list, {
-      activityId: 'activity_id',
-      recordId: 'record_id',
-      activityName: 'activity_name',
-      status: 'status',
-      startDate: 'start_date',
-      createDate: 'create_date',
-      endDate: 'end_date',
-      reason: 'reason',
-      statusName: ({ activity_info }) => activity_info?.status_name,
-      pics: ({ activity_info }) => activity_info?.pics,
-      area: 'area',
-      actionCancel: ({ action }) => action?.cancel == 1,
-      actionEdit: ({ action }) => action?.edit == 1,
-      actionApply: ({ action }) => action?.apply == 1,
-      activityStatus: ({ activity_info }) => activity_info?.status_name,
-      activityStartTime: ({ activity_info }) => activity_info?.start_time
-    })
+
+    const { list, total_count: total } = await api.user.registrationActivityList(params)
+    const nList = pickBy(list, doc.activity.ACTIVITY_LIST)
     setState((draft) => {
       draft.recordList = [...recordList, ...nList]
     })
@@ -112,24 +85,47 @@ function ItemActivity(props) {
     })
   }
 
+  const registrationSubmitFetch = async ({ activityId }) => {
+    await api.user.joinActivity({ activity_id: activityId})
+    Taro.showToast({
+      icon: 'none',
+      title: '报名成功'
+    })
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
+      })
+    }, 400)
+  }
+
   const onBtnAction = (item, type) => {
-    const { activityId } = item
-    switch (type) {
-      case 'reFill':
-        //重新填写
-        Taro.navigateTo({
-          url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
-        })
-        break
-      case 'sign':
-        //立即报名
-        setState((draft) => {
-          draft.isOpened = true
-          draft.activityInfo = item
-        })
-        break
-      default:
-        break
+    const { recordId, hasTemp, recordStatus } = item
+    if (!recordId) {
+      //新用户
+      if (hasTemp) {
+        //有模板：去表单页面
+        handleToGoodsReservate(false, item)
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch(item)
+      }
+    } else {
+      //老用户
+      if (hasTemp) {
+        if (['pending', 'rejected'].includes(recordStatus)) {
+          //立即报名
+          setState((draft) => {
+            draft.isOpened = true
+            draft.activityInfo = item
+          })
+        } else {
+          // 不能编辑
+          handleToGoodsReservate(false, item)
+        }
+      } else {
+        //没模板：直接报名
+        registrationSubmitFetch(item)
+      }
     }
   }
 
@@ -140,26 +136,31 @@ function ItemActivity(props) {
   }
 
   const handleSlectConfirm = (value) => {
-    const { activityId, recordId } = activityInfo
+    const isEdit = value == '0'
+    handleToGoodsReservate(isEdit, activityInfo)
+    handleSelectClose()
+  }
+
+  const handleToGoodsReservate = (isEdit = false, item) => {
+    const { activityId, recordId } = item
     let url = `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
-    if (value == '0') {
+    if (isEdit) {
       // 编辑
       url += `&record_id=${recordId}`
     }
     Taro.navigateTo({
       url
     })
-    handleSelectClose()
   }
 
-  const handleOnClear = async () => {
-    await setState((draft) => {
+  const handleOnClear = () => {
+    setState((draft) => {
       draft.keyword = ''
     })
   }
 
-  const handleConfirm = async (val) => {
-    await setState((draft) => {
+  const handleConfirm = (val) => {
+    setState((draft) => {
       draft.keyword = val
     })
   }
@@ -187,7 +188,12 @@ function ItemActivity(props) {
         >
           {recordList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
-              <CompActivityItem isActivity info={item} onClick={handleItemClick} onBtnAction={onBtnAction} />
+              <CompActivityItem
+                isActivity
+                info={item}
+                onClick={handleItemClick}
+                onBtnAction={onBtnAction}
+              />
             </View>
           ))}
         </SpScrollView>
@@ -203,8 +209,8 @@ function ItemActivity(props) {
   )
 }
 
-ItemActivity.options = {
+ActivityIist.options = {
   addGlobalClass: true
 }
 
-export default ItemActivity
+export default ActivityIist

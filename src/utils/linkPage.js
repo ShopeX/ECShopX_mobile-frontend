@@ -93,6 +93,8 @@ function linkPage(data) {
         url = '/pages/floorguide/index'
       } else if (id === 'grouppurchase') {
         url = '/groupBy/pages/home/index'
+      } else if(id === 'registActivity'){
+        url = '/marketing/pages/member/activity-list'
       } else {
         url = ''
       }

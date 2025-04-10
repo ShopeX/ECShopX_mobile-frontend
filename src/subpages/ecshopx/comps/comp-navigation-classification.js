@@ -2,7 +2,7 @@ import React, {useEffect, useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { classNames, pickBy , isWeb,} from '@/utils'
+import { classNames, pickBy , isWeb,isString} from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
@@ -81,7 +81,7 @@ function ConpNavigationClassification(props) {
 
   /**
    * 获得所有商家列表
-   * @returns 
+   * @returns
    */
   const storeData = async () => {
     let distributor_tag_id = seletedTags.map((obj) => obj.tag_id)
@@ -119,9 +119,9 @@ function ConpNavigationClassification(props) {
   /**
    * 获取商家和商品信息
    * if为true则请求商家接口  false请求商品接口
-   * 
-   * @param {*} param0 
-   * @returns 
+   *
+   * @param {*} param0
+   * @returns
    */
   const fetch = async ({ pageIndex, pageSize }) => {
     if (classifyList.children[0]?.category_ids == 0 && statusIndex) {
@@ -193,7 +193,7 @@ function ConpNavigationClassification(props) {
 
   /**
    * 去店铺首页
-   * @param {*} item 
+   * @param {*} item
    */
   const handleClickItem = (item) => {
     Taro.navigateTo({ url: `/subpages/store/index?id=${item.distributor_id}` })
@@ -201,7 +201,7 @@ function ConpNavigationClassification(props) {
 
   /**
    * 去商品详情页
-   * @param {*} item 
+   * @param {*} item
    */
   const handleGoodsClick = (item) => {
     const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
@@ -226,7 +226,7 @@ function ConpNavigationClassification(props) {
 
   /**
    * 商品列表ui
-   * @returns 
+   * @returns
    */
   const storeProducts = () => {
     return (
@@ -262,7 +262,7 @@ function ConpNavigationClassification(props) {
 
   /**
    * 商家ui
-   * @returns 
+   * @returns
    */
   const storeList = () => {
     return (
@@ -313,9 +313,10 @@ function ConpNavigationClassification(props) {
                         <Text className='monthly'>评分: {item?.scoreList?.avg_star}</Text>
                         <Text>月销：{item.sales_count}</Text>
                       </View>
-                      {item.distance_show && (
+
+                      {item.distance_show && typeof item.distance_show == 'string' (
                         <View className='sales'>
-                          {item.distance_show.split('.')[0]}
+                          {isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
                           {item.distance_unit}
                         </View>
                       )}
@@ -397,6 +398,7 @@ function ConpNavigationClassification(props) {
       )
     )
   }
+
 
   return (
     <View className='navigation-classification'>

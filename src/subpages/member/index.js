@@ -32,7 +32,8 @@ import {
   normalizeQuerys,
   log,
   VERSION_PLATFORM,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  getDistributorId
 } from '@/utils'
 import S from '@/spx'
 import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId } from '@/store/slices/purchase'

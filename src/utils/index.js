@@ -749,9 +749,13 @@ const getCurrentShopId = () => {
 const getDistributorId = (_dtid) => {
   const { sys, shop } = store.getState()
   const { openStore } = sys
+
+  // console.log("🚀🚀🚀 ~ getDistributorId ~ shop:", shop)
+
   const {
     shopInfo: { distributor_id, shop_id = 0 }
   } = shop
+  console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id

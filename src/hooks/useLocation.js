@@ -1,18 +1,22 @@
 import Taro from '@tarojs/taro'
 import api from '@/api'
 import entryLaunch from '@/utils/entryLaunch'
-import { useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { updateLocation } from '@/store/slices/user'
 import S from '@/spx'
 
 export default (props) => {
   const dispatch = useDispatch()
+  const { location } = useSelector((state) => state.user)
+  const { open_divided } = useSelector((state) => state.sys)
+
   /**
    * 未登录状态 && 授权定位  == 定位
    * 未登录状态  && 不授权定位  == 默认值
    */
   const updateAddress = async () => {
-    if (S.getAuthToken()) {
+    // open_divided店铺隔离，只取定位地址
+    if (S.getAuthToken() && !open_divided) {
       await addressLogic()
     } else {
       const res1 = await fetchLocation()
@@ -142,6 +146,6 @@ export default (props) => {
       }
     }
   }
-
-  return { updateAddress }
+    
+  return { updateAddress, calculateDistance }
 }

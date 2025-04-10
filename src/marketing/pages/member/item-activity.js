@@ -108,8 +108,21 @@ function ItemActivity(props) {
     })
   }
 
+  const registrationSubmitFetch = async ({ activityId }) => {
+    await api.user.joinActivity({ activity_id: activityId })
+    Taro.showToast({
+      icon: 'none',
+      title: '报名成功'
+    })
+    setTimeout(() => {
+      Taro.navigateTo({
+        url: `/marketing/pages/reservation/goods-reservate-result?activity_id=${activityId}`
+      })
+    }, 400)
+  }
+
   const onBtnAction = (item, type) => {
-    const { activityId, recordId, status } = item
+    const { activityId, recordId, status, hasTemp } = item
     switch (type) {
       case 'reFill':
         //重新填写
@@ -119,16 +132,22 @@ function ItemActivity(props) {
         break
       case 'sign':
         //立即报名
-        if(['passed','canceled','verified'].includes(status)){
-          Taro.navigateTo({
-            url:`/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
-          })
-        } else{
-          //有编辑
-          setState((draft) => {
-            draft.isOpened = true
-            draft.activityInfo = item
-          })
+        if (hasTemp) {
+          // 有模板
+          if(['passed','canceled','verified'].includes(status)){
+            Taro.navigateTo({
+              url:`/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
+            })
+          } else{
+            //有编辑
+            setState((draft) => {
+              draft.isOpened = true
+              draft.activityInfo = item
+            })
+          }
+        }else{
+          //没有模板
+          registrationSubmitFetch(item)
         }
 
         break

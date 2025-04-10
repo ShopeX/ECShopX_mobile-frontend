@@ -119,6 +119,10 @@
           border-radius: 16px;
           padding: 53px 48px;
           box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
         }
 
         &-title {
@@ -132,6 +136,14 @@
         &-img {
           padding: 14px;
           background: #fff;
+          margin-bottom: 16px;
+        }
+
+        &-code{
+          text-align: center;
+          font-weight: 500;
+          font-size: 28px;
+          color: #333333;
         }
 
       }
