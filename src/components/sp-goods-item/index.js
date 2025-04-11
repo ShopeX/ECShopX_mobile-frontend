@@ -26,8 +26,8 @@ function SpGoodsItem(props) {
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
   const {
-    activity_price:enPurActivityPrice,
-    sale_price:enPurSalePrice,
+    activity_price: enPurActivityPrice,
+    sale_price: enPurSalePrice,
   } = items_page
 
   const {
@@ -158,20 +158,22 @@ function SpGoodsItem(props) {
           {info.point && (
             <View className='goods-point'>
               <SpPoint value={info.point} />
+              {info.price > 0 ? <Text style="margin: 0 4px;">+</Text> : ''}
+              {info.price > 0 ? <SpPrice primary size={32} value={info.price} /> : ''}
             </View>
           )}
 
           {!info.point && showPrice && (
             <View className='goods-price'>
               <View className='gd-price'>
-                { isPurchase && <View>
+                {isPurchase && <View>
                   <SpPrice size={36} value={info.price}></SpPrice>
                   {info.activityPrice && enPurActivityPrice && <View className='act-price'>
                     活动价¥{info.activityPrice.toFixed(2)}
                     {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
-                    </View>}
+                  </View>}
                 </View>}
-               {!isPurchase && <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>}
+                {!isPurchase && <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>}
                 {info.marketPrice > 0 && enMarketPrice && (
                   <SpPrice
                     size={26}
@@ -231,6 +233,8 @@ function SpGoodsItem(props) {
                 <Text className='iconfont icon-gouwuche2' />
               </View>
             )}
+
+            {info.point && <View className='btn-exchange'>兑换</View>}
           </View>
         </View>
 

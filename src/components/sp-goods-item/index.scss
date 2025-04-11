@@ -93,6 +93,14 @@
             font-size: 38px;
             color: var(--color-primary);
           }
+
+          .btn-exchange {
+            font-size: 26px;
+            padding: 2px 8px;
+            color: var(--color-primary);
+            border: 1PX solid var(--color-primary);
+            border-radius: 8px;
+          }
         }
       }
     }
