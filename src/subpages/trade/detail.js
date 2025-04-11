@@ -305,13 +305,13 @@ function TradeDetail(props) {
       return '待医生开方'
     } else if (supplement) {
       return '待补充处方信息'
-    } else if (info.zitiStatus == 'PENDING') {
-      return '等待核销'
     } else if (info.deliveryStatus == 'PARTAIL') {
       return '部分商品已发货'
-    } else if (info.cancelStatus == 'WAIT_PROCESS') {
+  } else if (info.cancelStatus == 'WAIT_PROCESS') {
       return '订单取消，退款处理中'
-    } else if (
+    }else if (info.zitiStatus == 'PENDING' && info.orderStatus == "PAYED") {
+      return '等待核销'
+    }  else if (
       info.orderStatus == 'NOTPAY' &&
       info.payType == 'offline_pay' &&
       info.offlinePayCheckStatus == '0'
@@ -344,7 +344,7 @@ function TradeDetail(props) {
       }
 
       // 自提订单
-      if (info.receiptType == 'ziti') {
+      if (info.receiptType == 'ziti' && info.orderStatus == "PAYED" && info.zitiStatus == 'PENDING') {
         btns.unshift(tradeActionBtns.WRITE_OFF)
       }
 
