@@ -1,0 +1,15 @@
+.page-limit-list{
+  position: absolute;
+  .limit-list__hd {
+    width: 100%;
+    height: 276px;
+    background: var(--color-primary);
+    border-radius: 0 0 150px 150px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    z-index: -1;
+    background: linear-gradient(90deg, #F69F62 0%, #F67C62 100%);
+  }
+}

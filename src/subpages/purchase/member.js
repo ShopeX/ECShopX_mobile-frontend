@@ -431,7 +431,14 @@ function MemberIndex(props) {
         </View>
 
         {
-          !isPurchaseHome && <View className='header-bd'>
+          true && <View className='header-limit'>
+            查看额度列表
+            <Text className='iconfont icon-qianwang-01'></Text>
+          </View>
+        }
+
+        {
+          '!isPurchaseHome' && <View className='header-bd'>
             <View className='bd-item'>
               <View className='bd-item-label'>总额度</View>
               <View className='bd-item-value'>

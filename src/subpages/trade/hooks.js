@@ -59,9 +59,13 @@ export default (props) => {
       title: '售后详情',
       key: 'after_detail',
       btnStatus: 'normal',
-      action: ({ orderId }) => {
+      action: ({ orderId,orderClass }) => {
+        let url = `/subpages/trade/after-sale-list?order_id=${orderId}`
+        if(orderClass == 'employee_purchase'){
+          url += '&is_purchase=1'
+        }
         Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
+          url
         })
       }
     },
