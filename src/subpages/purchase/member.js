@@ -510,7 +510,7 @@ function MemberIndex(props) {
               <SpImage src='daizhifu.png' className='icon-style' />
               {state.waitPayNum > 0 && (
                 <View
-                  className={`'order-bradge' ${VERSION_IN_PURCHASE && 'purchase-order-bradge'}`}
+                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
                 >
                   <Text>{state.waitPayNum}</Text>
                 </View>
@@ -524,7 +524,7 @@ function MemberIndex(props) {
               <SpImage src='daishouhuo.png' className='icon-style' />
               {state.waitRecevieNum + state.waitSendNum > 0 && (
                 <View
-                  className={`'order-bradge' ${VERSION_IN_PURCHASE && 'purchase-order-bradge'}`}
+                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
                 >
                   <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
                 </View>
