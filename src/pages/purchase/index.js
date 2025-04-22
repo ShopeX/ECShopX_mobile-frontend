@@ -5,7 +5,7 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
-import { classNames, pickBy, getDistributorId } from '@/utils'
+import { classNames, pickBy, getDistributorId,VERSION_IN_PURCHASE } from '@/utils'
 import { useAsyncCallback, useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
 import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo, updateCount } from '@/store/slices/purchase'
@@ -67,11 +67,19 @@ function PurchaseActivityList() {
       enterprise_id:curEnterpriseId,
       activity_id
     })
+
+    // 纯内购没有企业进入认证首页
+    if(VERSION_IN_PURCHASE && total_count == 0){
+      Taro.redirectTo({
+        url: '/pages/purchase/auth'
+      })
+      return
+    }
+
      // 如果只有一条数据，直接进入活动首页
     if(total_count == 1 && !is_select){
       const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
       onClickChange(_list[0],'redirectTo')
-
     }else{
       setState(draft=>{
         draft.loading = false
