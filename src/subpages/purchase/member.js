@@ -43,7 +43,9 @@ import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
+import CompHelpCenter from './comps/comp-helpcenter'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
+
 
 import './member.scss'
 
@@ -596,6 +598,10 @@ function MemberIndex(props) {
           isPromoter={userInfo ? userInfo.isPromoter : false}
           onLink={handleClickService}
         />
+
+          <CompPanel>
+            <CompHelpCenter onLink={handleClickService} />
+          </CompPanel>
       </View>
       {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />
