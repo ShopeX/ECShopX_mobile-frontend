@@ -114,7 +114,7 @@ function SpCashier(props) {
     if (_list.length > 0) {
 
       // const defaultItem = (pointPayFirst && (userPoint > 0)) ?  _list.find(item=>item.paymentChannel ==  "point") : _list.find(item=>item.paymentChannel ==  "wxpay")
-      const defaultItem = _list.find(item=>item.paymentChannel == (defaultVal || "wxpay"))
+      const defaultItem = _list.find(item=>item.paymentChannel == (defaultVal || "wxpay")) ?? _list[0]
       onChange(defaultItem)
       onChangePayment(defaultItem)
     }
