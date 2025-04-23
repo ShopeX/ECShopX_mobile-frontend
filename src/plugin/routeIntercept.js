@@ -23,6 +23,11 @@ class RouteIntercept {
         '/pages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
+      },
+      'b2c': { // 如果是b2c并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
+        '/pages/item/list': '/subpages/purchase/list',
+        '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       }
       // 'standard': {
       //   '/pages/item/espier-detail': '/subpages/pointshop/espier-detail',
@@ -96,7 +101,7 @@ class RouteIntercept {
     }
 
     const activity_id = store.getState()?.purchase?.purchase_share_info?.activity_id
-    const sp_platform = this.app_platform == 'standard' || this.app_platform == 'platform'
+    const sp_platform = this.app_platform == 'standard' || this.app_platform == 'platform' || this.app_platform == 'b2c'
     const in_platform = this.app_platform == 'in_purchase'
     if(this.routes?.[this.app_platform] && in_platform) {
       params = this.transformParams(params)
