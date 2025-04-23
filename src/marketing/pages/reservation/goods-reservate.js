@@ -14,7 +14,7 @@ import {
   SpFloatLayout
 } from '@/components'
 import api from '@/api'
-import { showToast, getDistributorId } from '@/utils'
+import { showToast, getDistributorId, isWeixin } from '@/utils'
 import { useNavigation } from '@/hooks'
 import CompImgPicker from './comps/comp-img-picker'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -416,7 +416,7 @@ function GoodReservate(props) {
       api.user.newWxaMsgTmpl(templeparams).then(
         (tmlres) => {
           console.log('templeparams---1', tmlres)
-          if (tmlres.template_id && tmlres.template_id.length > 0) {
+          if (tmlres.template_id && tmlres.template_id.length > 0 && isWeixin) {
             wx.requestSubscribeMessage({
               tmplIds: tmlres.template_id,
               success() {

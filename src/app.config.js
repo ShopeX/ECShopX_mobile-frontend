@@ -27,6 +27,7 @@ const config = {
     'pages/purchase/auth',
     'pages/cart/prescription-information',//补充处方信息
     'pages/cart/add-personnel', // 添加用药人员
+    'pages/share-land', //太阳码统一落地页
   ],
   subPackages: [
     // 内购

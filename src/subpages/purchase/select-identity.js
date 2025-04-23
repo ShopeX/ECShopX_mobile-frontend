@@ -115,7 +115,7 @@ function SelectIdentity(props) {
             )
           })}
         </View>
-        {invalidIdentity?.length > 0 && (
+        {/* {invalidIdentity?.length > 0 && (
           <View className='invalid-identity'>
             <View className='title'>已失效身份</View>
             {state.invalidIdentity?.map((item, index) => (
@@ -137,7 +137,7 @@ function SelectIdentity(props) {
               </View>
             ))}
           </View>
-        )}
+        )} */}
       </View>
     </SpPage>
   )
