@@ -136,6 +136,7 @@ export default class PurchaseIndex extends Component {
               info.invited_num
             }；可分享：${info.invite_limit - info.invited_num}`}</View>
           </View>
+          <View>亲友参与时间：</View>
           {/* <View className='header-bd'>
             <View className='bd-item'>
               <View className='bd-item-label'>总额度</View>
@@ -161,7 +162,7 @@ export default class PurchaseIndex extends Component {
           <View>
             <View className='line-wrap'>
               <Text className='line'></Text>
-              <Text className='line-title'>全部家属</Text>
+              <Text className='line-title'>全部亲友</Text>
               <Text className='line'></Text>
             </View>
             <ScrollView
