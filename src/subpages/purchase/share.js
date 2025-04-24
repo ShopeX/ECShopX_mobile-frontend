@@ -3,6 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { SpPage, SpImage, SharePurchase, SpPoster } from '@/components'
 import api from '@/api'
+import dayjs from 'dayjs'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
 import { styleNames, formatDateTime, log } from '@/utils'
@@ -136,7 +137,7 @@ export default class PurchaseIndex extends Component {
               info.invited_num
             }；可分享：${info.invite_limit - info.invited_num}`}</View>
           </View>
-          <View>亲友参与时间：</View>
+          <View className='relative-time'>亲友参与时间：{dayjs(info?.employee_created * 1000).format('YYYY.MM.DD HH:mm:ss')}</View>
           {/* <View className='header-bd'>
             <View className='bd-item'>
               <View className='bd-item-label'>总额度</View>
