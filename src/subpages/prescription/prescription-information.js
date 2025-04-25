@@ -176,7 +176,8 @@ function PrescriptionPnformation() {
     let param = {
       order_id,
       medication_personnel_id: medicationList.filter(item => item.isShow == true)?.[0]?.id,
-      third_return_url: `/subpages/trade/detail?order_id=${order_id}`,
+      //是否通过店务端扫码进来
+      third_return_url: prescription_order_random?`/subpages/dianwu/index?order_id=${order_id}&path=/pages/order/detail`:`/subpages/trade/detail?order_id=${order_id}`,
       souce_from: isWeixin ? 0 : 2,
       before_ai_result_symptom: [],
       distributor_id: orderInfo.distributorId,
