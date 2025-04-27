@@ -106,6 +106,7 @@ import SpInput from './sp-input'
 import SpSelectModal from './sp-select-modal'
 import SpModalDivided from './sp-modal-divided'
 import SpDeliver from './sp-deliver'
+import SharePurchase from './share-purchase'
 
 
 
@@ -219,5 +220,6 @@ export {
   SpInput,
   SpSelectModal,
   SpModalDivided,
-  SpDeliver
+  SpDeliver,
+  SharePurchase
 }

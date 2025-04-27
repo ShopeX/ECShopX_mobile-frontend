@@ -64,7 +64,7 @@ class RouteIntercept {
         }
       };
 
-      // // 监听 popstate 事件
+      // 监听 popstate 事件
       // window.addEventListener('popstate', (e) => {
       //   const url = window.location.pathname + window.location.search;
       //   const newPath = this.formartParams({ url });
@@ -89,6 +89,17 @@ class RouteIntercept {
   }
 
   formartParams(params) {
+    //_original=1标识=>不重定向。并且去除标识
+    if(params.url?.includes('_original=1')){
+      // 移除 _original=1 参数及其连接符
+      params.url = params.url.replace(/[?&]_original=1($|&)/, (match, p1) => {
+        // 如果是最后一个参数，返回空字符串
+        // 如果后面还有其他参数，返回 ? 或保留 &
+        return match.startsWith('?') ? (p1 === '&' ? '?' : '') : '';
+      });
+      return params;
+    }
+
     const activity_id = store.getState()?.purchase?.purchase_share_info?.activity_id
     const sp_platform = this.app_platform == 'standard' || this.app_platform == 'platform' || this.app_platform == 'b2c'
     const in_platform = this.app_platform == 'in_purchase'

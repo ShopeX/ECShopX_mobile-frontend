@@ -14,6 +14,7 @@ import GuideCheckoutWx from './dw-guidecheckout'
 import GuideCheckoutAli from './dw-guidecheckout.alipay'
 import StoreCode from './dw-storeCode'
 import PlaceAnOrder from './dw-placeAnOrder'
+import Invite from './dw-invite'
 
 
 import './index.scss'
@@ -128,6 +129,16 @@ function SpPoster(props) {
           break
       case 'distribution':
         canvasObj = new Distribution({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
+       case 'invite':
+        // console.log('invite111')
+        canvasObj = new Invite({
           ctx,
           info,
           userInfo,

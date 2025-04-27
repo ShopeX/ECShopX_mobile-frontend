@@ -38,7 +38,7 @@ function PurchaseAuthAccount() {
   const formRef = useRef()
   const { form, rules, isOpened, companyList, curActiveIndex } = state
   const { params } = useRouter()
-  const { enterprise_id, enterprise_name, enterprise_sn, activity_id } = params
+  const { enterprise_id, enterprise_name, enterprise_sn, activity_id,is_activity = '' } = params
   const { showModal } = useModal()
   const dispatch = useDispatch()
 
@@ -135,7 +135,7 @@ function PurchaseAuthAccount() {
         })
       }
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
@@ -148,7 +148,7 @@ function PurchaseAuthAccount() {
           confirmText: '我知道了',
           contentAlign: 'center'
         })
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       } else {
         showToast(e.message)
       }

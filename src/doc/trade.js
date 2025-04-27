@@ -13,6 +13,7 @@ export const TRADE_ITEM = {
   deliveryStatus: 'delivery_status',
   distributorId: 'distributor_id',
   distributorName: 'distributor_name',
+  enterpriseId:'enterprise_id',
   distributorInfo: ({ distributor_info }) => {
     return pickBy(distributor_info, {
       name: 'name',
@@ -36,6 +37,7 @@ export const TRADE_ITEM = {
   isLogistics: ({ is_logistics }) => is_logistics == '1',
   items: ({ items }) => {
     return pickBy(items, {
+      activityId:'act_id',
       deliveryStatus: 'delivery_status',
       distributorId: 'distributor_id',
       pic: 'pic',

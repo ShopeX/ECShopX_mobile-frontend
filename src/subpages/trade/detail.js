@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { AtButton, AtCountdown, AtFloatLayout } from 'taro-ui'
@@ -41,7 +41,7 @@ const initialState = {
   squareRoot: false,  //待开方
   supplement: false,  //待补充
   prescriptionUrl: '',
-  prescriptionStatus: false
+  prescriptionStatus: false,
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
@@ -72,8 +72,16 @@ function TradeDetail(props) {
   const router = useRouter()
   const websocketRef = useRef(null)
 
+  const isMounted = useRef(true)  // 添加组件挂载状态标志
+
+  useDidShow(()=>{
+
+  })
+
   useEffect(() => {
     fetch()
+
+    isMounted.current = true  // 组件挂载时设置为true
 
     // 提交售后事件
     Taro.eventCenter.on('onEventAfterSalesApply', () => {
@@ -96,6 +104,8 @@ function TradeDetail(props) {
       Taro.eventCenter.off('onEventAfterSalesApply')
       Taro.eventCenter.off('onEventAfterSalesCancel')
       Taro.eventCenter.off('onEventOfflineApply')
+
+      isMounted.current = false  // 组件卸载时设置为false
     }
   }, [])
 
@@ -136,9 +146,11 @@ function TradeDetail(props) {
       websocketRef.current.onError((err) => {
         console.log('websocket start err: ', err)
         websocketRef.current = null
-        setTimeout(() => {
-          onWebSocket()
-        }, 200)
+        if (isMounted.current) {
+          setTimeout(() => {
+            onWebSocket()
+          }, 200)
+        }
       })
       websocketRef.current.onMessage((res) => {
         const { status } = JSON.parse(res.data)
@@ -204,10 +216,16 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId }) => {
-    Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
-    })
+  const onClickItem = ({ itemId, distributorId,activityId,orderClass }) => {
+    if(orderClass == 'employee_purchase'){
+      Taro.navigateTo({
+        url:`/subpages/purchase/espier-detail?id=${itemId}&dtid=${distributorId || 0}&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+      })
+    }else{
+      Taro.navigateTo({
+        url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
+      })
+    }
   }
 
   // 订单支付
@@ -293,13 +311,13 @@ function TradeDetail(props) {
       return '待医生开方'
     } else if (supplement) {
       return '待补充处方信息'
-    } else if (info.zitiStatus == 'PENDING') {
-      return '等待核销'
     } else if (info.deliveryStatus == 'PARTAIL') {
       return '部分商品已发货'
-    } else if (info.cancelStatus == 'WAIT_PROCESS') {
+  } else if (info.cancelStatus == 'WAIT_PROCESS') {
       return '订单取消，退款处理中'
-    } else if (
+    }else if (info.zitiStatus == 'PENDING' && info.orderStatus == "PAYED") {
+      return '等待核销'
+    }  else if (
       info.orderStatus == 'NOTPAY' &&
       info.payType == 'offline_pay' &&
       info.offlinePayCheckStatus == '0'
@@ -332,7 +350,7 @@ function TradeDetail(props) {
       }
 
       // 自提订单
-      if (info.receiptType == 'ziti') {
+      if (info.receiptType == 'ziti' && info.orderStatus == "PAYED" && info.zitiStatus == 'PENDING') {
         btns.unshift(tradeActionBtns.WRITE_OFF)
       }
 
@@ -360,8 +378,10 @@ function TradeDetail(props) {
 
   const parameter = async () => {
     const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    const routeParams = await entryLaunch.getRouteParams()
-    return routeParams && routeParams.order_id ? routeParams : storedData
+    // const routeParams = await entryLaunch.getRouteParams()
+    // return routeParams && routeParams.order_id ? routeParams : storedData
+    const order_id = router.params?.order_id
+    return  order_id ? {order_id} : storedData
   }
 
   const handleCallOpreator = () => {
@@ -625,7 +645,7 @@ function TradeDetail(props) {
             </View>
           </View> */}
           <View className='trade-goods'>
-            {info?.items.map((goods, goodsIndex) => (
+            {info?.items?.map((goods, goodsIndex) => (
               <View className='trade-goods-item' key={goodsIndex}>
                 <SpTradeItem
                   info={{
@@ -786,6 +806,7 @@ function TradeDetail(props) {
 
       {info?.orderStatus === 'NOTPAY' && (
         <SpCashier
+          isPurchase={info.orderClass == 'employee_purchase'}
           defaultVal={info?.payChannel}
           isOpened={openCashier}
           value={info?.payChannel}

@@ -5,7 +5,7 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { AtButton, AtInput } from 'taro-ui'
 import api from '@/api'
-import { classNames, pickBy, getDistributorId } from '@/utils'
+import { classNames, pickBy, getDistributorId,VERSION_IN_PURCHASE } from '@/utils'
 import { useAsyncCallback, useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
 import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo, updateCount } from '@/store/slices/purchase'
@@ -47,12 +47,12 @@ function PurchaseActivityList() {
   const dispatch = useDispatch()
 
   const { params } = useRouter()
-  let { activity_id, is_select } = params
+  let { activity_id, is_redirt } = params
 
   useEffect(() => {
     if (!S.getAuthToken()) {
       Taro.redirectTo({
-        url: '/pages/purchase/auth'
+        url: '/subpages/purchase/member?from=purchase_home'
       })
       return
     } else {
@@ -61,17 +61,29 @@ function PurchaseActivityList() {
   }, [])
 
   const verfiyActivityNums = async() => {
+    if(VERSION_IN_PURCHASE){
+      // 纯内购没有企业进入认证首页
+      const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
+      const validIdentityLen = data.filter(item => item.disabled == 0).length
+      if(!validIdentityLen){
+        Taro.redirectTo({
+          url: '/pages/purchase/auth'
+        })
+        return
+      }
+    }
+
     const { list, total_count } = await api.purchase.getEmployeeActivityList({
       page: 1,
       pageSize:1,
       enterprise_id:curEnterpriseId,
       activity_id
     })
+
      // 如果只有一条数据，直接进入活动首页
-    if(total_count == 1 && !is_select){
+    if(total_count == 1 && is_redirt){
       const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
       onClickChange(_list[0],'redirectTo')
-
     }else{
       setState(draft=>{
         draft.loading = false
@@ -138,7 +150,6 @@ function PurchaseActivityList() {
   }
 
   const onClickChange = async(item,isRedirectTo) => {
-    console.log(item)
     const { id, enterpriseId, pages_template_id, priceDisplayConfig = {}, isDiscountDescriptionEnabled, discountDescription } = item
     const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
     const _priceDisplayConfig = handlePriceConfig(priceDisplayConfig)

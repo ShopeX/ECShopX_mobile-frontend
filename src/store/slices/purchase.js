@@ -3,6 +3,7 @@ import { showToast } from '@/utils'
 import api from '@/api'
 
 const initialState = {
+  isOpen: false,
   tabbar: null,
   purchase_share_info: {},
   invite_code: '',
@@ -14,7 +15,8 @@ const initialState = {
   priceDisplayConfig:{},
   isDiscountDescriptionEnabled:false,
   discountDescription:'',
-  curDistributorId:null
+  curDistributorId:null,
+  persist_purchase_share_info: {},//持久化存储最近一次活动，用于内购会员中心额度和分享
 
 }
 
@@ -55,6 +57,9 @@ const purchaseSlice = createSlice({
     updatePurchaseShareInfo: (state, { payload = {} }) => {
       state.purchase_share_info = payload
     },
+    updatePersistPurchaseShareInfo: (state, { payload = {} }) => {
+      state.persist_purchase_share_info = payload
+    },
     updateInviteCode: (state, { payload = '' }) => {
       state.invite_code = payload
     },
@@ -79,7 +84,9 @@ const purchaseSlice = createSlice({
     updateCurDistributorId:(state, { payload = '' }) => {
       state.curDistributorId = payload
     },
-
+    updateIsOpenPurchase:(state, { payload = false }) => {
+      state.isOpen = payload
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCartList.fulfilled, (state, action) => {
@@ -95,6 +102,6 @@ const purchaseSlice = createSlice({
   }
 })
 
-export const { updatePurchaseTabbar, updatePurchaseShareInfo, updateInviteCode, purchaseClearCart,updateValidIdentity,updateEnterpriseId,updateActivityInfo, updateCurDistributorId } = purchaseSlice.actions
+export const { updatePurchaseTabbar, updatePurchaseShareInfo, updateInviteCode, purchaseClearCart,updateValidIdentity,updateEnterpriseId,updateActivityInfo, updateCurDistributorId, updateIsOpenPurchase, updatePersistPurchaseShareInfo } = purchaseSlice.actions
 
 export default purchaseSlice.reducer

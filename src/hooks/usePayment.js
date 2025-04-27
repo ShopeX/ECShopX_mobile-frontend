@@ -109,10 +109,10 @@ export default (props = {}) => {
 
   const payError = (orderInfo) => {
     const { order_id, trade_source_type } = orderInfo
-    if(isPurchasePage()){
-      Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
-      return
-    }
+    // if(isPurchasePage()){
+    //   Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
+    //   return
+    // }
     // 社区拼团订单
     if (!isTradeDetaiPage() && router.path != '/subpages/community/order') {
       if (trade_source_type == 'normal_community') {

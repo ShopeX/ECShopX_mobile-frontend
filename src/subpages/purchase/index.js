@@ -1,13 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import Taro, { getCurrentInstance, useDidShow, useRouter } from '@tarojs/taro'
-import { View, Image, ScrollView } from '@tarojs/components'
+import Taro, { getCurrentInstance, useDidShow, useRouter, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import { View, Image, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   SpPage,
   SpSearch,
   SpPrivacyModal,
   SpTabbar,
-  SpSkuSelect
+  SpSkuSelect,
+  SpFloatMenus,
+  SharePurchase,
+  SpPoster,
+  SpImage
 } from '@/components'
 import api from '@/api'
 import {
@@ -17,9 +21,14 @@ import {
   VERSION_PLATFORM,
   classNames,
   pickBy,
-  showToast
+  showToast,
+  log
 } from '@/utils'
-import { updatePurchaseShareInfo, updatePurchaseTabbar } from '@/store/slices/purchase'
+import {
+  updatePurchaseShareInfo,
+  updatePurchaseTabbar,
+  updatePersistPurchaseShareInfo
+} from '@/store/slices/purchase'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -38,7 +47,10 @@ const initialState = {
   loading: true,
   info: null,
   skuPanelOpen: false,
-  selectType: 'picker'
+  selectType: 'picker',
+  isOpened: false,
+  posterModalOpen: false,
+  activityInfo: {}
 }
 
 const { store } = configStore()
@@ -61,14 +73,19 @@ function Home() {
   const { openScanQrcode } = useSelector((state) => state.sys)
   const { setNavigationBarTitle } = useNavigation()
 
-  const { wgts, loading ,info ,skuPanelOpen ,selectType} = state
+  const { wgts, loading, info, skuPanelOpen, selectType, isOpened, posterModalOpen, activityInfo } =
+    state
 
   const dispatch = useDispatch()
 
   useEffect(() => {
+    Taro.hideShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
     const { activity_id, enterprise_id, pages_template_id } = router.params || {}
     if (activity_id) {
       dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
+      dispatch(updatePersistPurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
     }
   }, [])
 
@@ -84,32 +101,75 @@ function Home() {
     checkPolicyChange()
   })
 
-
   const init = async () => {
     await fetchWgts()
+    await fetchActivity()
   }
 
   const fetchWgts = async () => {
     try {
       const { config, tab_bar } = await api.shop.getShopTemplate({
         distributor_id: curDistributorId ?? getDistributorId(),
-        pages_template_id: router.params?.pages_template_id || purchase_share_info?.pages_template_id,
+        pages_template_id:
+          router.params?.pages_template_id || purchase_share_info?.pages_template_id,
         e_activity_id: router.params?.activity_id || purchase_share_info?.activity_id
       })
       const tabBar = tab_bar && JSON.parse(tab_bar)
-      dispatch(updatePurchaseTabbar({
-        tabbar: tabBar
-      }))
+      dispatch(
+        updatePurchaseTabbar({
+          tabbar: tabBar
+        })
+      )
       setState((draft) => {
         draft.wgts = config
         draft.loading = false
       })
     } catch (e) {
-      dispatch(updatePurchaseTabbar({
-        tabbar: null
-      }))
+      dispatch(
+        updatePurchaseTabbar({
+          tabbar: null
+        })
+      )
     }
   }
+
+  const fetchActivity = async () => {
+    const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
+    const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+    const data = await api.purchase.getEmployeeActivitydata({activity_id,enterprise_id})
+   setState(draft=>{
+    draft.activityInfo = data
+    })
+  }
+
+  useShareAppMessage(async () => {
+    return new Promise(async function (resolve,reject) {
+      return reject()
+      const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
+      const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+      const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
+      log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
+      resolve({
+        title: activityInfo.name,
+        imageUrl: activityInfo.share_pic,
+        path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}`
+      })
+    })
+  })
+
+  // useShareTimeline(async (res) => {
+  //   return new Promise(async function (resolve,reject) {
+  //     const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
+  //     const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+  //     const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
+  //     log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
+  //     resolve({
+  //       title: activityInfo.name,
+  //       imageUrl: activityInfo.share_pic,
+  //       path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}`
+  //     })
+  //   })
+  // })
 
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
@@ -151,6 +211,27 @@ function Home() {
     }
   }
 
+  const showInfo = () => {
+    if (purchase_share_info.surplus_share_limitnum == '0') {
+      Taro.showToast({
+        title: '分享次数为0',
+        icon: 'none'
+      })
+      return
+    } else {
+      setState((draft) => {
+        draft.isOpened = true
+      })
+    }
+  }
+
+  const onCreatePoster = () => {
+    setState((draft) => {
+      draft.isOpened = false
+      draft.posterModalOpen = true
+    })
+  }
+
   console.log('pageData:', pageData)
   return (
     <SpPage
@@ -159,6 +240,13 @@ function Home() {
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base}
       renderFooter={<CompTabbar />}
+      renderFloat={
+        false && (
+          <View className='float-share' onClick={showInfo}>
+            <SpImage src='share.png' className='share-btn' mode='aspectFit'></SpImage>
+          </View>
+        )
+      }
       loading={loading}
     >
       <ScrollView
@@ -167,7 +255,9 @@ function Home() {
         })}
         scrollY
       >
-        {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>}
+        {isShowHomeHeader && process.env.APP_PLATFORM === 'platform' && (
+          <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
+        )}
         {filterWgts.length > 0 && (
           <WgtsContext.Provider
             value={{
@@ -206,6 +296,28 @@ function Home() {
         onConfirm={handleConfirmModal}
       />
 
+      <SharePurchase
+        open={isOpened}
+        onCreatePoster={onCreatePoster}
+        onClose={() => {
+          setState((draft) => {
+            draft.isOpened = false
+          })
+        }}
+      ></SharePurchase>
+
+      {/* 海报 */}
+      {posterModalOpen && (
+        <SpPoster
+          info={purchase_share_info}
+          type='invite'
+          onClose={() => {
+            setState((draft) => {
+              draft.posterModalOpen = false
+            })
+          }}
+        />
+      )}
     </SpPage>
   )
 }

@@ -38,7 +38,7 @@ import {
   entryLaunch
 } from '@/utils'
 import { updateShopInfo, changeInWhite } from '@/store/slices/shop'
-import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updateInviteCode, updateEnterpriseId } from '@/store/slices/purchase'
 import S from '@/spx'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal, useWhiteShop } from '@/hooks'
@@ -149,6 +149,7 @@ function Home() {
   useDidShow(() => {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
+    dispatch(updateEnterpriseId())
   })
 
   useEffect(() => {
@@ -182,7 +183,7 @@ function Home() {
       checkStoreIsolation();
     }
   }, [open_divided]);
-  
+
   // 需要在页面返回到首页的时候执行，第一次页面渲染的时候不执行
   useDidShow(() => {
     if (VERSION_STANDARD && open_divided && !isFirstRender.current && !isFromPhoneCallBack.current) {
@@ -243,7 +244,7 @@ function Home() {
 
   const fetchWgts = async () => {
     const currentRequestId = ++requestIdRef.current;
-    
+
     setState((draft) => {
       draft.wgts = []
       draft.pageData = []
@@ -255,7 +256,7 @@ function Home() {
       const { config } = await api.shop.getShopTemplate({
         distributor_id: getDistributorId()
       })
-      
+
       // 如果这不是最新的请求,直接返回，避免前一次请求影响渲染结果
       if (currentRequestId !== requestIdRef.current) {
         return;
@@ -367,7 +368,7 @@ function Home() {
       dispatch(updateShopInfo(defalutShop))
     }
 
-    if (!S.getAuthToken()) { 
+    if (!S.getAuthToken()) {
       showWhiteLogin()
       return
     }
@@ -390,11 +391,11 @@ function Home() {
 
       // 分享带有tdid访问，每次都应该判断提示
       if (routerDtid && (shopInWhite && routerDtid != shopInfo.distributor_id)) {
-        // 虽然是在有效店铺，如果店铺变化，判断是否可以进店, 
+        // 虽然是在有效店铺，如果店铺变化，判断是否可以进店,
         // 可能是没开启白名单的店铺，直接进店，如果继续走下面的逻辑，会提示回我的店的问题
         const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
         dispatch(changeInWhite(status))
-        if (status) { 
+        if (status) {
           return
         }
       }
@@ -409,35 +410,35 @@ function Home() {
        * 没有 show_type  && distributor_id=0 && !location，同上
        * 没有 show_type && distributor_id>0, 如果这个店铺没有启用，返回默认店铺
        * 没有 show_type && distributor_id>0, 如果这个有启用，返回的是这个店铺是否是白名单的店铺
-       * 
+       *
        * 找合适店铺的逻辑
-       * 1、找最近开启白名单的店铺 
+       * 1、找最近开启白名单的店铺
        * 2、没有找到，从所有开启白名单店铺里的找，
        *    2.1 开启定位，找最近的
        *    2.2 没有开启定位，找创建时间最晚的
        * 3、还没找到，找没开启白名单的店铺
        * 4、都没有找到，就用默认的店铺渲染电话和模版
-       * 
+       *
        * 返回 white_hidden ==1  说明是默认店铺 ，不进店，但是需要取店铺信息作为模版背景和手机号
-       * 
+       *
        */
 
-        
+
         if (routerDtid) {
           params.show_type = 'self'
           // 带self，返回店铺内容store_name => 是绑定的店铺
           const shopDetail = await api.shop.getShop(params)
 
           // 不是店铺白名单店铺
-          if (shopDetail.store_name && shopDetail.white_hidden != 1) { 
+          if (shopDetail.store_name && shopDetail.white_hidden != 1) {
             // 找到店铺了
             dispatch(updateShopInfo(shopDetail))
             dispatch(changeInWhite(true))
             return
           }
 
-         
-         
+
+
           const shop = await getWhiteShop() // 已经加入的最优店铺
           if (shop) {
             params.distributor_id = shop.distributor_id
@@ -446,7 +447,7 @@ function Home() {
                 isShow: true,
                 confirmText: '回我的店',
                 showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
-                onCancel: () => { 
+                onCancel: () => {
                   connectWhiteShop(defalutShop?.phone || shopInfo?.phone)
                   setState((draft) => {
                     draft.modalDivided = {
@@ -487,7 +488,7 @@ function Home() {
                   isShow: true,
                   confirmText: '去其他店',
                   showCancel: !!(open_divided_templateId || defalutShop?.phone || shopInfo?.phone),
-                  onCancel: () => { 
+                  onCancel: () => {
                     connectWhiteShop(defalutShop?.phone || shopInfo?.phone)
                     setState((draft) => {
                       draft.modalDivided = {
@@ -522,7 +523,7 @@ function Home() {
 
 
           // 不是店铺白名单店铺
-          if (shopDetail.store_name && shopDetail.white_hidden != 1) { 
+          if (shopDetail.store_name && shopDetail.white_hidden != 1) {
             // 找到店铺了
             dispatch(updateShopInfo(shopDetail))
             dispatch(changeInWhite(true))
@@ -560,8 +561,8 @@ function Home() {
 
   /***
    * 未注册，开启店铺隔离后需要登录
-   * 
-   *  */ 
+   *
+   *  */
   const showWhiteLogin = async () => {
     if(!open_divided) return
     // 开启了店铺隔离 && 未登录，提示用户登录
@@ -594,7 +595,7 @@ function Home() {
     setState((draft) => {
       draft.policyModal = isShow
     })
-    
+
     // 如果用户取消隐私协议，仍然需要显示登录提示
     if (!isShow) {
       Taro.showModal({
@@ -643,7 +644,7 @@ function Home() {
         isShow: true,
         confirmText: '关闭',
         showCancel: !!(open_divided_templateId || phone),
-        onCancel: () => { 
+        onCancel: () => {
           connectWhiteShop(phone)
           setState((draft) => {
             draft.modalDivided = {
@@ -664,7 +665,7 @@ function Home() {
   }
 
   // 店铺隔离 end
-  
+
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
@@ -746,14 +747,14 @@ function Home() {
         }}
       />
       {/* 恢复隐私协议弹窗 */}
-      <SpPrivacyModal 
-        open={policyModal} 
-        onCancel={() => onPolicyChange(false)} 
-        onConfirm={handlePolicyConfirm} 
+      <SpPrivacyModal
+        open={policyModal}
+        onCancel={() => onPolicyChange(false)}
+        onConfirm={handlePolicyConfirm}
       />
-      
+
       {/* 登录组件 */}
-      <SpLogin 
+      <SpLogin
         ref={loginRef}
         newUser={true}
         onChange={() => {
@@ -766,9 +767,9 @@ function Home() {
         }}
       >
       </SpLogin>
-      { modalDivided.isShow && <SpModalDivided 
+      { modalDivided.isShow && <SpModalDivided
         content={modalDivided.content}
-        cancelText={modalDivided.cancelText} 
+        cancelText={modalDivided.cancelText}
         confirmText={modalDivided.confirmText}
         showCancel={modalDivided.showCancel}
         onCancel={modalDivided.onCancel}

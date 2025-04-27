@@ -1,8 +1,8 @@
 import req from './req'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 
-export function memberInfo() {
-  return req.get('/member')
+export function memberInfo(params = {}) {
+  return req.get('/member',params)
 }
 
 // 修改用户信息
