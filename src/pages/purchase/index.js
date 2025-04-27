@@ -52,7 +52,7 @@ function PurchaseActivityList() {
   useEffect(() => {
     if (!S.getAuthToken()) {
       Taro.redirectTo({
-        url: '/subpages/purchase/member?from=purchase_home'
+         url: '/pages/purchase/auth'
       })
       return
     } else {

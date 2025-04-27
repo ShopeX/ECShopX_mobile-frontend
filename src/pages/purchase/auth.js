@@ -3,7 +3,7 @@ import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, RootPortal } from '@tarojs/components'
 import { SpPrivacyModal, SpPage, SpLogin, SpModal, SpCheckbox, SpImage } from '@/components'
 import { AtButton, AtIcon } from 'taro-ui'
-import { showToast, normalizeQuerys, getCurrentPageRouteParams, VERSION_IN_PURCHASE } from '@/utils'
+import { showToast, normalizeQuerys, getCurrentPageRouteParams, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
 import { useLogin, useModal, useSyncCallback } from '@/hooks'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import S from '@/spx'
@@ -159,6 +159,17 @@ function PurchaseAuth() {
     setChecked(true)
     if (!isNewUser) {
       await login()
+      if(VERSION_IN_PURCHASE){
+        // 纯内购如果有企业则进入选身份页面
+        const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
+        const validIdentityLen = data.filter(item => item.disabled == 0).length
+        if(validIdentityLen){
+          Taro.reLaunch({
+            url:'/subpages/purchase/select-identity?is_redirt=1'
+          })
+        }
+      }
+
     }
   }
 
