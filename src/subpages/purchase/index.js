@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useRef } from 'react'
 import Taro, { getCurrentInstance, useDidShow, useRouter, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { View, Image, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
@@ -68,6 +68,7 @@ function Home() {
     }
   })
   const router = useRouter()
+  const pageRef = useRef()
 
   const [policyModal, setPolicyModal] = useState(false)
   const { openScanQrcode } = useSelector((state) => state.sys)
@@ -95,6 +96,14 @@ function Home() {
       setNavigationBarTitle(appName)
     }
   }, [initState])
+
+  useEffect(() => {
+    if (skuPanelOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen])
 
   useDidShow(() => {
     // 检查隐私协议是否变更或同意
@@ -237,6 +246,7 @@ function Home() {
     <SpPage
       className='page-purchase-index'
       scrollToTopBtn
+      ref={pageRef}
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base}
       renderFooter={<CompTabbar />}
