@@ -7,7 +7,7 @@ import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { SpPage, SpPrivacyModal } from '@/components'
 import { useLogin, useModal } from '@/hooks'
-import { showToast, VERSION_IN_PURCHASE, normalizeQuerys,getDistributorId } from '@/utils'
+import { showToast, VERSION_IN_PURCHASE, normalizeQuerys,getDistributorId, isWeb } from '@/utils'
 import CompSelectCompany from './comps/comp-select-company'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
 import CompBottomTip from './comps/comp-bottomTip'
@@ -214,7 +214,7 @@ function PurchaseAuthPhone(props) {
     <SpPage className='page-purchase-auth-phone select-component'>
       {enterprise_name && <View className='select-component-title'>{decodeURIComponent(enterprise_name)}</View>}
       {(auth_type == 'mobile' || auth_type == 'qr_code') && <View className='select-component-prompt'>使用手机号进行验证</View>}
-      {!isNewUser && (
+      {(!isNewUser || isWeb) && (
         <>
           <View className='phone-box'>
             <Text>已授权手机号：</Text>
@@ -236,7 +236,7 @@ function PurchaseAuthPhone(props) {
         </>
       )}
 
-      {isNewUser && (
+      {isNewUser && !isWeb && (
         <AtButton
           circle
           className='btns-phone new-in-btns'
