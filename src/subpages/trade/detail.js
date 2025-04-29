@@ -42,6 +42,7 @@ const initialState = {
   supplement: false,  //待补充
   prescriptionUrl: '',
   prescriptionStatus: false,
+  openingTime:'squareRoots',
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
@@ -60,7 +61,8 @@ function TradeDetail(props) {
     squareRoot,
     supplement,
     prescriptionUrl,
-    prescriptionStatus
+    prescriptionStatus,
+    openingTime
   } = state
   const { priceSetting, pointName } = useSelector((state) => state.sys)
 
@@ -107,7 +109,7 @@ function TradeDetail(props) {
 
       isMounted.current = false  // 组件卸载时设置为false
     }
-  }, [])
+  }, [openingTime])
 
   const fetch = async () => {
     const { order_id  } = await parameter()
@@ -438,6 +440,12 @@ function TradeDetail(props) {
     })
   }
 
+  const openingTimeUp = () => {
+    setState((v) => {
+      v.openingTime = supplement
+    })
+  }
+
 
   return (
     <SpPage
@@ -519,6 +527,20 @@ function TradeDetail(props) {
             </View>
           </View>
         }
+        {
+          (squareRoot && !supplement) &&
+          <View className='opening-time'>
+            <View className='opening-time-title'>处方已开具，正在药师审方中，请等待！</View>
+            <View className='opening-time-content'>
+              <AtCountdown
+                format={{ hours: '时', minutes: '分', seconds: '秒' }}
+                seconds={10}
+                onTimeUp={openingTimeUp}
+              />
+            </View>
+          </View>
+        }
+          
 
         {
           // 普通快递
