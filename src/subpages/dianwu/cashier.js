@@ -334,9 +334,9 @@ function DianWuCashier() {
     if (_num > item.store) {
       return
     }
-    setState((draft) => {
-      draft.cartList[idx].list[index].num = _num
-    })
+    // setState((draft) => {
+    //   draft.cartList[idx].list[index].num = _num
+    // })
     onChangeInputNumber(item, _num)
   }
 
@@ -345,9 +345,9 @@ function DianWuCashier() {
     if (_num == 0) {
       return
     }
-    setState((draft) => {
-      draft.cartList[idx].list[index].num = _num
-    })
+    // setState((draft) => {
+    //   draft.cartList[idx].list[index].num = _num
+    // })
     onChangeInputNumber(item, _num)
   }
 
@@ -479,7 +479,14 @@ function DianWuCashier() {
                       */}
                     </View>
                     <View className='item-bd'>
-                      <View className='title'>{item.itemName}</View>
+                      <View className='title'>
+                        {
+                          item.isPrescription == 1 && item.isMedicine &&
+                          <Text className='prescription-drug'>
+                          处方药
+                        </Text>
+                        }
+                        {item.itemName}</View>
                       {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
                       <View className='ft-info'>
                         <CompGoodsPrice info={item} />

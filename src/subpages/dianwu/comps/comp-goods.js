@@ -24,7 +24,14 @@ function CompGoods(props) {
           <SpImage src={info.pic} width={140} height={140} />
         </View>
         <View className='item-bd-bd'>
-          <View className='title'>{info.name}</View>
+          <View className='title'>
+            {
+              info.isPrescription == 1 && info.isMedicine &&
+              <Text className='prescription-drug'>
+              处方药
+            </Text>
+            }
+            {info.name}</View>
           {info.itemSpecDesc && <View className='sku'>{info.itemSpecDesc}</View>}
           {/* <View className='price-list'>
             <SpPrice className='sale-price' value={999.99}></SpPrice>

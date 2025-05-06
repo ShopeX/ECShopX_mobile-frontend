@@ -78,7 +78,6 @@ function GoodReservate(props) {
       activity_id: router.params.activity_id
     })
     activity_info = res.activity_info
-
     if (activity_info.join_limit == res.total_join_num && res.total_join_num != 0 && !isEdit) {
       showToast('您已经超出活动次数')
       setTimeout(() => {
@@ -86,6 +85,13 @@ function GoodReservate(props) {
       }, 700)
       return
     }
+
+    //无模板跳活动详情
+    if(activity_info.temp_id == '0'){
+      Taro.redirectTo({url:`/marketing/pages/member/activity-info?activity_id=${activity_info.activity_id}`})
+      return
+    }
+
 
     if (router.params.record_id) {
       //编辑

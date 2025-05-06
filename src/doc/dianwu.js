@@ -14,7 +14,9 @@ export const GOODS_ITEM = {
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
   store: 'store',
-  barcode: 'barcode'
+  barcode: 'barcode',
+  isPrescription:'is_prescription',
+  isMedicine:'is_medicine'
 }
 
 export const CART_GOODS_ITEM = {
@@ -46,7 +48,9 @@ export const CART_GOODS_ITEM = {
       marketPrice: ({ market_price }) => market_price / 100, // 原价
       memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
-      svipPrice: ({ svip_price }) => svip_price / 100 // svip价格
+      svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
+      isPrescription:'is_prescription',
+      isMedicine:'is_medicine'
     })
   }
 }
@@ -103,7 +107,9 @@ export const CHECKOUT_GOODS_ITEM = {
       discountFee: ({ discount_fee }) => discount_fee / 100, // 优惠
       point: 'point', // 积分抵扣
       num: 'num',
-      barcode: 'barcode'
+      barcode: 'barcode',
+      isPrescription:'is_prescription',
+      isMedicine:'is_medicine'
     })
   },
   itemsPromotion: ({ items_promotion }) => items_promotion || [],
@@ -116,7 +122,8 @@ export const CHECKOUT_GOODS_ITEM = {
   totalFee: ({ total_fee }) => total_fee / 100,
   memberDiscount: ({ member_discount }) => (member_discount ? member_discount / 100 : 0),
   couponDiscount: ({ coupon_discount }) => (coupon_discount ? coupon_discount / 100 : 0),
-  promotionDiscount: ({ promotion_discount }) => (promotion_discount ? promotion_discount / 100 : 0)
+  promotionDiscount: ({ promotion_discount }) => (promotion_discount ? promotion_discount / 100 : 0),
+  prescriptionStatus:'prescription_status'
 }
 
 export const COUPON_ITEM = {
@@ -144,7 +151,9 @@ export const PENDING_ITEM = {
       name: 'itemName',
       itemSpecDesc: 'item_spec_desc',
       price: ({ price }) => price / 100,
-      num: 'num'
+      num: 'num',
+      isPrescription:'is_prescription',
+      isMedicine:'is_medicine'
     })
   },
   userId: 'user_id',
@@ -168,7 +177,8 @@ export const ORDER_INFO = {
       leftAftersalesNum: 'left_aftersales_num',
       checked: false,
       discountFee: ({ discount_fee }) => discount_fee / 100,
-      point: ({ point_fee }) => point_fee / 100
+      point: ({ point_fee }) => point_fee / 100,
+      isPrescription: 'is_prescription',
     })
   },
   refundFee: ({ items }) => {

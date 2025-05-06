@@ -6,7 +6,7 @@ import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
-import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 
 import './select-company-email.scss'
@@ -106,7 +106,7 @@ function PurchaseAuthEmail(props) {
       //一个邮箱后缀只有一个企业
       params.enterprise_id = list[0].enterprise_id
 
-      if (isNewUser) {
+      if (isNewUser && !isWeb) {
         Taro.navigateTo({
           url: `/subpages/purchase/select-company-phone?${qs.stringify({
             ...params,

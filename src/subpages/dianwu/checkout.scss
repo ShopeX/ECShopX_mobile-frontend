@@ -300,4 +300,21 @@
       display: none;
     }
   }
+  .cart-checkout__title {
+    background-color: var(--color-primary);
+    color: #333;
+    font-size: 26px;
+    padding: 24px 20px;
+    margin-top: -50px;
+    text-align: center;
+  }
+  .prescription-drug {
+    font-size: 24px;
+    color: var(--color-primary);
+    padding: 0 4px;
+    border-radius: 4px;
+    border: 1px solid var(--color-primary);
+    line-height: 34px;
+    margin-right: 8px;
+  }
 }

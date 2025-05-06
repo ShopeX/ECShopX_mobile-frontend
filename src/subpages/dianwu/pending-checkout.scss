@@ -168,4 +168,13 @@
       }
     }
   }
+  .prescription-drug {
+    font-size: 18px;
+    color: var(--color-dianwu-primary);
+    padding: 1px 4px;
+    border-radius: 4px;
+    border: 1px solid var(--color-dianwu-primary);
+    line-height: 28px;
+    margin-right: 8px;
+  }
 }

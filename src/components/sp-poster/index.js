@@ -15,14 +15,15 @@ import GuideCheckoutAli from './dw-guidecheckout.alipay'
 import StoreCode from './dw-storeCode'
 import PlaceAnOrder from './dw-placeAnOrder'
 import Invite from './dw-invite'
+import PrescriptionCode from './dw-prescriptionCode'
 
 
 import './index.scss'
 
-const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes,PlaceAnOrders] = isAlipay ? [
-  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode,PlaceAnOrder
+const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes,PlaceAnOrders,Prescription] = isAlipay ? [
+  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode,PlaceAnOrder,PrescriptionCode
 ] : [
-  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode,PlaceAnOrder
+  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode,PlaceAnOrder,PrescriptionCode
 ]
 
 const initialState = {
@@ -146,6 +147,15 @@ function SpPoster(props) {
           toRpx
         })
         break
+        case 'prescriptionCode':
+          canvasObj = new Prescription({
+            ctx,
+            info,
+            userInfo,
+            toPx,
+            toRpx
+          })
+          break
       default:
         break
     }

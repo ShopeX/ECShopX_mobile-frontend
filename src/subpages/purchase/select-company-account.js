@@ -5,7 +5,7 @@ import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { useLogin, useModal } from '@/hooks'
-import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 import { SpForm, SpFormItem, SpPage, SpInput as AtInput, SpPrivacyModal } from '@/components'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
@@ -111,7 +111,7 @@ function PurchaseAuthAccount() {
   }
 
   const employeeAuth = (_params) => {
-    if (isNewUser) {
+    if (isNewUser && !isWeb) {
       //新用户需要跳到授权手机号页面
       Taro.navigateTo({
         url: `/subpages/purchase/select-company-phone?${qs.stringify({
