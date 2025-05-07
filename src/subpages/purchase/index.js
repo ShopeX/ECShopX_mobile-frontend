@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react'
-import Taro, { getCurrentInstance, useDidShow, useRouter, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
+import Taro, {
+  getCurrentInstance,
+  useDidShow,
+  useRouter,
+  useShareAppMessage,
+  useShareTimeline
+} from '@tarojs/taro'
 import { View, Image, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -113,7 +119,7 @@ function Home() {
   //是否可以分享亲友
   const isPurchaseShare = useMemo(() => {
     return !!(activityInfo?.is_employee && activityInfo?.if_relative_join)
-  },[activityInfo])
+  }, [activityInfo])
 
   const init = async () => {
     await fetchWgts()
@@ -150,15 +156,15 @@ function Home() {
   const fetchActivity = async () => {
     const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
     const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
-    const data = await api.purchase.getEmployeeActivitydata({activity_id,enterprise_id})
-    setState(draft=>{
+    const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
+    setState((draft) => {
       draft.activityInfo = data
     })
   }
 
   useShareAppMessage(async () => {
-    return new Promise(async function (resolve,reject) {
-      if(isPurchaseShare){
+    return new Promise(async function (resolve, reject) {
+      if (isPurchaseShare) {
         const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
         const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
         const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
@@ -324,7 +330,7 @@ function Home() {
         }}
       ></SharePurchase>
 
-      {/* 海报 */}
+      {/* 海报组件 */}
       {posterModalOpen && (
         <SpPoster
           info={purchase_share_info}
