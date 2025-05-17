@@ -1,4 +1,21 @@
 .pages-member-index {
+
+  .left-block {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    padding: 40px 40px 20px;
+  }
+  .shop-name {
+    font-size: 28px;
+    max-width: 420px;
+    @include text-overflow();
+    font-weight: bold;
+  }
+  .icon-qianwang-01 {
+    font-size: 24px;
+    color: #aaa;
+  }
   .header-block {
     background-size: cover;
     background-position: center;

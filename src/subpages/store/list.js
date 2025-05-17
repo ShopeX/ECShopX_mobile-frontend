@@ -62,6 +62,7 @@ function NearlyShop(props) {
   const { location = {}, address } = useSelector((state) => state.user)
   const { shopInfo } = useSelector((state) => state.shop)
   const { open_divided } = useSelector((state) => state.sys)
+
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
@@ -266,76 +267,81 @@ function NearlyShop(props) {
 
   return (
     <SpPage className='page-store-list' ref={pageRef}>
-      <View className='search-block'>
-        <View className='search-bar'>
-          <View className='region-picker'>
-            <View className='pick-title' onClick={() => {
-              setState((draft => {
-                draft.isSpAddressOpened = true
-              }))
-            }}>
-              <View className='iconfont icon-periscope'></View>
-              <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-              {/* <Text className='iconfont icon-arrowDown'></Text> */}
+      {!open_divided && (
+        <>
+          <View className='search-block'>
+            <View className='search-bar'>
+              <View className='region-picker'>
+                <View className='pick-title' onClick={() => {
+                  setState((draft => {
+                    draft.isSpAddressOpened = true
+                  }))
+                }}>
+                  <View className='iconfont icon-periscope'></View>
+                  <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
+                  {/* <Text className='iconfont icon-arrowDown'></Text> */}
+                </View>
+              </View>
+
+              <View className='search-comp-wrap'>
+                <Text className='iconfont icon-sousuo-01'></Text>
+                <Input
+                  className='search-comp'
+                  placeholder='请输入想搜索的店铺'
+                  confirmType='search'
+                  value={state.keyword}
+                  disabled={!location?.address}
+                  onInput={onInputChange}
+                  onConfirm={onConfirmSearch}
+                />
+                {state.keyword && state.keyword.length > 0 && (
+                  <View className='iconfont icon-close' onClick={onClearValueChange}></View>
+                )}
+              </View>
             </View>
           </View>
 
-          <View className='search-comp-wrap'>
-            <Text className='iconfont icon-sousuo-01'></Text>
-            <Input
-              className='search-comp'
-              placeholder='请输入想搜索的店铺'
-              confirmType='search'
-              value={state.keyword}
-              disabled={!location?.address}
-              onInput={onInputChange}
-              onConfirm={onConfirmSearch}
-            />
-            {state.keyword && state.keyword.length > 0 && (
-              <View className='iconfont icon-close' onClick={onClearValueChange}></View>
-            )}
-          </View>
-        </View>
-      </View>
+          {isRecommend && (
+            <View className='shop-logo'>
+              <Image className='img' src={headquarters.logo} mode='aspectFill' />
+              <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
+            </View>
+          )}
 
-      {isRecommend && (
-        <View className='shop-logo'>
-          <Image className='img' src={headquarters.logo} mode='aspectFill' />
-          <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
-        </View>
+          <View className='location-block'>
+            <View className='block-title'>当前定位地址</View>
+            <View className='location-wrap'>
+              <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
+              <View className='btn-location' onClick={getLocationInfo}>
+                <Text
+                  className={classNames('iconfont icon-zhongxindingwei', {
+                    active: state.locationIng
+                  })}
+                ></Text>
+                {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
+              </View>
+            </View>
+            {
+              address && <View className='block-title block-flex'>
+                <View>我的收货地址</View>
+              </View>
+            }
+
+            <View className='receive-address'>
+              {address && (
+                <View
+                  className='address'
+                  onClick={() => onLocationChange(address)}
+                >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
+              )}
+            </View>
+          </View>
+        </>
       )}
 
-      <View className='location-block'>
-        <View className='block-title'>当前定位地址</View>
-        <View className='location-wrap'>
-          <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
-          <View className='btn-location' onClick={getLocationInfo}>
-            <Text
-              className={classNames('iconfont icon-zhongxindingwei', {
-                active: state.locationIng
-              })}
-            ></Text>
-            {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
-          </View>
-        </View>
-        {
-          address && <View className='block-title block-flex'>
-            <View>我的收货地址</View>
-          </View>
-        }
-
-        <View className='receive-address'>
-          {address && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
-          )}
-        </View>
-      </View>
 
       <View className='nearlyshop-list'>
-        <View className='list-title'>{location?.address ? '附近门店' : '推荐门店'}</View>
+        <View className='list-title'>{!open_divided ? (location?.address ? '附近门店' : '推荐门店') : ''}</View>
         <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View
@@ -356,11 +362,11 @@ function NearlyShop(props) {
       </View>}
 
 
-      <SpAddress isOpened={isSpAddressOpened} onClose={() => {
+      { !open_divided && <SpAddress isOpened={isSpAddressOpened} onClose={() => {
         setState((draft) => {
           draft.isSpAddressOpened = false
         })
-      }} onChange={onPickerChange} />
+      }} onChange={onPickerChange} /> }
 
     </SpPage>
   )

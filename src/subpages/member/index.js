@@ -130,7 +130,10 @@ function MemberIndex(props) {
   const [policyModal, setPolicyModal] = useState(false)
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const { pointName } = useSelector((state) => state.sys)
+  const { pointName, open_divided } = useSelector((state) => state.sys)
+  const {
+    shopInfo: { store_name }
+  } = useSelector((state) => state.shop)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const dispatch = useDispatch()
 
@@ -472,6 +475,19 @@ function MemberIndex(props) {
             'background-image': `url(${`${process.env.APP_IMAGE_CDN}/m_bg.png`})`
           })}
         >
+          {VERSION_STANDARD && open_divided && (
+            <View
+              className='left-block'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: '/subpages/store/list'
+                })
+              }}
+            >
+              <View className='shop-name'>我的店铺 {store_name || '暂无店铺信息'}</View>
+              <Text className='iconfont icon-qianwang-01'></Text>
+            </View>
+          )}
           <View className='header-hd'>
             <View className='header-hd__header'>
               <SpImage
