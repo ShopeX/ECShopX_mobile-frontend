@@ -90,19 +90,19 @@ export default ({ onPhoneCallComplete } = {}) => {
     // 获取用户已经加入的白名单店铺，筛选合适的店铺
     const shopList = await fetchShop()
     // 找到最近的白名单店铺
-    if (location) {
-      const nearestShop = findNearestWhiteListShop(shopList, location);
-      if (nearestShop) {
-        // 使用最近的白名单店铺信息
-        return nearestShop;
-      }
-    } else {
+    // if (location) {
+    //   const nearestShop = findNearestWhiteListShop(shopList, location);
+    //   if (nearestShop) {
+    //     // 使用最近的白名单店铺信息
+    //     return nearestShop;
+    //   }
+    // } else {
       // 找到创建时间最晚的白名单店铺
       const latestShop = findLatestCreatedShop(shopList);
       if (latestShop) {
       }
       return latestShop;
-    }
+    // }
 
 
 
@@ -130,6 +130,18 @@ export default ({ onPhoneCallComplete } = {}) => {
     }
   }
 
+  const phoneCall = (phone) => { 
+    Taro.makePhoneCall({
+      phoneNumber: phone,
+      complete: () => {
+        // 在电话操作完成后（无论成功或失败）执行
+        if (onPhoneCallComplete) {
+          onPhoneCallComplete()
+        }
+      }
+    })
+  }
+
   // 没有店铺
   // const showNoShopModal = (phone) => {
   //   Taro.showModal({
@@ -151,5 +163,5 @@ export default ({ onPhoneCallComplete } = {}) => {
   // }
 
 
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop }
+  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop, phoneCall }
 }
