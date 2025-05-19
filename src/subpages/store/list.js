@@ -147,38 +147,44 @@ function NearlyShop(props) {
 
     log.debug(`fetchShop query: ${JSON.stringify(params)}`)
     
-    let list = []
-    const open_divided_page_size = 20  // 取前20个绑定的店铺
-    if (open_divided && pageIndex === 1) { // 是否开启店铺隔离模式
-      const selfResult = await api.shop.list({
+    if (open_divided) {
+      const open_divided_page_size = 20  // 取前20个绑定的店铺
+      // 开启店铺隔离，只取绑定的店铺
+      const { list, total_count: total } = await api.shop.list({
         ...params,
         pageSize: open_divided_page_size,
         show_type: 'self' // self 表示获取用户绑定的店铺
       })
-      list = selfResult.list
       list = list.map((item) => {
         item.isOpenDivided = true  // 标识绑定的店铺
         return item
       })
-    }
-    const { list: resultList, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+      setState((draft) => {
+        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+        draft.refresh = false
+      })
+  
+      return {
+        total
+      }
 
-    // 未开启店铺隔离时，直接获取所有店铺数据
-    list = [...list, ...resultList]
-
-    setState((draft) => {
-      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
-      draft.isRecommend = is_recommend === 1
-      draft.defualt_address = defualt_address
-      draft.refresh = false
-    })
-
-    if (isObject(defualt_address)) {
-      dispatch(updateChooseAddress(defualt_address))
-    }
-
-    return {
-      total
+    } else {
+      const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+      // 未开启店铺隔离时，直接获取所有店铺数据
+      setState((draft) => {
+        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+        draft.isRecommend = is_recommend === 1
+        draft.defualt_address = defualt_address
+        draft.refresh = false
+      })
+  
+      if (isObject(defualt_address)) {
+        dispatch(updateChooseAddress(defualt_address))
+      }
+  
+      return {
+        total
+      }
     }
   }
 

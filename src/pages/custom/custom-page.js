@@ -248,7 +248,7 @@ function CustomPage(props) {
     const { fromConnect } = await entryLaunch.getRouteParams($instance.router.params)
     if (fromConnect) return // 店铺隔离引导页
     const distributorId = getDistributorId() || 0
-    const { dtid: routerDtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    // const { dtid: distributorId } = Taro.getStorageSync(SG_ROUTER_PARAMS)
     // console.log("🚀🚀🚀 ~ checkStoreIsolation ~ 分享进来的 dtid:", dtid)
     let params = {
       distributor_id: distributorId // 如果店铺id和经纬度都传会根据哪个去定位传参
@@ -274,16 +274,16 @@ function CustomPage(props) {
     }
 
     if (S.getAuthToken()) {
-      if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
-        console.log('没有改变店铺信息，并且在白名单店铺内，结束店铺隔离逻辑')
-        // 在有效店铺，如果店铺没变，直接进店
-        // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
-        return
-      }
+      // if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
+      //   console.log('没有改变店铺信息，并且在白名单店铺内，结束店铺隔离逻辑')
+      //   // 在有效店铺，如果店铺没变，直接进店
+      //   // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
+      //   return
+      // }
 
-      if (routerDtid) {
+      if (distributorId) {
         // checkUserInWhite 取代上面2个接口的作用, 判断能否直接进店
-        const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
+        const { status } = await api.shop.checkUserInWhite({ distributor_id: distributorId })
         dispatch(changeInWhite(status))
         console.log('🚀🚀🚀 ~ checkStoreIsolation ~ status:', status)
         if (status) {
@@ -329,7 +329,7 @@ function CustomPage(props) {
         }
       }
 
-      if (!routerDtid) {
+      if (!distributorId) {
         // 没有携带店铺码，直接进店铺，不提示
         // 带self，返回店铺内容store_name => 是绑定的店铺
         const shopDetail = await api.shop.getShop({ show_type: 'self', distributor_id: 0 })

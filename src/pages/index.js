@@ -368,9 +368,14 @@ function Home() {
     let defalutShop  // 当前店铺的手机号
     // console.log('🚀🚀🚀 ~ checkStoreIsolation ~ shopInfo:', shopInfo.distributor_id)
     // console.log('🚀🚀🚀 ~ checkStoreIsolation ~ distributorId:', distributorId)
-    // 店铺没有改变的情况下，不重复请求。
+    
+
+    // distributorId的取值，如果SG_ROUTER_PARAMS存在，则取SG_ROUTER_PARAMS存的tdid，否则取shopInfo.distributor_id
+    // 所以在切换店铺后，即使把 SG_ROUTER_PARAMS 清空，distributorId 就会取 shopInfo.distributor_id。
+    // 这样就保证了，切换过店铺后，再次进入店铺，仍然会取到正确的店铺信息，而不会取 0
+    // 路由tdid 和 店铺id 不一致，更新店铺信息
     if (distributorId != shopInfo.distributor_id) {
-      defalutShop = await api.shop.getShop({ distributor_id: routerDtid || 0 })
+      defalutShop = await api.shop.getShop({ distributor_id: distributorId || 0 })
       dispatch(updateShopInfo(defalutShop))
     }
 
@@ -380,12 +385,12 @@ function Home() {
     }
 
     if (S.getAuthToken()) {
-      if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
-        console.log('没有改变店铺信息，并且在白名单店铺内，结束店铺隔离逻辑')
-        // 在有效店铺，如果店铺没变，直接进店
-        // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
-        return
-      }
+      // if ((shopInWhite && routerDtid == shopInfo.distributor_id) || (!routerDtid && shopInWhite)) {
+      //   console.log('没有改变店铺信息，并且在白名单店铺内，结束店铺隔离逻辑')
+      //   // 在有效店铺，如果店铺没变，直接进店
+      //   // 直接进店铺切换店铺的话，没有 routerDtid，但是也需要直接进店
+      //   return
+      // }
 
       /**
        * is_valid 接口逻辑
@@ -398,7 +403,7 @@ function Home() {
        * 没有 show_type && distributor_id>0, 如果这个有启用，返回店铺信息，open_divided判断的是这个店铺是否是白名单的店铺
        */
 
-      if (routerDtid) {
+      if (distributorId) {
         // 判断店铺是否开启了白名单
         // const reslut = await api.shop.getShop({distributor_id: routerDtid})
         // if (routerDtid == reslut.distributor_id && reslut.open_divided == '0') {
@@ -416,7 +421,7 @@ function Home() {
         // }
 
         // checkUserInWhite 取代上面2个接口的作用, 判断能否直接进店
-        const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
+        const { status } = await api.shop.checkUserInWhite({ distributor_id: distributorId })
         dispatch(changeInWhite(status))
         console.log('🚀🚀🚀 ~ checkStoreIsolation ~ status:', status)
         if (status) {
@@ -462,13 +467,15 @@ function Home() {
         }
       }
 
-      if (!routerDtid) {
+      if (!distributorId) {
         // 没有携带店铺码，直接进店铺，不提示
         // 带self，返回店铺内容store_name => 是绑定的店铺
         const shopDetail = await api.shop.getShop({ show_type: 'self', distributor_id: 0 })
 
         // 目前的接口无法判断默认店铺是否开启白名单，如果需要加这个判断，需要改接口
         // 现在的逻辑：默认的店铺，没有开启白名单，跳落地页。开启了白名单，可以进
+        // 如果带有店铺id进店，店铺没开白名单，才是进店铺
+        // 如果携带了店铺id，进店，只有默认店铺是白名单店，并且开启了白名单，是可以进默认店的
 
         if (shopDetail.store_name && shopDetail.white_hidden != 1) {
           // 找到店铺了
