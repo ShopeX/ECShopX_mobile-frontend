@@ -158,6 +158,7 @@ function ApplyChief(props) {
             name={key}
             type='text'
             value={form[key]}
+            cursor={form[key].length}
             placeholder={required_message}
             onChange={onInputChange.bind(this, key)}
           />
