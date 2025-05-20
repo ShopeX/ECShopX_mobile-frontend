@@ -150,7 +150,7 @@ function NearlyShop(props) {
     if (open_divided) {
       const open_divided_page_size = 20  // 取前20个绑定的店铺
       // 开启店铺隔离，只取绑定的店铺
-      const { list, total_count: total } = await api.shop.list({
+      let { list, total_count: total } = await api.shop.list({
         ...params,
         pageSize: open_divided_page_size,
         show_type: 'self' // self 表示获取用户绑定的店铺

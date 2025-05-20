@@ -375,7 +375,7 @@ function Home() {
     // 这样就保证了，切换过店铺后，再次进入店铺，仍然会取到正确的店铺信息，而不会取 0
     // 路由tdid 和 店铺id 不一致，更新店铺信息
     if (distributorId != shopInfo.distributor_id) {
-      defalutShop = await api.shop.getShop({ distributor_id: distributorId || 0 })
+      defalutShop = await api.shop.getShop({ distributor_id: distributorId })
       dispatch(updateShopInfo(defalutShop))
     }
 
