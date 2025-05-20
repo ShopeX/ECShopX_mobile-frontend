@@ -242,6 +242,8 @@ function EspierDetail(props) {
   useEffect(() => {
     if (dtid) {
       console.log("🚀🚀🚀 ~ useEffect ~ dtid:", dtid)
+      // 店铺隔离切换店铺后，dtid变化，重新请求数据
+      init(dtid)
       fetch()
     }
   }, [dtid])
@@ -314,15 +316,16 @@ function EspierDetail(props) {
     }
   }
 
-  const init = async () => {
-    const { type, id, dtid } = await entryLaunch.getRouteParams()
+  const init = async (newDtid) => {
+    const { type, id, dtid:routerDtid } = await entryLaunch.getRouteParams()
+    const dtid = newDtid || routerDtid
     setState((draft) => {
       draft.id = id
       draft.type = type
       draft.dtid = dtid
     })
     if (S.getAuthToken()) {
-      await dispatch(fetchUserFavs())
+      await dispatch(fetchUserFavs({distributor_id:dtid}))
     }
   }
 
