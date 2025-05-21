@@ -222,13 +222,13 @@ switch,
         max-width: 30%;
         @include multi-ellipsis(1);
       }
-    }
 
-    .wgt-subtitle {
-      color: #999;
-      font-size: 28px;
-      max-width: 55%;
-      @include multi-ellipsis(1);
+      .wgt-subtitle {
+        color: #999;
+        font-size: 28px;
+        max-width: 55%;
+        @include multi-ellipsis(1);
+      }
     }
 
     .wgt-more {
@@ -353,6 +353,7 @@ switch,
 
 .flex {
   display: flex;
+
   &-align-center {
     align-items: center;
   }

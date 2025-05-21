@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View } from '@tarojs/components'
-
+import { View, Text } from '@tarojs/components'
+import { classNames } from '@/utils'
 import './writing.scss'
 
 export default class WgtWriting extends Component {
@@ -12,7 +12,7 @@ export default class WgtWriting extends Component {
     info: null
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class WgtWriting extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     const { curIdx } = this.state
 
@@ -44,16 +44,19 @@ export default class WgtWriting extends Component {
     }
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
+      <View className={classNames(`wgt wgt-writing`, {
+        'wgt__padded': base.padded
+      })}>
         {base.title && (
-          <View className='wgt__header'>
-            <View className='wgt__title'>{base.title}</View>
-            <View className='wgt__subtitle'>{base.subtitle}</View>
+          <View className='wgt-head'>
+            <View className='wgt-hd'>
+              <Text className='wgt-title'>{base.title}</Text>
+              <Text className='wgt-subtitle'>{base.subtitle}</Text>
+            </View>
           </View>
         )}
         <View
-          className={`slider-wra wgt-writing ${config.padded ? 'padded' : ''}`}
-          style={`${config.align ? `text-align:${config.align}` : ''}`}
+          className={`wgt__body`}
         >
           {contentArr.map((item, index) => {
             return (

@@ -86,9 +86,10 @@ function WgtCoupon(props) {
   return (
     <View
       className={classNames('wgt wgt-coupon', {
-        wgt__padded: base.padded
+        'wgt__padded': base.padded
       })}
     >
+
       {base.title && (
         <View className='wgt-head'>
           <View className='wgt-hd'>
@@ -97,7 +98,7 @@ function WgtCoupon(props) {
           </View>
         </View>
       )}
-      {/* <View className={classNames('wgt__body with-padding', `coupon-style-${len <= 2 ? len : 3}`)}> */}
+
       <ScrollView scrollX className={classNames('wgt__body with-padding', `coupon-style-${len <= 2 ? len : 3}`)}>
         {
           data.map((item, index) => (

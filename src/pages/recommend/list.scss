@@ -6,6 +6,11 @@ $search-container: 90px;
     padding: 0 20px;
     display: flex;
     align-items: center;
+    background-color: #fff;
+
+    .sp-search-input {
+      width: 100%;
+    }
   }
 
   .list-scroll-container {

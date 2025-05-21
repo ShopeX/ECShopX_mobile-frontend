@@ -53,9 +53,10 @@ export default class WgtSlider extends Component {
     return (
       <View
         className={classNames('wgt wgt-slider', {
-          wgt__padded: base.padded
+          'wgt__padded': base.padded
         })}
       >
+
         {base.title && (
           <View className='wgt-head'>
             <View className='wgt-hd'>
@@ -64,6 +65,7 @@ export default class WgtSlider extends Component {
             </View>
           </View>
         )}
+
         {config && (
           <View
             className={classNames('slider-swiper-wrap', {
