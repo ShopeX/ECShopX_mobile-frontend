@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { SpPage } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { platformTemplateName } from '@/utils/platform'
@@ -40,7 +41,7 @@ function StoreItemList(props) {
   }
 
   return (
-    <View>
+    <SpPage>
       {
         state.layout === 1 && <CompsAddPurchase />
       }
@@ -49,7 +50,7 @@ function StoreItemList(props) {
         state.layout === 2 && <CompsCategoryNew />
       }
       {/* <CompsCategoryNew /> */}
-    </View>
+    </SpPage>
   )
 }
 
