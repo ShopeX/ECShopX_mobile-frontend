@@ -2,6 +2,31 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.20.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.20...v3.20.6) (2025-05-22)
+
+
+### Bug Fixes
+
+* h5定位问题 ([98685ca](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/98685ca6da7a2c71eacad9810c550793a3c6d130))
+* 种草挂件优化 ([59daaa7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/59daaa7f5d6a9a29d62c88f5fd18939fc0a886c7))
+
+### [3.20.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.18...v3.20.5) (2025-05-19)
+
+
+### Bug Fixes
+
+* 修复分类页展示逻辑 ([cec90f1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/cec90f13147e48427587993b19bdfacfa03f39b8))
+
+### [3.20.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.16...v3.20.4) (2025-05-09)
+
+### [3.20.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.2...v3.20.3) (2025-04-29)
+
+### [3.20.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.1...v3.20.2) (2025-04-29)
+
+### [3.20.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.0...v3.20.1) (2025-04-29)
+
+## [3.20.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.15...v3.20.0) (2025-04-28)
+
 ### [3.20.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.4...v3.20.5) (2025-05-19)
 
 
