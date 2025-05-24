@@ -65,7 +65,7 @@ function SpSkuSelect(props) {
       setState((draft) => {
         draft.curItem = null
         draft.skuText = ''
-        draft.num = 1
+        draft.num = specItemed()
       })
     }
   }, [info])
@@ -90,7 +90,28 @@ function SpSkuSelect(props) {
     calcDisabled(selection)
   }
 
-  const calcDisabled = (selection) => {
+  //起订量
+  const specItemed = (val=[]) =>{
+    if(info.startNum > 0){
+      if(info.specItems.length > 0 && val.length > 0){ //多规格动态获取起订量
+        const newval = val.length == 1 ? val[0] : val.join('-')
+        info.specItems.forEach((item) => {
+          if(item.customSpecId == newval){
+            setState((draft) => {
+              draft.num = item.startNum
+            })
+            return item.startNum
+          }
+        })
+      }
+      return info.startNum 
+    }else{
+      return 1
+    }
+    
+  }
+
+  const calcDisabled =async (selection) => {
     const disabledSet = new Set()
     const makeReg = (sel, row, val) => {
       const tSel = sel.slice()
@@ -126,7 +147,7 @@ function SpSkuSelect(props) {
       'selection:',
       selection,
       'disabledSet:',
-      disabledSet
+      disabledSet 
     )
 
     const curItem = skuDictRef.current[selection.join('_')]
@@ -141,7 +162,9 @@ function SpSkuSelect(props) {
       draft.skuText = skuText
     })
 
-    onChange(skuText, curItem)
+    await specItemed(selection) //处理起订量
+
+    await onChange(skuText, curItem)
   }
 
   // calcDisabled(initSelection)
@@ -356,6 +379,7 @@ function SpSkuSelect(props) {
     let limitNum = null
     let limitTxt = ''
     let max = null
+   
     // 商品限购
     if (activityType) {
       if (activityType == 'limited_buy') {
@@ -400,11 +424,12 @@ function SpSkuSelect(props) {
       <View className='buy-count'>
         <View className='label'>
           购买数量 {limitNum && <Text className='limit-count'>{limitTxt}</Text>}
+          {info.startNum > 0 &&  <Text className='limit-count'>(起订量{num}件)</Text>}
         </View>
 
         <SpInputNumber
           value={num}
-          min={1}
+          min={num}
           max={max}
           onChange={(n) => {
             setState((draft) => {
