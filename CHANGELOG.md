@@ -2,6 +2,34 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [3.21.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.21.1...v3.21.0) (2025-05-29)
+
+
+### Bug Fixes
+
+* 解决社区拼团光标乱跳问题 ([8f6c66c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/8f6c66cbec21579b8ea0737b01140d09170f9797))
+* 云店取消默认进虚拟店铺 ([90956ff](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/90956fffa27c0be26893cdd7f14ce2444001c71a))
+
+### [3.20.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.21.0...v3.20.6) (2025-05-22)
+
+
+### Features
+
+* 店铺隔离 店铺列表，只取绑定店铺。切换店铺后，SG_ROUTER_PARAMS 设置{} ([36e6689](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/36e66893ea9f97f3fb1d9f773fbbbd6b3ef64dc6))
+* 店铺隔离，白名单店铺入口放在会员中心页顶部 ([c27d524](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/c27d524e41c3f0e9fcdb6450225d8a083627e394))
+* 店铺隔离改版，去除定位. 首页，自定义页修改 ([b72855f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b72855f3fbdbeeed726ec5fe1d5fa3691713683b))
+* 获取最新店铺修改 ([b6fec3d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b6fec3d69ed425a59fb471873780280dc011d735))
+* 增加店铺排序, 会员中心样式修改 ([ac4f63d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ac4f63d4277611ed30478445dc442506dc85411a))
+* checkStoreIsolation 加上 open_divided 判断 ([f67b67d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f67b67defeeedbbb1233afab1426b5aa1e6f4343))
+* pdp 页 店铺隔离完成 ([92dd00b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/92dd00b4d9e15da497bfbab70fdbe7b83aaf6faf))
+
+
+### Bug Fixes
+
+* 店铺隔离，去除店铺距离 ([96a7677](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/96a767759ea85ca62d8179bbdb4e08ffa21ee889))
+* 收藏接口报错 ([f885dc0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f885dc02917bf5c7117d27a36e42c92846e7dc0e))
+* h5定位问题 ([98685ca](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/98685ca6da7a2c71eacad9810c550793a3c6d130))
+
 ### [3.20.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.20...v3.20.6) (2025-05-22)
 
 
