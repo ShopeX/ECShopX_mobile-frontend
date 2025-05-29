@@ -94,6 +94,7 @@ const userSlice = createSlice({
       state.favs = []
       state.address = null
       state.location = {}
+      state.isNewUser = true
     },
 
     updateCheckChief: (state, { payload }) => {

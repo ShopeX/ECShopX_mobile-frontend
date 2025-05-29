@@ -58,7 +58,7 @@ function GuideRecommendDetail(props) {
   const fetch = async () => {
     const { id } = $instance.router.params
     // 关注数加1
-    const resFocus = await api.article.focus(id)
+    // const resFocus = await api.article.focus(id)
     const res = await api.article.detail(id)
     const { itemId, title, articleFocusNum, content, updated } = pickBy(
       res,

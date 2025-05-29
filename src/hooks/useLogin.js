@@ -9,12 +9,14 @@ import api from '@/api'
 import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
+import { INVITE_ACTIVITY_ID } from '@/consts'
 
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {},loginSuccess=()=>{} } = props
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
+  const { invite_code } = useSelector((state) => state.purchase)
   const $instance = getCurrentInstance()
   // const policyTime = useRef(0)
 
@@ -99,7 +101,12 @@ export default (props = {}) => {
 
   const getUserInfo = async (refresh) => {
     if (!userInfo || refresh) {
-      const _userInfo = await api.member.memberInfo()
+      let params = {}
+      const activity_id = S.get(INVITE_ACTIVITY_ID,true)
+      if(activity_id){
+        params = { activity_id }
+      }
+      const _userInfo = await api.member.memberInfo(params)
       // 兼容老版本 后续优化
       const { username, avatar, user_id, mobile, open_id } = _userInfo.memberInfo
       Taro.setStorageSync('userinfo', {

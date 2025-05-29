@@ -84,7 +84,7 @@ function DianwuTradeSaleAfter(props) {
     if (!isNumber(refundFee)) {
       return showToast('请填写退款金额')
     }
-    if(refundFee > getRealRefundFee()) {
+    if (refundFee > getRealRefundFee()) {
       return showToast('退款金额超过实际可退金额')
     }
     if (!isNumber(refundPoint)) {
@@ -192,7 +192,14 @@ function DianwuTradeSaleAfter(props) {
                 <SpImage src={item.pic} width={128} height={128} radius={8} />
                 <View className='goods-info'>
                   <View className='goods-info-hd'>
-                    <Text className='goods-title'>{item.itemName}</Text>
+                    <Text className='goods-title'>
+                      {
+                        item.isPrescription == 1 &&
+                        <Text className='prescription-drug'>
+                          处方药
+                        </Text>
+                      }
+                      {item.itemName}</Text>
                     <Text className='goods-num'>{`数量：${item.num}`}</Text>
                   </View>
                   <View><SpPrice value={item.totalFee / item.num} /></View>

@@ -3,7 +3,7 @@ import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './index.scss'
-import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtRadio } from 'taro-ui'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtRadio,AtButton } from 'taro-ui'
 
 function SpSelectModal(props) {
   const { isOpened, options, onClose, title, onConfirm } = props
@@ -38,7 +38,7 @@ function SpSelectModal(props) {
           <AtRadio options={options} value={value} onClick={handleChange} />
         </AtModalContent>
         <AtModalAction>
-          <Button onClick={onClose}>取消</Button> <Button onClick={handleConfirm}>确定</Button>
+          <AtButton onClick={onClose}>取消</AtButton> <AtButton className='confirm-btn' onClick={handleConfirm}>确定</AtButton>
         </AtModalAction>
       </AtModal>
     </View>

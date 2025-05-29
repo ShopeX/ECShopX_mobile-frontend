@@ -36,7 +36,7 @@ import {
   getDistributorId
 } from '@/utils'
 import S from '@/spx'
-import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId } from '@/store/slices/purchase'
+import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId, updateIsOpenPurchase } from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompVipCard from './comps/comp-vipcard'
@@ -207,6 +207,7 @@ function MemberIndex(props) {
     setConfig((draft) => {
       draft.purchaseRes = purchaseRes
     })
+    dispatch(updateIsOpenPurchase(purchaseRes.is_open))
   }
 
   const getMemberCenterConfig = async () => {
@@ -407,7 +408,7 @@ function MemberIndex(props) {
     if (key == 'purchase') {
       const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
       if (data?.length > 0) {
-        Taro.navigateTo({ url: '/subpages/purchase/select-identity' })
+        Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
       } else {
         Taro.navigateTo({ url: '/pages/purchase/auth' })
       }

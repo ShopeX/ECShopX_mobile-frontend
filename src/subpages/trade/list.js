@@ -9,6 +9,7 @@ import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompTrackDetail from './comps/comp-track-detail'
+import CompTrackType from './comps/comp-trade-type'
 import './list.scss'
 
 const initialState = {
@@ -18,6 +19,7 @@ const initialState = {
     { tag_name: '待收货', value: '1' },
     { tag_name: '待评价', value: '7', is_rate: 0 }
   ],
+  typeVal:'0',
   status: '0',
   tradeList: [],
   refresherTriggered: false,
@@ -27,7 +29,7 @@ const initialState = {
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered,trackDetailList,openTrackDetail,info } = state
+  const { tradeStatus, status, tradeType, typeVal, tradeList, refresherTriggered,trackDetailList,openTrackDetail,info } = state
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -54,7 +56,7 @@ function TradeList(props) {
       draft.tradeList = []
     })
     tradeRef.current.reset()
-  }, [status])
+  }, [status,typeVal])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { is_rate } = tradeStatus.find((item) => item.value == status)
@@ -65,6 +67,8 @@ function TradeList(props) {
       status,
       is_rate
     }
+    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
+
     const {
       list,
       pager: { count: total },
@@ -85,6 +89,15 @@ function TradeList(props) {
     })
   }
 
+
+  const onChangeTradeType = (e) => {
+    setState((draft) => {
+      draft.typeVal = e
+    })
+  }
+
+
+
   const onRefresherRefresh = () => {
     setState((draft) => {
       draft.refresherTriggered = true
@@ -94,8 +107,11 @@ function TradeList(props) {
     tradeRef.current.reset()
   }
 
+
+
   return (
     <SpPage scrollToTopBtn className='page-trade-list'>
+      <CompTrackType value={typeVal} onChange={onChangeTradeType} />
       <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
       <ScrollView
         className='list-scroll-container'

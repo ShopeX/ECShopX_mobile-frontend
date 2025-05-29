@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { WebView } from '@tarojs/components'
 import qs from 'qs'
-import { log } from '@/utils'
+import { log , entryLaunch } from '@/utils'
 import S from '@/spx'
 
 const initialState = {
@@ -22,9 +22,12 @@ const Index = () => {
   //   createWebviewUrl()
   // })
 
-  const createWebviewUrl = () => {
+  const createWebviewUrl = async() => {
     const { openid, unionid, app_id, app_type, company_id } = S.get('DIANWU_CONFIG', true)
     const token =  S.getAuthToken()
+    const routeParams = await entryLaunch.getRouteParams()
+    const {path = '',...queryParams} = routeParams
+    
     // const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
     //   in_shop_wechat: true,
     //   openid,
@@ -33,10 +36,11 @@ const Index = () => {
     //   company_id,
     //   app_type
     // })}`
-    const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
+    const url = `${process.env.APP_DIANWU_URL}${path}?${qs.stringify({
       token,
       company_id,
-      in_shop_wechat: true
+      in_shop_wechat: true,
+      ...queryParams
       // type:'alipay'
     })}`
     setState(draft => {

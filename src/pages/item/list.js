@@ -205,13 +205,13 @@ function ItemList() {
     }
 
     if (VERSION_STANDARD) {
-      if (all) {
-        //如果从平铺分类跳转过来就查询所有的商品
-        params.distributor_id = 0
-      } else {
+      // if (all) {
+      //   //如果从平铺分类跳转过来就查询所有的商品
+      //   params.distributor_id = 0
+      // } else {
         // 有兑换券的时候，店铺ID传当前选中的店铺
         params.distributor_id = card_id ? shopInfo?.distributor_id : getDistributorId()
-      }
+      // }
 
     }
 

@@ -12,3 +12,4 @@ dist/
 .husky
 .history
 .swc
+.vscode

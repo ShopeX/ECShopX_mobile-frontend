@@ -7,7 +7,7 @@ import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { SpPage, SpPrivacyModal } from '@/components'
 import { useLogin, useModal } from '@/hooks'
-import { showToast, VERSION_IN_PURCHASE, normalizeQuerys,getDistributorId } from '@/utils'
+import { showToast, VERSION_IN_PURCHASE, normalizeQuerys,getDistributorId, isWeb } from '@/utils'
 import CompSelectCompany from './comps/comp-select-company'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
 import CompBottomTip from './comps/comp-bottomTip'
@@ -33,7 +33,7 @@ function PurchaseAuthPhone(props) {
   const { isOpened, companyList, curActiveIndex } = state
   const { userInfo = {} } = useSelector((state) => state.user)
   const { params } = useRouter()
-  let { enterprise_name, auth_code, account, email, vcode, auth_type = 'mobile', employee_id, enterprise_id, is_verify,activity_id } = params
+  let { enterprise_name, auth_code, account, email, vcode, auth_type = 'mobile', employee_id, enterprise_id, is_verify,activity_id,is_activity='' } = params
   const { showModal } = useModal()
   const $instance = getCurrentInstance()
 
@@ -117,8 +117,9 @@ function PurchaseAuthPhone(props) {
         }else{
           showToast('验证成功')
           await getQrCodeDtid()
+          dispatch(updateEnterpriseId(enterprise_id))
           setTimeout(() => {
-            Taro.reLaunch({ url: `/pages/purchase/index` })
+            Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
           }, 700)
         }
       } catch (e) {
@@ -168,7 +169,7 @@ function PurchaseAuthPhone(props) {
         })
       }
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       }, 2000)
     } catch (e) {
       console.log('🚀🚀🚀 ~ file: select-company-phone.js:102 ~ validatePhone ~ e:', e)
@@ -183,7 +184,7 @@ function PurchaseAuthPhone(props) {
         confirmText: '我知道了',
         contentAlign: 'center'
       })
-      Taro.reLaunch({ url: `/pages/purchase/index` })
+      Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       getLoginCode()
     }
   }
@@ -213,43 +214,39 @@ function PurchaseAuthPhone(props) {
     <SpPage className='page-purchase-auth-phone select-component'>
       {enterprise_name && <View className='select-component-title'>{decodeURIComponent(enterprise_name)}</View>}
       {(auth_type == 'mobile' || auth_type == 'qr_code') && <View className='select-component-prompt'>使用手机号进行验证</View>}
-      {!VERSION_IN_PURCHASE && (
+      {(!isNewUser || isWeb) && (
         <>
-          {!isNewUser && (
-            <>
-              <View className='phone-box'>
-                <Text>已授权手机号：</Text>
-                <Text className='phone-number'>{userInfo?.mobile}</Text>
-              </View>
-              <AtButton
-                circle
-                className='btns-phone'
-                onClick={() =>
-                  validatePhone({
-                    auth_type,
-                    enterprise_id,
-                    mobile: 'member_mobile'
-                  })
-                }
-              >
-                使用该号码验证
-              </AtButton>
-            </>
-          )}
-
-          {isNewUser && (
-            <AtButton
-              circle
-              className='btns-phone new-in-btns'
-              openType='getPhoneNumber'
-              onGetPhoneNumber={handleBindPhone}
-            >
-              手机号授权登录
-            </AtButton>
-          )}
+          <View className='phone-box'>
+            <Text>已授权手机号：</Text>
+            <Text className='phone-number'>{userInfo?.mobile}</Text>
+          </View>
+          <AtButton
+            circle
+            className='btns-phone'
+            onClick={() =>
+              validatePhone({
+                auth_type,
+                enterprise_id,
+                mobile: 'member_mobile'
+              })
+            }
+          >
+            使用该号码验证
+          </AtButton>
         </>
       )}
-      {VERSION_IN_PURCHASE &&
+
+      {isNewUser && !isWeb && (
+        <AtButton
+          circle
+          className='btns-phone new-in-btns'
+          openType='getPhoneNumber'
+          onGetPhoneNumber={handleBindPhone}
+        >
+          手机号授权登录
+        </AtButton>
+      )}
+      {/* {VERSION_IN_PURCHASE &&
         isNewUser && ( // 无商城&新用户需要手机号授权登录（调new_login接口 不需要绑定）
           <AtButton
             openType='getPhoneNumber'
@@ -277,7 +274,7 @@ function PurchaseAuthPhone(props) {
           >
             手机号授权登录
           </AtButton>
-        )}
+        )} */}
       <CompBottomTip />
 
       <CompSelectCompany

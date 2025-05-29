@@ -144,7 +144,7 @@ function CartCheckout(props) {
   }, [isLogin])
 
   useEffect(() => {
-    if (isNewUser) {
+    if (isNewUser && !isWeb) {
       Taro.redirectTo({
         url: `/subpages/member/index`
       })

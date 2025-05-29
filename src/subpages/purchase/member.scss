@@ -100,6 +100,19 @@
       font-size: 36px;
     }
   }
+  .header-limit{
+    padding: 0 32px;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    color: #777;
+    font-size: 24px;
+    margin-bottom: 16px;
+    .icon-qianwang-01{
+      font-size: 22px;
+    }
+  }
   .header-ft {
     height: 110px;
   }

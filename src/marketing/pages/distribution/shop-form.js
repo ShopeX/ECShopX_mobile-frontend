@@ -101,6 +101,7 @@ export default class DistributionShopForm extends Component {
               type='text'
               title='小店名称'
               value={info.val}
+              cursor={info.val.length}
               onChange={this.handleChange.bind(this)}
             />
           )}

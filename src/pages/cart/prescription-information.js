@@ -128,7 +128,7 @@ function PrescriptionPnformation() {
 
   const fetch = async () => {
     const { order_id } = router.params
-    const { orderInfo } = await api.trade.detail(order_id)
+    const { orderInfo } = await api.trade.detail(order_id,{prescription_order_random:'1223344'})
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     let list = _orderInfo.items.filter(item => item.isPrescription == 1);
     console.log(list, 'lllllllllfetch');
@@ -178,7 +178,8 @@ function PrescriptionPnformation() {
       third_return_url: `/subpages/trade/detail?order_id=${order_id}`,
       souce_from: isWeixin ? 0 : 2,
       before_ai_result_symptom: [],
-      distributor_id: orderInfo.distributorId
+      distributor_id: orderInfo.distributorId,
+      prescription_order_random:'1223344'
     }
     listProduct.forEach(item => {
       param.before_ai_result_symptom.push({

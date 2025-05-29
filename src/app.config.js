@@ -27,6 +27,7 @@ const config = {
     'pages/purchase/auth',
     'pages/cart/prescription-information',//补充处方信息
     'pages/cart/add-personnel', // 添加用药人员
+    'pages/share-land', //太阳码统一落地页
   ],
   subPackages: [
     // 内购
@@ -46,7 +47,8 @@ const config = {
         'category',
         'espier-index',
         'index',
-        'list' //商品列表
+        'list', //商品列表
+        'limit-list'
       ]
     },
     // 导购货架 guide
@@ -131,6 +133,7 @@ const config = {
         'salesman-personnel', // 业务员
         'edit-deliveryman-salesman', // 业务员创建
         'activity-code', // 活动扫码核销
+        'payment', //付款页面
       ]
     },
     // 积分商城

@@ -1,72 +1,43 @@
-import React, { Component } from 'react'
+import React, { useMemo, useCallback } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { classNames } from '@/utils'
 
-import './writing.scss'
+import './heading.scss'
 
-export default class WgtHeading extends Component {
-  static options = {
-    addGlobalClass: true
+function WgtHeading(props) {
+
+  if (!props.info) {
+    return null
   }
 
-  static defaultProps = {
-    info: null
-  }
+  const { config, base, data } = props.info || {}
 
-  constructor (props) {
-    super(props)
-
-    this.state = {
-      curIdx: 0
+  const computedStyle = useCallback(() => {
+    return {
+      textAlign: config.align,
+      color: config.color,
+      fontSize: Taro.pxTransform(config.fontSize * 2),
+      fontStyle: config.italic,
+      lineHeight: config.lineHeight,
+      fontWeight: config.weight
     }
-  }
+  }, [config])
 
-  handleSwiperChange = (e) => {
-    const { current } = e.detail
 
-    this.setState({
-      curIdx: current
-    })
-  }
-
-  render () {
-    const { info } = this.props
-    const { curIdx } = this.state
-
-    if (!info) {
-      return null
-    }
-
-    const { config, base, data } = info
-    const curContent = (data[curIdx] || {}).content
-    let stringStyle = ''
-    if (config) {
-      if (config.align) {
-        stringStyle = `text-align: ${config.align};`
-      }
-      if (config.italic === true) {
-        stringStyle = stringStyle.concat('font-style: italic;')
-      }
-      if (config.bold === true) {
-        stringStyle = stringStyle.concat('font-weight: 700;')
-      }
-      if (config.size) {
-        stringStyle = stringStyle.concat(`font-size: ${Taro.pxTransform(config.size * 2)};`)
-      }
-    }
-
-    return (
-      <View className={`wgt  ${base.padded ? 'wgt__padded' : null}`}>
-        {base.title && (
-          <View className='wgt__header'>
-            <View className='wgt__title'>{base.title}</View>
-            <View className='wgt__subtitle'>{base.subtitle}</View>
-          </View>
-        )}
-        <View className={`slider-wra ${config.padded ? 'padded' : ''}`} style={stringStyle}>
-          <View className='writing-view'>{curContent}</View>
-        </View>
-      </View>
-    )
-  }
+  return <View className={classNames(`wgt wgt-heading`, {
+    'wgt__padded': base.padded
+  })}>
+    <View className={classNames(`wgt-body`, {
+      'padded': config.padded
+    })} style={computedStyle()}>
+      {base.title}
+    </View>
+  </View>
 }
+
+WgtHeading.defaultProps = {
+  info: null
+}
+
+export default WgtHeading

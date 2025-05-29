@@ -5,7 +5,7 @@ import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { useLogin, useModal } from '@/hooks'
-import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 import { SpForm, SpFormItem, SpPage, SpInput as AtInput, SpPrivacyModal } from '@/components'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
@@ -38,7 +38,7 @@ function PurchaseAuthAccount() {
   const formRef = useRef()
   const { form, rules, isOpened, companyList, curActiveIndex } = state
   const { params } = useRouter()
-  const { enterprise_id, enterprise_name, enterprise_sn, activity_id } = params
+  const { enterprise_id, enterprise_name, enterprise_sn, activity_id,is_activity = '' } = params
   const { showModal } = useModal()
   const dispatch = useDispatch()
 
@@ -111,7 +111,7 @@ function PurchaseAuthAccount() {
   }
 
   const employeeAuth = (_params) => {
-    if (isNewUser) {
+    if (isNewUser && !isWeb) {
       //新用户需要跳到授权手机号页面
       Taro.navigateTo({
         url: `/subpages/purchase/select-company-phone?${qs.stringify({
@@ -135,7 +135,7 @@ function PurchaseAuthAccount() {
         })
       }
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
@@ -148,7 +148,7 @@ function PurchaseAuthAccount() {
           confirmText: '我知道了',
           contentAlign: 'center'
         })
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       } else {
         showToast(e.message)
       }

@@ -7,8 +7,9 @@ import Taro, {
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_ROUTER_PARAMS, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
+import { SG_ROUTER_PARAMS, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN, INVITE_ACTIVITY_ID } from '@/consts'
 import { updateUserInfo } from '@/store/slices/user'
+import { updateIsOpenPurchase } from '@/store/slices/purchase'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 
@@ -35,14 +36,17 @@ import {
   isEmpty,
   VERSION_IN_PURCHASE
 } from '@/utils'
-import { useLogin,useLocation } from '@/hooks'
+import { useLogin, useLocation } from '@/hooks'
 import S from '@/spx'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
+import CompHelpCenter from './comps/comp-helpcenter'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
+
+
 import './member.scss'
 
 const initialConfigState = {
@@ -83,7 +87,7 @@ const initialConfigState = {
   memberConfig: {
     defaultImg: false,
     vipImg: false
-  },
+  }
 }
 
 const initialState = {
@@ -107,7 +111,7 @@ function MemberIndex(props) {
   console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const { updateAddress } = useLocation()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
-    autoLogin: true,
+    autoLogin: false,
     policyUpdateHook: () => {
       setPolicyModal(true)
     },
@@ -121,13 +125,15 @@ function MemberIndex(props) {
   const router = useRouter()
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const { purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { persist_purchase_share_info: purchase_share_info = {} } = useSelector(
+    (state) => state.purchase
+  )
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
   const isPurchaseHome = router.params?.from == 'purchase_home'
 
-  useDidShow(()=>{
+  useDidShow(() => {
     getMemberCenterData()
   })
 
@@ -136,6 +142,7 @@ function MemberIndex(props) {
       getMemberCenterData()
       setMemberBackground()
       fetchPurchase()
+      getEmployeeIsOpen()
     }
   }, [isLogin])
 
@@ -152,6 +159,11 @@ function MemberIndex(props) {
     }
   })
 
+  const getEmployeeIsOpen = async () => {
+    const purchaseRes = await api.purchase.getEmployeeIsOpen()
+    dispatch(updateIsOpenPurchase(purchaseRes.is_open))
+  }
+
   const fetchPurchase = async () => {
     // 内购分享信息
     const { activity_id, enterprise_id } = purchase_share_info
@@ -161,7 +173,6 @@ function MemberIndex(props) {
       draft.purchaseInfo = data
     })
   }
-
 
   // 分享
   useShareAppMessage(async (res) => {
@@ -256,7 +267,14 @@ function MemberIndex(props) {
   }
 
   const setMemberBackground = async () => {
-    let memberRes = await api.member.memberInfo()
+    let params = {}
+    const activity_id =  purchase_share_info?.activity_id || S.get(INVITE_ACTIVITY_ID, true)
+
+    if (activity_id) {
+      params = { activity_id }
+    }
+    let memberRes = await api.member.memberInfo(params)
+
     setConfig((draft) => {
       draft.memberConfig = {
         defaultImg: memberRes?.cardInfo?.background_pic_url,
@@ -280,7 +298,7 @@ function MemberIndex(props) {
   }
 
   const getMemberCenterData = async () => {
-    const params = {order_class:'employee_purchase',order_type:'normal'}
+    const params = { order_class: 'employee_purchase', order_type: 'normal' }
     // if(!isPurchaseHome){
     //   params.activity_id = purchase_share_info.activity_id
     // }
@@ -366,8 +384,11 @@ function MemberIndex(props) {
           </View>
           <View className='gradename'>
             {userInfo?.is_employee && '员工'}
-            {userInfo?.is_dependent && '员工亲友'}
-            <Text className='identity-change' onClick={handleIdentityChange}>切换身份</Text>
+            {/* {userInfo?.is_dependent && '员工亲友'} */}
+            {userInfo?.is_relative && '员工亲友'}
+            <Text className='identity-change' onClick={handleIdentityChange}>
+              切换身份
+            </Text>
           </View>
         </View>
       )
@@ -382,7 +403,13 @@ function MemberIndex(props) {
 
   const handleIdentityChange = () => {
     Taro.reLaunch({
-      url:'/subpages/purchase/select-identity?is_select=1'
+      url: '/subpages/purchase/select-identity'
+    })
+  }
+
+  const hanleLimitListCheck = () => {
+    Taro.navigateTo({
+      url: '/subpages/purchase/limit-list'
     })
   }
 
@@ -397,7 +424,10 @@ function MemberIndex(props) {
   console.log('====config===', config.menu)
 
   return (
-    <SpPage className='page-purchase-member' renderFooter={isPurchaseHome ? <CompTabbarActivity /> : <CompTabbar />}>
+    <SpPage
+      className='page-purchase-member'
+      renderFooter={isPurchaseHome || !S.getAuthToken() ? <CompTabbarActivity /> : <CompTabbar />}
+    >
       <View
         className='header-block'
         style={styleNames({
@@ -417,49 +447,60 @@ function MemberIndex(props) {
               <View className='join-us'>{VipGradeDom()}</View>
             </View>
           </View>
-          {isLogin && <View className='header-hd__footer'>
-            <Text className='iconfont icon-qianwang-01' onClick={handleClickLink.bind(this, '/subpages/member/user-info')}></Text>
-          </View>}
+          {isLogin && (
+            <View className='header-hd__footer'>
+              <Text
+                className='iconfont icon-qianwang-01'
+                onClick={handleClickLink.bind(this, '/subpages/member/user-info')}
+              ></Text>
+            </View>
+          )}
         </View>
 
-        {
-          !isPurchaseHome && <View className='header-bd'>
-            <View className='bd-item'>
-              <View className='bd-item-label'>总额度</View>
-              <View className='bd-item-value'>
-                {isLogin
-                  ? purchaseInfo.limit_fee
-                    ? (purchaseInfo.limit_fee / 100).toFixed(2)
-                    : '0.00'
-                  : '****'}
-              </View>
+        {Object.keys(purchase_share_info).length > 0 && (
+          <>
+            <View className='header-limit' onClick={hanleLimitListCheck}>
+              查看额度列表
+              <Text className='iconfont icon-qianwang-01'></Text>
             </View>
-            <View className='bd-item'>
-              <View className='bd-item-label'>已使用额度</View>
-              <View className='bd-item-value'>
-                {isLogin
-                  ? purchaseInfo.aggregate_fee
-                    ? (purchaseInfo.aggregate_fee / 100).toFixed(2)
-                    : '0.00'
-                  : '****'}
+            <View className='header-bd'>
+              <View className='bd-item'>
+                <View className='bd-item-label'>总额度</View>
+                <View className='bd-item-value'>
+                  {isLogin
+                    ? purchaseInfo.limit_fee
+                      ? (purchaseInfo.limit_fee / 100).toFixed(2)
+                      : '0.00'
+                    : '****'}
+                </View>
               </View>
-            </View>
-            <View className='bd-item deposit-item'>
-              <View className='bd-item-label'>剩余额度</View>
-              <View className='bd-item-value'>
-                {isLogin
-                  ? purchaseInfo.left_fee
-                    ? (purchaseInfo.left_fee / 100).toFixed(2)
-                    : '0.00'
-                  : '****'}
+              <View className='bd-item'>
+                <View className='bd-item-label'>已使用额度</View>
+                <View className='bd-item-value'>
+                  {isLogin
+                    ? purchaseInfo.aggregate_fee
+                      ? (purchaseInfo.aggregate_fee / 100).toFixed(2)
+                      : '0.00'
+                    : '****'}
+                </View>
               </View>
-            </View>
-            {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
+              <View className='bd-item deposit-item'>
+                <View className='bd-item-label'>剩余额度</View>
+                <View className='bd-item-value'>
+                  {isLogin
+                    ? purchaseInfo.left_fee
+                      ? (purchaseInfo.left_fee / 100).toFixed(2)
+                      : '0.00'
+                    : '****'}
+                </View>
+              </View>
+              {/* <View className='bd-item' onClick={handleClickLink.bind(this, '/pages/member/item-fav')}>
             <View className='bd-item-label'>收藏(个)</View>
             <View className='bd-item-value'>{state.favCount}</View>
           </View> */}
-          </View>
-        }
+            </View>
+          </>
+        )}
         {/* {!isPurchaseHome && <View className='header-ft'>
           会员卡等级
           {vipInfo.isOpen && (
@@ -484,12 +525,12 @@ function MemberIndex(props) {
         <CompPanel
           title='订单'
           extra='查看全部订单'
-          onLink={handleClickLink.bind(this, '/subpage/pages/trade/list?evaluate=0')}
+          onLink={handleClickLink.bind(this, '/subpages/trade/list?status=0&is_purchase=1')}
         >
           {config.menu.ziti_order && (
             <View
               className='ziti-order'
-              onClick={handleClickLink.bind(this, '/subpages/trade/ziti-list')}
+              onClick={handleClickLink.bind(this, '/subpages/trade/ziti-list?is_purchase=1')}
             >
               <View className='ziti-order-info'>
                 <View className='title'>自提订单</View>
@@ -505,12 +546,12 @@ function MemberIndex(props) {
           <View className='order-con'>
             <View
               className='order-item'
-              onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=5&evaluate=0')}
+              onClick={handleClickLink.bind(this, '/subpages/trade/list?status=5&is_purchase=1')}
             >
               <SpImage src='daizhifu.png' className='icon-style' />
               {state.waitPayNum > 0 && (
                 <View
-                  className={`'order-bradge' ${VERSION_IN_PURCHASE && 'purchase-order-bradge'}`}
+                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
                 >
                   <Text>{state.waitPayNum}</Text>
                 </View>
@@ -519,33 +560,48 @@ function MemberIndex(props) {
             </View>
             <View
               className='order-item'
-              onClick={handleClickLink.bind(this, '/subpage/pages/trade/list?status=1&evaluate=0')}
+              onClick={handleClickLink.bind(this, '/subpages/trade/list?status=1&is_purchase=1')}
             >
               <SpImage src='daishouhuo.png' className='icon-style' />
               {state.waitRecevieNum + state.waitSendNum > 0 && (
                 <View
-                  className={`'order-bradge' ${VERSION_IN_PURCHASE && 'purchase-order-bradge'}`}
+                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
                 >
                   <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
                 </View>
               )}
               <Text className='order-txt'>待收货</Text>
             </View>
+            <View
+              className='order-item'
+              onClick={handleClickLink.bind(this, '/subpages/trade/after-sale-list?is_purchase=1')}
+            >
+              <SpImage src='shouhou.png' className='icon-style' />
+              {state.afterSalesNum > 0 && (
+                <View
+                  className={`'order-bradge' ${VERSION_IN_PURCHASE && 'purchase-order-bradge'}`}
+                >
+                  <Text>{state.afterSalesNum}</Text>
+                </View>
+              )}
+              <Text className='order-txt'>售后</Text>
+            </View>
           </View>
         </CompPanel>
 
+        <CompMenu
+          accessMenu={{
+            ...config.menu,
+            purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,
+            popularize: userInfo ? userInfo.popularize : false
+          }}
+          isPromoter={userInfo ? userInfo.isPromoter : false}
+          onLink={handleClickService}
+        />
 
-        {
-          !isPurchaseHome && <CompMenu
-            accessMenu={{
-              ...config.menu,
-              purchase: purchaseInfo?.is_employee && purchaseInfo?.if_relative_join,
-              popularize: userInfo ? userInfo.popularize : false
-            }}
-            isPromoter={userInfo ? userInfo.isPromoter : false}
-            onLink={handleClickService}
-          />
-        }
+          <CompPanel>
+            <CompHelpCenter onLink={handleClickService} />
+          </CompPanel>
       </View>
       {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />
@@ -561,8 +617,6 @@ function MemberIndex(props) {
           setPolicyModal(false)
         }}
       />
-
-
     </SpPage>
   )
 }

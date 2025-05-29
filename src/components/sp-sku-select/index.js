@@ -317,6 +317,7 @@ function SpSkuSelect(props) {
     }
     Taro.hideLoading()
     console.log('navigateTo:url', url)
+    url += '&_original=1'
     Taro.navigateTo({
       url
     })

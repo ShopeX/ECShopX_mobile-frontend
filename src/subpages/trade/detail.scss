@@ -27,6 +27,19 @@
       }
     }
   }
+  .opening-time{
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 30px 40px;
+    margin-bottom: 24px;
+    &-title{
+      color: var(--color-primary) ;
+    }
+    &-content{
+      margin-top: 8px;
+      text-align: end;
+    }
+  }
 
   .information {
     background-color: #fff;

@@ -138,7 +138,7 @@ function PurchaseCheckout(props) {
   }, [isLogin])
 
   useEffect(() => {
-    if (isNewUser) {
+    if (isNewUser && !isWeb) {
       Taro.redirectTo({
         url: `/subpages/member/index`
       })
@@ -782,8 +782,8 @@ function PurchaseCheckout(props) {
         onChange={(value) => {
           setState((draft) => {
             console.log(`SpCashier:`, value)
-            draft.payType = value.paymentCode
-            draft.payChannel = value.paymentChannel
+            draft.payType = value?.paymentCode
+            draft.payChannel = value?.paymentChannel
           })
         }}
       />

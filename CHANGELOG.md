@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.20.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.4...v3.20.5) (2025-05-19)
+
+
+### Bug Fixes
+
+* 修复分类页展示逻辑 ([cec90f1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/cec90f13147e48427587993b19bdfacfa03f39b8))
+
+### [3.20.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.3...v3.20.4) (2025-05-09)
+
+### [3.20.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.20.0...v3.20.1) (2025-04-29)
+
+## [3.20.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.15...v3.20.0) (2025-04-28)
+
+### [3.19.14](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.13...v3.19.14) (2025-04-24)
+
+### [3.19.13](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.12...v3.19.13) (2025-04-23)
+
 ### [3.19.9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.19.8...v3.19.9) (2025-04-15)
 
 

@@ -1,0 +1,5 @@
+FROM steebchen/nginx-spa:stable
+WORKDIR /app
+COPY ./dist/h5 .
+EXPOSE 80
+CMD ["nginx"]

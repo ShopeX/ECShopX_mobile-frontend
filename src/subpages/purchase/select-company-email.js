@@ -6,7 +6,7 @@ import { AtButton } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
-import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 
 import './select-company-email.scss'
@@ -37,12 +37,20 @@ function PurchaseAuthEmail(props) {
         { validate: 'email', message: '请输入正确的邮箱' },
         {
           validate: async (value) => {
-            // const { enterprise_id } = router.params
-            const { status } = await api.purchase.getEmailCode({
-              email: value,
-              distributor_id: getDistributorId()
-            })
-            showToast(status ? '发送成功' : '发送失败')
+            const { enterprise_id } = router.params
+            try {
+              const params = {
+                email: value
+              }
+              if(!enterprise_id){
+                //不是扫码进来，接口要传当前店铺ID
+                params.distributor_id =  getDistributorId()
+              }
+              const { status } = await api.purchase.getEmailCode(params)
+              showToast(status ? '发送成功' : '发送失败')
+            } catch (error) {
+              return Promise.reject(error.message)
+            }
           }
         }
       ],
@@ -51,7 +59,7 @@ function PurchaseAuthEmail(props) {
   })
   const { form, rules } = state
   const formRef = useRef()
-  const { enterprise_id, enterprise_name, enterprise_sn,activity_id } = router.params
+  const { enterprise_id, enterprise_name, enterprise_sn,activity_id,is_activity='' } = router.params
 
   const onInputChange = (key, value) => {
     setState((draft) => {
@@ -98,7 +106,7 @@ function PurchaseAuthEmail(props) {
       //一个邮箱后缀只有一个企业
       params.enterprise_id = list[0].enterprise_id
 
-      if (isNewUser) {
+      if (isNewUser && !isWeb) {
         Taro.navigateTo({
           url: `/subpages/purchase/select-company-phone?${qs.stringify({
             ...params,
@@ -114,7 +122,7 @@ function PurchaseAuthEmail(props) {
       showToast('验证成功')
 
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
@@ -127,7 +135,7 @@ function PurchaseAuthEmail(props) {
           confirmText: '我知道了',
           contentAlign: 'center'
         })
-        Taro.reLaunch({ url: `/pages/purchase/index` })
+        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
       } else {
         formRef.current.setMessage({ prop: 'vcode', message: e.message })
       }
@@ -144,8 +152,12 @@ function PurchaseAuthEmail(props) {
 
   // 获取验证码
   const getSmsCode = async (resolve) => {
-    await formRef.current.onSubmitAsync(['email'])
-    resolve()
+    try {
+      await formRef.current.onSubmitAsync(['email'])
+      resolve()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   // 同意隐私协议

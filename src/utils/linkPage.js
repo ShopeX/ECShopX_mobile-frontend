@@ -61,14 +61,14 @@ function linkPage(data) {
       url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id
       break
     case "purchase_activity":
-      url = '/subpages/purchase/select-identity?activity_id='+id
+      url = '/subpages/purchase/select-identity?is_redirt=1&activity_id='+id
       clearPurchaseDtid()
       break
     case 'link':
       if (id == 'vipgrades') {
         url = '/subpage/pages/vip/vipgrades'
       } else if (id == 'purchase') {
-        url = '/subpages/purchase/select-identity'
+        url = '/subpages/purchase/select-identity?is_redirt=1'
         clearPurchaseDtid()
       } else if (id == 'recharge') {
         url = '/others/pages/recharge/index'

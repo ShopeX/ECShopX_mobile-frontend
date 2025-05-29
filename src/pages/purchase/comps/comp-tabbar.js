@@ -104,9 +104,9 @@ function CompTabbar(props) {
     const { path } = getCurrentRoute()
     if (path != tabItem.url) {
       let url = `${tabItem.url}`
-      if (['/subpages/purchase/select-identity', '/pages/purchase/index'].includes(tabItem.url)) {
-        url = `${tabItem.url}?is_select=1`
-      }
+      // if (['/subpages/purchase/select-identity'].includes(tabItem.url)) {
+      //   url = `${tabItem.url}`
+      // }
       Taro.reLaunch({ url })
     }
   }

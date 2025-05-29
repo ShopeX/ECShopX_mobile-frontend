@@ -22,3 +22,18 @@ export const ACTIVITY_ITEM = {
   discountDescription:'discount_description',
   priceDisplayConfig:'price_display_config'
 }
+
+
+export const ACTIVITY_LIMIT_ITEM = {
+  name: 'name',
+  employeeBeginTime: ({ employee_begin_time }) => {
+    return formatDateTime(employee_begin_time)
+  },
+  employeeEndTime: ({ employee_end_time }) => {
+    return formatDateTime(employee_end_time)
+  },
+  limitFee:({fee})=> (fee?.limit_fee/ 100).toFixed(2),
+  aggregateFee:({fee})=> (fee?.aggregate_fee/ 100).toFixed(2),
+  leftFee:({fee})=> (fee?.left_fee/ 100).toFixed(2)
+}
+

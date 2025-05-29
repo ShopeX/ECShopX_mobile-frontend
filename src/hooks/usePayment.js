@@ -109,10 +109,10 @@ export default (props = {}) => {
 
   const payError = (orderInfo) => {
     const { order_id, trade_source_type } = orderInfo
-    if(isPurchasePage()){
-      Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
-      return
-    }
+    // if(isPurchasePage()){
+    //   Taro.redirectTo({ url: `/subpage/pages/trade/detail?id=${order_id}` })
+    //   return
+    // }
     // 社区拼团订单
     if (!isTradeDetaiPage() && router.path != '/subpages/community/order') {
       if (trade_source_type == 'normal_community') {
@@ -220,7 +220,13 @@ export default (props = {}) => {
     console.log(`wxpayh5Pay res:`, res)
     const loc = window.location
     const redirect_url = `${loc.protocol}//${loc.host}${cashierResultUrl}?order_id=${order_id}`
-    window.location.href = `${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`
+    if(!res.mweb_url){
+      //积分抵扣了所有金额，订单直接支付完成了
+      window.location.href = redirect_url
+    }else{
+      window.location.href = `${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`
+    }
+
   }
 
   // APP(微信、支付宝)

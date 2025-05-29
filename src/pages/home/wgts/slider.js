@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { classNames, linkPage } from '@/utils'
+import { classNames, linkPage ,VERSION_STANDARD ,getDistributorId } from '@/utils'
 import { WgtPlateType } from './index'
 
 import './slider.scss'
@@ -48,14 +48,20 @@ export default class WgtSlider extends Component {
     if (!info) {
       return null
     }
-    const { config, base, data } = info
+    let { config, base, data } = info
+    
+    if(VERSION_STANDARD && Array.isArray(data) && data.length > 0){
+      const distributorId = getDistributorId()
+      data = data.map(element => element ? { ...element, distributor_id: distributorId } : element)
+    }
     const curContent = (data[curIdx] || {}).content
     return (
       <View
         className={classNames('wgt wgt-slider', {
-          wgt__padded: base.padded
+          'wgt__padded': base.padded
         })}
       >
+
         {base.title && (
           <View className='wgt-head'>
             <View className='wgt-hd'>
@@ -64,6 +70,7 @@ export default class WgtSlider extends Component {
             </View>
           </View>
         )}
+
         {config && (
           <View
             className={classNames('slider-swiper-wrap', {
