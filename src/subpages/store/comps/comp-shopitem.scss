@@ -30,7 +30,7 @@
       width: 70%;
       font-weight: bold;
       color: #111;
-      margin-left: 24px;
+      // margin-left: 24px;
     }
     .distance {
       font-size: 22px;
@@ -42,6 +42,7 @@
       border-radius: 8px;
       /* prettier-ignore */
       border: 1PX solid var(--color-primary);
+      margin-right: 24px;
     }
   }
 
