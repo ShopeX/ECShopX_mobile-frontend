@@ -1013,7 +1013,7 @@ function EspierDetail(props) {
                   info.itemParams.map((item, index) => {
                     return(
                       <View className='parameter-item'>
-                        <View>
+                        <View className='attribute'>
                           {item.attribute_value_name}
                         </View>
                         <View className='configuration'>
