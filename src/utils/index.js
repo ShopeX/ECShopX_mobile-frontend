@@ -755,7 +755,7 @@ const getDistributorId = (_dtid) => {
   const {
     shopInfo: { distributor_id, shop_id = 0 }
   } = shop
-  console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
+  // console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
