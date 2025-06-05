@@ -696,7 +696,7 @@ function EspierDetail(props) {
 
   // 获取包裹
   const getPackageList = async () => {
-    const { list } = await api.item.packageList({ item_id: id, showError: false })
+    const { list } = await api.item.packageList({ item_id: id, showError: false, distributor_id: dtid })
     setState((draft) => {
       draft.promotionPackage = list
     })
