@@ -30,9 +30,9 @@ function ShareIand() {
       path = '/subpages/prescription/prescription-information'
       queryParams.order_id = queryParams.oi
       queryParams.prescription_order_random = queryParams.r
-      delete queryParams.oi
-      delete queryParams.r
-      delete queryParams.t
+      delete queryParams.oi  //order_id   
+      delete queryParams.r   //rd   随机默认参数
+      delete queryParams.t   //type  1是处方药
     }
 
     const queryString = Object.entries(queryParams)
