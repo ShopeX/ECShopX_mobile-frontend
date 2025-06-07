@@ -293,4 +293,71 @@
       // @include text-overflow();
     }
   }
+
+  .goods-params-flat{
+    margin: 0 16px 24px;
+    padding: 16px 24px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    width: 670px;
+    .parameter{
+      font-weight: 600;
+      font-size: 28px;
+      width: 100px;
+      text-align: center;
+      white-space:nowrap;
+    }
+    .parameter-content{
+      display: flex;
+      align-items: center;
+      white-space:nowrap;
+      flex: 1;
+      overflow-y: auto;
+      .parameter-item{
+        text-align: center;
+        width: 164px;
+        .attribute{
+          width: 160px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+        flex-shrink: 0;
+        .configuration{
+          color: #999;
+        }
+      }
+    }
+    .icon-arrowRight{
+      font-size: 36px;
+    }
+  }
+
+  .at-float-layout .layout-header__title {
+    text-align: center;
+  }
+
+  .product-parameter{
+    height: 700px;
+    padding: 0 24px;
+    &-all{
+      margin-bottom: 24px;
+      height: 560px;
+      overflow-x: auto;
+      .product-parameter-item{
+        height: 80px;
+        .title{
+          color: #999;
+          width: 260px;
+          display: inline-block;
+        }
+        .content{
+          font-weight: 600;
+        }
+      }
+    }
+    
+  }
+
 }

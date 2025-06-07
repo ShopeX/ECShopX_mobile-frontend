@@ -327,12 +327,12 @@ export const ESPIER_DETAIL_GOODS_INFO = {
       // 如果 regions 不是数组，可以将它转换成数组   把 regions 转换成只包含一个元素的数组
       regions = [regions]
     }
-    if (item_unit) {
-      res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
-    }
-    if (regions) {
-      res.push({ attribute_name: '产地', attribute_value_name: regions.join(' ') })
-    }
+    // if (item_unit) {
+    //   res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
+    // }
+    // if (regions) {
+    //   res.push({ attribute_name: '产地', attribute_value_name: regions.join(' ') })
+    // }
     return res.concat(item_params)
   },
   groupsList: 'groups_list',
