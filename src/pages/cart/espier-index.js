@@ -94,12 +94,12 @@ function CartIndex() {
     const params = {
       shop_type: type
     }
-     
+
     await dispatch(fetchCartList(params))
     await dispatch(updateCount(params))
     let cartRemindres = await api.cart.getCartRemind(params)
-    setState({
-      cartRemind: cartRemindres
+    setState((draft) => {
+      draft.cartRemind = cartRemindres
     })
     Taro.hideLoading()
   }
