@@ -22,7 +22,8 @@ import {
   WgtImgGif,
   WgtHotTopic,
   WgtFloorImg,
-  WgtNearbyShop
+  WgtNearbyShop,
+  WgtFullSlider
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -36,13 +37,11 @@ function HomeWgts(props) {
   const { localWgts, searchMethod } = state
   const wgtsRef = useRef()
 
-  // useEffect(() => {
-  //   if (wgts.length > 0) {
-  //     refreshWgtsList()
-  //   }
-  // }, [wgts])
-
-
+  useEffect(() => {
+    // if (wgts.length > 0) {
+    wgtsRef.current.reset()
+    // }
+  }, [wgts])
 
   // const refreshWgtsList = () => {
   //   setState(draft => {
@@ -54,7 +53,6 @@ function HomeWgts(props) {
   // }
 
   const fetch = ({ pageIndex, pageSize }) => {
-    console.log('首页挂件分页渲染...', pageIndex, pageSize, wgts)
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
@@ -80,7 +78,20 @@ function HomeWgts(props) {
   }
 
   return (
-    <SpScrollView className='home-wgts' ref={wgtsRef} fetch={fetch} pageSize={5} onLoad={onLoad} renderMore={copywriting?null:()=>{}}>
+    <SpScrollView
+      className='home-wgts'
+      ref={wgtsRef}
+      fetch={fetch}
+      pageSize={5}
+      onLoad={onLoad}
+      renderMore={() => {
+        return <></>
+      }}
+      renderEmpty={() => {
+        return <></>
+      }}
+      // renderMore={copywriting ? null : () => {}}
+    >
       {localWgts.map((list) => {
         return list.map((item, idx) => (
           <View
@@ -114,6 +125,7 @@ function HomeWgts(props) {
             {item.name === 'floorImg' && <WgtFloorImg info={item} />} {/** 楼层图片 */}
             {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
             {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
+            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />} {/** 全屏轮播 */}
           </View>
         ))
       })}
