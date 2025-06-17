@@ -498,6 +498,7 @@ function CustomPage(props) {
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   return (
     <SpPage
+      immersive={pageData?.base?.isImmersive}
       scrollToTopBtn
       className='page-custom-page'
       pageConfig={pageData?.base}
@@ -509,7 +510,9 @@ function CustomPage(props) {
     >
       <WgtsContext.Provider
         value={{
-          onAddToCart
+          onAddToCart,
+          immersive: pageData?.base?.isImmersive,
+          isTab: isShowTabBar
         }}
       >
         <HomeWgts wgts={filterWgts} />

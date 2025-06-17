@@ -26,5 +26,6 @@ export { default as WgtHotTopic } from './hot-topic'
 export { default as WgtFloorImg } from './floor-img'
 export { default as WgtHomeHeader } from './home-header'
 export { default as WgtHomeHeaderShop } from './home-header-shop'
+export { default as WgtFullSlider } from './full-slider'
 
 export { WgtCoupon, WgtNearbyShop }

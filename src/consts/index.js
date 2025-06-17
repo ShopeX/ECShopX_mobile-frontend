@@ -455,6 +455,12 @@ export const DELIVERY_LIST = [
 
 export const INVITE_ACTIVITY_ID = 'INVITE_ACTIVITY_ID'
 
+export const TAB_PAGES = [
+  '/pages/index',
+  '/pages/category/index',
+  '/pages/cart/espier-index',
+  '/subpages/member/index'
+]
 
 export * from './localstorage'
 

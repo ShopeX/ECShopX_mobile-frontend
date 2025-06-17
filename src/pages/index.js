@@ -80,7 +80,8 @@ const initialState = {
     showCancel: true,
     onCancel: null,
     onConfirm: null
-  }
+  },
+  navigateMantle: false
 }
 
 function Home() {
@@ -145,7 +146,8 @@ function Home() {
     skuPanelOpen,
     selectType,
     policyModal,
-    modalDivided
+    modalDivided,
+    navigateMantle
   } = state
 
   const dispatch = useDispatch()
@@ -644,22 +646,31 @@ function Home() {
     }
   }
 
+  const handleScroll = (e) => {
+    setState((draft) => {
+      draft.navigateMantle = e.detail.scrollTop >= 20
+    })
+  }
+
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
+      immersive={pageData?.base?.isImmersive}
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       loading={loading}
       ref={pageRef}
+      navigateMantle={navigateMantle}
     >
       <ScrollView
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
         scrollY
+        onScroll={handleScroll}
       >
         {isShowHomeHeader && (
           <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
@@ -667,7 +678,10 @@ function Home() {
         {filterWgts.length > 0 && (
           <WgtsContext.Provider
             value={{
-              onAddToCart
+              onAddToCart,
+              isTab: true,
+              immersive: pageData?.base?.isImmersive,
+              isShowHomeHeader: isShowHomeHeader && isWeixin
             }}
           >
             <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>

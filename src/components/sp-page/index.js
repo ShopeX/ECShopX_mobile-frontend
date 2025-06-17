@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useRef, useImperativeHandle } from 'react'
+import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, {
-  useDidShow,
-  usePageScroll,
   useRouter,
+  useDidShow,
+  useDidHide,
+  usePageScroll,
   getCurrentInstance,
   useReady
 } from '@tarojs/taro'
@@ -11,7 +12,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
 import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
-import { TABBAR_PATH } from '@/consts'
+import { TAB_PAGES, TABBAR_PATH } from '@/consts'
 import api from '@/api'
 import S from '@/spx'
 import {
@@ -20,31 +21,32 @@ import {
   hasNavbar,
   isWeixin,
   isAlipay,
-  isGoodsShelves,
-  VERSION_IN_PURCHASE,
-  validate,
-  hex2rgb,
-  VERSION_STANDARD,
-  getDistributorId
+  isIphoneX,
+  getDistributorId,
+  VERSION_IN_PURCHASE
 } from '@/utils'
 import { changeInWhite } from '@/store/slices/shop'
+import context from '@/hooks/usePageContext'
 
 import './index.scss'
 
+const DEFAULT_NAVIGATE_HEIGHT = 44
+const DEFAULT_FOOTER_HEIGHT = 124 // 默认底部高度，不包含页面底部安全距离
+const DEFAULT_SAFE_AREA_HEIGHT = 42 // 默认安全距离
+
 const initialState = {
-  lock: false,
-  lockStyle: {},
-  pageTitle: '',
-  isTabBarPage: true,
+  bodyHeight: 0,
+  btnReturn: false,
+  btnHome: false,
   customNavigation: false,
   cusCurrentPage: 0,
-  showLeftContainer: false,
-  pageBackground: {},
-  ipx: false,
-  windowHeight: 0,
   gNavbarH: 0,
   gStatusBarHeight: 0,
-  pageTheme: {},
+  height: 0,
+  isTabBarPage: true,
+  ipx: false,
+  lock: false,
+  lockStyle: {},
   modalDivided: {
     isShow: false,
     content: '',
@@ -52,476 +54,530 @@ const initialState = {
     showCancel: true,
     onCancel: null,
     onConfirm: null
-  }
+  },
+  menuWidth: 0,
+  mantle: false,
+  navigationLSpace: 0,
+  navigationRSpace: 0,
+  pageTitle: '',
+  pageBackground: {},
+  pageTheme: {},
+  showLeftContainer: false,
+  windowHeight: 0,
+  currentPage: false
 }
 
-function SpPage(props, ref) {
-  const $instance = getCurrentInstance()
-  const [state, setState] = useImmer(initialState)
-
-  const {
-    pageTheme,
-    lock,
-    lockStyle,
-    pageTitle,
-    isTabBarPage,
-    customNavigation,
-    cusCurrentPage,
-    showLeftContainer,
-    pageBackground,
-    ipx,
-    windowHeight,
-    gNavbarH,
-    gStatusBarHeight,
-    modalDivided
-  } = state
-  const {
-    className,
-    children,
-    renderFloat,
-    renderFooter,
-    scrollToTopBtn = false,
-    isDefault = false,
-    defaultImg = 'empty_data.png',
-    renderDefault,
-    loading = false,
-    defaultMsg = '',
-    navbar = true,
-    onClickLeftIcon = null,
-    navigateTheme = 'light',
-    navigateMantle = false, // 自定义导航，开启滚动蒙层
-    pageConfig,
-    fixedTopContainer = null,
-    showNavition = true, //是否展示Navition
-    title = '' // 页面导航标题
-  } = props
-  let { renderTitle } = props
-  const wrapRef = useRef(null)
-  const scrollTopRef = useRef(0)
-  const isFromPhoneCallBack = useRef(false);
-  const sys = useSelector((state) => state.sys)
-  const { shopInfo, shopInWhite } = useSelector((state) => state.shop)
-  const [showToTop, setShowToTop] = useState(false)
-  const [mantle, setMantle] = useState(false)
-  const { colorPrimary, colorMarketing, colorAccent, rgb, appName, open_divided, open_divided_templateId} = sys
-  const { themeColor } = useThemsColor()
-
-  const dispatch = useDispatch()
-  const { connectWhiteShop } = useWhiteShop({
-    onPhoneCallComplete: () => {
-      isFromPhoneCallBack.current = true
-      checkInWhite()
-    }
-  })
-  useReady(() => {
-    // 导购货架数据上报
-    // const router = $instance.router
-    // console.log('sp pages use ready:', $instance)
-  })
-
-  useEffect(() => {
-    if (lock) {
-      setState((draft) => {
-        draft.lockStyle = {
-          position: 'fixed',
-          top: `-${scrollTopRef.current}px`,
-          left: '0px',
-          width: '100%',
-          bottom: '0px'
-        }
-      })
-    } else {
-      setState((draft) => {
-        draft.lockStyle = {}
-      })
-    }
-  }, [lock])
-
-  useEffect(() => {
-    const { page } = $instance
-    const pages = Taro.getCurrentPages()
-    const { navigationStyle } = page.config
-
-    let ipx = false
-    let _gNavbarH = 0,
-      _gStatusBarHeight = 0
-    const { screenHeight, windowHeight } = Taro.getSystemInfoSync()
-    // showToast(`${screenHeight},${windowHeight}`)
-    if (isWeixin || isAlipay) {
-      const deviceInfo = Taro.getSystemInfoSync()
-      ipx = validate.isIpx(deviceInfo.model)
-      const menuButton = Taro.getMenuButtonBoundingClientRect()
-      const { statusBarHeight } = Taro.getSystemInfoSync()
-      _gNavbarH = Math.floor(
-        statusBarHeight + menuButton.height + (menuButton.top - statusBarHeight) * 2
-      )
-      _gStatusBarHeight = statusBarHeight
-    }
-
-    setState((draft) => {
-      draft.customNavigation = isWeixin ? navigationStyle === 'custom' : false
-      draft.cusCurrentPage = pages.length
-      draft.ipx = ipx
-      draft.windowHeight = windowHeight
-      draft.pageTitle = page?.config?.navigationBarTitleText
-      draft.gNavbarH = _gNavbarH
-      draft.gStatusBarHeight = _gStatusBarHeight
-    })
-  }, [])
-
-  useEffect(() => {
-    if (pageConfig) {
-      const {
-        pageBackgroundStyle,
-        pageBackgroundColor,
-        pageBackgroundImage,
-        navigateBackgroundColor
-      } = pageConfig
-      let _pageBackground = {}
-      if (pageBackgroundStyle == '1') {
-        _pageBackground = {
-          'background-color': pageBackgroundColor
-        }
-      } else {
-        _pageBackground = {
-          'background-image': `url(${pageBackgroundImage})`,
-          'background-size': '100% 100%',
-          'background-position': 'center'
-        }
+const SpPage = memo(
+  forwardRef((props, ref) => {
+    const router = useRouter()
+    const instanceRef = useRef(null)
+    const [state, setState] = useImmer(initialState)
+    const wrapRef = useRef(null)
+    const scrollTopRef = useRef(0)
+    const isFromPhoneCallBack = useRef(false)
+    const sys = useSelector((state) => state.sys)
+    const { shopInfo, shopInWhite } = useSelector((state) => state.shop)
+    const [showToTop, setShowToTop] = useState(false)
+    const { appName, open_divided, open_divided_templateId } = sys
+    const { themeColor } = useThemsColor()
+    const dispatch = useDispatch()
+    const { connectWhiteShop } = useWhiteShop({
+      onPhoneCallComplete: () => {
+        isFromPhoneCallBack.current = true
+        checkInWhite()
       }
+    })
+    useReady(() => {
+      // 导购货架数据上报
+    })
 
-      setState((draft) => {
-        draft.pageBackground = _pageBackground
-      })
-
-      if (isAlipay) {
-        my.setNavigationBar({
-          backgroundColor: navigateBackgroundColor
+    useEffect(() => {
+      if (state.lock) {
+        setState((draft) => {
+          draft.lockStyle = {
+            position: 'fixed',
+            top: `-${scrollTopRef.current}px`,
+            left: '0px',
+            width: '100%',
+            bottom: '0px'
+          }
+        })
+      } else {
+        setState((draft) => {
+          draft.lockStyle = {}
         })
       }
-    }
-  }, [pageConfig])
+    }, [state.lock])
 
-  useDidShow(() => {
-    const { page, router } = $instance
+    useEffect(() => {
+      instanceRef.current = getCurrentInstance()
+      const pages = Taro.getCurrentPages()
+      const { navigationStyle } = instanceRef.current?.page?.config
 
-    const fidx = Object.values(TABBAR_PATH).findIndex(
-      (v) => v == $instance.router?.path.split('?')[0]
-    )
-    const isTabBarPage = fidx > -1
-    setState((draft) => {
-      // draft.pageTitle = pageTitle
-      draft.isTabBarPage = isTabBarPage
-      draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
-        `/${page?.route}`
-      )
-      //更新主题色
-      draft.pageTheme = themeColor()
+      let _gNavbarH = 0 // 导航栏高度
+      let _gStatusBarHeight = 0 // 状态栏高度
+      let _menuWidth = 0
+      let _navigationLSpace = 0 // 导航栏左间距
+      let _navigationRSpace = 0 // 导航栏右间距
+      const { screenHeight, windowWidth, windowHeight } = Taro.getWindowInfo()
+      const [absolutePath] = router.path.split('?')
+      const _btnReturn = pages.length > 1 && !TAB_PAGES.includes(absolutePath)
+      const _btnHome = pages.length == 1 && !TAB_PAGES.includes(absolutePath)
+
+      if (isWeixin || isAlipay) {
+        const menuButton = Taro.getMenuButtonBoundingClientRect()
+        // const { statusBarHeight } = Taro.getSystemInfoSync()
+        _gNavbarH = Math.floor(menuButton.bottom + (props.navigateHeight - menuButton.height) / 2)
+        _gStatusBarHeight = Math.floor(
+          menuButton.top - (props.navigateHeight - menuButton.height) / 2
+        )
+        _menuWidth = menuButton.width
+        _navigationLSpace = windowWidth - menuButton.right
+        _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
+      }
+      const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
+      setState((draft) => {
+        draft.btnReturn = _btnReturn
+        draft.btnHome = _btnHome
+        draft.customNavigation = custom_navigation
+        draft.cusCurrentPage = pages.length
+        draft.ipx = isIphoneX()
+        draft.windowHeight = windowHeight
+        draft.pageTitle = instanceRef.current?.page?.config?.navigationBarTitleText || props.title
+        draft.gNavbarH = _gNavbarH
+        draft.gStatusBarHeight = _gStatusBarHeight
+        draft.height = !props.immersive ? screenHeight - _gNavbarH : screenHeight
+        draft.menuWidth = _menuWidth
+        draft.navigationLSpace = _navigationLSpace
+        draft.navigationRSpace = _navigationRSpace
+      })
+      const _height = props.renderFooter
+        ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0))
+        : 0
+      props.onReady({
+        gNavbarH: _gNavbarH,
+        height: !props.isSticky
+          ? `calc(${screenHeight - _gNavbarH}px - ${_height})`
+          : `calc(${screenHeight}px - ${_height})`,
+        menuWidth: _menuWidth,
+        footerHeight: _height
+      })
+    }, [])
+
+    useDidHide(() => {
+      setState((draft) => {
+        draft.currentPage = false
+      })
     })
 
-    // 导购货架分包路由，隐藏所有分享入口
-    if (router.path.indexOf('/subpages/guide') > -1) {
-      Taro.hideShareMenu({
-        menus: ['shareAppMessage', 'shareTimeline']
-      })
-    }
-    console.log("🚀🚀🚀 ~ sppage useDidShow ~ open_divided:", open_divided)
-    if (open_divided && !isFromPhoneCallBack.current) {
-      checkInWhite()
-    }
-    isFromPhoneCallBack.current = false
-  })
-
-  const checkInWhite = async () => {
-    const { router } = $instance
-    // 白名单直接登录的页面，不需要弹窗
-    const whiteLoginPage = ['/pages/index', '/pages/item/espier-detail', '/pages/custom/custom-page']
-    // 导购货架分包路由，隐藏所有分享入口
-    // 白名单直接登录的页面，不需要弹窗
-    if (whiteLoginPage.includes(router.path)) {
-      return
-    }
-
-    if (S.getAuthToken()) {
-      const distributorId = getDistributorId() || 0
-      // 在其他页面有进了白名单店铺的话，需要changeInWhite = true
-      if (!shopInWhite) {
-        const { status } = await api.shop.checkUserInWhite({distributor_id: distributorId})
-        dispatch(changeInWhite(status))
-        if (status) { 
-          return
+    useEffect(() => {
+      if (props.pageConfig) {
+        const {
+          pageBackgroundStyle,
+          pageBackgroundColor,
+          pageBackgroundImage,
+          navigateBackgroundColor
+        } = props.pageConfig
+        let _pageBackground = {}
+        if (pageBackgroundStyle == '1') {
+          _pageBackground = {
+            'background-color': pageBackgroundColor
+          }
         } else {
-          // 不在白名单的店铺，
-          setState((draft) => {
-            draft.modalDivided = {
-              isShow: true,
-              confirmText: '关闭',
-              showCancel: !!(open_divided_templateId || shopInfo?.phone),
-              onCancel: () => { 
-                connectWhiteShop(shopInfo?.phone)
-                setState((draft) => {
-                  draft.modalDivided = {
-                    isShow: false
-                  }
-                })
-              },
-              onConfirm: async () => {
-                // 去首页
-                const path = `/pages/index`
-                Taro.navigateTo({
-                  url: path
-                })
-                setState((draft) => {
-                  draft.modalDivided = {
-                    isShow: false
-                  }
-                })
-              }
-            }
-          })
+          _pageBackground = {
+            'background-image': `url(${pageBackgroundImage})`,
+            'background-size': '100% 100%',
+            'background-position': 'center'
+          }
         }
-      } 
-    } else {
 
+        setState((draft) => {
+          draft.pageBackground = _pageBackground
+        })
+
+        if (isAlipay) {
+          Taro.setNavigationBar &&
+            Taro.setNavigationBar({
+              backgroundColor: navigateBackgroundColor
+            })
+        }
+      }
+    }, [props.pageConfig])
+
+    useDidShow(() => {
+      const { page, router } = getCurrentInstance()
+      const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router?.path.split('?')[0])
+      const isTabBarPage = fidx > -1
+
+      setState((draft) => {
+        draft.pageTheme = themeColor()
+        draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
+          `/${page?.route}`
+        )
+        draft.currentPage = true
+        draft.isTabBarPage = isTabBarPage
+      })
+
+      // 导购货架分包路由，隐藏所有分享入口
+      if (router.path.indexOf('/subpages/guide') > -1) {
+        Taro.hideShareMenu({
+          menus: ['shareAppMessage', 'shareTimeline']
+        })
+      }
+
+      if (open_divided && !isFromPhoneCallBack.current) {
+        checkInWhite()
+      }
+      isFromPhoneCallBack.current = false
+    })
+
+    const checkInWhite = async () => {
+      const { router } = instanceRef.current
+      // 白名单直接登录的页面，不需要弹窗
+      const whiteLoginPage = [
+        '/pages/index',
+        '/pages/item/espier-detail',
+        '/pages/custom/custom-page'
+      ]
+
+      if (whiteLoginPage.includes(router.path)) {
+        return
+      }
+
+      if (S.getAuthToken()) {
+        const distributorId = getDistributorId() || 0
+        // 在其他页面有进了白名单店铺的话，需要changeInWhite = true
+        if (!shopInWhite) {
+          const { status } = await api.shop.checkUserInWhite({ distributor_id: distributorId })
+          dispatch(changeInWhite(status))
+          if (status) {
+            return
+          } else {
+            // 不在白名单的店铺
+            handleShowDividedModal(false)
+          }
+        }
+      } else {
+        handleShowDividedModal(true)
+      }
+    }
+
+    const handleShowDividedModal = (isLogin) => {
       setState((draft) => {
         draft.modalDivided = {
           isShow: true,
-          confirmText: '去登录',
+          confirmText: isLogin ? '去登录' : '关闭',
           showCancel: !!(open_divided_templateId || shopInfo?.phone),
-          onCancel: () => { 
+          onCancel: () => {
             connectWhiteShop(shopInfo?.phone)
-            setState((draft) => {
-              draft.modalDivided = {
-                isShow: false
-              }
-            })
+            closeDividedModal()
           },
           onConfirm: async () => {
-            console.log("🚀🚀🚀 ~ res.cancel ~ res.cancel:")
             const path = `/pages/index`
             Taro.navigateTo({
               url: path
             })
-            setState((draft) => {
-              draft.modalDivided = {
-                isShow: false
-              }
-            })
+            closeDividedModal()
           }
         }
       })
-
-    }
-  }
-  
-
-  usePageScroll((res) => {
-    if (!lock) {
-      scrollTopRef.current = res.scrollTop
     }
 
-    if (navigateMantle && res.scrollTop > 0) {
-      setMantle(true)
-    } else {
-      setMantle(false)
-    }
-
-    if (res.scrollTop > 300) {
-      setShowToTop(true)
-    } else {
-      setShowToTop(false)
-    }
-  })
-
-  const scrollToTop = () => {
-    Taro.pageScrollTo({
-      scrollTop: 0
-    })
-  }
-
-  useImperativeHandle(ref, () => ({
-    pageLock: () => {
+    const closeDividedModal = () => {
       setState((draft) => {
-        draft.lock = true
+        draft.modalDivided = {
+          isShow: false
+        }
       })
-    },
-    pageUnLock: () => {
-      setState((draft) => {
-        draft.lock = false
-      })
+    }
 
-      setTimeout(() => {
-        Taro.pageScrollTo({
-          scrollTop: scrollTopRef.current,
-          duration: 0
+    usePageScroll((res) => {
+      if (!state.lock) {
+        scrollTopRef.current = res.scrollTop
+      }
+      if (res.scrollTop > 10) {
+        setState((draft) => {
+          draft.mantle = true
         })
-      }, 0)
+      } else {
+        setState((draft) => {
+          draft.mantle = false
+        })
+      }
+
+      if (res.scrollTop > 300) {
+        setShowToTop(true)
+      } else {
+        setShowToTop(false)
+      }
+
+      props.onScroll && props.onScroll(res)
+    })
+
+    const scrollToTop = () => {
+      Taro.pageScrollTo({
+        scrollTop: 0
+      })
     }
-  }))
 
-  const CustomNavigation = () => {
-    const { page, route } = getCurrentInstance()
-    let pageStyle = {},
-      pageTitleStyle = {}
-    let navigationBarTitleText = ''
+    useImperativeHandle(ref, () => ({
+      pageLock: () => {
+        setState((draft) => {
+          draft.lock = true
+        })
+      },
+      pageUnLock: () => {
+        setState((draft) => {
+          draft.lock = false
+        })
 
-    if (pageConfig) {
+        setTimeout(() => {
+          Taro.pageScrollTo({
+            scrollTop: scrollTopRef.current,
+            duration: 0
+          })
+        }, 0)
+      }
+    }))
+    const computedNavigationStyle = () => {
       const {
         navigateBackgroundColor,
         navigateStyle,
         navigateBackgroundImage,
-        titleStyle,
-        titleColor,
-        titleBackgroundImage,
-        titlePosition
-      } = pageConfig
-      // 导航颜色背景
-      if (navigateStyle == '1') {
-        pageStyle = {
-          'background-color': navigateBackgroundColor
-        }
-      } else {
-        pageStyle = {
+        isImmersive
+      } = props.pageConfig || {}
+      let style = {
+        'height': `${state.gNavbarH}px`,
+        'padding-top': `${state.gStatusBarHeight}px`
+        // 'padding-right': `${state.navigationRSpace}px`,
+        // 'padding-left': `${state.navigationLSpace}px`
+      }
+      if (navigateStyle == '2') {
+        style = {
+          ...style,
           'background-image': `url(${navigateBackgroundImage})`,
           'background-size': '100% 100%',
           'background-repeat': 'no-repeat',
           'background-position': 'center'
         }
+      } else {
+        if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
+          style['background-color'] = navigateBackgroundColor || props.navigateBackgroundColor
+          style['transition'] = 'all 0.15s ease-in'
+        }
       }
-      // 页面标题
-      if (titleStyle == '1') {
-        renderTitle = (
-          <Text
-            style={styleNames({
-              color: titleColor
-            })}
-          >
-            {appName}
-          </Text>
-        )
-      } else if (titleStyle == '2') {
-        renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
-      }
-      pageTitleStyle = {
-        'justify-content': titlePosition == 'left' ? 'flex-start' : 'center',
-        'color': titleColor
-      }
-    } else {
-      navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
+      return style
     }
-    // console.log('zzz', Taro.getCurrentPages())
+
+    const RenderCustomNavigation = () => {
+      let { renderTitle } = props
+      let pageCenterStyle = {}
+      let pageTitleStyle = {}
+      let navigationBarTitleText = ''
+      if (props.pageConfig) {
+        const {
+          titleStyle,
+          titleColor,
+          titleBackgroundImage,
+          titlePosition
+        } = props.pageConfig
+        // 页面标题
+        if (titleStyle == '1') {
+          renderTitle = (
+            <Text
+              style={styleNames({
+                color: titleColor
+              })}
+            >
+              {appName}
+            </Text>
+          )
+        } else if (titleStyle == '2') {
+          renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
+        }
+        pageCenterStyle = {
+          'color': titleColor,
+          'position': 'relative'
+        }
+        pageTitleStyle = {
+          'color': props.pageConfig?.titleColor,
+          'position': 'absolute',
+          'left': titlePosition == 'left' ? '0' : '50%',
+          'top': '50%',
+          'transform': `translate(${titlePosition == 'left' ? '0' : '-25%'}, -50%)`
+        }
+      } else {
+        navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
+      }
+      return (
+        <View className='custom-navigation' style={styleNames(computedNavigationStyle())}>
+          <View className='custom-navigation__content h-full'>
+            <View
+              className='custom-navigation__body w-full h-full flex box-border'
+              style={{
+                padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
+                gap: `${state.navigationLSpace}px`
+              }}
+            >
+              {/* {(state.btnReturn || state.btnHome) && ( */}
+                <View
+                  className='custom-navigation__left-block flex items-center justify-between'
+                  style={{
+                    padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
+                    maxWidth: `${state.menuWidth}px`,
+                    gap: `${state.navigationLSpace}px`,
+                    width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
+                  }}
+                >
+                  {state.btnReturn && (
+                    <SpImage
+                      src='fv_back.png'
+                      width={36}
+                      height={36}
+                      onClick={() => Taro.navigateBack()}
+                    />
+                  )}
+                  {(state.btnHome || state.cusCurrentPage == 1) && (
+                    <SpImage
+                      src='fv_home.png'
+                      width={36}
+                      height={36}
+                      onClick={() => {
+                        Taro.reLaunch({
+                          url: isGoodsShelves()
+                            ? '/subpages/guide/index'
+                            : VERSION_IN_PURCHASE
+                            ? '/pages/purchase/index'
+                            : '/pages/index'
+                        })
+                      }}
+                    />
+                  )}
+                </View>
+              {/* )} */}
+              <View className='custom-navigation__center-block flex-1 flex items-center' style={styleNames(pageCenterStyle)}>
+                {props.renderNavigation ? (
+                  <context.Provider>
+                    {props.renderNavigation}
+                  </context.Provider>
+                ) : (
+                  <View className='title-container' style={styleNames(pageTitleStyle)}>
+                    {renderTitle || props.title || navigationBarTitleText}
+                    {/* 吸顶区域 */}
+                    {props.fixedTopContainer}
+                  </View>
+                )}
+              </View>
+              <View
+                className='custom-navigation__right-block'
+                style={{ width: `${state.menuWidth}px` }}
+              ></View>
+            </View>
+          </View>
+        </View>
+      )
+    }
 
     return (
       <View
-        className={classNames(
-          'custom-navigation',
-          {
-            'mantle': mantle
-          },
-          navigateTheme
-        )}
-        style={styleNames({
-          height: `${gNavbarH}px`,
-          'padding-top': `${gStatusBarHeight}px`,
-          ...pageStyle
-        })}
+        className={classNames('sp-page', props.className)}
+        style={styleNames({ ...state.pageTheme, ...state.lockStyle, ...state.pageBackground })}
+        ref={wrapRef}
       >
-        {showLeftContainer && (
-          <View className='left-container'>
-            <View className='icon-wrap'>
-              <Text
-                className={classNames('iconfont', {
-                  'icon-home1': cusCurrentPage == 1,
-                  'icon-fanhui': cusCurrentPage != 1
-                })}
-                onClick={() => {
-                  if (cusCurrentPage == 1) {
-                    Taro.redirectTo({
-                      url: isGoodsShelves()
-                        ? '/subpages/guide/index'
-                        : VERSION_IN_PURCHASE
-                        ? '/pages/purchase/index'
-                        : '/pages/index'
-                    })
-                  } else {
-                    Taro.navigateBack()
-                  }
-                }}
-              />
-            </View>
+        {hasNavbar && !state.isTabBarPage && props.navbar && (
+          <SpNavBar title={state.pageTitle} onClickLeftIcon={props.onClickLeftIcon} />
+        )}
+        {props.isDefault &&
+          (props.renderDefault || <SpNote img={props.defaultImg} title={props.defaultMsg} isUrl />)}
+        {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
+        {state.customNavigation && RenderCustomNavigation()}
+        {props.loading && <SpLoading />}
+        {!props.isDefault && !props.loading && (
+          <View
+            className='sp-page-body'
+            style={styleNames({
+              // 'height': `${state.height}px`,
+              'margin-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
+              'padding-bottom': props.renderFooter
+                ? Taro.pxTransform(
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )
+                : 0
+            })}
+          >
+            <context.Provider>
+              {props.children}
+            </context.Provider>
           </View>
         )}
-
-        {isWeixin && (
-          <View className='title-container' style={styleNames(pageTitleStyle)}>
-            {renderTitle || title || navigationBarTitleText}
-            {/* 吸顶区域 */}
-            {fixedTopContainer}
+        {props.renderFooter && (
+          <View
+            className='sp-page-footer'
+            style={styleNames({
+              'height': `${Taro.pxTransform(props.footerHeight)}`,
+              'padding-bottom': `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
+            })}
+          >
+            <context.Provider>
+              {props.renderFooter}
+            </context.Provider>
           </View>
         )}
-        {showLeftContainer && <View className='right-container'></View>}
+        {/* 浮动 */}
+        {!props.isDefault && (
+          <View className='float-container'>
+            {props.renderFloat}
+            {showToTop && props.scrollToTopBtn && (
+              <SpFloatMenuItem onClick={scrollToTop}>
+                <Text className='iconfont icon-zhiding'></Text>
+              </SpFloatMenuItem>
+            )}
+          </View>
+        )}
+        {state.modalDivided.isShow && (
+          <SpModalDivided
+            content={state.modalDivided.content}
+            cancelText={state.modalDivided.cancelText}
+            confirmText={state.modalDivided.confirmText}
+            showCancel={state.modalDivided.showCancel}
+            onCancel={state.modalDivided.onCancel}
+            onConfirm={state.modalDivided.onConfirm}
+          />
+        )}
       </View>
     )
-  }
+  })
+)
 
-  return (
-    <View
-      className={classNames('sp-page', className, {
-        'has-navbar': hasNavbar && !isTabBarPage && navbar,
-        'has-footer': renderFooter,
-        'has-custom-navigation': customNavigation && pageConfig,
-        'ipx': ipx
-      })}
-      style={styleNames({ ...pageTheme, ...lockStyle, ...pageBackground })}
-      ref={wrapRef}
-    >
-      {hasNavbar && !isTabBarPage && navbar && (
-        <SpNavBar title={pageTitle} onClickLeftIcon={onClickLeftIcon} />
-      )}
-
-      {isDefault && (renderDefault || <SpNote img={defaultImg} title={defaultMsg} isUrl={true} />)}
-
-      {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
-      {customNavigation && CustomNavigation()}
-
-      {loading && <SpLoading />}
-
-      {!isDefault && !loading && (
-        <View
-          className='sp-page-body'
-          style={styleNames({
-            'margin-top': `${customNavigation ? gNavbarH : 0}px`
-          })}
-        >
-          {children}
-        </View>
-      )}
-
-      {/* 置底操作区 */}
-      {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
-
-      {/* 浮动 */}
-      {!isDefault && (
-        <View className='float-container'>
-          {renderFloat}
-          {showToTop && scrollToTopBtn && (
-            <SpFloatMenuItem onClick={scrollToTop}>
-              <Text className='iconfont icon-zhiding'></Text>
-            </SpFloatMenuItem>
-          )}
-        </View>
-      )}
-
-    { modalDivided.isShow && <SpModalDivided 
-      content={modalDivided.content}
-      cancelText={modalDivided.cancelText} 
-      confirmText={modalDivided.confirmText}
-      showCancel={modalDivided.showCancel}
-      onCancel={modalDivided.onCancel}
-      onConfirm={modalDivided.onConfirm}
-    />}
-    </View>
-  )
+SpPage.defaultProps = {
+  onReady: () => {},
+  className: '',
+  children: null,
+  defaultMsg: '',
+  defaultImg: 'empty_data.png',
+  footerHeight: DEFAULT_FOOTER_HEIGHT,
+  fixedTopContainer: null,
+  isDefault: false,
+  isSticky: false, // 是否粘性吸顶
+  immersive: false, // 沉浸式导航
+  loading: false,
+  navbar: true,
+  navigateMantle: false, // 页面向下滚动，沉浸式导航开启蒙层背景色
+  navigationLeftBlockWidthFull: false,
+  navigateBackgroundColor: '#fff', // 导航背景色
+  navigateHeight: DEFAULT_NAVIGATE_HEIGHT,
+  onClickLeftIcon: null,
+  pageConfig: null,
+  renderDefault: null,
+  renderNavigation: null,
+  scrollToTopBtn: false,
+  showNavitionLeft: true,
+  title: '', // 页面导航标题
+  renderFloat: () => {},
+  renderFooter: null,
+  showLive: false,
+  pageType: ''
 }
 
-export default React.forwardRef(SpPage)
+export default SpPage
+
