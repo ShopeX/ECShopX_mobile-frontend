@@ -15,107 +15,117 @@ import {
 import { SG_APP_CONFIG } from '@/consts'
 
 import './comp-menu.scss'
+const getConst = () => {
 
-const MENUS = [
-  {
-    key: 'popularize',
-    name: '推广管理',
-    icon: 'm_menu_tuiguang.png',
-    link: '/marketing/pages/distribution/index'
-  },
-  {
-    key: 'group',
-    name: '我的拼团',
-    icon: 'm_menu_pintuan.png',
-    link: '/marketing/pages/member/group-list'
-  },
-  {
-    key: 'pointMenu',
-    name: '积分商城',
-    icon: 'm_menu_poin.png',
-    link: '/subpages/pointshop/list'
-  },
-  {
-    key: 'boost_activity',
-    name: '助力活动',
-    icon: 'm_menu_zhulihuodong.png',
-    link: '/boost/pages/home/index'
-  },
-  {
-    key: 'boost_order',
-    name: '助力订单',
-    icon: 'm_menu_zhulidingdan.png',
-    link: '/boost/pages/order/index'
-  },
-  // {
-  //   key: 'offline_order',
-  //   name: '线下订单',
-  //   icon: 'm_menu_xianxiadingdan.png',
-  //   link: '/others/pages/bindOrder/index'
-  // },
-  // community_order: { name: "社区团购", icon: "m_menu_tuangou.png" },
-  {
-    key: 'activity',
-    name: '我的活动',
-    icon: 'm_menu_baoming.png',
-    link: '/marketing/pages/member/item-activity'
-  },
-  {
-    key: 'prorate',
-    name: '推广管理',
-    icon: 'm_menu_tuiguang.png'
-  },
-  {
-    key: 'purchase',
-    name: '内购',
-    icon: 'm_menu_jiatingfengxiang.png',
-    link: '/pages/purchase/auth'
-  },
-  {
-    key: 'dianwu',
-    name: '店务管理',
-    icon: 'm_menu_dianwu.png',
-    link: '/subpages/dianwu/index'
+  const MENUS = [
+    {
+      key: 'popularize',
+      name: '推广管理',
+      icon: 'm_menu_tuiguang.png',
+      link: '/marketing/pages/distribution/index'
+    },
+    {
+      key: 'group',
+      name: '我的拼团',
+      icon: 'm_menu_pintuan.png',
+      link: '/marketing/pages/member/group-list'
+    },
+    {
+      key: 'pointMenu',
+      name: '积分商城',
+      icon: 'm_menu_poin.png',
+      link: '/subpages/pointshop/list'
+    },
+    {
+      key: 'boost_activity',
+      name: '助力活动',
+      icon: 'm_menu_zhulihuodong.png',
+      link: '/boost/pages/home/index'
+    },
+    {
+      key: 'boost_order',
+      name: '助力订单',
+      icon: 'm_menu_zhulidingdan.png',
+      link: '/boost/pages/order/index'
+    },
+    // {
+    //   key: 'offline_order',
+    //   name: '线下订单',
+    //   icon: 'm_menu_xianxiadingdan.png',
+    //   link: '/others/pages/bindOrder/index'
+    // },
+    // community_order: { name: "社区团购", icon: "m_menu_tuangou.png" },
+    {
+      key: 'activity',
+      name: '我的活动',
+      icon: 'm_menu_baoming.png',
+      link: '/marketing/pages/member/item-activity'
+    },
+    {
+      key: 'prorate',
+      name: '推广管理',
+      icon: 'm_menu_tuiguang.png'
+    },
+    {
+      key: 'purchase',
+      name: '内购',
+      icon: 'm_menu_jiatingfengxiang.png',
+      link: '/pages/purchase/auth'
+    },
+    {
+      key: 'dianwu',
+      name: '店务管理',
+      icon: 'm_menu_dianwu.png',
+      link: '/subpages/dianwu/index'
+    }
+
+    // {
+    //   key: "complaint",
+    //   name: "投诉记录",
+    //   icon: "m_menu_toushu.png",
+    //   link: "/marketing/pages/member/complaint-record",
+    // },
+  ]
+
+  const MENUS_CONST = [
+    {
+      key: 'tenants',
+      name: '商家入驻',
+      icon: 'm_menu_merchat.png',
+      link: '/subpages/merchant/login'
+      // link: '/subpages/merchant/audit'
+    }
+  ]
+
+  // const MENUS_OFFLINE = [
+  //   {
+  //     key: 'offline_order',
+  //     name: '线下订单',
+  //     icon: 'm_menu_xianxiadingdan.png',
+  //     link: '/others/pages/bindOrder/index'
+  //   }
+  // ]
+
+  const MENUS_COMMUNITY = [
+    {
+      key: 'community_group_enable',
+      name: '社区团购',
+      icon: 'm_menu_tuangou.png',
+      link: '/subpages/community/index'
+    }
+  ]
+
+  return {
+    MENUS,
+    MENUS_CONST,
+    MENUS_COMMUNITY
   }
-
-  // {
-  //   key: "complaint",
-  //   name: "投诉记录",
-  //   icon: "m_menu_toushu.png",
-  //   link: "/marketing/pages/member/complaint-record",
-  // },
-]
-
-const MENUS_CONST = [
-  {
-    key: 'tenants',
-    name: '商家入驻',
-    icon: 'm_menu_merchat.png',
-    link: '/subpages/merchant/login'
-    // link: '/subpages/merchant/audit'
-  }
-]
-
-// const MENUS_OFFLINE = [
-//   {
-//     key: 'offline_order',
-//     name: '线下订单',
-//     icon: 'm_menu_xianxiadingdan.png',
-//     link: '/others/pages/bindOrder/index'
-//   }
-// ]
-
-const MENUS_COMMUNITY = [
-  {
-    key: 'community_group_enable',
-    name: '社区团购',
-    icon: 'm_menu_tuangou.png',
-    link: '/subpages/community/index'
-  }
-]
-
+}
 function CompMenu(props) {
-  const { accessMenu, onLink = () => {}, isPromoter } = props
+  const { MENUS,
+    MENUS_CONST,
+    MENUS_COMMUNITY } = getConst()
+  const { accessMenu, onLink = () => { }, isPromoter } = props
   const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null

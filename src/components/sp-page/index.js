@@ -100,6 +100,7 @@ function SpPage(props, ref) {
   const scrollTopRef = useRef(0)
   const isFromPhoneCallBack = useRef(false);
   const sys = useSelector((state) => state.sys)
+  const { lang } = useSelector((state) => state.user)
   const { shopInfo, shopInWhite } = useSelector((state) => state.shop)
   const [showToTop, setShowToTop] = useState(false)
   const [mantle, setMantle] = useState(false)
@@ -474,6 +475,7 @@ function SpPage(props, ref) {
       })}
       style={styleNames({ ...pageTheme, ...lockStyle, ...pageBackground })}
       ref={wrapRef}
+      key={lang}
     >
       {hasNavbar && !isTabBarPage && navbar && (
         <SpNavBar title={pageTitle} onClickLeftIcon={onClickLeftIcon} />

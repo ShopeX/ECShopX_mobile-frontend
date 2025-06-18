@@ -4,6 +4,7 @@ import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
+
 import api from '@/api'
 
 // import { Tracker } from "@/service";

@@ -1,8 +1,14 @@
 
     // 导入国际化JSON文件
     import Taro from '@tarojs/taro'
+    import { defaultLang } from '@/utils/lang'
+    // import { updateLang } from '@/store/slices/user'
     import langJSON from './index.json'
+    
+
+
     (function () {
+
     // 定义翻译函数
     let $t = function (key, val, nameSpace) {
       // 获取指定命名空间下的语言包
@@ -79,17 +85,17 @@
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
     const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('') : '';
     // 从本地存储中获取当前语言，如果不存在则使用源语言
-    const baseLang = withStorageLang ? globalThis.localStorage.getItem('lang') : 'zhcn';
-    const lang = commonLang ? commonLang : 'en';
+    const baseLang = withStorageLang ? globalThis.localStorage.getItem('lang') : defaultLang;
+    const lang = commonLang ? commonLang : baseLang;
     // 根据当前语言设置翻译函数的语言包
     globalThis.$t.locale(globalThis.langMap[lang], 'lang');
+
     globalThis.$changeLang = (lang) => {
-        debugger
+        const configStore = require('@/store').default
+        const updateLang = require('@/store/slices/user').updateLang
+        const { store } = configStore()
+        store.dispatch(updateLang(lang))
         globalThis.$t.locale(globalThis.langMap[lang], 'lang');
-        const currentPage = Taro.getCurrentInstance().router.path;
-        Taro.redirectTo({
-            url: currentPage
-        })
     };
     Taro.$changeLang = globalThis.$changeLang
 
