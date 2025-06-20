@@ -10,7 +10,7 @@ import Taro, {
 import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
-import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
+import { useSyncCallback, useWhiteShop, useThemsColor, useLogin } from '@/hooks'
 import { TABBAR_PATH } from '@/consts'
 import api from '@/api'
 import S from '@/spx'
@@ -22,12 +22,15 @@ import {
   isAlipay,
   isGoodsShelves,
   VERSION_IN_PURCHASE,
+  VERSION_SHUYUN,
   validate,
   hex2rgb,
   VERSION_STANDARD,
   getDistributorId
 } from '@/utils'
 import { changeInWhite } from '@/store/slices/shop'
+
+
 
 import './index.scss'
 
@@ -202,6 +205,18 @@ function SpPage(props, ref) {
     }
   }, [pageConfig])
 
+  const { login } = useLogin()
+
+  useEffect(() => {
+    const {referrerInfo: {appId: fromAppId} } =  Taro.getLaunchOptionsSync()
+
+    if(fromAppId && !S.getAuthToken() && VERSION_SHUYUN){
+      //数云：第三方小程序跳来需要免登
+      login(fromAppId)
+    }
+  }, [])
+
+
   useDidShow(() => {
     const { page, router } = $instance
 
@@ -248,7 +263,7 @@ function SpPage(props, ref) {
       if (!shopInWhite) {
         const { status } = await api.shop.checkUserInWhite({distributor_id: distributorId})
         dispatch(changeInWhite(status))
-        if (status) { 
+        if (status) {
           return
         } else {
           // 不在白名单的店铺，
@@ -257,7 +272,7 @@ function SpPage(props, ref) {
               isShow: true,
               confirmText: '关闭',
               showCancel: !!(open_divided_templateId || shopInfo?.phone),
-              onCancel: () => { 
+              onCancel: () => {
                 connectWhiteShop(shopInfo?.phone)
                 setState((draft) => {
                   draft.modalDivided = {
@@ -280,7 +295,7 @@ function SpPage(props, ref) {
             }
           })
         }
-      } 
+      }
     } else {
 
       setState((draft) => {
@@ -288,7 +303,7 @@ function SpPage(props, ref) {
           isShow: true,
           confirmText: '去登录',
           showCancel: !!(open_divided_templateId || shopInfo?.phone),
-          onCancel: () => { 
+          onCancel: () => {
             connectWhiteShop(shopInfo?.phone)
             setState((draft) => {
               draft.modalDivided = {
@@ -313,7 +328,7 @@ function SpPage(props, ref) {
 
     }
   }
-  
+
 
   usePageScroll((res) => {
     if (!lock) {
@@ -512,9 +527,9 @@ function SpPage(props, ref) {
         </View>
       )}
 
-    { modalDivided.isShow && <SpModalDivided 
+    { modalDivided.isShow && <SpModalDivided
       content={modalDivided.content}
-      cancelText={modalDivided.cancelText} 
+      cancelText={modalDivided.cancelText}
       confirmText={modalDivided.confirmText}
       showCancel={modalDivided.showCancel}
       onCancel={modalDivided.onCancel}

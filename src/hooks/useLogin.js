@@ -6,7 +6,7 @@ import { updateUserInfo, fetchUserFavs, clearUserInfo, updateIsNewUser } from '@
 import { updateCount, clearCart } from '@/store/slices/cart'
 import { purchaseClearCart } from '@/store/slices/purchase'
 import api from '@/api'
-import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin } from '@/utils'
+import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin, VERSION_SHUYUN } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID } from '@/consts'
@@ -23,7 +23,7 @@ export default (props = {}) => {
   useEffect(() => {
     const token = S.getAuthToken()
     if (!token) {
-      autoLogin && login()
+       autoLogin && !VERSION_SHUYUN && login()
     } else {
       setIsLogin(true)
       getUserInfo()
@@ -37,7 +37,7 @@ export default (props = {}) => {
     }
   }, [userInfo])
 
-  const login = async () => {
+  const login = async (shuyunappid) => {
     if (isWeixin || isAlipay) {
       // 隐私协议
       const checkResult = await checkPolicyChange()
@@ -46,7 +46,7 @@ export default (props = {}) => {
         const { code } = await getCode()
 
         try {
-          const { token } = await getToken(code)
+          const { token } = await getToken(code,shuyunappid)
           Taro.hideLoading()
           setToken(token)
           loginSuccess()
@@ -69,9 +69,16 @@ export default (props = {}) => {
     }
   }
 
-  const getToken = async (code) => {
+  const getToken = async (code,shuyunappid) => {
     const auth_type = isWeixin ? 'wxapp' : 'aliapp'
-    return await api.wx.login({ code, showError: false, auth_type })
+    const params = { code, showError: false, auth_type }
+
+    if(shuyunappid){
+      params.shuyunappid = shuyunappid
+    }
+
+    return await api.wx.login(params)
+
   }
 
   const logout = () => {
