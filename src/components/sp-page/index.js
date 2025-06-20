@@ -23,7 +23,8 @@ import {
   isAlipay,
   isIphoneX,
   getDistributorId,
-  VERSION_IN_PURCHASE
+  VERSION_IN_PURCHASE,
+  isGoodsShelves
 } from '@/utils'
 import { changeInWhite } from '@/store/slices/shop'
 import context from '@/hooks/usePageContext'
@@ -389,7 +390,7 @@ const SpPage = memo(
                 color: titleColor
               })}
             >
-              {appName}
+              {props.title || navigationBarTitleText || appName}
             </Text>
           )
         } else if (titleStyle == '2') {
@@ -462,7 +463,7 @@ const SpPage = memo(
                   </context.Provider>
                 ) : (
                   <View className='title-container' style={styleNames(pageTitleStyle)}>
-                    {renderTitle || props.title || navigationBarTitleText}
+                    {renderTitle}
                     {/* 吸顶区域 */}
                     {props.fixedTopContainer}
                   </View>
