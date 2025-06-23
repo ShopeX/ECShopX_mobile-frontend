@@ -877,6 +877,37 @@ const resolveUrlParamsParse = (url) => {
   return res
 }
 
+const getMemberLevel = (gradeInfo = {}) => {
+  //由于测试环境和正式环境为两套id所以需要用name来兼容一下测试环境，此处为正式环境id映射关系
+  const gradeNameMap = {
+    '白卡': '1',
+    '蓝享卡': '2',
+    '银享卡': '3',
+    '金享卡': '4',
+    '铂金卡': '5',
+    '黑卡': '6'
+  }
+  const gradeIdMap = {
+    '50001': '1',
+    '50002': '2',
+    '50003': '3',
+    '50004': '4',
+    '50005': '5',
+    '50013': '6'
+  }
+  const { grade_id, grade_name } = gradeInfo
+  return gradeIdMap[grade_id] || gradeNameMap[grade_name]
+}
+
+export const pxToRpx = (px) => {
+  const { screenWidth } = Taro.getSystemInfoSync()
+  return parseInt((screenWidth * px) / 375)
+}
+
+export const pxToUnitRpx = (px) => {
+  return Taro.pxTransform(px * 2)
+}
+
 export {
   classNames,
   log,
@@ -902,7 +933,8 @@ export {
   getCurrentPageRouteParams,
   resolveStringifyParams,
   resolveUrlParamsParse,
-  getCurrentShopId
+  getCurrentShopId,
+  getMemberLevel
 }
 
 export * from './platforms'

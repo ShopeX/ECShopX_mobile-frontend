@@ -455,6 +455,27 @@ export const DELIVERY_LIST = [
 
 export const INVITE_ACTIVITY_ID = 'INVITE_ACTIVITY_ID'
 
+//需要注册的页面类型
+export const needLoginPageType = [
+  'vipgrades',
+  'applyChief',
+  'recharge',
+  'purchase',
+  'pointShop',
+  'registActivity',
+  'group',
+  'boost_activity',
+  'boost_order',
+  'coupon_list',
+  'my_collect',
+  'tenants',
+  'address',
+  'groups_list',
+  'hottopic',
+  'zitiOrder',
+  'community_group_enable'
+]
+
 export const needLoginPage = ['purchase_activity', 'regactivity']
 
 export const TAB_PAGES = [

@@ -1,49 +1,30 @@
-import Taro, {
-  useDidShow,
-  useShareAppMessage,
-  getCurrentPages,
-  getCurrentInstance
-} from '@tarojs/taro'
-import { useState, useEffect, useCallback, useRef } from 'react'
-import { updateUserInfo, fetchUserFavs, updateCheckChief } from '@/store/slices/user'
-import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN } from '@/consts'
+import Taro, { useDidShow, useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
+import { useState, useEffect } from 'react'
+import { updateUserInfo, updateCheckChief } from '@/store/slices/user'
+import { WgtsContext } from '@/pages/home/wgts/wgts-context'
+import { platformTemplateName } from '@/utils/platform'
+import { View, Text } from '@tarojs/components'
+import { SG_APP_CONFIG } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
+import HomeWgts from '@/pages/home/comps/home-wgts'
 import { useImmer } from 'use-immer'
-
-import {
-  SpLogin,
-  SpImage,
-  SpPrice,
-  CouponModal,
-  SpPrivacyModal,
-  SpTabbar,
-  SpPage
-} from '@/components'
-import api from '@/api'
-import {
-  navigateTo,
-  getThemeStyle,
-  styleNames,
-  classNames,
-  showToast,
-  showModal,
-  isWeixin,
-  normalizeQuerys,
-  log,
-  VERSION_PLATFORM,
-  VERSION_STANDARD,
-  getDistributorId
-} from '@/utils'
 import S from '@/spx'
-import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId, updateIsOpenPurchase } from '@/store/slices/purchase'
+import qs from 'qs'
+import req from '@/api/req'
+
+import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
+import api from '@/api'
+import { styleNames, log, getDistributorId, getMemberLevel, VERSION_PLATFORM, VERSION_STANDARD, VERSION_IN_PURCHASE, isWeixin } from '@/utils'
+import {
+  updatePurchaseShareInfo,
+  updateInviteCode,
+  updateCurDistributorId,
+  updateIsOpenPurchase
+} from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
-import CompVipCard from './comps/comp-vipcard'
-import CompBanner from './comps/comp-banner'
-import CompPanel from './comps/comp-panel'
+
 import CompMenu from './comps/comp-menu'
-import CompHelpCenter from './comps/comp-helpcenter'
 import './index.scss'
 
 const initialConfigState = {
@@ -88,33 +69,37 @@ const initialConfigState = {
     vipImg: null
   },
   purchaseRes: {},
-
 }
 
 const initialState = {
-  favCount: 0,
+  // favCount: 0,
   point: 0,
   couponCount: 0,
   username: '',
   avatar: '',
   mobile: '',
-  waitPayNum: 0,
-  waitSendNum: 0,
-  waitRecevieNum: 0,
-  waitEvaluateNum: 0,
-  afterSalesNum: 0,
+  // waitPayNum: 0,
+  // waitSendNum: 0,
+  // waitRecevieNum: 0,
+  // waitEvaluateNum: 0,
+  // afterSalesNum: 0,
   zitiNum: 0,
   deposit: 0,
   salesPersonList: {},
-  deliveryStaffList:[] //配送员
+  deliveryStaffList: [], //配送员
+  wgts: [],
+  loading: true,
+  shareInfo: {},
+  footerHeight: 0,
+  pageData: null
 }
 
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin, isNewUser, login, getUserInfoAuth } = useLogin({
-    autoLogin: true,
+  const { isLogin, isNewUser, getUserInfo } = useLogin({
+    autoLogin: false,
     // policyUpdateHook: (isUpdate) => {
     //   // isUpdate && setPolicyModal(true)
     //   if (isUpdate) {
@@ -130,10 +115,7 @@ function MemberIndex(props) {
   const [policyModal, setPolicyModal] = useState(false)
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const { pointName, open_divided } = useSelector((state) => state.sys)
-  const {
-    shopInfo: { store_name }
-  } = useSelector((state) => state.shop)
+  const { pointName } = useSelector((state) => state.sys)
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const dispatch = useDispatch()
 
@@ -153,26 +135,41 @@ function MemberIndex(props) {
     getMemberCenterConfig()
     // 白名单
     getSettings()
+    fetchWgts()
   }, [])
 
   useDidShow(() => {
+    getUserInfo()
     if (isLogin) {
       getMemberCenterData()
     }
   })
 
-  // useDidShow(() => {
-  //   if (isLogin) {
-  //     getMemberCenterData()
-  //     setMemberBackground()
-  //   }
-  //   // if (S.get(MERCHANT_TOKEN, true)) {
-  //   //   S.delete(MERCHANT_TOKEN, true)
-  //   // }
-  //   // if (S.get(SG_TOKEN)) {
-  //   //   setHeaderBlock()
-  //   // }
-  // })
+  const fetchWgts = async () => {
+    try {
+      const pathparams = qs.stringify({
+        template_name: platformTemplateName,
+        version: 'v1.0.1',
+        page_name: 'custom_my'
+      })
+      const url = `/pageparams/setting?${pathparams}`
+      const { config = [], share } = await req.get(url)
+      const pageData = config.find((wgt) => wgt.name == 'page')
+      setState((draft) => {
+        draft.wgts = config
+        draft.pageData = pageData
+        draft.loading = false
+        draft.shareInfo = share
+      })
+    } catch (error) {
+      console.log('🚀🚀🚀 ~ fetchWgts ~ error:', error)
+      setState((draft) => {
+        draft.wgts = []
+        draft.loading = false
+        draft.shareInfo = {}
+      })
+    }
+  }
 
   async function getSettings() {
     const { whitelist_status = false } = await api.shop.homeSetting()
@@ -194,16 +191,6 @@ function MemberIndex(props) {
       path: '/pages/index'
     }
   })
-
-  const setHeaderBlock = async () => {
-    const resAssets = await api.member.memberAssets()
-    const { discount_total_count, fav_total_count, point_total_count } = resAssets
-    setState((draft) => {
-      draft.favCount = fav_total_count
-      draft.point = point_total_count
-      draft.couponCount = discount_total_count
-    })
-  }
 
   const getEmployeeIsOpen = async () => {
     const purchaseRes = await api.purchase.getEmployeeIsOpen()
@@ -295,7 +282,7 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let memberRes = await api.member.memberInfo()
-    let deliveryPersonnel = memberRes?.deliveryStaffList?.list. map((item) => (item.operator_id)) ?? []
+    let deliveryPersonnel = memberRes?.deliveryStaffList?.list.map((item) => item.operator_id) ?? []
     setConfig((draft) => {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,
@@ -307,6 +294,7 @@ function MemberIndex(props) {
       draft.deposit = memberRes.deposit / 100
       draft.salesPersonList = memberRes?.salesPersonList
       draft.deliveryStaffList = memberRes?.deliveryStaffList
+      draft.point = memberRes?.point
     })
 
     dispatch(updateDeliveryPersonnel({self_delivery_operator_id:deliveryPersonnel,distributor_id:''})) //存配送员信息
@@ -314,34 +302,63 @@ function MemberIndex(props) {
   }
 
   const getMemberCenterData = async () => {
-    // const resSales = await api.member.getSalesperson()
     const resTrade = await api.trade.getCount()
-    // const resVip = await api.vip.getList()
-    // 大转盘
-    // const resTurntable = await api.wheel.getTurntableconfig()
     const resAssets = await api.member.memberAssets()
-    const { discount_total_count, fav_total_count, point_total_count } = resAssets
+    const { discount_total_count } = resAssets
 
     const {
-      aftersales, // 待处理售后
-      normal_notpay_notdelivery, // 未付款未发货
-      normal_payed_daifahuo, // 待发货
-      normal_payed_daishouhuo, // 待收货
       normal_payed_daiziti, // 待自提订单
-      normal_not_rate // 待评论
     } = resTrade
 
     setState((draft) => {
-      draft.favCount = fav_total_count
-      draft.point = point_total_count
+      // draft.favCount = fav_total_count
+      // draft.point = point_total_count
+      // draft.waitPayNum = normal_notpay_notdelivery
+      // draft.waitSendNum = normal_payed_daifahuo
+      // draft.waitRecevieNum = normal_payed_daishouhuo
+      // draft.afterSalesNum = aftersales
+      // draft.waitEvaluateNum = normal_not_rate
       draft.couponCount = discount_total_count
-      draft.waitPayNum = normal_notpay_notdelivery
-      draft.waitSendNum = normal_payed_daifahuo
-      draft.waitRecevieNum = normal_payed_daishouhuo
-      draft.afterSalesNum = aftersales
       draft.zitiNum = normal_payed_daiziti
-      draft.waitEvaluateNum = normal_not_rate
     })
+  }
+
+  const handlePopularChange = async () => { // 推广跳转
+    // 已经是分销员
+    if (userInfo.isPromoter) {
+      Taro.navigateTo({ url: link })
+    } else {
+      const { confirm } = await Taro.showModal({
+        title: '邀请推广',
+        content: '确定申请成为推广员？',
+        showCancel: true,
+        cancel: '取消',
+        confirmText: '确认',
+        confirmColor: '#0b4137'
+      })
+      if (!confirm) return
+      const { status } = await api.distribution.become()
+      if (status) {
+        Taro.showModal({
+          title: '恭喜',
+          content: '已成为推广员',
+          showCancel: false,
+          confirmText: '好'
+        })
+      }
+    }
+  }
+
+  const handlePurchaseChange = async () => {
+    const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
+    if (data?.length > 0) {
+      Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
+    } else {
+      Taro.navigateTo({ url: '/pages/purchase/auth' })
+    }
+    dispatch(updatePurchaseShareInfo())
+    dispatch(updateInviteCode())
+    dispatch(updateCurDistributorId(null))
   }
 
   const handleClickLink = async (link) => {
@@ -349,19 +366,8 @@ function MemberIndex(props) {
     Taro.navigateTo({ url: link })
   }
 
-  const handleClickPoint = () => {
-    const { pointAppId, pointPage, pointUrlIsOpen } = config
-    if (pointUrlIsOpen) {
-      Taro.navigateToMiniProgram({
-        appId: pointAppId,
-        path: pointPage
-      })
-    }
-  }
-
   const handleClickService = async (item) => {
     const { link, key } = item
-    // await getUserInfoAuth(key !== 'tenants')
     // 分销推广
     if (key == 'popularize') {
       // 已经是分销员
@@ -460,216 +466,139 @@ function MemberIndex(props) {
     return null
   }
 
-  // console.log(`member page:`, state, config);
-
-  const { memberConfig } = config
-
-  console.log('====config===', config.menu)
-
   return (
-    <SpPage className='pages-member-index' renderFooter={<SpTabbar />}>
-      <ScrollView scrollY style='height: 100%;'>
+    <SpPage
+      className='pages-member-index'
+      immersive={state.pageData?.base?.isImmersive}
+      pageConfig={state.pageData?.base || {}}
+      renderFooter={<SpTabbar />}
+      title='会员中心'
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+        console.log('onReady', footerHeight)
+      }}
+    >
+      <View className='user-info-card-wrapper' style={{ paddingBottom: state.footerHeight }}>
         <View
           className='header-block'
-          style={styleNames({
-            'background-image': `url(${`${process.env.APP_IMAGE_CDN}/m_bg.png`})`
-          })}
+          style={userInfo?.gradeInfo?.grade_background ? `{background: url(${userInfo?.gradeInfo?.grade_background})}` : {}}
         >
-          {VERSION_STANDARD && open_divided && (
-            <View
-              className='left-block'
-              onClick={() => {
-                Taro.navigateTo({
-                  url: '/subpages/store/list'
-                })
-              }}
-            >
-              <View className='shop-name'><Text className='shop-name-text'>我的店铺</Text> {store_name || '暂无店铺信息'}</View>
-              <Text className='iconfont icon-qianwang-01'></Text>
-            </View>
-          )}
-          <View className='header-hd'>
-            <View className='header-hd__header'>
-              <SpImage
-                className='usericon'
-                src={(userInfo && userInfo.avatar) || 'user_icon.png'}
-                width='110'
-              />
-            </View>
-            <View className='header-hd__body'>
-              <View className='username-wrap'>
-                <View className='join-us'>{VipGradeDom()}</View>
-              </View>
-            </View>
-            <View className='header-hd__footer'>
-              {config.menu.member_code && (
-                <SpLogin
-                  onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
-                >
-                  <Text className='iconfont icon-erweima-01'></Text>
-                </SpLogin>
-              )}
-              <SpLogin
-                className='user-info__link'
-                onChange={handleClickLink.bind(this, '/subpages/member/user-info')}
+          <View className='user-info-card'>
+            <View className='user-info-header'>
+              <View
+                className='user-avatar'
+                onClick={() => {
+                  if (isLogin) {
+                    Taro.navigateTo({ url: '/subpages/member/user-info' })
+                  }
+                }}
               >
-                <Text className='iconfont icon-qianwang-01'></Text>
-              </SpLogin>
-            </View>
-          </View>
-          <View className='header-hd__footer1'>
-            {/* {config.menu.member_code && (
-              <SpLogin onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}>
-                <Text className='iconfont icon-erweima-01'></Text>
-              </SpLogin>
-            )}
-            <SpLogin
-              className='user-info__link'
-              onChange={handleClickLink.bind(this, '/subpages/member/user-info')}
-            >
-              <Text className='iconfont icon-qianwang-01'></Text>
-            </SpLogin> */}
-            <SpLogin
-              className='bd-item'
-              onChange={handleClickLink.bind(this, '/subpages/marketing/coupon')}
-            >
-              <View className='bd-item-label'>优惠券(张)</View>
-              <View className='bd-item-value'>{state.couponCount}</View>
-            </SpLogin>
-            <SpLogin
-              className='bd-item'
-              onChange={handleClickLink.bind(this, '/subpages/member/point-detail')}
-            >
-              <View className='bd-item-label'>{`${pointName}`}</View>
-              <View className='bd-item-value'>{state.point}</View>
-            </SpLogin>
-            {/* {process.env.NODE_ENV === 'development' && (
-            <View className='bd-item deposit-item'>
-              <View className='bd-item-label'>储值(¥)</View>
-              <View className='bd-item-value'>
-                <SpPrice noSymbol value={state.deposit} />
+                <SpImage
+                  className='avatar-img'
+                  src={isLogin ? (userInfo && userInfo.avatar) || 'fv_user.png' : 'fv_user.png'}
+                  width={144}
+                  height={144}
+                />
+              </View>
+
+              <View className='user-details'>
+                {isLogin ? (
+                  <>
+                    <View
+                      className='user-name'
+                      onClick={() => Taro.navigateTo({ url: '/subpages/member/user-info' })}
+                    >
+                      {userInfo?.username || userInfo?.mobile}
+                    </View>
+                    <View className='user-vip-wrapper'>
+                      <SpImage
+                        src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
+                        width={146}
+                        height={32}
+                        mode='widthFix'
+                      />
+                    </View>
+                  </>
+                ) : (
+                  <SpLogin newUser={isNewUser}>
+                    <Text className='login-text font-medium text-34'>点击登录</Text>
+                  </SpLogin>
+                )}
+              </View>
+
+              <View className='qr-code-btn'>
+                <SpImage
+                  src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
+                  className='qr-code-img'
+                  width={120}
+                  height={88}
+                  mode='widthFix'
+                />
+                <SpImage
+                  src='fv_member_level_bg.png'
+                  width={120}
+                  height={88}
+                  mode='widthFix'
+                  className='member-level-bg'
+                />
+                {isLogin && (
+                  <Text
+                    className='iconfont icon-erweima-01'
+                    onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-code' })}
+                  ></Text>
+                )}
               </View>
             </View>
-          )} */}
-            <SpLogin
-              className='bd-item'
-              onChange={handleClickLink.bind(this, '/pages/member/item-fav')}
-            >
-              <View className='bd-item-label'>收藏(个)</View>
-              <View className='bd-item-value'>{state.favCount}</View>
-            </SpLogin>
-          </View>
-          <View className='header-ft'>
-            {/* 会员卡等级 */}
-            {vipInfo.isOpen && (
-              <SpLogin onChange={handleClickLink.bind(this, '/subpage/pages/vip/vipgrades')}>
-                <CompVipCard info={vipInfo} userInfo={userInfo} memberConfig={memberConfig} />
-              </SpLogin>
-            )}
-          </View>
-        </View>
 
-        <View className='body-block'>
-          {config.banner?.isShow && (
-            <CompBanner
-              info={config.banner}
-              src={isLogin ? config.banner.loginBanner : config.banner.noLoginBanner}
-            />
-          )}
-
-          <CompPanel
-            title='订单'
-            extra={
-              <SpLogin onChange={handleClickLink.bind(this, '/subpages/trade/list?status=0')}>
-                查看全部订单
-              </SpLogin>
-            }
-          >
-            {config.menu.ziti_order && (
-              <SpLogin onChange={handleClickLink.bind(this, '/subpages/trade/ziti-list')}>
-                <View className='ziti-order'>
-                  <View className='ziti-order-info'>
-                    <View className='title'>自提订单</View>
-                    <View className='ziti-txt'>
-                      您有<Text className='ziti-num'>{state.zitiNum}</Text>
-                      个等待自提的订单
-                    </View>
-                  </View>
-                  <Text className='iconfont icon-qianwang-01'></Text>
+            <View className='user-stats'>
+              <SpLogin
+                onChange={() => {
+                  Taro.navigateTo({ url: '/subpages/marketing/coupon' })
+                }}
+              >
+                <View
+                  className='stat-item'
+                  // onClick={() => }
+                >
+                  <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
+                  <Text className='stat-label'>优惠券</Text>
                 </View>
               </SpLogin>
-            )}
-
-            <View className='order-con'>
               <SpLogin
-                className='order-item'
-                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=5')}
+                onChange={() => {
+                  handleClickLink('/subpages/pointshop/list')
+                }}
               >
-                <SpImage src='daizhifu.png' className='icon-style' />
-                {state.waitPayNum > 0 && (
-                  <View className='order-bradge'>
-                    <Text>{state.waitPayNum}</Text>
-                  </View>
-                )}
-                <Text className='order-txt'>待支付</Text>
-              </SpLogin>
-              <SpLogin
-                className='order-item'
-                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=1')}
-              >
-                <SpImage src='daishouhuo.png' className='icon-style' />
-                {state.waitRecevieNum + state.waitSendNum > 0 && (
-                  <View className='order-bradge'>
-                    <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
-                  </View>
-                )}
-                <Text className='order-txt'>待收货</Text>
-              </SpLogin>
-              <SpLogin
-                className='order-item'
-                onChange={handleClickLink.bind(this, '/subpages/trade/list?status=7')}
-              >
-                <SpImage src='pingjia.png' className='icon-style' />
-                {state.waitEvaluateNum > 0 && (
-                  <View className='order-bradge'>
-                    <Text>{state.waitEvaluateNum}</Text>
-                  </View>
-                )}
-                <Text className='order-txt'>待评价</Text>
-              </SpLogin>
-              <SpLogin
-                className='order-item'
-                onChange={handleClickLink.bind(this, '/subpages/trade/after-sale-list')}
-              >
-                <SpImage src='shouhou.png' className='icon-style' />
-                {state.afterSalesNum > 0 && (
-                  <View className='order-bradge'>
-                    <Text>{state.afterSalesNum}</Text>
-                  </View>
-                )}
-                <Text className='order-txt'>售后</Text>
+                <View className='stat-item'>
+                  <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
+                  <Text className='stat-label'>积分</Text>
+                </View>
               </SpLogin>
             </View>
-          </CompPanel>
-          <CompPanel>
-            <CompMenu
-              accessMenu={{
-                ...config.menu,
-                purchase: config.purchaseRes.is_open,
-                popularize: userInfo ? userInfo.popularize : false,
-                salesPersonList: state.salesPersonList,
-                deliveryStaffList:state.deliveryStaffList
-              }}
-              isPromoter={userInfo ? userInfo.isPromoter : false}
-              onLink={handleClickService}
-            />
-          </CompPanel>
+          </View>
 
-          <CompPanel>
-            <CompHelpCenter onLink={handleClickService} />
-          </CompPanel>
+          <View className='header-block__ft'></View>
         </View>
-      </ScrollView>
+
+        <WgtsContext.Provider>
+          <HomeWgts wgts={state.wgts} />
+        </WgtsContext.Provider>
+
+        <CompMenu
+          accessMenu={{
+            purchase: config.purchaseRes.is_open,
+            popularize: userInfo ? userInfo.popularize : false,
+            salesPersonList: state.salesPersonList,
+            deliveryStaffList:state.deliveryStaffList,
+            dianwu: config.menu.dianwu,
+          }}
+          zitiNum={state.zitiNum}
+          isPromoter={userInfo ? userInfo.isPromoter : false}
+          onLink={handleClickService}
+        />
+      </View>
     </SpPage>
   )
 }
