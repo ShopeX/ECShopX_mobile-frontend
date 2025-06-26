@@ -24,7 +24,8 @@ import {
   isIphoneX,
   getDistributorId,
   VERSION_IN_PURCHASE,
-  isGoodsShelves
+  isGoodsShelves,
+  linkPage
 } from '@/utils'
 import { changeInWhite } from '@/store/slices/shop'
 import context from '@/hooks/usePageContext'
@@ -174,22 +175,15 @@ const SpPage = memo(
     useEffect(() => {
       if (props.pageConfig) {
         const {
-          pageBackgroundStyle,
           pageBackgroundColor,
           pageBackgroundImage,
           navigateBackgroundColor
         } = props.pageConfig
-        let _pageBackground = {}
-        if (pageBackgroundStyle == '1') {
-          _pageBackground = {
-            'background-color': pageBackgroundColor
-          }
-        } else {
-          _pageBackground = {
-            'background-image': `url(${pageBackgroundImage})`,
-            'background-size': '100% 100%',
-            'background-position': 'center'
-          }
+        let _pageBackground = {
+          'background-image': `url(${pageBackgroundImage})`,
+          'background-color': pageBackgroundColor,
+          'background-size': '100% 100%',
+          'background-position': 'center'
         }
 
         setState((draft) => {
@@ -343,34 +337,28 @@ const SpPage = memo(
     const computedNavigationStyle = () => {
       const {
         navigateBackgroundColor,
-        navigateStyle,
         navigateBackgroundImage,
-        isImmersive
       } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
-        'padding-top': `${state.gStatusBarHeight}px`
+        'padding-top': `${state.gStatusBarHeight}px`,
         // 'padding-right': `${state.navigationRSpace}px`,
         // 'padding-left': `${state.navigationLSpace}px`
+        // 'background-image': `url(${navigateBackgroundImage})`,
+        'background-size': '100% 100%',
+        'background-repeat': 'no-repeat',
+        'background-position': 'center'
       }
-      if (navigateStyle == '2') {
-        style = {
-          ...style,
-          'background-image': `url(${navigateBackgroundImage})`,
-          'background-size': '100% 100%',
-          'background-repeat': 'no-repeat',
-          'background-position': 'center'
-        }
-      } else {
-        if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
-          style['background-color'] = navigateBackgroundColor || props.navigateBackgroundColor
-          style['transition'] = 'all 0.15s ease-in'
-        }
+      if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
+        style['background-image'] = `url(${navigateBackgroundImage})`
+        style['background-color'] = navigateBackgroundColor
+        style['transition'] = 'all 0.15s ease-in'
       }
       return style
     }
 
     const RenderCustomNavigation = () => {
+      const { windowWidth } = Taro.getWindowInfo()
       let { renderTitle } = props
       let pageCenterStyle = {}
       let pageTitleStyle = {}
@@ -398,14 +386,11 @@ const SpPage = memo(
         }
         pageCenterStyle = {
           'color': titleColor,
-          'position': 'relative'
+          'position': 'relative',
+          'width': (windowWidth - (state.menuWidth * 2) - (state.navigationLSpace * 2)) + 'px'
         }
         pageTitleStyle = {
           'color': props.pageConfig?.titleColor,
-          'position': 'absolute',
-          'left': titlePosition == 'left' ? '0' : '50%',
-          'top': '50%',
-          'transform': `translate(${titlePosition == 'left' ? '0' : '-25%'}, -50%)`
         }
       } else {
         navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
@@ -422,12 +407,14 @@ const SpPage = memo(
             >
               {/* {(state.btnReturn || state.btnHome) && ( */}
                 <View
-                  className='custom-navigation__left-block flex items-center justify-between'
+                  className='custom-navigation__left-block flex items-center'
                   style={{
-                    padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
-                    maxWidth: `${state.menuWidth}px`,
+                    // padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
+                    // maxWidth: `${state.menuWidth}px`,
+                    // width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
                     gap: `${state.navigationLSpace}px`,
-                    width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
+                    width: `${state.menuWidth}px`,
+                    margin: `${state.navigationLSpace}px 0px`
                   }}
                 >
                   {state.btnReturn && (
@@ -438,7 +425,7 @@ const SpPage = memo(
                       onClick={() => Taro.navigateBack()}
                     />
                   )}
-                  {(state.btnHome || state.cusCurrentPage == 1) && (
+                  {state.btnHome && (
                     <SpImage
                       src='fv_home.png'
                       width={36}
@@ -454,9 +441,30 @@ const SpPage = memo(
                       }}
                     />
                   )}
+                  {props.pageConfig?.pTitleHotSetting?.imgUrl && (
+                    <View className='p-title-hot-img'>
+                      <SpImage
+                        src={props.pageConfig?.pTitleHotSetting?.imgUrl}
+                        mode='aspectFit'
+                      >
+                      </SpImage>
+                      {props.pageConfig?.pTitleHotSetting?.data?.map(citem => (
+                        <View
+                          className='img-hotzone_zone'
+                          style={styleNames({
+                            width: `${citem.widthPer * 100}%`,
+                            height: `${citem.heightPer * 100}%`,
+                            top: `${citem.topPer * 100}%`,
+                            left: `${citem.leftPer * 100}%`
+                          })}
+                          onClick={() => linkPage(citem)}
+                        />
+                      ))}
+                    </View>
+                  )}
                 </View>
               {/* )} */}
-              <View className='custom-navigation__center-block flex-1 flex items-center' style={styleNames(pageCenterStyle)}>
+              <View className='custom-navigation__center-block flex-1 flex items-center justify-items-center' style={styleNames(pageCenterStyle)}>
                 {props.renderNavigation ? (
                   <context.Provider>
                     {props.renderNavigation}

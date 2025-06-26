@@ -194,5 +194,17 @@
       }
     }
   }
+  .p-title-hot-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .sp-image {
+      width: 100%;
+      height: 100%;
+    }
+    .img-hotzone_zone {
+      position: absolute;
+    }
+  }
 }
 
