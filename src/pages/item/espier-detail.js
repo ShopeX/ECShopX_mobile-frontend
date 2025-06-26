@@ -159,6 +159,7 @@ function EspierDetail(props) {
     isDefault,
     defaultMsg,
     evaluationList,
+    evaluationTotal,
     curImgIdx,
     promotionPackage,
     packageOpen,
@@ -373,7 +374,7 @@ function EspierDetail(props) {
 
       // 分享带有tdid访问，每次都应该判断提示
       // if (routerDtid && (shopInWhite && routerDtid != shopInfo.distributor_id)) {
-      //   // 虽然是在有效店铺，如果店铺变化，判断是否可以进店, 
+      //   // 虽然是在有效店铺，如果店铺变化，判断是否可以进店,
       //   // 可能是没开启白名单的店铺，直接进店，如果继续走下面的逻辑，会提示回我的店的问题
       //   const { status } = await api.shop.checkUserInWhite({ distributor_id: routerDtid })
       //   dispatch(changeInWhite(status))
@@ -500,13 +501,13 @@ function EspierDetail(props) {
         }
         return
       }
-      // } 
+      // }
     }
   }
 
   /***
    * 未注册，开启店铺隔离后需要登录
-   * 
+   *
    *  */
   const showWhiteLogin = async () => {
     if (!open_divided) return
@@ -1003,7 +1004,7 @@ function EspierDetail(props) {
           </View>} */}
 
           {
-            info.itemParams.length > 0 && 
+            info.itemParams.length > 0 &&
             <View className='goods-params-flat'>
               <View className='parameter'>
                 参数
@@ -1028,10 +1029,10 @@ function EspierDetail(props) {
             </View>
           }
 
-          
+
 
           {/* 商品评价 */}
-          <CompEvaluation list={evaluationList} itemId={info.itemId}></CompEvaluation>
+          <CompEvaluation list={evaluationList} allNum={evaluationTotal} itemId={info.itemId}></CompEvaluation>
 
           {/* 店铺 */}
           {VERSION_PLATFORM && <CompStore info={info.distributorInfo} />}

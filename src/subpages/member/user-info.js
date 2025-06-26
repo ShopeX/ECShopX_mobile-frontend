@@ -7,7 +7,7 @@ import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components
 import { useLogin } from '@/hooks'
 import api from '@/api'
 import { SG_POLICY } from '@/consts'
-import { classNames, showToast, formatTime, isWeixin, isWeb } from '@/utils'
+import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button } from '@tarojs/components'
 import './user-info.scss'
@@ -352,6 +352,7 @@ function MemberUserInfo() {
           title='手机号'
           value={userInfo?.mobile}
           onClick={() => {
+            if( VERSION_SHUYUN )return
             Taro.navigateTo({
               url: '/subpages/auth/edit-phone'
             })

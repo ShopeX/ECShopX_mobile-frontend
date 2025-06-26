@@ -7,7 +7,7 @@ import { classNames } from '@/utils'
 import './comp-evaluation.scss'
 
 function CompEvaluation(props) {
-  const { className, list = [], itemId } = props
+  const { className, allNum, list = [], itemId } = props
 
   const onViewMore = () => {
     let url = `/marketing/pages/item/espier-evaluation?id=${itemId}`
@@ -22,7 +22,7 @@ function CompEvaluation(props) {
   return (
     <View className={classNames('comp-evaluation', className)}>
       <View className='evaluation-hd'>
-        <View className='title'>{`评价（${list.length}）`}</View>
+        <View className='title'>{`评价（${allNum}）`}</View>
         {list.length > 0 && (
           <View className='extra-more' onClick={onViewMore}>
             查看全部

@@ -98,6 +98,8 @@ export const VERSION_PLATFORM = process.env.APP_PLATFORM == 'platform'
 export const VERSION_B2C = process.env.APP_PLATFORM == 'b2c'
 // 内购
 export const VERSION_IN_PURCHASE = process.env.APP_PLATFORM == 'in_purchase'
+// 内购
+export const VERSION_SHUYUN = process.env.APP_PLATFORM == 'shuyun'
 
 export const getBrowserEnv = () => {
   const ua = navigator.userAgent

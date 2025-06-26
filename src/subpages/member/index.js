@@ -33,6 +33,7 @@ import {
   log,
   VERSION_PLATFORM,
   VERSION_STANDARD,
+  VERSION_SHUYUN,
   getDistributorId
 } from '@/utils'
 import S from '@/spx'
@@ -502,7 +503,8 @@ function MemberIndex(props) {
               </View>
             </View>
             <View className='header-hd__footer'>
-              {config.menu.member_code && (
+
+              {config.menu.member_code && !VERSION_SHUYUN && (
                 <SpLogin
                   onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
                 >
@@ -538,10 +540,22 @@ function MemberIndex(props) {
             </SpLogin>
             <SpLogin
               className='bd-item'
-              onChange={handleClickLink.bind(this, '/subpages/member/point-detail')}
+              onChange={()=>{
+                if( VERSION_SHUYUN ){
+                  handleClickLink('/subpages/member/point-rule')
+                }else{
+                  handleClickLink('/subpages/member/point-detail')
+                }
+
+              }}
             >
               <View className='bd-item-label'>{`${pointName}`}</View>
-              <View className='bd-item-value'>{state.point}</View>
+              { !VERSION_SHUYUN && <View className='bd-item-value'>{state.point}</View> }
+              { VERSION_SHUYUN && <View className='bd-item-value'>
+                <Text className='txt'> {state.point}</Text>
+                <Text className='point-rule'> 积分规则</Text>
+              </View>}
+
             </SpLogin>
             {/* {process.env.NODE_ENV === 'development' && (
             <View className='bd-item deposit-item'>

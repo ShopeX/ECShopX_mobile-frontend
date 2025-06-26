@@ -111,10 +111,16 @@
       color: #666;
       font-size: 24px;
     }
-    .bd-item-value {
+    .bd-item-value,.bd-item-value text {
       color: #333;
       font-size: 36px;
     }
+    .point-rule{
+      font-size: 24px !important;
+      margin-left: 8px;
+    }
+
+
   }
   .header-hd__footer1 {
     padding: 32px;
