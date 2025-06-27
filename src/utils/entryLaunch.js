@@ -358,9 +358,10 @@ class EntryLaunch {
    */
   async postGuideUV() {
     const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    const { gu } = routerParams || {}
-    if (gu) {
-      const [work_userid] = gu.split('_')
+    const { gu_user_id } = routerParams || {}
+    debugger
+    if (gu_user_id) {
+      const [work_userid] = gu_user_id.split('_')
       await api.user.uniquevisito({
         work_userid
       })
@@ -388,7 +389,7 @@ class EntryLaunch {
     }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params
-    if (gu && S.getAuthToken()) {
+    if (gu_user_id && S.getAuthToken()) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {
         employee_number,
