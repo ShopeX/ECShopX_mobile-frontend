@@ -3,10 +3,18 @@
     position: relative;
   }
   .goods-swiper {
-    height: 750px;
+    transition: height 0.2s ease-in-out;
+    overflow: hidden;
+    // height: 750px;
+    .swiperitem__img {
+      visibility: hidden;
+      opacity: 0;
+    }
     .sp-image {
+      width: 100%;
+      height: 100%;
       box-sizing: border-box;
-      height: 750px;
+      // height: 750px;
       display: flex;
       align-items: center;
       justify-content: center;
