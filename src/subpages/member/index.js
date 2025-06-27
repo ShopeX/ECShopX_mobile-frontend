@@ -483,7 +483,7 @@ function MemberIndex(props) {
       <View className='user-info-card-wrapper' style={{ paddingBottom: state.footerHeight }}>
         <View
           className='header-block'
-          style={userInfo?.gradeInfo?.grade_background ? `{background: url(${userInfo?.gradeInfo?.grade_background})}` : {}}
+          style={userInfo?.gradeInfo?.grade_background ? `{background-image: url(${userInfo?.gradeInfo?.grade_background})}` : {}}
         >
           <View className='user-info-card'>
             <View className='user-info-header'>
@@ -578,8 +578,7 @@ function MemberIndex(props) {
               </SpLogin>
             </View>
           </View>
-
-          <View className='header-block__ft'></View>
+          {/* <View className='header-block__ft'></View> */}
         </View>
 
         <WgtsContext.Provider>

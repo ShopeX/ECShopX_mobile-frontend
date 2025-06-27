@@ -45,7 +45,8 @@ import {
   isAPP,
   showToast,
   getDistributorId,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  pxToRpx
 } from '@/utils'
 import { fetchUserFavs } from '@/store/slices/user'
 
@@ -108,7 +109,8 @@ const initialState = {
     onCancel: null,
     onConfirm: null
   },
-  isParameter: false
+  isParameter: false,
+  imgSizeInfo: 375
 }
 
 function EspierDetail(props) {
@@ -118,6 +120,7 @@ function EspierDetail(props) {
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
   const isFromPhoneCallBack = useRef(false);     // 防止苹果手机返回不展示弹窗，但是安卓展示多次弹窗
+  const imgHeightRef =  useRef([]); // 用于存储图片高度
 
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
@@ -178,7 +181,8 @@ function EspierDetail(props) {
     recommendList,
     policyModal,
     modalDivided,
-    isParameter
+    isParameter,
+    imgSizeInfo
   } = state
 
   // 添加一个 ref 来追踪是否是首次渲染
@@ -655,11 +659,16 @@ function EspierDetail(props) {
         }
       })
     }
+    const banner = await getMultipleImageInfo(data.imgs)
+    imgHeightRef.current = banner
+    // const banner = data.imgs
+    // imgHeightRef.current = await getPicHeight(banner[0])
     setState((draft) => {
       draft.info = {
         ...data,
         subscribe
       }
+      // draft.imgSizeInfo = imgHeight
       draft.promotionActivity = data.promotionActivity
     })
 
@@ -683,6 +692,23 @@ function EspierDetail(props) {
 
     if (openRecommend == 1) {
       getRecommendList() // 猜你喜欢
+    }
+  }
+
+  const getMultipleImageInfo =  async (imageUrls) => {
+    const promises = imageUrls.map(url => 
+      Taro.getImageInfo({ src: url })
+    )
+    
+    try {
+      const results = await Promise.all(promises)
+      results.forEach((info, index) => {
+        console.log(`图片${index + 1}的尺寸:`, info.width, info.height)
+      })
+      return results.map(info => info.height / 2) // 返回每张图片的高度
+    } catch (error) {
+      console.error('获取图片信息失败:', error)
+      throw error
     }
   }
 
@@ -731,10 +757,31 @@ function EspierDetail(props) {
     })
   }
 
-  const onChangeSwiper = (e) => {
-    setState((draft) => {
-      draft.curImgIdx = e.detail.current
+  const onChangeSwiper = async (e) => {
+    const index = e.detail.current
+    // console.log('index', index)
+    // imgHeightRef.current = await getPicHeight(info.imgs[index])
+    await setState((draft) => {
+      // draft.imgSizeInfo = imgHeight
+      draft.curImgIdx = index
     })
+  }
+
+  const getPicHeight = async (img) => {
+    let imgHeight = 0
+    await Taro.getImageInfo({
+      src: img,
+      success: function (res) {
+        imgHeight = res.height / 2
+        console.log('图片宽度:', res.width)
+        console.log('图片高度:', res.height)
+        // 在这里可以使用获取到的尺寸
+      },
+      fail: function (err) {
+        console.error('获取图片信息失败:', err)
+      }
+    })
+    return imgHeight
   }
 
   const onChangeToolBar = (key) => {
@@ -753,6 +800,8 @@ function EspierDetail(props) {
       sessionFrom['昵称'] = userInfo.username
     }
   }
+
+  console.log(imgHeightRef.current, 'imgSizeInfo')
 
   return (
     <SpPage
@@ -796,15 +845,14 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
+              style={{ height: (imgHeightRef.current[curImgIdx] || 350) + 'px' }}
             >
               {console.log('info', info)}
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage
-                    mode='widthFix'
+                    mode='scaleToFill'
                     src={img}
-                    width={windowWidth * 2}
-                  // height={windowWidth * 2}
                   ></SpImage>
                 </SwiperItem>
               ))}
