@@ -110,7 +110,7 @@ const initialState = {
     onConfirm: null
   },
   isParameter: false,
-  imgSizeInfo: 375
+  imgHeightList: [], // 用于存储banner高度
 }
 
 function EspierDetail(props) {
@@ -120,7 +120,6 @@ function EspierDetail(props) {
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
   const isFromPhoneCallBack = useRef(false);     // 防止苹果手机返回不展示弹窗，但是安卓展示多次弹窗
-  const imgHeightRef =  useRef([]); // 用于存储图片高度
 
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend, open_divided, openLocation, open_divided_templateId } = useSelector((state) => state.sys)
@@ -182,7 +181,7 @@ function EspierDetail(props) {
     policyModal,
     modalDivided,
     isParameter,
-    imgSizeInfo
+    imgHeightList,
   } = state
 
   // 添加一个 ref 来追踪是否是首次渲染
@@ -660,15 +659,12 @@ function EspierDetail(props) {
       })
     }
     const banner = await getMultipleImageInfo(data.imgs)
-    imgHeightRef.current = banner
-    // const banner = data.imgs
-    // imgHeightRef.current = await getPicHeight(banner[0])
     setState((draft) => {
       draft.info = {
         ...data,
         subscribe
       }
-      // draft.imgSizeInfo = imgHeight
+      draft.imgHeightList = banner
       draft.promotionActivity = data.promotionActivity
     })
 
@@ -758,30 +754,9 @@ function EspierDetail(props) {
   }
 
   const onChangeSwiper = async (e) => {
-    const index = e.detail.current
-    // console.log('index', index)
-    // imgHeightRef.current = await getPicHeight(info.imgs[index])
     await setState((draft) => {
-      // draft.imgSizeInfo = imgHeight
-      draft.curImgIdx = index
+      draft.curImgIdx = e.detail.current
     })
-  }
-
-  const getPicHeight = async (img) => {
-    let imgHeight = 0
-    await Taro.getImageInfo({
-      src: img,
-      success: function (res) {
-        imgHeight = res.height / 2
-        console.log('图片宽度:', res.width)
-        console.log('图片高度:', res.height)
-        // 在这里可以使用获取到的尺寸
-      },
-      fail: function (err) {
-        console.error('获取图片信息失败:', err)
-      }
-    })
-    return imgHeight
   }
 
   const onChangeToolBar = (key) => {
@@ -811,14 +786,14 @@ function EspierDetail(props) {
     }
   }
 
-  console.log(imgHeightRef.current, 'imgSizeInfo')
-
   return (
     <SpPage
       className='page-item-espierdetail'
       scrollToTopBtn
       isDefault={isDefault}
       defaultMsg={defaultMsg}
+      immersive={true}
+      title={info?.itemName}
       ref={pageRef}
       renderFloat={
         <View>
@@ -855,7 +830,7 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
-              style={{ height: (imgHeightRef.current[curImgIdx] || 350) + 'px' }}
+              style={{ height: (imgHeightList[curImgIdx] || 350) + 'px' }}
             >
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>

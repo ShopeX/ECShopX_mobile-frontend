@@ -97,6 +97,14 @@
     right: 0;
     top: 0;
     z-index: 1000;
+    .title-container {
+      font-size: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      -webkit-text-overflow: ellipsis;
+    }
 
     // &__left-block {
     //   background-color: red;

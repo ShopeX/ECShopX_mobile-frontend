@@ -351,7 +351,7 @@ const SpPage = memo(
       }
       if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
         style['background-image'] = `url(${navigateBackgroundImage})`
-        style['background-color'] = navigateBackgroundColor
+        style['background-color'] = props.pageConfig?.navigateBackgroundColor ? navigateBackgroundColor : props.navigateBackgroundColor
         style['transition'] = 'all 0.15s ease-in'
       }
       return style
@@ -360,7 +360,9 @@ const SpPage = memo(
     const RenderCustomNavigation = () => {
       const { windowWidth } = Taro.getWindowInfo()
       let { renderTitle } = props
-      let pageCenterStyle = {}
+      let pageCenterStyle = {
+        'width': (windowWidth - (state.menuWidth * 2) - (state.navigationLSpace * 2)) + 'px'
+      }
       let pageTitleStyle = {}
       let navigationBarTitleText = ''
       if (props.pageConfig) {
@@ -386,8 +388,7 @@ const SpPage = memo(
         }
         pageCenterStyle = {
           'color': titleColor,
-          'position': 'relative',
-          'width': (windowWidth - (state.menuWidth * 2) - (state.navigationLSpace * 2)) + 'px'
+          'position': 'relative'
         }
         pageTitleStyle = {
           'color': props.pageConfig?.titleColor,
@@ -471,7 +472,7 @@ const SpPage = memo(
                   </context.Provider>
                 ) : (
                   <View className='title-container' style={styleNames(pageTitleStyle)}>
-                    {renderTitle}
+                    {renderTitle || props.title || navigationBarTitleText}
                     {/* 吸顶区域 */}
                     {props.fixedTopContainer}
                   </View>
@@ -582,10 +583,8 @@ SpPage.defaultProps = {
   scrollToTopBtn: false,
   showNavitionLeft: true,
   title: '', // 页面导航标题
-  renderFloat: () => {},
   renderFooter: null,
-  showLive: false,
-  pageType: ''
+  renderFloat: () => {},
 }
 
 export default SpPage
