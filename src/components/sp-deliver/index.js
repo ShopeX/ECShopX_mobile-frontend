@@ -356,7 +356,7 @@ function SpDeliver(props, ref) {
   const showSwitchItem = (key,distributorInfo) => {
     console.log(key,distributorInfo);
     if(key === 'is_self_delivery'){
-      return distributorInfo?.selfDeliveryRule?.is_open == 'true' && distributorInfo.is_self_delivery
+      return !!distributorInfo?.selfDeliveryRule?.is_open && distributorInfo.is_self_delivery
     }else{
       return distributorInfo[key]
     }
