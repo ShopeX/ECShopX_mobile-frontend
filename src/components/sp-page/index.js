@@ -402,8 +402,7 @@ const SpPage = memo(
             <View
               className='custom-navigation__body w-full h-full flex box-border'
               style={{
-                padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
-                gap: `${state.navigationLSpace}px`
+                padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`
               }}
             >
               {/* {(state.btnReturn || state.btnHome) && ( */}
@@ -413,9 +412,10 @@ const SpPage = memo(
                     // padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
                     // maxWidth: `${state.menuWidth}px`,
                     // width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
+                    // margin: `${state.navigationLSpace}px 0px`
                     gap: `${state.navigationLSpace}px`,
                     width: `${state.menuWidth}px`,
-                    margin: `${state.navigationLSpace}px 0px`
+                    height: '100%'
                   }}
                 >
                   {state.btnReturn && (

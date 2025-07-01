@@ -372,7 +372,6 @@ function WgtFullSlider(porps) {
         className={classNames('wgt_full_slider-wrap', {})}
         style={styleNames({ height: `${height}` })}
       >
-        {renderOverlay}
         <Swiper
           className='wgt_full_slider-swiper'
           autoplay={config.autoplay}
@@ -383,6 +382,7 @@ function WgtFullSlider(porps) {
           cacheExtent={1}
           current={curIdx}
         >
+          {renderOverlay}
           {renderItem}
         </Swiper>
 

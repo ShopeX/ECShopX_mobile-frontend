@@ -97,6 +97,9 @@
     right: 0;
     top: 0;
     z-index: 1000;
+    &__body {
+      align-items: center;
+    }
     .title-container {
       font-size: 26px;
       white-space: nowrap;
