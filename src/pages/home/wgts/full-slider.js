@@ -225,6 +225,7 @@ function WgtFullSlider(porps) {
   const setIndicator = () => {
     if (!config) return
     console.log(porps)
+    const page = Number(curIdx + 1)
     const { dotbottom, indicatorText, indicatorFontSize, indicatorColor } = config
     return (
       <View
@@ -232,11 +233,15 @@ function WgtFullSlider(porps) {
         style={{ color: indicatorColor, bottom: `${dotbottom || 0}px` }}
       >
         <View className='indicator-current' style={{ fontSize: indicatorFontSize + 'px' }}>
-          <Text>{Number(curIdx + 1)}</Text>
+          <Text style={{ fontSize: indicatorFontSize + 4 + 'px' }}>
+            {page < 10 ? '0' + page : page}
+          </Text>
           <Text> / </Text>
-          <Text>{localData.length}</Text>
+          <Text>{localData.length < 10 ? '0' + localData.length : localData.length}</Text>
         </View>
-        <View className='indicator-text' style={{ fontSize: indicatorFontSize + 'px' }}>{indicatorText}</View>
+        <View className='indicator-text' style={{ fontSize: indicatorFontSize + 'px' }}>
+          {indicatorText}
+        </View>
       </View>
     )
   }
