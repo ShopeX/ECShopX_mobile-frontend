@@ -1,5 +1,5 @@
 import Taro, { getCurrentPages } from '@tarojs/taro'
-import React, { useState } from 'react'
+import React, { useContext } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
@@ -7,6 +7,7 @@ import { TABBAR_PATH, TABBAR_ICON } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, isWeb } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import { updateCurDistributorId } from '@/store/slices/purchase'
+import context from '@/hooks/usePageContext'
 import './index.scss'
 
 function SpTabbar(props) {
@@ -14,6 +15,7 @@ function SpTabbar(props) {
   const { colorPrimary, tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
+  const { footerHeight } = useContext(context) || {}
   const { className } = props
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
   const tabList = tabbar?.data.map((item) => {
@@ -84,8 +86,9 @@ function SpTabbar(props) {
         {
           'sp-tabbar': true
         },
-        className,
+        className
       )}
+      customStyle={{ height: footerHeight }}
       color={color}
       iconSize='20'
       backgroundColor={backgroundColor}
