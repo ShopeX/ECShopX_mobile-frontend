@@ -528,7 +528,7 @@ const SpPage = memo(
               'padding-bottom': `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
             })}
           >
-            <context.Provider>
+            <context.Provider value={{ footerHeight: `${Taro.pxTransform(props.footerHeight)}` }}>
               {props.renderFooter}
             </context.Provider>
           </View>
