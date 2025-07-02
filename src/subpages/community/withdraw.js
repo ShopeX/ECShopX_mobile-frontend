@@ -5,8 +5,8 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
-import { AtButton, AtInput } from 'taro-ui'
-import { SpPage, SpPrice, SpCell } from '@/components'
+import { AtButton } from 'taro-ui'
+import { SpPage, SpPrice, SpCell, SpInput as AtInput } from '@/components'
 import { showToast } from '@/utils'
 import './withdraw.scss'
 
@@ -51,13 +51,13 @@ function CommunityWitdraw(props) {
       return
     }
 
-    await api.community.chiefCashWithdraw({ 
+    await api.community.chiefCashWithdraw({
       money: money * 100,
       pay_type: "bankcard"   //bankcard=银行卡;alipay=支付宝;wechat=微信
     })
     showToast('提现申请成功')
     Taro.navigateBack()
-    
+
   }
 
   const onInputChange = (value) => {

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Icon, Picker } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { AtInput } from 'taro-ui'
+import { SpInput as AtInput } from '@/components'
 import SpAddress from '../sp-address'
 import './index.scss'
 

@@ -4,7 +4,7 @@ import { useImmer } from "use-immer"
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import api from "@/api"
 import doc from "@/doc"
-import { AtButton, AtInput, AtTextarea } from 'taro-ui'
+import { AtButton, AtTextarea } from 'taro-ui'
 import { SpPage, SpCell, SpCheckbox, SpImage, SpChat, SpFloatLayout, SpUpload, SpPrice, SpHtml } from '@/components'
 import { View, Text, Picker, ScrollView } from "@tarojs/components"
 import { pickBy, showToast, isNumber, copyText } from '@/utils'

@@ -11,7 +11,8 @@ import {
   SpGoodsCell,
   SpFloatLayout,
   SpNumberKeyBoard,
-  SpDeliver, SpInput as AtInput
+  SpDeliver,
+  SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'

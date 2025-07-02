@@ -2,20 +2,23 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Input } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { SpInput as AtInput } from '@/components'
+import throttle from 'lodash/throttle'
 import './index.scss'
 
 function SpInput(props) {
   const { required, title, type = 'text' } = props
   const [cursor, setCursor] = useState(-1)
 
-  useEffect(() => {
-    setCursor(props.value.length)
-  }, [props.value])
-
-  const handleInput = (e) => {
-    console.log('sp-input', e)
-    setCursor(e.detail.cursor)
-    props.onChange(e.detail.value)
+  const handleInput = async (e, event) => {
+    console.log('sp-input', e.length, event)
+    if (props.maxLength && e.length > props.maxLength) {
+      return
+    }
+    await props.onChange(event.detail.value)
+    throttle(() => {
+      setCursor(event.detail.cursor)
+    }, 100)
   }
 
   const handleClear = () => {
@@ -36,20 +39,30 @@ function SpInput(props) {
             {title}
           </View>
         )}
-        <Input
-          className='at-input__input'
+        <AtInput
+          clear={props.clear}
           value={props.value}
           type={type}
           maxLength={props.maxLength}
           placeholder={props.placeholder}
           cursor={cursor}
+          onChange={handleInput}
+          placeholderClass={props.placeholderClass}
+          className={classNames('at-input__input', props.className)}
+        />
+        {/* <Input
+          type={type}
+          maxLength={props.maxLength}
+          placeholder={props.placeholder}
+          cursor={cursor}
           onInput={handleInput}
-        ></Input>
-        {props.value && props.clear && (
+          placeholderClass={props.placeholderClass}
+        ></Input> */}
+        {/* {props.value && props.clear && (
           <View className='sp-input__clear' onClick={handleClear}>
             x
           </View>
-        )}
+        )} */}
       </View>
     </View>
   )

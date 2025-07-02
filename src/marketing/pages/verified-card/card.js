@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Form, Button, Picker } from '@tarojs/components'
-import { AtInput, AtButton, AtList, AtListItem } from 'taro-ui'
+import { AtButton, AtList, AtListItem } from 'taro-ui'
 import S from '@/spx'
 import { connect } from 'react-redux'
-import { SpNavBar, SpToast } from '@/components'
+import { SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import req from '@/api/req'
 import { pickBy, classNames } from '@/utils'
@@ -126,7 +126,7 @@ export default class DistributionDashboard extends Component {
             </View>
             <View className='bt'>
               {/* <AtInput
-                                    
+
                                     title='银行'
                                     disabled={isTrue}
                                     type='text'
@@ -154,7 +154,7 @@ export default class DistributionDashboard extends Component {
                                     <AtList>
                                         <AtListItem title='证件起始日期' extraText={info.startDate}/>
                                     </AtList>
-                                    
+
                                 </Picker>
                             </View>
                             <View className=''>
@@ -179,7 +179,7 @@ export default class DistributionDashboard extends Component {
                                             extraText={this.state.selectorChecked}
                                         />
                                     </AtList>
-                                   
+
 
                                 </Picker>
                             </View> */}

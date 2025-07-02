@@ -5,7 +5,7 @@ import Taro from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
+import { SpInput as AtInput } from '@/components'
 import './comp-input.scss'
 
 function CompInput(props) {

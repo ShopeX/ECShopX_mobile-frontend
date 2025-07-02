@@ -8,7 +8,6 @@ import {
   AtModalContent,
   AtModalAction,
   AtModalHeader,
-  AtInput,
   AtTag
 } from 'taro-ui'
 import { SpPage, SpScrollView, SpSearchBar } from '@/components'
@@ -409,23 +408,6 @@ function CommunityOrder(props) {
             />
           ))}
       </SpScrollView>
-      {/* <AtModal isOpened={isOpened} closeOnClickOverlay={false}>
-        <AtModalHeader>添加备注</AtModalHeader>
-        <AtModalContent>
-          <AtInput
-            name='remark'
-            title='备注'
-            type='text'
-            placeholder='最多100个字哦'
-            value={remark}
-            onChange={handleChange}
-          />
-        </AtModalContent>
-        <AtModalAction>
-          <Button onClick={() => actionChange(false, 'cancel')}>取消</Button>
-          <Button onClick={() => actionChange(false, 'confirm')}>确定</Button>
-        </AtModalAction>
-      </AtModal> */}
     </SpPage>
   )
 }

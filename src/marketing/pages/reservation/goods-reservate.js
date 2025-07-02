@@ -8,10 +8,10 @@ import {
   SpCell,
   SpPage,
   SpAddress,
-  SpInput as AtInput,
   SpForm,
   SpFormItem,
-  SpFloatLayout
+  SpFloatLayout,
+  SpInput as AtInput,
 } from '@/components'
 import api from '@/api'
 import { showToast, getDistributorId, isWeixin } from '@/utils'

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { AtInput, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { SpNumberKeyBoard, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'

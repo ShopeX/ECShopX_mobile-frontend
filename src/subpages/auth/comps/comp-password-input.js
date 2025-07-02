@@ -1,9 +1,9 @@
 import React from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
+import { SpInput as AtInput } from '@/components'
 import { PASSWORD_TIP } from '../const'
 import './comp-password-input.scss'
 

@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Form, Button } from '@tarojs/components'
-import { AtInput, AtButton } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import S from '@/spx'
 import { connect } from 'react-redux'
-import { SpNavBar, SpToast } from '@/components'
+import { SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 

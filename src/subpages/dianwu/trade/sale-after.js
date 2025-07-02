@@ -4,8 +4,8 @@ import { useImmer } from "use-immer"
 import Taro, { getCurrentInstance } from "@tarojs/taro";
 import api from "@/api"
 import doc from "@/doc"
-import { AtTabs, AtInput, AtTextarea } from 'taro-ui'
-import { SpPage, SpButton, SpCell, SpCheckbox, SpImage, SpInputNumber, SpSelect, SpUpload, SpPrice } from '@/components'
+import { AtTabs, AtTextarea } from 'taro-ui'
+import { SpPage, SpButton, SpCell, SpCheckbox, SpImage, SpInputNumber, SpSelect, SpUpload, SpPrice, SpInput as AtInput } from '@/components'
 import { View, Text, Picker } from "@tarojs/components"
 import { pickBy, showToast, isNumber } from '@/utils'
 import CompTradeInfo from './../comps/comp-trade-info'

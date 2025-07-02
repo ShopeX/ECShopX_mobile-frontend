@@ -3,7 +3,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { AtDrawer, AtTabs, AtSearchBar, AtInput } from 'taro-ui'
+import { AtDrawer, AtTabs, AtSearchBar } from 'taro-ui'
 import {
   SpFilterBar,
   SearchBar,
@@ -19,7 +19,8 @@ import {
   SpDrawer,
   SpSelect,
   SpPoint,
-  SpImage
+  SpImage,
+  SpInput as AtInput
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'

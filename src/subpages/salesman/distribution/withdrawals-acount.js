@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
 import { showToast } from '@/utils'
+import { SpInput as AtInput } from '@/components'
 import api from '@/api'
 
 import './withdrawals-acount.scss'

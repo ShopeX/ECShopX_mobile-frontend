@@ -3,13 +3,12 @@ import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import {
   AtFloatLayout,
-  AtInput,
   AtModal,
   AtModalHeader,
   AtModalContent,
   AtModalAction
 } from 'taro-ui'
-import { SpCheckbox } from '@/components'
+import { SpCheckbox, SpInput as AtInput } from '@/components'
 import './point-use.scss'
 import { DEFAULT_POINT_NAME } from '@/consts'
 

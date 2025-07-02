@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { AtButton, AtInput } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import {
   SpPage,
   SpPrice,
@@ -11,7 +11,8 @@ import {
   SpGoodsCell,
   SpFloatLayout,
   SpNumberKeyBoard,
-  SpPoster
+  SpPoster,
+  SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'

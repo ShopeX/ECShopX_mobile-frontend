@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
-import { AtButton, AtInput, AtTextarea } from 'taro-ui'
+import { AtButton, AtTextarea } from 'taro-ui'
 import {
   SpPage,
   SpTabs,
@@ -15,7 +15,8 @@ import {
   SpFloatLayout,
   SpUpload,
   SpPrice,
-  SpHtml
+  SpHtml,
+  SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'

@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtInput } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { SpInput as AtInput } from '@/components'
 import './comp-input-phone.scss'
 import classNames from 'classnames'
 

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import { AtInput, AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
+import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
-import { SpCheckbox, SpFloatLayout } from '@/components'
+import { SpCheckbox, SpFloatLayout, SpInput as AtInput } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
 
 import './comp-pointuse.scss'

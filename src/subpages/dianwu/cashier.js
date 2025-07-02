@@ -5,7 +5,7 @@ import Taro, { getCurrentInstance, useDidHide } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text, ScrollView, Camera } from '@tarojs/components'
-import { AtTabs, AtTabsPane, AtButton, AtCurtain, AtInput } from 'taro-ui'
+import { AtTabs, AtTabsPane, AtButton, AtCurtain } from 'taro-ui'
 import {
   SpPage,
   SpSearchInput,
@@ -15,7 +15,8 @@ import {
   SpInputNumber,
   SpFloatLayout,
   SpCell,
-  SpNote
+  SpNote,
+  SpInput as AtInput
 } from '@/components'
 import { useDianWuLogin, useDebounce } from '@/hooks'
 import { styleNames, pickBy, showToast, classNames, validate } from '@/utils'

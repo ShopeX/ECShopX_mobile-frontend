@@ -2,12 +2,12 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { Input, View, Text, Image, Button, Video, Block, Icon, PageContainer } from '@tarojs/components'
-import { SpImg } from "@/components";
+import { SpImg, SpInput as AtInput } from "@/components";
 import { TagsBar, NavBar, Popups } from '../../components'
 import { connect } from 'react-redux'
 import imgUploader from '@/utils/upload'
 import { pickBy } from "@/utils";
-import { AtInput, AtTextarea, AtImagePicker, AtActionSheet, AtActionSheetItem } from 'taro-ui'
+import { AtTextarea, AtImagePicker, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from "@/api";
 
 import './index.scss'

@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
-// import { AtInputNumber } from 'taro-ui'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { isObject, classNames, styleNames, getThemeStyle } from '@/utils'

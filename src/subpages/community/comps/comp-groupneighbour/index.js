@@ -4,7 +4,6 @@ import Taro from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
 import './index.scss'
-import { AtInput, AtButton, AtProgress, AtIcon } from 'taro-ui'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
 
 function CompGroupNeighbour(props) {

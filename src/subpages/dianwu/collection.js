@@ -5,8 +5,8 @@ import Taro from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
-import { AtButton, AtInput } from 'taro-ui'
-import { SpPage, SpImage, SpPrice } from '@/components'
+import { AtButton } from 'taro-ui'
+import { SpPage, SpImage, SpPrice, SpInput as AtInput } from '@/components'
 import './collection.scss'
 
 function DianwuCollection(props) {
