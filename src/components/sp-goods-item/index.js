@@ -32,24 +32,25 @@ function SpGoodsItem(props) {
 
   const {
     onClick,
-    onChange = () => { },
-    onAddToCart = () => { },
-    onStoreClick = () => { },
-    showMarketPrice = true,
-    showFav = false,
-    showAddCart = false,
-    showSku = false,
-    noCurSymbol = false,
-    info = null,
-    isPointitem = false,
-    renderFooter = null,
-    showPromotion = true,
-    showPrice = true,
-    hideStore = false,
+    onChange,
+    onAddToCart,
+    onStoreClick,
+    showMarketPrice,
+    showFav,
+    showAddCart,
+    showSku,
+    noCurSymbol,
+    info,
+    isPointitem,
+    renderFooter,
+    showPromotion,
+    showPrice,
+    hideStore,
     renderBrand,
-    isPurchase = false,
-    mode = 'widthFix',
-    goodsType = 'normal',
+    isPurchase,
+    mode,
+    goodsType,
+    lazyLoad
   } = props
 
   const handleFavClick = async (e) => {
@@ -113,7 +114,7 @@ function SpGoodsItem(props) {
   return (
     <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
       <View className='goods-item__hd'>
-        <SpImage lazyLoad src={info.pic} mode={mode} />
+        <SpImage lazyLoad={lazyLoad} src={info.pic} mode={mode} />
       </View>
       {renderBrand && <View className='goods-brand-wrap'>{renderBrand}</View>}
       <View className='goods-item__bd'>
@@ -124,7 +125,7 @@ function SpGoodsItem(props) {
               className='nationalFlag'
               src={info.origincountry_img_url}
               mode='aspectFill'
-              lazyLoad
+              lazyLoad={lazyLoad}
             />
             <Text className='nationalTitle'>{info.origincountry_name}</Text>
           </View>
@@ -275,6 +276,29 @@ function SpGoodsItem(props) {
 
 SpGoodsItem.options = {
   addGlobalClass: true
+}
+
+SpGoodsItem.defaultProps = {
+  onClick: () => {},
+  onChange: () => { },
+  onAddToCart: () => { },
+  onStoreClick: () => { },
+  showMarketPrice: true,
+  showFav:false,
+  showAddCart: false,
+  showSku: false,
+  noCurSymbol: false,
+  info: null,
+  isPointitem: false,
+  renderFooter: null,
+  showPromotion: true,
+  showPrice: true,
+  hideStore: false,
+  renderBrand: null,
+  isPurchase: false,
+  mode: 'widthFix',
+  goodsType: 'normal',
+  lazyLoad: true
 }
 
 export default SpGoodsItem

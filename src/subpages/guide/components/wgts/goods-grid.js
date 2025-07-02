@@ -1,92 +1,166 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { useContext } from 'react'
+import Taro, { Component, useRouter } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
+import { SpGoodsItem, SpImage } from '@/components'
+import { pickBy, classNames, styleNames, linkPage } from '@/utils'
+import doc from '@/doc'
 import './goods-grid.scss'
 
-export default class WgtGoodsGrid extends Component {
-  static options = {
-    addGlobalClass: true
+function WgtGoodsGrid(props) {
+  const { info } = props
+  if (!info) {
+    return null
+  }
+  const { base, data, config } = info
+  const newData = Array.isArray(data) ? data : []
+  const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
+
+  const handleClickMore = () => {
+    Taro.navigateTo({ url: `/subpages/guide/item/list` })
   }
 
-  navigateTo(url) {
-    Taro.navigateTo({ url })
-  }
-
-  handleClickItem = (item, index) => {
-    const url = `/subpages/guide/item/espier-detail?id=${item.goodsId}`
+  const handleClickItem = (item, index) => {
     Taro.navigateTo({
-      url
+      url: `/subpages/guide/item/espier-detail?id=${item.itemId}`
     })
   }
 
-  render() {
-    const { info } = this.props
-    if (!info) {
-      return null
+  const leftFilterGoods = goods.filter((leftgoods, leftindex) => {
+    if (leftindex % 2 == 0) {
+      return leftgoods
     }
+  })
+  const rightFilterGoods = goods.filter((rightgoods, rightindex) => {
+    if (rightindex % 2 == 1) {
+      return rightgoods
+    }
+  })
 
-    const { base, data, config } = info
-    /*let listData = []
-    data.map(item => {
-      listData.push({
-        title: item.title,
-        desc: item.desc,
-        img: item.imgUrl,
-        is_fav: item.is_fav,
-        item_id: item.goodsId,
-      })
-    })*/
-
-    return (
-      <View className={`wgt wgt-grid ${base.padded ? 'wgt__padded' : null}`}>
-        {base.title && (
-          <View className='wgt__header'>
-            <View className='wgt__title'>
-              <Text>{base.title}</Text>
-              <View className='wgt__subtitle'>{base.subtitle}</View>
+  return (
+    <View
+      className={classNames('wgt', 'wgt-goods-grid', {
+        wgt__padded: base.padded
+      })}
+    >
+      {base.title && (
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+          </View>
+          <View className='all-goods' onClick={handleClickMore}>
+            全部商品
+          </View>
+        </View>
+      )}
+      <View className='wgt-body'>
+        {config.style == 'grid' && (
+          <View className='container'>
+            <View className='goods-item-wrap two-inrow left-container'>
+              {leftFilterGoods.map((item, leftidx) => (
+                <SpGoodsItem
+                  lazyLoad={false}
+                  renderBrand={
+                    config.brand && (
+                      <View className='brand-info' style={styleNames({
+                        'width': '62px',
+                        'height': '62px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  showAddCart={config.addCart}
+                  jumpType={config.type}
+                  info={item}
+                  key={`left_${leftidx}`}
+                  onClick={() => handleClickItem(item)}
+                />
+              ))}
             </View>
-
-            <View
-              className='wgt__goods__more'
-              onClick={this.navigateTo.bind(this, '/subpages/guide/item/list')}
-            >
-              <View className='all-goods'>全部商品</View>
+            <View className='goods-item-wrap two-inrow right-container'>
+              {rightFilterGoods.map((item, rightidx) => (
+                <SpGoodsItem
+                  lazyLoad={false}
+                  renderBrand={
+                    config.brand && (
+                      <View className='brand-info' style={styleNames({
+                        'width': '64px',
+                        'height': '64px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  showAddCart={config.addCart}
+                  jumpType={config.type}
+                  info={item}
+                  key={`right_${rightidx}`}
+                  onClick={() => handleClickItem(item)}
+                />
+              ))}
             </View>
           </View>
         )}
-        <View className='wgt-body with-padding'>
-          <View className='grid-goods out-padding '>
-            {data.map((item, idx) => (
-              <View
-                key={idx}
-                className='grid-item'
-                onClick={this.handleClickItem.bind(this, item, idx)}
-              >
-                <View className='goods-wrap'>
-                  <View className='thumbnail'>
-                    <Image className='goods-img' src={item.imgUrl} mode='aspectFill' />
-                  </View>
-                  <View className='caption'>
-                    {config.brand && item.brand && (
-                      <Image className='goods-brand' src={item.brand} mode='aspectFill' />
-                    )}
-                    <View
-                      className={`goods-title ${!config.brand || !item.brand ? 'no-brand' : ''}`}
-                    >
-                      {item.title}
-                    </View>
-                    <View
-                      className={`goods-brief ${!config.brand || !item.brand ? 'no-brand' : ''}`}
-                    >
-                      {item.brief}
-                    </View>
-                  </View>
-                </View>
+        <View className='wgt-goods-grid-list'>
+          {config.style === 'grids' &&
+            goods.map((item, idx) => (
+              <View className='goods-item-wrap three-inrow' key={`goods-item-wrap__${idx}`}>
+                <SpGoodsItem
+                  lazyLoad={false}
+                  renderBrand={
+                    config.brand && (
+                      <View className='brand-info' style={styleNames({
+                        'width': '64px',
+                        'height': '64px',
+                        'border-radius': '32px',
+                        'padding': '2px'
+                      })}>
+                        <SpImage
+                          src={item.brand}
+                          width={120}
+                          height={120}
+                          circle
+                          mode='scaleToFill'
+                        />
+                      </View>
+                    )
+                  }
+                  showPrice={config.showPrice}
+                  showAddCart={config.addCart}
+                  showPromotion={false}
+                  info={item}
+                  mode='aspectFill'
+                  onClick={() => handleClickItem(item)}
+                />
               </View>
             ))}
-          </View>
         </View>
       </View>
-    )
-  }
+    </View>
+  )
 }
+
+WgtGoodsGrid.options = {
+  addGlobalClass: true
+}
+
+export default WgtGoodsGrid
