@@ -333,9 +333,6 @@ function EspierDetail(props) {
     if (S.getAuthToken()) {
       await dispatch(fetchUserFavs({distributor_id:dtid}))
     }
-    if (!newDtid && gu) { // 初次进入pdp页有gu参数时，将导购信息存起来
-      Taro.setStorageSync(SG_GUIDE_PARAMS, routerParams)
-    }
   }
 
 

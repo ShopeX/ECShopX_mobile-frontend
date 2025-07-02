@@ -34,6 +34,7 @@ import {
   VERSION_B2C,
   VERSION_PLATFORM
 } from '@/utils'
+import entryLaunch from '@/utils/entryLaunch'
 import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
@@ -738,6 +739,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
+    const routerParams = await entryLaunch.getRouteParams()
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -755,6 +757,15 @@ function CartCheckout(props) {
       pay_type:payType,
       // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
+    }
+    // 处理导购数据(旧)
+    if (routerParams?.cxdid) {
+      cus_parmas.cxdid = routerParams?.cxdid;
+      cus_parmas.distributor_id = routerParams?.dtid;
+      cus_parmas.cart_type = "cxd";
+      cus_parmas.order_type = "normal_shopguide";
+      cus_parmas.salesman_id = routerParams?.smid;
+      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
     if (receiptType === 'ziti') {
@@ -803,6 +814,7 @@ function CartCheckout(props) {
     // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
+    debugger
 
     return cus_parmas
   }

@@ -45,6 +45,9 @@ class EntryLaunch {
           ...res
         }
       }
+      if (_options.gu || _options.gu_user_id) {
+        Taro.setStorageSync(SG_GUIDE_PARAMS, _options)
+      }
     } else {
       _options = params
     }
