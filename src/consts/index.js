@@ -490,6 +490,10 @@ export const TAB_PAGES = [
   '/subpages/guide/cart/espier-index',
 ]
 
+export const DEFAULT_NAVIGATE_HEIGHT = 44
+export const DEFAULT_FOOTER_HEIGHT = 124 // 默认底部高度，不包含页面底部安全距离
+export const DEFAULT_SAFE_AREA_HEIGHT = 42 // 默认安全距离
+
 export * from './localstorage'
 
 export default {}

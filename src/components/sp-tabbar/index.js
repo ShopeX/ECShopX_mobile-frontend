@@ -3,8 +3,8 @@ import React, { useContext } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { TABBAR_PATH, TABBAR_ICON } from '@/consts'
-import { classNames, styleNames, getCurrentRoute, isWeb } from '@/utils'
+import { TABBAR_PATH, TABBAR_ICON, DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
+import { classNames, styleNames, getCurrentRoute, isWeb, isIphoneX } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import { updateCurDistributorId } from '@/store/slices/purchase'
 import './index.scss'
@@ -86,7 +86,7 @@ function SpTabbar(props) {
         },
         className
       )}
-      customStyle={{ height: props.height }}
+      customStyle={{ height: props.height, paddingBottom: `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}` }}
       color={color}
       iconSize='20'
       backgroundColor={backgroundColor}
