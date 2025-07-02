@@ -36,6 +36,7 @@ const initialState = {
   current: 0, // 0:普通商品  1:跨境商品
   policyModal: false ,// 隐私弹框
   cartRemind: null,//购物车提示
+  footerHeight: 0
 }
 
 function CartIndex() {
@@ -277,7 +278,12 @@ function CartIndex() {
       className={classNames('page-cart-index', {
         'has-tabbar': tabbar == 1
       })}
-      renderFooter={tabbar == 1 && <SpTabbar />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+      renderFooter={tabbar == 1 && <SpTabbar height={state.footerHeight} />}
     >
       <ScrollView scrollY style="height: 100%;">
         {cartRemind&&cartRemind?.is_open && (

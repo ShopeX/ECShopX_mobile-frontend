@@ -471,7 +471,7 @@ function MemberIndex(props) {
       className='pages-member-index'
       immersive={state.pageData?.base?.isImmersive}
       pageConfig={state.pageData?.base || {}}
-      renderFooter={<SpTabbar />}
+      renderFooter={<SpTabbar height={state.footerHeight} />}
       title='会员中心'
       onReady={({ footerHeight }) => {
         setState((draft) => {
