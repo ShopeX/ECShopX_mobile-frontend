@@ -12,7 +12,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
 import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
-import { TAB_PAGES, TABBAR_PATH } from '@/consts'
+import { TAB_PAGES, TABBAR_PATH, DEFAULT_NAVIGATE_HEIGHT, DEFAULT_FOOTER_HEIGHT, DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
 import api from '@/api'
 import S from '@/spx'
 import {
@@ -31,10 +31,6 @@ import { changeInWhite } from '@/store/slices/shop'
 import context from '@/hooks/usePageContext'
 
 import './index.scss'
-
-const DEFAULT_NAVIGATE_HEIGHT = 44
-const DEFAULT_FOOTER_HEIGHT = 124 // 默认底部高度，不包含页面底部安全距离
-const DEFAULT_SAFE_AREA_HEIGHT = 42 // 默认安全距离
 
 const initialState = {
   bodyHeight: 0,
