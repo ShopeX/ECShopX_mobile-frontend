@@ -1,0 +1,11 @@
+.sp-slot {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &__button {
+    margin-top: 20px;
+    width: 200px !important;
+  }
+}

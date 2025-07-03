@@ -196,6 +196,10 @@ const config = {
       ]
     },
     {
+      root: 'subpages/game-activity',
+      pages: ['index', 'pages/records']
+    },
+    {
       root: 'subpages/mdugc',
       pages: [
         'index',

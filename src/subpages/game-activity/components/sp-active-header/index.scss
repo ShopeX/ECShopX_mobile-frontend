@@ -1,0 +1,40 @@
+.sp-active-control {
+  width: 654px;
+  height: 168px;
+  box-sizing: border-box;
+  padding-top: 36px;
+  padding-left: 30px;
+  position: relative;
+  background: linear-gradient(180deg, #ffffff 0%, #fff9e9 100%);
+  border-radius: 24px;
+  border: 1px solid #ebebeb;
+  box-sizing: border-box;
+  margin-bottom: 60px;
+  &__title {
+    height: 48px;
+    line-height: 48px;
+    font-size: 34px;
+    color: #1a1a1a;
+    font-weight: 600;
+    margin-bottom: 12px;
+    &-score {
+      font-size: 42px;
+      color: #ffae00;
+      position: relative;
+      top: 1px;
+    }
+    &-btn {
+      width: 287px;
+      height: 107px;
+      position: absolute;
+      top: 30px;
+      right: 24px;
+    }
+  }
+  &__desc {
+    font-size: 26px;
+    color: #666666;
+    height: 36px;
+    line-height: 36px;
+  }
+}

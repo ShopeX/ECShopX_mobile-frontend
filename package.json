@@ -36,6 +36,7 @@
     "ios >= 8"
   ],
   "dependencies": {
+    "@lucky-canvas/taro": "^0.0.15",
     "@reduxjs/toolkit": "^1.6.2",
     "axios": "^0.19.0",
     "azure-storage": "^2.10.3",

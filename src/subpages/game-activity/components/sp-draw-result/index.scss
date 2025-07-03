@@ -1,0 +1,109 @@
+.sp-draw-result {
+  width: 100%;
+  padding: 60px 48px;
+  background-color: #fff;
+  border-radius: 24px;
+  text-align: center;
+  box-sizing: border-box;
+  &__title {
+    font-size: 35px;
+    font-weight: 500;
+    color: #1A1A1A;
+    line-height: 48px;
+    height: 48px;
+    margin-bottom: 18px;
+  }
+
+  &__image {
+    width: 120px;
+    height: 120px;
+    margin: 10px auto 20px;
+  }
+
+  &__prize-name {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+  }
+
+  &__prize-amount {
+    font-size: 24px;
+    color: #f85f56;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  &__message {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+  }
+
+  &__desc {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 30px;
+    line-height: 1.6;
+  }
+
+  &__highlight {
+    color: #f85f56;
+    font-weight: bold;
+  }
+
+  &__icon-empty {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 20px;
+    background-image: url('https://img.yzcdn.cn/vant/empty-image-default.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+
+  // 中奖、未中奖、FV不足的容器样式
+  &__prize{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &-btn__wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+  }
+  &__btn {
+    width: 230px!important;
+    height: 88px!important;
+    border-radius: 12px!important;
+    font-weight: 500!important;
+    font-size: 28px!important;
+    line-height: 88px!important;
+    text-align: center!important;
+    box-sizing: border-box!important;
+    margin: 0px!important;
+  }
+  &__btn_left {
+    border: 2px solid #EBEBEB!important;
+    font-size: 28px!important;
+  }
+  &__btn_right {
+    background: #FF3A3A!important;
+    color: #FFFFFF!important;
+  }
+}
+
+// 覆盖AtCurtain默认样式
+.at-curtain {
+  &__body {
+    width: 580px!important;
+  }
+
+  &__btn-close {
+    color: #fff !important;
+    display: none !important;
+  }
+}
