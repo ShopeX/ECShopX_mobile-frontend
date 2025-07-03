@@ -232,7 +232,7 @@ const guideSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateStoreInfo } = guideSlice.actions
+export const { updateUserInfo, updateStoreInfo, setGoodsSkuInfo, closeCart } = guideSlice.actions
 
 export default guideSlice.reducer
 

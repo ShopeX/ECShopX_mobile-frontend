@@ -1,20 +1,12 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
+import { SpSearch } from '@/components'
 import {
-  WgtFilm,
   WgtSlider,
   WgtImgHotZone,
-  WgtNavigation,
-  WgtCoupon,
   WgtGoodsScroll,
   WgtGoodsGrid,
-  WgtShowcase,
-  WgtPointLuck,
-  WgtTagNavigation,
-  WgtSliderHotzone,
-  WgtActivityZone,
-  WgtSearchHome
 } from '../wgts'
 // import {  WgtSearchHome } from '@/pages/home/wgts'
 
@@ -50,6 +42,12 @@ export default class HomeWgts extends Component {
     })
   }
 
+  searchMethod = () => {
+    Taro.navigateTo({
+      url: `/subpages/guide/item/list`
+    })
+  }
+
   render() {
     const { wgts, scrollTop, source, zz } = this.props
     const { screenWidth } = this.state
@@ -58,52 +56,13 @@ export default class HomeWgts extends Component {
         {wgts.map((item, idx) => {
           return (
             <View className='wgt-wrap' key='indx'>
-              {item.name === 'slider' && (
-                <WgtSlider
-                  source={source}
-                  componentIndex={idx}
-                  isHomeSearch
-                  info={item}
-                  width={screenWidth}
-                  scrollTop={scrollTop}
-                />
-              )}
-              {item.name === 'search' && (
-                <WgtSearchHome info={item} dis_id={getCurrentInstance().router.params.id} />
-              )}
-              {item.name === 'slider-hotzone' && (
-                <WgtSliderHotzone source={source} componentIndex={idx} info={item} />
-              )}
-              {item.name === 'film' && <WgtFilm source={source} componentIndex={idx} info={item} />}
-              {item.name === 'navigation' && (
-                <WgtNavigation source={source} componentIndex={idx} info={item} />
-              )}
-              {/* {item.name === 'coupon' && <WgtCoupon source={source} componentIndex={idx}  info={item} />} */}
-              {item.name === 'imgHotzone' && (
-                <WgtImgHotZone source={source} componentIndex={idx} info={item} />
-              )}
-              {item.name === 'goodsScroll' && (
-                <WgtGoodsScroll source={source} componentIndex={idx} info={item} />
-              )}
-              {item.name === 'goodsGrid' && (
-                <WgtGoodsGrid source={source} componentIndex={idx} info={item} />
-              )}
-              {item.name === 'showcase' && (
-                <WgtShowcase source={source} componentIndex={idx} info={item} />
-              )}
-              {item.name === 'tagNavigation' && (
-                <View id={`tag-hotzone_img${item.tagnavIndex}`}>
-                  <WgtTagNavigation
-                    source={source}
-                    componentIndex={idx}
-                    info={item}
-                    onClick={this.handleTagNavationTop}
-                  />
-                </View>
-              )}
-              {/* {item.name === 'activityZone' && <WgtActivityZone source={source} componentIndex={idx} info={item} /> } */}
-
-              {idx === 1 && <WgtPointLuck />}
+              {item.name === 'search' && <SpSearch info={item} onClick={this.searchMethod} />}{' '}
+              {item.name === 'slider' && <WgtSlider isHomeSearch info={item} />} {/** 轮播 */}
+              {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
+              {/** 商品滚动 */}
+              {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} index={idx} type='good-scroll' />}
+              {/** 商品栅格 */}
+              {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} index={idx} type='good-grid' />}
             </View>
           )
         })}
