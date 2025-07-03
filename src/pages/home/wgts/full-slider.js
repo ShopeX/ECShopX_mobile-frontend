@@ -149,7 +149,8 @@ function WgtFullSlider(props) {
           borderLeft: `12px solid ${indicatorColor}`,
           position: 'absolute',
           right: '-22px',
-          top: indicatorText ? '40%' : '30%'
+          top: indicatorText ? '40%' : '30%',
+          color: indicatorColor
         }} />
       </View>
     )

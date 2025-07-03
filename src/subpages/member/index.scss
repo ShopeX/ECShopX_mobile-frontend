@@ -93,8 +93,8 @@
 
   .qr-code-btn {
     position: absolute;
-    width: 120px;
-    height: 88px;
+    // width: 120px;
+    // height: 88px;
     top: 0px;
     right: 0px;
     border-top-right-radius: 16px;
@@ -337,5 +337,12 @@
     right: 24px;
     color: var(--color-primary);
     font-size: 38px;
+  }
+  .user-grade-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+    color: #777777;
   }
 }
