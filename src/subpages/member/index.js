@@ -432,34 +432,23 @@ function MemberIndex(props) {
     }
   }
   const VipGradeDom = () => {
-    if (isLogin) {
-      return (
-        <View className='user-grade-name'>
-          <View className='username'>
-            {(userInfo && (userInfo.username || userInfo.mobile)) || '获取昵称'}
-          </View>
-          <View
-            className='gradename'
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/member-level' })
-            }}
-          >
-            {
-              {
-                true: vipInfo.grade_name || '会员',
-                false: userInfo?.gradeInfo?.grade_name || ''
-              }[vipInfo.isVip]
-            }
-          </View>
-        </View>
-      )
-    } else {
-      return (
-        <SpLogin newUser={isNewUser}>
-          <Text className='join-us-txt'>登录查看全部订单</Text>
-        </SpLogin>
-      )
-    }
+    return (
+      <View
+        className='user-grade-name'
+        onClick={() => {
+          Taro.navigateTo({ url: '/subpages/member/member-level' })
+        }}
+      >
+        <Text>
+          {{
+            true: vipInfo.grade_name || '会员',
+            false: userInfo?.gradeInfo?.grade_name || ''
+            }[vipInfo.isVip]
+          }
+        </Text>
+        <SpImage src='fv_chevron_right.png' width={40} />
+      </View>
+    )
   }
 
   if (!config) {
@@ -514,12 +503,13 @@ function MemberIndex(props) {
                       {userInfo?.username || userInfo?.mobile}
                     </View>
                     <View className='user-vip-wrapper'>
-                      <SpImage
+                      <View className='join-us'>{VipGradeDom()}</View>
+                      {/* <SpImage
                         src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
                         width={146}
                         height={32}
                         mode='widthFix'
-                      />
+                      /> */}
                     </View>
                   </>
                 ) : (
@@ -530,7 +520,7 @@ function MemberIndex(props) {
               </View>
 
               <View className='qr-code-btn'>
-                <SpImage
+                {/* <SpImage
                   src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
                   className='qr-code-img'
                   width={120}
@@ -543,7 +533,7 @@ function MemberIndex(props) {
                   height={88}
                   mode='widthFix'
                   className='member-level-bg'
-                />
+                /> */}
                 {isLogin && (
                   <Text
                     className='iconfont icon-erweima-01'
