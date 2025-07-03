@@ -279,10 +279,7 @@ SpGoodsItem.options = {
 }
 
 SpGoodsItem.defaultProps = {
-  onClick: () => {},
-  onChange: () => { },
-  onAddToCart: () => { },
-  onStoreClick: () => { },
+  onClick: null,
   showMarketPrice: true,
   showFav:false,
   showAddCart: false,
@@ -298,7 +295,10 @@ SpGoodsItem.defaultProps = {
   isPurchase: false,
   mode: 'widthFix',
   goodsType: 'normal',
-  lazyLoad: true
+  lazyLoad: true,
+  onChange: () => { },
+  onAddToCart: () => { },
+  onStoreClick: () => { },
 }
 
 export default SpGoodsItem

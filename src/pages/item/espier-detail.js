@@ -192,6 +192,12 @@ function EspierDetail(props) {
   }, [])
 
   useEffect(() => {
+    if (isLogin && id) { // 导购浏览记录
+      api.member.itemHistorySave(id)
+    }
+  },[isLogin, id])
+
+  useEffect(() => {
     if (open_divided) {
       checkStoreIsolation()
     }

@@ -1,235 +1,133 @@
 import React, { useEffect, useCallback, useContext, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpImage } from '@/components'
+import { SpImage, SpLogin } from '@/components'
 import { View, Image, Video, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { classNames, styleNames, linkPage } from '@/utils'
 import { cloneDeep } from 'lodash'
-import api from '@/api'
+import { needLoginPageType, needLoginPage } from '@/consts'
 import { WgtsContext } from './wgts-context'
 import './full-slider.scss'
-
-// const PlayImg = 'https://cdn-image.tjtjshengtu.com/constxcx/play.png'
 
 const $instance = getCurrentInstance()
 const initState = {
   curIdx: 0,
-  index: 0,
-  autoStatus: false,
-  viewPortXShow: false,
   play: false,
   localData: [],
   show: false,
   height: 0
 }
-function WgtFullSlider(porps) {
-  const [state, setState] = useImmer(initState)
 
-  const {
-    info = null
-  } = porps
-  const { base = {}, config = {}, data = {} } = info
-  const {
-    curIdx,
-    play,
-    localData,
-    show,
-    height
-  } = state
+function WgtFullSlider(props) {
+  const [state, setState] = useImmer(initState)
+  const { info = null } = props
+  const { base = {}, config = {}, data = [] } = info || {}
+  const { curIdx, play, localData, show, height } = state
   const { isTab = false, immersive = false, isShowHomeHeader = false, footerHeight } = useContext(WgtsContext)
 
+  // 初始化数据
   useEffect(() => {
     if (info) {
-      setLocalData()
+      setState(draft => {
+        draft.localData = cloneDeep(data)
+        draft.show = true
+      })
       setHeight()
     }
   }, [info])
 
   useEffect(() => {
-    initPlay()
-  }, [])
-
-  const currentPages = () => {
-    const pages = Taro.getCurrentPages()
-    return pages[pages.length - 1].route
-  }
-
-  //获取轮播数据
-  const setLocalData = async () => {
-    if (!info) return
-    setState((draft) => {
-      draft.localData = cloneDeep(data)
-      draft.show = true
-    })
-  }
-
-  const initPlay = () => {
-    if (data.length == 0) return
+    if (data.length === 0) return
     const item = data[curIdx]
-    if (item.media_type == 'video' && item.autoplay) {
-      setState((draft) => {
+    if (item.media_type === 'video' && item.autoplay) {
+      setState(draft => {
         draft.play = true
       })
     }
-  }
+  }, [])
 
-  const togglePlay = (index) => {
-    const item = localData[index]
-    if (item.media_type == 'video') {
-      const pages = Taro.getCurrentPages()
-      const {
-        config: pageConfig,
-        options: { id }
-      } = pages[pages.length - 1]
-      const videoRef = Taro.createVideoContext(`swiperVideo_${index}${porps.index}`, $instance)
-      if (play) {
-        videoRef.pause()
-        setState((draft) => {
-          draft.play = false
-        })
-      } else {
-        videoRef.play()
-        setState((draft) => {
-          draft.play = true
-        })
-      }
-    }
-  }
-
-  const setHeight = useCallback(async () => {
+  // 设置高度
+  const setHeight = useCallback(() => {
     const heightS = immersive ? 0 : 89
     const homeHeight = isShowHomeHeader ? 90 : 0
     const tabHeight = isTab ? footerHeight : 0
-    setState((draft) => {
-      draft.height = isTab ? `calc(100vh - ${homeHeight}rpx - ${heightS}px - ${tabHeight})` : `calc(100vh - ${homeHeight}rpx  - ${heightS}px)`
+    setState(draft => {
+      draft.height = isTab
+        ? `calc(100vh - ${homeHeight}rpx - ${heightS}px - ${tabHeight})`
+        : `calc(100vh - ${homeHeight}rpx - ${heightS}px)`
     })
-  }, [config, show])
+  }, [immersive, isShowHomeHeader, isTab, footerHeight])
 
-  // const setLeft = () => {
-  //   if (config?.dotleft == 0) {
-  //     return { left: '0px' }
-  //   } else if (config?.dotleft == 100) {
-  //     return { right: '0px' }
-  //   } else {
-  //     return {
-  //       left: config?.dotleft + '%',
-  //       transform: `translateX(-${config?.dotleft}%)`
-  //     }
-  //   }
-  // }
-  const setdotPosition = () => {
-    return { bottom: `${config?.dotbottom || 0}px` }
-  }
-  const setColor = (item, index) => {
-    if (item.isCustomSlider) {
-      return {
-        background: curIdx == index ? item.dot_cover : item.dot_noCover
+  // 切换视频播放
+  const togglePlay = index => {
+    const item = localData[index]
+    if (item.media_type === 'video') {
+      const videoRef = Taro.createVideoContext(`swiperVideo_${index}${props.index}`, $instance)
+      if (play) {
+        videoRef.pause()
+        setState(draft => { draft.play = false })
+      } else {
+        videoRef.play()
+        setState(draft => { draft.play = true })
       }
-    } else {
-      return {
-        background: curIdx == index ? config.dot_cover : config.dot_noCover
-      }
-    }
-  }
-  const setnumbercolor = (item) => {
-    if (item?.isCustomSlider) {
-      return {
-        background: item.dot_noCover,
-        color: item.dot_cover,
-        ...setdotPosition()
-      }
-    } else {
-      return {
-        background: config.dot_noCover,
-        color: config.dot_cover,
-        ...setdotPosition()
-      }
-    }
-  }
-  const setBgColor = (item, index) => {
-    if (item.isCustomSlider) {
-      return {
-        background: curIdx >= index ? item.dot_cover : item.dot_noCover
-      }
-    } else {
-      return {
-        background: curIdx >= index ? config.dot_cover : config.dot_noCover
-      }
-    }
-  }
-  const setDefaultColor = (item) => {
-    if (item.isCustomSlider) {
-      return { background: item.dot_noCover }
-    } else {
-      return { background: config.dot_noCover }
     }
   }
 
-  const changeSwiper = (e) => {
+  // 轮播切换
+  const changeSwiper = e => {
     const index = e.detail.current
     const videoData = localData[index]
     const prevideoData = localData[curIdx]
-    if (videoData.media_type == 'video') {
-      const videoRef = Taro.createVideoContext(`swiperVideo_${index}${porps.index}`, $instance)
+    if (videoData.media_type === 'video') {
+      const videoRef = Taro.createVideoContext(`swiperVideo_${index}${props.index}`, $instance)
       if (videoData.autoplay) {
         videoRef.play()
-        setState((draft) => {
-          draft.play = true
-        })
+        setState(draft => { draft.play = true })
       } else {
-        setState((draft) => {
-          draft.play = false
-        })
+        setState(draft => { draft.play = false })
       }
     }
-    if (prevideoData.media_type == 'video') {
-      const prevideoRef = Taro.createVideoContext(`swiperVideo_${curIdx}${porps.index}`, $instance)
+    if (prevideoData.media_type === 'video') {
+      const prevideoRef = Taro.createVideoContext(`swiperVideo_${curIdx}${props.index}`, $instance)
       prevideoRef.pause()
-      if (prevideoData.interact == 'reset') {
+      if (prevideoData.interact === 'reset') {
         prevideoRef.seek(0)
       }
     }
-    setState((draft) => {
-      draft.curIdx = e.detail.current
-    })
+    setState(draft => { draft.curIdx = index })
   }
 
-
+  // 视频播放结束
   const handlePlayEnd = (e, item) => {
     if (!item.loop) {
-      setState((draft) => {
-        draft.play = false
-      })
+      setState(draft => { draft.play = false })
     }
   }
 
+  // 视频开始播放
   const handlePlayStart = (e, item, index) => {
     if (item?.hidenPoster) return
     const _localData = cloneDeep(localData)
     _localData[index].hidenPoster = true
-    setState((draft) => {
-      draft.localData = _localData
-    })
+    setState(draft => { draft.localData = _localData })
   }
 
+  // 视频进度更新
   const handleTimeUpdate = (e, item, index) => {
     const { currentTime } = e.detail
     const _localData = cloneDeep(localData)
     _localData[index].currentTime = currentTime
-    setState((draft) => {
-      draft.localData = _localData
-    })
+    setState(draft => { draft.localData = _localData })
   }
 
+  // 指示器
   const setIndicator = () => {
-    if (!config) return
-    console.log(porps)
+    if (!config) return null
     const page = Number(curIdx + 1)
     const { dotbottom, indicatorText, indicatorFontSize, indicatorColor } = config
     return (
       <View
-        className={classNames('indicator-item')}
+        className='indicator-item'
         style={{ color: indicatorColor, bottom: `${dotbottom || 0}px` }}
       >
         <View className='indicator-current' style={{ fontSize: indicatorFontSize + 'px' }}>
@@ -245,95 +143,133 @@ function WgtFullSlider(porps) {
       </View>
     )
   }
+
+  // 覆盖层
   const renderOverlay = useMemo(() => {
-    if (localData.length == 0) return null
+    if (localData.length === 0) return null
     return (
       <>
-        {localData?.map(
-          (item, index) =>
-            item.overlay && (
-              <View
-                className={classNames('overlay-content_out', {
-                  'transparent-transition': curIdx !== index,
-                  'transparent-transition-active': curIdx == index
-                })}
-                style={styleNames({
-                  bottom: `${item.overlaybuttom}%;`,
-                  left: `${item.overlayLeft}%;`,
-                  width: `${item.overlayWidth}%;`,
-                  transition: `opacity ${config?.trans || 0}s ease-in-out`
-                })}
-              >
-                <SpImage src={item.overlay} className={classNames('over-lay')} />
-              </View>
-            )
-        )}
+        {localData.map((item, index) => (
+          item.overlay ? (
+            <View
+              key={`overlay_${index}`}
+              className={classNames('overlay-content_out', {
+                'transparent-transition': curIdx !== index,
+                'transparent-transition-active': curIdx === index
+              })}
+              style={styleNames({
+                bottom: `${item.overlaybuttom}%;`,
+                left: `${item.overlayLeft}%;`,
+                width: `${item.overlayWidth}%;`,
+                transition: `opacity ${config?.trans || 0}s ease-in-out`
+              })}
+            >
+              <SpImage src={item.overlay} className='over-lay' />
+            </View>
+          ) : null
+        ))}
       </>
     )
   }, [config, localData, curIdx])
+
+  // 热区渲染
+  const renderHotZones = (item) => {
+    if (!item.hotData) return null
+    return item.hotData.map((ele, idx) => {
+      const styleStr = `width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${ele.topPer * 100}%; left: ${ele.leftPer * 100}%`
+      if (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) {
+        return (
+          <SpLogin key={`hotzone_${idx}`} onChange={() => linkPage(ele)}>
+            <View className='img-hotzone_zone' style={styleStr} />
+          </SpLogin>
+        )
+      }
+      return (
+        <View
+          key={`hotzone_${idx}`}
+          className='img-hotzone_zone'
+          style={styleStr}
+          onClick={() => linkPage(ele)}
+        />
+      )
+    })
+  }
+
+  // 覆盖层热区渲染
+  const renderOverlayHotZones = (item, index) => {
+    if (!item.overlayHotData) return null
+    return item.overlayHotData.map((citem, idx) => {
+      const styleStr = `width: ${citem.widthPer * 100}%; height: ${citem.heightPer * 100}%; top: ${citem.topPer * 100}%; left: ${citem.leftPer * 100}%`
+      if (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) {
+        return (
+          <SpLogin key={`overlayhot_${idx}`} onChange={() => linkPage(citem)}>
+            <View className='img-hotzone_zone' style={styleStr} />
+          </SpLogin>
+        )
+      }
+      return (
+        <View
+          key={`overlayhot_${idx}`}
+          className='img-hotzone_zone'
+          style={styleStr}
+          onClick={() => linkPage(citem)}
+        />
+      )
+    })
+  }
+
+  // 轮播项渲染
   const renderItem = useMemo(() => {
-    if (localData.length == 0) return null
+    if (localData.length === 0) return null
     return (
       <>
-        {localData?.map((item, index) => (
+        {localData.map((item, index) => (
           <SwiperItem
             key={`slider-swiper_${index}`}
-            className={classNames('wgt_full_slider-swiper-item', {})}
-            onClick={() => {
-              togglePlay(index)
-            }}
+            className='wgt_full_slider-swiper-item'
+            onClick={() => togglePlay(index)}
           >
-            <View
-              // style={styleNames({
-              //   marginLeft: `:${imgpadded?.left || 0}px`,
-              //   marginRight: `:${imgpadded?.right || 0}px`
-              // })}
-              className={classNames('wgt_full_slider-swiper-item-content')}
-            >
-              {item?.media_type != 'video' && (
+            <View className='wgt_full_slider-swiper-item-content'>
+              {/* 图片类型需要登录 */}
+              {item?.media_type !== 'video' && (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) && (
+                <SpLogin onChange={() => { if (!item.pic_type) linkPage(item) }}>
+                  <View style={styleNames({ height: '100%' })}>
+                    <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
+                  </View>
+                </SpLogin>
+              )}
+              {/* 图片类型不需要登录 */}
+              {item?.media_type !== 'video' && !needLoginPageType.includes(item.id) && !needLoginPage.includes(item.linkPage) && (
                 <View
-                  onClick={() => {
-                    if (item.pic_type) return
-                    linkPage(item)
-                  }}
                   style={styleNames({ height: '100%' })}
+                  onClick={() => { if (!item.pic_type) linkPage(item) }}
                 >
                   <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
                 </View>
               )}
-              {item.hotData &&
-                item.hotData.length > 0 &&
-                item.hotData.map((ele) => (
-                  <View
-                    key={`${ele}1`}
-                    className='img-hotzone_zone'
-                    style={`width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${
-                      ele.topPer * 100
-                    }%; left: ${ele.leftPer * 100}%`}
-                    onClick={(e) => linkPage(ele)}
-                  />
-                ))}
-              {item.media_type == 'video' && item.videoUrl && (
+              {/* 热区 */}
+              {renderHotZones(item)}
+              {/* 视频类型 */}
+              {item.media_type === 'video' && item.videoUrl && (
                 <Video
                   src={item.videoUrl}
                   controls={false}
                   autoplay={item.autoplay}
-                  // loop={item.loop}
                   objectFit='cover'
                   showCenterPlayBtn={false}
                   showFullscreenBtn={false}
                   muted
-                  id={'swiperVideo_' + index + porps.index}
-                  onEnded={(e) => handlePlayEnd(e, item)}
-                  onPlay={(e) => handlePlayStart(e, item, index)}
-                  onTimeUpdate={(e) => handleTimeUpdate(e, item, index)}
+                  id={`swiperVideo_${index}${props.index}`}
+                  onEnded={e => handlePlayEnd(e, item)}
+                  onPlay={e => handlePlayStart(e, item, index)}
+                  onTimeUpdate={e => handleTimeUpdate(e, item, index)}
                 >
                   {!play && !item?.hidenPoster && (
                     <Image className='poster' mode='widthFix' src={item.imgUrl} />
                   )}
-                  {/* {!play && <Image className='play-btn' mode='widthFix' src={PlayImg} />} */}
                 </Video>
               )}
+              {/* 覆盖层 */}
               {item.overlay && (
                 <View
                   className='overlay-content'
@@ -344,17 +280,8 @@ function WgtFullSlider(porps) {
                     opacity: 1
                   })}
                 >
-                  <SpImage src={item.overlay} className={classNames('over-lay')} />
-                  {item.overlayHotData.map((citem) => (
-                    <View
-                      key={`${index}1`}
-                      className='img-hotzone_zone'
-                      style={`width: ${citem.widthPer * 100}%; height: ${
-                        citem.heightPer * 100
-                      }%; top: ${citem.topPer * 100}%; left: ${citem.leftPer * 100}%`}
-                      onClick={(e) => linkPage(citem)}
-                    ></View>
-                  ))}
+                  <SpImage src={item.overlay} className='over-lay' />
+                  {renderOverlayHotZones(item, index)}
                 </View>
               )}
             </View>
@@ -362,19 +289,16 @@ function WgtFullSlider(porps) {
         ))}
       </>
     )
-  }, [config, localData, play, porps.index])
+  }, [localData, play, props.index])
 
   if (localData.length === 0 || !show) return null
 
   return (
     <View
-      className={classNames(`wgt wgt_full_slider`, {
-        // 'no-cover': !config.dotCover,
-        wgt_padded: base.padded
-      })}
+      className={classNames('wgt wgt_full_slider', { wgt_padded: base.padded })}
     >
       <View
-        className={classNames('wgt_full_slider-wrap', {})}
+        className='wgt_full_slider-wrap'
         style={styleNames({ height: `${height}` })}
       >
         <Swiper
@@ -383,18 +307,15 @@ function WgtFullSlider(porps) {
           interval={config.interval}
           circular
           vertical
-          onChange={(e) => changeSwiper(e)}
+          onChange={changeSwiper}
           cacheExtent={1}
           current={curIdx}
         >
           {renderOverlay}
           {renderItem}
         </Swiper>
-
         {localData.length > 1 && (
-          <View
-            className={classNames('wgt_full_slider_indicator')}
-          >
+          <View className='wgt_full_slider_indicator'>
             {setIndicator()}
           </View>
         )}
