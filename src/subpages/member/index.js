@@ -455,6 +455,10 @@ function MemberIndex(props) {
     return null
   }
 
+  const memberBckStyle = {
+    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`,
+  }
+
   return (
     <SpPage
       className='pages-member-index'
@@ -472,7 +476,7 @@ function MemberIndex(props) {
       <View className='user-info-card-wrapper' style={{ paddingBottom: state.footerHeight }}>
         <View
           className='header-block'
-          style={userInfo?.gradeInfo?.grade_background ? `{background-image: url(${userInfo?.gradeInfo?.grade_background})}` : {}}
+          style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
           <View className='user-info-card'>
             <View className='user-info-header'>
@@ -534,7 +538,7 @@ function MemberIndex(props) {
                   mode='widthFix'
                   className='member-level-bg'
                 /> */}
-                {isLogin && (
+                {isLogin && config.menu.member_code && (
                   <Text
                     className='iconfont icon-erweima-01'
                     onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-code' })}

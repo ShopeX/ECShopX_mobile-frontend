@@ -671,6 +671,7 @@ function EspierDetail(props) {
         ...data,
         subscribe
       }
+      draft.play = data.video ? true : false // 辉绮需求
       draft.imgHeightList = banner
       draft.promotionActivity = data.promotionActivity
     })
@@ -697,23 +698,19 @@ function EspierDetail(props) {
       getRecommendList() // 猜你喜欢
     }
   }
-
-  const getMultipleImageInfo =  async (imageUrls) => {
-    const promises = imageUrls.map(url => 
-      Taro.getImageInfo({ src: url })
-    )
-    
-    try {
-      const results = await Promise.all(promises)
-      results.forEach((info, index) => {
-        console.log(`图片${index + 1}的尺寸:`, info.width, info.height)
+const getMultipleImageInfo = async (imageUrls) => {
+  const promises = imageUrls.map(url =>
+    Taro.getImageInfo({ src: url })
+      .then(info => info)
+      .catch(error => {
+        console.log('获取图片信息失败:', url, error)
+        // 返回一个默认高度或 null
+        return { width: 0, height: 750 }
       })
-      return results.map(info => info.height / 2) // 返回每张图片的高度
-    } catch (error) {
-      console.error('获取图片信息失败:', error)
-      throw error
-    }
-  }
+  )
+  const results = await Promise.all(promises)
+  return results.map(info => info.height / 2)
+}
 
   const getRecommendList = async () => {
     const { list } = await api.cart.likeList({
@@ -837,7 +834,7 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
-              style={{ height: (imgHeightList[curImgIdx] || 350) + 'px' }}
+              style={{ height: (imgHeightList[curImgIdx]) + 'px' }}
             >
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
