@@ -99,14 +99,17 @@ const GameActivity = () => {
             requiredFV: response.requiredFV,
             currentFV: response.currentFV
           })
+          isDrawing.current = false
           return Promise.reject(response)
         } else {
+          isDrawing.current = false
           return Promise.reject(response)
         }
       } else {
         return Promise.reject(response)
       }
     } catch (err) {
+      isDrawing.current = false
       console.error('抽奖请求失败:', err)
       return Promise.reject(response)
     }
