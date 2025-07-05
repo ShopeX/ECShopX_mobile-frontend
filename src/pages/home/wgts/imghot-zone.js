@@ -53,7 +53,7 @@ export default class WgtImgHotZone extends Component {
         <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
           <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
           {isArray(data) && data.map((item, index) => {
-            if (item.id == 'purchase' || ['purchase_activity','regactivity'].includes(item.linkPage)) {
+            if (item.id == 'purchase' || ['purchase_activity','regactivity','game-activity'].includes(item.linkPage)) {
               return (
                 <SpLogin onChange={this.handleClickItem.bind(this, {
                   ...item,

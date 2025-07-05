@@ -27,7 +27,7 @@ export const drawPrize = async (id) => {
 }
 
 // 获取游戏活动配置
-export const getGameConfig = (params = { id: 4 }) => {
+export const getGameConfig = (params = { }) => {
   return req.get('/promotion/getLuckyDrawData', params)
 }
 

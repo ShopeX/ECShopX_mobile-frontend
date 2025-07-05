@@ -45,10 +45,10 @@ const GameActivity = () => {
 
     try {
       // 获取页面参数，只需获取游戏类型，不需要活动ID
-      const { type,id = '4' } = Taro.getCurrentInstance().router.params
+      const { type, id } = Taro.getCurrentInstance().router.params
 
       // 调用API获取活动配置
-      const response = await getGameConfig({id})
+      const response = await getGameConfig({ id })
 
       if (response && response?.activity_template_config) {
         // 使用doc配置处理游戏配置数据，保留gameConfig层级

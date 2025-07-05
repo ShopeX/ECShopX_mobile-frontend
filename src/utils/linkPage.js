@@ -30,7 +30,11 @@ function linkPage(data) {
     return
   }
   let url = ''
+  console.log('linkPage----', data)
   switch (linkPage) {
+    case 'lottery':
+      url = `/subpages/game-activity/index?id=${id}`
+      break
     case 'goods':
       url = `/pages/item/espier-detail?id=${id}&dtid=${distributor_id}`
       break
