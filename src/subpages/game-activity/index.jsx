@@ -87,6 +87,7 @@ const GameActivity = () => {
     try {
       // 调用抽奖接口获取结果
       const response = await drawPrize(activeId)
+      console.log('handleDrawPrize--response----', response)
       if (response) {
         if (response.code === 0) {
           // 抽奖成功，显示结果
@@ -121,16 +122,11 @@ const GameActivity = () => {
     setResultData({})
   }
 
-  const handleGameEnd = (result) => {
+  const handleGameEnd = () => {
     setTimeout(() => {
       //等待canvas绘制结束，否则游戏组件没有变成图片之前，弹框盖不住
-      if (result?.code == 0) {
-        isDrawing.current = false
-        setResultVisible(true)
-        setResultData(result?.data)
-      } else {
-        isDrawing.current = false
-      }
+      isDrawing.current = false
+       setResultVisible(true)
     }, 600)
   }
   // 修改渲染游戏组件函数，使用正确的回调名称

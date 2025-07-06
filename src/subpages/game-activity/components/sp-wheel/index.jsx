@@ -20,12 +20,10 @@ const SpWheel = ({ config, onDrawPrize, onGameEnd, isDrawing, style }) => {
         wheelRef.current.play()
         setTimeout(() => {
           const prize_type = result?.data?.prize_type
-          if (prize_type == 'thanks') {
-            const _id = config?.prizes?.find((el) => el.prize_type == prize_type)?.index
+          console.log('config?.prizes----', config?.prizes)
+          const _id = config?.prizes?.findIndex((el) => el.prize_type == prize_type)
+          console.log('stop----', _id)
             wheelRef.current.stop(_id)
-          } else {
-            wheelRef.current.stop(result?.data.index)
-          }
         }, 2000)
       }
     } catch (err) {
@@ -34,6 +32,7 @@ const SpWheel = ({ config, onDrawPrize, onGameEnd, isDrawing, style }) => {
   }
   // 抽奖结束
   const handleEnd = () => {
+    console.log('resultRef.current----', resultRef.current)
     onGameEnd && onGameEnd(resultRef.current)
   }
   return (

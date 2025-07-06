@@ -16,7 +16,8 @@ const SpDrawResult = ({
   currentFV = 0
 }) => {
   // 判断是否是未中奖情况
-  const isEmptyPrize = prizeInfo.prize_type === 'thanks'
+  console.log('prizeInfo----', prizeInfo)
+  const isEmptyPrize = prizeInfo?.data?.prize_type === 'thanks'
   const { showModal } = useModal()
   useEffect(() => {
     if (visible) {
