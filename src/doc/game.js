@@ -43,6 +43,10 @@ export const GAME_CONFIG = {
   gameType: 'gameType',
   backgroundImage: 'backgroundImage',
   gameMarginTop: 'gameMarginTop',
+  recordFormConfig: ({ gameConfig }) => {
+    if (!gameConfig?.recordFormConfig) return {}
+    return gameConfig?.recordFormConfig
+  },
   gameConfig: ({ gameConfig }) => {
     if (!gameConfig) return {}
 

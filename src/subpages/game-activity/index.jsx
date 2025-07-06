@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { getGameConfig, drawPrize } from '@/api/game'
 import { GAME_TYPES } from '@/consts/game'
-import { pickBy } from '@/utils'
+import { pickBy, styleNames } from '@/utils'
 import { GAME_CONFIG } from '@/doc/game'
 import {SpPage} from '@/components'
 import SpWheel from './components/sp-wheel'
@@ -168,7 +168,7 @@ const GameActivity = () => {
     }
     return {}
   }
-
+console.log('activityConfig----', activityConfig)
   return (
     <SpPage className='sp-game-activity'>
       <View className='sp-game-activity__ad-area' style={getPageStyle()}>
@@ -202,6 +202,13 @@ const GameActivity = () => {
                 <View className='sp-game-activity__game-container'>{renderGameComponent}</View>
                 <View className='sp-game-activity__footer'>
                   <View
+                  style={styleNames({
+                    backgroundColor: activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
+                    color: activityConfig?.recordFormConfig?.rule?.[1] || '#000',
+                    backgroundImage: `url(${activityConfig?.recordFormConfig?.img})`,
+                    backgroundSize: '100% auto',
+                    backgroundRepeat: 'no-repeat'
+                  })}
                     className='sp-game-activity__footer-btn'
                     onClick={() =>
                       Taro.navigateTo({
