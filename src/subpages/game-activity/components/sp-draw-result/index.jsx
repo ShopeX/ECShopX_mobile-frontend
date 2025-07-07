@@ -55,11 +55,12 @@ const SpDrawResult = ({
           {resData?.prizeImage && (
             <Image className='sp-draw-result__image' src={resData?.prizeImage} mode='aspectFit' />
           )}
-          <View className='sp-draw-result__prize-name'>{resData?.prize_title}</View>
-          {resData?.prize_value && (
+          {resData?.prize_type !='points' && (
+            <View className='sp-draw-result__prize-name'>{resData?.prize_title}</View>
+          )}
+          {resData?.prize_value && resData?.prize_type =='points' && (
             <View className='sp-draw-result__prize-amount'>
-              {resData?.prize_value}
-              {resData?.prize_type === 'points' ? '积分' : '元'}
+              {resData?.prize_value}积分
             </View>
           )}
           <View className='sp-draw-result__message'>{resData?.message || '恭喜您获得奖品！'}</View>
