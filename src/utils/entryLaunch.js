@@ -386,8 +386,7 @@ class EntryLaunch {
    */
   async postGuideTask() {
     const { path } = $instance.router
-    const params = await this.getRouteParams($instance.router)
-    debugger
+    let params = await this.getRouteParams($instance.router)
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -397,6 +396,9 @@ class EntryLaunch {
     }
     if (!routePath[path]) {
       return
+    }
+    if (path == '/pages/cart/espier-checkout') {
+      params = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
     }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params

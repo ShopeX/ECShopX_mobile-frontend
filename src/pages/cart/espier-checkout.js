@@ -334,11 +334,15 @@ function CartCheckout(props) {
         {
           ...params,
           // 活动类型：拼团
-          activityType: type
+          activityType: type,
+          pageType: 'checkout'
         },
-        orderInfo
+        orderInfo,
+        () => {
+          entryLaunch.postGuideUV()
+          entryLaunch.postGuideTask()
+        }
       )
-      entryLaunch.postGuideUV() // 导购-支付成功调上报接口
     }
   }
 
