@@ -410,7 +410,7 @@ class EntryLaunch {
     if (gu_user_id) {
       work_userid = gu_user_id
     }
-    if (work_userid && subtask_id && S.getAuthToken()) {
+    if (work_userid && S.getAuthToken()) {
       const _params = {
         employee_number: work_userid,
         subtask_id,
@@ -419,7 +419,9 @@ class EntryLaunch {
         item_id: item_id || id,
         event_type: routePath[path]
       }
-      api.wx.taskReportData(_params)
+      if (subtask_id) {
+        api.wx.taskReportData(_params)
+      }
 
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
