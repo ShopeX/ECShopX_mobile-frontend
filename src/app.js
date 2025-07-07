@@ -72,6 +72,14 @@ class App extends Component {
     }
   }
 
+  getParamsOptions = async (options) => {
+    const routeParams = await entryLaunch.getRouteParams(options)
+    if (routeParams.gu || routeParams.gu_user_id) {
+      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+    }
+  }
+
   async componentDidShow(options) {
     if (isWeixin) {
       checkAppVersion()
@@ -86,6 +94,7 @@ class App extends Component {
       })
     }
     this.getSystemConfig()
+    this.getParamsOptions(options)
   }
 
   async getSystemConfig() {

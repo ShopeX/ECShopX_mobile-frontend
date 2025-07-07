@@ -36,7 +36,7 @@ import {
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
-import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
+import { PAYMENT_TYPE, SG_GUIDE_PARAMS } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
@@ -338,6 +338,7 @@ function CartCheckout(props) {
         },
         orderInfo
       )
+      entryLaunch.postGuideUV() // 导购-支付成功调上报接口
     }
   }
 
@@ -739,7 +740,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
-    const routerParams = await entryLaunch.getRouteParams()
+    const routerParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,

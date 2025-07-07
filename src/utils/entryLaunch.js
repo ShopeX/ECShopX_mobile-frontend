@@ -2,9 +2,10 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
+import dayjs from 'dayjs'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
-import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
+import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS_UPDATETIME, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
@@ -35,6 +36,7 @@ class EntryLaunch {
       _options = {
         ...resolveUrlParamsParse(params.scene)
       }
+      debugger
       if (_options.share_id) {
         const res = await api.wx.getShareId({
           share_id: _options.share_id
@@ -44,9 +46,6 @@ class EntryLaunch {
           ..._options,
           ...res
         }
-      }
-      if (_options.gu || _options.gu_user_id) {
-        Taro.setStorageSync(SG_GUIDE_PARAMS, _options)
       }
     } else {
       _options = params
@@ -361,6 +360,7 @@ class EntryLaunch {
    */
   async postGuideUV() {
     const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    debugger
     const { gu, gu_user_id } = routerParams || {}
     let work_userid = ''
     if (gu) {
@@ -370,6 +370,7 @@ class EntryLaunch {
       work_userid = gu_user_id
     }
     if (work_userid) {
+    debugger
       await api.user.uniquevisito({
         work_userid
       })
@@ -384,7 +385,9 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask() {
-    const { path, params } = $instance.router
+    const { path } = $instance.router
+    const params = await this.getRouteParams($instance.router)
+    debugger
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -407,7 +410,7 @@ class EntryLaunch {
     if (gu_user_id) {
       work_userid = gu_user_id
     }
-    if (work_userid && S.getAuthToken()) {
+    if (work_userid && subtask_id && S.getAuthToken()) {
       const _params = {
         employee_number: work_userid,
         subtask_id,
@@ -421,7 +424,7 @@ class EntryLaunch {
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
       api.wx.interactiveReportData({
-        event_id: employee_number,
+        event_id: work_userid,
         user_type: 'wechat',
         user_id,
         event_type: routePath[path],

@@ -189,6 +189,7 @@ function EspierDetail(props) {
 
   useEffect(() => {
     init()
+    entryLaunch.postGuideTask()
   }, [])
 
   useEffect(() => {
@@ -329,7 +330,7 @@ function EspierDetail(props) {
 
   const init = async (newDtid) => {
     const routerParams = await entryLaunch.getRouteParams()
-    const { type, id, dtid:routerDtid, gu } = routerParams
+    const { type, id, dtid:routerDtid } = routerParams
     const dtid = newDtid || routerDtid
     setState((draft) => {
       draft.id = id

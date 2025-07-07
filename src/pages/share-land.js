@@ -52,7 +52,7 @@ function ShareIand() {
       Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
 
       if (S.getAuthToken()) {
-        entryLaunch.postGuideUV()
+        // entryLaunch.postGuideUV()
         entryLaunch.postGuideTask()
       }
     } else {

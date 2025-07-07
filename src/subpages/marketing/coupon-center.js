@@ -18,7 +18,9 @@ function CouponCenter(props) {
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
 
-  useEffect(() => {}, [])
+  useEffect(() => {
+    entryLaunch.postGuideTask()
+  }, [])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { distributor_id, item_id = '', itemid = '', card_id } = await entryLaunch.getRouteParams($instance.router.params)

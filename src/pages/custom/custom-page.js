@@ -109,6 +109,7 @@ function CustomPage(props) {
   })
   useEffect(() => {
     fetch()
+    entryLaunch.postGuideTask()
   }, [])
 
   useEffect(() => {
