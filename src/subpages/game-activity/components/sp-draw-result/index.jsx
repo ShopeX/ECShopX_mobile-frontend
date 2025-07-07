@@ -66,7 +66,7 @@ const SpDrawResult = ({
           <View className='sp-draw-result__message'>{resData?.message || '恭喜您获得奖品！'}</View>
           <View className='sp-draw-result-btn__wrap'>
             <AtButton className='sp-draw-result__btn sp-draw-result__btn_left' onClick={onClose}>
-              取消
+              返回
             </AtButton>
             <AtButton
               className='sp-draw-result__btn sp-draw-result__btn_right'
