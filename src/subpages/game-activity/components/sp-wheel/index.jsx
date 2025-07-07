@@ -21,7 +21,13 @@ const SpWheel = ({ config, onDrawPrize, onGameEnd, isDrawing, style }) => {
         setTimeout(() => {
           const prize_type = result?.data?.prize_type
           const prize_value = result?.data?.prize_value
-          const _id = config?.prizes?.findIndex((el) => (el.prize_type + String(el.prize_value)) == (prize_type + String(prize_value)))
+          const _id = config?.prizes?.findIndex((el) => {
+            if(prize_type == 'thanks'){
+              return el.prize_type == 'thanks'
+            }else{
+              return el.prize_type == prize_type && el.prize_value == prize_value
+            }
+          })
           wheelRef.current.stop(_id)
         }, 2000)
       }
