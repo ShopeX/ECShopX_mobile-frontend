@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [3.21.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.21.4...v3.21.5) (2025-07-08)
+
+
+### Bug Fixes
+
+* imghot-zone ([6713aba](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6713abaaa7c93f0b09b323fe889bcc9be130bada))
+* 全局修复AtInput光标问题 ([2e4c9e9](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2e4c9e9dbe57e94232809a23027be680663e55cb))
+* 积分描述修改 ([7eb73b6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7eb73b644130f8d0af65d0874371c529a1eca2dd))
+
 ### [3.21.4](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.21.3...v3.21.4) (2025-06-19)
 
 
