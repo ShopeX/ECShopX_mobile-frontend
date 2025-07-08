@@ -37,18 +37,19 @@
       // }
       .grade-name {
         position: absolute;
-        top: 140px;
+        bottom: 76px;
         left: 30px;
-        font-size: 42px;
+        font-size: 32px;
         font-weight: 600;
-        color: #E0BA9A;
+        color: #fff;
       }
       .grade-discount {
         position: absolute;
-        top: 220px;
+        bottom: 30px;
         left: 30px;
-        font-size: 28px;
+        font-size: 24px;
         color: #fff;
+        opacity: 0.7;
       }
     }
     // .member-card {
@@ -62,10 +63,7 @@
     height: 100%;
   }
   .content-hd {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 56px;
+    margin: 56px 20px 0 20px;
     .title {
       // width: 256px;
       height: 45px;
@@ -77,12 +75,8 @@
     }
   }
   .content-bd {
-    width: 686px;
-    background: #dedede;
     border-radius: 20px;
     padding: 32px 40px;
-    margin: 40px auto;
-    box-sizing: border-box;
     .sp-html {
       color: #444444;
     }
