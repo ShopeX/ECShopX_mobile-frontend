@@ -107,6 +107,7 @@ export const TRADE_ITEM = {
     return prescription_status || 0
   },
   diagnosisData: 'diagnosis_data',
+  pointFee: ({ point_fee }) => point_fee / 100,
   invoice_amount:'invoice_amount',
   invoiceAble: 'invoice_able',
   invoiceId: 'invoice_id',
