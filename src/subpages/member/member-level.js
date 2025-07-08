@@ -47,9 +47,6 @@ function MemberLevel(props) {
     <SpPage className='page-member-level'>
       <View
         className='level-hd'
-        style={styleNames({
-          "background-image": `url(${process.env.APP_IMAGE_CDN}/member_bg.jpg)`
-        })}
       >
         <Swiper
           className='card-swiper'
@@ -71,14 +68,9 @@ function MemberLevel(props) {
       </View>
       <View className='level-bd'>
         <View className='content-hd'>
-          <SpImage src='quanyi_zuo.png' width={200} height={36} />
           <View className='title'>等级权益</View>
-          <SpImage src='quanyi_you.png' width={200} height={36} />
         </View>
         <View className='content-bd'><SpHtml content={list?.[activeIndex]?.description || ''}></SpHtml></View>
-        <View className='content-ft'>
-          <SpImage src='quanyi_h.png' width={556} height={54} />
-        </View>
       </View>
     </SpPage>
   )
