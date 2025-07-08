@@ -115,7 +115,6 @@ function CartCheckout(props) {
     isFirstCalc,//开启优先积分第一次需要填充积分抵扣
   } = state
 
-  const { invoice_content } = packInfo || {}
 
   const {
     type = routerParams.type,
