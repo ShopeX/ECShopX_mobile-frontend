@@ -4,7 +4,7 @@
     height: 450px;
     padding-top: 50px;
     .card-swiper {
-      height: 375px;
+      height: 385px;
 
       /*  #ifdef  alipay  */
       width:110%;
@@ -23,11 +23,12 @@
       display: inline-block;
       // margin-top: 32px;
       position: relative;
+      border-radius: 20px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
       .sp-image {
         width: 600px;
         height: 375px;
-        border-radius: 20px;
-        overflow: hidden;
       }
       // &:first-child {
       //   margin-left: 75px;
