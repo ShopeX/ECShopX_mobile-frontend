@@ -653,7 +653,7 @@ function EspierDetail(props) {
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, { distributor_id: dtid })
 
-    setNavigationBarTitle(data.itemName)
+    // setNavigationBarTitle(data.itemName)
 
     console.log(ACTIVITY_LIST[data.activityType])
     if (ACTIVITY_LIST[data.activityType]) {
