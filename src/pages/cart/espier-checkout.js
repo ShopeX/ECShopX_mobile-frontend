@@ -819,8 +819,6 @@ function CartCheckout(props) {
     // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
-    debugger
-
     return cus_parmas
   }
 
