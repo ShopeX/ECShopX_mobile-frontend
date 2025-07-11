@@ -12,7 +12,7 @@ import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID } from '@/consts'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => {},loginSuccess=()=>{} } = props
+  const { autoLogin = false, policyUpdateHook = () => { }, loginSuccess = () => { } } = props
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
@@ -23,7 +23,7 @@ export default (props = {}) => {
   useEffect(() => {
     const token = S.getAuthToken()
     if (!token) {
-       autoLogin && !VERSION_SHUYUN && login()
+      autoLogin && !VERSION_SHUYUN && login()
     } else {
       setIsLogin(true)
       getUserInfo()
@@ -46,7 +46,7 @@ export default (props = {}) => {
         const { code } = await getCode()
 
         try {
-          const { token } = await getToken(code,shuyunappid)
+          const { token } = await getToken(code, shuyunappid)
           Taro.hideLoading()
           setToken(token)
           loginSuccess()
@@ -69,11 +69,11 @@ export default (props = {}) => {
     }
   }
 
-  const getToken = async (code,shuyunappid) => {
+  const getToken = async (code, shuyunappid) => {
     const auth_type = isWeixin ? 'wxapp' : 'aliapp'
     const params = { code, showError: false, auth_type }
 
-    if(shuyunappid){
+    if (shuyunappid) {
       params.shuyunappid = shuyunappid
     }
 
@@ -109,8 +109,8 @@ export default (props = {}) => {
   const getUserInfo = async (refresh) => {
     if (!userInfo || refresh) {
       let params = {}
-      const activity_id = S.get(INVITE_ACTIVITY_ID,true)
-      if(activity_id){
+      const activity_id = S.get(INVITE_ACTIVITY_ID, true)
+      if (activity_id) {
         params = { activity_id }
       }
       const _userInfo = await api.member.memberInfo(params)

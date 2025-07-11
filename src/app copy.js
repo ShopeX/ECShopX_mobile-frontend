@@ -1,5 +1,5 @@
-import React, { Component, useEffect } from 'react'
-import Taro, { getCurrentInstance, getCurrentPages, useDidShow, useReady, useRouter } from '@tarojs/taro'
+import React, { Component } from 'react'
+import Taro, { getCurrentInstance, getCurrentPages, useRouter } from '@tarojs/taro'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -46,9 +46,20 @@ requestIntercept()
 
 
 
-function App({ children }) {
+class App extends Component {
+  // componentWillMount() {
+  //   this.getSystemConfig()
+  //   // if ( S.getAuthToken() ) {
+  //   //   store.dispatch(fetchUserFavs());
+  //   // }
+  // }
 
-  useEffect(() => {
+  componentDidMount() {
+
+  }
+
+  onLaunch(options) {
+    console.log(`app onLaunch:`, options)
     import('../package.json').then(res => {
       console.log(`App Name: ${res.name}, version: ${res.version}`)
     })
@@ -61,15 +72,17 @@ function App({ children }) {
       Taro.removeStorageSync(SG_GUIDE_PARAMS)
       Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
     }
-  }, [])
+  }
 
-  useDidShow(async (options) => {
+  async componentDidShow(options) {
     if (isWeixin) {
       checkAppVersion()
     }
+    // const router = useRouter()
 
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
+      console.log('router', router)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
     })
 
@@ -81,10 +94,10 @@ function App({ children }) {
         type: 'user/closeAdv', payload: showAdv
       })
     }
-    getSystemConfig()
-  })
+    this.getSystemConfig()
+  }
 
-  const getSystemConfig = async () => {
+  async getSystemConfig() {
     const {
       echat,
       meiqia,
@@ -151,7 +164,11 @@ function App({ children }) {
     }
   }
 
-  return <Provider store={store}>{children}</Provider>
+  componentDidCatchError() { }
+
+  render() {
+    return <Provider store={store}>{this.props.children}</Provider>
+  }
 }
 
 export default App

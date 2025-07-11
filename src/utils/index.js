@@ -755,7 +755,7 @@ const getDistributorId = (_dtid) => {
   // console.log("🚀🚀🚀 ~ getDistributorId ~ shop:", shop)
 
   const {
-    shopInfo: { distributor_id, shop_id = 0 }
+    shopInfo: { distributor_id, shop_id }
   } = shop
   // console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {

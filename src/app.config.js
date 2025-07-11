@@ -29,427 +29,427 @@ const config = {
     'pages/cart/add-personnel', // 添加用药人员
     'pages/share-land', //太阳码统一落地页
   ],
-  subPackages: [
-    // 内购
-    {
-      root: 'subpages/purchase',
-      pages: [
-        'member',
-        'espier-detail',
-        'espier-checkout',
-        'share', // 家属分享
-        'select-company',
-        'select-company-account',
-        'select-company-email',
-        'select-company-phone',
-        'select-identity',
-        'neigou-order',
-        'category',
-        'espier-index',
-        'index',
-        'list', //商品列表
-        'limit-list'
-      ]
-    },
-    // 导购货架 guide
-    {
-      root: 'subpages/guide',
-      pages: [
-        'index', // 货架首页
-        'category/index', // 分类页面
-        'item/list', // 商品列表
-        'item/espier-detail', // 商品详情
-        'cart/espier-index', // 购物车
-        'cart/espier-checkout', // 下单结算
-        'coupon-home/index', // 优惠券
-        'recommend/list', // 种草
-        'recommend/detail', // 种草详情
-        'custom/custom-page' // 自定义页面
-      ]
-    },
-    // 门店
-    {
-      root: 'subpages/store',
-      pages: [
-        'index', // 店铺首页
-        'brand-info', // 店铺品牌
-        'item-list', // 店铺商品列表
-        'category', // 店铺商品分类
-        'list', // 选择店铺列表
-        'ziti-list', // 自提列表
-        'ziti-picker' // 自提点选择
-      ]
-    },
-    {
-      root: 'subpages/ecshopx',
-      pages: [
-        'nearly-shop', // 店铺选择
-        'shop-list', // 商家列表
-        'navigation-ibs' //lbs图片导航
-      ]
-    },
-    {
-      root: 'subpages/member',
-      pages: [
-        'index', // 会员中心
-        'point-detail', // 积分明细
-        'point-rule', // 积分规则
-        'member-level', // 会员等级
-        'user-info' // 个人信息
-      ]
-    },
-    {
-      root: 'subpages/marketing',
-      pages: [
-        'coupon', // 优惠券
-        'coupon-center', // 优惠券
-        'coupon-record', // 优惠券使用记录
-        'coupon-picker', // 优惠券选择
-        'package-list', // 组合优惠
-        'certification', // 实名认证
-        'exchange-code', // 兑换券二维码
-      ]
-    },
-    {
-      root: 'subpages/dianwu', // 店务端
-      pages: [
-        'index', // webview
-        'list', // 商品搜索列表
-        'cashier', // 收银台
-        'checkout', // 结算
-        'change-price', // 结算改价
-        'collection', // 收款
-        'pending-checkout', // 取单
-        'collection-result', // 收款结果
-        'login', // 登录
-        'picker-shop', // 店铺选择
-        'trade/invoice', //开具发票
-        'trade/change-price', // 订单改价
-        'trade/cancel-trade', // 取消订单
-        'trade/sale-after', // 订单售后
-        'trade/result', // 订单操作结果
-        'delivery-personnel', // 配送员
-        'edit-deliveryman', // 配送员创建
-        'salesman-personnel', // 业务员
-        'edit-deliveryman-salesman', // 业务员创建
-        'activity-code', // 活动扫码核销
-        'payment', //付款页面
-      ]
-    },
-    // 积分商城
-    {
-      root: 'subpages/pointshop',
-      pages: [
-        'list', // 积分商品列表
-        'espier-detail', // 积分商品详情
-        'espier-checkout' // 积分商品下单
-      ]
-    },
-    {
-      root: 'subpages/community',
-      pages: [
-        'index', // 社区团购个人中心
-        'group', // 一键开团
-        'itemlist', // 商品选品
-        'picker-community', // 选择社区
-        'community-edit', // 添加社区
-        'order', // 团员订单列表页
-        'order-refund', // 订单退款页
-        'espier-checkout', //结算页
-        'wait-pay', //待支付订单
-        'group-leaderdetail', // 社区团详情页（团长）
-        'group-memberdetail', // 社区团详情页（团员）
-        'order-manage', // 团长订单列表页
-        'activity', // 我的活动
-        'trade/refund', // 团购-售后申请提交页面
-        'trade/refund-detail', // 团购-售后申请提交结果页面
-        'trade/refund-sendback', // 团购-售后填写物流公司页面
-        'trade/split-bagpack', // 团购-分单物流详情页面Ω
-        'trade/delivery-info', // 团购-整单物流详情页面
-        'trade/cancel', // 团购-取消订单页面,
-        'trade/after-sale-detail', // 团购-售后详情页面
-        'boxlist', // 箱数列表
-        'list', // 商品列表
-        'espier-detail', // 商品详情
-        'apply-chief', // 申请团长
-        'chief-licence', // 团长注册协议
-        'commission', // 团长佣金
-        'withdraw', // 团长提现
-        'withdraw-bank', // 提现银行
-        'withdraw-list' // 提现记录
-      ]
-    },
-    {
-      root: 'subpages/trade',
-      pages: [
-        'list',
-        'detail',
-        'after-sale-list', // 售后订单列表
-        'after-sale', // 申请售后
-        'after-sale-detail', // 售后详情
-        'ziti-list',
-        'logistics-info',
-        'store-picker',
-        'trade-evaluate', // 订单评价
-        'evaluate-success', // 评价结果
-        'delivery-info', // 物流详情
-      ]
-    },
-    {
-      root: 'subpages/game-activity',
-      pages: ['index', 'pages/records']
-    },
-    {
-      root: 'subpages/mdugc',
-      pages: [
-        'index',
-        'list',
-        'note',
-        'note-detail',
-        'subject-talk',
-        'item-list',
-        'image-edit',
-        'my',
-        'follow-fans',
-        'info-notify'
-        // "pages/make_label/index",
-        // "pages/make_word/index",
-        // "pages/make_details/index2",
-        // "pages/make_newslist/index2",
-        // "pages/make_fabulous/index",
-        // "pages/make_comment/index",
-        // "pages/make_follow/index",
-        // "pages/make_collection/index",
-        // "pages/make_system/index",
-      ]
-    },
-    {
-      root: 'marketing',
-      pages: [
-        'pages/distribution/index', // 推广管理首页
-        'pages/distribution/setting', // 推广管理会员资料
-        'pages/distribution/shop-home', // 小店首页
-        'pages/distribution/statistics', // 推广费详情页面
-        'pages/distribution/trade', // 推广订单列表
-        'pages/distribution/subordinate', // 我的会员列表
-        'pages/distribution/withdraw', // 提现页面
-        'pages/distribution/withdrawals-record', // 提现记录
-        'pages/distribution/withdrawals-acount', // 提现绑定账户
-        'pages/distribution/goods', // 推广商品列表
-        'pages/distribution/shop', // 我的小店概览页面
-        'pages/distribution/shop-setting', // 小店设置页面
-        'pages/distribution/shop-form', // 小店设置编辑页面
-        'pages/distribution/qrcode', // 小店二维码
-        'pages/distribution/shop-category', // 小店商品分类
-        'pages/distribution/good-category', // 推广商品分类页面
-        'pages/distribution/shop-goods', // 小店商品页面
-        'pages/distribution/shop-trade', // 小店订单页面
-        'pages/distribution/shop-achievement', // 小店业绩页面
+  // subPackages: [
+  //   // 内购
+  //   {
+  //     root: 'subpages/purchase',
+  //     pages: [
+  //       'member',
+  //       'espier-detail',
+  //       'espier-checkout',
+  //       'share', // 家属分享
+  //       'select-company',
+  //       'select-company-account',
+  //       'select-company-email',
+  //       'select-company-phone',
+  //       'select-identity',
+  //       'neigou-order',
+  //       'category',
+  //       'espier-index',
+  //       'index',
+  //       'list', //商品列表
+  //       'limit-list'
+  //     ]
+  //   },
+  //   // 导购货架 guide
+  //   {
+  //     root: 'subpages/guide',
+  //     pages: [
+  //       'index', // 货架首页
+  //       'category/index', // 分类页面
+  //       'item/list', // 商品列表
+  //       'item/espier-detail', // 商品详情
+  //       'cart/espier-index', // 购物车
+  //       'cart/espier-checkout', // 下单结算
+  //       'coupon-home/index', // 优惠券
+  //       'recommend/list', // 种草
+  //       'recommend/detail', // 种草详情
+  //       'custom/custom-page' // 自定义页面
+  //     ]
+  //   },
+  //   // 门店
+  //   {
+  //     root: 'subpages/store',
+  //     pages: [
+  //       'index', // 店铺首页
+  //       'brand-info', // 店铺品牌
+  //       'item-list', // 店铺商品列表
+  //       'category', // 店铺商品分类
+  //       'list', // 选择店铺列表
+  //       'ziti-list', // 自提列表
+  //       'ziti-picker' // 自提点选择
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/ecshopx',
+  //     pages: [
+  //       'nearly-shop', // 店铺选择
+  //       'shop-list', // 商家列表
+  //       'navigation-ibs' //lbs图片导航
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/member',
+  //     pages: [
+  //       'index', // 会员中心
+  //       'point-detail', // 积分明细
+  //       'point-rule', // 积分规则
+  //       'member-level', // 会员等级
+  //       'user-info' // 个人信息
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/marketing',
+  //     pages: [
+  //       'coupon', // 优惠券
+  //       'coupon-center', // 优惠券
+  //       'coupon-record', // 优惠券使用记录
+  //       'coupon-picker', // 优惠券选择
+  //       'package-list', // 组合优惠
+  //       'certification', // 实名认证
+  //       'exchange-code', // 兑换券二维码
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/dianwu', // 店务端
+  //     pages: [
+  //       'index', // webview
+  //       'list', // 商品搜索列表
+  //       'cashier', // 收银台
+  //       'checkout', // 结算
+  //       'change-price', // 结算改价
+  //       'collection', // 收款
+  //       'pending-checkout', // 取单
+  //       'collection-result', // 收款结果
+  //       'login', // 登录
+  //       'picker-shop', // 店铺选择
+  //       'trade/invoice', //开具发票
+  //       'trade/change-price', // 订单改价
+  //       'trade/cancel-trade', // 取消订单
+  //       'trade/sale-after', // 订单售后
+  //       'trade/result', // 订单操作结果
+  //       'delivery-personnel', // 配送员
+  //       'edit-deliveryman', // 配送员创建
+  //       'salesman-personnel', // 业务员
+  //       'edit-deliveryman-salesman', // 业务员创建
+  //       'activity-code', // 活动扫码核销
+  //       'payment', //付款页面
+  //     ]
+  //   },
+  //   // 积分商城
+  //   {
+  //     root: 'subpages/pointshop',
+  //     pages: [
+  //       'list', // 积分商品列表
+  //       'espier-detail', // 积分商品详情
+  //       'espier-checkout' // 积分商品下单
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/community',
+  //     pages: [
+  //       'index', // 社区团购个人中心
+  //       'group', // 一键开团
+  //       'itemlist', // 商品选品
+  //       'picker-community', // 选择社区
+  //       'community-edit', // 添加社区
+  //       'order', // 团员订单列表页
+  //       'order-refund', // 订单退款页
+  //       'espier-checkout', //结算页
+  //       'wait-pay', //待支付订单
+  //       'group-leaderdetail', // 社区团详情页（团长）
+  //       'group-memberdetail', // 社区团详情页（团员）
+  //       'order-manage', // 团长订单列表页
+  //       'activity', // 我的活动
+  //       'trade/refund', // 团购-售后申请提交页面
+  //       'trade/refund-detail', // 团购-售后申请提交结果页面
+  //       'trade/refund-sendback', // 团购-售后填写物流公司页面
+  //       'trade/split-bagpack', // 团购-分单物流详情页面Ω
+  //       'trade/delivery-info', // 团购-整单物流详情页面
+  //       'trade/cancel', // 团购-取消订单页面,
+  //       'trade/after-sale-detail', // 团购-售后详情页面
+  //       'boxlist', // 箱数列表
+  //       'list', // 商品列表
+  //       'espier-detail', // 商品详情
+  //       'apply-chief', // 申请团长
+  //       'chief-licence', // 团长注册协议
+  //       'commission', // 团长佣金
+  //       'withdraw', // 团长提现
+  //       'withdraw-bank', // 提现银行
+  //       'withdraw-list' // 提现记录
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/trade',
+  //     pages: [
+  //       'list',
+  //       'detail',
+  //       'after-sale-list', // 售后订单列表
+  //       'after-sale', // 申请售后
+  //       'after-sale-detail', // 售后详情
+  //       'ziti-list',
+  //       'logistics-info',
+  //       'store-picker',
+  //       'trade-evaluate', // 订单评价
+  //       'evaluate-success', // 评价结果
+  //       'delivery-info', // 物流详情
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpages/game-activity',
+  //     pages: ['index', 'pages/records']
+  //   },
+  //   {
+  //     root: 'subpages/mdugc',
+  //     pages: [
+  //       'index',
+  //       'list',
+  //       'note',
+  //       'note-detail',
+  //       'subject-talk',
+  //       'item-list',
+  //       'image-edit',
+  //       'my',
+  //       'follow-fans',
+  //       'info-notify'
+  //       // "pages/make_label/index",
+  //       // "pages/make_word/index",
+  //       // "pages/make_details/index2",
+  //       // "pages/make_newslist/index2",
+  //       // "pages/make_fabulous/index",
+  //       // "pages/make_comment/index",
+  //       // "pages/make_follow/index",
+  //       // "pages/make_collection/index",
+  //       // "pages/make_system/index",
+  //     ]
+  //   },
+  //   {
+  //     root: 'marketing',
+  //     pages: [
+  //       'pages/distribution/index', // 推广管理首页
+  //       'pages/distribution/setting', // 推广管理会员资料
+  //       'pages/distribution/shop-home', // 小店首页
+  //       'pages/distribution/statistics', // 推广费详情页面
+  //       'pages/distribution/trade', // 推广订单列表
+  //       'pages/distribution/subordinate', // 我的会员列表
+  //       'pages/distribution/withdraw', // 提现页面
+  //       'pages/distribution/withdrawals-record', // 提现记录
+  //       'pages/distribution/withdrawals-acount', // 提现绑定账户
+  //       'pages/distribution/goods', // 推广商品列表
+  //       'pages/distribution/shop', // 我的小店概览页面
+  //       'pages/distribution/shop-setting', // 小店设置页面
+  //       'pages/distribution/shop-form', // 小店设置编辑页面
+  //       'pages/distribution/qrcode', // 小店二维码
+  //       'pages/distribution/shop-category', // 小店商品分类
+  //       'pages/distribution/good-category', // 推广商品分类页面
+  //       'pages/distribution/shop-goods', // 小店商品页面
+  //       'pages/distribution/shop-trade', // 小店订单页面
+  //       'pages/distribution/shop-achievement', // 小店业绩页面
 
-        'pages/distribution/point-platform',
+  //       'pages/distribution/point-platform',
 
-        'pages/verified-card/index', // 实名认证以及绑定银行卡页面
-        'pages/verified-card/verified', // 实名认证页面
-        'pages/verified-card/card', // 绑定银行卡页面
-        'pages/reservation/brand-list', // 预约列表
-        'pages/reservation/brand-detail', // 预约详情
-        'pages/reservation/brand-result', // 预约结果
-        'pages/reservation/reservation-list', // 预约（代码逻辑显示）
-        'pages/reservation/goods-reservate', // 预约报名
-        'pages/reservation/goods-reservate-result', // 预约结果
-        'pages/reservation/reservation-detail', // 预约详情
+  //       'pages/verified-card/index', // 实名认证以及绑定银行卡页面
+  //       'pages/verified-card/verified', // 实名认证页面
+  //       'pages/verified-card/card', // 绑定银行卡页面
+  //       'pages/reservation/brand-list', // 预约列表
+  //       'pages/reservation/brand-detail', // 预约详情
+  //       'pages/reservation/brand-result', // 预约结果
+  //       'pages/reservation/reservation-list', // 预约（代码逻辑显示）
+  //       'pages/reservation/goods-reservate', // 预约报名
+  //       'pages/reservation/goods-reservate-result', // 预约结果
+  //       'pages/reservation/reservation-detail', // 预约详情
 
-        'pages/member/activity-list', // 报名活动列表
-        'pages/member/activity-info', // 报名活动详情
-        'pages/member/item-activity', // 活动列表
-        'pages/member/activity-detail', // 活动详情
-        'pages/member/user-info', // 用户注册
-        'pages/member/complaint', // 投诉导购
-        'pages/member/complaint-record', // 投诉导购记录
-        // 'pages/member/coupon', // 我的优惠券列表
-        // 'pages/member/coupon-detail', // 我的优惠券详情
-        'pages/member/address', // 我的地址
-        'pages/member/edit-address', // 编辑地址
-        'pages/member/crm-address-list', // 收货地址
-        'pages/member/setting', // 设置页面
-        // 'pages/member/userinfo', // 用户信息
-        'pages/member/item-history', // 浏览记录
-        'pages/member/item-guess', // 猜你喜欢页面
-        'pages/member/member-code', // 用户二维码
-        'pages/member/group-list', // 我的拼团
-        'pages/member/member-setting', // 会员中心设置
-        'pages/member/destroy-member', // 会员注销页面
+  //       'pages/member/activity-list', // 报名活动列表
+  //       'pages/member/activity-info', // 报名活动详情
+  //       'pages/member/item-activity', // 活动列表
+  //       'pages/member/activity-detail', // 活动详情
+  //       'pages/member/user-info', // 用户注册
+  //       'pages/member/complaint', // 投诉导购
+  //       'pages/member/complaint-record', // 投诉导购记录
+  //       // 'pages/member/coupon', // 我的优惠券列表
+  //       // 'pages/member/coupon-detail', // 我的优惠券详情
+  //       'pages/member/address', // 我的地址
+  //       'pages/member/edit-address', // 编辑地址
+  //       'pages/member/crm-address-list', // 收货地址
+  //       'pages/member/setting', // 设置页面
+  //       // 'pages/member/userinfo', // 用户信息
+  //       'pages/member/item-history', // 浏览记录
+  //       'pages/member/item-guess', // 猜你喜欢页面
+  //       'pages/member/member-code', // 用户二维码
+  //       'pages/member/group-list', // 我的拼团
+  //       'pages/member/member-setting', // 会员中心设置
+  //       'pages/member/destroy-member', // 会员注销页面
 
-        'pages/wheel/index', // 大转盘
-        'pages/item/espier-evaluation', // 商品评论列表
-        'pages/item/espier-evaluation-detail', // 商品评论详情
+  //       'pages/wheel/index', // 大转盘
+  //       'pages/item/espier-evaluation', // 商品评论列表
+  //       'pages/item/espier-evaluation-detail', // 商品评论详情
 
-        'pages/item/seckill-goods-list', //秒杀商品列表
-        'pages/item/seckill-list', //秒杀列表
-        'pages/item/group-detail', //限时团购详情
-        'pages/item/group-list', //限时团购列表
+  //       'pages/item/seckill-goods-list', //秒杀商品列表
+  //       'pages/item/seckill-list', //秒杀列表
+  //       'pages/item/group-detail', //限时团购详情
+  //       'pages/item/group-list', //限时团购列表
 
-        'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
-        'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
-      ]
-    },
-    {
-      root: 'subpage',
-      pages: [
-        'pages/recommend/detail', //软文详情页面
-        'pages/trade/list', //我的订单列表页面
-        'pages/trade/drug-list', //处方药订单列表
-        'pages/trade/detail', //订单详情页面
-        'pages/trade/after-sale-detail', //售后详情页面
-        'pages/trade/cancel', //取消订单页面
-        'pages/trade/after-sale', //售后订单列表
-        'pages/trade/refund', //售后申请提交页面
-        'pages/trade/refund-detail', //售后申请提交结果页面
-        'pages/trade/refund-sendback', //售后填写物流公司页面
-        'pages/trade/invoice-list', //发票管理
-        // 'pages/cashier/index', //收银台页面
-        // 'pages/cashier/cashier-result', //支付结果页面
-        'pages/qrcode-buy', //二维码购买页
-        'pages/vip/vipgrades', //会员购买页面
-        'pages/auth/pclogin', //pc登录页面
-        // 编辑分享
-        'pages/editShare/index'
-      ]
-    },
-    //   // 助力
-    {
-      root: 'boost',
-      pages: [
-        'pages/home/index',
-        'pages/detail/index',
-        'pages/flop/index',
-        'pages/pay/index',
-        'pages/payDetail/index',
-        'pages/order/index'
-      ]
-    },
+  //       'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
+  //       'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
+  //     ]
+  //   },
+  //   {
+  //     root: 'subpage',
+  //     pages: [
+  //       'pages/recommend/detail', //软文详情页面
+  //       'pages/trade/list', //我的订单列表页面
+  //       'pages/trade/drug-list', //处方药订单列表
+  //       'pages/trade/detail', //订单详情页面
+  //       'pages/trade/after-sale-detail', //售后详情页面
+  //       'pages/trade/cancel', //取消订单页面
+  //       'pages/trade/after-sale', //售后订单列表
+  //       'pages/trade/refund', //售后申请提交页面
+  //       'pages/trade/refund-detail', //售后申请提交结果页面
+  //       'pages/trade/refund-sendback', //售后填写物流公司页面
+  //       'pages/trade/invoice-list', //发票管理
+  //       // 'pages/cashier/index', //收银台页面
+  //       // 'pages/cashier/cashier-result', //支付结果页面
+  //       'pages/qrcode-buy', //二维码购买页
+  //       'pages/vip/vipgrades', //会员购买页面
+  //       'pages/auth/pclogin', //pc登录页面
+  //       // 编辑分享
+  //       'pages/editShare/index'
+  //     ]
+  //   },
+  //   //   // 助力
+  //   {
+  //     root: 'boost',
+  //     pages: [
+  //       'pages/home/index',
+  //       'pages/detail/index',
+  //       'pages/flop/index',
+  //       'pages/pay/index',
+  //       'pages/payDetail/index',
+  //       'pages/order/index'
+  //     ]
+  //   },
 
-    {
-      root: 'others',
-      pages: [
-        'pages/home/license',
-        // 'pages/home/coupon-home',
-        'pages/protocol/privacy',
-        // 美恰客服
-        'pages/meiqia/index',
-        'pages/echat/index',
-        // 扫码授权登录
-        'pages/auth/index',
-        // 储值
-        'pages/recharge/index',
-        'pages/recharge/history',
-        // cart
-        // 'pages/cart/coupon-picker',
-        'pages/cart/drug-info',
-        // 绑定订单
-        'pages/bindOrder/index',
-        // 过期优惠券
-        // 'pages/nullify/coupon-nullify'
-      ]
-    },
-    // 商家入驻
-    {
-      root: 'subpages/merchant',
-      pages: [
-        'login', //登陆页面
-        'apply', //申请页面
-        'selector', //选择页面
-        'audit', //审核页面
-        'agreement' //协议页面
-      ]
-    },
-    //业务员
-    {
-      root: 'subpages/salesman',
-      pages: [
-        'index', //首页
-        'card',//名片
-        'cart',//购物车
-        'my',//我的
-        'list',//订单
-        'detail',//订单详情
-        'cancel',//取消订单
-        'selectCustomer',//选客户
-        'selectStore',//选店铺
-        'selectShop',//选店铺
-        'achievement',//业绩
-        'delivery-personnel',//业务员管理
-        'edit-deliveryman',//创建业务员
-        'purchasing', //选商品
-        'distribution/index', // 推广管理首页
-        'distribution/setting', // 推广管理会员资料
-        'distribution/shop-home', // 小店首页
-        'distribution/statistics', // 推广费详情页面
-        'distribution/trade', // 推广订单列表
-        'distribution/subordinate', // 我的会员列表
-        'distribution/withdraw', // 提现页面
-        'distribution/withdrawals-record', // 提现记录
-        'distribution/withdrawals-acount', // 提现绑定账户
-        'distribution/goods', // 推广商品列表
-        'distribution/shop', // 我的小店概览页面
-        'distribution/shop-setting', // 小店设置页面
-        'distribution/shop-form', // 小店设置编辑页面
-        'distribution/qrcode', // 小店二维码
-        'distribution/shop-category', // 小店商品分类
-        'distribution/good-category', // 推广商品分类页面
-        'distribution/shop-goods', // 小店商品页面
-        'distribution/shop-trade', // 小店订单页面
-        'distribution/shop-achievement', // 小店业绩页面
-        'distribution/point-platform',
-        'distribution/certification',//实名认证
-        'delivery-info',//查看物流
-        'espier-checkout', // 结算页面
-        'address', // 收货地址
-        'edit-address',//添加收获地址
-        'coupon-picker', //优惠券选择器
-        'ziti-picker', //自提选择器
-      ]
-    },
-    //配送员
-    {
-      root: 'subpages/delivery',
-      pages: [
-        'index', //首页
-        'achievement',//业绩
-        'my',//我的
-        'after-sale-list', // 售后列表
-        'selectShop', // 店铺
-        'list',//订单
-        'send-out-goods', // 发货
-        'detail',//订单详情
-        'after-sale', // 售后
-        'after-sale-detail', // 售后详情
-      ]
-    },
-    // 授权
-    {
-      root: 'subpages/auth',
-      pages: [
-        'reg', //注册页面
-        'reg-rule', //注册协议页面
-        'login', //登陆页
-        'edit-password', //修改密码页面
-        'bindPhone', //绑定手机页面
-        'auth-loading', //授权加载页
-        'forgotpwd', //找回密码页面
-        'edit-phone', //修改密码页面
+  //   {
+  //     root: 'others',
+  //     pages: [
+  //       'pages/home/license',
+  //       // 'pages/home/coupon-home',
+  //       'pages/protocol/privacy',
+  //       // 美恰客服
+  //       'pages/meiqia/index',
+  //       'pages/echat/index',
+  //       // 扫码授权登录
+  //       'pages/auth/index',
+  //       // 储值
+  //       'pages/recharge/index',
+  //       'pages/recharge/history',
+  //       // cart
+  //       // 'pages/cart/coupon-picker',
+  //       'pages/cart/drug-info',
+  //       // 绑定订单
+  //       'pages/bindOrder/index',
+  //       // 过期优惠券
+  //       // 'pages/nullify/coupon-nullify'
+  //     ]
+  //   },
+  //   // 商家入驻
+  //   {
+  //     root: 'subpages/merchant',
+  //     pages: [
+  //       'login', //登陆页面
+  //       'apply', //申请页面
+  //       'selector', //选择页面
+  //       'audit', //审核页面
+  //       'agreement' //协议页面
+  //     ]
+  //   },
+  //   //业务员
+  //   {
+  //     root: 'subpages/salesman',
+  //     pages: [
+  //       'index', //首页
+  //       'card',//名片
+  //       'cart',//购物车
+  //       'my',//我的
+  //       'list',//订单
+  //       'detail',//订单详情
+  //       'cancel',//取消订单
+  //       'selectCustomer',//选客户
+  //       'selectStore',//选店铺
+  //       'selectShop',//选店铺
+  //       'achievement',//业绩
+  //       'delivery-personnel',//业务员管理
+  //       'edit-deliveryman',//创建业务员
+  //       'purchasing', //选商品
+  //       'distribution/index', // 推广管理首页
+  //       'distribution/setting', // 推广管理会员资料
+  //       'distribution/shop-home', // 小店首页
+  //       'distribution/statistics', // 推广费详情页面
+  //       'distribution/trade', // 推广订单列表
+  //       'distribution/subordinate', // 我的会员列表
+  //       'distribution/withdraw', // 提现页面
+  //       'distribution/withdrawals-record', // 提现记录
+  //       'distribution/withdrawals-acount', // 提现绑定账户
+  //       'distribution/goods', // 推广商品列表
+  //       'distribution/shop', // 我的小店概览页面
+  //       'distribution/shop-setting', // 小店设置页面
+  //       'distribution/shop-form', // 小店设置编辑页面
+  //       'distribution/qrcode', // 小店二维码
+  //       'distribution/shop-category', // 小店商品分类
+  //       'distribution/good-category', // 推广商品分类页面
+  //       'distribution/shop-goods', // 小店商品页面
+  //       'distribution/shop-trade', // 小店订单页面
+  //       'distribution/shop-achievement', // 小店业绩页面
+  //       'distribution/point-platform',
+  //       'distribution/certification',//实名认证
+  //       'delivery-info',//查看物流
+  //       'espier-checkout', // 结算页面
+  //       'address', // 收货地址
+  //       'edit-address',//添加收获地址
+  //       'coupon-picker', //优惠券选择器
+  //       'ziti-picker', //自提选择器
+  //     ]
+  //   },
+  //   //配送员
+  //   {
+  //     root: 'subpages/delivery',
+  //     pages: [
+  //       'index', //首页
+  //       'achievement',//业绩
+  //       'my',//我的
+  //       'after-sale-list', // 售后列表
+  //       'selectShop', // 店铺
+  //       'list',//订单
+  //       'send-out-goods', // 发货
+  //       'detail',//订单详情
+  //       'after-sale', // 售后
+  //       'after-sale-detail', // 售后详情
+  //     ]
+  //   },
+  //   // 授权
+  //   {
+  //     root: 'subpages/auth',
+  //     pages: [
+  //       'reg', //注册页面
+  //       'reg-rule', //注册协议页面
+  //       'login', //登陆页
+  //       'edit-password', //修改密码页面
+  //       'bindPhone', //绑定手机页面
+  //       'auth-loading', //授权加载页
+  //       'forgotpwd', //找回密码页面
+  //       'edit-phone', //修改密码页面
 
-      ]
-    },
-    //处方药
-    {
-      root: 'subpages/prescription',
-      pages: [
-        'add-personnel',// 添加用药人员
-        'prescription-information', //补充处方信息
-      ]
-    }
-  ],
+  //     ]
+  //   },
+  //   //处方药
+  //   {
+  //     root: 'subpages/prescription',
+  //     pages: [
+  //       'add-personnel',// 添加用药人员
+  //       'prescription-information', //补充处方信息
+  //     ]
+  //   }
+  // ],
   permission: {
     'scope.userLocation': {
       desc: '您的位置信息将用于定位附近门店'

@@ -2,53 +2,61 @@ import Taro from '@tarojs/taro'
 import api from '@/api'
 import { useSelector, useDispatch } from 'react-redux'
 import S from '@/spx'
-import { pickBy } from '@/utils'
+import { pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
 import { useLocation, useShopInfo } from '@/hooks'
+import { updateShopInfo, changeInWhite } from '@/store/slices/shop'
 
 export default ({ onPhoneCallComplete } = {}) => {
   const dispatch = useDispatch()
-  const { open_divided_templateId } =
-    useSelector((state) => state.sys)
+  const { open_divided_templateId } = useSelector((state) => state.sys)
   const { shopInfo } = useSelector((state) => state.shop)
   const { calculateDistance } = useLocation()
   const { location } = useSelector((state) => state.user)
-  // 找到最近的白名单店铺
-  const findNearestWhiteListShop = (shopList, currentLocation) => {
-    if (!shopList || !shopList.length || !currentLocation) return null;
 
-    // 先筛选同城市的店铺
-    let filteredShops = shopList.filter(shop =>
-      shop.regions &&
-      shop.regions[0] === currentLocation.province &&
-      shop.regions[1] === currentLocation.city &&
-      shop.regions[2] === currentLocation.district
-    );
 
-    // 如果没有同城市的店铺，返回所有店铺中最近的
-    if (filteredShops.length === 0) {
-      filteredShops = shopList;
+  const checkStoreIsolation = async () => {
+    const distributorId = getDistributorId() // 启动携带店铺id 或者 之前记录的 店铺信息
+    if (!S.getAuthToken()) {
+      if (typeof distributorId === 'undefined') {
+        // 路由上没有店铺id，重定向到店铺引导页
+        Taro.redirectTo({
+          url: `/pages/custom/custom-page?id=${open_divided_templateId}&fromConnect=1`
+        })
+        return
+      } else {
+        const shopInfo = await api.shop.getShop({ distributor_id: distributorId })
+        if (shopInfo.open_divided == '1') {
+          // 登录
+          Taro.showModal({
+            content: '你还未登录，请先登录',
+            confirmText: '立即登录',
+            showCancel: false,
+            success: async (res) => {
+              debugger
+              if (res.confirm) {
+                try {
+                  await login()
+                  console.log('login 下面')
+                } catch {
+                  console.log('登录失败，走新用户注册')
+                  if (loginRef.current && loginRef.current.handleToLogin) {
+                    loginRef.current.handleToLogin()
+                  }
+                }
+              }
+            }
+          })
+        } else {
+          // 进店
+          dispatch(updateShopInfo(shopInfo))
+          return
+        }
+      }
+    } else {
+
     }
-
-    // 计算每个店铺的距离
-    const shopsWithDistance = filteredShops.map(shop => {
-      const distance = calculateDistance(
-        parseFloat(currentLocation.lat),
-        parseFloat(currentLocation.lng),
-        parseFloat(shop.lat),
-        parseFloat(shop.lng)
-      );
-      return {
-        ...shop,
-        distance
-      };
-    });
-
-    // 按距离排序
-    shopsWithDistance.sort((a, b) => a.distance - b.distance);
-
-    return shopsWithDistance[0];
-  };
+  }
 
   const handleSortShopList = (shopList) => {
     if (!shopList || !shopList.length) return null;
@@ -64,7 +72,7 @@ export default ({ onPhoneCallComplete } = {}) => {
 
     return sortedShops;
   }
-  
+
   // 找到创建时间最晚的白名单店铺
   const findLatestCreatedShop = (shopList) => {
     if (!shopList || !shopList.length) return null;
@@ -100,17 +108,8 @@ export default ({ onPhoneCallComplete } = {}) => {
 
     // 获取用户已经加入的白名单店铺，筛选合适的店铺
     const shopList = await fetchShop()
-    // 找到最近的白名单店铺
-    // if (location) {
-    //   const nearestShop = findNearestWhiteListShop(shopList, location);
-    //   if (nearestShop) {
-    //     // 使用最近的白名单店铺信息
-    //     return nearestShop;
-    //   }
-    // } else {
-      // 找到创建时间最晚的白名单店铺
-      const latestShop = findLatestCreatedShop(shopList);
-      return latestShop;
+    const latestShop = findLatestCreatedShop(shopList);
+    return latestShop;
     // }
 
 
@@ -119,7 +118,7 @@ export default ({ onPhoneCallComplete } = {}) => {
 
   // 打店铺电话
   // todozm 修改逻辑，如果没落地页模版id，弹窗打电话，有模版id的话，没有携带店铺id，自动跳，带了 店铺id ，还是需要弹窗
-  const connectWhiteShop = (phone) => { 
+  const connectWhiteShop = (phone) => {
     if (open_divided_templateId) {
       const query = `?id=${open_divided_templateId}&fromConnect=1`
       const path = `/pages/custom/custom-page${query}`
@@ -139,7 +138,7 @@ export default ({ onPhoneCallComplete } = {}) => {
     }
   }
 
-  const phoneCall = (phone) => { 
+  const phoneCall = (phone) => {
     Taro.makePhoneCall({
       phoneNumber: phone,
       complete: () => {
@@ -172,5 +171,12 @@ export default ({ onPhoneCallComplete } = {}) => {
   // }
 
 
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop, phoneCall, sortShopList }
+  return {
+    checkStoreIsolation,
+    connectWhiteShop,
+    findLatestCreatedShop,
+    getWhiteShop,
+    phoneCall,
+    sortShopList
+  }
 }

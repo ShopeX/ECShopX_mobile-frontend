@@ -4,6 +4,7 @@ import qs from 'qs'
 import S from '@/spx'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
+import _isEqual from 'lodash/isEqual'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 
 
@@ -25,8 +26,16 @@ class EntryLaunch {
    * @function 获取小程序路由参数
    */
   async getRouteParams(options) {
-    // const { params } = $instance.router;
     const params = options?.query || options?.params || $instance.router?.params || {}
+
+    const pageQueue = Taro.getCurrentPages()
+
+    const resPage = pageQueue.find(item => item.route == options?.path && _isEqual(options.query, item.$taroParams))
+
+    if (resPage) {
+      return Taro.getStorageSync(SG_ROUTER_PARAMS)
+    }
+
     let _options = {}
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
