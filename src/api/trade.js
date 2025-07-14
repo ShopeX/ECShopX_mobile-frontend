@@ -123,3 +123,8 @@ export function getInvoiceSetting() {
   return req.get(`/order/invoice/setting`)
 }
 
+
+// 获取发票协议
+export function getInvoiceProtocol() {
+  return req.get(`/order/invoice/protocol`)
+}

@@ -48,6 +48,27 @@
     box-sizing: border-box;
   }
 
+  &__footer {
+    .privacy-box {
+      padding-left: 36px;
+      padding-top: 20px;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 26px;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      .privacy-txt {
+        color: var(--color-primary);
+      }
+      .iconfont {
+        margin-right: 8px;
+        font-size: 32px;
+        color: var(--color-primary);
+      }
+    }
+  }
+
   &__form {
     .sp-cell {
       padding: 0 36px;

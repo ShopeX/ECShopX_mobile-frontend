@@ -29,7 +29,10 @@ const initialState = {
   invoice_id: '',
   page_type: 'apply',
   openRefundType: false,
-  showSpecialInvoice: false
+  showSpecialInvoice: false,
+  protocolShow: true,
+  protocolTitle: '专票使用确认书',
+  protocolCheck: false
 }
 
 function Invoice(props) {
@@ -43,7 +46,10 @@ function Invoice(props) {
     order_id,
     invoice_id,
     page_type,
-    showSpecialInvoice
+    showSpecialInvoice,
+    protocolShow,
+    protocolTitle,
+    protocolCheck
   } = state
 
   useEffect(() => {
@@ -63,12 +69,21 @@ function Invoice(props) {
       })
     }
     getInvoiceSetting()
+    getInvoiceProtocol()
   }, [])
 
   const getInvoiceSetting = async () => {
     const { special_invoice } = await api.trade.getInvoiceSetting()
     setState((draft) => {
       draft.showSpecialInvoice = special_invoice == '1'
+    })
+  }
+
+  const getInvoiceProtocol = async () => {
+    const { title, special_invoice_confirm_open } = await api.trade.getInvoiceProtocol()
+    setState((draft) => {
+      draft.protocolTitle = title
+      draft.protocolShow = special_invoice_confirm_open == '1'
     })
   }
 
@@ -115,6 +130,10 @@ function Invoice(props) {
     }
     if (info?.mobile && !validate.isMobileNum(info?.mobile)) {
       showToast('请输入正确的手机号')
+      return
+    }
+    if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
+      showToast(`请同意${protocolTitle}`)
       return
     }
     let params = {
@@ -182,27 +201,55 @@ function Invoice(props) {
     <SpPage
       className='page-invoice'
       renderFooter={
-        <View className='btn-wrap'>
-          {isWeixin && (
-            <View className='btn-wrap__harvest' onClick={wxInvoice}>
-              <View className='btn-wrap-img-wrap'>
-                <SpImage className='btn-wrap-img' src='fv_wechat.png' />
-              </View>
-              选择微信开票信息
+        <View className='page-invoice__footer'>
+          {protocolShow && info.invoice_type_code === '01' && (
+            <View className='privacy-box'>
+              <Text
+                className={classNames('iconfont', {
+                  'icon-roundcheckfill': protocolCheck,
+                  'icon-round': !protocolCheck
+                })}
+                onClick={() => {
+                  setState((draft) => {
+                    draft.protocolCheck = !protocolCheck
+                  })
+                }}
+              />
+              我已阅读并同意
+              <Text
+                onClick={() =>
+                  Taro.navigateTo({ url: '/subpages/auth/reg-rule?type=invoice_protocol' })
+                }
+                className='privacy-txt'
+              >
+                《{protocolTitle}》
+              </Text>
             </View>
           )}
-          <View
-            className={classNames({
-              'btn-wrap__add': true,
-              'btn-wrap__all': !isWeixin,
-              'btn-wrap__disabled': !isFull()
-            })}
-            onClick={handleClickSubmit}
-          >
-            提交发票
+
+          <View className='btn-wrap'>
+            {isWeixin && (
+              <View className='btn-wrap__harvest' onClick={wxInvoice}>
+                <View className='btn-wrap-img-wrap'>
+                  <SpImage className='btn-wrap-img' src='fv_wechat.png' />
+                </View>
+                选择微信开票信息
+              </View>
+            )}
+            <View
+              className={classNames({
+                'btn-wrap__add': true,
+                'btn-wrap__all': !isWeixin,
+                'btn-wrap__disabled': !isFull()
+              })}
+              onClick={handleClickSubmit}
+            >
+              提交发票
+            </View>
           </View>
         </View>
       }
+      footerHeight={protocolShow && info.invoice_type_code === '01' ? 180 : 124}
     >
       <ScrollView className='scroll-view-container' scrollY>
         <View className='page-invoice__form'>
@@ -407,8 +454,8 @@ function Invoice(props) {
               <Text className='option-title'>普通发票</Text>
               <Text
                 className={classNames('iconfont', {
-                  'icon-a-iconcheck_box01': info.invoice_type_code === '02',
-                  'icon-a-iconcheck_box_outline_blank': info.invoice_type_code !== '02'
+                  'icon-roundcheckfill': info.invoice_type_code === '02',
+                  'icon-round': info.invoice_type_code !== '02'
                 })}
               />
               <Text className='option-electronic'>电子</Text>
@@ -430,8 +477,8 @@ function Invoice(props) {
                 <Text className='option-title'>专用发票</Text>
                 <Text
                   className={classNames('iconfont', {
-                    'icon-a-iconcheck_box01': info.invoice_type_code === '01',
-                    'icon-a-iconcheck_box_outline_blank': info.invoice_type_code !== '01'
+                    'icon-roundcheckfill': info.invoice_type_code === '01',
+                    'icon-round': info.invoice_type_code !== '01'
                   })}
                 />
                 <Text className='option-electronic'>电子</Text>
