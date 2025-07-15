@@ -19,17 +19,27 @@ const initialState = {
     { tag_name: '待收货', value: '1' },
     { tag_name: '待评价', value: '7', is_rate: 0 }
   ],
-  typeVal:'0',
+  typeVal: '0',
   status: '0',
   tradeList: [],
   refresherTriggered: false,
-  trackDetailList:[],
-  openTrackDetail:false,
-  info:null
+  trackDetailList: [],
+  openTrackDetail: false,
+  info: null
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeType, typeVal, tradeList, refresherTriggered,trackDetailList,openTrackDetail,info } = state
+  const {
+    tradeStatus,
+    status,
+    tradeType,
+    typeVal,
+    tradeList,
+    refresherTriggered,
+    trackDetailList,
+    openTrackDetail,
+    info
+  } = state
   const tradeRef = useRef()
   const router = useRouter()
 
@@ -56,7 +66,7 @@ function TradeList(props) {
       draft.tradeList = []
     })
     tradeRef.current.reset()
-  }, [status,typeVal])
+  }, [status, typeVal])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { is_rate } = tradeStatus.find((item) => item.value == status)
@@ -67,7 +77,7 @@ function TradeList(props) {
       status,
       is_rate
     }
-    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
+    // params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
 
     const {
       list,
@@ -89,14 +99,11 @@ function TradeList(props) {
     })
   }
 
-
   const onChangeTradeType = (e) => {
     setState((draft) => {
       draft.typeVal = e
     })
   }
-
-
 
   const onRefresherRefresh = () => {
     setState((draft) => {
@@ -106,8 +113,6 @@ function TradeList(props) {
 
     tradeRef.current.reset()
   }
-
-
 
   return (
     <SpPage scrollToTopBtn className='page-trade-list'>
@@ -130,15 +135,17 @@ function TradeList(props) {
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>
-              <CompTradeItem info={item} onClick={async(_info)=>{
+              <CompTradeItem
+                info={item}
+                onClick={async (_info) => {
                   const { orderId } = _info
                   const res = await api.trade.getTrackerpull({ order_id: orderId })
                   setState((v) => {
                     v.openTrackDetail = true
                     v.trackDetailList = res
                     v.info = _info
-                })
-              }}
+                  })
+                }}
               />
             </View>
           ))}

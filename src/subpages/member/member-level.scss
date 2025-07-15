@@ -26,6 +26,16 @@
       border-radius: 20px;
       box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
       overflow: hidden;
+      .level-info {
+        position: absolute;
+        top: 1px;
+        left: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border-radius: 20px 0px 20px 0px;
+        padding: 10px;
+        font-size: 22px;
+      }
       .sp-image {
         width: 600px;
         height: 375px;

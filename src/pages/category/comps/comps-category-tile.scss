@@ -19,11 +19,22 @@
         &--active {
           font-size: 36px;
           color: #222;
+
         }
         .at-tabs__item-underline {
           background: none;
         }
       }
+    }
+    .comp-series__nav-list__content {
+      opacity: 0.9;
+    }
+    .comp-series__nav-list__content_text-active::before  {
+      background: #000;
+    }
+    .comp-series__nav-list__content_text-active {
+      color: #000;
+      font-weight: bold;
     }
   
     .search-input-fixed {
