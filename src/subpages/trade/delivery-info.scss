@@ -104,7 +104,7 @@
     .accept-station {
       font-weight: 500;
       font-size: 24px;
-      color: #D92128;
+      // color: #D92128;
       margin-left: 38px;
     }
 
@@ -132,7 +132,6 @@
       flex: 1;
       width: 24px;
       height: 24px;
-      background: #FDE4E5;
       border-radius: 24px;
       display: flex;
       justify-content: center;
@@ -146,7 +145,7 @@
       width: 10px;
       height: 10px;
       border-radius: 10px;
-      background: #D92128;
+      background: #000;
     }
   }
 }
