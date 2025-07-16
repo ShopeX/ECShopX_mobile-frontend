@@ -145,7 +145,7 @@ function CompGoodsItem(props) {
                 <SpInputNumber
                   value={info.num}
                   max={parseInt(info?.limitedBuy ? info?.limitedBuy?.limit_buy : info.store)}
-                  min={1}
+                  min={Number(info.start_num) > 0 ? Number(info.start_num) : 1}
                   onChange={onChangeInputNumber}
                 />
               ) : (

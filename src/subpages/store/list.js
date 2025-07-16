@@ -7,7 +7,7 @@ import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import { useLogin } from '@/hooks'
+import { useLogin, useWhiteShop } from '@/hooks'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
@@ -62,6 +62,7 @@ function NearlyShop(props) {
   const { location = {}, address } = useSelector((state) => state.user)
   const { shopInfo } = useSelector((state) => state.shop)
   const { open_divided } = useSelector((state) => state.sys)
+  const { sortShopList } = useWhiteShop()
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
@@ -146,38 +147,46 @@ function NearlyShop(props) {
 
     log.debug(`fetchShop query: ${JSON.stringify(params)}`)
     
-    let list = []
-    const open_divided_page_size = 20  // 取前20个绑定的店铺
-    if (open_divided && pageIndex === 1) { // 是否开启店铺隔离模式
-      const selfResult = await api.shop.list({
+    if (open_divided) {
+      const open_divided_page_size = 20  // 取前20个绑定的店铺
+      // 开启店铺隔离，只取绑定的店铺
+      let { list, total_count: total } = await api.shop.list({
         ...params,
         pageSize: open_divided_page_size,
         show_type: 'self' // self 表示获取用户绑定的店铺
       })
-      list = selfResult.list
       list = list.map((item) => {
         item.isOpenDivided = true  // 标识绑定的店铺
         return item
       })
-    }
-    const { list: resultList, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
 
-    // 未开启店铺隔离时，直接获取所有店铺数据
-    list = [...list, ...resultList]
+      list = sortShopList(list)
+      setState((draft) => {
+        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+        draft.refresh = false
+      })
+  
+      return {
+        total
+      }
 
-    setState((draft) => {
-      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
-      draft.isRecommend = is_recommend === 1
-      draft.defualt_address = defualt_address
-      draft.refresh = false
-    })
-
-    if (isObject(defualt_address)) {
-      dispatch(updateChooseAddress(defualt_address))
-    }
-
-    return {
-      total
+    } else {
+      const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+      // 未开启店铺隔离时，直接获取所有店铺数据
+      setState((draft) => {
+        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+        draft.isRecommend = is_recommend === 1
+        draft.defualt_address = defualt_address
+        draft.refresh = false
+      })
+  
+      if (isObject(defualt_address)) {
+        dispatch(updateChooseAddress(defualt_address))
+      }
+  
+      return {
+        total
+      }
     }
   }
 
@@ -266,76 +275,81 @@ function NearlyShop(props) {
 
   return (
     <SpPage className='page-store-list' ref={pageRef}>
-      <View className='search-block'>
-        <View className='search-bar'>
-          <View className='region-picker'>
-            <View className='pick-title' onClick={() => {
-              setState((draft => {
-                draft.isSpAddressOpened = true
-              }))
-            }}>
-              <View className='iconfont icon-periscope'></View>
-              <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-              {/* <Text className='iconfont icon-arrowDown'></Text> */}
+      {!open_divided && (
+        <>
+          <View className='search-block'>
+            <View className='search-bar'>
+              <View className='region-picker'>
+                <View className='pick-title' onClick={() => {
+                  setState((draft => {
+                    draft.isSpAddressOpened = true
+                  }))
+                }}>
+                  <View className='iconfont icon-periscope'></View>
+                  <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
+                  {/* <Text className='iconfont icon-arrowDown'></Text> */}
+                </View>
+              </View>
+
+              <View className='search-comp-wrap'>
+                <Text className='iconfont icon-sousuo-01'></Text>
+                <Input
+                  className='search-comp'
+                  placeholder='请输入想搜索的店铺'
+                  confirmType='search'
+                  value={state.keyword}
+                  disabled={!location?.address}
+                  onInput={onInputChange}
+                  onConfirm={onConfirmSearch}
+                />
+                {state.keyword && state.keyword.length > 0 && (
+                  <View className='iconfont icon-close' onClick={onClearValueChange}></View>
+                )}
+              </View>
             </View>
           </View>
 
-          <View className='search-comp-wrap'>
-            <Text className='iconfont icon-sousuo-01'></Text>
-            <Input
-              className='search-comp'
-              placeholder='请输入想搜索的店铺'
-              confirmType='search'
-              value={state.keyword}
-              disabled={!location?.address}
-              onInput={onInputChange}
-              onConfirm={onConfirmSearch}
-            />
-            {state.keyword && state.keyword.length > 0 && (
-              <View className='iconfont icon-close' onClick={onClearValueChange}></View>
-            )}
-          </View>
-        </View>
-      </View>
+          {isRecommend && (
+            <View className='shop-logo'>
+              <Image className='img' src={headquarters.logo} mode='aspectFill' />
+              <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
+            </View>
+          )}
 
-      {isRecommend && (
-        <View className='shop-logo'>
-          <Image className='img' src={headquarters.logo} mode='aspectFill' />
-          <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
-        </View>
+          <View className='location-block'>
+            <View className='block-title'>当前定位地址</View>
+            <View className='location-wrap'>
+              <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
+              <View className='btn-location' onClick={getLocationInfo}>
+                <Text
+                  className={classNames('iconfont icon-zhongxindingwei', {
+                    active: state.locationIng
+                  })}
+                ></Text>
+                {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
+              </View>
+            </View>
+            {
+              address && <View className='block-title block-flex'>
+                <View>我的收货地址</View>
+              </View>
+            }
+
+            <View className='receive-address'>
+              {address && (
+                <View
+                  className='address'
+                  onClick={() => onLocationChange(address)}
+                >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
+              )}
+            </View>
+          </View>
+        </>
       )}
 
-      <View className='location-block'>
-        <View className='block-title'>当前定位地址</View>
-        <View className='location-wrap'>
-          <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
-          <View className='btn-location' onClick={getLocationInfo}>
-            <Text
-              className={classNames('iconfont icon-zhongxindingwei', {
-                active: state.locationIng
-              })}
-            ></Text>
-            {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
-          </View>
-        </View>
-        {
-          address && <View className='block-title block-flex'>
-            <View>我的收货地址</View>
-          </View>
-        }
-
-        <View className='receive-address'>
-          {address && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
-          )}
-        </View>
-      </View>
 
       <View className='nearlyshop-list'>
-        <View className='list-title'>{location?.address ? '附近门店' : '推荐门店'}</View>
+        <View className='list-title'>{!open_divided ? (location?.address ? '附近门店' : '推荐门店') : ''}</View>
         <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View
@@ -356,11 +370,11 @@ function NearlyShop(props) {
       </View>}
 
 
-      <SpAddress isOpened={isSpAddressOpened} onClose={() => {
+      { !open_divided && <SpAddress isOpened={isSpAddressOpened} onClose={() => {
         setState((draft) => {
           draft.isSpAddressOpened = false
         })
-      }} onChange={onPickerChange} />
+      }} onChange={onPickerChange} /> }
 
     </SpPage>
   )

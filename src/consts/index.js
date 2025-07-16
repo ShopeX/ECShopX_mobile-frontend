@@ -455,6 +455,44 @@ export const DELIVERY_LIST = [
 
 export const INVITE_ACTIVITY_ID = 'INVITE_ACTIVITY_ID'
 
+//需要注册的页面类型
+export const needLoginPageType = [
+  'vipgrades',
+  'applyChief',
+  'recharge',
+  'purchase',
+  'pointShop',
+  'registActivity',
+  'group',
+  'boost_activity',
+  'boost_order',
+  'coupon_list',
+  'my_collect',
+  'tenants',
+  'address',
+  'groups_list',
+  'hottopic',
+  'zitiOrder',
+  'community_group_enable'
+]
+
+export const needLoginPage = ['purchase_activity', 'regactivity']
+
+export const TAB_PAGES = [
+  '/pages/index',
+  '/pages/category/index',
+  '/pages/cart/espier-index',
+  '/subpages/member/index',
+  '/subpages/guide/index',
+  '/subpages/guide/category/index',
+  '/subpages/guide/coupon-home/index',
+  '/subpages/guide/recommend/list',
+  '/subpages/guide/cart/espier-index',
+]
+
+export const DEFAULT_NAVIGATE_HEIGHT = 44
+export const DEFAULT_FOOTER_HEIGHT = 124 // 默认底部高度，不包含页面底部安全距离
+export const DEFAULT_SAFE_AREA_HEIGHT = 42 // 默认安全距离
 
 export * from './localstorage'
 

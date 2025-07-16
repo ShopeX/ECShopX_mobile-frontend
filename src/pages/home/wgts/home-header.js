@@ -9,16 +9,15 @@ import './home-header.scss'
 function WgtHomeHeader(props) {
   const { children, jump = true, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const { openScanQrcode, openStore, openLocation } = useSelector((state) => state.sys)
+  const { openScanQrcode, openStore, openLocation, open_divided } = useSelector((state) => state.sys)
   const {
     shopInfo: { store_name }
   } = useSelector((state) => state.shop)
-
   const handleScanCode = () => {}
 
   return (
     <View className={classNames('home-header')}>
-      {VERSION_STANDARD && openStore && openLocation == 1 && (
+      {VERSION_STANDARD && openStore && openLocation == 1 && !open_divided && (
         <View
           className='left-block'
           onClick={() => {

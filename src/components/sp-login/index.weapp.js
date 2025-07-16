@@ -82,7 +82,7 @@ function SpLogin(props, ref) {
 
       // const { uid } = entryLaunch.getLaunchParams()
       const { uid, dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS)
+      const { gu_user_id, gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
       if (uid) {
         // 分销绑定
         params['uid'] = uid
@@ -90,10 +90,17 @@ function SpLogin(props, ref) {
       if (dtid && dtid !== 'undefined') {
         params['distributor_id'] = dtid
       }
-      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      let work_userid = ''
       if (gu_user_id) {
+        work_userid = gu_user_id
+      }
+      if (gu) {
+        work_userid = gu.split('_')[0]
+      }
+      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      if (work_userid) {
         params['channel'] = 1
-        params['work_userid'] = gu_user_id
+        params['work_userid'] = work_userid
       }
 
       try {

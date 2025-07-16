@@ -50,20 +50,31 @@ export default ({ onPhoneCallComplete } = {}) => {
     return shopsWithDistance[0];
   };
 
-  // 找到创建时间最晚的白名单店铺
-  const findLatestCreatedShop = (shopList) => {
+  const handleSortShopList = (shopList) => {
     if (!shopList || !shopList.length) return null;
 
     // 复制数组以避免修改原数组
     const sortedShops = [...shopList].sort((a, b) => {
-      // 确保 created 存在，如果不存在则设置为 0
-      const timeA = a.created || 0;
-      const timeB = b.created || 0;
+      // 确保 sort_id 存在，如果不存在则设置为 0
+      const timeA = a.sort_id || 0;
+      const timeB = b.sort_id || 0;
       // 降序排序，最新的在前
       return timeB - timeA;
     });
 
-    return sortedShops[0];
+    return sortedShops;
+  }
+  
+  // 找到创建时间最晚的白名单店铺
+  const findLatestCreatedShop = (shopList) => {
+    if (!shopList || !shopList.length) return null;
+    return handleSortShopList(shopList)[0];
+  };
+
+  // 排序店铺
+  const sortShopList = (shopList) => {
+    if (!shopList || !shopList.length) return null;
+    return handleSortShopList(shopList);
   };
 
   const getWhiteShop = async () => {
@@ -90,25 +101,24 @@ export default ({ onPhoneCallComplete } = {}) => {
     // 获取用户已经加入的白名单店铺，筛选合适的店铺
     const shopList = await fetchShop()
     // 找到最近的白名单店铺
-    if (location) {
-      const nearestShop = findNearestWhiteListShop(shopList, location);
-      if (nearestShop) {
-        // 使用最近的白名单店铺信息
-        return nearestShop;
-      }
-    } else {
+    // if (location) {
+    //   const nearestShop = findNearestWhiteListShop(shopList, location);
+    //   if (nearestShop) {
+    //     // 使用最近的白名单店铺信息
+    //     return nearestShop;
+    //   }
+    // } else {
       // 找到创建时间最晚的白名单店铺
       const latestShop = findLatestCreatedShop(shopList);
-      if (latestShop) {
-      }
       return latestShop;
-    }
+    // }
 
 
 
   }
 
   // 打店铺电话
+  // todozm 修改逻辑，如果没落地页模版id，弹窗打电话，有模版id的话，没有携带店铺id，自动跳，带了 店铺id ，还是需要弹窗
   const connectWhiteShop = (phone) => { 
     if (open_divided_templateId) {
       const query = `?id=${open_divided_templateId}&fromConnect=1`
@@ -127,6 +137,18 @@ export default ({ onPhoneCallComplete } = {}) => {
         }
       })
     }
+  }
+
+  const phoneCall = (phone) => { 
+    Taro.makePhoneCall({
+      phoneNumber: phone,
+      complete: () => {
+        // 在电话操作完成后（无论成功或失败）执行
+        if (onPhoneCallComplete) {
+          onPhoneCallComplete()
+        }
+      }
+    })
   }
 
   // 没有店铺
@@ -150,5 +172,5 @@ export default ({ onPhoneCallComplete } = {}) => {
   // }
 
 
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop }
+  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop, phoneCall, sortShopList }
 }

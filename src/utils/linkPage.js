@@ -1,7 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { stringify } from 'qs'
 import configStore from '@/store'
-// import { WGTS_NAV_MAP } from '@/consts'
 
 const { store } = configStore()
 
@@ -50,13 +49,13 @@ function linkPage(data) {
     case 'custom_page':
       url = '/pages/custom/custom-page?id=' + id
       break
-    case 'marketing':
-      if (id == 'coupon_list') {
-        url = '/subpages/marketing/coupon-center'
-      } else if (id == 'groups_list') {
-        url = '/marketing/pages/item/group-list'
-      }
-      break
+    // case 'marketing':
+    //   if (id == 'coupon_list') {
+    //     url = '/subpages/marketing/coupon-center'
+    //   } else if (id == 'groups_list') {
+    //     url = '/marketing/pages/item/group-list'
+    //   }
+    //   break
     case 'seckill':
       url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id
       break
@@ -65,39 +64,34 @@ function linkPage(data) {
       clearPurchaseDtid()
       break
     case 'link':
-      if (id == 'vipgrades') {
-        url = '/subpage/pages/vip/vipgrades'
-      } else if (id == 'purchase') {
-        url = '/subpages/purchase/select-identity?is_redirt=1'
+      const { path = '' } = memberSetting[id] || {}
+      url = path
+      if (id == 'purchase') {
         clearPurchaseDtid()
-      } else if (id == 'recharge') {
-        url = '/others/pages/recharge/index'
-      } else if (id == 'serviceH5Coach') {
-      } else if (id == 'pointShop') {
-        url = '/subpages/pointshop/list'
-      } else if (id == 'levelMemberVip') {
-        url = '/subpage/pages/vip/vipgrades'
-      } else if (id == 'serviceH5Coach') {
-        url = '/marketing/pages/service/wap-link?tp=o'
-      } else if (id == 'serviceH5Sales') {
-        url = '/marketing/pages/service/wap-link?tp=r'
-      } else if (id == 'storelist') {
-        url = '/marketing/pages/service/store-list'
-      } else if (id == 'aftersales') {
-        url = '/marketing/pages/service/refund-car'
-      } else if (id == 'mycoach') {
-        url = '/marketing/pages/service/online-guide'
-      } else if (id == 'hottopic') {
-        url = '/pages/recommend/list'
-      } else if (id === 'floorguide') {
-        url = '/pages/floorguide/index'
-      } else if (id === 'grouppurchase') {
-        url = '/groupBy/pages/home/index'
-      } else if(id === 'registActivity'){
-        url = '/marketing/pages/member/activity-list'
-      } else {
-        url = ''
+      } else if (id == 'applyChief') {
+        url += `?distributor_id=${dtid || distributor_id}`
       }
+      // if (id == 'vipgrades' || id == 'levelMemberVip') {
+      //   url = '/subpage/pages/vip/vipgrades'
+      // } else if (id == 'purchase') {
+      //   url = '/subpages/purchase/select-identity?is_redirt=1'
+      //   clearPurchaseDtid()
+      // } else if (id == 'recharge') {
+      //   url = '/others/pages/recharge/index'
+      // } else if (id == 'serviceH5Coach') {
+      // } else if (id == 'pointShop') {
+      //   url = '/subpages/pointshop/list'
+      // } else if (id == 'hottopic') {
+      //   url = '/pages/recommend/list'
+      // } else if (id === 'floorguide') {
+      //   url = '/pages/floorguide/index'
+      // } else if (id === 'grouppurchase') {
+      //   url = '/groupBy/pages/home/index'
+      // } else if(id === 'registActivity'){
+      //   url = '/marketing/pages/member/activity-list'
+      // } else {
+      //   url = ''
+      // }
       break
     case 'tag':
       url = '/pages/item/list?tag_id=' + id
@@ -124,9 +118,9 @@ function linkPage(data) {
     url = '/subpages/pointshop/list'
   }
 
-  if (id == 'applyChief') {
-    url = `/subpages/community/apply-chief?distributor_id=${dtid || distributor_id}`
-  }
+  // if (id == 'applyChief') {
+  //   url = `/subpages/community/apply-chief?distributor_id=${dtid || distributor_id}`
+  // }
 
   if (linkPage === 'other_wxapp') {
     Taro.navigateToMiniProgram({
@@ -144,6 +138,77 @@ function clearPurchaseDtid(){
   store.dispatch({
     type: 'purchase/updateCurDistributorId', payload: null
   })
+}
+
+const memberSetting = {
+  vipgrades: {
+    title: '会员开通',
+    path: '/subpage/pages/vip/vipgrades'
+  },
+  applyChief: {
+    title: '社区团长申请',
+    path: '/subpages/community/apply-chief'
+  },
+  recharge: {
+    title: '储值卡',
+    path: '/others/pages/recharge/index'
+  },
+  purchase: {
+    title: '内购',
+    path: '/subpages/purchase/select-identity?is_redirt=1'
+  },
+  pointShop: {
+    title: '积分商城',
+    path: '/subpages/pointshop/list'
+  },
+  registActivity: {
+    title: '报名活动', // 我的活动
+    path: '/marketing/pages/member/activity-list'
+  },
+  group: {
+    title: '我的拼团',
+    path: '/marketing/pages/member/group-list'
+  },
+  boost_activity: { // 平台版本隐藏助力活动和助力订单
+    title: '助力活动',
+    path: '/boost/pages/home/index'
+  },
+  boost_order: { // 平台版本隐藏助力活动和助力订单
+    title: '助力订单',
+    path: '/boost/pages/order/index'
+  },
+  coupon_list: {
+    title: '优惠券',
+    path: '/subpages/marketing/coupon-center'
+  },
+  my_collect: {
+    title: '我的收藏',
+    path: '/pages/member/item-fav'
+  },
+  tenants: { // 云店版本不显示
+    title: '商家入驻',
+    path: '/subpages/merchant/login'
+  },
+  address: {
+    title: '地址管理',
+    path: '/marketing/pages/member/address'
+  },
+  groups_list: {
+    title: '限时团购',
+    path: '/marketing/pages/item/group-list'
+  },
+  hottopic: {
+    title: '种草列表',
+    path: '/pages/recommend/list'
+  },
+  zitiOrder: {
+    title: '自提订单',
+    path: '/subpages/trade/ziti-list'
+  },
+  community_group_enable: { // H5不支持
+    title: '社区团购',
+    path: '/subpages/community/index'
+  }
 }
 
 export default linkPage

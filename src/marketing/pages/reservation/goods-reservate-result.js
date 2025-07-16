@@ -50,10 +50,10 @@ function GoodReservateResult(props) {
   return (
     <SpPage className='good-reservate-result'>
       <View className='good-reservate-result__title-box'>
-        <View className='good-reservate-result__title'>
+        {/* <View className='good-reservate-result__title'>
           <Text className='icon-wancheng iconfont'> </Text>
           股东您好，报名已填报完成！
-        </View>
+        </View> */}
         {info?.joinTips && <View className='good-reservate-result__subtitle'>{info.joinTips}</View>}
       </View>
 

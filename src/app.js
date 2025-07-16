@@ -61,42 +61,29 @@ class App extends Component {
     import('../package.json').then(res => {
       console.log(`App Name: ${res.name}, version: ${res.version}`)
     })
+
+    // 导购参数缓存处理
+    const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
+    const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+    // 参数保存超过3天，清除导购参数
+    if (diffMilliseconds > 3 * 86400000) {
+      Taro.removeStorageSync(SG_GUIDE_PARAMS)
+      Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+    }
+  }
+
+  getParamsOptions = async (options) => {
+    const routeParams = await entryLaunch.getRouteParams(options)
+    if (routeParams.gu || routeParams.gu_user_id) {
+      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+    }
   }
 
   async componentDidShow(options) {
     if (isWeixin) {
       checkAppVersion()
     }
-    // isWeb环境下，H5启动时，路由携带参数在options
-    // 小程序环境，启动时，路由携带参数在options.query
-    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
-      console.log(`app componentDidShow:`, options, params)
-      Taro.setStorageSync(SG_ROUTER_PARAMS, params)
-
-      // 已缓存的导购参数
-      const guideParams = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
-      const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || ''
-      const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
-      // 参数保存超过3天，清除导购参数
-      if (diffMilliseconds > 3 * 86400000) {
-        Taro.removeStorageSync(SG_GUIDE_PARAMS)
-        Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
-      } else {
-        // 欢迎语携带用户编号
-        if (guideParams?.gu_user_id) { delete guideParams.gu_user_id }
-        Taro.setStorageSync(SG_GUIDE_PARAMS, {
-          ...guideParams,
-          ...params
-        })
-        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-      }
-
-      // 导购UV上报
-      if (S.getAuthToken()) {
-        entryLaunch.postGuideUV()
-        entryLaunch.postGuideTask()
-      }
-    })
 
     const { show_time } = await api.promotion.getScreenAd()
     let showAdv
@@ -107,6 +94,7 @@ class App extends Component {
       })
     }
     this.getSystemConfig()
+    this.getParamsOptions(options)
   }
 
   async getSystemConfig() {

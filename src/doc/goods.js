@@ -15,6 +15,7 @@ export const WGT_GOODS_GRID = {
   promotion: 'promotionActivity',
   distributorId: 'distributor_id',
   isPoint: 'is_point',
+  point: 'point',
   price: ({ price }) => price / 100, // 销售价
   activityPrice: ({ promotionActivity,act_price }) => {
    let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price
@@ -270,6 +271,8 @@ export const GOODS_INFO = {
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
       svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
       packagePrice: ({ package_price }) => package_price / 100, // 组合价
+      startNum: 'start_num',// 起订量
+      customSpecId:'custom_spec_id' //拼接规格id
     })
   },
   intro: 'intro',
@@ -284,6 +287,7 @@ export const GOODS_INFO = {
   video: 'videos',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
+  startNum: 'start_num',// 起订量
 }
 
 export const ESPIER_DETAIL_GOODS_INFO = {
@@ -324,12 +328,12 @@ export const ESPIER_DETAIL_GOODS_INFO = {
       // 如果 regions 不是数组，可以将它转换成数组   把 regions 转换成只包含一个元素的数组
       regions = [regions]
     }
-    if (item_unit) {
-      res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
-    }
-    if (regions) {
-      res.push({ attribute_name: '产地', attribute_value_name: regions.join(' ') })
-    }
+    // if (item_unit) {
+    //   res.push({ attribute_name: '计量单位', attribute_value_name: item_unit })
+    // }
+    // if (regions) {
+    //   res.push({ attribute_name: '产地', attribute_value_name: regions.join(' ') })
+    // }
     return res.concat(item_params)
   },
   groupsList: 'groups_list',
@@ -404,6 +408,8 @@ export const ESPIER_DETAIL_GOODS_INFO = {
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
       svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
       packagePrice: ({ package_price }) => package_price / 100, // 组合价
+      startNum: 'start_num',// 起订量
+      customSpecId:'custom_spec_id' //拼接规格id
     })
   },
   intro: 'intro',
@@ -419,6 +425,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
   isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
+  startNum: 'start_num',// 起订量
 }
 
 export const PACKGOODS_INFO = {

@@ -32,7 +32,8 @@ function PackageList(props) {
     const { list, total_count: total } = await api.item.packageList({
       item_id: id,
       page,
-      pageSize
+      pageSize,
+      distributor_id
     })
     list.forEach((item) => {
       item.packageTotalPrice = 0

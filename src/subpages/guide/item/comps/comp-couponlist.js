@@ -29,9 +29,9 @@ function CompCouponList(props) {
           ))}
         </ScrollView>
       </View>
-      <View className='couponlist-ft' onClick={onClick}>
+      {/* <View className='couponlist-ft' onClick={onClick}>
         领券<Text className='iconfont icon-qianwang-01'></Text>
-      </View>
+      </View> */}
     </View>
   )
 }

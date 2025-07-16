@@ -20,7 +20,8 @@ const initialState = {
   tabList: [], // 横向tab
   contentList: [],
   fixTop: 0,
-  hasSeries: false //是否有多级
+  hasSeries: false, //是否有多级
+  footerHeight: 0
 }
 
 const CategoryIndex = (props) => {
@@ -111,7 +112,15 @@ const CategoryIndex = (props) => {
   }
 
   return (
-    <SpPage className='page-guide-category-index' renderFloat={<BaTabBar />}>
+    <SpPage
+      className='page-guide-category-index'
+      renderFloat={<BaTabBar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (

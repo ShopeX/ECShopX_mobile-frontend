@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { AtButton, AtInput } from 'taro-ui'
+import { AtButton } from 'taro-ui'
 import {
   SpPage,
   SpPrice,
@@ -11,7 +11,7 @@ import {
   SpGoodsCell,
   SpFloatLayout,
   SpNumberKeyBoard,
-  SpDeliver
+  SpDeliver, SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
@@ -34,8 +34,9 @@ import {
   VERSION_B2C,
   VERSION_PLATFORM
 } from '@/utils'
+import entryLaunch from '@/utils/entryLaunch'
 import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
-import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
+import { PAYMENT_TYPE, SG_GUIDE_PARAMS } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
@@ -333,9 +334,14 @@ function CartCheckout(props) {
         {
           ...params,
           // 活动类型：拼团
-          activityType: type
+          activityType: type,
+          pageType: 'checkout'
         },
-        orderInfo
+        orderInfo,
+        () => {
+          entryLaunch.postGuideUV()
+          entryLaunch.postGuideTask()
+        }
       )
     }
   }
@@ -673,7 +679,6 @@ function CartCheckout(props) {
       draft.openStreet = openStreet
       draft.openBuilding = openBuilding
       draft.salespersonInfo = salespersonInfo
-      draft.pointPayFirst = Number(point_rule?.point_pay_first) > 0
       if (openStreet) {
         const {
           multiValue,
@@ -691,16 +696,19 @@ function CartCheckout(props) {
         draft.community = community
       }
 
-      if(isFirstCalc && Number(point_rule?.point_pay_first) > 0){
-        const maxpoint = receiptType == 'ziti' ? max_point_ziti : max_point
-        let firstPoint = Math.min(maxpoint,user_point)
-
-        draft.point_use = firstPoint
-        draft.pointInfo = {
-          ...point_info,
-          real_use_point:firstPoint
+      {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
+      if ((VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0))) {
+        if(isFirstCalc && Number(point_rule?.point_pay_first) > 0) {
+          const maxpoint = receiptType == 'ziti' ? max_point_ziti : max_point
+          let firstPoint = Math.min(maxpoint,user_point)
+          draft.point_use = firstPoint
+          draft.pointInfo = {
+            ...point_info,
+            real_use_point:firstPoint
+          }
+          draft.isFirstCalc = false
         }
-        draft.isFirstCalc = false
+        draft.pointPayFirst = Number(point_rule?.point_pay_first) > 0
       }
     })
     // calc.current = false
@@ -736,6 +744,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
+    const routerParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -753,6 +762,15 @@ function CartCheckout(props) {
       pay_type:payType,
       // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
+    }
+    // 处理导购数据(旧)
+    if (routerParams?.cxdid) {
+      cus_parmas.cxdid = routerParams?.cxdid;
+      cus_parmas.distributor_id = routerParams?.dtid;
+      cus_parmas.cart_type = "cxd";
+      cus_parmas.order_type = "normal_shopguide";
+      cus_parmas.salesman_id = routerParams?.smid;
+      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
     if (receiptType === 'ziti') {
@@ -801,7 +819,6 @@ function CartCheckout(props) {
     // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
-
     return cus_parmas
   }
 

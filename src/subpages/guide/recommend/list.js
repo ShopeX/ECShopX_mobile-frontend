@@ -119,7 +119,15 @@ function GuideRecommendList(props) {
   }
 
   return (
-    <SpPage className='page-guide-recommendlist' renderFooter={<BaTabBar />}>
+    <SpPage
+      className='page-guide-recommendlist'
+      renderFooter={<BaTabBar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       <View id='search-wrap' className='search-wrap'>
         <SpSearchBar
           keyword={keywords}

@@ -59,7 +59,7 @@ function TradeAfterSaleList(props) {
       order_type: 'normal',
       aftersales_status: status
     }
-    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
+    // params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
     const { list, total_count } = await api.aftersales.list(params)
     const tempList = pickBy(list, doc.trade.AFTER_TRADE)
     setState((draft) => {

@@ -56,8 +56,8 @@ export default class WgtWriting extends Component {
           </View>
         )}
         <View
-          className={`slider-wra wgt-writing ${config.padded ? 'padded' : ''}`}
-          style={`${config.align ? `text-align:${config.align}` : ''}`}
+          className={`slider-wra wgt-writing ${config?.padded ? 'padded' : ''}`}
+          style={`${config?.align ? `text-align:${config?.align}` : ''}`}
         >
           {contentArr.map((item, index) => {
             return (

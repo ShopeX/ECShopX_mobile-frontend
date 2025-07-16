@@ -62,10 +62,12 @@
 
     .agreement-content {
       display: flex;
-      align-items: center;
       justify-content: center;
       font-size: 26px;
       margin: 50px 0 30px;
+
+      padding: 0px 50px;
+      align-items: flex-start;
 
       .sp-checkbox-new {
         .icon-round {

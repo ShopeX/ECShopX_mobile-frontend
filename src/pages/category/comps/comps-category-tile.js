@@ -16,7 +16,8 @@ const initialState = {
   activeIndex: 0,
   tabList: [], // 横向tab
   contentList: [],
-  hasSeries: false //是否有多级
+  hasSeries: false, //是否有多级
+  footerHeight: 0
 }
 
 const CompsCategoryTile = (props) => {
@@ -89,7 +90,15 @@ const CompsCategoryTile = (props) => {
   console.log('==currentList==', currentList, tabList)
 
   return (
-    <SpPage className='page-category-index-new' renderFooter={<SpTabbar />}>
+    <SpPage
+      className='page-category-index-new'
+      renderFooter={<SpTabbar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (

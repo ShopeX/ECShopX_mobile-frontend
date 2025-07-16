@@ -1,141 +1,142 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Swiper, SwiperItem } from '@tarojs/components'
-import { SpImg } from '@/components'
+import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
+import { SpImage } from '@/components'
+import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
-import { WgtPlateType } from './index'
 
 import './slider.scss'
 
-export default class WgtSlider extends Component {
-  static defaultProps = {
-    info: null
-  }
+const initialState = {
+  currentDot: 0,
+  curIdx: 0,
+  curContent: ''
+}
 
-  constructor(props) {
-    super(props)
+function WgtSlider(props) {
+  const { info } = props
+  const { base, config, data } = info
+  const [state, setState] = useImmer(initialState)
+  const { currentDot, curIdx, curContent } = state
 
-    this.state = {
-      curIdx: 0,
-      index: 0
-    }
-  }
+  useEffect(() => {
+    setState(draft => {
+      draft.curContent = (data[curIdx] || {}).content
+    })
+  }, [curIdx])
 
-  static options = {
-    addGlobalClass: true
-  }
+  const handleClickItem = linkPage
 
-  handleClickItem = linkPage
-
-  // handleSwiperChange = (e) => {
-  //   const { current  } = e.detail
-
-  //   this.setState({
-  //     curIdx: current
-  //   })
-  // }
-  handleSwiperChange = (e) => {
+  const dotChange = (e) => {
     const { current } = e.detail
-    this.setState({
-      curIdx: current,
-      index: e.target.current
+    setState(draft => {
+      draft.currentDot = current
     })
   }
 
-  render() {
-    const { info } = this.props
-    const { curIdx, index } = this.state
-
-    if (!info) {
-      return null
-    }
-    const { config, base, data } = info
-    const curContent = (data[curIdx] || {}).content
-
-    return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
-        {base.title && (
-          <View className='wgt__header'>
-            <View className='wgt__title'>{base.title}</View>
-            <View className='wgt__subtitle'>{base.subtitle}</View>
-          </View>
-        )}
-        {config ? (
-          <View className={`slider-wrap ${config.padded ? 'padded' : ''}`}>
-            {data[0] && (
-              <Image mode='widthFix' className='scale-placeholder' lazyLoad src={data[0].imgUrl} />
-            )}
-            <Swiper
-              className='slider-img'
-              circular
-              autoplay
-              current={curIdx}
-              interval={config.interval}
-              duration={300}
-              onChange={this.handleSwiperChange}
-            >
-              {data.map((item, idx) => {
-                // console.log('Swiper-item',item)
-                return (
-                  <SwiperItem
-                    key={`${idx}1`}
-                    className={`slider-item ${config.rounded ? 'rounded' : null}`}
-                  >
-                    <View
-                      style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
-                      onClick={this.handleClickItem.bind(this, item.linkPage, item.id, item)}
-                    >
-                      <WgtPlateType info={item} index={index} num={idx} base={base} />
-                      <SpImg
-                        img-class='slider-item__img'
-                        src={item.imgUrl}
-                        mode='widthFix'
-                        width='750'
-                        lazyLoad
-                      />
-                    </View>
-                  </SwiperItem>
-                )
-              })}
-            </Swiper>
-
-            {data.length > 1 && config.dot && (
-              <View
-                className={classNames(
-                  'slider-dot',
-                  { 'dot-size-switch': config.animation },
-                  config.dotLocation,
-                  config.dotCover ? 'cover' : 'no-cover',
-                  config.dotColor,
-                  config.shape
-                )}
-              >
-                {data.map((dot, dotIdx) => (
-                  <View
-                    className={classNames('dot', { active: curIdx === dotIdx })}
-                    key={`${dotIdx}1`}
-                  ></View>
-                ))}
-              </View>
-            )}
-
-            {data.length > 1 && !config.dot && (
-              <View
-                className={classNames(
-                  'slider-count',
-                  config.dotLocation,
-                  config.shape,
-                  config.dotColor
-                )}
-              >
-                {curIdx + 1}/{data.length}
-              </View>
-            )}
-          </View>
-        ) : null}
-        {config.content && curContent && <View className='slider-caption'>{curContent}</View>}
-      </View>
-    )
+  const swiperChange = (e) => {
+    const { current } = e.detail
+    setState(draft => {
+      draft.curIdx = current
+    })
   }
+
+  if (!info) {
+    return null
+  }
+
+  return (
+    <View
+      className={classNames('wgt wgt-slider', {
+        'wgt__padded': base.padded
+      })}
+    >
+
+      {base.title && (
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+          </View>
+        </View>
+      )}
+
+      {config && (
+        <View
+          className={classNames('slider-swiper-wrap', {
+            'padded': config.padded
+          })}
+        >
+          {data[0] && (
+            <SpImage
+              className={classNames('placeholder-img', {
+                'rounded': config.rounded
+              })}
+              src={data[0].imgUrl}
+            />
+          )}
+          <Swiper
+            className='slider-img'
+            circular
+            autoplay
+            current={curIdx}
+            interval={config.interval}
+            duration={300}
+            onChange={dotChange}
+            onAnimationFinish={swiperChange}
+          >
+            {data.map((item, idx) => {
+              return (
+                <SwiperItem key={`slider-item__${idx}`} className='slider-item'>
+                  <View
+                    className={classNames('wrapper-img', {
+                      'rounded': config.rounded
+                    })}
+                    onClick={() => handleClickItem(item)}
+                  >
+                    <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
+                  </View>
+                </SwiperItem>
+              )
+            })}
+          </Swiper>
+        </View>
+      )}
+      {data.length > 1 && (
+        <View
+          className={classNames(
+            'slider-pagination',
+            config.dotLocation,
+            config.shape,
+            config.dotColor,
+            {
+              'cover': !config.dotCover
+            }
+          )}
+        >
+          {config.dot &&
+            data.map((dot, dotIdx) => (
+              <View
+                className={classNames('dot-item', { active: currentDot === dotIdx })}
+                key={`dot-item__${dotIdx}`}
+              ></View>
+            ))}
+
+          {!config.dot && (
+            <View className='pagination-count'>
+              {currentDot + 1}/{data.length}
+            </View>
+          )}
+        </View>
+      )}
+      {config.content && curContent && <View className='slider-caption'>{curContent}</View>}
+    </View>
+  )
 }
+
+WgtSlider.options = {
+  addGlobalClass: true
+}
+
+export default WgtSlider

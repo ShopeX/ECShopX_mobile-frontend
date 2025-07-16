@@ -1,0 +1,84 @@
+/********* flexbox & grid *********/
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.items-center {
+  align-items: center;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-items-center {
+  justify-content: center;
+}
+
+.justify-items-end {
+  justify-content: flex-end;
+}
+
+.box-border {
+  box-sizing: border-box;
+}
+
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+/********* typography *********/
+
+// text-overflow
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
+.text-clip {
+  text-overflow: clip;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-wrap {
+  white-space: wrap;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+// font-weight
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+// white-space
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+// color
+.primary-text {
+  color: var(--color-primary);
+}

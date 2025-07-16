@@ -139,40 +139,18 @@ export function isObjectValueEqual(a, b) {
 
 export const isIphoneX = () => {
   if (isWeixin) {
-    try {
-      const {
-        model,
-        system,
-        windowWidth,
-        windowHeight,
-        screenHeight,
-        screenWidth,
-        pixelRatio,
-        brand
-      } = Taro.getSystemInfoSync()
-      const { networkType } = Taro.getNetworkType()
-
-      let px = screenWidth / 750 //rpx换算px iphone5：1rpx=0.42px
-
-      Taro.$systemSize = {
-        windowWidth,
-        windowHeight,
-        screenHeight,
-        screenWidth,
-        model,
-        px,
-        pixelRatio,
-        brand,
-        system,
-        networkType
-      }
-      if (system.indexOf('iOS') !== -1) {
-        Taro.$system = 'iOS'
-      }
-      S.set('ipxClass', model.toLowerCase().indexOf('iphone x') >= 0 ? 'is-ipx' : '')
-    } catch (e) {
-      console.log(e)
-    }
+    const { model } = Taro.getSystemInfoSync()
+    return (
+      model.search(
+        /iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*17|iPhone\s*16|iPhone\s*10/g
+      ) > -1
+    )
+  } else if (isAPP()) {
+    return /iphone/gi.test(window.navigator.userAgent) && window.screen.height >= 812
+  } else if (isWxWeb && getBrowserEnv().ios) {
+    return true
+  } else if (isWeb) {
+    return false
   }
 }
 
@@ -755,7 +733,7 @@ const getDistributorId = (_dtid) => {
   const {
     shopInfo: { distributor_id, shop_id = 0 }
   } = shop
-  console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
+  // console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
@@ -877,6 +855,37 @@ const resolveUrlParamsParse = (url) => {
   return res
 }
 
+const getMemberLevel = (gradeInfo = {}) => {
+  //由于测试环境和正式环境为两套id所以需要用name来兼容一下测试环境，此处为正式环境id映射关系
+  const gradeNameMap = {
+    '白卡': '1',
+    '蓝享卡': '2',
+    '银享卡': '3',
+    '金享卡': '4',
+    '铂金卡': '5',
+    '黑卡': '6'
+  }
+  const gradeIdMap = {
+    '50001': '1',
+    '50002': '2',
+    '50003': '3',
+    '50004': '4',
+    '50005': '5',
+    '50013': '6'
+  }
+  const { grade_id, grade_name } = gradeInfo
+  return gradeIdMap[grade_id] || gradeNameMap[grade_name]
+}
+
+export const pxToRpx = (px) => {
+  const { screenWidth } = Taro.getSystemInfoSync()
+  return parseInt((screenWidth * px) / 375)
+}
+
+export const pxToUnitRpx = (px) => {
+  return Taro.pxTransform(px * 2)
+}
+
 export {
   classNames,
   log,
@@ -902,7 +911,8 @@ export {
   getCurrentPageRouteParams,
   resolveStringifyParams,
   resolveUrlParamsParse,
-  getCurrentShopId
+  getCurrentShopId,
+  getMemberLevel
 }
 
 export * from './platforms'

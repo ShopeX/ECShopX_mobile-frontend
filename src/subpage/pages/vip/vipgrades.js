@@ -101,7 +101,7 @@ export default class VipIndex extends Component {
     api.vip
       .getBindCardList({
         type: 'vip_grade',
-        grade_id: item[curTabIdx].vip_grade_id
+        grade_id: item[curTabIdx]?.vip_grade_id
       })
       .then((res) => {
         const { list, total_count } = res
@@ -166,7 +166,7 @@ export default class VipIndex extends Component {
     const env = process.env.TARO_ENV
 
     const params = {
-      vip_grade_id: vip_grade.vip_grade_id,
+      vip_grade_id: vip_grade?.vip_grade_id,
       card_type: vip_grade.price_list[curCellIdx].name,
       distributor_id: Taro.getStorageSync('trackIdentity').distributor_id || '',
       pay_type: env === 'h5' ? 'wxpayh5' : payType,

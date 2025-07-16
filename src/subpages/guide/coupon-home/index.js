@@ -26,7 +26,8 @@ import {
 import './index.scss'
 
 const initialState = {
-  list: []
+  list: [],
+  footerHeight: 0
 }
 function GuideCouponIndex(props) {
   const { isLogin, login } = useQwLogin({
@@ -98,7 +99,15 @@ function GuideCouponIndex(props) {
   }
   console.log('list:', list)
   return (
-    <SpPage className='page-guide-coupon' renderFooter={<BaTabBar />}>
+    <SpPage
+      className='page-guide-coupon'
+      renderFooter={<BaTabBar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       <SpScrollView className='coupon-list' auto={false} ref={couponRef} fetch={fetch}>
         {list.map((item, index) => (
           <View className='coupon-item__wrap' key={`coupon-item__${index}`}>

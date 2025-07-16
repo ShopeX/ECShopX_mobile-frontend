@@ -17,13 +17,16 @@ export function requestIntercept() {
         const { smid: smid_2 } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
         smid = smid_1 || smid_2
         
+        let _data = qs.parse(data)
         let work_userid = gu_user_id
         if (gu) {
           work_userid = gu.split('_')[0]
         }
+        _data['work_userid'] = work_userid
         if (smid) {
-          const _data = qs.parse(data)
           _data['salesman_id'] = smid
+        }
+        if (_data) {
           requestParams.data = qs.stringify(_data)
         }
         console.log('requestIntercept:', requestParams)

@@ -2,14 +2,13 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
+import dayjs from 'dayjs'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS_UPDATETIME, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
-import MapLoader from '@/utils/lbs'
 
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
-// const geocodeUrl = 'https://restapi.amap.com/v3/geocode' //高德
 const $instance = getCurrentInstance()
 const { store } = configStore()
 class EntryLaunch {
@@ -28,7 +27,7 @@ class EntryLaunch {
    */
   async getRouteParams(options) {
     // const { params } = $instance.router;
-    const params = options?.query || $instance.router?.params || {}
+    const params = options?.query || options?.params || $instance.router?.params || {}
     let _options = {}
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
@@ -37,6 +36,7 @@ class EntryLaunch {
       _options = {
         ...resolveUrlParamsParse(params.scene)
       }
+      debugger
       if (_options.share_id) {
         const res = await api.wx.getShareId({
           share_id: _options.share_id
@@ -77,60 +77,9 @@ class EntryLaunch {
    * @function 初始化腾讯地图配置
    */
   async initAMap() {
-    return new Promise((resolve, reject) => {
-      MapLoader().then((qq) => {
-        // 初始化地图对象
-        this.geolocation = new qq.maps.Geolocation({
-          key: process.env.APP_MAP_KEY,
-          complete: function(result) {
-            console.log('complete', result)
-          },
-          error: function(error) {
-            console.error('error', error)
-          }
-        })
-        
-        // 初始化地址解析对象
-        this.geocoder = new qq.maps.Geocoder({
-          complete: function(result) {
-            console.log('complete', result)
-          },
-          error: function(error) {
-            console.error('error', error)
-          }
-        })
-        
-        console.log('entryLaunch', this)
-        resolve('ok')
-      }).catch(err => {
-        reject(err)
-      })
-    })
+    // 初始化地图对象
+    this.geolocation = new qq.maps.Geolocation()
   }
-
-  /**
-   * @function 初始化高德地图配置
-   */
-  // async initAMap(callback) {
-  //   return new Promise((reslove, reject) => {
-  //     MapLoader().then((amap) => {
-  //       amap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
-  //         this.geolocation = new amap.Geolocation({
-  //           enableHighAccuracy: true, //是否使用高精度定位，默认:true
-  //           timeout: 10000, //超过10秒后停止定位，默认：5s
-  //           position: 'RB', //定位按钮的停靠位置
-  //           buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-  //           zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-  //         })
-  //         this.geocoder = new AMap.Geocoder({
-  //           radius: 1000 //范围，默认：500
-  //         })
-  //       console.log('entryLaunch', this)
-  //         reslove('ok')
-  //       })
-  //     })
-  //   })
-  // }
 
   /**
    * @function 获取当前店铺
@@ -224,24 +173,20 @@ class EntryLaunch {
         })
       })
     } else {
-      console.log('getLocationInfo')
       return new Promise(async (reslove, reject) => {
-        if (!this.geolocation) {
-          setTimeout(() => {
-            this.getLocationInfo()
-          }, 1000)
-          return
-        }
-        this.geolocation.getCurrentPosition(function (status, result) {
-          if (status == 'complete') {
-            reslove({
-              lng: result.position.lng,
-              lat: result.position.lat
-            })
-          } else {
-            reject({ message: result.message })
-          }
-        })
+        this.geolocation.getLocation((res) => {
+          reslove({
+            lng: res.lng,
+            lat: res.lat,
+            province: res.province,
+            city: res.city,
+            district: res.district,
+            address: res.addr
+
+          })
+        }, (err) => {
+          console.error('getLocationInfo error', err)
+        }, { timeout: 8000 })
       })
     }
   }
@@ -256,42 +201,6 @@ class EntryLaunch {
     log.debug('getCurrentAddressInfo: ', res)
     return res
   }
-
-    /**
-   * @function 高德根据地址解析经纬度
-   */
-    // async getLnglatByAddress(address) {
-    //   const res = await Taro.request({
-    //     url: `${geocodeUrl}/geo`,
-    //     data: {
-    //       key: process.env.APP_MAP_KEY,
-    //       address
-    //     }
-    //   })
-  
-    //   // console.log(0,res);
-    //   if (res.data.status == 1) {
-    //     const { geocodes } = res.data
-    //     if (geocodes.length > 0) {
-    //     return {
-    //         address: geocodes[0].formatted_address,
-    //         province: geocodes[0].province,
-    //         city: geocodes[0].city,
-    //         district: geocodes[0].district,
-    //         lng: geocodes[0].location.split(',')[0],
-    //         lat: geocodes[0].location.split(',')[1]
-    //       }
-    //     } else {
-    //       return {
-    //         error: '没有搜索到地址'
-    //       }
-    //     }
-    //   } else {
-    //     return {
-    //       error: '地址解析错误'
-    //     }
-    //   }
-    // }
 
   /**
    * @function 根据地址解析经纬度--腾讯
@@ -340,41 +249,6 @@ class EntryLaunch {
 
 
   /**
-   * @function 根据经纬度解析地址 -- 高德
-   * @params lnglat Array
-   */
-  // async getAddressByLnglatWebAPI(lng, lat) {
-  //   const res = await Taro.request({
-  //     url: `${geocodeUrl}/regeo`,
-  //     data: {
-  //       key: process.env.APP_MAP_KEY,
-  //       location: `${lng},${lat}`
-  //     }
-  //   })
-
-  //   if (res.data.status == 1) {
-  //     const {
-  //       formatted_address,
-  //       addressComponent: { province, city, district }
-  //     } = res.data.regeocode
-  //     return {
-  //       lng,
-  //       lat,
-  //       address: formatted_address,
-  //       province: province,
-  //       city: isArray(city) ? province : city,
-  //       district: district
-  //     }
-  //   } else {
-  //     return {
-  //       error: '地址解析错误'
-  //     }
-  //   }
-  // }
-  
-
-  
-  /**
    * @function 根据经纬度解析地址 -- 腾讯
    * @params lnglat Array
    */
@@ -386,7 +260,7 @@ class EntryLaunch {
         location: `${lat},${lng}`
       }
     })
-    if (res.data.status ==0) {
+    if (res.data.status == 0) {
       const {
         address,
         address_component: { province, city, district }
@@ -455,7 +329,7 @@ class EntryLaunch {
                   } else {
                     Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
                   }
-                }else{
+                } else {
                   if (callback) callback(false)
                 }
               }
@@ -471,12 +345,13 @@ class EntryLaunch {
         if (callback) callback(res)
       }
     } else {
-      let { lng, lat } = await this.getLocationInfo()
-      let res = {}
-      if (lat) {
-        res = await this.getAddressByLnglatWebAPI(lng, lat)
-      }
+      // h5环境
+      const res = await this.getLocationInfo()
       if (callback) callback(res)
+      // let res = {}
+      // if (lat) {
+      //   res = await this.getAddressByLnglatWebAPI(lng, lat)
+      // }
     }
   }
 
@@ -484,10 +359,18 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    const { gu } = routerParams || {}
+    const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    debugger
+    const { gu, gu_user_id } = routerParams || {}
+    let work_userid = ''
     if (gu) {
-      const [work_userid] = gu.split('_')
+      work_userid = gu.split('_')[0]
+    }
+    if (gu_user_id) {
+      work_userid = gu_user_id
+    }
+    if (work_userid) {
+    debugger
       await api.user.uniquevisito({
         work_userid
       })
@@ -502,7 +385,8 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask() {
-    const { path, params } = $instance.router
+    const { path } = $instance.router
+    let params = await this.getRouteParams($instance.router)
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -513,24 +397,38 @@ class EntryLaunch {
     if (!routePath[path]) {
       return
     }
+    if (path == '/pages/cart/espier-checkout') {
+      params = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params
-    if (gu && S.getAuthToken()) {
-      const [employee_number, shop_code] = gu.split('_')
+    let work_userid = ''
+    let shop_code = ''
+    if (gu) {
+      const [employeenumber, shopcode] = gu.split('_')
+      work_userid = employeenumber
+      shop_code = shopcode
+    }
+    if (gu_user_id) {
+      work_userid = gu_user_id
+    }
+    if (work_userid && S.getAuthToken()) {
       const _params = {
-        employee_number,
+        employee_number: work_userid,
         subtask_id,
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
         event_type: routePath[path]
       }
-      api.wx.taskReportData(_params)
+      if (subtask_id) {
+        api.wx.taskReportData(_params)
+      }
 
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
       api.wx.interactiveReportData({
-        event_id: employee_number,
+        event_id: work_userid,
         user_type: 'wechat',
         user_id,
         event_type: routePath[path],

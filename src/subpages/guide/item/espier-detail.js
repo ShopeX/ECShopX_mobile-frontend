@@ -426,7 +426,7 @@ function EspierDetail(props) {
 
             <View className='goods-name-wrap'>
               <View className='goods-name'>{info.itemName}</View>
-              {isWeixin && (
+              {/* {isWeixin && (
                 <View
                   className='btn-share'
                   onClick={() => {
@@ -438,7 +438,7 @@ function EspierDetail(props) {
                   <Text className='iconfont icon-fenxiang-01'></Text>
                   <Text className='share-txt'>分享</Text>
                 </View>
-              )}
+              )} */}
             </View>
           </View>
 
