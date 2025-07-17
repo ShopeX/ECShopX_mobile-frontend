@@ -125,6 +125,7 @@ function WgtFullSlider(props) {
     if (!config) return null
     const page = Number(curIdx + 1)
     const { dotbottom, indicatorText, indicatorFontSize, indicatorColor } = config
+    const currentItem = localData[curIdx]
     return (
       <View
         className='indicator-item'
@@ -137,21 +138,33 @@ function WgtFullSlider(props) {
           <Text> / </Text>
           <Text>{localData.length < 10 ? '0' + localData.length : localData.length}</Text>
         </View>
-        <View className='indicator-text' style={{ fontSize: indicatorFontSize + 'px' }}>
-          {indicatorText}
-        </View>
-        <View className='indicator-arrow' style={{
-          marginRight: 4,
-          width: 0,
-          height: 0,
-          borderTop: '8px solid transparent',
-          borderBottom: '8px solid transparent',
-          borderLeft: `12px solid ${indicatorColor}`,
-          position: 'absolute',
-          right: '-22px',
-          top: indicatorText ? '40%' : '30%',
-          color: indicatorColor
-        }} />
+        {currentItem?.moreLink ? (
+          <View
+            className='indicator-text'
+            style={{ fontSize: indicatorFontSize + 'px' }}
+            onClick={() => linkPage(currentItem?.moreLink)}
+          >
+            {indicatorText}
+          </View>
+        ) : null}
+        {currentItem?.moreLink ? (
+          <View
+            className='indicator-arrow'
+            onClick={() => linkPage(currentItem?.moreLink)}
+            style={{
+              marginRight: 4,
+              width: 0,
+              height: 0,
+              borderTop: '8px solid transparent',
+              borderBottom: '8px solid transparent',
+              borderLeft: `12px solid ${indicatorColor}`,
+              position: 'absolute',
+              right: '-22px',
+              top: indicatorText ? '40%' : '30%',
+              color: indicatorColor
+            }}
+          />
+        ) : null}
       </View>
     )
   }
@@ -270,7 +283,7 @@ function WgtFullSlider(props) {
                   objectFit='cover'
                   showCenterPlayBtn={false}
                   showFullscreenBtn={false}
-                  muted
+                  muted={false}
                   id={`swiperVideo_${index}${props.index}`}
                   onEnded={e => handlePlayEnd(e, item)}
                   onPlay={e => handlePlayStart(e, item, index)}

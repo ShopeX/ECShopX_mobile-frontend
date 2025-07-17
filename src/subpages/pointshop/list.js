@@ -250,7 +250,15 @@ function PointShopList() {
               <SpImage src={userInfo?.avatar || 'user_icon.png'} width={80} height={80} />
               <Text className='user-name'>{userInfo?.username}</Text>
             </View>
-            <View className='point-total'>
+            <View
+              className='point-total'
+              onClick={() => {
+                console.log('point-total')
+                Taro.navigateTo({
+                  url: '/subpages/member/point-detail'
+                })
+              }}
+            >
               <SpPoint value={point} />
             </View>
           </View>
