@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components'
-import { useLogin } from '@/hooks'
+import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { SG_POLICY } from '@/consts'
 import { classNames, showToast, formatTime, isWeixin, isWeb } from '@/utils'
@@ -23,6 +23,8 @@ const initialState = {
 
 function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
+  const { showModal } = useModal()
+  const { lang } = useSelector((state) => state.user)
   const {
     formItems,
     formUserInfo,
@@ -53,34 +55,41 @@ function MemberUserInfo() {
     const data = await api.user.regParam({
       is_edite_page: true
     })
-    const {other_params:{custom_data}} = userInfo
+    const { other_params: { custom_data } } = userInfo
     const _formItems = []
     const _formUserInfo = {
+      language: userInfo.language || 'zh',
       avatar: userInfo.avatar,
       username: userInfo.username,
       ...custom_data
     }
     Object.keys(data).forEach((key) => {
-    const value = custom_data?.[key] ||userInfo[key]
-    if (data[key].is_open) {
+      const value = custom_data?.[key] || userInfo[key]
+      if (data[key].is_open) {
         if (key !== 'mobile' && key !== 'username') {
           _formItems.push(data[key])
         }
       }
       if (data[key].element_type == 'checkbox') {
-        _formUserInfo[key] =  value&&value.length>0? value.split(',').map(item=>({name:item,ischecked:true})) : [];
+        _formUserInfo[key] = value && value.length > 0 ? value.split(',').map(item => ({ name: item, ischecked: true })) : [];
       } else {
         _formUserInfo[key] = value || ''
       }
-      if(key === 'sex'){
+      if (key === 'sex') {
         const sexType = {
-          0:'未知',
-          1:'男',
-          2:'女'
+          0: '未知',
+          1: '男',
+          2: '女'
         }
         _formUserInfo[key] = sexType[value]
       }
     })
+    // _formItems.push({
+    //   key: 'language',
+    //   name: '切换语言',
+    //   field_type: 4,
+    //   select: ['中文', 'english']
+    // })
 
     setState((draft) => {
       draft.formItems = _formItems
@@ -174,7 +183,7 @@ function MemberUserInfo() {
           'placeholder': formUserInfo[key].length == 0
         })}
         onClick={() => {
-            const _checkboxList = checkbox.map((item) => {
+          const _checkboxList = checkbox.map((item) => {
             const fd = formUserInfo[key].find((k) => k.name == item.name)
             const isChecked = fd ? fd.ischecked : false
             return {
@@ -193,9 +202,9 @@ function MemberUserInfo() {
       >
         {formUserInfo[key].length > 0
           ? formUserInfo[key]
-              .filter((item) => !!item.ischecked)
-              .map((item) => item.name)
-              .join(',')
+            .filter((item) => !!item.ischecked)
+            .map((item) => item.name)
+            .join(',')
           : required_message}
       </View>
     )
@@ -265,6 +274,23 @@ function MemberUserInfo() {
     setState((draft) => {
       draft.formUserInfo.avatar = res[0]?.url
     })
+  }
+
+  const hanldeShowSwitchLanguage = async () => {
+    console.log('lang', lang)
+    const langText = lang === 'zh-cn' ? '英文' : '中文'
+   const res = await  showModal({
+      title: `切换语言到${langText}`,
+      content: '切换后语言后自动重启应用',
+      confirmText: '确定',
+      cancelText: '取消',
+    })
+    if (res.confirm) {
+    globalThis.$changeLang(lang === 'zh-cn' ? 'en' : 'zh-cn')
+      Taro.reLaunch({
+        url: '/subpages/member/index'
+      })
+    }
   }
 
   const onUploadAvatarFile = async () => {
@@ -369,6 +395,16 @@ function MemberUserInfo() {
             value={renderFormItem(item)}
           ></SpCell>
         ))}
+      </View>
+
+
+      <View className='block-container'>
+        <SpCell
+          isLink
+          title='切换语言'
+          value='切换后语言后自动重启应用'
+          onClick={hanldeShowSwitchLanguage}
+        ></SpCell>
       </View>
 
       <View className='block-container'>

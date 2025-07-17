@@ -77,6 +77,17 @@
     const isFunction = (fn) => {
         return typeof fn === 'function';
     };
+    globalThis.localStorage = {
+        getItem: (key) => {
+            return Taro.getStorageSync(key)
+        },
+        setItem: (key, value) => {
+            Taro.setStorageSync(key, value)
+        },
+        removeItem: (key) => {
+            Taro.removeStorageSync(key)
+        }
+    }
     
     const withStorageLang = isFunction && globalThis && globalThis.localStorage && 
     isFunction(globalThis.localStorage.getItem) && globalThis.localStorage.getItem('lang');
@@ -93,6 +104,7 @@
     globalThis.$changeLang = (lang) => {
         const configStore = require('@/store').default
         const updateLang = require('@/store/slices/user').updateLang
+        globalThis.localStorage.setItem('lang', lang)
         const { store } = configStore()
         store.dispatch(updateLang(lang))
         globalThis.$t.locale(globalThis.langMap[lang], 'lang');

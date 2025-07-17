@@ -513,7 +513,7 @@ function SpPage(props, ref) {
           )}
         </View>
       )}
-
+{/* 
     { modalDivided.isShow && <SpModalDivided 
       content={modalDivided.content}
       cancelText={modalDivided.cancelText} 
@@ -521,7 +521,7 @@ function SpPage(props, ref) {
       showCancel={modalDivided.showCancel}
       onCancel={modalDivided.onCancel}
       onConfirm={modalDivided.onConfirm}
-    />}
+    />} */}
     </View>
   )
 }

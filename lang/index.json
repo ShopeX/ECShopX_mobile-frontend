@@ -816,7 +816,7 @@
 	},
 	"kzjg2": {
 		"zh-cn": "确定",
-		"en": "\"Sure\"",
+		"en": "Sure",
 		"ja": "確定です"
 	},
 	"ayu1lb6": {
@@ -11953,5 +11953,25 @@
 		"zh-cn": "切换语言",
 		"en": "Switch languages",
 		"ja": "言語を切り替えます"
+	},
+	"mtva2": {
+		"zh-cn": "英文",
+		"en": "English",
+		"ja": "英語です"
+	},
+	"dure2": {
+		"zh-cn": "中文",
+		"en": "Chinese",
+		"ja": "中文"
+	},
+	"lb1ike5": {
+		"zh-cn": "切换语言到",
+		"en": "Switch languages to",
+		"ja": "言語を切り替えます"
+	},
+	"hegx50c": {
+		"zh-cn": "切换后语言后自动重启应用",
+		"en": "The application will automatically restart after switching languages",
+		"ja": "言語を切り替えると自動的にアプリを再起動します。"
 	}
 }

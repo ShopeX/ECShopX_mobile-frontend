@@ -468,10 +468,7 @@ function MemberIndex(props) {
 
   return (
     <SpPage className='pages-member-index' renderFooter={<SpTabbar />}>
-      <View onClick={() => {
-       
-        $changeLang('en')
-      }}>切换语言</View>
+
       <ScrollView scrollY style='height: 100%;'>
         <View
           className='header-block'
