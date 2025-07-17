@@ -8,7 +8,7 @@ import Taro, {
   getCurrentInstance,
   useReady
 } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
 import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
@@ -402,51 +402,69 @@ const SpPage = memo(
               }}
             >
               {/* {(state.btnReturn || state.btnHome) && ( */}
-                <View
-                  className='custom-navigation__left-block flex items-center'
-                  style={{
-                    // padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
-                    // maxWidth: `${state.menuWidth}px`,
-                    // width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
-                    // margin: `${state.navigationLSpace}px 0px`
-                    gap: `${state.navigationLSpace}px`,
-                    width: `${state.menuWidth}px`,
-                    height: '100%'
-                  }}
-                >
-                  {state.btnReturn && (
+              <View
+                className='custom-navigation__left-block flex items-center'
+                style={{
+                  // padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
+                  // maxWidth: `${state.menuWidth}px`,
+                  // width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
+                  // margin: `${state.navigationLSpace}px 0px`
+                  gap: `${state.navigationLSpace}px`,
+                  width: `${state.menuWidth}px`,
+                  height: '100%'
+                }}
+              >
+                {state.btnReturn && (
+                  <SpImage
+                    src='fv_back.png'
+                    width={36}
+                    height={36}
+                    onClick={() => Taro.navigateBack()}
+                  />
+                )}
+                {state.btnHome && (
+                  <SpImage
+                    src='fv_home.png'
+                    width={36}
+                    height={36}
+                    onClick={() => {
+                      Taro.reLaunch({
+                        url: isGoodsShelves()
+                          ? '/subpages/guide/index'
+                          : VERSION_IN_PURCHASE
+                          ? '/pages/purchase/index'
+                          : '/pages/index'
+                      })
+                    }}
+                  />
+                )}
+                {props.pageConfig?.pTitleHotSetting?.imgUrl && (
+                  <View className='p-title-hot-img'>
                     <SpImage
-                      src='fv_back.png'
-                      width={36}
-                      height={36}
-                      onClick={() => Taro.navigateBack()}
-                    />
-                  )}
-                  {state.btnHome && (
-                    <SpImage
-                      src='fv_home.png'
-                      width={36}
-                      height={36}
-                      onClick={() => {
-                        Taro.reLaunch({
-                          url: isGoodsShelves()
-                            ? '/subpages/guide/index'
-                            : VERSION_IN_PURCHASE
-                            ? '/pages/purchase/index'
-                            : '/pages/index'
-                        })
-                      }}
-                    />
-                  )}
-                  {props.pageConfig?.pTitleHotSetting?.imgUrl && (
-                    <View className='p-title-hot-img'>
-                      <SpImage
-                        src={props.pageConfig?.pTitleHotSetting?.imgUrl}
-                        mode='aspectFit'
-                      >
-                      </SpImage>
-                      {props.pageConfig?.pTitleHotSetting?.data?.map(citem => (
+                      src={props.pageConfig?.pTitleHotSetting?.imgUrl}
+                      mode='aspectFit'
+                    ></SpImage>
+                    {props.pageConfig?.pTitleHotSetting?.data?.map((citem) => {
+                      console.log(citem)
+                      if (citem.id == 'customerService') {
+                        return (
+                          <Button
+                            key={citem.id}
+                            className='img-hotzone_zone opacity-0'
+                            type='button'
+                            style={styleNames({
+                              width: `${citem.widthPer * 100}%`,
+                              height: `${citem.heightPer * 100}%`,
+                              top: `${citem.topPer * 100}%`,
+                              left: `${citem.leftPer * 100}%`
+                            })}
+                            openType='contact'
+                          />
+                        )
+                      }
+                      return (
                         <View
+                          key={citem.id}
                           className='img-hotzone_zone'
                           style={styleNames({
                             width: `${citem.widthPer * 100}%`,
@@ -456,16 +474,18 @@ const SpPage = memo(
                           })}
                           onClick={() => linkPage(citem)}
                         />
-                      ))}
-                    </View>
-                  )}
-                </View>
+                      )
+                    })}
+                  </View>
+                )}
+              </View>
               {/* )} */}
-              <View className='custom-navigation__center-block flex-1 flex items-center justify-items-center' style={styleNames(pageCenterStyle)}>
+              <View
+                className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
+                style={styleNames(pageCenterStyle)}
+              >
                 {props.renderNavigation ? (
-                  <context.Provider>
-                    {props.renderNavigation}
-                  </context.Provider>
+                  <context.Provider>{props.renderNavigation}</context.Provider>
                 ) : (
                   <View className='title-container' style={styleNames(pageTitleStyle)}>
                     {renderTitle || props.title || navigationBarTitleText}
