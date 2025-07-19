@@ -476,7 +476,7 @@ export const needLoginPageType = [
   'community_group_enable'
 ]
 
-export const needLoginPage = ['purchase_activity', 'regactivity']
+export const needLoginPage = ['purchase_activity', 'regactivity', 'lottery']
 
 export const TAB_PAGES = [
   '/pages/index',
