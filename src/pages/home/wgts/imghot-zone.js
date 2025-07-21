@@ -53,6 +53,8 @@ export default class WgtImgHotZone extends Component {
         <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
           <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
           {isArray(data) && data.map((item, index) => {
+
+            //TODO 后期可以使用provider 将事件上报给根组件进行登录后跳转的动作
             if (item.id == 'purchase' || ['purchase_activity','regactivity','lottery'].includes(item.linkPage)) {
               return (
                 <SpLogin onChange={this.handleClickItem.bind(this, {

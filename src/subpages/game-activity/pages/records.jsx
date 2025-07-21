@@ -3,7 +3,7 @@ import { View, Text } from '@tarojs/components'
 import { getDrawRecords } from '@/api/game'
 import Taro from '@tarojs/taro'
 import dayjs from 'dayjs'
-import './index.scss'
+import './records.scss'
 
 const SpRecordLayout = () => {
   const [records, setRecords] = useState([])
