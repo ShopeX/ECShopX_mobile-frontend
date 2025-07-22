@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { AtForm, AtButton } from 'taro-ui'
-import { CompOtherLogin, CompPasswordInput, CompInputPhone } from './comps'
 import { SpTimer, SpPage, SpInput as AtInput } from '@/components'
 import { updateUserInfo } from '@/store/slices/user'
 import { connect } from 'react-redux'
 import S from '@/spx'
 import api from '@/api'
 import { classNames, navigateTo, validate, showToast, tokenParseH5 } from '@/utils'
+import { CompOtherLogin, CompPasswordInput, CompInputPhone } from './comps'
 import { navigationToReg, setToken, setTokenAndRedirect, addListener } from './util'
 import './login.scss'
 
@@ -72,7 +72,7 @@ export default class Login extends Component {
     }
   }
 
-  handleTimerStop() { }
+  handleTimerStop() {}
 
   handleInputChange(name, val, error) {
     const { info } = this.state
@@ -318,8 +318,8 @@ export default class Login extends Component {
                   <CompPasswordInput
                     onChange={this.handleInputChange.bind(this, 'password')}
                     {...inputProp}
-                  // onFocus={this.handleRemarkFocus.bind(this)}
-                  // onBlur={this.handleRemarkBlur.bind(this)}
+                    // onFocus={this.handleRemarkFocus.bind(this)}
+                    // onBlur={this.handleRemarkBlur.bind(this)}
                   />
                 </View>
               </View>

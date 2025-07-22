@@ -12,7 +12,7 @@ function CompGoodsItem(props) {
     return
   }
 
-  const { pic, itemName, store, price, itemSpecDesc,  buyNum, minDeliveryNum, nospec } = info
+  const { pic, itemName, store, price, itemSpecDesc, buyNum, minDeliveryNum, nospec } = info
 
   const handleClickGoodsDetail = () => {
     const { itemId, distributorId } = info
@@ -23,10 +23,10 @@ function CompGoodsItem(props) {
 
   const diff = minDeliveryNum - buyNum
   let progressValue = 0
-  if(diff <= 0) {
+  if (diff <= 0) {
     progressValue = 100
   } else {
-    progressValue = buyNum / minDeliveryNum * 100
+    progressValue = (buyNum / minDeliveryNum) * 100
   }
 
   return (
@@ -36,21 +36,21 @@ function CompGoodsItem(props) {
       </View>
       <View className='item-bd'>
         <View className='goods-name'>{itemName}</View>
-        { !nospec && <View className="spec-label">多规格</View>}
+        {!nospec && <View className='spec-label'>多规格</View>}
         <View className='goods-spec'>{itemSpecDesc}</View>
         <View className='goods-store'>{`库存：${store}`}</View>
         <View className='goods-price'>
           <SpPrice primary value={price} />
         </View>
-        {showProgress && (minDeliveryNum > 0) && (
+        {showProgress && minDeliveryNum > 0 && (
           <View className='activity-progress'>
             <AtProgress percent={progressValue} isHidePercent />
             <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
           </View>
         )}
-        {
-          !showProgress && minDeliveryNum > 0 && <View className="delivery-num">{`${minDeliveryNum}件起送`}</View>
-        }
+        {!showProgress && minDeliveryNum > 0 && (
+          <View className='delivery-num'>{`${minDeliveryNum}件起送`}</View>
+        )}
       </View>
     </View>
   )

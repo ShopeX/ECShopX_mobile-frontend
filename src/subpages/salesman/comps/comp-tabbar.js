@@ -4,7 +4,7 @@ import { View, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
-import { updateCartSalesman,updateSalesmanCount } from '@/store/slices/cart'
+import { updateCartSalesman, updateSalesmanCount } from '@/store/slices/cart'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -34,10 +34,10 @@ function CompTabbar(props) {
   useEffect(() => {
     // 初始化购物车数量
     // cartSalesmanNumber()
-  },[])
+  }, [])
 
   const cartSalesmanNumber = async () => {
-    await dispatch(updateSalesmanCount({ shop_type: 'distributor',isSalesmanPage: 1 }))
+    await dispatch(updateSalesmanCount({ shop_type: 'distributor', isSalesmanPage: 1 }))
   }
 
   const tabList = TABBAR_LIST.map((item) => {
@@ -79,7 +79,7 @@ function CompTabbar(props) {
         'comp-tabbar': true
       })}
       iconSize='20'
-      selectedColor={'#4980FF'}
+      selectedColor='#4980FF'
       tabList={tabList}
       onClick={handleTabbarClick}
       current={currentIndex}

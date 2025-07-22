@@ -2,16 +2,10 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
-import {
-  AtFloatLayout,
-  AtModal,
-  AtModalHeader,
-  AtModalContent,
-  AtModalAction
-} from 'taro-ui'
+import { AtFloatLayout, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { SpCheckbox, SpInput as AtInput } from '@/components'
-import './point-use.scss'
 import { customName } from '@/utils/point'
+import './point-use.scss'
 
 @connect(({ colors }) => ({
   colors: colors.current

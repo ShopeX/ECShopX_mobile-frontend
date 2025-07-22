@@ -5,8 +5,8 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpPrice, SpTradeItem } from '@/components'
 import { ACTIVITY_STATUS_MAP } from '@/consts'
-import './comp-activity-item.scss'
 import classNames from 'classnames'
+import './comp-activity-item.scss'
 
 function CompActivityItem(props) {
   const { info = {}, isActivity = false, onClick = () => {}, onBtnAction = () => {} } = props

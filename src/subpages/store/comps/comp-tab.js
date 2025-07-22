@@ -1,17 +1,14 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro,{getCurrentInstance} from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
-import api from '@/api'
-import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon, SpPrice } from '@/components'
 import { pickBy, showToast, classNames } from '@/utils'
 import S from '@/spx'
-import './comp-tab.scss'
 import qs from 'qs'
-import { goToAuthPage } from '@/utils/platform.h5'
+import './comp-tab.scss'
 
 const initialState = {
   fav: false,
@@ -19,7 +16,7 @@ const initialState = {
   extend: false
 }
 function CompTab(props) {
-  const {shopCartCount} = useSelector((state) => state.cart)
+  const { shopCartCount } = useSelector((state) => state.cart)
 
   const { popFrame = {} } = props
   const [state, setState] = useImmer(initialState)
@@ -27,7 +24,7 @@ function CompTab(props) {
   const $instance = getCurrentInstance()
   const router = $instance.router
 
-  if(!shopCartCount) {
+  if (!shopCartCount) {
     return null
   }
 
@@ -59,17 +56,24 @@ function CompTab(props) {
   return (
     <View className='comp-shop-brand-cart'>
       <View className='comp-shop-brand-gwc'>
-        <View
-          className='comp-shop-brand-gwc-num'
-          onClick={()=>popFrame()}
-        >
+        <View className='comp-shop-brand-gwc-num' onClick={() => popFrame()}>
           <Text className='iconfont icon-gouwuche2' />
-          {shopCartCount.cart_total_num && <View className='nums'>{shopCartCount.cart_total_num}</View>}
+          {shopCartCount.cart_total_num && (
+            <View className='nums'>{shopCartCount.cart_total_num}</View>
+          )}
         </View>
         {shopCartCount.total_fee && <SpPrice value={shopCartCount.total_fee / 100}></SpPrice>}
         {/* {shopCartCount.discount_fee && <Text className='money'>¥ {formatMoney(shopCartCount.discount_fee)}</Text>} */}
       </View>
-      {shopCartCount.shop_id && <AtButton className='settlement'  disabled={!shopCartCount.total_fee} onClick={()=>settlement()}>去结算</AtButton>}
+      {shopCartCount.shop_id && (
+        <AtButton
+          className='settlement'
+          disabled={!shopCartCount.total_fee}
+          onClick={() => settlement()}
+        >
+          去结算
+        </AtButton>
+      )}
     </View>
   )
 }

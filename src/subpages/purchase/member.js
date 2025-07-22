@@ -7,7 +7,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { View, ScrollView, Text, Image, Button } from '@tarojs/components'
-import { SG_ROUTER_PARAMS, SG_APP_CONFIG, MERCHANT_TOKEN, SG_TOKEN, INVITE_ACTIVITY_ID } from '@/consts'
+import { SG_ROUTER_PARAMS, MERCHANT_TOKEN, SG_TOKEN, INVITE_ACTIVITY_ID } from '@/consts'
 import { updateUserInfo } from '@/store/slices/user'
 import { updateIsOpenPurchase } from '@/store/slices/purchase'
 import { useSelector, useDispatch } from 'react-redux'
@@ -38,14 +38,13 @@ import {
 } from '@/utils'
 import { useLogin, useLocation } from '@/hooks'
 import S from '@/spx'
+import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
 import CompVipCard from './comps/comp-vipcard'
 import CompBanner from './comps/comp-banner'
 import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
 import CompHelpCenter from './comps/comp-helpcenter'
-import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
-
 
 import './member.scss'
 
@@ -268,7 +267,7 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let params = {}
-    const activity_id =  purchase_share_info?.activity_id || S.get(INVITE_ACTIVITY_ID, true)
+    const activity_id = purchase_share_info?.activity_id || S.get(INVITE_ACTIVITY_ID, true)
 
     if (activity_id) {
       params = { activity_id }
@@ -551,7 +550,9 @@ function MemberIndex(props) {
               <SpImage src='daizhifu.png' className='icon-style' />
               {state.waitPayNum > 0 && (
                 <View
-                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
+                  className={classNames('order-bradge', {
+                    'purchase-order-bradge': VERSION_IN_PURCHASE
+                  })}
                 >
                   <Text>{state.waitPayNum}</Text>
                 </View>
@@ -565,7 +566,9 @@ function MemberIndex(props) {
               <SpImage src='daishouhuo.png' className='icon-style' />
               {state.waitRecevieNum + state.waitSendNum > 0 && (
                 <View
-                  className={classNames('order-bradge',{ 'purchase-order-bradge' : VERSION_IN_PURCHASE})}
+                  className={classNames('order-bradge', {
+                    'purchase-order-bradge': VERSION_IN_PURCHASE
+                  })}
                 >
                   <Text>{state.waitRecevieNum + state.waitSendNum}</Text>
                 </View>
@@ -599,9 +602,9 @@ function MemberIndex(props) {
           onLink={handleClickService}
         />
 
-          <CompPanel>
-            <CompHelpCenter onLink={handleClickService} />
-          </CompPanel>
+        <CompPanel>
+          <CompHelpCenter onLink={handleClickService} />
+        </CompPanel>
       </View>
       {/* <View className="dibiao-block">
         <SpImage className="dibiao-image" src="dibiao.png" />

@@ -16,7 +16,7 @@ function WgtGoodsGridTab(props) {
   const [current, setCurrent] = useState(0)
   const { onAddToCart } = useContext(WgtsContext)
   const router = useRouter()
-  const isPurchase = router.path == "/subpages/purchase/index"
+  const isPurchase = router.path == '/subpages/purchase/index'
 
   const { base, config, list } = info
 
@@ -102,12 +102,15 @@ function WgtGoodsGridTab(props) {
                             showAddCart={config.addCart}
                             renderBrand={
                               config.brand && (
-                                <View className='brand-info' style={styleNames({
-                                  'width': '64px',
-                                  'height': '64px',
-                                  'border-radius': '32px',
-                                  'padding': '2px'
-                                })}>
+                                <View
+                                  className='brand-info'
+                                  style={styleNames({
+                                    'width': '64px',
+                                    'height': '64px',
+                                    'border-radius': '32px',
+                                    'padding': '2px'
+                                  })}
+                                >
                                   <SpImage
                                     src={data.brand}
                                     width={120}
@@ -136,12 +139,15 @@ function WgtGoodsGridTab(props) {
                             showAddCart={config.addCart}
                             renderBrand={
                               config.brand && (
-                                <View className='brand-info' style={styleNames({
-                                  'width': '64px',
-                                  'height': '64px',
-                                  'border-radius': '32px',
-                                  'padding': '2px'
-                                })}>
+                                <View
+                                  className='brand-info'
+                                  style={styleNames({
+                                    'width': '64px',
+                                    'height': '64px',
+                                    'border-radius': '32px',
+                                    'padding': '2px'
+                                  })}
+                                >
                                   <SpImage
                                     src={data.brand}
                                     width={120}

@@ -70,11 +70,14 @@ const Cell = (props) => {
   const handleInput = ({ detail: { value } }) => {
     onChange(value)
   }
-  console.log('Cell:value',mode , value)
+  console.log('Cell:value', mode, value)
   const onPickerChange = (selectValue) => {
     console.log('onPickerChange:selectValue', selectValue)
-    setAddressText(selectValue.map(d=>d.label).join(''))
-    onChange(selectValue.map(d=>d.label),selectValue.map(d=>d.id))
+    setAddressText(selectValue.map((d) => d.label).join(''))
+    onChange(
+      selectValue.map((d) => d.label),
+      selectValue.map((d) => d.id)
+    )
   }
 
   const renderSelectorContent = mode === 'selector' && !noselect && (
@@ -114,14 +117,18 @@ const Cell = (props) => {
       <Text
         className={`area-text ${value && value.length != 0 ? '' : 'placeholder-class'}`}
         // placeholderClass='placeholder-class'
-        onClick={()=>{
+        onClick={() => {
           setIsSpAddressOpened(!isSpAddressOpened)
         }}
       >
         {/* {addressText} */}
         {value && value.length != 0 ? value.join('/') : placeholder}
       </Text>
-      <SpAddress isOpened={isSpAddressOpened} onClose={()=>setIsSpAddressOpened(!isSpAddressOpened)} onChange={onPickerChange} />
+      <SpAddress
+        isOpened={isSpAddressOpened}
+        onClose={() => setIsSpAddressOpened(!isSpAddressOpened)}
+        onChange={onPickerChange}
+      />
     </>
     // <Picker
     //   mode='multiSelector'
@@ -262,14 +269,12 @@ const Step = (props) => {
       {options.map((item, index) => (
         <View className={classNames('comps-step-item', { 'active': isActive(index) })} key={index}>
           {item}
-          {
-            <View
-              className={classNames('comps-step-item-line', {
-                'is-active': isActive(index),
-                'is-finish': isFinish(index)
-              })}
-            ></View>
-          }
+          <View
+            className={classNames('comps-step-item-line', {
+              'is-active': isActive(index),
+              'is-finish': isFinish(index)
+            })}
+          ></View>
         </View>
       ))}
     </View>

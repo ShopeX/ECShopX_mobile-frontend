@@ -4,14 +4,12 @@ import { View, Text, Image } from '@tarojs/components'
 import { SpImg, PointLine } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
-
 import { isObject, classNames, isWeb, VERSION_PLATFORM } from '@/utils'
-import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
-
-import './index.scss'
 import configStore from '@/store'
 
-const {store} = configStore()
+import './index.scss'
+
+const { store } = configStore()
 
 @connect(
   ({ colors, user }) => ({
@@ -20,7 +18,7 @@ const {store} = configStore()
   }),
   (dispatch) => ({
     onAddFav: ({ item_id, fav_id }) =>
-    dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
+      dispatch({ type: 'member/addFav', payload: { item_id, fav_id } }),
     onDelFav: ({ item_id }) => dispatch({ type: 'member/delFav', payload: { item_id } })
   })
 )

@@ -1,14 +1,11 @@
 import React, { useEffect } from 'react'
-import { useImmer } from 'use-immer'
-import { useSelector } from 'react-redux'
 import { useAsyncCallback } from '@/hooks'
-import Taro from '@tarojs/taro'
 
 import { View, PickerView, PickerViewColumn } from '@tarojs/components'
-import format from './format'
 import dayjs from 'dayjs'
-import 'dayjs/locale/zh-cn'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
+import 'dayjs/locale/zh-cn'
+import format from './format'
 import './picker-datetime.scss'
 
 dayjs.extend(customParseFormat)

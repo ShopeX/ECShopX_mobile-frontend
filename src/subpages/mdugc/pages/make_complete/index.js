@@ -1,122 +1,129 @@
-
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text , Image , ScrollView } from '@tarojs/components'
+import { View, Text, Image, ScrollView } from '@tarojs/components'
 import S from '@/spx'
-import {SearchBar} from '../../components'
-import { SpNote , BackToTop , GoodsItem, Loading } from "@/components";
-import { pickBy } from "@/utils";
+
+import { SpNote, BackToTop, GoodsItem, Loading } from '@/components'
+import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-import entry from "@/utils/entry";
+import entry from '@/utils/entry'
 
-import api from "@/api";
+import api from '@/api'
 
-
-//import '../../font/iconfont.scss'
+import { SearchBar } from '../../components'
 import './index.scss'
+
 @withPager
 @withBackToTop
-
 export default class make_complete extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       ...this.state,
       list: [],
-      val:'',//搜索框
+      val: '', //搜索框
       query: {
         keywords: ''
       },
-      oddList:[],
-      evenList:[]
+      oddList: [],
+      evenList: []
     }
   }
-  async componentDidMount(){
+  async componentDidMount() {
     const isOpenStore = await entry.getStoreStatus()
     const { store_id } = Taro.getStorageSync('curStore')
     this.setState({
       isOpenStore
     })
-    this.setState({
-      query: {
-        keywords: '',
-        item_type: 'normal',
-        is_point: 'false',
-        distributor_id:isOpenStore ? store_id : '',
-        approve_status: 'onsale,only_show',
-        category:'',
-        main_category:''
+    this.setState(
+      {
+        query: {
+          keywords: '',
+          item_type: 'normal',
+          is_point: 'false',
+          distributor_id: isOpenStore ? store_id : '',
+          approve_status: 'onsale,only_show',
+          category: '',
+          main_category: ''
+        }
+      },
+      () => {
+        this.nextPage()
       }
-    },()=>{
-      this.nextPage()
-    })
+    )
   }
   config = {
-    navigationBarTitleText: '添加商品',
+    navigationBarTitleText: '添加商品'
   }
-  componentDidShow () {
+  componentDidShow() {
     Taro.setNavigationBarColor({
       frontColor: '#000000',
-      backgroundColor: '#ffffff',
+      backgroundColor: '#ffffff'
     })
   }
   // 搜索
-  shonChange=(val)=>{
-    console.log("输入框值改变",val)
+  shonChange = (val) => {
+    console.log('输入框值改变', val)
   }
-  shonClear=()=>{
-    console.log("清除")
-    let{query}=this.state
+  shonClear = () => {
+    console.log('清除')
+    let { query } = this.state
     this.resetPage()
-    query.keywords=''
-    this.setState({
-      query,
-      list: [],
-      oddList:[],
-      evenList:[]
-    }, () => {
-      this.nextPage()
-    })
+    query.keywords = ''
+    this.setState(
+      {
+        query,
+        list: [],
+        oddList: [],
+        evenList: []
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
-  shonConfirm=(val)=>{
-    console.log("完成触发",val)
-    let{query}=this.state
+  shonConfirm = (val) => {
+    console.log('完成触发', val)
+    let { query } = this.state
     this.resetPage()
-    query.keywords=val
-    this.setState({
-      query,
-      list: [],
-      oddList:[],
-      evenList:[]
-    }, () => {
-      this.nextPage()
-    })
+    query.keywords = val
+    this.setState(
+      {
+        query,
+        list: [],
+        oddList: [],
+        evenList: []
+      },
+      () => {
+        this.nextPage()
+      }
+    )
   }
 
   // 列表
-  async fetch (params) {
+  async fetch(params) {
     const { isOpenStore } = this.state
 
     const { page_no: page, page_size: pageSize } = params
-    const { distributor_id,store_id } = Taro.getStorageSync('curStore')
+    const { distributor_id, store_id } = Taro.getStorageSync('curStore')
 
     const query = {
       ...this.state.query,
       page,
-      pageSize,
+      pageSize
     }
-    if (process.env.APP_PLATFORM === 'standard'){
+    if (process.env.APP_PLATFORM === 'standard') {
       query.distributor_id = isOpenStore ? store_id : distributor_id
     }
 
     // const { list, total_count: total } = await api.mdugc.yuyueActivityList(params)
-    const { list, total_count: total} = await api.item.search(query)
-    console.log("list, total",list, total)
+    const { list, total_count: total } = await api.item.search(query)
+    console.log('list, total', list, total)
 
     const nList = pickBy(list, {
-      img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
+      img: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
       item_id: 'item_id',
-      title: ({ itemName, item_name }) => itemName ? itemName : item_name,
+      title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
       desc: 'brief',
       distributor_id: 'distributor_id',
       distributor_info: 'distributor_info',
@@ -124,12 +131,13 @@ export default class make_complete extends Component {
       origincountry_name: 'origincountry_name',
       origincountry_img_url: 'origincountry_img_url',
       type: 'type',
-      price: ({ price }) => (price/100).toFixed(2),
-      member_price: ({ member_price }) => (member_price/100).toFixed(2),
-      market_price: ({ market_price }) => (market_price/100).toFixed(2)
+      price: ({ price }) => (price / 100).toFixed(2),
+      member_price: ({ member_price }) => (member_price / 100).toFixed(2),
+      market_price: ({ market_price }) => (market_price / 100).toFixed(2)
     })
 
-    let odd = [], even = []
+    let odd = [],
+      even = []
     nList.map((item, idx) => {
       if (idx % 2 == 0) {
         odd.push(item)
@@ -147,38 +155,35 @@ export default class make_complete extends Component {
     return { total }
   }
   handleClickItem = (item) => {
-    console.log("item",item)
+    console.log('item', item)
   }
-  topages=(item)=>{
-    let pages = Taro.getCurrentPages(); // 获取当前的页面栈
-    let prevPage = pages[pages.length-2]; // 获取上一页面
-    prevPage.setData({ //设置上一个页面的值
+  topages = (item) => {
+    let pages = Taro.getCurrentPages() // 获取当前的页面栈
+    let prevPage = pages[pages.length - 2] // 获取上一页面
+    prevPage.setData({
+      //设置上一个页面的值
       complete: item
-    });
+    })
     Taro.navigateBack({
       delta: 1
-    });
-
+    })
   }
 
-
-
-  render () {
-    const { list , page , query , showBackToTop , scrollTop , oddList, evenList } = this.state
+  render() {
+    const { list, page, query, showBackToTop, scrollTop, oddList, evenList } = this.state
     return (
-      <View className="ugcindex">
+      <View className='ugcindex'>
         <View className='ugcindex_search'>
           <SearchBar
             onChange={this.shonChange.bind(this)}
             onClear={this.shonClear.bind(this)}
             onConfirm={this.shonConfirm.bind(this)}
-            _placeholder="请输入"
+            _placeholder='请输入'
             keyword={query.keywords}
           ></SearchBar>
         </View>
 
         <View className='ugcindex_list'>
-
           <ScrollView
             scrollY
             className='ugcindex_list__scroll'
@@ -187,50 +192,30 @@ export default class make_complete extends Component {
             onScroll={this.handleScroll}
             onScrollToLower={this.nextPage}
           >
-              <View className="ugcindex_list__scroll_scrolls">
-                    <View className='ugcindex_list__scroll_scrolls_item'>
-                      {
-                        oddList.map((item)=>{
-                          return(
-                            <GoodsItem
-                              key={item.item_id}
-                              info={item}
-                              onClick={() => this.topages(item)}
-                            />
-                          )
-                        })
-                      }
-
-                    </View>
-                    <View className='ugcindex_list__scroll_scrolls_item'>
-                      {
-                        evenList.map((item)=>{
-                          return(
-                            <GoodsItem
-                              key={item.item_id}
-                              info={item}
-                              onClick={() => this.topages(item)}
-                            />
-                          )
-                        })
-                      }
-                    </View>
+            <View className='ugcindex_list__scroll_scrolls'>
+              <View className='ugcindex_list__scroll_scrolls_item'>
+                {oddList.map((item) => {
+                  return (
+                    <GoodsItem key={item.item_id} info={item} onClick={() => this.topages(item)} />
+                  )
+                })}
               </View>
-              {
-                page.isLoading && <Loading>正在加载...</Loading>
-              }
-              {
-                !page.isLoading && !page.hasNext && !list.length
-                && (<SpNote img='trades_empty.png'>列表页为空!</SpNote>)
-              }
+              <View className='ugcindex_list__scroll_scrolls_item'>
+                {evenList.map((item) => {
+                  return (
+                    <GoodsItem key={item.item_id} info={item} onClick={() => this.topages(item)} />
+                  )
+                })}
+              </View>
+            </View>
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+            )}
           </ScrollView>
         </View>
 
-        <BackToTop
-          show={showBackToTop}
-          onClick={this.scrollBackToTop}
-          bottom={150}
-        />
+        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} bottom={150} />
       </View>
     )
   }

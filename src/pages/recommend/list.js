@@ -1,12 +1,11 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
-import { SpSearchInput, SpAddress, SpScrollView, SpRecommendItem } from '@/components'
-import { useImmer } from 'use-immer'
-import { withPager, withBackToTop } from '@/hocs'
-import { connect } from 'react-redux'
-import { AtDrawer } from 'taro-ui'
 import {
+  SpSearchInput,
+  SpAddress,
+  SpScrollView,
+  SpRecommendItem,
   BackToTop,
   Loading,
   RecommendItem,
@@ -16,6 +15,10 @@ import {
   SpTabbar,
   SpPage
 } from '@/components'
+import { useImmer } from 'use-immer'
+import { withPager, withBackToTop } from '@/hocs'
+import { connect } from 'react-redux'
+import { AtDrawer } from 'taro-ui'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
 import doc from '@/doc'
@@ -36,7 +39,7 @@ function RecommendList() {
     const queryParams = {
       article_type: 'bring',
       page: pageIndex,
-      pageSize,
+      pageSize
       // category_id: selectColumn.id
     }
     const {
@@ -44,8 +47,8 @@ function RecommendList() {
       total_count: total,
       province_list
     } = S.getAuthToken()
-        ? await api.article.authList(queryParams)
-        : await api.article.list(queryParams)
+      ? await api.article.authList(queryParams)
+      : await api.article.list(queryParams)
 
     const n_list = pickBy(list, doc.article.ARTICLE_ITEM)
     const resLeftList = n_list.filter((item, index) => {
@@ -59,7 +62,7 @@ function RecommendList() {
       }
     })
 
-    setState(draft => {
+    setState((draft) => {
       draft.leftList[pageIndex - 1] = resLeftList
       draft.rightList[pageIndex - 1] = resRightList
     })
@@ -76,8 +79,8 @@ function RecommendList() {
   }
 
   return (
-    <SpPage className="page-recommend-list" renderFooter={<SpTabbar />}>
-      <View className="search-container">
+    <SpPage className='page-recommend-list' renderFooter={<SpTabbar />}>
+      <View className='search-container'>
         <SpSearchInput
           placeholder='搜索'
           onConfirm={(val) => {
@@ -88,11 +91,11 @@ function RecommendList() {
           }}
         />
       </View>
-      <ScrollView className="list-scroll-container" scrollY>
-        <SpScrollView fetch={fetch} >
+      <ScrollView className='list-scroll-container' scrollY>
+        <SpScrollView fetch={fetch}>
           <View className='article-list'>
             <View className='left-container'>
-              {leftList.map(gitem => {
+              {leftList.map((gitem) => {
                 return gitem.map((item, index) => (
                   <View className='article-item-wrap' key={`article-item-l__${index}`}>
                     <SpRecommendItem info={item} onClick={handleClickItem.bind(this, item)} />

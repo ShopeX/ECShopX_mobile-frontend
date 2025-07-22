@@ -1,6 +1,6 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
-export function setPageTitle (title) {
+export function setPageTitle(title) {
   Taro.setNavigationBarTitle({
     title
   })

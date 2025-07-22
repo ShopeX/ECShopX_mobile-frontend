@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
-import { formatTime,isWeb } from '@/utils'
+import { formatTime, isWeb } from '@/utils'
 import { Loading, FloatMenuMeiQia, SpHtml } from '@/components'
 import api from '@/api'
 import './refund-detail.scss'
@@ -155,7 +155,7 @@ export default class TradeRefundDetail extends Component {
           {progress == 7 ? (
             <Text className='refund-detail__title'>您已成功撤销本次退款申请</Text>
           ) : null}
-          {<Text className='refund-detail__descr'>{info.description || ''}</Text>}
+          <Text className='refund-detail__descr'>{info.description || ''}</Text>
           {progress == 0 ? (
             <View>
               {/* <Text className='refund-detail__btn' onClick={this.handleBtnClick.bind(this, 'edit')}>修改申请</Text> */}
@@ -249,7 +249,7 @@ export default class TradeRefundDetail extends Component {
             </View>
           </View>
         )}
-        {!isWeb && meiqia.is_open === 'true' || echat.is_open === 'true' ? (
+        {(!isWeb && meiqia.is_open === 'true') || echat.is_open === 'true' ? (
           <FloatMenuMeiQia
             storeId={info.distributor_id}
             info={{ orderId: info.order_id }}

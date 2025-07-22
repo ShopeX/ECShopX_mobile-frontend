@@ -59,7 +59,6 @@ function PurchaseCheckout(props) {
 
   const router = useRouter()
 
-
   const { cashierPayment } = usePayment()
 
   const [state, setState] = useAsyncCallback(initialState)
@@ -69,10 +68,14 @@ function PurchaseCheckout(props) {
   const deliverRef = useRef()
   const calc = useRef(false)
   const { userInfo, address } = useSelector((state) => state.user)
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const { colorPrimary, pointName, entryStoreByLBS } = useSelector((state) => state.sys)
   const { coupon, zitiAddress } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
-  const { purchase_share_info = {}, isDiscountDescriptionEnabled, discountDescription } = useSelector((state) => state.purchase)
+  const {
+    purchase_share_info = {},
+    isDiscountDescriptionEnabled,
+    discountDescription
+  } = useSelector((state) => state.purchase)
 
   const {
     detailInfo,
@@ -146,13 +149,12 @@ function PurchaseCheckout(props) {
     }
   }, [isNewUser])
 
-
   useEffect(() => {
     console.log('use-effect:', receiptType, payType)
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [address, payType,zitiAddress, point_use])
+  }, [address, payType, zitiAddress, point_use])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
@@ -507,14 +509,13 @@ function PurchaseCheckout(props) {
     const { activity_id, enterprise_id } = purchase_share_info
     const { value, activity } = getActivityValue() || {}
 
-    let _activity_id = activity_id;
-    let _enterprise_id = enterprise_id;
+    let _activity_id = activity_id
+    let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if(router.params.activity_id && router.params.enterprise_id){
+    if (router.params.activity_id && router.params.enterprise_id) {
       _activity_id = router.params.activity_id
       _enterprise_id = router.params.enterprise_id
     }
-
 
     let ziti_shopid
     let receiver = pickBy(address, doc.checkout.RECEIVER_ADDRESS)
@@ -543,7 +544,7 @@ function PurchaseCheckout(props) {
       cart_type,
       order_type: bargain_id ? 'bargain' : value,
       promotion: 'normal',
-      isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
+      isNostores: entryStoreByLBS ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
       pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : dtid,
@@ -620,7 +621,6 @@ function PurchaseCheckout(props) {
   }
 
   const renderFooter = () => {
-
     // console.log('renderFooter:', receiptType, address , !isObjectsValue(address))
     return (
       <View className='checkout-toolbar'>
@@ -658,12 +658,9 @@ function PurchaseCheckout(props) {
               ))}
             </View>
           </View>
-          {
-            isDiscountDescriptionEnabled && discountDescription &&
-            <View className='cart-checkout__title'>
-              {discountDescription}
-            </View>
-          }
+          {isDiscountDescriptionEnabled && discountDescription && (
+            <View className='cart-checkout__title'>{discountDescription}</View>
+          )}
           <View className='cart-group__cont cus-input'>
             <SpCell className='trade-remark' border={false}>
               <AtInput
@@ -695,14 +692,14 @@ function PurchaseCheckout(props) {
           onChange={handleSwitchExpress}
           onEidtZiti={handleEditZitiClick}
         /> */}
-          <SpDeliver
-            isPurchase
-            ref={deliverRef}
-            distributor_id={dtid}
-            address={address}
-            onChange={handleSwitchExpress}
-            onEidtZiti={handleEditZitiClick}
-          />
+        <SpDeliver
+          isPurchase
+          ref={deliverRef}
+          distributor_id={dtid}
+          address={address}
+          onChange={handleSwitchExpress}
+          onEidtZiti={handleEditZitiClick}
+        />
       </View>
 
       {renderGoodsComp()}
@@ -762,13 +759,9 @@ function PurchaseCheckout(props) {
           )}
       </View>
 
-
-      {
-        !totalInfo?.prescription_status == 0 &&
-        <View className='cart-checkout__title'>
-          订单中包含处方药，提交订单后请补充处方信息
-        </View>
-      }
+      {!totalInfo?.prescription_status == 0 && (
+        <View className='cart-checkout__title'>订单中包含处方药，提交订单后请补充处方信息</View>
+      )}
 
       <SpCashier
         isOpened={openCashier}

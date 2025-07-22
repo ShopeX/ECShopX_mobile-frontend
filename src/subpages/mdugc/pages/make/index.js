@@ -1,22 +1,29 @@
-
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { Input, View, Text, Image, Button, Video, Block, Icon, PageContainer } from '@tarojs/components'
-import { SpImg, SpInput as AtInput } from "@/components";
-import { TagsBar, NavBar, Popups } from '../../components'
+import {
+  Input,
+  View,
+  Text,
+  Image,
+  Button,
+  Video,
+  Block,
+  Icon,
+  PageContainer
+} from '@tarojs/components'
+import { SpImg, SpInput as AtInput } from '@/components'
+
 import { connect } from 'react-redux'
 import imgUploader from '@/utils/upload'
-import { pickBy } from "@/utils";
+import { pickBy } from '@/utils'
 import { AtTextarea, AtImagePicker, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import api from "@/api";
-
+import api from '@/api'
+import { TagsBar, NavBar, Popups } from '../../components'
 import './index.scss'
 
-@connect(
-  ({ member }) => ({
-    memberData: member.member
-  })
-)
+@connect(({ member }) => ({
+  memberData: member.member
+}))
 export default class Make extends Component {
   constructor(props) {
     super(props)
@@ -32,8 +39,8 @@ export default class Make extends Component {
       },
       file_img: [],
       file_text: {
-        title: "",
-        attextarea: ""
+        title: '',
+        attextarea: ''
       },
       file_commodity: [],
       file_word: [],
@@ -112,11 +119,10 @@ export default class Make extends Component {
     //   })
     // }else
     let res = await api.mdugc.postsetting({ type: 'video' })
-    console.log("视频是否开启上传", res['video.enable'])
+    console.log('视频是否开启上传', res['video.enable'])
     this.setState({
       videoenable: res['video.enable']
     })
-
 
     if (post_id) {
       Taro.showLoading({
@@ -129,20 +135,21 @@ export default class Make extends Component {
       }
       let { post_info } = await api.mdugc.postdetail(data)
       if (post_info) {
-        console.log("这是详情", post_info)
+        console.log('这是详情', post_info)
         // 视频
         if (post_info.video) {
           file_video.url = post_info.video
           file_video.proportion = post_info.video_ratio
           file_video.cover = post_info.cover
-          file_video.video_idx = (post_info.video_place ? post_info.video_place : -1)
+          file_video.video_idx = post_info.video_place ? post_info.video_place : -1
         }
         // 推荐商品
         if (post_info.goods && post_info.goods.length > 0) {
           let goods = pickBy(post_info.goods, {
-            img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
+            img: ({ pics }) =>
+              pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : '',
             item_id: 'item_id',
-            title: ({ itemName, item_name }) => itemName ? itemName : item_name,
+            title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
             desc: 'brief',
             distributor_id: 'distributor_id',
             distributor_info: 'distributor_info',
@@ -192,46 +199,55 @@ export default class Make extends Component {
           })
           file_img = [...imgs]
         }
-        this.setState({
-          file_video, file_img, file_text, file_commodity, file_word
-        }, () => {
-          Taro.hideLoading()
-        })
+        this.setState(
+          {
+            file_video,
+            file_img,
+            file_text,
+            file_commodity,
+            file_word
+          },
+          () => {
+            Taro.hideLoading()
+          }
+        )
       }
     }
   }
   componentDidShow() {
     let { file_word, file_commodity } = this.state
-    console.log("触发",)
+    console.log('触发')
     wx.enableAlertBeforeUnload({
-      message: "返回上一页将不会保存该编辑页内容",
+      message: '返回上一页将不会保存该编辑页内容',
       success: function (res) {
-        console.log("成功：", res);
+        console.log('成功：', res)
       },
       fail: function (err) {
-        console.log("失败：", err);
-      },
-    });
+        console.log('失败：', err)
+      }
+    })
     // Taro.setNavigationBarColor({
     //   frontColor: '#000000',
     //   backgroundColor: '#ffffff',
     // })
-    let pages = Taro.getCurrentPages();
-    let currentPage = pages[pages.length - 1]; // 获取当前页面
-    if (currentPage.__data__.img) { // 获取值
-      console.log("这是图片编辑页传递的数据", currentPage.__data__.img)
+    let pages = Taro.getCurrentPages()
+    let currentPage = pages[pages.length - 1] // 获取当前页面
+    if (currentPage.__data__.img) {
+      // 获取值
+      console.log('这是图片编辑页传递的数据', currentPage.__data__.img)
       let img = currentPage.__data__.img
       this.addfileimg(img)
-      currentPage.setData({ //清空上一页面传递值
+      currentPage.setData({
+        //清空上一页面传递值
         img: ''
-      });
+      })
     } else if (currentPage.__data__.word) {
-      console.log("这是添加话题页传递的数据", currentPage.__data__.word)
+      console.log('这是添加话题页传递的数据', currentPage.__data__.word)
       let word = currentPage.__data__.word
       let is = file_word.findIndex((item) => {
         return item.topic_id == word.topic_id
       })
-      console.log("isisis", is)
+      console.log('isisis', is)
       if (is < 0) {
         file_word.push(word)
       } else {
@@ -244,17 +260,18 @@ export default class Make extends Component {
       this.setState({
         file_word
       })
-      currentPage.setData({ //清空上一页面传递值
+      currentPage.setData({
+        //清空上一页面传递值
         word: ''
-      });
+      })
     } else if (currentPage.__data__.complete) {
-      console.log("这是添加推荐商品页传递的数据", currentPage.__data__.complete)
+      console.log('这是添加推荐商品页传递的数据', currentPage.__data__.complete)
       let complete = currentPage.__data__.complete
       // item_id
       let is = file_commodity.findIndex((item) => {
         return item.item_id == complete.item_id
       })
-      console.log("isisis", is)
+      console.log('isisis', is)
       if (is < 0) {
         file_commodity.push(complete)
       } else {
@@ -266,9 +283,10 @@ export default class Make extends Component {
       this.setState({
         file_commodity
       })
-      currentPage.setData({ //清空上一页面传递值
+      currentPage.setData({
+        //清空上一页面传递值
         complete: ''
-      });
+      })
     }
   }
   // 上传视频
@@ -284,7 +302,7 @@ export default class Make extends Component {
         console.log(res, videos)
         if (videos.size <= 51200000) {
           if (videos.tempFilePath.slice(-4) == '.mp4') {
-            console.log("视频及第一帧图片", videos)
+            console.log('视频及第一帧图片', videos)
             that.addvideos(videos)
           } else {
             Taro.showToast({
@@ -323,21 +341,30 @@ export default class Make extends Component {
         url: item.thumbTempFilePath
       }
     ]
-    let videos = await imgUploader.uploadImageFn(video, "videos", { image_type: 'video/mp4', storage: 'videos' })
-    let covers = await imgUploader.uploadImageFn(cover, "image", { image_type: 'image/jpeg', storage: 'image' })
-    console.log("videos---covers", videos, covers)
-    file_video.url = videos[0].url.split("ugcimgid")[0]
+    let videos = await imgUploader.uploadImageFn(video, 'videos', {
+      image_type: 'video/mp4',
+      storage: 'videos'
+    })
+    let covers = await imgUploader.uploadImageFn(cover, 'image', {
+      image_type: 'image/jpeg',
+      storage: 'image'
+    })
+    console.log('videos---covers', videos, covers)
+    file_video.url = videos[0].url.split('ugcimgid')[0]
     // file_video.urlimge_id=videos[0].url.split("ugcimgid")[1]
 
-    file_video.cover = covers[0].url.split("ugcimgid")[0]
+    file_video.cover = covers[0].url.split('ugcimgid')[0]
     // file_video.coverimge_id=covers[0].url.split("ugcimgid")[1]
 
     file_video.proportion = item.height / item.width
-    this.setState({
-      file_video
-    }, () => {
-      Taro.hideLoading()
-    })
+    this.setState(
+      {
+        file_video
+      },
+      () => {
+        Taro.hideLoading()
+      }
+    )
   }
   // 图片上传
   handleImageChange = (type) => {
@@ -350,7 +377,12 @@ export default class Make extends Component {
       success: async (res) => {
         let tempFilePaths = res.tempFilePaths[0]
         if (res.tempFiles[0].size <= 5120000) {
-          if (tempFilePaths.slice(-4) == '.jpeg' || tempFilePaths.slice(-4) == '.jpg' || tempFilePaths.slice(-4) == '.png' || tempFilePaths.slice(-4) == '.gif') {
+          if (
+            tempFilePaths.slice(-4) == '.jpeg' ||
+            tempFilePaths.slice(-4) == '.jpg' ||
+            tempFilePaths.slice(-4) == '.png' ||
+            tempFilePaths.slice(-4) == '.gif'
+          ) {
             Taro.showLoading({
               title: '加载中',
               mask: true
@@ -365,18 +397,21 @@ export default class Make extends Component {
                 url: tempFilePaths
               }
             ]
-            let files = await imgUploader.uploadImageFn(imgs, "image", { image_type: 'image/jpeg', storage: 'image' })
-            console.log("图片上传", res, files)
+            let files = await imgUploader.uploadImageFn(imgs, 'image', {
+              image_type: 'image/jpeg',
+              storage: 'image'
+            })
+            console.log('图片上传', res, files)
 
             Taro.getImageInfo({
               src: tempFilePaths,
               success: function (resimg) {
                 console.log(resimg.width)
                 console.log(resimg.height)
-                let proportion = (resimg.height / resimg.width)
+                let proportion = resimg.height / resimg.width
                 file = {
-                  imgurl: files[0].url.split("ugcimgid")[0],
-                  imge_id: files[0].url.split("ugcimgid")[1],
+                  imgurl: files[0].url.split('ugcimgid')[0],
+                  imge_id: files[0].url.split('ugcimgid')[1],
                   proportion
                 }
                 file = JSON.stringify(file)
@@ -386,11 +421,10 @@ export default class Make extends Component {
                 })
               }
             })
-
           } else {
             Taro.showToast({
               icon: 'none',
-              title: '图片格式仅支持jpg\png\gif'
+              title: '图片格式仅支持jpgpnggif'
             })
           }
         } else {
@@ -405,19 +439,19 @@ export default class Make extends Component {
   // 转base64
   fileToBase64 = (filePath) => {
     return new Promise((resolve) => {
-      let fileManager = Taro.getFileSystemManager();
+      let fileManager = Taro.getFileSystemManager()
       fileManager.readFile({
         filePath,
         encoding: 'base64',
         success: (e) => {
-          resolve(`data:image/jpg;base64,${e.data}`);
+          resolve(`data:image/jpg;base64,${e.data}`)
         }
-      });
-    });
+      })
+    })
   }
   // 添加图片
   addfileimg = (imgs) => {
-    console.log("这是图片详细信息", imgs)
+    console.log('这是图片详细信息', imgs)
     let img = JSON.parse(JSON.stringify(imgs))
     let { file_img } = this.state
     if (img.indexpages !== '' && img.indexpages >= 0) {
@@ -522,15 +556,22 @@ export default class Make extends Component {
   }
   ischeck = (is_draft) => {
     let { file_video, file_img, file_text, file_commodity, file_word, videoenable } = this.state
-    let emoji = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g;
+    let emoji = /[\uD800-\uDBFF][\uDC00-\uDFFF]/g
     let idx = 1
-    console.log("触发")
+    console.log('触发')
     if (is_draft) {
       // 保存草稿判断
       idx = 0
-      if (file_img.length > 0 || file_video.cover || file_text.title || file_text.attextarea || file_word.length > 0 || file_commodity.length > 0) {
+      if (
+        file_img.length > 0 ||
+        file_video.cover ||
+        file_text.title ||
+        file_text.attextarea ||
+        file_word.length > 0 ||
+        file_commodity.length > 0
+      ) {
         idx = 1
-        console.log("草稿通过")
+        console.log('草稿通过')
       } else {
         Taro.showToast({
           icon: 'none',
@@ -576,10 +617,10 @@ export default class Make extends Component {
   }
   // 上传笔记|草稿
   oncreate = async (is_draft) => {
-    const { memberData } = this.props;
+    const { memberData } = this.props
     let { md_drafts, post_id } = this.$router.params
 
-    console.log("memberData", memberData)
+    console.log('memberData', memberData)
     let { file_video, file_img, file_text, file_commodity, file_word } = this.state
     let is = this.ischeck(is_draft)
     if (is != 1) {
@@ -595,13 +636,13 @@ export default class Make extends Component {
     let video_ratio = ''
     let video_place = ''
     if (file_video.cover) {
-      cover = ('image/' + file_video.cover.split("/image/")[1])
+      cover = 'image/' + file_video.cover.split('/image/')[1]
       // 有视频则
-      video = ('image/' + file_video.url.split("/image/")[1])
+      video = 'image/' + file_video.url.split('/image/')[1]
       video_ratio = file_video.proportion
       video_place = file_video.video_idx
     } else if (file_img.length > 0) {
-      cover = ('image/' + file_img[0].bg_shareImg.split("/image/")[1])
+      cover = 'image/' + file_img[0].bg_shareImg.split('/image/')[1]
     }
     // 推荐商品
     let goods = []
@@ -620,26 +661,26 @@ export default class Make extends Component {
     })
     let image_path = []
     file_img.forEach((item) => {
-      let pushs = ('image/' + item.bg_shareImg.split("/image/")[1])
+      let pushs = 'image/' + item.bg_shareImg.split('/image/')[1]
       image_path.push(pushs)
     })
     // 图片tag信息
     let image_tag = []
     file_img.forEach((item) => {
       let tagi = {
-        "image_id": '',
-        "proportion": "",
-        "ugcwidth": "",
-        "tags": []
+        'image_id': '',
+        'proportion': '',
+        'ugcwidth': '',
+        'tags': []
       }
       tagi.image_id = item.imge_id
       tagi.proportion = item.proportion
       tagi.ugcwidth = item.ugcwidth
       item.movearry.forEach((mi) => {
         let mis = {
-          "tag_id": '',
-          "tag_name": "lv",
-          "movearray": {}
+          'tag_id': '',
+          'tag_name': 'lv',
+          'movearray': {}
         }
         mis.tag_id = mi.value.tag_id
         mis.tag_name = mi.value.tag_name
@@ -686,7 +727,7 @@ export default class Make extends Component {
       data.is_draft = 1
     }
 
-    console.log("传递参数", data)
+    console.log('传递参数', data)
     let res = await api.mdugc.create(data)
     if (res.message) {
       Taro.hideLoading()
@@ -700,20 +741,20 @@ export default class Make extends Component {
       setTimeout(() => {
         Taro.navigateBack({
           delta: 1
-        });
-      }, 1000);
+        })
+      }, 1000)
     }
-    console.log("这是信息", res)
+    console.log('这是信息', res)
   }
   // 返回上一页
   onugcBack = () => {
-    console.log("返回上一页")
+    console.log('返回上一页')
     this.setState({
       isPopups: true
     })
   }
   onLast = (isLast) => {
-    console.log("这是遮罩层数据", isLast)
+    console.log('这是遮罩层数据', isLast)
     if (isLast == 1) {
       this.setState({
         isback: false
@@ -721,7 +762,7 @@ export default class Make extends Component {
       wx.disableAlertBeforeUnload()
       Taro.navigateBack({
         delta: 1
-      });
+      })
     }
     this.setState({
       isPopups: false
@@ -749,8 +790,9 @@ export default class Make extends Component {
                 that.handleImageChange('camera')
               }
             },
-            fail: () => {//用户拒绝授权，然后就引导授权（这里的话如果用户拒绝，不会立马弹出引导授权界面，坑就是上边所说的官网原因）
-              console.log("用户无授权")
+            fail: () => {
+              //用户拒绝授权，然后就引导授权（这里的话如果用户拒绝，不会立马弹出引导授权界面，坑就是上边所说的官网原因）
+              console.log('用户无授权')
               elastic = {
                 title: '使用您的摄像头，将会上传你摄录的照片及视频',
                 closetext: '拒绝',
@@ -796,7 +838,6 @@ export default class Make extends Component {
         this.handleImageChange('album')
       }
     }
-
   }
 
   // 点击添加
@@ -819,17 +860,16 @@ export default class Make extends Component {
   onupload = (type) => {
     let { file_video, file_img, upload_img, upload_video, uploadtype } = this.state
     let that = this
-    console.log("这是类型", type)
+    console.log('这是类型', type)
     if (type == 'img') {
       uploadtype = upload_img
     } else if (type == 'video') {
       file_video.video_idx = file_img.length - 1
-      console.log("这是图片数组长度：", file_img.length)
+      console.log('这是图片数组长度：', file_img.length)
       that.setState({
         file_video
       })
       uploadtype = upload_video
-
     } else {
       if (type == 'album_i') {
         that.isalbum(0)
@@ -883,23 +923,30 @@ export default class Make extends Component {
   }
 
   render() {
-    const { file_video, file_img, occupy, file_text, file_word, curTagId, file_commodity, isPopups, isGrant, elastic, isOpened, uploadtype } = this.state
+    const {
+      file_video,
+      file_img,
+      occupy,
+      file_text,
+      file_word,
+      curTagId,
+      file_commodity,
+      isPopups,
+      isGrant,
+      elastic,
+      isOpened,
+      uploadtype
+    } = this.state
     let { post_id } = this.$router.params
     return (
       <View className='makeindex'>
         <NavBar
-          background="#ffffff"
-          color="#000"
-          iconTheme="#000"
+          background='#ffffff'
+          color='#000'
+          iconTheme='#000'
           onBack={this.onugcBack.bind(this)}
           back
-          renderCenter={
-            <View
-              className="trace-rowAlignCenter"
-            >
-              编辑
-            </View>
-          }
+          renderCenter={<View className='trace-rowAlignCenter'>编辑</View>}
         />
         <View className='makeindexs'>
           <View className='makeindex_upload'>
@@ -920,74 +967,81 @@ export default class Make extends Component {
               }
             </View> */}
             <View className='makeindex_upload_img'>
-              {
-                ((file_img.length == 0 && file_video.url) || (file_video.video_idx == -1 && file_video.url)) ? (
-                  <View className='makeindex_upload_img_i'>
-                    <SpImg
-                      img-class='makeindex_upload_img_i_img'
-                      src={file_video.cover}
-                      mode='widthFix'
-                      lazyLoad
-                    />
-                    <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this, 0, 'video')}>
-                      <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                    </View>
+              {(file_img.length == 0 && file_video.url) ||
+              (file_video.video_idx == -1 && file_video.url) ? (
+                <View className='makeindex_upload_img_i'>
+                  <SpImg
+                    img-class='makeindex_upload_img_i_img'
+                    src={file_video.cover}
+                    mode='widthFix'
+                    lazyLoad
+                  />
+                  <View
+                    className='makeindex_upload_delete'
+                    onClick={this.deletefile.bind(this, 0, 'video')}
+                  >
+                    <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
                   </View>
-                ) : null
-              }
-              {
-                file_img.map((item, idx) => {
-                  return (
-                    <Block>
-
+                </View>
+              ) : null}
+              {file_img.map((item, idx) => {
+                return (
+                  <Block>
+                    <View className='makeindex_upload_img_i'>
+                      <SpImg
+                        img-class='makeindex_upload_img_i_img'
+                        src={item.bg_shareImg}
+                        mode='aspectFill'
+                        lazyLoad
+                      />
+                      <View
+                        className='makeindex_upload_delete'
+                        onClick={this.deletefile.bind(this, idx, 'img')}
+                      >
+                        <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
+                      </View>
+                      <View
+                        className='makeindex_upload_edit'
+                        onClick={this.editimg.bind(this, idx)}
+                      >
+                        编辑
+                      </View>
+                    </View>
+                    {file_video.video_idx == idx && file_video.url ? (
+                      // <View className='makeindex_upload_video_i'>
+                      //   <Video className='makeindex_upload_video_i_video' src={file_video.url} objectFit="contain" controls={false} showCenterPlayBtn={false}></Video>
+                      //   <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this,0,'video')}>
+                      //     <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
+                      //   </View>
+                      // </View>
                       <View className='makeindex_upload_img_i'>
                         <SpImg
                           img-class='makeindex_upload_img_i_img'
-                          src={item.bg_shareImg}
+                          src={file_video.cover}
                           mode='aspectFill'
                           lazyLoad
                         />
-                        <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this, idx, 'img')}>
+                        <View
+                          className='makeindex_upload_delete'
+                          onClick={this.deletefile.bind(this, 0, 'video')}
+                        >
                           <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
                         </View>
-                        <View className='makeindex_upload_edit' onClick={this.editimg.bind(this, idx)}>编辑</View>
                       </View>
-                      {
-                        (file_video.video_idx == idx && file_video.url) ? (
-                          // <View className='makeindex_upload_video_i'>
-                          //   <Video className='makeindex_upload_video_i_video' src={file_video.url} objectFit="contain" controls={false} showCenterPlayBtn={false}></Video>
-                          //   <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this,0,'video')}>
-                          //     <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                          //   </View>
-                          // </View>
-                          <View className='makeindex_upload_img_i'>
-                            <SpImg
-                              img-class='makeindex_upload_img_i_img'
-                              src={file_video.cover}
-                              mode='aspectFill'
-                              lazyLoad
-                            />
-                            <View className='makeindex_upload_delete' onClick={this.deletefile.bind(this, 0, 'video')}>
-                              <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                            </View>
-                          </View>
-                        ) : null
-                      }
-                    </Block>
-
-                  )
-                })
-              }
-              {
-                ((file_video.url && file_img.length <= 7) || (!file_video.url && file_img.length <= 8)) ? (
-                  <View onClick={this.openpush.bind(this)} className='makeindex_upload_occupy icon-jiahao'>
-
-                  </View>
-                ) : null
-              }
-              {
-                occupy.map(() => <View className='makeindex_upload_img_occupy'></View>)
-              }
+                    ) : null}
+                  </Block>
+                )
+              })}
+              {(file_video.url && file_img.length <= 7) ||
+              (!file_video.url && file_img.length <= 8) ? (
+                <View
+                  onClick={this.openpush.bind(this)}
+                  className='makeindex_upload_occupy icon-jiahao'
+                ></View>
+              ) : null}
+              {occupy.map(() => (
+                <View className='makeindex_upload_img_occupy'></View>
+              ))}
             </View>
           </View>
           <View className='makeindex_input'>
@@ -1015,48 +1069,52 @@ export default class Make extends Component {
             <View className='makeindex_word_title'>添加话题</View>
             <View className='makeindex_word_scroll'>
               <View className='makeindex_word_scroll_left'>
-                {
-                  file_word.length &&
+                {file_word.length && (
                   <TagsBar
                     current={curTagId}
                     list={file_word}
                     onChange={this.handleTagChange.bind(this)}
-                    isedit={true}
+                    isedit
                     delete={this.deleteword.bind(this)}
                   />
-                }
+                )}
               </View>
-              <View onClick={this.addword.bind(this)} className='makeindex_word_scroll_right icon-bianji'></View>
+              <View
+                onClick={this.addword.bind(this)}
+                className='makeindex_word_scroll_right icon-bianji'
+              ></View>
             </View>
           </View>
           <View className='makeindex_commodity'>
             <View className='makeindex_commodity_title'>推荐商品</View>
             <View className='makeindex_commodity_list'>
-              {
-                file_commodity.map((item, idx) => {
-                  return (
-                    <View className='makeindex_commodity_list_i'>
-                      <SpImg
-                        img-class='makeindex_commodity_list_i_img'
-                        src={item.img}
-                        mode='aspectFill'
-                        lazyLoad
-                      />
-                      <View className='makeindex_upload_delete' onClick={this.deletecommodity.bind(this, idx)}>
-                        <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
-                      </View>
+              {file_commodity.map((item, idx) => {
+                return (
+                  <View className='makeindex_commodity_list_i'>
+                    <SpImg
+                      img-class='makeindex_commodity_list_i_img'
+                      src={item.img}
+                      mode='aspectFill'
+                      lazyLoad
+                    />
+                    <View
+                      className='makeindex_upload_delete'
+                      onClick={this.deletecommodity.bind(this, idx)}
+                    >
+                      <Text className='makeindex_upload_delete_i icon-jiahao'></Text>
                     </View>
-                  )
-                })
-              }
-              {
-                file_commodity.length < 9 ? (
-                  <View onClick={this.addcommodity.bind(this)} className='makeindex_upload_occupy icon-jiahao'></View>
-                ) : null
-              }
-              {
-                occupy.map(() => <View className='makeindex_upload_img_occupy'></View>)
-              }
+                  </View>
+                )
+              })}
+              {file_commodity.length < 9 ? (
+                <View
+                  onClick={this.addcommodity.bind(this)}
+                  className='makeindex_upload_occupy icon-jiahao'
+                ></View>
+              ) : null}
+              {occupy.map(() => (
+                <View className='makeindex_upload_img_occupy'></View>
+              ))}
             </View>
           </View>
           <View className='makeindex_footer'>
@@ -1069,39 +1127,32 @@ export default class Make extends Component {
             </View>
           </View>
         </View>
-        {
-          isPopups ? (
-            <Popups
-              title='是否退出当前编辑'
-              text='退出内容将不可保存哦'
-              closetext='确认退出'
-              showtext='继续编辑'
-              Last={this.onLast.bind(this)}
-            ></Popups>
-          ) : null
-        }
-        {
-          isGrant ? (
-            <Popups
-              title='MassimoDutti  申请'
-              text={elastic.title}
-              closetext={elastic.closetext}
-              showtext={elastic.showtext}
-              Last={this.ongrant.bind(this)}
-            ></Popups>
-          ) : null
-        }
+        {isPopups ? (
+          <Popups
+            title='是否退出当前编辑'
+            text='退出内容将不可保存哦'
+            closetext='确认退出'
+            showtext='继续编辑'
+            Last={this.onLast.bind(this)}
+          ></Popups>
+        ) : null}
+        {isGrant ? (
+          <Popups
+            title='MassimoDutti  申请'
+            text={elastic.title}
+            closetext={elastic.closetext}
+            showtext={elastic.showtext}
+            Last={this.ongrant.bind(this)}
+          ></Popups>
+        ) : null}
         <AtActionSheet isOpened={isOpened} cancelText='关闭' title='' onClose={this.closesheet}>
-          {
-            uploadtype.map((item) => {
-              return (
-                <AtActionSheetItem onClick={this.onupload.bind(this, item.type)}>
-                  {item.text}
-                </AtActionSheetItem>
-              )
-            })
-          }
-
+          {uploadtype.map((item) => {
+            return (
+              <AtActionSheetItem onClick={this.onupload.bind(this, item.type)}>
+                {item.text}
+              </AtActionSheetItem>
+            )
+          })}
         </AtActionSheet>
       </View>
     )

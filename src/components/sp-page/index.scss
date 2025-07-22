@@ -1,50 +1,49 @@
 .sp-page {
   box-sizing: border-box;
 
-  .sp-page-body {
+  .sp-page__body {
     box-sizing: border-box;
   }
 
-  .sp-page-footer {
+  .sp-page__footer {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: $page-footer-height;
     z-index: $z-index-level-3;
     background: #fff;
   }
 
-  &.has-navbar {
-    .sp-page-body {
-      padding-top: $navigate-height;
-    }
-  }
+  // &.has-navbar {
+  //   .sp-page-body {
+  //     padding-top: $navigate-height;
+  //   }
+  // }
 
   &.has-footer {
-    .sp-page-body {
-      padding-bottom: $page-footer-height;
-    }
+    // .sp-page-body {
+    //   padding-bottom: $page-footer-height;
+    // }
 
-    .sp-page-footer {
-      height: $page-footer-height;
-      .at-tab-bar {
-        height: $page-footer-height;
-      }
-    }
+    // .sp-page-footer {
+    //   height: $page-footer-height;
+    //   .at-tab-bar {
+    //     height: $page-footer-height;
+    //   }
+    // }
 
-    &.ipx {
-      .sp-page-body {
-        padding-bottom: $page-ipx-footer-height;
-      }
+    // &.ipx {
+    //   .sp-page-body {
+    //     padding-bottom: $page-ipx-footer-height;
+    //   }
 
-      .sp-page-footer {
-        height: $page-ipx-footer-height;
-        .at-tab-bar {
-          height: $page-ipx-footer-height;
-        }
-      }
-    }
+    //   .sp-page-footer {
+    //     height: $page-ipx-footer-height;
+    //     .at-tab-bar {
+    //       height: $page-ipx-footer-height;
+    //     }
+    //   }
+    // }
   }
 
   &.has-custom-navigation {
@@ -91,68 +90,23 @@
     }
   }
 
-
-
   .custom-navigation {
-    display: flex;
-    align-items: center;
     box-sizing: border-box;
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
     z-index: 1000;
-
-    .left-container,
-    .right-container {
-      width: 100px;
-      height: 100%;
-      display: flex;
-      justify-content: center;
+    &__body {
       align-items: center;
     }
-
-    .icon-wrap {
-      width: 56px;
-      height: 56px;
-      background: #c5c5c5;
-      border-radius: 32px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      .icon-home1 {
-        font-size: 38px;
-        color: #fff;
-        position: relative;
-        top: -2px;
-      }
-
-      .icon-fanhui {
-        font-size: 32px;
-        color: #fff;
-      }
-    }
-
     .title-container {
-      flex: 1;
-      height: 100%;
-      text-align: center;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #333;
-      padding: 0 16px;
-    }
-
-    .icon-home1 {
-      font-size: 40px;
-      color: #fff;
-    }
-
-    .icon-shangyiyehoutuifanhui-xianxingyuankuang {
-      font-size: 50px;
-      color: #fff;
+      font-size: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -o-text-overflow: ellipsis;
+      -webkit-text-overflow: ellipsis;
     }
 
     &.mantle {
@@ -182,6 +136,18 @@
       .title-container {
         color: #333;
       }
+    }
+  }
+  .p-title-hot-img {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    .sp-image {
+      width: 100%;
+      height: 100%;
+    }
+    .img-hotzone_zone {
+      position: absolute;
     }
   }
 }

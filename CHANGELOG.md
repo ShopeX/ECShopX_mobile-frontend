@@ -53,7 +53,7 @@ All notable changes to this project will be documented in this file. See [standa
 * 店铺隔离改版，去除定位. 首页，自定义页修改 ([b72855f](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b72855f3fbdbeeed726ec5fe1d5fa3691713683b))
 * 获取最新店铺修改 ([b6fec3d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b6fec3d69ed425a59fb471873780280dc011d735))
 * 增加店铺排序, 会员中心样式修改 ([ac4f63d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ac4f63d4277611ed30478445dc442506dc85411a))
-* checkStoreIsolation 加上 open_divided 判断 ([f67b67d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f67b67defeeedbbb1233afab1426b5aa1e6f4343))
+* checkEnterStoreRule 加上 open_divided 判断 ([f67b67d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f67b67defeeedbbb1233afab1426b5aa1e6f4343))
 * pdp 页 店铺隔离完成 ([92dd00b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/92dd00b4d9e15da497bfbab70fdbe7b83aaf6faf))
 
 

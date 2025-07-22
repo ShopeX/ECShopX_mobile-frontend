@@ -1,10 +1,9 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-// import React from 'react'
-import './index.scss'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
+import './index.scss'
 
-function SpShopFullReduction (props) {
+function SpShopFullReduction(props) {
   const { info, status, count = 0, handeChange, showMoreIcon } = props
   const { promotion_tag, marketing_name } = info
   return (

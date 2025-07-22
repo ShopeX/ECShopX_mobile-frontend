@@ -20,7 +20,6 @@ import PointTag from './point-tag'
 import CouponItem from './coupon-item'
 import CouponModal from './coupon-modal'
 import GoodsComment from './goods-comment'
-import SearchBar from './search-bar'
 import RecommendItem from './recommend-item'
 import TimePicker from './time-picker'
 import SpCheckbox from './sp-checkbox'
@@ -104,11 +103,8 @@ import SpCustomPicker from './sp-custom-picker'
 import SpTable from './sp-table'
 import SpInput from './sp-input'
 import SpSelectModal from './sp-select-modal'
-import SpModalDivided from './sp-modal-divided'
 import SpDeliver from './sp-deliver'
 import SharePurchase from './share-purchase'
-
-
 
 export default {}
 
@@ -135,12 +131,10 @@ export {
   CouponItem,
   CouponModal,
   GoodsComment,
-  SearchBar,
   RecommendItem,
   TimePicker,
   SpCheckbox,
   /* old */
-
   SpImg,
   SpImage,
   SpPrivacyModal,
@@ -219,7 +213,6 @@ export {
   SpTable,
   SpInput,
   SpSelectModal,
-  SpModalDivided,
   SpDeliver,
   SharePurchase
 }

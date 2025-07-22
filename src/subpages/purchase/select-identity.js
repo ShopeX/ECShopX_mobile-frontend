@@ -5,10 +5,14 @@ import { View, Text, Image } from '@tarojs/components'
 import api from '@/api'
 import { classNames, getDistributorId, VERSION_IN_PURCHASE } from '@/utils'
 import CompTabbarActivity from '@/pages/purchase/comps/comp-tabbar'
-import './select-identity.scss'
 import { SpPage } from '@/components'
-import { updateValidIdentity, updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
+import {
+  updateValidIdentity,
+  updateEnterpriseId,
+  updateCurDistributorId
+} from '@/store/slices/purchase'
 import { useDispatch, useSelector } from 'react-redux'
+import './select-identity.scss'
 
 const initialState = {
   identity: [],

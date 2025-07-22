@@ -19,14 +19,15 @@ const initialState = {
   agreeMentChecked: false
 }
 function SpLogin(props, ref) {
-  const { children, className, onChange, newUser = false, onPolicyClose } = props
+  const { children, className, newUser = false, visible, onPolicyClose, onChange, onClose } = props
   const { updateAddress } = useLocation()
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
-      // isUpdate && setPolicyModal(true)
+      isUpdate && setPolicyModal(true)
     },
     loginSuccess: () => {
-      updateAddress && updateAddress()
+      // TODO 需要优化
+      !visible && updateAddress && updateAddress()
     }
   })
   const [isNewUser, setIsNewUser] = useState(false)
@@ -35,6 +36,12 @@ function SpLogin(props, ref) {
   const [state, setState] = useImmer(initialState)
   const { logo, registerName, privacyName, agreeMentChecked } = state
   const codeRef = useRef()
+
+  useEffect(() => {
+    if (visible) {
+      setLoginModal(true)
+    }
+  }, [visible])
 
   useEffect(() => {
     if (newUser) {
@@ -122,15 +129,6 @@ function SpLogin(props, ref) {
   const handleConfirmModal = useCallback(async () => {
     setPolicyModal(false)
     handleUserLogin()
-    // if (isNewUser) {
-    //   return setLoginModal(true)
-    // } else {
-    //   try {
-    //     await login()
-    //   } catch (e) {
-    //     setLoginModal(true)
-    //   }
-    // }
   }, [])
 
   // 登录
@@ -160,8 +158,7 @@ function SpLogin(props, ref) {
       setLoginModal(false)
       onChange && onChange()
     } catch (e) {
-      setIsNewUser(true);
-      !loginModal && setLoginModal(true);
+      console.log('[sp-login] handleUserLogin error:', e)
     }
   }
 
@@ -216,6 +213,7 @@ function SpLogin(props, ref) {
       <AtCurtain
         isOpened={loginModal}
         onClose={() => {
+          onClose()
           setLoginModal(false)
         }}
       >
@@ -261,6 +259,12 @@ function SpLogin(props, ref) {
       </AtCurtain>
     </View>
   )
+}
+
+SpLogin.defaultProps = {
+  visible: false,
+  onChange: () => {},
+  onClose: () => {}
 }
 
 SpLogin.options = {

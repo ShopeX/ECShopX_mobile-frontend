@@ -1,9 +1,9 @@
 // import req from './req-dianwu'
 import { API } from './req'
+
 const req = new API({
   baseURL: process.env.APP_BASE_URL.replace('/h5app/wxapp', '')
 })
-
 
 export function goodsItems(params) {
   return req.get('/goods/items/onsale', params)
@@ -100,12 +100,12 @@ export function penddingDelete(params) {
 }
 
 // 改价
-export function changePrice (params) {
+export function changePrice(params) {
   return req.post('/order/markdown', params)
 }
 
 // 改价确认
-export function changePriceConfirm (params) {
+export function changePriceConfirm(params) {
   return req.post('/order/markdown/confirm', params)
 }
 
@@ -144,12 +144,12 @@ export function accountManagement(params) {
 }
 
 //编辑配送员
-export function patchAccountManagement(operator_id,params) {
+export function patchAccountManagement(operator_id, params) {
   return req.patch(`/account/management/${operator_id}`, params)
 }
 
 //编辑配送员
-export function getAccountManagement(operator_id,params) {
+export function getAccountManagement(operator_id, params) {
   return req.get(`/account/management/${operator_id}`, params)
 }
 

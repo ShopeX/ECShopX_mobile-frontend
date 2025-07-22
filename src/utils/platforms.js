@@ -1,5 +1,5 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { getExtConfigData } from '@/utils'
+import { getExtConfigData, isAlipay } from '@/utils'
 
 /* 获取小程序 */
 export const getAppId = () => {
@@ -9,9 +9,6 @@ export const getAppId = () => {
 }
 
 export const createIntersectionObserver = Taro.createIntersectionObserver
-
-/** 在支付宝平台 */
-export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY
 
 // export const copy = isWeixin
 //   ? text => Taro.setClipboardData({ data: text })
@@ -23,10 +20,6 @@ export const isAlipay = Taro.getEnv() == Taro.ENV_TYPE.ALIPAY
 //         fail: e => console.log("粘贴失败", e)
 //       });
 //     };
-
-// export const showLoading = isAlipay ? my.showLoading : Taro.showLoading;
-
-// export const hideLoading = isAlipay ? my.hideLoading : Taro.hideLoading;
 
 //平台支付
 export async function payPlatform(order = {}) {

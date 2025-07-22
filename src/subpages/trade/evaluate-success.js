@@ -21,9 +21,14 @@ function EvaluateSuccess(props) {
 
       <View className='btn-block'>
         <View className='btn-wrap'>
-          <AtButton circle onClick={() => {
-            Taro.redirectTo({ url: '/pages/index' })
-          }}>返回首页</AtButton>
+          <AtButton
+            circle
+            onClick={() => {
+              Taro.redirectTo({ url: '/pages/index' })
+            }}
+          >
+            返回首页
+          </AtButton>
         </View>
       </View>
     </SpPage>

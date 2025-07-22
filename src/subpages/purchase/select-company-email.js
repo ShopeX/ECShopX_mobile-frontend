@@ -9,10 +9,18 @@ import api from '@/api'
 import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 
-import './select-company-email.scss'
-import CompBottomTip from './comps/comp-bottomTip'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
-import { SpForm, SpFormItem, SpTimer, SpPage, SpPrivacyModal, SpInput as AtInput } from '@/components'
+import {
+  SpForm,
+  SpFormItem,
+  SpTimer,
+  SpPage,
+  SpPrivacyModal,
+  SpInput as AtInput
+} from '@/components'
+
+import CompBottomTip from './comps/comp-bottomTip'
+import './select-company-email.scss'
 
 function PurchaseAuthEmail(props) {
   const router = useRouter()
@@ -42,9 +50,9 @@ function PurchaseAuthEmail(props) {
               const params = {
                 email: value
               }
-              if(!enterprise_id){
+              if (!enterprise_id) {
                 //不是扫码进来，接口要传当前店铺ID
-                params.distributor_id =  getDistributorId()
+                params.distributor_id = getDistributorId()
               }
               const { status } = await api.purchase.getEmailCode(params)
               showToast(status ? '发送成功' : '发送失败')
@@ -59,7 +67,13 @@ function PurchaseAuthEmail(props) {
   })
   const { form, rules } = state
   const formRef = useRef()
-  const { enterprise_id, enterprise_name, enterprise_sn,activity_id,is_activity='' } = router.params
+  const {
+    enterprise_id,
+    enterprise_name,
+    enterprise_sn,
+    activity_id,
+    is_activity = ''
+  } = router.params
 
   const onInputChange = (key, value) => {
     setState((draft) => {
@@ -94,12 +108,12 @@ function PurchaseAuthEmail(props) {
     }
 
     try {
-      const checkParams = {...params}
-      if(!enterprise_id){
+      const checkParams = { ...params }
+      if (!enterprise_id) {
         //不是扫码进来，check接口要传当前店铺ID
         checkParams.distributor_id = getDistributorId()
       }
-      if(activity_id){
+      if (activity_id) {
         checkParams.activity_id = activity_id
       }
       const { list } = await api.purchase.employeeCheck(checkParams)
@@ -122,7 +136,11 @@ function PurchaseAuthEmail(props) {
       showToast('验证成功')
 
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
+        Taro.reLaunch({
+          url: `/pages/purchase/index?is_redirt=1${
+            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
+          }`
+        })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
@@ -135,17 +153,21 @@ function PurchaseAuthEmail(props) {
           confirmText: '我知道了',
           contentAlign: 'center'
         })
-        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
+        Taro.reLaunch({
+          url: `/pages/purchase/index?is_redirt=1${
+            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
+          }`
+        })
       } else {
         formRef.current.setMessage({ prop: 'vcode', message: e.message })
       }
     }
   }
 
-  const getQrCodeDtid = async() => {
-    if(!enterprise_id)return
+  const getQrCodeDtid = async () => {
+    if (!enterprise_id) return
     // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
-    const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
+    const { distributor_id } = await api.purchase.getPurchaseDistributor({ enterprise_id })
     //后续身份切换需要用
     dispatch(updateCurDistributorId(distributor_id))
   }
@@ -204,7 +226,7 @@ function PurchaseAuthEmail(props) {
               <SpTimer
                 className={classNames({ 'unuse': !form.email })}
                 onStart={getSmsCode}
-                onStop={()=>{}}
+                onStop={() => {}}
                 defaultMsg='获取验证码'
                 msg='重新获取'
               ></SpTimer>

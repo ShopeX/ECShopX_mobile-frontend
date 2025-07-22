@@ -1,13 +1,3 @@
-/*
- * @Author: error: git config user.email & please set dead value or install git
- * @Date: 2022-11-04 16:41:24
- * @LastEditors: error: git config user.email & please set dead value or install git
- * @LastEditTime: 2022-11-05 16:17:04
- * @FilePath: /ecshopxx-vshop/src/components/recommend-item/index.js
- * @Description: 
- * 
- * Copyright (c) 2022 by error: git config user.name && git config user.email & please set dead value or install git, All Rights Reserved. 
- */
 import React, { Component } from 'react'
 import { View, Text, Image, Progress } from '@tarojs/components'
 import { Price, SpImg } from '@/components'
@@ -15,7 +5,6 @@ import { isObject, classNames } from '@/utils'
 import api from '@/api'
 
 import './index.scss'
-import { info } from '@/api/aftersales'
 
 export default class RecommendItem extends Component {
   static defaultProps = {
@@ -31,7 +20,7 @@ export default class RecommendItem extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      info:JSON.parse(JSON.stringify(props.info))
+      info: JSON.parse(JSON.stringify(props.info))
     }
   }
   handleLikeClick = async (e) => {
@@ -41,7 +30,7 @@ export default class RecommendItem extends Component {
     const { count } = await api.article.praise(item_id)
     console.log(info)
     this.setState({
-      info:{
+      info: {
         ...info,
         isPraise: !isPraise,
         articlePraiseNum: count
@@ -49,7 +38,7 @@ export default class RecommendItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       // info,
       noCurSymbol,
@@ -61,9 +50,7 @@ export default class RecommendItem extends Component {
       type,
       noShowZan
     } = this.props
-    const {
-      info,
-    } = this.state
+    const { info } = this.state
     if (!info) {
       return null
     }

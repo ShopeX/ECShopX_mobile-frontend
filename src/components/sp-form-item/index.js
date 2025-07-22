@@ -13,7 +13,7 @@ const initialState = {
   message: ''
 }
 function SpFormItem(props) {
-  const { label, prop, children, info, copy = false, onChange = () => { } } = props
+  const { label, prop, children, info, copy = false, onChange = () => {} } = props
   const [state, setState] = useImmer(initialState)
   const { message } = state
   const value = useRef()
@@ -74,17 +74,19 @@ function SpFormItem(props) {
 
   const renderInputField = () => {
     const { type, disabled = false, clear = true, placeholder = '' } = props.info
-    return <AtInput
-      clear={clear}
-      focus
-      name={prop}
-      value={value.current}
-      placeholder={placeholder}
-      disabled={disabled}
-      onChange={(e) => {
-        onChange(prop, e)
-      }}
-    />
+    return (
+      <AtInput
+        clear={clear}
+        focus
+        name={prop}
+        value={value.current}
+        placeholder={placeholder}
+        disabled={disabled}
+        onChange={(e) => {
+          onChange(prop, e)
+        }}
+      />
+    )
   }
 
   const renderPickerField = () => {
@@ -98,12 +100,19 @@ function SpFormItem(props) {
   }
 
   const renderTextField = () => {
-    return <View className='text-field'>
-      <Text className='text-value'>{value.current}</Text>
-      {info?.copy && <Text className='iconfont icon-fuzhi' onClick={() => {
-        copyText(value.current)
-      }}></Text>}
-    </View>
+    return (
+      <View className='text-field'>
+        <Text className='text-value'>{value.current}</Text>
+        {info?.copy && (
+          <Text
+            className='iconfont icon-fuzhi'
+            onClick={() => {
+              copyText(value.current)
+            }}
+          ></Text>
+        )}
+      </View>
+    )
   }
 
   const renderComponent = () => {
@@ -120,12 +129,17 @@ function SpFormItem(props) {
 
   return (
     <View className={classNames('sp-form-item', { 'split-line': info.type == 'split' })}>
-      {label && <View className='form-item-label'>
-        {rule.length > 0 && <Text className='required'>*</Text>}
-        <Text className='label'>{label}</Text>
-      </View>
-      }
-      {info.type != 'split' && <View className={classNames('form-item-control', { 'disabled': !!info.disabled })}>{!isEmpty(info) ? renderComponent() : children}</View>}
+      {label && (
+        <View className='form-item-label'>
+          {rule.length > 0 && <Text className='required'>*</Text>}
+          <Text className='label'>{label}</Text>
+        </View>
+      )}
+      {info.type != 'split' && (
+        <View className={classNames('form-item-control', { 'disabled': !!info.disabled })}>
+          {!isEmpty(info) ? renderComponent() : children}
+        </View>
+      )}
       {info.type != 'split' && <View className='form-item-message'>{message}</View>}
     </View>
   )

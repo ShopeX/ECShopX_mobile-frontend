@@ -9,7 +9,6 @@ dist_iwa.zip
 sitemap.json
 dist/
 .app_modules.*
-.husky
 .history
 .swc
 .vscode

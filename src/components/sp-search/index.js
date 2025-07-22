@@ -21,10 +21,12 @@ function SpSearch(props) {
 
   return (
     // <View className={!isFixTop && 'sp-search-nofix'}>
-    <View className={classNames('sp-search', {
-      'wgt__padded': padded,
-      'fixed-top': fixTop
-    })} >
+    <View
+      className={classNames('sp-search', {
+        'wgt__padded': padded,
+        'fixed-top': fixTop
+      })}
+    >
       <View className='sp-search-block' onClick={handleClick}>
         <View className='iconfont icon-sousuo-01'></View>
         <Text className='place-holder'>{placeholder}</Text>

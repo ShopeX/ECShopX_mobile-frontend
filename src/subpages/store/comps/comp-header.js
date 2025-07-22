@@ -1,13 +1,12 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-import './comp-header.scss'
-import { classNames } from '@/utils'
 import { useState, useCallback, useEffect } from 'react'
 import api from '@/api'
 import { SpShopCoupon, SpShopFullReduction } from '@/components'
 import { useLogin } from '@/hooks'
+import './comp-header.scss'
 
-function CompHeader (props) {
+function CompHeader(props) {
   const {
     info,
     couponList = [],

@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
-import { SpAddress } from '@/components'
-import { withPager, withBackToTop } from '@/hocs'
-import { connect } from 'react-redux'
-import { AtDrawer } from 'taro-ui'
 import {
+  SpAddress,
   BackToTop,
   Loading,
   RecommendItem,
@@ -15,6 +12,9 @@ import {
   SpTabbar,
   SpPage
 } from '@/components'
+import { withPager, withBackToTop } from '@/hocs'
+import { connect } from 'react-redux'
+import { AtDrawer } from 'taro-ui'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
 import S from '@/spx'
@@ -44,7 +44,7 @@ export default class RecommendList extends Component {
       multiIndex: [],
       isShowSearch: false,
       shareInfo: {},
-      isSpAddressOpened: false,
+      isSpAddressOpened: false
     }
   }
 
@@ -146,8 +146,8 @@ export default class RecommendList extends Component {
       total_count: total,
       province_list
     } = S.getAuthToken()
-        ? await api.article.authList(article_query)
-        : await api.article.list(article_query)
+      ? await api.article.authList(article_query)
+      : await api.article.list(article_query)
 
     if (areaList.length === 0) {
       let res = await api.member.areaList()
@@ -335,25 +335,27 @@ export default class RecommendList extends Component {
       const { paramsList, selectParams } = this.state
       console.log('handleClickSearchParams:paramsList', paramsList)
       console.log('handleClickSearchParams:selectParams', selectParams)
-      paramsList && paramsList.map((item) => {
-        item.attribute_values.map((v_item) => {
-          if (v_item.attribute_value_id === '') {
-            v_item.isChooseParams = true
-          } else {
-            v_item.isChooseParams = false
-          }
+      paramsList &&
+        paramsList.map((item) => {
+          item.attribute_values.map((v_item) => {
+            if (v_item.attribute_value_id === '') {
+              v_item.isChooseParams = true
+            } else {
+              v_item.isChooseParams = false
+            }
+          })
         })
-      })
-      selectParams && selectParams.map((item) => {
-        item.attribute_value_id = ''
-      })
+      selectParams &&
+        selectParams.map((item) => {
+          item.attribute_value_id = ''
+        })
       this.setState({
         paramsList,
-        selectParams,        
+        selectParams
       })
       this.resetColumn()
     }
-    
+
     this.resetPage()
     this.setState(
       {
@@ -365,15 +367,15 @@ export default class RecommendList extends Component {
     )
   }
 
-  resetColumn(){
+  resetColumn() {
     this.setState({
-      selectColumn : Object.assign({}, { id: '', name: '全部', isChooseColumn: true }),
-      columnList : this.state.columnList.map((d,idx)=>{
+      selectColumn: Object.assign({}, { id: '', name: '全部', isChooseColumn: true }),
+      columnList: this.state.columnList.map((d, idx) => {
         d.isChooseColumn = idx == 0 ? true : false
         return d
       })
     })
-  } 
+  }
 
   // 选定开户地区
   handleClickPicker = () => {
@@ -515,18 +517,20 @@ export default class RecommendList extends Component {
     })
   }
 
-
   onPickerChange = (selectValue) => {
     const info = {
       province: selectValue[0].label,
-      city: selectValue[1].label,
+      city: selectValue[1].label
       // area: selectValue[2].label
     }
-    this.setState({
-      info
-    }, () => {
-      this.bindMultiPickerChange()
-    })
+    this.setState(
+      {
+        info
+      },
+      () => {
+        this.bindMultiPickerChange()
+      }
+    )
   }
 
   render() {
@@ -553,8 +557,9 @@ export default class RecommendList extends Component {
         <View className='page-recommend-list'>
           <View className='recommend-list__toolbar'>
             <View
-              className={`recommend-list__search ${query && query.title && isShowSearch ? 'on-search' : null
-                }`}
+              className={`recommend-list__search ${
+                query && query.title && isShowSearch ? 'on-search' : null
+              }`}
             >
               <SearchBar
                 showDailog={false}
@@ -589,15 +594,19 @@ export default class RecommendList extends Component {
                   <View className='iconfont icon-periscope'></View>
                   <Text>{address || '地区'}</Text>
                 </View>
-                <SpAddress isOpened={isSpAddressOpened} onClose={this.handleClickCloseSpAddress} onChange={this.onPickerChange} />
+                <SpAddress
+                  isOpened={isSpAddressOpened}
+                  onClose={this.handleClickCloseSpAddress}
+                  onChange={this.onPickerChange}
+                />
 
                 {address ? (
                   <View
-                  className='zoom-btn icon-close iconfont'
-                  onClick={this.handleRegionRefresh.bind(this)}
-                ></View>
-                  // <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}>x</Text>
+                    className='zoom-btn icon-close iconfont'
+                    onClick={this.handleRegionRefresh.bind(this)}
+                  ></View>
                 ) : (
+                  // <Text className='icon-close' onClick={this.handleRegionRefresh.bind(this)}>x</Text>
                   ''
                 )}
               </View>
@@ -623,8 +632,8 @@ export default class RecommendList extends Component {
                       style={
                         item.isChooseColumn
                           ? {
-                            background: (colors && colors.data && colors.data[0].primary) || null
-                          }
+                              background: (colors && colors.data && colors.data[0].primary) || null
+                            }
                           : {}
                       }
                       key={`${index}1`}
@@ -684,7 +693,6 @@ export default class RecommendList extends Component {
           </ScrollView>
 
           <BackToTop show={showBackToTop} onClick={this.scrollBackToTop} />
-
         </View>
       </SpPage>
     )

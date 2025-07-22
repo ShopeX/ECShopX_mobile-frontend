@@ -4,13 +4,7 @@ import { View } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SpPage, SpSearch, SpRecommend, SpSkuSelect } from '@/components'
 import api from '@/api'
-import {
-  isWeixin,
-  VERSION_PLATFORM,
-  classNames,
-  pickBy,
-  showToast
-} from '@/utils'
+import { isWeixin, VERSION_PLATFORM, classNames, pickBy, showToast } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateLocation } from '@/store/slices/user'
 import { platformTemplateName } from '@/utils/platform'
@@ -20,8 +14,8 @@ import doc from '@/doc'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import CompNavigationClassification from './comps/comp-navigation-classification'
 import { parse } from 'qs'
+import CompNavigationClassification from './comps/comp-navigation-classification'
 
 import './navigation-ibs.scss'
 
@@ -41,7 +35,7 @@ const initialState = {
   selectType: 'picker',
   seletedTags: [],
   classifyList: null,
-  jump:false
+  jump: false
 }
 
 function NavigationIbs() {
@@ -49,9 +43,7 @@ function NavigationIbs() {
   const [likeList, setLikeList] = useImmer([])
   const pageRef = useRef()
   const router = useRouter()
-  const { openRecommend } = useSelector(
-    (state) => state.sys
-  )
+  const { openRecommend } = useSelector((state) => state.sys)
   // const { shopInfo } = useSelector((state) => state.shop)
 
   // const showAdv = useSelector((member) => member.user.showAdv)
@@ -111,7 +103,7 @@ function NavigationIbs() {
       res.children.unshift({
         category_name: '推荐店铺',
         category_ids: 0,
-        image_url:true,
+        image_url: true
       })
     }
     //第二层默认是全部，并且那第一层的category_id
@@ -125,7 +117,6 @@ function NavigationIbs() {
       draft.classifyList = res
     })
   }
-
 
   /**
    * 获取模版装修数据
@@ -153,8 +144,7 @@ function NavigationIbs() {
     }
 
     const fixedTops = searchComps && searchComps.config.fixTop
-    const isShowHomeHeaders =
-      VERSION_PLATFORM || fixedTops
+    const isShowHomeHeaders = VERSION_PLATFORM || fixedTops
 
     setState((draft) => {
       draft.wgts = config
@@ -166,7 +156,6 @@ function NavigationIbs() {
       draft.loading = false
     })
   }
-
 
   //判断是否开启定位，通过定位获取数据（平台）
   const fetchLocation = () => {
@@ -182,7 +171,6 @@ function NavigationIbs() {
       }
     }
   }
-
 
   // 加购
   const onAddToCart = async ({ itemId, distributorId }) => {

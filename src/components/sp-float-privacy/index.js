@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { Button, View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtButton, AtFloatLayout } from 'taro-ui'
 import S from '@/spx'
@@ -23,10 +23,10 @@ export default class SpFloatPrivacy extends Component {
   static defaultProps = {
     isOpened: false,
     wxUserInfo: true,
-    callback: () => { },
-    onClose: () => { },
-    onConfirm: () => { },
-    onChange: () => { }
+    callback: () => {},
+    onClose: () => {},
+    onConfirm: () => {},
+    onChange: () => {}
   }
 
   constructor(props) {
@@ -78,7 +78,7 @@ export default class SpFloatPrivacy extends Component {
         return
       }
       my.getOpenUserInfo({
-        fail: (res) => { },
+        fail: (res) => {},
         success: async (res) => {
           let userInfo = JSON.parse(res.response).response
           await api.member.updateMemberInfo({

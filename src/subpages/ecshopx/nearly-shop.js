@@ -6,10 +6,10 @@ import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
-import CompShopItem from './comps/comp-shopitem'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
+import CompShopItem from './comps/comp-shopitem'
 
 import './nearly-shop.scss'
 
@@ -26,7 +26,7 @@ const initialState = {
   queryAddress: '',
   isSpAddressOpened: false,
   refresh: false,
-  isToken:false
+  isToken: false
 }
 
 function NearlyShop(props) {
@@ -37,11 +37,18 @@ function NearlyShop(props) {
     }
   })
   const [state, setState] = useImmer(initialState)
-  const { chooseValue, isSpAddressOpened, keyword, refresh, type, queryProvice,
+  const {
+    chooseValue,
+    isSpAddressOpened,
+    keyword,
+    refresh,
+    type,
+    queryProvice,
     queryCity,
     queryDistrict,
-    queryAddress ,
-    isToken} = state
+    queryAddress,
+    isToken
+  } = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const shopRef = useRef()
@@ -67,8 +74,9 @@ function NearlyShop(props) {
     setState((draft) => {
       if (address) {
         draft.type = address.is_def ? 2 : 3
-      } 
-      if (location) { // fix：未授权定位时不设置chooseValue
+      }
+      if (location) {
+        // fix：未授权定位时不设置chooseValue
         draft.chooseValue = [province, city, district]
         draft.type = 0
       }
@@ -76,8 +84,8 @@ function NearlyShop(props) {
     })
 
     Taro.eventCenter.on('onEventSelectReceivingAddress', (addressRes) => {
-      console.log(addressRes,'onEventSelectReceivingAddress...')
-      setState(draft => {
+      console.log(addressRes, 'onEventSelectReceivingAddress...')
+      setState((draft) => {
         draft.type = addressRes.is_def ? 2 : 3
         draft.shopList = []
         draft.refresh = true
@@ -91,17 +99,15 @@ function NearlyShop(props) {
     }
   }, [])
 
-
   // 在需要获取 Token 的地方调用该函数
   const getTokenFromStorage = async () => {
-      let res = await Taro.getStorage({ key: 'token' });
-      setState(draft => {
-        draft.isToken = res?.data ? true : false
-      })
-  };
+    let res = await Taro.getStorage({ key: 'token' })
+    setState((draft) => {
+      draft.isToken = res?.data ? true : false
+    })
+  }
 
   const fetchShop = async ({ pageIndex, pageSize }) => {
-    
     let params = {
       page: pageIndex,
       pageSize,
@@ -109,7 +115,8 @@ function NearlyShop(props) {
       sort_type: 1,
       type
     }
-    if (type == 0) { //经纬度
+    if (type == 0) {
+      //经纬度
       params = {
         ...params,
         lat: location?.lat,
@@ -121,7 +128,8 @@ function NearlyShop(props) {
           name: keyword
         }
       }
-    } else if(type == 1) {  //基于省市区过滤
+    } else if (type == 1) {
+      //基于省市区过滤
       const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
       if (keyword) {
         params = {
@@ -133,10 +141,9 @@ function NearlyShop(props) {
         ...params,
         province: chooseProvince,
         city: chooseCity,
-        area: chooseDistrict,
-        
+        area: chooseDistrict
       }
-    }  else if (type == 3) {
+    } else if (type == 3) {
       params = {
         ...params,
         province: address.province,
@@ -146,7 +153,7 @@ function NearlyShop(props) {
       }
     }
 
-    log.debug(`fetchShop query: ${JSON.stringify(params)}`,)
+    log.debug(`fetchShop query: ${JSON.stringify(params)}`)
     const { list, total_count: total, defualt_address } = await api.shop.list(params)
 
     setState((draft) => {
@@ -223,7 +230,8 @@ function NearlyShop(props) {
 
   // 根据定位地址或收货地址定位切换地址
   const onLocationChange = async (info) => {
-    let local = info.address || info.province + info.city + info?.area + info?.county + info?.adrdetail
+    let local =
+      info.address || info.province + info.city + info?.area + info?.county + info?.adrdetail
     const res = await entryLaunch.getLnglatByAddress(local)
     await dispatch(updateLocation(res))
     Taro.navigateBack()
@@ -244,11 +252,14 @@ function NearlyShop(props) {
       <View className='search-block'>
         <View className='search-bar'>
           <View className='region-picker'>
-            <View className='pick-title' onClick={() => {
-              setState((draft) => {
-                draft.isSpAddressOpened = true
-              })
-            }}>
+            <View
+              className='pick-title'
+              onClick={() => {
+                setState((draft) => {
+                  draft.isSpAddressOpened = true
+                })
+              }}
+            >
               <View className='iconfont icon-periscope'></View>
               <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
               {/* <Text className='iconfont icon-arrowDown'></Text> */}
@@ -288,8 +299,8 @@ function NearlyShop(props) {
             {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
-        {
-          isToken && address && <View className='block-title block-flex'>
+        {isToken && address && (
+          <View className='block-title block-flex'>
             <View>我的收货地址</View>
             <View
               className='arrow'
@@ -300,24 +311,22 @@ function NearlyShop(props) {
               选择其他地址<View className='iconfont icon-qianwang-01'></View>
             </View>
           </View>
-        }
-    
-            <View className='receive-address'>
-            {!address && isLogin && (
-              <View className='btn-add-address' onClick={onAddChange}>
-                添加新地址
-              </View>
-            )}
-            {address && isToken && (
-              <View
-                className='address'
-                onClick={() => onLocationChange(address)}
-              >{
-                `${address.province}${address.city}${address?.area || ''}${address?.county || ''}${address?.adrdetail || ''}`
-              }</View>
-            )}
-          </View>
-       
+        )}
+
+        <View className='receive-address'>
+          {!address && isLogin && (
+            <View className='btn-add-address' onClick={onAddChange}>
+              添加新地址
+            </View>
+          )}
+          {address && isToken && (
+            <View className='address' onClick={() => onLocationChange(address)}>{`${
+              address.province
+            }${address.city}${address?.area || ''}${address?.county || ''}${
+              address?.adrdetail || ''
+            }`}</View>
+          )}
+        </View>
       </View>
 
       <View className='nearlyshop-list'>
@@ -335,11 +344,15 @@ function NearlyShop(props) {
         </SpScrollView>
       </View>
 
-      <SpAddress isOpened={isSpAddressOpened} onClose={() => {
-        setState((draft) => {
-          draft.isSpAddressOpened = false
-        })
-      }} onChange={onPickerChange} />
+      <SpAddress
+        isOpened={isSpAddressOpened}
+        onClose={() => {
+          setState((draft) => {
+            draft.isSpAddressOpened = false
+          })
+        }}
+        onChange={onPickerChange}
+      />
     </SpPage>
   )
 }

@@ -41,8 +41,8 @@ import { useLogin, useNavigation } from '@/hooks'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import configStore from '@/store'
-import CompTabbar from './comps/comp-tabbar'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
+import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
@@ -63,7 +63,7 @@ const { store } = configStore()
 
 function Home() {
   const [state, setState] = useImmer(initialState)
-  const { initState, openLocation, openStore, appName } = useSelector((state) => state.sys)
+  const { initState, entryStoreByLBS, appName } = useSelector((state) => state.sys)
   const { purchase_share_info = {}, curDistributorId } = useSelector((state) => state.purchase)
   const { isLogin, login, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
@@ -210,7 +210,7 @@ function Home() {
   const isShowHomeHeader =
     VERSION_PLATFORM ||
     (openScanQrcode == 1 && isWeixin) ||
-    (VERSION_STANDARD && openStore && openLocation == 1) ||
+    (VERSION_STANDARD && entryStoreByLBS) ||
     fixedTop
 
   const onAddToCart = async ({ itemId, distributorId }) => {

@@ -12,7 +12,6 @@ import {
   VERSION_IN_PURCHASE,
   VERSION_B2C
 } from '@/utils'
-import { SG_APP_CONFIG } from '@/consts'
 import CompPanel from './comp-panel'
 
 import './comp-menu.scss'
@@ -117,7 +116,6 @@ const MENUS_COMMUNITY = [
 
 function CompMenu(props) {
   const { accessMenu, onLink = () => {}, isPromoter } = props
-  const config = Taro.getStorageSync(SG_APP_CONFIG)
   if (!accessMenu) {
     return null
   }

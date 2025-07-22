@@ -8,6 +8,7 @@ import { View, ScrollView, RichText } from '@tarojs/components'
 import { SpPage } from '@/components'
 import { isWeb, isAlipay, htmlStringToNodeArray } from '@/utils'
 import './point-rule.scss'
+
 const initialState = {
   content: ''
 }
@@ -29,7 +30,6 @@ function PointRule(props) {
   let _content = content
     .replace(/\s+style="[^"]*"/g, '')
     .replace(/<img/g, '<img style="width:100%;height:auto;display: block;"')
-  
 
   if (isAlipay) {
     _content = htmlStringToNodeArray(_content)
@@ -37,9 +37,9 @@ function PointRule(props) {
   console.log('content:', _content)
   return (
     <SpPage className='page-point-rule'>
-      <ScrollView className="point-scroll-view" scrollY>
+      <ScrollView className='point-scroll-view' scrollY>
         {isWeb && <View dangerouslySetInnerHTML={{ __html: _content }} />}
-        {(!isWeb && !isAlipay) && <mp-html content={_content} />}
+        {!isWeb && !isAlipay && <mp-html content={_content} />}
         {isAlipay && <RichText nodes={_content} />}
       </ScrollView>
     </SpPage>

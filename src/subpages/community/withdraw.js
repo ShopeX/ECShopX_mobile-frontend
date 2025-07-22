@@ -34,46 +34,48 @@ function CommunityWitdraw(props) {
   }
 
   const onWithDraw = async () => {
-    if(!money) {
+    if (!money) {
       showToast('请输入提现金额')
       return
     }
-    if(money <= 0) {
+    if (money <= 0) {
       showToast('提现金额大于0')
       return
     }
-    if(!bankName || !bankCardNo) {
+    if (!bankName || !bankCardNo) {
       showToast('请添加银行卡信息')
       return
     }
-    if(money > withdraw) {
+    if (money > withdraw) {
       showToast('不能超过可提现金额')
       return
     }
 
     await api.community.chiefCashWithdraw({
       money: money * 100,
-      pay_type: "bankcard"   //bankcard=银行卡;alipay=支付宝;wechat=微信
+      pay_type: 'bankcard' //bankcard=银行卡;alipay=支付宝;wechat=微信
     })
     showToast('提现申请成功')
     Taro.navigateBack()
-
   }
 
   const onInputChange = (value) => {
-    setState(draft => {
+    setState((draft) => {
       draft.money = value
     })
   }
 
   return (
-    <SpPage className='page-community-withdraw' renderFooter={
-      <View className='btn-wrap'>
-        <AtButton circle type='primary' onClick={onWithDraw}>
-          提交
-        </AtButton>
-      </View>
-    }>
+    <SpPage
+      className='page-community-withdraw'
+      renderFooter={
+        <View className='btn-wrap'>
+          <AtButton circle type='primary' onClick={onWithDraw}>
+            提交
+          </AtButton>
+        </View>
+      }
+    >
       <View className='withdraw-hd'>
         <View className='label'>可提现金额 (元)</View>
         <SpPrice size={52} value={withdraw} />
@@ -82,12 +84,16 @@ function CommunityWitdraw(props) {
         <View className='label'>提现金额 (元)</View>
         <View className='withdraw-money'>
           <Text className='rmb'>¥</Text>
-          <AtInput name="money" value={money} onChange={onInputChange} />
-          <AtButton circle className='btn-allwithdraw' onClick={() => {
-            setState(draft => {
-              draft.money = withdraw
-            })
-          }}>
+          <AtInput name='money' value={money} onChange={onInputChange} />
+          <AtButton
+            circle
+            className='btn-allwithdraw'
+            onClick={() => {
+              setState((draft) => {
+                draft.money = withdraw
+              })
+            }}
+          >
             全部提现
           </AtButton>
         </View>

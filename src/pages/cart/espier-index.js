@@ -34,8 +34,8 @@ import './espier-index.scss'
 const initialState = {
   recommendList: [], // 猜你喜欢
   current: 0, // 0:普通商品  1:跨境商品
-  policyModal: false ,// 隐私弹框
-  cartRemind: null,//购物车提示
+  policyModal: false, // 隐私弹框
+  cartRemind: null //购物车提示
 }
 
 function CartIndex() {
@@ -55,7 +55,7 @@ function CartIndex() {
   const router = $instance.router
 
   const [state, setState] = useImmer(initialState)
-  const { current, recommendList, policyModal,cartRemind } = state
+  const { current, recommendList, policyModal, cartRemind } = state
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
@@ -228,7 +228,7 @@ function CartIndex() {
   }
 
   const onChangeCartGoodsItem = useDebounce(async (item, num) => {
-    console.log(`onChangeCartGoodsItem:`, item,num)
+    console.log(`onChangeCartGoodsItem:`, item, num)
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
@@ -279,8 +279,8 @@ function CartIndex() {
       })}
       renderFooter={tabbar == 1 && <SpTabbar />}
     >
-      <ScrollView scrollY style="height: 100%;">
-        {cartRemind&&cartRemind?.is_open && (
+      <ScrollView scrollY style='height: 100%;'>
+        {cartRemind && cartRemind?.is_open && (
           <View className='cart-remind'>
             <Text>{cartRemind.remind_content}</Text>
           </View>
@@ -288,7 +288,7 @@ function CartIndex() {
         {!isLogin && (
           <View className='login-header'>
             <View className='login-txt'>授权登录后同步购物车的商品</View>
-            <SpLogin onChange={() => { }}>
+            <SpLogin onChange={() => {}}>
               <View className='btn-login'>授权登录</View>
             </SpLogin>
           </View>
@@ -358,7 +358,9 @@ function CartIndex() {
                                   <CompGoodsItem
                                     info={{
                                       ...c_sitem,
-                                      promotions: c_sitem.activity_info?.map(c_sitem_item => ({promotion_tag: c_sitem_item.info})),
+                                      promotions: c_sitem.activity_info?.map((c_sitem_item) => ({
+                                        promotion_tag: c_sitem_item.info
+                                      }))
                                     }}
                                     onDelete={onDeleteCartGoodsItem.bind(this, c_sitem)}
                                     onChange={onChangeCartGoodsItem.bind(this, c_sitem)}
@@ -368,7 +370,10 @@ function CartIndex() {
                                 {/**组合商品开始 */}
                                 {c_sitem.packages &&
                                   c_sitem.packages.map((pack_sitem, pack_index) => (
-                                    <View className='cart-item-wrap plus_items_bck' key={pack_index}>
+                                    <View
+                                      className='cart-item-wrap plus_items_bck'
+                                      key={pack_index}
+                                    >
                                       <CompGoodsItem
                                         disabled
                                         info={pack_sitem}

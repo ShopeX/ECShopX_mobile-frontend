@@ -1,5 +1,12 @@
 import React, { Component, useEffect } from 'react'
-import Taro, { getCurrentInstance, getCurrentPages, useDidShow, useReady, useRouter } from '@tarojs/taro'
+import Taro, {
+  getCurrentInstance,
+  getCurrentPages,
+  useDidShow,
+  useLaunch,
+  useReady,
+  useRouter
+} from '@tarojs/taro'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -10,14 +17,21 @@ import { fetchUserFavs } from '@/store/slices/user'
 import {
   DEFAULT_TABS,
   DEFAULT_THEME,
-  SG_APP_CONFIG,
   SG_MEIQIA,
   SG_YIQIA,
   SG_ROUTER_PARAMS,
   SG_GUIDE_PARAMS,
   SG_GUIDE_PARAMS_UPDATETIME
 } from '@/consts'
-import { checkAppVersion, isWeixin, isWeb, isNavbar, log, entryLaunch, VERSION_STANDARD } from '@/utils'
+import {
+  checkAppVersion,
+  isWeixin,
+  isWeb,
+  isNavbar,
+  log,
+  entryLaunch,
+  VERSION_STANDARD
+} from '@/utils'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
 
@@ -44,14 +58,23 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 
 requestIntercept()
 
-
-
 function App({ children }) {
+  useEffect(async (options) => {
+    console.log('useEffect %%%%%%%%%%%%%', options)
+    if (isWeixin) {
+      checkAppVersion()
+    }
 
-  useEffect(() => {
-    import('../package.json').then(res => {
-      console.log(`App Name: ${res.name}, version: ${res.version}`)
-    })
+    const { show_time } = await api.promotion.getScreenAd()
+    let showAdv
+    if (show_time === 'always') {
+      showAdv = false
+      store.dispatch({
+        type: 'user/closeAdv',
+        payload: showAdv
+      })
+    }
+    getSystemConfig()
 
     // 导购参数缓存处理
     const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
@@ -63,25 +86,16 @@ function App({ children }) {
     }
   }, [])
 
-  useDidShow(async (options) => {
-    if (isWeixin) {
-      checkAppVersion()
-    }
+  useLaunch((options) => {
+    console.log('useLaunch ***********', options)
+  })
 
+  useDidShow(async (options) => {
+    console.log('useDidShow &&&&&&&&&&&&', options)
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
     })
-
-    const { show_time } = await api.promotion.getScreenAd()
-    let showAdv
-    if (show_time === 'always') {
-      showAdv = false
-      store.dispatch({
-        type: 'user/closeAdv', payload: showAdv
-      })
-    }
-    getSystemConfig()
   })
 
   const getSystemConfig = async () => {
@@ -99,7 +113,6 @@ function App({ children }) {
       tab_bar,
       is_open_recommend: openRecommend,
       is_open_scan_qrcode: openScanQrcode,
-      is_open_wechatapp_location: openLocation,
       is_open_official_account: openOfficialAccount,
       color_style: { primary, accent, marketing },
       title // 商城应用名称
@@ -108,6 +121,11 @@ function App({ children }) {
     const priceSetting = await api.shop.getAppGoodsPriceSetting()
 
     const appSettingInfo = await api.groupBy.getCompanySetting() // 获取小程序头像
+
+    let enterStoreRule = null
+    if (VERSION_STANDARD) {
+      enterStoreRule = await api.shop.getStoreEnterRule()
+    }
 
     Taro.setStorageSync('distributor_param_status', distributor_param_status)
 
@@ -124,19 +142,23 @@ function App({ children }) {
           tabbar: tabBar,
           openRecommend, // 开启猜你喜欢 1开启 2关闭
           openScanQrcode, // 开启扫码功能 1开启 2关闭
-          openLocation, // 开启小程序定位 1开启 2关闭
           openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
           diskDriver: disk_driver,
           appName: title,
           echat,
           meiqia,
-          openStore: !nostores_status, // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
           priceSetting,
           appLogo: appSettingInfo?.logo,
-          open_divided: appSettingInfo?.open_divided?.status && VERSION_STANDARD && process.env.TARO_ENV !== 'h5', // 店铺隔离开关
-          open_divided_templateId: appSettingInfo?.open_divided?.template // 店铺隔离自定义模版id
+
+          entryStoreByStoreCode: enterStoreRule?.distributor_code,
+          entryStoreByGuideMaterial: enterStoreRule?.shop_assistant,
+          entryStoreByGuide: enterStoreRule?.shop_assistant_pro,
+          entryStoreByLBS: enterStoreRule?.shop_lbs,
+          entryDefalutStore: enterStoreRule.radio_type,
+          guidderTemplateId: enterStoreRule?.intro_page
         }
       })
+
       // 兼容老的主题方式
       store.dispatch({
         type: 'colors/setColor',
@@ -155,4 +177,3 @@ function App({ children }) {
 }
 
 export default App
-

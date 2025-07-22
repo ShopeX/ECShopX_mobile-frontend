@@ -9,6 +9,9 @@ import {
   SpLoadMore
 } from '@/components'
 import { classNames, isNavbar, JumpPageIndex } from '@/utils'
+
+import api from '@/api'
+import { usePage, useFirstMount } from '@/hooks'
 import {
   FILTER_DATA,
   FILTER_DRAWER_DATA,
@@ -17,8 +20,6 @@ import {
   DISTANCE_PLUS_SORT,
   DISTANCE_MINUS_SORT
 } from '../consts/index'
-import api from '@/api'
-import { usePage, useFirstMount } from '@/hooks'
 import './index.scss'
 
 const NavbarTitle = '附近商家'

@@ -1,99 +1,132 @@
-import Taro, { getCurrentPages } from '@tarojs/taro'
-import React, { useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import React, { useEffect, useState } from 'react'
+import { View, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { AtTabBar } from 'taro-ui'
 import { TABBAR_PATH, TABBAR_ICON } from '@/consts'
-import { classNames, styleNames, getCurrentRoute, isWeb } from '@/utils'
+import { getCurrentRoute, isWeb, tokenParse } from '@/utils'
+import S from '@/spx'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
-import { updateCurDistributorId } from '@/store/slices/purchase'
 import './index.scss'
+import SpImage from '../sp-image'
 
-function SpTabbar(props) {
+function SpTabbar() {
   const navipage = '/pages/item/list?isTabBar=true'
-  const { colorPrimary, tabbar = {} } = useSelector((state) => state.sys)
+  const [currentIndex, setCurrentIndex] = useState(-1)
+  const { tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
-  const dispatch = useDispatch()
-  const { className } = props
   const { color, backgroundColor, selectedColor } = tabbar?.config || {}
-  const tabList = tabbar?.data.map((item) => {
-    return {
-      title: item.text,
-      name: item.name,
-      iconType: item.iconPath ? '' : TABBAR_ICON[item.name],
-      selectedIconType: item.selectedIconPath ? '' : `${TABBAR_ICON[item.name]}-fill`,
-      iconPrefixClass: 'iconfont icon',
-      image: item.iconPath,
-      selectedImage: item.selectedIconPath,
-      url: item.pagePath,
-      urlRedirect: true,
-      customPageId:item?.customPage?.id,
-      text: item.text === '购物车' && cartCount > 0 ? cartCount : null,
-      max: item.max
-    }
-  })
+  const { data: tabList = [] } = tabbar || {}
 
-  let currentIndex = 0
   const pages = Taro.getCurrentPages()
-  if (pages.length > 0) {
-    let currentPage = pages[pages.length - 1].route
-    currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
-    const { params:{id:customPageId} } = getCurrentRoute()
-    currentIndex = tabList?.findIndex((tab) => {
-      if(currentPage == '/pages/custom/custom-page'){
-        return (
-          tab.customPageId && (customPageId == tab.customPageId)
-        )
-       }else{
-        if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
-          return(
-            routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
-            currentPage
-          )
-        }else{
-          return TABBAR_PATH[tab.name] == currentPage
+  useEffect(() => {
+    if (pages.length > 0) {
+      let currentPage = pages[pages.length - 1].route
+      currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
+      const {
+        params: { id: customPageId }
+      } = getCurrentRoute()
+      const currentIndex = tabList?.findIndex((tab) => {
+        if (currentPage == '/pages/custom/custom-page') {
+          console.log('customPageId', customPageId, tab.customPageId)
+          return tab.customPageId && customPageId == tab.customPageId
+        } else {
+          if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
+            return (
+              routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
+              currentPage
+            )
+          } else {
+            return TABBAR_PATH[tab.name] == currentPage
+          }
         }
-
-       }
-
-    })
-  }
+      })
+      if (currentIndex !== -1) {
+        setCurrentIndex(currentIndex)
+      }
+    }
+  }, [pages])
 
   const handleTabbarClick = (index) => {
     const tabItem = tabList[index]
-    const { path,params:{id:customPageId} } = getCurrentRoute()
+    const {
+      path,
+      params: { id: customPageId }
+    } = getCurrentRoute()
+    if (tabItem.name == 'other_wxapp') {
+      const path = tabItem.otherWxapp.wxLinkList.find(
+        (item) => item.wx_external_routes_id == tabItem.otherWxapp.wx_external_routes_id
+      )?.route_info
+
+      // Taro.redirectTo({ url: `/pages/custom/custom-page?isTabBar=true&id=${tabItem.customPageId}` })
+    }
+
     // 如果是跳转自定义页面则判断id是否一致
-    let otherCustomPage = ((path == '/pages/custom/custom-page') && (path == TABBAR_PATH[tabItem.name]) && (tabItem.customPageId != customPageId) )
-    if (path != TABBAR_PATH[tabItem.name] || otherCustomPage ) {
-      if(tabItem.name == 'purchase'){
-        dispatch(updateCurDistributorId(null))
-      }
-      if(TABBAR_PATH[tabItem.name]!==navipage){
-        let url = tabItem.name == 'customPage' ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}` :  TABBAR_PATH[tabItem.name]
+    let otherCustomPage =
+      path == '/pages/custom/custom-page' &&
+      path == TABBAR_PATH[tabItem.name] &&
+      tabItem.customPageId != customPageId
+    if (path != TABBAR_PATH[tabItem.name] || otherCustomPage) {
+      if (TABBAR_PATH[tabItem.name] !== navipage) {
+        let url =
+          tabItem.name == 'customPage'
+            ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}`
+            : TABBAR_PATH[tabItem.name]
         Taro.redirectTo({ url })
-      }else{
+      } else {
         Taro.navigateTo({ url: TABBAR_PATH[tabItem.name] })
       }
     }
   }
 
   return (
-    <AtTabBar
-      fixed
-      classNames={classNames(
-        {
-          'sp-tabbar': true
-        },
-        className,
-      )}
-      color={color}
-      iconSize='20'
-      backgroundColor={backgroundColor}
-      selectedColor={selectedColor}
-      tabList={tabList}
-      onClick={handleTabbarClick}
-      current={currentIndex}
-    />
+    <View className='sp-tabbar' style={{ backgroundColor: backgroundColor }}>
+      {tabList?.map((item, index) => (
+        <View className='sp-tabbar__item' key={index} onClick={() => handleTabbarClick(index)}>
+          {/* {index == 0 &&
+            (index !== currentIndex ? (
+              <>
+                <SpImage src={item.iconPath} className='sp-tabbar__item-image' mode='aspectFill' />
+                <View
+                  className='sp-tabbar__item-text'
+                  style={{ color: index == currentIndex ? selectedColor : color }}
+                >
+                  {item.text}
+                </View>
+              </>
+            ) : (
+              <SpImage
+                src={item.selectedIconPath}
+                className='sp-tabbar__item-cover-image'
+                mode='aspectFill'
+              />
+            ))} */}
+
+          <View className='sp-tabbar__item-image-wrapper'>
+            <SpImage
+              src={index == currentIndex ? item.selectedIconPath : item.iconPath}
+              className='sp-tabbar__item-image'
+              mode='aspectFill'
+            />
+
+            {item.name == 'cart' && cartCount > 0 && (
+              <View className={`sp-tabbar__item-badge${cartCount > 99 ? '1' : ''}`}>
+                {cartCount > 0 && cartCount <= 99 && (
+                  <Text className='cart-count'>{cartCount}</Text>
+                )}
+                {cartCount > 99 && <Text className='cart-count1'>99+</Text>}
+              </View>
+            )}
+          </View>
+
+          <View
+            className='sp-tabbar__item-text'
+            style={{ color: index == currentIndex ? selectedColor : color }}
+          >
+            {item.text}
+          </View>
+        </View>
+      ))}
+    </View>
   )
 }
 
@@ -101,4 +134,4 @@ SpTabbar.options = {
   addGlobalClass: true
 }
 
-export default SpTabbar
+export default React.memo(SpTabbar)

@@ -1,5 +1,5 @@
-import req from './req'
 import { transformPlatformUrl } from '@/utils/platform'
+import req from './req'
 
 // 登录
 export const login = (param = {}) => req.post('/wxa/promotion/articles', param)

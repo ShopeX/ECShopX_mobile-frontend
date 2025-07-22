@@ -6,13 +6,20 @@ import { updateUserInfo, fetchUserFavs, clearUserInfo, updateIsNewUser } from '@
 import { updateCount, clearCart } from '@/store/slices/cart'
 import { purchaseClearCart } from '@/store/slices/purchase'
 import api from '@/api'
-import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin, VERSION_SHUYUN } from '@/utils'
+import {
+  isWeixin,
+  showToast,
+  entryLaunch,
+  isAlipay,
+  alipayAutoLogin,
+  VERSION_SHUYUN
+} from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID } from '@/consts'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => { }, loginSuccess = () => { } } = props
+  const { autoLogin = false, policyUpdateHook = () => {}, loginSuccess = () => {} } = props
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
@@ -56,6 +63,8 @@ export default (props = {}) => {
           console.error('[hooks useLogin] auto login is failed: ', e)
           throw new Error(e)
         }
+      } else {
+        throw new Error('POLICY_NOT_AGREE')
       }
     }
   }
@@ -78,7 +87,6 @@ export default (props = {}) => {
     }
 
     return await api.wx.login(params)
-
   }
 
   const logout = () => {
@@ -134,7 +142,6 @@ export default (props = {}) => {
    * @return false: 协议已变更
    */
   const checkPolicyChange = async () => {
-
     const policyInfo = Taro.getStorageSync(SG_POLICY) || {
       policyUpdateTime: null,
       localPolicyUpdateTime: null,
@@ -219,9 +226,7 @@ export default (props = {}) => {
   /**
    * @function 新用户注册
    */
-  const registerUser = () => {
-
-  }
+  const registerUser = () => {}
 
   return {
     isLogin,

@@ -10,10 +10,9 @@ function CompWgts(props) {
   return (
     <View className='comp-wgts'>
       {info.map((item) => (
-        <View className="">
+        <View className=''>
           {item.type == 'bigimage' && <SpImage src={item.value} />}
           {item.type == 'text' && <View>{item.value}</View>}
-
         </View>
       ))}
     </View>

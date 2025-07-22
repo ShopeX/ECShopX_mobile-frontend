@@ -3,9 +3,9 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { ScrollView, View, RichText } from '@tarojs/components'
 import { SpPage, SpLoading } from '@/components'
 import { classNames, isWeixin } from '@/utils'
-import CompHeader from './comps/comp-header'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import CompHeader from './comps/comp-header'
 import './brand-info.scss'
 
 const initialState = {

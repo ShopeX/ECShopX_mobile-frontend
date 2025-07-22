@@ -18,7 +18,7 @@ const initialState = {
 function CouponPicker(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  let { couponListVaild,couponListInVaild, select } = state
+  let { couponListVaild, couponListInVaild, select } = state
   const dispatch = useDispatch()
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -47,12 +47,12 @@ function CouponPicker(props) {
     const { list, total_count: total } = await api.cart.coupons(params)
 
     const couponListNewVaul = pickBy(list, doc.coupon.COUPON_ITEM)
-    couponListVaild = couponListNewVaul.filter(item=>item.valid)
-    couponListInVaild = couponListNewVaul.filter(item=>!item.valid)
+    couponListVaild = couponListNewVaul.filter((item) => item.valid)
+    couponListInVaild = couponListNewVaul.filter((item) => !item.valid)
     setState((draft) => {
-      draft.couponListVaild = couponListVaild,
-      draft.couponListInVaild = couponListInVaild,
-      draft.select = coupon
+      ;(draft.couponListVaild = couponListVaild),
+        (draft.couponListInVaild = couponListInVaild),
+        (draft.select = coupon)
     })
     return {
       total
@@ -62,7 +62,7 @@ function CouponPicker(props) {
   const onChangeSelectCoupon = (item, e) => {
     let payload = null
     // 不使用优惠券
-    if(item) {
+    if (item) {
       const { cardId, code, title } = item
       payload = {
         coupon_id: cardId,
@@ -77,7 +77,7 @@ function CouponPicker(props) {
       }
     }
     dispatch(changeCoupon(payload))
-    setState(draft => {
+    setState((draft) => {
       draft.select = item ? item.code : item
     })
 
@@ -104,14 +104,22 @@ function CouponPicker(props) {
         {couponListVaild.map((item, index) => (
           <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
             <SpCoupon info={item} />
-            <SpCheckboxNew onChange={onChangeSelectCoupon.bind(this, item)} disabled={!item.valid} checked={select == item.code}/>
+            <SpCheckboxNew
+              onChange={onChangeSelectCoupon.bind(this, item)}
+              disabled={!item.valid}
+              checked={select == item.code}
+            />
           </View>
         ))}
-        { couponListInVaild.length>0 ? <View className='invalid-title'>不可用优惠券</View> :''}
+        {couponListInVaild.length > 0 ? <View className='invalid-title'>不可用优惠券</View> : ''}
         {couponListInVaild.map((item, index) => (
           <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
             <SpCoupon info={item} />
-            <SpCheckboxNew onChange={onChangeSelectCoupon.bind(this, item)} disabled={!item.valid} checked={select == item.code}/>
+            <SpCheckboxNew
+              onChange={onChangeSelectCoupon.bind(this, item)}
+              disabled={!item.valid}
+              checked={select == item.code}
+            />
           </View>
         ))}
       </SpScrollView>

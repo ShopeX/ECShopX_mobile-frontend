@@ -1,0 +1,143 @@
+/********* backgrounds *********/
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
+/********* flexbox & grid *********/
+.flex {
+  display: flex;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.items-center {
+  align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
+}
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+.flex-wrap {
+  flex-wrap: wrap;
+}
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-items-center {
+  justify-content: center;
+}
+
+.justify-items-end {
+  justify-content: flex-end;
+}
+
+/********* layout *********/
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.box-border {
+  box-sizing: border-box;
+}
+
+.box-content {
+  box-sizing: content-box;
+}
+
+/********* spacing *********/
+// ml-10 mt-10 mr-10 mb-10 m-10
+@include generate-margin(1, 50, 1);
+
+// pl-10 pt-10 pr-10 pb-10 p-10
+@include generate-padding(1, 50, 1);
+
+/********* sizing *********/
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+/********* typography *********/
+
+// text-{value}
+@include generate-fontsize(1, 50, 1);
+
+// text-overflow
+.text-ellipsis {
+  text-overflow: ellipsis;
+}
+
+.text-clip {
+  text-overflow: clip;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-wrap {
+  white-space: wrap;
+}
+.text-nowrap {
+  white-space: nowrap;
+}
+// font-weight
+.font-normal {
+  font-weight: 400;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.font-semibold {
+  font-weight: 600;
+}
+
+// white-space
+.whitespace-nowrap {
+  white-space: nowrap;
+}
+
+// color
+.primary-text {
+  color: var(--color-primary);
+}
+
+.dark-text {
+  color: $dark-text;
+}
+
+.default-text {
+  color: $default-text;
+}
+
+.secondary-text {
+  color: $secondary-text;
+}
+
+.muted-text {
+  color: $muted-text;
+}
+
+.light-text {
+  color: $light-text;
+}
+.at-button--primary {
+  background: var(--color-primary) !important;
+}

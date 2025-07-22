@@ -32,13 +32,12 @@ function MemberLevel(props) {
       list = pickBy(member_card_list, doc.member.MEMBER_CARD_ITEM)
     }
     setState((draft) => {
-      draft.list = list,
-      draft.total_consumption = total_consumption
+      ;(draft.list = list), (draft.total_consumption = total_consumption)
     })
   }
 
   const onChangeSwiper = (e) => {
-    setState(draft => {
+    setState((draft) => {
       draft.activeIndex = e.detail.current
     })
   }
@@ -48,13 +47,13 @@ function MemberLevel(props) {
       <View
         className='level-hd'
         style={styleNames({
-          "background-image": `url(${process.env.APP_IMAGE_CDN}/member_bg.jpg)`
+          'background-image': `url(${process.env.APP_IMAGE_CDN}/member_bg.jpg)`
         })}
       >
         <Swiper
           className='card-swiper'
-          previousMargin="75rpx"
-          nextMargin="30rpx"
+          previousMargin='75rpx'
+          nextMargin='30rpx'
           current={activeIndex}
           onChange={onChangeSwiper}
         >
@@ -75,7 +74,9 @@ function MemberLevel(props) {
           <View className='title'>等级权益</View>
           <SpImage src='quanyi_you.png' width={200} height={36} />
         </View>
-        <View className='content-bd'><SpHtml content={list?.[activeIndex]?.description || ''}></SpHtml></View>
+        <View className='content-bd'>
+          <SpHtml content={list?.[activeIndex]?.description || ''}></SpHtml>
+        </View>
         <View className='content-ft'>
           <SpImage src='quanyi_h.png' width={556} height={54} />
         </View>

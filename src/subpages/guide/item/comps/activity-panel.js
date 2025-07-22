@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
-import { SpImg } from '@/components'
+import { SpLoading, SpImg } from '@/components'
 
 import './activity-panel.scss'
 
@@ -31,7 +31,7 @@ export default class ActivityPanel extends Component {
   render() {
     const { info, isOpen, onClick, onClose } = this.props
     if (!info) {
-      return <Loading></Loading>
+      return <SpLoading />
     }
 
     return (

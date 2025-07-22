@@ -1,14 +1,13 @@
-
 import React, { useEffect, useRef, useState } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import S from '@/spx'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpSearchBar, SpGoodsItem } from "@/components";
-import { pickBy, getDistributorId, classNames } from "@/utils";
-import entry from "@/utils/entry";
+import { SpPage, SpScrollView, SpSearchBar, SpGoodsItem } from '@/components'
+import { pickBy, getDistributorId, classNames } from '@/utils'
+import entry from '@/utils/entry'
 import doc from '@/doc'
-import api from "@/api";
+import api from '@/api'
 
 import './item-list.scss'
 
@@ -90,13 +89,13 @@ function UgcItemList() {
     let tempSelected
     if (selected.has(itemId)) {
       selected.delete(itemId)
-      tempSelected = new Map([...selected]);
+      tempSelected = new Map([...selected])
     } else {
-      tempSelected = new Map([...selected, [itemId, { itemId, itemName, pic }]]);
+      tempSelected = new Map([...selected, [itemId, { itemId, itemName, pic }]])
     }
 
     Taro.eventCenter.trigger('onEventRemmendItems', Array.from(tempSelected.values()))
-    setSelected(tempSelected);
+    setSelected(tempSelected)
   }
 
   const isChecked = ({ itemId }) => {
@@ -104,31 +103,29 @@ function UgcItemList() {
   }
 
   return (
-    <SpPage scrollToTopBtn className="page-ugc-item-list">
+    <SpPage scrollToTopBtn className='page-ugc-item-list'>
       <SpSearchBar
         keyword={keyword}
         placeholder='搜索商品'
         showDailog={false}
-        onFocus={() => { }}
-        onChange={() => { }}
+        onFocus={() => {}}
+        onChange={() => {}}
         onClear={handleOnClear}
         onCancel={handleSearchCancel}
         onConfirm={handleConfirm}
       />
 
-      <SpScrollView
-        className='list-scroll'
-        ref={listRef}
-        fetch={fetch}
-        auto={false}
-      >
-        <View className="goods-list">
+      <SpScrollView className='list-scroll' ref={listRef} fetch={fetch} auto={false}>
+        <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
               return list.map((item, sidx) => (
-                <View className={classNames('goods-item-wrap', {
-                  'selected': isChecked(item)
-                })} key={`goods-item-l__${idx}_${sidx}`}>
+                <View
+                  className={classNames('goods-item-wrap', {
+                    'selected': isChecked(item)
+                  })}
+                  key={`goods-item-l__${idx}_${sidx}`}
+                >
                   <View className='select-item'>
                     <Text className='iconfont icon-gou'></Text>
                   </View>
@@ -140,12 +137,15 @@ function UgcItemList() {
           <View className='right-container'>
             {rightList.map((list, idx) => {
               return list.map((item, sidx) => (
-                <View className={classNames('goods-item-wrap', {
-                  'selected': isChecked(item)
-                })} key={`goods-item-r__${idx}_${sidx}`}>
-                  {<View className='select-item'>
+                <View
+                  className={classNames('goods-item-wrap', {
+                    'selected': isChecked(item)
+                  })}
+                  key={`goods-item-r__${idx}_${sidx}`}
+                >
+                  <View className='select-item'>
                     <Text className='iconfont icon-gou'></Text>
-                  </View>}
+                  </View>
                   <SpGoodsItem info={item} onClick={handleClickItem.bind(this, item)} />
                 </View>
               ))
@@ -155,7 +155,5 @@ function UgcItemList() {
       </SpScrollView>
     </SpPage>
   )
-
 }
 export default UgcItemList
-

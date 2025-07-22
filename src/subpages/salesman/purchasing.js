@@ -11,8 +11,7 @@ import {
   SpSkuSelect,
   SpScrollView
 } from '@/components'
-import { updateSalesmanCount,updateShopSalesmanCartCount } from '@/store/slices/cart'
-import CompFilterBar from './comps/comp-filter-bar'
+import { updateSalesmanCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
 import { platformTemplateName } from '@/utils/platform'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -105,7 +104,7 @@ const Purchasing = () => {
   const { params } = useRouter()
   const goodsRef = useRef()
   const pageRef = useRef()
-  
+
   useEffect(() => {
     setState((draft) => {
       draft.lists = []
@@ -129,8 +128,8 @@ const Purchasing = () => {
     goodsRef.current.reset()
   })
 
-  const carNumber =async () =>{
-    Taro.setStorageSync('distributorSalesman', { distributor_id: params.distributor_id } )
+  const carNumber = async () => {
+    Taro.setStorageSync('distributorSalesman', { distributor_id: params.distributor_id })
     let data = {
       shop_type: 'distributor',
       ...customerLnformation,
@@ -145,8 +144,7 @@ const Purchasing = () => {
       discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
       storeDetails: valid_cart[0] || {}
     }
-    await dispatch(updateShopSalesmanCartCount(shopCats))  //更新购物车价格
-    
+    await dispatch(updateShopSalesmanCartCount(shopCats)) //更新购物车价格
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -183,7 +181,7 @@ const Purchasing = () => {
       market_price: ({ market_price }) => (market_price / 100).toFixed(2),
       commission_type: 'commission_type',
       promoter_point: 'promoter_point',
-      pics: ({ pics }) => pics[0],
+      pics: ({ pics }) => pics[0]
     })
 
     setState((draft) => {

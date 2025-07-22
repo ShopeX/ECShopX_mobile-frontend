@@ -1,4 +1,4 @@
-import { default as SAPP } from './Mapp'
+import SAPP from './Mapp'
 
 import './index.scss'
 

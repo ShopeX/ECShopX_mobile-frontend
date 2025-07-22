@@ -7,7 +7,6 @@ import configStore from '@/store'
 import _isEqual from 'lodash/isEqual'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 
-
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
 const $instance = getCurrentInstance()
 const { store } = configStore()
@@ -28,9 +27,11 @@ class EntryLaunch {
   async getRouteParams(options) {
     const params = options?.query || options?.params || $instance.router?.params || {}
 
-    const pageQueue = Taro.getCurrentPages()
+    const pageStack = Taro.getCurrentPages()
 
-    const resPage = pageQueue.find(item => item.route == options?.path && _isEqual(options.query, item.$taroParams))
+    const resPage = pageStack.find(
+      (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
+    )
 
     if (resPage) {
       return Taro.getStorageSync(SG_ROUTER_PARAMS)
@@ -168,32 +169,35 @@ class EntryLaunch {
         my.getLocation({
           type: 0, // 获取经纬度和省市区县数据
           success: (res) => {
-            console.log(11, res);
+            console.log(11, res)
             resolve({
               lng: res.longitude,
               lat: res.latitude
             })
           },
           fail: (res) => {
-            reject({ message: '定位失败' + JSON.stringify(res) });
+            reject({ message: '定位失败' + JSON.stringify(res) })
           }
         })
       })
     } else {
       return new Promise(async (reslove, reject) => {
-        this.geolocation.getLocation((res) => {
-          reslove({
-            lng: res.lng,
-            lat: res.lat,
-            province: res.province,
-            city: res.city,
-            district: res.district,
-            address: res.addr
-
-          })
-        }, (err) => {
-          console.error('getLocationInfo error', err)
-        }, { timeout: 8000 })
+        this.geolocation.getLocation(
+          (res) => {
+            reslove({
+              lng: res.lng,
+              lat: res.lat,
+              province: res.province,
+              city: res.city,
+              district: res.district,
+              address: res.addr
+            })
+          },
+          (err) => {
+            console.error('getLocationInfo error', err)
+          },
+          { timeout: 8000 }
+        )
       })
     }
   }
@@ -253,7 +257,6 @@ class EntryLaunch {
       })
     })
   }
-
 
   /**
    * @function 根据经纬度解析地址 -- 腾讯

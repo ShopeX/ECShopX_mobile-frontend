@@ -1,4 +1,6 @@
-function ModalPolicy (props) {
+import { View } from '@tarojs/components'
+
+function ModalPolicy(props) {
   return <View></View>
 }
 

@@ -47,8 +47,7 @@ export default class TradeList extends Component {
       evaluate: 1,
       list: [],
       rate_status: false,
-      curItemActionsId: null,
-
+      curItemActionsId: null
     }
   }
 
@@ -60,14 +59,12 @@ export default class TradeList extends Component {
     }
     const tabIdx = _tabList.findIndex((tab) => tab.status === status)
     if (tabIdx >= 0) {
-      this.setState(
-        {
-          curTabIdx: tabIdx,
-          list: [],
-          evaluate,
-          tabList: _tabList
-        }
-      )
+      this.setState({
+        curTabIdx: tabIdx,
+        list: [],
+        evaluate,
+        tabList: _tabList
+      })
     }
   }
 
@@ -124,7 +121,7 @@ export default class TradeList extends Component {
         order_type: 'normal',
         status: tabList[curTabIdx].status,
         is_rate: tabList[curTabIdx].is_rate,
-        order_class: 'employee_purchase',
+        order_class: 'employee_purchase'
         // activity_id: this.props.purchase_share_info?.activity_id
       },
       function (val, key) {
@@ -171,7 +168,7 @@ export default class TradeList extends Component {
       orders_delivery_id: 'orders_delivery_id',
       order_type: 'order_type',
       can_apply_cancel: 'can_apply_cancel',
-      prescription_status:'prescription_status',
+      prescription_status: 'prescription_status',
       order: ({ items }) =>
         pickBy(items, {
           order_id: 'order_id',
@@ -183,13 +180,13 @@ export default class TradeList extends Component {
           type: 'type',
           item_spec_desc: 'item_spec_desc',
           price: ({ item_fee_new }) => (item_fee_new / 100).toFixed(2),
-          salePrice: ({sale_price}) => (sale_price / 100).toFixed(2),
-          activityPrice: ({price}) => (price / 100).toFixed(2),
+          salePrice: ({ sale_price }) => (sale_price / 100).toFixed(2),
+          activityPrice: ({ price }) => (price / 100).toFixed(2),
           item_fee: 'item_fee',
           point: 'item_point',
           num: 'num',
           order_item_type: 'order_item_type',
-          isPrescription: 'is_prescription',
+          isPrescription: 'is_prescription'
         })
     })
 
@@ -288,8 +285,9 @@ export default class TradeList extends Component {
           } = trade
           if (is_all_delivery || delivery_type === 'old') {
             Taro.navigateTo({
-              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_corp_name=${delivery_corp_name || delivery_corp
-                }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
+              url: `/subpages/trade/delivery-info?delivery_id=${orders_delivery_id}&delivery_code=${delivery_code}&delivery_corp=${delivery_corp}&delivery_corp_name=${
+                delivery_corp_name || delivery_corp
+              }&delivery_type=${delivery_type}&order_type=${order_type}&order_id=${tid}`
             })
           } else {
             Taro.navigateTo({
@@ -332,7 +330,7 @@ export default class TradeList extends Component {
       list = [],
       page,
       rateStatus,
-      evaluate,
+      evaluate
     } = this.state
 
     const isLogin = S.getAuthToken()
@@ -357,42 +355,49 @@ export default class TradeList extends Component {
           ))}
         </AtTabs>
 
-        {!isLogin && <View className="login-btn">
-          <SpLogin onChange={this.onLoginChange.bind(this)}><View className="btn-login">去登录</View>
-            <View className='btn-login-tip'>登录才能查看订单信息</View></SpLogin>
-        </View>}
+        {!isLogin && (
+          <View className='login-btn'>
+            <SpLogin onChange={this.onLoginChange.bind(this)}>
+              <View className='btn-login'>去登录</View>
+              <View className='btn-login-tip'>登录才能查看订单信息</View>
+            </SpLogin>
+          </View>
+        )}
 
-        {isLogin && <ScrollView
-          scrollY
-          className={`trade-list__scroll ${getBrowserEnv().weixin ? 'with-tabs-wx' : 'with-tabs'}`}
-          // onScrollToUpper={this.onPullDownRefresh.bind(this)}
-          onScrollToLower={this.nextPage}
-        >
-
-          {list.map((item) => {
-            return (
-              <TradeItem
-                payType={item.pay_type}
-                key={item.tid}
-                rateStatus={rateStatus}
-                info={item}
-                isShowDistributorInfo={VERSION_PLATFORM}
-                showActions={curItemActionsId === item.tid}
-                onClick={this.handleClickItem.bind(this, item)}
-                onClickBtn={this.handleClickItemBtn.bind(this, item)}
-                onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
-                onActionClick={this.handleActionClick.bind(this, item)}
-              />
-            )
-          })}
-          {page.isLoading && <Loading>正在加载...</Loading>}
-          {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_order.png`}>
-              您还没有商城订单呦~
-            </SpNote>
-          )}
-          {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
-        </ScrollView>}
+        {isLogin && (
+          <ScrollView
+            scrollY
+            className={`trade-list__scroll ${
+              getBrowserEnv().weixin ? 'with-tabs-wx' : 'with-tabs'
+            }`}
+            // onScrollToUpper={this.onPullDownRefresh.bind(this)}
+            onScrollToLower={this.nextPage}
+          >
+            {list.map((item) => {
+              return (
+                <TradeItem
+                  payType={item.pay_type}
+                  key={item.tid}
+                  rateStatus={rateStatus}
+                  info={item}
+                  isShowDistributorInfo={VERSION_PLATFORM}
+                  showActions={curItemActionsId === item.tid}
+                  onClick={this.handleClickItem.bind(this, item)}
+                  onClickBtn={this.handleClickItemBtn.bind(this, item)}
+                  onActionBtnClick={this.handleActionBtnClick.bind(this, item)}
+                  onActionClick={this.handleActionClick.bind(this, item)}
+                />
+              )
+            })}
+            {page.isLoading && <Loading>正在加载...</Loading>}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_order.png`}>
+                您还没有商城订单呦~
+              </SpNote>
+            )}
+            {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}
+          </ScrollView>
+        )}
       </View>
     )
   }

@@ -1,14 +1,14 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux"
-import { useImmer } from "use-immer"
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import api from "@/api"
-import doc from "@/doc"
-import { View } from "@tarojs/components"
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import api from '@/api'
+import doc from '@/doc'
+import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpSearchInput, SpNote } from '@/components'
 import { pickBy, onEventChannel, isWeixin, classNames } from '@/utils'
-import "./store-picker.scss";
+import './store-picker.scss'
 
 const initialState = {
   keywords: '',
@@ -28,10 +28,9 @@ function TradeStorePicker(props) {
     const { distributor_id, refund_store } = $instance.router.params
     let params = {
       distributor_id,
-      distributor_name: keywords,
-
+      distributor_name: keywords
     }
-    if(isWeixin) {
+    if (isWeixin) {
       const { errMsg, longitude, latitude } = await Taro.getLocation({
         type: 'gcj02'
       })
@@ -45,7 +44,7 @@ function TradeStorePicker(props) {
     }
 
     const { list: _list } = await api.aftersales.getAfterSaleStoreList(params)
-    setState(draft => {
+    setState((draft) => {
       draft.list = pickBy(_list, doc.shop.STORE_ITEM)
       draft.refundStore = refund_store
     })
@@ -57,21 +56,34 @@ function TradeStorePicker(props) {
     Taro.navigateBack()
   }
   console.log('refundStore:', refundStore)
-  return <SpPage className='page-trade-store-picker' renderFooter={<View className='btn-wrap'>
-    <AtButton circle type='primary'>确定</AtButton>
-  </View>}>
-    <SpSearchInput placeholder='输入门店地址或门店名称'
-      onConfirm={(val) => {
-        setState((draft) => {
-          draft.keywords = val
-        })
-      }} />
-    <View>
-      {
-        list?.map((item, index) => (
-          <View className={classNames('store-item', {
-            'active': refundStore == item.address_id
-          })} key={`store-item__${index}`} onClick={onSelectShopItem.bind(this, item)}>
+  return (
+    <SpPage
+      className='page-trade-store-picker'
+      renderFooter={
+        <View className='btn-wrap'>
+          <AtButton circle type='primary'>
+            确定
+          </AtButton>
+        </View>
+      }
+    >
+      <SpSearchInput
+        placeholder='输入门店地址或门店名称'
+        onConfirm={(val) => {
+          setState((draft) => {
+            draft.keywords = val
+          })
+        }}
+      />
+      <View>
+        {list?.map((item, index) => (
+          <View
+            className={classNames('store-item', {
+              'active': refundStore == item.address_id
+            })}
+            key={`store-item__${index}`}
+            onClick={onSelectShopItem.bind(this, item)}
+          >
             <View className='store-name'>{item.name}</View>
             <View className='store-address'>{`${item.province}${item.city}${item.area}${item.address}`}</View>
             <View className='store-connect'>{item.mobile}</View>
@@ -80,13 +92,11 @@ function TradeStorePicker(props) {
               <View className='store-distance'>{item.distance}</View>
             </View>
           </View>
-        ))
-      }
-      {
-        list?.length == 0 && <SpNote icon title='没有查询到数据' />
-      }
-    </View>
-  </SpPage>;
+        ))}
+        {list?.length == 0 && <SpNote icon title='没有查询到数据' />}
+      </View>
+    </SpPage>
+  )
 }
 
 TradeStorePicker.options = {

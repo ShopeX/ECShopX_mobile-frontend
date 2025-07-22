@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import './invoice.scss'
 import { SpPage } from '@/components'
 import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import './invoice.scss'
 
 const initialState = {
   billInfo: '',
@@ -31,7 +31,7 @@ function DianWuInvoice() {
   }
   //确定开票
   const drawBill = async () => {
-    if(isInvoiced) return
+    if (isInvoiced) return
     const { confirm } = await Taro.showModal({
       content: '确定将该订单标记为已开票吗？',
       cancelText: '取消',
@@ -48,7 +48,6 @@ function DianWuInvoice() {
         setState((draft) => {
           draft.isInvoiced = true
         })
-
       }
     }
   }

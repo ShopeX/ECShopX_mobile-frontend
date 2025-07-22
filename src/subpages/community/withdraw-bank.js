@@ -31,7 +31,7 @@ function CommunityWithdrawBank(props) {
 
   const fetch = async () => {
     const { bank_name, bankcard_no } = await api.community.getCashWithDrawAccount()
-    setState(draft => {
+    setState((draft) => {
       draft.form.bankName = bank_name
       draft.form.bankNum = bankcard_no
     })
@@ -75,7 +75,7 @@ function CommunityWithdrawBank(props) {
               focus
               name='bankName'
               value={form.bankName}
-              placeholder={'点击输入银行名称'}
+              placeholder='点击输入银行名称'
               onChange={onInputChange.bind(this, 'bankName')}
             />
           </SpFormItem>
@@ -85,7 +85,7 @@ function CommunityWithdrawBank(props) {
               focus
               name='bankNum'
               value={form.bankNum}
-              placeholder={'点击输入本人银行卡号'}
+              placeholder='点击输入本人银行卡号'
               onChange={onInputChange.bind(this, 'bankNum')}
             />
           </SpFormItem>

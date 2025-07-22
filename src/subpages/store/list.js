@@ -7,7 +7,7 @@ import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import { useLogin, useWhiteShop } from '@/hooks'
+import { useLogin } from '@/hooks'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
@@ -56,13 +56,12 @@ function NearlyShop(props) {
     queryProvice,
     queryCity,
     queryDistrict,
-    queryAddress,
+    queryAddress
   } = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const { shopInfo } = useSelector((state) => state.shop)
   const { open_divided } = useSelector((state) => state.sys)
-  const { sortShopList } = useWhiteShop()
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
@@ -134,7 +133,9 @@ function NearlyShop(props) {
         city: queryCity,
         area: queryDistrict
       }
-      const locationRes = await entryLaunch.getLnglatByAddress(`${queryProvice}${queryCity}${queryDistrict}${queryAddress}`)
+      const locationRes = await entryLaunch.getLnglatByAddress(
+        `${queryProvice}${queryCity}${queryDistrict}${queryAddress}`
+      )
       const { lng, lat, error } = locationRes
       if (!error) {
         params = {
@@ -146,47 +147,22 @@ function NearlyShop(props) {
     }
 
     log.debug(`fetchShop query: ${JSON.stringify(params)}`)
-    
-    if (open_divided) {
-      const open_divided_page_size = 20  // 取前20个绑定的店铺
-      // 开启店铺隔离，只取绑定的店铺
-      let { list, total_count: total } = await api.shop.list({
-        ...params,
-        pageSize: open_divided_page_size,
-        show_type: 'self' // self 表示获取用户绑定的店铺
-      })
-      list = list.map((item) => {
-        item.isOpenDivided = true  // 标识绑定的店铺
-        return item
-      })
 
-      list = sortShopList(list)
-      setState((draft) => {
-        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
-        draft.refresh = false
-      })
-  
-      return {
-        total
-      }
+    const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
+    // 未开启店铺隔离时，直接获取所有店铺数据
+    setState((draft) => {
+      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      draft.isRecommend = is_recommend === 1
+      draft.defualt_address = defualt_address
+      draft.refresh = false
+    })
 
-    } else {
-      const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
-      // 未开启店铺隔离时，直接获取所有店铺数据
-      setState((draft) => {
-        draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
-        draft.isRecommend = is_recommend === 1
-        draft.defualt_address = defualt_address
-        draft.refresh = false
-      })
-  
-      if (isObject(defualt_address)) {
-        dispatch(updateChooseAddress(defualt_address))
-      }
-  
-      return {
-        total
-      }
+    if (isObject(defualt_address)) {
+      dispatch(updateChooseAddress(defualt_address))
+    }
+
+    return {
+      total
     }
   }
 
@@ -246,7 +222,6 @@ function NearlyShop(props) {
         })
       }
     })
-
   }
 
   const handleClickShop = (info) => {
@@ -280,11 +255,14 @@ function NearlyShop(props) {
           <View className='search-block'>
             <View className='search-bar'>
               <View className='region-picker'>
-                <View className='pick-title' onClick={() => {
-                  setState((draft => {
-                    draft.isSpAddressOpened = true
-                  }))
-                }}>
+                <View
+                  className='pick-title'
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.isSpAddressOpened = true
+                    })
+                  }}
+                >
                   <View className='iconfont icon-periscope'></View>
                   <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
                   {/* <Text className='iconfont icon-arrowDown'></Text> */}
@@ -319,7 +297,9 @@ function NearlyShop(props) {
           <View className='location-block'>
             <View className='block-title'>当前定位地址</View>
             <View className='location-wrap'>
-              <Text className='location-address'>{location?.address || '无法获取您的位置信息'}</Text>
+              <Text className='location-address'>
+                {location?.address || '无法获取您的位置信息'}
+              </Text>
               <View className='btn-location' onClick={getLocationInfo}>
                 <Text
                   className={classNames('iconfont icon-zhongxindingwei', {
@@ -329,11 +309,11 @@ function NearlyShop(props) {
                 {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
               </View>
             </View>
-            {
-              address && <View className='block-title block-flex'>
+            {address && (
+              <View className='block-title block-flex'>
                 <View>我的收货地址</View>
               </View>
-            }
+            )}
 
             <View className='receive-address'>
               {address && (
@@ -347,9 +327,10 @@ function NearlyShop(props) {
         </>
       )}
 
-
       <View className='nearlyshop-list'>
-        <View className='list-title'>{!open_divided ? (location?.address ? '附近门店' : '推荐门店') : ''}</View>
+        <View className='list-title'>
+          {!open_divided ? (location?.address ? '附近门店' : '推荐门店') : ''}
+        </View>
         <SpScrollView ref={shopRef} auto={false} className='shoplist-block' fetch={fetchShop}>
           {state.shopList.map((item, index) => (
             <View
@@ -363,19 +344,25 @@ function NearlyShop(props) {
         </SpScrollView>
       </View>
 
-      {(headquarters && !open_divided) && <View className='shop-bottom' onClick={() => handleClickShop(headquarters)}>
-        <Image className='img' src={headquarters.logo} mode='aspectFill' />
-        {headquarters.store_name}
-        <View className='iconfont icon-arrowRight' />
-      </View>}
+      {headquarters && !open_divided && (
+        <View className='shop-bottom' onClick={() => handleClickShop(headquarters)}>
+          <Image className='img' src={headquarters.logo} mode='aspectFill' />
+          {headquarters.store_name}
+          <View className='iconfont icon-arrowRight' />
+        </View>
+      )}
 
-
-      { !open_divided && <SpAddress isOpened={isSpAddressOpened} onClose={() => {
-        setState((draft) => {
-          draft.isSpAddressOpened = false
-        })
-      }} onChange={onPickerChange} /> }
-
+      {!open_divided && (
+        <SpAddress
+          isOpened={isSpAddressOpened}
+          onClose={() => {
+            setState((draft) => {
+              draft.isSpAddressOpened = false
+            })
+          }}
+          onChange={onPickerChange}
+        />
+      )}
     </SpPage>
   )
 }

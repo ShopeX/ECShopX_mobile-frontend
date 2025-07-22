@@ -64,21 +64,22 @@ function CompNoteItem(props) {
       </View>
       <View className='note-item__hd' onClick={handleClick}>
         <SpImage lazyLoad src={info.image_url} mode={mode} />
-        {
-          info.status == '4' && <View className="verify-fail">
-            <View className="message">
-              <Text className="iconfont icon-jingshiFilled"></Text>
-              审核未通过</View>
-            <View className="btn-edit" >重新编辑</View>
+        {info.status == '4' && (
+          <View className='verify-fail'>
+            <View className='message'>
+              <Text className='iconfont icon-jingshiFilled'></Text>
+              审核未通过
+            </View>
+            <View className='btn-edit'>重新编辑</View>
           </View>
-        }
+        )}
       </View>
       <View className='note-item__bd'>
         <View className='note-info'>
           <View className='note-title'>{info.title}</View>
         </View>
         <View className='ugc-author'>
-          <View className='author-info' onClick={() => { }}>
+          <View className='author-info' onClick={() => {}}>
             <SpImage circle src={info.headimgurl} width={32} height={32} />
             <View className='author'>{info.username}</View>
           </View>

@@ -2,7 +2,15 @@ import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
-import { SpPage, SpPrice, SpPoint, SpCell, SpGoodsCell, SpCashier, SpInput as AtInput } from '@/components'
+import {
+  SpPage,
+  SpPrice,
+  SpPoint,
+  SpCell,
+  SpGoodsCell,
+  SpCashier,
+  SpInput as AtInput
+} from '@/components'
 import { View, Text, Picker } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
@@ -21,7 +29,7 @@ import {
   VERSION_PLATFORM,
   VERSION_STANDARD
 } from '@/utils'
-import { useAsyncCallback, useLogin, usePayment,useLocation } from '@/hooks'
+import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
 import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
 import api from '@/api'
 import doc from '@/doc'
@@ -53,7 +61,7 @@ function PointShopEspierCheckout() {
   const deliverRef = useRef()
 
   const { userInfo, address } = useSelector((state) => state.user)
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const { colorPrimary, pointName, entryStoreByLBS } = useSelector((state) => state.sys)
   const { coupon, zitiAddress } = useSelector((state) => state.cart)
   const { shopInfo } = useSelector((state) => state.shop)
 
@@ -116,7 +124,9 @@ function PointShopEspierCheckout() {
   }, [isNewUser])
 
   useEffect(() => {
-    console.log(`useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`)
+    console.log(
+      `useEffect: payType: ${payType}, address: ${address}, zitiAddress: ${zitiAddress}, receiptType: ${receiptType}`
+    )
     if (receiptType && payType) {
       calcOrder()
     }
@@ -224,7 +234,11 @@ function PointShopEspierCheckout() {
     let orderId
     try {
       // 积分商城默认下单积分支付
-      const resOrderInfo = await api.trade.h5create({...params,pay_type: "point",pay_channel: 'point'})
+      const resOrderInfo = await api.trade.h5create({
+        ...params,
+        pay_type: 'point',
+        pay_channel: 'point'
+      })
       orderInfo = resOrderInfo
       orderId = resOrderInfo.order_id
     } catch (e) {
@@ -459,9 +473,9 @@ function PointShopEspierCheckout() {
       cart_type,
       order_type: 'normal_pointsmall',
       promotion: 'normal',
-      isNostores: openStore ? 0 : 1, // 这个传参需要和后端在确定一下
+      isNostores: entryStoreByLBS ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use: totalInfo.point,
-      pay_type: payType,
+      pay_type: payType
     }
 
     if (receiptType === 'ziti') {

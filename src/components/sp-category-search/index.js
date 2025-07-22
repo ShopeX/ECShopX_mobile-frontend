@@ -130,7 +130,6 @@ function SpCategorySearch(props) {
             onConfirm={handleConfirm}
             onActionClick={handleClickCancel}
             focus
-            showActionButton
           />
           <View
             className={classNames(

@@ -9,10 +9,9 @@ import qs from 'qs'
 import { log, pickBy, showToast } from '@/utils'
 import api from '@/api'
 import doc from '@/doc'
-import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 
-import './espier-checkout.scss'
 import { useImmer } from 'use-immer'
+import './espier-checkout.scss'
 
 const initialState = {
   info: null,

@@ -9,15 +9,13 @@ import './home-header.scss'
 function WgtHomeHeader(props) {
   const { children, jump = true, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const { openScanQrcode, openStore, openLocation, open_divided } = useSelector((state) => state.sys)
-  const {
-    shopInfo: { store_name }
-  } = useSelector((state) => state.shop)
+  const { openScanQrcode, entryStoreByLBS } = useSelector((state) => state.sys)
+  const { shopInfo } = useSelector((state) => state.shop)
   const handleScanCode = () => {}
 
   return (
     <View className={classNames('home-header')}>
-      {VERSION_STANDARD && openStore && openLocation == 1 && !open_divided && (
+      {VERSION_STANDARD && entryStoreByLBS && (
         <View
           className='left-block'
           onClick={() => {
@@ -26,7 +24,7 @@ function WgtHomeHeader(props) {
             })
           }}
         >
-          <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
+          <View className='shop-name'>{shopInfo?.name || '总店'}</View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       )}

@@ -7,7 +7,7 @@ import api from '@/api'
 import { classNames, showToast, alipayAutoLogin } from '@/utils'
 
 import { SpPrivacyModal, SpImage } from '@/components'
-import { useLogin,useLocation } from '@/hooks'
+import { useLogin, useLocation } from '@/hooks'
 import './index.scss'
 
 function SpLogin(props, ref) {
@@ -18,6 +18,7 @@ function SpLogin(props, ref) {
       // isUpdate && setPolicyModal(true)
     },
     loginSuccess: () => {
+      debugger
       updateAddress()
     }
   })
@@ -39,7 +40,6 @@ function SpLogin(props, ref) {
     }
   }, [loginModal])
 
-
   const getPhoneNumber = () => {
     return new Promise((resolve, reject) => {
       my.getPhoneNumber({
@@ -56,7 +56,7 @@ function SpLogin(props, ref) {
 
   const onGetAuthorize = async () => {
     const res = await getPhoneNumber()
-    const encryptedData = JSON.parse(res.response).response;
+    const encryptedData = JSON.parse(res.response).response
     if (encryptedData) {
       const code = codeRef.current
       let params = {
@@ -119,7 +119,6 @@ function SpLogin(props, ref) {
     }
   }))
 
-
   return (
     <View className={classNames('sp-login', className)}>
       <View onClick={handleClickLogin}>{children}</View>
@@ -139,11 +138,16 @@ function SpLogin(props, ref) {
         }}
       >
         <View className='login-modal'>
-          <View className='login-modal__hd--alipay'>
-          </View>
+          <View className='login-modal__hd--alipay'></View>
           <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
           <View className='login-modal__ft'>
-            <button className='alipay-button--primary' type='primary' open-type='getAuthorize' scope='phoneNumber' onGetAuthorize={onGetAuthorize}>
+            <button
+              className='alipay-button--primary'
+              type='primary'
+              open-type='getAuthorize'
+              scope='phoneNumber'
+              onGetAuthorize={onGetAuthorize}
+            >
               登录
             </button>
           </View>

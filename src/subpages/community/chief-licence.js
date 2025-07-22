@@ -24,7 +24,7 @@ function PointRule(props) {
   const aggrementAndExplanation = async () => {
     const { distributor_id } = $instance.router.params
     const { aggrement } = await api.community.aggrementAndExplanation({ distributor_id })
-    setState(draft => {
+    setState((draft) => {
       draft.content = aggrement
     })
   }
@@ -39,9 +39,9 @@ function PointRule(props) {
   console.log('content:', _content)
   return (
     <SpPage className='page-community-chief-licence'>
-      <ScrollView className="scroll-view" scrollY>
+      <ScrollView className='scroll-view' scrollY>
         {isWeb && <View dangerouslySetInnerHTML={{ __html: _content }} />}
-        {(!isWeb && !isAlipay) && <mp-html content={_content} />}
+        {!isWeb && !isAlipay && <mp-html content={_content} />}
         {isAlipay && <RichText nodes={_content} />}
       </ScrollView>
     </SpPage>

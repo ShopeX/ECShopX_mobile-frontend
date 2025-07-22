@@ -26,8 +26,6 @@ import linkPage from './linkPage'
 
 const { store } = configStore()
 
-export * from './platforms'
-
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
 export function isFunction(val) {
@@ -35,8 +33,8 @@ export function isFunction(val) {
 }
 
 export function uniqueFunc(arr, uniId) {
-  const res = new Map();
-  return arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1));
+  const res = new Map()
+  return arr.filter((item) => !res.has(item[uniId]) && res.set(item[uniId], 1))
 }
 
 export function isNumber(val) {
@@ -141,40 +139,18 @@ export function isObjectValueEqual(a, b) {
 
 export const isIphoneX = () => {
   if (isWeixin) {
-    try {
-      const {
-        model,
-        system,
-        windowWidth,
-        windowHeight,
-        screenHeight,
-        screenWidth,
-        pixelRatio,
-        brand
-      } = Taro.getSystemInfoSync()
-      const { networkType } = Taro.getNetworkType()
-
-      let px = screenWidth / 750 //rpx换算px iphone5：1rpx=0.42px
-
-      Taro.$systemSize = {
-        windowWidth,
-        windowHeight,
-        screenHeight,
-        screenWidth,
-        model,
-        px,
-        pixelRatio,
-        brand,
-        system,
-        networkType
-      }
-      if (system.indexOf('iOS') !== -1) {
-        Taro.$system = 'iOS'
-      }
-      S.set('ipxClass', model.toLowerCase().indexOf('iphone x') >= 0 ? 'is-ipx' : '')
-    } catch (e) {
-      console.log(e)
-    }
+    const { model } = Taro.getSystemInfoSync()
+    return (
+      model.search(
+        /iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*17|iPhone\s*16|iPhone\s*10/g
+      ) > -1
+    )
+  } else if (isAPP()) {
+    return /iphone/gi.test(window.navigator.userAgent) && window.screen.height >= 812
+  } else if (isWxWeb && getBrowserEnv().ios) {
+    return true
+  } else if (isWeb) {
+    return false
   }
 }
 
@@ -298,8 +274,8 @@ export function copyText(text, msg = '内容已复制') {
       if (isAlipay) {
         console.log('copyText:text', text)
         my.setClipboard({
-          text: text,
-        });
+          text: text
+        })
         resolve(text)
         return
       }
@@ -413,13 +389,13 @@ export const browser = (() => {
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ; (function (m, ei, q, i, a, j, s) {
+  ;(function (m, ei, q, i, a, j, s) {
     m[i] =
       m[i] ||
       function () {
-        ; (m[i].a = m[i].a || []).push(arguments)
+        ;(m[i].a = m[i].a || []).push(arguments)
       }
-      ; (j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
     j.async = true
     j.charset = 'UTF-8'
     j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
@@ -743,21 +719,18 @@ export function getExtConfigData() {
 }
 
 const getCurrentShopId = () => {
-  const { shop, sys: { openStore } } = store.getState()
+  const { shop } = store.getState()
   const { shopInfo: { distributor_id, shop_id = 0 } = {} } = shop
   return distributor_id
 }
 
 const getDistributorId = (_dtid) => {
   const { sys, shop } = store.getState()
-  const { openStore } = sys
-
-  // console.log("🚀🚀🚀 ~ getDistributorId ~ shop:", shop)
+  const { entryStoreByLBS } = sys
 
   const {
     shopInfo: { distributor_id, shop_id }
   } = shop
-  // console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
@@ -765,7 +738,7 @@ const getDistributorId = (_dtid) => {
       if (dtid) {
         return dtid
       } else {
-        return openStore ? distributor_id : shop_id
+        return entryStoreByLBS ? distributor_id : shop_id
       }
     } else {
       return _dtid
@@ -811,7 +784,7 @@ const alipayAutoLogin = () => {
     my.getAuthCode({
       scopes: 'auth_base',
       success: (res) => {
-        const code = res.authCode;
+        const code = res.authCode
         resolve({ code })
       },
       fail: (res) => {
@@ -828,19 +801,19 @@ const requestAlipayminiPayment = (tradeNO) => {
     my.tradePay({
       tradeNO: tradeNO,
       success: (res) => {
-        console.log('支付回调成功res', res);
+        console.log('支付回调成功res', res)
         resolve(res)
       },
       fail: (res) => {
-        console.log('支付回调失败res', res);
+        console.log('支付回调失败res', res)
         reject(res)
       }
-    });
+    })
   })
 }
 
 const htmlStringToNodeArray = (htmlString) => {
-  let nodeArray = null;
+  let nodeArray = null
   parse(htmlString, (err, nodes) => {
     if (!err) {
       nodeArray = nodes
@@ -848,13 +821,13 @@ const htmlStringToNodeArray = (htmlString) => {
       log.error('htmlStringToNodeArray error')
     }
   })
-  return nodeArray;
+  return nodeArray
 }
 
 const getCurrentPageRouteParams = () => {
   const pages = Taro.getCurrentPages()
   const options = {}
-  Object.keys(pages[pages.length - 1].options).forEach(key => {
+  Object.keys(pages[pages.length - 1].options).forEach((key) => {
     if (key != '$taroTimestamp' && key != 'scene') {
       options[key] = pages[pages.length - 1].options[key]
     }
@@ -870,11 +843,11 @@ const resolveUrlParamsParse = (url) => {
   const res = {}
   const n_url = decodeURIComponent(url) || ''
   const paramArr = n_url.split('&') // 返回类似于 a=10&b=20&c=30
-  paramArr.forEach(item => {
+  paramArr.forEach((item) => {
     const itemArr = item.split('=')
     const key = itemArr[0]
     const value = itemArr[1]
-    res[key] = value;
+    res[key] = value
   })
   return res
 }

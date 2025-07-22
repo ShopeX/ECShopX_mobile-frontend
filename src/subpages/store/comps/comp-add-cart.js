@@ -12,9 +12,6 @@ import doc from '@/doc'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon, SpPrice, SpCheckboxNew, SpFloatLayout } from '@/components'
 import { pickBy, showToast, classNames, entryLaunch, getDistributorId } from '@/utils'
-import S from '@/spx'
-import './comp-add-cart.scss'
-import CompTab from './comp-tab'
 import { useNavigation, useDebounce } from '@/hooks'
 import {
   updateShopCartCount,
@@ -23,6 +20,8 @@ import {
   updateCartItemNum,
   deleteCartItem
 } from '@/store/slices/cart'
+import './comp-add-cart.scss'
+import CompTab from './comp-tab'
 
 const initialState = {
   hideClose: true
@@ -30,7 +29,7 @@ const initialState = {
 
 function CompAddCart(props) {
   const { shopCartCount } = useSelector((state) => state.cart)
-  const { openRecommend, openLocation, openStore, colorPrimary } = useSelector((state) => state.sys)
+  const { openRecommend, colorPrimary } = useSelector((state) => state.sys)
   const { open = false, onMaskCloses = {}, parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state

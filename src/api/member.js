@@ -1,8 +1,8 @@
-import req from './req'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
+import req from './req'
 
 export function memberInfo(params = {}) {
-  return req.get('/member',params)
+  return req.get('/member', params)
 }
 
 // 修改用户信息
@@ -29,8 +29,7 @@ export function pointDetail() {
 }
 
 export function favsList(params = {}) {
-  return req.get('/member/collect/item', {...params,  showError: false }, null )
-
+  return req.get('/member/collect/item', { ...params, showError: false }, null)
 }
 
 export function addFav(item_id, params) {

@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem, Video } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { AtCountdown } from 'taro-ui'
 import {
   SpPrice,
   SpCell,
@@ -45,9 +44,9 @@ import S from '@/spx'
 import { Tracker } from '@/service'
 import { useNavigation, useLogin } from '@/hooks'
 import { ACTIVITY_LIST } from '@/consts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 import CompEvaluation from './comps/comp-evaluation'
 import CompBuytoolbar from './comps/comp-buytoolbar'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 
 import './espier-detail.scss'
 
@@ -208,7 +207,9 @@ function PointShopEspierDetail(props) {
     }
 
     // 是否订阅
-    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, { distributor_id: dtid })
+    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
+      distributor_id: dtid
+    })
 
     setNavigationBarTitle(data.itemName)
 

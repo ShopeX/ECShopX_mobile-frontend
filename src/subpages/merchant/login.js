@@ -1,13 +1,13 @@
 import Taro from '@tarojs/taro'
 import { useEffect, useState } from 'react'
 import { Text, View } from '@tarojs/components'
-import { MButton, MInput, MRadio } from './comps'
 import { classNames, validate, showToast } from '@/utils'
 import { SpImage, SpPage } from '@/components'
-import { navigateToAgreement } from './util'
-import { useTimer } from './hook'
 import api from '@/api'
 import S from '@/spx'
+import { MButton, MInput, MRadio } from './comps'
+import { navigateToAgreement } from './util'
+import { useTimer } from './hook'
 import './login.scss'
 
 const Login = () => {

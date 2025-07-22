@@ -2,9 +2,9 @@ import React, { useMemo, memo, useState, useCallback, useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
-import { DistributionLabel } from './comps'
 import { SpNewCoupon, SpNewPrice } from '@/components'
 import api from '@/api'
+import { DistributionLabel } from './comps'
 import './index.scss'
 
 const NoImageSRC =
@@ -197,7 +197,7 @@ const SpNewShopItem = (props) => {
             {discountCardList.length !== 0 && (
               <View className='activity-line-one'>
                 <View className='left'>
-                  {discountCardList.map((item,index) => {
+                  {discountCardList.map((item, index) => {
                     return (
                       <SpNewCoupon
                         key={index}

@@ -6,7 +6,7 @@ import { getGameConfig, drawPrize } from '@/api/game'
 import { GAME_TYPES } from '@/consts/game'
 import { pickBy, styleNames } from '@/utils'
 import { GAME_CONFIG } from '@/doc/game'
-import {SpPage} from '@/components'
+import { SpPage } from '@/components'
 import SpWheel from './components/sp-wheel'
 import SpGrid from './components/sp-grid'
 import SpSlot from './components/sp-slot'
@@ -80,7 +80,7 @@ const GameActivity = () => {
   }
 
   // 修改抽奖结果处理函数
-  const handleDrawPrize = useCallback( async () => {
+  const handleDrawPrize = useCallback(async () => {
     if (isDrawing.current) return null
     isDrawing.current = true
 
@@ -114,7 +114,7 @@ const GameActivity = () => {
       console.error('抽奖请求失败:', err)
       return Promise.reject(response)
     }
-  },[activeId])
+  }, [activeId])
 
   // 修改关闭结果弹窗的处理函数
   const handleCloseResult = () => {
@@ -126,7 +126,7 @@ const GameActivity = () => {
     setTimeout(() => {
       //等待canvas绘制结束，否则游戏组件没有变成图片之前，弹框盖不住
       isDrawing.current = false
-       setResultVisible(true)
+      setResultVisible(true)
     }, 600)
   }
   // 修改渲染游戏组件函数，使用正确的回调名称
@@ -154,7 +154,7 @@ const GameActivity = () => {
           </View>
         )
     }
-  }, [activityConfig?.gameConfig,gameType,activeId])
+  }, [activityConfig?.gameConfig, gameType, activeId])
 
   // 渲染背景样式
   const getPageStyle = () => {
@@ -168,7 +168,7 @@ const GameActivity = () => {
     }
     return {}
   }
-console.log('activityConfig----', activityConfig)
+  console.log('activityConfig----', activityConfig)
   return (
     <SpPage className='sp-game-activity'>
       <View className='sp-game-activity__ad-area' style={getPageStyle()}>
@@ -202,13 +202,13 @@ console.log('activityConfig----', activityConfig)
                 <View className='sp-game-activity__game-container'>{renderGameComponent}</View>
                 <View className='sp-game-activity__footer'>
                   <View
-                  style={styleNames({
-                    backgroundColor: activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
-                    color: activityConfig?.recordFormConfig?.rule?.[1] || '#000',
-                    backgroundImage: `url(${activityConfig?.recordFormConfig?.img})`,
-                    backgroundSize: '100% auto',
-                    backgroundRepeat: 'no-repeat'
-                  })}
+                    style={styleNames({
+                      backgroundColor: activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
+                      color: activityConfig?.recordFormConfig?.rule?.[1] || '#000',
+                      backgroundImage: `url(${activityConfig?.recordFormConfig?.img})`,
+                      backgroundSize: '100% auto',
+                      backgroundRepeat: 'no-repeat'
+                    })}
                     className='sp-game-activity__footer-btn'
                     onClick={() =>
                       Taro.navigateTo({

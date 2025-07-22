@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useSelector } from 'react-redux'
-import { pickBy } from '@/utils'
+import { pickBy, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import imgUploader from '@/utils/upload'
 import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
 import { SpPage, SpSearchBar, SpScrollView, SpCell, SpNote } from '@/components'
-import { showToast } from '@/utils'
 
 import './subject-talk.scss'
 
@@ -25,7 +24,6 @@ function UgcSubjectTalk(props) {
   const router = useRouter()
   const listRef = useRef()
 
-
   useEffect(() => {
     listRef.current.reset()
   }, [keyword])
@@ -40,17 +38,19 @@ function UgcSubjectTalk(props) {
     }
     const { list = [], total_count: total } = await api.mdugc.topiclist(params)
     const _topicList = pickBy(list, {
-      topicId: "topic_id",
-      topicName: "topic_name"
+      topicId: 'topic_id',
+      topicName: 'topic_name'
     })
     const tempValue = [...topicList, ..._topicList]
-    const _selected = tempValue.filter(item => topicIds.indexOf(item.topicId) > -1).map(item => {
-      return [item.topicId, { topicId: item.topicId, topicName: item.topicName }]
-    })
-    setState(draft => {
+    const _selected = tempValue
+      .filter((item) => topicIds.indexOf(item.topicId) > -1)
+      .map((item) => {
+        return [item.topicId, { topicId: item.topicId, topicName: item.topicName }]
+      })
+    setState((draft) => {
       draft.topicList = [...topicList, ..._topicList]
     })
-    setSelected(new Map(_selected));
+    setSelected(new Map(_selected))
     return { total: total || 0 }
   }
 
@@ -76,13 +76,12 @@ function UgcSubjectTalk(props) {
       tempSelected = new Map([...selected, [topicId, { topicId, topicName }]])
     }
     Taro.eventCenter.trigger(event, Array.from(tempSelected.values()))
-    setSelected(tempSelected);
+    setSelected(tempSelected)
   }
 
   const isChecked = ({ topicId }) => {
-    return selected.has(topicId) ? <Text className="iconfont icon-zhengque-correct"></Text> : null
+    return selected.has(topicId) ? <Text className='iconfont icon-zhengque-correct'></Text> : null
   }
-
 
   const handleOnClear = async () => {
     await setState((draft) => {
@@ -111,8 +110,8 @@ function UgcSubjectTalk(props) {
         keyword={keyword}
         placeholder='搜索话题'
         localStorageKey='ugcSubjectTalkHistory'
-        onFocus={() => { }}
-        onChange={() => { }}
+        onFocus={() => {}}
+        onChange={() => {}}
         onClear={handleOnClear}
         onCancel={handleSearchCancel}
         onConfirm={handleConfirm}
@@ -125,22 +124,28 @@ function UgcSubjectTalk(props) {
         renderEmpty={
           <View className='action-container'>
             <SpNote icon title='没有查询到数据' />
-            {keyword && <AtButton circle onClick={handleAddSubjectTalk}>添加自定义话题</AtButton>}
+            {keyword && (
+              <AtButton circle onClick={handleAddSubjectTalk}>
+                添加自定义话题
+              </AtButton>
+            )}
           </View>
         }
       >
-        {topicList.length > 0 && <View className='list-container'>
-          {
-            topicList.map((item, index) => (
-              <SpCell className='subject-item' key={`subject-item__${index}`}
+        {topicList.length > 0 && (
+          <View className='list-container'>
+            {topicList.map((item, index) => (
+              <SpCell
+                className='subject-item'
+                key={`subject-item__${index}`}
                 title={item.topicName}
                 border={index < topicList.length - 1}
                 value={isChecked(item)}
-                onClick={handleClickItem.bind(this, item)} />
-            ))
-          }
-        </View>
-        }
+                onClick={handleClickItem.bind(this, item)}
+              />
+            ))}
+          </View>
+        )}
       </SpScrollView>
     </SpPage>
   )

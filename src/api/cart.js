@@ -1,5 +1,5 @@
-import req from './req'
 import { getDistributorId } from '@/utils'
+import req from './req'
 
 export function get(params) {
   return req.get('/cart/list', params)

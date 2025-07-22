@@ -17,7 +17,6 @@ function CompPointUse(props) {
   const { pointName } = useSelector((state) => state.sys)
   const { isOpenRule } = state
 
-
   if (!info) {
     return null
   }
@@ -29,13 +28,23 @@ function CompPointUse(props) {
       <SpFloatLayout className='point-float-layout' open={isOpened} hideClose>
         <View className='point-hd'>
           <View className='point-info'>{`可用${pointName}：${info.user_point}，本单可用${pointName}：${info.max_point}`}</View>
-          <Text className="point-rule" onClick={() => {
-            setState((draf) => {
-              draf.isOpenRule = true
-            })
-          }}>使用规则</Text>
+          <Text
+            className='point-rule'
+            onClick={() => {
+              setState((draf) => {
+                draf.isOpenRule = true
+              })
+            }}
+          >
+            使用规则
+          </Text>
         </View>
-        <SpNumberKeyBoard maxValue={info.max_point} value={info.user_point} onClose={onClose} onConfirm={onChange}/>
+        <SpNumberKeyBoard
+          maxValue={info.max_point}
+          value={info.user_point}
+          onClose={onClose}
+          onConfirm={onChange}
+        />
       </SpFloatLayout>
 
       <AtModal isOpened={isOpenRule}>
@@ -49,11 +58,15 @@ function CompPointUse(props) {
           <View>{`2. ${deduct_point_rule.deduct_point}${pointName}抵1元；`}</View>
         </AtModalContent>
         <AtModalAction>
-          <Button onClick={() => {
-            setState((draf) => {
-              draf.isOpenRule = false
-            })
-          }}>我知道了</Button>
+          <Button
+            onClick={() => {
+              setState((draf) => {
+                draf.isOpenRule = false
+              })
+            }}
+          >
+            我知道了
+          </Button>
         </AtModalAction>
       </AtModal>
     </View>

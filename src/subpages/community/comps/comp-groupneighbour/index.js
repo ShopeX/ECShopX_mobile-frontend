@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
 import { ScrollView, View, Text } from '@tarojs/components'
-import { SpImage, SpPrice } from '@/components'
-import './index.scss'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
+import './index.scss'
 
 function CompGroupNeighbour(props) {
   const { info } = props

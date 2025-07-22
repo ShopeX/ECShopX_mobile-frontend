@@ -6,10 +6,10 @@ import { useImmer } from 'use-immer'
 import { useAsyncCallback } from '@/hooks'
 import doc from '@/doc'
 import api from '@/api'
-import { WgtsContext } from './wgts-context'
 import { SpNoShop, SpImage, SpShopCoupon, SpPrice, SpGoodsItem, SpSkuSelect } from '@/components'
 import { classNames, styleNames, isEmpty, entryLaunch, showToast, pickBy, isString } from '@/utils'
 import { AtActivityIndicator } from 'taro-ui'
+import { WgtsContext } from './wgts-context'
 import './nearby-shop.scss'
 
 const initialState = {
@@ -98,11 +98,11 @@ function WgtNearbyShop(props) {
       // 根据经纬度或地区查询
       type: location?.lat ? 0 : 1,
       sort_type: 1,
-      lat : location?.lat || address?.lat,
-      lng : location?.lng || address?.lng,
-      province : location?.province || address?.province,
-      city : location?.city || address?.city,
-      district : location?.district || address?.district,
+      lat: location?.lat || address?.lat,
+      lng: location?.lng || address?.lng,
+      province: location?.province || address?.province,
+      city: location?.city || address?.city,
+      district: location?.district || address?.district
     }
     // if (location) {
     //   params = {
@@ -166,11 +166,11 @@ function WgtNearbyShop(props) {
       show_items: 1,
       show_score: 1,
       show_sales_count: 1,
-      lat : location?.lat || address?.lat,
-      lng : location?.lng || address?.lng,
-      province : location?.province || address?.province,
-      city : location?.city || address?.city,
-      district : location?.district || address?.district,
+      lat: location?.lat || address?.lat,
+      lng: location?.lng || address?.lng,
+      province: location?.province || address?.province,
+      city: location?.city || address?.city,
+      district: location?.district || address?.district
     }
     // if (location) {
     //   params = {
@@ -227,7 +227,7 @@ function WgtNearbyShop(props) {
                       </View>
                       {item.distance_show && (
                         <View className='sales'>
-                          { isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
+                          {isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
                           {item.distance_unit}
                         </View>
                       )}

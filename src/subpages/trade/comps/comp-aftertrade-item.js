@@ -13,9 +13,21 @@ function CompTradeItem(props) {
   if (!info) {
     return null
   }
-  const { aftersalesBn, distributorInfo, orderId, createdTime, aftersalesStatus, items, orderStatus, refundFee, orderClass = 'normal', point, distributorId ,freight} = info
+  const {
+    aftersalesBn,
+    distributorInfo,
+    orderId,
+    createdTime,
+    aftersalesStatus,
+    items,
+    orderStatus,
+    refundFee,
+    orderClass = 'normal',
+    point,
+    distributorId,
+    freight
+  } = info
   // const { pointName } = useSelector((state) => state.sys)
-
 
   const onViewTradeDetail = () => {
     Taro.navigateTo({
@@ -42,7 +54,10 @@ function CompTradeItem(props) {
         <View>
           <View className='shop-info' onClick={onViewStorePage}>
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
-            <View className='shop-name'>{distributorInfo?.name}{!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}</View>
+            <View className='shop-name'>
+              {distributorInfo?.name}
+              {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
+            </View>
           </View>
           <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
           <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
@@ -51,9 +66,11 @@ function CompTradeItem(props) {
       </View>
       <View className='trade-item-bd' onClick={onViewTradeDetail}>
         {items.map((good) => (
-          <SpTradeItem info={{
-            ...good,
-          }} />
+          <SpTradeItem
+            info={{
+              ...good
+            }}
+          />
         ))}
 
         <View className='trade-total'>
@@ -65,19 +82,17 @@ function CompTradeItem(props) {
               <Text className='point-value' style="font-size: 20px;">{point}</Text>
             </View>
           } */}
-          {
-            orderClass == 'normal' && <View>
+          {orderClass == 'normal' && (
+            <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>退款金额</Text>
               <SpPrice value={totalPrice} size={38} />
             </View>
-          }
+          )}
         </View>
       </View>
 
-      <View className='trade-item-ft'>
-
-      </View>
+      <View className='trade-item-ft'></View>
     </View>
   )
 }

@@ -5,9 +5,9 @@ import { SpPage, SpInput as AtInput } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
-import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
 import { useLogin } from '@/hooks'
 import { useImmer } from 'use-immer'
+import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
 import { PASSWORD_TIP } from './const'
 import './edit-password.scss'
 
@@ -84,7 +84,6 @@ const PageEditPassword = () => {
               type='password'
               name='mobile'
               maxLength={11}
-              type='tel'
               value={password}
               placeholder='请输入密码'
               onChange={handleInputChange('password')}
