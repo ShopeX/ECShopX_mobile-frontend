@@ -67,12 +67,13 @@ function SpSkuSelect(props) {
         draft.curItem = null
         draft.skuText = ''
         draft.minNum = specItemed()
+        draft.num = specItemed()
       })
     }
   }, [info])
 
   useEffect(() => {
-    if(open){
+    if(!open){
       setState((draft) => {
         draft.num = 1
       })
