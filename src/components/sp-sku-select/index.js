@@ -375,7 +375,7 @@ function SpSkuSelect(props) {
     } else if (type == 'addcart') {
       return (
         <AtButton circle loading={loading} type='primary' onClick={addToCart}>
-          {btnTxt}问我
+          {btnTxt}
         </AtButton>
       )
     } else {
