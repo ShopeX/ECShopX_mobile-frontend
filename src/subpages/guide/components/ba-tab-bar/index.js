@@ -3,7 +3,8 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { getCurrentRoute } from '@/utils'
+import { getCurrentRoute, isIphoneX } from '@/utils'
+import { DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
 import S from '@/spx'
 // import { getTotalCount } from '@/store/cart'
 
@@ -186,6 +187,10 @@ export default class TabBar extends Component {
       <AtTabBar
         fixed
         color={color}
+        customStyle={{
+          height: this.props.height,
+          paddingBottom: `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
+        }}
         backgroundColor={backgroundColor}
         selectedColor={selectedColor}
         tabList={tabList}

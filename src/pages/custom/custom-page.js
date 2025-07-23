@@ -31,14 +31,13 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   isShowTabBar: false,
-  policyModal: false
+  footerHeight: 0
 }
 function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { setNavigationBarTitle } = useNavigation()
-  const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar, policyModal } =
-    state
+  const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)
   const pageRef = useRef()
   const loginRef = useRef()
@@ -46,6 +45,7 @@ function CustomPage(props) {
 
   useEffect(() => {
     fetch()
+    entryLaunch.postGuideTask()
   }, [])
 
   useEffect(() => {
@@ -129,18 +129,26 @@ function CustomPage(props) {
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   return (
     <SpPage
+      immersive={pageData?.base?.isImmersive}
       scrollToTopBtn
       className='page-custom-page'
       pageConfig={pageData?.base}
       loading={loading}
       title={shareInfo?.page_name}
       ref={pageRef}
-      renderFooter={isShowTabBar && <SpTabbar />}
+      renderFooter={isShowTabBar && <SpTabbar height={state.footerHeight} />}
       fixedTopContainer={fixedTop && <SpSearch info={searchComp} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
     >
       <WgtsContext.Provider
         value={{
-          onAddToCart
+          onAddToCart,
+          immersive: pageData?.base?.isImmersive,
+          isTab: isShowTabBar
         }}
       >
         <HomeWgts wgts={filterWgts} />

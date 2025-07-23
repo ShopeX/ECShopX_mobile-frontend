@@ -15,7 +15,8 @@ export default class LiveRoomList extends Component {
     super(props)
     this.state = {
       ...this.state,
-      liveList: []
+      liveList: [],
+      footerHeight: 0
     }
   }
 
@@ -65,7 +66,12 @@ export default class LiveRoomList extends Component {
   render() {
     const { liveList, scrollTop, page } = this.state
     return (
-      <SpPage renderFooter={<SpTabbar />}>
+      <SpPage
+        renderFooter={<SpTabbar height={state.footerHeight} />}
+        onReady={({ footerHeight }) => {
+          this.setState({ footerHeight: footerHeight })
+        }}
+      >
         <View>
           <ScrollView
             className='liveroom-page'

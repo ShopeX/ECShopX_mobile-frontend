@@ -25,7 +25,8 @@ const initState = {
   wgts: [],
   shareInfo: {},
   showBackToTop: false,
-  shopList: null
+  shopList: null,
+  footerHeight: 0
 }
 
 function Home() {
@@ -96,7 +97,16 @@ function Home() {
   // })
 
   return (
-    <SpPage className='page-guide-index' scrollToTopBtn renderFooter={<BaTabBar />}>
+    <SpPage
+      className='page-guide-index'
+      scrollToTopBtn
+      renderFooter={<BaTabBar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       {userInfo && <BaStore guideInfo={userInfo} />}
 
       <View className='home-body'>

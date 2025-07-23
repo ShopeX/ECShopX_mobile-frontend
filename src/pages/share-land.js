@@ -51,7 +51,7 @@ function ShareIand() {
       }
 
       if (S.getAuthToken()) {
-        entryLaunch.postGuideUV()
+        // entryLaunch.postGuideUV()
         entryLaunch.postGuideTask()
       }
     } else {

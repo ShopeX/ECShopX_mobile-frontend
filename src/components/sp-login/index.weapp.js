@@ -1,5 +1,12 @@
 import Taro from '@tarojs/taro'
-import React, { useEffect, useState, useCallback, useRef, useImperativeHandle } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useRef,
+  forwardRef,
+  useImperativeHandle
+} from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { AtButton, AtCurtain } from 'taro-ui'
 import { useImmer } from 'use-immer'
@@ -18,7 +25,8 @@ const initialState = {
   privacyName: '',
   agreeMentChecked: false
 }
-function SpLogin(props, ref) {
+
+const SpLogin = forwardRef((props, ref) => {
   const { children, className, newUser = false, visible, onPolicyClose, onChange, onClose } = props
   const { updateAddress } = useLocation()
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
@@ -89,7 +97,7 @@ function SpLogin(props, ref) {
 
       // const { uid } = entryLaunch.getLaunchParams()
       const { uid, dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS)
+      const { gu_user_id, gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
       if (uid) {
         // 分销绑定
         params['uid'] = uid
@@ -97,10 +105,17 @@ function SpLogin(props, ref) {
       if (dtid && dtid !== 'undefined') {
         params['distributor_id'] = dtid
       }
-      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      let work_userid = ''
       if (gu_user_id) {
+        work_userid = gu_user_id
+      }
+      if (gu) {
+        work_userid = gu.split('_')[0]
+      }
+      // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
+      if (work_userid) {
         params['channel'] = 1
-        params['work_userid'] = gu_user_id
+        params['work_userid'] = work_userid
       }
 
       try {
@@ -259,7 +274,7 @@ function SpLogin(props, ref) {
       </AtCurtain>
     </View>
   )
-}
+})
 
 SpLogin.defaultProps = {
   visible: false,
@@ -271,4 +286,4 @@ SpLogin.options = {
   addGlobalClass: true
 }
 
-export default React.forwardRef(SpLogin)
+export default SpLogin

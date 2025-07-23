@@ -41,7 +41,8 @@ const initialState = {
   thirdList: [],
   info: null,
   skuPanelOpen: false,
-  selectType: 'picker'
+  selectType: 'picker',
+  footerHeight: 0
 }
 
 function CompsCategoryAddCart(props) {
@@ -374,8 +375,13 @@ function CompsCategoryAddCart(props) {
     <SpPage
       scrollToTopBtn
       className={classNames('page-category-index-old')}
-      renderFooter={<SpTabbar />}
+      renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
     >
       <View className='container-hd'>
         <View className='category-search'>

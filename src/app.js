@@ -21,7 +21,8 @@ import {
   SG_YIQIA,
   SG_ROUTER_PARAMS,
   SG_GUIDE_PARAMS,
-  SG_GUIDE_PARAMS_UPDATETIME
+  SG_GUIDE_PARAMS_UPDATETIME,
+  SG_CHECK_STORE_RULE
 } from '@/consts'
 import {
   checkAppVersion,
@@ -95,6 +96,15 @@ function App({ children }) {
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+
+      if (typeof params.runFlag === 'undefined') {
+        Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+      }
+
+      if (params.gu || params.gu_user_id) {
+        Taro.setStorageSync(SG_GUIDE_PARAMS, params)
+        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+      }
     })
   })
 
@@ -152,9 +162,10 @@ function App({ children }) {
 
           entryStoreByStoreCode: enterStoreRule?.distributor_code,
           entryStoreByGuideMaterial: enterStoreRule?.shop_assistant,
+          enterStoreWhiteList: enterStoreRule?.white_list,
           entryStoreByGuide: enterStoreRule?.shop_assistant_pro,
           entryStoreByLBS: enterStoreRule?.shop_lbs,
-          entryDefalutStore: enterStoreRule.radio_type,
+          entryDefalutStore: enterStoreRule?.radio_type,
           guidderTemplateId: enterStoreRule?.intro_page
         }
       })

@@ -35,8 +35,9 @@ import {
   VERSION_B2C,
   VERSION_PLATFORM
 } from '@/utils'
+import entryLaunch from '@/utils/entryLaunch'
 import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
-import { PAYMENT_TYPE, TRANSFORM_PAYTYPE } from '@/consts'
+import { PAYMENT_TYPE, SG_GUIDE_PARAMS } from '@/consts'
 import _cloneDeep from 'lodash/cloneDeep'
 import api from '@/api'
 import doc from '@/doc'
@@ -332,9 +333,14 @@ function CartCheckout(props) {
         {
           ...params,
           // 活动类型：拼团
-          activityType: type
+          activityType: type,
+          pageType: 'checkout'
         },
-        orderInfo
+        orderInfo,
+        () => {
+          entryLaunch.postGuideUV()
+          entryLaunch.postGuideTask()
+        }
       )
     }
   }
@@ -739,6 +745,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
+    const routerParams = (await Taro.getStorageSync(SG_GUIDE_PARAMS)) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -756,6 +763,15 @@ function CartCheckout(props) {
       pay_type: payType,
       // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
+    }
+    // 处理导购数据(旧)
+    if (routerParams?.cxdid) {
+      cus_parmas.cxdid = routerParams?.cxdid
+      cus_parmas.distributor_id = routerParams?.dtid
+      cus_parmas.cart_type = 'cxd'
+      cus_parmas.order_type = 'normal_shopguide'
+      cus_parmas.salesman_id = routerParams?.smid
+      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
     if (receiptType === 'ziti') {
@@ -804,7 +820,6 @@ function CartCheckout(props) {
     // cus_parmas.pay_type = totalInfo.freight_type === 'point' ? 'point' : payType
     cus_parmas.pay_channel = payChannel
     // }
-
     return cus_parmas
   }
 

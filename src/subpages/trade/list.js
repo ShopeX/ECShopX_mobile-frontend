@@ -77,7 +77,7 @@ function TradeList(props) {
       status,
       is_rate
     }
-    params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
+    // params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
 
     const {
       list,

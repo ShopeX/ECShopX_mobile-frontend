@@ -1,9 +1,11 @@
 .page-achievement {
   &-statistics {
     margin: 24px;
+
     .icon-tongji {
       font-size: 38px;
     }
+
     .title {
       font-family: PingFangSC, PingFang SC;
       font-weight: 500;
@@ -13,11 +15,13 @@
       margin-left: 12px;
     }
   }
+
   &-list {
     background-color: #fff;
     margin: 0 24px;
     border-radius: 16px;
     padding: 36px 24px;
+
     &-picker {
       display: flex;
       justify-content: space-between;
@@ -27,12 +31,13 @@
 
   .sp-tabs-hd .tab-item-active .name {
     font-weight: 600;
-    // color:var(--color-dianwu-primary);
     border-bottom: 4px solid var(--color-dianwu-primary);
   }
+
   .sp-tabs-hd .tab-item {
     color: #111a34;
   }
+
   .sp-tabs-hd .tab-item:not(:last-child):after {
     content: '';
     height: 0px;

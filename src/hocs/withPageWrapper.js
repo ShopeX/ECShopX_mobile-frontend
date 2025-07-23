@@ -6,6 +6,7 @@ import { useEffectAsync, useWhiteShop, useModal } from '@/hooks'
 import useModalLogin from '@/hooks/useModalLogin'
 import { updateShopInfo } from '@/store/slices/shop'
 import { SpPage, SpLogin } from '@/components'
+import { SG_CHECK_STORE_RULE } from '@/consts'
 import { VERSION_STANDARD } from '@/utils'
 import configStore from '@/store'
 
@@ -22,9 +23,11 @@ function withPageWrapper(Component) {
 
     useEffectAsync(async () => {
       if (initState) {
-        if (VERSION_STANDARD) {
+        // 启动时（冷启动+热启动）执行云店进店规则
+        if (VERSION_STANDARD && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) {
           // 云店进店规则
           try {
+            Taro.setStorageSync(SG_CHECK_STORE_RULE, 1)
             await checkEnterStoreRule()
             setState(true)
           } catch (error) {

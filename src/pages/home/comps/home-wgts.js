@@ -22,7 +22,9 @@ import {
   WgtImgGif,
   WgtHotTopic,
   WgtFloorImg,
-  WgtNearbyShop
+  WgtNearbyShop,
+  WgtFullSlider,
+  WgtOrderNavigation
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -36,23 +38,13 @@ function HomeWgts(props) {
   const { localWgts, searchMethod } = state
   const wgtsRef = useRef()
 
-  // useEffect(() => {
-  //   if (wgts.length > 0) {
-  //     refreshWgtsList()
-  //   }
-  // }, [wgts])
-
-  // const refreshWgtsList = () => {
-  //   setState(draft => {
-  //     draft.localWgts = []
-  //   })
-  //   setTimeout(() => {
-  //     wgtsRef.current.reset()
-  //   }, 20)
-  // }
+  useEffect(() => {
+    // if (wgts.length > 0) {
+    wgtsRef.current.reset()
+    // }
+  }, [wgts])
 
   const fetch = ({ pageIndex, pageSize }) => {
-    console.log('首页挂件分页渲染...', pageIndex, pageSize, wgts)
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
@@ -85,7 +77,13 @@ function HomeWgts(props) {
       fetch={fetch}
       pageSize={5}
       onLoad={onLoad}
-      renderMore={copywriting ? null : () => {}}
+      renderMore={() => {
+        return <></>
+      }}
+      renderEmpty={() => {
+        return <></>
+      }}
+      // renderMore={copywriting ? null : () => {}}
     >
       {localWgts.map((list) => {
         return list.map((item, idx) => (
@@ -121,6 +119,10 @@ function HomeWgts(props) {
             {item.name === 'floorImg' && <WgtFloorImg info={item} />} {/** 楼层图片 */}
             {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
             {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
+            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />}{' '}
+            {/** 全屏轮播 */}
+            {item.name === 'orderNavigation' && <WgtOrderNavigation info={item} />}{' '}
+            {/** 订单导航 */}
           </View>
         ))
       })}

@@ -103,7 +103,7 @@ export default (props = {}) => {
     setIsLogin(true)
     await getUserInfo()
     // 导购UV统计
-    entryLaunch.postGuideUV()
+    // entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())

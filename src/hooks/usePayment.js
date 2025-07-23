@@ -97,6 +97,10 @@ export default (props = {}) => {
     if (isTradeDetaiPage()) {
       callbackRef.current()
     } else {
+      if (params.pageType == 'checkout') {
+        // checkout：下单-支付成功需要调用导购绑定接口
+        callbackRef.current()
+      }
       if (activityType == 'group') {
         Taro.redirectTo({ url: `/marketing/pages/item/group-detail?team_id=${orderInfo.team_id}` })
       } else {

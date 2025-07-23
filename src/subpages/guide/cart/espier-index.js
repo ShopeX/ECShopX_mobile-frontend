@@ -23,7 +23,8 @@ import './espier-index.scss'
 
 const initialState = {
   current: 0, // 0:普通商品  1:跨境商品
-  policyModal: false // 隐私弹框
+  policyModal: false, // 隐私弹框
+  footerHeight: 0
 }
 
 function CartIndex() {
@@ -222,7 +223,12 @@ function CartIndex() {
       className={classNames('page-guide-cart-index', {
         'has-tabbar': tabbar == 1
       })}
-      renderFooter={tabbar == 1 && <BaTabBar />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+      renderFooter={tabbar == 1 && <BaTabBar height={state.footerHeight} />}
     >
       <View>
         {/* <SpTabs current={current} tablist={tablist} onChange={onChangeSpTab} /> */}

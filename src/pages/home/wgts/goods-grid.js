@@ -97,6 +97,7 @@ function WgtGoodsGrid(props) {
                   }
                   showPrice={config.showPrice}
                   showAddCart={config.addCart}
+                  jumpType={config.type}
                   info={item}
                   key={`left_${leftidx}`}
                   onAddToCart={handleAddToCart}
@@ -130,6 +131,7 @@ function WgtGoodsGrid(props) {
                   }
                   showPrice={config.showPrice}
                   showAddCart={config.addCart}
+                  jumpType={config.type}
                   info={item}
                   key={`right_${rightidx}`}
                   onAddToCart={handleAddToCart}

@@ -8,10 +8,10 @@ import Taro, {
   getCurrentInstance,
   useReady
 } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
+import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
-import { useSyncCallback, useThemsColor } from '@/hooks'
+import { useSyncCallback, useWhiteShop, useThemsColor, useLogin } from '@/hooks'
 import {
   TAB_PAGES,
   TABBAR_PATH,
@@ -19,8 +19,6 @@ import {
   DEFAULT_FOOTER_HEIGHT,
   DEFAULT_SAFE_AREA_HEIGHT
 } from '@/consts'
-import api from '@/api'
-import S from '@/spx'
 import {
   classNames,
   styleNames,
@@ -31,7 +29,11 @@ import {
   getDistributorId,
   VERSION_IN_PURCHASE,
   isGoodsShelves,
-  linkPage
+  linkPage,
+  VERSION_SHUYUN,
+  validate,
+  hex2rgb,
+  VERSION_STANDARD
 } from '@/utils'
 import context from '@/hooks/usePageContext'
 
@@ -69,13 +71,12 @@ const SpPage = memo(
     const [state, setState] = useImmer(initialState)
     const wrapRef = useRef(null)
     const scrollTopRef = useRef(0)
-    const isFromPhoneCallBack = useRef(false)
     const sys = useSelector((state) => state.sys)
-    const { shopInfo } = useSelector((state) => state.shop)
     const [showToTop, setShowToTop] = useState(false)
     const { appName } = sys
     const { themeColor } = useThemsColor()
     const dispatch = useDispatch()
+    const { login } = useLogin()
 
     useReady(() => {
       // 导购货架数据上报
@@ -125,6 +126,7 @@ const SpPage = memo(
         _navigationLSpace = windowWidth - menuButton.right
         _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
       }
+
       const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
       setState((draft) => {
         draft.btnReturn = _btnReturn
@@ -140,10 +142,13 @@ const SpPage = memo(
         draft.menuWidth = _menuWidth
         draft.navigationLSpace = _navigationLSpace
         draft.navigationRSpace = _navigationRSpace
+        draft.pageTheme = themeColor()
       })
+
       const _height = props.renderFooter
         ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0))
         : 0
+
       props.onReady({
         gNavbarH: _gNavbarH,
         height: !props.isSticky
@@ -152,6 +157,17 @@ const SpPage = memo(
         menuWidth: _menuWidth,
         footerHeight: _height
       })
+    }, [])
+
+    useEffect(() => {
+      const {
+        referrerInfo: { appId: fromAppId }
+      } = Taro.getLaunchOptionsSync()
+
+      if (fromAppId && !S.getAuthToken() && VERSION_SHUYUN) {
+        //数云：第三方小程序跳来需要免登
+        login(fromAppId)
+      }
     }, [])
 
     useDidHide(() => {
@@ -188,9 +204,7 @@ const SpPage = memo(
       const { page, router } = getCurrentInstance()
       const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router?.path.split('?')[0])
       const isTabBarPage = fidx > -1
-
       setState((draft) => {
-        draft.pageTheme = themeColor()
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
           `/${page?.route}`
         )
@@ -362,18 +376,38 @@ const SpPage = memo(
                       src={props.pageConfig?.pTitleHotSetting?.imgUrl}
                       mode='aspectFit'
                     ></SpImage>
-                    {props.pageConfig?.pTitleHotSetting?.data?.map((citem) => (
-                      <View
-                        className='img-hotzone_zone'
-                        style={styleNames({
-                          width: `${citem.widthPer * 100}%`,
-                          height: `${citem.heightPer * 100}%`,
-                          top: `${citem.topPer * 100}%`,
-                          left: `${citem.leftPer * 100}%`
-                        })}
-                        onClick={() => linkPage(citem)}
-                      />
-                    ))}
+                    {props.pageConfig?.pTitleHotSetting?.data?.map((citem) => {
+                      console.log(citem)
+                      if (citem.id == 'customerService') {
+                        return (
+                          <Button
+                            key={citem.id}
+                            className='img-hotzone_zone opacity-0'
+                            type='button'
+                            style={styleNames({
+                              width: `${citem.widthPer * 100}%`,
+                              height: `${citem.heightPer * 100}%`,
+                              top: `${citem.topPer * 100}%`,
+                              left: `${citem.leftPer * 100}%`
+                            })}
+                            openType='contact'
+                          />
+                        )
+                      }
+                      return (
+                        <View
+                          key={citem.id}
+                          className='img-hotzone_zone'
+                          style={styleNames({
+                            width: `${citem.widthPer * 100}%`,
+                            height: `${citem.heightPer * 100}%`,
+                            top: `${citem.topPer * 100}%`,
+                            left: `${citem.leftPer * 100}%`
+                          })}
+                          onClick={() => linkPage(citem)}
+                        />
+                      )
+                    })}
                   </View>
                 )}
               </View>

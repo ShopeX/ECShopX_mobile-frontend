@@ -15,6 +15,7 @@ export const WGT_GOODS_GRID = {
   promotion: 'promotionActivity',
   distributorId: 'distributor_id',
   isPoint: 'is_point',
+  point: 'point',
   price: ({ price }) => price / 100, // 销售价
   activityPrice: ({ promotionActivity, act_price }) => {
     let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price

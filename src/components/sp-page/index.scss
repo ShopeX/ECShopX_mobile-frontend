@@ -14,38 +14,6 @@
     background: #fff;
   }
 
-  // &.has-navbar {
-  //   .sp-page-body {
-  //     padding-top: $navigate-height;
-  //   }
-  // }
-
-  &.has-footer {
-    // .sp-page-body {
-    //   padding-bottom: $page-footer-height;
-    // }
-
-    // .sp-page-footer {
-    //   height: $page-footer-height;
-    //   .at-tab-bar {
-    //     height: $page-footer-height;
-    //   }
-    // }
-
-    // &.ipx {
-    //   .sp-page-body {
-    //     padding-bottom: $page-ipx-footer-height;
-    //   }
-
-    //   .sp-page-footer {
-    //     height: $page-ipx-footer-height;
-    //     .at-tab-bar {
-    //       height: $page-ipx-footer-height;
-    //     }
-    //   }
-    // }
-  }
-
   &.has-custom-navigation {
     .countDown {
       &.right_top {
@@ -53,26 +21,6 @@
       }
     }
   }
-
-  // &.ipx {
-  //   padding-bottom: 20px;
-
-  //   .sp-page-footer {
-  //     height: $page-ipx-footer-height;
-  //   }
-
-  //   .sp-float-layout-ft {
-  //     padding-bottom: 40px;
-  //   }
-
-  //   .at-tab-bar {
-  //     height: $page-ipx-footer-height;
-  //     /*  #ifdef  alipay  */
-  //     padding: 10px 0 20px 0;
-  //     height: auto;
-  //     /*  #endif  */
-  //   }
-  // }
 
   .float-container {
     position: fixed;
@@ -148,6 +96,9 @@
     }
     .img-hotzone_zone {
       position: absolute;
+    }
+    .opacity-0 {
+      opacity: 0;
     }
   }
 }

@@ -7,9 +7,6 @@
     .scroll-list {
       @include page-scroll(0, $page-ipx-footer-height + 121px * 2);
     }
-    // .sp-page-body {
-    //   height: calc(100vh - 140px);
-    // }
   }
   &.show-tip {
     .scroll-list {
@@ -271,7 +268,7 @@
       bottom: $page-ipx-footer-height;
     }
   }
-  .sp-page-footer {
+  .sp-page__footer {
     padding: 20px 20px 0 20px;
     .at-button--primary {
       background: var(--color-dianwu-primary) !important;

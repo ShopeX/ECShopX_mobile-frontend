@@ -7,23 +7,22 @@
   // padding-top: 170px;
   .item-list-scroll {
     padding: 24px 0;
-    @include page-scroll($header-height + $camera-height + 168px, $footer-height + $page-footer-height + 66px);
+    @include page-scroll(
+      $header-height + $camera-height + 168px,
+      $footer-height + $page-footer-height + 66px
+    );
   }
   &.ipx {
     .item-list-scroll {
-      @include page-scroll($header-height + $camera-height + 168px, $footer-height + $page-ipx-footer-height + 66px);
+      @include page-scroll(
+        $header-height + $camera-height + 168px,
+        $footer-height + $page-ipx-footer-height + 66px
+      );
     }
-    // .sp-page-body {
-    //   height: calc(100vh - 140px);
-    // }
   }
-  .item-list{
+  .item-list {
     margin-top: 24px;
   }
-  // .sp-page-body {
-  //   position: relative;
-  //   height: calc(100vh - 120px);
-  // }
   .block-tools {
     display: flex;
     align-items: center;
@@ -58,7 +57,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1PX solid var(--color-dianwu-primary);
+      border: 1px solid var(--color-dianwu-primary);
       color: var(--color-dianwu-primary);
       border-radius: 30px;
       background: #e3ebfc;
@@ -71,7 +70,8 @@
   .scan-code-wrap {
     position: relative;
   }
-  .scan-code-camera, .camera-placeholder {
+  .scan-code-camera,
+  .camera-placeholder {
     height: $camera-height;
   }
   .scan-code-close {
@@ -81,16 +81,16 @@
     right: 0;
     height: 60px;
     line-height: 60px;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     color: #fff;
     font-size: 24px;
-    border-radius: 0 0 0 10px
+    border-radius: 0 0 0 10px;
   }
   .camera-placeholder {
     position: relative;
     height: $camera-height;
     text-align: center;
-    color: #CCCCCC;
+    color: #cccccc;
     font-size: 24px;
     background: #fff;
     &-wrap {
@@ -103,7 +103,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      border: 1PX solid #CCCCCC;
+      border: 1px solid #cccccc;
     }
     .iconfont {
       margin-bottom: 10px;
@@ -113,14 +113,14 @@
       color: var(--color-dianwu-primary);
     }
   }
-  .code-to-cart{
+  .code-to-cart {
     color: var(--color-dianwu-primary);
     margin-left: 10px;
     &-icon {
       font-size: 60px;
       text-align: center;
     }
-    &-text{
+    &-text {
       font-size: 24px;
     }
   }
@@ -129,7 +129,7 @@
     padding: 0 20px;
     display: flex;
     align-items: center;
-    border: 1PX solid var(--color-dianwu-primary);
+    border: 1px solid var(--color-dianwu-primary);
     border-radius: 30px;
     background: #e3ebfc;
     .lf {
@@ -137,7 +137,6 @@
       color: #4d84fc;
     }
     .rg {
-
     }
     .name {
       width: 80px;
@@ -163,7 +162,7 @@
       line-height: 90px;
       color: var(--color-dianwu-primary);
       text-align: right;
-      border-left: 1PX solid var(--color-dianwu-primary);
+      border-left: 1px solid var(--color-dianwu-primary);
       .iconfont {
         font-size: 36px;
       }
@@ -343,18 +342,18 @@
       display: flex;
       flex-direction: column;
       width: 123px;
-      border-left: 1PX solid #dadada;
+      border-left: 1px solid #dadada;
       &-count {
         display: flex;
         height: 60px;
-        border-bottom: 1PX solid #dadada;
+        border-bottom: 1px solid #dadada;
         .count-option {
           flex: 1;
           line-height: 60px;
           text-align: center;
           font-size: 32px;
           &:first-child {
-            border-right: 1PX solid #dadada;
+            border-right: 1px solid #dadada;
           }
         }
       }
@@ -381,7 +380,7 @@
         line-height: 50px;
         text-align: center;
         font-size: 30px;
-        border-top: 1PX solid #dadada;
+        border-top: 1px solid #dadada;
       }
     }
   }
@@ -703,7 +702,7 @@
     padding: 20px;
     background-color: #ffffff;
     border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     &-hd {
       display: flex;
       justify-content: space-between;
@@ -752,7 +751,7 @@
       }
       .search-result {
         padding: 10px 20px;
-        border: 1PX solid #efefef;
+        border: 1px solid #efefef;
         border-radius: 6px;
         color: var(--color-dianwu-primary);
         font-size: 24px;
@@ -774,7 +773,6 @@
         border-radius: 40px;
         line-height: 78px;
         padding: 0 40px;
-
       }
       .btn-confirm {
         height: 80px;
@@ -794,7 +792,7 @@
   .at-curtain--closed {
     display: none;
   }
-  .prescription-drug{
+  .prescription-drug {
     font-size: 20px;
     color: var(--color-dianwu-primary);
     padding: 1px 4px;

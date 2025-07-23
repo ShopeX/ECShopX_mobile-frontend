@@ -1,254 +1,358 @@
 .pages-member-index {
+  background-color: #f5f5f5;
 
-  .left-block {
+  .sp-area-select {
+    padding-left: calc(24px - 7px);
+  }
+
+  .sp-page__body {
     display: flex;
-    align-items: center;
-    flex: 1;
-    padding: 40px 40px 20px;
+    flex-direction: column;
   }
-  .shop-name {
-    font-size: 28px;
-    max-width: 420px;
-    @include text-overflow();
-    font-weight: bold;
-    &-text {
-      color: #666;
-    }
+
+  .render-title {
+    height: 100%;
   }
-  .icon-qianwang-01 {
-    font-size: 24px;
-    color: #aaa;
-  }
+
   .header-block {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    height: 570px;
+    background: linear-gradient(177deg, #fff2e0 9%, #dbbf8c 45%, #f8f8f8 100%);
+    position: relative;
+
+    &__ft {
+      height: 24px;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
   }
-  .usericon {
-    border: 4px solid #fff;
-    width: 110px;
-    height: 110px;
-    border-radius: 50px;
-    margin-right: 20px;
+
+  .user-info-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: absolute;
+    bottom: 54px;
+    left: 24px;
+    right: 24px;
+    height: 280px;
+    box-sizing: border-box;
+  }
+
+  .user-info-header {
+    height: 108px;
+  }
+
+  .user-avatar {
+    width: 144px;
+    height: 144px;
+    border-radius: 50%;
+    border: 2px solid #ebebeb;
     overflow: hidden;
+    position: absolute;
+    left: 36px;
+    top: -36px;
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      background-color: #f5f5f5;
+    }
   }
-  .icon-style {
-    width: 70px;
-    height: 70px;
-  }
-  .header-hd {
-    padding: 32px;
-    display: flex;
-    align-items: center;
-    &__body {
+
+  .user-details {
+    margin-top: 12px;
+    margin-left: 198px;
+
+    .user-name {
+      font-weight: 500;
+      font-size: 34px;
+      color: #1a1a1a;
       line-height: 40px;
-      width: 80%;
+    }
+
+    .user-vip {
       display: flex;
-      justify-content: space-between;
-      /*  #ifdef  h5  */
-      margin-top: 20px;
-      /*  #endif  */
-    }
-    &__footer {
-      flex-direction: column;
-      .user-info__link {
-        margin-top: 20px;
-        display: inline-block;
-      }
-      .icon-qianwang-01 {
-        font-size: 28px;
-      }
+      align-items: center;
+      width: 130px;
+      height: 32px;
     }
 
-    .username-wrap {
+    .user-vip-wrapper {
+      margin-top: 4px;
+      margin-left: -8px;
     }
-    .user-grade-name {
-      line-height: 35px;
-    }
-    .username {
-      font-size: 32px;
-      color: #222;
-      // width: 90%;
-      font-weight: bold;
-      // @include multi-ellipsis(1);
-    }
-    .gradename {
-      display: inline-block;
-      position: relative;
-      // padding: 0 20px;
-      z-index: 1;
-      font-size: 24px;
-      text-align: center;
-      color: #777;
-      // background: linear-gradient(to right bottom, #fca280, #e75fa9);
-      // border-radius: 50px;
-    }
-    .icon-erweima-01 {
-      color: var(--color-primary);
-      font-size: 38px;
-    }
-    .join-us-txt {
-      // color: var(--color-primary);
-      // font-size: 28px;
-      font-size: 32px;
-      color: #222;
+
+    .login-text {
+      color: #1a1a1a;
     }
   }
-  .header-bd {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    .bd-item {
-      flex: 1;
-      text-align: center;
-    }
-    .deposit-item {
-      .sp-price__int {
-        font-size: 36px;
+
+  .bd-item-value,
+  .bd-item-value text {
+    color: #333;
+    font-size: 36px;
+  }
+  .point-rule {
+    font-size: 24px !important;
+    margin-left: 8px;
+  }
+
+  .qr-code-btn {
+    position: absolute;
+    // width: 120px;
+    // height: 88px;
+    top: 0px;
+    right: 0px;
+    border-top-right-radius: 16px;
+    overflow: hidden;
+
+    .user-vip-code {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+
+      .iconfont {
+        font-size: 48px;
+        color: #fff;
       }
     }
-    .bd-item-label {
-      color: #666;
-      font-size: 24px;
-    }
-    .bd-item-value,.bd-item-value text {
-      color: #333;
-      font-size: 36px;
-    }
-    .point-rule{
-      font-size: 24px !important;
-      margin-left: 8px;
+
+    .qr-code-img {
+      width: 100%;
+      height: 100%;
     }
 
+    .member-level-bg {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
 
+    .qr-code {
+      position: absolute;
+      top: 12px;
+      right: 24px;
+    }
+
+    /* 确保三角形可以溢出容器 */
+    &-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30rpx;
+      height: 88rpx;
+      background: linear-gradient(-100deg, transparent 50%, #fff 0%);
+      background-size: 100%;
+
+      // &::before {
+      //   content: '';
+      //   position: absolute;
+      //   top: 0;
+      //   right: 0;
+      //   width: 0;
+      //   height: 0;
+      //   background-color: transparent;
+      //   border-style: solid;
+      //   border-width: 0 0 80px 20px;
+      //   border-color: transparent #fff transparent transparent;
+      // }
+    }
+
+    // &__content {
+    //   position: relative;
+    //   background-color: #f0f0f0;
+    //   border-radius: 12px;
+    //   padding: 20px;
+    //   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    // }
   }
-  .header-hd__footer1 {
-    padding: 32px;
+
+  // .qr-code-btn {
+  //   width: 60px;
+  //   height: 60px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   background-color: #f5f5f5;
+  //   border-radius: 8px;
+  //   position: absolute;
+  //   right: 0px;
+  //   top: 0px;
+
+  //   .iconfont {
+  //     font-size: 36px;
+  //     color: #333;
+  //   }
+  // }
+
+  .user-stats {
     display: flex;
     justify-content: space-around;
-    align-items: center;
-    .user-info__link {
-      margin-top: 20px;
-      display: inline-block;
-    }
-    .icon-qianwang-01 {
-      font-size: 28px;
-    }
-    .sp-login {
-      display: initial;
-      text-align: center;
-    }
-  }
-  .header-ft {
-    height: 110px;
+    margin-top: 42px;
+    padding: 0 36px;
+    box-sizing: border-box;
   }
 
-  .body-block {
-    padding: 24px 16px;
-    .comp-panel {
-      margin-bottom: 24px;
-    }
-  }
-  .ziti-order {
-    background: #f5f5f5;
-    display: flex;
-    align-items: center;
-    padding: 20px 16px;
-    margin-bottom: 24px;
-    &-info {
-      flex: 1;
-    }
-    .icon-qianwang-01 {
-      font-size: 24px;
-      color: #aaa;
-    }
-    .title {
-      font-size: 30px;
-      color: #444;
-      // font-weight: bold;
-    }
-    .ziti-txt {
-      font-size: 24px;
-      color: #444;
-    }
-    .ziti-num {
-      color: #da760c;
-    }
-  }
-  .order-con {
-    display: flex;
-    .order-item {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      padding: 0px !important;
-    }
-    .order-bradge {
-      position: absolute;
-      top: -6px;
-      right: 45px;
-      font-size: 20px;
-      display: block;
-      border: 3px solid #fff;
-      border-radius: 20px 20px 20px 0px;
-      color: #fff;
-      padding: 3px 10px;
-      min-width: 16px;
-      line-height: 1.2;
-      box-sizing: content-box;
-      background-color: var(--color-primary);
-      text-align: center;
-    }
-    .order-txt {
-      font-size: 24px;
-      color: #222;
-    }
-  }
-
-  .service-block {
-    background: #fff;
-    box-shadow: 0px 2px 10px 0px rgba(234, 231, 224, 1);
-    margin: 0 16px 24px;
-    .block-hd {
-      color: #333;
-      font-size: 36px;
-      font-weight: bold;
-      padding: 36px 25px;
-    }
-  }
-
-  .btn-share {
-    border-width: 0;
-    height: inherit;
-    line-height: inherit;
-    padding: 0;
-    width: fit-content;
-    background-color: transparent;
+  .stat-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    &:after {
-      border-width: 0;
+    flex: 1;
+    gap: 12px;
+
+    .stat-value {
+      height: 42px;
+      font-family: D-DIN-PRO, D-DIN-PRO;
+      font-weight: 600;
+      font-size: 42px;
+      color: #404040;
+      text-align: center;
+      line-height: 42px;
+    }
+
+    .stat-label {
+      font-size: 26px;
+      color: #bfbfbf;
+      line-height: 30px;
+      font-weight: 400;
+      text-align: center;
     }
   }
 
-  .dibiao-block {
+  .order-section {
+    padding: 24px 48px 24px 48px;
+    background: #fff;
+  }
+
+  .section-header {
     display: flex;
-    justify-content: center;
-    margin-bottom: 40px;
-    .dibiao-image {
-      width: 320px;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 36px;
+
+    .section-header-title {
+      font-weight: 500;
+      font-size: 30px;
+      color: #1a1a1a;
     }
-    // .sp-image-img {
-    //   height: 40px;
-    // }
-    // /*  #ifdef  h5  */
-    // img {
-    //   height: 40px;
-    // }
-    // /*  #endif  */
+
+    .view-all {
+      display: flex;
+      align-items: center;
+
+      .view-all-text {
+        font-size: 26px;
+        color: #666666;
+        font-weight: 400;
+      }
+
+      .iconfont {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+
+  .order-icons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .order-section-ft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 22px;
+    padding-top: 36px;
+  }
+
+  .order-section-ft-item {
+    flex: 1;
+
+    &-info {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      height: 88px;
+      background: #f8f8f8;
+      border-radius: 16px;
+      border: 1px solid #ebebeb;
+      text-align: center;
+
+      .icon-label {
+        font-weight: 500;
+        font-size: 28px;
+        color: #1a1a1a;
+      }
+    }
+  }
+
+  .order-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+
+    .order-icon-bg {
+      width: 108px;
+      height: 108px;
+      background: #f8f8f8;
+      border-radius: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .order-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .order-badge {
+      position: absolute;
+      top: 10px;
+      right: -10px;
+      height: 30px;
+      min-width: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: var(--color-primary);
+      color: #fff;
+      border-radius: 44px;
+      font-size: 20px;
+      display: inline-block;
+    }
+  }
+
+  .icon-label {
+    font-size: 24px;
+    color: #404040;
+    line-height: 28px;
+  }
+  .icon-erweima-01 {
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    color: var(--color-primary);
+    font-size: 38px;
+  }
+  .user-grade-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+    color: #777777;
   }
 }

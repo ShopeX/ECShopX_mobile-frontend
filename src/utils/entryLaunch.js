@@ -2,10 +2,15 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
+import dayjs from 'dayjs'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
 import _isEqual from 'lodash/isEqual'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import {
+  SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS_UPDATETIME,
+  SG_GUIDE_PARAMS
+} from '@/consts/localstorage'
 
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
 const $instance = getCurrentInstance()
@@ -33,8 +38,12 @@ class EntryLaunch {
       (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
     )
 
+    // 只返回小程序启动时的参数（包含冷启动和热启动）
     if (resPage) {
-      return Taro.getStorageSync(SG_ROUTER_PARAMS)
+      return {
+        ...Taro.getStorageSync(SG_ROUTER_PARAMS),
+        runFlag: true // 标识小程序启动标志，用于判断是否是小程序启动
+      }
     }
 
     let _options = {}
@@ -369,10 +378,19 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    const { gu } = routerParams || {}
+    const routerParams =
+      Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    debugger
+    const { gu, gu_user_id } = routerParams || {}
+    let work_userid = ''
     if (gu) {
-      const [work_userid] = gu.split('_')
+      work_userid = gu.split('_')[0]
+    }
+    if (gu_user_id) {
+      work_userid = gu_user_id
+    }
+    if (work_userid) {
+      debugger
       await api.user.uniquevisito({
         work_userid
       })
@@ -387,7 +405,8 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask() {
-    const { path, params } = $instance.router
+    const { path } = $instance.router
+    let params = await this.getRouteParams($instance.router)
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -398,24 +417,38 @@ class EntryLaunch {
     if (!routePath[path]) {
       return
     }
+    if (path == '/pages/cart/espier-checkout') {
+      params = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params
-    if (gu && S.getAuthToken()) {
-      const [employee_number, shop_code] = gu.split('_')
+    let work_userid = ''
+    let shop_code = ''
+    if (gu) {
+      const [employeenumber, shopcode] = gu.split('_')
+      work_userid = employeenumber
+      shop_code = shopcode
+    }
+    if (gu_user_id) {
+      work_userid = gu_user_id
+    }
+    if (work_userid && S.getAuthToken()) {
       const _params = {
-        employee_number,
+        employee_number: work_userid,
         subtask_id,
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
         event_type: routePath[path]
       }
-      api.wx.taskReportData(_params)
+      if (subtask_id) {
+        api.wx.taskReportData(_params)
+      }
 
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
       api.wx.interactiveReportData({
-        event_id: employee_number,
+        event_id: work_userid,
         user_type: 'wechat',
         user_id,
         event_type: routePath[path],

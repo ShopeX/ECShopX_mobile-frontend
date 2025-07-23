@@ -45,7 +45,8 @@ const initialState = {
   ],
   curFilterIndex: 0,
   leftList: [],
-  rightList: []
+  rightList: [],
+  footerHeight: 0
 }
 
 function UgcIndex() {
@@ -206,7 +207,12 @@ function UgcIndex() {
           </SpLogin>
         </View>
       }
-      renderFooter={<SpTabbar />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+      renderFooter={<SpTabbar height={state.footerHeight} />}
     >
       <SpSearchBar
         keyword={keyword}

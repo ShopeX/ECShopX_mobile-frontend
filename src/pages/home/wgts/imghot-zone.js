@@ -1,84 +1,48 @@
-import React, { Component } from 'react'
+import React, { useContext } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
-import { linkPage, classNames, styleNames, isString, isArray } from '@/utils'
-
+import { linkPage, classNames, styleNames, isString, isArray, pxToUnitRpx } from '@/utils'
+import { needLoginPage, needLoginPageType } from '@/consts'
 import './imghot-zone.scss'
 
-export default class WgtImgHotZone extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+function WgtImgHotZone(props) {
+  const { info } = props
+  const { base, config, data, distributor_id } = info
 
-  static defaultProps = {
-    info: null
-  }
+  const handleClickItem = linkPage
 
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      curIdx: 0
-    }
-  }
-
-  handleClickItem = linkPage
-
-  render() {
-    const { info } = this.props
-    const { curIdx } = this.state
-
-    if (!info) {
-      return null
-    }
-
-    const { config, base, data, distributor_id } = info
-    const curContent = (data[curIdx] || {}).content
-
-    return (
-      <View
-        className={classNames('wgt wgt-imghot-zone', {
-          wgt__padded: base.padded
-        })}
-      >
-        {base.title && (
-          <View className='wgt-head'>
-            <View className='wgt-hd'>
-              <Text className='wgt-title'>{base.title}</Text>
-              <Text className='wgt-subtitle'>{base.subtitle}</Text>
-            </View>
+  return (
+    <View
+      className={classNames('wgt wgt-imghot-zone', {
+        wgt__padded: base.padded
+      })}
+    >
+      {base.title && (
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
-        )}
+        </View>
+      )}
 
-        <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
-          <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
-          {isArray(data) &&
-            data.map((item, index) => {
-              if (
-                item.id == 'purchase' ||
-                ['purchase_activity', 'regactivity', 'lottery'].includes(item.linkPage)
-              ) {
-                return (
-                  <SpLogin
-                    onChange={this.handleClickItem.bind(this, {
-                      ...item,
-                      distributor_id
-                    })}
-                  >
-                    <View
-                      key={`${index}1`}
-                      className='img-hotzone_zone'
-                      style={styleNames({
-                        width: `${item.widthPer * 100}%`,
-                        height: `${item.heightPer * 100}%`,
-                        top: `${item.topPer * 100}%`,
-                        left: `${item.leftPer * 100}%`
-                      })}
-                    />
-                  </SpLogin>
-                )
-              } else {
-                return (
+      <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
+        <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
+        {isArray(data) &&
+          data.map((item, index) => {
+            if (
+              item.id == 'purchase' ||
+              needLoginPageType.includes(item.id) ||
+              needLoginPage.includes(item.linkPage)
+            ) {
+              return (
+                <SpLogin
+                  key={`imghotzonr-${index}`}
+                  onChange={handleClickItem.bind(this, {
+                    ...item,
+                    distributor_id
+                  })}
+                >
                   <View
                     key={`${index}1`}
                     className='img-hotzone_zone'
@@ -88,16 +52,39 @@ export default class WgtImgHotZone extends Component {
                       top: `${item.topPer * 100}%`,
                       left: `${item.leftPer * 100}%`
                     })}
-                    onClick={this.handleClickItem.bind(this, {
-                      ...item,
-                      distributor_id
-                    })}
                   />
-                )
-              }
-            })}
-        </View>
+                </SpLogin>
+              )
+            } else {
+              return (
+                <View
+                  key={`${index}1`}
+                  className='img-hotzone_zone'
+                  style={styleNames({
+                    width: `${item.widthPer * 100}%`,
+                    height: `${item.heightPer * 100}%`,
+                    top: `${item.topPer * 100}%`,
+                    left: `${item.leftPer * 100}%`
+                  })}
+                  onClick={handleClickItem.bind(this, {
+                    ...item,
+                    distributor_id
+                  })}
+                />
+              )
+            }
+          })}
       </View>
-    )
-  }
+    </View>
+  )
 }
+
+WgtImgHotZone.options = {
+  addGlobalClass: true
+}
+
+WgtImgHotZone.defaultProps = {
+  info: null
+}
+
+export default WgtImgHotZone

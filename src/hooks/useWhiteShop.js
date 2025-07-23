@@ -15,6 +15,7 @@ export default () => {
   const {
     entryStoreByStoreCode,
     entryStoreByGuideMaterial,
+    enterStoreWhiteList, // 进入白名单会员店
     entryStoreByGuide,
     entryStoreByLBS,
     entryDefalutStore,
@@ -35,6 +36,19 @@ export default () => {
     // 开启店铺码进店
     const currentShopInfo = await api.shop.getShop(params)
     shopInfoRef.current = currentShopInfo
+
+    // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
+    if (
+      dtid > 0 &&
+      currentShopInfo.distributor_id !== 0 &&
+      currentShopInfo.distributor_id !== dtid &&
+      entryDefalutStore === '2'
+    ) {
+      Taro.redirectTo({
+        url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=1`
+      })
+    }
+
     if (currentShopInfo.distributor_id !== 0 && currentShopInfo.open_divided == '1') {
       // 开启了店铺白名单
       if (!S.getAuthToken()) {
@@ -50,9 +64,7 @@ export default () => {
   // 检查进店规则
   const checkEnterStoreRule = async () => {
     const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-    // const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) // gu_user_id = 导购工号
-
-    const gu_user_id = '13661830217'
+    const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) // gu_user_id = 导购工号
 
     // 路由带参
     if (dtid) {
@@ -72,6 +84,7 @@ export default () => {
         if (guideStoreInfo?.distributor_id) {
           await checkStoreWhiteList(guideStoreInfo?.distributor_id)
         } else {
+          // 兜底策略
           if (entryDefalutStore === '1') {
             // 当前导购未绑定店铺
             await checkStoreWhiteList()
@@ -85,11 +98,12 @@ export default () => {
         await checkStoreWhiteList()
       }
     } else {
-      if (entryStoreByGuide && $.getAuthToken()) {
+      if (entryStoreByGuide && S.getAuthToken()) {
         const guideStoreInfo = await api.shop.checkStoreEnterRule()
         if (guideStoreInfo?.distributor_id) {
           await checkStoreWhiteList(guideStoreInfo?.distributor_id)
         } else {
+          // 兜底策略
           if (entryDefalutStore === '1') {
             // 当前导购未绑定店铺
             await checkStoreWhiteList()
@@ -98,6 +112,13 @@ export default () => {
               url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=1`
             })
           }
+        }
+      } else if (enterStoreWhiteList && S.getAuthToken()) {
+        const myShopInfo = await getUserWhiteShop()
+        if (myShopInfo) {
+          dispatch(updateShopInfo(myShopInfo))
+        } else {
+          await checkStoreWhiteList()
         }
       } else {
         await checkStoreWhiteList()

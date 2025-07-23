@@ -4,11 +4,11 @@
     height: 450px;
     padding-top: 50px;
     .card-swiper {
-      height: 375px;
+      height: 385px;
 
       /*  #ifdef  alipay  */
-      width:110%;
-      margin-left:-80px;
+      width: 110%;
+      margin-left: -80px;
       /*  #endif  */
     }
     .swiper-slide {
@@ -23,11 +23,22 @@
       display: inline-block;
       // margin-top: 32px;
       position: relative;
+      border-radius: 20px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      .level-info {
+        position: absolute;
+        top: 1px;
+        left: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border-radius: 20px 0px 20px 0px;
+        padding: 10px;
+        font-size: 22px;
+      }
       .sp-image {
         width: 600px;
         height: 375px;
-        border-radius: 20px;
-        overflow: hidden;
       }
       // &:first-child {
       //   margin-left: 75px;
@@ -37,18 +48,19 @@
       // }
       .grade-name {
         position: absolute;
-        top: 140px;
+        bottom: 76px;
         left: 30px;
-        font-size: 42px;
+        font-size: 32px;
         font-weight: 600;
-        color: #E0BA9A;
+        color: #fff;
       }
       .grade-discount {
         position: absolute;
-        top: 220px;
+        bottom: 30px;
         left: 30px;
-        font-size: 28px;
+        font-size: 24px;
         color: #fff;
+        opacity: 0.7;
       }
     }
     // .member-card {
@@ -62,10 +74,7 @@
     height: 100%;
   }
   .content-hd {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 56px;
+    margin: 56px 20px 0 20px;
     .title {
       // width: 256px;
       height: 45px;
@@ -77,12 +86,8 @@
     }
   }
   .content-bd {
-    width: 686px;
-    background: #dedede;
     border-radius: 20px;
     padding: 32px 40px;
-    margin: 40px auto;
-    box-sizing: border-box;
     .sp-html {
       color: #444444;
     }

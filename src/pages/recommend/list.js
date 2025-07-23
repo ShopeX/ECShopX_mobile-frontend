@@ -27,7 +27,8 @@ import './list.scss'
 
 const initialState = {
   leftList: [],
-  rightList: []
+  rightList: [],
+  footerHeight: 0
 }
 
 function RecommendList() {
@@ -78,7 +79,15 @@ function RecommendList() {
   }
 
   return (
-    <SpPage className='page-recommend-list' renderFooter={<SpTabbar />}>
+    <SpPage
+      className='page-recommend-list'
+      renderFooter={<SpTabbar height={state.footerHeight} />}
+      onReady={({ footerHeight }) => {
+        setState((draft) => {
+          draft.footerHeight = footerHeight
+        })
+      }}
+    >
       <View className='search-container'>
         <SpSearchInput
           placeholder='搜索'
