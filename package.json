@@ -124,7 +124,7 @@
     "webpack-bundle-analyzer": "^4.10.2"
   },
   "overrides": {
-    "stylus": "github:stylus/stylus#0.55.0"
+    "stylus": "https://registry.npmmirror.com/stylus/-/stylus-0.64.0.tgz"
   },
   "config": {
     "commitizen": {
