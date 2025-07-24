@@ -7,7 +7,6 @@ import { SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { classNames, pickBy, thousandthFormat } from '@/utils'
-import { POINT_TYPE } from '@/consts'
 import './point-detail.scss'
 
 const btns = [
@@ -82,9 +81,12 @@ function PointDetail(props) {
               <SpImage src='point.png' width={48} height={48} />
               <Text className='label'>{`可用${pointName}`}</Text>
             </View>
-            <View className='point-rule' onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/point-rule' })
-            }}>{`${pointName}规则`}</View>
+            <View
+              className='point-rule'
+              onClick={() => {
+                Taro.navigateTo({ url: '/subpages/member/point-rule' })
+              }}
+            >{`${pointName}规则`}</View>
           </View>
           <View className='point-total'>{point}</View>
         </View>

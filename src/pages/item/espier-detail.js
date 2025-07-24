@@ -706,11 +706,11 @@ const getMultipleImageInfo = async (imageUrls) => {
       .catch(error => {
         console.log('获取图片信息失败:', url, error)
         // 返回一个默认高度或 null
-        return { width: 0, height: 750 }
+        return { width: 0, height: 650 }
       })
   )
   const results = await Promise.all(promises)
-  return results.map(info => info.height / 2)
+  return results.map(info => (info.height) / 2 > 650 ? 650 : info.height / 2)
 }
 
   const getRecommendList = async () => {
@@ -775,9 +775,10 @@ const getMultipleImageInfo = async (imageUrls) => {
     return {
       height: '100%',
       width: '100%',
-      backgroundSize: '100% auto',
+      backgroundSize: 'cover',
       backgroundImage: `url(${item})`,
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
     }
   }
 

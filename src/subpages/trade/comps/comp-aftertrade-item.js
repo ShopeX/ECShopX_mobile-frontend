@@ -40,10 +40,10 @@ function CompTradeItem(props) {
     <View className='comp-tradeitem'>
       <View className='trade-item-hd' onClick={onViewTradeDetail}>
         <View>
-          <View className='shop-info' onClick={onViewStorePage}>
+          {/* <View className='shop-info' onClick={onViewStorePage}>
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
             <View className='shop-name'>{distributorInfo?.name}{!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}</View>
-          </View>
+          </View> */}
           <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
           <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
         </View>

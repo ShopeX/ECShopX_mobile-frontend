@@ -131,7 +131,12 @@ function WgtFullSlider(props) {
         className='indicator-item'
         style={{ color: indicatorColor, bottom: `${dotbottom || 0}px` }}
       >
-        <View className='indicator-current' style={{ fontSize: indicatorFontSize + 'px' }}>
+        <View className='indicator-current' style={{ fontSize: indicatorFontSize + 'px' }} onClick={() => {
+          if (currentItem?.moreLink) {
+            linkPage(currentItem?.moreLink)
+          }
+        }}
+        >
           <Text style={{ fontSize: indicatorFontSize + 4 + 'px' }}>
             {page < 10 ? '0' + page : page}
           </Text>

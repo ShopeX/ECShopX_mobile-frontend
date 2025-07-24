@@ -249,17 +249,22 @@
       margin: 0 32px;
       display: flex;
       overflow: hidden;
+      position: relative;
     }
 
     .icon-bianji1 {
       color: #aaaaaa;
+      position: absolute;
+      z-index: 999;
+      top:4px;
     }
 
     .at-textarea {
       border-width: 0;
       padding: 0;
-      margin: 6px 0 0 10px;
-
+      margin: 0px 0 0 10px;
+      text-indent: 30rpx;
+      position: relative;
       &__textarea {
         font-size: 24px;
       }
@@ -333,6 +338,7 @@
 
   .icon-bianji1 {
     font-size: 32px;
+    position: absolute;
   }
 
   .sp-upload {
