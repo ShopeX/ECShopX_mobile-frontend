@@ -64,8 +64,20 @@ function Invoice(props) {
     const params = Taro.getStorageSync('invoice_params')
     console.log('params:', params)
     if (params && Object.keys(params).length > 0) {
+      const invoiceParams = {
+        invoice_type_code: params?.invoice_type_code || '02',
+        invoice_type: params?.invoice_type || 'individual',
+        company_title: params?.company_title || '',
+        company_tax_number: params?.company_tax_number || '',
+        company_address: params?.company_address || '',
+        company_telephone: params?.company_telephone || '',
+        bank_name: params?.bank_name || '',
+        bank_account: params?.bank_account || '',
+        email: params?.email || '',
+        mobile: params?.mobile || ''
+      }
       setState((draft) => {
-        draft.info = params
+        draft.info = invoiceParams
       })
     }
     getInvoiceSetting()
@@ -96,7 +108,9 @@ function Invoice(props) {
         let nInfo = {
           invoice_type: type == 0 ? 'enterprise' : 'individual',
           invoice_type_code: info.invoice_type_code,
-          company_title: title
+          company_title: title,
+          email: info?.email,
+          mobile: info?.mobile
         }
         if (type == 0) {
           nInfo = {
@@ -173,14 +187,14 @@ function Invoice(props) {
   const handleChange = (name, val) => {
     const nInfo = JSON.parse(JSON.stringify(state.info || {}))
     nInfo[name] = val
-    if (name === 'invoice_type') {
-      nInfo.company_title = ''
-      nInfo.company_tax_number = ''
-      nInfo.company_address = ''
-      nInfo.company_telephone = ''
-      nInfo.bank_name = ''
-      nInfo.bank_account = ''
-    }
+    // if (name === 'invoice_type') {
+    //   nInfo.company_title = ''
+    //   nInfo.company_tax_number = ''
+    //   nInfo.company_address = ''
+    //   nInfo.company_telephone = ''
+    //   nInfo.bank_name = ''
+    //   nInfo.bank_account = ''
+    // }
     if (name === 'invoice_type_code' && val === '01') {
       nInfo.invoice_type = 'enterprise'
     }

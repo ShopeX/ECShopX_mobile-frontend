@@ -46,7 +46,7 @@ const InvoiceSuccess = () => {
         <View className='page-invoice-success__title'>开票申请提交成功</View>
 
         <View className='page-invoice-success__desc'>
-          您的开票申请已成功提交，我们将在48小时内发送至您的邮箱或手机号，请注意查收。
+          您的开票申请已成功提交，我们将在72小时内发送至您的邮箱或手机号，请注意查收。
         </View>
 
         <View className='page-invoice-success__button' onClick={handleViewDetail}>
