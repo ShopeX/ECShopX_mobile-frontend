@@ -20,8 +20,7 @@ const initialState = {
     company_telephone: '', // 公司电话
     bank_name: '', // 开户银行
     bank_account: '', // 开户账号
-    email: '', // 电子邮箱
-    mobile: '' // 手机号
+    email: '' // 电子邮箱
   },
   allInfo: false,
   invoice_amount: 0,
@@ -73,8 +72,7 @@ function Invoice(props) {
         company_telephone: params?.company_telephone || '',
         bank_name: params?.bank_name || '',
         bank_account: params?.bank_account || '',
-        email: params?.email || '',
-        mobile: params?.mobile || ''
+        email: params?.email || ''
       }
       setState((draft) => {
         draft.info = invoiceParams
@@ -109,8 +107,7 @@ function Invoice(props) {
           invoice_type: type == 0 ? 'enterprise' : 'individual',
           invoice_type_code: info.invoice_type_code,
           company_title: title,
-          email: info?.email,
-          mobile: info?.mobile
+          email: info?.email
         }
         if (type == 0) {
           nInfo = {
@@ -142,10 +139,6 @@ function Invoice(props) {
       showToast('请输入正确的电子邮箱')
       return
     }
-    if (info?.mobile && !validate.isMobileNum(info?.mobile)) {
-      showToast('请输入正确的手机号')
-      return
-    }
     if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
       showToast(`请同意${protocolTitle}`)
       return
@@ -154,8 +147,7 @@ function Invoice(props) {
       invoice_type_code: info?.invoice_type_code,
       invoice_type: info?.invoice_type,
       company_title: info?.company_title,
-      email: info?.email,
-      mobile: info?.mobile
+      email: info?.email
     }
     if (params.invoice_type === 'enterprise') {
       params = {
@@ -205,9 +197,9 @@ function Invoice(props) {
 
   const isFull = () => {
     if (info?.invoice_type === 'individual') {
-      return info?.company_title && (info?.email || info?.mobile)
+      return info?.company_title && info?.email
     } else if (info?.invoice_type === 'enterprise') {
-      return info?.company_title && info?.company_tax_number && (info?.email || info?.mobile)
+      return info?.company_title && info?.company_tax_number && info?.email
     }
   }
 
@@ -426,19 +418,9 @@ function Invoice(props) {
               <AtInput
                 name='email'
                 value={info?.email}
-                placeholder='电子邮箱、手机号码至少填一项'
+                placeholder='必填'
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('email', e)}
-              />
-            </SpCell>
-            <SpCell title='手机号码'>
-              <AtInput
-                name='mobile'
-                maxLength={11}
-                value={info?.mobile}
-                placeholder='电子邮箱、手机号码至少填一项'
-                placeholderClass='input-placeholder'
-                onChange={(e) => handleChange('mobile', e)}
               />
             </SpCell>
             <View className='invoice-box__bottom'></View>
