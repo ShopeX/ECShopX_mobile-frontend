@@ -79,7 +79,7 @@ function SpSkuSelect(props) {
   }, [info])
 
   useEffect(() => {
-    if(!open){
+    if (!open) {
       setState((draft) => {
         draft.num = 1
       })
