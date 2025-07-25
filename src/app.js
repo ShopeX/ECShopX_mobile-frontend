@@ -99,6 +99,12 @@ function App({ children }) {
 
       if (typeof params.runFlag === 'undefined') {
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+
+        // 小程序启动时，如果路由带参有店铺码，则清除导购参数
+        if (typeof params?.dtid !== 'undefined') {
+          Taro.removeStorageSync(SG_GUIDE_PARAMS)
+          Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+        }
       }
 
       if (params.gu || params.gu_user_id) {
