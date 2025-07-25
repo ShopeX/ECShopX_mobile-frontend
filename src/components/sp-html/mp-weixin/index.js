@@ -1,5 +1,5 @@
 'use strict'
-function e (e, t, n) {
+function e(e, t, n) {
   return (
     t in e
       ? Object.defineProperty(e, t, { value: n, enumerable: !0, configurable: !0, writable: !0 })
@@ -82,7 +82,7 @@ Component({
     getText: function (e) {
       var t = ''
       return (
-        (function e (n) {
+        (function e(n) {
           for (var o = 0; o < n.length; o++) {
             var r = n[o]
             if ('text' === r.type) t += r.text.replace(/&amp;/g, '&')

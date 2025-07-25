@@ -42,17 +42,17 @@ export default class RegRule extends Component {
       })
       data = registerContent + privacyContent
       navBarTitle = `${registerTitle}和${privactTitle}`
-    }else if (type === 'x') {
+    } else if (type === 'x') {
       // 隐私和注册协议
-      const {salesman_service} = await api.salesman.shopsProtocolsaleman({
+      const { salesman_service } = await api.salesman.shopsProtocolsaleman({
         type: 'x'
       })
       const { content: privacyContent, title: privactTitle } = salesman_service
       data = privacyContent
       navBarTitle = privactTitle
-    }else if (type === 'y') {
+    } else if (type === 'y') {
       // 隐私和注册协议
-      const {salesman_privacy} = await api.salesman.shopsProtocolsaleman({
+      const { salesman_privacy } = await api.salesman.shopsProtocolsaleman({
         type: 'x'
       })
       const { content: privacyContent, title: privactTitle } = salesman_privacy
@@ -92,9 +92,7 @@ export default class RegRule extends Component {
     const { info, title } = this.state
     return (
       <ScrollView enhanced scrollY showScrollbar={false} className='page-auth-reg-rule'>
-        {info && (
-          <SpHtml content={info} />
-        )}
+        {info && <SpHtml content={info} />}
       </ScrollView>
     )
   }

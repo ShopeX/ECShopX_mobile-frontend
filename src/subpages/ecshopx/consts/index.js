@@ -40,7 +40,7 @@ export const FILTER_DRAWER_DATA = [
 ]
 
 //填充标签
-export function fillFilterTag (tagList) {
+export function fillFilterTag(tagList) {
   FILTER_DRAWER_DATA[0].children = tagList.map((item) => ({
     value: item.tag_id,
     label: item.tag_name

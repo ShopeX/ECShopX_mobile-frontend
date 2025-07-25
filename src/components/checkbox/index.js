@@ -10,14 +10,14 @@ export default class SpCheckbox extends Component {
     onChange: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       isChecked: this.props.checked
     }
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { checked } = nextProps
 
     if (checked !== this.state.isChecked) {
@@ -40,7 +40,7 @@ export default class SpCheckbox extends Component {
     this.props.onChange && this.props.onChange(isChecked)
   }
 
-  render () {
+  render() {
     const { isChecked } = this.state
 
     return (

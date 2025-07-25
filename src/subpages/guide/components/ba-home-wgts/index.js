@@ -2,12 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpSearch } from '@/components'
-import {
-  WgtSlider,
-  WgtImgHotZone,
-  WgtGoodsScroll,
-  WgtGoodsGrid,
-} from '../wgts'
+import { WgtSlider, WgtImgHotZone, WgtGoodsScroll, WgtGoodsGrid } from '../wgts'
 // import {  WgtSearchHome } from '@/pages/home/wgts'
 
 export default class HomeWgts extends Component {
@@ -60,9 +55,13 @@ export default class HomeWgts extends Component {
               {item.name === 'slider' && <WgtSlider isHomeSearch info={item} />} {/** 轮播 */}
               {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
               {/** 商品滚动 */}
-              {item.name === 'goodsScroll' && <WgtGoodsScroll info={item} index={idx} type='good-scroll' />}
+              {item.name === 'goodsScroll' && (
+                <WgtGoodsScroll info={item} index={idx} type='good-scroll' />
+              )}
               {/** 商品栅格 */}
-              {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} index={idx} type='good-grid' />}
+              {item.name === 'goodsGrid' && (
+                <WgtGoodsGrid info={item} index={idx} type='good-grid' />
+              )}
             </View>
           )
         })}

@@ -19,7 +19,7 @@ import './rate.scss'
 )
 export default class TradeRate extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -29,11 +29,11 @@ export default class TradeRate extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
     Taro.showLoading({
@@ -85,7 +85,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChange (index, value) {
+  handleChange(index, value) {
     const { goodsList } = this.state
     goodsList[index].star = value
     this.setState({
@@ -100,7 +100,7 @@ export default class TradeRate extends Component {
     })
   }
 
-  handleChangeComment (index, value, e) {
+  handleChangeComment(index, value, e) {
     // value在H5端有bug 所以还是用e.detail.value 的方式！
     console.log(e.detail.value)
     const { goodsList } = this.state
@@ -190,7 +190,7 @@ export default class TradeRate extends Component {
   }
 
   // TODO: 确认原有功能
-  render () {
+  render() {
     const { goodsList } = this.state
 
     const { colors } = this.props

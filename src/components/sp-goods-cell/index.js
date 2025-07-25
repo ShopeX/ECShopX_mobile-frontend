@@ -52,7 +52,7 @@ function SpGoodsCell(props) {
         <SpPrice value={info.salePrice}></SpPrice>
         {enPurActivityPrice && (
           <View className='act-price'>
-            活动价¥{(info.price).toFixed(2)}
+            活动价¥{info.price.toFixed(2)}
             {/* <SpPrice value={info.price}></SpPrice> */}
           </View>
         )}
@@ -69,14 +69,11 @@ function SpGoodsCell(props) {
       <View className='goods-item-bd'>
         <View className='item-hd'>
           <View className='goods-title'>
-          {
-            info?.isMedicine == 1 && info?.isPrescription == 1 &&
-            <Text className='prescription-drug'>
-              处方药
-            </Text>
-          }
+            {info?.isMedicine == 1 && info?.isPrescription == 1 && (
+              <Text className='prescription-drug'>处方药</Text>
+            )}
             {info.itemName}
-            </View>
+          </View>
         </View>
         <View className='item-bd'>
           <View>

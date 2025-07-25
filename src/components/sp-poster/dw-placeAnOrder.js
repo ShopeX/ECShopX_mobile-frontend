@@ -187,7 +187,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '原价：¥ ' + totalInfo.market_fee/100,
+        text: '原价：¥ ' + totalInfo.market_fee / 100
       },
       drawOptions
     )
@@ -198,7 +198,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '总价：¥ ' + totalInfo.item_fee_new/100,
+        text: '总价：¥ ' + totalInfo.item_fee_new / 100
       },
       drawOptions
     )
@@ -209,7 +209,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '运费：¥ ' + totalInfo.freight_fee/100,
+        text: '运费：¥ ' + totalInfo.freight_fee / 100
       },
       drawOptions
     )
@@ -220,7 +220,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '促销：¥ ' + totalInfo.promotion_discount/100,
+        text: '促销：¥ ' + totalInfo.promotion_discount / 100
       },
       drawOptions
     )
@@ -231,11 +231,10 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '优惠券：¥ ' + totalInfo.coupon_discount/100,
+        text: '优惠券：¥ ' + totalInfo.coupon_discount / 100
       },
       drawOptions
     )
-
 
     // 太阳码
     drawImage(

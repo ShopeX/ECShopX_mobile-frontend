@@ -1,7 +1,7 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useEffect, useRef } from 'react'
-import { classNames, formatTime} from '@/utils'
-import {  SpPage, SpSearchInput, SpScrollView } from '@/components'
+import { classNames, formatTime } from '@/utils'
+import { SpPage, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
 import api from '@/api'
@@ -48,7 +48,7 @@ const SelectShop = () => {
       province: address[0],
       city: address[1],
       area: address[2],
-      self_delivery_operator_id:deliveryPersonnel.self_delivery_operator_id
+      self_delivery_operator_id: deliveryPersonnel.self_delivery_operator_id
     }
     params[basis.key] = basis.keywords
 
@@ -86,7 +86,6 @@ const SelectShop = () => {
           return <CompShopList key={index} item={item} />
         })}
       </SpScrollView>
-
     </SpPage>
   )
 }

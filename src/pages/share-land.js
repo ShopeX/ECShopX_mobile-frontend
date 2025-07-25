@@ -19,11 +19,14 @@ function ShareIand() {
     resloveRouterParams()
   }, [])
 
-
   const resloveRouterParams = async () => {
     const routeParams = await entryLaunch.getRouteParams(router)
     Taro.setStorageSync(SG_ROUTER_PARAMS, routeParams)
     if (/^guide_welcome/.test(routeParams?.from_scene)) {
+      // 欢迎语携带用户编号
+      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+
       // 导购欢迎语
       if (routeParams.from_scene == 'guide_welcome_home') {
         // 导购欢迎语--商城首页
@@ -47,10 +50,6 @@ function ShareIand() {
         showToast('未匹配到参数')
       }
 
-      // 欢迎语携带用户编号
-      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
-      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-
       if (S.getAuthToken()) {
         // entryLaunch.postGuideUV()
         entryLaunch.postGuideTask()
@@ -58,10 +57,13 @@ function ShareIand() {
     } else {
       // 分享的太阳码场景
       const _tempParams = {}
-      if (routeParams?.t == 1) { // 处方药
+      if (routeParams?.t == 1) {
+        // 处方药
         _tempParams.order_id = routeParams.oi
         _tempParams.prescription_order_random = routeParams.r
-        Taro.redirectTo({ url: `/subpages/prescription/prescription-information?${qs.stringify(_tempParams)}` })
+        Taro.redirectTo({
+          url: `/subpages/prescription/prescription-information?${qs.stringify(_tempParams)}`
+        })
       }
     }
   }

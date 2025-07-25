@@ -1,15 +1,15 @@
 export default class Base {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.options = options
   }
 
-  setVar () {}
-  trackEvent () {}
+  setVar() {}
+  trackEvent() {}
 
-  componentDidMount () {}
-  componentDidHide () {}
+  componentDidMount() {}
+  componentDidHide() {}
 
-  dispatch (type, payload) {
+  dispatch(type, payload) {
     try {
       const actions = this.actions
       if (!actions) {

@@ -190,7 +190,8 @@ function ItemList() {
 
     if (VERSION_STANDARD) {
       // 有兑换券的时候，店铺ID传当前选中的店铺
-      params.distributor_id = curDistributorId ?? (card_id ? shopInfo?.distributor_id : getDistributorId());
+      params.distributor_id =
+        curDistributorId ?? (card_id ? shopInfo?.distributor_id : getDistributorId())
     }
 
     const {

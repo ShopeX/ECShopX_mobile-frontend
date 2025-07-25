@@ -77,7 +77,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   distributorId: 'distributor_id',
   shareImageUrl: 'share_image_url',
   showChiefGoodsList: ({ show_chief_goodslist }) => {
-    if(typeof show_chief_goodslist == 'undefined') {
+    if (typeof show_chief_goodslist == 'undefined') {
       return 1
     } else {
       return show_chief_goodslist
@@ -104,8 +104,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
           price: ({ price }) => (price / 100).toFixed(2),
           num: 0
         })
-      },
-
+      }
     })
   },
   ziti: ({ ziti }) => {
@@ -123,7 +122,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   showCondition: ({ condition_type }) => condition_type == 'money',
   progressValue: ({ condition_money, total_fee }) => {
     const totalFee = total_fee / 100
-    return totalFee >= condition_money ? 100 : totalFee / condition_money * 100
+    return totalFee >= condition_money ? 100 : (totalFee / condition_money) * 100
   },
   diffCondition: ({ condition_money, total_fee }) => {
     const totalFee = total_fee / 100
@@ -131,7 +130,7 @@ export const COMMUNITY_ACTIVITY_ITEM = {
   },
   totalFee: 'total_fee',
   conditionMoney: 'condition_money',
-  conditionType: "condition_type"
+  conditionType: 'condition_type'
 }
 
 export const COMMUNITY_ACTIVITY_DETAIL_ITEM = {

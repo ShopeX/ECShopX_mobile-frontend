@@ -21,7 +21,7 @@ function WgtSlider(props) {
   const { currentDot, curIdx, curContent } = state
 
   useEffect(() => {
-    setState(draft => {
+    setState((draft) => {
       draft.curContent = (data[curIdx] || {}).content
     })
   }, [curIdx])
@@ -30,14 +30,14 @@ function WgtSlider(props) {
 
   const dotChange = (e) => {
     const { current } = e.detail
-    setState(draft => {
+    setState((draft) => {
       draft.currentDot = current
     })
   }
 
   const swiperChange = (e) => {
     const { current } = e.detail
-    setState(draft => {
+    setState((draft) => {
       draft.curIdx = current
     })
   }
@@ -52,7 +52,6 @@ function WgtSlider(props) {
         'wgt__padded': base.padded
       })}
     >
-
       {base.title && (
         <View className='wgt-head'>
           <View className='wgt-hd'>

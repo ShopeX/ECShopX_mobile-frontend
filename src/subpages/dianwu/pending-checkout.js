@@ -48,7 +48,7 @@ function DianwuPendingCheckout(props) {
 
   // useDianWuLogin()
 
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -174,13 +174,11 @@ function DianwuPendingCheckout(props) {
                           </View>
                           <View className='g-item-bd'>
                             <View className='title'>
-                              {
-                                goods.isPrescription == 1 && goods.isMedicine == 1 &&
-                                <Text className='prescription-drug'>
-                                  处方药
-                                </Text>
-                              }
-                              {goods.name}</View>
+                              {goods.isPrescription == 1 && goods.isMedicine == 1 && (
+                                <Text className='prescription-drug'>处方药</Text>
+                              )}
+                              {goods.name}
+                            </View>
                             <View className='sku-num'>
                               <View className='sku-num-l'>
                                 {goods.itemSpecDesc && (

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
-import { SpToast, Loading, SpNote, SearchBar } from '@/components'
+import { SpToast, Loading, SpNote, SpSearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
@@ -13,7 +13,7 @@ import './shop-goods.scss'
 @withBackToTop
 export default class DistributionShopGoods extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -25,7 +25,7 @@ export default class DistributionShopGoods extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.hideShareMenu({
       menus: ['shareAppMessage', 'shareTimeline']
     })
@@ -44,7 +44,7 @@ export default class DistributionShopGoods extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { page_no: page, page_size: pageSize } = params
     const { selectParams } = this.state
@@ -52,7 +52,7 @@ export default class DistributionShopGoods extends Component {
       ...this.state.query,
       page,
       pageSize,
-      isSalesmanPage:1
+      isSalesmanPage: 1
     }
 
     const { list, total_count: total } = await api.item.search(query)
@@ -153,7 +153,7 @@ export default class DistributionShopGoods extends Component {
           item_type: 'normal',
           pageSize: 50,
           page: 1,
-          isSalesmanPage:1
+          isSalesmanPage: 1
         }
         const res = await api.item.search(query)
         const details = pickBy(res.list, {
@@ -204,7 +204,7 @@ export default class DistributionShopGoods extends Component {
     }
   }
 
-  onShareAppMessage (res) {
+  onShareAppMessage(res) {
     const { userId } = Taro.getStorageSync('userinfo')
     const { info } = res.target.dataset
     return {
@@ -217,13 +217,13 @@ export default class DistributionShopGoods extends Component {
     }
   }
 
-  render () {
+  render() {
     const { list, goodsIds, page, scrollTop, query } = this.state
 
     return (
       <View className='page-distribution-shop'>
         <View className='searchBar'>
-          <SearchBar
+          <SpSearchBar
             showDailog={false}
             keyword={query ? query.keywords : ''}
             onFocus={() => false}

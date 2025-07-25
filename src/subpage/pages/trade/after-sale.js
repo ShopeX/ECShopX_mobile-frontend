@@ -106,11 +106,11 @@ export default class AfterSale extends Component {
     return { total }
   }
 
-  detailFilter(nList){
-    const {order_id} = this.$instance.router.params
+  detailFilter(nList) {
+    const { order_id } = this.$instance.router.params
     let nFList = JSON.parse(JSON.stringify(nList))
-    if(order_id){
-      nFList = nList.filter(item => item.order_id == order_id)
+    if (order_id) {
+      nFList = nList.filter((item) => item.order_id == order_id)
     }
     return nFList
   }

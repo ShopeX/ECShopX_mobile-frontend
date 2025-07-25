@@ -3,7 +3,15 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker } from '@tarojs/components'
-import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpPicker, SpInput as AtInput } from '@/components'
+import {
+  SpPage,
+  SpImage,
+  SpButton,
+  SpUpload,
+  SpCell,
+  SpPicker,
+  SpInput as AtInput
+} from '@/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
@@ -38,7 +46,8 @@ function Group(props) {
   const [state, setState] = useImmer(initialState)
   const { userInfo = {} } = useSelector((state) => state.user)
   const { selectCommunityZiti, selectGoods } = useSelector((state) => state.community)
-  const { qrcode, activityName, comps, startDate, startTime, endDate, endTime, shareImageUrl } = state
+  const { qrcode, activityName, comps, startDate, startTime, endDate, endTime, shareImageUrl } =
+    state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
 
@@ -181,7 +190,7 @@ function Group(props) {
       }
     }
 
-    if(selectGoods.length == 0) {
+    if (selectGoods.length == 0) {
       return showToast('请选择团购商品')
     }
 

@@ -4,7 +4,7 @@ import { View, Image, Text, Block } from '@tarojs/components'
 import { SpImage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
-import {styleNames, getThemeStyle} from '@/utils'
+import { styleNames, getThemeStyle } from '@/utils'
 import { connect } from 'react-redux'
 
 //import '../../font/iconfont.scss'
@@ -33,7 +33,7 @@ export default class Scrollitem extends Component {
   componentDidMount() {
     let { item } = this.props
     this.setspot(item)
-    console.log(123456,item,this.props.memberData)
+    console.log(123456, item, this.props.memberData)
   }
   componentWillReceiveProps(nextProps) {
     this.setspot(nextProps.item)

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpScrollView} from '@/components'
+import { SpScrollView } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
@@ -14,7 +14,6 @@ import CompSecondCategory from './comps/comp-second-category'
 import CompThirdCategory from './comps/comp-third-category'
 import GoodsItem from './comps/goods-item'
 import './categorys.scss'
-
 
 const initialState = {
   cusIndex: 1,
@@ -49,11 +48,7 @@ function StoreItemList(props) {
     thirdList
   } = state
 
-
-  const {
-    addPurchases = () => {},
-    dtid
-  } = props
+  const { addPurchases = () => {}, dtid } = props
 
   const goodsRef = useRef()
   const dispatch = useDispatch()
@@ -68,28 +63,27 @@ function StoreItemList(props) {
     }
   }, [cat_id])
 
-
   const getCategoryList = async () => {
-      const res = await api.category.get({distributor_id:dtid})
-      const currentList = pickBy(res, {
-        name: 'category_name',
-        img: 'image_url',
-        id: 'category_id',
-        category_id: 'category_id',
-        children: ({ children }) =>
-          pickBy(children, {
-            name: 'category_name',
-            img: 'image_url',
-            id: 'category_id',
-            category_id: 'category_id',
-            children: ({ children: children_ }) =>
-              pickBy(children_, {
-                name: 'category_name',
-                img: 'image_url',
-                id: 'category_id'
-              })
-          })
-      })
+    const res = await api.category.get({ distributor_id: dtid })
+    const currentList = pickBy(res, {
+      name: 'category_name',
+      img: 'image_url',
+      id: 'category_id',
+      category_id: 'category_id',
+      children: ({ children }) =>
+        pickBy(children, {
+          name: 'category_name',
+          img: 'image_url',
+          id: 'category_id',
+          category_id: 'category_id',
+          children: ({ children: children_ }) =>
+            pickBy(children_, {
+              name: 'category_name',
+              img: 'image_url',
+              id: 'category_id'
+            })
+        })
+    })
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
@@ -110,7 +104,7 @@ function StoreItemList(props) {
       // distributor_id: dis_id || Taro.getStorageSync('distributor_id'),
       goodsSort,
       category_id: cat_id,
-      v_store: cusIndex,
+      v_store: cusIndex
     }
 
     const { list: _list, total_count } = await api.item.search(params)
@@ -202,7 +196,6 @@ function StoreItemList(props) {
     // })
   }
 
-
   const addPurchase = async (id) => {
     addPurchases(id)
   }
@@ -235,10 +228,7 @@ function StoreItemList(props) {
   }
 
   return (
-    <View
-      scrollToTopBtn
-      className={classNames('page-category-item-list')}
-    >
+    <View scrollToTopBtn className={classNames('page-category-item-list')}>
       <View className='page-category-item-list-head'>
         <View className='category-search'>
           {/* <SpCategorySearch onConfirm={handleConfirm} /> */}
@@ -269,7 +259,7 @@ function StoreItemList(props) {
           className='right-container'
           style={styleNames({
             paddingTop: thirdList.length > 0 && '40px',
-            height:thirdList.length > 0 && '535px',
+            height: thirdList.length > 0 && '535px'
           })}
         >
           {thirdList.length > 0 && (
@@ -292,7 +282,12 @@ function StoreItemList(props) {
             >
               {allList.map((item, index) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <GoodsItem onStoreClick={handleClickStore} onAddToCart={addPurchase} hideStore info={item} />
+                  <GoodsItem
+                    onStoreClick={handleClickStore}
+                    onAddToCart={addPurchase}
+                    hideStore
+                    info={item}
+                  />
                   {item.activity_store > 0 && (
                     <View className='goods-add' onClick={shoppingCart.bind(this, item)}>
                       <Image

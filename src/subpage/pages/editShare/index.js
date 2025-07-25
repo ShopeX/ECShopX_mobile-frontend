@@ -4,7 +4,7 @@ import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
-import { getAppId,isAlipay } from '@/utils'
+import { getAppId, isAlipay } from '@/utils'
 import { connect } from 'react-redux'
 
 import './index.scss'
@@ -134,14 +134,20 @@ export default class EditShare extends Component {
       const canvas = Taro.createCanvasContext(`canvas${i}`)
       const { path } = await Taro.getImageInfo({ src: url.replace('http://', 'https://') })
       // canvas.drawImage(path, 0, 0, canvsW_H, canvsW_H/1.3)
-      canvas.drawImage(path, 0, 0, isAlipay? canvsW_H*1.5:canvsW_H, isAlipay? canvsW_H*1.2:canvsW_H,)
+      canvas.drawImage(
+        path,
+        0,
+        0,
+        isAlipay ? canvsW_H * 1.5 : canvsW_H,
+        isAlipay ? canvsW_H * 1.2 : canvsW_H
+      )
       canvas.restore()
       canvas.save()
       if (isCode) {
         canvas.drawImage(
           codeImg.path,
-          isAlipay? (canvsW_H - wxCodeW_H - 5) * 1.5 : canvsW_H - wxCodeW_H - 5,
-          isAlipay? (canvsW_H - wxCodeW_H - 5) * 1.1 : canvsW_H - wxCodeW_H - 5,
+          isAlipay ? (canvsW_H - wxCodeW_H - 5) * 1.5 : canvsW_H - wxCodeW_H - 5,
+          isAlipay ? (canvsW_H - wxCodeW_H - 5) * 1.1 : canvsW_H - wxCodeW_H - 5,
           // canvsW_H - wxCodeW_H - 5,
           wxCodeW_H,
           wxCodeW_H

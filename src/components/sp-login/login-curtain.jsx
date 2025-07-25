@@ -33,7 +33,10 @@ function LoginCurtain(props) {
   }, [isOpened])
 
   const init = async () => {
-    const { logo, protocol: { member_register, privacy } } = await api.shop.getStoreBaseInfo()
+    const {
+      logo,
+      protocol: { member_register, privacy }
+    } = await api.shop.getStoreBaseInfo()
     // eslint-disable-next-line no-undef
     const { icon, nickname } = __wxConfig.accountInfo
     setState((draft) => {
@@ -56,17 +59,11 @@ function LoginCurtain(props) {
         <View className='agreement-content'>
           <SpCheckbox checked={agreeMentChecked} onChange={onChangePayment} />
           <View className='agreement-list'>
-            <Text
-              className='agreement-name'
-              onClick={() => handleClickPrivacy('member_register')}
-            >
+            <Text className='agreement-name' onClick={() => handleClickPrivacy('member_register')}>
               《{state.registerName}》
             </Text>
             和
-            <Text
-              className='agreement-name'
-              onClick={() => handleClickPrivacy('privacy')}
-            >
+            <Text className='agreement-name' onClick={() => handleClickPrivacy('privacy')}>
               《{state.privacyName}》
             </Text>
           </View>

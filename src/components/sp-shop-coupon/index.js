@@ -6,8 +6,8 @@ import { SpImage, SpNewPrice } from '@/components'
 import api from '@/api'
 import './index.scss'
 
-function SpShopCoupon (props) {
-  const { className, info, fromStoreIndex = false, onClick= () => {} } = props
+function SpShopCoupon(props) {
+  const { className, info, fromStoreIndex = false, onClick = () => {} } = props
   const { card_type, discount, least_cost, title } = info
   let couponText = ''
   // 折扣券

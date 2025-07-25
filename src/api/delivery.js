@@ -1,22 +1,22 @@
 import req from './req'
 
 // 配送员首页统计
-export function datacubeDeliverystaffdata (params = {}) {
+export function datacubeDeliverystaffdata(params = {}) {
   return req.get('/datacube/Deliverystaffdata', params)
 }
 
 // 配送员店铺列表
-export function getDistributorList (params = {}) {
+export function getDistributorList(params = {}) {
   return req.get('/selfdelivery/getDistributorList', params)
 }
 
 // 配送员店铺列表
-export function datacubeDeliverystaffdataDetail (params = {}) {
+export function datacubeDeliverystaffdataDetail(params = {}) {
   return req.get('/datacube/DeliverystaffdataDetail', params)
 }
 
 // 配送员我的
-export function selfdeliveryList (params = {}) {
+export function selfdeliveryList(params = {}) {
   return req.get('/selfdelivery/list', params)
 }
 
@@ -36,7 +36,7 @@ export function orderDelivery(params) {
 }
 
 //更新配送状态
-export function orderUpdateDelivery(delivery_id,params) {
+export function orderUpdateDelivery(delivery_id, params) {
   return req.post(`/order/updateDelivery/${delivery_id}`, params)
 }
 

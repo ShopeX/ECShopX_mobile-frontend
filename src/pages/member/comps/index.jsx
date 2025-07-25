@@ -1,11 +1,7 @@
-import React from 'react';
+import React from 'react'
 
 function Comps() {
-  return (
-    <div>
-      Comps
-    </div>
-  );
+  return <div>Comps</div>
 }
 
-export default Comps;
+export default Comps

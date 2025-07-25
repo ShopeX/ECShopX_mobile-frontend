@@ -1,5 +1,6 @@
 import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
 import React, { useCallback, useState, useEffect, useRef } from 'react'
+import { useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -12,7 +13,6 @@ import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purch
 import CompBottomTip from './comps/comp-bottomTip'
 import CompSelectCompany from './comps/comp-select-company'
 import './select-company-account.scss'
-import { useDispatch } from 'react-redux'
 
 function PurchaseAuthAccount() {
   const { isNewUser, login } = useLogin({
@@ -38,7 +38,7 @@ function PurchaseAuthAccount() {
   const formRef = useRef()
   const { form, rules, isOpened, companyList, curActiveIndex } = state
   const { params } = useRouter()
-  const { enterprise_id, enterprise_name, enterprise_sn, activity_id,is_activity = '' } = params
+  const { enterprise_id, enterprise_name, enterprise_sn, activity_id, is_activity = '' } = params
   const { showModal } = useModal()
   const dispatch = useDispatch()
 
@@ -71,12 +71,12 @@ function PurchaseAuthAccount() {
       auth_type: 'account'
     }
 
-    const checkParams = {..._params}
-    if(activity_id){
+    const checkParams = { ..._params }
+    if (activity_id) {
       checkParams.activity_id = activity_id
     }
 
-    if(!enterprise_id){
+    if (!enterprise_id) {
       //不是扫码进来，check接口要传当前店铺ID
       checkParams.distributor_id = getDistributorId()
     }
@@ -98,14 +98,18 @@ function PurchaseAuthAccount() {
 
   const handleSelctCompany = async () => {
     const { account, auth_code } = form
-    const { enterprise_id: _enterprise_id, id: employee_id,enterprise_name:_enterprise_name } = companyList[curActiveIndex] || {}
+    const {
+      enterprise_id: _enterprise_id,
+      id: employee_id,
+      enterprise_name: _enterprise_name
+    } = companyList[curActiveIndex] || {}
     const _params = {
       enterprise_id: _enterprise_id,
       employee_id,
       account,
       auth_code,
       auth_type: 'account',
-      enterprise_name:_enterprise_name,
+      enterprise_name: _enterprise_name
     }
     employeeAuth(_params)
   }
@@ -125,7 +129,7 @@ function PurchaseAuthAccount() {
 
   const employeeAuthFetch = async (_params) => {
     try {
-      await api.purchase.setEmployeeAuth({..._params,showError:false})
+      await api.purchase.setEmployeeAuth({ ..._params, showError: false })
       await getQrCodeDtid()
       showToast('验证成功')
       dispatch(updateEnterpriseId(_params.enterprise_id))
@@ -135,7 +139,11 @@ function PurchaseAuthAccount() {
         })
       }
       setTimeout(() => {
-        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
+        Taro.reLaunch({
+          url: `/pages/purchase/index?is_redirt=1${
+            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
+          }`
+        })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
@@ -148,17 +156,21 @@ function PurchaseAuthAccount() {
           confirmText: '我知道了',
           contentAlign: 'center'
         })
-        Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1${is_activity && activity_id? `&activity_id=${activity_id}` : ''}` })
+        Taro.reLaunch({
+          url: `/pages/purchase/index?is_redirt=1${
+            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
+          }`
+        })
       } else {
         showToast(e.message)
       }
     }
   }
 
-  const getQrCodeDtid = async() => {
-    if(!enterprise_id)return
+  const getQrCodeDtid = async () => {
+    if (!enterprise_id) return
     // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
-    const {distributor_id} = await api.purchase.getPurchaseDistributor({enterprise_id})
+    const { distributor_id } = await api.purchase.getPurchaseDistributor({ enterprise_id })
     //后续身份切换需要用
     dispatch(updateCurDistributorId(distributor_id))
   }

@@ -34,7 +34,6 @@ import * as salesman from './salesman'
 import * as delivery from './delivery'
 import * as prescriptionDrug from './prescriptionDrug'
 
-
 export default {
   article,
   aftersales,

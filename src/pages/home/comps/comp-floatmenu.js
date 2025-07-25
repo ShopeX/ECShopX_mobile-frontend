@@ -12,7 +12,7 @@ import './comp-floatmenu.scss'
 const initialState = {
   showStore: false,
   featuredShopId: null,
-  salesPersonList:true
+  salesPersonList: true
 }
 function CompFloatMenu(props) {
   const [state, setState] = useImmer(initialState)
@@ -45,7 +45,7 @@ function CompFloatMenu(props) {
       setState((draft) => {
         draft.showStore = true
         draft.featuredShopId = _userId
-        draft.salesPersonList = userInfo.salesPersonList?.total_count>0?false:true
+        draft.salesPersonList = userInfo.salesPersonList?.total_count > 0 ? false : true
       })
     }
   }

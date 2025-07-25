@@ -34,7 +34,7 @@ const validate = {
     return message
   },
   // 企业税号
-  checkTax (val) {
+  checkTax(val) {
     return /^[A-Z0-9]{15}$|^[A-Z0-9]{17}$|^[A-Z0-9]{18}$|^[A-Z0-9]{20}$/.test(val)
   },
   // 金额验证
@@ -43,7 +43,11 @@ const validate = {
     return reg.test(val)
   },
   isIpx(str) {
-    return str.search(/iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*10/g) > -1
+    return (
+      str.search(
+        /iPhone\s*X|iPhone\s*11|iPhone\s*12|iPhone\s*13|iPhone\s*14|iPhone\s*15|iPhone\s*10/g
+      ) > -1
+    )
   }
 }
 

@@ -249,7 +249,7 @@ export default class GoodsReservate extends Component {
 
   handleSubmit = async () => {
     let new_subdata = _cloneDeep(this.state.cur_activity_info)
-    console.log('new_subdata',new_subdata)
+    console.log('new_subdata', new_subdata)
     if (new_subdata.formdata && new_subdata.formdata.content) {
       new_subdata.formdata.content = JSON.stringify(new_subdata.formdata.content)
     }
@@ -351,7 +351,9 @@ export default class GoodsReservate extends Component {
             formdata.content.map((item, index) => {
               return (
                 <View className='goods-reservate__userinfo' key={`${index}1`}>
-                {item.title&&<View className='goods-reservate__userinfo_title'>{item.title}</View>}
+                  {item.title && (
+                    <View className='goods-reservate__userinfo_title'>{item.title}</View>
+                  )}
                   {item.formdata && item.formdata.length > 0
                     ? item.formdata.map((i_data, i_index) => {
                         return (

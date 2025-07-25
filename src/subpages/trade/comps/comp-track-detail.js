@@ -9,8 +9,13 @@ import { classNames, formatDateTime } from '@/utils'
 import './comp-track-detail.scss'
 
 function CompTrackDetail(props) {
-  const { isOpened = false, selfDeliveryOperatorName, trackDetailList = [], selfDeliveryOperatorMobile, onClose = () => { } } = props
-
+  const {
+    isOpened = false,
+    selfDeliveryOperatorName,
+    trackDetailList = [],
+    selfDeliveryOperatorMobile,
+    onClose = () => {}
+  } = props
 
   const formatLogs = (logs) => {
     let arr = []
@@ -31,23 +36,30 @@ function CompTrackDetail(props) {
     })
   }
 
-
   return (
-    <View className={classNames('comp-tradedetail', {
-      'active': isOpened
-    })}>
-      <SpFloatLayout className='tradedetail-floatlayout' title="订单跟踪" open={isOpened} onClose={onClose}>
+    <View
+      className={classNames('comp-tradedetail', {
+        'active': isOpened
+      })}
+    >
+      <SpFloatLayout
+        className='tradedetail-floatlayout'
+        title='订单跟踪'
+        open={isOpened}
+        onClose={onClose}
+      >
         <View className='opreator'>
           <View className='opreator-name'>配送员：{selfDeliveryOperatorName || '-'}</View>
-          <View className='opreator-mobile' onClick={handleCallOpreator}>拨打电话</View>
+          <View className='opreator-mobile' onClick={handleCallOpreator}>
+            拨打电话
+          </View>
         </View>
         <ScrollView scrollY>
           <View className='tradedetail-container'>
             {trackDetailList.length > 0 &&
               formatLogs(trackDetailList).map((item, idx) => (
                 <SpTimeLineItem key={idx} item={item} />
-              ))
-            }
+              ))}
           </View>
         </ScrollView>
       </SpFloatLayout>

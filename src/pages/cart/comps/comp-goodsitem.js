@@ -27,7 +27,7 @@ function CompGoodsItem(props) {
   const { cart_page } = priceSetting
   const { market_price: enMarketPrice } = cart_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
-  const { cart_page:pcart_page = {} } = priceDisplayConfig
+  const { cart_page: pcart_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = pcart_page
   const [state, setState] = useImmer(initialState)
   const { localNum } = state
@@ -61,7 +61,6 @@ function CompGoodsItem(props) {
     _price = price
   }
 
-
   let limitTxt = ''
   let limitNum = ''
   if (info?.limitedBuy?.marketing_type == 'limited_buy') {
@@ -91,12 +90,9 @@ function CompGoodsItem(props) {
             <View className='goods-title'>
               {/* {info.activity_type == 'package' && <Text className='goods-title__tag'>组合商品</Text>} */}
               {info.is_plus_buy && <Text className='goods-title__tag'>加价购</Text>}
-              {
-                info?.is_medicine == 1 && info?.is_prescription == 1 &&
-                <Text className='prescription-drug'>
-                  处方药
-                </Text>
-              }
+              {info?.is_medicine == 1 && info?.is_prescription == 1 && (
+                <Text className='prescription-drug'>处方药</Text>
+              )}
               {info.item_name}
             </View>
             {isShowDeleteIcon && (
@@ -129,13 +125,17 @@ function CompGoodsItem(props) {
             <View className='item-fd-hd'></View>
             <View className='item-ft-bd'>
               <View className='goods-price-wrap'>
-                {isPurchase && <>
-                  <SpPrice value={info.sale_price / 100} />
-                  {enPurActivityPrice && <View className='act-price'>
-                    活动价¥{(info.price / 100).toFixed(2)}
-                    {/* <SpPrice value={info.price / 100} /> */}
-                  </View>}
-                  </>}
+                {isPurchase && (
+                  <>
+                    <SpPrice value={info.sale_price / 100} />
+                    {enPurActivityPrice && (
+                      <View className='act-price'>
+                        活动价¥{(info.price / 100).toFixed(2)}
+                        {/* <SpPrice value={info.price / 100} /> */}
+                      </View>
+                    )}
+                  </>
+                )}
                 {!isPurchase && <SpPrice value={_price / 100} />}
                 {info.market_price > 0 && enMarketPrice && (
                   <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />

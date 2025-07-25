@@ -6,7 +6,6 @@ import { View } from '@tarojs/components'
 import { classNames, isNumber } from '@/utils'
 import './index.scss'
 
-
 const ret = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/
 const initialState = {
   currentValue: 0
@@ -15,22 +14,25 @@ const initialState = {
 function SpNumberKeyBoard(props) {
   const {
     maxValue = 0,
-    value = 0,isShowDefault=false , onClose = () => {}, onConfirm = () => {} } = props
+    value = 0,
+    isShowDefault = false,
+    onClose = () => {},
+    onConfirm = () => {}
+  } = props
   const [state, setState] = useImmer(initialState)
   const { currentValue } = state
 
-  useEffect(()=>{
+  useEffect(() => {
     setState((draft) => {
-      draft.currentValue = isShowDefault ? Math.min(maxValue,value) : 0
+      draft.currentValue = isShowDefault ? Math.min(maxValue, value) : 0
     })
-  },[value, maxValue])
+  }, [value, maxValue])
 
   const handleClickItem = (key) => {
     let _currentValue = currentValue
     if (isNumber(key)) {
       _currentValue = `${_currentValue == '0' ? '' : _currentValue}${key}`
     }
-
 
     if (
       !/\./.test(_currentValue) || // 首位不含.
@@ -53,7 +55,7 @@ function SpNumberKeyBoard(props) {
         })
         break
       case 'ok':
-        if(!isDisabled()) {
+        if (!isDisabled()) {
           onConfirm(_currentValue)
         }
         break
@@ -69,7 +71,10 @@ function SpNumberKeyBoard(props) {
 
   const isDisabled = () => {
     // console.log(ret.test(currentValue), parseFloat(currentValue) <= maxValue)
-    return !(currentValue == '0' || (ret.test(currentValue) && parseFloat(currentValue) <= maxValue))
+    return !(
+      currentValue == '0' ||
+      (ret.test(currentValue) && parseFloat(currentValue) <= maxValue)
+    )
   }
 
   return (

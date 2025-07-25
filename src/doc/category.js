@@ -33,9 +33,9 @@ export const CATEGORY_STORE_LIST_TWO_CHILDREN = {
     return pickBy(children, {
       name: 'name',
       img: 'img',
-      category_id :'category_id',
-      main_category_id:'main_category_id',
-      is_main_category:'is_main_category',
+      category_id: 'category_id',
+      main_category_id: 'main_category_id',
+      is_main_category: 'is_main_category'
     })
   }
 }

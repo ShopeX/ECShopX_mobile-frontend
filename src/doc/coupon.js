@@ -6,7 +6,7 @@ export const COUPON_ITEM = {
   cardId: 'card_id',
   cardType: 'card_type',
   code: 'code',
-  invalidDesc:'invalid_desc',
+  invalidDesc: 'invalid_desc',
   beginDate: ({ begin_date }) => begin_date.replace(/-/g, '.'),
   endDate: ({ end_date }) => end_date.replace(/-/g, '.'),
   tagClass: 'tagClass',
@@ -24,7 +24,7 @@ export const COUPON_ITEM = {
   status: 'status',
   getNum: 'get_num',
   valid: ({ valid }) => {
-    if(typeof valid === 'undefined') {
+    if (typeof valid === 'undefined') {
       return true
     } else {
       return valid
@@ -49,12 +49,12 @@ export const COUPON = {
   description: 'description',
   quantity: ({ quantity }) => parseInt(quantity),
   getNum: 'get_num',
-  couponStatus: ({ quantity, get_limit, user_get_num, get_num}) => {
-    if(quantity - get_num <= 0) {
+  couponStatus: ({ quantity, get_limit, user_get_num, get_num }) => {
+    if (quantity - get_num <= 0) {
       return 0 // 已领完
-    } else if(get_limit - user_get_num > 0) {
+    } else if (get_limit - user_get_num > 0) {
       return 1 // 立即领取
-    } else if(get_limit - user_get_num <= 0) {
+    } else if (get_limit - user_get_num <= 0) {
       return 2 // 已领取
     }
   },
@@ -64,7 +64,7 @@ export const COUPON = {
   sourceType: 'source_type',
   sourceId: 'source_id',
   valid: ({ valid }) => {
-    if(typeof valid === 'undefined') {
+    if (typeof valid === 'undefined') {
       return true
     } else {
       return valid

@@ -31,7 +31,7 @@ import './list.scss'
 const initialState = {
   filterList: [
     { tag_id: 1, tag_name: '最热' },
-    { tag_id: 2, tag_name: '最新' },
+    { tag_id: 2, tag_name: '最新' }
   ],
   curFilterIndex: 0,
   leftList: [],
@@ -41,14 +41,22 @@ const initialState = {
 
 function UgcTopicList() {
   const [state, setState] = useImmer(initialState)
-  const { keyword, tagsList, curTagIndex, filterList, curFilterIndex, leftList, rightList, topicName } = state
+  const {
+    keyword,
+    tagsList,
+    curTagIndex,
+    filterList,
+    curFilterIndex,
+    leftList,
+    rightList,
+    topicName
+  } = state
   const listRef = useRef()
   const router = useRouter()
 
   useEffect(() => {
     listRef.current.reset()
   }, [curTagIndex])
-
 
   // 列表
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -120,7 +128,7 @@ function UgcTopicList() {
         </View>
       }
     >
-      <View className="topic-name">{`#${topicName}`}</View>
+      <View className='topic-name'>{`#${topicName}`}</View>
       <View className='ugc-filter'>
         <SpTagBar
           list={filterList}
@@ -128,12 +136,7 @@ function UgcTopicList() {
           onChange={onChangeFilter}
         />
       </View>
-      <SpScrollView
-        className='list-scroll'
-        ref={listRef}
-        auto={false}
-        fetch={fetch}
-      >
+      <SpScrollView className='list-scroll' ref={listRef} auto={false} fetch={fetch}>
         <View className='list-container'>
           <View className='left-container'>
             {leftList.map((list) => {

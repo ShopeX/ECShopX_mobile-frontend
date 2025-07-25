@@ -20,7 +20,7 @@ export default class SpPageNote extends Component {
 
   handleClick = () => {}
 
-  render () {
+  render() {
     const { info: page, className, title, button, value, btnText, to } = this.props
     if (!page) {
       return null

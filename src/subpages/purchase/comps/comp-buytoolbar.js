@@ -27,7 +27,7 @@ function CompGoodsBuyToolbar(props) {
   }
 
   const RenderBtns = () => {
-    if(info.approveStatus == 'only_show') {
+    if (info.approveStatus == 'only_show') {
       btns.push(BUY_TOOL_BTNS.ONLY_SHOW)
       return
     }

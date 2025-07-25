@@ -5,7 +5,7 @@ import { classNames, styleNames } from '@/utils'
 
 import './comp-banner.scss'
 
-function CompsBanner (props) {
+function CompsBanner(props) {
   const { className, src, info } = props
 
   const handleClick = () => {

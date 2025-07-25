@@ -118,7 +118,6 @@ function EspierDetail(props) {
     from
   } = state
 
-
   useEffect(() => {
     init()
   }, [])
@@ -212,7 +211,7 @@ function EspierDetail(props) {
           distributor_id: dtid
         })
         data = pickBy(itemDetail, doc.goods.GOODS_INFO)
-        if(data.approveStatus == 'instock') {
+        if (data.approveStatus == 'instock') {
           setState((draft) => {
             draft.isDefault = true
             draft.defaultMsg = '商品已下架'
@@ -228,7 +227,9 @@ function EspierDetail(props) {
     }
 
     // 是否订阅
-    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, { distributor_id: dtid })
+    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
+      distributor_id: dtid
+    })
 
     setNavigationBarTitle(data.itemName)
 
@@ -376,7 +377,6 @@ function EspierDetail(props) {
           </View>
 
           <View className='goods-info'>
-
             <View className='goods-name-wrap'>
               <View className='goods-name'>
                 <View className='title'>{info.itemName}</View>
@@ -458,7 +458,6 @@ function EspierDetail(props) {
           </View>
         </View>
       )}
-
     </SpPage>
   )
 }

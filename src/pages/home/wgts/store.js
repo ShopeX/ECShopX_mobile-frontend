@@ -64,7 +64,13 @@ export default class WgtStore extends Component {
             style={{ backgroundColor: base.backgroundColor || '#FFF' }}
           >
             <View className='store-info' onClick={this.handleStoreClick.bind(this, item.id)}>
-              <SpImage className='store-logo' src={item.logo} mode='scaleToFill' width={100} height={100}/>
+              <SpImage
+                className='store-logo'
+                src={item.logo}
+                mode='scaleToFill'
+                width={100}
+                height={100}
+              />
               <View className='store-title'>
                 <View className='store-name'>{item.name}</View>
                 <View className='store-tags'>

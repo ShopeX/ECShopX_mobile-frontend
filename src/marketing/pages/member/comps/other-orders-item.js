@@ -8,13 +8,13 @@ export default class OtherOrdersItem extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  render () {
+  render() {
     const { info, onClick } = this.props
 
     if (!info) {

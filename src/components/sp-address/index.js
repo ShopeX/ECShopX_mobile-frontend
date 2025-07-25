@@ -21,7 +21,7 @@ const initialState = {
 function SpAddress(props) {
   const [state, setState] = useAsyncCallback(initialState)
   const { addressList, areaList, multiIndex, selectValue, selectId, pindex } = state
-  const { isOpened = false, onClose = () => { }, onChange = () => { } } = props
+  const { isOpened = false, onClose = () => {}, onChange = () => {} } = props
   useEffect(() => {
     fetch()
   }, [])
@@ -77,36 +77,39 @@ function SpAddress(props) {
       }
     })()
 
-    setState((draft) => {
-      if (_areaList) {
-        draft.areaList[level] = _areaList
-      }
-      if (level < 3) {
-        draft.pindex = level
-      }
+    setState(
+      (draft) => {
+        if (_areaList) {
+          draft.areaList[level] = _areaList
+        }
+        if (level < 3) {
+          draft.pindex = level
+        }
 
-      if (selectValue.length < level) {
-        draft.selectValue[level - 1] = {
-          label,
-          id,
-          level
+        if (selectValue.length < level) {
+          draft.selectValue[level - 1] = {
+            label,
+            id,
+            level
+          }
+        } else {
+          draft.selectValue[level - 1] = {
+            label,
+            id,
+            level
+          }
+          if (level < selectValue.length) {
+            draft.selectValue.splice(level, selectValue.length - level)
+          }
         }
-      } else {
-        draft.selectValue[level - 1] = {
-          label,
-          id,
-          level
-        }
-        if (level < selectValue.length) {
-          draft.selectValue.splice(level, selectValue.length - level)
+      },
+      (state) => {
+        if (state.selectValue.length === 3) {
+          onChange(state.selectValue)
+          onClose()
         }
       }
-    }, (state) => {
-      if (state.selectValue.length === 3) {
-        onChange(state.selectValue)
-        onClose()
-      }
-    })
+    )
   }
 
   const handleClickSelectItem = ({ parent_id, label, id, level }) => {
@@ -116,11 +119,11 @@ function SpAddress(props) {
     })
   }
 
-  const randomKey = () => new Date + Math.random()
+  const randomKey = () => new Date() + Math.random()
 
-  console.log('pindex', pindex);
-  console.log('selectValue', selectValue);
-  console.log('areaList', areaList);
+  console.log('pindex', pindex)
+  console.log('selectValue', selectValue)
+  console.log('areaList', areaList)
 
   return (
     <View className='sp-address'>
@@ -129,22 +132,24 @@ function SpAddress(props) {
         <View className='address-hd'>
           {selectValue.map((vitem, vindex) => (
             <View
-              className={classNames(`tab-item`,
-                {
-                  active: pindex === vindex || vindex === 2 && pindex === 3
-                })}
+              className={classNames(`tab-item`, {
+                active: pindex === vindex || (vindex === 2 && pindex === 3)
+              })}
               key={`tab-item__${randomKey()}`}
               onClick={handleClickSelectItem.bind(this, vitem)}
             >
               {vitem.label}
             </View>
           ))}
-          {(selectValue.length < areaList.length) && <View className='tab-item active'>请选择</View>}
+          {selectValue.length < areaList.length && <View className='tab-item active'>请选择</View>}
         </View>
         <View className='address-bd'>
-          <View className="address-cols" style={styleNames({
-            transform: `translate3d(${-100 * pindex}%, 0px, 0px)`
-          })}>
+          <View
+            className='address-cols'
+            style={styleNames({
+              transform: `translate3d(${-100 * pindex}%, 0px, 0px)`
+            })}
+          >
             {areaList?.map((item, index) => (
               <ScrollView className='address-col' scrollY key={`address-col__${index}`}>
                 {item.map((sitem, sindex) => (
@@ -156,7 +161,9 @@ function SpAddress(props) {
                     onClick={handleClickItem.bind(this, sitem)}
                   >
                     {sitem.label}
-                    {selectValue?.[index]?.id == sitem.id && <Text className="iconfont icon-zhengque-correct"></Text>}
+                    {selectValue?.[index]?.id == sitem.id && (
+                      <Text className='iconfont icon-zhengque-correct'></Text>
+                    )}
                   </View>
                 ))}
               </ScrollView>

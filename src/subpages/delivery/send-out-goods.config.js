@@ -1,4 +1,3 @@
 export default {
-    navigationBarTitleText: '发货'
-  }
-  
+  navigationBarTitleText: '发货'
+}

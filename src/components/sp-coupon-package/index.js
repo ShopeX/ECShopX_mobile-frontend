@@ -27,7 +27,7 @@ function SpCouponPackage(props) {
 
   const getCouponList = async () => {
     let receiveType
-    if(info == 'grade') {
+    if (info == 'grade') {
       const { type } = await api.vip.getCurrentGradList()
       receiveType = type
     } else {
@@ -62,7 +62,9 @@ function SpCouponPackage(props) {
         <View className='package-bd'>
           <ScrollView scrollY className='coupon-list'>
             {list.map((item, idx) => (
-              <SpCoupon info={item} key={`coupon-item__${idx}`} >去使用</SpCoupon>
+              <SpCoupon info={item} key={`coupon-item__${idx}`}>
+                去使用
+              </SpCoupon>
             ))}
           </ScrollView>
         </View>

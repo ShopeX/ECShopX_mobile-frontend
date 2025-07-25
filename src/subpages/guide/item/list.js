@@ -10,7 +10,6 @@ import {
   Loading,
   TagsBar,
   SpFilterBar,
-  SearchBar,
   GoodsItem,
   SpTagBar,
   SpGoodsItem,

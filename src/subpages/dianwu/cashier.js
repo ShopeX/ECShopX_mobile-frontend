@@ -353,11 +353,7 @@ function DianWuCashier() {
   }
 
   return (
-    <SpPage
-      className='page-dianwu-cashier'
-      ref={pageRef}
-      renderFooter={<CompTabbar />}
-    >
+    <SpPage className='page-dianwu-cashier' ref={pageRef} renderFooter={<CompTabbar />}>
       <View className='block-tools'>
         <SpSearchInput
           placeholder='商品名称/货号/条码'
@@ -481,13 +477,11 @@ function DianWuCashier() {
                     </View>
                     <View className='item-bd'>
                       <View className='title'>
-                        {
-                          item.isPrescription == 1 && item.isMedicine &&
-                          <Text className='prescription-drug'>
-                          处方药
-                        </Text>
-                        }
-                        {item.itemName}</View>
+                        {item.isPrescription == 1 && item.isMedicine && (
+                          <Text className='prescription-drug'>处方药</Text>
+                        )}
+                        {item.itemName}
+                      </View>
                       {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
                       <View className='ft-info'>
                         <CompGoodsPrice info={item} />

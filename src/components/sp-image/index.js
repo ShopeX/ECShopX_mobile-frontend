@@ -16,9 +16,9 @@ function SpImage(props) {
     mode = 'widthFix',
     width = 'auto',
     height,
-    onClick = () => { },
-    onError = () => { },
-    onLoad = () => { },
+    onClick = () => {},
+    onError = () => {},
+    onLoad = () => {},
     lazyLoad = false,
     circle = false,
     isShowMenuByLongpress = true
@@ -71,8 +71,8 @@ function SpImage(props) {
           'border-radius': isNumber(circle)
             ? `${circle / 2}px`
             : isBoolean(circle) && circle
-              ? `${width / 2}px`
-              : 0
+            ? `${width / 2}px`
+            : 0
         })}
         src={imgUrl}
         mode={mode}

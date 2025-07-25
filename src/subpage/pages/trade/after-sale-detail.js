@@ -25,7 +25,7 @@ import './after-sale-detail.scss'
 }))
 export default class TradeDetail extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -41,15 +41,15 @@ export default class TradeDetail extends Component {
     }
   }
 
-  componentDidShow () {
+  componentDidShow() {
     this.fetch()
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     clearInterval(this.state.interval)
   }
 
-  calcTimer (totalSec) {
+  calcTimer(totalSec) {
     let remainingSec = totalSec
     const dd = Math.floor(totalSec / 24 / 3600)
     remainingSec -= dd * 3600 * 24
@@ -66,7 +66,7 @@ export default class TradeDetail extends Component {
       ss
     }
   }
-  selectionGoods (list) {
+  selectionGoods(list) {
     const selected = list.filter((v) => v.is_checked)
     let params = {}
     let refund = []
@@ -181,7 +181,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  async fetch () {
+  async fetch() {
     const { id } = this.$instance.router.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
@@ -343,7 +343,7 @@ export default class TradeDetail extends Component {
     await copyText(msg)
   }
 
-  async handlePay () {
+  async handlePay() {
     const { info } = this.state
 
     this.setState({
@@ -401,7 +401,7 @@ export default class TradeDetail extends Component {
     }
   }
 
-  async handleClickBtn (type, val) {
+  async handleClickBtn(type, val) {
     const { info } = this.state
 
     if (type === 'REFUND') {
@@ -551,7 +551,7 @@ export default class TradeDetail extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, ziti, qrcode, timer, payLoading, scrollIntoView } = this.state
 

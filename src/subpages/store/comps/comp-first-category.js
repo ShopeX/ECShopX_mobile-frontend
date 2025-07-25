@@ -52,7 +52,7 @@ function CompFirstCategory(props) {
   return (
     <View className='comp-first-category'>
       <ScrollView className='comp-first-category-scrollX' scrollX scrollIntoView={scrollIntoView}>
-        <View  className='comp-first-category-content'>{CompItem()}</View>
+        <View className='comp-first-category-content'>{CompItem()}</View>
       </ScrollView>
       <View onClick={onShowClick} className='comp-first-category-filter'>
         <Text>全部</Text>

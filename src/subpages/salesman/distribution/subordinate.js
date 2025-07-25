@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar, SpSearchInput,SpTabs,SpPage } from '@/components'
+import { Loading, SpNote, SpNavBar, SpSearchInput, SpTabs, SpPage } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -44,11 +44,10 @@ export default class DistributionSubordinate extends Component {
     }
     query[parameter.key] = parameter.keywords
 
-
     const res = await api.distribution.subordinate(query)
 
     const { list, total_count } = res[query.buy_type]
-    
+
     const total = total_count
 
     const nList = pickBy(list, {
@@ -111,24 +110,24 @@ export default class DistributionSubordinate extends Component {
 
     return (
       <SpPage scrollToTopBtn>
-      <View className='page-distribution-subordinate'>
-        <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
-        <SpSearchInput
-          placeholder='输入内容'
-          // isShowArea
-          isShowSearchCondition
-          searchConditionList={searchConditionList}
-          onConfirm={this.handleConfirm.bind(this)}
-        />
-        <SpTabs
-          current={curTabIdx}
-          tablist={tabList}
-          onChange={(e)=>{
-            console.log(e,'llonChange');
-            this.handleClickTab(e)
-          }}
-        />
-        {/* <AtTabs
+        <View className='page-distribution-subordinate'>
+          <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
+          <SpSearchInput
+            placeholder='输入内容'
+            // isShowArea
+            isShowSearchCondition
+            searchConditionList={searchConditionList}
+            onConfirm={this.handleConfirm.bind(this)}
+          />
+          <SpTabs
+            current={curTabIdx}
+            tablist={tabList}
+            onChange={(e) => {
+              console.log(e, 'llonChange')
+              this.handleClickTab(e)
+            }}
+          />
+          {/* <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
           tabList={tabList}
@@ -138,56 +137,58 @@ export default class DistributionSubordinate extends Component {
             <AtTabsPane current={curTabIdx} key={panes.type} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs> */}
-        <ScrollView
-          className='subordinate-list__scroll'
-          scrollY
-          lower-threshold={100}
-          scrollTop={scrollTop}
-          onScrollToLower={this.nextPage}
-        >
-          {list.length > 0 && (
-            <View className='section list'>
-              {list.map((item) => {
-                return (
-                  <View
-                    key={item.user_id}
-                    className={classNames(
-                      'list-item',
-                      item.relationship_depth == 1 && 'child',
-                      item.relationship_depth == 2 && 'Gchild',
-                      item.relationship_depth == 3 && 'GGchild'
-                    )}
-                  >
-                    <Image
-                      className='avatar'
-                      src={
-                        item.headimgurl ? item.headimgurl : `${process.env.APP_IMAGE_CDN}/logo.png`
-                      }
-                    />
-                    <View className='list-item-txt'>
-                      <View className='name'>
-                        {item.username || '匿名用户'}
-                        {/* {item.is_open_promoter_grade && (
+          <ScrollView
+            className='subordinate-list__scroll'
+            scrollY
+            lower-threshold={100}
+            scrollTop={scrollTop}
+            onScrollToLower={this.nextPage}
+          >
+            {list.length > 0 && (
+              <View className='section list'>
+                {list.map((item) => {
+                  return (
+                    <View
+                      key={item.user_id}
+                      className={classNames(
+                        'list-item',
+                        item.relationship_depth == 1 && 'child',
+                        item.relationship_depth == 2 && 'Gchild',
+                        item.relationship_depth == 3 && 'GGchild'
+                      )}
+                    >
+                      <Image
+                        className='avatar'
+                        src={
+                          item.headimgurl
+                            ? item.headimgurl
+                            : `${process.env.APP_IMAGE_CDN}/logo.png`
+                        }
+                      />
+                      <View className='list-item-txt'>
+                        <View className='name'>
+                          {item.username || '匿名用户'}
+                          {/* {item.is_open_promoter_grade && (
                           <Text className='level-name'>({item.promoter_grade_name})</Text>
                         )} */}
+                        </View>
+                        <View className='mobile'>{item.mobile && <Text>{item.mobile}</Text>}</View>
                       </View>
-                      <View className='mobile'>{item.mobile && <Text>{item.mobile}</Text>}</View>
+                      <View className='bind-date'>
+                        <View>绑定时间</View>
+                        <View>{item.bind_date}</View>
+                      </View>
                     </View>
-                    <View className='bind-date'>
-                      <View>绑定时间</View>
-                      <View>{item.bind_date}</View>
-                    </View>
-                  </View>
-                )
-              })}
-            </View>
-          )}
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
-          {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-          )}
-        </ScrollView>
-      </View>
+                  )
+                })}
+              </View>
+            )}
+            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {!page.isLoading && !page.hasNext && !list.length && (
+              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            )}
+          </ScrollView>
+        </View>
       </SpPage>
     )
   }

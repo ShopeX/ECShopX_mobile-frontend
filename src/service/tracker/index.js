@@ -4,7 +4,7 @@ import Trackers from './platform'
 
 // import { SOURCE_TYPE } from "./trackers/sensors/consts";
 
-function enable (target, name, descriptor) {
+function enable(target, name, descriptor) {
   // if (process.env.APP_TRACK) {
   //   return descriptor
   // }
@@ -18,7 +18,7 @@ function enable (target, name, descriptor) {
 const defaults = {}
 
 class Tracker {
-  constructor (options = {}) {
+  constructor(options = {}) {
     if (options.provider) {
       this.use(options.provider, options.providerConfig)
     }
@@ -59,27 +59,27 @@ class Tracker {
 
     // this.SOURCE_TYPE = SOURCE_TYPE;
   }
-  _componentDidShow (e) {
+  _componentDidShow(e) {
     if (!this._tracker) return
     this._tracker.componentDidShow(e)
   }
 
-  _componentDidMount (e) {
+  _componentDidMount(e) {
     if (!this._tracker) return
     this._tracker.componentDidMount(e)
   }
 
-  _componentDidHide (e) {
+  _componentDidHide(e) {
     if (!this._tracker) return
     this._tracker.componentDidHide(e)
   }
 
-  _componentWillUnmount (e) {
+  _componentWillUnmount(e) {
     if (!this._tracker) return
     this._tracker.componentWillUnmount(e)
   }
 
-  resolveEvent (...args) {
+  resolveEvent(...args) {
     let action = 'click'
     let category, label, value
 
@@ -100,19 +100,19 @@ class Tracker {
   }
 
   @enable
-  use (provider, config) {
+  use(provider, config) {
     this._tracker = Trackers.get(provider, config)
   }
 
   @enable
-  setVar (params) {
+  setVar(params) {
     log.debug('[tracker] setVar: ', params)
     if (!this._tracker) return
     this._tracker.setVar(params)
   }
 
   @enable
-  trackEvents (...events) {
+  trackEvents(...events) {
     try {
       if (typeof events[0] === 'string') {
         events = [events]
@@ -130,14 +130,14 @@ class Tracker {
   }
 
   @enable
-  dispatch (type, payload) {
+  dispatch(type, payload) {
     if (process.env.TARO_ENV === 'alipay') return
     if (!this._tracker) return
     return this._tracker.dispatch(type, payload)
   }
 }
 
-function createInstance (options) {
+function createInstance(options) {
   const inst = new Tracker(options)
   return inst
 }

@@ -10,7 +10,6 @@ import {
   Loading,
   TagsBar,
   SpFilterBar,
-  SearchBar,
   GoodsItem,
   SpTagBar,
   SpGoodsItem,
@@ -53,7 +52,7 @@ const initialState = {
   fixTop: 0,
   info: null,
   skuPanelOpen: false,
-  selectType: 'picker',
+  selectType: 'picker'
 }
 
 function StoreItemList(props) {
@@ -80,7 +79,7 @@ function StoreItemList(props) {
   const goodsRef = useRef()
   const pageRef = useRef()
 
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
 
   // useDidShow(() => {
   //   setTimeout(() => {
@@ -142,7 +141,6 @@ function StoreItemList(props) {
     if (main_cat_id) {
       params['category'] = main_cat_id
     }
-
 
     const {
       list,
@@ -300,7 +298,7 @@ function StoreItemList(props) {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
-    // renderFooter={tabbar == 1 && <CompTabbar />}
+      // renderFooter={tabbar == 1 && <CompTabbar />}
     >
       <View className='search-wrap'>
         <SpSearchBar
@@ -343,7 +341,13 @@ function StoreItemList(props) {
             {leftList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-l__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav showAddCart onStoreClick={handleClickStore} onAddToCart={handleAddToCart} info={item} />
+                  <SpGoodsItem
+                    showFav
+                    showAddCart
+                    onStoreClick={handleClickStore}
+                    onAddToCart={handleAddToCart}
+                    info={item}
+                  />
                 </View>
               ))
             })}
@@ -352,7 +356,13 @@ function StoreItemList(props) {
             {rightList.map((list, idx) => {
               return list.map((item, sidx) => (
                 <View className='goods-item-wrap' key={`goods-item-r__${idx}_${sidx}`}>
-                  <SpGoodsItem showFav showAddCart onStoreClick={handleClickStore} onAddToCart={handleAddToCart} info={item} />
+                  <SpGoodsItem
+                    showFav
+                    showAddCart
+                    onStoreClick={handleClickStore}
+                    onAddToCart={handleAddToCart}
+                    info={item}
+                  />
                 </View>
               ))
             })}

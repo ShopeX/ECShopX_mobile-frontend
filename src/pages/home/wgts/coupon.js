@@ -17,7 +17,7 @@ function WgtCoupon(props) {
   const { base, data, voucher_package } = props.info
   const [state, setState] = useImmer(initialState)
   const { visibleCouponPkg } = state
-  useEffect(() => { }, [])
+  useEffect(() => {}, [])
 
   const handleClickItem = async ({ id }) => {
     if (!S.getAuthToken()) {
@@ -70,7 +70,7 @@ function WgtCoupon(props) {
     showToast('优惠券领取成功')
   }
 
-  const len = data.length + ((voucher_package?.length) ?? 0)
+  const len = data.length + (voucher_package?.length ?? 0)
 
   const getCouponStyle = (item) => {
     if (item.imgUrl) {
@@ -89,7 +89,6 @@ function WgtCoupon(props) {
         'wgt__padded': base.padded
       })}
     >
-
       {base.title && (
         <View className='wgt-head'>
           <View className='wgt-hd'>
@@ -99,86 +98,93 @@ function WgtCoupon(props) {
         </View>
       )}
 
-      <ScrollView scrollX className={classNames('wgt__body with-padding', `coupon-style-${len <= 2 ? len : 3}`)}>
-        {
-          data.map((item, index) => (
-            <View className={classNames('wgt-coupon-item', {
+      <ScrollView
+        scrollX
+        className={classNames('wgt__body with-padding', `coupon-style-${len <= 2 ? len : 3}`)}
+      >
+        {data.map((item, index) => (
+          <View
+            className={classNames('wgt-coupon-item', {
               'has-img': item.imgUrl
-            })} key={`coupon-item__${index}`} style={styleNames(getCouponStyle(item))} onClick={handleClickItem.bind(this, item)}>
-              {
-                !item.imgUrl && <View class="coupon-bd">
-                  {
-                    item.type == 'cash' && <View class="coupon-amount">
-                      <Text class="symbol">¥</Text>
-                      <Text class="value">{item.amount / 100}</Text>
-                    </View>
-                  }
-                  {
-                    item.type == 'discount' && <View class="coupon-amount">
-                      <Text class="value">{item.amount}</Text>
-                      <Text class="symbol">折</Text>
-                    </View>
-                  }
-                  {
-                    item.type == 'new_gift' && <View class="coupon-amount">
-                      <Text class="value">{item.amount / 100}</Text>
-                      <Text class="symbol">元</Text>
-                    </View>
-                  }
-                  <View class="coupon-desc">
-                    <Text class="name">{item.title}</Text>
-                    <Text class="desc">{item.desc}</Text>
+            })}
+            key={`coupon-item__${index}`}
+            style={styleNames(getCouponStyle(item))}
+            onClick={handleClickItem.bind(this, item)}
+          >
+            {!item.imgUrl && (
+              <View class='coupon-bd'>
+                {item.type == 'cash' && (
+                  <View class='coupon-amount'>
+                    <Text class='symbol'>¥</Text>
+                    <Text class='value'>{item.amount / 100}</Text>
                   </View>
-                </View>
-              }
-              {
-                !item.imgUrl && <View class="coupon-ft">
-                  <View class="btn">领取</View>
-                </View>
-              }
-            </View>
-          ))
-        }
-
-        {
-          voucher_package.map((item, index) => (
-            <View className={classNames('wgt-coupon-item', {
-              'has-img': item.imgUrl
-            })} style={styleNames(getCouponStyle(item))} onClick={handleClickItemPkg.bind(this, item)}>
-              {!item.imgUrl && <View class="coupon-bd">
-                <View class="coupon-amount">
-                  <Text class="package-value">券包</Text>
-                </View>
-                <View class="coupon-desc">
-                  <Text class="name">{item.title}</Text>
-                  <Text class="desc">{item.desc}</Text>
+                )}
+                {item.type == 'discount' && (
+                  <View class='coupon-amount'>
+                    <Text class='value'>{item.amount}</Text>
+                    <Text class='symbol'>折</Text>
+                  </View>
+                )}
+                {item.type == 'new_gift' && (
+                  <View class='coupon-amount'>
+                    <Text class='value'>{item.amount / 100}</Text>
+                    <Text class='symbol'>元</Text>
+                  </View>
+                )}
+                <View class='coupon-desc'>
+                  <Text class='name'>{item.title}</Text>
+                  <Text class='desc'>{item.desc}</Text>
                 </View>
               </View>
-              }
-              {!item.imgUrl && <View class="coupon-ft">
-                <View class="btn">领取</View>
-              </View>}
-            </View>
-          ))
-        }
+            )}
+            {!item.imgUrl && (
+              <View class='coupon-ft'>
+                <View class='btn'>领取</View>
+              </View>
+            )}
+          </View>
+        ))}
 
-
+        {voucher_package.map((item, index) => (
+          <View
+            className={classNames('wgt-coupon-item', {
+              'has-img': item.imgUrl
+            })}
+            style={styleNames(getCouponStyle(item))}
+            onClick={handleClickItemPkg.bind(this, item)}
+          >
+            {!item.imgUrl && (
+              <View class='coupon-bd'>
+                <View class='coupon-amount'>
+                  <Text class='package-value'>券包</Text>
+                </View>
+                <View class='coupon-desc'>
+                  <Text class='name'>{item.title}</Text>
+                  <Text class='desc'>{item.desc}</Text>
+                </View>
+              </View>
+            )}
+            {!item.imgUrl && (
+              <View class='coupon-ft'>
+                <View class='btn'>领取</View>
+              </View>
+            )}
+          </View>
+        ))}
       </ScrollView>
 
       {/* 优惠券包 */}
-      {
-        visibleCouponPkg && (
-          <SpCouponPackage
-            info='template'
-            onClose={() => {
-              setState((draft) => {
-                draft.visibleCouponPkg = false
-              })
-            }}
-          />
-        )
-      }
-    </View >
+      {visibleCouponPkg && (
+        <SpCouponPackage
+          info='template'
+          onClose={() => {
+            setState((draft) => {
+              draft.visibleCouponPkg = false
+            })
+          }}
+        />
+      )}
+    </View>
   )
 }
 

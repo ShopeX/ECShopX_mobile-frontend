@@ -1,9 +1,11 @@
 import Taro from '@tarojs/taro'
 import { View, Text, RichText } from '@tarojs/components'
 import { isWeb, isAlipay, htmlStringToNodeArray, isWeixin } from '@/utils'
+
 function SpHtml(props) {
   const { content = '' } = props
-  let _content = content.toString()
+  let _content = content
+    .toString()
     .replace(/\s+style="[^"]*"/g, '')
     .replace(/<img/g, '<img style="width:100%;height:auto;display: block;"')
   if (isAlipay) {

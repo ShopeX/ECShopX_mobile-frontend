@@ -1,5 +1,5 @@
 'use strict'
-function t (t, e, i) {
+function t(t, e, i) {
   return (
     e in t
       ? Object.defineProperty(t, e, { value: i, enumerable: !0, configurable: !0, writable: !0 })

@@ -11,7 +11,7 @@ export const SHOP_ITEM = {
   distance: ({ distance, distance_unit }) => {
     return distance
       ? (distance < 1 ? Math.round(distance * Math.pow(10, 3)) : Number(distance).toFixed(0)) +
-      distance_unit
+          distance_unit
       : ''
   },
   cardList: 'discountCardList',
@@ -31,10 +31,10 @@ export const SHOP_ITEM = {
   is_ziti: 'is_ziti',
   lat: 'lat',
   lng: 'lng',
-  selfDeliveryRule:'selfDeliveryRule',
-  is_self_delivery:"is_self_delivery",
+  selfDeliveryRule: 'selfDeliveryRule',
+  is_self_delivery: 'is_self_delivery',
   created: 'created', // 创建时间
-  isOpenDivided: 'isOpenDivided', // 是否开启店铺隔离  
+  isOpenDivided: 'isOpenDivided', // 是否开启店铺隔离
   sort_id: 'sort_id' // 店铺隔离最新排序id
 }
 
@@ -62,6 +62,9 @@ export const STORE_ITEM = {
   distance: ({ distance }) => {
     const _distance = parseFloat(distance)
     return distance
-      ? (_distance < 1000 ? `${parseInt(_distance)}m` : `${(_distance / 1000).toFixed(1)}km`) : ''
-  },
+      ? _distance < 1000
+        ? `${parseInt(_distance)}m`
+        : `${(_distance / 1000).toFixed(1)}km`
+      : ''
+  }
 }

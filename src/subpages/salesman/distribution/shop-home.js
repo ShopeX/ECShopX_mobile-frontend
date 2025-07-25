@@ -96,13 +96,13 @@ export default class DistributionShopHome extends Component {
 
   async salesmanShare() {
     let params = this.$instance.router.params
-    if (params?.qr=='Y') {
+    if (params?.qr == 'Y') {
       let param = {
         promoter_user_id: params?.featuredshop
       }
       await api.salesman.salespersonBindusersalesperson(param)
       Taro.setStorageSync('salesmanUserinfo', param)
-      console.log(param,'分享成功，业务员已存储2')
+      console.log(param, '分享成功，业务员已存储2')
     }
   }
 

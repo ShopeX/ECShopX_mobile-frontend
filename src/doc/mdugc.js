@@ -30,13 +30,15 @@ export const UGC_DETAIL = {
   cover: 'cover',
   topics: 'topics',
   goods: ({ goods }) => {
-    return goods ? goods.map(item => {
-      return {
-        ...item,
-        imgUrl: item.pics[0],
-        ImgTitle: item.item_name
-      }
-    }) : []
+    return goods
+      ? goods.map((item) => {
+          return {
+            ...item,
+            imgUrl: item.pics[0],
+            ImgTitle: item.item_name
+          }
+        })
+      : []
   },
   // 关注
   followStatus: 'follow_status',
@@ -59,8 +61,8 @@ export const UGC_DETAIL = {
 }
 
 export const COMMENT_INFO = {
-  headimgurl: "headimgurl",
-  username: "nickname",
+  headimgurl: 'headimgurl',
+  username: 'nickname',
   content: 'content',
   created: 'created_text',
   likeStatus: 'like_status',
@@ -71,22 +73,22 @@ export const COMMENT_INFO = {
       return []
     } else {
       return pickBy(child, {
-        headimgurl: "headimgurl",
-        username: "reply_nickname",
+        headimgurl: 'headimgurl',
+        username: 'reply_nickname',
         content: 'content',
         created: 'created',
         likeStatus: 'like_status',
         likes: 'likes',
-        commentId: 'comment_id',
+        commentId: 'comment_id'
       })
     }
   }
 }
 
 export const GOOD_INFO = {
-  img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
+  img: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
   item_id: 'item_id',
-  title: ({ itemName, item_name }) => itemName ? itemName : item_name,
+  title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
   desc: 'brief',
   distributor_id: 'distributor_id',
   distributor_info: 'distributor_info',
@@ -100,9 +102,9 @@ export const GOOD_INFO = {
 }
 
 export const MAKE_COLLECTION_LIST = {
-  postInfo: "postInfo",
-  item_id: "article_id",
-  title: "title",
+  postInfo: 'postInfo',
+  item_id: 'article_id',
+  title: 'title',
   from_userInfo: 'from_userInfo',
   content: 'content',
   time: 'created_moment',
@@ -111,9 +113,9 @@ export const MAKE_COLLECTION_LIST = {
 }
 
 export const MAKE_COMPLETE_LIST = {
-  img: ({ pics }) => pics ? typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0] : '',
+  img: ({ pics }) => (pics ? (typeof pics !== 'string' ? pics[0] : JSON.parse(pics)[0]) : ''),
   item_id: 'item_id',
-  title: ({ itemName, item_name }) => itemName ? itemName : item_name,
+  title: ({ itemName, item_name }) => (itemName ? itemName : item_name),
   desc: 'brief',
   distributor_id: 'distributor_id',
   distributor_info: 'distributor_info',
@@ -125,4 +127,3 @@ export const MAKE_COMPLETE_LIST = {
   member_price: ({ member_price }) => (member_price / 100).toFixed(2),
   market_price: ({ market_price }) => (market_price / 100).toFixed(2)
 }
-

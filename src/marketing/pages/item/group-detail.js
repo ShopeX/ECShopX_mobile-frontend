@@ -37,7 +37,7 @@ export default class GroupDetail extends Component {
     const { team_id } = this.$instance.router.params
     console.log('team_id', team_id)
     const { distributor_id } = Taro.getStorageSync('curStore')
-    const params = { distributor_id }    
+    const params = { distributor_id }
     const detail = await api.group.groupDetail(team_id, params)
     const { activity_info, team_info, member_list } = detail
     console.log('detail', detail)

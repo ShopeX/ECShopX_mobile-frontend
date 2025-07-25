@@ -5,7 +5,7 @@ import { View, Text } from '@tarojs/components'
 import { SG_SHOW_ADD_TIP } from '@/consts'
 import './comp-addtip.scss'
 
-function CompAddTip (props) {
+function CompAddTip(props) {
   const showed = Taro.getStorageSync(SG_SHOW_ADD_TIP) || false
 
   const [timer, setTimer] = useState(null)

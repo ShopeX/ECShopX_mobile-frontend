@@ -56,10 +56,9 @@ const initialState = {
       }
     ]
   },
-  openStore: true,
+  openStore: false,
   openRecommend: 1,
   openScanQrcode: 1,
-  openLocation: 1,
   openOfficialAccount: 1,
   priceSetting: {
     cart_page: {
@@ -73,9 +72,7 @@ const initialState = {
     order_page: {
       market_price: false
     }
-  },
-  open_divided: false,// 店铺隔离开关
-  open_divided_templateId: '' // 店铺隔离自定义模版id
+  }
 }
 
 const sysSlice = createSlice({

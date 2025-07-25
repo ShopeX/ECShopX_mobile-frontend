@@ -12,11 +12,20 @@ const initialState = {
 }
 
 function SpUpload(props) {
-  const { max = 5, onChange = () => { }, value = [], multiple = true,backgroundSrc = '', mediaType = 'image', edit = false, onEdit = () => { }, placeholder = '添加图片' } = props
+  const {
+    max = 5,
+    onChange = () => {},
+    value = [],
+    multiple = true,
+    backgroundSrc = '',
+    mediaType = 'image',
+    edit = false,
+    onEdit = () => {},
+    placeholder = '添加图片'
+  } = props
 
   const [state, setState] = useImmer(initialState)
   const { files } = state
-
 
   useEffect(() => {
     if (value?.length > 0) {
@@ -30,13 +39,13 @@ function SpUpload(props) {
     if (process.env.TARO_ENV == 'h5') {
       const { tempFiles } = await Taro.chooseImage({
         count: max,
-        sourceType: ['camera', 'album'],
+        sourceType: ['camera', 'album']
       })
       console.log('sp-upload handleUploadFile', tempFiles)
       const resultFiles = tempFiles.map((item) => ({
-          url: item.path,
-          file: item
-        }))
+        url: item.path,
+        file: item
+      }))
 
       Taro.showLoading()
       // console.log("🚀🚀🚀 ~ file: index.js:93 ~ resultFiles ~ resultFiles:", resultFiles)
@@ -59,7 +68,7 @@ function SpUpload(props) {
           count: max,
           mediaType: [mediaType],
           sourceType: ['camera', 'album'],
-          camera: 'back',
+          camera: 'back'
         })
         console.log('sp-upload handleUploadFile', tempFiles)
         const resultFiles = tempFiles.map(({ tempFilePath, fileType, thumbTempFilePath }) => ({
@@ -69,16 +78,18 @@ function SpUpload(props) {
           thumb: thumbTempFilePath
         }))
         Taro.showLoading()
-        imgUploader.uploadImageFn(resultFiles, mediaType == 'video' ? 'videos' : 'image').then((res) => {
-          console.log('---uploadImageFn res---', res)
-          Taro.hideLoading()
-          const _res = mediaType == 'video' ? res : res.map((item) => item.url)
-          const _files = [...files, ..._res]
-          setState((draft) => {
-            draft.files = _files
+        imgUploader
+          .uploadImageFn(resultFiles, mediaType == 'video' ? 'videos' : 'image')
+          .then((res) => {
+            console.log('---uploadImageFn res---', res)
+            Taro.hideLoading()
+            const _res = mediaType == 'video' ? res : res.map((item) => item.url)
+            const _files = [...files, ..._res]
+            setState((draft) => {
+              draft.files = _files
+            })
+            onChange(_files)
           })
-          onChange(_files)
-        })
       })
     }
   }
@@ -100,22 +111,34 @@ function SpUpload(props) {
       {isArray(files) &&
         files.map((item, index) => (
           <View className='file-item' key={`file-item__${index}`}>
-            <SpImage mode='aspectFit' src={mediaType == 'image' ? item : item.thumb} width={160} height={160} circle={16} />
+            <SpImage
+              mode='aspectFit'
+              src={mediaType == 'image' ? item : item.thumb}
+              width={160}
+              height={160}
+              circle={16}
+            />
             <Text
               className='iconfont icon-guanbi'
               onClick={handleDeletePic.bind(this, index)}
             ></Text>
-            {edit && <View className='edit-block' onClick={onEdit.bind(this, item, index)}>编辑</View>}
+            {edit && (
+              <View className='edit-block' onClick={onEdit.bind(this, item, index)}>
+                编辑
+              </View>
+            )}
           </View>
         ))}
       {((multiple && files.length < max) || (!multiple && files.length == 0)) && (
         <View className='btn-upload' onClick={handleUploadFile}>
-         {backgroundSrc && <SpImage src={backgroundSrc}  className='btn-upload-bg' />}
-          <View className={classNames('btn-upload-icon',{'hasBackground':backgroundSrc})}>
+          {backgroundSrc && <SpImage src={backgroundSrc} className='btn-upload-bg' />}
+          <View className={classNames('btn-upload-icon', { 'hasBackground': backgroundSrc })}>
             <Text className='iconfont icon-xiangji'></Text>
           </View>
           {!backgroundSrc && <Text className='btn-upload-txt'>{placeholder}</Text>}
-          {!backgroundSrc && max && <Text className='files-length'>{`(${files.length}/${max})`}</Text>}
+          {!backgroundSrc && max && (
+            <Text className='files-length'>{`(${files.length}/${max})`}</Text>
+          )}
         </View>
       )}
     </View>

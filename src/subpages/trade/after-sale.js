@@ -165,9 +165,11 @@ function TradeAfterSale(props) {
         .reduce((sum, { point, num, refundNum, leftAftersalesNum }) => {
           console.log(sum + (point / num) * refundNum, '---')
           console.log(refundNum, leftAftersalesNum, '---')
-          if (leftAftersalesNum == refundNum) { // 可申请数量=退货数量时，向上取整 积分47 总数2件 可申请为1件 申请1件 退24积分
+          if (leftAftersalesNum == refundNum) {
+            // 可申请数量=退货数量时，向上取整 积分47 总数2件 可申请为1件 申请1件 退24积分
             return Math.ceil(sum + (point / num) * refundNum)
-          } else if (num > refundNum) { // 总数大于退货数量时，向下取整 积分47 总数2件 可申请2件 申请1件 退23积分
+          } else if (num > refundNum) {
+            // 总数大于退货数量时，向下取整 积分47 总数2件 可申请2件 申请1件 退23积分
             return Math.floor(sum + (point / num) * refundNum)
           }
           return sum + (point / num) * refundNum
@@ -290,17 +292,22 @@ function TradeAfterSale(props) {
                     />
                   </View>
                   <View className='item-bd'>
-                    <SpImage  mode='aspectFit' src={item.pic} width={128} height={128} radius={8} circle={8} />
+                    <SpImage
+                      mode='aspectFit'
+                      src={item.pic}
+                      width={128}
+                      height={128}
+                      radius={8}
+                      circle={8}
+                    />
                     <View className='goods-info'>
                       <View className='goods-info-hd'>
                         <Text className='goods-title'>
-                          {
-                            item?.isPrescription == 1 &&
-                            <Text className='prescription-drug'>
-                              处方药
-                            </Text>
-                          }
-                          {item.itemName}</Text>
+                          {item?.isPrescription == 1 && (
+                            <Text className='prescription-drug'>处方药</Text>
+                          )}
+                          {item.itemName}
+                        </Text>
                       </View>
                       <View className='goods-info-bd'>
                         <View>

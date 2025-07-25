@@ -6,7 +6,7 @@ import './index.scss'
 
 const voidFn = () => {}
 
-function SpDrawer (props) {
+function SpDrawer(props) {
   const { show, onClose = voidFn, children, onReset = voidFn, onConfirm = voidFn } = props
   return (
     <AtDrawer className='sp-drawer' show={show} right mask onClose={onClose} width='260px'>

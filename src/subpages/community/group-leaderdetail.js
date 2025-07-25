@@ -46,8 +46,7 @@ function GroupLeaderDetail(props) {
     setState((draft) => {
       draft.detail = pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM)
       draft.loading = false
-      draft.timer = timer,
-      draft.shareImageUrl = res.share_image_url
+      ;(draft.timer = timer), (draft.shareImageUrl = res.share_image_url)
     })
   }
 
@@ -171,7 +170,11 @@ function GroupLeaderDetail(props) {
                 <View className='condition'>
                   <View className='condition-label'>
                     <Text>成团金额</Text>
-                    <Text>{`${detail.diffCondition <= 0 ? '已满足成团金额' : `还差${detail.diffCondition}元成团`}`}</Text>
+                    <Text>{`${
+                      detail.diffCondition <= 0
+                        ? '已满足成团金额'
+                        : `还差${detail.diffCondition}元成团`
+                    }`}</Text>
                   </View>
                   <AtProgress percent={detail.progressValue} isHidePercent />
                 </View>

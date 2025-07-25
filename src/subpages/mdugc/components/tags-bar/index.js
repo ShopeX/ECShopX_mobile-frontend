@@ -15,59 +15,52 @@ export default class TagsBar extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
-      curId:''
+      curId: ''
     }
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { current } = nextProps
     this.setState({
-      curId:current
+      curId: current
     })
   }
-  handleClickItem (id) {
+  handleClickItem(id) {
     this.props.onChange(id)
   }
-  delete(idx,e){
+  delete(idx, e) {
     e && e.stopPropagation()
     this.props.delete(idx)
   }
 
-  render () {
-    const { list,isedit } = this.props
-    const {curId}=this.state
+  render() {
+    const { list, isedit } = this.props
+    const { curId } = this.state
     return (
-      <ScrollView
-        className='tags'
-        scrollX
-      >
-        {
-          list.length > 0 &&
+      <ScrollView className='tags' scrollX>
+        {list.length > 0 &&
           list.map((item, idx) => {
-            const isCurrent = (curId == item.topic_id)
+            const isCurrent = curId == item.topic_id
 
             return (
               <View
-                className={ isCurrent?"tag-item tag-item_active":"tag-item"}
+                className={isCurrent ? 'tag-item tag-item_active' : 'tag-item'}
                 // style={isCurrent ? `color: ${colors.data[0].primary}` : `color: inherit;`}
                 onClick={this.handleClickItem.bind(this, item.topic_id)}
                 key={item.topic_id}
               >
                 #{item.topic_name}
-                {
-                  isedit && (
-                    <View onClick={this.delete.bind(this,idx)} className='tag-item_delete'>
-                      <View className='iconfont icon-tianjia1'></View>
-                    </View>
-                  )
-                }
+                {isedit && (
+                  <View onClick={this.delete.bind(this, idx)} className='tag-item_delete'>
+                    <View className='iconfont icon-tianjia1'></View>
+                  </View>
+                )}
               </View>
             )
-          })
-        }
+          })}
       </ScrollView>
     )
   }

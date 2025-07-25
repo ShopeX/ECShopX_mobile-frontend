@@ -1,8 +1,8 @@
-import React, {useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-import { classNames, pickBy , isWeb,isString} from '@/utils'
+import { classNames, pickBy, isWeb, isString } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
@@ -32,9 +32,9 @@ const initialState = {
 function ConpNavigationClassification(props) {
   const [state, setState] = useImmer(initialState)
   const { navList, navSecon, list, activeIndex, statusIndex, mainCategory } = state
-  const { seletedTags, classifyList,onAddToCart = () => {} } = props
+  const { seletedTags, classifyList, onAddToCart = () => {} } = props
   //拿到定位
-  const { location,address } = useSelector((state) => state.user)
+  const { location, address } = useSelector((state) => state.user)
   // const { onAddToCart } = useContext(WgtsContext)
   const goodsRef = useRef()
 
@@ -45,15 +45,15 @@ function ConpNavigationClassification(props) {
     }
   }, [activeIndex, mainCategory])
 
-    // 定位后从新获取商品信息
-    useEffect(() => {
-      if (location) {
-        setState((draft) => {
-          draft.list = []
-        })
-        goodsRef.current.reset()
-      }
-    }, [location])
+  // 定位后从新获取商品信息
+  useEffect(() => {
+    if (location) {
+      setState((draft) => {
+        draft.list = []
+      })
+      goodsRef.current.reset()
+    }
+  }, [location])
 
   /**
    * @param {*} val 判断一级二级点击事件
@@ -266,7 +266,8 @@ function ConpNavigationClassification(props) {
    */
   const storeList = () => {
     return (
-      classifyList.children[0]?.category_ids == 0 && statusIndex && (
+      classifyList.children[0]?.category_ids == 0 &&
+      statusIndex && (
         <View className='shop-list'>
           <View className='shop-list-title'>附近商家</View>
           {/* 头部滑动 */}
@@ -291,94 +292,99 @@ function ConpNavigationClassification(props) {
             </ScrollView>
           )}
 
-          {list.length>0 && list.map((item, index) => {
-            return (
-              <View key={index} className='shop-list-item'>
-                <View className='shop-list-item-del'>
-                  <SpImage
-                    className='shop-logo'
-                    src={item.logo || 'shop_default_logo.png'}
-                    circle={16}
-                    width={100}
-                    height={100}
-                    onClick={() => handleClickItem(item)}
-                  />
-                  <View className='shop-del'>
-                    <View className='shop-names' onClick={() => handleClickItem(item)}>
-                      <View className='name'>{item.name}</View>
-                      {/* <View className='deliver'>商家自配</View> */}
-                    </View>
-                    <View className='score' onClick={() => handleClickItem(item)}>
-                      <View className='sales'>
-                        <Text className='monthly'>评分: {item?.scoreList?.avg_star}</Text>
-                        <Text>月销：{item.sales_count}</Text>
+          {list.length > 0 &&
+            list.map((item, index) => {
+              return (
+                <View key={index} className='shop-list-item'>
+                  <View className='shop-list-item-del'>
+                    <SpImage
+                      className='shop-logo'
+                      src={item.logo || 'shop_default_logo.png'}
+                      circle={16}
+                      width={100}
+                      height={100}
+                      onClick={() => handleClickItem(item)}
+                    />
+                    <View className='shop-del'>
+                      <View className='shop-names' onClick={() => handleClickItem(item)}>
+                        <View className='name'>{item.name}</View>
+                        {/* <View className='deliver'>商家自配</View> */}
                       </View>
-
-                      {item.distance_show && typeof item.distance_show == 'string' (
+                      <View className='score' onClick={() => handleClickItem(item)}>
                         <View className='sales'>
-                          {isString(item.distance_show) ? item.distance_show.split('.')[0] : ''}
-                          {item.distance_unit}
+                          <Text className='monthly'>评分: {item?.scoreList?.avg_star}</Text>
+                          <Text>月销：{item.sales_count}</Text>
                         </View>
-                      )}
-                    </View>
-                    <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
-                      {item.discountCardList.map((coupon, cindex) => {
-                        return (
-                          <SpShopCoupon
-                            fromStoreIndex
-                            className='coupon-index'
-                            info={coupon}
-                            key={`shop-coupon__${cindex}`}
-                            // onClick={() => {
-                            //   Taro.navigateTo({
-                            //     url: `/subpages/marketing/coupon-center`
-                            //   })
-                            // }}
-                          />
-                        )
-                      })}
-                    </ScrollView>
-                  </View>
-                </View>
-                <View>
-                  {item.itemList && (
-                    <ScrollView scrollX>
-                      <View className='coupon-commodity-all'>
-                        {/* <View className='coupon-commodity-nolist'></View> */}
-                        {item.itemList.map((goods, gindex) => {
+
+                        {item.distance_show &&
+                          typeof item.distance_show ==
+                            'string'(
+                              <View className='sales'>
+                                {isString(item.distance_show)
+                                  ? item.distance_show.split('.')[0]
+                                  : ''}
+                                {item.distance_unit}
+                              </View>
+                            )}
+                      </View>
+                      <ScrollView scrollX className='coupon-list' scrollLeft={state.scrollLeft}>
+                        {item.discountCardList.map((coupon, cindex) => {
                           return (
-                            <View
-                              className='coupon-commodity-list'
-                              key={gindex}
-                              onClick={() => {
-                                handleGoodsClick(goods)
-                              }}
-                            >
-                              <Image
-                                src={goods.pics || 'shop_default_logo.png'}
-                                className='shop-logo'
-                              ></Image>
-                              <View className='coupon-commodity-title'>{goods.item_name}</View>
-                              <SpPrice
-                                className='market-price'
-                                size={32}
-                                value={goods.price / 100}
-                              ></SpPrice>
-                              {goods.market_price > 0 && goods.pric > goods.market_price && (
-                                <View className='coupon-commodity-price'>
-                                  ¥{goods.market_price / 100}
-                                </View>
-                              )}
-                            </View>
+                            <SpShopCoupon
+                              fromStoreIndex
+                              className='coupon-index'
+                              info={coupon}
+                              key={`shop-coupon__${cindex}`}
+                              // onClick={() => {
+                              //   Taro.navigateTo({
+                              //     url: `/subpages/marketing/coupon-center`
+                              //   })
+                              // }}
+                            />
                           )
                         })}
-                      </View>
-                    </ScrollView>
-                  )}
+                      </ScrollView>
+                    </View>
+                  </View>
+                  <View>
+                    {item.itemList && (
+                      <ScrollView scrollX>
+                        <View className='coupon-commodity-all'>
+                          {/* <View className='coupon-commodity-nolist'></View> */}
+                          {item.itemList.map((goods, gindex) => {
+                            return (
+                              <View
+                                className='coupon-commodity-list'
+                                key={gindex}
+                                onClick={() => {
+                                  handleGoodsClick(goods)
+                                }}
+                              >
+                                <Image
+                                  src={goods.pics || 'shop_default_logo.png'}
+                                  className='shop-logo'
+                                ></Image>
+                                <View className='coupon-commodity-title'>{goods.item_name}</View>
+                                <SpPrice
+                                  className='market-price'
+                                  size={32}
+                                  value={goods.price / 100}
+                                ></SpPrice>
+                                {goods.market_price > 0 && goods.pric > goods.market_price && (
+                                  <View className='coupon-commodity-price'>
+                                    ¥{goods.market_price / 100}
+                                  </View>
+                                )}
+                              </View>
+                            )
+                          })}
+                        </View>
+                      </ScrollView>
+                    )}
+                  </View>
                 </View>
-              </View>
-            )
-          })}
+              )
+            })}
 
           {/* <View
             className='ac_btn'
@@ -398,7 +404,6 @@ function ConpNavigationClassification(props) {
       )
     )
   }
-
 
   return (
     <View className='navigation-classification'>
@@ -435,7 +440,7 @@ function ConpNavigationClassification(props) {
                     navList == index ? 'first-level-item-recommendation-index' : null
                   )}
                 >
-                 <View className='first-level-item-recommendation-name'>{item.category_name}</View>
+                  <View className='first-level-item-recommendation-name'>{item.category_name}</View>
                 </View>
               </View>
             )
@@ -471,9 +476,7 @@ function ConpNavigationClassification(props) {
         fetch={fetch}
       >
         {/* 商家storeList   商品storeProducts */}
-        {classifyList.children[0]?.category_ids == 0 && statusIndex
-          ? storeList()
-          : storeProducts()}
+        {classifyList.children[0]?.category_ids == 0 && statusIndex ? storeList() : storeProducts()}
       </SpScrollView>
     </View>
   )

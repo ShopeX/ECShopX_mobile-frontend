@@ -12,11 +12,7 @@ const initialState = {
 }
 
 function CompThirdCategory(props) {
-  const {
-    onClick = () => { },
-    list = [],
-    cusIndex = 0
-  } = props
+  const { onClick = () => {}, list = [], cusIndex = 0 } = props
   const [state, setState] = useImmer(initialState)
   const { isShowFloat, scrollIntoView, selectValue } = state
 
@@ -28,7 +24,6 @@ function CompThirdCategory(props) {
   }, [cusIndex])
 
   const onSelectClick = (id) => {
-
     const scrollIntoViewId = list[id]?.id
 
     setState((draft) => {
@@ -44,8 +39,7 @@ function CompThirdCategory(props) {
   }
 
   const onChangeBrand = ([id]) => {
-
-    const index = list.findIndex(item => item.id == id)
+    const index = list.findIndex((item) => item.id == id)
 
     setState((draft) => {
       draft.isShowFloat = false
@@ -55,9 +49,7 @@ function CompThirdCategory(props) {
   }
 
   return (
-    <View
-      className='comp-third-category'
-    >
+    <View className='comp-third-category'>
       <ScrollView className='comp-third-category-scroll' scrollX scrollIntoView={scrollIntoView}>
         <View className='scroll-container'>
           {list.map((el, index) => (

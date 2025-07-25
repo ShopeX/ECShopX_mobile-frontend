@@ -9,18 +9,18 @@ import {
   SpLoadMore
 } from '@/components'
 import { classNames, isNavbar } from '@/utils'
-import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag } from '../consts/index'
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks'
+import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag } from '../consts/index'
 import './index.scss'
 
 const NavbarTitle = '搜索'
 
-function getLog () {
+function getLog() {
   return Taro.getStorageSync('searchLog') || []
 }
 
-function setLog (log) {
+function setLog(log) {
   let prevLogs = getLog()
   if (!prevLogs.includes(log)) {
     prevLogs.push(log)

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, {useRouter} from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
@@ -42,8 +42,8 @@ function SpSkuSelect(props) {
   const {
     info,
     open = false,
-    onClose = () => { },
-    onChange = () => { },
+    onClose = () => {},
+    onChange = () => {},
     type,
     hideInputNumber = false
   } = props
@@ -71,7 +71,9 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find((item) => item.store > 0 && ['onsale', 'offline_sale'].includes(item.approveStatus))
+    const defaultSpecItem = specItems.find(
+      (item) => item.store > 0 && ['onsale', 'offline_sale'].includes(item.approveStatus)
+    )
     let selection = Array(specItems.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
@@ -93,7 +95,11 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return key.match(reg) && skuDictRef.current[key].store > 0 && ['onsale', 'offline_sale'].includes(skuDictRef.current[key].approveStatus)
+        return (
+          key.match(reg) &&
+          skuDictRef.current[key].store > 0 &&
+          ['onsale', 'offline_sale'].includes(skuDictRef.current[key].approveStatus)
+        )
       })
     }
 
@@ -180,10 +186,10 @@ function SpSkuSelect(props) {
 
   const addToCart = async () => {
     const { activity_id, enterprise_id } = purchase_share_info
-    let _activity_id = activity_id;
-    let _enterprise_id = enterprise_id;
+    let _activity_id = activity_id
+    let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if(router.params.activity_id && router.params.enterprise_id){
+    if (router.params.activity_id && router.params.enterprise_id) {
       _activity_id = router.params.activity_id
       _enterprise_id = router.params.enterprise_id
     }
@@ -205,7 +211,13 @@ function SpSkuSelect(props) {
       })
     )
     onClose()
-    dispatch(updateCount({ shop_type: 'distributor', activity_id: _activity_id, enterprise_id: _enterprise_id }))
+    dispatch(
+      updateCount({
+        shop_type: 'distributor',
+        activity_id: _activity_id,
+        enterprise_id: _enterprise_id
+      })
+    )
 
     Taro.hideLoading()
     // showToast('成功加入购物车')
@@ -221,24 +233,29 @@ function SpSkuSelect(props) {
     onClose()
     const { activity_id, enterprise_id } = purchase_share_info
     const { distributorId, activityType, activityInfo } = info
-    let _activity_id = activity_id;
-    let _enterprise_id = enterprise_id;
+    let _activity_id = activity_id
+    let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if(router.params.activity_id && router.params.enterprise_id){
+    if (router.params.activity_id && router.params.enterprise_id) {
       _activity_id = router.params.activity_id
       _enterprise_id = router.params.enterprise_id
     }
 
     const itemId = curItem ? curItem.itemId : info.itemId
-    await api.purchase.addPurchaseCart({
-      item_id: curItem ? curItem.itemId : info.itemId,
-      num,
-      distributor_id: distributorId,
-      activity_id: _activity_id,
-      enterprise_id: _enterprise_id,
-      cart_type: 'fastbuy'
-    }, !!info.point) // info.point 有积分值时是积分商品
-    let url = !!info.point ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0' : `/subpages/purchase/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
+    await api.purchase.addPurchaseCart(
+      {
+        item_id: curItem ? curItem.itemId : info.itemId,
+        num,
+        distributor_id: distributorId,
+        activity_id: _activity_id,
+        enterprise_id: _enterprise_id,
+        cart_type: 'fastbuy'
+      },
+      !!info.point
+    ) // info.point 有积分值时是积分商品
+    let url = !!info.point
+      ? '/subpages/pointshop/espier-checkout?cart_type=fastbuy&shop_id=0'
+      : `/subpages/purchase/espier-checkout?cart_type=fastbuy&shop_id=${distributorId}`
     if (activityType == 'seckill' || activityType === 'limited_time_sale') {
       const { seckill_id } = activityInfo
       const { ticket } = await api.item.seckillCheck({
@@ -253,7 +270,7 @@ function SpSkuSelect(props) {
     }
 
     // 订单详情点进来的商品去结算
-    if(router.params.activity_id && router.params.enterprise_id){
+    if (router.params.activity_id && router.params.enterprise_id) {
       url += `&activity_id=${_activity_id}&enterprise_id=${_enterprise_id}`
     }
 
@@ -331,14 +348,11 @@ function SpSkuSelect(props) {
       limitTxt = `（限购${purlimitByFastbuy}件）`
     }
 
-
     if (limitNum) {
       max = parseInt(limitNum)
     } else {
       max = parseInt(curItem ? curItem.store : info.store)
     }
-
-
 
     return (
       <View className='buy-count'>
@@ -383,7 +397,9 @@ function SpSkuSelect(props) {
           </View> */}
           <SpGoodsPrice isPurchase info={curItem || info} />
           <View className='goods-sku-txt'>{skuText}</View>
-          {info.store_setting && <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>}
+          {info.store_setting && (
+            <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>
+          )}
         </View>
       </View>
       <View className='sku-list'>

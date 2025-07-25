@@ -56,8 +56,8 @@ export const initialState = {
   openCashier: false,
   isPointOpenModal: false,
   routerParams: {},
-  deliveryTimeList:{},
-  paymentName:'',
+  deliveryTimeList: {},
+  paymentName: '',
   codeStatus: false
 }
 
@@ -75,7 +75,7 @@ export const deliveryList = [
   {
     type: 'merchant',
     name: '同城配',
-    key: 'is_self_delivery'//自配送也展示同城配文字，自配送和达达只展示一个
+    key: 'is_self_delivery' //自配送也展示同城配文字，自配送和达达只展示一个
   },
   {
     type: 'ziti',

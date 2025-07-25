@@ -1,9 +1,9 @@
 import { log } from '@/utils'
 import throttle from 'lodash/throttle'
 
-export default function withBackToTop (Component) {
+export default function withBackToTop(Component) {
   return class WithBackToTopComponent extends Component {
-    constructor (props) {
+    constructor(props) {
       super(props)
 
       this.state = {

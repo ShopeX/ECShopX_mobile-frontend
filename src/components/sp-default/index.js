@@ -9,7 +9,7 @@ const TYPES = {
   cart: 'empty_cart.png'
 }
 
-function SpDefault (props) {
+function SpDefault(props) {
   const { className, message, children, type } = props
   return (
     <View

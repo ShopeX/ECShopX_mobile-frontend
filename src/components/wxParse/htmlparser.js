@@ -45,7 +45,7 @@ var fillAttrs = makeMap(
 // Special Elements (can contain anything)
 var special = makeMap('wxxxcode-style,script,style,view,scroll-view,block')
 
-function HTMLParser (html, handler) {
+function HTMLParser(html, handler) {
   var index,
     chars,
     match,
@@ -125,7 +125,7 @@ function HTMLParser (html, handler) {
   // Clean up any remaining tags
   parseEndTag()
 
-  function parseStartTag (tag, tagName, rest, unary) {
+  function parseStartTag(tag, tagName, rest, unary) {
     tagName = tagName.toLowerCase()
 
     if (block[tagName]) {
@@ -169,7 +169,7 @@ function HTMLParser (html, handler) {
     }
   }
 
-  function parseEndTag (tag, tagName) {
+  function parseEndTag(tag, tagName) {
     // If no tag name is provided, clean shop
     if (!tagName) var pos = 0
     // Find the closest opened tag of the same type
@@ -187,7 +187,7 @@ function HTMLParser (html, handler) {
   }
 }
 
-function makeMap (str) {
+function makeMap(str) {
   var obj = {},
     items = str.split(',')
   for (var i = 0; i < items.length; i++) obj[items[i]] = true

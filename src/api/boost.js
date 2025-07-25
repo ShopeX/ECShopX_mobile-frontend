@@ -1,5 +1,5 @@
-import req from './req'
 import { transformPlatformUrl } from '@/utils/platform'
+import req from './req'
 
 // 获取助力列表
 export const getList = (param = {}) => req.get('/promotion/bargains', param)

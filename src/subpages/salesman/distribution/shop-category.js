@@ -14,7 +14,7 @@ import './shop-category.scss'
 @withBackToTop
 export default class DistributionShopCategory extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -46,11 +46,11 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetchInfo()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -58,7 +58,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const options = this.$instance.router.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
@@ -105,7 +105,7 @@ export default class DistributionShopCategory extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
     const options = this.$instance.router.params
@@ -119,7 +119,7 @@ export default class DistributionShopCategory extends Component {
       page,
       shop_user_id: distributionShopId || userId,
       pageSize,
-      isSalesmanPage:1
+      isSalesmanPage: 1
     }
 
     if (options.featuredshop || options.uid) {
@@ -213,7 +213,7 @@ export default class DistributionShopCategory extends Component {
       })
     }
   }
-  render () {
+  render() {
     const { list, hasSeries, tabList, localCurrent, contentList, currentIndex, page, scrollTop } =
       this.state
     const isHaveLeft = list.length > 0

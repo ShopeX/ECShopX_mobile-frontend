@@ -18,7 +18,7 @@ const initialState = {
 function CommunityCommission(props) {
   const [state, setState] = useImmer(initialState)
   const { total_fee, rebate_total, cash_withdrawal_rebate, payed_rebate } = state
-  
+
   useDidShow(() => {
     fetch()
   })
@@ -50,11 +50,16 @@ function CommunityCommission(props) {
       <View className='commission-bd'>
         <View className='label'>可提现金额(元)</View>
         <SpPrice value={cash_withdrawal_rebate} size={52} />
-        <AtButton circle className='applay-withdraw' type='primary' onClick={() => {
-          Taro.navigateTo({
-            url: `/subpages/community/withdraw?withdraw=${cash_withdrawal_rebate}`
-          })
-        }}>
+        <AtButton
+          circle
+          className='applay-withdraw'
+          type='primary'
+          onClick={() => {
+            Taro.navigateTo({
+              url: `/subpages/community/withdraw?withdraw=${cash_withdrawal_rebate}`
+            })
+          }}
+        >
           申请提现
         </AtButton>
         <View className='withdraw-recode'>
@@ -63,11 +68,14 @@ function CommunityCommission(props) {
             <View className='title'>累计提取金额(元)</View>
             <SpPrice className='recode-money' value={payed_rebate}></SpPrice>
           </View>
-          <View className='btn-recode' onClick={() => {
-            Taro.navigateTo({
-              url: '/subpages/community/withdraw-list'
-            })
-          }}>
+          <View
+            className='btn-recode'
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/subpages/community/withdraw-list'
+              })
+            }}
+          >
             提现记录<Text className='iconfont icon-qianwang-01'></Text>
           </View>
         </View>

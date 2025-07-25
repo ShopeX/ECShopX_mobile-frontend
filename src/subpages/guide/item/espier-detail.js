@@ -195,7 +195,7 @@ function EspierDetail(props) {
       subtask_id: subtaskId
     }
     const path = `/pages/item/espier-detail?${qs.stringify(query)}`
-    console.log('gu---------------------',path)
+    console.log('gu---------------------', path)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,
@@ -234,7 +234,9 @@ function EspierDetail(props) {
     }
 
     // 是否订阅
-    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, { distributor_id: dtid })
+    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
+      distributor_id: dtid
+    })
 
     Taro.setNavigationBarTitle({
       title: data.itemName

@@ -11,13 +11,13 @@ import {
   SpForm,
   SpFormItem,
   SpFloatLayout,
-  SpInput as AtInput,
+  SpInput as AtInput
 } from '@/components'
 import api from '@/api'
 import { showToast, getDistributorId, isWeixin } from '@/utils'
 import { useNavigation } from '@/hooks'
-import CompImgPicker from './comps/comp-img-picker'
 import _cloneDeep from 'lodash/cloneDeep'
+import CompImgPicker from './comps/comp-img-picker'
 import './goods-reservate.scss'
 
 const initialState = {
@@ -87,11 +87,12 @@ function GoodReservate(props) {
     }
 
     //无模板跳活动详情
-    if(activity_info.temp_id == '0'){
-      Taro.redirectTo({url:`/marketing/pages/member/activity-info?activity_id=${activity_info.activity_id}`})
+    if (activity_info.temp_id == '0') {
+      Taro.redirectTo({
+        url: `/marketing/pages/member/activity-info?activity_id=${activity_info.activity_id}`
+      })
       return
     }
-
 
     if (router.params.record_id) {
       //编辑

@@ -108,7 +108,7 @@ function BaCoupon(props) {
           {getCouponValue()}
           <View className='coupon-btn'>
             {quantity > 0 && (
-              <View >
+              <View>
                 <Button
                   plain
                   openType='share'

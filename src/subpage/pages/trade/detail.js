@@ -84,10 +84,10 @@ export default class TradeDetail extends Component {
       tradeInfo: {},
       showQRcode: false,
       distributor: {},
-      squareRoot: false,  //待开方
-      supplement: false,  //待补充
+      squareRoot: false, //待开方
+      supplement: false, //待补充
       prescriptionStatus: false,
-      prescriptionUrl: ""
+      prescriptionUrl: ''
     }
   }
 
@@ -158,7 +158,7 @@ export default class TradeDetail extends Component {
       show_aftersales: 'show_aftersales',
       distributor_id: 'distributor_id',
       isPrescription: 'is_prescription',
-      aftersales_bn: ({ aftersales_detail }) => aftersales_detail?.aftersales_bn,
+      aftersales_bn: ({ aftersales_detail }) => aftersales_detail?.aftersales_bn
     }
     const info = pickBy(data.orderInfo, {
       tid: 'order_id',
@@ -233,8 +233,8 @@ export default class TradeDetail extends Component {
       orderStatus: 'order_status',
       prescriptionStatus: 'prescription_status',
       prescriptionData: 'prescription_data',
-      enterprise_id:'enterprise_id',
-      activity_id:'activity_id'
+      enterprise_id: 'enterprise_id',
+      activity_id: 'activity_id'
     })
 
     const ziti = pickBy(data.distributor, {
@@ -306,8 +306,12 @@ export default class TradeDetail extends Component {
       cancelData,
       tradeInfo,
       distributor: data.distributor,
-      supplement: info.orderStatus == 'NOTPAY' && info.prescriptionStatus == 1 && isArray(info?.diagnosisData),
-      squareRoot: info.orderStatus == 'NOTPAY' && info.prescriptionStatus == 1 && info?.diagnosisData?.id
+      supplement:
+        info.orderStatus == 'NOTPAY' &&
+        info.prescriptionStatus == 1 &&
+        isArray(info?.diagnosisData),
+      squareRoot:
+        info.orderStatus == 'NOTPAY' && info.prescriptionStatus == 1 && info?.diagnosisData?.id
     })
   }
 
@@ -360,7 +364,6 @@ export default class TradeDetail extends Component {
     }
 
     this.weappPay(params, orderInfo)
-
   }
 
   async weappPay(params, orderInfo) {
@@ -474,8 +477,11 @@ export default class TradeDetail extends Component {
   handleClickDelivery = () => {
     if (this.state.info.is_all_delivery || this.state.info.delivery_type === 'old') {
       Taro.navigateTo({
-        url: `/subpages/trade/delivery-info?delivery_id=${this.state.info.orders_delivery_id}&delivery_code=${this.state.info.delivery_code}&delivery_corp_name=${this.state.info.delivery_corp_name || this.state.info.delivery_corp
-          }&order_id=${this.state.info.tid}`
+        url: `/subpages/trade/delivery-info?delivery_id=${
+          this.state.info.orders_delivery_id
+        }&delivery_code=${this.state.info.delivery_code}&delivery_corp_name=${
+          this.state.info.delivery_corp_name || this.state.info.delivery_corp
+        }&order_id=${this.state.info.tid}`
       })
     } else {
       Taro.navigateTo({
@@ -756,20 +762,20 @@ export default class TradeDetail extends Component {
                   分钟
                 </View>
               )}
-              {
-                supplement &&
+              {supplement && (
                 <View className='trade-detail-header-name' onClick={this.onSupplement.bind(this)}>
                   <Text className='iconfont icon-bianji1'></Text>
                   前往补充
                 </View>
-              }
+              )}
 
               {info.status !== 'WAIT_BUYER_PAY' && (
                 <View className='delivery-infos'>
                   <View className='delivery-infos__status'>
                     <View
-                      className={`delivery-infos__text text-status ${info.receipt_type === 'dada' && info.dada.dada_status === 9 && 'red'
-                        }`}
+                      className={`delivery-infos__text text-status ${
+                        info.receipt_type === 'dada' && info.dada.dada_status === 9 && 'red'
+                      }`}
                     >
                       {info.order_status_msg}
                       {info.dada && info.dada.id && statusImg[info.dada.dada_status] && (
@@ -792,23 +798,26 @@ export default class TradeDetail extends Component {
               )}
             </View>
           </View>
-          {info.dada && info.dada.id && info.dada.dada_status > 1 && info.dada.dada_status !== 5 && (
-            <View className='dadaInfo'>
-              <View className='name'>
-                <Image
-                  src={require('../../assets/dada3.png')}
-                  mode='aspectFill'
-                  className='avatar'
-                />
-                <View>骑手：{info.dada.dm_name} </View>
-                <View
-                  className='iconfont icon-dianhua'
-                  onClick={this.callDada.bind(this, info.dada.dm_mobile)}
-                ></View>
+          {info.dada &&
+            info.dada.id &&
+            info.dada.dada_status > 1 &&
+            info.dada.dada_status !== 5 && (
+              <View className='dadaInfo'>
+                <View className='name'>
+                  <Image
+                    src={require('../../assets/dada3.png')}
+                    mode='aspectFill'
+                    className='avatar'
+                  />
+                  <View>骑手：{info.dada.dm_name} </View>
+                  <View
+                    className='iconfont icon-dianhua'
+                    onClick={this.callDada.bind(this, info.dada.dm_mobile)}
+                  ></View>
+                </View>
+                <View className='tip'>本单由达达同城为您服务</View>
               </View>
-              <View className='tip'>本单由达达同城为您服务</View>
-            </View>
-          )}
+            )}
           {info.receipt_type === 'ziti' && !info.is_logistics && (
             <View className='ziti-content'>
               {info.status === 'WAIT_SELLER_SEND_GOODS' && info.ziti_status === 'PENDING' && (
@@ -834,8 +843,7 @@ export default class TradeDetail extends Component {
               )}
             </View>
           )}
-          {
-            info?.prescriptionStatus > 0 &&
+          {info?.prescriptionStatus > 0 && (
             <View className='information'>
               <View className='title'>
                 <Text className='title-num'>1</Text>
@@ -843,8 +851,16 @@ export default class TradeDetail extends Component {
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
-                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>2</Text>
-                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>医生开方</Text>
+                <Text
+                  className={
+                    squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'
+                  }
+                >
+                  2
+                </Text>
+                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
+                  医生开方
+                </Text>
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
@@ -852,13 +868,14 @@ export default class TradeDetail extends Component {
                 <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
               </View>
             </View>
-          }
+          )}
           <View className='trade-detail-address'>
             {info.dada && info.dada.id && (
               <View className={`store ${info.dada && info.dada.id ? 'border' : ''}`}>
                 <Text
-                  className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shangjiadizhi-01' : 'icon-dizhi-01'
-                    }`}
+                  className={`iconfont ${
+                    info.receipt_type === 'dada' ? 'icon-shangjiadizhi-01' : 'icon-dizhi-01'
+                  }`}
                 ></Text>
                 <View>
                   <View className='storeName'>{ziti.store_name}</View>
@@ -879,29 +896,37 @@ export default class TradeDetail extends Component {
               </View>
             )}
 
-            {
-              info.receipt_type === 'ziti' && info.ziti_info && (
-                <View className='ziti-container'>
-                  <View className='ziti-name'>自提点：{info.ziti_info.name}</View>
-                  <View className='ziti-address'>自提地址：{`${info.ziti_info.province}${info.ziti_info.city}${info.ziti_info.area}${info.ziti_info.address}`}</View>
-                  <View className='ziti-address'>联系电话：{`${info.ziti_info.contract_phone}`}<Text
+            {info.receipt_type === 'ziti' && info.ziti_info && (
+              <View className='ziti-container'>
+                <View className='ziti-name'>自提点：{info.ziti_info.name}</View>
+                <View className='ziti-address'>
+                  自提地址：
+                  {`${info.ziti_info.province}${info.ziti_info.city}${info.ziti_info.area}${info.ziti_info.address}`}
+                </View>
+                <View className='ziti-address'>
+                  联系电话：{`${info.ziti_info.contract_phone}`}
+                  <Text
                     className='iconfont icon-dianhua'
                     onClick={this.callDada.bind(this, info.ziti_info.contract_phone)}
-                  ></Text></View>
-                  <View className='ziti-info'>
-                    <View className='ziti-receive-name'>提货人：{info.receiver_name}</View>
-                    <View className='ziti-receive-time'>提货时间：{`${info.ziti_info.pickup_date} ${info.ziti_info.pickup_time[0]}-${info.ziti_info.pickup_time[1]}`}</View>
-                    <View className='ziti-receive-mobile'>提货人手机：{info.receiver_mobile}</View>
-                  </View>
+                  ></Text>
                 </View>
-              )
-            }
+                <View className='ziti-info'>
+                  <View className='ziti-receive-name'>提货人：{info.receiver_name}</View>
+                  <View className='ziti-receive-time'>
+                    提货时间：
+                    {`${info.ziti_info.pickup_date} ${info.ziti_info.pickup_time[0]}-${info.ziti_info.pickup_time[1]}`}
+                  </View>
+                  <View className='ziti-receive-mobile'>提货人手机：{info.receiver_mobile}</View>
+                </View>
+              </View>
+            )}
 
             {((info.dada && info.dada.id) || info.receipt_type === 'logistics') && (
               <View className='address-receive'>
                 <Text
-                  className={`iconfont ${info.receipt_type === 'dada' ? 'icon-shouhuodizhi-01' : 'icon-dizhi-01'
-                    }`}
+                  className={`iconfont ${
+                    info.receipt_type === 'dada' ? 'icon-shouhuodizhi-01' : 'icon-dizhi-01'
+                  }`}
                 ></Text>
                 <View className='info-trade'>
                   <Text className='address-detail'>
@@ -947,7 +972,11 @@ export default class TradeDetail extends Component {
                 </Text>
               </View>
             </View>
-            <DetailItem info={info} isPurchase={info.order_class == 'employee_purchase'} isPointitem={this.isPointitemGood()} />
+            <DetailItem
+              info={info}
+              isPurchase={info.order_class == 'employee_purchase'}
+              isPointitem={this.isPointitemGood()}
+            />
           </View>
           {info.is_logistics && (
             <View className='logConfirm'>
@@ -1009,8 +1038,7 @@ export default class TradeDetail extends Component {
               )}
           </View>
 
-          {
-            info?.salespersonInfo?.user_id &&
+          {info?.salespersonInfo?.user_id && (
             <View className='shopping'>
               <View className='shopping_guide'>业务员信息:</View>
               <View className='shopping_guides'>
@@ -1018,63 +1046,64 @@ export default class TradeDetail extends Component {
                 <Text>{info?.salespersonInfo?.mobile}</Text>
               </View>
             </View>
-          }
+          )}
 
-          {
-            info?.prescriptionStatus > 0 && !supplement &&
+          {info?.prescriptionStatus > 0 && !supplement && (
             <View className='block-container order-info'>
               <View className='block-container-label'>处方信息</View>
-              {
-                info?.diagnosisData?.doctor_name &&
+              {info?.diagnosisData?.doctor_name && (
                 <SpCell
                   title='开方医生'
                   value={(() => {
+                    return <View>{info?.diagnosisData?.doctor_name}</View>
+                  })()}
+                />
+              )}
+              {info?.diagnosisData?.location_url && (
+                <SpCell
+                  title='开方记录'
+                  value={(() => {
                     return (
-                      <View>
-                        {info?.diagnosisData?.doctor_name}
+                      <View
+                        className='block-container-link'
+                        onClick={() => {
+                          const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
+                          Taro.redirectTo({
+                            url: `/pages/webview?url=${webviewSrc}`
+                          })
+                        }}
+                      >
+                        查看 <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
                 />
-              }
-              {
-                info?.diagnosisData?.location_url &&
-                <SpCell title='开方记录' value={(() => {
-                  return (
-                    <View className='block-container-link' onClick={() => {
-                      const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
-                      Taro.redirectTo({
-                        url: `/pages/webview?url=${webviewSrc}`
-                      })
-                    }}>
-                      查看 <Text className='iconfont icon-qianwang-01' />
-                    </View>
-                  )
-                })()}
+              )}
+              {info?.prescriptionData?.audit_apothecary_name && (
+                <SpCell
+                  title='审方药师'
+                  value={(() => {
+                    return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
+                  })()}
                 />
-              }
-              {info?.prescriptionData?.audit_apothecary_name &&
-                <SpCell title='审方药师' value={(() => {
-                  return (
-                    <View>
-                      {info?.prescriptionData?.audit_apothecary_name}
-                    </View>
-                  )
-                })()}
+              )}
+              {info?.prescriptionData?.dst_file_path && (
+                <SpCell
+                  title='电子处方'
+                  value={(() => {
+                    return (
+                      <View
+                        className='block-container-link'
+                        onClick={this.dstFilePath.bind(this, info?.prescriptionData?.dst_file_path)}
+                      >
+                        查看 <Text className='iconfont icon-qianwang-01' />
+                      </View>
+                    )
+                  })()}
                 />
-              }
-              {info?.prescriptionData?.dst_file_path && <SpCell title='电子处方' value={(() => {
-                return (
-                  <View className='block-container-link' onClick={this.dstFilePath.bind(this, info?.prescriptionData?.dst_file_path)}>
-                    查看 <Text className='iconfont icon-qianwang-01' />
-                  </View>
-                )
-              })()}
-              />}
+              )}
             </View>
-          }
-
-
+          )}
 
           {info.remark && (
             <View className='trade-detail-remark'>
@@ -1182,16 +1211,18 @@ export default class TradeDetail extends Component {
               <View className='line'>
                 <View className='left'>支付</View>
                 <View className='right'>
-                  {`¥${info.payment} ${info.order_class !== 'excard' ? this.computedPayType() : ''
-                    }`}
+                  {`¥${info.payment} ${
+                    info.order_class !== 'excard' ? this.computedPayType() : ''
+                  }`}
                 </View>
               </View>
             )}
 
             <View className='line'>
               <View className='left'>实付</View>
-              <View className='right'>{`${this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`
-                }`}</View>
+              <View className='right'>{`${
+                this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`
+              }`}</View>
             </View>
 
             {info.delivery_code && (
@@ -1223,17 +1254,18 @@ export default class TradeDetail extends Component {
             {
               // 立即支付
               //prescriptionStatus 2:是处方药并且已开方 0:不是处方药
-              info.status === 'WAIT_BUYER_PAY' && (info.prescriptionStatus == 2 || info.prescriptionStatus == 0) && (
-                <Button
-                  className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
-                  type='primary'
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  loading={payLoading}
-                  onClick={this.handleClickBtn.bind(this, 'pay')}
-                >
-                  立即支付
-                </Button>
-              )
+              info.status === 'WAIT_BUYER_PAY' &&
+                (info.prescriptionStatus == 2 || info.prescriptionStatus == 0) && (
+                  <Button
+                    className='trade-detail__footer__btn trade-detail__footer_active trade-detail__footer_allWidthBtn'
+                    type='primary'
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                    loading={payLoading}
+                    onClick={this.handleClickBtn.bind(this, 'pay')}
+                  >
+                    立即支付
+                  </Button>
+                )
             }
             {
               // 申请售后
@@ -1251,9 +1283,10 @@ export default class TradeDetail extends Component {
               // !this.isPointitemGood() && (
               info.can_apply_aftersales === 1 && (
                 <View
-                  className={`trade-detail__footer__btn ${info.is_logistics &&
+                  className={`trade-detail__footer__btn ${
+                    info.is_logistics &&
                     'trade-detail__footer_active trade-detail__footer_allWidthBtn'
-                    }`}
+                  }`}
                   onClick={this.handleClickBtn.bind(this, 'aftersales')}
                 >
                   申请售后
@@ -1283,48 +1316,51 @@ export default class TradeDetail extends Component {
             {
               // 确认收货
               info.order_class !== 'excard' &&
-              info.receipt_type !== 'dada' &&
-              !info.is_logistics &&
-              info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
-              (info.is_all_delivery ||
-                (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
-                <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active ${info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'
+                info.receipt_type !== 'dada' &&
+                !info.is_logistics &&
+                info.status === 'WAIT_BUYER_CONFIRM_GOODS' &&
+                (info.is_all_delivery ||
+                  (!info.is_all_delivery && info.delivery_status === 'DONE')) && (
+                  <View
+                    className={`trade-detail__footer__btn trade-detail__footer_active ${
+                      info.can_apply_aftersales === 0 && 'trade-detail__footer_allWidthBtn'
                     }`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                  onClick={this.handleClickBtn.bind(this, 'confirm')}
-                >
-                  确认收货
-                </View>
-              )
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                    onClick={this.handleClickBtn.bind(this, 'confirm')}
+                  >
+                    确认收货
+                  </View>
+                )
             }
             {
               // 联系客服
               (info.status === 'TRADE_SUCCESS' ||
                 (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-              info.order_class !== 'excard' && !isWeb && (
-                <View
-                  className={`trade-detail__footer__btn trade-detail__footer_active right ${(info.can_apply_aftersales === 0 ||
-                    (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
-                    'trade-detail__footer_allWidthBtn'
+                info.order_class !== 'excard' &&
+                !isWeb && (
+                  <View
+                    className={`trade-detail__footer__btn trade-detail__footer_active right ${
+                      (info.can_apply_aftersales === 0 ||
+                        (info.receipt_type === 'dada' && info.dada.dada_status === 9)) &&
+                      'trade-detail__footer_allWidthBtn'
                     }`}
-                  style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-                >
-                  {meiqia.is_open === 'true' || echat.is_open === 'true' ? (
-                    <FloatMenuMeiQia
-                      storeId={info.distributor_id}
-                      info={{ orderId: info.order_id }}
-                      isFloat={false}
-                    >
-                      联系客服
-                    </FloatMenuMeiQia>
-                  ) : (
-                    (<Button openType='contact' className='contact'>
-                      联系客服
-                    </Button>)
-                  )}
-                </View>
-              )
+                    style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+                  >
+                    {meiqia.is_open === 'true' || echat.is_open === 'true' ? (
+                      <FloatMenuMeiQia
+                        storeId={info.distributor_id}
+                        info={{ orderId: info.order_id }}
+                        isFloat={false}
+                      >
+                        联系客服
+                      </FloatMenuMeiQia>
+                    ) : (
+                      <Button openType='contact' className='contact'>
+                        联系客服
+                      </Button>
+                    )}
+                  </View>
+                )
             }
           </View>
         )}
@@ -1342,13 +1378,20 @@ export default class TradeDetail extends Component {
           </View>
         )}
 
-        <AtFloatLayout title="电子处方" isOpened={prescriptionStatus} onClose={this.handleClose.bind(this)}>
+        <AtFloatLayout
+          title='电子处方'
+          isOpened={prescriptionStatus}
+          onClose={this.handleClose.bind(this)}
+        >
           <View className='long-press'>长按可保存处方图片</View>
-          <SpImage src={prescriptionUrl} onClick={() => {
-            Taro.previewImage({
-              urls: prescriptionUrl
-            })
-          }}></SpImage>
+          <SpImage
+            src={prescriptionUrl}
+            onClick={() => {
+              Taro.previewImage({
+                urls: prescriptionUrl
+              })
+            }}
+          ></SpImage>
         </AtFloatLayout>
       </View>
     )

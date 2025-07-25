@@ -2,10 +2,7 @@ import Taro from '@tarojs/taro'
 import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpCell } from '@/components'
-import { isWeixin,
-  VERSION_PLATFORM,
-  VERSION_STANDARD,
-} from '@/utils'
+import { isWeixin, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
 
 import './comp-menu.scss'
 
@@ -29,7 +26,7 @@ function CompMenu(props) {
     })
   }
   if ((VERSION_PLATFORM || VERSION_STANDARD) && isWeixin && accessMenu.purchase) {
-      menus = menus.concat({
+    menus = menus.concat({
       key: 'purchase',
       name: '内购',
       icon: 'm_menu_jiatingfengxiang.png',

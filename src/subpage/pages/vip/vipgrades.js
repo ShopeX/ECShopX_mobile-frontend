@@ -6,7 +6,15 @@ import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
-import { pickBy, classNames, hideLoading, isAlipay, isNavbar, redirectUrl, requestAlipayminiPayment } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  hideLoading,
+  isAlipay,
+  isNavbar,
+  redirectUrl,
+  requestAlipayminiPayment
+} from '@/utils'
 import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
 import userIcon from '@/assets/imgs/user-icon.png'
 // import { useDispatch } from 'react-redux'
@@ -208,7 +216,7 @@ export default class VipIndex extends Component {
           title: '支付失败',
           icon: 'none'
         })
-        console.log('error==>', e);
+        console.log('error==>', e)
       }
       return
     }
@@ -269,7 +277,7 @@ export default class VipIndex extends Component {
         payChannel,
         isPaymentOpend: false
       },
-      () => { }
+      () => {}
     )
   }
 

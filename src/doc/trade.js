@@ -1,5 +1,5 @@
-import { pickBy, formatDateTime, isObject } from "@/utils"
-import dayjs from "dayjs"
+import { pickBy, formatDateTime, isObject } from '@/utils'
+import dayjs from 'dayjs'
 
 export const TRADE_ITEM = {
   activityType: 'activity_type',
@@ -13,7 +13,7 @@ export const TRADE_ITEM = {
   deliveryStatus: 'delivery_status',
   distributorId: 'distributor_id',
   distributorName: 'distributor_name',
-  enterpriseId:'enterprise_id',
+  enterpriseId: 'enterprise_id',
   distributorInfo: ({ distributor_info }) => {
     return pickBy(distributor_info, {
       name: 'name',
@@ -37,11 +37,11 @@ export const TRADE_ITEM = {
   isLogistics: ({ is_logistics }) => is_logistics == '1',
   items: ({ items }) => {
     return pickBy(items, {
-      activityId:'act_id',
+      activityId: 'act_id',
       deliveryStatus: 'delivery_status',
       distributorId: 'distributor_id',
       pic: 'pic',
-      price: ({ total_fee }) => (total_fee) / 100,
+      price: ({ total_fee }) => total_fee / 100,
       id: 'id',
       itemId: 'item_id',
       itemName: 'item_name',
@@ -56,21 +56,23 @@ export const TRADE_ITEM = {
       checked: () => false,
       showAftersales: ({ show_aftersales }) => show_aftersales == 1,
       isPrescription: 'is_prescription',
-      medicineSymptomSet: ({ medicine_symptom_set }) => medicine_symptom_set?.map((item1, index1) => {
-        return {
-          key: index1,
-          value: item1,
-          show: false
-        }
-      })
+      medicineSymptomSet: ({ medicine_symptom_set }) =>
+        medicine_symptom_set?.map((item1, index1) => {
+          return {
+            key: index1,
+            value: item1,
+            show: false
+          }
+        })
     })
   },
   selfDeliveryOperatorName: 'self_delivery_operator_name',
   selfDeliveryOperatorMobile: 'self_delivery_operator_mobile',
   selfDeliveryOperatorId: 'self_delivery_operator_id',
-  selfDeliveryTime: ({ self_delivery_time }) => self_delivery_time && formatDateTime(self_delivery_time * 1000),
+  selfDeliveryTime: ({ self_delivery_time }) =>
+    self_delivery_time && formatDateTime(self_delivery_time * 1000),
   invoice: 'invoice',
-  isRate: ({ is_rate }) => is_rate == "1",
+  isRate: ({ is_rate }) => is_rate == '1',
   // 是否整单发货
   isAllDelivery: 'is_all_delivery',
   marketFee: ({ market_fee }) => market_fee / 100,
@@ -86,11 +88,11 @@ export const TRADE_ITEM = {
   payType: 'pay_type',
   receiptType: 'receipt_type',
   receiverAddress: 'receiver_address',
-  receiverCity: "receiver_city",
-  receiverDistrict: "receiver_district",
-  receiverMobile: "receiver_mobile",
-  receiverName: "receiver_name",
-  receiverState: "receiver_state",
+  receiverCity: 'receiver_city',
+  receiverDistrict: 'receiver_district',
+  receiverMobile: 'receiver_mobile',
+  receiverName: 'receiver_name',
+  receiverState: 'receiver_state',
   totalFee: ({ total_fee }) => total_fee / 100,
   zitiStatus: 'ziti_status',
   zitiInfo: 'ziti_info',
@@ -113,9 +115,7 @@ export const TRADE_ITEM = {
   invoiceId: 'invoice_id',
 }
 
-export const SHOP_INFO = {
-
-}
+export const SHOP_INFO = {}
 
 export const AFTER_TRADE = {
   aftersalesBn: 'aftersales_bn',
@@ -132,13 +132,13 @@ export const AFTER_TRADE = {
       pic: 'item_pic',
       price: ({ refund_fee }) => refund_fee / 100,
       point: 'point',
-      isPrescription: 'is_prescription',
+      isPrescription: 'is_prescription'
     })
   },
   orderId: 'order_id',
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId: 'user_id',
-  freight: ({ freight }) => freight / 100,
+  freight: ({ freight }) => freight / 100
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
@@ -156,7 +156,7 @@ export const TRADE_AFTER_SALES_ITEM = {
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
       num: ({ orderItem }) => orderItem.num,
       price: ({ orderItem }) => orderItem.total_fee / 100,
-      isPrescription: ({ orderItem }) => orderItem.is_prescription,
+      isPrescription: ({ orderItem }) => orderItem.is_prescription
     })
   },
   hasAftersalesAddress: ({ aftersales_address }) => isObject(aftersales_address),

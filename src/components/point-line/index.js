@@ -5,13 +5,13 @@ import configStore from '@/store'
 
 import './index.scss'
 
-const {store} = configStore()
+const { store } = configStore()
 export default class HomeCapsule extends Component {
   static defaultProps = {
     url: ''
   }
 
-  render () {
+  render() {
     const { className, point, plus, isGoodCard, isStoreOut } = this.props
     const classes = classNames('point-line', className, { plus: plus })
 

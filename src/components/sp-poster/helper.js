@@ -12,7 +12,7 @@
  * @param { function } drawOptions.toPx - toPx方法
  * @param { function } drawOptions.toRpx - toRpx方法
  */
- export function _drawRadiusRect(drawData, drawOptions) {
+export function _drawRadiusRect(drawData, drawOptions) {
   const { x, y, w, h, r } = drawData
   const {
     ctx,

@@ -33,10 +33,8 @@ export default class popups extends Component {
                   {text.map((item, index) => {
                     return (
                       <View className='popups_cen_b_text_b_i' key={index}>
-                        <View className={`popups_cen_b_text_b_i_l ${index==0 ? 'blue' : 'red'}`}>
-                          <View
-                            className={`iconfont ${item.icon} `}
-                          ></View>
+                        <View className={`popups_cen_b_text_b_i_l ${index == 0 ? 'blue' : 'red'}`}>
+                          <View className={`iconfont ${item.icon} `}></View>
                         </View>
                         <View className='popups_cen_b_text_b_i_r'>
                           <View className='popups_cen_b_text_b_i_r_text'>{item.text}</View>

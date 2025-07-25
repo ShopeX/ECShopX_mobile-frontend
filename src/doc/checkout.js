@@ -13,7 +13,7 @@ export const CHECKOUT_GOODS_ITEM = {
   isPoint: 'is_point',
   item_point: 'item_point',
   price: ({ price }) => price / 100, // 销售价
-  salePrice:({ sale_price }) => sale_price / 100,
+  salePrice: ({ sale_price }) => sale_price / 100,
   activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价
   marketPrice: ({ market_price }) => market_price / 100, // 原价
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
@@ -29,7 +29,7 @@ export const CHECKOUT_GOODS_ITEM = {
   cusActivity: 'cusActivity',
   isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
-  isMedicine: 'is_medicine',
+  isMedicine: 'is_medicine'
 }
 
 export const INVOICE_TITLE = {

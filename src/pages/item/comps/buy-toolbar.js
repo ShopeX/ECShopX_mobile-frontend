@@ -10,7 +10,7 @@ import { FormIdCollector, SpLogin } from '@/components'
 import { classNames, isWeb, showToast, merchantIsvaild } from '@/utils'
 import './buy-toolbar.scss'
 
-const {store} = configStore()
+const { store } = configStore()
 @connect(({ colors, user }) => ({
   colors: colors.current,
   favs: user.favs || []
@@ -66,7 +66,7 @@ export default class GoodsBuyToolbar extends Component {
     showToast(isFaved ? '已移出收藏' : '已加入收藏')
   }
 
-  render () {
+  render() {
     const {
       onClickAddCart,
       onClickFastBuy,

@@ -103,7 +103,7 @@ function CompOrderItem(props) {
           ))}
         </View>
 
-        <View className="total-info">
+        <View className='total-info'>
           <Text className='sale-num'>共{info.totalNum}件</Text>
           <SpPrice className='sale-price' unit='cent' value={info.totalFee} />
         </View>
@@ -128,7 +128,7 @@ function CompOrderItem(props) {
             <View className='ziti-address'>{info.receiver_address}</View>
             {info?.communityInfo?.extra_data_str?.map((el, idx) => (
               <View className='ziti-address' key={idx}>
-                {el.replace(":", ": ")}
+                {el.replace(':', ': ')}
               </View>
             ))}
           </View>

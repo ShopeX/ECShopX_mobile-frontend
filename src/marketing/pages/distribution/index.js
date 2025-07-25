@@ -149,7 +149,11 @@ export default class DistributionDashboard extends Component {
         <SpNavBar title='推广管理' leftIconType='chevron-left' />
         <View className='header' style={'background: ' + colors.data[0].marketing}>
           <View className='view-flex view-flex-middle'>
-            <Image className='header-avatar' src={info.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`} mode='aspectFill' />
+            <Image
+              className='header-avatar'
+              src={info.avatar || `${process.env.APP_IMAGE_CDN}/user_icon.png`}
+              mode='aspectFill'
+            />
             <View className='header-info view-flex-item'>
               {info.username}
               {info.is_open_promoter_grade && <Text>（{info.promoter_grade_name}）</Text>}
@@ -271,8 +275,9 @@ export default class DistributionDashboard extends Component {
           <Navigator
             className='list-item'
             open-type='navigateTo'
-            url={`/marketing/pages/distribution/goods?status=${info.isOpenShop && info.shop_status === 1
-              }`}
+            url={`/marketing/pages/distribution/goods?status=${
+              info.isOpenShop && info.shop_status === 1
+            }`}
           >
             <View className='iconfont icon-weChat icon-fontsize' />
             <View className='list-item-txt'>推广商品</View>
@@ -318,9 +323,9 @@ export default class DistributionDashboard extends Component {
               className={classNames(
                 'cicle',
                 (adapay_status == '审核中' && 'approve') ||
-                (adapay_status == '未认证' && 'NotCertified') ||
-                (adapay_status == '认证失败' && 'fail') ||
-                (adapay_status == '已认证' && 'success')
+                  (adapay_status == '未认证' && 'NotCertified') ||
+                  (adapay_status == '认证失败' && 'fail') ||
+                  (adapay_status == '已认证' && 'success')
               )}
             />
             <View style={{ marginRight: '15rpx' }}>{adapay_status}</View>

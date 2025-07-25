@@ -53,8 +53,16 @@ function CouponIndex() {
     })
   }
 
-  const handleClickCouponItem = ({ cardId, cardType, status, sourceType, sourceId, id, tagClass }) => {
-    if(tagClass == 'notstarted') {
+  const handleClickCouponItem = ({
+    cardId,
+    cardType,
+    status,
+    sourceType,
+    sourceId,
+    id,
+    tagClass
+  }) => {
+    if (tagClass == 'notstarted') {
       showToast('活动未开始')
       return
     }

@@ -31,12 +31,12 @@ function CompGoodsBuyToolbar(props) {
   const RenderBtns = () => {
     // 兑换券
     const { card_id } = $instance.router?.params || {}
-    if(card_id) {
+    if (card_id) {
       btns.push(BUY_TOOL_BTNS.EX_CHANGE)
       return
     }
 
-    if(info.approveStatus == 'only_show') {
+    if (info.approveStatus == 'only_show') {
       btns.push(BUY_TOOL_BTNS.ONLY_SHOW)
       return
     }
@@ -111,7 +111,7 @@ function CompGoodsBuyToolbar(props) {
           onSubscribe()
         }
       })
-    } else if(key == 'exchange') {
+    } else if (key == 'exchange') {
       const { itemId } = info
       const { status } = await api.cart.exchangeGood({
         item_id: itemId,

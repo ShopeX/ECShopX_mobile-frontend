@@ -47,16 +47,16 @@ function OfflineTransfer() {
   }, [params])
 
   const fetchOrderDetail = async (order_id) => {
-    let _params = {};
-    if(params.isDianwu){
+    let _params = {}
+    if (params.isDianwu) {
       const { userId } = Taro.getStorageSync('userinfo')
       _params = {
-        isSalesmanPage:1,
-        promoter_user_id:userId
+        isSalesmanPage: 1,
+        promoter_user_id: userId
       }
     }
 
-    const { orderInfo } = await api.trade.detail(order_id,_params)
+    const { orderInfo } = await api.trade.detail(order_id, _params)
     //获取收款账户列表
     const { list: _accountList, setting: _setting } = await api.trade.getAackaccountList()
 
@@ -154,7 +154,7 @@ function OfflineTransfer() {
       return showToast('请上传凭证')
     }
 
-    if(params.isDianwu){
+    if (params.isDianwu) {
       const { userId } = Taro.getStorageSync('userinfo')
       data.isSalesmanPage = 1
       data.promoter_user_id = userId
@@ -232,8 +232,9 @@ function OfflineTransfer() {
       <View
         key={item.idx}
         onClick={() => handleAccountItemClick(idx)}
-        className={classNames('account-item', { 'account-item-active': item.id == accountId && !params.isDianwu,
-          'account-item-dianwu-active': item.id == accountId && params.isDianwu,
+        className={classNames('account-item', {
+          'account-item-active': item.id == accountId && !params.isDianwu,
+          'account-item-dianwu-active': item.id == accountId && params.isDianwu
         })}
       >
         <SpImage src={item.pic} width={90} height={90} mode='aspectFill' circle />
@@ -259,7 +260,10 @@ function OfflineTransfer() {
               circle
               loading={submitLoading}
               disabled={submitLoading}
-              className={classNames('submit-btn', { 'dianwu-primary': params.isDianwu,'normal-primary': !params.isDianwu })}
+              className={classNames('submit-btn', {
+                'dianwu-primary': params.isDianwu,
+                'normal-primary': !params.isDianwu
+              })}
               onClick={handleSubmit}
             >
               提交凭证

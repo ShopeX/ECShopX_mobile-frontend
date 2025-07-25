@@ -10,7 +10,7 @@ import BargainItem from '../../component/bargainItem'
 import './index.scss'
 
 export default class Home extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       param: {
@@ -25,7 +25,7 @@ export default class Home extends Component {
       isEmpty: false
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     this.getList()
   }
 
@@ -86,7 +86,7 @@ export default class Home extends Component {
     this.getList()
   }
 
-  render () {
+  render() {
     const { list, scrollTop, isRefresh, isLoading, isEnd, isEmpty } = this.state
     return (
       <View className='home'>

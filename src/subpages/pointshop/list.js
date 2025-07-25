@@ -6,7 +6,6 @@ import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs, AtSearchBar } from 'taro-ui'
 import {
   SpFilterBar,
-  SearchBar,
   GoodsItem,
   SpTagBar,
   SpGoodsItem,

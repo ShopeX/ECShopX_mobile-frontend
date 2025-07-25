@@ -15,7 +15,7 @@ function SpTimeLineItem(props) {
   const handlePreviewPics = (idx) => {
     Taro.previewImage({
       urls: item.pics,
-      current: item.pics[idx],
+      current: item.pics[idx]
     })
   }
 
@@ -32,7 +32,12 @@ function SpTimeLineItem(props) {
             照片上传：
             <View className='content-pic'>
               {item.pics.map((pic, idx) => (
-                <Image src={pic} className='content-pic-item' key={idx} onClick={()=>handlePreviewPics(idx)}></Image>
+                <Image
+                  src={pic}
+                  className='content-pic-item'
+                  key={idx}
+                  onClick={() => handlePreviewPics(idx)}
+                ></Image>
               ))}
             </View>
           </View>

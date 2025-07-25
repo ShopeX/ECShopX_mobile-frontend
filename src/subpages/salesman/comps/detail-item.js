@@ -112,7 +112,7 @@ export default class DetailItem extends Component {
                 isShowNational
                 isPointitemGood={isPointitem}
                 onClick={() => {
-                  if(info.order_class == 'pointsmall') {
+                  if (info.order_class == 'pointsmall') {
                     Taro.navigateTo({
                       url: `/subpages/pointshop/espier-detail?id=${item.good_id}`
                     })

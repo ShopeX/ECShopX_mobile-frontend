@@ -1,9 +1,9 @@
 'use strict'
-function t (t) {
+function t(t) {
   for (var i = Object.create(null), s = t.split(','), e = s.length; e--; ) i[s[e]] = !0
   return i
 }
-function i (t, i) {
+function i(t, i) {
   for (var s = t.indexOf('&'); -1 !== s; ) {
     var e = t.indexOf(';', s + 3),
       n = void 0
@@ -18,7 +18,7 @@ function i (t, i) {
   }
   return t
 }
-function s (t) {
+function s(t) {
   ;(this.options = t.data || {}),
     (this.tagStyle = Object.assign({}, a.tagStyle, this.options.tagStyle)),
     (this.imgList = t.imgList || []),
@@ -32,7 +32,7 @@ function s (t) {
         ? 2
         : 0)
 }
-function e (t) {
+function e(t) {
   this.handler = t
 }
 var a = {
@@ -336,7 +336,7 @@ var a = {
         (i.style = ''),
         i.viewbox && (i.viewBox = i.viewbox),
         (i.xmlns = 'http://www.w3.org/2000/svg'),
-        (function t (i) {
+        (function t(i) {
           if ('text' === i.type) return void (h += i.text)
           h += '<' + i.name
           for (var s in i.attrs) {
@@ -419,7 +419,7 @@ var a = {
               m = [],
               v = [],
               y = {}
-            !(function t (i) {
+            !(function t(i) {
               for (var s = 0; s < i.length; s++)
                 'tr' === i[s].name ? m.push(i[s]) : t(i[s].children || [])
             })(s)
@@ -473,7 +473,7 @@ var a = {
             t.c && (c.display = 'table'),
               isNaN(u) || (c['border-spacing'] = u + 'px'),
               (g || p || t.c) &&
-                (function i (s) {
+                (function i(s) {
                   for (var e = 0; e < s.length; e++) {
                     var a = s[e]
                     t.c && (a.c = 1),

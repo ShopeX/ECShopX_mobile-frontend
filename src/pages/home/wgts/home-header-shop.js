@@ -8,7 +8,7 @@ import './home-header-shop.scss'
 
 function WgtHomeHeaderShop(props) {
   const { children, isSetHight } = props
-  const { openScanQrcode, openStore, openLocation } = useSelector((state) => state.sys)
+  const { openScanQrcode, entryStoreByLBS } = useSelector((state) => state.sys)
   const {
     shopInfo: { store_name }
   } = useSelector((state) => state.shop)
@@ -23,7 +23,7 @@ function WgtHomeHeaderShop(props) {
 
   return (
     <View className={classNames('home-header-shop', !isSetHight && 'cus-home-header')}>
-      {openStore && openLocation == 1 && (
+      {entryStoreByLBS && (
         <View className='shop-left' onClick={handlePickStore}>
           <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
           <Text className='iconfont icon-qianwang-01'></Text>

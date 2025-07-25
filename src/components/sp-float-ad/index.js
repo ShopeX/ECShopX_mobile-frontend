@@ -45,7 +45,7 @@ function SpFloatAd(props) {
   }
 
   const isOpenItem = () => {
-    return list.find(item => item.is_open == 'true')
+    return list.find((item) => item.is_open == 'true')
   }
 
   if (S.getAuthToken() || !isOpenItem()) {

@@ -16,7 +16,7 @@ export default class PointDepositBtn extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -68,7 +68,7 @@ export default class PointDepositBtn extends Component {
     // })
   }
 
-  render () {
+  render() {
     const { payType } = this.props
     const { isOpened } = this.state
 

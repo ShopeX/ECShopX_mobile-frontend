@@ -41,7 +41,7 @@ function AddressIndex(props) {
   const fetch = async (isDelete = false) => {
     const { isPicker, receipt_type = '', city = '' } = $instance.router.params
     if (isPicker) {
-      setState(draft => {
+      setState((draft) => {
         draft.isPicker = true
       })
     }
@@ -49,7 +49,7 @@ function AddressIndex(props) {
     const { list } = await api.member.addressList()
     Taro.hideLoading()
     let newList = [...list]
-    if (['dada','merchant'].includes(receipt_type) && city) {
+    if (['dada', 'merchant'].includes(receipt_type) && city) {
       newList = list
         .map((item) => {
           item.disabled = item.city !== city
@@ -63,14 +63,13 @@ function AddressIndex(props) {
     } else {
       selectedId = list.find((addr) => addr.is_def > 0) || null
     }
-    setState(draft => {
-      draft.list = newList,
-        draft.selectedId = selectedId
+    setState((draft) => {
+      ;(draft.list = newList), (draft.selectedId = selectedId)
     })
   }
 
   const handleClickChecked = (e, item) => {
-    setState(draft => {
+    setState((draft) => {
       draft.selectedId = item[ADDRESS_ID]
     })
 
@@ -82,7 +81,6 @@ function AddressIndex(props) {
   }
 
   const handleChangeDefault = async (e, item) => {
-
     const nItem = JSON.parse(JSON.stringify(item))
     nItem.is_def = 1
     try {
@@ -175,12 +173,7 @@ function AddressIndex(props) {
     >
       <ScrollView className='scroll-view-container' scrollY>
         {isWeixin && (
-          <SpCell
-            isLink
-            className='address-harvest'
-            title='获取微信收货地址'
-            onClick={wxAddress}
-          />
+          <SpCell isLink className='address-harvest' title='获取微信收货地址' onClick={wxAddress} />
         )}
 
         <View className='member-address-list'>
@@ -204,7 +197,10 @@ function AddressIndex(props) {
                     </View>
 
                     {isPicker && !item.disabled && (
-                      <View className='address-item__check' onClick={e => handleClickChecked(e, item)}>
+                      <View
+                        className='address-item__check'
+                        onClick={(e) => handleClickChecked(e, item)}
+                      >
                         {item[ADDRESS_ID] === selectedId ? (
                           <Text className='iconfont icon-roundcheckfill' />
                         ) : (
@@ -215,8 +211,8 @@ function AddressIndex(props) {
                   </View>
 
                   <View className='address-item__footer'>
-                    {
-                      !isPicker && <View
+                    {!isPicker && (
+                      <View
                         className='address-item__footer_default'
                         onClick={(e) => handleChangeDefault(e, item)}
                       >
@@ -227,17 +223,17 @@ function AddressIndex(props) {
                             'icon-round': !item.is_def
                           })}
                         />
-                        <Text className='default-text'>{item.is_def ? '已设为默认' : '设为默认'}</Text>
+                        <Text className='default-text'>
+                          {item.is_def ? '已设为默认' : '设为默认'}
+                        </Text>
                       </View>
-                    }
+                    )}
 
-                    {
-                      isPicker && <View
-                        className='address-item__footer_default'
-                      >
+                    {isPicker && (
+                      <View className='address-item__footer_default'>
                         {item.is_def && <Text className='picker-default-text'>默认</Text>}
                       </View>
-                    }
+                    )}
 
                     <View className='address-item__footer_edit'>
                       <View className='footer-text' onClick={(e) => handleDelete(e, item)}>

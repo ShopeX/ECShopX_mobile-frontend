@@ -78,8 +78,8 @@ export default class DistributionShopHome extends Component {
     //     url: `${process.env.APP_AUTH_PAGE}?redirect_url=${redirect}`
     //   })
     // } else {
-      this.getShopInfo()
-      this.init()
+    this.getShopInfo()
+    this.init()
     // }
   }
 

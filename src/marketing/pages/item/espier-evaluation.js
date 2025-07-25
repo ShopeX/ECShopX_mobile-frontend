@@ -24,7 +24,7 @@ export default class Evaluation extends Component {
     addGlobalClass: true
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -37,13 +37,13 @@ export default class Evaluation extends Component {
     }
   }
 
-  async componentWillMount () {
+  async componentWillMount() {
     // const query = await normalizeQuerys(this.$instance.router.params)
     // this.$instance.router.params.id = query.id
     // await entry.entryLaunch(this.$instance.router.params, false)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const userInfo = Taro.getStorageSync('userinfo')
     this.setState({
       userInfo
@@ -51,7 +51,7 @@ export default class Evaluation extends Component {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { order_type } = this.$instance.router.params
     const query = {
@@ -153,7 +153,7 @@ export default class Evaluation extends Component {
     })
   }
 
-  render () {
+  render() {
     const { showBackToTop, evaluationList, showCommentPanel } = this.state
 
     if (!evaluationList.length) {

@@ -66,7 +66,7 @@ function CartCheckout(props) {
   const calc = useRef(false)
   const deliverRef = useRef()
   const { userInfo, address } = useSelector((state) => state.user)
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const { colorPrimary, pointName } = useSelector((state) => state.sys)
   const { coupon, zitiAddress, customerLnformation, customerSalesman } = useSelector(
     (state) => state.cart
   )
@@ -109,7 +109,7 @@ function CartCheckout(props) {
     deliveryTimeList, //自配送时间
     codeStatus,
     cutomer,
-    paymentName,
+    paymentName
   } = state
 
   const {
@@ -813,9 +813,9 @@ function CartCheckout(props) {
   }
 
   const getPayChannelLabel = () => {
-    if(payChannel == 'offline_pay'){
-      return  paymentName
-    }else{
+    if (payChannel == 'offline_pay') {
+      return paymentName
+    } else {
       return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
     }
   }
@@ -1067,9 +1067,7 @@ function CartCheckout(props) {
                       {`${pointName}可用`}
                     </Text>
                   )}
-                  <Text className='invoice-title'>
-                    {getPayChannelLabel()}
-                  </Text>
+                  <Text className='invoice-title'>{getPayChannelLabel()}</Text>
                 </View>
               }
             />

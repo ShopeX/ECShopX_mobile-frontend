@@ -215,26 +215,26 @@ const upload = {
     }
   },
   cosv5Upload: async (item, tokenRes) => {
-    if(!COS) return false
+    if (!COS) return false
     const { bucket, region, token, url, filetype } = tokenRes
     try {
       var cos = new COS({
-          getAuthorization: function (options, callback) {
-            callback({ Authorization: token })
-          },
-          SimpleUploadMethod: 'putObject'
-        })
-        console.log(item.file.originalFileObj)
+        getAuthorization: function (options, callback) {
+          callback({ Authorization: token })
+        },
+        SimpleUploadMethod: 'putObject'
+      })
+      console.log(item.file.originalFileObj)
       var params = {
         Bucket: bucket /* 填写自己的 bucket，必须字段 */,
         Region: region /* 存储桶所在地域，必须字段 */,
-        Key: url /* 存储在桶里的对象键（例如:1.jpg，a/b/test.txt，图片.jpg）支持中文，必须字段 */,
+        Key: url /* 存储在桶里的对象键（例如:1.jpg，a/b/test.txt，图片.jpg）支持中文，必须字段 */
       }
-      if(isWeixin){
-        params = {...params,FilePath: item.url /* 上传文件路径，必须字段 */}
+      if (isWeixin) {
+        params = { ...params, FilePath: item.url /* 上传文件路径，必须字段 */ }
       }
-      if(isWeb){
-        params = {...params,Body: item.file.originalFileObj /* 上传文件路径，必须字段 */}
+      if (isWeb) {
+        params = { ...params, Body: item.file.originalFileObj /* 上传文件路径，必须字段 */ }
       }
       const res = await cos.uploadFile(params)
       const { Location } = res
@@ -242,7 +242,7 @@ const upload = {
         return false
       }
       return {
-        url: 'https://'+Location,
+        url: 'https://' + Location,
         filetype,
         thumb: item.thumb
       }
@@ -300,7 +300,10 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
         const thumbFileName = _thumb.url.slice(_thumb.url.lastIndexOf('/') + 1)
         const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName })
         const thumbUploadType = getUploadFun(thumbRes.driver)
-        const thumbImg = await upload[thumbUploadType]({ url: _thumb.url }, { ...thumbRes.token, filetype: 'image' })
+        const thumbImg = await upload[thumbUploadType](
+          { url: _thumb.url },
+          { ...thumbRes.token, filetype: 'image' }
+        )
         if (thumbImg) {
           img['thumb'] = thumbImg.url
         }

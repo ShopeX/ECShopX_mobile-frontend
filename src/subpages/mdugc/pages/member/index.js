@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Button, ScrollView, Image } from '@tarojs/components'
 
-import { Scrollitem, Popups } from '../../components'
 import S from '@/spx'
 import { connect } from 'react-redux'
 
@@ -12,8 +11,7 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 
 import api from '@/api'
-
-//import '../../font/iconfont.scss'
+import { Scrollitem, Popups } from '../../components'
 import './index.scss'
 
 @connect(({ member }) => ({
@@ -77,9 +75,8 @@ export default class mdugcmember extends Component {
   }
 
   async componentDidMount() {
-
-    let  {memberData}  = this.props
-    console.log(123,memberData)
+    let { memberData } = this.props
+    console.log(123, memberData)
     const isAuth = S.getAuthToken()
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
@@ -500,15 +497,15 @@ export default class mdugcmember extends Component {
               <View className='ugcmember_t_data_l_name'>{userinfo.nickname}</View>
             </View>
             {/* {userinfo.isoneself ? ( */}
-              <View
-                className='ugcmember_t_data_r'
-                onClick={this.topages.bind(this, '/subpages/mdugc/pages/make_newslist/index')}
-              >
-                <View className='ugcmember_t_data_r_icon icon-xiaoxi'></View>
-                {userinfo.unread_nums > 0 ? (
-                  <View className='ugcmember_t_data_r_num'>{userinfo.unread_nums}</View>
-                ) : null}
-              </View>
+            <View
+              className='ugcmember_t_data_r'
+              onClick={this.topages.bind(this, '/subpages/mdugc/pages/make_newslist/index')}
+            >
+              <View className='ugcmember_t_data_r_icon icon-xiaoxi'></View>
+              {userinfo.unread_nums > 0 ? (
+                <View className='ugcmember_t_data_r_num'>{userinfo.unread_nums}</View>
+              ) : null}
+            </View>
             {/* ) : null} */}
           </View>
           <View className='ugcmember_t_news'>

@@ -25,13 +25,11 @@ function CompGoods(props) {
         </View>
         <View className='item-bd-bd'>
           <View className='title'>
-            {
-              info.isPrescription == 1 && info.isMedicine &&
-              <Text className='prescription-drug'>
-              处方药
-            </Text>
-            }
-            {info.name}</View>
+            {info.isPrescription == 1 && info.isMedicine && (
+              <Text className='prescription-drug'>处方药</Text>
+            )}
+            {info.name}
+          </View>
           {info.itemSpecDesc && <View className='sku'>{info.itemSpecDesc}</View>}
           {/* <View className='price-list'>
             <SpPrice className='sale-price' value={999.99}></SpPrice>

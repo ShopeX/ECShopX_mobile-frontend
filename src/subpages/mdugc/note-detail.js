@@ -1,9 +1,18 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
-import { View, Text, Video, Swiper, SwiperItem, } from '@tarojs/components'
+import { View, Text, Video, Swiper, SwiperItem } from '@tarojs/components'
 import { AtButton, AtActionSheet, AtActionSheetItem } from 'taro-ui'
-import { SpHtml, SpFloatMenuItem, SpPage, SpImage, SpLoading, SpLogin, SpScrollView, SpInput as AtInput } from '@/components'
+import {
+  SpHtml,
+  SpFloatMenuItem,
+  SpPage,
+  SpImage,
+  SpLoading,
+  SpLogin,
+  SpScrollView,
+  SpInput as AtInput
+} from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
 import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
@@ -111,7 +120,7 @@ function UgcNoteDetail(props) {
     }
     const { list, total_count: total } = await api.mdugc.commentlist(params)
     const _commentList = pickBy(list, doc.mdugc.COMMENT_INFO)
-    setState(draft => {
+    setState((draft) => {
       draft.commentList = _commentList
       draft.commentTotal = _commentList.reduce((previous, current) => {
         return previous + current.child.length + 1
@@ -161,8 +170,8 @@ function UgcNoteDetail(props) {
       showToast('关注成功')
     }
 
-    setState(draft => {
-      draft.info["followStatus"] = followers
+    setState((draft) => {
+      draft.info['followStatus'] = followers
     })
   }
 
@@ -177,9 +186,9 @@ function UgcNoteDetail(props) {
     } else {
       showToast('点赞成功')
     }
-    setState(draft => {
-      draft.info["likes"] = likes
-      draft.info["likeStatus"] = action == 'unlike' ? 0 : 1
+    setState((draft) => {
+      draft.info['likes'] = likes
+      draft.info['likeStatus'] = action == 'unlike' ? 0 : 1
     })
   }
 
@@ -193,15 +202,15 @@ function UgcNoteDetail(props) {
     } else {
       showToast('收藏成功')
     }
-    setState(draft => {
-      draft.info["favoriteNums"] = likes
-      draft.info["favoriteStatus"] = action == 'unfavorite' ? 0 : 1
+    setState((draft) => {
+      draft.info['favoriteNums'] = likes
+      draft.info['favoriteStatus'] = action == 'unfavorite' ? 0 : 1
     })
   }
 
   // 回复评论
   const handleCommitReply = () => {
-    setState(draft => {
+    setState((draft) => {
       draft.showCommentInput = true
       draft.parentCommentId = ''
       draft.commentPlaceholder = '请输入评论'
@@ -226,7 +235,7 @@ function UgcNoteDetail(props) {
       _commentList[pindex].likes = likes
     }
 
-    setState(draft => {
+    setState((draft) => {
       draft.commentList = _commentList
     })
   }
@@ -245,7 +254,7 @@ function UgcNoteDetail(props) {
     const res = await api.mdugc.commentcreate(params)
     showToast(res.message)
     listRef.current.reset()
-    setState(draft => {
+    setState((draft) => {
       draft.comment = ''
       draft.showCommentInput = false
     })
@@ -283,27 +292,29 @@ function UgcNoteDetail(props) {
       ref={pageRef}
       renderFloat={
         <View className='float-icon'>
-          {
-            isMyNote() && <SpLogin onChange={onHandleMenuItem.bind(this, `/subpages/mdugc/note?post_id=${info?.postId}`)}>
+          {isMyNote() && (
+            <SpLogin
+              onChange={onHandleMenuItem.bind(this, `/subpages/mdugc/note?post_id=${info?.postId}`)}
+            >
               <SpFloatMenuItem>
                 <Text className='iconfont icon-bianji'></Text>
               </SpFloatMenuItem>
             </SpLogin>
-          }
-          {
-            isMyNote() && <SpLogin onChange={onDeleteNote}>
+          )}
+          {isMyNote() && (
+            <SpLogin onChange={onDeleteNote}>
               <SpFloatMenuItem>
                 <Text className='iconfont icon-shanchu'></Text>
               </SpFloatMenuItem>
             </SpLogin>
-          }
+          )}
         </View>
       }
       renderFooter={
         <View className='action-container'>
           <View className='comment-input' onClick={handleCommitReply}>
             <Text className='iconfont icon-bianji1'></Text>
-            <Text className="placeholder">留言评论...</Text>
+            <Text className='placeholder'>留言评论...</Text>
           </View>
           <View className='btn-action-list'>
             <SpLogin className='action-item' onChange={likeNote}>
@@ -314,7 +325,7 @@ function UgcNoteDetail(props) {
                     'icon-dianzanFilled': info?.likeStatus == 1
                   })}
                 ></View>
-                <Text className="action-item-text">{`${info?.likes || 0}`}</Text>
+                <Text className='action-item-text'>{`${info?.likes || 0}`}</Text>
               </View>
             </SpLogin>
             <SpLogin className='action-item' onChange={favoriteNote}>
@@ -325,241 +336,262 @@ function UgcNoteDetail(props) {
                     'icon-shoucanghover-01': info?.favoriteStatus == 1
                   })}
                 ></View>
-                <Text className="action-item-text">{`${info?.favoriteNums || 0}`}</Text>
+                <Text className='action-item-text'>{`${info?.favoriteNums || 0}`}</Text>
               </View>
             </SpLogin>
             <AtButton className='action-item' openType='share'>
-              <View
-                className={classNames('iconfont', 'icon-fenxiang-01')}
-              ></View>
-              <Text className="action-item-text">{`${info?.shareNums || 0}`}</Text>
+              <View className={classNames('iconfont', 'icon-fenxiang-01')}></View>
+              <Text className='action-item-text'>{`${info?.shareNums || 0}`}</Text>
             </AtButton>
           </View>
-        </ View>
+        </View>
       }
     >
       {!info && <SpLoading />}
-      {info && <View className='note-contents'>
-        {/* 轮播图 */}
-        <View className='note-pic-container'>
-          <Swiper
-            className='note-swiper'
-            // current={curImgIdx}
-            onChange={onChangeSwiper}
-          >
-            {info?.imgList.map((item, idx) => (
-              <SwiperItem key={`swiperitem__${idx}`}>
-                <SpImage
-                  mode='aspectFill'
-                  src={item.url}
-                  width={windowWidth * 2}
-                  height={windowWidth * 2}
-                ></SpImage>
-                {
-                  item.topics.map((topic, index) => (
-                    <View className='movable-item' style={getTopicPostion(topic)} key={`movable-item__${index}`}>
+      {info && (
+        <View className='note-contents'>
+          {/* 轮播图 */}
+          <View className='note-pic-container'>
+            <Swiper
+              className='note-swiper'
+              // current={curImgIdx}
+              onChange={onChangeSwiper}
+            >
+              {info?.imgList.map((item, idx) => (
+                <SwiperItem key={`swiperitem__${idx}`}>
+                  <SpImage
+                    mode='aspectFill'
+                    src={item.url}
+                    width={windowWidth * 2}
+                    height={windowWidth * 2}
+                  ></SpImage>
+                  {item.topics.map((topic, index) => (
+                    <View
+                      className='movable-item'
+                      style={getTopicPostion(topic)}
+                      key={`movable-item__${index}`}
+                    >
                       {topic.topicName}
                     </View>
-                  ))
-                }
+                  ))}
+                </SwiperItem>
+              ))}
+            </Swiper>
 
-              </SwiperItem>
-            ))}
-          </Swiper>
+            {info.imgList?.length > 1 && (
+              <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgList.length}`}</View>
+            )}
 
-          {info.imgList?.length > 1 && (
-            <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgList.length}`}</View>
-          )}
+            {info.video && play && (
+              <View className='video-container'>
+                <Video
+                  id='goods-video'
+                  className='item-video'
+                  src={info.video}
+                  showCenterPlayBtn={false}
+                />
+              </View>
+            )}
 
-          {info.video && play && (
-            <View className='video-container'>
-              <Video
-                id='goods-video'
-                className='item-video'
-                src={info.video}
-                showCenterPlayBtn={false}
-              />
+            {info.video && (
+              <View
+                className={classNames('btn-video', {
+                  playing: play
+                })}
+                onClick={() => {
+                  setState((draft) => {
+                    play ? (draft.play = false) : (draft.play = true)
+                  })
+                }}
+              >
+                {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
+                {play ? '退出视频' : '播放视频'}
+              </View>
+            )}
+          </View>
+          <View className='ugc-author'>
+            <View className='author-info' onClick={() => {}}>
+              <SpImage circle src={info.headimgurl} width={88} height={88} />
+              <Text className='author'>{info.username}</Text>
             </View>
-          )}
+            {!isMyNote() && (
+              <SpLogin
+                className={classNames('btn-follow', {
+                  'follow': info.followStatus
+                })}
+                onChange={handleFollower}
+              >
+                {info.followStatus ? '已关注' : '+关注'}
+              </SpLogin>
+            )}
+          </View>
 
-          {info.video && (
-            <View
-              className={classNames('btn-video', {
-                playing: play
-              })}
-              onClick={() => {
-                setState((draft) => {
-                  play ? (draft.play = false) : (draft.play = true)
+          <View className='ugc-content'>
+            <View className='title'>{info.title}</View>
+            <View className='content'>
+              {/* {info.content} */}
+
+              <SpHtml content={info.content} />
+            </View>
+
+            <View className='topic-list'>
+              {info.topics?.map((item, index) => (
+                <View
+                  className='topic-item'
+                  key={`topic-item__${index}`}
+                  onClick={() => {
+                    Taro.navigateTo({
+                      url: `/subpages/mdugc/list?topic_id=${item.topic_id}&topic_name=${item.topic_name}`
+                    })
+                  }}
+                >
+                  #{item.topic_name}
+                </View>
+              ))}
+            </View>
+
+            <View className='content-datetime'>{info.created}</View>
+          </View>
+
+          <View className='remmend-goods'>
+            <WgtFloorImg
+              info={{
+                name: 'floorImg',
+                base: {
+                  title: '推荐商品',
+                  subtitle: '',
+                  padded: true,
+                  WordColor: '#222',
+                  openBackImg: false,
+                  backgroundImg: ''
+                },
+                data: info.goods
+              }}
+              onClick={({ itemId }) => {
+                Taro.navigateTo({
+                  url: `/pages/item/espier-detail?id=${itemId}`
                 })
               }}
-            >
-              {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
-              {play ? '退出视频' : '播放视频'}
-            </View>
-          )}
-        </View>
-        <View className='ugc-author'>
-          <View
-            className='author-info'
-            onClick={() => {
-
-            }}
+              isShowDistributor
+            />
+          </View>
+          <SpScrollView
+            className='comment-list'
+            ref={listRef}
+            auto={false}
+            fetch={fetchComment}
+            renderEmpty={
+              <View className='comment-empty'>
+                <Text className='iconfont icon-pinglun'></Text>
+                <View className='empty-text'>
+                  <Text className='t1'>还没有评论哦，</Text>
+                  <SpLogin onChange={handleCommitReply}>
+                    <Text className='t2'>点击评论</Text>
+                  </SpLogin>
+                </View>
+              </View>
+            }
           >
-            <SpImage circle src={info.headimgurl} width={88} height={88} />
-            <Text className='author'>{info.username}</Text>
-          </View>
-          {
-            !isMyNote() && <SpLogin
-              className={classNames('btn-follow', {
-                'follow': info.followStatus
-              })}
-              onChange={handleFollower}
-            >
-              {info.followStatus ? '已关注' : '+关注'}
-            </SpLogin>
-          }
-
-        </View>
-
-        <View className="ugc-content">
-          <View className="title">{info.title}</View>
-          <View className="content">
-            {/* {info.content} */}
-
-            <SpHtml content={info.content} />
-          </View>
-
-          <View className="topic-list">
-            {info.topics?.map((item, index) => (
-              <View className='topic-item' key={`topic-item__${index}`} onClick={() => {
-                Taro.navigateTo({
-                  url: `/subpages/mdugc/list?topic_id=${item.topic_id}&topic_name=${item.topic_name}`
-                })
-              }}>
-                #{item.topic_name}
-              </View>
-            ))}
-          </View>
-
-          <View className="content-datetime">{info.created}</View>
-        </View>
-
-        <View className="remmend-goods">
-          <WgtFloorImg info={{
-            name: 'floorImg',
-            base: {
-              title: '推荐商品',
-              subtitle: '',
-              padded: true,
-              WordColor: '#222',
-              openBackImg: false,
-              backgroundImg: ''
-            },
-            data: info.goods
-          }} onClick={({ itemId }) => {
-            Taro.navigateTo({
-              url: `/pages/item/espier-detail?id=${itemId}`
-            })
-          }}
-          isShowDistributor={true}
-          />
-        </View>
-        <SpScrollView className="comment-list"
-          ref={listRef}
-          auto={false}
-          fetch={fetchComment}
-          renderEmpty={
-            <View className="comment-empty">
-              <Text className="iconfont icon-pinglun"></Text>
-              <View className="empty-text">
-                <Text className="t1">还没有评论哦，</Text>
-                <SpLogin onChange={handleCommitReply}>
-                  <Text className="t2">点击评论</Text>
-                </SpLogin>
-              </View>
-            </View>
-          }>
-          <View className="comment-body">
-            <View className="comment-num">{`共${commentTotal}条评论`}</View>
-            {
-              commentList.map((item, index) => (
-                <View className="comment-item" key={`comment-item__${index}`}>
-                  <View className="item-hd">
+            <View className='comment-body'>
+              <View className='comment-num'>{`共${commentTotal}条评论`}</View>
+              {commentList.map((item, index) => (
+                <View className='comment-item' key={`comment-item__${index}`}>
+                  <View className='item-hd'>
                     <SpImage circle src={item.headimgurl} width={60} height={60} />
                   </View>
-                  <View className="item-bd">
-                    <View className="first-comment">
-                      <View className="comment-info">
-                        <View className="author">{item.username}</View>
-                        <View className="comment-content" onClick={() => {
-                          setState(draft => {
-                            draft.showCommentInput = true
-                            draft.parentCommentId = item.commentId
-                            draft.commentPlaceholder = `回复 @${item.username}`
-                          })
-                        }}>{item.content}<Text className="create-time">{item.created}</Text></View>
+                  <View className='item-bd'>
+                    <View className='first-comment'>
+                      <View className='comment-info'>
+                        <View className='author'>{item.username}</View>
+                        <View
+                          className='comment-content'
+                          onClick={() => {
+                            setState((draft) => {
+                              draft.showCommentInput = true
+                              draft.parentCommentId = item.commentId
+                              draft.commentPlaceholder = `回复 @${item.username}`
+                            })
+                          }}
+                        >
+                          {item.content}
+                          <Text className='create-time'>{item.created}</Text>
+                        </View>
                       </View>
                       <View className='comment-likes'>
-                        <Text className={classNames("iconfont", {
-                          'icon-dianzan': item.likeStatus == 0,
-                          'icon-dianzanFilled': item.likeStatus == 1
-                        })} onClick={handleCommentLike.bind(this, item.commentId, index)}></Text>
-                        <Text className="like-num">{item.likes}</Text>
+                        <Text
+                          className={classNames('iconfont', {
+                            'icon-dianzan': item.likeStatus == 0,
+                            'icon-dianzanFilled': item.likeStatus == 1
+                          })}
+                          onClick={handleCommentLike.bind(this, item.commentId, index)}
+                        ></Text>
+                        <Text className='like-num'>{item.likes}</Text>
                       </View>
                     </View>
-                    {
-                      item?.child && <View className="sub-comment">
-                        {
-                          item?.child.map((citem, cindex) => (
-                            <View className="sub-comment-item" key={`sub-comment-item__${cindex}`}>
-                              <View className="sitem-hd">
-                                <SpImage circle src={citem.headimgurl} width={40} height={40} />
-                              </View>
-                              <View className="sitem-bd">
-                                <View className="author">{citem.username}</View>
-                                <View className="comment-content">{citem.content}<Text className="create-time">{citem.created}</Text></View>
-                              </View>
-                              <View className="sitem-ft">
-                                <Text className={classNames("iconfont", {
-                                  'icon-dianzan': citem.likeStatus == 0,
-                                  'icon-dianzanFilled': citem.likeStatus == 1
-                                })} onClick={handleCommentLike.bind(this, citem.commentId, index, cindex)}></Text>
-                                <Text className="like-num">{citem.likes}</Text>
+                    {item?.child && (
+                      <View className='sub-comment'>
+                        {item?.child.map((citem, cindex) => (
+                          <View className='sub-comment-item' key={`sub-comment-item__${cindex}`}>
+                            <View className='sitem-hd'>
+                              <SpImage circle src={citem.headimgurl} width={40} height={40} />
+                            </View>
+                            <View className='sitem-bd'>
+                              <View className='author'>{citem.username}</View>
+                              <View className='comment-content'>
+                                {citem.content}
+                                <Text className='create-time'>{citem.created}</Text>
                               </View>
                             </View>
-                          ))
-                        }
+                            <View className='sitem-ft'>
+                              <Text
+                                className={classNames('iconfont', {
+                                  'icon-dianzan': citem.likeStatus == 0,
+                                  'icon-dianzanFilled': citem.likeStatus == 1
+                                })}
+                                onClick={handleCommentLike.bind(
+                                  this,
+                                  citem.commentId,
+                                  index,
+                                  cindex
+                                )}
+                              ></Text>
+                              <Text className='like-num'>{citem.likes}</Text>
+                            </View>
+                          </View>
+                        ))}
                       </View>
-
-                    }
+                    )}
                   </View>
                 </View>
-              ))
-            }
-          </View>
-        </SpScrollView>
-      </View>}
+              ))}
+            </View>
+          </SpScrollView>
+        </View>
+      )}
 
-      {
-        showCommentInput && <View className="input-comment">
-          <AtInput type="text" value={comment}
+      {showCommentInput && (
+        <View className='input-comment'>
+          <AtInput
+            type='text'
+            value={comment}
             placeholder={commentPlaceholder}
             adjustPosition
             autoFocus
             focus={showCommentInput}
             onChange={(e) => {
-              setState(draft => {
+              setState((draft) => {
                 draft.comment = e
               })
             }}
             onBlur={() => {
-              setState(draft => {
+              setState((draft) => {
                 draft.showCommentInput = false
               })
             }}
-            onConfirm={onSubmitComment} />
+            onConfirm={onSubmitComment}
+          />
         </View>
-      }
+      )}
     </SpPage>
   )
 }

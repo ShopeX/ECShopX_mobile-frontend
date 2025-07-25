@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Picker } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import {  SpToast, SpPage, SpInput as AtInput } from '@/components'
+import { SpToast, SpPage, SpInput as AtInput } from '@/components'
 import { getThemeStyle, styleNames } from '@/utils'
 import { LOGISTICS_CODE } from '@/consts'
 import api from '@/api'
@@ -34,17 +34,17 @@ export default class TradeRefundSendback extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      express:[],
+      express: [],
       curExpressIdx: 0,
       corp_code: 'SF',
       logi_no: ''
     }
   }
-  componentDidMount(){
+  componentDidMount() {
     this.initState()
   }
 
-  initState = () =>{
+  initState = () => {
     const express = []
     for (let key in LOGISTICS_CODE) {
       express.push({
@@ -106,9 +106,7 @@ export default class TradeRefundSendback extends Component {
   render() {
     const { express, logi_no, curExpressIdx } = this.state
     return (
-      <SpPage
-        className='page-distribution-tarde-refund-sendback'
-      >
+      <SpPage className='page-distribution-tarde-refund-sendback'>
         <View className='page-refund-sendback' style={styleNames(getThemeStyle())}>
           <View className='sec'>
             <View className='at-input'>

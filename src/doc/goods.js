@@ -17,15 +17,17 @@ export const WGT_GOODS_GRID = {
   isPoint: 'is_point',
   point: 'point',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ promotionActivity,act_price }) => {
-   let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price
-   return _aprice/ 100
+  activityPrice: ({ promotionActivity, act_price }) => {
+    let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price
+    return _aprice / 100
   }, // 秒杀价
-  marketPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.market_price / 100, // 原价
-  memberPrice: ({ promotionActivity }) => promotionActivity && promotionActivity[0]?.member_price / 100, // 当前会员等级价
+  marketPrice: ({ promotionActivity }) =>
+    promotionActivity && promotionActivity[0]?.market_price / 100, // 原价
+  memberPrice: ({ promotionActivity }) =>
+    promotionActivity && promotionActivity[0]?.member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
-  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
+  isPrescription: ({ medicine_data }) => medicine_data?.is_prescription
 }
 
 export const WGT_GOODS_SCROLL = {
@@ -59,7 +61,7 @@ export const WGT_GOODS_SCROLL = {
   memberPrice: ({ member_price }) => member_price / 100, // 当前会员等级价
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
-  isPrescription:'isPrescription',
+  isPrescription: 'isPrescription'
 }
 
 export const WGT_GOODS_GRID_TAB = {
@@ -92,7 +94,7 @@ export const WGT_GOODS_GRID_TAB = {
   vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
   svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
   brand: 'brand',
-  isPrescription:({medicine_data}) => medicine_data?.is_prescription,
+  isPrescription: ({ medicine_data }) => medicine_data?.is_prescription
 }
 
 export const WGT_GOODS_BRAND = {
@@ -128,7 +130,8 @@ export const ITEM_LIST_GOODS = {
   // isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
-  isPrescription:({medicine_data,is_prescription}) => is_prescription?is_prescription:medicine_data?.is_prescription,
+  isPrescription: ({ medicine_data, is_prescription }) =>
+    is_prescription ? is_prescription : medicine_data?.is_prescription
 }
 
 export const ITEM_LIST_POINT_GOODS = {
@@ -271,8 +274,8 @@ export const GOODS_INFO = {
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
       svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
       packagePrice: ({ package_price }) => package_price / 100, // 组合价
-      startNum: 'start_num',// 起订量
-      customSpecId:'custom_spec_id' //拼接规格id
+      startNum: 'start_num', // 起订量
+      customSpecId: 'custom_spec_id' //拼接规格id
     })
   },
   intro: 'intro',
@@ -287,7 +290,7 @@ export const GOODS_INFO = {
   video: 'videos',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
-  startNum: 'start_num',// 起订量
+  startNum: 'start_num' // 起订量
 }
 
 export const ESPIER_DETAIL_GOODS_INFO = {
@@ -408,8 +411,8 @@ export const ESPIER_DETAIL_GOODS_INFO = {
       vipPrice: ({ vip_price }) => vip_price / 100, // vip价格
       svipPrice: ({ svip_price }) => svip_price / 100, // svip价格
       packagePrice: ({ package_price }) => package_price / 100, // 组合价
-      startNum: 'start_num',// 起订量
-      customSpecId:'custom_spec_id' //拼接规格id
+      startNum: 'start_num', // 起订量
+      customSpecId: 'custom_spec_id' //拼接规格id
     })
   },
   intro: 'intro',
@@ -425,7 +428,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
   isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
-  startNum: 'start_num',// 起订量
+  startNum: 'start_num' // 起订量
 }
 
 export const PACKGOODS_INFO = {

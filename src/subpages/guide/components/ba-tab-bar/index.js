@@ -187,7 +187,10 @@ export default class TabBar extends Component {
       <AtTabBar
         fixed
         color={color}
-        customStyle={{ height: this.props.height, paddingBottom: `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}` }}
+        customStyle={{
+          height: this.props.height,
+          paddingBottom: `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
+        }}
         backgroundColor={backgroundColor}
         selectedColor={selectedColor}
         tabList={tabList}

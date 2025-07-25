@@ -4,8 +4,8 @@ import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { SpInput as AtInput } from '@/components'
-import './comp-input-phone.scss'
 import classNames from 'classnames'
+import './comp-input-phone.scss'
 
 const initialValue = {
   error: false

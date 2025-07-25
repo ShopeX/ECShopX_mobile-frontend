@@ -56,7 +56,7 @@ export default class SpFilterBar extends Component {
             list.map((item, idx) => (
               <View
                 className={classNames('sp-filter-bar__item', {
-                  active: curIdx === idx,
+                  active: curIdx === idx
                   // 'sort-asc': item.sort && sortOrder > 0,
                   // 'sort-desc': item.sort && sortOrder < 0
                 })}
@@ -66,7 +66,14 @@ export default class SpFilterBar extends Component {
                 <Text className='sp-filter-bar__item-text' style={curIdx === idx && { color }}>
                   {item.title}
                 </Text>
-                {item.icon && <Text className={classNames('iconfont', isArray(item.icon) ? item.icon[sortOrder == 1 ? 0 : 1] : item.icon)}></Text>}
+                {item.icon && (
+                  <Text
+                    className={classNames(
+                      'iconfont',
+                      isArray(item.icon) ? item.icon[sortOrder == 1 ? 0 : 1] : item.icon
+                    )}
+                  ></Text>
+                )}
               </View>
             ))}
         </View>

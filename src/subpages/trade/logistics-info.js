@@ -1,15 +1,15 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux"
-import { useImmer } from "use-immer"
-import Taro, { getCurrentInstance } from "@tarojs/taro";
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
-import api from "@/api"
-import doc from "@/doc"
-import { View, Picker } from "@tarojs/components"
+import api from '@/api'
+import doc from '@/doc'
+import { View, Picker } from '@tarojs/components'
 import { LOGISTICS_CODE } from '@/consts'
-import { SpPage, SpCell,SpInput as AtInput } from '@/components'
+import { SpPage, SpCell, SpInput as AtInput } from '@/components'
 import { showToast } from '@/utils'
-import "./logistics-info.scss";
+import './logistics-info.scss'
 
 const initialState = {
   logi_no: '',
@@ -22,13 +22,13 @@ function TradeLogisticsInfo(props) {
   const { logi_no, expressList, corpIndex } = state
 
   useEffect(() => {
-    const _expressList = Object.keys(LOGISTICS_CODE).map(key => {
+    const _expressList = Object.keys(LOGISTICS_CODE).map((key) => {
       return {
         name: LOGISTICS_CODE[key],
         code: key
       }
     })
-    setState(draft => {
+    setState((draft) => {
       draft.expressList = _expressList
     })
   }, [])
@@ -61,7 +61,7 @@ function TradeLogisticsInfo(props) {
 
   const onChangeExpress = (e) => {
     const { value } = e.detail
-    setState(draft => {
+    setState((draft) => {
       draft.corpIndex = value
     })
   }
@@ -71,32 +71,46 @@ function TradeLogisticsInfo(props) {
     return name
   }
 
-  return <SpPage className='page-trade-logistics-info' renderFooter={<View className='btn-wrap'>
-    <AtButton circle type='primary' onClick={onSubmit}>提交</AtButton>
-  </View>}>
-    <SpCell className='logistics-company' title='物流公司' isLink value={
-      <Picker
-        mode='selector'
-        range={expressList}
-        rangeKey='name'
-        onChange={onChangeExpress}
-      >
-        <View className='picker-value'>{getLogisticName()}</View>
-      </Picker>}></SpCell>
+  return (
+    <SpPage
+      className='page-trade-logistics-info'
+      renderFooter={
+        <View className='btn-wrap'>
+          <AtButton circle type='primary' onClick={onSubmit}>
+            提交
+          </AtButton>
+        </View>
+      }
+    >
+      <SpCell
+        className='logistics-company'
+        title='物流公司'
+        isLink
+        value={
+          <Picker mode='selector' range={expressList} rangeKey='name' onChange={onChangeExpress}>
+            <View className='picker-value'>{getLogisticName()}</View>
+          </Picker>
+        }
+      ></SpCell>
 
-    <SpCell className='logistics-no' title='物流单号' value={
-      <AtInput
-        name='logi_no'
-        value={logi_no}
-        placeholder='请填写物流单号'
-        onChange={(e) => {
-          setState(draft => {
-            draft.logi_no = e
-          })
-        }}
-      />
-    }></SpCell>
-  </SpPage>;
+      <SpCell
+        className='logistics-no'
+        title='物流单号'
+        value={
+          <AtInput
+            name='logi_no'
+            value={logi_no}
+            placeholder='请填写物流单号'
+            onChange={(e) => {
+              setState((draft) => {
+                draft.logi_no = e
+              })
+            }}
+          />
+        }
+      ></SpCell>
+    </SpPage>
+  )
 }
 
 TradeLogisticsInfo.options = {

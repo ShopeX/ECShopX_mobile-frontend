@@ -72,7 +72,7 @@ export default class WeappBtn extends Component {
     )
   }
 
-  render () {
+  render() {
     return (
       <View className='weapp-btn' onClick={this.handleClickPay.bind(this)}>
         微信支付

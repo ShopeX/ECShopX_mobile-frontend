@@ -1,7 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
-import {
-  getDistributorId,
-} from '@/utils'
+import { getDistributorId } from '@/utils'
 import api from '@/api'
 
 const initialState = {
@@ -30,7 +28,10 @@ const initialState = {
 }
 
 export const fetchUserFavs = createAsyncThunk('user/fetchUserFavs', async (params) => {
-  const { list } = await api.member.favsList({ ...params , distributor_id: params?.distributor_id || getDistributorId()})
+  const { list } = await api.member.favsList({
+    ...params,
+    distributor_id: params?.distributor_id || getDistributorId()
+  })
   return {
     list
   }
@@ -49,8 +50,16 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     updateUserInfo: (state, { payload }) => {
-      const { deposit, memberInfo, cardInfo, vipgrade, is_open_popularize, is_promoter, favs ,salesPersonList} =
-        payload
+      const {
+        deposit,
+        memberInfo,
+        cardInfo,
+        vipgrade,
+        is_open_popularize,
+        is_promoter,
+        favs,
+        salesPersonList
+      } = payload
       state.userInfo = {
         ...memberInfo,
         salesPersonList,
@@ -114,7 +123,13 @@ const userSlice = createSlice({
   }
 })
 
-export const { updateUserInfo, updateChooseAddress, updateLocation, updateCheckChief, clearUserInfo, updateIsNewUser } =
-  userSlice.actions
+export const {
+  updateUserInfo,
+  updateChooseAddress,
+  updateLocation,
+  updateCheckChief,
+  clearUserInfo,
+  updateIsNewUser
+} = userSlice.actions
 
 export default userSlice.reducer

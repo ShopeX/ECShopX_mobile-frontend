@@ -5,7 +5,17 @@ import configStore from '@/store'
 const { store } = configStore()
 
 function linkPage(data) {
-  const { id, title, linkPage, linkType, type, distributor_id, navigation = false, content, seletedTags = [] } = data
+  const {
+    id,
+    title,
+    linkPage,
+    linkType,
+    type,
+    distributor_id,
+    navigation = false,
+    content,
+    seletedTags = []
+  } = data
   const { id: dtid } = getCurrentInstance().router.params
   // h5链接
   if (linkType == 1) {
@@ -16,15 +26,17 @@ function linkPage(data) {
   }
   if (navigation) {
     let tags = []
-    seletedTags.forEach(item => {
+    seletedTags.forEach((item) => {
       tags.push({
         tag_id: item.tag_id,
         tag_name: item.tag_name
       })
     })
-    let seleted = stringify(tags);
+    let seleted = stringify(tags)
     Taro.navigateTo({
-      url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${encodeURIComponent(seleted)}`
+      url: `/subpages/ecshopx/navigation-ibs?content=${content}&id=${id}&seletedTags=${encodeURIComponent(
+        seleted
+      )}`
     })
     return
   }
@@ -63,8 +75,8 @@ function linkPage(data) {
     case 'seckill':
       url = '/marketing/pages/item/seckill-goods-list?seckill_id=' + id
       break
-    case "purchase_activity":
-      url = '/subpages/purchase/select-identity?is_redirt=1&activity_id='+id
+    case 'purchase_activity':
+      url = '/subpages/purchase/select-identity?is_redirt=1&activity_id=' + id
       clearPurchaseDtid()
       break
     case 'link':
@@ -72,30 +84,36 @@ function linkPage(data) {
       url = path
       if (id == 'purchase') {
         clearPurchaseDtid()
+      } else if (id == 'recharge') {
+        url = '/others/pages/recharge/index'
+      } else if (id == 'serviceH5Coach') {
+      } else if (id == 'pointShop') {
+        url = '/subpages/pointshop/list'
+      } else if (id == 'levelMemberVip') {
+        url = '/subpage/pages/vip/vipgrades'
+      } else if (id == 'serviceH5Coach') {
+        url = '/marketing/pages/service/wap-link?tp=o'
+      } else if (id == 'serviceH5Sales') {
+        url = '/marketing/pages/service/wap-link?tp=r'
+      } else if (id == 'storelist') {
+        url = '/marketing/pages/service/store-list'
+      } else if (id == 'aftersales') {
+        url = '/marketing/pages/service/refund-car'
+      } else if (id == 'mycoach') {
+        url = '/marketing/pages/service/online-guide'
+      } else if (id == 'hottopic') {
+        url = '/pages/recommend/list'
+      } else if (id === 'floorguide') {
+        url = '/pages/floorguide/index'
+      } else if (id === 'grouppurchase') {
+        url = '/groupBy/pages/home/index'
+      } else if (id === 'registActivity') {
+        url = '/marketing/pages/member/activity-list'
       } else if (id == 'applyChief') {
         url += `?distributor_id=${dtid || distributor_id}`
+      } else {
+        url = ''
       }
-      // if (id == 'vipgrades' || id == 'levelMemberVip') {
-      //   url = '/subpage/pages/vip/vipgrades'
-      // } else if (id == 'purchase') {
-      //   url = '/subpages/purchase/select-identity?is_redirt=1'
-      //   clearPurchaseDtid()
-      // } else if (id == 'recharge') {
-      //   url = '/others/pages/recharge/index'
-      // } else if (id == 'serviceH5Coach') {
-      // } else if (id == 'pointShop') {
-      //   url = '/subpages/pointshop/list'
-      // } else if (id == 'hottopic') {
-      //   url = '/pages/recommend/list'
-      // } else if (id === 'floorguide') {
-      //   url = '/pages/floorguide/index'
-      // } else if (id === 'grouppurchase') {
-      //   url = '/groupBy/pages/home/index'
-      // } else if(id === 'registActivity'){
-      //   url = '/marketing/pages/member/activity-list'
-      // } else {
-      //   url = ''
-      // }
       break
     case 'tag':
       url = '/pages/item/list?tag_id=' + id
@@ -138,9 +156,10 @@ function linkPage(data) {
   }
 }
 
-function clearPurchaseDtid(){
+function clearPurchaseDtid() {
   store.dispatch({
-    type: 'purchase/updateCurDistributorId', payload: null
+    type: 'purchase/updateCurDistributorId',
+    payload: null
   })
 }
 
@@ -173,11 +192,13 @@ const memberSetting = {
     title: '我的拼团',
     path: '/marketing/pages/member/group-list'
   },
-  boost_activity: { // 平台版本隐藏助力活动和助力订单
+  boost_activity: {
+    // 平台版本隐藏助力活动和助力订单
     title: '助力活动',
     path: '/boost/pages/home/index'
   },
-  boost_order: { // 平台版本隐藏助力活动和助力订单
+  boost_order: {
+    // 平台版本隐藏助力活动和助力订单
     title: '助力订单',
     path: '/boost/pages/order/index'
   },
@@ -189,7 +210,8 @@ const memberSetting = {
     title: '我的收藏',
     path: '/pages/member/item-fav'
   },
-  tenants: { // 云店版本不显示
+  tenants: {
+    // 云店版本不显示
     title: '商家入驻',
     path: '/subpages/merchant/login'
   },
@@ -209,7 +231,8 @@ const memberSetting = {
     title: '自提订单',
     path: '/subpages/trade/ziti-list'
   },
-  community_group_enable: { // H5不支持
+  community_group_enable: {
+    // H5不支持
     title: '社区团购',
     path: '/subpages/community/index'
   }

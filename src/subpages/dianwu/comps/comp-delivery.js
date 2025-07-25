@@ -90,7 +90,7 @@ function CompDelivery(props) {
                   <View className='information'>
                     <Text className='information-tltle'>每单配送费</Text>
                     <Text>
-                      {item.payment_fee/100}
+                      {item.payment_fee / 100}
                       {item.payment_method === 'order' ? '元/每单' : '%/每单'}
                     </Text>
                   </View>

@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux"
-import { useImmer } from "use-immer"
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import api from "@/api"
-import doc from "@/doc"
-import { View } from "@tarojs/components"
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import api from '@/api'
+import doc from '@/doc'
+import { View } from '@tarojs/components'
 import { SpCell } from '@/components'
 import { pickBy } from '@/utils'
-import "./comp-trade-info.scss";
+import './comp-trade-info.scss'
 
 const initialState = {
   tradeId: '',
@@ -56,10 +56,7 @@ function CompTradeInfo(props) {
     let _receiveDate = ''
     let _receiveAddress = ''
 
-    if (
-      order_class == 'excard' ||
-      order_class == 'shopadmin'
-    ) {
+    if (order_class == 'excard' || order_class == 'shopadmin') {
       _buyMember = `${username} ${mobile}`
       _receiveName = `${username}（${mobile}）`
       _receiveAddress = `${store_address}（${store_name}）`
@@ -75,7 +72,7 @@ function CompTradeInfo(props) {
       _receiveAddress = `${receiver_state}${receiver_city}${receiver_district}${receiver_address}`
     }
 
-    setState(draft => {
+    setState((draft) => {
       draft.tradeId = trade_id
       draft.orderInfo = pickBy(orderInfo, doc.dianwu.ORDER_INFO)
       draft.buyMember = _buyMember
@@ -88,13 +85,15 @@ function CompTradeInfo(props) {
     onFetch(info)
   }
 
-  return <View className='comp-trade-info'>
-    <SpCell title='订单ID'>{tradeId}</SpCell>
-    <SpCell title='买家'>{buyMember}</SpCell>
-    <SpCell title={`${receiptType == 'ziti' ? '提货人' : '收货人'}`}>{receiveName}</SpCell>
-    <SpCell title={`${receiptType == 'ziti' ? '提货地址' : '收货地址'}`}>{receiveAddress}</SpCell>
-    {receiveDate && <SpCell title='提货时间'>{receiveDate}</SpCell>}
-  </View>;
+  return (
+    <View className='comp-trade-info'>
+      <SpCell title='订单ID'>{tradeId}</SpCell>
+      <SpCell title='买家'>{buyMember}</SpCell>
+      <SpCell title={`${receiptType == 'ziti' ? '提货人' : '收货人'}`}>{receiveName}</SpCell>
+      <SpCell title={`${receiptType == 'ziti' ? '提货地址' : '收货地址'}`}>{receiveAddress}</SpCell>
+      {receiveDate && <SpCell title='提货时间'>{receiveDate}</SpCell>}
+    </View>
+  )
 }
 
 CompTradeInfo.options = {

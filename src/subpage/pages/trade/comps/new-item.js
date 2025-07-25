@@ -78,7 +78,7 @@ export default class TradeItem extends Component {
       showActions,
       colors,
       rateStatus,
-      isShowDistributorInfo,
+      isShowDistributorInfo
     } = this.props
 
     if (!info) {
@@ -94,7 +94,12 @@ export default class TradeItem extends Component {
           </View>
         )}
         <View className='trade-item__msg'>
-          <View className='item lineone'>{info.order_class === 'employee_purchase' && <Text className='purchase-icon'>内购</Text>}订单编号：{info.tid}</View>
+          <View className='item lineone'>
+            {info.order_class === 'employee_purchase' && (
+              <Text className='purchase-icon'>内购</Text>
+            )}
+            订单编号：{info.tid}
+          </View>
           <View className='item linetwo'>下单时间：{info.create_date}</View>
         </View>
         <View className='trade-item__bd' onClick={onClick}>
@@ -130,8 +135,7 @@ export default class TradeItem extends Component {
                   取消订单
                 </Button>
               ) : null}
-              {
-                (info.prescription_status == 0 || info.prescription_status == 2) &&
+              {(info.prescription_status == 0 || info.prescription_status == 2) && (
                 <Button
                   className='btn-action'
                   style={`background: ${colors.data[0].primary}`}
@@ -139,8 +143,7 @@ export default class TradeItem extends Component {
                 >
                   立即支付
                 </Button>
-              }
-
+              )}
             </View>
           </View>
         )}

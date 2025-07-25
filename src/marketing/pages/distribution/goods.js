@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
-import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SearchBar, SpPage } from '@/components'
+import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SpSearchBar, SpPage } from '@/components'
 import S from '@/spx'
 import { getDtidIdUrl } from '@/utils/helper'
 import api from '@/api'
@@ -47,7 +47,7 @@ export default class DistributionGoods extends Component {
       selectParams: [],
       list: [],
       goodsIds: [],
-      top:0
+      top: 0
     }
   }
 
@@ -246,7 +246,7 @@ export default class DistributionGoods extends Component {
         this.setState(
           {
             goodsIds: [...this.state.goodsIds, id],
-            scrollTop:this.state.top
+            scrollTop: this.state.top
           },
           () => {
             S.toast('上架成功')
@@ -260,7 +260,7 @@ export default class DistributionGoods extends Component {
         this.setState(
           {
             goodsIds,
-            scrollTop:this.state.top
+            scrollTop: this.state.top
           },
           () => {
             S.toast('下架成功')
@@ -375,7 +375,7 @@ export default class DistributionGoods extends Component {
       <SpPage className='page-distribution-shop'>
         <View>
           <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
-          <SearchBar
+          <SpSearchBar
             showDailog={false}
             keyword={query ? query.keywords : ''}
             onFocus={() => false}

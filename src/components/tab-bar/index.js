@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View } from '@tarojs/components'
-import { connect } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { getCurrentRoute } from '@/utils'
 import S from '@/spx'
@@ -14,7 +12,7 @@ const defaultTabList = []
 // }))
 export default class TabBar extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -30,24 +28,24 @@ export default class TabBar extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.initTabbarData()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.current) {
       this.setState({ localCurrent: nextProps.current })
     }
     this.initTabbarData(nextProps)
   }
 
-  componentDidShow () {
+  componentDidShow() {
     if (this.state.tabList.length > 0) {
       this.fetchCart()
     }
   }
 
-  initTabbarData (props) {
+  initTabbarData(props) {
     const { tabBar } = Object.assign(this.props, props)
     let list = []
 
@@ -119,7 +117,7 @@ export default class TabBar extends Component {
     )
   }
 
-  get cartCount () {
+  get cartCount() {
     // console.log('computed')
     return this.props.cartCount
   }
@@ -132,7 +130,7 @@ export default class TabBar extends Component {
   //   }
   // }
 
-  updateCurTab () {
+  updateCurTab() {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
     const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
@@ -151,7 +149,7 @@ export default class TabBar extends Component {
     }
   }
 
-  async fetchCart () {
+  async fetchCart() {
     if (!S.getAuthToken()) return
     const { tabList } = this.state
     const cartTabIdx = tabList.findIndex((item) => item.url.indexOf('cart') !== -1)
@@ -196,7 +194,7 @@ export default class TabBar extends Component {
     }
   }
 
-  render () {
+  render() {
     const { color, backgroundColor, selectedColor, tabList, localCurrent } = this.state
     const { tabBar } = this.props
 

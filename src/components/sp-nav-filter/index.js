@@ -1,4 +1,4 @@
-import React, { useEffect,useImperativeHandle } from 'react'
+import React, { useEffect, useImperativeHandle } from 'react'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { View, Text } from '@tarojs/components'
@@ -17,9 +17,9 @@ const initState = {
   cateSecondIndex: null,
   cateThirdIndex: null,
   init: true,
-  offsetHight:140,
+  offsetHight: 140
 }
-function SpNavFilter(props,ref) {
+function SpNavFilter(props, ref) {
   const [state, setState] = useImmer(initState)
 
   const {
@@ -38,29 +38,27 @@ function SpNavFilter(props,ref) {
 
   const { info, onChange, children } = props
 
-
   useDidShow(() => {
     //根据元素高度计算mask位置和高度
-    setTimeout(()=>{
-     Taro.createSelectorQuery()
-          .select('.sp-nav-filter')
-          .boundingClientRect((res) => {
-            console.log('boundingClientRect:', res)
-            if (res) {
-              setState(v=>{
-                v.offsetHight = res.top + res.height
-              })
-            }
-          })
-          .exec()
-    },1000)
-  });
+    setTimeout(() => {
+      Taro.createSelectorQuery()
+        .select('.sp-nav-filter')
+        .boundingClientRect((res) => {
+          console.log('boundingClientRect:', res)
+          if (res) {
+            setState((v) => {
+              v.offsetHight = res.top + res.height
+            })
+          }
+        })
+        .exec()
+    }, 1000)
+  })
 
   useEffect(() => {
     console.log('----', info)
     initDynamicData()
   }, [info])
-
 
   const initDynamicData = async () => {
     const _typeList = JSON.parse(JSON.stringify(info))
@@ -219,10 +217,10 @@ function SpNavFilter(props,ref) {
     onChange && onChange('category', categoryId)
   }
 
-  console.log('--------',cateListSecond)
+  console.log('--------', cateListSecond)
 
   return (
-    <View className='sp-nav-filter' >
+    <View className='sp-nav-filter'>
       <View className='sp-nav-filter-content'>
         {typeList.map((item, idx) => (
           <View
@@ -317,7 +315,12 @@ function SpNavFilter(props,ref) {
           )}
         </View>
       )}
-      {visible && <View className='mask' style={{height:`calc(100vh - ${offsetHight}px)`,top:`${offsetHight}px`}}></View>}
+      {visible && (
+        <View
+          className='mask'
+          style={{ height: `calc(100vh - ${offsetHight}px)`, top: `${offsetHight}px` }}
+        ></View>
+      )}
     </View>
   )
 }

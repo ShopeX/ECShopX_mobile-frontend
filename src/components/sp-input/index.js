@@ -11,7 +11,7 @@ function SpInput(props) {
   const [cursor, setCursor] = useState(-1)
 
   const handleInput = async (event) => {
-    console.log('sp-input', event,event.detail.value)
+    console.log('sp-input', event, event.detail.value)
     if (props.maxLength && event.detail.value?.length > props.maxLength) {
       return
     }
@@ -82,7 +82,7 @@ SpInput.defaultProps = {
   placeholder: '',
   maxLength: null,
   onChange: () => {},
-  onConfirm:() => {}
+  onConfirm: () => {}
 }
 
 export default SpInput

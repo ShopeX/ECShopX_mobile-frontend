@@ -17,7 +17,7 @@ export default class DistributionGoodsItem extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { info, onClick, className, isRelease, status, shareDataChange } = this.props
     console.log('DistributionGoodsItem', this.props)
     if (!info) {
@@ -64,7 +64,7 @@ export default class DistributionGoodsItem extends Component {
                   className='goods-item__share-btn'
                   data-info={info}
                   openType='share'
-                  onClick={()=>Taro.setStorageSync('shareData',info)}
+                  onClick={() => Taro.setStorageSync('shareData', info)}
                   size='small'
                 >
                   <Text class='iconfont icon-share2'></Text>

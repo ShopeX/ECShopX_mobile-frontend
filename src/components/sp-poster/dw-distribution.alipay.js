@@ -5,7 +5,6 @@ import { drawText, drawImage, drawBlock } from './helper'
 // const canvasWidth = 750
 // const canvasHeight = 1335
 
-
 const canvasWidth = 600
 const canvasHeight = 960
 
@@ -32,7 +31,8 @@ class DistributionPoster {
     const { isOpenShop, shop_status, qrcode_bg_img } = this.info
     const { user_id, avatar } = this.userInfo
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
-    const url = (isOpenShop && shop_status == 1) ? `marketing/pages/distribution/shop-home` : `pages/index`
+    const url =
+      isOpenShop && shop_status == 1 ? `marketing/pages/distribution/shop-home` : `pages/index`
     let wxappCode
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
     // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
@@ -40,7 +40,7 @@ class DistributionPoster {
       url: `${host}/api/h5app/alipaymini/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`, //仅为示例，并非真实的接口地址
       header: {
         'content-type': 'application/json' // 默认值
-      },
+      }
     })
     wxappCode = res.data.data.qr_code_url
 
@@ -84,7 +84,7 @@ class DistributionPoster {
         sx: 0,
         sy: 0,
         sw: this.bkg.width,
-        sh: this.bkg.height,
+        sh: this.bkg.height
         // borderRadius: 80
       },
       drawOptions

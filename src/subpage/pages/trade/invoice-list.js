@@ -13,7 +13,7 @@ import './invoice-list.scss'
 @withPager
 @withLogin()
 export default class InvoiceList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -22,13 +22,13 @@ export default class InvoiceList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  componentWillUnmount () {}
+  componentWillUnmount() {}
 
-  async fetch (params) {
+  async fetch(params) {
     params = _mapKeys(
       {
         ...params
@@ -128,7 +128,7 @@ export default class InvoiceList extends Component {
     }
   }
 
-  render () {
+  render() {
     const { list, page } = this.state
 
     return (

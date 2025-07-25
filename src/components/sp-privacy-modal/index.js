@@ -18,7 +18,7 @@ const initState = {
 
 function SpPrivacyModal(props) {
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
-  const { open = false, onCancel = () => { }, onConfirm = () => { } } = props
+  const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
   const [info, setInfo] = useImmer(initState)
   useEffect(() => {
     if (open) {
@@ -59,9 +59,7 @@ function SpPrivacyModal(props) {
       })}
     >
       <View className='sp-privacy-modal__overlay'></View>
-      <View
-        className='modal-container'
-      >
+      <View className='modal-container'>
         <View className='modal-hd'>
           <Text className='title'>个人隐私保护指引</Text>
         </View>

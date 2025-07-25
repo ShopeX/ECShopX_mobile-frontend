@@ -2,7 +2,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { hex2rgb } from '@/utils'
 import { useSelector } from 'react-redux'
 
-
 function useThemsColor() {
   const sys = useSelector((state) => state.sys)
   const { colorPrimary, colorMarketing, colorAccent, rgb } = sys
@@ -33,7 +32,8 @@ function useThemsColor() {
     }
 
     // 使用正则表达式匹配路由前缀
-    const regex = res.split('/').length >= 4 ? res.match(/(?:[^\/]*\/){2}([^\/]+)(?:\/|$)/)[0] : null
+    const regex =
+      res.split('/').length >= 4 ? res.match(/(?:[^\/]*\/){2}([^\/]+)(?:\/|$)/)[0] : null
 
     // 检查是否找到匹配项
     const status = regex !== null && prefixes[regex]
@@ -47,7 +47,7 @@ function useThemsColor() {
       '--color-accent': status ? newPrefixes.accent : colorAccent,
       '--color-rgb': status ? hex2rgb(newPrefixes.primary).join(',') : rgb,
       '--color-dianwu-primary': '#4980FF',
-      '--color-dianwu-rgb': hex2rgb('#4980FF').join(','),
+      '--color-dianwu-rgb': hex2rgb('#4980FF').join(',')
     }
     return theme
   }
@@ -56,6 +56,5 @@ function useThemsColor() {
     themeColor
   }
 }
-
 
 export default useThemsColor

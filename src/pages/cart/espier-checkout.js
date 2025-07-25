@@ -17,7 +17,7 @@ import {
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
-import { changeZitiStore, changeInWhite } from '@/store/slices/shop'
+import { changeZitiStore } from '@/store/slices/shop'
 import {
   isObjectsValue,
   isWeixin,
@@ -71,7 +71,7 @@ function CartCheckout(props) {
   const calc = useRef(false)
   const deliverRef = useRef()
   const { userInfo, address } = useSelector((state) => state.user)
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const { colorPrimary, pointName } = useSelector((state) => state.sys)
   const { coupon, zitiAddress } = useSelector((state) => state.cart)
   const shop = useSelector((state) => state.shop)
 
@@ -113,7 +113,7 @@ function CartCheckout(props) {
     deliveryTimeList, //自配送时间
     salespersonInfo, // 业务员信息
     pointPayFirst,
-    isFirstCalc,//开启优先积分第一次需要填充积分抵扣
+    isFirstCalc //开启优先积分第一次需要填充积分抵扣
   } = state
 
 
@@ -236,7 +236,6 @@ function CartCheckout(props) {
       return
     }
 
-
     if (isWeixin) {
       const templeparams = {
         temp_name: 'yykweishop',
@@ -318,7 +317,6 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.submitLoading = false
       })
-      dispatch(changeInWhite())
       Taro.hideLoading()
       setTimeout(() => {
         Taro.navigateBack()
@@ -331,7 +329,7 @@ function CartCheckout(props) {
       draft.submitLoading = false
     })
 
-    if(!totalInfo?.prescription_status == 0){
+    if (!totalInfo?.prescription_status == 0) {
       Taro.redirectTo({
         url: `/subpages/prescription/prescription-information?order_id=${orderId}`
       })
@@ -371,7 +369,8 @@ function CartCheckout(props) {
     setState((draft) => {
       draft.receiptType = receipt_type
       draft.distributorInfo = distributor_info
-      if (pointPayFirst) { // 后端打开默认积分开关
+      if (pointPayFirst) {
+        // 后端打开默认积分开关
         draft.point_use = receipt_type == 'ziti' ? pointInfo?.max_point_ziti : pointInfo.max_point
         draft.isFirstCalc = true
       } else {
@@ -550,7 +549,6 @@ function CartCheckout(props) {
       orderRes = await api.cart.total(cus_parmas)
     } catch (e) {
       console.log('e:', e)
-      dispatch(changeInWhite())
     }
     Taro.hideLoading()
     const {
@@ -577,7 +575,7 @@ function CartCheckout(props) {
       point_use,
       user_point = 0,
       max_point = 0,
-      max_point_ziti=0,
+      max_point_ziti = 0,
       is_open_deduct_point,
       deduct_point_rule,
       real_use_point,
@@ -722,15 +720,17 @@ function CartCheckout(props) {
         draft.community = community
       }
 
-      {/* 平台版自营店铺、云店、官方商城支持积分抵扣 */}
-      if ((VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0))) {
-        if(isFirstCalc && Number(point_rule?.point_pay_first) > 0) {
+      {
+        /* 平台版自营店铺、云店、官方商城支持积分抵扣 */
+      }
+      if (VERSION_STANDARD || VERSION_B2C || (VERSION_PLATFORM && shop_id == 0)) {
+        if (isFirstCalc && Number(point_rule?.point_pay_first) > 0) {
           const maxpoint = receiptType == 'ziti' ? max_point_ziti : max_point
-          let firstPoint = Math.min(maxpoint,user_point)
+          let firstPoint = Math.min(maxpoint, user_point)
           draft.point_use = firstPoint
           draft.pointInfo = {
             ...point_info,
-            real_use_point:firstPoint
+            real_use_point: firstPoint
           }
           draft.isFirstCalc = false
         }
@@ -770,7 +770,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
-    const routerParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+    const routerParams = (await Taro.getStorageSync(SG_GUIDE_PARAMS)) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -785,17 +785,17 @@ function CartCheckout(props) {
       // 云店店铺商铺下单这个参数应该是0
       isNostores: type == 'distributor' ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type:payType,
+      pay_type: payType,
       // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
     if (routerParams?.cxdid) {
-      cus_parmas.cxdid = routerParams?.cxdid;
-      cus_parmas.distributor_id = routerParams?.dtid;
-      cus_parmas.cart_type = "cxd";
-      cus_parmas.order_type = "normal_shopguide";
-      cus_parmas.salesman_id = routerParams?.smid;
+      cus_parmas.cxdid = routerParams?.cxdid
+      cus_parmas.distributor_id = routerParams?.dtid
+      cus_parmas.cart_type = 'cxd'
+      cus_parmas.order_type = 'normal_shopguide'
+      cus_parmas.salesman_id = routerParams?.smid
       cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
@@ -908,9 +908,9 @@ function CartCheckout(props) {
   }
 
   const getPayChannelLabel = () => {
-    if(payChannel == 'offline_pay'){
-      return  paymentName
-    }else{
+    if (payChannel == 'offline_pay') {
+      return paymentName
+    } else {
       return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
     }
   }
@@ -1178,9 +1178,7 @@ function CartCheckout(props) {
                       {`${pointName}可用`}
                     </Text>
                   )}
-                  <Text className='invoice-title'>
-                    {getPayChannelLabel()}
-                  </Text>
+                  <Text className='invoice-title'>{getPayChannelLabel()}</Text>
                 </View>
               }
             />
@@ -1233,13 +1231,9 @@ function CartCheckout(props) {
             )}
         </View>
 
-        {
-          !totalInfo?.prescription_status == 0 &&
-          <View className='cart-checkout__title'>
-          订单中包含处方药，提交订单后请补充处方信息
-        </View>
-        }
-
+        {!totalInfo?.prescription_status == 0 && (
+          <View className='cart-checkout__title'>订单中包含处方药，提交订单后请补充处方信息</View>
+        )}
       </ScrollView>
       <CompPointUse
         isOpened={isPointOpenModal}

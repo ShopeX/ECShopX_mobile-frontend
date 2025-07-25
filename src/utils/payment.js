@@ -3,7 +3,7 @@ import { payment_platform } from '@/utils/platform'
 import { isWxWeb, isAlipay } from '@/utils'
 import api from '@/api'
 
-export default async function getPaymentList (distributor_id) {
+export default async function getPaymentList(distributor_id) {
   let params = {}
   if (distributor_id) {
     params = {
@@ -11,7 +11,7 @@ export default async function getPaymentList (distributor_id) {
       platform: isWxWeb ? 'wxPlatform' : payment_platform
     }
   }
-  if(isAlipay){
+  if (isAlipay) {
     params = {
       platform: payment_platform
     }

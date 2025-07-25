@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '会员权益',
+  navigationBarTitleText: '会员权益'
 }

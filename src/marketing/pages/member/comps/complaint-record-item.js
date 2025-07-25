@@ -10,15 +10,15 @@ export default class ComplaintRecordItem extends Component {
     isOpened: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {}
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     let { info, onClick } = this.props
 
     if (!info) return null

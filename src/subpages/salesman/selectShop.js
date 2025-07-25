@@ -1,7 +1,7 @@
 import Taro, { useDidShow } from '@tarojs/taro'
 import { useEffect, useRef } from 'react'
-import { classNames, formatTime} from '@/utils'
-import {  SpPage, SpSearchInput, SpScrollView } from '@/components'
+import { classNames, formatTime } from '@/utils'
+import { SpPage, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import CompShopList from './comps/comp-shop-list'
@@ -84,7 +84,6 @@ const SelectShop = () => {
           return <CompShopList key={index} item={item} />
         })}
       </SpScrollView>
-
     </SpPage>
   )
 }

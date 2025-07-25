@@ -22,8 +22,8 @@ import {
 import doc from '@/doc'
 import { classNames, pickBy } from '@/utils'
 import api from '@/api'
-import './shop-list.scss'
 import { Tracker } from '@/service'
+import './shop-list.scss'
 //plusValue 代表正序 minusValue代表倒序
 const TIME_SORT = 0
 const SALE_PLUS_SORT = 4
@@ -53,7 +53,7 @@ const initialState = {
   plus: true
 }
 
-function shopList (props) {
+function shopList(props) {
   const [state, setState] = useImmer(initialState)
   const { brandSelect, businessServices, name, curFilterIdx, plus } = state
   const goodsRef = useRef()

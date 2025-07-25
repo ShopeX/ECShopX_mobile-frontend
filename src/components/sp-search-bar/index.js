@@ -15,11 +15,11 @@ export default class SpSearchBar extends Component {
     history: true,
     placeholder: '搜索',
     localStorageKey: 'searchHistory',
-    onCancel: () => { },
-    onChange: () => { },
-    onClear: () => { },
-    onFocus: () => { },
-    onConfirm: () => { }
+    onCancel: () => {},
+    onChange: () => {},
+    onClear: () => {},
+    onFocus: () => {},
+    onConfirm: () => {}
   }
 
   constructor(props) {
@@ -57,7 +57,7 @@ export default class SpSearchBar extends Component {
         })
         this.setState({ historyList: stringArr })
       })
-      .catch(() => { })
+      .catch(() => {})
   }
 
   handleChangeSearch = (value) => {

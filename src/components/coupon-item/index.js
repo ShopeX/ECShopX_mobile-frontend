@@ -177,12 +177,7 @@ export default class CouponItem extends Component {
                     {obj.tag}
                   </View>
                   <View className='name'>
-                    {showDtName && (
-                      <Text>
-                        {this.getDistributorName() || '平台自营'}
-                        {'：'}
-                      </Text>
-                    )}
+                    {showDtName && <Text>{this.getDistributorName() || '平台自营'}：</Text>}
                     <Text>{info.title}</Text>
                   </View>
                 </View>

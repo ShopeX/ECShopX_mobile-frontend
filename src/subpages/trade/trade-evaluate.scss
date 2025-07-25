@@ -1,5 +1,5 @@
 .page-trade-evaluate {
-  .sp-page-body {
+  .sp-page__body {
     overflow: auto;
   }
 
@@ -24,7 +24,7 @@
     display: flex;
     align-items: center;
     margin-top: 32px;
-    border-bottom: 1PX solid #ddd;
+    border-bottom: 1px solid #ddd;
     padding-bottom: 24px;
 
     .label {
@@ -35,7 +35,7 @@
 
     .at-rate__icon {
       &--on {
-        color: #D92128;
+        color: #d92128;
       }
     }
   }
@@ -50,7 +50,6 @@
       font-size: 24px;
       color: #aaa;
     }
-
   }
 
   .goods-rate-images {

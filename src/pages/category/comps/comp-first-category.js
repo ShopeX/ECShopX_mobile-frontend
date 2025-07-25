@@ -13,7 +13,7 @@ const initialState = {
 function CompFirstCategory(props) {
   const [state, setState] = useImmer(initialState)
   const { isShowFloat, scrollIntoView } = state
-  const { onClick = () => { }, list = [], cusIndex = 0 } = props
+  const { onClick = () => {}, list = [], cusIndex = 0 } = props
 
   const onSelectClick = (index) => {
     setState((draft) => {
@@ -61,9 +61,7 @@ function CompFirstCategory(props) {
       >
         <View className='sp-select-box'>
           <ScrollView className='category-full' scrollY>
-            <View className='category-full-container'>
-              {renderCategoryItem()}
-            </View>
+            <View className='category-full-container'>{renderCategoryItem()}</View>
           </ScrollView>
         </View>
       </View>

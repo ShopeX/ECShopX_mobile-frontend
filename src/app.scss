@@ -97,7 +97,6 @@ body {
 }
 
 .btns {
-
   button,
   .at-button {
     margin: 0 0 $edge-margin;
@@ -114,7 +113,6 @@ body {
 
 .toolbar {
   &.toolbar-inline {
-
     .at-button,
     at-button {
       width: 100%;
@@ -141,7 +139,8 @@ body {
     font-size: $font-size;
   }
 
-  &-hd {}
+  &-hd {
+  }
 
   &-ft {
     max-width: 120px;
@@ -183,7 +182,8 @@ switch,
 //   }
 // }
 
-.sp-search-bar {}
+.sp-search-bar {
+}
 
 .usericon {
   border: 4px solid #fff;

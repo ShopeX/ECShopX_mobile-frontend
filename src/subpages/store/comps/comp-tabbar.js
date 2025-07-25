@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId,isWeb } from '@/utils'
+import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
@@ -63,11 +63,9 @@ function CompTabbar(props) {
   return (
     <AtTabBar
       fixed
-      classNames={classNames(
-        {
-          'comp-tabbar': true
-        }
-      )}
+      classNames={classNames({
+        'comp-tabbar': true
+      })}
       iconSize='20'
       selectedColor={colorPrimary}
       tabList={tabList}

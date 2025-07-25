@@ -29,7 +29,7 @@ const MyPage = () => {
       title: '加载中',
       icon: 'none'
     })
-    const res = await api.delivery.selfdeliveryList({...deliveryPersonnel})
+    const res = await api.delivery.selfdeliveryList({ ...deliveryPersonnel })
     setState((draft) => {
       draft.information = res.list[0]
     })

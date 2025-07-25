@@ -25,10 +25,7 @@ function SpGoodsItem(props) {
   } = item_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
-  const {
-    activity_price: enPurActivityPrice,
-    sale_price: enPurSalePrice,
-  } = items_page
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
 
   const {
     onClick,
@@ -96,8 +93,11 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${(!!point || goodsType == 'point') ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
-      }?${qs.stringify(query)}`
+    const url = `${
+      !!point || goodsType == 'point'
+        ? '/subpages/pointshop/espier-detail'
+        : '/pages/item/espier-detail'
+    }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -133,12 +133,7 @@ function SpGoodsItem(props) {
 
         <View className='goods-info'>
           <View className='goods-title'>
-            {
-              info?.isPrescription == 1 &&
-              <Text className='prescription-drug'>
-                处方药
-              </Text>
-            }
+            {info?.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
             {info.itemName}
           </View>
           <View className='goods-desc'>{info.brief}</View>
@@ -160,7 +155,7 @@ function SpGoodsItem(props) {
           {info.point && (
             <View className='goods-point'>
               <SpPoint value={info.point} />
-              {info.price > 0 ? <Text style="margin: 0 4px;">+</Text> : ''}
+              {info.price > 0 ? <Text style='margin: 0 4px;'>+</Text> : ''}
               {info.price > 0 ? <SpPrice primary size={32} value={info.price} /> : ''}
             </View>
           )}
@@ -168,14 +163,20 @@ function SpGoodsItem(props) {
           {!info.point && showPrice && (
             <View className='goods-price'>
               <View className='gd-price'>
-                {isPurchase && <View>
-                  <SpPrice size={36} value={info.price}></SpPrice>
-                  {info.activityPrice && enPurActivityPrice && <View className='act-price'>
-                    活动价¥{info.activityPrice.toFixed(2)}
-                    {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
-                  </View>}
-                </View>}
-                {!isPurchase && <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>}
+                {isPurchase && (
+                  <View>
+                    <SpPrice size={36} value={info.price}></SpPrice>
+                    {info.activityPrice && enPurActivityPrice && (
+                      <View className='act-price'>
+                        活动价¥{info.activityPrice.toFixed(2)}
+                        {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
+                      </View>
+                    )}
+                  </View>
+                )}
+                {!isPurchase && (
+                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                )}
                 {info.marketPrice > 0 && enMarketPrice && (
                   <SpPrice
                     size={26}
@@ -281,7 +282,7 @@ SpGoodsItem.options = {
 SpGoodsItem.defaultProps = {
   onClick: null,
   showMarketPrice: true,
-  showFav:false,
+  showFav: false,
   showAddCart: false,
   showSku: false,
   noCurSymbol: false,
@@ -296,9 +297,9 @@ SpGoodsItem.defaultProps = {
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,
-  onChange: () => { },
-  onAddToCart: () => { },
-  onStoreClick: () => { },
+  onChange: () => {},
+  onAddToCart: () => {},
+  onStoreClick: () => {}
 }
 
 export default SpGoodsItem

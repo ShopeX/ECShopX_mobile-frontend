@@ -92,7 +92,6 @@ export function getMemberItems(params) {
   return req.get('/community/member/items', params)
 }
 
-
 // 获取申请信息
 export function getAppayFields(params) {
   return req.get('/community/chief/apply_fields', params)
@@ -125,7 +124,7 @@ export function getCashWithDraw(params) {
 
 // 获取团长提现账户
 export function getCashWithDrawAccount() {
-  return req.get('/community/chief/cash_withdrawal/account' )
+  return req.get('/community/chief/cash_withdrawal/account')
 }
 
 // 更新团长提现账户

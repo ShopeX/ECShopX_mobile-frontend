@@ -66,7 +66,7 @@ export default class WgtFloorImg extends Component {
                         {item.ImgTitle}
                       </View>
                     )}
-                    { isShowDistributor && !Array.isArray(item.distributor_info) && (
+                    {isShowDistributor && !Array.isArray(item.distributor_info) && (
                       <View className='distributor'>
                         <SpImage circle src={item.distributor_info.logo} width={32} height={32} />
                         <View className='distributor-name'>{item.distributor_info.name}</View>

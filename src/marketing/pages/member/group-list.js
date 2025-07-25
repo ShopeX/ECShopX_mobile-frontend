@@ -10,7 +10,7 @@ import './group-list.scss'
 
 @withPager
 export default class myGroupList extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -19,11 +19,11 @@ export default class myGroupList extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     params = _mapKeys(
       {
         ...params,
@@ -60,7 +60,7 @@ export default class myGroupList extends Component {
     })
   }
 
-  render () {
+  render() {
     const { tabList, curTabIdx, list, page } = this.state
 
     return (

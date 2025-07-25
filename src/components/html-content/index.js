@@ -19,14 +19,14 @@ export default class HtmlContent extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'weapp') {
       const { content } = this.props
       wxParse('content', 'html', content, this)
     }
   }
 
-  render () {
+  render() {
     const { className } = this.props
     const classes = classNames('html-content', className)
 

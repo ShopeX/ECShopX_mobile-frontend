@@ -15,7 +15,7 @@ const initialState = {
 
 function SpTime(props) {
   const [state, setState] = useImmer(initialState)
-  const { selector, selectorChecked, seleIndex, timeDay,setPicker } = state
+  const { selector, selectorChecked, seleIndex, timeDay, setPicker } = state
   const { onTimeChange = () => {}, selects = 0, nowTimeDa = '请选择' } = props
   const onChange = (e) => {
     setState((draft) => {
@@ -36,12 +36,12 @@ function SpTime(props) {
   }, [])
 
   useEffect(() => {
-    if(!setPicker){
+    if (!setPicker) {
       setState((draft) => {
         draft.setPicker = true
       })
     }
-  },[setPicker])
+  }, [setPicker])
 
   const onDateChange = (e) => {
     setState((draft) => {

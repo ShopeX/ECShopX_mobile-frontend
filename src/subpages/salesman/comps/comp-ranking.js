@@ -3,7 +3,7 @@ import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import { View, Text, Image } from '@tarojs/components'
-import { SpTime, SpImage,SpCustomPicker } from '@/components'
+import { SpTime, SpImage, SpCustomPicker } from '@/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
 
@@ -16,7 +16,7 @@ const initialState = {
   datas: '',
   datasType: 0,
   customName: '全部业绩排行',
-  customValue:'all',
+  customValue: 'all',
   selector: [
     { label: '全部业绩排行', value: 'all' },
     { label: '直推业绩排行', value: 'lv1' },
@@ -26,7 +26,7 @@ const initialState = {
 
 function CompRanking(props) {
   const [state, setState] = useImmer(initialState)
-  const { list, total_count, datas, datasType, valList, customName,customValue, selector } = state
+  const { list, total_count, datas, datasType, valList, customName, customValue, selector } = state
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
 
@@ -100,12 +100,7 @@ function CompRanking(props) {
         <View className='comp-ranking-table'>
           <SpTime onTimeChange={onTimeChange} />
           <View className='comp-ranking-table-custom'>
-            <SpCustomPicker
-              customStatus
-              id={customValue}
-              cancel={cancel}
-              selector={selector}
-            />
+            <SpCustomPicker customStatus id={customValue} cancel={cancel} selector={selector} />
           </View>
         </View>
         <View className='comp-ranking-list'>

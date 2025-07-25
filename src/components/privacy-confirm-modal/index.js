@@ -11,14 +11,14 @@ import './index.scss'
 }))
 export default class PrivacyConfirmModal extends Component {
   static defaultProps = {}
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       info: null
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
@@ -28,7 +28,7 @@ export default class PrivacyConfirmModal extends Component {
     })
   }
 
-  async fetch () {
+  async fetch() {
     const data = await api.shop.getStoreBaseInfo()
     this.setState({
       info: data
@@ -45,7 +45,7 @@ export default class PrivacyConfirmModal extends Component {
     onChange && onChange('agree', e)
   }
 
-  render () {
+  render() {
     const { info } = this.state
     const { visible, onChange, isPhone, colors } = this.props
 

@@ -1,6 +1,6 @@
 import React from 'react'
 import { View } from '@tarojs/components'
-import {SpHtml} from '@/components'
+import { SpHtml } from '@/components'
 import './index.scss'
 
 const SpRuleLayout = ({ rules = '' }) => {

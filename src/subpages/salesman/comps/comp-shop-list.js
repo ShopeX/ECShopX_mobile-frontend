@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage ,SpPoster} from '@/components'
+import { SpImage, SpPoster } from '@/components'
 import './comp-shop-list.scss'
 
 const initialState = {
@@ -37,12 +37,11 @@ function CompShopList(props) {
           <View
             className='comp-customer-list-scroll-list'
             onClick={() => {
-              if(!params.status){
+              if (!params.status) {
                 Taro.navigateTo({
                   url: `/subpages/salesman/purchasing?distributor_id=${item.distributor_id}`
                 })
               }
-             
             }}
           >
             <SpImage src={item.logo} />
@@ -76,8 +75,6 @@ function CompShopList(props) {
           }}
         />
       )}
-
-      
     </View>
   )
 }

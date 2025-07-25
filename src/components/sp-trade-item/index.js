@@ -6,9 +6,18 @@ import { SpImage, SpPrice } from '@/components'
 import './index.scss'
 
 function SpTradeItem(props) {
-  const { info, onClick = () => { } } = props
+  const { info, onClick = () => {} } = props
   if (!info) return null
-  const { pic, itemName, itemPoint, price, itemSpecDesc, num, orderClass = 'normal',isPrescription } = info
+  const {
+    pic,
+    itemName,
+    itemPoint,
+    price,
+    itemSpecDesc,
+    num,
+    orderClass = 'normal',
+    isPrescription
+  } = info
   const { pointName } = useSelector((state) => state.sys)
 
   const onClickItem = () => {
@@ -23,20 +32,11 @@ function SpTradeItem(props) {
       <View className='tradeitem-bd'>
         <View className='goods-info-hd'>
           <View className='name'>
-            {
-              isPrescription == 1 &&
-              <Text className='prescription-drug'>
-                处方药
-              </Text>
-            }
+            {isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
             {itemName}
           </View>
-          {
-            orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`}</Text>
-          }
-          {
-            orderClass == 'normal' && <SpPrice value={price} />
-          }
+          {orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`}</Text>}
+          {orderClass == 'normal' && <SpPrice value={price} />}
         </View>
         <View className='goods-info-bd'>
           <Text className='spec-desc'>{itemSpecDesc}</Text>

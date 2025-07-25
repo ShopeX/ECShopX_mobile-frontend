@@ -146,6 +146,6 @@ export default (props) => {
       }
     }
   }
-    
+
   return { updateAddress, calculateDistance }
 }

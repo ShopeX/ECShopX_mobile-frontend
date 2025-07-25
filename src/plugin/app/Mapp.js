@@ -1,5 +1,5 @@
-import { default as SAPPPay } from './MappPay'
-import { default as SAPPShare } from './MappShare'
+import SAPPPay from './MappPay'
+import SAPPShare from './MappShare'
 import log, { showToast } from './utils'
 
 class MAPP {

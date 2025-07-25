@@ -103,7 +103,9 @@ function CompPackageItem(props) {
         draft.mainGoods.specText = specText
         draft.mainGoods['curItem'] = {
           ...curItem,
-          price: main_package_price[curItem.itemId] ? main_package_price[curItem.itemId].price / 100 : curItem?.price / 100
+          price: main_package_price[curItem.itemId]
+            ? main_package_price[curItem.itemId].price / 100
+            : curItem?.price / 100
         }
       })
     } else {
@@ -112,7 +114,9 @@ function CompPackageItem(props) {
         draft.makeUpGoods[curMakeUpGoodsIndex].specText = specText
         draft.makeUpGoods[curMakeUpGoodsIndex]['curItem'] = {
           ...curItem,
-          price: package_price[curItem.itemId] ? package_price[curItem.itemId].price / 100 : curItem?.price / 100
+          price: package_price[curItem.itemId]
+            ? package_price[curItem.itemId].price / 100
+            : curItem?.price / 100
         }
       })
     }

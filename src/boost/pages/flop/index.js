@@ -13,7 +13,7 @@ import './index.scss'
 }))
 export default class Flop extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,7 +28,7 @@ export default class Flop extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getBoostDetail()
     S.getAuthToken() && this.handleClickWxOAuth()
   }
@@ -142,7 +142,7 @@ export default class Flop extends Component {
     this.handleClickWxOAuth()
   }
 
-  handleClickWxOAuth () {
+  handleClickWxOAuth() {
     const { avatar, username } = this.props.memberData
     if (!avatar && !username) {
       this.setState({
@@ -151,15 +151,11 @@ export default class Flop extends Component {
     }
   }
 
-  render () {
+  render() {
     const { info, boostList, isDisabled, cutPercent, showPrivacy } = this.state
     return (
       <View className='flop'>
-        <SpNavBar
-          title='帮砍'
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title='帮砍' leftIconType='chevron-left' fixed='true' />
         <View className='goods'>
           <Image className='img' src={info.item_pics} mode='aspectFill' />
           <View className='info'>

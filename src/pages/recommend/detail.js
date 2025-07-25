@@ -74,13 +74,11 @@ function GuideRecommendDetail(props) {
     })
   }
 
-  const handleClickGoods = async () => { }
+  const handleClickGoods = async () => {}
 
   return (
-    <SpPage
-      className='pages-recommend-detail'
-    >
-      <ScrollView className='scrollview-container' scrollY >
+    <SpPage className='pages-recommend-detail'>
+      <ScrollView className='scrollview-container' scrollY>
         <View className='article-hd'>
           <View className='article-title'>{title}</View>
           <View className='article-info'>

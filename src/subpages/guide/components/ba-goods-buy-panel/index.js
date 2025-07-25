@@ -2,15 +2,14 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
-// import find from 'lodash/find'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { classNames, pickBy, log } from '@/utils'
 import { Tracker } from '@/service'
 import api from '@/api'
 import entry from '@/utils/entry'
-import './index.scss'
 import { floor } from 'lodash'
+import './index.scss'
 
 @connect(({ colors, guide }) => ({
   colors: colors.current,

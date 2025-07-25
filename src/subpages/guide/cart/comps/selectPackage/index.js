@@ -1,16 +1,6 @@
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 是否需要包装
- * @FilePath: /unite-vshop/src/pages/cart/comps/selectPackage/index.js
- * @Date: 2020-11-06 11:01:46
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-26 20:18:13
- */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { Button, View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
 
 import { SpCheckbox, SpCell } from '@/components'

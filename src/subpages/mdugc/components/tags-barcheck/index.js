@@ -9,7 +9,6 @@ import './index.scss'
 @connect(({ colors }) => ({
   colors: colors.current
 }))
-
 export default class TagsBarcheck extends Component {
   static options = {
     addGlobalClass: true
@@ -20,46 +19,45 @@ export default class TagsBarcheck extends Component {
     list: []
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
-      curId:[]
+      curId: []
     }
   }
-  componentWillReceiveProps(nextProps){
+  componentWillReceiveProps(nextProps) {
     const { current } = nextProps
-    console.log(123,current)
+    console.log(123, current)
     this.setState({
-      curId:current
+      curId: current
     })
   }
-  handleClickItem (id) {
+  handleClickItem(id) {
     this.props.onChange(id)
   }
 
-  render () {
+  render() {
     const { list } = this.props
-    const {curId}=this.state
+    const { curId } = this.state
     return (
-      <ScrollView
-        className='tags'
-        scrollX
-      >
-        {
-          list.length > 0 &&
+      <ScrollView className='tags' scrollX>
+        {list.length > 0 &&
           list.map((item, idx) => {
             return (
               <View
-                className={` ${(curId?.filter( curIdi=> (curIdi==item.topic_id))).length>0?"tag-item_active":""} tag-item `}
+                className={` ${
+                  (curId?.filter((curIdi) => curIdi == item.topic_id)).length > 0
+                    ? 'tag-item_active'
+                    : ''
+                } tag-item `}
                 onClick={this.handleClickItem.bind(this, item.topic_id)}
                 key={item.topic_id}
               >
                 {item.topic_name}
               </View>
             )
-          })
-        }
+          })}
       </ScrollView>
     )
   }

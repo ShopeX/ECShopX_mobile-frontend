@@ -47,7 +47,6 @@ function GuideCustomPage() {
 
   const { wgts, shareInfo, shopList } = state
 
-
   useEffect(() => {
     if (userInfo) {
       fetchWgts()

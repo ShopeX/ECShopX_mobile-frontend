@@ -13,7 +13,7 @@ import './brand-detail.scss'
 @withPager
 @withBackToTop
 export default class BrandDetail extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -28,9 +28,9 @@ export default class BrandDetail extends Component {
     }
   }
 
-  componentDidMount () {}
+  componentDidMount() {}
 
-  async fetch () {}
+  async fetch() {}
 
   handleCell = (type, e) => {
     const checked_index = e.detail.value
@@ -69,7 +69,7 @@ export default class BrandDetail extends Component {
     console.log(query, 53)
   }
 
-  render () {
+  render() {
     const {
       brand_name_list,
       brand_time_list,

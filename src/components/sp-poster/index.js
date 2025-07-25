@@ -17,14 +17,35 @@ import PlaceAnOrder from './dw-placeAnOrder'
 import Invite from './dw-invite'
 import PrescriptionCode from './dw-prescriptionCode'
 
-
 import './index.scss'
 
-const [GoodsDetailPoster, Distribution, GuideGoodsDetailPoster, GuideCheckout,StoreCodes,PlaceAnOrders,Prescription] = isAlipay ? [
-  GoodsDetailPosterAli, DistributionAli, GuideGoodsDetailPosterAli, GuideCheckoutAli,StoreCode,PlaceAnOrder,PrescriptionCode
-] : [
-  GoodsDetailPosterWx, DistributionWx, GuideGoodsDetailPosterWx, GuideCheckoutWx,StoreCode,PlaceAnOrder,PrescriptionCode
-]
+const [
+  GoodsDetailPoster,
+  Distribution,
+  GuideGoodsDetailPoster,
+  GuideCheckout,
+  StoreCodes,
+  PlaceAnOrders,
+  Prescription
+] = isAlipay
+  ? [
+      GoodsDetailPosterAli,
+      DistributionAli,
+      GuideGoodsDetailPosterAli,
+      GuideCheckoutAli,
+      StoreCode,
+      PlaceAnOrder,
+      PrescriptionCode
+    ]
+  : [
+      GoodsDetailPosterWx,
+      DistributionWx,
+      GuideGoodsDetailPosterWx,
+      GuideCheckoutWx,
+      StoreCode,
+      PlaceAnOrder,
+      PrescriptionCode
+    ]
 
 const initialState = {
   poster: null,
@@ -36,14 +57,14 @@ const initialState = {
 }
 
 function SpPoster(props) {
-  const { info, type, onClose = () => { } } = props
+  const { info, type, onClose = () => {} } = props
   const { userInfo } = useSelector((state) => state.user)
   const { userInfo: guideInfo } = useSelector((state) => state.guide)
   const [state, setState] = useAsyncCallback(initialState)
 
   const { poster, pxWidth, pxHeight, eleId, ctx } = state
 
-  console.log('info--------',info)
+  console.log('info--------', info)
 
   useEffect(() => {
     handleCreatePoster()
@@ -110,24 +131,24 @@ function SpPoster(props) {
           toRpx
         })
         break
-        case 'storeCode':
-          canvasObj = new StoreCodes({
-            ctx,
-            info,
-            userInfo: guideInfo,
-            toPx,
-            toRpx
-          })
-          break
-        case 'placeAnOrder':
-          canvasObj = new PlaceAnOrders({
-            ctx,
-            info,
-            userInfo: guideInfo,
-            toPx,
-            toRpx
-          })
-          break
+      case 'storeCode':
+        canvasObj = new StoreCodes({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'placeAnOrder':
+        canvasObj = new PlaceAnOrders({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
       case 'distribution':
         canvasObj = new Distribution({
           ctx,
@@ -137,7 +158,7 @@ function SpPoster(props) {
           toRpx
         })
         break
-       case 'invite':
+      case 'invite':
         // console.log('invite111')
         canvasObj = new Invite({
           ctx,
@@ -147,15 +168,15 @@ function SpPoster(props) {
           toRpx
         })
         break
-        case 'prescriptionCode':
-          canvasObj = new Prescription({
-            ctx,
-            info,
-            userInfo,
-            toPx,
-            toRpx
-          })
-          break
+      case 'prescriptionCode':
+        canvasObj = new Prescription({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
       default:
         break
     }
@@ -194,14 +215,14 @@ function SpPoster(props) {
               Taro.getCurrentInstance().page
             )
             resolve(tempFilePath)
-          } else if(isAlipay) {
+          } else if (isAlipay) {
             my.canvasToTempFilePath({
               canvasId: eleId,
               success: ({ apFilePath }) => {
-                console.log('success', apFilePath);
+                console.log('success', apFilePath)
                 resolve(apFilePath)
               }
-            });
+            })
           }
         })
       } catch (e) {

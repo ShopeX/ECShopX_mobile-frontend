@@ -23,11 +23,11 @@ export default class LoadingMore extends Component {
     isEmpty: false
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
-  render () {
+  render() {
     const { isLoading, isEnd, isEmpty } = this.props
     return (
       <View className={`loadingMore ${isEmpty && 'empty'}`}>

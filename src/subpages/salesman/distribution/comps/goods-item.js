@@ -18,7 +18,15 @@ export default class DistributionGoodsItem extends Component {
   }
 
   render() {
-    const { info, onClick, className, isRelease, status, shareDataChange,integral=false } = this.props
+    const {
+      info,
+      onClick,
+      className,
+      isRelease,
+      status,
+      shareDataChange,
+      integral = false
+    } = this.props
     if (!info) {
       return null
     }
@@ -38,10 +46,12 @@ export default class DistributionGoodsItem extends Component {
                 {info.price}
               </View>
               {integral ? (
-                  <View className='goods-item__promoter-price'>
-                    预计收益：
-                    <Text className='cur'>¥{info.commission_type === 'money'?info.promoter_price:'0.00'}</Text>
-                  </View>
+                <View className='goods-item__promoter-price'>
+                  预计收益：
+                  <Text className='cur'>
+                    ¥{info.commission_type === 'money' ? info.promoter_price : '0.00'}
+                  </Text>
+                </View>
               ) : (
                 <View className='goods-item__promoter-price'>
                   预计收益：

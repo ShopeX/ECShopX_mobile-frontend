@@ -3,7 +3,7 @@ let privacyResolves = new Set()
 let closeOtherPagePopUpHooks = new Set()
 
 if (wx.onNeedPrivacyAuthorization) {
-  wx.onNeedPrivacyAuthorization(resolve => {
+  wx.onNeedPrivacyAuthorization((resolve) => {
     console.log('onNeedPrivacyAuthorization...', resolve)
     if (typeof privacyHandler === 'function') {
       privacyHandler(resolve)
@@ -12,7 +12,7 @@ if (wx.onNeedPrivacyAuthorization) {
 }
 
 const closeOtherPagePopUp = (closePopUp) => {
-  closeOtherPagePopUpHooks.forEach(hook => {
+  closeOtherPagePopUpHooks.forEach((hook) => {
     if (closePopUp !== hook) {
       hook()
     }
@@ -21,11 +21,11 @@ const closeOtherPagePopUp = (closePopUp) => {
 
 Component({
   options: {
-    addGlobalClass: true,
+    addGlobalClass: true
   },
   data: {
-    title: "用户隐私保护提示",
-    urlTitle: "《用户隐私保护指引》",
+    title: '用户隐私保护提示',
+    urlTitle: '《用户隐私保护指引》',
     innerShow: false
   },
   lifetimes: {
@@ -34,7 +34,7 @@ Component({
         this.disPopUp()
       }
 
-      privacyHandler = resolve => {
+      privacyHandler = (resolve) => {
         privacyResolves.add(resolve)
         this.popUp()
         // 额外逻辑：当前页面的隐私弹窗弹起的时候，关掉其他页面的隐私弹窗
@@ -46,7 +46,7 @@ Component({
       this.closePopUp = closePopUp
 
       wx.getPrivacySetting({
-        success: res => {
+        success: (res) => {
           const { privacyContractName } = res
           this.setData({
             urlTitle: privacyContractName
@@ -55,7 +55,7 @@ Component({
         fail: (e) => {
           console.log('getPrivacySetting err:', e)
         },
-        complete: () => { }
+        complete: () => {}
       })
     },
     detached: function () {
@@ -66,7 +66,7 @@ Component({
     handleAgree(e) {
       console.log('handleAgree:', e)
       this.disPopUp()
-      privacyResolves.forEach(resolve => {
+      privacyResolves.forEach((resolve) => {
         resolve({
           event: 'agree',
           buttonId: 'agree-btn'
@@ -76,9 +76,9 @@ Component({
     },
     handleDisagree(e) {
       this.disPopUp()
-      privacyResolves.forEach(resolve => {
+      privacyResolves.forEach((resolve) => {
         resolve({
-          event: 'disagree',
+          event: 'disagree'
         })
       })
       privacyResolves.clear()
@@ -99,10 +99,10 @@ Component({
     },
     openPrivacyContract() {
       wx.openPrivacyContract({
-        success: res => {
+        success: (res) => {
           console.log('openPrivacyContract success')
         },
-        fail: res => {
+        fail: (res) => {
           console.error('openPrivacyContract fail', res)
         }
       })

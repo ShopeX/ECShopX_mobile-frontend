@@ -13,7 +13,7 @@ function SpOrderItem(props) {
     isPointitemGood = false,
     isShowPointTag = false,
     isPurchase = false,
-    onClick = () => { },
+    onClick = () => {},
     customFooter,
     showDesc,
     renderDesc,
@@ -61,12 +61,7 @@ function SpOrderItem(props) {
           {info.order_item_type === 'gift' && (
             <Text className='sp-order-item__title-tag'>赠品</Text>
           )}
-          {
-            info.isPrescription == 1 &&
-            <Text className='prescription-drug'>
-              处方药
-            </Text>
-          }
+          {info.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
           {info.title}
         </View>
         {showDesc && info.item_spec_desc && (

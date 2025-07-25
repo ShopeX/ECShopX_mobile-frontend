@@ -10,7 +10,7 @@ import './cashier-result.scss'
 
 export default class CashierResult extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class CashierResult extends Component {
       showTabBar: ''
     }
   }
-  componentDidMount () {
+  componentDidMount() {
     Taro.showLoading({ title: '' })
     setInterval(() => {
       Taro.hideLoading()
@@ -29,7 +29,7 @@ export default class CashierResult extends Component {
     }, 1000)
   }
 
-  async fetch () {
+  async fetch() {
     const { order_id } = this.$instance.router.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
@@ -63,7 +63,7 @@ export default class CashierResult extends Component {
     })
   }
 
-  render () {
+  render() {
     const { orderInfo, tradeInfo, showTabBar } = this.state
 
     if (!orderInfo) return null

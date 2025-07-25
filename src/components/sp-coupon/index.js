@@ -38,7 +38,8 @@ function SpCoupon(props) {
   } = info
 
   const { tag, invalidBg, bg } = COUPON_TYPE[cardType]
-  const couponTagBg = info.tagClass === 'used' || info.tagClass === 'overdue' || !info.valid ? invalidBg : bg
+  const couponTagBg =
+    info.tagClass === 'used' || info.tagClass === 'overdue' || !info.valid ? invalidBg : bg
 
   const getCouponValue = () => {
     if (cardType === 'cash') {
@@ -98,8 +99,7 @@ function SpCoupon(props) {
           </View>
           <View className='coupon-datetime'>{`有效期: ${beginDate} - ${endDate}`}</View>
           <View className='coupon-desc'>
-          {info.valid &&
-            (
+            {info.valid && (
               <>
                 <Text className='coupon-desc-txt'>详细信息</Text>
                 <SpImage
@@ -113,11 +113,8 @@ function SpCoupon(props) {
                   }}
                 />
               </>
-            )
-          }
-          {!info.valid && (
-            <View className='invaild-desc'>{info.invalidDesc}</View>
-          )}
+            )}
+            {!info.valid && <View className='invaild-desc'>{info.invalidDesc}</View>}
           </View>
         </View>
         <View

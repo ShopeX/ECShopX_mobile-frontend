@@ -29,15 +29,7 @@ const initialState = {
 }
 function ActivityIist(props) {
   const [state, setState] = useImmer(initialState)
-  const {
-    tradeStatus,
-    status,
-    recordList,
-    isOpened,
-    selectOptions,
-    activityInfo,
-    keyword
-  } = state
+  const { tradeStatus, status, recordList, isOpened, selectOptions, activityInfo, keyword } = state
   const recordRef = useRef()
   const router = useRouter()
 
@@ -86,7 +78,7 @@ function ActivityIist(props) {
   }
 
   const registrationSubmitFetch = async ({ activityId }) => {
-    await api.user.joinActivity({ activity_id: activityId})
+    await api.user.joinActivity({ activity_id: activityId })
     Taro.showToast({
       icon: 'none',
       title: '报名成功'

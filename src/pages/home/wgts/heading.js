@@ -6,7 +6,6 @@ import { classNames } from '@/utils'
 import './heading.scss'
 
 function WgtHeading(props) {
-
   if (!props.info) {
     return null
   }
@@ -24,16 +23,22 @@ function WgtHeading(props) {
     }
   }, [config])
 
-
-  return <View className={classNames(`wgt wgt-heading`, {
-    'wgt__padded': base.padded
-  })}>
-    <View className={classNames(`wgt-body`, {
-      'padded': config.padded
-    })} style={computedStyle()}>
-      {base.title}
+  return (
+    <View
+      className={classNames(`wgt wgt-heading`, {
+        'wgt__padded': base.padded
+      })}
+    >
+      <View
+        className={classNames(`wgt-body`, {
+          'padded': config.padded
+        })}
+        style={computedStyle()}
+      >
+        {base.title}
+      </View>
     </View>
-  </View>
+  )
 }
 
 WgtHeading.defaultProps = {

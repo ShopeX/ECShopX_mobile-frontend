@@ -4,10 +4,9 @@ import { View, Text, Image } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
 import { pickBy, classNames, styleNames, linkPage } from '@/utils'
 import { Tracker } from '@/service'
-import { CreateIntersectionObserver } from '@/utils/platform'
 import { withLoadMore } from '@/hocs'
-import { WgtsContext } from './wgts-context'
 import doc from '@/doc'
+import { WgtsContext } from './wgts-context'
 import './goods-grid.scss'
 
 function WgtGoodsGrid(props) {
@@ -19,7 +18,7 @@ function WgtGoodsGrid(props) {
   const newData = Array.isArray(data) ? data : []
   const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
   const router = useRouter()
-  const isPurchase = router.path == "/subpages/purchase/index"
+  const isPurchase = router.path == '/subpages/purchase/index'
 
   const { onAddToCart } = useContext(WgtsContext)
 
@@ -49,7 +48,6 @@ function WgtGoodsGrid(props) {
     onAddToCart({ itemId, distributorId })
   }
 
-
   return (
     <View
       className={classNames('wgt', 'wgt-goods-grid', {
@@ -78,12 +76,15 @@ function WgtGoodsGrid(props) {
                   isPurchase={isPurchase}
                   renderBrand={
                     config.brand && (
-                      <View className='brand-info' style={styleNames({
-                        'width': '62px',
-                        'height': '62px',
-                        'border-radius': '32px',
-                        'padding': '2px'
-                      })}>
+                      <View
+                        className='brand-info'
+                        style={styleNames({
+                          'width': '62px',
+                          'height': '62px',
+                          'border-radius': '32px',
+                          'padding': '2px'
+                        })}
+                      >
                         <SpImage
                           src={item.brand}
                           width={120}
@@ -109,12 +110,15 @@ function WgtGoodsGrid(props) {
                   isPurchase={isPurchase}
                   renderBrand={
                     config.brand && (
-                      <View className='brand-info' style={styleNames({
-                        'width': '64px',
-                        'height': '64px',
-                        'border-radius': '32px',
-                        'padding': '2px'
-                      })}>
+                      <View
+                        className='brand-info'
+                        style={styleNames({
+                          'width': '64px',
+                          'height': '64px',
+                          'border-radius': '32px',
+                          'padding': '2px'
+                        })}
+                      >
                         <SpImage
                           src={item.brand}
                           width={120}
@@ -143,12 +147,15 @@ function WgtGoodsGrid(props) {
                 <SpGoodsItem
                   renderBrand={
                     config.brand && (
-                      <View className='brand-info' style={styleNames({
-                        'width': '64px',
-                        'height': '64px',
-                        'border-radius': '32px',
-                        'padding': '2px'
-                      })}>
+                      <View
+                        className='brand-info'
+                        style={styleNames({
+                          'width': '64px',
+                          'height': '64px',
+                          'border-radius': '32px',
+                          'padding': '2px'
+                        })}
+                      >
                         <SpImage
                           src={item.brand}
                           width={120}

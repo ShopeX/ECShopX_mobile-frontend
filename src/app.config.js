@@ -8,7 +8,7 @@ const config = {
     'pages/cart/cashier-result', // 支付结果页面
     // 'pages/cart/cashier-alipay', // 支付宝收银台（adapay）
     'pages/cart/cashier-weapp', // 微信收银台（adapay）
-    'pages/cart/offline-transfer',//线下转账
+    'pages/cart/offline-transfer', //线下转账
 
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
@@ -25,9 +25,9 @@ const config = {
     'pages/chat/index', // 客服
     'pages/liveroom/index', // 直播间页面
     'pages/purchase/auth',
-    'pages/cart/prescription-information',//补充处方信息
+    'pages/cart/prescription-information', //补充处方信息
     'pages/cart/add-personnel', // 添加用药人员
-    'pages/share-land', //太阳码统一落地页
+    'pages/share-land' //太阳码统一落地页
   ],
   subPackages: [
     // 内购
@@ -107,7 +107,7 @@ const config = {
         'coupon-picker', // 优惠券选择
         'package-list', // 组合优惠
         'certification', // 实名认证
-        'exchange-code', // 兑换券二维码
+        'exchange-code' // 兑换券二维码
       ]
     },
     {
@@ -133,7 +133,7 @@ const config = {
         'salesman-personnel', // 业务员
         'edit-deliveryman-salesman', // 业务员创建
         'activity-code', // 活动扫码核销
-        'payment', //付款页面
+        'payment' //付款页面
       ]
     },
     // 积分商城
@@ -195,7 +195,7 @@ const config = {
         'invoice-success', //开具发票成功
         'trade-evaluate', // 订单评价
         'evaluate-success', // 评价结果
-        'delivery-info', // 物流详情
+        'delivery-info' // 物流详情
       ]
     },
     {
@@ -293,7 +293,7 @@ const config = {
         'pages/item/group-list', //限时团购列表
 
         'pages/plusprice/detail-plusprice-list', //商品进入换购详情页面
-        'pages/plusprice/cart-plusprice-list', //购物车进入换购详情页面
+        'pages/plusprice/cart-plusprice-list' //购物车进入换购详情页面
       ]
     },
     {
@@ -350,7 +350,7 @@ const config = {
         // 'pages/cart/coupon-picker',
         'pages/cart/drug-info',
         // 绑定订单
-        'pages/bindOrder/index',
+        'pages/bindOrder/index'
         // 过期优惠券
         // 'pages/nullify/coupon-nullify'
       ]
@@ -371,18 +371,18 @@ const config = {
       root: 'subpages/salesman',
       pages: [
         'index', //首页
-        'card',//名片
-        'cart',//购物车
-        'my',//我的
-        'list',//订单
-        'detail',//订单详情
-        'cancel',//取消订单
-        'selectCustomer',//选客户
-        'selectStore',//选店铺
-        'selectShop',//选店铺
-        'achievement',//业绩
-        'delivery-personnel',//业务员管理
-        'edit-deliveryman',//创建业务员
+        'card', //名片
+        'cart', //购物车
+        'my', //我的
+        'list', //订单
+        'detail', //订单详情
+        'cancel', //取消订单
+        'selectCustomer', //选客户
+        'selectStore', //选店铺
+        'selectShop', //选店铺
+        'achievement', //业绩
+        'delivery-personnel', //业务员管理
+        'edit-deliveryman', //创建业务员
         'purchasing', //选商品
         'distribution/index', // 推广管理首页
         'distribution/setting', // 推广管理会员资料
@@ -404,13 +404,13 @@ const config = {
         'distribution/shop-trade', // 小店订单页面
         'distribution/shop-achievement', // 小店业绩页面
         'distribution/point-platform',
-        'distribution/certification',//实名认证
-        'delivery-info',//查看物流
+        'distribution/certification', //实名认证
+        'delivery-info', //查看物流
         'espier-checkout', // 结算页面
         'address', // 收货地址
-        'edit-address',//添加收获地址
+        'edit-address', //添加收获地址
         'coupon-picker', //优惠券选择器
-        'ziti-picker', //自提选择器
+        'ziti-picker' //自提选择器
       ]
     },
     //配送员
@@ -418,15 +418,15 @@ const config = {
       root: 'subpages/delivery',
       pages: [
         'index', //首页
-        'achievement',//业绩
-        'my',//我的
+        'achievement', //业绩
+        'my', //我的
         'after-sale-list', // 售后列表
         'selectShop', // 店铺
-        'list',//订单
+        'list', //订单
         'send-out-goods', // 发货
-        'detail',//订单详情
+        'detail', //订单详情
         'after-sale', // 售后
-        'after-sale-detail', // 售后详情
+        'after-sale-detail' // 售后详情
       ]
     },
     // 授权
@@ -440,16 +440,15 @@ const config = {
         'bindPhone', //绑定手机页面
         'auth-loading', //授权加载页
         'forgotpwd', //找回密码页面
-        'edit-phone', //修改密码页面
-
+        'edit-phone' //修改密码页面
       ]
     },
     //处方药
     {
       root: 'subpages/prescription',
       pages: [
-        'add-personnel',// 添加用药人员
-        'prescription-information', //补充处方信息
+        'add-personnel', // 添加用药人员
+        'prescription-information' //补充处方信息
       ]
     }
   ],
@@ -473,17 +472,14 @@ const config = {
     //   'provider': 'wx2b03c6e691cd7370' // 必须填该直播组件appid，该示例值即为直播组件appid（复制时请去掉注释）
     // }
   },
-  requiredPrivateInfos: [
-    "getLocation",
-    "chooseAddress"
-  ],
+  requiredPrivateInfos: ['getLocation', 'chooseAddress']
   // "__usePrivacyCheck__": true
 }
 
 if (process.env.TARO_ENV == 'weapp') {
   Object.assign(config, {
     usingComponents: {
-      'mp-html': './components/sp-html/mp-weixin/index',
+      'mp-html': './components/sp-html/mp-weixin/index'
       // "sp-wx-privacy": "./components/sp-wx-privacy/index"
     }
   })
@@ -512,6 +508,5 @@ if (process.env.APP_ADAPAY == 'true') {
     }
   })
 }
-
 
 export default config

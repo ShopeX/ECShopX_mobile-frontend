@@ -6,9 +6,17 @@ import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpFloatLayout, SpCheckbox } from '@/components'
 import api from '@/api'
-import { isWeixin, isWxWeb, isWeb, getDistributorId, isAPP, pickBy, VERSION_IN_PURCHASE, isAlipay } from '@/utils'
+import {
+  isWeixin,
+  isWxWeb,
+  isWeb,
+  getDistributorId,
+  isAPP,
+  pickBy,
+  VERSION_IN_PURCHASE,
+  isAlipay
+} from '@/utils'
 import doc from '@/doc'
-import { payment_platform } from '@/utils/platform'
 import './index.scss'
 
 const paymentList = [
@@ -30,8 +38,8 @@ function SpCashier(props) {
     isOpened = true,
     value,
     userPoint,
-    onClose = () => { },
-    onChange = () => { },
+    onClose = () => {},
+    onChange = () => {},
     paymentAmount = 0,
     defaultVal,
     salesman = false,
@@ -51,7 +59,7 @@ function SpCashier(props) {
     //   fetchPaymentList()
     // }
     fetchPaymentList()
-  }, [ENV,userPoint])
+  }, [ENV, userPoint])
 
   useEffect(() => {
     if (!isOpened) {
@@ -61,7 +69,7 @@ function SpCashier(props) {
     }
   }, [value, isOpened])
 
-  console.log('selectPayment',selectPayment)
+  console.log('selectPayment', selectPayment)
 
   const fetchPaymentList = async () => {
     let platform = ''
@@ -78,20 +86,20 @@ function SpCashier(props) {
     }
     const { shop_id } = $instance.router.params
     let params = {}
-    if(salesman){
+    if (salesman) {
       params = {
         distributor_id: getDistributorId(shop_id),
         platform,
         ...customerLnformation
       }
-    }else{
+    } else {
       params = {
         distributor_id: getDistributorId(shop_id),
         platform
       }
     }
 
-    if(isPurchase){
+    if (isPurchase) {
       params.order_type = 'normal_employee_purchase'
     }
     const res = await api.member.getTradePaymentList(params)
@@ -101,7 +109,6 @@ function SpCashier(props) {
       const resAppPayment = await Taro.SAPPPay.getPayList()
       console.log('fetchAppPaymentList:', resAppPayment)
       const appPaymentlist = pickBy(resAppPayment, doc.payment.APP_PAYMENT_ITEM)
-
     }
     let _list = list
     if (process.env.NODE_ENV === 'development') {
@@ -112,13 +119,12 @@ function SpCashier(props) {
       draft.list = _list
     })
     if (_list.length > 0) {
-
       // const defaultItem = (pointPayFirst && (userPoint > 0)) ?  _list.find(item=>item.paymentChannel ==  "point") : _list.find(item=>item.paymentChannel ==  "wxpay")
-      const defaultItem = _list.find(item=>item.paymentChannel == (defaultVal || "wxpay")) ?? _list[0]
+      const defaultItem =
+        _list.find((item) => item.paymentChannel == (defaultVal || 'wxpay')) ?? _list[0]
       onChange(defaultItem)
       onChangePayment(defaultItem)
     }
-
 
     // console.log('===list===', list)
     // const isHasAlipay = list.some((item) => item.pay_type_code === 'alipayh5')
@@ -188,7 +194,7 @@ function SpCashier(props) {
             <SpCheckbox
               checked={item.paymentChannel == selectPayment}
               onChange={onChangePayment.bind(this, item)}
-            // disabled={onDisabled(item)}
+              // disabled={onDisabled(item)}
             >
               {renderPaymentName(item)}
             </SpCheckbox>

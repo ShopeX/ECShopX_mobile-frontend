@@ -1,5 +1,12 @@
-import React, { Component } from 'react'
-import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+import React, { Component, useEffect } from 'react'
+import Taro, {
+  getCurrentInstance,
+  getCurrentPages,
+  useDidShow,
+  useLaunch,
+  useReady,
+  useRouter
+} from '@tarojs/taro'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
@@ -10,14 +17,22 @@ import { fetchUserFavs } from '@/store/slices/user'
 import {
   DEFAULT_TABS,
   DEFAULT_THEME,
-  SG_APP_CONFIG,
   SG_MEIQIA,
   SG_YIQIA,
   SG_ROUTER_PARAMS,
   SG_GUIDE_PARAMS,
-  SG_GUIDE_PARAMS_UPDATETIME
+  SG_GUIDE_PARAMS_UPDATETIME,
+  SG_CHECK_STORE_RULE
 } from '@/consts'
-import { checkAppVersion, isWeixin, isWeb, isNavbar, log, entryLaunch, VERSION_STANDARD } from '@/utils'
+import {
+  checkAppVersion,
+  isWeixin,
+  isWeb,
+  isNavbar,
+  log,
+  entryLaunch,
+  VERSION_STANDARD
+} from '@/utils'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
 
@@ -44,43 +59,9 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 
 requestIntercept()
 
-class App extends Component {
-  // componentWillMount() {
-  //   this.getSystemConfig()
-  //   // if ( S.getAuthToken() ) {
-  //   //   store.dispatch(fetchUserFavs());
-  //   // }
-  // }
-
-  componentDidMount() {
-
-  }
-
-  onLaunch(options) {
-    console.log(`app onLaunch:`, options)
-    import('../package.json').then(res => {
-      console.log(`App Name: ${res.name}, version: ${res.version}`)
-    })
-
-    // 导购参数缓存处理
-    const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
-    const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
-    // 参数保存超过3天，清除导购参数
-    if (diffMilliseconds > 3 * 86400000) {
-      Taro.removeStorageSync(SG_GUIDE_PARAMS)
-      Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
-    }
-  }
-
-  getParamsOptions = async (options) => {
-    const routeParams = await entryLaunch.getRouteParams(options)
-    if (routeParams.gu || routeParams.gu_user_id) {
-      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
-      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-    }
-  }
-
-  async componentDidShow(options) {
+function App({ children }) {
+  useEffect(async (options) => {
+    console.log('useEffect %%%%%%%%%%%%%', options)
     if (isWeixin) {
       checkAppVersion()
     }
@@ -90,14 +71,50 @@ class App extends Component {
     if (show_time === 'always') {
       showAdv = false
       store.dispatch({
-        type: 'user/closeAdv', payload: showAdv
+        type: 'user/closeAdv',
+        payload: showAdv
       })
     }
-    this.getSystemConfig()
-    this.getParamsOptions(options)
-  }
+    getSystemConfig()
 
-  async getSystemConfig() {
+    // 导购参数缓存处理
+    const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
+    const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+    // 参数保存超过3天，清除导购参数
+    if (diffMilliseconds > 3 * 86400000) {
+      Taro.removeStorageSync(SG_GUIDE_PARAMS)
+      Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+    }
+  }, [])
+
+  useLaunch((options) => {
+    console.log('useLaunch ***********', options)
+  })
+
+  useDidShow(async (options) => {
+    console.log('useDidShow &&&&&&&&&&&&', options)
+    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
+      console.log(`app componentDidShow:`, options, params)
+      Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+
+      if (typeof params.runFlag === 'undefined') {
+        Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+
+        // 小程序启动时，如果路由带参有店铺码，则清除导购参数
+        if (typeof params?.dtid !== 'undefined') {
+          Taro.removeStorageSync(SG_GUIDE_PARAMS)
+          Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+        }
+      }
+
+      if (params.gu || params.gu_user_id) {
+        Taro.setStorageSync(SG_GUIDE_PARAMS, params)
+        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+      }
+    })
+  })
+
+  const getSystemConfig = async () => {
     const {
       echat,
       meiqia,
@@ -112,7 +129,6 @@ class App extends Component {
       tab_bar,
       is_open_recommend: openRecommend,
       is_open_scan_qrcode: openScanQrcode,
-      is_open_wechatapp_location: openLocation,
       is_open_official_account: openOfficialAccount,
       color_style: { primary, accent, marketing },
       title // 商城应用名称
@@ -121,6 +137,11 @@ class App extends Component {
     const priceSetting = await api.shop.getAppGoodsPriceSetting()
 
     const appSettingInfo = await api.groupBy.getCompanySetting() // 获取小程序头像
+
+    let enterStoreRule = null
+    if (VERSION_STANDARD) {
+      enterStoreRule = await api.shop.getStoreEnterRule()
+    }
 
     Taro.setStorageSync('distributor_param_status', distributor_param_status)
 
@@ -137,19 +158,24 @@ class App extends Component {
           tabbar: tabBar,
           openRecommend, // 开启猜你喜欢 1开启 2关闭
           openScanQrcode, // 开启扫码功能 1开启 2关闭
-          openLocation, // 开启小程序定位 1开启 2关闭
           openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
           diskDriver: disk_driver,
           appName: title,
           echat,
           meiqia,
-          openStore: !nostores_status, // 前端店铺展示是否关闭 true:开启 false:关闭（接口返回值为true:关闭 false:不关闭）
           priceSetting,
           appLogo: appSettingInfo?.logo,
-          open_divided: appSettingInfo?.open_divided?.status && VERSION_STANDARD && process.env.TARO_ENV !== 'h5', // 店铺隔离开关
-          open_divided_templateId: appSettingInfo?.open_divided?.template // 店铺隔离自定义模版id
+
+          entryStoreByStoreCode: enterStoreRule?.distributor_code,
+          entryStoreByGuideMaterial: enterStoreRule?.shop_assistant,
+          enterStoreWhiteList: enterStoreRule?.white_list,
+          entryStoreByGuide: enterStoreRule?.shop_assistant_pro,
+          entryStoreByLBS: enterStoreRule?.shop_lbs,
+          entryDefalutStore: enterStoreRule?.radio_type,
+          guidderTemplateId: enterStoreRule?.intro_page
         }
       })
+
       // 兼容老的主题方式
       store.dispatch({
         type: 'colors/setColor',
@@ -164,12 +190,7 @@ class App extends Component {
     }
   }
 
-  componentDidCatchError() { }
-
-  render() {
-    return <Provider store={store}>{this.props.children}</Provider>
-  }
+  return <Provider store={store}>{children}</Provider>
 }
 
 export default App
-

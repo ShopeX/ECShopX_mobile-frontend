@@ -1,13 +1,13 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux"
-import Taro, { useRouter } from "@tarojs/taro";
-import { View, Image } from "@tarojs/components"
-import { AtButton } from "taro-ui"
-import { useImmer } from "use-immer"
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import Taro, { useRouter } from '@tarojs/taro'
+import { View, Image } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { useImmer } from 'use-immer'
 import { SpFloatLayout, SpImage } from '@/components'
-import api from "@/api"
-import doc from "@/doc"
-import "./comp-writeoff-code.scss";
+import api from '@/api'
+import doc from '@/doc'
+import './comp-writeoff-code.scss'
 
 const initialState = {
   qrcode: '',
@@ -35,7 +35,7 @@ function CompWriteOffCode(props) {
   const fetchCode = async () => {
     const { order_id } = router.params
     const { qrcode_url, pickup_code } = await api.trade.zitiCode({ order_id })
-    setState(draft => {
+    setState((draft) => {
       draft.qrcode = qrcode_url
       draft.pickup_code = pickup_code
     })
@@ -50,25 +50,27 @@ function CompWriteOffCode(props) {
     onClose()
   }
 
-  return <SpFloatLayout
-    title='核销码'
-    className='comp-wirteoff-code'
-    open={isOpened}
-    onClose={handleCloseFloatLayout}
-    renderFooter={
-      <AtButton circle type='primary' onClick={handleCloseFloatLayout}>
-        关闭
-      </AtButton>
-    }
-  >
-    <View className="qrcode-container">
-      <View className="wirte-off-code">
-        <Image className="qrcode-image" src={qrcode} mode="widthFix" />
+  return (
+    <SpFloatLayout
+      title='核销码'
+      className='comp-wirteoff-code'
+      open={isOpened}
+      onClose={handleCloseFloatLayout}
+      renderFooter={
+        <AtButton circle type='primary' onClick={handleCloseFloatLayout}>
+          关闭
+        </AtButton>
+      }
+    >
+      <View className='qrcode-container'>
+        <View className='wirte-off-code'>
+          <Image className='qrcode-image' src={qrcode} mode='widthFix' />
+        </View>
+        <View className='pickup-code'>{pickup_code}</View>
+        <View className='wirte-off-desc'>提货时请出告知店员提货验证码</View>
       </View>
-      <View className="pickup-code">{pickup_code}</View>
-      <View className="wirte-off-desc">提货时请出告知店员提货验证码</View>
-    </View>
-  </SpFloatLayout>;
+    </SpFloatLayout>
+  )
 }
 
 CompWriteOffCode.options = {
@@ -77,8 +79,8 @@ CompWriteOffCode.options = {
 
 CompWriteOffCode.defaultProps = {
   isOpened: false,
-  onClose: () => { },
-  onConfirm: () => { }
+  onClose: () => {},
+  onConfirm: () => {}
 }
 
 export default CompWriteOffCode

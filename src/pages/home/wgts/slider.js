@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { useImmer } from 'use-immer'
-import { classNames, linkPage ,VERSION_STANDARD ,getDistributorId } from '@/utils'
+import { classNames, linkPage, VERSION_STANDARD, getDistributorId } from '@/utils'
 import { needLoginPageType, needLoginPage } from '@/consts'
 
 import './slider.scss'
@@ -22,11 +22,13 @@ function WgtSlider(props) {
 
   useEffect(() => {
     let nData = []
-    if(VERSION_STANDARD && Array.isArray(data) && data.length > 0){
+    if (VERSION_STANDARD && Array.isArray(data) && data.length > 0) {
       const distributorId = getDistributorId()
-      nData = data.map(element => element ? { ...element, distributor_id: distributorId } : element)
+      nData = data.map((element) =>
+        element ? { ...element, distributor_id: distributorId } : element
+      )
     }
-    setState(draft => {
+    setState((draft) => {
       draft.curContent = (nData[curIdx] || {}).content
     })
   }, [curIdx])
@@ -35,14 +37,14 @@ function WgtSlider(props) {
 
   const dotChange = (e) => {
     const { current } = e.detail
-    setState(draft => {
+    setState((draft) => {
       draft.currentDot = current
     })
   }
 
   const swiperChange = (e) => {
     const { current } = e.detail
-    setState(draft => {
+    setState((draft) => {
       draft.curIdx = current
     })
   }
@@ -57,7 +59,6 @@ function WgtSlider(props) {
         'wgt__padded': base.padded
       })}
     >
-
       {base.title && (
         <View className='wgt-head'>
           <View className='wgt-hd'>
@@ -94,8 +95,8 @@ function WgtSlider(props) {
             {data.map((item, idx) => {
               return (
                 <SwiperItem key={`slider-item__${idx}`} className='slider-item'>
-                {needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage) ? (
-                  <SpLogin onChange={() => handleClickItem(item)}>
+                  {needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage) ? (
+                    <SpLogin onChange={() => handleClickItem(item)}>
                       <View
                         // style={`padding: 0 ${config.padded ? Taro.pxTransform(20) : 0}`}
                         className={classNames('wrapper-img', {
@@ -106,16 +107,16 @@ function WgtSlider(props) {
                         <SpImage src={item.imgUrl} lazyLoad />
                       </View>
                     </SpLogin>
-                ) : (
-                  <View
-                    className={classNames('wrapper-img', {
-                      'rounded': config.rounded
-                    })}
-                    onClick={() => handleClickItem(item)}
-                  >
-                    <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
-                  </View>
-                )}
+                  ) : (
+                    <View
+                      className={classNames('wrapper-img', {
+                        'rounded': config.rounded
+                      })}
+                      onClick={() => handleClickItem(item)}
+                    >
+                      <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
+                    </View>
+                  )}
                 </SwiperItem>
               )
             })}

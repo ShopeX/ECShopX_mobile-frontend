@@ -12,30 +12,30 @@ const memberSlice = createSlice({
   initialState,
   reducers: {
     favs: (state, { payload }) => {
-      const favsList = payload;
-      const favs = {};
+      const favsList = payload
+      const favs = {}
       favsList.forEach(({ item_id, fav_id }) => {
         favs[item_id] = {
           item_id,
           fav_id
-        };
-      });
+        }
+      })
       state.favs = favs
     },
     addFav: (state, { payload }) => {
-      const { item_id } = payload;
+      const { item_id } = payload
       const favs = {
         ...state.favs,
         [item_id]: payload
-      };
+      }
       state.favs = favs
     },
     delFav: (state, { payload }) => {
-      const { item_id } = payload;
+      const { item_id } = payload
       const favs = {
         ...state.favs
-      };
-      delete favs[item_id];
+      }
+      delete favs[item_id]
       state.favs = favs
     },
     closeAdv: (state, { payload }) => {

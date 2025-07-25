@@ -1,14 +1,19 @@
-import Taro,{useRouter} from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import React, { useRef, useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import api from '@/api'
-import { classNames, pickBy, getDistributorId,VERSION_IN_PURCHASE } from '@/utils'
+import { classNames, pickBy, getDistributorId, VERSION_IN_PURCHASE } from '@/utils'
 import { useAsyncCallback, useLogin } from '@/hooks'
 import { updateUserInfo } from '@/store/slices/user'
-import { updatePurchaseShareInfo, updatePurchaseTabbar, updateActivityInfo, updateCount } from '@/store/slices/purchase'
-import { updateValidIdentity } from '@/store/slices/purchase'
+import {
+  updatePurchaseShareInfo,
+  updatePurchaseTabbar,
+  updateActivityInfo,
+  updateCount,
+  updateValidIdentity
+} from '@/store/slices/purchase'
 
 import doc from '@/doc'
 import S from '@/spx'
@@ -34,12 +39,12 @@ const initialState = {
     { title: '未开始', value: 2 },
     { title: '已结束', value: 3 }
   ],
-  loading:true
+  loading: true
 }
 
 function PurchaseActivityList() {
   const [state, setState] = useImmer(initialState)
-  const { activityList, activity_name, tabList, currentIndex,loading} = state
+  const { activityList, activity_name, tabList, currentIndex, loading } = state
   const { curEnterpriseId } = useSelector((_state) => _state.purchase)
 
   const scrollRef = useRef()
@@ -51,7 +56,7 @@ function PurchaseActivityList() {
   useEffect(() => {
     if (!S.getAuthToken()) {
       Taro.redirectTo({
-         url: '/pages/purchase/auth'
+        url: '/pages/purchase/auth'
       })
       return
     } else {
@@ -59,12 +64,15 @@ function PurchaseActivityList() {
     }
   }, [])
 
-  const verfiyActivityNums = async() => {
-    if(VERSION_IN_PURCHASE){
+  const verfiyActivityNums = async () => {
+    if (VERSION_IN_PURCHASE) {
       // 纯内购没有企业进入认证首页
-      const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
-      const validIdentityLen = data.filter(item => item.disabled == 0).length
-      if(!validIdentityLen){
+      const data = await api.purchase.getUserEnterprises({
+        disabled: 0,
+        distributor_id: getDistributorId()
+      })
+      const validIdentityLen = data.filter((item) => item.disabled == 0).length
+      if (!validIdentityLen) {
         Taro.redirectTo({
           url: '/pages/purchase/auth'
         })
@@ -74,17 +82,17 @@ function PurchaseActivityList() {
 
     const { list, total_count } = await api.purchase.getEmployeeActivityList({
       page: 1,
-      pageSize:1,
-      enterprise_id:curEnterpriseId,
+      pageSize: 1,
+      enterprise_id: curEnterpriseId,
       activity_id
     })
 
-     // 如果只有一条数据，直接进入活动首页
-    if(total_count == 1 && is_redirt){
+    // 如果只有一条数据，直接进入活动首页
+    if (total_count == 1 && is_redirt) {
       const _list = pickBy(list, doc.purchase.ACTIVITY_ITEM)
-      onClickChange(_list[0],'redirectTo')
-    }else{
-      setState(draft=>{
+      onClickChange(_list[0], 'redirectTo')
+    } else {
+      setState((draft) => {
         draft.loading = false
       })
       scrollRef.current.reset()
@@ -94,12 +102,14 @@ function PurchaseActivityList() {
     }
   }
 
-
-  const updateIdentity = async() => {
-    const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
-    const hasValidIdentity = data.filter(item => item.disabled == 0).length > 1
+  const updateIdentity = async () => {
+    const data = await api.purchase.getUserEnterprises({
+      disabled: 0,
+      distributor_id: getDistributorId()
+    })
+    const hasValidIdentity = data.filter((item) => item.disabled == 0).length > 1
     //多个企业展示身份切换tab
-    dispatch(updateValidIdentity(hasValidIdentity));
+    dispatch(updateValidIdentity(hasValidIdentity))
   }
 
   const updataMemberInfo = async () => {
@@ -114,7 +124,7 @@ function PurchaseActivityList() {
       pageSize,
       activity_name,
       // type,
-      enterprise_id:curEnterpriseId,
+      enterprise_id: curEnterpriseId,
       activity_id
     })
 
@@ -148,32 +158,47 @@ function PurchaseActivityList() {
     )
   }
 
-  const onClickChange = async(item,isRedirectTo) => {
-    const { id, enterpriseId, pages_template_id, priceDisplayConfig = {}, isDiscountDescriptionEnabled, discountDescription } = item
+  const onClickChange = async (item, isRedirectTo) => {
+    const {
+      id,
+      enterpriseId,
+      pages_template_id,
+      priceDisplayConfig = {},
+      isDiscountDescriptionEnabled,
+      discountDescription
+    } = item
     const url = `/subpages/purchase/index?activity_id=${id}&enterprise_id=${enterpriseId}&pages_template_id=${pages_template_id}`
     const _priceDisplayConfig = handlePriceConfig(priceDisplayConfig)
     //需要存活动价格展示
-    dispatch(updateActivityInfo({priceDisplayConfig:_priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription}))
+    dispatch(
+      updateActivityInfo({
+        priceDisplayConfig: _priceDisplayConfig,
+        isDiscountDescriptionEnabled,
+        discountDescription
+      })
+    )
     //更新活动购物车
-    await dispatch(updateCount({
-      shop_type:'distributor',
-      enterprise_id:enterpriseId,
-      activity_id:id
-    }))
-    if(isRedirectTo){
-      Taro.redirectTo({url})
-    }else{
-      Taro.navigateTo({url})
+    await dispatch(
+      updateCount({
+        shop_type: 'distributor',
+        enterprise_id: enterpriseId,
+        activity_id: id
+      })
+    )
+    if (isRedirectTo) {
+      Taro.redirectTo({ url })
+    } else {
+      Taro.navigateTo({ url })
     }
   }
 
   const handlePriceConfig = (val) => {
-    if(!val)return {}
+    if (!val) return {}
     const priceConfig = JSON.parse(JSON.stringify(val))
-    Object.keys(priceConfig).forEach(key=>{
+    Object.keys(priceConfig).forEach((key) => {
       const c_config = priceConfig[key]
-      if(c_config){
-        for(let ckey in c_config){
+      if (c_config) {
+        for (let ckey in c_config) {
           c_config[ckey] = c_config[ckey] == 'true'
         }
       }
@@ -210,10 +235,7 @@ function PurchaseActivityList() {
     >
       <View className='user-box'>
         <View className='user-serach'>
-          <SpSearchInput
-            placeholder='活动名称'
-            onConfirm={onConfirm}
-          />
+          <SpSearchInput placeholder='活动名称' onConfirm={onConfirm} />
         </View>
       </View>
       {/* <SpTabs current={currentIndex} tablist={tabList} onChange={handleTypeChange} /> */}
@@ -250,4 +272,3 @@ PurchaseActivityList.options = {
 }
 
 export default PurchaseActivityList
-

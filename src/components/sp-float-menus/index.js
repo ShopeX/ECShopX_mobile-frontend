@@ -5,7 +5,7 @@ import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './index.scss'
 
-function SpFloatMenus (props) {
+function SpFloatMenus(props) {
   const { children, className } = props
   return <View className={classNames('sp-float-menus', className)}>{children}</View>
 }

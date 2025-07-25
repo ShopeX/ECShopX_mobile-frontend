@@ -27,7 +27,7 @@ function CmopDeliver(props) {
   const dispatch = useDispatch()
 
   const { location = {}, address: storeAddress } = useSelector((state) => state.user)
-  const { rgb, openStore } = useSelector((state) => state.sys)
+  const { rgb, entryStoreByLBS } = useSelector((state) => state.sys)
   const { zitiShop } = useSelector((state) => state.shop)
   const [state, setState] = useImmer(initialState)
   const { distributorInfo, receiptType } = state
@@ -53,7 +53,7 @@ function CmopDeliver(props) {
       setState((draft) => {
         draft.distributorInfo = _distributorInfo
         const fd = deliveryList.find((item) => _distributorInfo[item.key])
-        if(fd) {
+        if (fd) {
           draft.receiptType = fd.type
           _receiptType = fd.type
         }
@@ -78,7 +78,7 @@ function CmopDeliver(props) {
     const { list } = await api.member.addressList(query)
     const defaultAddress = list.find((item) => item.is_def) || list[0] || null
 
-    const selectAddress = list.find(item => item.address_id == storeAddress?.address_id )
+    const selectAddress = list.find((item) => item.address_id == storeAddress?.address_id)
     onChange({
       receipt_type: _receiptType,
       distributor_info: _distributorInfo,
@@ -156,7 +156,7 @@ function CmopDeliver(props) {
           <View className='address-title'>{zitiInfo.name}</View>
           <View className='address-detail'>
             <View className='address'>{zitiInfo.store_address}</View>
-            {!openStore && VERSION_STANDARD ? (
+            {!entryStoreByLBS && VERSION_STANDARD ? (
               <View
                 className='iconfont icon-edit'
                 onClick={() => handleEditZitiClick(zitiInfo.distributor_id)}

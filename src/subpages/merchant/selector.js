@@ -1,15 +1,16 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useRef } from 'react'
-import { MNavBar, MCell } from './comps'
+
 import { SpSearchBar, SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateMerchantType, updateBusinessScope, updateBank } from '@/store/slices/merchant'
-import { MERCHANT_TYPE, BANG_NAME, PLACEHOLDER_SELECTOR, BUSINESS_SCOPE } from './consts'
 import { useImmer } from 'use-immer'
-import { setMerchant, splitMatch } from './util'
 import { classNames } from '@/utils'
+import { MNavBar, MCell } from './comps'
+import { MERCHANT_TYPE, BANG_NAME, PLACEHOLDER_SELECTOR, BUSINESS_SCOPE } from './consts'
+import { setMerchant, splitMatch } from './util'
 import './selector.scss'
 
 const initialState = {
@@ -33,7 +34,7 @@ const Selector = () => {
       page_size: pageSize,
       parent_id: type === MERCHANT_TYPE ? 0 : parent_id
     }
-    const {searchingName} = state
+    const { searchingName } = state
     if (isBank) {
       params.bank_name = searchingName
     } else {
@@ -62,7 +63,7 @@ const Selector = () => {
 
   //点击搜索框搜索
   const handleConfirm = async (val) => {
-    console.log('------------',val)
+    console.log('------------', val)
     await setState((v) => {
       v.list = []
       v.name = val

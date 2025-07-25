@@ -93,7 +93,7 @@ class PrescriptionCode {
     // 店铺名称
     drawText(
       {
-        x:180,
+        x: 180,
         y: 150,
         fontSize: 36,
         w: canvasWidth,

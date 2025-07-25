@@ -1,176 +1,149 @@
+import { useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import api from '@/api'
-import { useSelector, useDispatch } from 'react-redux'
 import S from '@/spx'
-import { pickBy } from '@/utils'
+import { pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
-import { useLocation, useShopInfo } from '@/hooks'
+import { useShopInfo } from '@/hooks'
+import { updateShopInfo } from '@/store/slices/shop'
+import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
+import configStore from '@/store'
 
-export default ({ onPhoneCallComplete } = {}) => {
+export default () => {
   const dispatch = useDispatch()
-  const { open_divided_templateId } =
-    useSelector((state) => state.sys)
-  const { shopInfo } = useSelector((state) => state.shop)
-  const { calculateDistance } = useLocation()
+  const {
+    entryStoreByStoreCode,
+    entryStoreByGuideMaterial,
+    enterStoreWhiteList, // 进入白名单会员店
+    entryStoreByGuide,
+    entryStoreByLBS,
+    entryDefalutStore,
+    guidderTemplateId
+  } = useSelector((state) => state.sys)
   const { location } = useSelector((state) => state.user)
-  // 找到最近的白名单店铺
-  const findNearestWhiteListShop = (shopList, currentLocation) => {
-    if (!shopList || !shopList.length || !currentLocation) return null;
 
-    // 先筛选同城市的店铺
-    let filteredShops = shopList.filter(shop =>
-      shop.regions &&
-      shop.regions[0] === currentLocation.province &&
-      shop.regions[1] === currentLocation.city &&
-      shop.regions[2] === currentLocation.district
-    );
+  const shopInfoRef = useRef(null)
 
-    // 如果没有同城市的店铺，返回所有店铺中最近的
-    if (filteredShops.length === 0) {
-      filteredShops = shopList;
+  const checkStoreWhiteList = async (dtid) => {
+    const params = {}
+    if (dtid) {
+      params['distributor_id'] = dtid
+    } else if (entryStoreByLBS) {
+      params['lat'] = location?.lat
+      params['lng'] = location?.lng
     }
+    // 开启店铺码进店
+    const currentShopInfo = await api.shop.getShop(params)
+    shopInfoRef.current = currentShopInfo
 
-    // 计算每个店铺的距离
-    const shopsWithDistance = filteredShops.map(shop => {
-      const distance = calculateDistance(
-        parseFloat(currentLocation.lat),
-        parseFloat(currentLocation.lng),
-        parseFloat(shop.lat),
-        parseFloat(shop.lng)
-      );
-      return {
-        ...shop,
-        distance
-      };
-    });
-
-    // 按距离排序
-    shopsWithDistance.sort((a, b) => a.distance - b.distance);
-
-    return shopsWithDistance[0];
-  };
-
-  const handleSortShopList = (shopList) => {
-    if (!shopList || !shopList.length) return null;
-
-    // 复制数组以避免修改原数组
-    const sortedShops = [...shopList].sort((a, b) => {
-      // 确保 sort_id 存在，如果不存在则设置为 0
-      const timeA = a.sort_id || 0;
-      const timeB = b.sort_id || 0;
-      // 降序排序，最新的在前
-      return timeB - timeA;
-    });
-
-    return sortedShops;
-  }
-  
-  // 找到创建时间最晚的白名单店铺
-  const findLatestCreatedShop = (shopList) => {
-    if (!shopList || !shopList.length) return null;
-    return handleSortShopList(shopList)[0];
-  };
-
-  // 排序店铺
-  const sortShopList = (shopList) => {
-    if (!shopList || !shopList.length) return null;
-    return handleSortShopList(shopList);
-  };
-
-  const getWhiteShop = async () => {
-    // 获取店铺列表，主要用于查找白名单店铺
-    const fetchShop = async () => {
-      let params = {
-        page: 1,
-        pageSize: 50,
-        type: 0,           // 店铺类型，0表示所有类型
-        search_type: 2,    // 1=搜索商品；2=搜索门店
-        sort_type: 1,      // 排序方式
-        show_type: 'self'  // 'self'表示只获取白名单店铺
-      }
-
-      // console.log(`fetchShop query: ${JSON.stringify(params)}`)
-      // 调用店铺列表API
-      const { list } = await api.shop.list(params)
-      // 使用 pickBy 函数按照 doc.shop.SHOP_ITEM 的格式处理店铺数据
-      const reslut = pickBy(list, doc.shop.SHOP_ITEM)
-      console.log("🚀🚀🚀 ~ fetchShop ~ list:", reslut)
-      return reslut
-    }
-
-    // 获取用户已经加入的白名单店铺，筛选合适的店铺
-    const shopList = await fetchShop()
-    // 找到最近的白名单店铺
-    // if (location) {
-    //   const nearestShop = findNearestWhiteListShop(shopList, location);
-    //   if (nearestShop) {
-    //     // 使用最近的白名单店铺信息
-    //     return nearestShop;
-    //   }
-    // } else {
-      // 找到创建时间最晚的白名单店铺
-      const latestShop = findLatestCreatedShop(shopList);
-      return latestShop;
-    // }
-
-
-
-  }
-
-  // 打店铺电话
-  // todozm 修改逻辑，如果没落地页模版id，弹窗打电话，有模版id的话，没有携带店铺id，自动跳，带了 店铺id ，还是需要弹窗
-  const connectWhiteShop = (phone) => { 
-    if (open_divided_templateId) {
-      const query = `?id=${open_divided_templateId}&fromConnect=1`
-      const path = `/pages/custom/custom-page${query}`
-      Taro.navigateTo({
-        url: path
+    // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
+    if (
+      dtid > 0 &&
+      currentShopInfo.distributor_id !== 0 &&
+      currentShopInfo.distributor_id !== dtid &&
+      entryDefalutStore === '2'
+    ) {
+      Taro.redirectTo({
+        url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=1`
       })
+    }
+
+    if (currentShopInfo.distributor_id !== 0 && currentShopInfo.open_divided == '1') {
+      // 开启了店铺白名单
+      if (!S.getAuthToken()) {
+        throw new Error('AUTH_REQUIRED') // 去授权
+      } else {
+        throw new Error('CHECK_WHITE_LIST') // 去检查当前用户是否在店铺白名单中
+      }
     } else {
-      Taro.makePhoneCall({
-        phoneNumber: phone,
-        complete: () => {
-          // 在电话操作完成后（无论成功或失败）执行
-          if (onPhoneCallComplete) {
-            onPhoneCallComplete()
+      dispatch(updateShopInfo(currentShopInfo))
+    }
+  }
+
+  // 检查进店规则
+  const checkEnterStoreRule = async () => {
+    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    const { gu_user_id } = Taro.getStorageSync(SG_GUIDE_PARAMS) // gu_user_id = 导购工号
+
+    // 路由带参
+    if (dtid) {
+      if (entryStoreByStoreCode) {
+        // 开启店铺码进店
+        await checkStoreWhiteList(dtid)
+      } else {
+        // 未开启店铺码进店
+        await checkStoreWhiteList()
+      }
+    } else if (gu_user_id) {
+      if (entryStoreByGuideMaterial) {
+        // 导购绑定的店铺信息
+        const guideStoreInfo = await api.shop.checkStoreEnterRule({
+          work_userid: gu_user_id
+        })
+        if (guideStoreInfo?.distributor_id) {
+          await checkStoreWhiteList(guideStoreInfo?.distributor_id)
+        } else {
+          // 兜底策略
+          if (entryDefalutStore === '1') {
+            // 当前导购未绑定店铺
+            await checkStoreWhiteList()
+          } else if (entryDefalutStore === '2') {
+            Taro.redirectTo({
+              url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=1`
+            })
           }
         }
-      })
+      } else {
+        await checkStoreWhiteList()
+      }
+    } else {
+      if (entryStoreByGuide && S.getAuthToken()) {
+        const guideStoreInfo = await api.shop.checkStoreEnterRule()
+        if (guideStoreInfo?.distributor_id) {
+          await checkStoreWhiteList(guideStoreInfo?.distributor_id)
+        } else {
+          // 兜底策略
+          if (entryDefalutStore === '1') {
+            // 当前导购未绑定店铺
+            await checkStoreWhiteList()
+          } else if (entryDefalutStore === '2') {
+            Taro.redirectTo({
+              url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=1`
+            })
+          }
+        }
+      } else if (enterStoreWhiteList && S.getAuthToken()) {
+        const myShopInfo = await getUserWhiteShop()
+        if (myShopInfo) {
+          dispatch(updateShopInfo(myShopInfo))
+        } else {
+          await checkStoreWhiteList()
+        }
+      } else {
+        await checkStoreWhiteList()
+      }
     }
   }
 
-  const phoneCall = (phone) => { 
-    Taro.makePhoneCall({
-      phoneNumber: phone,
-      complete: () => {
-        // 在电话操作完成后（无论成功或失败）执行
-        if (onPhoneCallComplete) {
-          onPhoneCallComplete()
-        }
-      }
-    })
+  // 检查用户是否在白名单店铺
+  const checkUserInStoreWhiteList = async () => {
+    const { distributor_id } = shopInfoRef.current
+    const { status } = await api.shop.checkUserInWhite({ distributor_id: distributor_id })
+    if (status) {
+      dispatch(updateShopInfo(shopInfoRef.current))
+    }
+    return status
   }
 
-  // 没有店铺
-  // const showNoShopModal = (phone) => {
-  //   Taro.showModal({
-  //     content: '抱歉，本店会员才可以访问，如有需要可电话联系店铺',
-  //     confirmText: '关闭',
-  //     cancelText: '联系店铺',
-  //     showCancel: !!(open_divided_templateId || phone),
-  //     success: async (res) => {
-  //       if (res.cancel) {
-  //         connectWhiteShop(phone)
-  //       }
+  const getUserWhiteShop = async () => {
+    const list = await api.shop.getMyStoreWhiteList()
+    return list.length > 0 ? list[0] : null
+  }
 
-  //       if (res.confirm) {
-  //         // 关闭退出小程序
-  //         Taro.exitMiniProgram()
-  //       }
-  //     }
-  //   })
-  // }
-
-
-  return { findNearestWhiteListShop, findLatestCreatedShop, getWhiteShop, connectWhiteShop, phoneCall, sortShopList }
+  return {
+    checkEnterStoreRule,
+    checkUserInStoreWhiteList,
+    getUserWhiteShop
+  }
 }

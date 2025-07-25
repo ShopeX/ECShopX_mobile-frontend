@@ -23,7 +23,6 @@ function ListIndex(props) {
   const { list } = state
   const goodsRef = useRef()
 
-
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
       page: pageIndex,
@@ -42,9 +41,7 @@ function ListIndex(props) {
   }
 
   return (
-    <SpPage
-      className='page-community-list'
-    >
+    <SpPage className='page-community-list'>
       <SpScrollView className='itemlist-scroll' ref={goodsRef} fetch={fetch}>
         {list.map((item, index) => (
           <View className='goods-item-wrap' key={`goods-item-wrap__${index}`}>

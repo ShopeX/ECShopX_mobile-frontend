@@ -1,13 +1,9 @@
 import Taro from '@tarojs/taro'
-import { View} from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
-import {
-  SpScrollView,
-  SpNote,
-  SpPage
-} from '@/components'
+import { SpScrollView, SpNote, SpPage } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 
@@ -48,10 +44,7 @@ function LimitList(props) {
     return (
       <View key={idx} className='list-item'>
         <View className='list-item__title'>{name}</View>
-        <View className='list-item__time'>
-          {' '}
-          {`${employeeBeginTime} - ${employeeEndTime}`}
-        </View>
+        <View className='list-item__time'> {`${employeeBeginTime} - ${employeeEndTime}`}</View>
         <View className='list-item__content'>
           <View className='list-item__content-item'>
             <View className='list-item__content-item-key'>总额度</View>

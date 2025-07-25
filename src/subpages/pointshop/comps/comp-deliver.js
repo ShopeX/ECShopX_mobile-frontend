@@ -3,7 +3,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { AddressChoose, SpCell, SpFloatLayout, SpForm, SpFormItem, SpInput as AtInput } from '@/components'
+import {
+  AddressChoose,
+  SpCell,
+  SpFloatLayout,
+  SpForm,
+  SpFormItem,
+  SpInput as AtInput
+} from '@/components'
 import { updateChooseAddress } from '@/store/slices/user'
 import { enumdays } from '@/consts'
 import { classNames, VERSION_STANDARD } from '@/utils'
@@ -37,19 +44,29 @@ function CompDeliver(props, ref) {
   const {
     address = {},
     distributor_id,
-    onChangReceiptType = () => { },
-    onChange = () => { },
-    onEidtZiti = () => { }
+    onChangReceiptType = () => {},
+    onChange = () => {},
+    onEidtZiti = () => {}
   } = props
 
   const dispatch = useDispatch()
 
   const { location = {}, address: storeAddress } = useSelector((state) => state.user)
-  const { rgb, openStore } = useSelector((state) => state.sys)
+  const { rgb } = useSelector((state) => state.sys)
   const { zitiAddress } = useSelector((state) => state.cart)
   const { zitiShop } = useSelector((state) => state.shop)
   const [state, setState] = useImmer(initialState)
-  const { distributorInfo, receiptType, showTimePicker, form, rules, weekdays, timeSlots, pickerIndex, activeTimeId } = state
+  const {
+    distributorInfo,
+    receiptType,
+    showTimePicker,
+    form,
+    rules,
+    weekdays,
+    timeSlots,
+    pickerIndex,
+    activeTimeId
+  } = state
   const formRef = useRef()
   const $instance = getCurrentInstance()
   const { cart_type } = $instance.router?.params || {}
@@ -87,7 +104,7 @@ function CompDeliver(props, ref) {
       _distributorInfo = await api.shop.getShop({ distributor_id })
     }
 
-    const _receiptType = deliveryList.find(item => !!_distributorInfo[item.key])
+    const _receiptType = deliveryList.find((item) => !!_distributorInfo[item.key])
     setState((draft) => {
       draft.distributorInfo = _distributorInfo
       draft.receiptType = _receiptType?.type || 'logistics'
@@ -114,7 +131,7 @@ function CompDeliver(props, ref) {
     const { list } = await api.member.addressList(query)
     const defaultAddress = list.find((item) => item.is_def) || list[0] || null
 
-    const selectAddress = list.find(item => item.address_id == storeAddress?.address_id)
+    const selectAddress = list.find((item) => item.address_id == storeAddress?.address_id)
 
     onChange({
       receipt_type: receiptType,
@@ -122,8 +139,6 @@ function CompDeliver(props, ref) {
       address_info: selectAddress || defaultAddress
     })
   }
-
-
 
   const calcZitiPickerData = () => {
     const { wait_pickup_days, hours } = zitiAddress
@@ -133,7 +148,7 @@ function CompDeliver(props, ref) {
       _weekdays.push({ title: enumdays[i] || _day.format('YYYY-MM-DD'), value: _day })
     }
 
-    setState(draft => {
+    setState((draft) => {
       draft.weekdays = _weekdays
       // draft.timeSlots = hours
     })
@@ -164,7 +179,7 @@ function CompDeliver(props, ref) {
         disabled: !enable
       })
     }
-    setState(draft => {
+    setState((draft) => {
       draft.pickerIndex = index
       draft.timeSlots = _timeSlots
     })
@@ -263,80 +278,112 @@ function CompDeliver(props, ref) {
       {/** 自提 */}
       {receiptType === 'ziti' && (
         <View className='address-module'>
-          <View className='ziti-title' onClick={() => {
-            Taro.navigateTo({
-              url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}`
-            })
-          }}>{zitiAddress?.name || '选择自提地址'}
+          <View
+            className='ziti-title'
+            onClick={() => {
+              Taro.navigateTo({
+                url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}`
+              })
+            }}
+          >
+            {zitiAddress?.name || '选择自提地址'}
             <Text className='iconfont icon-arrowRight'></Text>
           </View>
-          {zitiAddress && <View className='address-connect'>
-            <View className='ziti-address'>提货地址：{`${zitiAddress?.province}${zitiAddress?.city}${zitiAddress?.area}${zitiAddress?.address}`}</View>
-            <View className='ziti-connect'>联系电话：{zitiAddress?.contract_phone}</View>
-          </View>}
+          {zitiAddress && (
+            <View className='address-connect'>
+              <View className='ziti-address'>
+                提货地址：
+                {`${zitiAddress?.province}${zitiAddress?.city}${zitiAddress?.area}${zitiAddress?.address}`}
+              </View>
+              <View className='ziti-connect'>联系电话：{zitiAddress?.contract_phone}</View>
+            </View>
+          )}
 
-          {zitiAddress && <View className='ziti-info'>
-            <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
-              <SpFormItem label='提货时间' prop='pickerTime'>
-                <SpCell className='picker-time' isLink onClick={() => {
-                  setState(draft => {
-                    draft.showTimePicker = true
-                  })
-                }}>
-                  <Text className={classNames({
-                    'placeholder': !form.pickerTime
-                  })}>{getPickerTime()}</Text>
-                </SpCell>
-              </SpFormItem>
-              <SpFormItem label='提货人' prop='pickerName'>
-                <AtInput
-                  name='pickerName'
-                  value={form.pickerName}
-                  placeholder='请输入提货人姓名'
-                  cursor={form.pickerName.length}
-                  onChange={onInputChange.bind(this, 'pickerName')}
-                />
-              </SpFormItem>
-              <SpFormItem label='手机号码' prop='pickerPhone'>
-                <AtInput
-                  name='pickerPhone'
-                  value={form.pickerPhone}
-                  cursor={form.pickerPhone.length}
-                  placeholder='请输入提货人手机号码'
-                  onChange={onInputChange.bind(this, 'pickerPhone')}
-                />
-              </SpFormItem>
-            </SpForm>
-          </View>}
+          {zitiAddress && (
+            <View className='ziti-info'>
+              <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
+                <SpFormItem label='提货时间' prop='pickerTime'>
+                  <SpCell
+                    className='picker-time'
+                    isLink
+                    onClick={() => {
+                      setState((draft) => {
+                        draft.showTimePicker = true
+                      })
+                    }}
+                  >
+                    <Text
+                      className={classNames({
+                        'placeholder': !form.pickerTime
+                      })}
+                    >
+                      {getPickerTime()}
+                    </Text>
+                  </SpCell>
+                </SpFormItem>
+                <SpFormItem label='提货人' prop='pickerName'>
+                  <AtInput
+                    name='pickerName'
+                    value={form.pickerName}
+                    placeholder='请输入提货人姓名'
+                    cursor={form.pickerName.length}
+                    onChange={onInputChange.bind(this, 'pickerName')}
+                  />
+                </SpFormItem>
+                <SpFormItem label='手机号码' prop='pickerPhone'>
+                  <AtInput
+                    name='pickerPhone'
+                    value={form.pickerPhone}
+                    cursor={form.pickerPhone.length}
+                    placeholder='请输入提货人手机号码'
+                    onChange={onInputChange.bind(this, 'pickerPhone')}
+                  />
+                </SpFormItem>
+              </SpForm>
+            </View>
+          )}
         </View>
-      )
-      }
+      )}
 
       {/* 自提时间选择 */}
-      <SpFloatLayout className='ziti-time-floatlayout' open={showTimePicker} onClose={() => {
-        setState(draft => {
-          draft.showTimePicker = false
-        })
-      }}>
+      <SpFloatLayout
+        className='ziti-time-floatlayout'
+        open={showTimePicker}
+        onClose={() => {
+          setState((draft) => {
+            draft.showTimePicker = false
+          })
+        }}
+      >
         <View className='ziti-time-container'>
           <ScrollView className='week-container' scrollY>
-            {
-              weekdays.map((item, index) => (<View className={classNames('weekday-item', {
-                active: index === pickerIndex
-              })} key={`weekday-item__${index}`} onClick={onChangeWeekDays.bind(this, index)}>{item.title}</View>))
-            }
+            {weekdays.map((item, index) => (
+              <View
+                className={classNames('weekday-item', {
+                  active: index === pickerIndex
+                })}
+                key={`weekday-item__${index}`}
+                onClick={onChangeWeekDays.bind(this, index)}
+              >
+                {item.title}
+              </View>
+            ))}
           </ScrollView>
           <ScrollView className='time-container' scrollY>
-            {
-              timeSlots.map((item, index) => (<View className={classNames('timeslot-item', {
-                'active': item.id === activeTimeId,
-                'disabled': item.disabled
-              })} key={`timeslot-item__${index}`} onClick={onChangeTimeSlot.bind(this, item)}>{`${item.value[0]} ~ ${item.value[1]}`}</View>))
-            }
+            {timeSlots.map((item, index) => (
+              <View
+                className={classNames('timeslot-item', {
+                  'active': item.id === activeTimeId,
+                  'disabled': item.disabled
+                })}
+                key={`timeslot-item__${index}`}
+                onClick={onChangeTimeSlot.bind(this, item)}
+              >{`${item.value[0]} ~ ${item.value[1]}`}</View>
+            ))}
           </ScrollView>
         </View>
       </SpFloatLayout>
-    </View >
+    </View>
   )
 }
 

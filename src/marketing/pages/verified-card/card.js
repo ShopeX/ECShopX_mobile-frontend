@@ -16,7 +16,7 @@ import './verified.scss'
   colors: colors.current
 }))
 export default class DistributionDashboard extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       info: {},
@@ -27,7 +27,7 @@ export default class DistributionDashboard extends Component {
       bankData: null
     }
   }
-  async componentDidMount () {
+  async componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -44,7 +44,7 @@ export default class DistributionDashboard extends Component {
     this.fetch()
   }
 
-  handleInput (type, val) {
+  handleInput(type, val) {
     let info = this.state.info
     info[type] = val
     this.setState({
@@ -52,7 +52,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  handleSubmit (e) {
+  handleSubmit(e) {
     let { info } = this.state
     if (!info.bank_id) {
       return S.toast('请选择银行')
@@ -79,7 +79,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  async fetch () {
+  async fetch() {
     const res = await api.member.hfpayBankInfo()
     const info = pickBy(res, {
       card_num: 'card_num',
@@ -94,7 +94,7 @@ export default class DistributionDashboard extends Component {
     }
   }
 
-  handleChange (e) {
+  handleChange(e) {
     const { bankData } = this.state
     let bank_name = bankData[e.detail.value].bank_name
     let bank_id = bankData[e.detail.value].bank_code
@@ -105,7 +105,7 @@ export default class DistributionDashboard extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info, isTrue, bankData } = this.state
     return (

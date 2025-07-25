@@ -45,7 +45,7 @@ export default class DistributionTrade extends Component {
       brokerage_source: type,
       page,
       pageSize,
-      isSalesmanPage:1
+      isSalesmanPage: 1
     }
     query[parameter.key] = parameter.keywords
 
@@ -61,8 +61,8 @@ export default class DistributionTrade extends Component {
       mobile: 'mobile',
       commission_type: 'commission_type',
       rebate_point: 'rebate_point',
-      store_name:'store_name',
-      promote_type:'promote_type'
+      store_name: 'store_name',
+      promote_type: 'promote_type'
     })
 
     this.setState({

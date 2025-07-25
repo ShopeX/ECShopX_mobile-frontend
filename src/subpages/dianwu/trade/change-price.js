@@ -78,7 +78,7 @@ function DianwuChangePrice(props) {
       itemFeeNew,
       freightFee,
       totalFee,
-      pointFreightFee,
+      pointFreightFee
     } = pickBy(orderInfo, doc.dianwu.ORDER_INFO)
 
     const { store_address, store_name } = distributor
@@ -373,7 +373,11 @@ function DianwuChangePrice(props) {
               onConfirm={onConfirmGlobalFreight}
             />
             <View className='bd-item-ft'>
-              <SpCheckbox checked={isFreeFreight} disabled={receiptType == 'dada'} onChange={onChangeFreeFreight}>
+              <SpCheckbox
+                checked={isFreeFreight}
+                disabled={receiptType == 'dada'}
+                onChange={onChangeFreeFreight}
+              >
                 免运费
               </SpCheckbox>
             </View>

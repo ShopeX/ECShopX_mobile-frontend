@@ -117,15 +117,15 @@ function DianwuCheckout(props) {
 
   // 收款
   const onCollection = async () => {
-    if(!prescriptionStatus == 0){
-       console.log('我要跳转到新的页面啦dianwu:')
-       if(!checkout_order_id){
+    if (!prescriptionStatus == 0) {
+      console.log('我要跳转到新的页面啦dianwu:')
+      if (!checkout_order_id) {
         await createOrder()
         dispatch(selectMember(null))
-       }
-       setState((draft) => {
+      }
+      setState((draft) => {
         draft.codeStatus = true
-       })
+      })
       return
     }
     setState((draft) => {
@@ -245,8 +245,7 @@ function DianwuCheckout(props) {
       draft.promotionDiscount = _promotionDiscount
       draft.couponInfo = _couponInfo
       draft.selectCoupon = _couponInfo ? _couponInfo.coupon_code : null
-      draft.markdown = markdown,
-      draft.prescriptionStatus = _prescriptionStatus
+      ;(draft.markdown = markdown), (draft.prescriptionStatus = _prescriptionStatus)
     })
   }
 
@@ -310,7 +309,7 @@ function DianwuCheckout(props) {
     const { order_id } = await api.dianwu.createOrder(params)
 
     //存在处方药要把order_id存起来
-    if(!prescriptionStatus == 0){
+    if (!prescriptionStatus == 0) {
       setState((draft) => {
         draft.checkout_order_id = order_id
       })
@@ -460,13 +459,11 @@ function DianwuCheckout(props) {
             </View>
             <View className='item-bd'>
               <View className='title'>
-                {
-                  item?.isMedicine == 1 && item?.isPrescription == 1 &&
-                  <Text className='prescription-drug'>
-                    处方药
-                  </Text>
-                }
-                {item.name}</View>
+                {item?.isMedicine == 1 && item?.isPrescription == 1 && (
+                  <Text className='prescription-drug'>处方药</Text>
+                )}
+                {item.name}
+              </View>
               {item.itemSpecDesc && <View className='sku'>{item.itemSpecDesc}</View>}
               <View className='ft-info'>
                 <CompGoodsPrice info={item} />
@@ -575,12 +572,9 @@ function DianwuCheckout(props) {
         ></AtTextarea>
       </View>
 
-      {
-        !prescriptionStatus == 0 &&
-        <View className='cart-checkout__title'>
-          订单中包含处方药，提交订单后请补充处方信息
-        </View>
-      }
+      {!prescriptionStatus == 0 && (
+        <View className='cart-checkout__title'>订单中包含处方药，提交订单后请补充处方信息</View>
+      )}
 
       <AtModal
         className='collection-modal'
@@ -650,7 +644,7 @@ function DianwuCheckout(props) {
         </View>
       </SpFloatLayout>
 
-      {console.log(checkout_order_id,'checkout_order_id0000')}
+      {console.log(checkout_order_id, 'checkout_order_id0000')}
 
       {codeStatus && (
         <SpPoster

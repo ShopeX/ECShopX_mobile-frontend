@@ -66,11 +66,14 @@ export default class WgtMarquees extends Component {
             </View>
           </View>
         )}
-        <View className='wgt-body' style={styleNames({
-          background: config.bgcolor
-        })}>
-          {
-            config.direction === 'vertical' && <Swiper
+        <View
+          className='wgt-body'
+          style={styleNames({
+            background: config.bgcolor
+          })}
+        >
+          {config.direction === 'vertical' && (
+            <Swiper
               className='marquees'
               autoplay
               circular
@@ -92,10 +95,9 @@ export default class WgtMarquees extends Component {
                 </SwiperItem>
               ))}
             </Swiper>
-          }
+          )}
 
-          {
-            config.direction === 'horizontal' &&
+          {config.direction === 'horizontal' && (
             <AtNoticebar marquee speed={30}>
               <View
                 style={styleNames({
@@ -105,8 +107,7 @@ export default class WgtMarquees extends Component {
                 {announce}
               </View>
             </AtNoticebar>
-          }
-
+          )}
         </View>
         {/* {config.label && (
           <View

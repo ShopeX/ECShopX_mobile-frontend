@@ -123,9 +123,11 @@ function CompShopBrand(props) {
       </View>
       {storeInfo?.marketingActivityList.length > 0 && (
         <View className='activity-list'>
-          <View className={classNames('activity', {
-            'extend': extend
-          })}>
+          <View
+            className={classNames('activity', {
+              'extend': extend
+            })}
+          >
             {storeInfo?.marketingActivityList.map((item, index) => (
               <View className='activity-item' key={`activity-item__${index}`}>
                 <View className='activity-tag'>{item.promotion_tag}</View>
@@ -133,16 +135,21 @@ function CompShopBrand(props) {
               </View>
             ))}
           </View>
-          <View className="more-txt" onClick={() => {
-            setState(draft => {
-              draft.extend = !draft.extend;
-            })
-          }}>
+          <View
+            className='more-txt'
+            onClick={() => {
+              setState((draft) => {
+                draft.extend = !draft.extend
+              })
+            }}
+          >
             <Text>{`${storeInfo?.marketingActivityList.length}种优惠`}</Text>
-            <Text className={classNames('iconfont', {
-              'icon-arrowDown': !extend,
-              'icon-arrowUp': extend
-            })}></Text>
+            <Text
+              className={classNames('iconfont', {
+                'icon-arrowDown': !extend,
+                'icon-arrowUp': extend
+              })}
+            ></Text>
           </View>
         </View>
       )}

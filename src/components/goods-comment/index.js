@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text,Textarea } from '@tarojs/components'
+import { View, Text, Textarea } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './index.scss'
 
@@ -13,19 +13,19 @@ export default class GoodsComment extends Component {
     onClose: () => {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
       isActive: props.isOpened,
       comment: '',
-      input_bottom:0,
+      input_bottom: 0,
       count: 0
     }
   }
-  componentDidMount () {}
+  componentDidMount() {}
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { isOpened } = nextProps
     if (isOpened !== this.state.isActive) {
       this.setState({
@@ -43,7 +43,7 @@ export default class GoodsComment extends Component {
     this.props.onClose && this.props.onClose()
   }
 
-   handleClickReply = async () => {
+  handleClickReply = async () => {
     const { comment } = this.state
     if (!comment || !comment.length) {
       return
@@ -52,19 +52,19 @@ export default class GoodsComment extends Component {
     this.setState({
       comment: '',
       isActive: false,
-      count:0
+      count: 0
     })
   }
 
-  setinputtop=(e)=>{
-    console.log("键盘高度变化",e,e.detail.height)
-    let het=e.detail.height-0
+  setinputtop = (e) => {
+    console.log('键盘高度变化', e, e.detail.height)
+    let het = e.detail.height - 0
     this.setState({
-      input_bottom:het
+      input_bottom: het
     })
   }
 
-  handleChange (e) {
+  handleChange(e) {
     let comment = e.detail.value
     this.setState({
       comment,
@@ -72,8 +72,8 @@ export default class GoodsComment extends Component {
     })
   }
 
-  render () {
-    const { isActive, comment, count,input_bottom } = this.state
+  render() {
+    const { isActive, comment, count, input_bottom } = this.state
 
     return (
       <View
@@ -88,7 +88,10 @@ export default class GoodsComment extends Component {
         ></View>
 
         <View className='goods-comment-panel__wrap'>
-          <View className='goods-comment-panel__bd' style={{paddingBottom:`${input_bottom-0+10}px`}}>
+          <View
+            className='goods-comment-panel__bd'
+            style={{ paddingBottom: `${input_bottom - 0 + 10}px` }}
+          >
             <Textarea
               className='comment'
               adjustPosition={false}

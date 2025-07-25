@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { useRouter,useDidShow } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'

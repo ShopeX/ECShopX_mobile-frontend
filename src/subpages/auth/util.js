@@ -3,28 +3,28 @@ import { showToast } from '@/utils'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 
 //跳转到注册页
-function navigationToReg (redirect) {
+function navigationToReg(redirect) {
   Taro.navigateTo({
     url: `/subpages/auth/reg?redi_url=${encodeURIComponent(redirect)}`
   })
 }
 
 //设置token
-function setToken (token = '') {
+function setToken(token = '') {
   if (token) {
     S.setAuthToken(token)
     return true
   }
 }
 
-function getToken () {
+function getToken() {
   return S.getAuthToken()
 }
 
-function getRedirectUrl () {}
+function getRedirectUrl() {}
 
 //设置token并跳转
-async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
+async function setTokenAndRedirect(token = '', tokenSetSuccessCallback) {
   const hasToken = setToken(token)
 
   const $instance = this ? this.$instance : getCurrentInstance()
@@ -43,16 +43,16 @@ async function setTokenAndRedirect (token = '', tokenSetSuccessCallback) {
 }
 
 /*-----监听返回事件-----*/
-function pushHistory (callback) {
+function pushHistory(callback) {
   window.addEventListener('popstate', callback, false)
   window.history.pushState(null, null, document.URL)
 }
 
-function clearHistory (callback) {
+function clearHistory(callback) {
   window.removeEventListener('popstate', callback, false)
 }
 
-function addListener () {
+function addListener() {
   window.addEventListener('focusout', () => {})
 }
 

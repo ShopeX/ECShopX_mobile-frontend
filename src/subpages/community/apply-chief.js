@@ -8,7 +8,16 @@ import doc from '@/doc'
 import qs from 'qs'
 import { CHIEF_APPLY_STATUS, FORM_COMP } from '@/consts'
 import { View, Text, Picker, RichText } from '@tarojs/components'
-import { SpPage, SpImage, SpForm, SpFormItem, SpUpload, SpCheckbox, SpNote, SpInput as AtInput } from '@/components'
+import {
+  SpPage,
+  SpImage,
+  SpForm,
+  SpFormItem,
+  SpUpload,
+  SpCheckbox,
+  SpNote,
+  SpInput as AtInput
+} from '@/components'
 import { classNames, showToast, isAlipay, htmlStringToNodeArray } from '@/utils'
 import './apply-chief.scss'
 
@@ -118,7 +127,7 @@ function ApplyChief(props) {
 
   const aggrementAndExplanation = async () => {
     let { explanation } = await api.community.aggrementAndExplanation({ distributor_id })
-    if(isAlipay){
+    if (isAlipay) {
       explanation = htmlStringToNodeArray(explanation)
     }
     setState((draft) => {

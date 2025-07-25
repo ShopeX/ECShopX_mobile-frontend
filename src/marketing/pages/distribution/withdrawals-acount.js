@@ -27,8 +27,8 @@ export default class DistributionWithdrawalsAcount extends Component {
   async fetch() {
     const { alipay_name, alipay_account } = await api.distribution.info()
     this.setState({
-      name: alipay_name || "",
-      acount: alipay_account || "",
+      name: alipay_name || '',
+      acount: alipay_account || '',
       hasBind: !!alipay_name && !!alipay_account
     })
   }

@@ -15,7 +15,7 @@ export default class SpTimer extends Component {
     msg: '重新发送'
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,7 +27,7 @@ export default class SpTimer extends Component {
     }
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.stop()
   }
 
@@ -75,14 +75,14 @@ export default class SpTimer extends Component {
     }, this.state.countDur)
   }
 
-  stop () {
+  stop() {
     if (this.timer) {
       clearTimeout(this.timer)
       this.timer = null
     }
   }
 
-  render () {
+  render() {
     const { countDur, sent, finish } = this.state
     const { timerMsg, className, style = '' } = this.props
 

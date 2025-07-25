@@ -3,7 +3,7 @@ import { View, Button } from '@tarojs/components'
 import S from '@/spx'
 import api from '@/api'
 import { showToast, classNames, navigateTo } from '@/utils'
-import { useLogin,useLocation } from '@/hooks'
+import { useLogin, useLocation } from '@/hooks'
 import qs from 'qs'
 import './index.scss'
 

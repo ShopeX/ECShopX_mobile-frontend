@@ -9,13 +9,7 @@ import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, classNames } from '@/utils'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/guide'
-import {
-  SpPage,
-  SpPrice,
-  SpRecommend,
-  SpDefault,
-  SpCheckboxNew
-} from '@/components'
+import { SpPage, SpPrice, SpRecommend, SpDefault, SpCheckboxNew } from '@/components'
 import { BaTabBar } from '@/subpages/guide/components'
 
 import CompGoodsItem from './comps/comp-goodsitem'

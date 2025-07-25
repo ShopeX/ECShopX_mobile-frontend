@@ -1,9 +1,8 @@
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { Text, View } from '@tarojs/components'
-import SpImagePicker from './comp-imgpicker'
 import { classNames } from '@/utils'
-import { useDepChange } from '@/hooks'
+import SpImagePicker from './comp-imgpicker'
 import './comp-img-picker.scss'
 
 const IMG_MAP = {

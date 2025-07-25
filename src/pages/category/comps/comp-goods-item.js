@@ -2,13 +2,12 @@ import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpImage, SpLogin, SpPoint, SpPrice} from '@/components'
+import { SpImage, SpLogin, SpPoint, SpPrice } from '@/components'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import { addCart, updateCount } from '@/store/slices/cart'
 import qs from 'qs'
 import S from '@/spx'
 import { useLogin } from '@/hooks'
-
 
 import { classNames, showToast, styleNames, VERSION_PLATFORM } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
@@ -20,8 +19,8 @@ function CompGoodsItem(props) {
   const { favs = [] } = useSelector((state) => state.user)
   const {
     onClick,
-    onStoreClick = () => { },
-    onAddToCart = () => { },
+    onStoreClick = () => {},
+    onAddToCart = () => {},
     showFav = false,
     info = null,
     renderFooter = null,
@@ -29,9 +28,9 @@ function CompGoodsItem(props) {
     showPrice = true,
     hideStore = false
   } = props
-   const { isLogin, isNewUser, login, getUserInfoAuth } = useLogin({
-      // autoLogin: true,
-    })
+  const { isLogin, isNewUser, login, getUserInfoAuth } = useLogin({
+    // autoLogin: true,
+  })
 
   const handleFavClick = async (e) => {
     e.stopPropagation()
@@ -131,14 +130,11 @@ function CompGoodsItem(props) {
         )}
         <View className='goods-info' onClick={handleClick.bind(this)}>
           <View className='goods-title'>
-          {
-            info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 &&
-            <Text className='prescription-drug'>
-              处方药
-            </Text>
-          }
+            {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
+              <Text className='prescription-drug'>处方药</Text>
+            )}
             {info.itemName}
-            </View>
+          </View>
           {/* <View className='goods-desc'>{info.brief}</View> */}
         </View>
 
@@ -185,7 +181,6 @@ function CompGoodsItem(props) {
           )}
         </View>
 
-
         {(info.is_point || (!info.is_point && showPrice) || showFav) && (
           <View className='bd-block' onClick={handleClick.bind(this)}>
             {/* 商品价格、积分 */}
@@ -219,7 +214,7 @@ function CompGoodsItem(props) {
                 />
               </View>
             )}
-            <SpLogin newUser={isNewUser} >
+            <SpLogin newUser={isNewUser}>
               <Text className='iconfont icon-gouwuche2' onClick={onChangeToolBar} />
             </SpLogin>
           </View>

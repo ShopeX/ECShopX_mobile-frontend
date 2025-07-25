@@ -14,7 +14,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { WebView } from '@tarojs/components'
 
 export default class MeiQia extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       metadata: '',
@@ -24,7 +24,7 @@ export default class MeiQia extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const that = this
     const eventChannel = that.$scope.getOpenerEventChannel()
     // 监听acceptDataFromOpenerPage事件，获取上一页面通过eventChannel传送到当前页面的数据
@@ -47,7 +47,7 @@ export default class MeiQia extends Component {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     console.log('===process.env.APP_CUSTOM_SERVER===>', process.env.APP_CUSTOM_SERVER)
     const { metadata, clientid, agentid, id, groupid } = this.state
     return (

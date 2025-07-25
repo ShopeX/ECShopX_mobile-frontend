@@ -1,3 +1,16 @@
+/********* backgrounds *********/
+.bg-transparent {
+  background-color: transparent;
+}
+
+.bg-black {
+  background-color: #000;
+}
+
+.bg-white {
+  background-color: #fff;
+}
+
 /********* flexbox & grid *********/
 .flex {
   display: flex;
@@ -9,6 +22,9 @@
 
 .items-center {
   align-items: center;
+}
+.items-baseline {
+  align-items: baseline;
 }
 .flex-nowrap {
   flex-wrap: nowrap;
@@ -28,10 +44,27 @@
   justify-content: flex-end;
 }
 
+/********* layout *********/
+.overflow-hidden {
+  overflow: hidden;
+}
+
 .box-border {
   box-sizing: border-box;
 }
 
+.box-content {
+  box-sizing: content-box;
+}
+
+/********* spacing *********/
+// ml-10 mt-10 mr-10 mb-10 m-10
+@include generate-margin(1, 50, 1);
+
+// pl-10 pt-10 pr-10 pb-10 p-10
+@include generate-padding(1, 50, 1);
+
+/********* sizing *********/
 .w-full {
   width: 100%;
 }
@@ -41,6 +74,9 @@
 }
 
 /********* typography *********/
+
+// text-{value}
+@include generate-fontsize(1, 50, 1);
 
 // text-overflow
 .text-ellipsis {
@@ -81,4 +117,27 @@
 // color
 .primary-text {
   color: var(--color-primary);
+}
+
+.dark-text {
+  color: $dark-text;
+}
+
+.default-text {
+  color: $default-text;
+}
+
+.secondary-text {
+  color: $secondary-text;
+}
+
+.muted-text {
+  color: $muted-text;
+}
+
+.light-text {
+  color: $light-text;
+}
+.at-button--primary {
+  background: var(--color-primary) !important;
 }

@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
-export function linkPage (type, data) {
+export function linkPage(type, data) {
   const { id, title, distributor_id } = data
   let url = ''
 
@@ -79,7 +79,7 @@ export function linkPage (type, data) {
     url = '/subpages/pointshop/list'
   }
 
-  if(id == 'applyChief') {
+  if (id == 'applyChief') {
     url = `/subpages/community/apply-chief?distributor_id=${distributor_id}`
   }
 

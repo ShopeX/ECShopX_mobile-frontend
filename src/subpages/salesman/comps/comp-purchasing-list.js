@@ -5,7 +5,7 @@ import { SpImage, SpPrice } from '@/components'
 import './comp-purchasing-list.scss'
 
 function CompPurchasingList(props) {
-  const { items ,addCart=()=>{}} = props
+  const { items, addCart = () => {} } = props
 
   return (
     <View className='comp-purchasing-list'>
@@ -31,7 +31,9 @@ function CompPurchasingList(props) {
                 <Text>{items.itemBn}</Text>
               </View>
             </View>
-            <View className='increase' onClick={()=>addCart(items)}>+</View>
+            <View className='increase' onClick={() => addCart(items)}>
+              +
+            </View>
           </View>
         </View>
       </View>

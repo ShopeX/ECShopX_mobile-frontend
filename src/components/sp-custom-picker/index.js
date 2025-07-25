@@ -15,34 +15,28 @@ import './index.scss'
 
 const initialState = {
   selectorChecked: '全部店铺',
-  value : '0',
-  customName:''
+  value: '0',
+  customName: ''
 }
 
 function CustomPicker(props) {
   const [state, setState] = useImmer(initialState)
-  const {
-    selector,
-    customStatus = false,
-    cancel = () => {},
-    id=''
-  } = props
-  const { selectorChecked,value,customName } = state
+  const { selector, customStatus = false, cancel = () => {}, id = '' } = props
+  const { selectorChecked, value, customName } = state
 
-  useEffect(() => { 
-    if(customStatus){
-      selector.map((item,index)=>{
-        if(id == item.value){
-          setState(draft => {
-            draft.value=String(index)
-            draft.customName=item.label
+  useEffect(() => {
+    if (customStatus) {
+      selector.map((item, index) => {
+        if (id == item.value) {
+          setState((draft) => {
+            draft.value = String(index)
+            draft.customName = item.label
           })
         }
       })
-      console.log('customStatus1', id,selector)
+      console.log('customStatus1', id, selector)
     }
-  }, [id,selector])
-
+  }, [id, selector])
 
   const onChange = (e) => {
     console.log('e', e)
@@ -55,7 +49,7 @@ function CustomPicker(props) {
 
   return (
     <View className='custom-picker'>
-      <Picker mode='selector' rangeKey='label' range={selector} onChange={onChange} value={value} >
+      <Picker mode='selector' rangeKey='label' range={selector} onChange={onChange} value={value}>
         <View className='picker-box'>
           <Text>{customStatus ? customName : selectorChecked}</Text>
           <Text className='iconfont icon-xialajiantou'></Text>

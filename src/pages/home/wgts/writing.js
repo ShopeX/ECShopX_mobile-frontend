@@ -44,9 +44,11 @@ export default class WgtWriting extends Component {
     }
 
     return (
-      <View className={classNames(`wgt wgt-writing`, {
-        'wgt__padded': base.padded
-      })}>
+      <View
+        className={classNames(`wgt wgt-writing`, {
+          'wgt__padded': base.padded
+        })}
+      >
         {base.title && (
           <View className='wgt-head'>
             <View className='wgt-hd'>
@@ -55,9 +57,7 @@ export default class WgtWriting extends Component {
             </View>
           </View>
         )}
-        <View
-          className={`wgt__body`}
-        >
+        <View className='wgt__body'>
           {contentArr.map((item, index) => {
             return (
               <View className='writing-view' key={`${index}1`}>

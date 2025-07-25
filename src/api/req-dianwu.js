@@ -301,7 +301,8 @@ class API {
       const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
-        (res.data.data && res.data.data.status_code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH && token
+        (res.data.data && res.data.data.status_code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
+        token
         // S.getAuthToken()
       ) {
         // token失效时重造请求，并刷新token

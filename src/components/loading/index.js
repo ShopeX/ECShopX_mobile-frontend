@@ -14,7 +14,7 @@ export default class Loading extends Component {
     size: null
   }
 
-  render () {
+  render() {
     const { className, type, img, size } = this.props
 
     return (

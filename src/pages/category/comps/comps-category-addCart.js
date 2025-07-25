@@ -90,7 +90,6 @@ function CompsCategoryAddCart(props) {
     }
   }, [skuPanelOpen])
 
-
   // 上个版本的分类逻辑，不删除保留，防止后面产品变卦
   // const getCategoryList = async () => {
   //   let currentList = []
@@ -208,7 +207,6 @@ function CompsCategoryAddCart(props) {
       draft.cat_id = currentList[0].id
       draft.cat_type = currentList[0]?.type
     })
-
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -362,13 +360,13 @@ function CompsCategoryAddCart(props) {
       draft.thirdList =
         _thirdList.length > 0
           ? [
-            {
-              name: '全部',
-              img: '',
-              id: ''
-            },
-            ..._thirdList
-          ]
+              {
+                name: '全部',
+                img: '',
+                id: ''
+              },
+              ..._thirdList
+            ]
           : []
     })
   }

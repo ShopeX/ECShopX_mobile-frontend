@@ -16,7 +16,8 @@ function SpForm(props, ref) {
 
   const onSubmitForm = (callback, keys = []) => {
     return new Promise(async (resolve, reject) => {
-      const fieldList = keys.length > 0 ? fields.current.filter(item => keys.includes(item.prop)) : fields.current
+      const fieldList =
+        keys.length > 0 ? fields.current.filter((item) => keys.includes(item.prop)) : fields.current
       let formValidateResult = []
       for (const field of fieldList) {
         const fieldResult = await field.validate(formData)
@@ -30,7 +31,8 @@ function SpForm(props, ref) {
 
   const onSubmitAsync = (keys = []) => {
     return new Promise(async (resolve, reject) => {
-      const fieldList = keys.length > 0 ? fields.current.filter(item => keys.includes(item.prop)) : fields.current
+      const fieldList =
+        keys.length > 0 ? fields.current.filter((item) => keys.includes(item.prop)) : fields.current
       let formValidateResult = []
       for (const field of fieldList) {
         const fieldResult = await field.validate(formData)
@@ -47,11 +49,11 @@ function SpForm(props, ref) {
   }
 
   const setMessage = (arr) => {
-    if(isArray(arr)) {
-      arr.forEach(item => {
+    if (isArray(arr)) {
+      arr.forEach((item) => {
         fieldsMessage.current[item.prop](item.message)
       })
-    } else if(isObject(arr)) {
+    } else if (isObject(arr)) {
       fieldsMessage.current[arr.prop](arr.message)
     }
   }

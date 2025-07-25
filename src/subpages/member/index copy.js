@@ -36,7 +36,12 @@ import {
   getDistributorId
 } from '@/utils'
 import S from '@/spx'
-import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId, updateIsOpenPurchase } from '@/store/slices/purchase'
+import {
+  updatePurchaseShareInfo,
+  updateInviteCode,
+  updateCurDistributorId,
+  updateIsOpenPurchase
+} from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompVipCard from './comps/comp-vipcard'
@@ -87,8 +92,7 @@ const initialConfigState = {
     // defaultImg: null,
     vipImg: null
   },
-  purchaseRes: {},
-
+  purchaseRes: {}
 }
 
 const initialState = {
@@ -106,7 +110,7 @@ const initialState = {
   zitiNum: 0,
   deposit: 0,
   salesPersonList: {},
-  deliveryStaffList:[] //配送员
+  deliveryStaffList: [] //配送员
 }
 
 function MemberIndex(props) {
@@ -295,12 +299,12 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let memberRes = await api.member.memberInfo()
-    let deliveryPersonnel = memberRes?.deliveryStaffList?.list. map((item) => (item.operator_id)) ?? []
+    let deliveryPersonnel = memberRes?.deliveryStaffList?.list.map((item) => item.operator_id) ?? []
     setConfig((draft) => {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,
         vipImg: memberRes?.vipgrade?.background_pic_url,
-        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url,
+        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
       }
     })
     setState((draft) => {
@@ -309,7 +313,9 @@ function MemberIndex(props) {
       draft.deliveryStaffList = memberRes?.deliveryStaffList
     })
 
-    dispatch(updateDeliveryPersonnel({self_delivery_operator_id:deliveryPersonnel,distributor_id:''})) //存配送员信息
+    dispatch(
+      updateDeliveryPersonnel({ self_delivery_operator_id: deliveryPersonnel, distributor_id: '' })
+    ) //存配送员信息
     dispatch(updateUserInfo(memberRes))
   }
 
@@ -409,7 +415,10 @@ function MemberIndex(props) {
     }
 
     if (key == 'purchase') {
-      const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
+      const data = await api.purchase.getUserEnterprises({
+        disabled: 0,
+        distributor_id: getDistributorId()
+      })
       if (data?.length > 0) {
         Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
       } else {
@@ -484,7 +493,9 @@ function MemberIndex(props) {
                 })
               }}
             >
-              <View className='shop-name'><Text className='shop-name-text'>我的店铺</Text> {store_name || '暂无店铺信息'}</View>
+              <View className='shop-name'>
+                <Text className='shop-name-text'>我的店铺</Text> {store_name || '暂无店铺信息'}
+              </View>
               <Text className='iconfont icon-qianwang-01'></Text>
             </View>
           )}
@@ -658,7 +669,7 @@ function MemberIndex(props) {
                 purchase: config.purchaseRes.is_open,
                 popularize: userInfo ? userInfo.popularize : false,
                 salesPersonList: state.salesPersonList,
-                deliveryStaffList:state.deliveryStaffList
+                deliveryStaffList: state.deliveryStaffList
               }}
               isPromoter={userInfo ? userInfo.isPromoter : false}
               onLink={handleClickService}

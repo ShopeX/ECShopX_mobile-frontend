@@ -3,8 +3,8 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { SpPage, SpLoading } from '@/components'
 import { classNames, tokenParseH5 } from '@/utils'
 import api from '@/api'
-import { setTokenAndRedirect, getToken } from './util'
 import { useLogin } from '@/hooks'
+import { setTokenAndRedirect, getToken } from './util'
 import './auth-loading.scss'
 
 const AuthLoading = () => {

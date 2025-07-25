@@ -3,7 +3,7 @@ import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
-import { pickBy,VERSION_PLATFORM } from '@/utils'
+import { pickBy, VERSION_PLATFORM } from '@/utils'
 import doc from '@/doc'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpTabbar } from '@/components'
@@ -34,7 +34,7 @@ const CompsCategoryTile = (props) => {
     let seriesList = list[0] ? list[0].params.data : []
 
     if (!seriesList.length) {
-      const res = await api.category.get(VERSION_PLATFORM?{is_main_category:1}:{})
+      const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
       const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',

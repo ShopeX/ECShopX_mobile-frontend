@@ -184,38 +184,37 @@
       font-size: 22px;
     }
   }
-  .item-pre{
+  .item-pre {
     padding: 16px 0;
     width: 100%;
     overflow: hidden;
-    &-title{
+    &-title {
       font-size: 24px;
       color: #999999;
       margin-bottom: 10px;
-      .medicine{
+      .medicine {
         color: var(--color-primary);
         margin-right: 8px;
       }
     }
-    &-content{
+    &-content {
       width: 97%;
       background-color: #f1f1f1;
       padding: 20px;
       display: flex;
-      .title{
+      .title {
         width: 70px;
         border-right: 1px solid #666;
         font-size: 26px;
       }
-      .content{
+      .content {
         padding: 0 20px;
         flex: 1;
         font-size: 26px;
-        &-title{
+        &-title {
           color: #666666;
         }
       }
-
     }
   }
   .item-bn-sales {
@@ -302,42 +301,42 @@
     }
   }
 
-  .goods-params-flat{
+  .goods-params-flat {
     margin: 0 16px 24px;
     padding: 16px 24px;
     background: #fff;
     display: flex;
     align-items: center;
     width: 670px;
-    .parameter{
+    .parameter {
       font-weight: 600;
       font-size: 28px;
       width: 100px;
       text-align: center;
-      white-space:nowrap;
+      white-space: nowrap;
     }
-    .parameter-content{
+    .parameter-content {
       display: flex;
       align-items: center;
-      white-space:nowrap;
+      white-space: nowrap;
       flex: 1;
       overflow-y: auto;
-      .parameter-item{
+      .parameter-item {
         text-align: center;
         width: 164px;
-        .attribute{
+        .attribute {
           width: 160px;
           overflow: hidden;
           text-overflow: ellipsis;
           white-space: nowrap;
         }
         flex-shrink: 0;
-        .configuration{
+        .configuration {
           color: #999;
         }
       }
     }
-    .icon-arrowRight{
+    .icon-arrowRight {
       font-size: 36px;
     }
   }
@@ -346,26 +345,24 @@
     text-align: center;
   }
 
-  .product-parameter{
+  .product-parameter {
     height: 700px;
     padding: 0 24px;
-    &-all{
+    &-all {
       margin-bottom: 24px;
       height: 560px;
       overflow-x: auto;
-      .product-parameter-item{
+      .product-parameter-item {
         height: 80px;
-        .title{
+        .title {
           color: #999;
           width: 260px;
           display: inline-block;
         }
-        .content{
+        .content {
           font-weight: 600;
         }
       }
     }
-    
   }
-
 }

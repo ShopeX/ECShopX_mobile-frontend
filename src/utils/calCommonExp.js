@@ -1,9 +1,9 @@
-function isOperator (value) {
+function isOperator(value) {
   var operatorString = '+-*/()×÷'
   return operatorString.indexOf(value) > -1
 }
 
-function getPrioraty (value) {
+function getPrioraty(value) {
   if (value == '-' || value == '+') {
     return 1
   } else if (value == '*' || value == '/' || value == '×' || value == '÷') {
@@ -13,11 +13,11 @@ function getPrioraty (value) {
   }
 }
 
-function prioraty (v1, v2) {
+function prioraty(v1, v2) {
   return getPrioraty(v1) <= getPrioraty(v2)
 }
 
-function outputRpn (exp) {
+function outputRpn(exp) {
   var inputStack = []
   var outputStack = []
   var outputQueue = []
@@ -66,7 +66,7 @@ function outputRpn (exp) {
   return outputQueue
 }
 
-function calRpnExp (rpnArr) {
+function calRpnExp(rpnArr) {
   var stack = []
   for (var i = 0, max = rpnArr.length; i < max; i++) {
     if (!isOperator(rpnArr[i])) {
@@ -89,7 +89,7 @@ function calRpnExp (rpnArr) {
   return stack[0]
 }
 
-function calCommonExp (exp) {
+function calCommonExp(exp) {
   var rpnArr = outputRpn(exp)
   return calRpnExp(rpnArr)
 }

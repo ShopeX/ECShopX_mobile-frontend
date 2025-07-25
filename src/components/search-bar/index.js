@@ -50,7 +50,7 @@ export default class SearchBar extends Component {
         })
         this.setState({ historyList: stringArr })
       })
-      .catch(() => { })
+      .catch(() => {})
   }
 
   handleChangeSearch = (value, event) => {
@@ -110,7 +110,7 @@ export default class SearchBar extends Component {
     })
   }
 
-  handleClickHotItem = () => { }
+  handleClickHotItem = () => {}
 
   handleBlurSearch = () => {
     this.props.onBlur?.()

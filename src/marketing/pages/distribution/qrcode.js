@@ -13,7 +13,7 @@ import './qrcode.scss'
 }))
 export default class DistributionQrcode extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -21,7 +21,7 @@ export default class DistributionQrcode extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     const { colors } = this.props
     Taro.setNavigationBarColor({
       frontColor: '#ffffff',
@@ -30,7 +30,7 @@ export default class DistributionQrcode extends Component {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { username, avatar, userId } = Taro.getStorageSync('userinfo')
     let { isOpenShop, status } = this.$instance.router.params
     isOpenShop = JSON.parse(isOpenShop)
@@ -48,7 +48,7 @@ export default class DistributionQrcode extends Component {
     })
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { info } = this.state
 

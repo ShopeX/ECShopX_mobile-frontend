@@ -10,11 +10,11 @@ if (
 }
 
 class Trackers {
-  constructor () {
+  constructor() {
     this.providers = providers
   }
 
-  get (name, options) {
+  get(name, options) {
     const Tracker = this.providers[name]
     return new Tracker(options)
   }

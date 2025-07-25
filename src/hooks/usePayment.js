@@ -7,8 +7,6 @@ import { TRANSFORM_PAYTYPE } from '@/consts'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
 
-
-
 const initialState = {
   params: '',
   orderInfo: ''
@@ -79,7 +77,7 @@ export default (props = {}) => {
       case 'alipaymini':
         alipaymini(params, orderInfo)
       case 'offline_pay':
-        offlinePay(params,orderInfo)
+        offlinePay(params, orderInfo)
     }
   }
 
@@ -99,7 +97,8 @@ export default (props = {}) => {
     if (isTradeDetaiPage()) {
       callbackRef.current()
     } else {
-      if (params.pageType == 'checkout') { // checkout：下单-支付成功需要调用导购绑定接口
+      if (params.pageType == 'checkout') {
+        // checkout：下单-支付成功需要调用导购绑定接口
         callbackRef.current()
       }
       if (activityType == 'group') {
@@ -149,8 +148,8 @@ export default (props = {}) => {
       //     payError(orderInfo)
       //   });
       // } else {
-        await Taro.requestPayment(weappOrderInfo)
-        paySuccess(params, orderInfo)
+      await Taro.requestPayment(weappOrderInfo)
+      paySuccess(params, orderInfo)
       // }
     } catch (e) {
       Taro.hideLoading()
@@ -223,13 +222,12 @@ export default (props = {}) => {
     console.log(`wxpayh5Pay res:`, res)
     const loc = window.location
     const redirect_url = `${loc.protocol}//${loc.host}${cashierResultUrl}?order_id=${order_id}`
-    if(!res.mweb_url){
+    if (!res.mweb_url) {
       //积分抵扣了所有金额，订单直接支付完成了
       window.location.href = redirect_url
-    }else{
+    } else {
       window.location.href = `${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`
     }
-
   }
 
   // APP(微信、支付宝)
@@ -273,7 +271,9 @@ export default (props = {}) => {
     const el = document.createElement('div')
     el.setAttribute('class', 'alipay_submit_div')
     //el.innerHTML='<form id="a" name="test"></form>'
-    el.innerHTML = payment.replace(/<form/, '<form target="_blank"').replace(/<script>(.*)?<\/script>/, '')
+    el.innerHTML = payment
+      .replace(/<form/, '<form target="_blank"')
+      .replace(/<script>(.*)?<\/script>/, '')
     document.body.appendChild(el)
     document.getElementById('alipay_submit').submit()
   }
@@ -347,7 +347,6 @@ export default (props = {}) => {
 
   // 余额/积分支付
   const depositPay = async (params, orderInfo) => {
-
     const { activityType, pay_type } = params
     const { order_id, team_id, order_type } = orderInfo
     if (pay_type == 'deposit') {
@@ -358,7 +357,7 @@ export default (props = {}) => {
           order_type: order_type
         })
         paySuccess(params, orderInfo)
-      } catch(e) {
+      } catch (e) {
         payError(orderInfo)
       }
     }
@@ -383,24 +382,23 @@ export default (props = {}) => {
   }
 
   const offlinePay = async (params, orderInfo) => {
-    console.log('offlinePay',params, orderInfo,isTradeDetaiPage())
+    console.log('offlinePay', params, orderInfo, isTradeDetaiPage())
     const { pay_channel, pay_type } = params
-    const { order_id, order_type, has_check} = orderInfo
-     await api.cashier.getPayment({
-        pay_type,
-        pay_channel,
-        order_id,
-        order_type: order_type
-      })
+    const { order_id, order_type, has_check } = orderInfo
+    await api.cashier.getPayment({
+      pay_type,
+      pay_channel,
+      order_id,
+      order_type: order_type
+    })
     if (isTradeDetaiPage()) {
-      Taro.navigateTo({url:`/pages/cart/offline-transfer?isDetail=true&order_id=${order_id}&has_check=${has_check}`})
-    }else{
-      Taro.redirectTo({url:'/pages/cart/offline-transfer?order_id='+order_id})
+      Taro.navigateTo({
+        url: `/pages/cart/offline-transfer?isDetail=true&order_id=${order_id}&has_check=${has_check}`
+      })
+    } else {
+      Taro.redirectTo({ url: '/pages/cart/offline-transfer?order_id=' + order_id })
     }
-
-
   }
-
 
   return {
     cashierPayment

@@ -10,10 +10,30 @@ import api from '@/api'
 import './order-navigation.scss'
 
 const initList = [
-  { content: '待付款', imgUrl: 'fv_order_daifukuan.png',  link: '/subpages/trade/list?status=5', key: 'waitPayNum' },
-  { content: '待收货', imgUrl: 'fv_order_daifahuo.png', link: '/subpages/trade/list?status=1', key: 'waitRecevieNum' },
-  { content: '待评价', imgUrl: 'fv_order_daishouhuo.png', link: '/subpages/trade/list?status=7', key: 'waitEvaluateNum' },
-  { content: '售后', imgUrl: 'fv_order_shouhou.png', link: '/subpages/trade/after-sale-list', key: 'afterSalesNum' },
+  {
+    content: '待付款',
+    imgUrl: 'fv_order_daifukuan.png',
+    link: '/subpages/trade/list?status=5',
+    key: 'waitPayNum'
+  },
+  {
+    content: '待收货',
+    imgUrl: 'fv_order_daifahuo.png',
+    link: '/subpages/trade/list?status=1',
+    key: 'waitSendNum'
+  },
+  {
+    content: '待评价',
+    imgUrl: 'fv_order_daishouhuo.png',
+    link: '/subpages/trade/list?status=7',
+    key: 'waitRecevieNum'
+  },
+  {
+    content: '售后',
+    imgUrl: 'fv_order_shouhou.png',
+    link: '/subpages/trade/after-sale-list',
+    key: 'afterSalesNum'
+  }
 ]
 
 const initialState = {
@@ -25,15 +45,17 @@ const initialState = {
   orderList: []
 }
 
-function WgtOrderNavigation (props) {
+function WgtOrderNavigation(props) {
   const { info } = props
-  const [ state, setState ] = useImmer(initialState)
+  const [state, setState] = useImmer(initialState)
   const { isLogin } = useLogin()
   const { base, data, distributor_id } = info || {}
 
-  const { windowWidth } = isWeb ? {
-    windowWidth: window.innerWidth
-  } : Taro.getSystemInfoSync()
+  const { windowWidth } = isWeb
+    ? {
+        windowWidth: window.innerWidth
+      }
+    : Taro.getSystemInfoSync()
   const itemWidth = Math.floor((windowWidth * 2 - (data.length + 1) * 16) / data.length)
 
   const handleClickLink = async (link) => {
@@ -81,9 +103,8 @@ function WgtOrderNavigation (props) {
       draft.waitEvaluateNum = normal_not_rate
     })
   }
-  
-  if (!info || itemWidth == 0) return null
 
+  if (!info || itemWidth == 0) return null
 
   return (
     <View
@@ -96,11 +117,13 @@ function WgtOrderNavigation (props) {
         <View className='wgt-head'>
           <View className='wgt-hd' style={{ color: base?.titleColor }}>
             <Text className='wgt-title'>{base.title}</Text>
-            <View className='wgt-morelink' onClick={() => handleClickLink('/subpages/trade/list?status=0')}>
+            <View
+              className='wgt-morelink'
+              onClick={() => handleClickLink('/subpages/trade/list?status=0')}
+            >
               <Text>全部订单</Text>
               <SpImage src='fv_chevron_right.png' width={40} />
             </View>
-            
           </View>
         </View>
       )}
@@ -111,10 +134,13 @@ function WgtOrderNavigation (props) {
               handleClickLink(item.link)
             }}
           >
-            <View className='wgt-order-item' >
+            <View className='wgt-order-item'>
               <View className='wgt-order-wrapper'>
                 <View className='wgt-order-bg' style={{ backgroundColor: base?.iconBgColor }}>
-                  <SpImage src={item.imgUrl || initList[idx].imgUrl} className={item.imgUrl ? 'wgt-order-icon' : 'wgt-order-icon-mr'}/>
+                  <SpImage
+                    src={item.imgUrl || initList[idx].imgUrl}
+                    className={item.imgUrl ? 'wgt-order-icon' : 'wgt-order-icon-mr'}
+                  />
                 </View>
                 {state[item.key] > 0 && (
                   <View className='wgt-order-badge'>

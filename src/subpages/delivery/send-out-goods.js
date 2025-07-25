@@ -8,7 +8,7 @@ import { pickBy, showToast, classNames } from '@/utils'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { SpPage, SpScrollView } from '@/components'
-import { DELIVERY_PERSONNEL_INFORMATION} from '@/consts'
+import { DELIVERY_PERSONNEL_INFORMATION } from '@/consts'
 
 import CompShippingInformation from './comps/comp-shipping-information'
 import CompTradeItem from './comps/comp-tradeitem'
@@ -61,7 +61,7 @@ const SendOutGoods = () => {
       self_delivery_status: 'DELIVERING',
       delivery_type: 'batch',
       delivery_corp: 'SELF_DELIVERY',
-      type : 'new'
+      type: 'new'
     }
     list.forEach((item) => {
       if (item.status !== 'select') {
@@ -98,7 +98,13 @@ const SendOutGoods = () => {
         )
       }
     >
-      <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false} renderMore={()=>{}}>
+      <SpScrollView
+        className='scroll-view-goods'
+        ref={goodsRef}
+        fetch={fetch}
+        auto={false}
+        renderMore={() => {}}
+      >
         {information.orderId && (
           <View>
             <View className='trade-item-wrap'>

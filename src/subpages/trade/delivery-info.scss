@@ -20,17 +20,17 @@
   }
 
   .package-item-wrap {
-    border: 1PX solid #DADBDC;
+    border: 1px solid #dadbdc;
     border-radius: 8px;
     padding: 16px;
     margin-right: 20px;
     display: inline-block;
 
     &.active {
-      border-color: #D92128;
+      border-color: #d92128;
 
       .t1 {
-        color: #D92128;
+        color: #d92128;
       }
     }
 
@@ -57,8 +57,6 @@
       font-size: 20px;
       color: #999;
     }
-
-
   }
 
   .corp-name {
@@ -74,7 +72,7 @@
     margin-top: 10px;
   }
 
-  .opreator-container{
+  .opreator-container {
     margin: 24px 16px 0;
     background-color: #fff;
     border-radius: 16px;
@@ -82,7 +80,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    .opreator-mobile{
+    .opreator-mobile {
       border: solid 1px #ccc;
       padding: 2px 4px;
       color: #999;
@@ -92,7 +90,6 @@
   }
 
   .deliver-point-list {
-
     .deliver-point-item {
       position: relative;
 
@@ -116,11 +113,10 @@
       margin-left: 38px;
     }
 
-    .accept-pic{
-
+    .accept-pic {
       display: flex;
       flex-wrap: wrap;
-      &-item{
+      &-item {
         width: 120px;
         height: 120px;
         margin-right: 16px;

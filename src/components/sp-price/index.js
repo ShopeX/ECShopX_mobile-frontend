@@ -37,7 +37,7 @@ export default class SpPrice extends Component {
       size
     } = this.props
     let _value = value
-    if(isString(value)) {
+    if (isString(value)) {
       _value = parseFloat(value)
     }
 

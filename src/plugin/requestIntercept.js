@@ -11,12 +11,18 @@ export function requestIntercept() {
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
       // console.log('getCurrentInstance params:', path)
-      if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
+      if (
+        path === '/pages/cart/espier-checkout' &&
+        [
+          `${process.env.APP_BASE_URL}/order_new`,
+          `${process.env.APP_BASE_URL}/getFreightFee`
+        ].indexOf(url) > -1
+      ) {
         let smid = ''
         const { gu, gu_user_id, smid: smid_1 } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
         const { smid: smid_2 } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
         smid = smid_1 || smid_2
-        
+
         let _data = qs.parse(data)
         let work_userid = gu_user_id
         if (gu) {
@@ -32,7 +38,7 @@ export function requestIntercept() {
         console.log('requestIntercept:', requestParams)
       }
     }
-     
+
     return chain.proceed(requestParams).then((res) => {
       // console.log(`http <-- ${url} request:`, res)
       return res

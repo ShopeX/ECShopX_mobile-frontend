@@ -3,7 +3,7 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { WebView } from '@tarojs/components'
 import qs from 'qs'
-import { log , entryLaunch } from '@/utils'
+import { log, entryLaunch } from '@/utils'
 import S from '@/spx'
 
 const initialState = {
@@ -22,12 +22,12 @@ const Index = () => {
   //   createWebviewUrl()
   // })
 
-  const createWebviewUrl = async() => {
+  const createWebviewUrl = async () => {
     const { openid, unionid, app_id, app_type, company_id } = S.get('DIANWU_CONFIG', true)
-    const token =  S.getAuthToken()
+    const token = S.getAuthToken()
     const routeParams = await entryLaunch.getRouteParams()
-    const {path = '',...queryParams} = routeParams
-    
+    const { path = '', ...queryParams } = routeParams
+
     // const url = `${process.env.APP_DIANWU_URL}?${qs.stringify({
     //   in_shop_wechat: true,
     //   openid,
@@ -43,7 +43,7 @@ const Index = () => {
       ...queryParams
       // type:'alipay'
     })}`
-    setState(draft => {
+    setState((draft) => {
       draft.webviewSrc = url
     })
     console.log('webviewSrc', url)
@@ -53,10 +53,7 @@ const Index = () => {
     log.debug(`handleTest.... ${webviewSrc}`)
   }
 
-
-
-  const onMessage = (e) => {
-  }
+  const onMessage = (e) => {}
 
   return <WebView src={webviewSrc} onMessage={onMessage} />
 }

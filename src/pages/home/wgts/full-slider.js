@@ -23,12 +23,17 @@ function WgtFullSlider(props) {
   const { info = null } = props
   const { base = {}, config = {}, data = [] } = info || {}
   const { curIdx, play, localData, show, height } = state
-  const { isTab = false, immersive = false, isShowHomeHeader = false, footerHeight } = useContext(WgtsContext)
+  const {
+    isTab = false,
+    immersive = false,
+    isShowHomeHeader = false,
+    footerHeight
+  } = useContext(WgtsContext)
 
   // 初始化数据
   useEffect(() => {
     if (info) {
-      setState(draft => {
+      setState((draft) => {
         draft.localData = cloneDeep(data)
         draft.show = true
       })
@@ -40,7 +45,7 @@ function WgtFullSlider(props) {
     if (data.length === 0) return
     const item = data[curIdx]
     if (item.media_type === 'video' && item.autoplay) {
-      setState(draft => {
+      setState((draft) => {
         draft.play = true
       })
     }
@@ -51,7 +56,7 @@ function WgtFullSlider(props) {
     const heightS = immersive ? 0 : 89
     const homeHeight = isShowHomeHeader ? 90 : 0
     const tabHeight = isTab ? footerHeight : 0
-    setState(draft => {
+    setState((draft) => {
       draft.height = isTab
         ? `calc(100vh - ${homeHeight}rpx - ${heightS}px - ${tabHeight})`
         : `calc(100vh - ${homeHeight}rpx - ${heightS}px)`
@@ -59,22 +64,26 @@ function WgtFullSlider(props) {
   }, [immersive, isShowHomeHeader, isTab, footerHeight])
 
   // 切换视频播放
-  const togglePlay = index => {
+  const togglePlay = (index) => {
     const item = localData[index]
     if (item.media_type === 'video') {
       const videoRef = Taro.createVideoContext(`swiperVideo_${index}${props.index}`, $instance)
       if (play) {
         videoRef.pause()
-        setState(draft => { draft.play = false })
+        setState((draft) => {
+          draft.play = false
+        })
       } else {
         videoRef.play()
-        setState(draft => { draft.play = true })
+        setState((draft) => {
+          draft.play = true
+        })
       }
     }
   }
 
   // 轮播切换
-  const changeSwiper = e => {
+  const changeSwiper = (e) => {
     const index = e.detail.current
     const videoData = localData[index]
     const prevideoData = localData[curIdx]
@@ -82,9 +91,13 @@ function WgtFullSlider(props) {
       const videoRef = Taro.createVideoContext(`swiperVideo_${index}${props.index}`, $instance)
       if (videoData.autoplay) {
         videoRef.play()
-        setState(draft => { draft.play = true })
+        setState((draft) => {
+          draft.play = true
+        })
       } else {
-        setState(draft => { draft.play = false })
+        setState((draft) => {
+          draft.play = false
+        })
       }
     }
     if (prevideoData.media_type === 'video') {
@@ -94,13 +107,17 @@ function WgtFullSlider(props) {
         prevideoRef.seek(0)
       }
     }
-    setState(draft => { draft.curIdx = index })
+    setState((draft) => {
+      draft.curIdx = index
+    })
   }
 
   // 视频播放结束
   const handlePlayEnd = (e, item) => {
     if (!item.loop) {
-      setState(draft => { draft.play = false })
+      setState((draft) => {
+        draft.play = false
+      })
     }
   }
 
@@ -109,7 +126,9 @@ function WgtFullSlider(props) {
     if (item?.hidenPoster) return
     const _localData = cloneDeep(localData)
     _localData[index].hidenPoster = true
-    setState(draft => { draft.localData = _localData })
+    setState((draft) => {
+      draft.localData = _localData
+    })
   }
 
   // 视频进度更新
@@ -117,7 +136,9 @@ function WgtFullSlider(props) {
     const { currentTime } = e.detail
     const _localData = cloneDeep(localData)
     _localData[index].currentTime = currentTime
-    setState(draft => { draft.localData = _localData })
+    setState((draft) => {
+      draft.localData = _localData
+    })
   }
 
   // 指示器
@@ -140,18 +161,21 @@ function WgtFullSlider(props) {
         <View className='indicator-text' style={{ fontSize: indicatorFontSize + 'px' }}>
           {indicatorText}
         </View>
-        <View className='indicator-arrow' style={{
-          marginRight: 4,
-          width: 0,
-          height: 0,
-          borderTop: '8px solid transparent',
-          borderBottom: '8px solid transparent',
-          borderLeft: `12px solid ${indicatorColor}`,
-          position: 'absolute',
-          right: '-22px',
-          top: indicatorText ? '40%' : '30%',
-          color: indicatorColor
-        }} />
+        <View
+          className='indicator-arrow'
+          style={{
+            marginRight: 4,
+            width: 0,
+            height: 0,
+            borderTop: '8px solid transparent',
+            borderBottom: '8px solid transparent',
+            borderLeft: `12px solid ${indicatorColor}`,
+            position: 'absolute',
+            right: '-22px',
+            top: indicatorText ? '40%' : '30%',
+            color: indicatorColor
+          }}
+        />
       </View>
     )
   }
@@ -161,7 +185,7 @@ function WgtFullSlider(props) {
     if (localData.length === 0) return null
     return (
       <>
-        {localData.map((item, index) => (
+        {localData.map((item, index) =>
           item.overlay ? (
             <View
               key={`overlay_${index}`}
@@ -179,7 +203,7 @@ function WgtFullSlider(props) {
               <SpImage src={item.overlay} className='over-lay' />
             </View>
           ) : null
-        ))}
+        )}
       </>
     )
   }, [config, localData, curIdx])
@@ -188,7 +212,9 @@ function WgtFullSlider(props) {
   const renderHotZones = (item) => {
     if (!item.hotData) return null
     return item.hotData.map((ele, idx) => {
-      const styleStr = `width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${ele.topPer * 100}%; left: ${ele.leftPer * 100}%`
+      const styleStr = `width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${
+        ele.topPer * 100
+      }%; left: ${ele.leftPer * 100}%`
       if (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) {
         return (
           <SpLogin key={`hotzone_${idx}`} onChange={() => linkPage(ele)}>
@@ -211,7 +237,9 @@ function WgtFullSlider(props) {
   const renderOverlayHotZones = (item, index) => {
     if (!item.overlayHotData) return null
     return item.overlayHotData.map((citem, idx) => {
-      const styleStr = `width: ${citem.widthPer * 100}%; height: ${citem.heightPer * 100}%; top: ${citem.topPer * 100}%; left: ${citem.leftPer * 100}%`
+      const styleStr = `width: ${citem.widthPer * 100}%; height: ${citem.heightPer * 100}%; top: ${
+        citem.topPer * 100
+      }%; left: ${citem.leftPer * 100}%`
       if (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) {
         return (
           <SpLogin key={`overlayhot_${idx}`} onChange={() => linkPage(citem)}>
@@ -243,22 +271,31 @@ function WgtFullSlider(props) {
           >
             <View className='wgt_full_slider-swiper-item-content'>
               {/* 图片类型需要登录 */}
-              {item?.media_type !== 'video' && (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) && (
-                <SpLogin onChange={() => { if (!item.pic_type) linkPage(item) }}>
-                  <View style={styleNames({ height: '100%' })}>
+              {item?.media_type !== 'video' &&
+                (needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) && (
+                  <SpLogin
+                    onChange={() => {
+                      if (!item.pic_type) linkPage(item)
+                    }}
+                  >
+                    <View style={styleNames({ height: '100%' })}>
+                      <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
+                    </View>
+                  </SpLogin>
+                )}
+              {/* 图片类型不需要登录 */}
+              {item?.media_type !== 'video' &&
+                !needLoginPageType.includes(item.id) &&
+                !needLoginPage.includes(item.linkPage) && (
+                  <View
+                    style={styleNames({ height: '100%' })}
+                    onClick={() => {
+                      if (!item.pic_type) linkPage(item)
+                    }}
+                  >
                     <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
                   </View>
-                </SpLogin>
-              )}
-              {/* 图片类型不需要登录 */}
-              {item?.media_type !== 'video' && !needLoginPageType.includes(item.id) && !needLoginPage.includes(item.linkPage) && (
-                <View
-                  style={styleNames({ height: '100%' })}
-                  onClick={() => { if (!item.pic_type) linkPage(item) }}
-                >
-                  <SpImage src={`${item.imgUrl}?x-oss-process=image/quality,Q_50`} />
-                </View>
-              )}
+                )}
               {/* 热区 */}
               {renderHotZones(item)}
               {/* 视频类型 */}
@@ -272,9 +309,9 @@ function WgtFullSlider(props) {
                   showFullscreenBtn={false}
                   muted
                   id={`swiperVideo_${index}${props.index}`}
-                  onEnded={e => handlePlayEnd(e, item)}
-                  onPlay={e => handlePlayStart(e, item, index)}
-                  onTimeUpdate={e => handleTimeUpdate(e, item, index)}
+                  onEnded={(e) => handlePlayEnd(e, item)}
+                  onPlay={(e) => handlePlayStart(e, item, index)}
+                  onTimeUpdate={(e) => handleTimeUpdate(e, item, index)}
                 >
                   {!play && !item?.hidenPoster && (
                     <Image className='poster' mode='widthFix' src={item.imgUrl} />
@@ -306,13 +343,8 @@ function WgtFullSlider(props) {
   if (localData.length === 0 || !show) return null
 
   return (
-    <View
-      className={classNames('wgt wgt_full_slider', { wgt_padded: base.padded })}
-    >
-      <View
-        className='wgt_full_slider-wrap'
-        style={styleNames({ height: `${height}` })}
-      >
+    <View className={classNames('wgt wgt_full_slider', { wgt_padded: base.padded })}>
+      <View className='wgt_full_slider-wrap' style={styleNames({ height: `${height}` })}>
         <Swiper
           className='wgt_full_slider-swiper'
           autoplay={config.autoplay}
@@ -327,9 +359,7 @@ function WgtFullSlider(props) {
           {renderOverlay}
         </Swiper>
         {localData.length > 1 && (
-          <View className='wgt_full_slider_indicator'>
-            {setIndicator()}
-          </View>
+          <View className='wgt_full_slider_indicator'>{setIndicator()}</View>
         )}
       </View>
     </View>

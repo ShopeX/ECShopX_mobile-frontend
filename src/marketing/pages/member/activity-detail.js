@@ -47,8 +47,8 @@ function ActivityDetail(props) {
   const getQrCode = ({ verifyCode, recordId }) => {
     if (!verifyCode) return
     const params = {
-      verify_code:verifyCode,
-      record_id:recordId
+      verify_code: verifyCode,
+      record_id: recordId
     }
     QRCode.toDataURL(JSON.stringify(params)).then((res) => {
       console.log('getQrCode', res)

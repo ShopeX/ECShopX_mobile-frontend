@@ -9,7 +9,6 @@ import tradeHooks from '../hooks'
 import btnHooks from '../btn-hooks'
 import './comp-tradeitem.scss'
 
-
 function CompTradeItem(props) {
   const {
     info,
@@ -23,7 +22,7 @@ function CompTradeItem(props) {
     return null
   }
   const { tradeActionBtns, getTradeAction } = tradeHooks()
-  const {orderState } = btnHooks()
+  const { orderState } = btnHooks()
 
   const {
     distributorInfo,
@@ -89,13 +88,10 @@ function CompTradeItem(props) {
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>
           </View>
-          
-            {!showButton && <View className='trade-no'>{`订单编号: ${orderId}`}</View>
-           }
 
-           {!showButton &&  <View className='trade-time'>{`订单时间: ${createDate}`}</View>}
-          
-          
+          {!showButton && <View className='trade-no'>{`订单编号: ${orderId}`}</View>}
+
+          {!showButton && <View className='trade-time'>{`订单时间: ${createDate}`}</View>}
         </View>
         {!showButton && <View className='trade-state'>{orderState(info)}</View>}
       </View>

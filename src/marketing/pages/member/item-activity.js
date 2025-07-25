@@ -28,19 +28,12 @@ const initialState = {
     { label: '代他人报名', value: '1' }
   ],
   activityInfo: {},
-  hasReFreash:false
+  hasReFreash: false
 }
 function ItemActivity(props) {
   const [state, setState] = useImmer(initialState)
-  const {
-    tradeStatus,
-    status,
-    recordList,
-    isOpened,
-    selectOptions,
-    activityInfo,
-    hasReFreash
-  } = state
+  const { tradeStatus, status, recordList, isOpened, selectOptions, activityInfo, hasReFreash } =
+    state
   const recordRef = useRef()
   const router = useRouter()
 
@@ -59,7 +52,7 @@ function ItemActivity(props) {
   //   }
   // }, [])
 
-  useDidShow(()=>{
+  useDidShow(() => {
     // if(hasReFreash){
     //   setState((draft) => {
     //     draft.recordList = []
@@ -70,7 +63,7 @@ function ItemActivity(props) {
 
     setState((draft) => {
       draft.recordList = []
-    });
+    })
     recordRef.current.reset()
   })
 
@@ -89,7 +82,7 @@ function ItemActivity(props) {
       status
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
-    const nList = pickBy(list,doc.activity.RECORD_LIST)
+    const nList = pickBy(list, doc.activity.RECORD_LIST)
     setState((draft) => {
       draft.recordList = [...recordList, ...nList]
     })
@@ -134,18 +127,18 @@ function ItemActivity(props) {
         //立即报名
         if (hasTemp) {
           // 有模板
-          if(['passed','canceled','verified'].includes(status)){
+          if (['passed', 'canceled', 'verified'].includes(status)) {
             Taro.navigateTo({
-              url:`/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
+              url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
             })
-          } else{
+          } else {
             //有编辑
             setState((draft) => {
               draft.isOpened = true
               draft.activityInfo = item
             })
           }
-        }else{
+        } else {
           //没有模板
           registrationSubmitFetch(item)
         }
@@ -163,7 +156,7 @@ function ItemActivity(props) {
   }
 
   const handleSlectConfirm = (value) => {
-    const { activityId,recordId } = activityInfo
+    const { activityId, recordId } = activityInfo
     let url = `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
     if (value == '0') {
       // 编辑
@@ -185,7 +178,6 @@ function ItemActivity(props) {
           ref={recordRef}
           fetch={fetch}
           emptyMsg='没有查询到订单'
-
         >
           {recordList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

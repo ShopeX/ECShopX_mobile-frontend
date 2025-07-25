@@ -2,7 +2,7 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime,SpCustomPicker } from '@/components'
+import { SpPage, SpTime, SpCustomPicker } from '@/components'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
@@ -19,7 +19,7 @@ const initialConfigState = {
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/salesman/distribution/index'
     },
-    { name: '我的商家', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop` },
+    { name: '我的商家', icon: 'icon-shangjialiebiao', path: `/subpages/salesman/selectShop` }
     // { name: '地址列表', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/address' },
     // { name: '优惠券', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/coupon-picker' },
     // { name: '业务员', icon: 'icon-shangjialiebiao', path: '/subpages/salesman/delivery-personnel' }
@@ -33,12 +33,12 @@ const initialConfigState = {
     distributor_id: ''
   },
   selector: [],
-  pickerId:""
+  pickerId: ''
 }
 
 const Index = () => {
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, information, funcList, info, parameter, selector,pickerId} = state
+  const { codeStatus, information, funcList, info, parameter, selector, pickerId } = state
 
   useDidShow(() => {
     distributor()
@@ -77,7 +77,7 @@ const Index = () => {
     })
     setState((draft) => {
       draft.selector = list
-      draft.parameter = {...parameter, distributor_id: list[1].value}
+      draft.parameter = { ...parameter, distributor_id: list[1].value }
       draft.pickerId = list[1].value
     })
     handleRefresh()
@@ -147,7 +147,7 @@ const Index = () => {
               <View className='panel-header-title'>实时概况</View>
             </View>
             <View className='panel-headers'>
-              <SpCustomPicker selector={selector} cancel={cancel} customStatus id={pickerId}  />
+              <SpCustomPicker selector={selector} cancel={cancel} customStatus id={pickerId} />
             </View>
           </View>
           <SpTime
@@ -218,7 +218,6 @@ const Index = () => {
           </View>
         </View>
       </View>
-
     </SpPage>
   )
 }

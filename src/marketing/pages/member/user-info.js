@@ -3,7 +3,14 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtForm, AtButton } from 'taro-ui'
-import { SpToast, SpTimer, SpNavBar, FormIdCollector, SpCheckbox, SpInput as AtInput } from '@/components'
+import {
+  SpToast,
+  SpTimer,
+  SpNavBar,
+  FormIdCollector,
+  SpCheckbox,
+  SpInput as AtInput
+} from '@/components'
 import { classNames, isString, isArray } from '@/utils'
 // import { Tracker } from '@/service'
 import S from '@/spx'
@@ -21,7 +28,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
 )
 export default class Reg extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -38,7 +45,7 @@ export default class Reg extends Component {
     this.handleChange = this.handleChange.bind(this)
   }
 
-  componentDidMount () {
+  componentDidMount() {
     // console.log(Taro.getEnv(),this.props.land_params)
     if (process.env.TARO_ENV === 'weapp') {
       this.setState({
@@ -71,7 +78,7 @@ export default class Reg extends Component {
     }
   }
 
-  async fetch () {
+  async fetch() {
     let arr = []
     let res = await api.user.regParam()
     console.log(res)
@@ -340,7 +347,7 @@ export default class Reg extends Component {
     })
   }
 
-  render () {
+  render() {
     const {
       info,
       isHasValue,

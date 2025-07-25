@@ -12,7 +12,7 @@
  * detail : http://weappdev.com/t/wxparse-alpha0-1-html-markdown/184
  */
 
-function getDefaultOpts (simple) {
+function getDefaultOpts(simple) {
   'use strict'
 
   var defaultOptions = {
@@ -307,7 +307,7 @@ showdown.resetExtensions = function () {
  * @param {string} name
  * @returns {{valid: boolean, error: string}}
  */
-function validate (extension, name) {
+function validate(extension, name) {
   'use strict'
 
   var errMsg = name ? 'Error in ' + name + ' extension->' : 'Error in unnamed extension',
@@ -455,7 +455,7 @@ if (!showdown.hasOwnProperty('helper')) {
  * @param {string} a
  * @returns {boolean}
  */
-showdown.helper.isString = function isString (a) {
+showdown.helper.isString = function isString(a) {
   'use strict'
   return typeof a === 'string' || a instanceof String
 }
@@ -466,7 +466,7 @@ showdown.helper.isString = function isString (a) {
  * @param {string} a
  * @returns {boolean}
  */
-showdown.helper.isFunction = function isFunction (a) {
+showdown.helper.isFunction = function isFunction(a) {
   'use strict'
   var getType = {}
   return a && getType.toString.call(a) === '[object Function]'
@@ -478,7 +478,7 @@ showdown.helper.isFunction = function isFunction (a) {
  * @param {*} obj
  * @param {function} callback
  */
-showdown.helper.forEach = function forEach (obj, callback) {
+showdown.helper.forEach = function forEach(obj, callback) {
   'use strict'
   if (typeof obj.forEach === 'function') {
     obj.forEach(callback)
@@ -495,7 +495,7 @@ showdown.helper.forEach = function forEach (obj, callback) {
  * @param {*} a
  * @returns {boolean}
  */
-showdown.helper.isArray = function isArray (a) {
+showdown.helper.isArray = function isArray(a) {
   'use strict'
   return a.constructor === Array
 }
@@ -506,7 +506,7 @@ showdown.helper.isArray = function isArray (a) {
  * @param {*} value The value to check.
  * @returns {boolean} Returns `true` if `value` is `undefined`, else `false`.
  */
-showdown.helper.isUndefined = function isUndefined (value) {
+showdown.helper.isUndefined = function isUndefined(value) {
   'use strict'
   return typeof value === 'undefined'
 }
@@ -522,7 +522,7 @@ showdown.helper.stdExtName = function (s) {
   return s.replace(/[_-]||\s/g, '').toLowerCase()
 }
 
-function escapeCharactersCallback (wholeMatch, m1) {
+function escapeCharactersCallback(wholeMatch, m1) {
   'use strict'
   var charCodeToEscape = m1.charCodeAt(0)
   return '~E' + charCodeToEscape + 'E'
@@ -545,7 +545,7 @@ showdown.helper.escapeCharactersCallback = escapeCharactersCallback
  * @param {boolean} afterBackslash
  * @returns {XML|string|void|*}
  */
-showdown.helper.escapeCharacters = function escapeCharacters (text, charsToEscape, afterBackslash) {
+showdown.helper.escapeCharacters = function escapeCharacters(text, charsToEscape, afterBackslash) {
   'use strict'
   // First we have to escape the escape characters so that
   // we can build a character class out of them
@@ -762,7 +762,7 @@ showdown.Converter = function (converterOptions) {
    * Converter constructor
    * @private
    */
-  function _constructor () {
+  function _constructor() {
     converterOptions = converterOptions || {}
 
     for (var gOpt in globalOptions) {
@@ -797,7 +797,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} [name='']
    * @private
    */
-  function _parseExtension (ext, name) {
+  function _parseExtension(ext, name) {
     name = name || null
     // If it's a string, the extension was previously loaded
     if (showdown.helper.isString(ext)) {
@@ -864,7 +864,7 @@ showdown.Converter = function (converterOptions) {
    * @param {*} ext
    * @param {string} name
    */
-  function legacyExtensionLoading (ext, name) {
+  function legacyExtensionLoading(ext, name) {
     if (typeof ext === 'function') {
       ext = ext(new showdown.Converter())
     }
@@ -897,7 +897,7 @@ showdown.Converter = function (converterOptions) {
    * @param {string} name
    * @param {function} callback
    */
-  function listen (name, callback) {
+  function listen(name, callback) {
     if (!showdown.helper.isString(name)) {
       throw Error(
         'Invalid argument in converter.listen() method: name must be a string, but ' +
@@ -920,7 +920,7 @@ showdown.Converter = function (converterOptions) {
     listeners[name].push(callback)
   }
 
-  function rTrimInputText (text) {
+  function rTrimInputText(text) {
     var rsp = text.match(/^\s*/)[0].length,
       rgx = new RegExp('^\\s{0,' + rsp + '}', 'gm')
     return text.replace(rgx, '')
@@ -935,7 +935,7 @@ showdown.Converter = function (converterOptions) {
    * @param {{}} globals
    * @returns {string}
    */
-  this._dispatch = function dispatch (evtName, text, options, globals) {
+  this._dispatch = function dispatch(evtName, text, options, globals) {
     if (listeners.hasOwnProperty(evtName)) {
       for (var ei = 0; ei < listeners[evtName].length; ++ei) {
         var nText = listeners[evtName][ei](evtName, text, this, options, globals)
@@ -1296,7 +1296,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
     text = text.replace(simpleMailRegex, replaceMail)
   }
 
-  function replaceLink (wm, link) {
+  function replaceLink(wm, link) {
     var lnkTxt = link
     if (/^www\./i.test(link)) {
       link = link.replace(/^www\./i, 'http://www.')
@@ -1304,7 +1304,7 @@ showdown.subParser('autoLinks', function (text, options, globals) {
     return '<a href="' + link + '">' + lnkTxt + '</a>'
   }
 
-  function replaceMail (wholeMatch, m1) {
+  function replaceMail(wholeMatch, m1) {
     var unescapedStr = showdown.subParser('unescapeSpecialChars')(m1)
     return showdown.subParser('encodeEmailAddress')(unescapedStr)
   }
@@ -1949,7 +1949,7 @@ showdown.subParser('headers', function (text, options, globals) {
     return showdown.subParser('hashBlock')(header, options, globals)
   })
 
-  function headerId (m) {
+  function headerId(m) {
     var title,
       escapedId = m.replace(/[^\w]/g, '').toLowerCase()
 
@@ -1987,7 +1987,7 @@ showdown.subParser('images', function (text, options, globals) {
       /!\[(.*?)]\s?\([ \t]*()<?(\S+?)>?(?: =([*\d]+[A-Za-z%]{0,4})x([*\d]+[A-Za-z%]{0,4}))?[ \t]*(?:(['"])(.*?)\6[ \t]*)?\)/g,
     referenceRegExp = /!\[([^\]]*?)] ?(?:\n *)?\[(.*?)]()()()()()/g
 
-  function writeImageTag (wholeMatch, altText, linkId, url, width, height, m5, title) {
+  function writeImageTag(wholeMatch, altText, linkId, url, width, height, m5, title) {
     var gUrls = globals.gUrls,
       gTitles = globals.gTitles,
       gDims = globals.gDimensions
@@ -2089,7 +2089,7 @@ showdown.subParser('lists', function (text, options, globals) {
    * @param {boolean} trimTrailing
    * @returns {string}
    */
-  function processListItems (listStr, trimTrailing) {
+  function processListItems(listStr, trimTrailing) {
     // The $g_list_level global keeps track of when we're inside a list.
     // Each time we enter a list, we increment it; when we leave a list,
     // we decrement. If it's zero, we're not in a list anymore.
@@ -2179,7 +2179,7 @@ showdown.subParser('lists', function (text, options, globals) {
    * @param {boolean} trimTrailing
    * @returns {string}
    */
-  function parseConsecutiveLists (list, listType, trimTrailing) {
+  function parseConsecutiveLists(list, listType, trimTrailing) {
     // check if we caught 2 or more consecutive lists by mistake
     // we use the counterRgx, meaning if listType is UL we look for UL and vice versa
     var counterRxg = listType === 'ul' ? /^ {0,2}\d+\.[ \t]/gm : /^ {0,2}[*+-][ \t]/gm,
@@ -2187,7 +2187,7 @@ showdown.subParser('lists', function (text, options, globals) {
       result = ''
 
     if (list.search(counterRxg) !== -1) {
-      ;(function parseCL (txt) {
+      ;(function parseCL(txt) {
         var pos = txt.search(counterRxg)
         if (pos !== -1) {
           // slice
@@ -2493,7 +2493,7 @@ showdown.subParser('tables', function (text, options, globals) {
   var tableRgx =
     /^[ \t]{0,3}\|?.+\|.+\n[ \t]{0,3}\|?[ \t]*:?[ \t]*(?:-|=){2,}[ \t]*:?[ \t]*\|[ \t]*:?[ \t]*(?:-|=){2,}[\s\S]+?(?:\n\n|~0)/gm
 
-  function parseStyles (sLine) {
+  function parseStyles(sLine) {
     if (/^:[ \t]*--*$/.test(sLine)) {
       return ' style="text-align:left;"'
     } else if (/^--*[ \t]*:[ \t]*$/.test(sLine)) {
@@ -2505,7 +2505,7 @@ showdown.subParser('tables', function (text, options, globals) {
     }
   }
 
-  function parseHeaders (header, style) {
+  function parseHeaders(header, style) {
     var id = ''
     header = header.trim()
     if (options.tableHeaderId) {
@@ -2516,12 +2516,12 @@ showdown.subParser('tables', function (text, options, globals) {
     return '<th' + id + style + '>' + header + '</th>\n'
   }
 
-  function parseCells (cell, style) {
+  function parseCells(cell, style) {
     var subText = showdown.subParser('spanGamut')(cell, options, globals)
     return '<td' + style + '>' + subText + '</td>\n'
   }
 
-  function buildTable (headers, cells) {
+  function buildTable(headers, cells) {
     var tb = '<table>\n<thead>\n<tr>\n',
       tblLgn = headers.length
 

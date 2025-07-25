@@ -9,7 +9,7 @@ import { WgtsContext } from './wgts-context'
 import './goods-scroll.scss'
 
 export default class WgtGoodsScroll extends Component {
-  static contextType = WgtsContext;
+  static contextType = WgtsContext
 
   static options = {
     addGlobalClass: true,
@@ -25,7 +25,6 @@ export default class WgtGoodsScroll extends Component {
       // boxHeight: null
     }
   }
-
 
   setTimer() {
     const { info } = this.props
@@ -94,7 +93,7 @@ export default class WgtGoodsScroll extends Component {
 
     const { base, data, config, more } = info
     const { timer, boxHeight } = this.state
-    const isPurchase = this.$instance.router.path == "/subpages/purchase/index"
+    const isPurchase = this.$instance.router.path == '/subpages/purchase/index'
     const goods = pickBy(data, doc.goods.WGT_GOODS_SCROLL)
 
     return (
@@ -137,10 +136,7 @@ export default class WgtGoodsScroll extends Component {
         <View className='wgt-body'>
           <ScrollView className='scroll-goods' scrollX>
             {goods.map((item, idx) => (
-              <View
-                className={classNames('scroll-item')}
-                key={`goodsscroll-item__${idx}`}
-              >
+              <View className={classNames('scroll-item')} key={`goodsscroll-item__${idx}`}>
                 {config.leaderboard && (
                   <View className='subscript'>
                     <View className='subscript-text'>NO.{idx + 1}</View>
@@ -160,15 +156,12 @@ export default class WgtGoodsScroll extends Component {
               </View>
             ))}
 
-
             {(config?.moreLink?.linkPage || config?.moreLink?.linkUrl) && (
               <View className='more-link' onClick={this.handleClickMore}>
-                {
-                  base.backgroundImg && <SpImage circle={16} src={base.backgroundImg} mode='aspectFill' />
-                }
-                {
-                  !base.backgroundImg && <View className='text'>查看更多</View>
-                }
+                {base.backgroundImg && (
+                  <SpImage circle={16} src={base.backgroundImg} mode='aspectFill' />
+                )}
+                {!base.backgroundImg && <View className='text'>查看更多</View>}
                 {/* <View className={`img ${isWeb ? 'h5-img' : ''}`}>
                 </View> */}
               </View>

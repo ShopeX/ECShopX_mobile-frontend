@@ -53,11 +53,10 @@ function UgcFollowFans() {
       user_id: user_id,
       user_type: type
     }
-    const { list=[], total_count: total } = await api.mdugc.followerlist(params)
-    setState(
-      (draft) => {
-        draft.followlist = [...followlist, ...list]
-      })
+    const { list = [], total_count: total } = await api.mdugc.followerlist(params)
+    setState((draft) => {
+      draft.followlist = [...followlist, ...list]
+    })
     Taro.stopPullDownRefresh()
     return { total: total || 0 }
   }
@@ -72,8 +71,8 @@ function UgcFollowFans() {
   })
 
   // 关注|取消关注
-  const followercreate = async (e,i) => {
-    e&&e.stopPropagation()
+  const followercreate = async (e, i) => {
+    e && e.stopPropagation()
     let item = JSON.parse(JSON.stringify(followlist[i]))
     let data = {
       user_id: item.user_id,
@@ -102,9 +101,9 @@ function UgcFollowFans() {
     })
   }
 
-const topages = (url) =>{
-  Taro.navigateTo({ url })
-}
+  const topages = (url) => {
+    Taro.navigateTo({ url })
+  }
 
   return (
     <SpPage className='page-ugc-follow-fans'>
@@ -116,14 +115,18 @@ const topages = (url) =>{
       <SpScrollView className='scroll-list' auto ref={listRef} fetch={fetch}>
         <View className='follow-list'>
           {followlist.map((item, index) => (
-            <View className='follow-item' key={`follow-item__${index}`} onClick={()=>topages(`/subpages/mdugc/my?user_id=${item.user_id}`)}>
+            <View
+              className='follow-item'
+              key={`follow-item__${index}`}
+              onClick={() => topages(`/subpages/mdugc/my?user_id=${item.user_id}`)}
+            >
               <View className='item-lf'>
                 <View className='item-hd'>
                   <SpImage circle src={item.headimgurl} width={80} height={80} />
                 </View>
                 <View className='item-bd'>{item.nickname}</View>
               </View>
-              <View className='item-ft' onClick={(e) => followercreate(e,index)}>
+              <View className='item-ft' onClick={(e) => followercreate(e, index)}>
                 {item.mutal_follow == 0 ? (
                   type == 'user' ? (
                     <View className='item-ft__r active'>+关注</View>

@@ -601,15 +601,6 @@ export default class DistributionGoods extends Component {
       <SpPage className='page-distribution-shop'>
         <View>
           <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
-          {/* <SearchBar
-            showDailog={false}
-            keyword={query ? query.keywords : ''}
-            onFocus={() => false}
-            onCancel={() => {}}
-            onChange={this.handleSearchChange}
-            onClear={this.handleConfirm.bind(this)}
-            onConfirm={this.handleConfirm.bind(this)}
-          /> */}
           <SpSearchInput
             placeholder='输入内容'
             // isShowArea

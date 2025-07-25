@@ -14,7 +14,7 @@ export default class SpCell extends Component {
     arrow: 'right',
     onClick: () => {},
     commonStyle: '',
-    certainly:false
+    certainly: false
   }
 
   static options = {
@@ -61,7 +61,7 @@ export default class SpCell extends Component {
           ></View>
         )}
         <View className='sp-cell__hd'>
-          {certainly && <Text className='sp-cell__xin'>* </Text> }
+          {certainly && <Text className='sp-cell__xin'>* </Text>}
           {title && <Text className='sp-cell__title'>{title}</Text>}
         </View>
         <View className='sp-cell__bd'>{this.props.children}</View>

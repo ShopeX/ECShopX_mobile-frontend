@@ -13,3 +13,4 @@ export const SG_SHOW_ADD_TIP = 'addTipIsShow' // 小程序添加指引
 export const SG_ROUTER_PARAMS = 'routerParams' // 路由参数缓存
 export const SG_GUIDE_PARAMS = 'guideParams' // 导购参数缓存
 export const SG_GUIDE_PARAMS_UPDATETIME = 'guideParams_updatetime' // 导购参数缓存时间戳
+export const SG_CHECK_STORE_RULE = 'check_store_rule' // 检查店铺进店规则

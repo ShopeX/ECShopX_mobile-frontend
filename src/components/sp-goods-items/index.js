@@ -53,9 +53,7 @@ function CompGoodsItem(props) {
                     <Text className='names'>{item.item_name}</Text>
                     <Text className='iconfont icon-shanchu-01' onClick={() => deletes(item)} />
                   </View>
-                  <View className='details'>
-                   {item.item_spec_desc}
-                  </View>
+                  <View className='details'>{item.item_spec_desc}</View>
                   {/* <View className='new'>新品</View> */}
                   <View className='money'>
                     <View>

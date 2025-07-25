@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage ,SpPoster} from '@/components'
+import { SpImage, SpPoster } from '@/components'
 import './comp-shop-list.scss'
 
 const initialState = {
@@ -71,8 +71,6 @@ function CompShopList(props) {
           }}
         />
       )}
-
-      
     </View>
   )
 }

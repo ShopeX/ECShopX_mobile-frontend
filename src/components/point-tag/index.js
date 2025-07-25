@@ -5,13 +5,13 @@ import configStore from '@/store'
 
 import './index.scss'
 
-const {store} = configStore()
+const { store } = configStore()
 export default class PointTag extends Component {
   static defaultProps = {
     url: ''
   }
 
-  render () {
+  render() {
     const { className } = this.props
     const classes = classNames('point-tag', className)
 

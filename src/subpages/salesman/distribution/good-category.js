@@ -13,7 +13,7 @@ import './shop-category.scss'
 @withBackToTop
 export default class DistributionShopCategory extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -48,7 +48,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     Taro.hideShareMenu({
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
@@ -62,7 +62,7 @@ export default class DistributionShopCategory extends Component {
     this.fetchInfo()
   }
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (nextProps.isChanged === true) {
       this.setState({
         currentIndex: 0
@@ -70,7 +70,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  async fetchInfo () {
+  async fetchInfo() {
     const query = {
       category_level: 2
     }
@@ -105,7 +105,7 @@ export default class DistributionShopCategory extends Component {
     )
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
     // let distribution_shop_id = Taro.getStorageSync('distribution_shop_id')
@@ -120,7 +120,7 @@ export default class DistributionShopCategory extends Component {
       promoter_onsale: true,
       approve_status: 'onsale,only_show',
       is_promoter: true,
-      isSalesmanPage:1
+      isSalesmanPage: 1
     }
     //console.warn('83',params)
     const { list: goodsList, total_count: total } = await api.item.search(query)
@@ -261,7 +261,7 @@ export default class DistributionShopCategory extends Component {
     }
   }
 
-  render () {
+  render() {
     const { status } = this.$instance.router.params
     const {
       list,
@@ -324,7 +324,7 @@ export default class DistributionShopCategory extends Component {
                 onScrollToLower={this.nextPage}
               >
                 <View className='grid-goods'>
-                  {contentList.length &&
+                  {(contentList.length &&
                     contentList.map((item) => {
                       const isRelease = goodIds.findIndex((n) => item.goods_id == n) !== -1
                       return (
@@ -357,7 +357,7 @@ export default class DistributionShopCategory extends Component {
                                 data-info={item}
                                 openType='share'
                                 size='small'
-                                onClick={()=>Taro.setStorageSync('shareData',item)}
+                                onClick={() => Taro.setStorageSync('shareData', item)}
                               >
                                 <Text class='iconfont icon-share2'></Text>
                               </Button>
@@ -365,9 +365,8 @@ export default class DistributionShopCategory extends Component {
                           </View>
                         </View>
                       )
-                    })
-                    || null
-                  }
+                    })) ||
+                    null}
                 </View>
                 {page.isLoading ? <Loading>正在加载...</Loading> : null}
                 {!page.isLoading && !page.hasNext && !contentList.length && (

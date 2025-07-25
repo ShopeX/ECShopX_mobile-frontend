@@ -5,8 +5,12 @@ import S from '@/spx'
 import dayjs from 'dayjs'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
-import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS_UPDATETIME, SG_GUIDE_PARAMS } from '@/consts/localstorage'
-
+import _isEqual from 'lodash/isEqual'
+import {
+  SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS_UPDATETIME,
+  SG_GUIDE_PARAMS
+} from '@/consts/localstorage'
 
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
 const $instance = getCurrentInstance()
@@ -26,17 +30,29 @@ class EntryLaunch {
    * @function 获取小程序路由参数
    */
   async getRouteParams(options) {
-    // const { params } = $instance.router;
     const params = options?.query || options?.params || $instance.router?.params || {}
+
+    const pageStack = Taro.getCurrentPages()
+
+    const resPage = pageStack.find(
+      (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
+    )
+
+    // 只返回小程序启动时的参数（包含冷启动和热启动）
+    if (resPage) {
+      return {
+        ...Taro.getStorageSync(SG_ROUTER_PARAMS),
+        runFlag: true // 标识小程序启动标志，用于判断是否是小程序启动
+      }
+    }
+
     let _options = {}
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
-      // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
       console.log('params scene:', params.scene, resolveUrlParamsParse(params.scene))
       _options = {
         ...resolveUrlParamsParse(params.scene)
       }
-      debugger
       if (_options.share_id) {
         const res = await api.wx.getShareId({
           share_id: _options.share_id
@@ -161,32 +177,35 @@ class EntryLaunch {
         my.getLocation({
           type: 0, // 获取经纬度和省市区县数据
           success: (res) => {
-            console.log(11, res);
+            console.log(11, res)
             resolve({
               lng: res.longitude,
               lat: res.latitude
             })
           },
           fail: (res) => {
-            reject({ message: '定位失败' + JSON.stringify(res) });
+            reject({ message: '定位失败' + JSON.stringify(res) })
           }
         })
       })
     } else {
       return new Promise(async (reslove, reject) => {
-        this.geolocation.getLocation((res) => {
-          reslove({
-            lng: res.lng,
-            lat: res.lat,
-            province: res.province,
-            city: res.city,
-            district: res.district,
-            address: res.addr
-
-          })
-        }, (err) => {
-          console.error('getLocationInfo error', err)
-        }, { timeout: 8000 })
+        this.geolocation.getLocation(
+          (res) => {
+            reslove({
+              lng: res.lng,
+              lat: res.lat,
+              province: res.province,
+              city: res.city,
+              district: res.district,
+              address: res.addr
+            })
+          },
+          (err) => {
+            console.error('getLocationInfo error', err)
+          },
+          { timeout: 8000 }
+        )
       })
     }
   }
@@ -246,7 +265,6 @@ class EntryLaunch {
       })
     })
   }
-
 
   /**
    * @function 根据经纬度解析地址 -- 腾讯
@@ -359,7 +377,8 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    const routerParams =
+      Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
     debugger
     const { gu, gu_user_id } = routerParams || {}
     let work_userid = ''
@@ -370,7 +389,7 @@ class EntryLaunch {
       work_userid = gu_user_id
     }
     if (work_userid) {
-    debugger
+      debugger
       await api.user.uniquevisito({
         work_userid
       })

@@ -5,7 +5,7 @@ import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import './index.scss'
 
-function SpFloatMenuItem (props) {
+function SpFloatMenuItem(props) {
   const { children, onClick = () => {}, className } = props
   return (
     <View className={classNames('sp-float-menu-item', className)} onClick={onClick}>

@@ -3,7 +3,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Picker } from '@tarojs/components'
 import {
   SpToast,
-  SearchBar,
   BackToTop,
   SpNavBar,
   SpCheckbox,
@@ -14,16 +13,15 @@ import {
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
-import StoreListItem from './comps/list-item'
 import { pickBy } from '@/utils'
 import { connect } from 'react-redux'
-
+import StoreListItem from './comps/list-item'
 import './ziti-list.scss'
 
 @connect(
   ({ cart, sys }) => ({
     curZitiShop: cart.zitiShop,
-    openStore: sys.openStore
+    entryStoreByLBS: sys.entryStoreByLBS
   }),
   (dispatch) => ({
     onChangeZitiStore: (zitiShop) => dispatch({ type: 'shop/changeZitiStore', payload: zitiShop })
@@ -84,7 +82,7 @@ export default class StoreZitiList extends Component {
     }
   }
   async fetch(params) {
-    const isOpenStore = this.props.openStore
+    const entryStoreByLBS = this.props.entryStoreByLBS
     const { page_no: page, page_size: pageSize } = params
     const { shop_id, order_type, cart_type, seckill_id, ticket, bargain_id } =
       this.$instance.router.params
@@ -96,7 +94,7 @@ export default class StoreZitiList extends Component {
       order_type,
       seckill_id,
       seckill_ticket: ticket,
-      isNostores: isOpenStore ? 0 : 1,
+      isNostores: entryStoreByLBS ? 0 : 1,
       bargain_id
     }
 
@@ -423,17 +421,6 @@ export default class StoreZitiList extends Component {
     return (
       <View className='page-store-list'>
         <SpAddress />
-        {/* <View className='store-list__search'>
-          <SearchBar
-            showDailog={false}
-            keyword={query ? query.name : ''}
-            onFocus={this.handleSearchOn}
-            onChange={this.handleSearchChange}
-            onClear={this.handleSearchClear}
-            onCancel={this.handleSearchOff}
-            onConfirm={this.handleConfirm.bind(this)}
-          />
-        </View> */}
         <Picker
           mode='multiSelector'
           onClick={this.handleClickPicker}

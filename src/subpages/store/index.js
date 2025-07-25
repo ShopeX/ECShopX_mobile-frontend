@@ -39,11 +39,6 @@ import _toString from 'lodash/toString'
 import qs from 'qs'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import CompTabbar from './comps/comp-tabbar'
-import CompShopBrand from './comps/comp-shopbrand'
-import Categorys from './categorys'
-import CompTab from './comps/comp-tab'
-import CompAddCart from './comps/comp-add-cart'
 import {
   updateShopCartCount,
   fetchCartList,
@@ -51,6 +46,11 @@ import {
   updateCartItemNum,
   deleteCartItem
 } from '@/store/slices/cart'
+import CompTabbar from './comps/comp-tabbar'
+import CompShopBrand from './comps/comp-shopbrand'
+import Categorys from './categorys'
+import CompTab from './comps/comp-tab'
+import CompAddCart from './comps/comp-add-cart'
 
 import './index.scss'
 
@@ -75,7 +75,7 @@ const initState = {
 function StoreIndex() {
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
-  const { openRecommend, openLocation, openStore, colorPrimary } = useSelector((state) => state.sys)
+  const { openRecommend, colorPrimary } = useSelector((state) => state.sys)
   const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
@@ -146,15 +146,17 @@ function StoreIndex() {
     // if (storedData && typeof storedData === 'object' && Object.keys(storedData).length > 0) {
     //   return storedData
     // } else {
-      const routeParams = await entryLaunch.getRouteParams()
-      return routeParams && (routeParams.id || routeParams.dtid || routeParams.uid) ? routeParams : storedData;
+    const routeParams = await entryLaunch.getRouteParams()
+    return routeParams && (routeParams.id || routeParams.dtid || routeParams.uid)
+      ? routeParams
+      : storedData
 
-      // if (routeParams?.id || routeParams?.dtid || routeParams?.uid) {
-      //   return routeParams
-      // }else{
-      //   return storedData
-      // }
-      // return routeParams
+    // if (routeParams?.id || routeParams?.dtid || routeParams?.uid) {
+    //   return routeParams
+    // }else{
+    //   return storedData
+    // }
+    // return routeParams
     // }
   }
 

@@ -16,9 +16,9 @@ const initialConfigState = {
   types: 0,
   listData: [],
   listHeader: [
-    { title: '时间', width: '120px',id: 'date_time' },
+    { title: '时间', width: '120px', id: 'date_time' },
     // { title: '业务员', id: 'salesName' },
-   { title: '订单额（元）', width: '120px', id: 'total_fee_count' },
+    { title: '订单额（元）', width: '120px', id: 'total_fee_count' },
     { title: '订单配送量（单）', width: '120px', id: 'order_count' },
     // { title: '新增顾客', id: 'member_num' },
     { title: '配送费（元）', width: '120px', id: 'self_delivery_fee_count' }
@@ -155,11 +155,7 @@ const Achievement = () => {
             handleRefresh()
           }}
         /> */}
-        {
-          listData.length>0 && <SpTable listData={listData} listHeader={listHeader} />
-        }
-
-        
+        {listData.length > 0 && <SpTable listData={listData} listHeader={listHeader} />}
       </View>
     </SpPage>
   )

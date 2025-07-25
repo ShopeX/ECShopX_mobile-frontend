@@ -73,8 +73,8 @@ function CouponRecord() {
         ))}
 
         {isDefault && (
-          <View className={'default-view'}>
-            <SpNote img={'empty_marketing.png'} title={'没有优惠券~'} />
+          <View className='default-view'>
+            <SpNote img='empty_marketing.png' title='没有优惠券~' />
             <SpButton
               resetText='首页'
               confirmText='领券中心'

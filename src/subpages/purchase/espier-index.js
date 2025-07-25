@@ -9,15 +9,13 @@ import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, classNames, throttle, getDistributorId } from '@/utils'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
-import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/purchase'
 import {
-  SpPage,
-  SpPrice,
-  SpLogin,
-  SpDefault,
-  SpCheckboxNew,
-  SpPrivacyModal
-} from '@/components'
+  fetchCartList,
+  deleteCartItem,
+  updateCartItemNum,
+  updateCount
+} from '@/store/slices/purchase'
+import { SpPage, SpPrice, SpLogin, SpDefault, SpCheckboxNew, SpPrivacyModal } from '@/components'
 
 import CompGoodsItem from '@/pages/cart/comps/comp-goodsitem'
 import CompTabbar from './comps/comp-tabbar'
@@ -45,9 +43,13 @@ function CartIndex() {
   const { current, policyModal } = state
 
   const { colorPrimary } = useSelector((state) => state.sys)
-  const { validCart = [], invalidCart = [], purchase_share_info = {},curDistributorId } = useSelector((state) => state.purchase)
+  const {
+    validCart = [],
+    invalidCart = [],
+    purchase_share_info = {},
+    curDistributorId
+  } = useSelector((state) => state.purchase)
   const { tabbar = 1 } = router?.params || {}
-
 
   useEffect(() => {
     if (isLogin) fetch()
@@ -73,7 +75,9 @@ function CartIndex() {
       enterprise_id,
       activity_id
     }
-    await dispatch(fetchCartList({...params,distributor_id: curDistributorId ?? getDistributorId()}))
+    await dispatch(
+      fetchCartList({ ...params, distributor_id: curDistributorId ?? getDistributorId() })
+    )
     await dispatch(updateCount(params))
     Taro.hideLoading()
   }
@@ -249,7 +253,7 @@ function CartIndex() {
       {!isLogin && (
         <View className='login-header'>
           <View className='login-txt'>授权登录后同步购物车的商品</View>
-          <SpLogin onChange={() => { }}>
+          <SpLogin onChange={() => {}}>
             <View className='btn-login'>授权登录</View>
           </SpLogin>
         </View>
@@ -428,7 +432,11 @@ function CartIndex() {
 
       {validCart.length == 0 && invalidCart.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
-          <AtButton type='primary' circle onClick={navigateTo.bind(this, '/subpages/purchase/index', true)}>
+          <AtButton
+            type='primary'
+            circle
+            onClick={navigateTo.bind(this, '/subpages/purchase/index', true)}
+          >
             去选购
           </AtButton>
         </SpDefault>

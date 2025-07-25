@@ -21,7 +21,7 @@ const initialState = {
     { tag_name: '已关闭', value: '4' }
   ],
   status: '0',
-  typeVal:'0',
+  typeVal: '0',
   tradeList: [],
   refresherTriggered: false
 }
@@ -50,7 +50,7 @@ function TradeAfterSaleList(props) {
       draft.tradeList = []
     })
     tradeRef.current.reset()
-  }, [status,typeVal])
+  }, [status, typeVal])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {

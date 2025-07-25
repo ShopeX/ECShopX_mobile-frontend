@@ -28,7 +28,7 @@ export default (props) => {
   }, [page.pageIndex])
 
   useEffect(() => {
-    if(page.reset) {
+    if (page.reset) {
       excluteFetch()
     }
   }, [page.reset])

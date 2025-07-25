@@ -41,7 +41,7 @@ const request = (() => {
   }
 
   // 支付宝小程序，请求失败时，需要额外处理
-  if(isAlipay){
+  if (isAlipay) {
     return async (...args) => {
       let res
       try {
@@ -151,12 +151,12 @@ class API {
         url = '/subpages/merchant/login'
       } else if (isGoodsShelves()) {
         url = '/subpages/guide/index'
-      } else if (VERSION_IN_PURCHASE){
+      } else if (VERSION_IN_PURCHASE) {
         url = `/subpages/purchase/member`
       } else {
         url = `/subpages/member/index`
       }
-      if(path != url) {
+      if (path != url) {
         url = url + `?redirect_url=${encodeURIComponent(fullPath)}`
         Taro.redirectTo({ url })
       }
@@ -258,7 +258,7 @@ class API {
   async refreshToken() {
     this.isRefreshingToken = true
     const token = S.getAuthToken()
-    console.log('refreshToken',66);
+    console.log('refreshToken', 66)
     try {
       await this.makeReq(
         {

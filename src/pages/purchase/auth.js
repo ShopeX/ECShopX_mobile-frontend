@@ -3,7 +3,13 @@ import React, { useCallback, useState, useEffect, useRef } from 'react'
 import { View, Text, Image, RootPortal } from '@tarojs/components'
 import { SpPrivacyModal, SpPage, SpLogin, SpModal, SpCheckbox, SpImage } from '@/components'
 import { AtButton, AtIcon } from 'taro-ui'
-import { showToast, normalizeQuerys, getCurrentPageRouteParams, VERSION_IN_PURCHASE, getDistributorId } from '@/utils'
+import {
+  showToast,
+  normalizeQuerys,
+  getCurrentPageRouteParams,
+  VERSION_IN_PURCHASE,
+  getDistributorId
+} from '@/utils'
 import { useLogin, useModal, useSyncCallback } from '@/hooks'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import S from '@/spx'
@@ -25,7 +31,7 @@ const initialState = {
   invite_code: '',
   activity_id: '',
   enterprise_id: '',
-  is_activity:''
+  is_activity: ''
 }
 
 function PurchaseAuth() {
@@ -85,7 +91,7 @@ function PurchaseAuth() {
 
   const init = async () => {
     //获取扫码参数
-   await getQrcodeEid()
+    await getQrcodeEid()
     //如果不是扫码则存路由参数
     if (!params.scene) {
       setState((draft) => {
@@ -159,17 +165,19 @@ function PurchaseAuth() {
     setChecked(true)
     if (!isNewUser) {
       await login()
-      if(VERSION_IN_PURCHASE){
+      if (VERSION_IN_PURCHASE) {
         // 纯内购如果有企业则进入选身份页面
-        const data = await api.purchase.getUserEnterprises({disabled: 0,distributor_id: getDistributorId()})
-        const validIdentityLen = data.filter(item => item.disabled == 0).length
-        if(validIdentityLen){
+        const data = await api.purchase.getUserEnterprises({
+          disabled: 0,
+          distributor_id: getDistributorId()
+        })
+        const validIdentityLen = data.filter((item) => item.disabled == 0).length
+        if (validIdentityLen) {
           Taro.reLaunch({
-            url:'/subpages/purchase/select-identity?is_redirt=1'
+            url: '/subpages/purchase/select-identity?is_redirt=1'
           })
         }
       }
-
     }
   }
 
@@ -198,9 +206,9 @@ function PurchaseAuth() {
       //首页模板活动入口跳转进来，带活动ID
       if (activity_id) {
         redirectUrl = `${redirectUrl}?activity_id=${activity_id}`
-        if(is_activity){
+        if (is_activity) {
           //首页跳转进来需要带上标识认证成功直接进入活动
-          redirectUrl +=  '&is_activity=1'
+          redirectUrl += '&is_activity=1'
         }
       }
       Taro.navigateTo({
@@ -246,7 +254,7 @@ function PurchaseAuth() {
         content: e.message || e,
         confirmText: '我知道了',
         showCancel: false,
-        success: async() => {
+        success: async () => {
           await getDtidToEnterid(enterprise_id)
           Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1` })
         }
@@ -262,7 +270,7 @@ function PurchaseAuth() {
     dispatch(updateEnterpriseId(eid))
   }
 
-  const handlePassClick = async() => {
+  const handlePassClick = async () => {
     await getDtidToEnterid(enterprise_id)
     Taro.reLaunch({ url: `/pages/purchase/index?is_redirt=1` })
   }

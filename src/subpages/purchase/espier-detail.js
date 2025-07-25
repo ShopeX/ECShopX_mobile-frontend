@@ -76,8 +76,8 @@ const initialState = {
   // 多规格商品选中的规格
   curItem: null,
   recommendList: [],
-  activityId:'',
-  enterpriseId:''
+  activityId: '',
+  enterpriseId: ''
 }
 
 function EspierDetail(props) {
@@ -194,7 +194,7 @@ function EspierDetail(props) {
   // }
 
   const init = async () => {
-    const { type, id, dtid,activity_id,enterprise_id } = await entryLaunch.getRouteParams()
+    const { type, id, dtid, activity_id, enterprise_id } = await entryLaunch.getRouteParams()
     setState((draft) => {
       draft.id = id
       draft.type = type
@@ -202,7 +202,6 @@ function EspierDetail(props) {
       draft.dtid = curDistributorId ?? getDistributorId()
       draft.activityId = activity_id
       draft.enterpriseId = enterprise_id
-
     })
   }
 
@@ -210,7 +209,7 @@ function EspierDetail(props) {
     let { activity_id, enterprise_id } = purchase_share_info
 
     //参数传来
-    if(activityId && enterpriseId){
+    if (activityId && enterpriseId) {
       activity_id = activityId
       enterprise_id = enterpriseId
     }
@@ -242,7 +241,9 @@ function EspierDetail(props) {
     }
 
     // 是否订阅
-    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, { distributor_id: dtid })
+    const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
+      distributor_id: dtid
+    })
 
     setNavigationBarTitle(data.itemName)
 
@@ -466,8 +467,7 @@ function EspierDetail(props) {
                 <View className='title'>{info.itemName}</View>
                 <View className='brief'>{info.brief}</View>
               </View>
-              {
-                info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 &&
+              {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
                 <View className='item-pre'>
                   <View className='item-pre-title'>
                     <Text className='medicine'>处方药</Text>
@@ -482,7 +482,7 @@ function EspierDetail(props) {
                     </View>
                   </View>
                 </View>
-              }
+              )}
               <View className='item-bn'>{`货号：${info.itemBn}`}</View>
             </View>
           </View>

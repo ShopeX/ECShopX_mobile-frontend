@@ -1,6 +1,7 @@
 import path from 'path'
 import pkg from '../package.json'
-const chalk = require("chalk")
+
+const chalk = require('chalk')
 const { getEnvs, getDefineConstants, getCacheIdentifier } = require('./utils')
 
 require('dotenv-flow').config()
@@ -22,10 +23,9 @@ const CONST_ENVS = {
   ...APP_ENVS
 }
 
-Object.keys(CONST_ENVS).forEach(key => {
-  console.log(chalk.green(`${key}=${CONST_ENVS[key]}`));
+Object.keys(CONST_ENVS).forEach((key) => {
+  console.log(chalk.green(`${key}=${CONST_ENVS[key]}`))
 })
-
 
 // 是否打包APP
 const IS_APP = BUILD_TARGET === 'app'
@@ -39,13 +39,13 @@ if (process.env.TARO_ENV == 'weapp') {
 if (process.env.TARO_ENV == 'h5') {
   copyPatterns.push({ from: 'src/files', to: `${DIST_PATH}` })
 }
-if(process.env.TARO_ENV == 'alipay') {
+if (process.env.TARO_ENV == 'alipay') {
   copyPatterns.push({ from: 'mini.project.json', to: `${DIST_PATH}/mini.project.json` })
 }
 
 const config = {
   projectName: pkg.name,
-  date: '2021-11-22',
+  date: '2025-04-22',
   framework: 'react',
   designWidth: 750,
   deviceRatio: {
@@ -63,12 +63,19 @@ const config = {
   defineConstants: getDefineConstants(CONST_ENVS),
   alias: {
     'taro-ui$': 'taro-ui/lib/index',
-    '@': path.join(__dirname, '../src'),
-    'lodash': 'lodash-es'
-
+    '@': path.join(__dirname, '../src')
+    // 'lodash': 'lodash-es'
   },
   copy: {
     patterns: copyPatterns
+  },
+  compiler: {
+    type: 'webpack5',
+    // 依赖预编译配置
+    prebundle: {
+      enable: false,
+      force: true
+    }
   },
   plugins: [
     // '@shopex/taro-plugin-modules',
@@ -78,8 +85,7 @@ const config = {
 
   mini: {
     // webpackChain(chain, webpack) {
-    //   chain.plugin('analyzer')
-    //     .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
+    //   chain.plugin('analyzer').use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
     // },
     miniCssExtractPluginOption: {
       ignoreOrder: true
@@ -118,11 +124,11 @@ const config = {
   h5: {
     // publicPath: IS_PROD ? './' : '/',
     // publicPath: '/',
-    publicPath: (IS_APP && IS_PROD && !IS_APP_SERVER) ? './' : '/',
+    publicPath: IS_APP && IS_PROD && !IS_APP_SERVER ? './' : '/',
     // publicPath: process.env.APP_PUBLIC_PATH || '/',
     staticDirectory: 'static',
     router: {
-      mode: IS_APP ? "hash" : "browser"
+      mode: IS_APP ? 'hash' : 'browser'
       // mode: "browser"
     },
     devServer: {

@@ -4,7 +4,7 @@ export const STATUS_TYPES_MAP = {
   WAIT_BUYER_CONFIRM: 'WAIT_BUYER_CONFIRM_GOODS',
   DONE: 'TRADE_SUCCESS',
   CANCEL: 'TRADE_CLOSED',
-  PART_PAYMENT:'WAIT_BUYER_PAY'
+  PART_PAYMENT: 'WAIT_BUYER_PAY'
 }
 
 export const ORDER_STATUS_INFO = {
@@ -28,7 +28,7 @@ export const ORDER_STATUS_INFO = {
     msg: '交易完成',
     icon: 'order_success'
   },
-  PART_PAYMENT:{
+  PART_PAYMENT: {
     msg: '部分付款',
     icon: 'partial_payment'
   }
@@ -99,7 +99,7 @@ export const AFTER_SALE_TYPE = [
 
 export const REFUND_FEE_TYPE = [
   { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 'logistics' },
-  { title: '到店退货', desc: '前往线下门店退货', value: 'offline' },
+  { title: '到店退货', desc: '前往线下门店退货', value: 'offline' }
 ]
 
 export const AFTER_SALE_STATUS_TEXT = {
@@ -168,8 +168,8 @@ export const TABBAR_PATH = {
   liveroom: '/pages/liveroom/index',
   allGoods: '/pages/item/list?isTabBar=true',
   ugc: '/subpages/mdugc/index',
-  customPage:'/pages/custom/custom-page',
-  purchase:'/subpages/purchase/select-identity?is_redirt=1'
+  customPage: '/pages/custom/custom-page',
+  purchase: '/subpages/purchase/select-identity?is_redirt=1'
 }
 
 export const TABBAR_ICON = {
@@ -187,14 +187,14 @@ export const PURCHASE_TABBAR_PATH = {
   home: '/subpages/purchase/index',
   category: '/subpages/purchase/category',
   cart: '/subpages/purchase/espier-index',
-  member: '/subpages/purchase/member',
+  member: '/subpages/purchase/member'
 }
 
 export const PURCHASE_TABBAR_ICON = {
   home: 'shouye',
   category: 'fenlei',
   cart: 'gwche',
-  member: 'huiyuan',
+  member: 'huiyuan'
 }
 
 export const BUY_TOOL_BTNS = {
@@ -271,7 +271,7 @@ export const PAYMENT_TYPE = {
   alipaypos: '支付宝支付',
   alipaymini: '支付宝支付',
   point: '积分支付',
-  offline_pay:'线下转账'
+  offline_pay: '线下转账'
 }
 
 export const TRANSFORM_PAYTYPE = {
@@ -355,7 +355,7 @@ export const infotype = {
   FOLLOWERUSER: 'followerUser'
 }
 
-export const  DELIVERY_PERSONNEL_INFORMATION = [
+export const DELIVERY_PERSONNEL_INFORMATION = [
   {
     title: '快递公司',
     selector: [{ label: '商家自配送', status: true }],
@@ -400,35 +400,36 @@ export const  DELIVERY_PERSONNEL_INFORMATION = [
   }
 ]
 
-export const relationship = [{
-  key: 1,
-  value: '本人'
-},
-{
-  key: 2,
-  value: '父母'
-},
-{
-  key: 3,
-  value: '配偶'
-},
-{
-  key: 4,
-  value: '子女'
-},
-{
-  key: 5,
-  value: '其他'
-}]
+export const relationship = [
+  {
+    key: 1,
+    value: '本人'
+  },
+  {
+    key: 2,
+    value: '父母'
+  },
+  {
+    key: 3,
+    value: '配偶'
+  },
+  {
+    key: 4,
+    value: '子女'
+  },
+  {
+    key: 5,
+    value: '其他'
+  }
+]
 
 export const ACTIVITY_STATUS_MAP = {
-    'pending': '待审核',
-    'passed': '已通过',
-    'rejected': '已拒绝',
-    'verified': '已核销',
-    'canceled': '已取消'
-  }
-
+  'pending': '待审核',
+  'passed': '已通过',
+  'rejected': '已拒绝',
+  'verified': '已核销',
+  'canceled': '已取消'
+}
 
 export const DELIVERY_LIST = [
   {
@@ -444,7 +445,7 @@ export const DELIVERY_LIST = [
   {
     type: 'merchant',
     name: '同城配',
-    key: 'is_self_delivery'//自配送也展示同城配文字，自配送和达达只展示一个
+    key: 'is_self_delivery' //自配送也展示同城配文字，自配送和达达只展示一个
   },
   {
     type: 'ziti',
@@ -487,7 +488,7 @@ export const TAB_PAGES = [
   '/subpages/guide/category/index',
   '/subpages/guide/coupon-home/index',
   '/subpages/guide/recommend/list',
-  '/subpages/guide/cart/espier-index',
+  '/subpages/guide/cart/espier-index'
 ]
 
 export const DEFAULT_NAVIGATE_HEIGHT = 44

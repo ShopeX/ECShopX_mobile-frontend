@@ -9,7 +9,7 @@ export function update(params = {}) {
 }
 
 export function dashboard(params = {}) {
-  return req.get('/promoter/index',params)
+  return req.get('/promoter/index', params)
 }
 
 export function info(params = {}) {
@@ -25,7 +25,7 @@ export function commission(params = {}) {
 }
 
 export function statistics(params) {
-  return req.get('/promoter/brokerage/count',params)
+  return req.get('/promoter/brokerage/count', params)
 }
 
 export function withdrawRecord(params) {

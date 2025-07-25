@@ -4,7 +4,7 @@ import { classNames } from '@/utils'
 
 import './index.scss'
 
-function SpSelect (props) {
+function SpSelect(props) {
   const { info = [], value = [], multiple = false, onChange = () => {} } = props
 
   // useEffect( () => {

@@ -13,13 +13,10 @@ export default (props = {}) => {
 
   useEffect(() => {
     const { token } = $instance.router?.params || {}
-    if(token) {
+    if (token) {
       Taro.setStorageSync(SG_DIANWU_TOKEN, token)
     }
   }, [])
 
-
-  return {
-
-  }
+  return {}
 }

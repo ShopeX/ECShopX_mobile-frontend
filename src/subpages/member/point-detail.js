@@ -82,9 +82,12 @@ function PointDetail(props) {
               <SpImage src='point.png' width={48} height={48} />
               <Text className='label'>{`可用${pointName}`}</Text>
             </View>
-            <View className='point-rule' onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/point-rule' })
-            }}>{`${pointName}规则`}</View>
+            <View
+              className='point-rule'
+              onClick={() => {
+                Taro.navigateTo({ url: '/subpages/member/point-rule' })
+              }}
+            >{`${pointName}规则`}</View>
           </View>
           <View className='point-total'>{point}</View>
         </View>

@@ -25,7 +25,7 @@ export default class ItemFav extends Component {
       { title: '软文', status: '1' }
     ]
 
-    if(VERSION_PLATFORM) {
+    if (VERSION_PLATFORM) {
       tabList.push({ title: '店铺', status: '2' })
     }
 

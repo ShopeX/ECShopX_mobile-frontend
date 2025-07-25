@@ -101,10 +101,14 @@ function DianwuChangePrice(props) {
       let total_fee
       // 直接改价
       if (changeType[0] == 1) {
-        total_fee = item.changePrice ? new Big(item.changePrice).times(100).toNumber() : new Big(item.totalFee).times(100).toNumber()
+        total_fee = item.changePrice
+          ? new Big(item.changePrice).times(100).toNumber()
+          : new Big(item.totalFee).times(100).toNumber()
       } else if (changeType[0] == 2) {
         // 折扣改价
-        total_fee = item.changeDiscount ? new Big(item.changeDiscount).times(item.totalFee).toNumber() : new Big(item.totalFee).times(100).toNumber()
+        total_fee = item.changeDiscount
+          ? new Big(item.changeDiscount).times(item.totalFee).toNumber()
+          : new Big(item.totalFee).times(100).toNumber()
       }
       return {
         item_id: item.itemId,
@@ -132,7 +136,7 @@ function DianwuChangePrice(props) {
   // 一键改价
   const onChangeGlobalPrice = (value) => {
     const _value = validate.isMoney(value) ? value : value.substring(0, value.length - 1)
-    if(!validate.isMoney(value)) {
+    if (!validate.isMoney(value)) {
       console.log(_value)
     }
     setState((draft) => {

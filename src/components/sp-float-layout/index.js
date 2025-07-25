@@ -17,7 +17,6 @@ function SpFloatLayout(props) {
     onClose = () => {}
   } = props
 
-
   return (
     <View
       className={classNames('sp-float-layout', className, {

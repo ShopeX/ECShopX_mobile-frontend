@@ -7,8 +7,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
-import CompTabbar from './comps/comp-tabbar'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
+import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const initialConfigState = {
@@ -20,7 +20,7 @@ const initialConfigState = {
       icon: 'icon-yewuyuantuiguang',
       path: '/subpages/delivery/achievement'
     },
-    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop' },
+    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop' }
     // { name: '详情', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/detail' }
   ],
   codeStatus: false,
@@ -100,7 +100,6 @@ const Index = () => {
       url: path
     })
   }
-
 
   const onTimeChange = (time, val) => {
     let params = {

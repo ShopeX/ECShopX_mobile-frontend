@@ -1,6 +1,6 @@
-import req from './req'
 import S from '@/spx'
 import { transformPlatformUrl } from '@/utils/platform'
+import req from './req'
 
 function createHead() {
   return {
@@ -70,7 +70,7 @@ export function salespersonItems(params = {}, config = createHead()) {
   return req.get('/goods/salesperson/items', params, config, { showLoading: true })
 }
 
- // 更新导购敏感信息
+// 更新导购敏感信息
 export function updateBAInfo(params = {}, config = createHead()) {
-  return req.post("/salesperson/bainfo", params, config);
+  return req.post('/salesperson/bainfo', params, config)
 }

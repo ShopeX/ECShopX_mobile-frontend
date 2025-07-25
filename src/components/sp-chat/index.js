@@ -45,18 +45,18 @@ function SpChat(props) {
       const meiqiaConfig = await api.im.getImConfigByDistributor(dtid)
       const { channel, meiqia_url } = meiqiaConfig
       let chat_link = ''
-      if(channel == 'multi') {
-        if(isWeixin) {
+      if (channel == 'multi') {
+        if (isWeixin) {
           chat_link = meiqia_url.wxapp
-        } else if(isWeb) {
+        } else if (isWeb) {
           chat_link = meiqia_url.h5
-        } else if(isAPP()) {
+        } else if (isAPP()) {
           chat_link = meiqia_url.app
         }
       } else {
         chat_link = meiqia_url.common
       }
-      if(!chat_link) {
+      if (!chat_link) {
         return showToast('客服暂不在线，请稍后再试~')
       }
       Taro.navigateTo({ url: `/pages/chat/index?url=${encodeURIComponent(chat_link)}` })
@@ -65,7 +65,7 @@ function SpChat(props) {
 
   return (
     <View className='sp-chat'>
-      {(isWeAppKefu && isWeixin) && (
+      {isWeAppKefu && isWeixin && (
         <Button className='btn-cantact' openType='contact' sessionFrom={sessionFrom}>
           {children}
           {/* {isAlipay && <contact-button

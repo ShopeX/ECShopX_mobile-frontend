@@ -1,6 +1,89 @@
-.at-tab-bar {
-  /*  #ifdef  alipay  */
-  padding: 20px 0 50px 0 !important;
-  height: auto !important;
-  /*  #endif  */
+.sp-tabbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 124px;
+  background-color: #fff;
+  border-top: 1px solid #e5e5e5;
+  padding: 20px 36px 0px;
+  box-sizing: border-box;
+
+  .cart-count1 {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 20px;
+    color: #ffffff;
+    height: 28px;
+    min-width: 36px;
+    box-sizing: border-box;
+    padding: 0 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    border-radius: 44px;
+  }
+
+  .cart-count {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 20px;
+    color: #ffffff;
+    height: 28px;
+    width: 0px;
+    box-sizing: border-box;
+    padding: 17px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+  }
+
+  &__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 96px;
+    height: 86px;
+
+    &-cover-image {
+      width: 86px;
+      height: 86px;
+      border-radius: 100%;
+      overflow: hidden;
+    }
+
+    &-text {
+      height: 28px;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 500;
+      font-size: 20px;
+      line-height: 28px;
+      text-align: center;
+      font-style: normal;
+      text-transform: none;
+    }
+    &-badge {
+      position: absolute;
+      right: -10px;
+      top: -10px;
+      z-index: 9;
+    }
+    &-badge1 {
+      position: absolute;
+      right: -24px;
+      top: -10px;
+      z-index: 9;
+    }
+    &-image-wrapper {
+      position: relative;
+    }
+    &-image {
+      // position: relative;
+      width: 56px;
+      height: 56px;
+    }
+  }
 }

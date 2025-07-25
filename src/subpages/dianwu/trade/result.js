@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux"
-import { useImmer } from "use-immer"
-import Taro, { getCurrentInstance } from "@tarojs/taro";
-import api from "@/api"
-import doc from "@/doc"
-import { View } from "@tarojs/components"
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import api from '@/api'
+import doc from '@/doc'
+import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpImage } from '@/components'
-import "./result.scss";
+import './result.scss'
 
 const tipMessage = {
   '1': {
@@ -38,16 +38,23 @@ function DianwuTradeResult(props) {
 
   const { title, desc } = tipMessage[type]
 
+  return (
+    <SpPage className='page-dianwu-trade-result'>
+      <SpImage src='success.png' width={181} height={180} />
+      <View className='title'>{title}</View>
+      <View className='desc'>{desc}</View>
 
-  return <SpPage className='page-dianwu-trade-result'>
-    <SpImage src='success.png' width={181} height={180} />
-    <View className='title'>{title}</View>
-    <View className='desc'>{desc}</View>
-
-    <AtButton className='btn-return' circle onClick={() => {
-      Taro.navigateBack()
-    }}>返回订单列表</AtButton>
-  </SpPage>;
+      <AtButton
+        className='btn-return'
+        circle
+        onClick={() => {
+          Taro.navigateBack()
+        }}
+      >
+        返回订单列表
+      </AtButton>
+    </SpPage>
+  )
 }
 
 DianwuTradeResult.options = {

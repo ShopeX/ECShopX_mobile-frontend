@@ -13,7 +13,7 @@ import './trade.scss'
 @withBackToTop
 export default class DistributionTrade extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -27,11 +27,11 @@ export default class DistributionTrade extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.nextPage()
   }
 
-  async fetch (params) {
+  async fetch(params) {
     const { curTabIdx } = this.state
     const { type } = this.$instance.router.params
     const { page_no: page, page_size: pageSize } = params
@@ -84,7 +84,7 @@ export default class DistributionTrade extends Component {
     )
   }
 
-  render () {
+  render() {
     const { list, page, tabList, curFilterIdx, scrollTop, curTabIdx } = this.state
     console.log(list)
 

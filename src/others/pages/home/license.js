@@ -4,9 +4,9 @@ import { View, Text } from '@tarojs/components'
 import './license.scss'
 
 export default class HomeLicense extends Component {
-  componentDidMount () {}
+  componentDidMount() {}
 
-  render () {
+  render() {
     return (
       <View className='page-home-license'>
         <View className='dl'>

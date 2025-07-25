@@ -32,8 +32,8 @@ function TradeDeliveryInfo(props) {
     if (order_id) {
       const { userId } = Taro.getStorageSync('userinfo')
       let params = {
-        isSalesmanPage:1,
-        promoter_user_id:userId,
+        isSalesmanPage: 1,
+        promoter_user_id: userId,
         order_id
       }
       const data = await api.trade.deliveryLists(params)

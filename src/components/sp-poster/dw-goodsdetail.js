@@ -20,11 +20,11 @@ class GoodsDetailPoster {
   async getCanvasSize() {
     const { imgs } = this.info
     const pic = imgs[0].replace('http:', 'https:')
-    const { width: goodsImageWidth, height: goodsImageHeight } = await Taro.getImageInfo({ src: pic })
+    const { width: goodsImageWidth, height: goodsImageHeight } = await Taro.getImageInfo({
+      src: pic
+    })
     this.canvasWidth = canvasWidth
-    this.canvasImgHeight = parseInt(
-      (canvasWidth * goodsImageHeight) / goodsImageWidth
-    )
+    this.canvasImgHeight = parseInt((canvasWidth * goodsImageHeight) / goodsImageWidth)
     this.canvasHeight = this.canvasImgHeight + 360
 
     return {

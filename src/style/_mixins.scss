@@ -1,4 +1,31 @@
-@import 'variables';
+/**
+ * SCSS 混合器文档
+ *
+ * 本文件包含以下混合器:
+ *
+ * @mixin text-overflow() - 单行文本溢出显示省略号
+ *   用法: @include text-overflow();
+ *
+ * @mixin clearfix() - 清除浮动
+ *   用法: @include clearfix();
+ *
+ * @mixin multi-ellipsis($line) - 多行文本溢出显示省略号
+ *   参数: $line - 显示的行数
+ *   用法: @include multi-ellipsis(2);
+ *
+ * @mixin arrow($size, $color) - 创建箭头
+ *   参数:
+ *     $size - 箭头大小，默认4px
+ *     $color - 箭头颜色，默认$color-border-gray
+ *   用法: @include arrow(6px, #333);
+ *
+ * @mixin hairline($color, $left-gap, $sides...) - 创建细线边框
+ *   参数:
+ *     $color - 边框颜色，默认$color-border-gray
+ *     $left-gap - 左侧间隙，默认0
+ *     $sides - 指定边框位置，默认bottom
+ *   用法: @include hairline(#eee, 15px, bottom);
+ */
 
 @mixin text-overflow() {
   white-space: nowrap;
@@ -15,6 +42,7 @@
     visibility: hidden;
     overflow: hidden;
   }
+
   overflow: hidden;
 }
 
@@ -40,10 +68,12 @@
 }
 
 @mixin hairline($color: $color-border-gray, $left-gap: 0, $sides...) {
-  @if length($sides) == 0 {
+  @if length($sides) ==0 {
     $sides: bottom;
   }
+
   position: relative;
+
   &:before {
     content: ' ';
     display: block;
@@ -55,10 +85,12 @@
     z-index: 2;
     pointer-events: none;
     box-sizing: border-box;
+
     @each $side in $sides {
       border-#{$side}: 1px solid $color;
     }
   }
+
   @media (-webkit-device-pixel-ratio: 2) {
     &:before {
       width: 200%;
@@ -67,6 +99,7 @@
       transform: scale(0.5);
     }
   }
+
   @media (-webkit-device-pixel-ratio: 1.5) {
     &:before {
       width: 150%;
@@ -75,6 +108,7 @@
       transform: scale(0.6666);
     }
   }
+
   @media (-webkit-device-pixel-ratio: 3) {
     &:before {
       width: 300%;
@@ -107,12 +141,15 @@
   height: 100%;
   z-index: $z-index-modal + 1;
   visibility: hidden;
+
   &__overlay {
     @include overlay();
   }
+
   &__active {
     animation: $animation 0.2s ease-in-out;
     visibility: visible;
+
     #{$self}__overlay {
       opacity: 1;
     }
@@ -131,6 +168,7 @@
   z-index: 1;
   /*  #ifdef  weapp  */
   transform: translate3d(0, 0, 0);
+
   /*  #endif  */
   > div,
   > view {
@@ -159,10 +197,12 @@
     color: $color !important;
     font-size: $int-size - 8px !important;
   }
+
   .sp-price__int {
     color: $color !important;
     font-size: $int-size !important;
   }
+
   .sp-price__decimal {
     color: $color !important;
     font-size: $int-size - 4px !important;
@@ -175,19 +215,66 @@
     color: $color;
     font-size: $font-size;
   }
+
   :-moz-placeholder {
     /* Mozilla Firefox 4 to 18 */
     color: $color;
     font-size: $font-size;
   }
+
   ::-moz-placeholder {
     /* Mozilla Firefox 19+ */
     color: $color;
     font-size: $font-size;
   }
+
   :-ms-input-placeholder {
     /* Internet Explorer 10+ */
     color: $color;
     font-size: $font-size;
+  }
+}
+
+@mixin generate-margin($start, $end, $step) {
+  $position: top, right, bottom, left;
+
+  @each $p in $position {
+    @for $i from $start through $end {
+      .m#{str-slice($p, 1, 1)}-#{$i} {
+        margin-#{$p}: $i + px;
+      }
+    }
+  }
+
+  @for $i from $start through $end {
+    .m-#{$i} {
+      margin: $i + px;
+    }
+  }
+}
+
+@mixin generate-padding($start, $end, $step) {
+  $position: top, right, bottom, left;
+
+  @each $p in $position {
+    @for $i from $start through $end {
+      .p#{str-slice($p, 1, 1)}-#{$i} {
+        padding-#{$p}: $i + px;
+      }
+    }
+  }
+
+  @for $i from $start through $end {
+    .p-#{$i} {
+      padding: $i + px;
+    }
+  }
+}
+
+@mixin generate-fontsize($start: 1, $len: 20, $step: 1, $base-size: 14) {
+  @for $i from $start through $len {
+    .text-#{($i - 1) * $step + $base-size} {
+      font-size: ($i - 1) * $step + $base-size + px;
+    }
   }
 }

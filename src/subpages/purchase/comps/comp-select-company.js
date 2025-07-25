@@ -4,9 +4,8 @@ import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View } from '@tarojs/components'
 import { SpPrice, SpFloatLayout } from '@/components'
-import { ACTIVITY_LIST, ACTIVITY_STATUS } from '@/consts'
-import './comp-select-company.scss'
 import classNames from 'classnames'
+import './comp-select-company.scss'
 
 function CompSelectCompany(props) {
   const {

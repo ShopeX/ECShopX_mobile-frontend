@@ -11,6 +11,7 @@ import api from '@/api'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
+
 @connect(({ member }) => ({
   memberData: member.member
 }))

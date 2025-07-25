@@ -62,9 +62,11 @@ function CashierResult(props) {
       }, 3000)
     } else if (tradeInfo.tradeState == 'SUCCESS') {
       // 更新购物车
-      await dispatch(updateCount({
-        shop_type: 'distributor'
-      }))
+      await dispatch(
+        updateCount({
+          shop_type: 'distributor'
+        })
+      )
     }
   }
 
@@ -104,36 +106,38 @@ function CashierResult(props) {
         {(tradeInfo?.tradeSourceType == 'normal' ||
           tradeInfo?.tradeSourceType == 'normal_seckill' ||
           tradeInfo?.tradeSourceType == 'normal_groups') && (
-            <View className='btn-wrap'>
-              <SpButton
-                resetText='首页'
-                confirmText='订单详情'
-                onReset={() => {
-                  Taro.redirectTo({ url: '/pages/index' })
-                }}
-                onConfirm={() => {
-                  Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${orderId}` })
-                }}
-              ></SpButton>
-            </View>
-          )}
+          <View className='btn-wrap'>
+            <SpButton
+              resetText='首页'
+              confirmText='订单详情'
+              onReset={() => {
+                Taro.redirectTo({ url: '/pages/index' })
+              }}
+              onConfirm={() => {
+                Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${orderId}` })
+              }}
+            ></SpButton>
+          </View>
+        )}
 
         {/* 积分订单 */}
         {(tradeInfo?.tradeSourceType == 'normal_pointsmall' ||
           tradeInfo?.tradeSourceType == 'normal_pointsmall_pointsmall') && (
-            <View className='btn-wrap'>
-              <SpButton
-                resetText='首页'
-                confirmText='订单详情'
-                onReset={() => {
-                  Taro.redirectTo({ url: '/pages/index' })
-                }}
-                onConfirm={() => {
-                  Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${orderId}&type=pointitem` })
-                }}
-              ></SpButton>
-            </View>
-          )}
+          <View className='btn-wrap'>
+            <SpButton
+              resetText='首页'
+              confirmText='订单详情'
+              onReset={() => {
+                Taro.redirectTo({ url: '/pages/index' })
+              }}
+              onConfirm={() => {
+                Taro.redirectTo({
+                  url: `/subpages/trade/detail?order_id=${orderId}&type=pointitem`
+                })
+              }}
+            ></SpButton>
+          </View>
+        )}
 
         {/* 社区拼团订单 */}
         {tradeInfo?.tradeSourceType == 'normal_community' && (

@@ -2,7 +2,7 @@ import Taro from '@tarojs/taro'
 import { isWeixin } from '@/utils'
 
 //设置系统信息
-export function setSystemInfo () {
+export function setSystemInfo() {
   if (isWeixin) {
     const systemInfo = Taro.getSystemInfoSync()
     const mebuButtonObject = Taro.getMenuButtonBoundingClientRect()
@@ -11,7 +11,7 @@ export function setSystemInfo () {
 }
 
 //获取系统信息
-export function getSystemInfo () {
+export function getSystemInfo() {
   let res
   if (isWeixin) {
     res = Taro.getStorageSync('systemInfo')

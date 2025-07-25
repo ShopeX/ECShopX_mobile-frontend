@@ -53,7 +53,9 @@ function MemberUserInfo() {
     const data = await api.user.regParam({
       is_edite_page: true
     })
-    const {other_params:{custom_data}} = userInfo
+    const {
+      other_params: { custom_data }
+    } = userInfo
     const _formItems = []
     const _formUserInfo = {
       avatar: userInfo.avatar,
@@ -61,22 +63,25 @@ function MemberUserInfo() {
       ...custom_data
     }
     Object.keys(data).forEach((key) => {
-    const value = custom_data?.[key] ||userInfo[key]
-    if (data[key].is_open) {
+      const value = custom_data?.[key] || userInfo[key]
+      if (data[key].is_open) {
         if (key !== 'mobile' && key !== 'username') {
           _formItems.push(data[key])
         }
       }
       if (data[key].element_type == 'checkbox') {
-        _formUserInfo[key] =  value&&value.length>0? value.split(',').map(item=>({name:item,ischecked:true})) : [];
+        _formUserInfo[key] =
+          value && value.length > 0
+            ? value.split(',').map((item) => ({ name: item, ischecked: true }))
+            : []
       } else {
         _formUserInfo[key] = value || ''
       }
-      if(key === 'sex'){
+      if (key === 'sex') {
         const sexType = {
-          0:'未知',
-          1:'男',
-          2:'女'
+          0: '未知',
+          1: '男',
+          2: '女'
         }
         _formUserInfo[key] = sexType[value]
       }
@@ -174,7 +179,7 @@ function MemberUserInfo() {
           'placeholder': formUserInfo[key].length == 0
         })}
         onClick={() => {
-            const _checkboxList = checkbox.map((item) => {
+          const _checkboxList = checkbox.map((item) => {
             const fd = formUserInfo[key].find((k) => k.name == item.name)
             const isChecked = fd ? fd.ischecked : false
             return {
@@ -352,7 +357,7 @@ function MemberUserInfo() {
           title='手机号'
           value={userInfo?.mobile}
           onClick={() => {
-            if( VERSION_SHUYUN )return
+            if (VERSION_SHUYUN) return
             Taro.navigateTo({
               url: '/subpages/auth/edit-phone'
             })

@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: '开具发票',
+  navigationBarTitleText: '开具发票'
 }

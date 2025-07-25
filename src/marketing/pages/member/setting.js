@@ -39,7 +39,7 @@ export default class MemberSetting extends Component {
     }
   }
 
-  render () {
+  render() {
     return (
       <View className='page-member-setting'>
         <SpNavBar title='设置' fixed={false} />

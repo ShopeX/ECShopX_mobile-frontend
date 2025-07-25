@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image } from '@tarojs/components'
+import { Button, View, Image } from '@tarojs/components'
 import './index.scss'
 
 export default class BaShareMenu extends Component {

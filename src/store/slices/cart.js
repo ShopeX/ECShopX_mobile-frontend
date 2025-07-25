@@ -15,9 +15,10 @@ const initialState = {
   zitiAddress: null,
   shopCartCount: {},
   shopSalesmanCartCount: {},
-  deliveryPersonnel: { //配送员信息
-    self_delivery_operator_id:[],
-    distributor_id:''
+  deliveryPersonnel: {
+    //配送员信息
+    self_delivery_operator_id: [],
+    distributor_id: ''
   }
 }
 

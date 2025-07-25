@@ -70,7 +70,7 @@ const SelectCustomer = () => {
       mobile: 'mobile',
       bind_date: 'bind_date',
       name: 'name',
-      user_id:"user_id"
+      user_id: 'user_id'
     })
 
     setState((draft) => {

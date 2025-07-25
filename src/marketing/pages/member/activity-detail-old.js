@@ -23,7 +23,7 @@ import './activity-detail.scss'
 }))
 export default class ActivityDetail extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -31,11 +31,11 @@ export default class ActivityDetail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.fetch()
   }
 
-  async fetch () {
+  async fetch() {
     const { content } = await api.user.registrationRecordInfo({
       record_id: this.$instance.router.params.record_id
     })
@@ -68,7 +68,7 @@ export default class ActivityDetail extends Component {
     Taro.navigateBack()
   }
 
-  render () {
+  render() {
     const { colors } = this.props
     const { cur_activity_info } = this.state
 

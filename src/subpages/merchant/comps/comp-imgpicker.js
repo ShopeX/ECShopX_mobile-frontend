@@ -6,7 +6,7 @@ import { SpImage } from '@/components'
 import imgUploader from '@/utils/upload'
 import './comp-imgpicker.scss'
 
-function SpImagePicker (props) {
+function SpImagePicker(props) {
   let {
     className,
     backgroundSrc = '',

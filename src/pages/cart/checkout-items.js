@@ -21,7 +21,7 @@ export default class CheckoutItems extends Component {
     addGlobalClass: true
   }
 
-  render () {
+  render() {
     const { isOpened, list, onClickBack } = this.props
 
     return (

@@ -1,4 +1,3 @@
 export default {
-    navigationBarTitleText: '业务员业绩',
-  }
-  
+  navigationBarTitleText: '业务员业绩'
+}

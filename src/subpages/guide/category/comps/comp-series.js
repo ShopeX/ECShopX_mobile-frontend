@@ -67,10 +67,7 @@ const CompSeries = (props) => {
   return (
     <View className='comp-series'>
       {/* left */}
-      <ScrollView
-        className='comp-series__nav'
-        scrollY
-      >
+      <ScrollView className='comp-series__nav' scrollY>
         <View className='comp-series__nav_list'>
           {info.map((item, index) => (
             <View
@@ -100,10 +97,7 @@ const CompSeries = (props) => {
       </ScrollView>
 
       {/* right */}
-      <ScrollView
-        className='comp-series__content'
-        scrollY
-      >
+      <ScrollView className='comp-series__content' scrollY>
         <View className={classNames(pluralType ? 'category-content' : 'category-content-no')}>
           {currentTopImg && (
             <SpImage

@@ -55,18 +55,18 @@ function CompTabbar(props) {
     const { distributor_id } = $instance.router.params
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     if (path != tabItem.url) {
-      Taro.redirectTo({ url: `${tabItem.url}?token=${token}&distributor_id=${distributor_id}&from=tabbar` })
+      Taro.redirectTo({
+        url: `${tabItem.url}?token=${token}&distributor_id=${distributor_id}&from=tabbar`
+      })
     }
   }
 
   return (
     <AtTabBar
       fixed
-      classNames={classNames(
-        {
-          'comp-tabbar': true
-        }
-      )}
+      classNames={classNames({
+        'comp-tabbar': true
+      })}
       iconSize='20'
       selectedColor='#4d84fc'
       tabList={tabList}

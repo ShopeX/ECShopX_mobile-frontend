@@ -25,20 +25,19 @@ function SpSearchInput(props) {
     ],
     onConfirm = () => {},
     onSelectArea = () => {},
-    onHandleSearch=()=>{}
+    onHandleSearch = () => {}
   } = props
   const [state, setState] = useImmer(initialState)
 
   const { keywords, selectArea, isSpAddressOpened, searchCondition, searchConditionVis } = state
 
   useEffect(() => {
-    if(!isShowSearchCondition)return
+    if (!isShowSearchCondition) return
     let searchConditionDefault = searchConditionList.length ? searchConditionList[0].value : ''
     setState((draft) => {
       draft.searchCondition = searchConditionDefault
     })
   }, [searchConditionList])
-
 
   const handleChangeSearch = (e) => {
     setState((draft) => {
@@ -47,10 +46,10 @@ function SpSearchInput(props) {
   }
 
   const handleConfirm = () => {
-    if(!isShowSearchCondition){
+    if (!isShowSearchCondition) {
       onConfirm(keywords)
-    }else{
-      onConfirm({key:searchCondition,keywords})
+    } else {
+      onConfirm({ key: searchCondition, keywords })
     }
   }
 
@@ -59,7 +58,7 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.selectArea = [province, city, area]
     })
-    onSelectArea && onSelectArea({type:'area',value:[province, city, area]})
+    onSelectArea && onSelectArea({ type: 'area', value: [province, city, area] })
   }
 
   const getSearchConditionLabel = useMemo(() => {
@@ -72,7 +71,7 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.searchCondition = searchConditionNew
     })
-    console.log(searchConditionList[e.target.value],'llllll');
+    console.log(searchConditionList[e.target.value], 'llllll')
     onHandleSearch(searchConditionList[e.target.value])
   }
 
@@ -81,7 +80,7 @@ function SpSearchInput(props) {
     setState((draft) => {
       draft.selectArea = []
     })
-    onSelectArea && onSelectArea({type:'area',value:[]})
+    onSelectArea && onSelectArea({ type: 'area', value: [] })
   }
 
   return (
@@ -101,7 +100,6 @@ function SpSearchInput(props) {
           ) : (
             <View className='iconfont icon-arrowDown area-icon'></View>
           )}
-
         </View>
       )}
       <View className='search-input'>
@@ -125,7 +123,6 @@ function SpSearchInput(props) {
                 <View className='iconfont icon-arrowDown search-condition-icon'></View>
               </View>
             </Picker>
-
           </>
         )}
 

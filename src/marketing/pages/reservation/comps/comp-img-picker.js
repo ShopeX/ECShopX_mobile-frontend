@@ -42,10 +42,7 @@ const ImgPicker = (props) => {
       <View className={classNames('comps-img-picker__content', { ismultiple })}>
         {info.map((item, index) => {
           return (
-            <View
-              className='comps-img-picker__item'
-              key={`image-item__${index}`}
-            >
+            <View className='comps-img-picker__item' key={`image-item__${index}`}>
               <SpUpload
                 max={1}
                 backgroundSrc={Array.isArray(IMG_MAP[mode]) ? IMG_MAP[mode][index] : IMG_MAP[mode]}

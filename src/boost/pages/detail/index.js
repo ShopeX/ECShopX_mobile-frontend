@@ -19,7 +19,7 @@ import './index.scss'
 )
 export default class Detail extends Component {
   $instance = getCurrentInstance()
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       adPic: '',
@@ -49,11 +49,11 @@ export default class Detail extends Component {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getBoostDetail()
   }
 
-  onShareAppMessage () {
+  onShareAppMessage() {
     const { userInfo, info } = this.state
     const userId = userInfo.user_id
 
@@ -143,18 +143,18 @@ export default class Detail extends Component {
         filePath,
         data: bodyData,
         encoding: 'base64',
-        success () {
+        success() {
           Taro.getImageInfo({
             src: filePath,
-            success (res) {
+            success(res) {
               resolve(res.path)
             },
-            fail (e) {
+            fail(e) {
               console.log(e)
             }
           })
         },
-        fail () {
+        fail() {
           reject(new Error('ERROR_BASE64SRC_WRITE'))
         }
       })
@@ -293,7 +293,7 @@ export default class Detail extends Component {
     }
   }
 
-  render () {
+  render() {
     const {
       adPic,
       info,
@@ -315,13 +315,11 @@ export default class Detail extends Component {
 
     return (
       <View className='detail'>
-
         {/* <SpNavBar
           title={config.navigationBarTitleText}
           leftIconType='chevron-left'
           fixed='true'
         /> */}
-
 
         <View className='header'>
           <Image className='adPic' src={adPic} mode='aspectFill' />

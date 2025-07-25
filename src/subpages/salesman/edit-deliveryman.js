@@ -57,19 +57,19 @@ function EditDeliveryman(props) {
   const { setNavigationBarTitle } = useNavigation()
 
   useEffect(() => {
-    if(params?.operator_id){
+    if (params?.operator_id) {
       edit(params?.operator_id)
     }
     setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
   const initNavigationBarTitle = () => {
-    return params.operator_id ? '编辑业务员':'创建业务员'
+    return params.operator_id ? '编辑业务员' : '创建业务员'
   }
 
   const edit = async (operator_id) => {
     let res = await api.dianwu.getAccountManagement(operator_id)
-    let params= {
+    let params = {
       staff_type: 'distributor',
       operator_type: 'self_delivery_staff',
       staff_no: res.staff_no,
@@ -82,8 +82,8 @@ function EditDeliveryman(props) {
     }
     setState((draft) => {
       draft.parent = params
-      draft.propertyIndex= res.payment_method == 'order' ? 0 : 1
-      draft.mannerIndex= res.staff_attribute == 'part_time' ? 0 : 1
+      draft.propertyIndex = res.payment_method == 'order' ? 0 : 1
+      draft.mannerIndex = res.staff_attribute == 'part_time' ? 0 : 1
     })
   }
 
@@ -152,10 +152,10 @@ function EditDeliveryman(props) {
         }
       ]
     }
-    if(params?.operator_id){
-      await api.dianwu.patchAccountManagement(params.operator_id,par)
+    if (params?.operator_id) {
+      await api.dianwu.patchAccountManagement(params.operator_id, par)
       showToast('编辑成功')
-    }else{
+    } else {
       await api.dianwu.accountManagement(par)
       showToast('添加成功')
     }

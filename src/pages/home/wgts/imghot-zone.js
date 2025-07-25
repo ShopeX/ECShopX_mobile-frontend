@@ -28,16 +28,35 @@ function WgtImgHotZone(props) {
 
       <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
         <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
-        {isArray(data) && data.map((item, index) => {
-          if (item.id == 'purchase' || needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)) {
-            return (
-              <SpLogin
-                key={`imghotzonr-${index}`}
-                onChange={handleClickItem.bind(this, {
-                  ...item,
-                  distributor_id
-                })}
-              >
+        {isArray(data) &&
+          data.map((item, index) => {
+            //TODO 后期可以使用provider 将事件上报给根组件进行登录后跳转的动作
+            if (
+              item.id == 'purchase' ||
+              ['purchase_activity', 'regactivity', 'lottery'].includes(item.linkPage)
+            ) {
+              return (
+                <SpLogin
+                  key={`imghotzonr-${index}`}
+                  onChange={handleClickItem.bind(this, {
+                    ...item,
+                    distributor_id
+                  })}
+                >
+                  <View
+                    key={`${index}1`}
+                    className='img-hotzone_zone'
+                    style={styleNames({
+                      width: `${item.widthPer * 100}%`,
+                      height: `${item.heightPer * 100}%`,
+                      top: `${item.topPer * 100}%`,
+                      left: `${item.leftPer * 100}%`
+                    })}
+                  />
+                </SpLogin>
+              )
+            } else {
+              return (
                 <View
                   key={`${index}1`}
                   className='img-hotzone_zone'
@@ -47,28 +66,14 @@ function WgtImgHotZone(props) {
                     top: `${item.topPer * 100}%`,
                     left: `${item.leftPer * 100}%`
                   })}
+                  onClick={handleClickItem.bind(this, {
+                    ...item,
+                    distributor_id
+                  })}
                 />
-              </SpLogin>
-            )
-          } else {
-            return (
-              <View
-                key={`${index}1`}
-                className='img-hotzone_zone'
-                style={styleNames({
-                  width: `${item.widthPer * 100}%`,
-                  height: `${item.heightPer * 100}%`,
-                  top: `${item.topPer * 100}%`,
-                  left: `${item.leftPer * 100}%`
-                })}
-                onClick={handleClickItem.bind(this, {
-                  ...item,
-                  distributor_id
-                })}
-              />
-            )
-          }
-        })}
+              )
+            }
+          })}
       </View>
     </View>
   )

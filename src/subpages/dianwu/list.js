@@ -42,7 +42,6 @@ function DianWuList() {
     getCashierList()
   })
 
-
   useEffect(() => {
     goodsRef.current.reset()
   }, [keywords])
@@ -92,11 +91,7 @@ function DianWuList() {
   }
 
   return (
-    <SpPage
-      className='page-dianwu-list'
-      scrollToTopBtn
-      renderFooter={<CompTabbar />}
-    >
+    <SpPage className='page-dianwu-list' scrollToTopBtn renderFooter={<CompTabbar />}>
       <View className='search-block'>
         <SpSearchInput
           placeholder='商品名称/商品货号/商品条形码'
@@ -111,7 +106,10 @@ function DianWuList() {
       <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         {list.map((items, idx) => {
           return items.map((item, sidx) => (
-            <View className={classNames('item-wrap', {'item-disabled' : item.store == 0})} key={`item-wrap__${idx}_${sidx}`}>
+            <View
+              className={classNames('item-wrap', { 'item-disabled': item.store == 0 })}
+              key={`item-wrap__${idx}_${sidx}`}
+            >
               {/* <View className='item-hd'>
                 <View className='promotion-list'>
                   <Text className='promotion-tag'>满1000减100</Text>

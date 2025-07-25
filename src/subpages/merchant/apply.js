@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { showToast, isArray, isUndefined } from '@/utils'
 import { SpPage, SpLoading } from '@/components'
-import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
-import { useArea, usePrevious } from './hook'
-import { navigateToAgreement } from './util'
+
 import { useSelector, useDispatch } from 'react-redux'
+
+import { useImmer } from 'use-immer'
+import api from '@/api'
+import S from '@/spx'
+import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/slices/merchant'
 import {
   MERCHANT_TYPE,
   BUSINESS_SCOPE,
@@ -17,11 +20,10 @@ import {
   BANK_PUBLIC,
   BANK_PRIVATE
 } from './consts'
-import { useImmer } from 'use-immer'
-import api from '@/api'
-import S from '@/spx'
+import { MButton, MStep, MNavBar, MCell, MImgPicker } from './comps'
+import { useArea, usePrevious } from './hook'
+import { navigateToAgreement } from './util'
 import './apply.scss'
-import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/slices/merchant'
 
 const StepOptions = ['入驻信息', '商户信息', '证照信息']
 
@@ -259,7 +261,7 @@ const Apply = () => {
         content: '请确认是否提交审核',
         showCancel: true,
         cancel: '取消',
-        confirmText: '确认',
+        confirmText: '确认'
       })
       if (!confirm) {
         return true
@@ -624,7 +626,10 @@ const Apply = () => {
                       }
                       value={[state.legal_certid_front_url, state.legal_cert_id_back_url]}
                       onChange={handleChange('legal_certid_front_url', 'legal_cert_id_back_url')}
-                      info={[`上传${fieldName}手持身份证人像面`, `上传${fieldName}手持身份证国徽面`]}
+                      info={[
+                        `上传${fieldName}手持身份证人像面`,
+                        `上传${fieldName}手持身份证国徽面`
+                      ]}
                     />
                     <MImgPicker
                       mode='bankCard'

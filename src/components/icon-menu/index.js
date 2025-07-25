@@ -33,7 +33,7 @@ export default class IconMenu extends Component {
     onClick()
   }
 
-  render () {
+  render() {
     const { img, icon, iconStyle, iconPrefixClass, title, size, className, hoverClass, openType } =
       this.props
 

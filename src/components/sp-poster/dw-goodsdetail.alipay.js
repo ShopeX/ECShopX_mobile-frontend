@@ -1,13 +1,11 @@
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
-import { getExtConfigData, isAlipay, } from '@/utils'
+import { getExtConfigData, isAlipay } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
-
 
 //计算canvas画布尺寸
 let canvasWidth = 600
 let canvasHeight = 960
-
 
 class GoodsDetailPoster {
   constructor(props) {
@@ -42,7 +40,7 @@ class GoodsDetailPoster {
       url: `${host}/api/h5app/alipaymini/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`, //仅为示例，并非真实的接口地址
       header: {
         'content-type': 'application/json' // 默认值
-      },
+      }
     })
     wxappCode = res.data.data.qr_code_url
 
@@ -117,7 +115,7 @@ class GoodsDetailPoster {
         sh: this.avatar.height,
         borderRadius: 80
       },
-      drawOptions,
+      drawOptions
     )
     // 姓名
     drawText(
@@ -195,7 +193,7 @@ class GoodsDetailPoster {
         sw: this.codeImg.width,
         sh: this.codeImg.height
       },
-      drawOptions,
+      drawOptions
     )
   }
 }

@@ -22,18 +22,21 @@ import './cart.scss'
 
 const initialConfigState = {
   allChecked: true,
-  current:0 // 0:普通商品  1:跨境商品
+  current: 0 // 0:普通商品  1:跨境商品
 }
 
 function Cart() {
   const [state, setState] = useImmer(initialConfigState)
-  const { allChecked,current } = state
+  const { allChecked, current } = state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
   const router = $instance.router
-  const { validSalesmanCart = [], invalidSalesmanCart = [],customerLnformation } = useSelector((state) => state.cart)
+  const {
+    validSalesmanCart = [],
+    invalidSalesmanCart = [],
+    customerLnformation
+  } = useSelector((state) => state.cart)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
-
 
   useEffect(() => {
     getCartList()
@@ -41,7 +44,7 @@ function Cart() {
 
   const getCartList = async () => {
     Taro.showLoading({ title: '' })
-    const { type = 'distributor',distributor_id = '' } = router?.params || {}
+    const { type = 'distributor', distributor_id = '' } = router?.params || {}
     const params = {
       shop_type: type,
       isSalesmanPage: 1,
@@ -49,7 +52,7 @@ function Cart() {
       ...customerLnformation
     }
     //获取购物车列表
-    await dispatch(fetchSalesmanCartList(params)) 
+    await dispatch(fetchSalesmanCartList(params))
     //获取购物车数量
     await dispatch(updateSalesmanCount(params))
     Taro.hideLoading()
@@ -66,7 +69,7 @@ function Cart() {
       parmas['cart_id'] = item.cart_id
     }
     try {
-      await api.cart.select({ ...parmas, isSalesmanPage: 1,...customerLnformation })
+      await api.cart.select({ ...parmas, isSalesmanPage: 1, ...customerLnformation })
     } catch (e) {
       console.log(e)
     }
@@ -77,7 +80,9 @@ function Cart() {
   const onChangeInputNumber = useDebounce(async (num, item) => {
     let { shop_id, cart_id } = item
     const { type = 'distributor' } = router.params
-    await dispatch(updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1,...customerLnformation }))
+    await dispatch(
+      updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1, ...customerLnformation })
+    )
     await getCartList()
   }, 200)
 
@@ -106,7 +111,7 @@ function Cart() {
 
   // 清除无效商品（失效）
   const handleClearInvalidGoods = async (val) => {
-    let cart_id_list = val.map(item=>item.cart_id).join(","); 
+    let cart_id_list = val.map((item) => item.cart_id).join(',')
     let params = {
       cart_id_list,
       isSalesmanPage: 1,
@@ -128,12 +133,12 @@ function Cart() {
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
-    await dispatch(deleteCartItem({ cart_id, isSalesmanPage: 1,...customerLnformation }))
+    await dispatch(deleteCartItem({ cart_id, isSalesmanPage: 1, ...customerLnformation }))
     await getCartList()
   }
 
   return (
-    <SpPage classNames='page-cart' >
+    <SpPage classNames='page-cart'>
       {/* 有效商品 */}
       {validSalesmanCart.map((item, index) => {
         return (

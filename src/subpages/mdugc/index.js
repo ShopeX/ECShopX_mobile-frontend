@@ -41,7 +41,7 @@ const initialState = {
   curTagIndex: 0,
   filterList: [
     { tag_id: 1, tag_name: '最热' },
-    { tag_id: 2, tag_name: '最新' },
+    { tag_id: 2, tag_name: '最新' }
   ],
   curFilterIndex: 0,
   leftList: [],
@@ -59,7 +59,7 @@ function UgcIndex() {
 
     // 笔记编辑、删除后刷新页面
     Taro.eventCenter.on('onEventRefreshFromNote', () => {
-      console.log('onEventRefreshFromNote:', )
+      console.log('onEventRefreshFromNote:')
       listRef.current.reset()
     })
 
@@ -205,7 +205,6 @@ function UgcIndex() {
               <Text className='iconfont icon-tianjia1'></Text>
             </SpFloatMenuItem>
           </SpLogin>
-
         </View>
       }
       onReady={({ footerHeight }) => {
@@ -219,8 +218,8 @@ function UgcIndex() {
         keyword={keyword}
         placeholder='搜索'
         showDailog={false}
-        onFocus={() => { }}
-        onChange={() => { }}
+        onFocus={() => {}}
+        onChange={() => {}}
         onClear={handleOnClear}
         onCancel={handleSearchCancel}
         onConfirm={handleConfirm}
@@ -242,12 +241,7 @@ function UgcIndex() {
           />
         </View>
 
-        <SpScrollView
-          className='list-scroll'
-          auto={false}
-          ref={listRef}
-          fetch={fetch}
-        >
+        <SpScrollView className='list-scroll' auto={false} ref={listRef} fetch={fetch}>
           <View className='list-container'>
             <View className='left-container'>
               {leftList.map((list) => {

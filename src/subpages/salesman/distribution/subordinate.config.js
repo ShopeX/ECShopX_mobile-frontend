@@ -1,4 +1,3 @@
 export default {
-    navigationBarTitleText: '选我的会员下单'
-  }
-  
+  navigationBarTitleText: '选我的会员下单'
+}

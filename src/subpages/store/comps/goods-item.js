@@ -90,8 +90,7 @@ function GoodsItem(props) {
     showToast('成功加入购物车')
   }
 
-
-  const onChangeToolBar = (id,e)=>{
+  const onChangeToolBar = (id, e) => {
     e?.stopPropagation()
     if (!S.getAuthToken()) {
       showToast('请登录')
@@ -176,20 +175,18 @@ function GoodsItem(props) {
           )}
         </View> */}
 
-{/* 促销活动标签 */}
-    <View className='promotions'>
-      {showPromotion && info.promotion && info.promotion.length > 0 && (
-        <View>
-          {info?.promotion.map((item, index) => (
-            <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-              {PROMOTION_TAG[item.tag_type]}
-            </Text>
-          ))}
+        {/* 促销活动标签 */}
+        <View className='promotions'>
+          {showPromotion && info.promotion && info.promotion.length > 0 && (
+            <View>
+              {info?.promotion.map((item, index) => (
+                <Text className='promotion-tag' key={`promotion-tag__${index}`}>
+                  {PROMOTION_TAG[item.tag_type]}
+                </Text>
+              ))}
+            </View>
+          )}
         </View>
-      )}
-    </View>
-          
-
 
         {(info.is_point || (!info.is_point && showPrice) || showFav) && (
           <View className='bd-block' onClick={handleClick.bind(this)}>
@@ -199,8 +196,6 @@ function GoodsItem(props) {
                 <SpPoint value={info.point} />
               </View>
             )}
-            
-
 
             {!info.is_point && showPrice && (
               <View className='goods-price'>
@@ -208,12 +203,16 @@ function GoodsItem(props) {
                   <SpPrice value={info.price} size={36}></SpPrice>
                   <Text
                     className='iconfont icon-gouwuche2'
-                    onClick={(e)=>onChangeToolBar(info.itemId,e)}
+                    onClick={(e) => onChangeToolBar(info.itemId, e)}
                   />
-                  {info.price-info.activityPrice>0?<Text className='unit-price'>{info.price}</Text> : ''}
+                  {info.price - info.activityPrice > 0 ? (
+                    <Text className='unit-price'>{info.price}</Text>
+                  ) : (
+                    ''
+                  )}
                   {/* <Text className='unit'>{info.item_unit ? `/${info.item_unit}` : ''}</Text> */}
                 </View>
-                
+
                 {/* <View className='mk-price'>
                   {info.marketPrice / 100 > 0 && (
                     <SpPrice lineThrough value={info.marketPrice / 100}></SpPrice>
@@ -239,7 +238,7 @@ function GoodsItem(props) {
             )}
           </View>
         )}
-        
+
         {isShowStore && (
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}

@@ -24,7 +24,6 @@ export default class DistributionStatistics extends Component {
     this.distributor()
   }
 
-
   async fetch() {
     const res = await api.distribution.statistics({ ...this.state.parameter, isSalesmanPage: 1 })
     const info = pickBy(res, {
@@ -39,7 +38,7 @@ export default class DistributionStatistics extends Component {
       orderTeamCloseRebate: 'orderTeamCloseRebate',
       orderTeamNoCloseRebate: 'orderTeamNoCloseRebate',
       taskBrokerageItemTotalFee: 'taskBrokerageItemTotalFee',
-      noCloseRebate:'noCloseRebate'
+      noCloseRebate: 'noCloseRebate'
     })
 
     this.setState({

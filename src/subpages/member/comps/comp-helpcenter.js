@@ -13,7 +13,7 @@ const MENUS = [
     name: '地址管理',
     icon: 'icon-dizhiguanli-01',
     link: '/marketing/pages/member/address'
-  },
+  }
   // {
   //   key: 'useinfo',
   //   name: '设置',

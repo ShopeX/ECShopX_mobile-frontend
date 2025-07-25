@@ -48,7 +48,9 @@ function DianwuCollection(props) {
           </View>
         </View>
         <View className='btn-confirm-wrap'>
-          <AtButton className='btn-confirm' circle>完成收款</AtButton>
+          <AtButton className='btn-confirm' circle>
+            完成收款
+          </AtButton>
         </View>
         <View className='pending'>挂单</View>
       </View>

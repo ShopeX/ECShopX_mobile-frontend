@@ -1,21 +1,21 @@
-import React, { useEffect, useRef } from "react";
-import { useSelector } from "react-redux"
-import Taro, { useRouter } from "@tarojs/taro";
-import { View, ScrollView } from "@tarojs/components"
-import { AtButton } from "taro-ui"
-import { useImmer } from "use-immer"
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import Taro, { useRouter } from '@tarojs/taro'
+import { View, ScrollView } from '@tarojs/components'
+import { AtButton } from 'taro-ui'
+import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView } from '@/components'
-import api from "@/api"
-import doc from "@/doc"
+import api from '@/api'
+import doc from '@/doc'
 import { pickBy } from '@/utils'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompTrackType from './comps/comp-trade-type'
-import "./ziti-list.scss";
+import './ziti-list.scss'
 
 const initialState = {
   tradeList: [],
   refresherTriggered: false,
-  typeVal:'0',
+  typeVal: '0'
 }
 function TradeZitiList(props) {
   const [state, setState] = useImmer(initialState)
@@ -48,7 +48,7 @@ function TradeZitiList(props) {
       page: pageIndex,
       pageSize,
       order_type: 'normal',
-      status: 4, // 自提订单
+      status: 4 // 自提订单
     }
     params.order_class = typeVal == '1' ? 'employee_purchase' : 'normal'
     const {
@@ -65,7 +65,6 @@ function TradeZitiList(props) {
     return { total }
   }
 
-
   const onRefresherRefresh = () => {
     setState((draft) => {
       draft.refresherTriggered = true
@@ -81,29 +80,39 @@ function TradeZitiList(props) {
     })
   }
 
-  return <SpPage scrollToTopBtn className='page-trade-ziti-list'>
-    <CompTrackType value={typeVal} onChange={onChangeTradeType} />
-    <ScrollView className="list-scroll-container" scrollY refresherEnabled
-      refresherBackground='#f5f5f7'
-      refresherTriggered={refresherTriggered}
-      onRefresherRefresh={onRefresherRefresh}
-    >
-      <SpScrollView className='trade-list-scroll' ref={tradeRef} auto={false} fetch={fetch} emptyMsg="没有查询到订单">
-        {tradeList.map((item) => (
-          <View className='trade-item-wrap'>
-            <CompTradeItem info={item} />
-          </View>
-        ))}
-      </SpScrollView>
-    </ScrollView>
-  </SpPage>;
+  return (
+    <SpPage scrollToTopBtn className='page-trade-ziti-list'>
+      <CompTrackType value={typeVal} onChange={onChangeTradeType} />
+      <ScrollView
+        className='list-scroll-container'
+        scrollY
+        refresherEnabled
+        refresherBackground='#f5f5f7'
+        refresherTriggered={refresherTriggered}
+        onRefresherRefresh={onRefresherRefresh}
+      >
+        <SpScrollView
+          className='trade-list-scroll'
+          ref={tradeRef}
+          auto={false}
+          fetch={fetch}
+          emptyMsg='没有查询到订单'
+        >
+          {tradeList.map((item) => (
+            <View className='trade-item-wrap'>
+              <CompTradeItem info={item} />
+            </View>
+          ))}
+        </SpScrollView>
+      </ScrollView>
+    </SpPage>
+  )
 }
 
 TradeZitiList.options = {
   addGlobalClass: true
 }
 
-TradeZitiList.defaultProps = {
-}
+TradeZitiList.defaultProps = {}
 
 export default TradeZitiList

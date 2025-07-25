@@ -29,7 +29,12 @@ import {
   VERSION_SHUYUN,
   getDistributorId
 } from '@/utils'
-import { updatePurchaseShareInfo, updateInviteCode, updateCurDistributorId, updateIsOpenPurchase } from '@/store/slices/purchase'
+import {
+  updatePurchaseShareInfo,
+  updateInviteCode,
+  updateCurDistributorId,
+  updateIsOpenPurchase
+} from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 
@@ -77,7 +82,7 @@ const initialConfigState = {
     // defaultImg: null,
     vipImg: null
   },
-  purchaseRes: {},
+  purchaseRes: {}
 }
 
 const initialState = {
@@ -296,7 +301,7 @@ function MemberIndex(props) {
       draft.memberConfig = {
         // defaultImg: memberRes?.cardInfo?.background_pic_url,
         vipImg: memberRes?.vipgrade?.background_pic_url,
-        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url,
+        backgroundImg: memberRes?.memberInfo?.gradeInfo?.background_pic_url
       }
     })
     setState((draft) => {
@@ -306,7 +311,9 @@ function MemberIndex(props) {
       draft.point = memberRes?.point
     })
 
-    dispatch(updateDeliveryPersonnel({self_delivery_operator_id:deliveryPersonnel,distributor_id:''})) //存配送员信息
+    dispatch(
+      updateDeliveryPersonnel({ self_delivery_operator_id: deliveryPersonnel, distributor_id: '' })
+    ) //存配送员信息
     dispatch(updateUserInfo(memberRes))
   }
 
@@ -316,7 +323,7 @@ function MemberIndex(props) {
     const { discount_total_count } = resAssets
 
     const {
-      normal_payed_daiziti, // 待自提订单
+      normal_payed_daiziti // 待自提订单
     } = resTrade
 
     setState((draft) => {
@@ -332,7 +339,8 @@ function MemberIndex(props) {
     })
   }
 
-  const handlePopularChange = async () => { // 推广跳转
+  const handlePopularChange = async () => {
+    // 推广跳转
     // 已经是分销员
     if (userInfo.isPromoter) {
       Taro.navigateTo({ url: link })
@@ -359,7 +367,10 @@ function MemberIndex(props) {
   }
 
   const handlePurchaseChange = async () => {
-    const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
+    const data = await api.purchase.getUserEnterprises({
+      disabled: 0,
+      distributor_id: getDistributorId()
+    })
     if (data?.length > 0) {
       Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
     } else {
@@ -424,7 +435,10 @@ function MemberIndex(props) {
     }
 
     if (key == 'purchase') {
-      const data = await api.purchase.getUserEnterprises({ disabled: 0,distributor_id: getDistributorId() })
+      const data = await api.purchase.getUserEnterprises({
+        disabled: 0,
+        distributor_id: getDistributorId()
+      })
       if (data?.length > 0) {
         Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
       } else {
@@ -449,9 +463,10 @@ function MemberIndex(props) {
         }}
       >
         <Text>
-          {{
-            true: vipInfo.grade_name || '会员',
-            false: userInfo?.gradeInfo?.grade_name || ''
+          {
+            {
+              true: vipInfo.grade_name || '会员',
+              false: userInfo?.gradeInfo?.grade_name || ''
             }[vipInfo.isVip]
           }
         </Text>
@@ -465,7 +480,7 @@ function MemberIndex(props) {
   }
 
   const memberBckStyle = {
-    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`,
+    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`
   }
 
   return (
@@ -548,7 +563,9 @@ function MemberIndex(props) {
                   className='member-level-bg'
                 /> */}
                 {isLogin && config.menu.member_code && !VERSION_SHUYUN && (
-                  <SpLogin onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}>
+                  <SpLogin
+                    onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
+                  >
                     <Text className='iconfont icon-erweima-01'></Text>
                   </SpLogin>
                 )}
@@ -571,9 +588,9 @@ function MemberIndex(props) {
               </SpLogin>
               <SpLogin
                 onChange={() => {
-                  if( VERSION_SHUYUN ){
+                  if (VERSION_SHUYUN) {
                     handleClickLink('/subpages/member/point-rule')
-                  } else{
+                  } else {
                     handleClickLink('/subpages/member/point-detail')
                   }
                 }}
@@ -599,8 +616,8 @@ function MemberIndex(props) {
             purchase: config.purchaseRes.is_open,
             popularize: userInfo ? userInfo.popularize : false,
             salesPersonList: state.salesPersonList,
-            deliveryStaffList:state.deliveryStaffList,
-            dianwu: config.menu.dianwu,
+            deliveryStaffList: state.deliveryStaffList,
+            dianwu: config.menu.dianwu
           }}
           zitiNum={state.zitiNum}
           isPromoter={userInfo ? userInfo.isPromoter : false}

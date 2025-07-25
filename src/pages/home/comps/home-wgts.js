@@ -33,7 +33,7 @@ const initialState = {
   searchMethod: null
 }
 function HomeWgts(props) {
-  const { wgts, dtid, onLoad = () => { }, children ,copywriting = false} = props
+  const { wgts, dtid, onLoad = () => {}, children, copywriting = false } = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
   const wgtsRef = useRef()
@@ -44,20 +44,12 @@ function HomeWgts(props) {
     // }
   }, [wgts])
 
-  // const refreshWgtsList = () => {
-  //   setState(draft => {
-  //     draft.localWgts = []
-  //   })
-  //   setTimeout(() => {
-  //     wgtsRef.current.reset()
-  //   }, 20)
-  // }
-
   const fetch = ({ pageIndex, pageSize }) => {
     const x = pageSize * pageIndex
     const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
     log.debug(
-      `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${x > wgts.length ? wgts.length : x
+      `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${
+        x > wgts.length ? wgts.length : x
       }`
     )
 
@@ -66,7 +58,7 @@ function HomeWgts(props) {
         url: `/subpages/store/item-list?dtid=${dtid}`
       })
     }
-    let searchMethod = dtid && storeClick;
+    let searchMethod = dtid && storeClick
 
     setState((draft) => {
       draft.localWgts[pageIndex - 1] = twgt
@@ -127,8 +119,10 @@ function HomeWgts(props) {
             {item.name === 'floorImg' && <WgtFloorImg info={item} />} {/** 楼层图片 */}
             {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
             {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
-            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />} {/** 全屏轮播 */}
-            {item.name === 'orderNavigation' && <WgtOrderNavigation info={item} />} {/** 订单导航 */}
+            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />}{' '}
+            {/** 全屏轮播 */}
+            {item.name === 'orderNavigation' && <WgtOrderNavigation info={item} />}{' '}
+            {/** 订单导航 */}
           </View>
         ))
       })}

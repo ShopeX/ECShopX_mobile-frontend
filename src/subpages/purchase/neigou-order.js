@@ -5,10 +5,10 @@ import { useImmer } from 'use-immer'
 import { View, Text, ScrollView, Image, Input, Picker, Button } from '@tarojs/components'
 import api from '@/api'
 import { classNames } from '@/utils'
-import './neigou-order.scss'
-import CompBottomTip from './comps/comp-bottomTip'
 import { SpPage, SpTabbar } from '@/components'
+import CompBottomTip from './comps/comp-bottomTip'
 import CompTabbar from './comps/comp-tabbar'
+import './neigou-order.scss'
 
 const tabbarState = [{ title: '全部' }, { title: '待支付' }, { title: '待收货' }]
 
@@ -47,11 +47,10 @@ function SelectComponent(props) {
       }
     }
   ])
-  const { colorPrimary, pointName, openStore } = useSelector((state) => state.sys)
+  const { colorPrimary, pointName } = useSelector((state) => state.sys)
 
   const handleTitleClick = (index) => {
     setActiveIndex(index)
-    //todo  根据index发送请求
   }
 
   return (
@@ -86,7 +85,7 @@ function SelectComponent(props) {
                   <View className='order-time'>下单时间：{item.orderTime}</View>
                 </View>
                 <View className='content-good'>
-                  <View >
+                  <View>
                     <Image className='good-img' src={item.goods?.url} />
                   </View>
                   <View className='good-content'>
@@ -96,7 +95,7 @@ function SelectComponent(props) {
                     </View>
                     <View className='good-content-bottom'>
                       <View>{item.goods?.intro}</View>
-                      <View >x&nbsp;{item.goods?.count}</View>
+                      <View>x&nbsp;{item.goods?.count}</View>
                     </View>
                   </View>
                 </View>
@@ -104,7 +103,8 @@ function SelectComponent(props) {
                   <Text className='all-count'>共{item.goods?.count}件</Text>
                   <Text className='actual-price'>实付金额</Text>
                   <Text className='price'>
-                    ¥<Text className='price-account'>{item.goods?.price * item.goods?.count}</Text>.00
+                    ¥<Text className='price-account'>{item.goods?.price * item.goods?.count}</Text>
+                    .00
                   </Text>
                 </View>
                 <View className='item-option'>

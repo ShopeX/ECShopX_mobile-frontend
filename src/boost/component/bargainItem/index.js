@@ -9,7 +9,7 @@ export default class BargainItem extends Component {
     info: {}
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
 
@@ -20,7 +20,7 @@ export default class BargainItem extends Component {
     })
   }
 
-  render () {
+  render() {
     const { info } = this.props
     return (
       <View className='bargainItem'>

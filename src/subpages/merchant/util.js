@@ -1,7 +1,7 @@
 import Taro from '@tarojs/taro'
 
 //跳转到入驻协议
-export function navigateToAgreement () {
+export function navigateToAgreement() {
   const url = `/subpages/merchant/agreement`
   Taro.navigateTo({
     url
@@ -9,7 +9,7 @@ export function navigateToAgreement () {
 }
 //截取高亮字符串方法
 //使用indexOf找到是否存在关键字，找到关键字之后进行存储，将带有关键字的部分全部删掉，继续匹配，直到匹配结束
-export function splitMatch (label, keyword) {
+export function splitMatch(label, keyword) {
   let matchingKeys = []
   let isHasRepeat = true
   while (isHasRepeat) {

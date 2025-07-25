@@ -119,7 +119,12 @@ export default class DetailItem extends Component {
                       url: `/subpages/pointshop/espier-detail?id=${item.good_id}`
                     })
                   } else {
-                    JumpGoodDetail(item.good_id, item.distributor_id, info?.activity_id, info?.enterprise_id)
+                    JumpGoodDetail(
+                      item.good_id,
+                      item.distributor_id,
+                      info?.activity_id,
+                      info?.enterprise_id
+                    )
                   }
                 }}
               />

@@ -24,7 +24,7 @@ export default class SpNote extends Component {
 
   navigateTo = navigateTo
 
-  handleClick = () => { }
+  handleClick = () => {}
 
   resolveUrl(img) {
     return `/assets/imgs/${img}`
@@ -36,9 +36,7 @@ export default class SpNote extends Component {
     return (
       <View className={classNames('sp-note', className)}>
         {/* {icon && <AtIcon prefixClass='sw-icon' value={value} size='60' color='#cdcdcd' />} */}
-        {img && (
-          <SpImage className='default-img' src={img} width={292} height={224} />
-        )}
+        {img && <SpImage className='default-img' src={img} width={292} height={224} />}
         <Text className='sp-note__text'>{title || this.props.children}</Text>
         {button && to && (
           <View className='sp-note__btn'>

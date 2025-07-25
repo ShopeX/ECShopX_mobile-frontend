@@ -10,14 +10,13 @@ const initialState = {
   validCart: [],
   invalidCart: [],
   cartCount: 0,
-  hasValidIdentity:true,
-  curEnterpriseId:null,
-  priceDisplayConfig:{},
-  isDiscountDescriptionEnabled:false,
-  discountDescription:'',
-  curDistributorId:null,
-  persist_purchase_share_info: {},//持久化存储最近一次活动，用于内购会员中心额度和分享
-
+  hasValidIdentity: true,
+  curEnterpriseId: null,
+  priceDisplayConfig: {},
+  isDiscountDescriptionEnabled: false,
+  discountDescription: '',
+  curDistributorId: null,
+  persist_purchase_share_info: {} //持久化存储最近一次活动，用于内购会员中心额度和分享
 }
 
 export const fetchCartList = createAsyncThunk('purchase/fetchCartList', async (params) => {
@@ -37,7 +36,7 @@ export const deleteCartItem = createAsyncThunk('purchase/deleteCartItem', async 
   await api.purchase.deletePurchaseCart(params)
 })
 
-export const updateCartItemNum = createAsyncThunk('purchase/updateCartItemNum',async (params) => {
+export const updateCartItemNum = createAsyncThunk('purchase/updateCartItemNum', async (params) => {
   await api.purchase.updatePurchaseCart(params)
 })
 
@@ -63,30 +62,30 @@ const purchaseSlice = createSlice({
     updateInviteCode: (state, { payload = '' }) => {
       state.invite_code = payload
     },
-    purchaseClearCart: (state ) => {
+    purchaseClearCart: (state) => {
       state.cartCount = 0
       state.validCart = []
       state.invalidCart = []
       state.coupon = null
     },
-    updateValidIdentity:(state, { payload = '' }) => {
+    updateValidIdentity: (state, { payload = '' }) => {
       state.hasValidIdentity = payload
     },
-    updateEnterpriseId:(state, { payload = '' }) => {
+    updateEnterpriseId: (state, { payload = '' }) => {
       state.curEnterpriseId = payload
     },
-    updateActivityInfo:(state, { payload }) => {
-      const {priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription} = payload
+    updateActivityInfo: (state, { payload }) => {
+      const { priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription } = payload
       state.priceDisplayConfig = priceDisplayConfig
       state.isDiscountDescriptionEnabled = isDiscountDescriptionEnabled
       state.discountDescription = discountDescription
     },
-    updateCurDistributorId:(state, { payload = '' }) => {
+    updateCurDistributorId: (state, { payload = '' }) => {
       state.curDistributorId = payload
     },
-    updateIsOpenPurchase:(state, { payload = false }) => {
+    updateIsOpenPurchase: (state, { payload = false }) => {
       state.isOpen = payload
-    },
+    }
   },
   extraReducers: (builder) => {
     builder.addCase(fetchCartList.fulfilled, (state, action) => {
@@ -102,6 +101,17 @@ const purchaseSlice = createSlice({
   }
 })
 
-export const { updatePurchaseTabbar, updatePurchaseShareInfo, updateInviteCode, purchaseClearCart,updateValidIdentity,updateEnterpriseId,updateActivityInfo, updateCurDistributorId, updateIsOpenPurchase, updatePersistPurchaseShareInfo } = purchaseSlice.actions
+export const {
+  updatePurchaseTabbar,
+  updatePurchaseShareInfo,
+  updateInviteCode,
+  purchaseClearCart,
+  updateValidIdentity,
+  updateEnterpriseId,
+  updateActivityInfo,
+  updateCurDistributorId,
+  updateIsOpenPurchase,
+  updatePersistPurchaseShareInfo
+} = purchaseSlice.actions
 
 export default purchaseSlice.reducer

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
-import { isArray,showToast } from '@/utils'
+import { isArray, showToast } from '@/utils'
 import { SpPage, SpSearchInput, SpInput as AtInput } from '@/components'
 import api from '@/api'
 
@@ -119,7 +119,7 @@ export default class DistributionWithdraw extends Component {
     })
   }
   goWithdraw = async () => {
-    const { amount, curIdx,parameter } = this.state
+    const { amount, curIdx, parameter } = this.state
     const query = {
       money: amount * 100,
       pay_type: curIdx,
@@ -127,7 +127,7 @@ export default class DistributionWithdraw extends Component {
       //money:(amount/100).toFixed(2)
     }
 
-    if(!parameter.distributor_id){
+    if (!parameter.distributor_id) {
       showToast('选择店铺才可提现哦')
       return
     }

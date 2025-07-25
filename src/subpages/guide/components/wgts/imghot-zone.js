@@ -5,8 +5,8 @@ import { SpImage, SpLogin } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { isArray, classNames, styleNames } from '@/utils'
-import { linkPage } from './helper'
 import { closeCart, setGoodsSkuInfo } from '@/store/slices/guide'
+import { linkPage } from './helper'
 import './imghot-zone.scss'
 
 function WgtImgHotZone(props) {
@@ -71,21 +71,22 @@ function WgtImgHotZone(props) {
 
       <View className={`slider-wra wgt-body img-hotzone ${config.padded ? 'padded' : ''}`}>
         <SpImage img-class='img-hotzone_img' src={config.imgUrl} lazyLoad />
-        {isArray(data) && data.map((item, index) => {
-          return (
-            <View
-              key={`${index}1`}
-              className='img-hotzone_zone'
-              style={styleNames({
-                width: `${item.widthPer * 100}%`,
-                height: `${item.heightPer * 100}%`,
-                top: `${item.topPer * 100}%`,
-                left: `${item.leftPer * 100}%`
-              })}
-              onClick={handleClickItem.bind(this, item)}
-            />
-          )
-        })}
+        {isArray(data) &&
+          data.map((item, index) => {
+            return (
+              <View
+                key={`${index}1`}
+                className='img-hotzone_zone'
+                style={styleNames({
+                  width: `${item.widthPer * 100}%`,
+                  height: `${item.heightPer * 100}%`,
+                  top: `${item.topPer * 100}%`,
+                  left: `${item.leftPer * 100}%`
+                })}
+                onClick={handleClickItem.bind(this, item)}
+              />
+            )
+          })}
       </View>
     </View>
   )

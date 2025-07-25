@@ -12,7 +12,7 @@ export default class HeaderHome extends Component {
     isOpenScanQrcode: 2
   }
 
-  constructor (props) {
+  constructor(props) {
     super(props)
 
     this.state = {
@@ -26,7 +26,7 @@ export default class HeaderHome extends Component {
     addGlobalClass: true
   }
 
-  componentDidMount () {
+  componentDidMount() {
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
     }
@@ -60,7 +60,7 @@ export default class HeaderHome extends Component {
     })
   }
 
-  render () {
+  render() {
     const { store = {}, isOpenScanQrcode, isOpenStoreStatus } = this.props
     const isNoStores = isOpenStoreStatus ? false : true
     return (

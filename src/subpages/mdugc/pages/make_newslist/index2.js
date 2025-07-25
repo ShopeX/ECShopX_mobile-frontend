@@ -4,7 +4,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 
 import api from '@/api'
 import { useImmer } from 'use-immer'
-import {SpImage} from '@/components'
+import { SpImage } from '@/components'
 
 //import '../../font/iconfont.scss'
 import './index2.scss'
