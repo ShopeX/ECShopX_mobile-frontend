@@ -11,28 +11,37 @@ export function requestIntercept() {
     if (isObject(getCurrentInstance().router)) {
       const { path } = getCurrentInstance()?.router
       // console.log('getCurrentInstance params:', path)
-      if (path === '/pages/cart/espier-checkout' && [`${process.env.APP_BASE_URL}/order_new`,`${process.env.APP_BASE_URL}/getFreightFee`].indexOf(url) > -1){
-        let smid = ''
-        const { gu, gu_user_id, smid: smid_1 } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
-        const { smid: smid_2 } = Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
-        smid = smid_1 || smid_2
-        
+      if (
+        path === '/pages/cart/espier-checkout' &&
+        [
+          `${process.env.APP_BASE_URL}/order_new`,
+          `${process.env.APP_BASE_URL}/getFreightFee`
+        ].indexOf(url) > -1
+      ) {
+        const {
+          source_id = '',
+          monitor_id = '',
+          latest_source_id = '',
+          latest_monitor_id = ''
+        } = Taro.getStorageSync('sourceInfo')
         let _data = qs.parse(data)
-        let work_userid = gu_user_id
-        if (gu) {
-          work_userid = gu.split('_')[0]
+        if (source_id) {
+          _data['source_id'] = source_id
         }
-        _data['work_userid'] = work_userid
-        if (smid) {
-          _data['salesman_id'] = smid
+        if (monitor_id) {
+          _data['monitor_id'] = monitor_id
         }
-        if (_data) {
-          requestParams.data = qs.stringify(_data)
+        if (latest_source_id) {
+          _data['latest_source_id'] = latest_source_id
         }
+        if (latest_monitor_id) {
+          _data['latest_monitor_id'] = latest_monitor_id
+        }
+        requestParams.data = qs.stringify(_data)
         console.log('requestIntercept:', requestParams)
       }
     }
-     
+
     return chain.proceed(requestParams).then((res) => {
       // console.log(`http <-- ${url} request:`, res)
       return res
