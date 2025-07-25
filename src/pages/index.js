@@ -263,7 +263,7 @@ function Home() {
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
-      renderFooter={<SpTabbar height={footerHeight} />}
+      renderFooter={<SpTabbar />}
       loading={loading}
       ref={pageRef}
       navigateMantle={navigateMantle}

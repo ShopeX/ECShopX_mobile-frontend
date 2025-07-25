@@ -224,7 +224,7 @@ const SpPage = memo(
       if (!state.lock) {
         scrollTopRef.current = res.scrollTop
       }
-      if (res.scrollTop > 10) {
+      if (res.scrollTop > 20) {
         setState((draft) => {
           draft.mantle = true
         })
@@ -454,7 +454,7 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'height': `${state.height}px`,
+              'height': props.immersive ? `${state.height + state.gNavbarH}px` : `${state.height}px`,
               'margin-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
