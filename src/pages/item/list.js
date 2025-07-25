@@ -168,7 +168,7 @@ function ItemList() {
 
   const fetch = async ({ pageIndex, pageSize }) => {
     // card_id: 兑换券id
-    // const { cat_id, main_cat_id, tag_id, card_id } = $instance.router.params
+    const {  mcid, cid } = $instance.router.params
     let params = {
       page: pageIndex,
       pageSize,
@@ -196,12 +196,12 @@ function ItemList() {
       params['tag_id'] = curTagIdx
     }
 
-    if (cat_id) {
-      params['category'] = cat_id
+    if (cat_id || cid) {
+      params['category'] = cat_id || cid
     }
 
-    if (main_cat_id) {
-      params['main_category'] = main_cat_id
+    if (main_cat_id || mcid) {
+      params['main_category'] = main_cat_id || mcid
     }
 
     if (VERSION_STANDARD) {
