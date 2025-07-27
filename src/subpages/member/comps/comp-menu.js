@@ -3,7 +3,6 @@ import React from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpCell } from '@/components'
 import { isWeixin, VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
-
 import './comp-menu.scss'
 
 function CompMenu(props) {

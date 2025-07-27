@@ -72,6 +72,7 @@ const SpPage = memo(
     const wrapRef = useRef(null)
     const scrollTopRef = useRef(0)
     const sys = useSelector((state) => state.sys)
+    const { lang } = useSelector((state) => state.user)
     const [showToTop, setShowToTop] = useState(false)
     const { appName } = sys
     const { themeColor } = useThemsColor()
@@ -441,6 +442,7 @@ const SpPage = memo(
         className={classNames('sp-page', props.className)}
         style={styleNames({ ...state.pageTheme, ...state.lockStyle, ...state.pageBackground })}
         ref={wrapRef}
+        key={lang}
       >
         {hasNavbar && !state.isTabBarPage && props.navbar && (
           <SpNavBar title={state.pageTitle} onClickLeftIcon={props.onClickLeftIcon} />
@@ -454,7 +456,9 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'height': props.immersive ? `${state.height + state.gNavbarH}px` : `${state.height}px`,
+              'height': props.immersive
+                ? `${state.height + state.gNavbarH}px`
+                : `${state.height}px`,
               'margin-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(

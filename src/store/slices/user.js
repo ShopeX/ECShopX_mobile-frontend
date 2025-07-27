@@ -1,11 +1,14 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { getDistributorId } from '@/utils'
+import { defaultLang } from '@/utils/lang'
 import api from '@/api'
 
+console.log('defaultLang', defaultLang)
 const initialState = {
   userInfo: null,
   isNewUser: false,
   cardInfo: {},
+  lang: defaultLang,
   vipInfo: {
     isOpen: false,
     isVip: false,
@@ -92,7 +95,9 @@ const userSlice = createSlice({
     closeAdv: (state, { payload }) => {
       state.showAdv = payload
     },
-
+    updateLang: (state, { payload }) => {
+      state.lang = payload
+    },
     clearUserInfo: (state, { payload }) => {
       state.userInfo = null
       state.cardInfo = {}
@@ -129,7 +134,8 @@ export const {
   updateLocation,
   updateCheckChief,
   clearUserInfo,
-  updateIsNewUser
+  updateIsNewUser,
+  updateLang
 } = userSlice.actions
 
 export default userSlice.reducer

@@ -4,7 +4,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components'
-import { useLogin } from '@/hooks'
+import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { SG_POLICY } from '@/consts'
 import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN } from '@/utils'
@@ -23,6 +23,8 @@ const initialState = {
 
 function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
+  const { showModal } = useModal()
+  const { lang } = useSelector((state) => state.user)
   const {
     formItems,
     formUserInfo,
@@ -58,6 +60,7 @@ function MemberUserInfo() {
     } = userInfo
     const _formItems = []
     const _formUserInfo = {
+      language: userInfo.language || 'zh',
       avatar: userInfo.avatar,
       username: userInfo.username,
       ...custom_data
@@ -86,6 +89,12 @@ function MemberUserInfo() {
         _formUserInfo[key] = sexType[value]
       }
     })
+    // _formItems.push({
+    //   key: 'language',
+    //   name: '切换语言',
+    //   field_type: 4,
+    //   select: ['中文', 'english']
+    // })
 
     setState((draft) => {
       draft.formItems = _formItems
@@ -272,6 +281,23 @@ function MemberUserInfo() {
     })
   }
 
+  const hanldeShowSwitchLanguage = async () => {
+    console.log('lang', lang)
+    const langText = lang === 'zh-cn' ? '英文' : '中文'
+    const res = await showModal({
+      title: `切换语言到${langText}`,
+      content: '切换后语言后自动重启应用',
+      confirmText: '确定',
+      cancelText: '取消'
+    })
+    if (res.confirm) {
+      globalThis.$changeLang(lang === 'zh-cn' ? 'en' : 'zh-cn')
+      Taro.reLaunch({
+        url: '/subpages/member/index'
+      })
+    }
+  }
+
   const onUploadAvatarFile = async () => {
     const { tempFiles = [] } = await Taro.chooseImage({
       count: 1
@@ -375,6 +401,15 @@ function MemberUserInfo() {
             value={renderFormItem(item)}
           ></SpCell>
         ))}
+      </View>
+
+      <View className='block-container'>
+        <SpCell
+          isLink
+          title='切换语言'
+          value='切换后语言后自动重启应用'
+          onClick={hanldeShowSwitchLanguage}
+        ></SpCell>
       </View>
 
       <View className='block-container'>
