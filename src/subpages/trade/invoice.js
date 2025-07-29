@@ -15,13 +15,13 @@ const initialState = {
     invoice_type_code: '02', // 01:数电票(增值税专用发票) 02:数电票(普通发票)
     invoice_type: 'individual', // individual:个人 enterprise:企业
     company_title: '', // 抬头名称
+    individual_title: '', // 个人抬头
     company_tax_number: '', // 公司税号
     company_address: '', // 公司地址
     company_telephone: '', // 公司电话
     bank_name: '', // 开户银行
     bank_account: '', // 开户账号
-    email: '', // 电子邮箱
-    mobile: '' // 手机号
+    email: '' // 电子邮箱
   },
   allInfo: false,
   invoice_amount: 0,
@@ -64,18 +64,19 @@ function Invoice(props) {
     const params = Taro.getStorageSync('invoice_params')
     console.log('params:', params)
     if (params && Object.keys(params).length > 0) {
-      const invoiceParams = {
+      let invoiceParams = {
         invoice_type_code: params?.invoice_type_code || '02',
         invoice_type: params?.invoice_type || 'individual',
-        company_title: params?.company_title || '',
+        company_title: params?.invoice_type == 'enterprise' ? params?.company_title : '',
+        individual_title: params?.invoice_type != 'enterprise' ? params?.company_title : '',
         company_tax_number: params?.company_tax_number || '',
         company_address: params?.company_address || '',
         company_telephone: params?.company_telephone || '',
         bank_name: params?.bank_name || '',
         bank_account: params?.bank_account || '',
-        email: params?.email || '',
-        mobile: params?.mobile || ''
+        email: params?.email || ''
       }
+
       setState((draft) => {
         draft.info = invoiceParams
       })
@@ -108,13 +109,13 @@ function Invoice(props) {
         let nInfo = {
           invoice_type: type == 0 ? 'enterprise' : 'individual',
           invoice_type_code: info.invoice_type_code,
-          company_title: title,
-          email: info?.email,
-          mobile: info?.mobile
+          email: info?.email
         }
         if (type == 0) {
           nInfo = {
             ...nInfo,
+            company_title: title,
+            individual_title: info?.individual_title,
             company_tax_number: taxNumber,
             company_address: companyAddress,
             company_telephone: telephone,
@@ -124,6 +125,8 @@ function Invoice(props) {
         } else {
           nInfo = {
             ...nInfo,
+            company_title: info?.company_title,
+            individual_title: title,
             invoice_type_code: '02'
           }
         }
@@ -142,10 +145,6 @@ function Invoice(props) {
       showToast('请输入正确的电子邮箱')
       return
     }
-    if (info?.mobile && !validate.isMobileNum(info?.mobile)) {
-      showToast('请输入正确的手机号')
-      return
-    }
     if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
       showToast(`请同意${protocolTitle}`)
       return
@@ -153,9 +152,9 @@ function Invoice(props) {
     let params = {
       invoice_type_code: info?.invoice_type_code,
       invoice_type: info?.invoice_type,
-      company_title: info?.company_title,
-      email: info?.email,
-      mobile: info?.mobile
+      company_title:
+        info?.invoice_type == 'enterprise' ? info?.company_title : info.individual_title,
+      email: info?.email
     }
     if (params.invoice_type === 'enterprise') {
       params = {
@@ -205,9 +204,9 @@ function Invoice(props) {
 
   const isFull = () => {
     if (info?.invoice_type === 'individual') {
-      return info?.company_title && (info?.email || info?.mobile)
+      return info?.individual_title && info?.email
     } else if (info?.invoice_type === 'enterprise') {
-      return info?.company_title && info?.company_tax_number && (info?.email || info?.mobile)
+      return info?.company_title && info?.company_tax_number && info?.email
     }
   }
 
@@ -329,11 +328,11 @@ function Invoice(props) {
           {info?.invoice_type === 'individual' && (
             <SpCell title='抬头名称'>
               <AtInput
-                name='company_title'
-                value={info?.company_title}
+                name='individual_title'
+                value={info?.individual_title}
                 placeholder='必填'
                 placeholderClass='input-placeholder'
-                onChange={(e) => handleChange('company_title', e)}
+                onChange={(e) => handleChange('individual_title', e)}
               />
             </SpCell>
           )}
@@ -426,19 +425,9 @@ function Invoice(props) {
               <AtInput
                 name='email'
                 value={info?.email}
-                placeholder='电子邮箱、手机号码至少填一项'
+                placeholder='必填'
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('email', e)}
-              />
-            </SpCell>
-            <SpCell title='手机号码'>
-              <AtInput
-                name='mobile'
-                maxLength={11}
-                value={info?.mobile}
-                placeholder='电子邮箱、手机号码至少填一项'
-                placeholderClass='input-placeholder'
-                onChange={(e) => handleChange('mobile', e)}
               />
             </SpCell>
             <View className='invoice-box__bottom'></View>

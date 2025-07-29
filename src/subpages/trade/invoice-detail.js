@@ -130,8 +130,7 @@ function InvoiceDetail() {
                     company_telephone: info?.company_telephone,
                     bank_name: info?.bank_name,
                     bank_account: info?.bank_account,
-                    email: info?.email,
-                    mobile: info?.mobile
+                    email: info?.email
                   })
                   Taro.redirectTo({
                     url: `/subpages/trade/invoice?invoice_id=${info?.id}&order_id=${info?.order_id}&invoice_amount=${info?.invoice_amount}&page_type=update`
@@ -205,16 +204,9 @@ function InvoiceDetail() {
               </SpCell>
             </>
           )}
-          {info?.email && (
-            <SpCell title='电子邮箱' border={info?.mobile ? true : false}>
-              <Text className='invoice-detail__value'>{info?.email}</Text>
-            </SpCell>
-          )}
-          {info?.mobile && (
-            <SpCell title='手机号码'>
-              <Text className='invoice-detail__value'>{info?.mobile}</Text>
-            </SpCell>
-          )}
+          <SpCell title='电子邮箱' border={false}>
+            <Text className='invoice-detail__value'>{info?.email}</Text>
+          </SpCell>
         </View>
 
         <View className='invoice-detail__section'>
