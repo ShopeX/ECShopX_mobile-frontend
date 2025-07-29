@@ -250,23 +250,26 @@
       display: flex;
       overflow: hidden;
       position: relative;
-    }
 
-    .icon-bianji1 {
-      color: #aaaaaa;
-      position: absolute;
-      z-index: 999;
-      top:4px;
-    }
-
-    .at-textarea {
-      border-width: 0;
-      padding: 0;
-      margin: 0px 0 0 10px;
-      text-indent: 30rpx;
-      position: relative;
-      &__textarea {
-        font-size: 24px;
+      .icon-bianji1 {
+        color: #aaaaaa;
+        position: absolute;
+        z-index: 999;
+        top: 13px;
+        left: 10px;
+      }
+   
+      .at-textarea {
+        border-width: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        
+        &__textarea {
+          font-size: 24px;
+          line-height: normal;
+          padding: 0px 10px 20px 40px;
+        }
       }
     }
 
@@ -338,7 +341,6 @@
 
   .icon-bianji1 {
     font-size: 32px;
-    position: absolute;
   }
 
   .sp-upload {
