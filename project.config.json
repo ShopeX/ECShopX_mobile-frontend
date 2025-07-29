@@ -2,7 +2,7 @@
     "miniprogramRoot": "dist/",
     "projectname": "ecshopx-vshop",
     "description": "weshop for platform",
-    "appid": "wxf7abee400d50e0d0",
+    "appid":"wx1e25e45145b70faa",
     "setting": {
         "urlCheck": false,
         "es6": false,
@@ -28,7 +28,7 @@
         "babelSetting": {
             "ignore": [],
             "disablePlugins": [],
-            "outputPath": ""
+            "outputPath":"wx1e25e45145b70faa"
         },
         "enableEngineNative": false,
         "useIsolateContext": true,

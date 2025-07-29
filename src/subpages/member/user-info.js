@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
@@ -10,6 +10,7 @@ import { SG_POLICY } from '@/consts'
 import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button } from '@tarojs/components'
+import { updateLang } from '@/store/slices/user'
 import i18n from '@/lang/consts'
 import './user-info.scss'
 
@@ -28,7 +29,8 @@ const initialState = {
 function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
   const { showModal } = useModal()
-  const { lang } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const lang = Taro.getStorageSync('lang')
   console.log('lang', lang, 'i18n', i18n)
   const {
     formItems,
@@ -504,6 +506,7 @@ function MemberUserInfo() {
             circle
             type='primary'
             onClick={() => {
+              // Taro.setStorageSync('lang', state.selectLang)
               Taro.$changeLang(state.selectLang)
               Taro.reLaunch({
                 url: '/subpages/member/index'

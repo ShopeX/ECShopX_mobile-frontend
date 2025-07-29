@@ -24,7 +24,7 @@ export default class GoodsEvaluation extends Component {
   }
 
   componentDidMount() {
-    const { windowWidth } = Taro.getSystemInfoSync()
+    const { windowWidth } = Taro.getWindowInfo()
 
     let height = (windowWidth * 2 - 169) / 3 + 'rpx'
     this.setState({

@@ -46,6 +46,22 @@ if (process.env.TARO_ENV == 'alipay') {
   copyPatterns.push({ from: 'mini.project.json', to: `${DIST_PATH}/mini.project.json` })
 }
 
+const AutoI18nOptions = {
+  rewriteConfig: false, // 是否重写配置js ， 小程序需要魔改配置文件，所以不要重新生成，以现在的为准
+  excludedPath: [
+    path.resolve(__dirname, './../src/lang/index.js'),
+    path.resolve(__dirname, './../src/lang/consts.js')
+  ],
+  globalPath: path.resolve(__dirname, './../src/subpages/i18n/lang'),
+  targetLangList: ['en', 'zh-tw'], // 目标语言
+  originLang: 'zh-cn', // 源语言
+  translator: new YoudaoTranslator({
+    appId: process.env.APP_I18N_APP_ID,
+    appKey: process.env.APP_I18N_APP_KEY
+  }),
+  includePath: [/src/] // 仅扫描 src 目录
+}
+
 const config = {
   projectName: pkg.name,
   date: '2025-04-22',
@@ -91,23 +107,7 @@ const config = {
   mini: {
     webpackChain(chain) {
       if (process.env.APP_I18N_APP_ID && process.env.APP_I18N_APP_KEY) {
-        chain.plugin('auto-i18n').use(webpackPluginsAutoI18n.default, [
-          {
-            rewriteConfig: false, // 是否重写配置js ， 小程序需要魔改配置文件，所以不要重新生成，以现在的为准
-            excludedPath: [
-              path.resolve(__dirname, './../src/i18n/index.js'),
-              path.resolve(__dirname, './../src/i18n/lang.js')
-            ],
-            globalPath: path.resolve(__dirname, './../src/subpages/i18n/lang'),
-            targetLangList: ['en', 'zh-tw'], // 目标语言
-            originLang: 'zh-cn', // 源语言
-            translator: new YoudaoTranslator({
-              appId: process.env.APP_I18N_APP_ID,
-              appKey: process.env.APP_I18N_APP_KEY
-            }),
-            includePath: [/src/] // 仅扫描 src 目录
-          }
-        ])
+        chain.plugin('auto-i18n').use(webpackPluginsAutoI18n.default, [AutoI18nOptions])
       }
     },
 

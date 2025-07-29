@@ -726,7 +726,6 @@ const getCurrentShopId = () => {
 
 const getDistributorId = (_dtid) => {
   const { sys, shop } = store.getState()
-  const { entryStoreByLBS } = sys
 
   const {
     shopInfo: { distributor_id, shop_id }
@@ -738,7 +737,7 @@ const getDistributorId = (_dtid) => {
       if (dtid) {
         return dtid
       } else {
-        return entryStoreByLBS ? distributor_id : shop_id
+        return distributor_id
       }
     } else {
       return _dtid

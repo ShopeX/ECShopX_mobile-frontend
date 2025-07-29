@@ -6,7 +6,8 @@ import Taro, {
   useDidShow,
   useLaunch,
   useReady,
-  useRouter
+  useRouter,
+  useError
 } from '@tarojs/taro'
 
 import S from '@/spx'
@@ -95,6 +96,7 @@ function App({ children }) {
     __non_webpack_require__ &&
       __non_webpack_require__('subpages/i18n/index', (res) => {
         const langJSON = Taro['langJSON']
+        console.log('langJSON--------', langJSON)
         langObj.setLanguagePackage(langJSON)
       })
   })
@@ -120,6 +122,10 @@ function App({ children }) {
         Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
       }
     })
+  })
+
+  useError((error) => {
+    log.error('useError', error)
   })
 
   const getSystemConfig = async () => {

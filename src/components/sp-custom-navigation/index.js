@@ -21,7 +21,7 @@ function CustomNavigation(props) {
 
   const init = async () => {
     const menuButton = await Taro.getMenuButtonBoundingClientRect()
-    const { statusBarHeight } = await Taro.getSystemInfoSync()
+    const { statusBarHeight } = await Taro.getWindowInfo()
 
     console.log('MenuButton:', menuButton, statusBarHeight)
 

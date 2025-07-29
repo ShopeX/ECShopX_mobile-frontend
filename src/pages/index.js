@@ -33,6 +33,7 @@ import {
   resolveStringifyParams,
   getCurrentShopId,
   pickBy,
+  log,
   showToast,
   entryLaunch
 } from '@/utils'
@@ -114,6 +115,8 @@ function Home() {
   useEffectAsync(async () => {
     fetchWgts()
     setNavigationBarTitle(appName)
+
+    log.info({ str: 'hello world' }, 'info log', 100, [1, 2, 3])
   }, [])
 
   useDidShow(() => {
