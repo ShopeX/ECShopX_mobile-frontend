@@ -450,6 +450,10 @@ const config = {
         'add-personnel', // 添加用药人员
         'prescription-information' //补充处方信息
       ]
+    },
+    {
+      root: 'subpages/i18n',
+      pages: ['index']
     }
   ],
   permission: {

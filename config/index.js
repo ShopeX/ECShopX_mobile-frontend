@@ -9,13 +9,6 @@ const { getEnvs, getDefineConstants, getCacheIdentifier } = require('./utils')
 
 require('dotenv-flow').config()
 
-// const i18nPlugin = new webpackPluginsAutoI18n.default({
-//   translator: new YoudaoTranslator({
-//       appId: '4cdb9baea8066fef',
-//       appKey: 'ONI6AerZnGRyDqr3w7UM730mPuF8mB3j'
-//   })
-// })
-
 const DIST_PATH = `dist/${process.env.TARO_ENV}`
 const APP_ENVS = getEnvs()
 
@@ -73,8 +66,8 @@ const config = {
   defineConstants: getDefineConstants(CONST_ENVS),
   alias: {
     'taro-ui$': 'taro-ui/lib/index',
-    '@': path.join(__dirname, '../src'),
-    '@lang': path.join(__dirname, '../lang')
+    '@': path.join(__dirname, '../src')
+    // '@lang': path.join(__dirname, '../lang')
     // 'lodash': 'lodash-es'
   },
   copy: {
@@ -89,28 +82,31 @@ const config = {
     }
   },
   plugins: [
-    // i18nPlugin
     // '@shopex/taro-plugin-modules',
     // path.join(__dirname, "../src/plugin/test.js")
     // path.join(__dirname, "./modify-taro.js")
   ],
 
   mini: {
-    // webpackChain(chain) {
-    //   chain.plugin('auto-i18n').use(webpackPluginsAutoI18n.default, [
-    //     {
-    //       rewriteConfig: false, // 是否重写配置js ， 小程序需要魔改配置文件，所以不要重新生成，以现在的为准
-    //       targetLangList: ['en', 'ja'], // 目标语言
-    //       originLang: 'zh-cn', // 源语言
-    //       translator: new YoudaoTranslator({
-    //         appId: process.env.YD_APP_ID,
-    //         appKey: process.env.YD_APP_KEY
-    //       }),
-    //       excludedPath: ['node_modules'], // 排除目录
-    //       includePath: [/src/] // 仅扫描 src 目录
-    //     }
-    //   ])
-    // },
+    webpackChain(chain) {
+      chain.plugin('auto-i18n').use(webpackPluginsAutoI18n.default, [
+        {
+          rewriteConfig: false, // 是否重写配置js ， 小程序需要魔改配置文件，所以不要重新生成，以现在的为准
+          excludedPath: [
+            path.resolve(__dirname, './../src/lang/index.js'),
+            path.resolve(__dirname, './../src/lang/consts.js')
+          ],
+          globalPath: path.resolve(__dirname, './../src/subpages/i18n/lang'),
+          targetLangList: ['en', 'zh-tw'], // 目标语言
+          originLang: 'zh-cn', // 源语言
+          translator: new YoudaoTranslator({
+            appId: process.env.APP_I18N_APP_ID,
+            appKey: process.env.APP_I18N_APP_KEY
+          }),
+          includePath: [/src/] // 仅扫描 src 目录
+        }
+      ])
+    },
 
     miniCssExtractPluginOption: {
       ignoreOrder: true

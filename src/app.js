@@ -1,5 +1,5 @@
 import React, { Component, useEffect } from 'react'
-// import '@lang/index.js' // 📍 必须在入口文件中第一行引入，文件会在运行插件时自动生成，默认位于打包配置目录同层的lang文件夹中，其中的index.js就是配置文件
+import langObj from '@/lang/index.js' // 📍 必须在入口文件中第一行引入，文件会在运行插件时自动生成，默认位于打包配置目录同层的lang文件夹中，其中的index.js就是配置文件
 import Taro, {
   getCurrentInstance,
   getCurrentPages,
@@ -92,6 +92,13 @@ function App({ children }) {
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
+
+    __non_webpack_require__ &&
+      __non_webpack_require__('subpages/i18n/index', (res) => {
+        const langJSON = Taro['langJSON']
+        console.log('langJSON--------', langJSON)
+        langObj.setLanguagePackage(langJSON)
+      })
   })
 
   useDidShow(async (options) => {

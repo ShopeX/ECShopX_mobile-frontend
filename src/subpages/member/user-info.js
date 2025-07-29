@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
@@ -10,6 +10,7 @@ import { SG_POLICY } from '@/consts'
 import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button } from '@tarojs/components'
+import i18n from '@/lang/consts'
 import './user-info.scss'
 
 const initialState = {
@@ -18,13 +19,18 @@ const initialState = {
   checkboxPickerTitle: '',
   showCheckboxPicker: false,
   checkboxKey: '',
-  checkboxList: []
+  checkboxList: [],
+  showSwitchLanguage: false,
+  selectLang: '',
+  languageList: []
 }
 
 function MemberUserInfo() {
   const [state, setState] = useImmer(initialState)
   const { showModal } = useModal()
-  const { lang } = useSelector((state) => state.user)
+  const dispatch = useDispatch()
+  const lang = Taro.getStorageSync('lang')
+  console.log('lang', lang, 'i18n', i18n)
   const {
     formItems,
     formUserInfo,
@@ -89,16 +95,17 @@ function MemberUserInfo() {
         _formUserInfo[key] = sexType[value]
       }
     })
-    // _formItems.push({
-    //   key: 'language',
-    //   name: '切换语言',
-    //   field_type: 4,
-    //   select: ['中文', 'english']
-    // })
 
     setState((draft) => {
       draft.formItems = _formItems
       draft.formUserInfo = _formUserInfo
+      draft.languageList = Object.keys(i18n).map((key) => {
+        return {
+          name: i18n[key],
+          key,
+          ischecked: key === lang
+        }
+      })
     })
   }
 
@@ -281,22 +288,21 @@ function MemberUserInfo() {
     })
   }
 
-  const hanldeShowSwitchLanguage = async () => {
-    console.log('lang', lang)
-    const langText = lang === 'zh-cn' ? '英文' : '中文'
-    const res = await showModal({
-      title: `切换语言到${langText}`,
-      content: '切换后语言后自动重启应用',
-      confirmText: '确定',
-      cancelText: '取消'
-    })
-    if (res.confirm) {
-      globalThis.$changeLang(lang === 'zh-cn' ? 'en' : 'zh-cn')
-      Taro.reLaunch({
-        url: '/subpages/member/index'
-      })
-    }
-  }
+  // const hanldeShowSwitchLanguage = async () => {
+  //   console.log('lang', lang)
+  //   const res = await showModal({
+  //     title: `提示`,
+  //     content: '请确认是否切换语言',
+  //     confirmText: '确定',
+  //     cancelText: '取消'
+  //   })
+  //   if (res.confirm) {
+  //     globalThis.$changeLang(lang === 'zh-cn' ? 'en' : 'zh-cn')
+  //     Taro.reLaunch({
+  //       url: '/subpages/member/index'
+  //     })
+  //   }
+  // }
 
   const onUploadAvatarFile = async () => {
     const { tempFiles = [] } = await Taro.chooseImage({
@@ -407,8 +413,13 @@ function MemberUserInfo() {
         <SpCell
           isLink
           title='切换语言'
-          value='切换后语言后自动重启应用'
-          onClick={hanldeShowSwitchLanguage}
+          value={i18n[lang]}
+          onClick={() => {
+            setState((draft) => {
+              draft.selectLang = lang
+              draft.showSwitchLanguage = true
+            })
+          }}
         ></SpCell>
       </View>
 
@@ -478,6 +489,49 @@ function MemberUserInfo() {
             </SpCheckbox>
           </View>
         ))}
+      </SpFloatLayout>
+
+      {/* 切换语言 */}
+      <SpFloatLayout
+        title='切换语言'
+        open={state.showSwitchLanguage}
+        onClose={() => {
+          setState((draft) => {
+            draft.showSwitchLanguage = false
+          })
+        }}
+        renderFooter={
+          <AtButton
+            circle
+            type='primary'
+            onClick={() => {
+              // Taro.setStorageSync('lang', state.selectLang)
+              Taro.$changeLang(state.selectLang)
+              Taro.reLaunch({
+                url: '/subpages/member/index'
+              })
+            }}
+          >
+            确定
+          </AtButton>
+        }
+      >
+        <View className='lang-list'>
+          {state.languageList.map((item, index) => (
+            <View className='lang-item' key={`lang-item__${index}`}>
+              <SpCheckbox
+                checked={item.key == state.selectLang}
+                onChange={(e) => {
+                  setState((draft) => {
+                    draft.selectLang = item.key
+                  })
+                }}
+              >
+                {item.name}
+              </SpCheckbox>
+            </View>
+          ))}
+        </View>
       </SpFloatLayout>
     </SpPage>
   )

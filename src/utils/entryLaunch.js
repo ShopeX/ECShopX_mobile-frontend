@@ -379,7 +379,6 @@ class EntryLaunch {
   async postGuideUV() {
     const routerParams =
       Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
-    debugger
     const { gu, gu_user_id } = routerParams || {}
     let work_userid = ''
     if (gu) {
@@ -389,7 +388,6 @@ class EntryLaunch {
       work_userid = gu_user_id
     }
     if (work_userid) {
-      debugger
       await api.user.uniquevisito({
         work_userid
       })
