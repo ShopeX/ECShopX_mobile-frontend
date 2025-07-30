@@ -56,8 +56,16 @@ function TradeList(props) {
       tradeRef.current.reset()
     })
 
+    Taro.eventCenter.on('onEventInvoiceStatusChange', () => {
+      setState((draft) => {
+        draft.tradeList = []
+      })
+      tradeRef.current.reset()
+    })
+
     return () => {
       Taro.eventCenter.off('onEventOrderStatusChange')
+      Taro.eventCenter.off('onEventInvoiceStatusChange')
     }
   }, [])
 

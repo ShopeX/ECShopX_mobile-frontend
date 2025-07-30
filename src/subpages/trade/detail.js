@@ -102,10 +102,16 @@ function TradeDetail(props) {
       }, 200)
     })
 
+    // 发票状态变更
+    Taro.eventCenter.on('onEventInvoiceStatusChange', () => {
+      fetch()
+    })
+
     return () => {
       Taro.eventCenter.off('onEventAfterSalesApply')
       Taro.eventCenter.off('onEventAfterSalesCancel')
       Taro.eventCenter.off('onEventOfflineApply')
+      Taro.eventCenter.off('onEventInvoiceStatusChange')
 
       isMounted.current = false  // 组件卸载时设置为false
     }

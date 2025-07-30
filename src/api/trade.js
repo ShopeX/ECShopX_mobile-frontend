@@ -98,5 +98,33 @@ export function getVoucher (data) {
   return req.get(`/order/offline/get/voucher`, data)
 }
 
+// 申请发票
+export function applyInvoice(data) {
+  return req.post(`/order/invoice/apply`, data)
+}
+
+// 修改发票
+export function updateInvoice(data) {
+  return req.post(`/order/invoice/update`, data)
+}
+
+// 获取用户发票详情
+export function getInvoiceDetail(id) {
+  return req.get(`/order/invoice/info/${id}`)
+}
+
+// 重发发票到邮箱
+export function resendInvoice(data) {
+  return req.post(`/order/invoice/resend`, data)
+}
+
+// 获取发票设置
+export function getInvoiceSetting() {
+  return req.get(`/order/invoice/setting`)
+}
 
 
+// 获取发票协议
+export function getInvoiceProtocol() {
+  return req.get(`/order/invoice/protocol`)
+}

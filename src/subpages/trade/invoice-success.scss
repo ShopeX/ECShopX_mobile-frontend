@@ -1,0 +1,59 @@
+.page-invoice-success {
+  // background: #fff;
+
+  &__content {
+    padding: 240px 60px 0 60px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+
+  &__title {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 42px;
+    color: #1a1a1a;
+    margin-bottom: 36px;
+    text-align: center;
+  }
+
+  &__desc {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    font-size: 28px;
+    color: #666666;
+    margin-bottom: 108px;
+    text-align: center;
+  }
+
+  &__button {
+    padding: 0;
+    width: 288px;
+    height: 88px;
+    line-height: 88px;
+    background: #1a1a1a;
+    border: none;
+    border-radius: 12px;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 28px;
+    color: #ffffff;
+    text-align: center;
+  }
+
+  .sp-price__symbol,
+  .sp-price__int,
+  .sp-price__decimal {
+    font-family: PingFang SC, PingFang SC !important;
+    font-weight: 600 !important;
+    font-size: 28px !important;
+    color: #1a1a1a !important;
+  }
+}

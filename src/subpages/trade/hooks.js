@@ -102,6 +102,22 @@ export default (props) => {
     TRACK: {
       title: '订单追踪', key: 'track', btnStatus: 'normal'
     },
+    INVOICE_APPLY: {
+      title: '申请开票', key: 'invoice_apply', btnStatus: 'normal', action: ({ orderId, invoice_amount }) => {
+        Taro.setStorageSync('invoice_params', null)
+        Taro.navigateTo({
+          url: `/subpages/trade/invoice?order_id=${orderId}&invoice_amount=${invoice_amount}`
+        })
+      }
+    },
+    INVOICE_DETAIL: {
+      title: '发票详情', key: 'invoice_detail', btnStatus: 'normal',
+      action: ({ invoiceId }) => {
+        Taro.navigateTo({
+          url: `/subpages/trade/invoice-detail?invoice_id=${invoiceId}`
+        })
+      }
+    }
   }
 
   const getTradeAction = ({
@@ -113,12 +129,22 @@ export default (props) => {
     receiptType,
     isRate,
     items,
+    invoiceAble,
+    invoiceId,
     offlinePayCheckStatus,
     prescriptionStatus
   }) => {
     const btns = []
     const isData = receiptType == 'dada'
     const isMerchant = receiptType == 'merchant'
+
+    if (invoiceAble && !invoiceId) {
+      btns.push(tradeActionBtns.INVOICE_APPLY)
+    }
+    
+    if (invoiceId) {
+      btns.push(tradeActionBtns.INVOICE_DETAIL)
+    }
 
     if (offlinePayCheckStatus == '2' && orderStatus == 'NOTPAY') {
       //线下转账拒绝时修改付款凭证

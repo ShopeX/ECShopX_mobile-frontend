@@ -108,6 +108,9 @@ export const TRADE_ITEM = {
   },
   diagnosisData: 'diagnosis_data',
   pointFee: ({ point_fee }) => point_fee / 100,
+  invoice_amount:'invoice_amount',
+  invoiceAble: 'invoice_able',
+  invoiceId: 'invoice_id',
 }
 
 export const SHOP_INFO = {

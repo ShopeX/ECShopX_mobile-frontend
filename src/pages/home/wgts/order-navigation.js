@@ -11,8 +11,8 @@ import './order-navigation.scss'
 
 const initList = [
   { content: '待付款', imgUrl: 'fv_order_daifukuan.png',  link: '/subpages/trade/list?status=5', key: 'waitPayNum' },
-  { content: '待收货', imgUrl: 'fv_order_daifahuo.png', link: '/subpages/trade/list?status=1', key: 'waitSendNum' },
-  { content: '待评价', imgUrl: 'fv_order_daishouhuo.png', link: '/subpages/trade/list?status=7', key: 'waitRecevieNum' },
+  { content: '待收货', imgUrl: 'fv_order_daifahuo.png', link: '/subpages/trade/list?status=1', key: 'waitRecevieNum' },
+  { content: '待评价', imgUrl: 'fv_order_daishouhuo.png', link: '/subpages/trade/list?status=7', key: 'waitEvaluateNum' },
   { content: '售后', imgUrl: 'fv_order_shouhou.png', link: '/subpages/trade/after-sale-list', key: 'afterSalesNum' },
 ]
 

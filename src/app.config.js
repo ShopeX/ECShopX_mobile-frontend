@@ -190,6 +190,9 @@ const config = {
         'ziti-list',
         'logistics-info',
         'store-picker',
+        'invoice', //开具发票
+        'invoice-detail', //开具发票详情
+        'invoice-success', //开具发票成功
         'trade-evaluate', // 订单评价
         'evaluate-success', // 评价结果
         'delivery-info', // 物流详情

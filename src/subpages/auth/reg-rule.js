@@ -58,6 +58,13 @@ export default class RegRule extends Component {
       const { content: privacyContent, title: privactTitle } = salesman_privacy
       data = privacyContent
       navBarTitle = privactTitle
+    } else if (type == 'invoice_protocol') {
+      // 隐私政策
+      const { content, title = '专票使用确认书' } = await api.trade.getInvoiceProtocol({
+        type
+      })
+      data = content
+      navBarTitle = title
     } else if (type) {
       // 隐私政策
       const { content, title = '充值协议' } = await api.shop.getRuleInfo({

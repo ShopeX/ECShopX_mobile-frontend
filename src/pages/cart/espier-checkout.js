@@ -115,6 +115,7 @@ function CartCheckout(props) {
     isFirstCalc,//开启优先积分第一次需要填充积分抵扣
   } = state
 
+
   const {
     type = routerParams.type,
     order_type = 'normal',
@@ -131,6 +132,24 @@ function CartCheckout(props) {
     goodType = routerParams.goodType
   } = $instance?.router?.params || {}
   console.log('$instance.router?.params:', $instance.router)
+
+  useEffect(() => {
+    Taro.eventCenter.on('onEventCheckoutInvoiceChange', (params) => {
+      console.log('onEventCheckoutInvoiceChange:', params)
+      let invoice_parmas = {
+        invoice_content: {
+          ...params
+        }
+      }
+      setState((draft) => {
+        draft.invoiceTitle = params.company_title || ''
+        draft.paramsInfo = { ...paramsInfo, ...invoice_parmas }
+      })
+    })
+    return () => {
+      Taro.eventCenter.off('onEventCheckoutInvoiceChange')
+    }
+  }, [])
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()
@@ -157,7 +176,7 @@ function CartCheckout(props) {
       calcOrder()
     }
     // }, [address, payType, coupon, point_use, receiptType, zitiAddress])
-  }, [payType, point_use, address, coupon, zitiAddress, receiptType])
+  }, [payType, point_use, address, coupon, zitiAddress, receiptType, paramsInfo.invoice_content])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
@@ -382,6 +401,11 @@ function CartCheckout(props) {
 
   // 开发票
   const handleInvoiceClick = () => {
+    Taro.setStorageSync('invoice_params', paramsInfo?.invoice_content)
+    Taro.navigateTo({
+      url: `/subpages/trade/invoice?page_type=checkout`
+    })
+    return
     authSetting('invoiceTitle', async () => {
       const res = await Taro.chooseInvoiceTitle()
       if (res.errMsg === 'chooseInvoiceTitle:ok') {
@@ -420,7 +444,8 @@ function CartCheckout(props) {
     e.stopPropagation()
     setState((draft) => {
       draft.invoiceTitle = ''
-      draft.paramsInfo = { ...paramsInfo, invoice_type: '', invoice_content: {} }
+      // draft.paramsInfo = { ...paramsInfo, invoice_type: '', invoice_content: {} }
+      draft.paramsInfo = { ...paramsInfo, invoice_content: {} }
     })
   }
 
@@ -789,7 +814,7 @@ function CartCheckout(props) {
 
     // 积分不开票
     if (payType === 'point') {
-      delete cus_parmas.invoice_type
+      // delete cus_parmas.invoice_type
       delete cus_parmas.invoice_content
       delete cus_parmas.point_use
     }
@@ -1055,7 +1080,7 @@ function CartCheckout(props) {
             value={couponText || '请选择'}
           />
         )}
-        {isWeixin && !bargain_id && totalInfo.invoice_status && (
+        {(!bargain_id && totalInfo.invoice_status) ? (
           <SpCell
             isLink
             title='开发票'
@@ -1073,7 +1098,7 @@ function CartCheckout(props) {
               </View>
             }
           />
-        )}
+        ) : null}
 
         {openBuilding && (
           <View className='cart-checkout__building'>

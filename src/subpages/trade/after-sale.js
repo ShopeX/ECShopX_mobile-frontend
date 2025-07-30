@@ -463,6 +463,7 @@ function TradeAfterSale(props) {
                 value={description}
                 placeholder='请输入您的补充描述（选填）'
                 maxLength={200}
+                placeholderStyle='padding-left: 10px;'
                 onChange={(e) => {
                   setState((draft) => {
                     draft.description = e
