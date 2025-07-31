@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import api from '@/api'
 import S from '@/spx'
-import { pickBy, getDistributorId, entryLaunch } from '@/utils'
+import { pickBy, getDistributorId, entryLaunch, isEmpty } from '@/utils'
 import doc from '@/doc'
 import { useShopInfo } from '@/hooks'
 import { updateShopInfo } from '@/store/slices/shop'
@@ -31,7 +31,7 @@ export default () => {
     if (dtid) {
       params['distributor_id'] = dtid
     } else if (entryStoreByLBS) {
-      if (!location) {
+      if (isEmpty(location)) {
         const locationInfo = await entryLaunch.getLocationInfo()
         dispatch(updateLocation(locationInfo))
         params['lat'] = locationInfo?.lat
@@ -154,6 +154,7 @@ export default () => {
 
   return {
     checkEnterStoreRule,
+    checkStoreWhiteList,
     checkUserInStoreWhiteList,
     getUserWhiteShop
   }

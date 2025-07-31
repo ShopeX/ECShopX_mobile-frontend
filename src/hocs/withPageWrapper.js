@@ -109,7 +109,11 @@ function withPageWrapper(Component) {
           })
           if (res.confirm) {
             if (entryDefalutStore == '1') {
-              await checkStoreWhiteList()
+              try {
+                await checkStoreWhiteList()
+              } catch (err) {
+                await handleStoreWhiteList()
+              }
             } else {
               Taro.redirectTo({
                 url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=davild`
