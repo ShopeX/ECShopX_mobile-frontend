@@ -69,6 +69,17 @@ function App({ children }) {
       checkAppVersion()
     }
 
+    // 导购参数缓存处理
+    const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
+    if (guideUpdateTime != 0) {
+      const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+      // 参数保存超过3天，清除导购参数
+      if (diffMilliseconds > 3 * 86400000) {
+        Taro.removeStorageSync(SG_GUIDE_PARAMS)
+        Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
+      }
+    }
+
     const { show_time } = await api.promotion.getScreenAd()
     let showAdv
     if (show_time === 'always') {
@@ -78,21 +89,12 @@ function App({ children }) {
         payload: showAdv
       })
     }
-    getSystemConfig()
-
-    // 导购参数缓存处理
-    const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
-    const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
-    // 参数保存超过3天，清除导购参数
-    if (diffMilliseconds > 3 * 86400000) {
-      Taro.removeStorageSync(SG_GUIDE_PARAMS)
-      Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
-    }
   }, [])
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
 
+    // 分包异步加载语言包
     __non_webpack_require__ &&
       __non_webpack_require__('subpages/i18n/index', (res) => {
         const langJSON = Taro['langJSON']
@@ -104,8 +106,17 @@ function App({ children }) {
   useDidShow(async (options) => {
     console.log('useDidShow &&&&&&&&&&&&', options)
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
-      console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
+
+      if (params.gu || params.gu_user_id) {
+        Taro.setStorageSync(SG_GUIDE_PARAMS, {
+          ...params,
+          gu_user_id: params.gu_user_id || params.gu.split('_')[0]
+        })
+        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix() * 1000)
+      }
+
+      console.log(`app componentDidShow:`, params)
 
       if (typeof params.runFlag === 'undefined') {
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
@@ -115,13 +126,8 @@ function App({ children }) {
           Taro.removeStorageSync(SG_GUIDE_PARAMS)
           Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
         }
-      }
-      if (params.gu || params.gu_user_id) {
-        Taro.setStorageSync(SG_GUIDE_PARAMS, {
-          ...params,
-          gu_user_id: params.gu_user_id || params.gu.split('_')[0]
-        })
-        Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+
+        getSystemConfig()
       }
     })
   })
