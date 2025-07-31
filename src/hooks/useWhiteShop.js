@@ -89,7 +89,7 @@ export default () => {
           work_userid: gu_user_id
         })
         if (guideStoreInfo?.distributor_id) {
-          await checkStoreWhiteList(guideStoreInfo?.distributor_id)
+          await checkStoreWhiteList(guideStoreInfo?.distributor_id, false)
         } else {
           // 兜底策略
           if (entryDefalutStore == '1') {
