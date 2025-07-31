@@ -178,7 +178,7 @@ function App({ children }) {
 
           entryStoreByStoreCode: enterStoreRule?.distributor_code,
           entryStoreByGuideMaterial: enterStoreRule?.shop_assistant,
-          enterStoreWhiteList: enterStoreRule?.white_list,
+          enterStoreWhiteList: enterStoreRule?.shop_white,
           entryStoreByGuide: enterStoreRule?.shop_assistant_pro,
           entryStoreByLBS: enterStoreRule?.shop_lbs,
           entryDefalutStore: enterStoreRule?.radio_type,

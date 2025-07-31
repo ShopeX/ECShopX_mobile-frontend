@@ -106,6 +106,7 @@ export default () => {
         await checkStoreWhiteList()
       }
     } else {
+      // 进入专属导购所属店
       if (entryStoreByGuide && S.getAuthToken()) {
         const guideStoreInfo = await api.shop.checkStoreEnterRule()
         if (guideStoreInfo?.distributor_id) {
@@ -123,6 +124,7 @@ export default () => {
           }
         }
       } else if (enterStoreWhiteList && S.getAuthToken()) {
+        // 进入白名单会员店
         const myShopInfo = await getUserWhiteShop()
         if (myShopInfo) {
           dispatch(updateShopInfo(myShopInfo))
