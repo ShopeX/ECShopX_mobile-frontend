@@ -83,7 +83,11 @@ function withPageWrapper(Component) {
         } else {
           // 返回兜底店铺逻辑
           if (entryDefalutStore == '1') {
-            await checkStoreWhiteList()
+            try {
+              await checkStoreWhiteList()
+            } catch (err) {
+              await handleToLogin()
+            }
           } else {
             Taro.redirectTo({
               url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=davild`
