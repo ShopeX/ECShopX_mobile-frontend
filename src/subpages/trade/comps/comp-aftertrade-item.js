@@ -52,7 +52,7 @@ function CompTradeItem(props) {
     <View className='comp-tradeitem'>
       <View className='trade-item-hd' onClick={onViewTradeDetail}>
         <View>
-          <View className='shop-info' onClick={onViewStorePage}>
+          {/* <View className='shop-info' onClick={onViewStorePage}>
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
             <View className='shop-name'>
               {distributorInfo?.name}

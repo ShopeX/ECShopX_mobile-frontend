@@ -1,13 +1,12 @@
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
-import doc from '@/doc'
+import S from '@/spx'
 import { View, Picker } from '@tarojs/components'
 import { LOGISTICS_CODE } from '@/consts'
-import { SpPage, SpCell, SpInput as AtInput } from '@/components'
+import { SpPage, SpCell, SpInput as AtInput, SpToast } from '@/components'
 import { showToast } from '@/utils'
 import './logistics-info.scss'
 
@@ -44,19 +43,25 @@ function TradeLogisticsInfo(props) {
       showToast('请填写物流单号')
       return
     }
-    await api.aftersales.sendback({
-      item_id,
-      order_id,
-      aftersales_bn,
-      logi_no,
-      corp_code
-    })
-    showToast('操作成功')
-    setTimeout(() => {
-      Taro.navigateBack({
-        delta: 2
+    try {
+      await api.aftersales.sendback({
+        item_id,
+        order_id,
+        aftersales_bn,
+        logi_no,
+        corp_code,
+        showError:false
       })
-    }, 1000)
+      showToast('操作成功')
+      setTimeout(() => {
+        Taro.navigateBack({
+          delta: 2
+        })
+      }, 1000)
+    } catch (error) {
+      console.log(error)
+      S.toast(error.message)
+    }
   }
 
   const onChangeExpress = (e) => {
@@ -109,6 +114,8 @@ function TradeLogisticsInfo(props) {
           />
         }
       ></SpCell>
+        <SpToast />
+
     </SpPage>
   )
 }

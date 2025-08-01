@@ -7,7 +7,6 @@ import { SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { classNames, pickBy, thousandthFormat } from '@/utils'
-import { POINT_TYPE } from '@/consts'
 import './point-detail.scss'
 
 const btns = [

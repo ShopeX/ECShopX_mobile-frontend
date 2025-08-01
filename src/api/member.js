@@ -29,7 +29,7 @@ export function pointDetail() {
 }
 
 export function favsList(params = {}) {
-  return req.get('/member/collect/item', { ...params, showError: false }, null)
+  return req.get('/member/collect/item', {...params,  showError: false }, null )
 }
 
 export function addFav(item_id, params) {

@@ -249,19 +249,27 @@
       margin: 0 32px;
       display: flex;
       overflow: hidden;
-    }
+      position: relative;
 
-    .icon-bianji1 {
-      color: #aaaaaa;
-    }
-
-    .at-textarea {
-      border-width: 0;
-      padding: 0;
-      margin: 6px 0 0 10px;
-
-      &__textarea {
-        font-size: 24px;
+      .icon-bianji1 {
+        color: #aaaaaa;
+        position: absolute;
+        z-index: 999;
+        top: 13px;
+        left: 10px;
+      }
+   
+      .at-textarea {
+        border-width: 0;
+        padding: 0;
+        margin: 0;
+        width: 100%;
+        
+        &__textarea {
+          font-size: 24px;
+          line-height: normal;
+          padding: 0px 10px 20px 40px;
+        }
       }
     }
 

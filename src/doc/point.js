@@ -29,7 +29,7 @@ const JOURNAL_TYPE = {
 
 export const POINT_LIST_ITEM = {
   journalType: ({ journal_type }) => JOURNAL_TYPE[journal_type],
-  outinType: 'outin_type',
+  outinType: ({ income, outcome }) => income ? 'in' : outcome ? 'out' : '',
   point: ({ point }) => thousandthFormat(point),
   orderId: 'order_id',
   created: ({ created }) => formatDateTime(created)

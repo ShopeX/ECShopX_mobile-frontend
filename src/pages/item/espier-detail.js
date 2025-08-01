@@ -304,7 +304,7 @@ function EspierDetail(props) {
       distributor_id: dtid
     })
 
-    setNavigationBarTitle(data.itemName)
+    // setNavigationBarTitle(data.itemName)
 
     console.log(ACTIVITY_LIST[data.activityType])
     if (ACTIVITY_LIST[data.activityType]) {
@@ -350,19 +350,19 @@ function EspierDetail(props) {
       getRecommendList() // 猜你喜欢
     }
   }
-  const getMultipleImageInfo = async (imageUrls) => {
-    const promises = imageUrls.map((url) =>
-      Taro.getImageInfo({ src: url })
-        .then((info) => info)
-        .catch((error) => {
-          console.log('获取图片信息失败:', url, error)
-          // 返回一个默认高度或 null
-          return { width: 0, height: 750 }
-        })
-    )
-    const results = await Promise.all(promises)
-    return results.map((info) => info.height / 2)
-  }
+const getMultipleImageInfo = async (imageUrls) => {
+  const promises = imageUrls.map(url =>
+    Taro.getImageInfo({ src: url })
+      .then(info => info)
+      .catch(error => {
+        console.log('获取图片信息失败:', url, error)
+        // 返回一个默认高度或 null
+        return { width: 0, height: 650 }
+      })
+  )
+  const results = await Promise.all(promises)
+  return results.map(info => (info.height) / 2 > 650 ? 650 : info.height / 2)
+}
 
   const getRecommendList = async () => {
     const { list } = await api.cart.likeList({
@@ -430,9 +430,10 @@ function EspierDetail(props) {
     return {
       height: '100%',
       width: '100%',
-      backgroundSize: '100% auto',
+      backgroundSize: 'cover',
       backgroundImage: `url(${item})`,
-      backgroundRepeat: 'no-repeat'
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
     }
   }
 

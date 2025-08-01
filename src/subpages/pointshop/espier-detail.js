@@ -322,6 +322,19 @@ function PointShopEspierDetail(props) {
         <View className='goods-contents'>
           <View className='goods-pic-container'>
             <Swiper className='goods-swiper' onChange={onChangeSwiper}>
+              {info.video && (
+                <SwiperItem key='swiperitem__video'>
+                  <View className='video-container'>
+                    <Video
+                      id='goods-video'
+                      className='item-video'
+                      src={info.video}
+                      autoplay
+                      showCenterPlayBtn={false}
+                    />
+                  </View>
+                </SwiperItem>
+              )}
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage
@@ -335,21 +348,12 @@ function PointShopEspierDetail(props) {
             </Swiper>
 
             {info.imgs.length > 1 && (
-              <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgs.length}`}</View>
+              <View className='swiper-pagegation'>{`${curImgIdx + 1}/${
+                info.imgs.length + (info.video ? 1 : 0)
+              }`}</View>
             )}
 
-            {info.video && play && (
-              <View className='video-container'>
-                <Video
-                  id='goods-video'
-                  className='item-video'
-                  src={info.video}
-                  showCenterPlayBtn={false}
-                />
-              </View>
-            )}
-
-            {info.video && (
+            {/* {info.video && (
               <View
                 className={classNames('btn-video', {
                   playing: play
@@ -362,8 +366,8 @@ function PointShopEspierDetail(props) {
               >
                 {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
                 {play ? '退出视频' : '播放视频'}
-              </View>
-            )}
+              </View> */}
+            {/* )} */}
           </View>
 
           <View className='goods-info'>

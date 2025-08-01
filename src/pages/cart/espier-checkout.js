@@ -317,9 +317,13 @@ function CartCheckout(props) {
         draft.submitLoading = false
       })
       Taro.hideLoading()
+      Taro.showToast({
+        title: `${e?.message || '创建订单失败,请稍后再试'}`,
+        icon: 'none'
+      })
       setTimeout(() => {
         Taro.navigateBack()
-      }, 100)
+      }, 800)
       return
     }
     Taro.hideLoading()
