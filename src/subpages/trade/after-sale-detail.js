@@ -58,6 +58,10 @@ function TradeAfterSaleDetail(props) {
       order_id
     })
     console.log(pickBy(resInfo, doc.trade.TRADE_AFTER_SALES_ITEM))
+    resInfo?.detail?.forEach(item => {
+      item.orderItem.refundNum = item.num
+      item.orderItem.refundFee = item.refund_fee / 100
+    })
     setState(draft => {
       draft.info = pickBy(resInfo, doc.trade.TRADE_AFTER_SALES_ITEM)
       draft.reasons = reasons
