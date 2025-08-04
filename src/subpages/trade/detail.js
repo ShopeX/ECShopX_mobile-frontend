@@ -218,10 +218,14 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId,activityId,orderClass }) => {
+  const onClickItem = ({ itemId, distributorId,activityId,orderClass,point }) => {
     if(orderClass == 'employee_purchase'){
       Taro.navigateTo({
         url:`/subpages/purchase/espier-detail?id=${itemId}&dtid=${distributorId || 0}&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+      })
+    }  else if(point > 0){
+      Taro.navigateTo({
+        url:`/subpages/pointshop/espier-detail?id=${itemId}&dtid=${distributorId || 0}&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
       })
     }else{
       Taro.navigateTo({
