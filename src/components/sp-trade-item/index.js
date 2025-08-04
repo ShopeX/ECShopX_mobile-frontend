@@ -32,7 +32,7 @@ function SpTradeItem(props) {
             {itemName}
           </View>
           {
-            orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`}</Text>
+            orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`} {price? <SpPrice value={price} /> : null}</Text>
           }
           {
             orderClass == 'normal' && <SpPrice value={price} />
