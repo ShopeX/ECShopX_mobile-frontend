@@ -41,7 +41,7 @@ export const TRADE_ITEM = {
       deliveryStatus: 'delivery_status',
       distributorId: 'distributor_id',
       pic: 'pic',
-      price: ({ total_fee }) => (total_fee) / 100,
+      price: ({ price }) => price / 100,
       id: 'id',
       itemId: 'item_id',
       itemName: 'item_name',
@@ -130,7 +130,7 @@ export const AFTER_TRADE = {
       itemName: 'item_name',
       num: 'num',
       pic: 'item_pic',
-      price: ({ refund_fee }) => refund_fee / 100,
+      price: ({ refund_fee,num }) => refund_fee / num / 100,
       point: 'point',
       isPrescription: 'is_prescription',
     })
@@ -154,8 +154,8 @@ export const TRADE_AFTER_SALES_ITEM = {
       pic: ({ orderItem }) => orderItem.pic,
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
-      num: ({ orderItem }) => orderItem.num,
-      price: ({ orderItem }) => orderItem.total_fee / 100,
+      num: ({ orderItem }) => orderItem.refundNum,
+      price: ({ orderItem }) => orderItem.refundFee,
       isPrescription: ({ orderItem }) => orderItem.is_prescription,
     })
   },
