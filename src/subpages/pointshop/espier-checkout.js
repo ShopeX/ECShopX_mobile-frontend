@@ -44,7 +44,7 @@ function PointShopEspierCheckout() {
     }
   })
 
-  const { cashierPayment } = usePayment()
+  const { cashierPayment,payError } = usePayment()
 
   const [state, setState] = useAsyncCallback(initialState)
 
@@ -253,6 +253,10 @@ function PointShopEspierCheckout() {
       let { redirect_url } = await api.wx.getredirecturl({ url })
       window.location.href = redirect_url
     } else {
+      if(orderInfo?.order_type == "normal_pointsmall" && orderInfo?.total_fee == 0){
+        payError(orderInfo)
+        return
+      }
       cashierPayment(
         {
           ...params,
