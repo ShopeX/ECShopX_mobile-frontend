@@ -166,6 +166,12 @@ export const TRADE_AFTER_SALES_ITEM = {
   afterSalesContact: ({ aftersales_address }) => aftersales_address.aftersales_contact,
   aftersalesHours: ({ aftersales_address }) => aftersales_address.aftersales_hours,
   refundFee: ({ refund_fee }) => refund_fee / 100,
+  refund_info: ({ refund_info }) => {
+    return pickBy(refund_info, {
+      refundFee: ({ refunded_fee }) => refunded_fee / 100,
+      refundPoint: 'refund_point',
+    })
+  },
   refundPoint: 'refund_point',
   reason: 'reason',
   description: 'description',

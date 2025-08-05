@@ -218,10 +218,10 @@ function TradeAfterSaleDetail(props) {
 
         <View className='refund-detail'>
           <View className='refund-amount'>
-            <SpCell title='退款金额' value={<SpPrice value={info?.refundFee} />}></SpCell>
+            <SpCell title='退款金额' value={<SpPrice value={info?.refund_info?.refundFee ||  info?.refundFee} />}></SpCell>
           </View>
           <View className='refund-point'>
-            <SpCell title='退积分' value={info?.refundPoint}></SpCell>
+            <SpCell title='退积分' value={<SpPrice value={info?.refund_info?.refundPoint || info?.refundPoint} />}></SpCell>
           </View>
           {
             info?.freight > 0 &&
