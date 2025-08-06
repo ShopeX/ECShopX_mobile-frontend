@@ -93,7 +93,7 @@ function EspierDetail(props) {
   // const { type, id, dtid } = $instance.router.params
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const pageRef = useRef()
-  const { userInfo, cartCount } = useSelector((state) => state.guide)
+  const { userInfo, cartCount,storeInfo } = useSelector((state) => state.guide)
   const { colorPrimary } = useSelector((state) => state.sys)
 
   const [state, setState] = useImmer(initialState)
@@ -187,9 +187,11 @@ function EspierDetail(props) {
   const getAppShareInfo = () => {
     const { itemName, imgs } = info
     const { salesperson_id, avatar, company_id, work_userid, shop_code } = userInfo
+    const { shop_id } = storeInfo
     const query = {
       id,
-      dtid,
+      dtid:shop_id,
+      distributor_id:shop_id, 
       smid: salesperson_id,
       gu: `${work_userid}_${shop_code}`,
       subtask_id: subtaskId
@@ -205,11 +207,11 @@ function EspierDetail(props) {
   }
 
   const init = async () => {
-    const { type, id, dtid, subtask_id } = await entryLaunch.getRouteParams()
+    const { type, id, dtid, subtask_id,distributor_id } = await entryLaunch.getRouteParams()
     setState((draft) => {
       draft.id = id
       draft.type = type
-      draft.dtid = dtid
+      draft.dtid = dtid || distributor_id
       draft.subtaskId = subtask_id // 导购任务号
     })
   }
