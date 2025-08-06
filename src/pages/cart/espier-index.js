@@ -41,6 +41,8 @@ const initialState = {
 
 function CartIndex() {
   const { updateAddress } = useLocation()
+
+  const  {shopInfo = {}} = useSelector(state=>state.shop)
   const { isLogin } = useLogin({
     autoLogin: true,
     policyUpdateHook: (isUpdate) => {
@@ -309,7 +311,7 @@ function CartIndex() {
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
                     <View className='shop-cart-item-hd'>
                       <Text className='iconfont icon-shop' />
-                      {all_item.shop_name || '自营'}
+                      {all_item.shop_name || shopInfo?.store_name || '自营'}
                     </View>
                     <View className='shop-cart-item-shadow'>
                       {/** 店铺商品开始 */}

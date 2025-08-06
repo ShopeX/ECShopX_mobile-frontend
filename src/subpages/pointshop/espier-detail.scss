@@ -14,12 +14,7 @@
     bottom: 0;
     .item-video {
       width: 100%;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 100;
-      // height: auto;
+      height: 100%;
     }
     .btn-play {
       position: absolute;
@@ -92,7 +87,7 @@
       }
     }
     .goods-desc {
-      margin: 24px 16px;
+      margin: 24px 0px;
       background-color: #fff;
       box-shadow: 0px 2px 10px 0px #eae7e0;
       .desc-hd {

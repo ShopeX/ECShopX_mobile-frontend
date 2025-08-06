@@ -403,6 +403,7 @@ export default (props = {}) => {
 
 
   return {
-    cashierPayment
+    cashierPayment,
+    payError
   }
 }
