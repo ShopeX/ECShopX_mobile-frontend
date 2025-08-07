@@ -736,7 +736,7 @@ function TradeDetail(props) {
               title='实付'
               value={(() => {
                 if (info?.orderClass === 'pointsmall') {
-                  return `${pointName} ${info?.point}${info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''}`
+                  return `${pointName} ${info?.point}${info?.totalFee >0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''}`
                 } else {
                   return <SpPrice value={info?.totalFee} size={28} />
                 }
