@@ -777,6 +777,13 @@ function CartCheckout(props) {
       cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
+    if (routerParams?.gu?.length > 0) {
+      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+    }
+    if(routerParams?.dtid) {
+      cus_parmas.distributor_id = routerParams?.dtid;
+    }
+
     if (receiptType === 'ziti') {
       delete cus_parmas.receiver_state
       delete cus_parmas.receiver_city
