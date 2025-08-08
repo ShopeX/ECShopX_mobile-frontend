@@ -41,7 +41,7 @@ export const TRADE_ITEM = {
       deliveryStatus: 'delivery_status',
       distributorId: 'distributor_id',
       pic: 'pic',
-      price: ({ price }) => price / 100,
+      price: ({ total_fee }) => total_fee / 100,
       id: 'id',
       itemId: 'item_id',
       itemName: 'item_name',
@@ -155,7 +155,7 @@ export const TRADE_AFTER_SALES_ITEM = {
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
       num: ({ orderItem }) => orderItem.refundNum,
-      price: ({ orderItem }) => orderItem.refundFee,
+      price: ({ orderItem }) => orderItem.total_fee,
       isPrescription: ({ orderItem }) => orderItem.is_prescription,
     })
   },
