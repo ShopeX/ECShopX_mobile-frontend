@@ -141,8 +141,12 @@ function CartCheckout(props) {
           ...params
         }
       }
+      let invoice_title = ''
+      if(params.company_title) {
+        invoice_title = `${params.invoice_type_code == '02' ? '普票' : '专票'}(${params.company_title})`
+      }
       setState((draft) => {
-        draft.invoiceTitle = params.company_title || ''
+        draft.invoiceTitle = invoice_title
         draft.paramsInfo = { ...paramsInfo, ...invoice_parmas }
       })
     })
