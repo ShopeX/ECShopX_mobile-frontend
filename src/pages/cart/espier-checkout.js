@@ -320,7 +320,7 @@ function CartCheckout(props) {
 
     if (
       params.pay_type == 'wxpayjs' ||
-      (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+      ((params.pay_type == 'bspay' || params.pay_type == 'adapay') && params.pay_channel == 'wx_pub' && isWxWeb)
     ) {
       // 微信客户端code授权
       const loc = window.location
@@ -545,7 +545,7 @@ function CartCheckout(props) {
       point_use,
       user_point = 0,
       max_point = 0,
-      max_point_ziti=0,
+      max_point_ziti = 0,
       is_open_deduct_point,
       deduct_point_rule,
       real_use_point,
@@ -691,14 +691,14 @@ function CartCheckout(props) {
         draft.community = community
       }
 
-      if(isFirstCalc && Number(point_rule?.point_pay_first) > 0){
+      if (isFirstCalc && Number(point_rule?.point_pay_first) > 0) {
         const maxpoint = receiptType == 'ziti' ? max_point_ziti : max_point
-        let firstPoint = Math.min(maxpoint,user_point)
+        let firstPoint = Math.min(maxpoint, user_point)
 
         draft.point_use = firstPoint
         draft.pointInfo = {
           ...point_info,
-          real_use_point:firstPoint
+          real_use_point: firstPoint
         }
         draft.isFirstCalc = false
       }
@@ -750,7 +750,7 @@ function CartCheckout(props) {
       // 云店店铺商铺下单这个参数应该是0
       isNostores: type == 'distributor' ? 0 : 1, // 这个传参需要和后端在确定一下
       point_use,
-      pay_type:payType,
+      pay_type: payType,
       // pay_type: point_use > 0 && totalInfo.total_fee == 0 ? 'point' : payType,
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
@@ -865,9 +865,9 @@ function CartCheckout(props) {
   }
 
   const getPayChannelLabel = () => {
-    if(payChannel == 'offline_pay'){
-      return  paymentName
-    }else{
+    if (payChannel == 'offline_pay') {
+      return paymentName
+    } else {
       return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
     }
   }
@@ -1193,8 +1193,8 @@ function CartCheckout(props) {
         {
           !totalInfo?.prescription_status == 0 &&
           <View className='cart-checkout__title'>
-          订单中包含处方药，提交订单后请补充处方信息
-        </View>
+            订单中包含处方药，提交订单后请补充处方信息
+          </View>
         }
 
       </ScrollView>
