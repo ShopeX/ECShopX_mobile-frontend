@@ -218,6 +218,7 @@ function InvoiceDetail() {
                   <SpImage
                     width={134}
                     height={134}
+                    mode='aspectFill'
                     src={item.item_bn != 'shippingFeeLine888' ? item.main_img : 'fv_freight.png'}
                   />
                 </View>
