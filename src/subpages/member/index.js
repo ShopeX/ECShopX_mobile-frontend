@@ -563,7 +563,7 @@ function MemberIndex(props) {
               </SpLogin>
               <SpLogin
                 onChange={() => {
-                  handleClickLink('/subpages/pointshop/list')
+                  handleClickLink('/subpages/member/point-detail')
                 }}
               >
                 <View className='stat-item'>
