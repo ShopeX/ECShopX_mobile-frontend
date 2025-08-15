@@ -37,6 +37,22 @@ function parseValue(num) {
 }
 
 class AtInputNumber extends AtComponent {
+  state = {
+    localValue: 0
+  }
+
+  componentDidMount() {
+    this.setState({
+      localValue: this.props.value
+    })
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.state.localValue) {
+      this.setState({ localValue: this.props.value });
+    }
+  }
+
   handleClick(clickType) {
     const { disabled, value, min, max, step } = this.props
     const lowThanMin = clickType === 'minus' && value <= min
@@ -55,11 +71,14 @@ class AtInputNumber extends AtComponent {
           errorValue
         })
       }
-      return
+      // return
     }
     const deltaValue = clickType === 'minus' ? -step : step
     let newValue = addNum(value, deltaValue)
     newValue = this.handleValue(newValue)
+    this.setState({
+      localValue: newValue
+    })
     this.props.onChange(newValue)
   }
 
@@ -67,14 +86,14 @@ class AtInputNumber extends AtComponent {
     const { max, min } = this.props
     let resultValue = value === '' ? min : value
     // 此处不能使用 Math.max，会是字符串变数字，并丢失 .
-    if (resultValue > max) {
+    if (Number(resultValue) > max) {
       resultValue = max
       this.handleError({
         type: 'OVER',
         errorValue: resultValue
       })
     }
-    if (resultValue < min) {
+    if (Number(resultValue) < min) {
       resultValue = min
       this.handleError({
         type: 'LOW',
@@ -89,13 +108,26 @@ class AtInputNumber extends AtComponent {
     const { value } = e.target
     const { disabled } = this.props
     if (disabled) return
+    // console.log('handleInput', value)
+    // this.setState({
+    //   localValue: value
+    // })
 
-    const newValue = this.handleValue(value)
-    this.props.onChange(newValue, e, ...arg)
-    return newValue
+
+    // this.props.onChange(newValue, e, ...arg)
+    // return newValue
   }
 
-  handleBlur = (...arg) => this.props.onBlur(...arg)
+  handleBlur = (e, ...arg) => {
+    const { value } = e.target
+    const newValue = this.handleValue(value)
+    console.log('handleInput', newValue)
+    this.setState({
+      localValue: newValue
+    })
+    this.props.onChange(newValue, e, ...arg)
+  }
+  // handleBlur = (...arg) => this.props.onBlur(...arg)
 
   handleError = (errorValue) => {
     if (!this.props.onErrorInput) {
@@ -110,8 +142,8 @@ class AtInputNumber extends AtComponent {
     const inputStyle = {
       width: width ? `${Taro.pxTransform(width)}` : ''
     }
-    const inputValue = this.handleValue(value)
-    console.log('inputValue', inputValue, max, inputValue >= parseInt(max))
+    const inputValue = this.handleValue(this.state.localValue)
+    console.log('inputValue', inputValue, 'localValue', this.state.localValue, 'max', max, 'inputValue >= parseInt(max)', inputValue >= parseInt(max))
     const rootCls = classNames(
       'sp-input-number',
       'at-input-number',
@@ -122,10 +154,10 @@ class AtInputNumber extends AtComponent {
       className
     )
     const minusBtnCls = classNames('at-input-number__btn', {
-      'at-input-number--disabled': inputValue <= min || disabled
+      'at-input-number--disabled': Number(inputValue) <= min || disabled
     })
     const plusBtnCls = classNames('at-input-number__btn', {
-      'at-input-number--disabled': inputValue >= max || disabled
+      'at-input-number--disabled': Number(inputValue) >= max || disabled
     })
 
     return (
@@ -161,8 +193,8 @@ AtInputNumber.defaultProps = {
   max: 100,
   step: 1,
   size: '',
-  onChange: () => {},
-  onBlur: () => {}
+  onChange: () => { },
+  onBlur: () => { }
 }
 
 export default AtInputNumber
