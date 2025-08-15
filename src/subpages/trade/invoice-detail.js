@@ -83,6 +83,24 @@ function InvoiceDetail() {
     )
   }
 
+  const handleCancel = async () => {
+    const { confirm } = await Taro.showModal({
+      title: '提示',
+      content: '确认撤销申请吗？',
+      cancelText: '取消',
+      confirmColor: colorPrimary,
+      confirmText: '确认'
+    })
+    if (confirm) {
+      api.trade.updateInvoice({
+        invoice_id: info?.id,
+        invoice_status: 'cancel'
+      })
+      Taro.eventCenter.trigger('onEventInvoiceStatusChange')
+      Taro.navigateBack()
+    }
+  }
+
   const renderStatus = () => {
     const statusMap = {
       'pending': '待开票',
@@ -114,6 +132,12 @@ function InvoiceDetail() {
                 }}
               >
                 重发至邮箱
+              </View>
+            )}
+
+            {info?.invoice_status === 'pending' && (
+              <View className='btn-wrap__item' onClick={() => handleCancel()}>
+                撤销申请
               </View>
             )}
 
