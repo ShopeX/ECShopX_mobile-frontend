@@ -57,8 +57,6 @@ export default (props = {}) => {
           wxpayjsPay(params, orderInfo)
         } else if (pay_channel == 'alipay_wap') {
           bspayAliH5Pay(params, orderInfo)
-        }else if(pay_channel == 'wx_qr'){
-          wxpayjsPay(params, orderInfo)
         }
         break
       case 'wxpayh5':
@@ -178,12 +176,12 @@ export default (props = {}) => {
   // 微信H5 JSDK
   const wxpayjsPay = async (params, orderInfo) => {
     // const $instance = getCurrentInstance()
-    const { order_id, code } = router.params
+    const { order_id, code,source} = router.params
     if (!code) {
       // 微信客户端code授权
       const loc = window.location
       // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}`
+      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${orderId}&source=${source}`
       let { redirect_url } = await api.wx.getredirecturl({ url })
       window.location.href = redirect_url
     }

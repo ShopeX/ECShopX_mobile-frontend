@@ -37,12 +37,12 @@ function CashierWeApp(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id, code } = $instance.router.params
+    const { order_id, code,source } = $instance.router.params
     if (isWxWeb && !code) {
       // 微信客户端code授权
       const loc = window.location
       // const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-result?order_id=${orderId}`
-      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${order_id}`
+      const url = `${loc.protocol}//${loc.host}/pages/cart/cashier-weapp?order_id=${order_id}&source=${source}`
       let { redirect_url } = await api.wx.getredirecturl({ url })
       window.location.href = redirect_url
     }
@@ -51,7 +51,7 @@ function CashierWeApp(props) {
       orderDetail.orderInfo
     const params = {
       activityType: activity_type,
-      pay_channel: isWeixin ? 'wx_lite' : pay_channel,
+      pay_channel: isWeixin ? 'wx_lite' : pay_channel == 'wx_qr' ? 'wx_pub' : pay_channel,
       pay_type: pay_type
     }
     const orderInfo = {
