@@ -57,6 +57,8 @@ export default (props = {}) => {
           wxpayjsPay(params, orderInfo)
         } else if (pay_channel == 'alipay_wap') {
           bspayAliH5Pay(params, orderInfo)
+        }else if(pay_channel == 'wx_qr'){
+          wxpayjsPay(params, orderInfo)
         }
         break
       case 'wxpayh5':
@@ -66,7 +68,6 @@ export default (props = {}) => {
         alipayh5Pay(params, orderInfo)
         break
       case 'wxpayjs':
-        case 'wx_qr':
         wxpayjsPay(params, orderInfo)
         break
       case 'wxpayapp':
