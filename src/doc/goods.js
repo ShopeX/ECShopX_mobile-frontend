@@ -238,6 +238,7 @@ export const GOODS_INFO = {
   specItems: ({ spec_items, is_point }) => {
     return pickBy(spec_items, {
       approveStatus: 'approve_status',
+      customSpecId:'custom_spec_id',
       specItem: ({ item_spec }) => {
         return pickBy(item_spec, {
           specId: 'spec_value_id',
@@ -249,6 +250,7 @@ export const GOODS_INFO = {
         })
       },
       itemId: 'item_id',
+      startNum: 'start_num',// 起订量
       store: 'store',
       limitNum: 'limit_num',
       // price: ({ price }) => price / 100,
@@ -284,6 +286,7 @@ export const GOODS_INFO = {
   video: 'videos',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
+  startNum: 'start_num'// 起订量
 }
 
 export const ESPIER_DETAIL_GOODS_INFO = {
