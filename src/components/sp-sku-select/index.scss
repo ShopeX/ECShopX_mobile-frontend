@@ -70,6 +70,7 @@
     display: flex;
     flex-wrap: wrap;
     margin-top: 20px;
+    gap: 20px;
     .spec-name {
       display: block;
       // max-width: 260px;
@@ -84,7 +85,7 @@
     /* prettier-ignore */
     border: 1PX solid #f5f5f5;
     border-radius: 4px;
-    margin: 0 24px 24px 0;
+    // margin: 0 24px 24px 0;
     color: #222;
     box-sizing: border-box;
     &.sku-img {
@@ -102,6 +103,12 @@
         display: block;
         text-align: center;
         margin: 8px 0;
+        -webkit-line-clamp: 1;
+        line-clamp: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        max-width: 260px;
       }
     }
     &.active {
