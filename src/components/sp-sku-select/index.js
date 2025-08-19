@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
+import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import {
   SpFloatLayout,
   SpButton,
@@ -236,9 +237,17 @@ function SpSkuSelect(props) {
     }
     Taro.showLoading({ title: '' })
 
-    const { userId } = Taro.getStorageSync('userinfo')
     let params = {}
-    if (salesman) {
+
+    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    if(dtid && dtid !== 'undefined') {
+      params = {
+        shop_type: 'distributor',
+        distributor_id: dtid,
+        ...customerLnformation
+      }
+    }
+    else if (salesman) {
       params = {
         shop_type: 'distributor',
         distributor_id: info.distributorId,
