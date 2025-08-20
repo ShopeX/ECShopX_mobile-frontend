@@ -724,16 +724,12 @@ const getCurrentShopId = () => {
   return distributor_id
 }
 
+
 const getDistributorId = (_dtid) => {
-  const { sys, shop } = store.getState()
-  const { openStore } = sys
-
-  // console.log("🚀🚀🚀 ~ getDistributorId ~ shop:", shop)
-
+  const { shop } = store.getState()
   const {
-    shopInfo: { distributor_id, shop_id }
+    shopInfo: { distributor_id }
   } = shop
-  // console.log("🚀🚀🚀 ~ getDistributorId ~ distributor_id:", distributor_id)
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
@@ -741,7 +737,7 @@ const getDistributorId = (_dtid) => {
       if (dtid) {
         return dtid
       } else {
-        return openStore ? distributor_id : shop_id
+        return distributor_id 
       }
     } else {
       return _dtid
@@ -750,6 +746,7 @@ const getDistributorId = (_dtid) => {
     return _dtid || 0
   }
 }
+
 
 /**
  * 保留两个位小数，不足补0
