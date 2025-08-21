@@ -64,10 +64,10 @@ const langMap = {
     globalThis && globalThis.lang && globalThis.lang.en
       ? globalThis.lang.en
       : globalThis._getJSONKey('en', langJSON),
-  'zhtw':
-    globalThis && globalThis.lang && globalThis.lang.zhtw
-      ? globalThis.lang.zhtw
-      : globalThis._getJSONKey('zh-tw', langJSON),
+  // 'zhtw':
+  //   globalThis && globalThis.lang && globalThis.lang.zhtw
+  //     ? globalThis.lang.zhtw
+  //     : globalThis._getJSONKey('zh-tw', langJSON),
   'zhcn':
     globalThis && globalThis.lang && globalThis.lang.zhcn
       ? globalThis.lang.zhcn

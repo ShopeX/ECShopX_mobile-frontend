@@ -607,7 +607,7 @@ function MemberIndex(props) {
           {/* <View className='header-block__ft'></View> */}
         </View>
 
-        <WgtsContext.Provider>
+        <WgtsContext.Provider value={{}}>
           <HomeWgts wgts={state.wgts} />
         </WgtsContext.Provider>
 

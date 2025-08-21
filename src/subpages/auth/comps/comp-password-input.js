@@ -13,7 +13,7 @@ const initialValue = {
 }
 
 const CompPasswordInput = (props) => {
-  const { onChange = () => {}, disabled, onFocus = () => {}, onBlur = () => {} } = props
+  const { onChange = () => {}, disabled, onFocus = () => {}, onBlur = () => {}, value } = props
 
   const [state, setState] = useImmer(initialValue)
 
@@ -35,6 +35,7 @@ const CompPasswordInput = (props) => {
         onChange={onChange}
         onFocus={onFocus}
         onBlur={onBlur}
+        value={value}
         disabled={disabled}
       />
       <View className='input-icon' onClick={handleToggle}>

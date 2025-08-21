@@ -284,7 +284,7 @@ export default class Login extends Component {
           info.password.length >= 6 &&
           !info.is_new)) &&
       info.mobile.length === 11
-
+    console.log('info', passwordLogin, info)
     const inputProp = {
       onFocus: this.logoShow(false),
       onBlur: this.logoShow(true)
@@ -318,6 +318,7 @@ export default class Login extends Component {
                   <CompPasswordInput
                     onChange={this.handleInputChange.bind(this, 'password')}
                     {...inputProp}
+                    value={info.password}
                     // onFocus={this.handleRemarkFocus.bind(this)}
                     // onBlur={this.handleRemarkBlur.bind(this)}
                   />

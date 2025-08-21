@@ -84,11 +84,11 @@ class Lang {
     }
     globalThis.langMap = langMap
     // 存储语言是否存在
-    // 判断 globalThis.localStorage.getItem 是否为函数
+    // 判断 globalThis._localStorage.getItem 是否为函数
     const isFunction = (fn) => {
       return typeof fn === 'function'
     }
-    globalThis.localStorage = {
+    globalThis._localStorage = {
       getItem: (key) => {
         return Taro.getStorageSync(key)
       },
@@ -102,29 +102,29 @@ class Lang {
     const withStorageLang =
       isFunction &&
       globalThis &&
-      globalThis.localStorage &&
-      isFunction(globalThis.localStorage.getItem) &&
-      globalThis.localStorage.getItem('lang')
+      globalThis._localStorage &&
+      isFunction(globalThis._localStorage.getItem) &&
+      globalThis._localStorage.getItem('lang')
     const withStorageCommonLang =
       isFunction &&
       globalThis &&
-      globalThis.localStorage &&
-      isFunction(globalThis.localStorage.getItem) &&
-      globalThis.localStorage.getItem('')
+      globalThis._localStorage &&
+      isFunction(globalThis._localStorage.getItem) &&
+      globalThis._localStorage.getItem('')
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
-    const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('') : ''
+    const commonLang = withStorageCommonLang ? globalThis._localStorage.getItem('') : ''
     // 从本地存储中获取当前语言，如果不存在则使用源语言
-    const baseLang = withStorageLang ? globalThis.localStorage.getItem('lang') : 'zhcn'
+    const baseLang = withStorageLang ? globalThis._localStorage.getItem('lang') : 'zhcn'
     const lang = commonLang ? commonLang : baseLang
-    if (!globalThis.localStorage.getItem('lang')) {
+    if (!globalThis._localStorage.getItem('lang')) {
       // 设置默认语言
-      globalThis.localStorage.setItem('lang', 'zhcn')
+      globalThis._localStorage.setItem('lang', 'zhcn')
     }
     // 根据当前语言设置翻译函数的语言包
     globalThis.$t.locale(globalThis.langMap[lang], 'lang')
 
     Taro.$changeLang = (lang) => {
-      globalThis.localStorage.setItem('lang', lang)
+      globalThis._localStorage.setItem('lang', lang)
       globalThis.$t.locale(globalThis.langMap[lang], 'lang')
     }
   }

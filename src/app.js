@@ -104,6 +104,12 @@ function App({ children }) {
           console.log('langJSON--------', langJSON)
           langObj.setLanguagePackage(langJSON)
         })
+    } else {
+      import('@/subpages/i18n/index').then((res) => {
+        const langJSON = Taro['langJSON']
+        console.log('langJSON--------', langJSON, langObj.setLanguagePackage)
+        langObj.setLanguagePackage(langJSON)
+      })
     }
   })
 
