@@ -5,6 +5,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpImage, SpPrice } from '@/components'
 import { classNames, entryLaunch, showToast, authSetting, validate } from '@/utils'
 import api from '@/api'
+import { useSelector } from 'react-redux'
 import CompInvoiceModal from './comps/comp-invoice-modal'
 import './invoice-detail.scss'
 
@@ -23,6 +24,7 @@ const initialState = {
 }
 function InvoiceDetail() {
   const $router = useRouter()
+  const { colorPrimary } = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
   const { info, confirmInfo, isOpened } = state
   const { invoice_items = [] } = info
