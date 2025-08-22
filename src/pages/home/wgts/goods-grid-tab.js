@@ -76,12 +76,16 @@ function WgtGoodsGridTab(props) {
         </ScrollView>
         <View className='tabs-container'>
           {list.map((item, index) => {
-            const leftFilterGoods = item.goodsList.filter((leftgoods, leftindex) => {
+            const _list =
+              item?.pointGoods?.filter((el) => el.goodsId)?.length > 0
+                ? item?.pointGoods
+                : item?.goodsList
+            const leftFilterGoods = _list.filter((leftgoods, leftindex) => {
               if (leftindex % 2 == 0) {
                 return leftgoods
               }
             })
-            const rightFilterGoods = item.goodsList.filter((rightgoods, rightindex) => {
+            const rightFilterGoods = _list.filter((rightgoods, rightindex) => {
               if (rightindex % 2 == 1) {
                 return rightgoods
               }

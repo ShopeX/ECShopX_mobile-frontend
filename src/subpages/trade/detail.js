@@ -226,10 +226,16 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
+  const onClickItem = ({ itemId, distributorId, activityId, orderClass, point }) => {
     if (orderClass == 'employee_purchase') {
       Taro.navigateTo({
         url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
+          distributorId || 0
+        }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+      })
+    } else if (point > 0) {
+      Taro.navigateTo({
+        url: `/subpages/pointshop/espier-detail?id=${itemId}&dtid=${
           distributorId || 0
         }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
       })
@@ -703,7 +709,9 @@ function TradeDetail(props) {
               title='总价'
               value={(() => {
                 if (info?.orderClass === 'pointsmall') {
-                  return `${pointName} ${info?.itemPoint}`
+                  return `${pointName} ${info?.itemPoint}${
+                    info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
+                  }`
                 } else {
                   return <SpPrice value={info?.itemFee} size={28} />
                 }
@@ -741,7 +749,9 @@ function TradeDetail(props) {
               title='实付'
               value={(() => {
                 if (info?.orderClass === 'pointsmall') {
-                  return `${pointName} ${info?.point}`
+                  return `${pointName} ${info?.point}${
+                    info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
+                  }`
                 } else {
                   return <SpPrice value={info?.totalFee} size={28} />
                 }

@@ -37,13 +37,15 @@ function MemberUserInfo() {
     checkboxPickerTitle,
     showCheckboxPicker,
     checkboxKey,
-    checkboxList
+    checkboxList,
+    dmcrm_is_open
   } = state
   const { userInfo = {} } = useSelector((_state) => _state.user)
   const pageRef = useRef()
   const { getUserInfo, logout } = useLogin()
 
   useEffect(() => {
+    getCommonSetting()
     getFormItem()
   }, [])
 
@@ -57,6 +59,12 @@ function MemberUserInfo() {
 
   // console.log('userInfo ******', userInfo)
 
+  const getCommonSetting = async () => {
+    const res = await api.category.getCommonSetting()
+    setState((draft) => {
+      draft.dmcrm_is_open = res?.dmcrm_is_open
+    })
+  }
   const getFormItem = async () => {
     const data = await api.user.regParam({
       is_edite_page: true
@@ -385,7 +393,7 @@ function MemberUserInfo() {
           }
         ></SpCell>
         <SpCell
-          isLink
+          isLink={!dmcrm_is_open}
           title='手机号'
           value={userInfo?.mobile}
           onClick={() => {
@@ -394,7 +402,7 @@ function MemberUserInfo() {
               url: '/subpages/auth/edit-phone'
             })
           }}
-        ></SpCell>
+        />
       </View>
 
       <View className='block-container'>

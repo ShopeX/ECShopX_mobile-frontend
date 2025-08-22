@@ -74,6 +74,7 @@ export const WGT_GOODS_GRID_TAB = {
   promotion: 'promotion_activity',
   distributorId: 'distributor_id',
   isPoint: 'is_point',
+  point: 'point',
   // price: ({ activity_price, member_price, price }) => {
   //   if (activity_price > 0) {
   //     return activity_price

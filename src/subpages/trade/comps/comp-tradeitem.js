@@ -103,9 +103,16 @@ function CompTradeItem(props) {
           {orderClass == 'pointsmall' && (
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
-              <Text className='label'>{pointName}</Text>
-              <Text className='point-value' style='font-size: 20px;'>
-                {point}
+              <Text>
+                <Text className='label'>{pointName}</Text>
+                <Text className='point-value' style='font-size: 20px;'>
+                  {point}
+                </Text>{' '}
+                {totalFee > 0 && (
+                  <Text>
+                    +<SpPrice value={totalFee} size={38} />
+                  </Text>
+                )}
               </Text>
             </View>
           )}

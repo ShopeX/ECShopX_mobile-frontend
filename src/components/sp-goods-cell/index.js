@@ -134,7 +134,12 @@ function SpGoodsCell(props) {
         </View>
         <View className='item-ft'>
           <View className='price-gp'>
-            {isPoint && <SpPoint value={point} />}
+            {isPoint && (
+              <Text>
+                <SpPoint value={point} />
+                {_price ? `+¥${Number(_price).toFixed(2)}` : ''}
+              </Text>
+            )}
             {!isPoint && (
               <>
                 {isPurchase && renderPurchasePrice()}

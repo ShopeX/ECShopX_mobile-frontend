@@ -725,10 +725,9 @@ const getCurrentShopId = () => {
 }
 
 const getDistributorId = (_dtid) => {
-  const { sys, shop } = store.getState()
-
+  const { shop } = store.getState()
   const {
-    shopInfo: { distributor_id, shop_id }
+    shopInfo: { distributor_id }
   } = shop
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {

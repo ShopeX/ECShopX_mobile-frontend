@@ -16,6 +16,7 @@ import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
 import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal, SpImage, SpCheckbox } from '@/components'
+import { useSelector } from 'react-redux'
 import { useLogin, useLocation } from '@/hooks'
 import './index.scss'
 
@@ -29,6 +30,8 @@ const initialState = {
 const SpLogin = forwardRef((props, ref) => {
   const { children, className, newUser = false, visible, onPolicyClose, onChange, onClose } = props
   const { updateAddress } = useLocation()
+  const { shopInfo } = useSelector((state) => state.shop)
+
   const { isLogin, login, setToken, checkPolicyChange } = useLogin({
     policyUpdateHook: (isUpdate) => {
       isUpdate && setPolicyModal(true)
@@ -101,6 +104,10 @@ const SpLogin = forwardRef((props, ref) => {
       if (uid) {
         // 分销绑定
         params['uid'] = uid
+      }
+
+      if (shopInfo.distributor_id) {
+        params['distributor_id'] = shopInfo.distributor_id
       }
       if (dtid && dtid !== 'undefined') {
         params['distributor_id'] = dtid

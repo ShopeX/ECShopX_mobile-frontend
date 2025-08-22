@@ -83,6 +83,10 @@ function TradeAfterSaleDetail(props) {
       order_id
     })
     console.log(pickBy(resInfo, doc.trade.TRADE_AFTER_SALES_ITEM))
+    resInfo?.detail?.forEach((item) => {
+      item.orderItem.refundNum = item.num
+      item.orderItem.refundFee = item.refund_fee / 100
+    })
     setState((draft) => {
       draft.info = pickBy(resInfo, doc.trade.TRADE_AFTER_SALES_ITEM)
       draft.reasons = reasons
@@ -273,69 +277,89 @@ function TradeAfterSaleDetail(props) {
 
           <View className='refund-detail'>
             <View className='refund-amount'>
-              <SpCell title='退款金额' value={<SpPrice value={info?.refundFee} />}></SpCell>
+              <SpCell
+                title='退款金额'
+                value={<SpPrice value={info?.refund_info?.refundFee || info?.refundFee} />}
+              ></SpCell>
             </View>
             <View className='refund-point'>
-              <SpCell title='退积分' value={info?.refundPoint}></SpCell>
+              <SpCell
+                title='退积分'
+                value={<SpPrice value={info?.refund_info?.refundPoint || info?.refundPoint} />}
+              ></SpCell>
             </View>
-            {info?.freight > 0 && (
+            {info?.refund_freight_amount > 0 && (
               <View className='refund-point'>
-                <SpCell title='退运费' value={info?.freight}></SpCell>
+                <SpCell title='退运费' value={info?.refund_freight_amount}></SpCell>
               </View>
             )}
-          </View>
 
-          <View className='refund-type'>
-            <SpCell title='退货方式'>{getRefundType()}</SpCell>
-            {info?.returnType == 'offline' && info?.hasAftersalesAddress && (
-              <SpCell title='退货门店'>
+            <View className='refund-detail'>
+              <View className='refund-amount'>
+                <SpCell title='退款金额' value={<SpPrice value={info?.refundFee} />}></SpCell>
+              </View>
+              <View className='refund-point'>
+                <SpCell title='退积分' value={info?.refundPoint}></SpCell>
+              </View>
+              {info?.freight > 0 && (
+                <View className='refund-point'>
+                  <SpCell title='退运费' value={info?.freight}></SpCell>
+                </View>
+              )}
+            </View>
+
+            <View className='refund-type'>
+              <SpCell title='退货方式'>{getRefundType()}</SpCell>
+              {info?.returnType == 'offline' && info?.hasAftersalesAddress && (
+                <SpCell title='退货门店'>
+                  <>
+                    <View className='store-name'>{info?.afterSalesName}</View>
+                    <View className='store-address'>{info?.afterSalesAddress}</View>
+                    <View className='store-connect'>{info?.afterSalesMobile}</View>
+                    <View className='store-time'>{`营业时间 ${info?.aftersalesHours}`}</View>
+                  </>
+                </SpCell>
+              )}
+            </View>
+
+            <View className='after-sales-type'>
+              <SpCell title='售后类型'>{getAfterSalesType()}</SpCell>
+              <SpCell title='退款原因'>{info?.reason}</SpCell>
+              <SpCell title='退款凭证'>
                 <>
-                  <View className='store-name'>{info?.afterSalesName}</View>
-                  <View className='store-address'>{info?.afterSalesAddress}</View>
-                  <View className='store-connect'>{info?.afterSalesMobile}</View>
-                  <View className='store-time'>{`营业时间 ${info?.aftersalesHours}`}</View>
+                  <View>{info?.description}</View>
+                  <View className='evidence-pic'>
+                    {info?.evidencePic.map((item, index) => (
+                      <SpImage
+                        key={`pic-image__${index}`}
+                        src={item}
+                        width={130}
+                        height={130}
+                        circle={16}
+                      />
+                    ))}
+                  </View>
                 </>
               </SpCell>
-            )}
-          </View>
+            </View>
 
-          <View className='after-sales-type'>
-            <SpCell title='售后类型'>{getAfterSalesType()}</SpCell>
-            <SpCell title='退款原因'>{info?.reason}</SpCell>
-            <SpCell title='退款凭证'>
-              <>
-                <View>{info?.description}</View>
-                <View className='evidence-pic'>
-                  {info?.evidencePic.map((item, index) => (
-                    <SpImage
-                      key={`pic-image__${index}`}
-                      src={item}
-                      width={130}
-                      height={130}
-                      circle={16}
-                    />
-                  ))}
+            <View className='after-sales-trade'>
+              <SpCell title='订单编号'>{info?.orderId}</SpCell>
+              <SpCell title='申请时间'>{info?.createTime}</SpCell>
+              <SpCell title='退款编号'>
+                {info?.afterSalesBn}
+                <View
+                  className='btn-copy'
+                  circle
+                  size='small'
+                  onClick={() => {
+                    copyText(info?.afterSalesBn)
+                  }}
+                >
+                  复制
                 </View>
-              </>
-            </SpCell>
-          </View>
-
-          <View className='after-sales-trade'>
-            <SpCell title='订单编号'>{info?.orderId}</SpCell>
-            <SpCell title='申请时间'>{info?.createTime}</SpCell>
-            <SpCell title='退款编号'>
-              {info?.afterSalesBn}
-              <View
-                className='btn-copy'
-                circle
-                size='small'
-                onClick={() => {
-                  copyText(info?.afterSalesBn)
-                }}
-              >
-                复制
-              </View>
-            </SpCell>
+              </SpCell>
+            </View>
           </View>
         </View>
       </ScrollView>

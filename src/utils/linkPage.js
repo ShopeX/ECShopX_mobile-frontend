@@ -17,6 +17,12 @@ function linkPage(data) {
     seletedTags = []
   } = data
   const { id: dtid } = getCurrentInstance().router.params
+  if (id === 'homeSearch') {
+    Taro.navigateTo({
+      url: '/pages/item/list'
+    })
+    return
+  }
   // h5链接
   if (linkType == 1) {
     Taro.navigateTo({

@@ -100,19 +100,21 @@ function SpCoupon(props) {
           <View className='coupon-datetime'>{`有效期: ${beginDate} - ${endDate}`}</View>
           <View className='coupon-desc'>
             {info.valid && (
-              <>
+              <View
+                style={{ display: 'flex', alignItems: 'center' }}
+                onClick={() => {
+                  setState((draft) => {
+                    draft.isExpanded = !isExpanded
+                  })
+                }}
+              >
                 <Text className='coupon-desc-txt'>详细信息</Text>
                 <SpImage
                   src={`${isExpanded ? 'coupon_arrow_up.png' : 'coupon_arrow_down.png'}`}
                   width={24}
                   height={24}
-                  onClick={() => {
-                    setState((draft) => {
-                      draft.isExpanded = !isExpanded
-                    })
-                  }}
                 />
-              </>
+              </View>
             )}
             {!info.valid && <View className='invaild-desc'>{info.invalidDesc}</View>}
           </View>

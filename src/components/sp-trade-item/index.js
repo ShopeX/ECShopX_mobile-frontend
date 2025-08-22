@@ -35,7 +35,16 @@ function SpTradeItem(props) {
             {isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
             {itemName}
           </View>
-          {orderClass == 'pointsmall' && <Text>{`${pointName}: ${itemPoint}`}</Text>}
+          {orderClass == 'pointsmall' && (
+            <Text>
+              {`${pointName}: ${itemPoint}`}{' '}
+              {price > 0 ? (
+                <Text>
+                  +<SpPrice value={price} />
+                </Text>
+              ) : null}
+            </Text>
+          )}
           {orderClass == 'normal' && <SpPrice value={price} />}
         </View>
         <View className='goods-info-bd'>

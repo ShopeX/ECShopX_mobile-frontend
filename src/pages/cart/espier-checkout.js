@@ -141,8 +141,14 @@ function CartCheckout(props) {
           ...params
         }
       }
+      let invoice_title = ''
+      if (params.company_title) {
+        invoice_title = `${params.invoice_type_code == '02' ? '普票' : '专票'}(${
+          params.company_title
+        })`
+      }
       setState((draft) => {
-        draft.invoiceTitle = params.company_title || ''
+        draft.invoiceTitle = invoice_title
         draft.paramsInfo = { ...paramsInfo, ...invoice_parmas }
       })
     })
@@ -802,6 +808,13 @@ function CartCheckout(props) {
       cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
     }
 
+    if (routerParams?.gu?.length > 0) {
+      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+    }
+    if (routerParams?.dtid) {
+      cus_parmas.distributor_id = routerParams?.dtid
+    }
+
     if (receiptType === 'ziti') {
       delete cus_parmas.receiver_state
       delete cus_parmas.receiver_city
@@ -1084,7 +1097,7 @@ function CartCheckout(props) {
             value={couponText || '请选择'}
           />
         )}
-        {!bargain_id && totalInfo.invoice_status ? (
+        {totalInfo.invoice_status ? (
           <SpCell
             isLink
             title='开发票'

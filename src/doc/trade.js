@@ -130,7 +130,7 @@ export const AFTER_TRADE = {
       itemName: 'item_name',
       num: 'num',
       pic: 'item_pic',
-      price: ({ refund_fee }) => refund_fee / 100,
+      price: ({ refund_fee, num }) => refund_fee / num / 100,
       point: 'point',
       isPrescription: 'is_prescription'
     })
@@ -154,8 +154,8 @@ export const TRADE_AFTER_SALES_ITEM = {
       pic: ({ orderItem }) => orderItem.pic,
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
-      num: ({ orderItem }) => orderItem.num,
-      price: ({ orderItem }) => orderItem.total_fee / 100,
+      num: ({ orderItem }) => orderItem.refundNum,
+      price: ({ orderItem }) => orderItem.total_fee,
       isPrescription: ({ orderItem }) => orderItem.is_prescription
     })
   },
@@ -166,11 +166,18 @@ export const TRADE_AFTER_SALES_ITEM = {
   afterSalesContact: ({ aftersales_address }) => aftersales_address.aftersales_contact,
   aftersalesHours: ({ aftersales_address }) => aftersales_address.aftersales_hours,
   refundFee: ({ refund_fee }) => refund_fee / 100,
+  refund_info: ({ refund_info }) => {
+    return pickBy(refund_info, {
+      refundFee: ({ refunded_fee }) => refunded_fee / 100,
+      refundPoint: 'refund_point'
+    })
+  },
   refundPoint: 'refund_point',
   reason: 'reason',
   description: 'description',
   evidencePic: 'evidence_pic',
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
   returnType: 'return_type',
-  freight: ({ freight }) => freight / 100
+  freight: ({ freight }) => freight / 100,
+  refund_freight_amount: ({ refund_freight_amount }) => refund_freight_amount / 100
 }
