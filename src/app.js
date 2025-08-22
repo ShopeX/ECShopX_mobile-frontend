@@ -72,47 +72,6 @@ function App({ children }) {
         Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
       }
     }
- // isWeb环境下，H5启动时，路由携带参数在options
-    // 小程序环境，启动时，路由携带参数在options.query
-    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then(async (params) => {
-      console.log(`app componentDidShow:`, options, params)
-      Taro.setStorageSync(SG_ROUTER_PARAMS, params)
-      let _ucd = ''
-      //crmcode 区域code, ucd 用户会员 card,source_id, monitor_id, latest_source_id, latest_monitor_id
-      const {
-        crmcode,
-        ucd = '',
-        s = '',
-        m = '',
-        latest_source_id = '',
-        latest_monitor_id = '',
-      } = params || {}
-
-      Taro.setStorageSync('user_card_code', ucd) //对方打开本小程序会传的参数
-      Taro.setStorageSync('sourceInfo', {
-        source_id: s,
-        monitor_id: m,
-        latest_source_id,
-        latest_monitor_id
-      })
-      if (m && s) {
-        await entryLaunch.trackViewNum(m, s)
-      }
-      if (crmcode) {
-        this.getSystemConfig()
-      }
-      if (ucd) {
-        const token = S.getAuthToken()
-        const userInfo = token ? tokenParse(token) : {}
-        _ucd = userInfo?.user_card_code
-        if (ucd !== _ucd) {
-          //如果有ucd 并且 与本地用户的_ucd相等说明是mob拉起 需要走自动登录
-          S.setAuthToken('')
-          Taro.removeStorageSync('userinfo')
-          return
-        }
-      }
-    })
     const { show_time } = await api.promotion.getScreenAd()
     let showAdv
     if (show_time === 'always') {

@@ -1,10 +1,11 @@
+
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPage, SpTimer, SpCheckbox, SpInput as AtInput } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { useSelector } from 'react-redux'
-import { AtForm, AtInput, AtButton } from 'taro-ui'
+import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useLogin } from '@/hooks'
@@ -99,8 +100,6 @@ const Reg = () => {
     if (!validate.isPassword(password)) {
       return showToast('密码格式不正确')
     }
-    const { source_id, monitor_id, latest_source_id, latest_monitor_id } =
-      Taro.getStorageSync('sourceInfo')
     try {
       //从登陆页跳转过来
       const { token } = await api.user.reg({
@@ -110,11 +109,7 @@ const Reg = () => {
         password,
         vcode,
         sex: 0,
-        user_type: 'local',
-        source_id,
-        monitor_id,
-        latest_source_id,
-        latest_monitor_id
+        user_type: 'local'
       })
       showToast('注册成功', async () => {
         await setTokenAndRedirect(token, async () => {

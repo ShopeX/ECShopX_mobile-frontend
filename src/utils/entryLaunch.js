@@ -1,8 +1,10 @@
+
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import qs from 'qs'
 import S from '@/spx'
-import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse,tokenParse } from '@/utils'
+import dayjs from 'dayjs'
+import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
 import _isEqual from 'lodash/isEqual'
 import {
@@ -14,7 +16,6 @@ import {
 import MapLoader from '@/utils/lbs'
 
 const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
-// const geocodeUrl = 'https://restapi.amap.com/v3/geocode' //高德
 const $instance = getCurrentInstance()
 const { store } = configStore()
 class EntryLaunch {
@@ -24,7 +25,7 @@ class EntryLaunch {
 
   init() {
     if (Taro.getEnv() == Taro.ENV_TYPE.WEB) {
-      // this.initAMap()
+      this.initAMap()
     }
   }
 
@@ -73,24 +74,6 @@ class EntryLaunch {
   }
 
   /**
-   * @function 同步获取小程序路由参数
-   */
-  getRouteSyncParams(options) {
-    const params = options?.query || $instance.router?.params || {}
-    let _options = {}
-    if (params?.scene) {
-      // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
-      console.log('params scene:', params.scene, resolveUrlParamsParse(params.scene))
-      _options = {
-        ...resolveUrlParamsParse(params.scene)
-      }
-    } else {
-      _options = params
-    }
-    return _options
-  }
-
-  /**
    * @function 获取小程序启动参数
    */
   getLaunchParams() {
@@ -113,9 +96,12 @@ class EntryLaunch {
    * @function 初始化腾讯地图配置
    */
   async initAMap() {
+    // 初始化地图对象
+    // this.geolocation = new qq.maps.Geolocation()
     return new Promise((resolve, reject) => {
       MapLoader()
         .then((qq) => {
+          debugger
           // 初始化地图对象
           this.geolocation = new qq.maps.Geolocation({
             key: process.env.APP_MAP_KEY,
@@ -145,30 +131,6 @@ class EntryLaunch {
         })
     })
   }
-
-  /**
-   * @function 初始化高德地图配置
-   */
-  // async initAMap(callback) {
-  //   return new Promise((reslove, reject) => {
-  //     MapLoader().then((amap) => {
-  //       amap.plugin(['AMap.Geolocation', 'AMap.Geocoder'], () => {
-  //         this.geolocation = new amap.Geolocation({
-  //           enableHighAccuracy: true, //是否使用高精度定位，默认:true
-  //           timeout: 10000, //超过10秒后停止定位，默认：5s
-  //           position: 'RB', //定位按钮的停靠位置
-  //           buttonOffset: new AMap.Pixel(10, 20), //定位按钮与设置的停靠位置的偏移量，默认：Pixel(10, 20)
-  //           zoomToAccuracy: true //定位成功后是否自动调整地图视野到定位点
-  //         })
-  //         this.geocoder = new AMap.Geocoder({
-  //           radius: 1000 //范围，默认：500
-  //         })
-  //       console.log('entryLaunch', this)
-  //         reslove('ok')
-  //       })
-  //     })
-  //   })
-  // }
 
   /**
    * @function 获取当前店铺
@@ -262,7 +224,6 @@ class EntryLaunch {
         })
       })
     } else {
-      console.log('getLocationInfo')
       return new Promise(async (reslove, reject) => {
         this.geolocation?.getLocation(
           (res) => {
@@ -294,42 +255,6 @@ class EntryLaunch {
     log.debug('getCurrentAddressInfo: ', res)
     return res
   }
-
-  /**
-   * @function 高德根据地址解析经纬度
-   */
-  // async getLnglatByAddress(address) {
-  //   const res = await Taro.request({
-  //     url: `${geocodeUrl}/geo`,
-  //     data: {
-  //       key: process.env.APP_MAP_KEY,
-  //       address
-  //     }
-  //   })
-
-  //   // console.log(0,res);
-  //   if (res.data.status == 1) {
-  //     const { geocodes } = res.data
-  //     if (geocodes.length > 0) {
-  //     return {
-  //         address: geocodes[0].formatted_address,
-  //         province: geocodes[0].province,
-  //         city: geocodes[0].city,
-  //         district: geocodes[0].district,
-  //         lng: geocodes[0].location.split(',')[0],
-  //         lat: geocodes[0].location.split(',')[1]
-  //       }
-  //     } else {
-  //       return {
-  //         error: '没有搜索到地址'
-  //       }
-  //     }
-  //   } else {
-  //     return {
-  //       error: '地址解析错误'
-  //     }
-  //   }
-  // }
 
   /**
    * @function 根据地址解析经纬度--腾讯
@@ -473,12 +398,13 @@ class EntryLaunch {
         if (callback) callback(res)
       }
     } else {
-      let { lng, lat } = await this.getLocationInfo()
-      let res = {}
-      if (lat) {
-        res = await this.getAddressByLnglatWebAPI(lng, lat)
-      }
+      // h5环境
+      const res = await this.getLocationInfo()
       if (callback) callback(res)
+      // let res = {}
+      // if (lat) {
+      //   res = await this.getAddressByLnglatWebAPI(lng, lat)
+      // }
     }
   }
 
@@ -511,7 +437,8 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask() {
-    const { path, params } = $instance.router
+    const { path } = $instance.router
+    let params = await this.getRouteParams($instance.router)
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -522,62 +449,44 @@ class EntryLaunch {
     if (!routePath[path]) {
       return
     }
+    if (path == '/pages/cart/espier-checkout') {
+      params = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params
-    if (gu && S.getAuthToken()) {
-      const [employee_number, shop_code] = gu.split('_')
+    let work_userid = ''
+    let shop_code = ''
+    if (gu) {
+      const [employeenumber, shopcode] = gu.split('_')
+      work_userid = employeenumber
+      shop_code = shopcode
+    }
+    if (gu_user_id) {
+      work_userid = gu_user_id
+    }
+    if (work_userid && S.getAuthToken()) {
       const _params = {
-        employee_number,
+        employee_number: work_userid,
         subtask_id,
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
         event_type: routePath[path]
       }
-      api.wx.taskReportData(_params)
+      if (subtask_id) {
+        api.wx.taskReportData(_params)
+      }
 
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
       api.wx.interactiveReportData({
-        event_id: employee_number,
+        event_id: work_userid,
         user_type: 'wechat',
         user_id,
         event_type: routePath[path],
         store_bn: shop_code
       })
     }
-  }
- // 任务中心上报 
-  async postCenterTask(info) {
-    const res = await api.task.getTaskList()
-    // console.log('infouu--',Taro.getStorageSync('task_shop_rule_id'),res,info);
-    if(res?.rule_list && res?.rule_list.length > 0){
-      res?.rule_list.forEach(async (item) => {
-        const goodsIdList = item?.binding_items && JSON.parse(item.binding_items)
-        const distributorsList = item?.binding_distributors && JSON.parse(item.binding_distributors)
-        try {
-          const { page_delay=0 } = item?.common_condition
-            if(((info?.ruleId == item?.id || goodsIdList.includes(info?.goodsId)) || (item?.special_type == '3' && goodsIdList.length==0) || (item?.special_type == '2' && distributorsList.length==0)) && item.done == 0){
-              setTimeout(async ()=>{
-                await api.task.completeTask({activity_id:item?.activity_id,rule_id:item.id}) 
-             },page_delay*1000)
-            }
-        } catch (error) {
-           console.log(error)
-        }
-       })
-    }
-  }
-
-// 千人千码上报
-  async trackViewNum(monitor_id, source_id) {
-    if (monitor_id && source_id) {
-      const logRes = await Taro.login()
-      const res = await api.wx.getYoushuOpenid({ code:logRes.code })
-      let param = { source_id: source_id, monitor_id: monitor_id,open_id:res?.openid }
-      api.track.viewnum(param)
-    }
-    return true
   }
 }
 

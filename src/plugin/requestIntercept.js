@@ -24,19 +24,17 @@ export function requestIntercept() {
         smid = smid_1 || smid_2
 
         let _data = qs.parse(data)
-        if (source_id) {
-          _data['source_id'] = source_id
+        let work_userid = gu_user_id
+        if (gu) {
+          work_userid = gu.split('_')[0]
         }
-        if (monitor_id) {
-          _data['monitor_id'] = monitor_id
+        _data['work_userid'] = work_userid
+        if (smid) {
+          _data['salesman_id'] = smid
         }
-        if (latest_source_id) {
-          _data['latest_source_id'] = latest_source_id
+        if (_data) {
+          requestParams.data = qs.stringify(_data)
         }
-        if (latest_monitor_id) {
-          _data['latest_monitor_id'] = latest_monitor_id
-        }
-        requestParams.data = qs.stringify(_data)
         console.log('requestIntercept:', requestParams)
       }
     }
