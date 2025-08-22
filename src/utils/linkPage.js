@@ -7,6 +7,12 @@ const { store } = configStore()
 function linkPage(data) {
   const { id, title, linkPage, linkType, type, distributor_id, navigation = false, content, seletedTags = [] } = data
   const { id: dtid } = getCurrentInstance().router.params
+  if(id === 'homeSearch'){
+    Taro.navigateTo({
+      url: '/pages/item/list'
+    })
+    return
+  }
   // h5链接
   if (linkType == 1) {
     Taro.navigateTo({
