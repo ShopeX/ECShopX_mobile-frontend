@@ -121,7 +121,7 @@ function PointShopEspierCheckout() {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [payType, point_use, address, zitiAddress, receiptType])
+  }, [payType, point_use, address, zitiAddress, receiptType,paramsInfo.invoice_content])
 
   useEffect(() => {
     if (isPackageOpend || isPointOpenModal) {
@@ -151,7 +151,7 @@ function PointShopEspierCheckout() {
     return () => {
       Taro.eventCenter.off('onEventCheckoutInvoiceChange')
     }
-  }, [])
+  }, [paramsInfo])
 
   // 是否需要包装
   const getTradeSetting = async () => {
