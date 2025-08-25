@@ -782,6 +782,7 @@ function EspierDetail(props) {
             draft.skuPanelOpen = false
           })
         }}
+        refreshs={false}
         onChange={(skuText, curItem) => {
           setState((draft) => {
             draft.skuText = skuText

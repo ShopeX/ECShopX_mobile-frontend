@@ -52,6 +52,7 @@ function SpSkuSelect(props) {
     open = false,
     onClose = () => {},
     onChange = () => {},
+    refreshs = true,
     type,
     hideInputNumber = false,
     salesman = false
@@ -78,20 +79,20 @@ function SpSkuSelect(props) {
       })
     }
 
-    return () => {
+    // return () => {
+    //   setState((draft) => {
+    //     draft.num = 1
+    //   })
+    // }
+  }, [info])
+
+  useEffect(() => {
+    if (!open && refreshs) {
       setState((draft) => {
         draft.num = 1
       })
     }
-  }, [info])
-
-  // useEffect(() => {
-  //   if (!open) {
-  //     setState((draft) => {
-  //       draft.num = 1
-  //     })
-  //   }
-  // }, [open])
+  }, [open])
 
   const init = () => {
     const { skuList, specItems } = info
