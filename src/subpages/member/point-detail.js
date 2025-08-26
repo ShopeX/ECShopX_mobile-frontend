@@ -109,14 +109,10 @@ function PointDetail(props) {
             {list.map((item, index) => (
               <View className='point-item' key={`point-item__${index}`}>
                 <View className='point-item-hd'>
-                  <View className='name'>{item.journalType}</View>
+                  {item?.point_desc && <View className='order-no'>{item.point_desc}</View>}
+                  {item.journalType && <View className='name'>{item.journalType}</View>}
                   <View className='created'>{item.created}</View>
-                  <View style={{ display: 'flex', flexDirection: 'column' }}>
-                    {item?.point_desc  && <View className='order-no'>{item.point_desc}</View>}
-                    {item.orderId && (
-                      <View className='order-no'>{`订单编号: ${item.orderId}`}</View>
-                    )}
-                  </View>
+                  {item.orderId && <View className='order-no'>{`订单编号: ${item.orderId}`}</View>}
                 </View>
                 <View className={classNames('point-value', item.outinType)}>{`${
                   item.outinType == 'in' ? '+' : '-'
