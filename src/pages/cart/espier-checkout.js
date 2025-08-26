@@ -603,7 +603,8 @@ function CartCheckout(props) {
       deliveryTimeList,
       salespersonInfo,
       point_rule,
-      prescription_status
+      prescription_status,
+      freight_point_fee,
     } = orderRes
 
     let subdistrictRes
@@ -664,7 +665,10 @@ function CartCheckout(props) {
       item_point,
       freight_type,
       promotion_discount,
-      prescription_status
+      prescription_status,
+      freight_point_fee,
+      freight_point,
+      total_freight_fee: Number(freight_fee || 0 + freight_point_fee || 0)?.toFixed(2)
     }
 
     const point_info = {
@@ -1222,7 +1226,7 @@ function CartCheckout(props) {
           <SpCell
             className='trade-sub__item'
             title='运费：'
-            value={<SpPrice unit='cent' value={totalInfo.freight_fee} />}
+            value={<SpPrice unit='cent' value={totalInfo.total_freight_fee} />}
           />
           <SpCell
             className='trade-sub__item'
