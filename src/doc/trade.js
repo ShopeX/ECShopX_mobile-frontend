@@ -111,6 +111,8 @@ export const TRADE_ITEM = {
   invoice_amount:'invoice_amount',
   invoiceAble: 'invoice_able',
   invoiceId: 'invoice_id',
+  freightPointFee: ({ freight_point_fee }) => freight_point_fee / 100,
+  freightPoint: ({ freight_point }) => freight_point,
 }
 
 export const SHOP_INFO = {
