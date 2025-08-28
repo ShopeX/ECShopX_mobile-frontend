@@ -263,6 +263,7 @@ function withPageWrapper(Component) {
               Taro.redirectTo({
                 url: `/pages/custom/custom-page?id=${guidderTemplateId}&fromConnect=davild`
               })
+              throw new Error('TO_STORE_GUIDE_PAGE')
             }
           }
         }
