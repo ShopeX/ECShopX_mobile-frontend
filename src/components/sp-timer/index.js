@@ -11,8 +11,8 @@ export default class SpTimer extends Component {
 
   static defaultProps = {
     duration: 60,
-    defaultMsg: '发送验证码',
-    msg: '重新发送'
+    defaultMsg: '',
+    msg: ''
   }
 
   constructor(props) {
@@ -90,7 +90,12 @@ export default class SpTimer extends Component {
     const is_sending = sent && !finish
 
     const msg =
-      timerMsg || (is_sending ? `${countDur}s` : finish ? this.props.msg : this.props.defaultMsg)
+      timerMsg ||
+      (is_sending
+        ? `${countDur}s`
+        : finish
+        ? this.props.msg || '重新发送'
+        : this.props.defaultMsg || '发送验证码')
 
     return (
       <Text

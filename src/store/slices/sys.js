@@ -15,7 +15,7 @@ const initialState = {
   colorMarketing: colorMarketing,
   colorAccent: colorAccent,
   rgb: '',
-  pointName: DEFAULT_POINT_NAME,
+  pointName: DEFAULT_POINT_NAME(),
   pageTitle: '',
   appName: '',
   tabbar: {

@@ -166,7 +166,9 @@ export default class PointUse extends Component {
           <AtModalContent>
             <View>使用条件</View>
             <View>
-              {`1.${DEFAULT_POINT_NAME}支付不得超出订单应付总金额的 ${deduct_point_rule.deduct_proportion_limit}%；`}
+              {`1.${DEFAULT_POINT_NAME()}支付不得超出订单应付总金额的 ${
+                deduct_point_rule.deduct_proportion_limit
+              }%；`}
             </View>
             <View>使用数量</View>
             <View>{`2.${deduct_point_rule.deduct_point} ${pointName}抵 1 元；`}</View>
