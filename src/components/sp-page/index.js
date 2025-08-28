@@ -87,13 +87,13 @@ const SpPage = memo(
       if (state.lock) {
         // 保存当前滚动位置
         const currentScrollTop = scrollTopRef.current || 0
-        
+
         setState((draft) => {
           draft.lockStyle = {
             overflow: 'hidden'
           }
         })
-        
+
         // 设置滚动位置，防止回到顶部
         setTimeout(() => {
           Taro.pageScrollTo({
@@ -101,7 +101,6 @@ const SpPage = memo(
             duration: 0
           })
         }, 0)
-        
       } else {
         setState((draft) => {
           draft.lockStyle = {
