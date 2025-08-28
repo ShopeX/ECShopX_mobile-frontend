@@ -94,7 +94,9 @@ function App({ children }) {
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
-
+    Taro.eventCenter.on('languageChanged', () => {
+      getSystemConfig()
+    })
     //分包异步加载语言包
     if (process.env.TARO_ENV === 'weapp') {
       __non_webpack_require__ &&

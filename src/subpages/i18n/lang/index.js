@@ -1,7 +1,9 @@
 // 导入国际化JSON文件
 import langJSON from './index.json'
 
-;(function () {
+;
+
+(function () {
   // 定义翻译函数
   let $t = function (key, val, nameSpace) {
     // 获取指定命名空间下的语言包

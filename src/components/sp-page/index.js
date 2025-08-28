@@ -481,6 +481,7 @@ const SpPage = memo(
         )}
         {props.renderFooter && (
           <View
+            key={lang}
             className='sp-page__footer'
             style={styleNames({
               'height': props.renderFooter ? `${Taro.pxTransform(props.footerHeight)}` : 0,

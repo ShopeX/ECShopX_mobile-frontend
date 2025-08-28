@@ -126,6 +126,10 @@ class Lang {
     Taro.$changeLang = (lang) => {
       globalThis._localStorage.setItem('lang', lang)
       globalThis.$t.locale(globalThis.langMap[lang], 'lang')
+      // 触发语言变化事件，让其他地方能够监听到
+      if (Taro.eventCenter) {
+        Taro.eventCenter.trigger('languageChanged', { lang, langMap: globalThis.langMap[lang] })
+      }
     }
   }
 }
