@@ -502,7 +502,7 @@ function DianwuCheckout(props) {
           )} */}
           {item.activity_type == 'full_gift' && (
             <View className='activity-item'>
-              <View className='activity-tag'>{PROMOTION_TAG[item.activity_type]}</View>
+              <View className='activity-tag'>{PROMOTION_TAG()[item.activity_type]}</View>
               <View className='activity-content'>{item.item_name}</View>
             </View>
           )}

@@ -23,7 +23,7 @@ function TradeLogisticsInfo(props) {
   useEffect(() => {
     const _expressList = Object.keys(LOGISTICS_CODE).map((key) => {
       return {
-        name: LOGISTICS_CODE[key],
+        name: LOGISTICS_CODE()[key],
         code: key
       }
     })

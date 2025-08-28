@@ -243,8 +243,8 @@ function EspierDetail(props) {
     Taro.setNavigationBarTitle({
       title: data.itemName
     })
-    console.log(ACTIVITY_LIST[data.activityType])
-    if (ACTIVITY_LIST[data.activityType]) {
+    console.log(ACTIVITY_LIST()[data.activityType])
+    if (ACTIVITY_LIST()[data.activityType]) {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
         backgroundColor: colorPrimary,
@@ -403,7 +403,7 @@ function EspierDetail(props) {
           </View>
 
           {/* 拼团、秒杀、限时特惠显示活动价 */}
-          {ACTIVITY_LIST[info.activityType] && (
+          {ACTIVITY_LIST()[info.activityType] && (
             <CompActivityBar
               info={info.activityInfo}
               type={info.activityType}
@@ -417,7 +417,9 @@ function EspierDetail(props) {
 
           <View className='goods-info'>
             {/* 拼团、秒杀、限时特惠不显示 */}
-            {!ACTIVITY_LIST[info.activityType] && <SpGoodsPrice info={curItem ? curItem : info} />}
+            {!ACTIVITY_LIST()[info.activityType] && (
+              <SpGoodsPrice info={curItem ? curItem : info} />
+            )}
 
             <CompCouponList
               info={

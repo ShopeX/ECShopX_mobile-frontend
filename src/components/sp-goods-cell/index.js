@@ -98,7 +98,7 @@ function SpGoodsCell(props) {
             </View>
           )}
           {info?.orderItemType && info?.orderItemType != 'normal' && (
-            <View className='goods-type'>{GOODS_TYPE[info.orderItemType]}</View>
+            <View className='goods-type'>{GOODS_TYPE()[info.orderItemType]}</View>
           )}
           {info.discount_info?.map((sp, idx) => {
             if (sp.type != 'coupon_discount' && sp.type != 'member_price') {

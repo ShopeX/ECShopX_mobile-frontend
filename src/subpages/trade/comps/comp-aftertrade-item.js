@@ -62,7 +62,7 @@ function CompTradeItem(props) {
           <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>
           <View className='trade-time'>{`申请时间: ${createdTime}`}</View>
         </View>
-        <View className='trade-state'>{AFTER_SALE_STATUS[aftersalesStatus]}</View>
+        <View className='trade-state'>{AFTER_SALE_STATUS()[aftersalesStatus]}</View>
       </View>
       <View className='trade-item-bd' onClick={onViewTradeDetail}>
         {items.map((good) => (

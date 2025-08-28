@@ -568,7 +568,7 @@ function DianWuCashier() {
                 return item.gifts.map((gift, gindex) => (
                   // <CompGift info={gift} key={`gift-item__${idx}_${index}_${gindex}`} />
                   <View className='activity-item'>
-                    <View className='activity-tag'>{PROMOTION_TAG[item.activity_type]}</View>
+                    <View className='activity-tag'>{PROMOTION_TAG()[item.activity_type]}</View>
                     <View className='activity-content'>{item.item_name}</View>
                   </View>
                 ))

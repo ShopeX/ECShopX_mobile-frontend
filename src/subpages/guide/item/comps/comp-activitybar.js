@@ -28,12 +28,12 @@ function CompActivityBar(props) {
   return (
     <View className='comp-activitybar'>
       <View className='activitybar-hd'>
-        <View className='activity-name'>{`${ACTIVITY_LIST[type]} ${activityDesc}`}</View>
+        <View className='activity-name'>{`${ACTIVITY_LIST()[type]} ${activityDesc}`}</View>
         <View className='goods-price'>{children}</View>
       </View>
       <View className='activitybar-ft'>
         <View className='title'>
-          {ACTIVITY_STATUS[type][type == 'group' ? show_status : status]}
+          {ACTIVITY_STATUS()[type][type == 'group' ? show_status : status]}
         </View>
         <AtCountdown
           format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}

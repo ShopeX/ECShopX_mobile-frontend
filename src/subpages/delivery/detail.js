@@ -67,7 +67,7 @@ const Detail = () => {
   }
 
   const getTradeStatusIcon = (info) => {
-    return `${ORDER_STATUS_INFO[info.orderStatus]?.icon}.png`
+    return `${ORDER_STATUS_INFO()[info.orderStatus]?.icon}.png`
   }
 
   const deliveryItem = (item) => {

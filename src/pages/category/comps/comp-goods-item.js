@@ -174,7 +174,7 @@ function CompGoodsItem(props) {
             <View>
               {info?.promotion.map((item, index) => (
                 <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                  {PROMOTION_TAG[item.tag_type]}
+                  {PROMOTION_TAG()[item.tag_type]}
                 </Text>
               ))}
             </View>

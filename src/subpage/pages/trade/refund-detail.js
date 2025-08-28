@@ -37,7 +37,7 @@ export default class TradeRefundDetail extends Component {
       order_id
     })
     let prog = +info.progress
-    info.status_str = REFUND_STATUS[String(prog)]
+    info.status_str = REFUND_STATUS()[String(prog)]
     info.creat_time_str = formatTime(info.create_time * 1000, 'YYYY-MM-DD HH:mm')
     let remind = await api.aftersales.remindDetail()
 

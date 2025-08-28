@@ -283,9 +283,9 @@ function SpSkuSelect(props) {
 
   const renderFooter = () => {
     let btnTxt = ''
-    Object.keys(BUY_TOOL_BTNS).forEach((key) => {
-      if (BUY_TOOL_BTNS[key].key == type) {
-        btnTxt = BUY_TOOL_BTNS[key].title
+    Object.keys(BUY_TOOL_BTNS()).forEach((key) => {
+      if (BUY_TOOL_BTNS()[key].key == type) {
+        btnTxt = BUY_TOOL_BTNS()[key].title
       }
     })
     if (type == 'picker') {

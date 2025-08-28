@@ -221,7 +221,7 @@ export const COMMUNITY_GOODS_ITEM = {
 
 export const COMMUNITY_AFTER_SALE_ITEM = {
   id: 'aftersales_bn',
-  status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+  status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS()[aftersales_status],
   totalItems: 'num',
   payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
   pay_type: 'pay_type',

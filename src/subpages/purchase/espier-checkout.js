@@ -719,7 +719,7 @@ function PurchaseCheckout(props) {
               </Text>
             )}
             <Text className='invoice-title'>
-              {payChannel ? PAYMENT_TYPE[payChannel] : '请选择'}
+              {payChannel ? PAYMENT_TYPE()[payChannel] : '请选择'}
             </Text>
           </SpCell>
           {totalInfo.deduction && (

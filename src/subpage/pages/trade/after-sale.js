@@ -76,7 +76,7 @@ export default class AfterSale extends Component {
     let nList = pickBy(list, {
       id: 'aftersales_bn',
       order_id: 'order_id',
-      status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS[aftersales_status],
+      status_desc: ({ aftersales_status }) => AFTER_SALE_STATUS()[aftersales_status],
       totalItems: 'num',
       payment: ({ refund_fee }) => (refund_fee / 100).toFixed(2),
       pay_type: 'pay_type',

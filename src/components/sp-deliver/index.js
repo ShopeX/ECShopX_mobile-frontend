@@ -200,7 +200,7 @@ function SpDeliver(props, ref) {
     const _weekdays = []
     for (let i = 0; i <= parseInt(wait_pickup_days); i++) {
       const _day = dayjs().add(i, 'day')
-      _weekdays.push({ title: enumdays[i] || _day.format('YYYY-MM-DD'), value: _day })
+      _weekdays.push({ title: enumdays()[i] || _day.format('YYYY-MM-DD'), value: _day })
     }
 
     setState((draft) => {

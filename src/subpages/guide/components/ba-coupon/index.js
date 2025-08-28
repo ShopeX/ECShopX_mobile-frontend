@@ -35,7 +35,7 @@ function BaCoupon(props) {
     getNum
   } = info
 
-  const { tag, invalidBg, bg } = COUPON_TYPE[cardType]
+  const { tag, invalidBg, bg } = COUPON_TYPE()[cardType]
   const couponTagBg = info.tagClass === 'used' || info.tagClass === 'overdue' ? invalidBg : bg
 
   const getCouponValue = () => {
@@ -80,7 +80,7 @@ function BaCoupon(props) {
                 background: couponTagBg
               })}
             >
-              {COUPON_TYPE[cardType].tag}
+              {COUPON_TYPE()[cardType].tag}
             </View>
             <Text className='title'>{title}</Text>
           </View>

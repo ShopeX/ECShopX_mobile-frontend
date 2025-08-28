@@ -37,7 +37,7 @@ function SpCoupon(props) {
     distributorName
   } = info
 
-  const { tag, invalidBg, bg } = COUPON_TYPE[cardType]
+  const { tag, invalidBg, bg } = COUPON_TYPE()[cardType]
   const couponTagBg =
     info.tagClass === 'used' || info.tagClass === 'overdue' || !info.valid ? invalidBg : bg
 
@@ -91,7 +91,7 @@ function SpCoupon(props) {
                 background: couponTagBg
               })}
             >
-              {COUPON_TYPE[cardType].tag}
+              {COUPON_TYPE()[cardType].tag}
             </View>
             <View className='title'>{`${
               VERSION_PLATFORM && distributorName ? `${distributorName}: ${title}` : title

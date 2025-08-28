@@ -927,7 +927,7 @@ function CartCheckout(props) {
     if (payChannel == 'offline_pay') {
       return paymentName
     } else {
-      return payChannel ? PAYMENT_TYPE[payChannel] : '请选择'
+      return payChannel ? PAYMENT_TYPE()[payChannel] : '请选择'
     }
   }
 

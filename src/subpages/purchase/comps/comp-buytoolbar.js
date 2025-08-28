@@ -28,50 +28,50 @@ function CompGoodsBuyToolbar(props) {
 
   const RenderBtns = () => {
     if (info.approveStatus == 'only_show') {
-      btns.push(BUY_TOOL_BTNS.ONLY_SHOW)
+      btns.push(BUY_TOOL_BTNS().ONLY_SHOW)
       return
     }
     if (info.store == 0) {
       if (info.subscribe) {
-        btns.push(BUY_TOOL_BTNS.SUBSCRIBE)
+        btns.push(BUY_TOOL_BTNS().SUBSCRIBE)
       } else {
-        btns.push(BUY_TOOL_BTNS.NOTICE)
+        btns.push(BUY_TOOL_BTNS().NOTICE)
       }
       return
     }
 
     if (info.isGift) {
-      btns.push(BUY_TOOL_BTNS.GIFT)
+      btns.push(BUY_TOOL_BTNS().GIFT)
       return
     }
 
     // 秒杀、拼团、限时特惠
-    if (ACTIVITY_LIST[info.activityType]) {
+    if (ACTIVITY_LIST()[info.activityType]) {
       if (info.activityType == 'seckill') {
         // 活动即将开始
         if (info.activityInfo.status === 'in_the_notice') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_FAST_BUY)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_FAST_BUY)
         }
       } else if (info.activityType == 'limited_time_sale') {
         if (info.activityInfo.status === 'in_the_notice') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ADD_CART, BUY_TOOL_BTNS.ACTIVITY_BUY)
+          btns.push(BUY_TOOL_BTNS().ADD_CART, BUY_TOOL_BTNS().ACTIVITY_BUY)
         }
       } else if (info.activityType == 'group') {
         if (info.activityInfo.show_status === 'nostart') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_GROUP_BUY)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_GROUP_BUY)
         }
       }
       return
     }
 
-    btns.push(BUY_TOOL_BTNS.ADD_CART)
-    btns.push(BUY_TOOL_BTNS.FAST_BUY)
+    btns.push(BUY_TOOL_BTNS().ADD_CART)
+    btns.push(BUY_TOOL_BTNS().FAST_BUY)
   }
 
   RenderBtns()

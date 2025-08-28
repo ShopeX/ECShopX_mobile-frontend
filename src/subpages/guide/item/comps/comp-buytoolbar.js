@@ -29,42 +29,42 @@ function CompGoodsBuyToolbar(props) {
 
   const RenderBtns = () => {
     if (info.store == 0) {
-      btns.push(BUY_TOOL_BTNS.NO_STORE)
+      btns.push(BUY_TOOL_BTNS().NO_STORE)
       return
     }
 
     if (info.isGift) {
-      btns.push(BUY_TOOL_BTNS.GIFT)
+      btns.push(BUY_TOOL_BTNS().GIFT)
       return
     }
 
     // 秒杀、拼团、限时特惠
-    if (ACTIVITY_LIST[info.activityType]) {
+    if (ACTIVITY_LIST()[info.activityType]) {
       if (info.activityType == 'seckill') {
         // 活动即将开始
         if (info.activityInfo.status === 'in_the_notice') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.SHARE)
+          btns.push(BUY_TOOL_BTNS().SHARE)
         }
       } else if (info.activityType == 'limited_time_sale') {
         if (info.activityInfo.status === 'in_the_notice') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.SHARE)
+          btns.push(BUY_TOOL_BTNS().SHARE)
         }
       } else if (info.activityType == 'group') {
         if (info.activityInfo.show_status === 'nostart') {
-          btns.push(BUY_TOOL_BTNS.ACTIVITY_WILL_START)
+          btns.push(BUY_TOOL_BTNS().ACTIVITY_WILL_START)
         } else {
-          btns.push(BUY_TOOL_BTNS.SHARE)
+          btns.push(BUY_TOOL_BTNS().SHARE)
         }
       }
       return
     }
 
-    btns.push(BUY_TOOL_BTNS.ADD_CART)
-    btns.push(BUY_TOOL_BTNS.SHARE)
+    btns.push(BUY_TOOL_BTNS().ADD_CART)
+    btns.push(BUY_TOOL_BTNS().SHARE)
   }
 
   RenderBtns()

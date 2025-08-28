@@ -258,7 +258,7 @@ function TradeDetail(props) {
     if (info.cancelStatus == 'WAIT_PROCESS') {
       return 'order_dengdai.png'
     }
-    return `${ORDER_STATUS_INFO[info.orderStatus]?.icon}.png`
+    return `${ORDER_STATUS_INFO()[info.orderStatus]?.icon}.png`
   }
 
   const getTradeStatusDesc = () => {
@@ -279,7 +279,7 @@ function TradeDetail(props) {
       //展示线下审核的一些状态 0 待处理;1 已审核;2 已拒绝;9 已取消
       return '待商家确认'
     } else {
-      return ORDER_STATUS_INFO[info.orderStatus]?.msg
+      return ORDER_STATUS_INFO()[info.orderStatus]?.msg
     }
   }
 
@@ -553,7 +553,7 @@ function TradeDetail(props) {
               value={(() => {
                 return info?.payType == 'offline_pay'
                   ? info?.offlinePayName
-                  : PAYMENT_TYPE[info?.payType] || ''
+                  : PAYMENT_TYPE()[info?.payType] || ''
               })()}
             />
             <SpCell

@@ -50,7 +50,7 @@ export default class TradeRefundSendback extends Component {
     for (let key in LOGISTICS_CODE) {
       express.push({
         corp_code: key,
-        corp_name: LOGISTICS_CODE[key]
+        corp_name: LOGISTICS_CODE()[key]
       })
     }
     this.setState({

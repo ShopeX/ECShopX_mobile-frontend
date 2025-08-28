@@ -7,7 +7,7 @@ export const STATUS_TYPES_MAP = {
   PART_PAYMENT: 'WAIT_BUYER_PAY'
 }
 
-export const ORDER_STATUS_INFO = {
+export const ORDER_STATUS_INFO = () => ({
   NOTPAY: {
     msg: '等待买家付款',
     icon: 'order_daizhifu'
@@ -32,9 +32,9 @@ export const ORDER_STATUS_INFO = {
     msg: '部分付款',
     icon: 'partial_payment'
   }
-}
+})
 
-export const ORDER_DADA_STATUS = {
+export const ORDER_DADA_STATUS = () => ({
   0: {
     msg: '等待商家接单',
     icon: 'order_dengdai'
@@ -71,17 +71,17 @@ export const ORDER_DADA_STATUS = {
     msg: '骑手正赶往商家',
     icon: 'order_qishou'
   }
-}
+})
 
-export const AFTER_SALE_STATUS = {
+export const AFTER_SALE_STATUS = () => ({
   '0': '待处理',
   '1': '处理中',
   '2': '已处理',
   '3': '已驳回',
   '4': '已关闭'
-}
+})
 
-export const REFUND_STATUS = {
+export const REFUND_STATUS = () => ({
   '0': '等待商家审核',
   '1': '商家接受申请，等回寄',
   '2': '消费者回寄，等待商家收货确认',
@@ -90,19 +90,19 @@ export const REFUND_STATUS = {
   '5': '退款驳回',
   '6': '退款成功',
   '7': '售后关闭'
-}
+})
 
-export const AFTER_SALE_TYPE = [
+export const AFTER_SALE_TYPE = () => [
   { title: '仅退款', icon: 'icon-jintuikuan-01', type: 'ONLY_REFUND' },
   { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
 ]
 
-export const REFUND_FEE_TYPE = [
+export const REFUND_FEE_TYPE = () => [
   { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 'logistics' },
   { title: '到店退货', desc: '前往线下门店退货', value: 'offline' }
 ]
 
-export const AFTER_SALE_STATUS_TEXT = {
+export const AFTER_SALE_STATUS_TEXT = () => ({
   0: '售后申请已提交，等待商家处理',
   1: '商家审核通过，请及时上传物流信息',
   2: '消费者回寄，等待商家收货确认',
@@ -113,9 +113,9 @@ export const AFTER_SALE_STATUS_TEXT = {
   7: '售后关闭',
   8: '商家确认收货',
   9: '退款处理中'
-}
+})
 
-export const PROMOTION_TAG = {
+export const PROMOTION_TAG = () => ({
   single_group: '团购',
   full_minus: '满减',
   full_discount: '满折',
@@ -124,15 +124,15 @@ export const PROMOTION_TAG = {
   limited_time_sale: '限时特惠',
   plus_price_buy: '加价购',
   member_preference: '会员限购'
-}
+})
 
-export const ACTIVITY_LIST = {
+export const ACTIVITY_LIST = () => ({
   group: '拼团',
   seckill: '秒杀',
   limited_time_sale: '限时特惠'
-}
+})
 
-export const ACTIVITY_STATUS = {
+export const ACTIVITY_STATUS = () => ({
   seckill: {
     in_the_notice: '距开始还剩',
     in_sale: '距结束还剩'
@@ -145,9 +145,9 @@ export const ACTIVITY_STATUS = {
     nostart: '距开始还剩',
     noend: '距结束还剩'
   }
-}
+})
 
-export const DEFAULT_POINT_NAME = '积分'
+export const DEFAULT_POINT_NAME = () => '积分'
 
 export const DEFAULT_THEME = {
   colorPrimary: '#d42f29',
@@ -197,7 +197,7 @@ export const PURCHASE_TABBAR_ICON = {
   member: 'huiyuan'
 }
 
-export const BUY_TOOL_BTNS = {
+export const BUY_TOOL_BTNS = () => ({
   NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
   SUBSCRIBE: { title: '已订阅到货通知', key: 'subscribe', btnStatus: 'default' },
   ADD_CART: { title: '加入购物车', key: 'addcart', btnStatus: 'default' },
@@ -214,9 +214,8 @@ export const BUY_TOOL_BTNS = {
   EX_CHANGE: { title: '立即兑换', key: 'exchange', btnStatus: 'active' },
   // 兑换积分商品
   EX_CHANGE_POINT: { title: '立即兑换', key: 'exchange_point', btnStatus: 'active' }
-}
-
-export const COUPON_TYPE = {
+})
+export const COUPON_TYPE = () => ({
   new_gift: {
     tag: '兑换券',
     bg: 'linear-gradient(122deg, #F4C486 0%, #D4A570 100%)',
@@ -241,7 +240,7 @@ export const COUPON_TYPE = {
     invalidFc: '#888888',
     opacity: '0.4'
   }
-}
+})
 
 export const PAYTYPE = {
   /** h5环境下 */
@@ -251,7 +250,7 @@ export const PAYTYPE = {
   WXH5JS: 'wxpayjs'
 }
 
-export const PAYMENT_TYPE = {
+export const PAYMENT_TYPE = () => ({
   wxpay: '微信支付',
   hfpay: '微信支付',
   alipayh5: '支付宝支付',
@@ -272,7 +271,7 @@ export const PAYMENT_TYPE = {
   alipaymini: '支付宝支付',
   point: '积分支付',
   offline_pay: '线下转账'
-}
+})
 
 export const TRANSFORM_PAYTYPE = {
   'wxpayh5': 'wxpayh5',
@@ -285,7 +284,7 @@ export const TRANSFORM_PAYTYPE = {
   'point': 'point'
 }
 
-export const POINT_TYPE = {
+export const POINT_TYPE = () => ({
   1: '注册送积分',
   2: '推荐送分',
   3: '充值返积分',
@@ -298,7 +297,7 @@ export const POINT_TYPE = {
   10: '售后处理积分',
   11: '大转盘抽奖送积分',
   12: '管理员手动调整积分'
-}
+})
 
 export const FORM_COMP = {
   INPUT: 1,
@@ -316,14 +315,14 @@ export const CHIEF_APPLY_STATUS = {
   REJECT: 2
 }
 
-export const GOODS_TYPE = {
+export const GOODS_TYPE = () => ({
   'normal': '普通商品',
   'gift': '赠品',
   'plus_buy': '换购',
   'package': '组合商品'
-}
+})
 
-export const LOGISTICS_CODE = {
+export const LOGISTICS_CODE = () => ({
   'SF': '顺丰速运',
   'HTKY': '百世快递',
   'ZTO': '中通快递',
@@ -339,13 +338,13 @@ export const LOGISTICS_CODE = {
   'ZJS': '宅急送',
   'FWX': '丰网速运',
   'JTSD': '极兔速递'
-}
+})
 
-export const enumdays = {
+export const enumdays = () => ({
   0: '今天',
   1: '明天',
   2: '后天'
-}
+})
 
 export const infotype = {
   SYSTEM: 'system',
@@ -355,7 +354,7 @@ export const infotype = {
   FOLLOWERUSER: 'followerUser'
 }
 
-export const DELIVERY_PERSONNEL_INFORMATION = [
+export const DELIVERY_PERSONNEL_INFORMATION = () => [
   {
     title: '快递公司',
     selector: [{ label: '商家自配送', status: true }],
@@ -400,7 +399,7 @@ export const DELIVERY_PERSONNEL_INFORMATION = [
   }
 ]
 
-export const relationship = [
+export const relationship = () => [
   {
     key: 1,
     value: '本人'
@@ -423,15 +422,15 @@ export const relationship = [
   }
 ]
 
-export const ACTIVITY_STATUS_MAP = {
+export const ACTIVITY_STATUS_MAP = () => ({
   'pending': '待审核',
   'passed': '已通过',
   'rejected': '已拒绝',
   'verified': '已核销',
   'canceled': '已取消'
-}
+})
 
-export const DELIVERY_LIST = [
+export const DELIVERY_LIST = () => [
   {
     type: 'logistics',
     name: '普通快递',
