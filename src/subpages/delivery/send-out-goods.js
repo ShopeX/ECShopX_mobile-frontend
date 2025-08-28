@@ -17,7 +17,7 @@ import './send-out-goods.scss'
 
 const initialConfigState = {
   information: {},
-  list: DELIVERY_PERSONNEL_INFORMATION
+  list: DELIVERY_PERSONNEL_INFORMATION()
 }
 
 const SendOutGoods = () => {

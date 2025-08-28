@@ -94,12 +94,12 @@ function TradeAfterSaleDetail(props) {
   }
 
   const getRefundType = () => {
-    const { title } = REFUND_FEE_TYPE.find((item) => item.value == info?.returnType) || {}
+    const { title } = REFUND_FEE_TYPE().find((item) => item.value == info?.returnType) || {}
     return title
   }
 
   const getAfterSalesType = () => {
-    const { title } = AFTER_SALE_TYPE.find((item) => item.type == info?.afterSalesType) || {}
+    const { title } = AFTER_SALE_TYPE().find((item) => item.type == info?.afterSalesType) || {}
     return title
   }
 

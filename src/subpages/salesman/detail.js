@@ -252,7 +252,7 @@ function TradeDetail(props) {
   const getTradeStatusIcon = () => {
     if (info.receiptType == 'dada') {
       // 达达同城配，订单状态单独处理
-      return `${ORDER_DADA_STATUS[info.dada?.dadaStatus]?.icon}.png` || ''
+      return `${ORDER_DADA_STATUS()[info.dada?.dadaStatus]?.icon}.png` || ''
     }
 
     if (info.cancelStatus == 'WAIT_PROCESS') {
@@ -264,7 +264,7 @@ function TradeDetail(props) {
   const getTradeStatusDesc = () => {
     if (info.receiptType == 'dada') {
       // 达达同城配，订单状态单独处理
-      return ORDER_DADA_STATUS[info.dada?.dadaStatus]?.msg
+      return ORDER_DADA_STATUS()[info.dada?.dadaStatus]?.msg
     } else if (info.zitiStatus == 'PENDING') {
       return '等待核销'
     } else if (info.deliveryStatus == 'PARTAIL') {

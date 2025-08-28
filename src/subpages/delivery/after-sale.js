@@ -26,7 +26,7 @@ import './after-sale.scss'
 const initialState = {
   info: null,
   curTabIdx: 0,
-  tabList: AFTER_SALE_TYPE,
+  tabList: AFTER_SALE_TYPE(),
   reasonIndex: '',
   reasons: [],
   refundFee: 0,
@@ -124,7 +124,7 @@ function TradeAfterSale(props) {
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
       ) {
-        draft.refundTypeList = REFUND_FEE_TYPE.filter((item) => item.value != 'offline')
+        draft.refundTypeList = REFUND_FEE_TYPE().filter((item) => item.value != 'offline')
         draft.refundType = 'logistics'
       }
     })

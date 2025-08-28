@@ -20,7 +20,7 @@ const initialState = {
     user_family_gender: '',
     relationship: 0
   },
-  selector: relationship,
+  selector: relationship(),
   handlechecked: null
 }
 

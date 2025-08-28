@@ -15,7 +15,7 @@ function CompMedicationPersonnel(props) {
 
   const [state, setState] = useImmer({
     list: [],
-    selector: relationship
+    selector: relationship()
   })
   const goodsRef = useRef()
 

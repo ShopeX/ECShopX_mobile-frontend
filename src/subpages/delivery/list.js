@@ -28,7 +28,7 @@ const initialState = {
   tradeList: [],
   refresherTriggered: false,
   statusDelivery: false,
-  list: DELIVERY_PERSONNEL_INFORMATION
+  list: DELIVERY_PERSONNEL_INFORMATION()
 }
 function TradeList(props) {
   const [state, setState] = useImmer(initialState)

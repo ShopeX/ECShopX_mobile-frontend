@@ -19,7 +19,7 @@ import './detail.scss'
 const initialConfigState = {
   information: {},
   statusDelivery: false,
-  list: DELIVERY_PERSONNEL_INFORMATION
+  list: DELIVERY_PERSONNEL_INFORMATION()
 }
 
 const Detail = () => {

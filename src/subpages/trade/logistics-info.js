@@ -21,7 +21,7 @@ function TradeLogisticsInfo(props) {
   const { logi_no, expressList, corpIndex } = state
 
   useEffect(() => {
-    const _expressList = Object.keys(LOGISTICS_CODE).map((key) => {
+    const _expressList = Object.keys(LOGISTICS_CODE()).map((key) => {
       return {
         name: LOGISTICS_CODE()[key],
         code: key

@@ -26,7 +26,7 @@ import './after-sale.scss'
 const initialState = {
   info: null,
   curTabIdx: 0,
-  tabList: AFTER_SALE_TYPE,
+  tabList: AFTER_SALE_TYPE(),
   reasonIndex: '',
   reasons: [],
   refundFee: 0,
@@ -37,7 +37,7 @@ const initialState = {
   // 用于云店后台交易设置-到店退货关闭时判断
   offlineAftersalesIsOpen: false,
   offlineAftersales: false,
-  refundTypeList: REFUND_FEE_TYPE,
+  refundTypeList: REFUND_FEE_TYPE(),
   refundStore: '', // 退货门店
   contact: '', // 联系人
   offline_freight: '', //运费
@@ -127,7 +127,7 @@ function TradeAfterSale(props) {
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
       ) {
-        draft.refundTypeList = REFUND_FEE_TYPE.filter((item) => item.value != 'offline')
+        draft.refundTypeList = REFUND_FEE_TYPE().filter((item) => item.value != 'offline')
         draft.refundType = 'logistics'
       }
     })

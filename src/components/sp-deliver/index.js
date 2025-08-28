@@ -159,7 +159,7 @@ function SpDeliver(props, ref) {
       _distributorInfo = await api.shop.getShop({ distributor_id })
     }
 
-    const _receiptType = DELIVERY_LIST.find((item) => !!_distributorInfo[item.key])
+    const _receiptType = DELIVERY_LIST().find((item) => !!_distributorInfo[item.key])
     setState((draft) => {
       draft.distributorInfo = _distributorInfo
       draft.receiptType = _receiptType?.type || 'logistics'
@@ -391,8 +391,8 @@ function SpDeliver(props, ref) {
   return (
     <View className='page-comp-deliver'>
       <View className='switch-box'>
-        <View className={classNames(DELIVERY_LIST.length > 0 && 'switch-tab')}>
-          {DELIVERY_LIST.map((item) => {
+        <View className={classNames(DELIVERY_LIST().length > 0 && 'switch-tab')}>
+          {DELIVERY_LIST().map((item) => {
             if (showSwitchItem(item.key, distributorInfo)) {
               return (
                 <View

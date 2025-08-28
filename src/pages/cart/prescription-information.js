@@ -101,7 +101,7 @@ const initialState = {
     pageSize: 10
   },
   medicationList: [],
-  selector: relationship,
+  selector: relationship(),
   risk: false,
   listProduct: [],
   before_ai_result_allergy_history: '',

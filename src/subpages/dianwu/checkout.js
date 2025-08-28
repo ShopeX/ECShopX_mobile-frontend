@@ -477,7 +477,7 @@ function DianwuCheckout(props) {
         <View className='promotion-item' key={`promotion-item__${idx}`}>
           {/* {item.activity_type == 'full_gift' && (
             <View className='gift-item'>
-              <View className='activity-tag'>{PROMOTION_TAG[item.activity_type]}</View>
+              <View className='activity-tag'>{PROMOTION_TAG()[item.activity_type]}</View>
               <View className='activity-content'>
                 {item.activity_desc?.gifts?.map((gift, index) => (
                   <View className='gift-item' key={`gift-item__${idx}__${index}`}>
@@ -496,7 +496,7 @@ function DianwuCheckout(props) {
 
           {/* {item.activity_type != 'full_gift' && (
             <View className='activity-item'>
-              <View className='activity-tag'>{PROMOTION_TAG[item.activity_type]}</View>
+              <View className='activity-tag'>{PROMOTION_TAG()[item.activity_type]}</View>
               <View className='activity-content'>{item.activity_name}</View>
             </View>
           )} */}
