@@ -105,9 +105,9 @@ function withPageWrapper(Component) {
               }
             }
 
-            if (shopInfo?.distributor_id) {
+            if (dtid || shopInfo?.distributor_id) {
               // 如果缓存中存在店铺，需校验当前店铺是否在白名单中
-              await checkStoreWhiteList(shopInfo?.distributor_id)
+              await checkStoreWhiteList(dtid || shopInfo?.distributor_id)
               resolve()
             } else {
               const myShopInfo = await getUserWhiteShop()
