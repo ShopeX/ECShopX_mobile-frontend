@@ -237,7 +237,7 @@ function withPageWrapper(Component) {
             Taro.makePhoneCall({
               phoneNumber: currentShopInfo.phone,
               fail: async () => {
-                await resloveCheckUserInStoreWhiteList(currentShopInfo)
+                return await resloveCheckUserInStoreWhiteList(currentShopInfo)
               }
             })
             throw new Error('PHONE_CALL_TO_STORE')
