@@ -234,13 +234,8 @@ function withPageWrapper(Component) {
             contentAlign: 'center'
           })
           if (resModalConnectStore.confirm) {
-            Taro.makePhoneCall({
-              phoneNumber: currentShopInfo.phone,
-              fail: async () => {
-                return await resloveCheckUserInStoreWhiteList(currentShopInfo)
-              }
-            })
-            throw new Error('PHONE_CALL_TO_STORE')
+            await makePhoneCall(currentShopInfo.phone)
+            dispatch(updateShopInfo(myShopInfo))
           } else {
             dispatch(updateShopInfo(myShopInfo))
           }
@@ -282,6 +277,20 @@ function withPageWrapper(Component) {
       } else {
         dispatch(updateShopInfo(currentShopInfo))
       }
+    }
+
+    const makePhoneCall = async (phoneNumber) => {
+      return new Promise((resolve, reject) => {
+        Taro.makePhoneCall({
+          phoneNumber: phoneNumber,
+          success: async () => {
+            resolve()
+          },
+          fail: async () => {
+            reject()
+          }
+        })
+      })
     }
 
     if (state) {
