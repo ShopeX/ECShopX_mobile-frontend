@@ -734,7 +734,7 @@ const getDistributorId = (_dtid) => {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
       const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      if (dtid) {
+      if (dtid && dtid !== 'undefined') {
         return dtid
       } else {
         return distributor_id 
