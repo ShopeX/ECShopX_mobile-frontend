@@ -39,8 +39,7 @@ import {
   isAPP,
   showToast,
   getDistributorId,
-  VERSION_STANDARD,
-  pxToRpx
+  VERSION_STANDARD
 } from '@/utils'
 import { fetchUserFavs } from '@/store/slices/user'
 
@@ -281,7 +280,7 @@ function EspierDetail(props) {
 
         const itemDetail = await api.item.detail(id, {
           showError: false,
-          distributor_id: dtid
+          distributor_id: getDistributorId()
         })
         data = pickBy(itemDetail, doc.goods.ESPIER_DETAIL_GOODS_INFO)
         if (data.approveStatus == 'instock') {
@@ -301,7 +300,7 @@ function EspierDetail(props) {
 
     // 是否订阅
     const { user_id: subscribe = false } = await api.user.isSubscribeGoods(id, {
-      distributor_id: dtid
+      distributor_id: getDistributorId()
     })
 
     // setNavigationBarTitle(data.itemName)

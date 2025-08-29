@@ -235,7 +235,10 @@ function withPageWrapper(Component) {
           })
           if (resModalConnectStore.confirm) {
             Taro.makePhoneCall({
-              phoneNumber: currentShopInfo.phone
+              phoneNumber: currentShopInfo.phone,
+              fail: async () => {
+                await resloveCheckUserInStoreWhiteList(currentShopInfo)
+              }
             })
             throw new Error('PHONE_CALL_TO_STORE')
           } else {
