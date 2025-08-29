@@ -55,6 +55,7 @@ function SpSkuSelect(props) {
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, curImage, disabledSet, curItem, skuText, num, loading,minNum } = state
   const { customerLnformation } = useSelector((state) => state.cart)
+  const { shopInfo } = useSelector((state) => state.shop)
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
@@ -239,7 +240,7 @@ function SpSkuSelect(props) {
 
     let params = {}
 
-    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    const { distributor_id:dtid } = shopInfo || Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
     if(dtid && dtid !== 'undefined') {
       params = {
         shop_type: 'distributor',
