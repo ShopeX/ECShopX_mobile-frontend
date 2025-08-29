@@ -287,7 +287,7 @@ function withPageWrapper(Component) {
             resolve()
           },
           fail: async () => {
-            reject()
+            resolve()
           }
         })
       })
