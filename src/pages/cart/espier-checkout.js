@@ -33,7 +33,8 @@ import {
   isEmpty,
   VERSION_STANDARD,
   VERSION_B2C,
-  VERSION_PLATFORM
+  VERSION_PLATFORM,
+  getDistributorId
 } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { useAsyncCallback, useLogin, usePayment, useLocation } from '@/hooks'
@@ -795,7 +796,8 @@ function CartCheckout(props) {
     // 处理导购数据(旧)
     if (routerParams?.cxdid) {
       cus_parmas.cxdid = routerParams?.cxdid
-      cus_parmas.distributor_id = routerParams?.dtid
+      // cus_parmas.distributor_id = routerParams?.dtid
+      cus_parmas.distributor_id = getDistributorId()
       cus_parmas.cart_type = 'cxd'
       cus_parmas.order_type = 'normal_shopguide'
       cus_parmas.salesman_id = routerParams?.smid
