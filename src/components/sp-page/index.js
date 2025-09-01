@@ -79,10 +79,6 @@ const SpPage = memo(
     const dispatch = useDispatch()
     const { login } = useLogin()
 
-    useReady(() => {
-      // 导购货架数据上报
-    })
-
     useEffect(() => {
       if (state.lock) {
         // 保存当前滚动位置
@@ -122,32 +118,27 @@ const SpPage = memo(
       let _navigationRSpace = 0 // 导航栏右间距
       const { screenHeight, windowWidth, windowHeight } = Taro.getWindowInfo()
       const [absolutePath] = router.path.split('?')
+      const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
       const _btnReturn = pages.length > 1 && !TAB_PAGES.includes(absolutePath)
       const _btnHome = pages.length == 1 && !TAB_PAGES.includes(absolutePath)
-
       if (isWeixin || isAlipay) {
         const menuButton = Taro.getMenuButtonBoundingClientRect()
-        // const { statusBarHeight } = Taro.getSystemInfoSync()
-        _gNavbarH = Math.floor(menuButton.bottom + (props.navigateHeight - menuButton.height) / 2)
+        _gNavbarH = Math.floor(menuButton.bottom + (props.navigateHeight - menuButton.height) / 2) // 导航栏高度
         _gStatusBarHeight = Math.floor(
           menuButton.top - (props.navigateHeight - menuButton.height) / 2
-        )
+        ) // 状态栏高度
         _menuWidth = menuButton.width
         _navigationLSpace = windowWidth - menuButton.right
         _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
-      } else if (hasNavbar) {
-        _gNavbarH = props.navigateHeight
-        _gStatusBarHeight = 0
       }
 
-      const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
       setState((draft) => {
+        draft.bodyHeight = windowHeight
         draft.btnReturn = _btnReturn
         draft.btnHome = _btnHome && props.btnHomeEnable
         draft.customNavigation = custom_navigation
         draft.cusCurrentPage = pages.length
         draft.ipx = isIphoneX()
-        draft.windowHeight = windowHeight
         draft.pageTitle = instanceRef.current?.page?.config?.navigationBarTitleText || props.title
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
@@ -274,14 +265,12 @@ const SpPage = memo(
         })
       }
     }))
+
     const computedNavigationStyle = () => {
       const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
         'padding-top': `${state.gStatusBarHeight}px`,
-        // 'padding-right': `${state.navigationRSpace}px`,
-        // 'padding-left': `${state.navigationLSpace}px`
-        // 'background-image': `url(${navigateBackgroundImage})`,
         'background-size': '100% 100%',
         'background-repeat': 'no-repeat',
         'background-position': 'center'
@@ -330,6 +319,7 @@ const SpPage = memo(
       } else {
         navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
       }
+
       return (
         <View className='custom-navigation' style={styleNames(computedNavigationStyle())}>
           <View className='custom-navigation__content h-full'>
@@ -339,14 +329,9 @@ const SpPage = memo(
                 padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`
               }}
             >
-              {/* {(state.btnReturn || state.btnHome) && ( */}
               <View
                 className='custom-navigation__left-block flex items-center'
                 style={{
-                  // padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`,
-                  // maxWidth: `${state.menuWidth}px`,
-                  // width: props.navigationLeftBlockWidthFull ? `${state.menuWidth}px` : 'auto'
-                  // margin: `${state.navigationLSpace}px 0px`
                   gap: `${state.navigationLSpace}px`,
                   width: `${state.menuWidth}px`,
                   height: '100%'
@@ -378,12 +363,8 @@ const SpPage = memo(
                 )}
                 {props.pageConfig?.pTitleHotSetting?.imgUrl && (
                   <View className='p-title-hot-img'>
-                    <SpImage
-                      src={props.pageConfig?.pTitleHotSetting?.imgUrl}
-                      mode='aspectFit'
-                    ></SpImage>
+                    <SpImage src={props.pageConfig?.pTitleHotSetting?.imgUrl} mode='aspectFit' />
                     {props.pageConfig?.pTitleHotSetting?.data?.map((citem) => {
-                      console.log(citem)
                       if (citem.id == 'customerService') {
                         return (
                           <Button
@@ -417,7 +398,7 @@ const SpPage = memo(
                   </View>
                 )}
               </View>
-              {/* )} */}
+
               <View
                 className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
                 style={styleNames(pageCenterStyle)}
@@ -427,7 +408,6 @@ const SpPage = memo(
                 ) : (
                   <View className='title-container' style={styleNames(pageTitleStyle)}>
                     {renderTitle || props.title || navigationBarTitleText}
-                    {/* 吸顶区域 */}
                     {props.fixedTopContainer}
                   </View>
                 )}
@@ -442,8 +422,6 @@ const SpPage = memo(
       )
     }
 
-    console.log('customNavigation:', state.customNavigation)
-
     return (
       <View
         className={classNames('sp-page', props.className)}
@@ -454,21 +432,21 @@ const SpPage = memo(
         {hasNavbar && !state.isTabBarPage && props.navbar && (
           <SpNavBar title={state.pageTitle} onClickLeftIcon={props.onClickLeftIcon} />
         )}
+
         {props.isDefault &&
           (props.renderDefault || <SpNote img={props.defaultImg} title={props.defaultMsg} isUrl />)}
+
         {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
-        {state.customNavigation && RenderCustomNavigation()}
+        {state.customNavigation && <RenderCustomNavigation />}
+
         {props.loading && <SpLoading />}
+
         {!props.isDefault && !props.loading && (
           <View
             className='sp-page__body'
             style={styleNames({
-              'height':
-                props.immersive || hasNavbar
-                  ? `${state.height + state.gNavbarH}px`
-                  : `${state.height}px`,
-              'padding-top': `${hasNavbar ? state.gNavbarH : 0}px`,
-              'margin-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
+              'height': `${state.bodyHeight}px`,
+              'padding-top': `${state.customNavigation && !props.immerse ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
                     props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
@@ -476,9 +454,10 @@ const SpPage = memo(
                 : 0
             })}
           >
-            <context.Provider>{props.children}</context.Provider>
+            <context.Provider value={{}}>{props.children}</context.Provider>
           </View>
         )}
+
         {props.renderFooter && (
           <View
             key={lang}
@@ -488,9 +467,10 @@ const SpPage = memo(
               'padding-bottom': `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
             })}
           >
-            <context.Provider>{props.renderFooter}</context.Provider>
+            <context.Provider value={{}}>{props.renderFooter}</context.Provider>
           </View>
         )}
+
         {/* 浮动 */}
         {!props.isDefault && (
           <View className='float-container'>
@@ -533,7 +513,7 @@ SpPage.defaultProps = {
   showNavitionLeft: true,
   title: '', // 页面导航标题
   renderFooter: null,
-  renderFloat: () => {}
+  renderFloat: null
 }
 
 export default SpPage

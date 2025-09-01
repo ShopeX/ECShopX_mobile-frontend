@@ -298,113 +298,115 @@ export default class Login extends Component {
         })}
         onClickLeftIcon={this.handleNavLeftItemClick}
       >
-        <View className='auth-hd'>
-          <View className='title'>欢迎登录</View>
-          {/* <View className='desc'>使用已注册的手机号登录</View> */}
-        </View>
-        <View className='auth-bd'>
-          <AtForm className='form'>
-            <View className='form-field noborder'>
-              <CompInputPhone
-                onChange={this.handleInputChange.bind(this, 'mobile')}
-                value={info.mobile}
-                needValidate={passwordLogin}
-              />
-            </View>
-            {/* 密码登录 */}
-            {passwordLogin && (
-              <View className='form-field'>
-                <View className='input-field'>
-                  <CompPasswordInput
-                    onChange={this.handleInputChange.bind(this, 'password')}
-                    {...inputProp}
-                    value={info.password}
-                    // onFocus={this.handleRemarkFocus.bind(this)}
-                    // onBlur={this.handleRemarkBlur.bind(this)}
-                  />
-                </View>
+        <View style={{ padding: '0 32px' }}>
+          <View className='auth-hd'>
+            <View className='title'>欢迎登录</View>
+            {/* <View className='desc'>使用已注册的手机号登录</View> */}
+          </View>
+          <View className='auth-bd'>
+            <AtForm className='form'>
+              <View className='form-field noborder'>
+                <CompInputPhone
+                  onChange={this.handleInputChange.bind(this, 'mobile')}
+                  value={info.mobile}
+                  needValidate={passwordLogin}
+                />
               </View>
-            )}
-            {/* 验证码登录，验证码超过1次，显示图形验证码 */}
-            {codeLogin && (
-              <View className='form-field'>
-                <View className='input-field'>
-                  <AtInput
-                    clear
-                    name='yzm'
-                    value={info.yzm}
-                    placeholder='请输入图形验证码'
-                    onChange={this.handleInputChange.bind(this, 'yzm')}
-                    placeholderClass='input-placeholder'
-                    {...inputProp}
-                  />
-                </View>
-                <View className='btn-field'>
-                  {imgInfo && (
-                    <Image
-                      className='image-vcode'
-                      src={imgInfo.imageData}
-                      onClick={this.getImageVcode.bind(this)}
-                    />
-                  )}
-                </View>
-              </View>
-            )}
-            {codeLogin && (
-              <View className='form-field'>
-                <View className='input-field'>
-                  <AtInput
-                    clear
-                    name='vcode'
-                    value={info.vcode}
-                    placeholder='请输入验证码'
-                    onChange={this.handleInputChange.bind(this, 'vcode')}
-                    placeholderClass='input-placeholder'
-                    {...inputProp}
-                  />
-                </View>
-                <View className='btn-field'>
-                  <SpTimer
-                    onStart={this.handleTimerStart.bind(this)}
-                    onStop={this.handleTimerStop}
-                  />
-                </View>
-              </View>
-            )}
-            {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP}</View>} */}
-            <View className='btn-text-group'>
-              <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
-                {passwordLogin ? '验证码登录' : '密码登录'}
-              </Text>
+              {/* 密码登录 */}
               {passwordLogin && (
-                <Text className='btn-text forgot-password' onClick={this.handleForgotPsd}>
-                  忘记密码？
-                </Text>
+                <View className='form-field'>
+                  <View className='input-field'>
+                    <CompPasswordInput
+                      onChange={this.handleInputChange.bind(this, 'password')}
+                      {...inputProp}
+                      value={info.password}
+                      // onFocus={this.handleRemarkFocus.bind(this)}
+                      // onBlur={this.handleRemarkBlur.bind(this)}
+                    />
+                  </View>
+                </View>
               )}
-            </View>
-            <View className='form-submit'>
-              <AtButton
-                disabled={!isFull}
-                circle
-                type='primary'
-                className='login-button'
-                onClick={this.handleSubmit.bind(this)}
-              >
-                登 录
-              </AtButton>
-              <AtButton
-                circle
-                type='primary'
-                className='reg-button'
-                onClick={this.handleNavigateReg}
-              >
-                注 册
-              </AtButton>
-            </View>
-          </AtForm>
-        </View>
-        <View className='other-login'>
-          <CompOtherLogin />
+              {/* 验证码登录，验证码超过1次，显示图形验证码 */}
+              {codeLogin && (
+                <View className='form-field'>
+                  <View className='input-field'>
+                    <AtInput
+                      clear
+                      name='yzm'
+                      value={info.yzm}
+                      placeholder='请输入图形验证码'
+                      onChange={this.handleInputChange.bind(this, 'yzm')}
+                      placeholderClass='input-placeholder'
+                      {...inputProp}
+                    />
+                  </View>
+                  <View className='btn-field'>
+                    {imgInfo && (
+                      <Image
+                        className='image-vcode'
+                        src={imgInfo.imageData}
+                        onClick={this.getImageVcode.bind(this)}
+                      />
+                    )}
+                  </View>
+                </View>
+              )}
+              {codeLogin && (
+                <View className='form-field'>
+                  <View className='input-field'>
+                    <AtInput
+                      clear
+                      name='vcode'
+                      value={info.vcode}
+                      placeholder='请输入验证码'
+                      onChange={this.handleInputChange.bind(this, 'vcode')}
+                      placeholderClass='input-placeholder'
+                      {...inputProp}
+                    />
+                  </View>
+                  <View className='btn-field'>
+                    <SpTimer
+                      onStart={this.handleTimerStart.bind(this)}
+                      onStop={this.handleTimerStop}
+                    />
+                  </View>
+                </View>
+              )}
+              {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP}</View>} */}
+              <View className='btn-text-group'>
+                <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
+                  {passwordLogin ? '验证码登录' : '密码登录'}
+                </Text>
+                {passwordLogin && (
+                  <Text className='btn-text forgot-password' onClick={this.handleForgotPsd}>
+                    忘记密码？
+                  </Text>
+                )}
+              </View>
+              <View className='form-submit'>
+                <AtButton
+                  disabled={!isFull}
+                  circle
+                  type='primary'
+                  className='login-button'
+                  onClick={this.handleSubmit.bind(this)}
+                >
+                  登 录
+                </AtButton>
+                <AtButton
+                  circle
+                  type='primary'
+                  className='reg-button'
+                  onClick={this.handleNavigateReg}
+                >
+                  注 册
+                </AtButton>
+              </View>
+            </AtForm>
+          </View>
+          <View className='other-login'>
+            <CompOtherLogin />
+          </View>
         </View>
       </SpPage>
     )

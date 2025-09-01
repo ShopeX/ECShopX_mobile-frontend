@@ -1,4 +1,4 @@
-$border-color:#E2E4EA;
+$border-color: #e2e4ea;
 
 .page-auth-login {
   background-color: #fff;
@@ -7,54 +7,51 @@ $border-color:#E2E4EA;
   right: 0;
   bottom: 0;
   left: 0;
-  padding: 0 32px;
   display: flex;
   flex-direction: column;
 
-  @include placeholder(rgba(197, 202, 213, 1),32px);
+  @include placeholder(rgba(197, 202, 213, 1), 32px);
 
-  .at-input{
-     .weui-input{
-       color:rgba(17, 26, 52, 1);
-     }
-     .input-placeholder{
-       color:rgba(197, 202, 213, 1);
-     }
+  .at-input {
+    .weui-input {
+      color: rgba(17, 26, 52, 1);
+    }
+    .input-placeholder {
+      color: rgba(197, 202, 213, 1);
+    }
   }
 
-  &.is-code-login{
-    .auth-bd{
-      .form-submit{
+  &.is-code-login {
+    .auth-bd {
+      .form-submit {
         margin-top: 50px;
       }
     }
   }
 
-  &.is-full{
-    .auth-bd{
-      .form-submit{
-        .login-button{
-          background-color:var(--color-primary);
+  &.is-full {
+    .auth-bd {
+      .form-submit {
+        .login-button {
+          background-color: var(--color-primary);
           border-color: var(--color-primary);
         }
       }
     }
   }
 
-
   .auth-hd {
-
-    margin-top:80px;
+    margin-top: 80px;
 
     .title {
-      color: #111A34;
+      color: #111a34;
       font-size: 52px;
       line-height: 1;
-      margin-bottom:24px;
+      margin-bottom: 24px;
     }
     .desc {
       font-size: 28px;
-      color: #858B9C;
+      color: #858b9c;
       line-height: 1;
     }
   }
@@ -62,21 +59,21 @@ $border-color:#E2E4EA;
     margin-top: 100px;
     .form-title {
       font-size: 32px;
-      color: #111A34;
+      color: #111a34;
       padding-bottom: 20px;
-      border-bottom: 1PX solid $border-color;
+      border-bottom: 1px solid $border-color;
     }
-    .form-tip{
+    .form-tip {
       font-size: 28px;
-       color: #858b9c;
+      color: #858b9c;
       margin-top: 16px;
     }
     .form-field {
       display: flex;
       align-items: center;
-      border-bottom: 1PX solid $border-color;
+      border-bottom: 1px solid $border-color;
 
-      &.noborder{
+      &.noborder {
         border-bottom: none;
       }
 
@@ -86,7 +83,7 @@ $border-color:#E2E4EA;
         flex: 1;
 
         &:after {
-          border:none;
+          border: none;
         }
       }
       .input-field {
@@ -96,15 +93,15 @@ $border-color:#E2E4EA;
         width: 180px;
         text-align: center;
         .image-vcode {
-          width:180px;
-          height:60px;
+          width: 180px;
+          height: 60px;
           display: block;
         }
       }
     }
     .btn-text-group {
       display: flex;
-      justify-content:space-between;
+      justify-content: space-between;
     }
     .btn-text {
       margin-top: 30px;
@@ -113,36 +110,35 @@ $border-color:#E2E4EA;
     }
     .form-submit {
       margin-top: 100px;
-      .at-button__text{
+      .at-button__text {
         @include flex-center();
         font-size: 36px;
         font-weight: 600;
       }
-      .at-button--disabled{
-        opacity: .5;
+      .at-button--disabled {
+        opacity: 0.5;
       }
-      .login-button,.reg-button{
+      .login-button,
+      .reg-button {
         height: 100px;
         border-radius: 50px;
       }
-      .reg-button{
+      .reg-button {
         margin-top: 32px;
         background-color: white;
         /* prettier-ignore */
         border: 1PX solid var(--color-primary);
-        color:var(--color-primary);
+        color: var(--color-primary);
       }
     }
-    .forgot-password{
-      color:rgba(133, 139, 156, 1);
+    .forgot-password {
+      color: rgba(133, 139, 156, 1);
     }
     .btn-submit {
       height: 100px;
       border-radius: 50px;
       line-height: 100px;
       font-size: 36px;
-
-
     }
   }
   .auth-ft {
@@ -157,11 +153,11 @@ $border-color:#E2E4EA;
       height: 45px;
     }
   }
-  .other-login{
+  .other-login {
     margin-top: 100px;
     left: 0;
     right: 0;
-    bottom:0;
+    bottom: 0;
     text-align: center;
   }
 }

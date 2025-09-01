@@ -133,6 +133,7 @@ function WgtOrderNavigation(props) {
             onChange={() => {
               handleClickLink(item.link)
             }}
+            key={`wgt-order-item__${idx}`}
           >
             <View className='wgt-order-item'>
               <View className='wgt-order-wrapper'>

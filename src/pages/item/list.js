@@ -131,41 +131,6 @@ function ItemList() {
     }
   }, [shopInfo])
 
-  useDidShow(() => {
-    // setTimeout(() => {
-    //   if (isWeixin) {
-    //     Taro.createSelectorQuery()
-    //       .select('#item-list-head')
-    //       .boundingClientRect((res) => {
-    //         console.log('boundingClientRect:', res) //
-    //         if (res) {
-    //           setState((draft) => {
-    //             draft.fixTop = res.bottom
-    //             console.log('fixTop1:', res.bottom) //
-    //           })
-    //         }
-    //       })
-    //       .exec()
-    //   } else {
-    //     Taro.createSelectorQuery()
-    //       .select('#item-list-head')
-    //       .boundingClientRect((res) => {
-    //         console.log('boundingClientRect:', res) //
-    //         if (res) {
-    //           setState((draft) => {
-    //             draft.fixTop = res.bottom
-    //             console.log('fixTop2:', res.bottom) //
-    //           })
-    //         }
-    //       })
-    //       .exec()
-    //     //   draft.fixTop = document.getElementById('item-list-head').clientHeight
-    //     //   console.log('fixTop2:', document.getElementById('item-list-head').clientHeight) //
-    //     // })
-    //   }
-    // }, 1000)
-  })
-
   const fetch = async ({ pageIndex, pageSize }) => {
     // card_id: 兑换券id
     const { mcid, cid } = $instance.router.params
@@ -369,7 +334,6 @@ function ItemList() {
       ref={pageRef}
     >
       <View className='search-wrap'>
-        {/* 兑换券选择店铺 */}
         {VERSION_STANDARD && card_id && (
           <View
             className='store-picker'
@@ -395,18 +359,7 @@ function ItemList() {
       </View>
       <View className='item-list-head'>
         {tagList.length > 0 && (
-          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag}>
-            {/* <View
-            className="filter-btn"
-            onClick={() => {
-              setState(v => {
-                v.show = true;
-              });
-            }}
-          >
-            筛选<Text className="iconfont icon-filter"></Text>
-          </View> */}
-          </SpTagBar>
+          <SpTagBar className='tag-list' list={tagList} value={curTagIdx} onChange={onChangeTag} />
         )}
 
         <SpFilterBar

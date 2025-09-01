@@ -100,7 +100,6 @@ class EntryLaunch {
     return new Promise((resolve, reject) => {
       MapLoader()
         .then((qq) => {
-          debugger
           // 初始化地图对象
           this.geolocation = new qq.maps.Geolocation({
             key: process.env.APP_MAP_KEY,

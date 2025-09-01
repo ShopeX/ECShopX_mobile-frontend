@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { connect } from 'react-redux'
 import { classNames, isArray } from '@/utils'
 
 import './index.scss'
@@ -48,7 +47,6 @@ export default class SpFilterBar extends Component {
   render() {
     const { list, className, custom, color } = this.props
     const { sortOrder, curIdx } = this.state
-
     return (
       <View className={classNames('sp-filter-bar', className)}>
         <View className='filter-bar-body'>
@@ -57,13 +55,11 @@ export default class SpFilterBar extends Component {
               <View
                 className={classNames('sp-filter-bar__item', {
                   active: curIdx === idx
-                  // 'sort-asc': item.sort && sortOrder > 0,
-                  // 'sort-desc': item.sort && sortOrder < 0
                 })}
                 onClick={this.handleClickItem.bind(this, idx, item.type)}
                 key={`sp-filter-bar-item__${idx}`}
               >
-                <Text className='sp-filter-bar__item-text' style={curIdx === idx && { color }}>
+                <Text className={`sp-filter-bar__item-text ${curIdx === idx ? 'active' : ''}`}>
                   {item.title}
                 </Text>
                 {item.icon && (
