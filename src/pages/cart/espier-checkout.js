@@ -349,7 +349,9 @@ function CartCheckout(props) {
 
     if (
       params.pay_type == 'wxpayjs' ||
-      (params.pay_type == 'adapay' && params.pay_channel == 'wx_pub' && isWxWeb)
+      ((params.pay_type == 'bspay' || params.pay_type == 'adapay') &&
+        params.pay_channel == 'wx_pub' &&
+        isWxWeb)
     ) {
       // 微信客户端code授权
       const loc = window.location
