@@ -12918,7 +12918,7 @@
 		"zh-cn": "专票",
 		"en": "",
 		"zh-tw": ""
-  },
+	},
 	"5ipxx55": {
 		"zh-cn": "退出小程序",
 		"en": "Exit the mini-program",
@@ -12928,5 +12928,25 @@
 		"zh-cn": "抱歉，本店会员才可以访问",
 		"en": "Sorry, only members of this store can access",
 		"zh-tw": "抱歉，本店會員纔可以訪問"
+	},
+	"1yomk16": {
+		"zh-cn": "查看数据总览",
+		"en": "",
+		"zh-tw": ""
+	},
+	"gpo32": {
+		"zh-cn": "微信",
+		"en": "",
+		"zh-tw": ""
+	},
+	"9b6rva7": {
+		"zh-cn": "去看看全部商品",
+		"en": "",
+		"zh-tw": ""
+	},
+	"k7shki6": {
+		"zh-cn": "数据不能为空",
+		"en": "",
+		"zh-tw": ""
 	}
 }

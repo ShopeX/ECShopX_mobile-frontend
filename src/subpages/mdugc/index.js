@@ -35,21 +35,20 @@ import TagsBarcheck from './comps/comp-tags-barcheck'
 
 import './index.scss'
 
-const initialState = {
-  keyword: '',
-  tagsList: [],
-  curTagIndex: 0,
-  filterList: [
-    { tag_id: 1, tag_name: '最热' },
-    { tag_id: 2, tag_name: '最新' }
-  ],
-  curFilterIndex: 0,
-  leftList: [],
-  rightList: [],
-  footerHeight: 0
-}
-
 function UgcIndex() {
+  const initialState = {
+    keyword: '',
+    tagsList: [],
+    curTagIndex: 0,
+    filterList: [
+      { tag_id: 1, tag_name: '最热' },
+      { tag_id: 2, tag_name: '最新' }
+    ],
+    curFilterIndex: 0,
+    leftList: [],
+    rightList: [],
+    footerHeight: 0
+  }
   const [state, setState] = useImmer(initialState)
   const { keyword, tagsList, curTagIndex, filterList, curFilterIndex, leftList, rightList } = state
   const listRef = useRef()
@@ -214,6 +213,13 @@ function UgcIndex() {
       }}
       renderFooter={<SpTabbar height={state.footerHeight} />}
     >
+      {filterList.map((item) => {
+        return (
+          <View key={item.tag_id}>
+            <Text>{item.tag_name}</Text>
+          </View>
+        )
+      })}
       <SpSearchBar
         keyword={keyword}
         placeholder='搜索'
