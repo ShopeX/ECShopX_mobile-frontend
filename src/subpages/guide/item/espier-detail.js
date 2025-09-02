@@ -85,7 +85,8 @@ const initialState = {
   evaluationList: [],
   evaluationTotal: 0,
   // 多规格商品选中的规格
-  curItem: null
+  curItem: null,
+  imgHeightList: [], // 用于存储banner高度
 }
 
 function EspierDetail(props) {
@@ -119,7 +120,8 @@ function EspierDetail(props) {
     type,
     dtid,
     subtaskId,
-    curItem
+    curItem,
+    imgHeightList, // 用于存储banner高度
   } = state
 
   useEffect(() => {
@@ -252,13 +254,30 @@ function EspierDetail(props) {
         }
       })
     }
+    const banner = await getMultipleImageInfo(data.imgs)
+
     setState((draft) => {
       draft.info = {
         ...data,
         subscribe
       }
+      draft.imgHeightList = banner
       draft.promotionActivity = data.promotionActivity
     })
+  }
+
+  const getMultipleImageInfo = async (imageUrls) => {
+    const promises = imageUrls.map(url =>
+      Taro.getImageInfo({ src: url })
+        .then(info => info)
+        .catch(error => {
+          console.log('获取图片信息失败:', url, error)
+          // 返回一个默认高度或 null
+          return { width: 0, height: 650 }
+        })
+    )
+    const results = await Promise.all(promises)
+    return results.map(info => (info.height) / 2 > 650 ? 650 : info.height / 2)
   }
 
   // 获取包裹
@@ -295,6 +314,19 @@ function EspierDetail(props) {
       draft.curImgIdx = e.detail.current
     })
   }
+
+
+  const setSwiperCss = (item) => {
+    return {
+      height: '100%',
+      width: '100%',
+      backgroundSize: 'cover',
+      backgroundImage: `url(${item})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center'
+    }
+  }
+
 
   const onChangeToolBar = (key) => {
     if (key == 'share') {
@@ -355,15 +387,17 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
+              style={{ height: (imgHeightList[curImgIdx]) + 'px' }}
             >
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
-                  <SpImage
-                    mode='aspecFill'
-                    src={img}
-                    width={windowWidth * 2}
-                    height={windowWidth * 2}
-                  ></SpImage>
+                  <View style={setSwiperCss(img)}>
+                    <SpImage
+                      mode='scaleToFill'
+                      src={img}
+                      className='swiperitem__img'
+                    ></SpImage>
+                  </View>
                 </SwiperItem>
               ))}
             </Swiper>
