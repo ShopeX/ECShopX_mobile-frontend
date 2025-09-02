@@ -80,7 +80,7 @@ function SpPrivacyModal(props) {
         </View>
         <View className='modal-ft'>
           <View className='btn-wrap'>
-            <AtButton type='primary' circle onClick={handleConfirm}>
+            <AtButton type='primary' className='primary-btn-left' circle onClick={handleConfirm}>
               同意
             </AtButton>
           </View>

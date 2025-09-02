@@ -41,6 +41,11 @@
   }
 
   &__ft {
+    .primary-btn-left {
+      background: var(--color-primary) !important;
+      border-color: var(--color-primary) !important;
+      color: #444 !important;
+    }
     .at-button {
       border-radius: 44px;
     }

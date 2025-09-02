@@ -56,17 +56,11 @@ function LoginCurtain(props) {
         <View className='agreement-content'>
           <SpCheckbox checked={agreeMentChecked} onChange={onChangePayment} />
           <View className='agreement-list'>
-            <Text
-              className='agreement-name'
-              onClick={() => handleClickPrivacy('member_register')}
-            >
+            <Text className='agreement-name' onClick={() => handleClickPrivacy('member_register')}>
               《{state.registerName}》
             </Text>
             和
-            <Text
-              className='agreement-name'
-              onClick={() => handleClickPrivacy('privacy')}
-            >
+            <Text className='agreement-name' onClick={() => handleClickPrivacy('privacy')}>
               《{state.privacyName}》
             </Text>
           </View>
@@ -77,13 +71,19 @@ function LoginCurtain(props) {
               type='primary'
               disabled={!agreeMentChecked}
               openType='getPhoneNumber'
+              className='primary-btn-left'
               onGetPhoneNumber={handleBindPhone}
             >
               登录
             </AtButton>
           )}
           {!isNewUser && (
-            <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
+            <AtButton
+              type='primary'
+              className='primary-btn-left'
+              disabled={!agreeMentChecked}
+              nClick={handleUserLogin}
+            >
               登录
             </AtButton>
           )}
