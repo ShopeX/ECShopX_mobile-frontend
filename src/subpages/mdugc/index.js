@@ -213,13 +213,6 @@ function UgcIndex() {
       }}
       renderFooter={<SpTabbar height={state.footerHeight} />}
     >
-      {filterList.map((item) => {
-        return (
-          <View key={item.tag_id}>
-            <Text>{item.tag_name}</Text>
-          </View>
-        )
-      })}
       <SpSearchBar
         keyword={keyword}
         placeholder='搜索'
