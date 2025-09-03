@@ -90,36 +90,41 @@ function linkPage(data) {
       url = path
       if (id == 'purchase') {
         clearPurchaseDtid()
-      } else if (id == 'recharge') {
-        url = '/others/pages/recharge/index'
-      } else if (id == 'serviceH5Coach') {
-      } else if (id == 'pointShop') {
-        url = '/subpages/pointshop/list'
-      } else if (id == 'levelMemberVip') {
-        url = '/subpage/pages/vip/vipgrades'
-      } else if (id == 'serviceH5Coach') {
-        url = '/marketing/pages/service/wap-link?tp=o'
-      } else if (id == 'serviceH5Sales') {
-        url = '/marketing/pages/service/wap-link?tp=r'
-      } else if (id == 'storelist') {
-        url = '/marketing/pages/service/store-list'
-      } else if (id == 'aftersales') {
-        url = '/marketing/pages/service/refund-car'
-      } else if (id == 'mycoach') {
-        url = '/marketing/pages/service/online-guide'
-      } else if (id == 'hottopic') {
-        url = '/pages/recommend/list'
-      } else if (id === 'floorguide') {
-        url = '/pages/floorguide/index'
-      } else if (id === 'grouppurchase') {
-        url = '/groupBy/pages/home/index'
-      } else if (id === 'registActivity') {
-        url = '/marketing/pages/member/activity-list'
       } else if (id == 'applyChief') {
         url += `?distributor_id=${dtid || distributor_id}`
-      } else {
-        url = ''
       }
+      // if (id == 'purchase') {
+      //   clearPurchaseDtid()
+      // } else if (id == 'recharge') {
+      //   url = '/others/pages/recharge/index'
+      // } else if (id == 'serviceH5Coach') {
+      // } else if (id == 'pointShop') {
+      //   url = '/subpages/pointshop/list'
+      // } else if (id == 'levelMemberVip') {
+      //   url = '/subpage/pages/vip/vipgrades'
+      // } else if (id == 'serviceH5Coach') {
+      //   url = '/marketing/pages/service/wap-link?tp=o'
+      // } else if (id == 'serviceH5Sales') {
+      //   url = '/marketing/pages/service/wap-link?tp=r'
+      // } else if (id == 'storelist') {
+      //   url = '/marketing/pages/service/store-list'
+      // } else if (id == 'aftersales') {
+      //   url = '/marketing/pages/service/refund-car'
+      // } else if (id == 'mycoach') {
+      //   url = '/marketing/pages/service/online-guide'
+      // } else if (id == 'hottopic') {
+      //   url = '/pages/recommend/list'
+      // } else if (id === 'floorguide') {
+      //   url = '/pages/floorguide/index'
+      // } else if (id === 'grouppurchase') {
+      //   url = '/groupBy/pages/home/index'
+      // } else if (id === 'registActivity') {
+      //   url = '/marketing/pages/member/activity-list'
+      // } else if (id == 'applyChief') {
+      //   url += `?distributor_id=${dtid || distributor_id}`
+      // } else {
+      //   url = ''
+      // }
       break
     case 'tag':
       url = '/pages/item/list?tag_id=' + id
@@ -241,7 +246,23 @@ const memberSetting = {
     // H5不支持
     title: '社区团购',
     path: '/subpages/community/index'
-  }
+  },
+  storelist: {
+    title: '店铺列表',
+    path: '/marketing/pages/service/store-list'
+  },
+  floorguide: {
+    title: '楼层引导',
+    path: '/pages/floorguide/index'
+  },
+  grouppurchase: {
+    title: '团购',
+    path: '/groupBy/pages/home/index'
+  },
+  levelMemberVip: {
+    title: '会员等级',
+    path: '/subpage/pages/vip/vipgrades'
+  },
 }
 
 export default linkPage
