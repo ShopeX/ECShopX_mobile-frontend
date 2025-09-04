@@ -262,7 +262,7 @@ const memberSetting = {
   levelMemberVip: {
     title: '会员等级',
     path: '/subpage/pages/vip/vipgrades'
-  },
+  }
 }
 
 export default linkPage
