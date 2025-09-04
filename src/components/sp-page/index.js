@@ -437,7 +437,7 @@ const SpPage = memo(
           (props.renderDefault || <SpNote img={props.defaultImg} title={props.defaultMsg} isUrl />)}
 
         {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
-        {state.customNavigation && <RenderCustomNavigation />}
+        {state.customNavigation && RenderCustomNavigation()}
 
         {props.loading && <SpLoading />}
 
