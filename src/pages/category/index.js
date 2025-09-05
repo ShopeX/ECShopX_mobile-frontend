@@ -46,6 +46,7 @@ function StoreItemList(props) {
         state.layout === 1 && <CompsAddPurchase />
       }
 
+    {/* classify = false 时候显示平铺 */}
       {
         state.layout === 2 && <CompsCategoryNew />
       }
