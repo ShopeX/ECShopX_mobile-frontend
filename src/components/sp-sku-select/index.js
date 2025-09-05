@@ -50,7 +50,6 @@ function SpSkuSelect(props) {
     hideInputNumber = false,
     salesman = false
   } = props
-  console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, curImage, disabledSet, curItem, skuText, num, loading,minNum } = state

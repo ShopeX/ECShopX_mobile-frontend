@@ -6,7 +6,13 @@ import configStore from '@/store'
 import api from '@/api'
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
-import { SG_ROUTER_PARAMS,SG_GUIDE_PARAMS_EXPRESSTIME, SG_GUIDE_PARAMS, SG_GUIDE_PARAMS_UPDATETIME,SG_CHECK_STORE_RULE } from '@/consts'
+import {
+  SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS_EXPRESSTIME,
+  SG_GUIDE_PARAMS,
+  SG_GUIDE_PARAMS_UPDATETIME,
+  SG_CHECK_STORE_RULE
+} from '@/consts'
 import {
   checkAppVersion,
   isWeixin,
@@ -69,7 +75,7 @@ class App extends Component {
   //   init()
   // }
 
- async onLaunch(options) {
+  async onLaunch(options) {
     console.log(`app onLaunch:`, options)
     import('../package.json').then((res) => {
       console.log(`App Name: ${res.name}, version: ${res.version}`)
@@ -84,8 +90,23 @@ class App extends Component {
       Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
     }
 
-       // isWeb环境下，H5启动时，路由携带参数在options
+    // isWeb环境下，H5启动时，路由携带参数在options
     // 小程序环境，启动时，路由携带参数在options.query
+    this.initRouterParams(options)
+    const { show_time } = await api.promotion.getScreenAd()
+    let showAdv
+    if (show_time === 'always') {
+      showAdv = false
+      store.dispatch({
+        type: 'user/closeAdv',
+        payload: showAdv
+      })
+    }
+    this.getSystemConfig()
+    this.getParamsOptions(options)
+  }
+
+  initRouterParams = async (options) => {
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then(async (params) => {
       console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
@@ -146,16 +167,9 @@ class App extends Component {
         }
       }
     })
-    const { show_time } = await api.promotion.getScreenAd()
-    let showAdv
-    if (show_time === 'always') {
-      showAdv = false
-      store.dispatch({
-        type: 'user/closeAdv',
-        payload: showAdv
-      })
-    }
-    this.getSystemConfig()
+  }
+
+  async componentDidShow(options) {
     this.getParamsOptions(options)
   }
 
