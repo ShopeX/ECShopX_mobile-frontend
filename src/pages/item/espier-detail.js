@@ -102,7 +102,8 @@ const initialState = {
   curItem: null,
   recommendList: [],
   isParameter: false,
-  imgHeightList: [] // 用于存储banner高度
+  imgHeightList: [], // 用于存储banner高度
+  navigateMantle: false
 }
 
 function EspierDetail(props) {
@@ -144,7 +145,8 @@ function EspierDetail(props) {
     curItem,
     recommendList,
     isParameter,
-    imgHeightList
+    imgHeightList,
+    navigateMantle
   } = state
 
   useEffect(() => {
@@ -196,19 +198,10 @@ function EspierDetail(props) {
   }, [play])
 
   useEffect(() => {
-    if (
-      packageOpen ||
-      skuPanelOpen ||
-      sharePanelOpen ||
-      posterModalOpen ||
-      promotionOpen ||
-      isParameter
-    ) {
-      pageRef.current.pageLock()
-    } else {
-      pageRef.current.pageUnLock()
-    }
-  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen, isParameter])
+    Taro.nextTick(() => {
+      pageRef.current && pageRef.current.pageLock()
+    })
+  }, [])
 
   useEffect(() => {
     if (dtid) {
@@ -443,6 +436,11 @@ function EspierDetail(props) {
       sessionFrom['昵称'] = userInfo.username
     }
   }
+  const handleScroll = (e) => {
+    setState((draft) => {
+      draft.navigateMantle = e.detail.scrollTop > 20
+    })
+  }
 
   return (
     <SpPage
@@ -450,8 +448,10 @@ function EspierDetail(props) {
       scrollToTopBtn
       isDefault={isDefault}
       defaultMsg={defaultMsg}
+      navigateBackgroundColor='#fff'
+      navigateMantle={navigateMantle}
       immersive
-      title={info?.itemName}
+      title={navigateMantle?info?.itemName:''}
       ref={pageRef}
       renderFloat={
         <View>
@@ -479,210 +479,211 @@ function EspierDetail(props) {
         />
       }
     >
+        <View className='page-item-espierdetail__header-bg'></View>
+      <ScrollView scrollY className='page-item-espierdetail-goods-contents' style='height: 100%;' onScroll={handleScroll}>
 
-      <View className='page-item-espierdetail__header-bg'></View>
-      {/* <Canvas id="canvas2" type="2d" onReady={onCanvasReady} /> */}
-      {!info && <SpLoading />}
-      {info && (
-        <ScrollView scrollY className='goods-contents' style='height: 100%;'>
-          <View className='goods-pic-container'>
-            <Swiper
-              className='goods-swiper'
-              // current={curImgIdx}
-              onChange={onChangeSwiper}
-              style={{ height: imgHeightList[curImgIdx] + 'px' }}
-            >
-              {info.imgs.map((img, idx) => (
-                <SwiperItem key={`swiperitem__${idx}`}>
-                  <View style={setSwiperCss(img)}>
-                    <SpImage mode='scaleToFill' src={img} className='swiperitem__img' />
-                  </View>
-                </SwiperItem>
-              ))}
-            </Swiper>
-
-            {info.imgs.length > 1 && (
-              <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgs.length}`}</View>
-            )}
-
-            {info.video && play && (
-              <View className='video-container'>
-                <Video
-                  direction={90}
-                  id='goods-video'
-                  className='item-video'
-                  src={info.video}
-                  showCenterPlayBtn={false}
-                />
-              </View>
-            )}
-
-            {info.video && (
-              <View
-                className={classNames('btn-video', {
-                  playing: play
-                })}
-                onClick={() => {
-                  setState((draft) => {
-                    play ? (draft.play = false) : (draft.play = true)
-                  })
-                }}
+        {/* <Canvas id="canvas2" type="2d" onReady={onCanvasReady} /> */}
+        {!info && <SpLoading />}
+        {info && (
+          <View className='goods-contents' style='height: 100%;'>
+            <View className='goods-pic-container'>
+              <Swiper
+                className='goods-swiper'
+                // current={curImgIdx}
+                onChange={onChangeSwiper}
+                style={{ height: imgHeightList[curImgIdx] + 'px' }}
               >
-                {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
-                {play ? '退出视频' : '播放视频'}
-              </View>
-            )}
-          </View>
+                {info.imgs.map((img, idx) => (
+                  <SwiperItem key={`swiperitem__${idx}`}>
+                    <View style={setSwiperCss(img)}>
+                      <SpImage mode='scaleToFill' src={img} className='swiperitem__img' />
+                    </View>
+                  </SwiperItem>
+                ))}
+              </Swiper>
 
-          {/* 拼团、秒杀、限时特惠显示活动价 */}
-          {ACTIVITY_LIST()[info.activityType] && (
-            <CompActivityBar
-              info={{
-                ...info.activityInfo,
-                priceObj: curItem ? curItem : info
-              }}
-              type={info.activityType}
-              onTimeUp={() => {
-                fetch()
-              }}
-            >
-              <SpGoodsPrice info={curItem ? curItem : info} />
-            </CompActivityBar>
-          )}
+              {info.imgs.length > 1 && (
+                <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgs.length}`}</View>
+              )}
 
-          <View className='goods-info'>
-            <View className='goods-info-title'>
-              {/* 拼团、秒杀、限时特惠不显示 */}
-              {!ACTIVITY_LIST()[info.activityType] && (
-                <SpGoodsPrice info={curItem ? curItem : info} />
+              {info.video && play && (
+                <View className='video-container'>
+                  <Video
+                    direction={90}
+                    id='goods-video'
+                    className='item-video'
+                    src={info.video}
+                    showCenterPlayBtn={false}
+                  />
+                </View>
+              )}
+
+              {info.video && (
+                <View
+                  className={classNames('btn-video', {
+                    playing: play
+                  })}
+                  onClick={() => {
+                    setState((draft) => {
+                      play ? (draft.play = false) : (draft.play = true)
+                    })
+                  }}
+                >
+                  {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
+                  {play ? '退出视频' : '播放视频'}
+                </View>
               )}
             </View>
 
-            <CompVipGuide
-              info={{
-                ...info.vipgradeGuideTitle,
-                memberPrice: info.memberPrice
-              }}
-            />
+            {/* 拼团、秒杀、限时特惠显示活动价 */}
+            {ACTIVITY_LIST()[info.activityType] && (
+              <CompActivityBar
+                info={{
+                  ...info.activityInfo,
+                  priceObj: curItem ? curItem : info
+                }}
+                type={info.activityType}
+                onTimeUp={() => {
+                  fetch()
+                }}
+              >
+                <SpGoodsPrice info={curItem ? curItem : info} />
+              </CompActivityBar>
+            )}
 
-            <CompCouponList
-              info={
-                info.couponList.list.length > 3
-                  ? info.couponList.list.slice(0, 3)
-                  : info.couponList.list
-              }
-              onClick={handleReceiveCoupon}
-            />
-
-            <View className='goods-name-wrap'>
-              <View className='goods-name'>
-                <View className='title'>{info.itemName}</View>
-                <View className='brief'>{info.brief}</View>
+            <View className='goods-info'>
+              <View className='goods-info-title'>
+                {/* 拼团、秒杀、限时特惠不显示 */}
+                {!ACTIVITY_LIST()[info.activityType] && (
+                  <SpGoodsPrice info={curItem ? curItem : info} />
+                )}
               </View>
-              {(isWeixin || isAPP()) && (
-                // {(
-                <View className='btn-share-wrap'>
-                  <View
-                    onClick={async () => {
-                      if (isAPP()) {
-                        Taro.SAPPShare.open()
-                      } else {
-                        // await getUserInfoAuth()
-                        setState((draft) => {
-                          draft.sharePanelOpen = true
-                        })
-                      }
-                    }}
-                  >
-                    <View className='btn-share'>
-                      <Text className='iconfont icon-fenxiang-01'></Text>
-                      <Text className='share-txt'>分享</Text>
+
+              <CompVipGuide
+                info={{
+                  ...info.vipgradeGuideTitle,
+                  memberPrice: info.memberPrice
+                }}
+              />
+
+              <CompCouponList
+                info={
+                  info.couponList.list.length > 3
+                    ? info.couponList.list.slice(0, 3)
+                    : info.couponList.list
+                }
+                onClick={handleReceiveCoupon}
+              />
+
+              <View className='goods-name-wrap'>
+                <View className='goods-name'>
+                  <View className='title'>{info.itemName}</View>
+                  <View className='brief'>{info.brief}</View>
+                </View>
+                {(isWeixin || isAPP()) && (
+                  // {(
+                  <View className='btn-share-wrap'>
+                    <View
+                      onClick={async () => {
+                        if (isAPP()) {
+                          Taro.SAPPShare.open()
+                        } else {
+                          // await getUserInfoAuth()
+                          setState((draft) => {
+                            draft.sharePanelOpen = true
+                          })
+                        }
+                      }}
+                    >
+                      <View className='btn-share'>
+                        <Text className='iconfont icon-fenxiang-01'></Text>
+                        <Text className='share-txt'>分享</Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
+              </View>
+              {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
+                <View className='item-pre'>
+                  <View className='item-pre-title'>
+                    <Text className='medicine'>处方药</Text>
+                    <Text>处方药须凭处方在药师指导下购买和使用</Text>
+                  </View>
+                  <View className='item-pre-content'>
+                    <View className='title'>用药提示</View>
+                    <View className='content'>
+                      {/* <Text>功能主治：</Text> */}
+                      {/* <Text className='content-title'>根据法规要求，请咨询药师了解处方药详细信息</Text> */}
+                      <Text className='content-title'>{info?.medicineData?.use_tip}</Text>
                     </View>
                   </View>
                 </View>
               )}
+              <View className='item-bn-sales'>
+                {/* <View className='item-bn'></View> */}
+                {info.salesSetting && (
+                  <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
+                )}
+                {info.store_setting && <View className='kc'>库存：{info.store}</View>}
+              </View>
             </View>
-            {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
-              <View className='item-pre'>
-                <View className='item-pre-title'>
-                  <Text className='medicine'>处方药</Text>
-                  <Text>处方药须凭处方在药师指导下购买和使用</Text>
-                </View>
-                <View className='item-pre-content'>
-                  <View className='title'>用药提示</View>
-                  <View className='content'>
-                    {/* <Text>功能主治：</Text> */}
-                    {/* <Text className='content-title'>根据法规要求，请咨询药师了解处方药详细信息</Text> */}
-                    <Text className='content-title'>{info?.medicineData?.use_tip}</Text>
-                  </View>
-                </View>
+
+            <CompGroup info={info} />
+
+            {!info.nospec && (
+              <View className='sku-block'>
+                <SpCell
+                  title='规格'
+                  isLink
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.skuPanelOpen = true
+                      draft.selectType = 'picker'
+                    })
+                  }}
+                >
+                  <Text className='cell-value'>{skuText}</Text>
+                </SpCell>
               </View>
             )}
-            <View className='item-bn-sales'>
-              {/* <View className='item-bn'></View> */}
-              {info.salesSetting && (
-                <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
-              )}
-              {info.store_setting && <View className='kc'>库存：{info.store}</View>}
-            </View>
-          </View>
 
-          <CompGroup info={info} />
-
-          {!info.nospec && (
             <View className='sku-block'>
-              <SpCell
-                title='规格'
-                isLink
-                onClick={() => {
-                  setState((draft) => {
-                    draft.skuPanelOpen = true
-                    draft.selectType = 'picker'
-                  })
-                }}
-              >
-                <Text className='cell-value'>{skuText}</Text>
-              </SpCell>
+              {promotionPackage.length > 0 && (
+                <SpCell
+                  title='组合优惠'
+                  isLink
+                  onClick={() => {
+                    Taro.navigateTo({
+                      url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
+                    })
+                    // setState((draft) => {
+                    //   draft.packageOpen = true
+                    // })
+                  }}
+                >
+                  <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
+                </SpCell>
+              )}
+              {promotionActivity.length > 0 && (
+                <SpCell
+                  title='优惠活动'
+                  isLink
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.promotionOpen = true
+                    })
+                  }}
+                >
+                  {promotionActivity.map((item, index) => (
+                    <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                      {item.promotionTag}
+                    </View>
+                  ))}
+                </SpCell>
+              )}
             </View>
-          )}
 
-          <View className='sku-block'>
-            {promotionPackage.length > 0 && (
-              <SpCell
-                title='组合优惠'
-                isLink
-                onClick={() => {
-                  Taro.navigateTo({
-                    url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
-                  })
-                  // setState((draft) => {
-                  //   draft.packageOpen = true
-                  // })
-                }}
-              >
-                <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
-              </SpCell>
-            )}
-            {promotionActivity.length > 0 && (
-              <SpCell
-                title='优惠活动'
-                isLink
-                onClick={() => {
-                  setState((draft) => {
-                    draft.promotionOpen = true
-                  })
-                }}
-              >
-                {promotionActivity.map((item, index) => (
-                  <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                    {item.promotionTag}
-                  </View>
-                ))}
-              </SpCell>
-            )}
-          </View>
-
-          {/* {info.itemParams.length > 0 && <View className='goods-params'>
+            {/* {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
             <View className='params-bd'>
               {info.itemParams.map((item, index) => (
@@ -694,156 +695,157 @@ function EspierDetail(props) {
             </View>
           </View>} */}
 
-          {info.itemParams.length > 0 && (
-            <View className='goods-params-flat'>
-              <View className='parameter'>参数</View>
-              <View className='parameter-content'>
-                {info.itemParams.map((item, index) => {
-                  return (
-                    <View className='parameter-item'>
-                      <View className='attribute'>{item.attribute_value_name}</View>
-                      <View className='configuration'>{item.attribute_name}</View>
-                    </View>
-                  )
-                })}
+            {info.itemParams.length > 0 && (
+              <View className='goods-params-flat'>
+                <View className='parameter'>参数</View>
+                <View className='parameter-content'>
+                  {info.itemParams.map((item, index) => {
+                    return (
+                      <View className='parameter-item'>
+                        <View className='attribute'>{item.attribute_value_name}</View>
+                        <View className='configuration'>{item.attribute_name}</View>
+                      </View>
+                    )
+                  })}
+                </View>
+                <Text className='iconfont icon-arrowRight' onClick={handleClose} />
               </View>
-              <Text className='iconfont icon-arrowRight' onClick={handleClose} />
-            </View>
-          )}
-
-          {/* 商品评价 */}
-          <CompEvaluation
-            list={evaluationList}
-            allNum={evaluationTotal}
-            itemId={info.itemId}
-          ></CompEvaluation>
-
-          {/* 店铺 */}
-          {VERSION_PLATFORM && <CompStore info={info.distributorInfo} />}
-
-          <View className='goods-desc'>
-            <View className='desc-hd'>
-              <Text className='desc-title'>宝贝详情</Text>
-            </View>
-            {isArray(info.intro) ? (
-              <View>
-                {info.intro.map((item, idx) => (
-                  <View className='wgt-wrap' key={`wgt-wrap__${idx}`}>
-                    {item.name === 'film' && <WgtFilm info={item} />}
-                    {item.name === 'slider' && <WgtSlider info={item} />}
-                    {item.name === 'writing' && <WgtWriting info={item} />}
-                    {/* {item.name === 'heading' && <WgtHeading info={item} />} */}
-                    {item.name === 'headline' && <WgtHeadline info={item} />}
-                    {item.name === 'goods' && <WgtGoods info={item} />}
-                    {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
-                  </View>
-                ))}
-              </View>
-            ) : (
-              <SpHtml content={info.intro} />
             )}
+
+            {/* 商品评价 */}
+            <CompEvaluation
+              list={evaluationList}
+              allNum={evaluationTotal}
+              itemId={info.itemId}
+            ></CompEvaluation>
+
+            {/* 店铺 */}
+            {VERSION_PLATFORM && <CompStore info={info.distributorInfo} />}
+
+            <View className='goods-desc'>
+              <View className='desc-hd'>
+                <Text className='desc-title'>宝贝详情</Text>
+              </View>
+              {isArray(info.intro) ? (
+                <View>
+                  {info.intro.map((item, idx) => (
+                    <View className='wgt-wrap' key={`wgt-wrap__${idx}`}>
+                      {item.name === 'film' && <WgtFilm info={item} />}
+                      {item.name === 'slider' && <WgtSlider info={item} />}
+                      {item.name === 'writing' && <WgtWriting info={item} />}
+                      {/* {item.name === 'heading' && <WgtHeading info={item} />} */}
+                      {item.name === 'headline' && <WgtHeadline info={item} />}
+                      {item.name === 'goods' && <WgtGoods info={item} />}
+                      {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />}
+                    </View>
+                  ))}
+                </View>
+              ) : (
+                <SpHtml content={info.intro} />
+              )}
+            </View>
           </View>
-        </ScrollView>
-      )}
+        )}
 
-      <SpRecommend info={recommendList} />
+        <SpRecommend info={recommendList} />
 
-      {/* 组合优惠 */}
-      <CompPackageList
-        open={packageOpen}
-        onClose={() => {
-          setState((draft) => {
-            draft.packageOpen = false
-          })
-        }}
-        info={{
-          mainGoods,
-          makeUpGoods
-        }}
-      />
-
-      {/* 促销优惠活动 */}
-      <CompPromation
-        open={promotionOpen}
-        info={promotionActivity}
-        onClose={() => {
-          setState((draft) => {
-            draft.promotionOpen = false
-          })
-        }}
-      />
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        refreshs={false}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
-
-      {/* 分享 */}
-      <CompShare
-        open={sharePanelOpen}
-        onClose={() => {
-          setState((draft) => {
-            draft.sharePanelOpen = false
-          })
-        }}
-        onCreatePoster={() => {
-          setState((draft) => {
-            draft.sharePanelOpen = false
-            draft.posterModalOpen = true
-          })
-        }}
-        onShareEdit={() => {
-          const { itemId, companyId, distributorId } = info
-          Taro.navigateTo({
-            url: `/subpage/pages/editShare/index?id=${itemId}&dtid=${distributorId}&company_id=${companyId}`
-          })
-        }}
-      />
-
-      {/* 海报 */}
-      {posterModalOpen && (
-        <SpPoster
-          info={info}
-          type='goodsDetial'
+        {/* 组合优惠 */}
+        <CompPackageList
+          open={packageOpen}
           onClose={() => {
             setState((draft) => {
-              draft.posterModalOpen = false
+              draft.packageOpen = false
+            })
+          }}
+          info={{
+            mainGoods,
+            makeUpGoods
+          }}
+        />
+
+        {/* 促销优惠活动 */}
+        <CompPromation
+          open={promotionOpen}
+          info={promotionActivity}
+          onClose={() => {
+            setState((draft) => {
+              draft.promotionOpen = false
             })
           }}
         />
-      )}
 
-      <AtFloatLayout isOpened={isParameter} title='商品参数' onClose={handleClose}>
-        <View className='product-parameter'>
-          <View className='product-parameter-all'>
-            {info?.itemParams?.map((item, index) => {
-              return (
-                <View className='product-parameter-item'>
-                  <Text className='title'>{item.attribute_name}</Text>
-                  <Text className='content'>{item.attribute_value_name}</Text>
-                </View>
-              )
-            })}
+        {/* Sku选择器 */}
+        <MSpSkuSelect
+          open={skuPanelOpen}
+          type={selectType}
+          info={info}
+          onClose={() => {
+            setState((draft) => {
+              draft.skuPanelOpen = false
+            })
+          }}
+          refreshs={false}
+          onChange={(skuText, curItem) => {
+            setState((draft) => {
+              draft.skuText = skuText
+              draft.curItem = curItem
+            })
+          }}
+        />
+
+        {/* 分享 */}
+        <CompShare
+          open={sharePanelOpen}
+          onClose={() => {
+            setState((draft) => {
+              draft.sharePanelOpen = false
+            })
+          }}
+          onCreatePoster={() => {
+            setState((draft) => {
+              draft.sharePanelOpen = false
+              draft.posterModalOpen = true
+            })
+          }}
+          onShareEdit={() => {
+            const { itemId, companyId, distributorId } = info
+            Taro.navigateTo({
+              url: `/subpage/pages/editShare/index?id=${itemId}&dtid=${distributorId}&company_id=${companyId}`
+            })
+          }}
+        />
+
+        {/* 海报 */}
+        {posterModalOpen && (
+          <SpPoster
+            info={info}
+            type='goodsDetial'
+            onClose={() => {
+              setState((draft) => {
+                draft.posterModalOpen = false
+              })
+            }}
+          />
+        )}
+
+        <AtFloatLayout isOpened={isParameter} title='商品参数' onClose={handleClose}>
+          <View className='product-parameter'>
+            <View className='product-parameter-all'>
+              {info?.itemParams?.map((item, index) => {
+                return (
+                  <View className='product-parameter-item'>
+                    <Text className='title'>{item.attribute_name}</Text>
+                    <Text className='content'>{item.attribute_value_name}</Text>
+                  </View>
+                )
+              })}
+            </View>
+            <AtButton type='primary' circle onClick={handleClose}>
+              确认
+            </AtButton>
           </View>
-          <AtButton type='primary' circle onClick={handleClose}>
-            确认
-          </AtButton>
-        </View>
-      </AtFloatLayout>
+        </AtFloatLayout>
+      </ScrollView>
     </SpPage>
   )
 }
