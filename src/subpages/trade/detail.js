@@ -115,7 +115,9 @@ function TradeDetail(props) {
 
   const fetch = async () => {
     const { order_id } = await parameter()
-    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
+    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(
+      router.params?.id ? `TD${router.params.id}` : order_id
+    )
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态
     if (_orderInfo.receiptType == 'ziti' && _orderInfo.zitiStatus == 'PENDING') {
