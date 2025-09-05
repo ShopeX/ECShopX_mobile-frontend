@@ -69,7 +69,7 @@ class App extends Component {
   //   init()
   // }
 
-  onLaunch(options) {
+ async onLaunch(options) {
     console.log(`app onLaunch:`, options)
     import('../package.json').then((res) => {
       console.log(`App Name: ${res.name}, version: ${res.version}`)
@@ -83,18 +83,8 @@ class App extends Component {
       Taro.removeStorageSync(SG_GUIDE_PARAMS)
       Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
     }
-  }
 
-  getParamsOptions = async (options) => {
-    const routeParams = await entryLaunch.getRouteParams(options)
-    if (routeParams.gu || routeParams.gu_user_id) {
-      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
-      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-    }
-  }
-
-  async componentDidShow(options) {
-    // isWeb环境下，H5启动时，路由携带参数在options
+       // isWeb环境下，H5启动时，路由携带参数在options
     // 小程序环境，启动时，路由携带参数在options.query
     entryLaunch.getRouteParams(isWeb ? { query: options } : options).then(async (params) => {
       console.log(`app componentDidShow:`, options, params)
@@ -167,6 +157,14 @@ class App extends Component {
     }
     this.getSystemConfig()
     this.getParamsOptions(options)
+  }
+
+  getParamsOptions = async (options) => {
+    const routeParams = await entryLaunch.getRouteParams(options)
+    if (routeParams.gu || routeParams.gu_user_id) {
+      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
+    }
   }
 
   async getSystemConfig() {

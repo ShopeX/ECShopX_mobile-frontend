@@ -69,7 +69,7 @@ function withPageWrapper(Component) {
           const rule = ruleList.shift()
           if (!rule) {
             // 规则轮询检测完毕
-            await checkStoreWhiteList()
+            await checkStoreWhiteList(dtid)
             return resolve()
           }
 

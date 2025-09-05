@@ -260,14 +260,13 @@ function SpLogin(props, ref) {
                 type='primary'
                 disabled={!agreeMentChecked}
                 openType='getPhoneNumber'
-                className='primary-btn-left'
                 onGetPhoneNumber={handleBindPhone}
               >
                 登录
               </AtButton>
             )}
             {!isNewUser && (
-              <AtButton type='primary' className='primary-btn-left' disabled={!agreeMentChecked} onClick={handleUserLogin}>
+              <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
                 登录
               </AtButton>
             )}

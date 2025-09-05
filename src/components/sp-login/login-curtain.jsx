@@ -71,7 +71,6 @@ function LoginCurtain(props) {
               type='primary'
               disabled={!agreeMentChecked}
               openType='getPhoneNumber'
-              className='primary-btn-left'
               onGetPhoneNumber={handleBindPhone}
             >
               登录
@@ -80,7 +79,6 @@ function LoginCurtain(props) {
           {!isNewUser && (
             <AtButton
               type='primary'
-              className='primary-btn-left'
               disabled={!agreeMentChecked}
               nClick={handleUserLogin}
             >
