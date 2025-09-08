@@ -5,6 +5,8 @@ import S from '@/spx'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse,tokenParse } from '@/utils'
 import configStore from '@/store'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import _isEqual from 'lodash/isEqual'
+
 
 import MapLoader from '@/utils/lbs'
 
@@ -30,6 +32,22 @@ class EntryLaunch {
     // const { params } = $instance.router;
     const params = options?.query || $instance.router?.params || {}
     let _options = {}
+
+    const pageStack = Taro.getCurrentPages()
+
+    const resPage = pageStack.find(
+      (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
+    )
+
+    // 只返回小程序启动时的参数（包含冷启动和热启动）
+    if (resPage) {
+      return {
+        ...Taro.getStorageSync(SG_ROUTER_PARAMS),
+        runFlag: true // 标识小程序启动标志，用于判断是否是小程序启动
+      }
+    }
+
+
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
       // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
