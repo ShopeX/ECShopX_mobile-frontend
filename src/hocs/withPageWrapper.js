@@ -156,6 +156,21 @@ function withPageWrapper(Component) {
       return store || (list.length > 0 ? list[0] : null)
     }
 
+    // 获取当前定位
+    const fetchLocation = async () => {
+      try {
+        const res = await new Promise((resolve) => {
+          entryLaunch.isOpenPosition((res1) => {
+            resolve(res1)
+          })
+        })
+        return res
+      } catch (e) {
+        console.error('获取地图位置信息失败:', e)
+        throw e
+      }
+    }
+
     const checkStoreWhiteList = async (dtid, isLocation = true) => {
       const params = {}
       if (dtid) {
@@ -165,12 +180,17 @@ function withPageWrapper(Component) {
       } else if (entryStoreByLBS && isLocation) {
         if (isEmpty(location)) {
           const locationInfo = await entryLaunch.getLocationInfo()
-          dispatch(updateLocation(locationInfo))
+          // dispatch(updateLocation(locationInfo))
           params['lat'] = locationInfo?.lat
           params['lng'] = locationInfo?.lng
         } else {
           params['lat'] = location?.lat
           params['lng'] = location?.lng
+        }
+
+        const res1 = await fetchLocation()
+        if (res1 instanceof Object && res1.lat) {
+          dispatch(updateLocation(res1))
         }
       }
       // 开启店铺码进店
