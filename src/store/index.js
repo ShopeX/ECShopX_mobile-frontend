@@ -20,7 +20,7 @@ const reducer = persistReducer(
   {
     key: 'root',
     storage,
-    blacklist: ['merchant', 'select'],
+    blacklist: ['merchant', 'select', 'sys'],
     throttle: 20
   },
   rootReducer

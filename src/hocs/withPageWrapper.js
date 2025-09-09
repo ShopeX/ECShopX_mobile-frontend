@@ -180,26 +180,22 @@ function withPageWrapper(Component) {
       } else if (entryStoreByLBS && isLocation) {
         if (isEmpty(location)) {
           const locationInfo = await entryLaunch.getLocationInfo()
-          // dispatch(updateLocation(locationInfo))
+          dispatch(updateLocation(locationInfo))
           params['lat'] = locationInfo?.lat
           params['lng'] = locationInfo?.lng
         } else {
           params['lat'] = location?.lat
           params['lng'] = location?.lng
         }
-
-        const res1 = await fetchLocation()
-        if (res1 instanceof Object && res1.lat) {
-          dispatch(updateLocation(res1))
-        }
       }
       // 开启店铺码进店
       const currentShopInfo = await api.shop.getShop(params)
       // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
       if (
-        (typeof dtid === 'undefined' || (dtid > 0 &&
-          currentShopInfo.distributor_id !== 0 &&
-          currentShopInfo.distributor_id !== dtid)) &&
+        (typeof dtid === 'undefined' ||
+          (dtid > 0 &&
+            currentShopInfo.distributor_id !== 0 &&
+            currentShopInfo.distributor_id !== dtid)) &&
         entryDefalutStore == 2 // 兜底策略指定页面
       ) {
         Taro.redirectTo({
