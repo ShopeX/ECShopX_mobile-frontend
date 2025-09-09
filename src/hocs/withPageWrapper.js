@@ -46,11 +46,11 @@ function withPageWrapper(Component) {
       if (VERSION_STANDARD && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) {
         // 云店进店规则
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 1)
-       try {
-        await checkEnterStoreRule()
-       } catch (error) {
-        console.log('error', error)
-       }
+        try {
+          await checkEnterStoreRule()
+        } catch (error) {
+          console.log('error', error)
+        }
         setState(true)
       } else {
         setState(true)
@@ -177,9 +177,9 @@ function withPageWrapper(Component) {
       const currentShopInfo = await api.shop.getShop(params)
       // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
       if (
-        dtid > 0 &&
-        currentShopInfo.distributor_id !== 0 &&
-        currentShopInfo.distributor_id !== dtid &&
+        (typeof dtid === 'undefined' || (dtid > 0 &&
+          currentShopInfo.distributor_id !== 0 &&
+          currentShopInfo.distributor_id !== dtid)) &&
         entryDefalutStore == 2 // 兜底策略指定页面
       ) {
         Taro.redirectTo({
