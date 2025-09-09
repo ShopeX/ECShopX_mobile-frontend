@@ -19,7 +19,7 @@ function CompShopItem(props) {
       </View> */}
       <View className='shopitem-bd'>
         <View className='shop-info'>
-          {!open_divided && <View className='distance'>{info.distance}</View>}
+          {!open_divided && info?.distance && <View className='distance'>{info.distance}</View>}
           <View className='name'>{info.store_name}</View>
           {info.isOpenDivided && (
             <View className='shop-tag'>
