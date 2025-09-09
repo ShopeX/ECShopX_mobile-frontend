@@ -46,6 +46,13 @@ class AtInputNumber extends AtComponent {
       localValue: this.props.value
     })
   }
+  componentDidUpdate(prevProps) {
+    if (prevProps.value !== this.props.value) {
+      this.setState({
+        localValue: this.props.value
+      })
+    }
+  }
 
   handleClick(clickType) {
     const { disabled, value, min, max, step } = this.props

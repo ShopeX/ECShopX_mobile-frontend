@@ -337,8 +337,8 @@ function EspierDetail(props) {
       getRecommendList() // 猜你喜欢
     }
   }
-  const getMultipleImageInfo = async (imageUrls) => {
-    const promises = imageUrls.map((url) =>
+  const getMultipleImageInfo = async (imageUrls=[]) => {
+    const promises = imageUrls?.map((url) =>
       Taro.getImageInfo({ src: url })
         .then((info) => info)
         .catch((error) => {

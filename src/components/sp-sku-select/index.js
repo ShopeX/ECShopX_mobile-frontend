@@ -85,13 +85,13 @@ function SpSkuSelect(props) {
     // }
   }, [info])
 
-  useEffect(() => {
-    if (!open) {
-      setState((draft) => {
-        draft.num = 1
-      })
-    }
-  }, [open])
+  // useEffect(() => {
+  //   if (!open) {
+  //     setState((draft) => {
+  //       draft.num = 1
+  //     })
+  //   }
+  // }, [open])
 
   const init = () => {
     const { skuList, specItems } = info
@@ -120,7 +120,6 @@ function SpSkuSelect(props) {
       if (info.specItems.length > 0 && val.length > 0) {
         //多规格动态获取起订量
         const newval = val.length == 1 ? val[0] : val.join('-')
-        console.log('newval:', newval, val, info.specItems)
         info.specItems.forEach((item) => {
           if (item.customSpecId == newval) {
             setState((draft) => {
@@ -130,12 +129,19 @@ function SpSkuSelect(props) {
             return item.startNum
           }
         })
+      }else{
+        // 单规格
+        setState((draft) => {
+          draft.minNum = info.startNum
+          draft.num = info.startNum
+        })
       }
       //单规格
       return info.startNum
     } else {
       setState((draft) => {
         draft.minNum = 1
+        draft.num = 1
       })
       return 1
     }
