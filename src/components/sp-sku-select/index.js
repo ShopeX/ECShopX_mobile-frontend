@@ -239,7 +239,8 @@ function SpSkuSelect(props) {
 
     let params = {}
 
-    const { distributor_id:dtid } = shopInfo || Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
+    const dtid = Taro.getStorageSync(SG_ROUTER_PARAMS)?.distributor_id || shopInfo?.distributor_id || ''
+
     if(dtid && dtid !== 'undefined') {
       params = {
         shop_type: 'distributor',
