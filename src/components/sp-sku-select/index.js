@@ -239,7 +239,8 @@ function SpSkuSelect(props) {
 
     let params = {}
 
-    const dtid = Taro.getStorageSync(SG_ROUTER_PARAMS)?.distributor_id || shopInfo?.distributor_id || ''
+    // 加购
+    const dtid =  VERSION_STANDARD ? shopInfo?.distributor_id :  Taro.getStorageSync(SG_ROUTER_PARAMS)?.distributor_id
 
     if(dtid && dtid !== 'undefined') {
       params = {
