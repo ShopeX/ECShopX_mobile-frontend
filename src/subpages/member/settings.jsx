@@ -17,6 +17,7 @@ const initialState = {
 const Settings = () => {
   const [state, setState] = useImmer(initialState)
   const lang = Taro.getStorageSync('lang')
+  console.log('lang', lang, 'i18n', i18n)
 
   useEffect(() => {
     // 初始化语言列表

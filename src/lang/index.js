@@ -116,15 +116,18 @@ class Lang {
     // 从本地存储中获取当前语言，如果不存在则使用源语言
     const baseLang = withStorageLang ? globalThis._localStorage.getItem('lang') : 'zhcn'
     const lang = commonLang ? commonLang : baseLang
-
     // 如果本地存储中没有语言设置，则使用环境变量中的默认语言
     if (!globalThis._localStorage.getItem('lang')) {
-      const defaultLang = process.env.APP_I18N_ORIGIN_LANG
-        ? process.env.APP_I18N_ORIGIN_LANG
-        : 'zhcn'
-
-      // 设置默认语言
-      globalThis._localStorage.setItem('lang', defaultLang)
+      try {
+        const defaultLang = process.env.APP_I18N_ORIGIN_LANG
+          ? process.env.APP_I18N_ORIGIN_LANG
+          : 'zhcn'
+        // 设置默认语言
+        globalThis._localStorage.setItem('lang', defaultLang)
+      } catch (error) {
+        globalThis._localStorage.setItem('lang', 'zhcn')
+        console.error('setLanguagePackage error', error)
+      }
     }
     // 根据当前语言设置翻译函数的语言包
     globalThis.$t.locale(globalThis.langMap[lang], 'lang')
