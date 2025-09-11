@@ -33,9 +33,7 @@ const IS_APP = BUILD_TARGET === 'app'
 const IS_APP_SERVER = BUILD_APP_SERVER === 'server'
 
 const copyPatterns = [{ from: 'src/assets', to: `${DIST_PATH}/assets` }]
-if (process.env.TARO_ENV == 'weapp') {
-  copyPatterns.push({ from: 'src/ext.json', to: `${DIST_PATH}/ext.json` })
-}
+
 if (process.env.TARO_ENV == 'h5') {
   copyPatterns.push({ from: 'src/files', to: `${DIST_PATH}` })
 }
