@@ -56,7 +56,7 @@ import './espier-checkout.scss'
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin,  getUserInfoAuth } = useLogin({
+  const { isLogin, getUserInfoAuth } = useLogin({
     autoLogin: true,
     loginSuccess: () => {
       updateAddress()
