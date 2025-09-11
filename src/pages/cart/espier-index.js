@@ -74,6 +74,7 @@ function CartIndex() {
   }, [])
 
   useEffect(() => {
+    console.log('useEffect', isLogin)
     if (isLogin) fetch()
   }, [isLogin])
 

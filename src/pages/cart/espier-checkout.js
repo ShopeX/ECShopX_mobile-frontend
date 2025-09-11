@@ -56,7 +56,7 @@ import './espier-checkout.scss'
 function CartCheckout(props) {
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
+  const { isLogin,  getUserInfoAuth } = useLogin({
     autoLogin: true,
     loginSuccess: () => {
       updateAddress()
@@ -171,12 +171,13 @@ function CartCheckout(props) {
   }, [isLogin])
 
   useEffect(() => {
-    if (isNewUser && !isWeb) {
+    const token = S.getAuthToken()
+    if (!token && !isWeb) {
       Taro.redirectTo({
         url: `/subpages/member/index`
       })
     }
-  }, [isNewUser])
+  }, [])
 
   useEffect(() => {
     if (receiptType && payType) {
