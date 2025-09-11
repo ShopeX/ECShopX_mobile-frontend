@@ -9,6 +9,7 @@ import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy, log } from '@/utils'
+import { withPageWrapper } from '@/hocs'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import './detail.scss'
 
@@ -112,4 +113,4 @@ GuideRecommendDetail.options = {
   addGlobalClass: true
 }
 
-export default GuideRecommendDetail
+export default withPageWrapper(GuideRecommendDetail)
