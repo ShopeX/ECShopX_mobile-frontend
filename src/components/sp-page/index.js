@@ -12,7 +12,13 @@ import { View, Text, ScrollView, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpModalDivided } from '@/components'
 import { useSyncCallback, useWhiteShop, useThemsColor } from '@/hooks'
-import { TAB_PAGES, TABBAR_PATH, DEFAULT_NAVIGATE_HEIGHT, DEFAULT_FOOTER_HEIGHT, DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
+import {
+  TAB_PAGES,
+  TABBAR_PATH,
+  DEFAULT_NAVIGATE_HEIGHT,
+  DEFAULT_FOOTER_HEIGHT,
+  DEFAULT_SAFE_AREA_HEIGHT
+} from '@/consts'
 import api from '@/api'
 import S from '@/spx'
 import {
@@ -85,9 +91,12 @@ const SpPage = memo(
         checkInWhite()
       }
     })
-    useReady(() => {
-      // 导购货架数据上报
-    })
+
+    useEffect(() => {
+      setState((draft) => {
+        draft.pageTheme = themeColor()
+      })
+    }, [])
 
     useEffect(() => {
       if (state.lock) {
@@ -136,7 +145,7 @@ const SpPage = memo(
       const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
       setState((draft) => {
         draft.btnReturn = _btnReturn
-        draft.btnHome = _btnHome
+        draft.btnHome = _btnHome && props.btnHomeEnable
         draft.customNavigation = custom_navigation
         draft.cusCurrentPage = pages.length
         draft.ipx = isIphoneX()
@@ -170,11 +179,8 @@ const SpPage = memo(
 
     useEffect(() => {
       if (props.pageConfig) {
-        const {
-          pageBackgroundColor,
-          pageBackgroundImage,
-          navigateBackgroundColor
-        } = props.pageConfig
+        const { pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } =
+          props.pageConfig
         let _pageBackground = {
           'background-image': `url(${pageBackgroundImage})`,
           'background-color': pageBackgroundColor,
@@ -196,6 +202,10 @@ const SpPage = memo(
     }, [props.pageConfig])
 
     useDidShow(() => {
+      initRoute()
+    })
+
+    const initRoute = () => {
       const { page, router } = getCurrentInstance()
       const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router?.path.split('?')[0])
       const isTabBarPage = fidx > -1
@@ -220,7 +230,7 @@ const SpPage = memo(
         checkInWhite()
       }
       isFromPhoneCallBack.current = false
-    })
+    }
 
     const checkInWhite = async () => {
       const { router } = instanceRef.current
@@ -331,10 +341,7 @@ const SpPage = memo(
       }
     }))
     const computedNavigationStyle = () => {
-      const {
-        navigateBackgroundColor,
-        navigateBackgroundImage,
-      } = props.pageConfig || {}
+      const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
         'padding-top': `${state.gStatusBarHeight}px`,
@@ -347,7 +354,9 @@ const SpPage = memo(
       }
       if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
         style['background-image'] = `url(${navigateBackgroundImage})`
-        style['background-color'] = props.pageConfig?.navigateBackgroundColor ? navigateBackgroundColor : props.navigateBackgroundColor
+        style['background-color'] = props.pageConfig?.navigateBackgroundColor
+          ? navigateBackgroundColor
+          : props.navigateBackgroundColor
         style['transition'] = 'all 0.15s ease-in'
       }
       return style
@@ -357,17 +366,12 @@ const SpPage = memo(
       const { windowWidth } = Taro.getWindowInfo()
       let { renderTitle } = props
       let pageCenterStyle = {
-        'width': (windowWidth - (state.menuWidth * 2) - (state.navigationLSpace * 2)) + 'px'
+        'width': windowWidth - state.menuWidth * 2 - state.navigationLSpace * 2 + 'px'
       }
       let pageTitleStyle = {}
       let navigationBarTitleText = ''
       if (props.pageConfig) {
-        const {
-          titleStyle,
-          titleColor,
-          titleBackgroundImage,
-          titlePosition
-        } = props.pageConfig
+        const { titleStyle, titleColor, titleBackgroundImage, titlePosition } = props.pageConfig
         // 页面标题
         if (titleStyle == '1') {
           renderTitle = (
@@ -387,7 +391,7 @@ const SpPage = memo(
           'position': 'relative'
         }
         pageTitleStyle = {
-          'color': props.pageConfig?.titleColor,
+          'color': props.pageConfig?.titleColor
         }
       } else {
         navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
@@ -525,26 +529,24 @@ const SpPage = memo(
               // 'height': `${state.height}px`,
               'margin-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
-                ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0))
+                ? Taro.pxTransform(
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )
                 : 0
             })}
           >
-            <context.Provider>
-              {props.children}
-            </context.Provider>
+            <context.Provider>{props.children}</context.Provider>
           </View>
         )}
         {props.renderFooter && (
           <View
             className='sp-page-footer'
             style={styleNames({
-              'height': props.renderFooter ?`${Taro.pxTransform(props.footerHeight)}` : 0,
+              'height': props.renderFooter ? `${Taro.pxTransform(props.footerHeight)}` : 0,
               'padding-bottom': `${isIphoneX() ? Taro.pxTransform(DEFAULT_SAFE_AREA_HEIGHT) : 0}`
             })}
           >
-            <context.Provider>
-              {props.renderFooter}
-            </context.Provider>
+            <context.Provider>{props.renderFooter}</context.Provider>
           </View>
         )}
         {/* 浮动 */}
@@ -575,6 +577,7 @@ const SpPage = memo(
 
 SpPage.defaultProps = {
   onReady: () => {},
+  btnHomeEnable: true,
   className: '',
   children: null,
   defaultMsg: '',
@@ -598,8 +601,7 @@ SpPage.defaultProps = {
   showNavitionLeft: true,
   title: '', // 页面导航标题
   renderFooter: null,
-  renderFloat: () => {},
+  renderFloat: () => {}
 }
 
 export default SpPage
-

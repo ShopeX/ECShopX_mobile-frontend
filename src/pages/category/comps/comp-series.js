@@ -104,7 +104,7 @@ const CompSeries = (props) => {
               className='category__banner'
               mode='widthFix'
               src={currentTopImg}
-              onClick={() => handleCustomClick(currentID)}
+              onClick={() => handleClickItem(info[activeIndex])}
             />
           )}
           <View className='comp-series__content_box'>

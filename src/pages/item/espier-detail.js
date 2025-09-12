@@ -71,6 +71,7 @@ import CompGroup from './comps/comp-group'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading, WgtHeadline,WgtImgHotZone } from '../home/wgts'
 import { updateShopInfo, changeInWhite } from '@/store/slices/shop'
 import './espier-detail.scss'
+import { withPageWrapper } from '@/hocs'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
 
@@ -1233,4 +1234,4 @@ const getMultipleImageInfo = async (imageUrls) => {
   )
 }
 
-export default EspierDetail
+export default withPageWrapper(EspierDetail)  

@@ -50,7 +50,6 @@ function SpSkuSelect(props) {
     hideInputNumber = false,
     salesman = false
   } = props
-  console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, curImage, disabledSet, curItem, skuText, num, loading,minNum } = state
@@ -240,7 +239,9 @@ function SpSkuSelect(props) {
 
     let params = {}
 
-    const { distributor_id:dtid } = shopInfo || Taro.getStorageSync(SG_ROUTER_PARAMS) || {}
+    // 加购
+    const dtid =  VERSION_STANDARD ? shopInfo?.distributor_id :  Taro.getStorageSync(SG_ROUTER_PARAMS)?.distributor_id
+
     if(dtid && dtid !== 'undefined') {
       params = {
         shop_type: 'distributor',

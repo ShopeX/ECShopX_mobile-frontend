@@ -4,7 +4,9 @@ import qs from 'qs'
 import S from '@/spx'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse,tokenParse } from '@/utils'
 import configStore from '@/store'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
+import _isEqual from 'lodash/isEqual'
+
 
 import MapLoader from '@/utils/lbs'
 
@@ -30,6 +32,22 @@ class EntryLaunch {
     // const { params } = $instance.router;
     const params = options?.query || $instance.router?.params || {}
     let _options = {}
+
+    const pageStack = Taro.getCurrentPages()
+
+    const resPage = pageStack.find(
+      (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
+    )
+
+    // 只返回小程序启动时的参数（包含冷启动和热启动）
+    if (resPage) {
+      return {
+        ...Taro.getStorageSync(SG_ROUTER_PARAMS),
+        runFlag: true // 标识小程序启动标志，用于判断是否是小程序启动
+      }
+    }
+
+
     console.log('$instance.router?.params', $instance.router?.params)
     if (params?.scene) {
       // tip: 使用qs.parse解析url参数，真机状态下通过卡片进入时，参数解析不正确；临时用自定义方法解析参数
@@ -501,7 +519,7 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    const routerParams = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
     const { gu } = routerParams || {}
     if (gu) {
       const [work_userid] = gu.split('_')
@@ -555,7 +573,7 @@ class EntryLaunch {
       })
     }
   }
- // 任务中心上报 
+ // 任务中心上报
   async postCenterTask(info) {
     const res = await api.task.getTaskList()
     // console.log('infouu--',Taro.getStorageSync('task_shop_rule_id'),res,info);
@@ -567,7 +585,7 @@ class EntryLaunch {
           const { page_delay=0 } = item?.common_condition
             if(((info?.ruleId == item?.id || goodsIdList.includes(info?.goodsId)) || (item?.special_type == '3' && goodsIdList.length==0) || (item?.special_type == '2' && distributorsList.length==0)) && item.done == 0){
               setTimeout(async ()=>{
-                await api.task.completeTask({activity_id:item?.activity_id,rule_id:item.id}) 
+                await api.task.completeTask({activity_id:item?.activity_id,rule_id:item.id})
              },page_delay*1000)
             }
         } catch (error) {

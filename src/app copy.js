@@ -1,30 +1,16 @@
-import Taro, {
-  getCurrentInstance,
-  getCurrentPages,
-  useDidShow,
-  useLaunch,
-  useReady,
-  useRouter,
-  useError
-} from '@tarojs/taro'
-
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import S from '@/spx'
 import { Provider } from 'react-redux'
 import configStore from '@/store'
 import api from '@/api'
-
 // import { Tracker } from "@/service";
 // import { youshuLogin } from '@/utils/youshu'
 import {
-  DEFAULT_TABS,
-  DEFAULT_THEME,
-  SG_MEIQIA,
-  SG_YIQIA,
   SG_ROUTER_PARAMS,
+  SG_GUIDE_PARAMS_EXPRESSTIME,
   SG_GUIDE_PARAMS,
   SG_GUIDE_PARAMS_UPDATETIME,
-  SG_GUIDE_PARAMS_EXPRESSTIME,
   SG_CHECK_STORE_RULE
 } from '@/consts'
 import {
@@ -37,7 +23,6 @@ import {
   VERSION_STANDARD,
   tokenParse
 } from '@/utils'
-import { useEffectAsync } from '@/hooks'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
 
@@ -64,24 +49,50 @@ if (process.env.APP_BUILD_TARGET == 'app') {
 
 requestIntercept()
 
-function App({ children }) {
-  useEffectAsync(async (options) => {
-    console.log('useEffect %%%%%%%%%%%%%', options)
-    if (isWeixin) {
-      checkAppVersion()
-    }
+class App extends Component {
+  // componentWillMount() {
+  //   this.getSystemConfig()
+  //   // if ( S.getAuthToken() ) {
+  //   //   store.dispatch(fetchUserFavs());
+  //   // }
+  // }
+
+  // componentDidMount() {
+  //   const init = async () => {
+  //     if (isWeixin) {
+  //       checkAppVersion()
+  //     }
+  //     const { show_time } = await api.promotion.getScreenAd()
+  //     let showAdv
+  //     if (show_time === 'always') {
+  //       showAdv = false
+  //       store.dispatch({
+  //         type: 'user/closeAdv',
+  //         payload: showAdv
+  //       })
+  //     }
+  //   }
+  //   init()
+  // }
+
+  async onLaunch(options) {
+    console.log(`app onLaunch:`, options)
+    import('../package.json').then((res) => {
+      console.log(`App Name: ${res.name}, version: ${res.version}`)
+    })
 
     // 导购参数缓存处理
     const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
-    const guideExpressTime = Taro.getStorageSync(SG_GUIDE_PARAMS_EXPRESSTIME) || 0
-    if (guideUpdateTime != 0) {
-      const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
-      // 参数保存超过3天，清除导购参数
-      if (diffMilliseconds > guideExpressTime * 86400000) {
-        Taro.removeStorageSync(SG_GUIDE_PARAMS)
-        Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
-      }
+    const diffMilliseconds = dayjs().diff(dayjs(guideUpdateTime))
+    // 参数保存超过3天，清除导购参数
+    if (diffMilliseconds > 3 * 86400000) {
+      Taro.removeStorageSync(SG_GUIDE_PARAMS)
+      Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
     }
+
+    // isWeb环境下，H5启动时，路由携带参数在options
+    // 小程序环境，启动时，路由携带参数在options.query
+    this.initRouterParams(options)
     const { show_time } = await api.promotion.getScreenAd()
     let showAdv
     if (show_time === 'always') {
@@ -91,10 +102,13 @@ function App({ children }) {
         payload: showAdv
       })
     }
-  }, [])
+    this.getSystemConfig()
+    this.getParamsOptions(options)
+  }
 
-  useDidShow(async (options) => {
-    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then((params) => {
+  initRouterParams = async (options) => {
+    entryLaunch.getRouteParams(isWeb ? { query: options } : options).then(async (params) => {
+      console.log(`app componentDidShow:`, options, params)
       Taro.setStorageSync(SG_ROUTER_PARAMS, params)
 
       if (params.gu || params.gu_user_id) {
@@ -115,63 +129,59 @@ function App({ children }) {
           Taro.removeStorageSync(SG_GUIDE_PARAMS)
           Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
         }
-        getSystemConfig()
       }
-      initCrm(params)
-    })
-  })
 
-  // useError((error) => {
-  //   log.error('useError', error)
-  // })
+      let _ucd = ''
+      //crmcode 区域code, ucd 用户会员 card,source_id, monitor_id, latest_source_id, latest_monitor_id
+      const {
+        crmcode,
+        ucd = '',
+        s = '',
+        m = '',
+        latest_source_id = '',
+        latest_monitor_id = ''
+      } = params || {}
 
-  const initCrm = async (params) => {
-    let _ucd = ''
-    //crmcode 区域code, ucd 用户会员 card,source_id, monitor_id, latest_source_id, latest_monitor_id
-    const {
-      crmcode,
-      ucd = '',
-      s = '',
-      m = '',
-      latest_source_id = '',
-      latest_monitor_id = ''
-    } = params || {}
-
-    Taro.setStorageSync('user_card_code', ucd) //对方打开本小程序会传的参数
-    Taro.setStorageSync('sourceInfo', {
-      source_id: s,
-      monitor_id: m,
-      latest_source_id,
-      latest_monitor_id
-    })
-    if (m && s) {
-      await entryLaunch.trackViewNum(m, s)
-    }
-    if (crmcode) {
-      getSystemConfig()
-    }
-    if (ucd) {
-      const token = S.getAuthToken()
-      const userInfo = token ? tokenParse(token) : {}
-      _ucd = userInfo?.user_card_code
-      if (ucd !== _ucd) {
-        //如果有ucd 并且 与本地用户的_ucd相等说明是mob拉起 需要走自动登录
-        S.setAuthToken('')
-        Taro.removeStorageSync('userinfo')
-        return
+      Taro.setStorageSync('user_card_code', ucd) //对方打开本小程序会传的参数
+      Taro.setStorageSync('sourceInfo', {
+        source_id: s,
+        monitor_id: m,
+        latest_source_id,
+        latest_monitor_id
+      })
+      if (m && s) {
+        await entryLaunch.trackViewNum(m, s)
       }
+      if (crmcode) {
+        this.getSystemConfig()
+      }
+      if (ucd) {
+        const token = S.getAuthToken()
+        const userInfo = token ? tokenParse(token) : {}
+        _ucd = userInfo?.user_card_code
+        if (ucd !== _ucd) {
+          //如果有ucd 并且 与本地用户的_ucd相等说明是mob拉起 需要走自动登录
+          S.setAuthToken('')
+          Taro.removeStorageSync('userinfo')
+          return
+        }
+      }
+    })
+  }
+
+  async componentDidShow(options) {
+    this.getParamsOptions(options)
+  }
+
+  getParamsOptions = async (options) => {
+    const routeParams = await entryLaunch.getRouteParams(options)
+    if (routeParams.gu || routeParams.gu_user_id) {
+      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
     }
   }
 
-  const getSystemConfig = async () => {
-    const [homeRes, appBaseRes, priceSetting, appSettingInfo, enterStoreRule] = await Promise.all([
-      api.shop.homeSetting(),
-      api.shop.getAppBaseInfo(),
-      api.shop.getAppGoodsPriceSetting(),
-      api.groupBy.getCompanySetting(),
-      VERSION_STANDARD ? api.shop.getStoreEnterRule() : Promise.resolve(null)
-    ])
-
+  async getSystemConfig() {
     const {
       echat,
       meiqia,
@@ -180,7 +190,7 @@ function App({ children }) {
       nostores_status = false,
       distributor_param_status = false,
       point_rule_name = '积分'
-    } = homeRes
+    } = await api.shop.homeSetting()
 
     const {
       tab_bar,
@@ -189,10 +199,16 @@ function App({ children }) {
       is_open_official_account: openOfficialAccount,
       color_style: { primary, accent, marketing },
       title // 商城应用名称
-    } = appBaseRes
+    } = await api.shop.getAppBaseInfo()
 
-    let entryStoreRules = []
-    if (VERSION_STANDARD && enterStoreRule) {
+    const priceSetting = await api.shop.getAppGoodsPriceSetting()
+
+    const appSettingInfo = await api.groupBy.getCompanySetting() // 获取小程序头像
+
+    let enterStoreRule = null,
+      entryStoreRules = []
+    if (VERSION_STANDARD) {
+      enterStoreRule = await api.shop.getStoreEnterRule()
       entryStoreRules = Object.entries({
         distributor_code: enterStoreRule.distributor_code,
         shop_assistant: enterStoreRule.shop_assistant,
@@ -258,8 +274,9 @@ function App({ children }) {
       console.log(error)
     }
   }
-
-  return <Provider store={store}>{children}</Provider>
+  render() {
+    return <Provider store={store}>{this.props.children}</Provider>
+  }
 }
 
 export default App

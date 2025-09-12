@@ -110,3 +110,19 @@ export function getMapKeyDetail (params) {
 export function getAppGoodsPriceSetting() {
   return req.get('/setting/itemPrice')
 }
+
+
+// 获取店铺进店规则
+export function getStoreEnterRule() {
+  return req.get('/distributor/config/inRule')
+}
+
+// 验证导购员店铺是否有效，如果已登录，则验证用户和当前导购绑定的店铺是否有效
+export function checkStoreEnterRule(params) {
+  return req.post('/distributor/config/inRule/check', params)
+}
+
+// 查询当前用户绑定的白名单店铺
+export function getMyStoreWhiteList() {
+  return req.get('/distributor/whitelistByMember')
+}
