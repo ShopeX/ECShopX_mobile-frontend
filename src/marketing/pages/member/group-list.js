@@ -98,7 +98,7 @@ export default class myGroupList extends Component {
                           key={`${index}1`}
                           mode='aspectFill'
                           className='user-avatar'
-                          src={avatar.member_info.headimgurl}
+                          src={avatar?.member_info?.headimgurl}
                         />
                       )
                     })}

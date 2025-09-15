@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { linkPage, classNames, styleNames, isString, isArray, pxToUnitRpx } from '@/utils'
 import { needLoginPage, needLoginPageType } from '@/consts'
@@ -55,6 +55,19 @@ function WgtImgHotZone(props) {
                   />
                 </SpLogin>
               )
+            }else if (item.id == 'customerService') {
+              return (  <Button
+                key={item.id}
+                className='img-hotzone_zone opacity-0'
+                type='button'
+                style={styleNames({
+                  width: `${item.widthPer * 100}%`,
+                  height: `${item.heightPer * 100}%`,
+                  top: `${item.topPer * 100}%`,
+                  left: `${item.leftPer * 100}%`
+                })}
+                openType='contact'
+              />)
             } else {
               return (
                 <View
