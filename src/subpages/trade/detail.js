@@ -703,7 +703,7 @@ function TradeDetail(props) {
               </View>
             ))}
           </View>
-          <View className='trade-price-info'>
+          {info&&<View className='trade-price-info'>
             {enMarketPrice && info?.marketFee > 0 && (
               <SpCell title='原价' value={<SpPrice value={info?.marketFee} size={28} />} />
             )}
@@ -759,11 +759,10 @@ function TradeDetail(props) {
                 }
               })()}
             />
-          </View>
+          </View>}
         </View>
         {/* <View className='block-container'>
         </View> */}
-        {console.log(info, 'info------')}
 
         {info?.prescriptionStatus > 0 && !supplement && (
           <View className='block-container order-info'>
@@ -822,7 +821,7 @@ function TradeDetail(props) {
           </View>
         )}
 
-        <View className='block-container order-info'>
+       {info&& <View className='block-container order-info'>
           <View className='block-container-label'>订单信息</View>
           <SpCell
             title='订单编号'
@@ -849,7 +848,7 @@ function TradeDetail(props) {
             />
           )}
           {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
-        </View>
+        </View>}
         <View className='padding-view'></View>
       </ScrollView>
 
