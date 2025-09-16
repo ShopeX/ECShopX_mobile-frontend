@@ -93,12 +93,7 @@ function MemberUserInfo() {
         _formUserInfo[key] = value || ''
       }
       if (key === 'sex') {
-        const sexType = {
-          0: '未知',
-          1: '男',
-          2: '女'
-        }
-        _formUserInfo[key] = sexType[value]
+        _formUserInfo[key] = data[key].select[value]
       }
     })
 
