@@ -4,6 +4,18 @@
   padding: 0 30px;
   position: relative;
 
+  &.sp-form-item-line {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .form-item-control {
+      flex: 1;
+    }
+    .at-input {
+      margin: 0!important;
+    }
+  } 
+
   .form-item-label {
     margin-bottom: 4px;
     position: relative;

@@ -451,7 +451,7 @@ function SpDeliver(props, ref) {
           {zitiAddress && (
             <View className='ziti-info'>
               <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
-                <SpFormItem label='提货时间' prop='pickerTime'>
+                <SpFormItem label='提货时间' prop='pickerTime' type='line' labelWidth='70px'>
                   <SpCell
                     className='picker-time'
                     isLink
@@ -470,7 +470,7 @@ function SpDeliver(props, ref) {
                     </Text>
                   </SpCell>
                 </SpFormItem>
-                <SpFormItem label='提货人' prop='pickerName'>
+                <SpFormItem label='提货人' prop='pickerName' type='line' labelWidth='70px'>
                   <AtInput
                     name='pickerName'
                     value={form.pickerName}
@@ -478,7 +478,7 @@ function SpDeliver(props, ref) {
                     onChange={onInputChange.bind(this, 'pickerName')}
                   />
                 </SpFormItem>
-                <SpFormItem label='手机号码' prop='pickerPhone'>
+                <SpFormItem label='手机号码' prop='pickerPhone' type='line' labelWidth='70px'>
                   <AtInput
                     name='pickerPhone'
                     value={form.pickerPhone}

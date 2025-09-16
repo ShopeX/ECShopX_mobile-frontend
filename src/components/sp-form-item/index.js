@@ -13,7 +13,7 @@ const initialState = {
   message: ''
 }
 function SpFormItem(props) {
-  const { label, prop, children, info, copy = false, onChange = () => {} } = props
+  const { label, prop, children, info, copy = false, onChange = () => {} ,type, labelWidth = ''} = props
   const [state, setState] = useImmer(initialState)
   const { message } = state
   const value = useRef()
@@ -128,9 +128,9 @@ function SpFormItem(props) {
   }
 
   return (
-    <View className={classNames('sp-form-item', { 'split-line': info.type == 'split' })}>
+    <View className={classNames('sp-form-item', { 'split-line': info.type == 'split', 'sp-form-item-line': type == 'line' })}>
       {label && (
-        <View className='form-item-label'>
+        <View className='form-item-label' style={{ width: labelWidth }}>
           {rule.length > 0 && <Text className='required'>*</Text>}
           <Text className='label'>{label}</Text>
         </View>
