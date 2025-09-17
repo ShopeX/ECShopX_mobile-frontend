@@ -13,14 +13,14 @@
     .item-list-scroll {
       @include page-scroll($header-height + $camera-height + 168px, $footer-height + $page-ipx-footer-height + 66px);
     }
-    // .sp-page-body {
+    // .sp-page__body {
     //   height: calc(100vh - 140px);
     // }
   }
   .item-list{
     margin-top: 24px;
   }
-  // .sp-page-body {
+  // .sp-page__body {
   //   position: relative;
   //   height: calc(100vh - 120px);
   // }

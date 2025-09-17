@@ -488,7 +488,7 @@ function SpPage(props, ref) {
 
       {!isDefault && !loading && (
         <View
-          className='sp-page-body'
+          className='sp-page__body'
           style={styleNames({
             'margin-top': `${customNavigation ? gNavbarH : 0}px`
           })}
@@ -498,7 +498,7 @@ function SpPage(props, ref) {
       )}
 
       {/* 置底操作区 */}
-      {!isDefault && renderFooter && <View className='sp-page-footer'>{renderFooter}</View>}
+      {!isDefault && renderFooter && <View className='sp-page__footer'>{renderFooter}</View>}
 
       {/* 浮动 */}
       {!isDefault && (
