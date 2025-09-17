@@ -732,12 +732,12 @@ const getDistributorId = (_dtid) => {
   if (VERSION_STANDARD) {
     if (typeof _dtid == 'undefined') {
       // 小程序启动后URL是否携带店铺id
-      const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
-      if (dtid) {
-        return dtid
-      } else {
-        return distributor_id
-      }
+      // const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+      // if (dtid) {
+      //   return dtid
+      // } else {
+      // }
+      return distributor_id
     } else {
       return _dtid
     }
