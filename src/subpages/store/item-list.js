@@ -1,33 +1,20 @@
 import React, { useRef, useEffect, useState } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { connect } from 'react-redux'
+import { View } from '@tarojs/components'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
-import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer, AtTabs } from 'taro-ui'
 import {
-  BackToTop,
-  Loading,
-  TagsBar,
   SpFilterBar,
-  GoodsItem,
   SpTagBar,
   SpGoodsItem,
   SpSearchBar,
-  SpNavBar,
-  SpLoadMore,
-  TabBar,
   SpPage,
   SpScrollView,
-  SpDrawer,
-  SpSelect,
   SpSkuSelect
 } from '@/components'
 import doc from '@/doc'
 import api from '@/api'
-import { pickBy, classNames, isWeixin, getDistributorId, styleNames, showToast } from '@/utils'
+import { pickBy, classNames, showToast } from '@/utils'
 import { Tracker } from '@/service'
-import CompTabbar from './comps/comp-tabbar'
 
 import './item-list.scss'
 
@@ -36,7 +23,6 @@ const MSpSkuSelect = React.memo(SpSkuSelect)
 const initialState = {
   leftList: [],
   rightList: [],
-  brandList: [],
   brandSelect: [],
   filterList: [
     { title: '综合' },
@@ -48,28 +34,23 @@ const initialState = {
   tagList: [],
   curTagIdx: 0,
   keywords: '',
-  show: false,
-  fixTop: 0,
   info: null,
   skuPanelOpen: false,
   selectType: 'picker'
 }
 
-function StoreItemList(props) {
+function StoreItemList() {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const {
     keywords,
     leftList,
     rightList,
-    brandList,
     brandSelect,
     curFilterIdx,
     filterList,
     tagList,
     curTagIdx,
-    show,
-    fixTop,
     info,
     skuPanelOpen,
     selectType
@@ -80,23 +61,6 @@ function StoreItemList(props) {
   const pageRef = useRef()
 
   useEffect(() => {}, [])
-
-  // useDidShow(() => {
-  //   setTimeout(() => {
-  //     Taro.createSelectorQuery()
-  //       .select('#item-list-head')
-  //       .boundingClientRect((res) => {
-  //         console.log('boundingClientRect:', res) //
-  //         if (res) {
-  //           setState((draft) => {
-  //             draft.fixTop = res.bottom
-  //             console.log('fixTop:', res.bottom) //
-  //           })
-  //         }
-  //       })
-  //       .exec()
-  //   }, 200)
-  // })
 
   useEffect(() => {
     if (skuPanelOpen) {
@@ -145,7 +109,6 @@ function StoreItemList(props) {
     const {
       list,
       total_count,
-      item_params_list = [],
       select_tags_list = [],
       brand_list
     } = await api.item.search(params)
@@ -174,7 +137,6 @@ function StoreItemList(props) {
             tag_id: 0
           }
         ].concat(select_tags_list)
-        v.fixTop = fixTop + 34
       }
     })
 
@@ -239,30 +201,8 @@ function StoreItemList(props) {
     goodsRef.current.reset()
   }
 
-  const onChangeBrand = (val) => {
-    setState((draft) => {
-      draft.brandSelect = val
-    })
-  }
 
-  const onConfirmBrand = async () => {
-    await setState((draft) => {
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
-  const onResetBrand = async () => {
-    await setState((draft) => {
-      draft.brandSelect = []
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
   const handleClickStore = (item) => {
     const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
@@ -290,7 +230,6 @@ function StoreItemList(props) {
     }
   }
 
-  console.log('page-store-item-list', fixTop)
   return (
     <SpPage
       scrollToTopBtn
@@ -330,9 +269,6 @@ function StoreItemList(props) {
       </View>
       <SpScrollView
         className='item-list-scroll'
-        style={styleNames({
-          marginTop: `${fixTop}px`
-        })}
         ref={goodsRef}
         fetch={fetch}
       >
