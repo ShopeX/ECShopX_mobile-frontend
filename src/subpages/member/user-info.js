@@ -7,7 +7,7 @@ import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { SG_POLICY } from '@/consts'
-import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN } from '@/utils'
+import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN, goToPage } from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button } from '@tarojs/components'
 import i18n from '@/lang/consts'
@@ -264,8 +264,14 @@ function MemberUserInfo() {
   const handleLogOut = async () => {
     logout()
     showToast('退出登录成功')
-    // Taro.redirectTo({ url: '/pages/index' })
-    window.location.href = `${window.location.origin}/pages/index`
+    if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
+      // eslint-disable-next-line
+      goToPage(process.env.APP_HOME_PAGE)
+    } else {
+      Taro.redirectTo({
+        url: process.env.APP_HOME_PAGE
+      })
+    }
   }
 
   const onChooseAvatar = async (e) => {
