@@ -95,7 +95,8 @@ function CartIndex() {
     Taro.showLoading({ title: '' })
     const { type = 'distributor' } = router?.params || {}
     const params = {
-      shop_type: type
+      shop_type: type,
+      shop_id: shopInfo?.distributor_id
     }
 
     await dispatch(fetchCartList(params))

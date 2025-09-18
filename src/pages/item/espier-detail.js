@@ -293,8 +293,6 @@ function EspierDetail(props) {
 
     // setNavigationBarTitle(data.itemName)
 
-    console.log(data, data.activityType)
-    debugger
     if (ACTIVITY_LIST[data.activityType]) {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
