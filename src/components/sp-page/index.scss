@@ -1,11 +1,11 @@
 .sp-page {
   box-sizing: border-box;
 
-  .sp-page-body {
+  .sp-page__body {
     box-sizing: border-box;
   }
 
-  .sp-page-footer {
+  .sp-page__footer {
     position: fixed;
     bottom: 0;
     left: 0;
@@ -15,17 +15,17 @@
   }
 
   // &.has-navbar {
-  //   .sp-page-body {
+  //   .sp-page__body {
   //     padding-top: $navigate-height;
   //   }
   // }
 
   &.has-footer {
-    // .sp-page-body {
+    // .sp-page__body {
     //   padding-bottom: $page-footer-height;
     // }
 
-    // .sp-page-footer {
+    // .sp-page__footer {
     //   height: $page-footer-height;
     //   .at-tab-bar {
     //     height: $page-footer-height;
@@ -33,11 +33,11 @@
     // }
 
     // &.ipx {
-    //   .sp-page-body {
+    //   .sp-page__body {
     //     padding-bottom: $page-ipx-footer-height;
     //   }
 
-    //   .sp-page-footer {
+    //   .sp-page__footer {
     //     height: $page-ipx-footer-height;
     //     .at-tab-bar {
     //       height: $page-ipx-footer-height;
@@ -57,7 +57,7 @@
   // &.ipx {
   //   padding-bottom: 20px;
 
-  //   .sp-page-footer {
+  //   .sp-page__footer {
   //     height: $page-ipx-footer-height;
   //   }
 
