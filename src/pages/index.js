@@ -253,9 +253,11 @@ function Home() {
   }
 
   const handleScroll = (e) => {
-    setState((draft) => {
-      draft.navigateMantle = e.detail.scrollTop >= 20
-    })
+    if (pageData?.base?.isImmersive) {
+      setState((draft) => {
+        draft.navigateMantle = e.detail.scrollTop >= 20
+      })
+    }
   }
 
   return (
@@ -267,7 +269,6 @@ function Home() {
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar  height={state.footerHeight} />}
-      loading={loading}
       ref={pageRef}
       navigateMantle={navigateMantle}
       onReady={({ footerHeight }) => {
