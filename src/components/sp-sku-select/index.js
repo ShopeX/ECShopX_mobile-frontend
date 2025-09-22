@@ -392,17 +392,15 @@ function SpSkuSelect(props) {
   }
 
   const handleSubscribe = async() => {
-    const { subscribe } = info
     const { dtid } = $instance.router.params
     // console.log('onSubscribe:subscribe', subscribe)
-    if (subscribe) return false
 
     if (isWeb) {
       showToast('请在小程序完成商品到货通知')
       return
     }
 
-    await api.user.subscribeGoods(info.itemId, { distributor_id: dtid })
+    await api.user.subscribeGoods(curItem?.itemId, { distributor_id: dtid })
     const { template_id } = await api.user.newWxaMsgTmpl({
       temp_name: 'yykweishop',
       source_type: 'goods'
