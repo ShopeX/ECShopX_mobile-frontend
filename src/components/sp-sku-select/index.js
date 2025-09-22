@@ -394,7 +394,7 @@ function SpSkuSelect(props) {
   const handleSubscribe = async() => {
     const { subscribe } = info
     const { dtid } = $instance.router.params
-    console.log('onSubscribe:subscribe', subscribe)
+    // console.log('onSubscribe:subscribe', subscribe)
     if (subscribe) return false
 
     if (isWeb) {
@@ -428,7 +428,7 @@ function SpSkuSelect(props) {
     })
     if (curItem?.store <= 0) {
      return (
-      <AtButton circle type='primary'  onChange={handleSubscribe}>
+      <AtButton circle type='primary'  onClick={handleSubscribe}>
         {BUY_TOOL_BTNS().NOTICE.title}
       </AtButton>
      )
