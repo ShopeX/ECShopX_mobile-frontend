@@ -9,7 +9,7 @@ import api from '@/api'
 import { SG_POLICY } from '@/consts'
 import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN, goToPage } from '@/utils'
 import imgUploader from '@/utils/upload'
-import { View, Input, Picker, Button } from '@tarojs/components'
+import { View, Input, Picker, Button, ScrollView } from '@tarojs/components'
 import i18n from '@/lang/consts'
 import './user-info.scss'
 
@@ -48,12 +48,8 @@ function MemberUserInfo() {
   }, [])
 
   useEffect(() => {
-    if (showCheckboxPicker) {
-      pageRef.current.pageLock()
-    } else {
-      pageRef.current.pageUnLock()
-    }
-  }, [showCheckboxPicker])
+    pageRef.current?.pageLock()
+  }, [])
 
   // console.log('userInfo ******', userInfo)
 
@@ -365,6 +361,7 @@ function MemberUserInfo() {
         </AtButton>
       }
     >
+      <ScrollView scrollY style={{height:'100%'}}>
       <View className='block-container'>
         <SpCell title='头像' isLink border value={renderAvatar()}></SpCell>
         <SpCell
@@ -436,6 +433,7 @@ function MemberUserInfo() {
           <SpCell isLink title='退出登录' value='退出当前账号' onClick={handleLogOut}></SpCell>
         </View>
       )}
+      </ScrollView>
 
       <SpFloatLayout
         title={checkboxPickerTitle}
