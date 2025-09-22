@@ -110,8 +110,8 @@ function App({ children }) {
       if (typeof params.runFlag === 'undefined') {
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
-        // 小程序启动时，如果路由带参有店铺码，则清除导购参数
-        if (typeof params?.dtid !== 'undefined' && params?.dtid !== '') {
+        // 小程序启动时，如果路由带参有店铺码，则清除导购参数(非导购入口)
+        if (typeof params?.dtid !== 'undefined' && params?.dtid !== '' && (!params.gu && !params.gu_user_id)) {
           Taro.removeStorageSync(SG_GUIDE_PARAMS)
           Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
         }
