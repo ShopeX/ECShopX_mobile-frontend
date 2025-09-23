@@ -260,6 +260,7 @@ function CartCheckout(props) {
 
   const handlePay = async () => {
     const params = await getParamsInfo()
+    console.log('handlePay:', params)
     // 店铺是否开启社区街道
     if (openStreet) {
       params['subdistrict_parent_id'] = street
@@ -552,6 +553,7 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
+    console.log('cus_parmas:', cus_parmas)
     let orderRes
     try {
       orderRes = await api.cart.total(cus_parmas)
@@ -781,7 +783,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
-    const routerParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
+    const storageParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -801,21 +803,21 @@ function CartCheckout(props) {
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
-    if (routerParams?.cxdid) {
-      cus_parmas.cxdid = routerParams?.cxdid;
-      cus_parmas.distributor_id = routerParams?.dtid;
+    if (storageParams?.cxdid) {
+      cus_parmas.cxdid = storageParams?.cxdid;
+      cus_parmas.distributor_id = storageParams?.dtid;
       cus_parmas.cart_type = "cxd";
       cus_parmas.order_type = "normal_shopguide";
-      cus_parmas.salesman_id = routerParams?.smid;
-      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+      cus_parmas.salesman_id = storageParams?.smid;
+      cus_parmas.work_userid = storageParams?.gu.split('_')[0] || storageParams?.gu_user_id || ''
     }
 
-    if (routerParams?.gu?.length > 0) {
-      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+    if (storageParams?.gu?.length > 0) {
+      cus_parmas.work_userid = storageParams?.gu.split('_')[0] || storageParams?.gu_user_id || ''
     }
-    if(routerParams?.dtid) {
-      cus_parmas.distributor_id = routerParams?.dtid;
-    }
+    // if(storageParams?.dtid) { // 如果使用导购的店铺id，可能会出现店铺id不一致的情况，所以不使用导购的店铺id
+    //   cus_parmas.distributor_id = storageParams?.dtid;
+    // }
 
     if (receiptType === 'ziti') {
       delete cus_parmas.receiver_state
