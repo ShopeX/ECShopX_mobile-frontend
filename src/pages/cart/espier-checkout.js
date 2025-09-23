@@ -16,7 +16,7 @@ import {
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { changeCoupon, changeZitiAddress } from '@/store/slices/cart'
 import { updateChooseAddress } from '@/store/slices/user'
-import { changeZitiStore, changeInWhite } from '@/store/slices/shop'
+import { changeZitiStore } from '@/store/slices/shop'
 import {
   isObjectsValue,
   isWeixin,
@@ -322,7 +322,6 @@ function CartCheckout(props) {
       setState((draft) => {
         draft.submitLoading = false
       })
-      dispatch(changeInWhite())
       Taro.hideLoading()
       Taro.showToast({
         title: `${e?.message || '创建订单失败,请稍后再试'}`,
@@ -559,7 +558,6 @@ function CartCheckout(props) {
       orderRes = await api.cart.total(cus_parmas)
     } catch (e) {
       console.log('e:', e)
-      dispatch(changeInWhite())
     }
     Taro.hideLoading()
     const {

@@ -15,13 +15,10 @@ const shopSlice = createSlice({
     },
     changeZitiStore: (state, { payload }) => {
       state.zitiShop = payload
-    },
-    changeInWhite: (state, { payload }) => {
-      state.shopInWhite = payload
     }
   }
 })
 
-export const { updateShopInfo, changeZitiStore, changeInWhite } = shopSlice.actions
+export const { updateShopInfo, changeZitiStore } = shopSlice.actions
 
 export default shopSlice.reducer
