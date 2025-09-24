@@ -1,4 +1,55 @@
 .page-trade-logistics-info {
+  .after-address {
+    margin: 24px 16px 0;
+    padding: 24px 0;
+    border-radius: 16px;
+    background: #fff;
+    overflow: hidden;
+    .sp-cell {
+      align-items: flex-start;
+      padding: 0 30px;
+    }
+    .sp-cell__title {
+      font-size: 30px;
+      font-weight: 600;
+      color: #222;
+    }
+    .sp-cell__bd {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      .contact {
+        font-size: 30px;
+        font-weight: 600;
+        color: #222;
+        word-break: break-all;
+      }
+      .mobile {
+        font-size: 30px;
+        font-weight: 600;
+        color: #999;
+        // margin-left: 20px;
+      }
+    }
+    .sp-cell__ft,
+    .sp-cell__link {
+      display: none;
+    }
+    .address-detail {
+      color: #222222;
+      padding: 0 30px;
+      margin-top: 10px;
+    }
+    .btn-container {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 32px;
+      padding: 0 30px;
+    }
+    .btn-logistics {
+      width: 210px;
+    }
+  }
   .btn-wrap {
     padding: 20px;
   }
@@ -27,5 +78,10 @@
   }
   .sp-input{
     text-align: right;
+  }
+  .address-detail {
+    padding: 24px 32px;
+    padding-top: 0;
+    background: #fff;
   }
 }

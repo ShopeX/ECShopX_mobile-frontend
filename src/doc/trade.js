@@ -120,6 +120,7 @@ export const SHOP_INFO = {
 }
 
 export const AFTER_TRADE = {
+  aftersalesAddress: 'aftersales_address',
   aftersalesBn: 'aftersales_bn',
   aftersalesStatus: 'aftersales_status',
   createdTime: ({ create_time }) => formatDateTime(create_time * 1000),
