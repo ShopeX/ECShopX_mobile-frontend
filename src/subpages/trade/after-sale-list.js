@@ -148,14 +148,19 @@ function TradeAfterSaleList(props) {
     Taro.navigateTo({ url: `/subpages/trade/logistics-info?type=more` })
   }
 
+  const renderFooter = () => {
+    if (status != '1') return null
+    return (
+      <View className='btn-wrap'>
+        <AtButton circle type='primary' disabled={selectAftersn.length === 0} onClick={onSubmit}>批量处理</AtButton>
+      </View>
+    )
+  }
+
   return (
     <SpPage
       className='page-trade-aftersale-list'
-      renderFooter={
-        <View className='btn-wrap'>
-          <AtButton circle type='primary' disabled={selectAftersn.length === 0 || status != '1'} onClick={onSubmit}>批量处理</AtButton>
-        </View>
-      }
+      renderFooter={renderFooter()}
     >
       <View className='search-bar-container'>
         <SpSearchBar
@@ -190,7 +195,7 @@ function TradeAfterSaleList(props) {
               <CompAfterTradeItem
                 info={item}
                 selectAftersn={selectAftersn}
-                isShowChecked
+                isShowChecked={status == '1'}
                 onSelect={onSelect}
               />
             </View>

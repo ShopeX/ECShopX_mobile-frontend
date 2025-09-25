@@ -42,7 +42,7 @@ function CompTradeItem(props) {
         <View>
           <View className='shop-info' onClick={onViewStorePage}>
             {/* <SpImage src={distributorInfo?.logo} width={100} height={100} /> */}
-            {isShowChecked && <SpCheckboxNew checked={selectAftersn.includes(aftersalesBn)} onChange={() => onSelect(aftersalesBn)} />}
+            {isShowChecked && <SpCheckboxNew checked={selectAftersn.includes(aftersalesBn)} style={{ marginRight: 24 }} onChange={() => onSelect(aftersalesBn)} />}
             <View className='shop-name'>{distributorInfo?.name}{!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}</View>
           </View>
           <View className='trade-no'>{`退款单号: ${aftersalesBn}`}</View>

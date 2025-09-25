@@ -54,10 +54,11 @@ function TradeLogisticsInfo(props) {
       await api.aftersales.sendback({
         item_id,
         order_id,
-        aftersales_bn: aftersales_bn || aftersInfo?.aftersalesBn,
+        aftersales_bn: aftersales_bn,
         logi_no,
         corp_code,
         showError:false,
+        aftersales_data: aftersInfo?.aftersalesBn
       })
       showToast('操作成功')
       setTimeout(() => {
