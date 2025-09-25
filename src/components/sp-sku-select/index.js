@@ -294,7 +294,7 @@ function SpSkuSelect(props) {
       discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
       storeDetails: valid_cart[0] || {}
     }
-    dispatch(updateCount({ shop_type: 'distributor'}))
+    dispatch(updateCount({ shop_type: 'distributor', shop_id: distributor_id }))
     dispatch(updateShopCartCount(shopCats))
   }
 

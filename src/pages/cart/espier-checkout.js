@@ -459,6 +459,7 @@ function CartCheckout(props) {
 
   const handleCouponsClick = async () => {
     const { cart_type, distributor_id: id } = paramsInfo
+    const storageParams = await Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     const items = detailInfo
       .filter((item) => item.orderItemType !== 'gift')
       .map((item) => {
@@ -474,6 +475,9 @@ function CartCheckout(props) {
     )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${shop_id || id}&source=${source}`
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
+    }
+    if (storageParams?.cxdid) {
+      url = `${url}&cxdid=${storageParams?.cxdid}`
     }
     Taro.navigateTo({
       url
