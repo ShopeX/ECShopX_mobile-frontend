@@ -6,7 +6,7 @@ import { updateUserInfo, fetchUserFavs, clearUserInfo, updateIsNewUser } from '@
 import { updateCount, clearCart } from '@/store/slices/cart'
 import { purchaseClearCart } from '@/store/slices/purchase'
 import api from '@/api'
-import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin } from '@/utils'
+import { isWeixin, showToast, entryLaunch, isAlipay, alipayAutoLogin, getDistributorId } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID } from '@/consts'
@@ -92,7 +92,7 @@ export default (props = {}) => {
     entryLaunch.postGuideTask()
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
-    dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
+    dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
     if (redirect_url) {
       Taro.redirectTo({ url: decodeURIComponent(redirect_url) })
