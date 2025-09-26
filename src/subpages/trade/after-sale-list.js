@@ -195,7 +195,7 @@ function TradeAfterSaleList(props) {
               <CompAfterTradeItem
                 info={item}
                 selectAftersn={selectAftersn}
-                isShowChecked={status == '1'}
+                isShowChecked={status == '1' && item.progress == 1}
                 onSelect={onSelect}
               />
             </View>
