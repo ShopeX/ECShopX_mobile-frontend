@@ -157,8 +157,8 @@ export const TRADE_AFTER_SALES_ITEM = {
       pic: ({ orderItem }) => orderItem.pic,
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
-      num: ({ orderItem }) => orderItem.refundNum,
-      price: ({ orderItem }) => orderItem.total_fee / 100,
+      num: 'num',
+      price: ({ refund_fee, num }) => (refund_fee / num) / 100,
       isPrescription: ({ orderItem }) => orderItem.is_prescription,
     })
   },
