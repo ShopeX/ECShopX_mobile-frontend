@@ -171,8 +171,9 @@ export const TRADE_AFTER_SALES_ITEM = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   refund_info: ({ refund_info }) => {
     return pickBy(refund_info, {
-      refundFee: ({ refunded_fee }) => refunded_fee / 100,
+      refundFee: ({ refund_fee }) => refund_fee / 100,
       refundPoint: 'refund_point',
+      freight: ({ freight }) => freight / 100
     })
   },
   refundPoint: 'refund_point',
