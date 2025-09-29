@@ -120,6 +120,7 @@ export const SHOP_INFO = {
 }
 
 export const AFTER_TRADE = {
+  aftersalesAddress: 'aftersales_address',
   aftersalesBn: 'aftersales_bn',
   aftersalesStatus: 'aftersales_status',
   createdTime: ({ create_time }) => formatDateTime(create_time * 1000),
@@ -141,6 +142,7 @@ export const AFTER_TRADE = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId: 'user_id',
   freight: ({ freight }) => freight / 100,
+  progress: 'progress',
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
@@ -156,8 +158,8 @@ export const TRADE_AFTER_SALES_ITEM = {
       pic: ({ orderItem }) => orderItem.pic,
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
-      num: ({ orderItem }) => orderItem.refundNum,
-      price: ({ orderItem }) => orderItem.total_fee / 100,
+      num: 'num',
+      price: ({ refund_fee, num }) => (refund_fee / num) / 100,
       isPrescription: ({ orderItem }) => orderItem.is_prescription,
     })
   },
@@ -170,8 +172,9 @@ export const TRADE_AFTER_SALES_ITEM = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   refund_info: ({ refund_info }) => {
     return pickBy(refund_info, {
-      refundFee: ({ refunded_fee }) => refunded_fee / 100,
+      refundFee: ({ refund_fee }) => refund_fee / 100,
       refundPoint: 'refund_point',
+      freight: ({ freight }) => freight / 100
     })
   },
   refundPoint: 'refund_point',

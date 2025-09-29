@@ -68,18 +68,20 @@
 
   .shop-info {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
 
     .sp-image {
       border-radius: 16px;
       overflow: hidden;
+    }
+    .nochecked {
+      margin-left: 0px !important;
     }
 
     .shop-name {
       font-size: 30px;
       color: #111;
       font-weight: bold;
-      margin-left: 24px;
       display: flex;
       align-items: center;
 

@@ -206,7 +206,7 @@ function TradeAfterSaleDetail(props) {
                       </View>
                       <View className='goods-info-bd'>
                         <View>{item.itemSpecDesc && <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>}</View>
-                        <View><SpPrice size={28} value={item.price / item.num} /> x <Text className='num'>{item.num}</Text></View>
+                        <View><SpPrice size={28} value={item.price} /> x <Text className='num'>{item.num}</Text></View>
                       </View>
                     </View>
                   </View>
@@ -224,9 +224,9 @@ function TradeAfterSaleDetail(props) {
             <SpCell title='退积分' value={<SpPrice value={info?.refund_info?.refundPoint || info?.refundPoint} />}></SpCell>
           </View>
           {
-            info?.refund_freight_amount > 0 &&
+            info?.refund_info?.freight > 0 &&
             <View className='refund-point'>
-              <SpCell title='退运费' value={info?.refund_freight_amount}></SpCell>
+              <SpCell title='退运费' value={info?.refund_info?.freight}></SpCell>
             </View>
           }
         </View>
