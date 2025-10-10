@@ -367,6 +367,7 @@ function CartCheckout(props) {
         orderInfo,
         () => {
           entryLaunch.postGuideUV()
+          entryLaunch.postGuideUVBind()
           entryLaunch.postGuideTask()
         }
       )
@@ -476,7 +477,7 @@ function CartCheckout(props) {
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
     }
-    if (storageParams?.cxdid) {
+    if (storageParams?.cxdid && scene) {
       url = `${url}&cxdid=${storageParams?.cxdid}`
     }
     Taro.navigateTo({
@@ -805,7 +806,8 @@ function CartCheckout(props) {
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
-    if (storageParams?.cxdid) {
+    if (storageParams?.cxdid && scene) {
+      debugger
       cus_parmas.cxdid = storageParams?.cxdid;
       cus_parmas.distributor_id = storageParams?.dtid;
       cus_parmas.cart_type = "cxd";

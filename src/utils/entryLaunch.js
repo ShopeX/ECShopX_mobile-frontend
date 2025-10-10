@@ -519,6 +519,7 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
+    if (!S.getAuthToken()) return
     const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
     const { gu } = routerParams || {}
     if (gu) {
@@ -526,7 +527,17 @@ class EntryLaunch {
       await api.user.uniquevisito({
         work_userid
       })
-      // 导购关系绑定
+    }
+  }
+
+  /**
+   * 导购关系绑定
+   */
+  async postGuideUVBind() {
+    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
+    const { gu } = routerParams || {}
+    if (gu) {
+      const [work_userid] = gu.split('_')
       await api.user.bindSaleperson({
         work_userid
       })
