@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpPrice, SpPoint, SpVipLabel } from '@/components'
 import { classNames } from '@/utils'
+import { useLogin } from '@/hooks'
 import './index.scss'
 
 function SpGoodsPrice(props) {
@@ -16,6 +17,7 @@ function SpGoodsPrice(props) {
     svip_price: enSvipPrice
   } = item_page
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
+  const { isLogin } = useLogin()
   const { items_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
 
@@ -56,14 +58,14 @@ function SpGoodsPrice(props) {
             )}
           </View>
           <View>
-            {info.memberPrice < info.price && enMemberPrice && (
+            {info.memberPrice < info.price && enMemberPrice && isLogin && (
               <View className='vip-price'>
                 <SpPrice value={info.memberPrice} />
                 <SpVipLabel content='会员价' type='member' />
               </View>
             )}
 
-            {info.vipPrice > 0 &&
+            {info.vipPrice > 0 && isLogin &&
               info.vipPrice < info.memberPrice &&
               (!info.svipPrice || info.vipPrice > info.svipPrice) &&
               enSvipPrice && (
@@ -73,7 +75,7 @@ function SpGoodsPrice(props) {
                 </View>
               )}
 
-            {info.svipPrice > 0 &&
+            {info.svipPrice > 0 && isLogin &&
               info.svipPrice < info.vipPrice &&
               info.svipPrice < info.memberPrice &&
               enSvipPrice && (

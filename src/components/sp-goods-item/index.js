@@ -1,14 +1,14 @@
-import React, { Component, useEffect } from 'react'
+import React, {  } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
+import { SpImage, SpPoint, SpPrice, SpVipLabel } from '@/components'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
+import { useLogin } from '@/hooks'
 import qs from 'qs'
-import api from '@/api'
 import S from '@/spx'
 
-import { isObject, classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE } from '@/utils'
+import { classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 
 import './index.scss'
@@ -26,7 +26,6 @@ function SpGoodsItem(props) {
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
   const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
-
   const {
     onClick,
     onChange,
@@ -49,6 +48,7 @@ function SpGoodsItem(props) {
     goodsType,
     lazyLoad
   } = props
+  const {isLogin} = useLogin()
 
   const handleFavClick = async (e) => {
     e.stopPropagation()
@@ -188,7 +188,7 @@ function SpGoodsItem(props) {
                   ></SpPrice>
                 )}
               </View>
-              {!info.activityPrice && (
+              {!info.activityPrice && isLogin && (
                 <View className='more-price'>
                   {info.memberPrice < info.price && enMemberPrice && (
                     <View className='vip-price'>
@@ -197,7 +197,7 @@ function SpGoodsItem(props) {
                     </View>
                   )}
 
-                  {info.vipPrice > 0 &&
+                  {info.vipPrice > 0 && isLogin &&
                     info.vipPrice < info.memberPrice &&
                     (!info.svipPrice || info.vipPrice > info.svipPrice) &&
                     enSvipPrice && (
@@ -207,7 +207,7 @@ function SpGoodsItem(props) {
                       </View>
                     )}
 
-                  {info.svipPrice > 0 &&
+                  {info.svipPrice > 0 && isLogin &&
                     info.svipPrice < info.vipPrice &&
                     info.svipPrice < info.memberPrice &&
                     enSvipPrice && (
