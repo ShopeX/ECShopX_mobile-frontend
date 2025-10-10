@@ -367,6 +367,7 @@ function CartCheckout(props) {
         orderInfo,
         () => {
           entryLaunch.postGuideUV()
+          entryLaunch.postGuideUVBind()
           entryLaunch.postGuideTask()
         }
       )

@@ -19,6 +19,7 @@ function CouponCenter(props) {
   const { couponList } = state
 
   useEffect(() => {
+    entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
   }, [])
 
