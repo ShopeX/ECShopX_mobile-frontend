@@ -154,7 +154,7 @@ function PurchaseCheckout(props) {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [address, payType, zitiAddress, point_use])
+  }, [address, payType, zitiAddress, point_use, receiptType])
 
   useEffect(() => {
     if (isPackageOpend || openCashier || isPointOpenModal) {
