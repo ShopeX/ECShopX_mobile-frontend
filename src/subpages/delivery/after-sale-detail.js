@@ -242,15 +242,8 @@ function TradeAfterSaleDetail(props) {
                         <Text className='goods-title'>{item.itemName}</Text>
                       </View>
                       <View className='goods-info-bd'>
-                        <View>
-                          {item.itemSpecDesc && (
-                            <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>
-                          )}
-                        </View>
-                        <View>
-                          <SpPrice size={28} value={item.price / item.num} /> x{' '}
-                          <Text className='num'>{item.num}</Text>
-                        </View>
+                        <View>{item.itemSpecDesc && <Text className='sku-info'>{`${item.itemSpecDesc}`}</Text>}</View>
+                        <View><SpPrice size={28} value={item.price} /> x <Text className='num'>{item.num}</Text></View>
                       </View>
                     </View>
                   </View>

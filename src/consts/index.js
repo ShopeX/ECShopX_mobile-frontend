@@ -97,6 +97,10 @@ export const AFTER_SALE_TYPE = () => [
   { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
 ]
 
+export const AFTER_SALE_TYPE1 = () => [
+  { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
+]
+
 export const REFUND_FEE_TYPE = () => [
   { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 'logistics' },
   { title: '到店退货', desc: '前往线下门店退货', value: 'offline' }

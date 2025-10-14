@@ -12,6 +12,7 @@ import {
   entryLaunch,
   isAlipay,
   alipayAutoLogin,
+  getDistributorId,
   VERSION_SHUYUN
 } from '@/utils'
 import S from '@/spx'
@@ -103,11 +104,11 @@ export default (props = {}) => {
     setIsLogin(true)
     await getUserInfo()
     // 导购UV统计
-    // entryLaunch.postGuideUV()
+    entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
-    dispatch(updateCount({ shop_type: 'distributor' })) // 获取购物车商品数量
+    dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
     if (redirect_url) {
       Taro.redirectTo({ url: decodeURIComponent(redirect_url) })

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
@@ -112,6 +112,12 @@ function TradeDetail(props) {
       isMounted.current = false // 组件卸载时设置为false
     }
   }, [openingTime])
+
+
+  const totalFreightFee = useMemo(() => {
+    const { freightFee, freightPointFee } = info || {}
+    return Number(freightFee || 0 + freightPointFee || 0)?.toFixed(2)
+  }, [info?.freightFee, info?.freightPointFee])
 
   const fetch = async () => {
     const { order_id } = await parameter()
@@ -719,7 +725,7 @@ function TradeDetail(props) {
                 }
               })()}
             />
-            <SpCell title='运费' value={<SpPrice value={info?.freightFee} size={28} />} />
+            <SpCell title='运费' value={<SpPrice value={totalFreightFee} size={28} />} />
             <SpCell title='促销' value={<SpPrice value={info?.promotionDiscount} size={28} />} />
             <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
             <SpCell

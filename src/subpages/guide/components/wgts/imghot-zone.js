@@ -31,7 +31,7 @@ function WgtImgHotZone(props) {
       return
     }
 
-    linkPage(item.linkPage, item.id, item)
+    linkPage(item)
   }
   const onClickAddCart = async (id) => {
     if (!S.getAuthToken()) {

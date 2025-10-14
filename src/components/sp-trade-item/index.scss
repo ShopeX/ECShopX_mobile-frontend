@@ -12,7 +12,7 @@
     .name {
       font-size: 28px;
       color: #222;
-      margin-right: 40px;
+      margin-right: 10px;
       @include multi-ellipsis(2);
       .prescription-drug{
         font-size: 24px;

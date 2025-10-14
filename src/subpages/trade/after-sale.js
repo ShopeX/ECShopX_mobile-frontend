@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -19,7 +19,7 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
-import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
+import { AFTER_SALE_TYPE, REFUND_FEE_TYPE,AFTER_SALE_TYPE1 } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
 import './after-sale.scss'
 
@@ -27,6 +27,7 @@ const initialState = {
   info: null,
   curTabIdx: 0,
   tabList: AFTER_SALE_TYPE(),
+  tabList1: AFTER_SALE_TYPE1(),
   reasonIndex: '',
   reasons: [],
   refundFee: 0,
@@ -59,6 +60,7 @@ function TradeAfterSale(props) {
     info,
     curTabIdx,
     tabList,
+    tabList1,
     reasonIndex,
     reasons,
     refundFee,
@@ -78,6 +80,10 @@ function TradeAfterSale(props) {
     offline_freight_status,
     offline_freight
   } = state
+
+const OnlyRefundShow =  useMemo(() => {
+  return  info && info.deliveryStatus != "DONE"
+}, [info])
 
   useEffect(() => {
     fetch()
@@ -199,7 +205,7 @@ function TradeAfterSale(props) {
     if (!reasons?.[reasonIndex]) {
       return showToast('请选择售后原因')
     }
-    const aftersales_type = tabList[curTabIdx].type
+    const aftersales_type = OnlyRefundShow ? tabList[curTabIdx].type : tabList1[curTabIdx].type
     const reason = reasons?.[reasonIndex]
     let params = {
       detail: checkedItems.map(({ id: _id, refundNum }) => {
@@ -272,7 +278,7 @@ function TradeAfterSale(props) {
         <View className='scroll-view-body'>
           <SpTabs
             current={curTabIdx}
-            tablist={tabList}
+            tablist={OnlyRefundShow ?  tabList : tabList1}
             onChange={(e) => {
               setState((draft) => {
                 draft.curTabIdx = e
