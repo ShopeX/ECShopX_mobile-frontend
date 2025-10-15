@@ -431,13 +431,17 @@ function MemberIndex(props) {
       Taro.navigateTo({ url: link })
     }
   }
+
+  const onLoginChange = (url) => {
+    if (!isLogin) return
+    Taro.navigateTo({ url })
+  }
+
   const VipGradeDom = () => {
     return (
       <View
         className='user-grade-name'
-        onClick={() => {
-          Taro.navigateTo({ url: '/subpages/member/member-level' })
-        }}
+        onClick={() => onLoginChange('/subpages/member/member-level')}
       >
         <Text>
           {{
@@ -478,101 +482,86 @@ function MemberIndex(props) {
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <View className='user-info-card'>
-            <View className='user-info-header'>
-              <View
-                className='user-avatar'
-                onClick={() => {
-                  if (isLogin) {
-                    Taro.navigateTo({ url: '/subpages/member/user-info' })
-                  }
-                }}
-                style={{ width: '72px', height: '72px' }}
-              >
-                <SpImage
-                  className='avatar-img'
-                  src={isLogin ? (userInfo && userInfo.avatar) || 'fv_user.png' : 'fv_user.png'}
-                  width={144}
-                  height={144}
-                />
-              </View>
+          <SpLogin newUser={isNewUser}>
+            <View className='user-info-card'>
+              <View className='user-info-header'>
+                <View
+                  className='user-avatar'
+                  onClick={() => onLoginChange('/subpages/member/user-info')}
+                  style={{ width: '72px', height: '72px' }}
+                >
+                  <SpImage
+                    className='avatar-img'
+                    src={isLogin ? (userInfo && userInfo.avatar) || 'fv_user.png' : 'fv_user.png'}
+                    width={144}
+                    height={144}
+                  />
+                </View>
 
-              <View className='user-details'>
-                {isLogin ? (
-                  <>
-                    <View
-                      className='user-name'
-                      onClick={() => Taro.navigateTo({ url: '/subpages/member/user-info' })}
-                    >
-                      {userInfo?.username || userInfo?.mobile}
-                    </View>
-                    <View className='user-vip-wrapper'>
-                      <View className='join-us'>{VipGradeDom()}</View>
-                      {/* <SpImage
-                        src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
-                        width={146}
-                        height={32}
-                        mode='widthFix'
-                      /> */}
-                    </View>
-                  </>
-                ) : (
-                  <SpLogin newUser={isNewUser}>
+                <View className='user-details'>
+                  {isLogin ? (
+                    <>
+                      <View
+                        className='user-name'
+                        onClick={() => onLoginChange('/subpages/member/user-info')}
+                      >
+                        {userInfo?.username || userInfo?.mobile}
+                      </View>
+                      <View className='user-vip-wrapper'>
+                        <View className='join-us'>{VipGradeDom()}</View>
+                        {/* <SpImage
+                          src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
+                          width={146}
+                          height={32}
+                          mode='widthFix'
+                        /> */}
+                      </View>
+                    </>
+                  ) : (
                     <Text className='login-text font-medium text-34'>点击登录</Text>
-                  </SpLogin>
-                )}
+                  )}
+                </View>
+
+                <View className='qr-code-btn'>
+                  {/* <SpImage
+                    src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
+                    className='qr-code-img'
+                    width={120}
+                    height={88}
+                    mode='widthFix'
+                  />
+                  <SpImage
+                    src='fv_member_level_bg.png'
+                    width={120}
+                    height={88}
+                    mode='widthFix'
+                    className='member-level-bg'
+                  /> */}
+                  {isLogin && config.menu.member_code && (
+                    <Text
+                      className='iconfont icon-erweima-01'
+                      onClick={() => onLoginChange('/marketing/pages/member/member-code')}
+                    ></Text>
+                  )}
+                </View>
               </View>
 
-              <View className='qr-code-btn'>
-                {/* <SpImage
-                  src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
-                  className='qr-code-img'
-                  width={120}
-                  height={88}
-                  mode='widthFix'
-                />
-                <SpImage
-                  src='fv_member_level_bg.png'
-                  width={120}
-                  height={88}
-                  mode='widthFix'
-                  className='member-level-bg'
-                /> */}
-                {isLogin && config.menu.member_code && (
-                  <Text
-                    className='iconfont icon-erweima-01'
-                    onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-code' })}
-                  ></Text>
-                )}
-              </View>
-            </View>
-
-            <View className='user-stats'>
-              <SpLogin
-                onChange={() => {
-                  Taro.navigateTo({ url: '/subpages/marketing/coupon' })
-                }}
-              >
+              <View className='user-stats'>
                 <View
                   className='stat-item'
-                  // onClick={() => }
+                  onClick={() => onLoginChange('/subpages/marketing/coupon')}
                 >
                   <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
                   <Text className='stat-label'>优惠券</Text>
                 </View>
-              </SpLogin>
-              <SpLogin
-                onChange={() => {
-                  handleClickLink('/subpages/member/point-detail')
-                }}
-              >
-                <View className='stat-item'>
+                  
+                <View className='stat-item' onClick={() => onLoginChange('/subpages/member/point-detail')}>
                   <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
                   <Text className='stat-label'>积分</Text>
                 </View>
-              </SpLogin>
+              </View>
             </View>
-          </View>
+          </SpLogin>
           {/* <View className='header-block__ft'></View> */}
         </View>
 
