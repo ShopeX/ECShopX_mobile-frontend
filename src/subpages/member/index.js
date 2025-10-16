@@ -482,83 +482,81 @@ function MemberIndex(props) {
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <SpLogin newUser={isNewUser}>
-            <View className='user-info-card'>
-              <View className='user-info-header'>
-                <View
-                  className='user-avatar'
-                  onClick={() => onLoginChange('/subpages/member/user-info')}
-                  style={{ width: '72px', height: '72px' }}
-                >
-                  <SpImage
-                    className='avatar-img'
-                    src={isLogin ? (userInfo && userInfo.avatar) || 'fv_user.png' : 'fv_user.png'}
-                    width={144}
-                    height={144}
-                  />
-                </View>
-
-                <View className='user-details'>
-                  {isLogin ? (
-                    <>
-                      <View
-                        className='user-name'
-                        onClick={() => onLoginChange('/subpages/member/user-info')}
-                      >
-                        {userInfo?.username || userInfo?.mobile}
-                      </View>
-                      <View className='user-vip-wrapper'>
-                        <View className='join-us'>{VipGradeDom()}</View>
-                        {/* <SpImage
-                          src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
-                          width={146}
-                          height={32}
-                          mode='widthFix'
-                        /> */}
-                      </View>
-                    </>
-                  ) : (
-                    <Text className='login-text font-medium text-34'>点击登录</Text>
-                  )}
-                </View>
-
-                <View className='qr-code-btn'>
-                  {/* <SpImage
-                    src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
-                    className='qr-code-img'
-                    width={120}
-                    height={88}
-                    mode='widthFix'
-                  />
-                  <SpImage
-                    src='fv_member_level_bg.png'
-                    width={120}
-                    height={88}
-                    mode='widthFix'
-                    className='member-level-bg'
-                  /> */}
-                  {isLogin && config.menu.member_code && (
-                    <Text
-                      className='iconfont icon-erweima-01'
-                      onClick={() => onLoginChange('/marketing/pages/member/member-code')}
-                    ></Text>
-                  )}
-                </View>
+          <SpLogin className='user-info-card'>
+            <View className='user-info-header'>
+              <View
+                className='user-avatar'
+                onClick={() => onLoginChange('/subpages/member/user-info')}
+                style={{ width: '72px', height: '72px' }}
+              >
+                <SpImage
+                  className='avatar-img'
+                  src={isLogin ? (userInfo && userInfo.avatar) || 'fv_user.png' : 'fv_user.png'}
+                  width={144}
+                  height={144}
+                />
               </View>
 
-              <View className='user-stats'>
-                <View
-                  className='stat-item'
-                  onClick={() => onLoginChange('/subpages/marketing/coupon')}
-                >
-                  <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
-                  <Text className='stat-label'>优惠券</Text>
-                </View>
-                  
-                <View className='stat-item' onClick={() => onLoginChange('/subpages/member/point-detail')}>
-                  <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
-                  <Text className='stat-label'>积分</Text>
-                </View>
+              <View className='user-details'>
+                {isLogin ? (
+                  <>
+                    <View
+                      className='user-name'
+                      onClick={() => onLoginChange('/subpages/member/user-info')}
+                    >
+                      {userInfo?.username || userInfo?.mobile}
+                    </View>
+                    <View className='user-vip-wrapper'>
+                      <View className='join-us'>{VipGradeDom()}</View>
+                      {/* <SpImage
+                        src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}.png`}
+                        width={146}
+                        height={32}
+                        mode='widthFix'
+                      /> */}
+                    </View>
+                  </>
+                ) : (
+                  <Text className='login-text font-medium text-34'>点击登录</Text>
+                )}
+              </View>
+
+              <View className='qr-code-btn'>
+                {/* <SpImage
+                  src={`fv_member_level_${getMemberLevel(userInfo?.gradeInfo)}_bg.png`}
+                  className='qr-code-img'
+                  width={120}
+                  height={88}
+                  mode='widthFix'
+                />
+                <SpImage
+                  src='fv_member_level_bg.png'
+                  width={120}
+                  height={88}
+                  mode='widthFix'
+                  className='member-level-bg'
+                /> */}
+                {isLogin && config.menu.member_code && (
+                  <Text
+                    className='iconfont icon-erweima-01'
+                    onClick={() => onLoginChange('/marketing/pages/member/member-code')}
+                  ></Text>
+                )}
+              </View>
+            </View>
+
+            <View className='user-stats'>
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/marketing/coupon')}
+              >
+                <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
+                <Text className='stat-label'>优惠券</Text>
+              </View>
+                
+              <View className='stat-item' onClick={() => onLoginChange('/subpages/member/point-detail')}>
+                <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
+                <Text className='stat-label'>积分</Text>
               </View>
             </View>
           </SpLogin>
