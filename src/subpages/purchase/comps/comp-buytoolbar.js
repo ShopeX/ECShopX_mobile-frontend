@@ -96,6 +96,7 @@ function CompGoodsBuyToolbar(props) {
         tmplIds: template_id,
         success: () => {
           onSubscribe()
+          showToast('订阅成功')
         },
         fail: () => {
           onSubscribe()
