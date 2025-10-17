@@ -433,13 +433,17 @@ function MemberIndex(props) {
       Taro.navigateTo({ url: link })
     }
   }
+
+  const onLoginChange = (url) => {
+    if (!isLogin) return
+    Taro.navigateTo({ url })
+  }
+
   const VipGradeDom = () => {
     return (
       <View
         className='user-grade-name'
-        onClick={() => {
-          Taro.navigateTo({ url: '/subpages/member/member-level' })
-        }}
+        onClick={() => onLoginChange('/subpages/member/member-level')}
       >
         <Text>
           {{
@@ -480,15 +484,11 @@ function MemberIndex(props) {
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <View className='user-info-card'>
+          <SpLogin className='user-info-card'>
             <View className='user-info-header'>
               <View
                 className='user-avatar'
-                onClick={() => {
-                  if (isLogin) {
-                    Taro.navigateTo({ url: '/subpages/member/user-info' })
-                  }
-                }}
+                onClick={() => onLoginChange('/subpages/member/user-info')}
                 style={{ width: '72px', height: '72px' }}
               >
                 <SpImage
@@ -504,7 +504,7 @@ function MemberIndex(props) {
                   <>
                     <View
                       className='user-name'
-                      onClick={() => Taro.navigateTo({ url: '/subpages/member/user-info' })}
+                      onClick={() => onLoginChange('/subpages/member/user-info')}
                     >
                       {userInfo?.username || userInfo?.mobile}
                     </View>
@@ -519,9 +519,7 @@ function MemberIndex(props) {
                     </View>
                   </>
                 ) : (
-                  <SpLogin newUser={isNewUser}>
-                    <Text className='login-text font-medium text-34'>点击登录</Text>
-                  </SpLogin>
+                  <Text className='login-text font-medium text-34'>点击登录</Text>
                 )}
               </View>
 
@@ -543,38 +541,27 @@ function MemberIndex(props) {
                 {isLogin && config.menu.member_code && (
                   <Text
                     className='iconfont icon-erweima-01'
-                    onClick={() => Taro.navigateTo({ url: '/marketing/pages/member/member-code' })}
+                    onClick={() => onLoginChange('/marketing/pages/member/member-code')}
                   ></Text>
                 )}
               </View>
             </View>
 
             <View className='user-stats'>
-              <SpLogin
-                onChange={() => {
-                  Taro.navigateTo({ url: '/subpages/marketing/coupon' })
-                }}
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/marketing/coupon')}
               >
-                <View
-                  className='stat-item'
-                  // onClick={() => }
-                >
-                  <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
-                  <Text className='stat-label'>优惠券</Text>
-                </View>
-              </SpLogin>
-              <SpLogin
-                onChange={() => {
-                  handleClickLink('/subpages/member/point-detail')
-                }}
-              >
-                <View className='stat-item'>
-                  <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
-                  <Text className='stat-label'>积分</Text>
-                </View>
-              </SpLogin>
+                <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
+                <Text className='stat-label'>优惠券</Text>
+              </View>
+                
+              <View className='stat-item' onClick={() => onLoginChange('/subpages/member/point-detail')}>
+                <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
+                <Text className='stat-label'>积分</Text>
+              </View>
             </View>
-          </View>
+          </SpLogin>
           {/* <View className='header-block__ft'></View> */}
         </View>
 
