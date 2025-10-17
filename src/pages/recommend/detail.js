@@ -8,7 +8,7 @@ import { AtButton } from 'taro-ui'
 import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
-import { pickBy, log } from '@/utils'
+import { pickBy, log, buildSharePath } from '@/utils'
 import { withPageWrapper } from '@/hocs'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import './detail.scss'
@@ -47,7 +47,7 @@ function GuideRecommendDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const sharePath = `/pages/recommend/detail?${qs.stringify(query)}`
+    const sharePath = buildSharePath('/pages/recommend/detail', query)
     log.debug(`【/pages/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
       title: title,

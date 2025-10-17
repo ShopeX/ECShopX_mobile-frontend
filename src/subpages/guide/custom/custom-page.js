@@ -11,7 +11,7 @@ import qs from 'qs'
 import { AtButton } from 'taro-ui'
 import { SpScreenAd, SpPage, SpSearch, SpRecommend, SpTabbar } from '@/components'
 import api from '@/api'
-import { isWeixin, log } from '@/utils'
+import { isWeixin, log, buildSharePath } from '@/utils'
 import entryLaunch from '@/utils/entryLaunch'
 import { updateStoreInfo } from '@/store/slices/guide'
 import { useImmer } from 'use-immer'
@@ -78,7 +78,7 @@ function GuideCustomPage() {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const path = `/pages/custom/custom-page?${qs.stringify(query)}`
+    const path = buildSharePath('/pages/custom/custom-page', query)
     log.debug(`share path: ${path}`)
 
     return {
