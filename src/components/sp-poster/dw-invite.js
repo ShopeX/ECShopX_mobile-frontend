@@ -30,7 +30,7 @@ class GoodsDetailPoster {
 
     const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
     debugger
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/purchase/auth`}&appid=${appid}&company_id=${company_id}&code=${data.invite_code}&eid=${enterprise_id}&aid=${activity_id}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/share-land&appid=${appid}&company_id=${company_id}&code=${data.invite_code}&eid=${enterprise_id}&aid=${activity_id}&target_path=pages/purchase/auth`
     console.log('wxappCode:', wxappCode)
 
     const pic = sharePic
