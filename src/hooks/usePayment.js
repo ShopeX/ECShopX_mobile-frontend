@@ -284,7 +284,7 @@ export default (props = {}) => {
     el.setAttribute('class', 'alipay_submit_div')
     //el.innerHTML='<form id="a" name="test"></form>'
     el.innerHTML = payment
-      .replace(/<form/, '<form target="_blank"')
+      // .replace(/<form/, '<form target="_blank"')
       .replace(/<script>(.*)?<\/script>/, '')
     document.body.appendChild(el)
     document.getElementById('alipay_submit').submit()
