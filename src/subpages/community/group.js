@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Picker } from '@tarojs/components'
+import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import {
   SpPage,
   SpImage,
@@ -50,11 +50,15 @@ function Group(props) {
     state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
+  const pageRef = useRef('')
 
   useEffect(() => {
     if ($instance.router.params.id) {
       fetchActivity()
     }
+    Taro.nextTick(() => {
+      pageRef.current && pageRef.current.pageLock()
+    })
   }, [])
 
   const fetchActivity = async () => {
@@ -261,6 +265,7 @@ function Group(props) {
   return (
     <SpPage
       className='page-community-group'
+      ref={pageRef}
       renderFooter={
         <View className='btn-group'>
           <AtButton circle type='primary' onClick={createChiefActivity}>
@@ -269,199 +274,200 @@ function Group(props) {
         </View>
       }
     >
-      <View className='page-header'>
-        <View className='user-info'>
-          <SpImage src={userInfo.avatar} mode='aspectFit' width={110} height={110} />
-          <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
+      <ScrollView scrollY style={{ height: '100%',paddingBottom:'20rpx',boxSizing:'border-box' }}>
+        <View className='page-header'>
+          <View className='user-info'>
+            <SpImage src={userInfo.avatar} mode='aspectFit' width={110} height={110} />
+            <Text className='user-name'>{userInfo.username || userInfo.mobile}</Text>
+          </View>
         </View>
-      </View>
-      <View className='card-block'>
-        <View className='card-block-hd'>团购介绍</View>
-        <View className='card-block-bd padding-20'>
-          <View className='tipas'>
-            <AtInput
-              name='activityName'
-              value={activityName}
-              className='group-name'
-              placeholder='请输入团购活动标题'
-              onChange={onInputChange.bind(this, 'activityName')}
-            />
-          </View>
-          <View className='tip'>添加群或个人微信二维码，方便团员取得联系</View>
+        <View className='card-block'>
+          <View className='card-block-hd'>团购介绍</View>
+          <View className='card-block-bd padding-20'>
+            <View className='tipas'>
+              <AtInput
+                name='activityName'
+                value={activityName}
+                className='group-name'
+                placeholder='请输入团购活动标题'
+                onChange={onInputChange.bind(this, 'activityName')}
+              />
+            </View>
+            <View className='tip'>添加群或个人微信二维码，方便团员取得联系</View>
 
-          <View className='teamhead-barcode'>
-            <SpUpload
-              value={qrcode}
-              onChange={(val) => {
-                setState((draft) => {
-                  draft.qrcode = val
-                })
-              }}
-            />
-          </View>
-          <View className='info-list'>
-            {comps?.map((item, index) => (
-              <View className='comp-item-wrap' key={`comp-item__${index}`}>
-                <View className='comp-info'>
-                  <Text className='comp-name'>{getCompName(item)}</Text>
-                  <View className='bt-group'>
-                    <View
-                      className={classNames('btn-text', { disabled: index == 0 })}
-                      onClick={handleClickAction.bind(this, item, 'up', index)}
-                    >
-                      上移
-                    </View>
-                    <View
-                      className={classNames('btn-text', { disabled: index == comps.length - 1 })}
-                      onClick={handleClickAction.bind(this, item, 'down', index)}
-                    >
-                      下移
-                    </View>
-                    <View
-                      className={classNames('btn-text', { disabled: index == 0 })}
-                      onClick={handleClickAction.bind(this, item, 'top', index)}
-                    >
-                      置顶
-                    </View>
-                    <View
-                      className='btn-text'
-                      onClick={handleClickAction.bind(this, item, 'add', index)}
-                    >
-                      添加
-                    </View>
-                    <View
-                      className='btn-text'
-                      onClick={handleClickAction.bind(this, item, 'delete', index)}
-                    >
-                      删除
+            <View className='teamhead-barcode'>
+              <SpUpload
+                value={qrcode}
+                onChange={(val) => {
+                  setState((draft) => {
+                    draft.qrcode = val
+                  })
+                }}
+              />
+            </View>
+            <View className='info-list'>
+              {comps?.map((item, index) => (
+                <View className='comp-item-wrap' key={`comp-item__${index}`}>
+                  <View className='comp-info'>
+                    <Text className='comp-name'>{getCompName(item)}</Text>
+                    <View className='bt-group'>
+                      <View
+                        className={classNames('btn-text', { disabled: index == 0 })}
+                        onClick={handleClickAction.bind(this, item, 'up', index)}
+                      >
+                        上移
+                      </View>
+                      <View
+                        className={classNames('btn-text', { disabled: index == comps.length - 1 })}
+                        onClick={handleClickAction.bind(this, item, 'down', index)}
+                      >
+                        下移
+                      </View>
+                      <View
+                        className={classNames('btn-text', { disabled: index == 0 })}
+                        onClick={handleClickAction.bind(this, item, 'top', index)}
+                      >
+                        置顶
+                      </View>
+                      <View
+                        className='btn-text'
+                        onClick={handleClickAction.bind(this, item, 'add', index)}
+                      >
+                        添加
+                      </View>
+                      <View
+                        className='btn-text'
+                        onClick={handleClickAction.bind(this, item, 'delete', index)}
+                      >
+                        删除
+                      </View>
                     </View>
                   </View>
+                  {item.type == 'bigimage' && <SpImage src={item.value} width={670} />}
+                  {item.type == 'text' && (
+                    <AtTextarea
+                      name={`${item.type}__${index}`}
+                      value={item.value}
+                      placeholder='请输入团购活动内容'
+                      count={false}
+                      onChange={onTextAreaChange.bind(this, index)}
+                    />
+                  )}
                 </View>
-                {item.type == 'bigimage' && <SpImage src={item.value} width={670} />}
-                {item.type == 'text' && (
-                  <AtTextarea
-                    name={`${item.type}__${index}`}
-                    value={item.value}
-                    placeholder='请输入团购活动内容'
-                    count={false}
-                    onChange={onTextAreaChange.bind(this, index)}
-                  />
-                )}
+              ))}
+            </View>
+          </View>
+          <View className='card-block-ft'>
+            {COMPS_LIST.map((item, index) => (
+              <View
+                className='btn-icon'
+                key={`btn-icon__${index}`}
+                onClick={onCompsClick.bind(this, item)}
+              >
+                <Text className={classNames('iconfont', item.icon)}></Text>
+                <Text className='btn-icon-txt'>{item.name}</Text>
               </View>
             ))}
           </View>
         </View>
-        <View className='card-block-ft'>
-          {COMPS_LIST.map((item, index) => (
+
+        <View className='card-block'>
+          <View className='card-block-hd'>
+            <Text>团购商品</Text>
             <View
-              className='btn-icon'
-              key={`btn-icon__${index}`}
-              onClick={onCompsClick.bind(this, item)}
+              className='btn-import'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: '/subpages/community/itemlist'
+                })
+              }}
             >
-              <Text className={classNames('iconfont', item.icon)}></Text>
-              <Text className='btn-icon-txt'>{item.name}</Text>
+              选品
             </View>
-          ))}
-        </View>
-      </View>
-
-      <View className='card-block'>
-        <View className='card-block-hd'>
-          <Text>团购商品</Text>
-          <View
-            className='btn-import'
-            onClick={() => {
-              Taro.navigateTo({
-                url: '/subpages/community/itemlist'
-              })
-            }}
-          >
-            选品
+          </View>
+          <View className='card-block-bd padding-20'>
+            <View className='goods-list'>
+              {selectGoods.map((item) => (
+                <CompGoodsItem info={item} />
+              ))}
+            </View>
           </View>
         </View>
-        <View className='card-block-bd padding-20'>
-          <View className='goods-list'>
-            {selectGoods.map((item) => (
-              <CompGoodsItem info={item} />
-            ))}
-          </View>
-        </View>
-      </View>
 
-      <View className='card-block'>
-        <View className='card-block-hd'>团购设置</View>
-        <View className='card-block-bd'>
-          <SpCell
-            border
-            title='选择服务小区'
-            isLink
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/community/picker-community' })
-            }}
-          >
-            {selectCommunityZiti ? (
-              <View className='ziti-info'>{selectCommunityZiti.zitiName}</View>
-            ) : (
-              <View className='ziti-info placeholder'>选择服务小区</View>
-            )}
-          </SpCell>
-          {/* <SpCell border title="需要用户填写信息" isLink/> */}
+        <View className='card-block'>
+          <View className='card-block-hd'>团购设置</View>
+          <View className='card-block-bd'>
+            <SpCell
+              border
+              title='选择服务小区'
+              isLink
+              onClick={() => {
+                Taro.navigateTo({ url: '/subpages/community/picker-community' })
+              }}
+            >
+              {selectCommunityZiti ? (
+                <View className='ziti-info'>{selectCommunityZiti.zitiName}</View>
+              ) : (
+                <View className='ziti-info placeholder'>选择服务小区</View>
+              )}
+            </SpCell>
+            {/* <SpCell border title="需要用户填写信息" isLink/> */}
 
-          <SpCell border title='团购开始时间' isLink>
-            <View className='picker-container'>
-              <Picker
-                className='date-picker'
-                mode='date'
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.startDate = e.detail.value
-                  })
-                }}
-              >
-                <View className='picker-value'>{startDate || '选择日期'}</View>
-              </Picker>
-              <Picker
-                className='time-picker'
-                mode='time'
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.startTime = e.detail.value
-                  })
-                }}
-              >
-                <View className='picker-value'>{startTime || '选择时间'}</View>
-              </Picker>
-            </View>
-          </SpCell>
+            <SpCell border title='团购开始时间' isLink>
+              <View className='picker-container'>
+                <Picker
+                  className='date-picker'
+                  mode='date'
+                  onChange={(e) => {
+                    setState((draft) => {
+                      draft.startDate = e.detail.value
+                    })
+                  }}
+                >
+                  <View className='picker-value'>{startDate || '选择日期'}</View>
+                </Picker>
+                <Picker
+                  className='time-picker'
+                  mode='time'
+                  onChange={(e) => {
+                    setState((draft) => {
+                      draft.startTime = e.detail.value
+                    })
+                  }}
+                >
+                  <View className='picker-value'>{startTime || '选择时间'}</View>
+                </Picker>
+              </View>
+            </SpCell>
 
-          <SpCell border title='团购结束时间' isLink>
-            <View className='picker-container'>
-              <Picker
-                className='date-picker'
-                mode='date'
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.endDate = e.detail.value
-                  })
-                }}
-              >
-                <View className='picker-value'>{endDate || '选择日期'}</View>
-              </Picker>
-              <Picker
-                className='time-picker'
-                mode='time'
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.endTime = e.detail.value
-                  })
-                }}
-              >
-                <View className='picker-value'>{endTime || '选择时间'}</View>
-              </Picker>
-            </View>
-          </SpCell>
+            <SpCell border title='团购结束时间' isLink>
+              <View className='picker-container'>
+                <Picker
+                  className='date-picker'
+                  mode='date'
+                  onChange={(e) => {
+                    setState((draft) => {
+                      draft.endDate = e.detail.value
+                    })
+                  }}
+                >
+                  <View className='picker-value'>{endDate || '选择日期'}</View>
+                </Picker>
+                <Picker
+                  className='time-picker'
+                  mode='time'
+                  onChange={(e) => {
+                    setState((draft) => {
+                      draft.endTime = e.detail.value
+                    })
+                  }}
+                >
+                  <View className='picker-value'>{endTime || '选择时间'}</View>
+                </Picker>
+              </View>
+            </SpCell>
 
-          {/* <SpCell border title='团购开始时间'>
+            {/* <SpCell border title='团购开始时间'>
             <View className='picker-container'>
               <View className="date-picker">
                 开始 <SpPicker mode='datetime'/>
@@ -473,15 +479,16 @@ function Group(props) {
               </View>
             </View>
           </SpCell> */}
-          {/* <SpCell border title="周围邻居是否可见" isLink/> */}
+            {/* <SpCell border title="周围邻居是否可见" isLink/> */}
+          </View>
         </View>
-      </View>
-      <View className='card-block share'>
-        <SpCell title='活动分享卡片封面' isLink>
-          <Text className='tips'>默认为页面首屏</Text>
-          <SpImage onClick={onChooseClick} src={shareImageUrl} width={100} />
-        </SpCell>
-      </View>
+        <View className='card-block share'>
+          <SpCell title='活动分享卡片封面' isLink>
+            <Text className='tips'>默认为页面首屏</Text>
+            <SpImage onClick={onChooseClick} src={shareImageUrl} width={100} />
+          </SpCell>
+        </View>
+      </ScrollView>
     </SpPage>
   )
 }
