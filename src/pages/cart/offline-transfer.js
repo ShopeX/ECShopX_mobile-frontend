@@ -190,7 +190,7 @@ function OfflineTransfer() {
         } else {
           Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${params.order_id}` })
         }
-      }, 700)
+      }, 1500)
     } catch (error) {
       if (!params.isDetail) {
         Taro.redirectTo({ url: `/subpages/trade/detail?order_id=${params.order_id}` })
