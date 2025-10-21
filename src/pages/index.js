@@ -35,7 +35,8 @@ import {
   pickBy,
   log,
   showToast,
-  entryLaunch
+  entryLaunch,
+  buildSharePath
 } from '@/utils'
 import { updateShopInfo } from '@/store/slices/shop'
 import {
@@ -145,7 +146,7 @@ function Home() {
     if (VERSION_STANDARD) {
       params = Object.assign(params, { dtid: getCurrentShopId() })
     }
-    let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
+    const path = buildSharePath('/pages/index', params)
 
     console.log('useShareAppMessage path:', path, params)
 

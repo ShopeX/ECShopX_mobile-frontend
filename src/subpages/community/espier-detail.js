@@ -35,7 +35,8 @@ import {
   classNames,
   navigateTo,
   VERSION_PLATFORM,
-  isAPP
+  isAPP,
+  buildSharePath
 } from '@/utils'
 
 import doc from '@/doc'
@@ -183,7 +184,7 @@ function EspierDetail(props) {
     if (userInfo) {
       query['uid'] = userInfo.uid
     }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const path = buildSharePath('/pages/item/espier-detail', query)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,

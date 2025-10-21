@@ -883,6 +883,21 @@ export const pxToUnitRpx = (px) => {
   return Taro.pxTransform(px * 2)
 }
 
+/**
+ * 构建统一分享路径
+ * @param {string} target_path - 目标页面路径
+ * @param {object} params - 路径参数
+ * @returns {string} 统一的分享落地页路径
+ */
+export function buildSharePath(target_path, params = {}) {
+  const shareParams = {
+    target_path: target_path,
+    ...params
+  }
+  const queryString = qs.stringify(shareParams)
+  return `/pages/share-land${queryString ? '?' + queryString : ''}`
+}
+
 export {
   classNames,
   log,

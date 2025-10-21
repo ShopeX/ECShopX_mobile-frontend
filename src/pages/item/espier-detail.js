@@ -39,7 +39,8 @@ import {
   isAPP,
   showToast,
   getDistributorId,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  buildSharePath
 } from '@/utils'
 import { fetchUserFavs } from '@/store/slices/user'
 
@@ -239,7 +240,7 @@ function EspierDetail(props) {
     if (userInfo) {
       query['uid'] = userInfo.user_id
     }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const path = buildSharePath('/pages/item/espier-detail', query)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,

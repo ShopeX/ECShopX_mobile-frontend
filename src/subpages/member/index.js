@@ -11,6 +11,7 @@ import { useImmer } from 'use-immer'
 import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
+import { buildSharePath } from '@/utils'
 
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
@@ -185,10 +186,11 @@ function MemberIndex(props) {
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })
+    const path = buildSharePath('/pages/index', {})
     return {
       title: share_title,
       imageUrl: share_pic_wechatapp || logo,
-      path: '/pages/index'
+      path: path
     }
   })
 

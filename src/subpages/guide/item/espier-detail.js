@@ -35,7 +35,8 @@ import {
   isWeb,
   pickBy,
   classNames,
-  navigateTo
+  navigateTo,
+  buildSharePath
 } from '@/utils'
 
 import doc from '@/doc'
@@ -200,7 +201,7 @@ function EspierDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id: subtaskId
     }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const path = buildSharePath('/pages/item/espier-detail', query)
     console.log('gu---------------------',path)
     log.debug(`share path: ${path}`)
     return {
