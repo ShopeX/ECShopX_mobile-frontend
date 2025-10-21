@@ -4,7 +4,7 @@ import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
 const canvasWidth = 600
-const canvasHeight = 960
+// const canvasHeight = 960
 
 class GuideGoodsDetailPoster {
   constructor(props) {
@@ -16,12 +16,22 @@ class GuideGoodsDetailPoster {
     this.toRpx = toRpx
   }
 
-  getCanvasSize() {
+  async getCanvasSize() {
+    const { imgs } = this.info
+    const pic = imgs[0].replace('http:', 'https:')
+    const { width: goodsImageWidth, height: goodsImageHeight } = await Taro.getImageInfo({ src: pic })
+    this.canvasWidth = canvasWidth
+    this.canvasImgHeight = parseInt(
+      (canvasWidth * goodsImageHeight) / goodsImageWidth
+    )
+    this.canvasHeight = this.canvasImgHeight + 360
+
     return {
-      canvasWidth: canvasWidth,
-      canvasHeight: canvasHeight
+      canvasWidth: this.canvasWidth,
+      canvasHeight: this.canvasHeight
     }
   }
+
 
   async drawPoster() {
     const host = process.env.APP_BASE_URL.replace('/api/h5app/wxapp', '')
@@ -56,8 +66,8 @@ class GuideGoodsDetailPoster {
       {
         x: 0,
         y: 0,
-        width: canvasWidth,
-        height: canvasHeight,
+        width: this.canvasWidth,
+        height: this.canvasHeight,
         backgroundColor: '#fff'
       },
       drawOptions
@@ -68,8 +78,8 @@ class GuideGoodsDetailPoster {
         imgPath: this.goodsImg.path,
         x: 0,
         y: 0,
-        w: canvasWidth,
-        h: canvasWidth,
+        w: this.canvasWidth,
+        h: this.canvasImgHeight,
         sx: 0,
         sy: 0,
         sw: this.goodsImg.width,
@@ -81,7 +91,7 @@ class GuideGoodsDetailPoster {
     drawBlock(
       {
         x: 24,
-        y: 624,
+        y: this.canvasImgHeight + 24,
         width: 312,
         height: 80,
         backgroundColor: '#efefef',
@@ -94,7 +104,7 @@ class GuideGoodsDetailPoster {
       {
         imgPath: this.avatar.path,
         x: 24,
-        y: 624,
+        y: this.canvasImgHeight + 24,
         w: 80,
         h: 80,
         sx: 0,
@@ -109,7 +119,7 @@ class GuideGoodsDetailPoster {
     drawText(
       {
         x: 112,
-        y: 656,
+        y: this.canvasImgHeight + 56,
         fontSize: 24,
         color: '#000',
         text: salesperson_name
@@ -120,7 +130,7 @@ class GuideGoodsDetailPoster {
     drawText(
       {
         x: 112,
-        y: 688,
+        y: this.canvasImgHeight + 88,
         fontSize: 22,
         color: '#999',
         text: '推荐一个好物给你'
@@ -133,7 +143,7 @@ class GuideGoodsDetailPoster {
     drawText(
       {
         x: 24,
-        y: 815,
+        y: this.canvasImgHeight + 215,
         color: '#222',
         text: [
           {
@@ -159,7 +169,7 @@ class GuideGoodsDetailPoster {
     drawText(
       {
         x: 24,
-        y: 887,
+        y: this.canvasImgHeight + 287,
         fontSize: 24,
         width: 312,
         color: '#666',
@@ -173,7 +183,7 @@ class GuideGoodsDetailPoster {
       {
         imgPath: this.codeImg.path,
         x: 416,
-        y: 742,
+        y: this.canvasImgHeight + 142,
         w: 160,
         h: 160,
         sx: 0,
@@ -186,7 +196,7 @@ class GuideGoodsDetailPoster {
     drawText(
       {
         x: 433,
-        y: 928,
+        y: this.canvasImgHeight + 328,
         fontSize: 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',
