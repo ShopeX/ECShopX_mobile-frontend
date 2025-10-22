@@ -168,7 +168,7 @@ function PointShopEspierDetail(props) {
     if (userInfo) {
       query['uid'] = userInfo.user_id
     }
-    const path = buildSharePath('/subpages/pointshop/espier-detail', query)
+    const path = buildSharePath('poster_pointshop_espier_detail', query)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,

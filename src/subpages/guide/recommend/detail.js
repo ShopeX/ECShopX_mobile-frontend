@@ -46,7 +46,7 @@ function GuideRecommendDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const sharePath = buildSharePath('/pages/recommend/detail', query)
+    const sharePath = buildSharePath('poster_recommend_detail', query)
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
       title: title,

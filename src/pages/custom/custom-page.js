@@ -111,7 +111,7 @@ function CustomPage(props) {
     if (userId) {
       params.uid = userId
     }
-    const path = buildSharePath('/pages/custom/custom-page', params)
+    const path = buildSharePath('poster_custom_page', params)
 
     log.debug(`getAppShareInfo: ${path}`)
     return {

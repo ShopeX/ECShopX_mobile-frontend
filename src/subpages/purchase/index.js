@@ -174,7 +174,7 @@ function Home() {
           enterprise_id,
           activity_id
         }
-        const path = buildSharePath('/pages/purchase/auth', params)
+        const path = buildSharePath('poster_purchase_auth', params)
         log.debug(path)
         resolve({
           title: activityInfo.name,

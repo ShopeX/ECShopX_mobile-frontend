@@ -270,7 +270,7 @@ function StoreIndex() {
     const query = {
       dtid
     }
-    const path = buildSharePath('/subpages/store/index', query)
+    const path = buildSharePath('poster_store_index', query)
     log.debug(`share path: ${path}`)
     return {
       title: storeInfo?.name,

@@ -131,7 +131,7 @@ function UgcNoteDetail(props) {
         draft.info['shareNums'] = shareInfo.share_nums
       })
     }
-    const path = buildSharePath('/subpages/mdugc/note-detail', { post_id })
+    const path = buildSharePath('poster_mdugc_detail', { post_id })
     console.log(`useShareAppMessage:`, path)
     return {
       title: info.title,

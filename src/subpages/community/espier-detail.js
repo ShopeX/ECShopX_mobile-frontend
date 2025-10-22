@@ -184,7 +184,7 @@ function EspierDetail(props) {
     if (userInfo) {
       query['uid'] = userInfo.uid
     }
-    const path = buildSharePath('/pages/item/espier-detail', query)
+    const path = buildSharePath('poster_espier_detail', query)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,

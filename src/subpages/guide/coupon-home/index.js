@@ -72,7 +72,7 @@ function GuideCouponIndex(props) {
       // subtask_id: subtaskId
     }
 
-    const path = buildSharePath('/subpages/marketing/coupon-center', query)
+    const path = buildSharePath('poster_coupon_center', query)
     log.debug(`getAppShareInfo: ${path}`)
     return {
       title: title,

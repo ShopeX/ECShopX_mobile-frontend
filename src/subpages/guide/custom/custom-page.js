@@ -78,7 +78,7 @@ function GuideCustomPage() {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const path = buildSharePath('/pages/custom/custom-page', query)
+    const path = buildSharePath('poster_custom_page', query)
     log.debug(`share path: ${path}`)
 
     return {

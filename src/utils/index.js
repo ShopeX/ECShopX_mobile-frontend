@@ -885,16 +885,17 @@ export const pxToUnitRpx = (px) => {
 
 /**
  * 构建统一分享路径
- * @param {string} target_path - 目标页面路径
+ * @param {string} from_scene - 目标页面类型
  * @param {object} params - 路径参数
  * @returns {string} 统一的分享落地页路径
  */
-export function buildSharePath(target_path, params = {}) {
+export function buildSharePath(from_scene, params = {}) {
   const shareParams = {
-    target_path: target_path,
+    from_scene: from_scene,
     ...params
   }
   const queryString = qs.stringify(shareParams)
+  debugger
   return `/pages/share-land${queryString ? '?' + queryString : ''}`
 }
 

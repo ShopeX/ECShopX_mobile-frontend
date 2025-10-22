@@ -52,7 +52,7 @@ function GroupLeaderDetail(props) {
   }
 
   useShareAppMessage(() => {
-    const path = buildSharePath('/subpages/community/group-memberdetail', { activity_id: detail.activityId })
+    const path = buildSharePath('poster_community_memberdetail', { activity_id: detail.activityId })
     log.debug(`share path: ${path}`)
     return {
       imageUrl: shareImageUrl,

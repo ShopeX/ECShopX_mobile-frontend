@@ -186,7 +186,7 @@ function MemberIndex(props) {
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })
-    const path = buildSharePath('/pages/index', {})
+    const path = buildSharePath('poster_home', {})
     return {
       title: share_title,
       imageUrl: share_pic_wechatapp || logo,

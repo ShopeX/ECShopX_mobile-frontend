@@ -146,7 +146,7 @@ function Home() {
     if (VERSION_STANDARD) {
       params = Object.assign(params, { dtid: getCurrentShopId() })
     }
-    const path = buildSharePath('/pages/index', params)
+    const path = buildSharePath('poster_home', params)
 
     console.log('useShareAppMessage path:', path, params)
 

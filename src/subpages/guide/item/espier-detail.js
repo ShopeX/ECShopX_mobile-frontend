@@ -201,7 +201,7 @@ function EspierDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id: subtaskId
     }
-    const path = buildSharePath('/pages/item/espier-detail', query)
+    const path = buildSharePath('poster_espier_detail', query)
     console.log('gu---------------------',path)
     log.debug(`share path: ${path}`)
     return {
