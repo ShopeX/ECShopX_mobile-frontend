@@ -66,7 +66,7 @@ function ShareIand() {
       'poster_home': '/pages/index', // 小程序-海报分享&页面转发-店务小店
       'poster_shop_home': '/marketing/pages/distribution/shop-home', // 小程序-海报分享&页面转发-店务小店
       'poster_espier_detail': '/pages/item/espier-detail', // 小程序-海报分享-商品详情
-      'poster_espier_checkout': '/pages/cart/espier-checkout', // 小程序-海报分享&页面转发-商品详情
+      'poster_espier_checkout': '/pages/cart/espier-checkout', // 小程序-海报分享&页面转发-结算页
       'poster_purchase_auth': '/pages/purchase/auth', // 小程序-海报分享&页面转发-内购邀请
       'poster_trade_detail': '/subpages/trade/detail', // 小程序-海报分享&页面转发-交易详情
       'poster_store_index': '/subpages/store/index', // 小程序-海报分享&页面转发-店铺首页
