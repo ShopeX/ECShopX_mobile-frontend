@@ -285,7 +285,7 @@ function NearlyShop(props) {
         </View>
       </View>
 
-      {isRecommend && (
+      {isRecommend && location?.address&&(
         <View className='shop-logo'>
           <Image className='img' src={headquarters.logo} mode='aspectFill' />
           <View className='tip'>您想要地区的店铺暂时未入驻网上商城</View>
