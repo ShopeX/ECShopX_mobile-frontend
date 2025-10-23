@@ -496,7 +496,7 @@ function EspierDetail(props) {
       >
         {!info && <SpLoading />}
         {info && (
-          <View className='goods-contents' style='height: 100%;'>
+          <View className='goods-contents'>
             <View className='goods-pic-container'>
               <Swiper
                 className='goods-swiper'
