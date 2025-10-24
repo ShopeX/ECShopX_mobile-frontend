@@ -372,8 +372,8 @@ const SpPage = memo(
                         url: isGoodsShelves()
                           ? '/subpages/guide/index'
                           : VERSION_IN_PURCHASE
-                          ? '/pages/purchase/index'
-                          : '/pages/index'
+                            ? '/pages/purchase/index'
+                            : '/pages/index'
                       })
                     }}
                   />
@@ -463,15 +463,21 @@ const SpPage = memo(
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
-                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-                  )
+                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                )
                 : 0
             })}
           >
             <context.Provider value={{}}>{props.children}</context.Provider>
+
+            <View className='sp-page__powered-by text-center'>
+              Powered by <SpImage src='powered-logo.png' width={100} height={20} />
+            </View>
           </View>
         )}
         {props.loading && <SpLoading />}
+
+
         {props.renderFooter && (
           <View
             key={lang}
@@ -484,7 +490,6 @@ const SpPage = memo(
             <context.Provider value={{}}>{props.renderFooter}</context.Provider>
           </View>
         )}
-
         {/* 浮动 */}
         {!props.isDefault && (
           <View className='float-container'>
@@ -502,7 +507,7 @@ const SpPage = memo(
 )
 
 SpPage.defaultProps = {
-  onReady: () => {},
+  onReady: () => { },
   btnHomeEnable: true,
   className: '',
   children: null,

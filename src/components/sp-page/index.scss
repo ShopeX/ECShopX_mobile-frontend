@@ -41,6 +41,12 @@
     }
   }
 
+  .sp-page__powered-by {
+    color: #B3B3B3;
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
   .float-container {
     position: fixed;
     bottom: 350px;
@@ -64,9 +70,11 @@
     right: 0;
     top: 0;
     z-index: 1000;
+
     &__body {
       align-items: center;
     }
+
     .title-container {
       font-size: 26px;
       white-space: nowrap;
@@ -105,17 +113,20 @@
       }
     }
   }
+
   .p-title-hot-img {
     position: relative;
     width: 100%;
     height: 100%;
+
     .sp-image {
       width: 100%;
       height: 100%;
     }
+
     .img-hotzone_zone {
       position: absolute;
     }
-  
+
   }
 }
