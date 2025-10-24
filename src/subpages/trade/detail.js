@@ -475,7 +475,7 @@ function TradeDetail(props) {
       scrollToTopBtn
       renderFooter={renderActionButton()}
     >
-      <ScrollView className='trade-detail-scroll' scrollY>
+      {info&&<ScrollView className='trade-detail-scroll' scrollY>
         <View className='trade-status'>
           {info && (
             <View className='trade-status-desc'>
@@ -850,7 +850,7 @@ function TradeDetail(props) {
           {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
         </View>}
         <View className='padding-view'></View>
-      </ScrollView>
+      </ScrollView>}
 
       {info?.orderStatus === 'NOTPAY' && (
         <SpCashier
