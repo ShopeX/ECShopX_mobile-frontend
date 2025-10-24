@@ -105,7 +105,8 @@ const initialState = {
   loading: true,
   shareInfo: {},
   footerHeight: 0,
-  pageData: null
+  pageData: null,
+  shareInfo: {}
 }
 
 function MemberIndex(props) {
@@ -168,6 +169,7 @@ function MemberIndex(props) {
       })
       const url = `/pageparams/setting?${pathparams}`
       const { config = [], share } = await req.get(url)
+      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config,share)
       const pageData = config.find((wgt) => wgt.name == 'page')
       setState((draft) => {
         draft.wgts = config
@@ -200,8 +202,8 @@ function MemberIndex(props) {
       distributor_id: 0
     })
     return {
-      title: share_title,
-      imageUrl: share_pic_wechatapp || logo,
+      title: state.shareInfo.page_share_title || share_title,
+      imageUrl: state.shareInfo.page_share_imageUrl || share_pic_wechatapp || logo,
       path: '/pages/index'
     }
   })
