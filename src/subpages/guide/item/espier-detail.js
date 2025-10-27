@@ -35,7 +35,8 @@ import {
   isWeb,
   pickBy,
   classNames,
-  navigateTo
+  navigateTo,
+  buildSharePath
 } from '@/utils'
 
 import doc from '@/doc'
@@ -87,6 +88,7 @@ const initialState = {
   // 多规格商品选中的规格
   curItem: null,
   imgHeightList: [], // 用于存储banner高度
+  defaultImageHeight: 520, // 默认图片高度，避免空白
 }
 
 function EspierDetail(props) {
@@ -122,6 +124,7 @@ function EspierDetail(props) {
     subtaskId,
     curItem,
     imgHeightList, // 用于存储banner高度
+    defaultImageHeight,
   } = state
 
   useEffect(() => {
@@ -198,8 +201,8 @@ function EspierDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id: subtaskId
     }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
-    console.log('gu---------------------', path)
+    const path = buildSharePath('poster_espier_detail', query)
+    console.log('gu---------------------',path)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,
@@ -256,30 +259,51 @@ function EspierDetail(props) {
         }
       })
     }
-    const banner = await getMultipleImageInfo(data.imgs)
-
     setState((draft) => {
       draft.info = {
         ...data,
         subscribe
       }
-      draft.imgHeightList = banner
       draft.promotionActivity = data.promotionActivity
+      // 初始化图片高度数组，使用默认高度
+      draft.imgHeightList = new Array(data.imgs.length).fill(draft.defaultImageHeight)
+    })
+
+    // 异步计算图片真实高度，不阻塞页面渲染
+    getMultipleImageInfo(data.imgs).then(heights => {
+      setState((draft) => {
+        draft.imgHeightList = heights
+      })
+    }).catch(error => {
+      console.log('计算图片高度失败，使用默认高度:', error)
     })
   }
 
-  const getMultipleImageInfo = async (imageUrls) => {
-    const promises = imageUrls.map(url =>
-      Taro.getImageInfo({ src: url })
-        .then(info => info)
-        .catch(error => {
-          console.log('获取图片信息失败:', url, error)
-          // 返回一个默认高度或 null
-          return { width: 0, height: 650 }
-        })
-    )
-    const results = await Promise.all(promises)
-    return results.map(info => (info.height) / 2 > 650 ? 650 : info.height / 2)
+  const getMultipleImageInfo = async (imageUrls = []) => {
+    let windowWidth = defaultImageHeight
+    try {
+      const sys = Taro.getSystemInfoSync()
+      if (sys && sys.windowWidth) windowWidth = sys.windowWidth
+    } catch (e) {
+      console.log('获取系统信息失败，使用默认宽度:', e)
+    }
+
+    const promises = imageUrls.map(async (url) => {
+      try {
+        const imageInfo = await Taro.getImageInfo({ src: url })
+        const imgWidth = Number(imageInfo?.width) || 0
+        const imgHeight = Number(imageInfo?.height) || 0
+        if (imgWidth > 0 && imgHeight > 0) {
+          return Math.round((windowWidth * imgHeight) / imgWidth)
+        }
+        return Math.round(windowWidth)
+      } catch (error) {
+        console.log('获取图片信息失败:', url, error)
+        return Math.round(windowWidth)
+      }
+    })
+
+    return Promise.all(promises)
   }
 
   // 获取包裹
@@ -389,7 +413,7 @@ function EspierDetail(props) {
               className='goods-swiper'
               // current={curImgIdx}
               onChange={onChangeSwiper}
-              style={{ height: (imgHeightList[curImgIdx]) + 'px' }}
+              style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
             >
               {info.imgs.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>

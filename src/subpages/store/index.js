@@ -31,7 +31,8 @@ import {
   entryLaunch,
   pickBy,
   log,
-  showToast
+  showToast,
+  buildSharePath
 } from '@/utils'
 import { useImmer } from 'use-immer'
 import { useNavigation, useDebounce } from '@/hooks'
@@ -271,7 +272,7 @@ function StoreIndex() {
     const query = {
       dtid
     }
-    const path = `/subpages/store/index?${qs.stringify(query)}`
+    const path = buildSharePath('poster_store_index', query)
     log.debug(`share path: ${path}`)
     return {
       title: storeInfo?.name,

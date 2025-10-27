@@ -61,6 +61,8 @@ class EntryLaunch {
           ..._options,
           ...res
         }
+        delete _options?.distributorInfo
+        delete _options?.salespersonInfo
       }
     } else {
       _options = params

@@ -9,7 +9,7 @@ import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import S from '@/spx'
-import { pickBy, log, isWeixin, showToast } from '@/utils'
+import { pickBy, log, isWeixin, showToast, buildSharePath } from '@/utils'
 import { withPageWrapper } from '@/hocs'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../home/wgts'
 import './detail.scss'
@@ -52,7 +52,7 @@ function GuideRecommendDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const sharePath = `/pages/recommend/detail?${qs.stringify(query)}`
+    const sharePath = buildSharePath('poster_recommend_detail', query)
     log.debug(`【/pages/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
       title: title,
