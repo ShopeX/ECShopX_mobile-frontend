@@ -484,7 +484,7 @@ function MemberIndex(props) {
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <SpLogin className='user-info-card'>
+          <SpLogin newUser={isNewUser} className='user-info-card'>
             <View className='user-info-header'>
               <View
                 className='user-avatar'
