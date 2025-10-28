@@ -37,8 +37,6 @@ function ShareIand() {
     
     if (routeParams?.t == 1) {
       handlePrescription(routeParams)
-    } else if (routeParams?.target_path) { // 兼容1021版本
-      handleGeneralShare(routeParams)
     } else {
       handleShareLand(routeParams)
     }
