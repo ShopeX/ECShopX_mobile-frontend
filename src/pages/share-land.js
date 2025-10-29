@@ -86,10 +86,10 @@ function ShareIand() {
     const targetUrl = queryString ? `${welcomeRoutes[from_scene]}?${queryString}` : welcomeRoutes[from_scene]
     console.log('导购任务分享跳转:', targetUrl)
 
-    if (targetUrl) {
+    if (welcomeRoutes[from_scene]) {
       Taro.redirectTo({ url: targetUrl })
     } else {
-      showToast('未匹配到参数')
+      showToast('页面跳转失败')
       setTimeout(() => {
         Taro.redirectTo({ url: '/pages/index' })
       }, 1500);
