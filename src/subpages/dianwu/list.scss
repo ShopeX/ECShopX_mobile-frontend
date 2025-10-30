@@ -5,14 +5,9 @@
   $tabbar-ipx-height: 140px !default;
   // font-family: Helvetica;
   // padding-top: 170px;
-  &.ipx {
-    .sp-page__body {
-      height: calc(100vh - 140px);
-    }
-  }
+
   .sp-page__body {
     position: relative;
-    height: calc(100vh - 120px);
   }
   .search-block {
     display: flex;
@@ -20,21 +15,18 @@
     padding: 0 20px;
     height: $header-height;
     background-color: #fff;
-  }
-  &.ipx {
-    .footer-wrap {
-      bottom: $tabbar-ipx-height;
+
+    .sp-search-input {
+      width: 100%;
     }
   }
+
   .footer-wrap {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: $tabbar-height;
-    height: $footer-height;
+    height: 106px;
     display: flex;
     justify-content: space-between;
-    padding: 10px 40px;
+    align-items: center;
+    padding: 0 40px;
     background: #ffffff;
     z-index: 1000;
     box-sizing: border-box;
@@ -43,7 +35,7 @@
       flex-direction: column;
       justify-content: center;
       flex: 1;
-      height: 100px;
+      height: 90px;
       background: #111a34;
       box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
       border-radius: 50px 0 0 50px;
@@ -67,9 +59,9 @@
     }
     .btn-confirm {
       width: 245px;
-      height: 100px;
+      height: 90px;
       text-align: center;
-      line-height: 100px;
+      line-height: 90px;
       background: var(--color-dianwu-primary);
       box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
       border-radius: 0px 50px 50px 0px;
@@ -89,7 +81,10 @@
   }
   .item-list-scroll {
     padding: 20px 0;
-    @include page-scroll($header-height, $footer-height);
+    // @include page-scroll($header-height, $footer-height);
+    height: calc(100% - $header-height);
+    overflow-y: scroll;
+    box-sizing: border-box;
   }
   .item-wrap {
     padding: 25px 20px;

@@ -62,17 +62,15 @@ function CompTabbar(props) {
   }
 
   return (
-    <AtTabBar
-      fixed
-      classNames={classNames({
-        'comp-tabbar': true
-      })}
-      iconSize='20'
-      selectedColor='#4d84fc'
-      tabList={tabList}
-      onClick={handleTabbarClick}
-      current={currentIndex}
-    />
+    <View className='comp-tabbar'>
+      <AtTabBar
+        iconSize='20'
+        selectedColor='#4d84fc'
+        tabList={tabList}
+        onClick={handleTabbarClick}
+        current={currentIndex}
+      />
+    </View>
   )
 }
 

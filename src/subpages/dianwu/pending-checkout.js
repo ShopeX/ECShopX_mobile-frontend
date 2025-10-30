@@ -114,7 +114,11 @@ function DianwuPendingCheckout(props) {
   }
 
   return (
-    <SpPage className='page-dianwu-pending-checkout' renderFooter={<CompTabbar />}>
+    <SpPage
+      className='page-dianwu-pending-checkout'
+      footerHeight={96}
+      renderFooter={<CompTabbar />}
+    >
       <SpScrollView className='pending-checkout-list' ref={listRef} fetch={fetch}>
         {list.map((items, index) => {
           return items.map((item, sidx) => (

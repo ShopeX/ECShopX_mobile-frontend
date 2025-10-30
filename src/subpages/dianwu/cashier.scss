@@ -12,16 +12,11 @@
       $footer-height + $page-footer-height + 66px
     );
   }
-  &.ipx {
-    .item-list-scroll {
-      @include page-scroll(
-        $header-height + $camera-height + 168px,
-        $footer-height + $page-ipx-footer-height + 66px
-      );
-    }
-  }
+
   .item-list {
-    margin-top: 24px;
+    height: calc(100% - $header-height);
+    overflow-y: scroll;
+    box-sizing: border-box;
   }
   .block-tools {
     display: flex;
@@ -238,8 +233,7 @@
     }
   }
   .block-goods {
-    // margin-top: 24px;
-    padding: 0 20px;
+    padding: 20px;
     .item-wrap {
       background-color: #fff;
       &:not(:last-child) {
@@ -342,18 +336,18 @@
       display: flex;
       flex-direction: column;
       width: 123px;
-      border-left: 1px solid #dadada;
+      border-left: 1px solid #e4e4e4;
       &-count {
         display: flex;
         height: 60px;
-        border-bottom: 1px solid #dadada;
+        border-bottom: 1px solid #e4e4e4;
         .count-option {
           flex: 1;
           line-height: 60px;
           text-align: center;
           font-size: 32px;
           &:first-child {
-            border-right: 1px solid #dadada;
+            border-right: 1px solid #e4e4e4;
           }
         }
       }
@@ -368,7 +362,8 @@
           text-align: center;
           font-size: 28px;
           input {
-            padding-right: 0;
+            padding: 0 20px;
+            text-align: center;
           }
           &:after {
             border-color: transparent;
@@ -380,21 +375,13 @@
         line-height: 50px;
         text-align: center;
         font-size: 30px;
-        border-top: 1px solid #dadada;
+        border-top: 1px solid #e4e4e4;
       }
     }
   }
-  &.ipx {
-    .footer-wrap {
-      bottom: $tabbar-ipx-height;
-    }
-  }
+
   .footer-wrap {
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: $tabbar-height;
-    height: $footer-height;
+    height: 106px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -450,11 +437,7 @@
       font-size: 26px;
     }
   }
-  &.ipx {
-    .total-bar {
-      bottom: $footer-height + $tabbar-ipx-height;
-    }
-  }
+
   .total-bar {
     height: 66px;
     background: #e2ebfd;
@@ -462,10 +445,6 @@
     align-items: center;
     padding: 0 30px;
     justify-content: space-between;
-    position: fixed;
-    bottom: $footer-height + $tabbar-height;
-    left: 0;
-    right: 0;
     z-index: 1000;
     .lf {
       color: #4980ff;

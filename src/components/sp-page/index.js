@@ -442,7 +442,8 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'height': state.lock ? `${state.bodyHeight}px` : '100%',
+              // 'height': state.lock ? `${state.bodyHeight}px` : '100%',
+              'height': `${state.bodyHeight}px`,
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(

@@ -353,7 +353,75 @@ function DianWuCashier() {
   }
 
   return (
-    <SpPage className='page-dianwu-cashier' ref={pageRef} renderFooter={<CompTabbar />}>
+    <SpPage
+      className='page-dianwu-cashier'
+      footerHeight={cartList.length > 0 ? 202 + 66 : 202}
+      ref={pageRef}
+      renderFooter={
+        <View>
+          {cartList.length > 0 && (
+            <View className='total-bar'>
+              <View className='lf'>
+                <View className='total-mount'>
+                  合计 <SpPrice size={28} value={cartList[0]?.totalPrice} />
+                </View>
+                <View className='discount-mount'>
+                  已优惠 <SpPrice size={28} value={cartList[0]?.discountFee} />
+                </View>
+              </View>
+              <View
+                className='rg'
+                onClick={() => {
+                  setState((draft) => {
+                    draft.discountDetailLayout = true
+                  })
+                }}
+              >
+                优惠详情<Text className='iconfont icon-qianwang-01'></Text>
+              </View>
+            </View>
+          )}
+          <View className='footer-wrap'>
+            <View className='total-info'>
+              <View className='real-mount'>
+                <Text className='label'>应收 </Text>
+                <SpPrice value={cartList[0]?.totalFee || 0} />
+              </View>
+              <View className='txt'>已选择{cartList[0]?.totalNum || 0}件商品</View>
+            </View>
+            <View className='g-button'>
+              <View className='g-button__first' onClick={handleOrderPendding}>
+                {cartList.length == 0 ? '取单' : '挂单'}
+              </View>
+              <View
+                className='g-button__second'
+                onClick={() => {
+                  if (cartList.length == 0) {
+                    showToast('请添加商品')
+                    return
+                  }
+
+                  setState((draft) => {
+                    draft.isCameraOpend = false
+                  })
+                  Taro.navigateTo({
+                    url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}`,
+                    events: {
+                      onEventFetchOrder: () => {
+                        getCashierList()
+                      }
+                    }
+                  })
+                }}
+              >
+                结算收银
+              </View>
+            </View>
+          </View>
+          <CompTabbar />
+        </View>
+      }
+    >
       <View className='block-tools'>
         <SpSearchInput
           placeholder='商品名称/货号/条码'
@@ -578,29 +646,6 @@ function DianWuCashier() {
         )} */}
       </ScrollView>
 
-      {cartList.length > 0 && (
-        <View className='total-bar'>
-          <View className='lf'>
-            <View className='total-mount'>
-              合计 <SpPrice size={28} value={cartList[0]?.totalPrice} />
-            </View>
-            <View className='discount-mount'>
-              已优惠 <SpPrice size={28} value={cartList[0]?.discountFee} />
-            </View>
-          </View>
-          <View
-            className='rg'
-            onClick={() => {
-              setState((draft) => {
-                draft.discountDetailLayout = true
-              })
-            }}
-          >
-            优惠详情<Text className='iconfont icon-qianwang-01'></Text>
-          </View>
-        </View>
-      )}
-
       <SpFloatLayout
         title='优惠详情'
         open={discountDetailLayout}
@@ -622,44 +667,6 @@ function DianWuCashier() {
           </SpCell>
         </View>
       </SpFloatLayout>
-
-      <View className='footer-wrap'>
-        <View className='total-info'>
-          <View className='real-mount'>
-            <Text className='label'>应收 </Text>
-            <SpPrice value={cartList[0]?.totalFee || 0} />
-          </View>
-          <View className='txt'>已选择{cartList[0]?.totalNum || 0}件商品</View>
-        </View>
-        <View className='g-button'>
-          <View className='g-button__first' onClick={handleOrderPendding}>
-            {cartList.length == 0 ? '取单' : '挂单'}
-          </View>
-          <View
-            className='g-button__second'
-            onClick={() => {
-              if (cartList.length == 0) {
-                showToast('请添加商品')
-                return
-              }
-
-              setState((draft) => {
-                draft.isCameraOpend = false
-              })
-              Taro.navigateTo({
-                url: `/subpages/dianwu/checkout?distributor_id=${distributor_id}`,
-                events: {
-                  onEventFetchOrder: () => {
-                    getCashierList()
-                  }
-                }
-              })
-            }}
-          >
-            结算收银
-          </View>
-        </View>
-      </View>
 
       <SpFloatLayout
         className='layout-search-result'

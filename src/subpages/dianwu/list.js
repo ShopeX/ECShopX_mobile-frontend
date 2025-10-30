@@ -91,7 +91,32 @@ function DianWuList() {
   }
 
   return (
-    <SpPage className='page-dianwu-list' scrollToTopBtn renderFooter={<CompTabbar />}>
+    <SpPage
+      className='page-dianwu-list'
+      footerHeight={202}
+      scrollToTopBtn
+      renderFooter={
+        <View>
+          <View className='footer-wrap'>
+            <View className='total-info'>
+              <SpPrice value={cartList[0]?.totalPrice || 0} size={38} />
+              <View className='txt'>已选择 {cartList[0]?.totalNum || 0} 件商品</View>
+            </View>
+            <View
+              className='btn-confirm'
+              onClick={() => {
+                Taro.navigateTo({
+                  url: `/subpages/dianwu/cashier?distributor_id=${distributor_id}`
+                })
+              }}
+            >
+              进入收银台
+            </View>
+          </View>
+          <CompTabbar />
+        </View>
+      }
+    >
       <View className='search-block'>
         <SpSearchInput
           placeholder='商品名称/商品货号/商品条形码'
@@ -135,22 +160,6 @@ function DianWuList() {
           ))
         })}
       </SpScrollView>
-      <View className='footer-wrap'>
-        <View className='total-info'>
-          <SpPrice value={cartList[0]?.totalPrice || 0} size={38} />
-          <View className='txt'>已选择 {cartList[0]?.totalNum || 0} 件商品</View>
-        </View>
-        <View
-          className='btn-confirm'
-          onClick={() => {
-            Taro.navigateTo({
-              url: `/subpages/dianwu/cashier?distributor_id=${distributor_id}`
-            })
-          }}
-        >
-          进入收银台
-        </View>
-      </View>
     </SpPage>
   )
 }
