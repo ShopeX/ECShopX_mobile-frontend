@@ -25,7 +25,7 @@ const initialState = {
   userInfo: null,
   isNewUser: false,
   cardInfo: {},
-  lang: 'zhcn',
+  lang: 'en',
   vipInfo: {
     isOpen: false,
     isVip: false,

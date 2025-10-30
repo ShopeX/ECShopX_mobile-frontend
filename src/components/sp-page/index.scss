@@ -43,8 +43,12 @@
 
   .sp-page__powered-by {
     color: #B3B3B3;
-    font-size: 20px;
-    margin-bottom: 20px;
+    font-size: 24px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 80px;
   }
 
   .float-container {

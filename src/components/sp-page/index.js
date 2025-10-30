@@ -470,9 +470,9 @@ const SpPage = memo(
           >
             <context.Provider value={{}}>{props.children}</context.Provider>
 
-            <View className='sp-page__powered-by text-center'>
-              Powered by <SpImage src='powered-logo.png' width={100} height={20} />
-            </View>
+            {!props.loading && <View className='sp-page__powered-by flex items-center justify-center text-center'>
+             <Text>Powered by</Text><SpImage src='powered-logo.png' width={120} />
+            </View>}
           </View>
         )}
         {props.loading && <SpLoading />}
