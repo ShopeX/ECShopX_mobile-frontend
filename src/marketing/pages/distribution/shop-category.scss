@@ -1,4 +1,22 @@
-@import "@/style/imports";
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
 
 .page-category-index {
   width: 100%;
@@ -32,30 +50,27 @@
     @include page-scroll($tabs-height + 10px, $tabbar-height);
     /*  #endif  */
     /*  #ifdef  h5  */
-    @include page-scroll(
-      $tabs-height + $navigate-height-h5 + 10px,
-      $tabbar-height
-    );
+    @include page-scroll($tabs-height + $navigate-height-h5 + 10px, $tabbar-height);
     /*  #endif  */
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
-    /*  #ifdef  weapp  */  
+    /*  #ifdef  weapp  */
     @include page-scroll(0, $tabbar-height);
     /*  #endif  */
-    /*  #ifdef  h5  */  
+    /*  #ifdef  h5  */
     @include page-scroll($navigate-height-h5, $tabbar-height);
     /*  #endif  */
   }
-  .shop-category__wrap{
+  .shop-category__wrap {
     &.all {
       .category-list__scroll {
         width: 100%;
         left: 0;
       }
     }
-    .category-list__scroll{
+    .category-list__scroll {
       @include page-scroll($tabs-height + $navigate-height, 0);
       /*  #ifdef  h5  */
       @include page-scroll($tabs-height + $navigate-height-h5, 0);
@@ -96,7 +111,7 @@
       text-overflow: ellipsis;
       border-left: 7px solid transparent;
       line-height: 85px;
-      margin:0 auto;
+      margin: 0 auto;
       box-sizing: border-box;
       background-color: #fff;
     }
@@ -124,7 +139,7 @@
       color: #fff;
       font-size: 20px;
       &::after {
-        content: "热";
+        content: '热';
       }
     }
   }
@@ -151,7 +166,8 @@
         height: 170px;
         position: relative;
         flex-shrink: 0;
-        .goodImg, .itemImg {
+        .goodImg,
+        .itemImg {
           width: 100%;
           height: 100%;
           img {
@@ -200,7 +216,7 @@
             }
           }
           .itemShareBtn {
-            border:none;
+            border: none;
             background: transparent;
             padding: 0;
             margin: 0;
@@ -210,7 +226,7 @@
             &::after {
               border: none;
             }
-            .iconfont{
+            .iconfont {
               font-size: 36px;
             }
           }
@@ -240,7 +256,8 @@
           }
         }
         .right {
-          .goodName, .goodPrice {
+          .goodName,
+          .goodPrice {
             color: #999 !important;
           }
         }

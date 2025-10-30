@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-offline-transfer {
   .sp-page__body {
     height: 100% !important;
@@ -8,7 +26,7 @@
 
     .scroll-view-body {
       overflow: hidden;
-      padding:  24px;
+      padding: 24px;
     }
   }
 
@@ -20,10 +38,9 @@
   .dianwu-primary {
     border-color: var(--color-dianwu-primary) !important;
     background: var(--color-dianwu-primary) !important;
-
   }
 
-  .normal-primary{
+  .normal-primary {
     border-color: var(--color-primary) !important;
     background: var(--color-primary) !important;
   }
@@ -49,7 +66,6 @@
         width: 176px;
       }
 
-
       &__bd {
         padding-top: 4px;
         text-align: right;
@@ -62,13 +78,13 @@
     }
   }
 
-  .offline-voucher-pc{
+  .offline-voucher-pc {
     display: flex;
     flex-direction: column;
-    .sp-cell__hd{
+    .sp-cell__hd {
       width: 100%;
     }
-    .sp-cell__bd{
+    .sp-cell__bd {
       width: 100%;
       font-size: 28px;
       color: #111111;
@@ -86,7 +102,6 @@
   }
 
   .picker {
-
     text {
       font-size: 28px;
     }
@@ -111,7 +126,7 @@
   }
 
   .border-bottom {
-    border-bottom: 1PX solid #DDDDDD;
+    border-bottom: 1px solid #dddddd;
   }
 
   .offline-item {
@@ -156,7 +171,6 @@
     .sp-cell__title {
       font-size: 28px;
     }
-
   }
 
   .at-input input {
@@ -209,16 +223,16 @@
     }
   }
 
-  .pic-box{
+  .pic-box {
     display: flex;
     flex-wrap: wrap;
-    &-item{
+    &-item {
       margin-right: 26px;
       margin-bottom: 36px;
     }
   }
 
-  .account-item{
+  .account-item {
     width: 100%;
     padding: 33px 36px;
     box-sizing: border-box;
@@ -228,29 +242,29 @@
     align-items: center;
     margin-top: 24px;
 
-    &-active{
-      border-color:var(--color-primary);
+    &-active {
+      border-color: var(--color-primary);
       background: rgba(var(--color-rgb), 0.2);
     }
-    &-dianwu-active{
-      border-color:var(--color-dianwu-primary);
+    &-dianwu-active {
+      border-color: var(--color-dianwu-primary);
       background: rgba(var(--color-dianwu-rgb), 0.2);
     }
-    &-content{
+    &-content {
       margin-left: 36px;
       font-weight: 400;
       font-size: 28px;
       color: #666666;
-      &-bank{
+      &-bank {
         font-weight: 500;
         font-size: 32px;
         color: #111111;
       }
-      &-name{
+      &-name {
         margin: 11px 0;
         font-size: 26px;
       }
-      &-no{
+      &-no {
         font-size: 28px;
         margin-top: 11px;
       }

@@ -1,5 +1,23 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .activity-item {
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
   position: relative;
@@ -8,7 +26,6 @@
     .sp-image-img {
       height: 314px !important;
     }
-
   }
 
   &__status {
@@ -16,16 +33,15 @@
     height: 36px;
     text-align: center;
     line-height: 36px;
-    background: #31973F;
+    background: #31973f;
     border-radius: 16px 0px 16px 0px;
     position: absolute;
     left: 0;
     top: 0;
     font-weight: 600;
     font-size: 22px;
-    color: #FFFFFF;
+    color: #ffffff;
     z-index: 2;
-
   }
 
   .flex-between-center {
@@ -47,7 +63,7 @@
     &-status {
       font-weight: 400;
       font-size: 28px;
-      color: #31973F;
+      color: #31973f;
       margin-bottom: 16px;
     }
 
@@ -85,21 +101,21 @@
     &-btn {
       padding: 12px 24px;
       box-sizing: border-box;
-      background: linear-gradient(to right, #F67F70 0%, #CD352A 100%);
+      background: linear-gradient(to right, #f67f70 0%, #cd352a 100%);
       border-radius: 8px;
       font-weight: 600;
       font-size: 24px;
-      color: #FFFFFF;
+      color: #ffffff;
       margin-left: 16px;
     }
 
     .disabled-btn {
-      background: #D8D8D8;
+      background: #d8d8d8;
     }
 
     .activity-btn {
       background: #fff;
-      border: 1PX solid var(--color-primary);
+      border: 1px solid var(--color-primary);
       color: var(--color-primary);
       margin-left: 0;
     }
@@ -110,30 +126,27 @@
   }
 
   &.has-end {
-
     .activity-item {
       &__status {
         background: #333;
       }
 
       &__content {
-
         &-title,
         &-time {
-          color: #C7C7C7;
+          color: #c7c7c7;
         }
 
         &-btn {
-          background: #C7C7C7;
+          background: #c7c7c7;
         }
 
-        .activity-btn
-            {
-            color: #C7C7C7;
-            border-color: #C7C7C7;
-            background: #fff;
-          }
+        .activity-btn {
+          color: #c7c7c7;
+          border-color: #c7c7c7;
+          background: #fff;
         }
       }
     }
   }
+}

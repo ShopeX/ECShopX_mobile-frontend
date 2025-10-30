@@ -1,29 +1,46 @@
-@import "../../style/imports";
-@import "../../style/animations";
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '../../style/imports';
+@import '../../style/animations';
 
 $current-shop-height: 150px !default;
-
 
 .page-store-list {
   height: 100%;
   box-sizing: border-box;
-  /*  #ifdef  h5  */  
+  /*  #ifdef  h5  */
   padding-top: $navigate-height-h5;
-  /*  #endif  */     
+  /*  #endif  */
   &__scroll {
-    @include page-scroll(100px); 
-    /*  #ifdef  h5  */  
-    @include page-scroll($current-shop-height + $navigate-height-h5 + 10); 
-    /*  #endif  */    
+    @include page-scroll(100px);
+    /*  #ifdef  h5  */
+    @include page-scroll($current-shop-height + $navigate-height-h5 + 10);
+    /*  #endif  */
     padding-bottom: 130px;
   }
-  .store-list__search {  
+  .store-list__search {
     .at-search-bar {
       padding-right: 30px !important;
     }
     .search-input {
       box-shadow: none;
-      &__focus{
+      &__focus {
         .at-search-bar {
           padding-right: 30px !important;
         }
@@ -66,20 +83,20 @@ $current-shop-height: 150px !default;
         color: $color-gray;
       }
     }
-    &_footer{
-        position: fixed;
-        width: 100%;
-        bottom: 0;
-        left:0;
-        height: 120px;
-        padding-left: 15px;
-        padding-right: 15px;
-        padding-top: 10px;
-        background: #fff;
-      .sure-button{
+    &_footer {
+      position: fixed;
+      width: 100%;
+      bottom: 0;
+      left: 0;
+      height: 120px;
+      padding-left: 15px;
+      padding-right: 15px;
+      padding-top: 10px;
+      background: #fff;
+      .sure-button {
         height: 100px;
         line-height: 100px;
-        background: #D0021B;
+        background: #d0021b;
         border-radius: 50px;
         width: 100%;
         text-align: center;
@@ -104,7 +121,7 @@ $current-shop-height: 150px !default;
       .loading {
         @include fade-loop(1s);
       }
-      [class^="icon-"] {
+      [class^='icon-'] {
         font-size: 42px;
         color: $color-gray;
       }

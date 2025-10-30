@@ -1,34 +1,52 @@
-.complaint-record-item{
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.complaint-record-item {
   margin-top: 20px;
   background: #fff;
   padding: 25px;
 
-  .item-header{
+  .item-header {
     display: flex;
-   &__info{
-     margin-left: 30px;
-     &-name{
-       font-size: 34px;
-     }
-     &-store_name{
-      margin-top: 20px;
-     }
-   }
+    &__info {
+      margin-left: 30px;
+      &-name {
+        font-size: 34px;
+      }
+      &-store_name {
+        margin-top: 20px;
+      }
+    }
   }
 
-  .item-info{
-     margin-top: 40px;
-     &__con{
-       margin-top: 20px;
-       display: flex;
+  .item-info {
+    margin-top: 40px;
+    &__con {
+      margin-top: 20px;
+      display: flex;
 
-      .triangle-box{
+      .triangle-box {
         width: 40px;
         height: 40px;
         // border-top: 1px solid #efefef;
         // overflow: hidden;
         position: relative;
-        .triangle{
+        .triangle {
           position: relative;
           width: 0;
           height: 0;
@@ -39,7 +57,7 @@
           top: -33px;
           left: 9px;
 
-          View{
+          View {
             position: absolute;
             width: 0;
             height: 0;
@@ -50,53 +68,53 @@
             top: -33px;
             left: -31px;
           }
-         }
+        }
       }
 
-       &-text{
+      &-text {
         flex: 1;
-       }
-     }
+      }
+    }
 
-     &__img{
+    &__img {
       margin-left: 40px;
       margin-top: 30px;
       margin-bottom: 30px;
       display: flex;
-      &-box{
+      &-box {
         height: 150px;
         width: 150px;
         padding: 5px;
         margin-block: 5px;
-        border:1px solid #efefef;
+        border: 1px solid #efefef;
         margin: 5px;
       }
-     }
+    }
 
-     &__date{
-       margin-left: 40px;
-     }
+    &__date {
+      margin-left: 40px;
+    }
   }
 
-  .item-reply{
+  .item-reply {
     margin-top: 30px;
-    &__title{
+    &__title {
       text-align: right;
     }
 
-    &__con{
+    &__con {
       margin-top: 20px;
       display: flex;
-      &-text{
+      &-text {
         flex: 1;
       }
-      .triangle-box{
+      .triangle-box {
         width: 40px;
         height: 40px;
         // border-top: 1px solid #efefef;
         // overflow: hidden;
         position: relative;
-        .triangle{
+        .triangle {
           position: relative;
           width: 0;
           height: 0;
@@ -107,7 +125,7 @@
           top: -36px;
           left: -39px;
 
-          View{
+          View {
             position: absolute;
             width: 0;
             height: 0;
@@ -118,11 +136,11 @@
             top: -26px;
             left: -32px;
           }
-         }
+        }
       }
     }
 
-    &__date{
+    &__date {
       text-align: right;
       margin-right: 40px;
       margin-top: 20px;

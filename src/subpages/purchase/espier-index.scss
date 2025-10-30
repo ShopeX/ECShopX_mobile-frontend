@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-cart-index {
   &.has-tabbar {
     padding-bottom: $tabbar-height;
@@ -134,13 +152,13 @@
     width: 620px;
   }
   .at-input-number {
-    border: 1PX solid #999;
+    border: 1px solid #999;
     border-radius: 0;
     height: 40px;
     &__input {
       /* prettier-ignore */
       border-left: 1PX solid #999;
-      border-right: 1PX solid #999;
+      border-right: 1px solid #999;
       width: 60px;
       height: 32px;
       line-height: 32px;

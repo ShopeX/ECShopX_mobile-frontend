@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-dianwu-collection-result {
   .btn-wrap {
     padding: 20px;
@@ -136,19 +154,19 @@
     &:before {
       content: '';
       height: 66px;
-      background-color: #F5F6F9;
+      background-color: #f5f6f9;
       display: block;
     }
     &:after {
       content: '';
       height: 66px;
-      background-color: #F5F6F9;
+      background-color: #f5f6f9;
       display: block;
     }
     .sp-cell {
       padding: 16px 10px;
       &__title {
-        color: #666F83;
+        color: #666f83;
       }
     }
     .sp-cell__bd {
@@ -164,7 +182,7 @@
       padding: 16px 10px;
       align-items: flex-start;
       &__title {
-        color: #666F83;
+        color: #666f83;
       }
       &__value {
         max-width: 300px;

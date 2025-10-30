@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-purchase-auth-account {
   height: 100vh;
   background-color: #fff;
@@ -41,7 +59,7 @@
 
     .info {
       font-size: 24px;
-      color: #AAAAAA;
+      color: #aaaaaa;
       margin-left: 25px;
 
       .icon {
@@ -65,7 +83,7 @@
       .at-input__container {
         display: flex;
         align-items: center;
-        border: 1PX solid #707078;
+        border: 1px solid #707078;
         border-radius: 44px;
         // padding: 8px 12px 8px 30px;
         box-sizing: border-box;
@@ -75,25 +93,25 @@
         line-height: 88px;
       }
 
-      .sp-input__clear{
+      .sp-input__clear {
         width: 30px;
         height: 30px;
         border-radius: 50%;
         color: #fff;
-        background: #D8D8D8;
+        background: #d8d8d8;
         text-align: center;
         line-height: 28px;
       }
 
       .form-item-message {
-        color: #EC2E3D;
+        color: #ec2e3d;
       }
     }
 
     .err-info {
       margin: 15px 0 0 30px;
       font-size: 24px;
-      color: #EC2E3D;
+      color: #ec2e3d;
     }
 
     .success-info {
@@ -107,7 +125,7 @@
       align-items: center;
 
       .icon {
-        color: #1AAD19;
+        color: #1aad19;
         font-size: 32px;
       }
     }
@@ -116,7 +134,7 @@
       background: var(--color-primary);
       margin-top: 79px;
       font-size: 28px;
-      color: #FFFFFF;
+      color: #ffffff;
       height: 80px;
     }
 
@@ -124,7 +142,6 @@
       color: red;
       margin-left: 25px;
     }
-
   }
   .sp-input {
     font-size: 28px;

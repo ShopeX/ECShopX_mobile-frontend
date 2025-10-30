@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 $custabs: 80px;
 $paddingBottom: 100px;
 
@@ -66,15 +84,15 @@ $paddingBottom: 100px;
         margin: 0 20px;
       }
     }
-    &-name{
+    &-name {
       font-size: 28px;
       text-align: center;
-      padding:16px 20px ;
+      padding: 16px 20px;
       border: 1px solid #222;
       // background-color: #222;
       // color: #fff;
       border-radius: 40px;
-      .iconfont{
+      .iconfont {
         font-size: 28px;
         // color: #fff;
       }
@@ -668,7 +686,7 @@ $paddingBottom: 100px;
     .titled {
       font-size: 26px;
       color: #999;
-      .title-text{
+      .title-text {
         color: #000;
       }
       &-num {
@@ -695,10 +713,10 @@ $paddingBottom: 100px;
       margin-bottom: 16px;
     }
 
-    &-link{
+    &-link {
       display: flex;
       align-items: center;
-      .icon-qianwang-01{
+      .icon-qianwang-01 {
         margin-left: 4px;
       }
     }
@@ -707,7 +725,7 @@ $paddingBottom: 100px;
     text-align: center;
     padding: 0 80px;
   }
-  .long-press{
+  .long-press {
     font-size: 24px;
     color: #999;
     margin-top: 10px;

@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .comp-goods-item {
   display: flex;
 
@@ -17,9 +35,6 @@
         height: 160px;
       }
 
-
-
-
       .shouqin-icon {
         width: 100%;
         height: 100%;
@@ -32,7 +47,6 @@
         overflow: hidden;
         padding: 20px;
         // background: rgba(0, 0, 0, 0.5);
-
       }
 
       .shuiyin {
@@ -71,7 +85,7 @@
         color: #222;
         font-weight: bold;
         @include multi-ellipsis(1);
-        .prescription-drug{
+        .prescription-drug {
           font-size: 24px;
           color: var(--color-primary);
           padding: 0 4px;
@@ -112,20 +126,20 @@
           font-size: 22px;
           font-family: PingFangSC, PingFang SC;
           font-weight: 400;
-          color: #BBBBBB;
+          color: #bbbbbb;
           margin-left: 20px;
           text-decoration: line-through;
         }
 
         .unit {
-          color: #BBBBBB;
+          color: #bbbbbb;
           font-size: 24px;
         }
       }
 
       .promotion-tag-direct {
-        border: 1PX solid #F4811F;
-        color: #F4811F;
+        border: 1px solid #f4811f;
+        color: #f4811f;
         font-size: 22px;
         border-radius: 8px;
         padding: 0 11px;
@@ -166,7 +180,8 @@
         justify-content: space-between;
         margin-top: 28px;
 
-        &-lf {}
+        &-lf {
+        }
 
         .goods-price {
           width: 100%;
@@ -201,7 +216,6 @@
       color: #333;
     }
   }
-
 
   .goods-info-box {
     margin-top: 13px;

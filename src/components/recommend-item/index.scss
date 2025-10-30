@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 @import '../../style/imports';
 
 $item-img-size: 240px !default;
@@ -10,7 +28,6 @@ $item-img-size: 240px !default;
     &__bd {
       width: 100%;
     }
-
   }
 }
 
@@ -30,7 +47,7 @@ $item-img-size: 240px !default;
   position: relative;
   border-radius: $item-border-radius;
   overflow: hidden;
-  box-shadow: 0 5px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
 
   &__hd {
   }
@@ -39,7 +56,7 @@ $item-img-size: 240px !default;
     background: #fff;
     overflow: hidden;
   }
-  &__cont{
+  &__cont {
     height: 250px;
     padding: 20px;
   }
@@ -55,7 +72,7 @@ $item-img-size: 240px !default;
       position: relative;
       &::after {
         padding-top: 100%;
-        content: ""
+        content: '';
       }
     }
   }
@@ -129,11 +146,12 @@ $item-img-size: 240px !default;
         margin-right: 8px;
       }
     }
-    .icon-star-on, .icon-like-on {
+    .icon-star-on,
+    .icon-like-on {
       color: $color-brand-primary;
     }
   }
-  .is_like__active{
+  .is_like__active {
     .iconfont {
       color: $color-brand-primary;
     }

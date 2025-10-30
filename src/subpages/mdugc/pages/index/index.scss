@@ -1,31 +1,49 @@
-.ugcindex{
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.ugcindex {
   width: 100%;
   padding: 0 20px;
   margin: 0 auto;
   min-height: 100vh;
   background-color: #eeeeee;
-  &_search{
+  &_search {
     .search-inputugc__bar {
       padding-left: 0;
     }
   }
-  &_tagsbar{
+  &_tagsbar {
     margin: 40px 0;
   }
-  &_list{
-    &__tag{
+  &_list {
+    &__tag {
       display: flex;
       flex-direction: row-reverse;
       margin-bottom: 25px;
-      &_i{
+      &_i {
         margin-left: 24px;
-        color: rgba($color: #000000, $alpha: 0.3)
+        color: rgba($color: #000000, $alpha: 0.3);
       }
-      &_iact{
-        color: rgba($color: #000000, $alpha: 1.0)
+      &_iact {
+        color: rgba($color: #000000, $alpha: 1);
       }
     }
-    &__scroll{
+    &__scroll {
       position: absolute;
       top: 250px;
       left: 0;
@@ -36,7 +54,7 @@
       overflow-y: auto;
       overflow-x: hidden;
       z-index: 1;
-      &_end{
+      &_end {
         width: 100%;
         height: 30px;
         line-height: 30px;
@@ -46,35 +64,35 @@
         position: relative;
         bottom: 155px;
       }
-      &_scrolls{
+      &_scrolls {
         width: 100%;
         display: flex;
         justify-content: space-between;
         padding: 0 15px;
-        padding-bottom:160px;
-        &_left{
+        padding-bottom: 160px;
+        &_left {
           width: 48.7%;
           padding-top: 10px;
         }
-        &_right{
+        &_right {
           width: 48.7%;
           padding-top: 10px;
         }
-        &_item{
+        &_item {
           width: 100%;
         }
       }
     }
   }
-  .note.note__has-img{
+  .note.note__has-img {
     padding-top: 0;
   }
-  .float-menus{
+  .float-menus {
     right: 33px;
     bottom: 120px;
   }
-  &_floatmenus{
-    .float-menus{
+  &_floatmenus {
+    .float-menus {
       bottom: 220px;
     }
   }

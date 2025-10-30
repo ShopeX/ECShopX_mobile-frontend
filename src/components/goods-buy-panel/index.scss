@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 @import '../../style/imports';
 
 .goods-buy-panel {
@@ -9,13 +27,13 @@
   width: 100%;
   height: 100%;
   transform: translate3D(0, 110%, 0);
-  .goods-point{
+  .goods-point {
     display: flex;
-    .number{
+    .number {
       font-size: 35rpx;
       color: #d42f29;
     }
-    .text{
+    .text {
       font-size: 24rpx;
       margin-top: 10rpx;
       margin-left: 4rpx;
@@ -94,12 +112,14 @@
     border: none;
     border-radius: 0;
     font-weight: bold;
-    &:before, &:after {
+    &:before,
+    &:after {
       display: none;
       border: none;
     }
   }
-  .btn-add-cart, .btn-add-cart {
+  .btn-add-cart,
+  .btn-add-cart {
     background: $color-brand-primary;
     width: 750px;
   }
@@ -116,22 +136,22 @@
     z-index: 10;
     padding: 16px;
   }
-      /*  #ifdef  alipay  */
-      .icon-close {
-        position: absolute;
-        right: $edge-size - 8px;
-        top: $edge-size - 8px;
-        color: $color-gray;
-        z-index: 10;
-        padding: 16px;
-        font-size: 28px;
-      }
-      /*  #endif  */
+  /*  #ifdef  alipay  */
+  .icon-close {
+    position: absolute;
+    right: $edge-size - 8px;
+    top: $edge-size - 8px;
+    color: $color-gray;
+    z-index: 10;
+    padding: 16px;
+    font-size: 28px;
+  }
+  /*  #endif  */
 
   .goods-img {
     width: 140px;
     height: 140px;
-    box-shadow: 0 0 0 1PX $color-border-gray;
+    box-shadow: 0 0 0 1px $color-border-gray;
     &__wrap {
       background: #fff;
       position: absolute;
@@ -183,7 +203,7 @@
         padding: 0 10px;
         margin-right: 10px;
         color: $color-price;
-        box-shadow: 0 0 0 1PX $color-price;
+        box-shadow: 0 0 0 1px $color-price;
         border-radius: 6px;
         display: inline-block;
         vertical-align: middle;
@@ -203,7 +223,7 @@
     line-height: 60px;
     white-space: nowrap;
     font-size: $font-size-small;
-    border: 1PX solid #eeeeee;
+    border: 1px solid #eeeeee;
     padding: 0 $edge-size;
     margin: 0 15px 15px 0;
     display: inline-block;
@@ -217,7 +237,7 @@
     }
     &.is-disabled {
       opacity: 0.5;
-      border: 1PX dashed #eee;
+      border: 1px dashed #eee;
     }
     &__group {
       padding: floor($edge-size / 2) 0;

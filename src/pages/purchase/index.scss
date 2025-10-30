@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-purchase-index {
   .user-box {
     width: 100%;
@@ -40,8 +58,6 @@
         }
       }
 
-
-
       .activity-time {
         font-weight: 400;
         font-size: 26px;
@@ -82,14 +98,12 @@
   }
 
   .float-container {
-
     .icon-huiyuanzhongxin,
     .icon-headphones {
       font-size: 38px;
       color: #fff;
     }
   }
-
 
   .select-company-footer {
     display: flex;
@@ -100,16 +114,16 @@
     padding-top: 30px;
   }
 
-  .sp-tabs-hd .tab-item:not(:last-child):after{
+  .sp-tabs-hd .tab-item:not(:last-child):after {
     display: none !important;
   }
 
-  .sp-tabs-hd .tab-item-active .name{
+  .sp-tabs-hd .tab-item-active .name {
     color: var(--color-primary) !important;
     border-bottom: 8px solid var(--color-primary) !important;
   }
 
-  .sp-tabs-hd .tab-item{
+  .sp-tabs-hd .tab-item {
     color: #333333 !important;
   }
 }

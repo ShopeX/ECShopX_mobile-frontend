@@ -1,3 +1,20 @@
+// +----------------------------------------------------------------------
+// | ECShopX open source E-commerce
+// | ECShopX 开源商城系统
+// +----------------------------------------------------------------------
+// | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+// +----------------------------------------------------------------------
+// | Corporate Website:  https://www.shopex.cn
+// +----------------------------------------------------------------------
+// | Licensed under the Apache License, Version 2.0
+// | http://www.apache.org/licenses/LICENSE-2.0
+// +----------------------------------------------------------------------
+// | The removal of shopeX copyright information without authorization is prohibited.
+// | 未经授权不可去除shopeX商派相关版权
+// +----------------------------------------------------------------------
+// | Author: shopeX Team <mkt@shopex.cn>
+// | Contact: 400-821-3106
+// +----------------------------------------------------------------------
 import Taro from '@tarojs/taro'
 
 class Lang {
@@ -114,18 +131,18 @@ class Lang {
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
     const commonLang = withStorageCommonLang ? globalThis._localStorage.getItem('') : ''
     // 从本地存储中获取当前语言，如果不存在则使用源语言
-    const baseLang = withStorageLang ? globalThis._localStorage.getItem('lang') : 'zhcn'
+    const baseLang = withStorageLang ? globalThis._localStorage.getItem('lang') : 'en'
     const lang = commonLang ? commonLang : baseLang
     // 如果本地存储中没有语言设置，则使用环境变量中的默认语言
     if (!globalThis._localStorage.getItem('lang')) {
       try {
         const defaultLang = process.env.APP_I18N_ORIGIN_LANG
           ? process.env.APP_I18N_ORIGIN_LANG
-          : 'zhcn'
+          : 'en'
         // 设置默认语言
         globalThis._localStorage.setItem('lang', defaultLang)
       } catch (error) {
-        globalThis._localStorage.setItem('lang', 'zhcn')
+        globalThis._localStorage.setItem('lang', 'en')
         console.error('setLanguagePackage error', error)
       }
     }

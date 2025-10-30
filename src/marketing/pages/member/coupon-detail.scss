@@ -1,4 +1,22 @@
-@import "@/style/imports";
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
 
 .page-coupon-detail {
   min-height: 100vh;
@@ -81,7 +99,7 @@
         }
         .card-decorate::before,
         .card-decorate::after {
-          content: "";
+          content: '';
           position: absolute;
           bottom: -25px;
           width: 45px;
@@ -138,18 +156,14 @@
           transition: 0.8s;
         }
         &::after {
-          content: "";
+          content: '';
           position: absolute;
           bottom: -3px;
           width: 94%;
           height: 3px;
           left: 50%;
           transform: translateX(-50%);
-          background: radial-gradient(
-            circle at bottom,
-            transparent 3px,
-            #fff 3px
-          );
+          background: radial-gradient(circle at bottom, transparent 3px, #fff 3px);
           background-size: 20rpx 100%;
         }
         .remind-txt {
@@ -158,7 +172,7 @@
           padding-bottom: 20px;
           &::before,
           &::after {
-            content: "";
+            content: '';
             position: absolute;
             left: 70px;
             top: 16px;

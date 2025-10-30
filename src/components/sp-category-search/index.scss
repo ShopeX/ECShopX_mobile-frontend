@@ -1,13 +1,31 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .sp-category-search {
   // width: 100vh;
   // background: #FFFFFF;
   box-sizing: border-box;
 
   .at-icon-search::after {
-    content: "";
-    width: 1PX;
+    content: '';
+    width: 1px;
     height: 34rpx;
-    border-right: 1rpx solid #BBBBBB;
+    border-right: 1rpx solid #bbbbbb;
     position: relative;
     margin-left: 12rpx;
     border-right-width: 1px;
@@ -18,7 +36,7 @@
   .search-wrap {
     width: 100vw;
     height: 92px;
-    background: #FFFFFF;
+    background: #ffffff;
     box-sizing: border-box;
     padding: 16px 24px;
 
@@ -29,8 +47,8 @@
 
     &-input {
       width: auto;
-      height: 30PX;
-      background: #F5F5F5;
+      height: 30px;
+      background: #f5f5f5;
       border-radius: 30px;
       box-sizing: border-box;
       padding: 0 24px;
@@ -41,15 +59,14 @@
         height: 60px;
         font-size: 26px;
         font-weight: 400;
-        color: #AAAAAA;
+        color: #aaaaaa;
         line-height: 60px;
         @include text-overflow();
-
       }
 
       .at-icon {
         color: var(--color-primary);
-        font-size: 14PX;
+        font-size: 14px;
         flex-shrink: 0;
         line-height: 60px;
         padding-right: 10px;
@@ -143,7 +160,6 @@
   &__history-none {
     // display: none;
   }
-
 
   &__history {
     background: #fff;

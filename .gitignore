@@ -12,3 +12,6 @@ dist/
 .swc
 .vscode
 .env.local
+.cursor/
+AGENTS.md
+openspec/

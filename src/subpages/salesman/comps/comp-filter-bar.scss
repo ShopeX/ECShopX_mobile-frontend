@@ -1,4 +1,22 @@
-.comp-filter-bar{
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-filter-bar {
   width: 100%;
   background: #fff;
   display: flex;
@@ -7,83 +25,81 @@
   height: 90px;
   box-sizing: border-box;
 
-  .area{
+  .area {
     display: flex;
     align-items: center;
     margin-right: 26px;
 
-
-    &-val{
+    &-val {
       overflow: hidden;
-      text-overflow:ellipsis;
+      text-overflow: ellipsis;
       white-space: nowrap;
       max-width: 200px;
     }
 
-    &-icon{
+    &-icon {
       margin-left: 10px;
     }
   }
 
-  .search{
+  .search {
     display: flex;
     align-items: center;
-    background: #F5F6F9;
+    background: #f5f6f9;
     border-radius: 35px;
     padding: 15px 0 15px 32px;
     box-sizing: border-box;
 
-
-    &-condition{
+    &-condition {
       display: flex;
       align-items: center;
       flex-wrap: nowrap;
       white-space: nowrap;
-      border-right: 1px #E2E4EA solid;
+      border-right: 1px #e2e4ea solid;
       padding-right: 17px;
 
-      &-icon{
+      &-icon {
         margin-left: 10px;
       }
     }
 
-    &-input{
+    &-input {
       box-sizing: border-box;
       margin-left: 17px;
     }
   }
 
-  .condition-box{
+  .condition-box {
     height: calc(100vh - 90px);
     position: fixed;
     top: 90px;
     left: 0;
-    right:0;
+    right: 0;
     z-index: 99;
-    background: #6E6E6E;
+    background: #6e6e6e;
 
-    .condition-content{
+    .condition-content {
       background: #fff;
       padding: 36px 24px;
       display: grid;
-      grid-template-columns: repeat(3,1fr);
+      grid-template-columns: repeat(3, 1fr);
       grid-gap: 24px;
 
-      &-item{
+      &-item {
         padding: 13px 44px;
         font-size: 28px;
-        background: #F5F6F9;
-        color: #111A34;
+        background: #f5f6f9;
+        color: #111a34;
         border-radius: 33px;
         white-space: nowrap;
         text-align: center;
       }
 
-      .condition-active{
+      .condition-active {
         border: 1px solid var(--color-dianwu-primary);
         color: var(--color-dianwu-primary);
         font-weight: 500;
-        background: #E9F3FF;
+        background: #e9f3ff;
       }
     }
   }

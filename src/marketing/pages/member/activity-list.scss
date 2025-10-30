@@ -1,8 +1,25 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 $tag-bar-height: 90px;
 
 .page-activity-list {
-
-  .sp-tag-bar .tag-item.active{
+  .sp-tag-bar .tag-item.active {
     color: var(--color-primary);
   }
   .sp-tag-bar .tag-item {
@@ -11,8 +28,8 @@ $tag-bar-height: 90px;
     position: relative;
   }
 
-  .sp-tag-bar .tag-item.active::after{
-    content:'';
+  .sp-tag-bar .tag-item.active::after {
+    content: '';
     width: 56px;
     height: 7px;
     background: var(--color-primary);
@@ -20,7 +37,6 @@ $tag-bar-height: 90px;
     left: 30%;
     bottom: 0;
   }
-
 
   .search-input {
     padding: 16px;
@@ -35,7 +51,7 @@ $tag-bar-height: 90px;
         content: '';
         width: 1px;
         height: 34px;
-        border-right: 1px solid #BBBBBB;
+        border-right: 1px solid #bbbbbb;
         position: relative;
         margin-left: 12px;
       }
@@ -68,11 +84,11 @@ $tag-bar-height: 90px;
     width: 530px;
   }
 
-  .activity-item__content-btn{
+  .activity-item__content-btn {
     border-radius: 28px;
   }
 
-  .activity-item__content-btns{
+  .activity-item__content-btns {
     justify-content: space-between;
   }
 }

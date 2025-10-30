@@ -1,5 +1,22 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-trade-detail {
-
   .trade-detail-scroll {
     height: 100%;
     padding: 0 16px;
@@ -21,7 +38,7 @@
   }
 
   .padding-view {
-    height: 1PX;
+    height: 1px;
   }
 
   .trade-status {
@@ -31,7 +48,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      &-box{
+      &-box {
         display: flex;
         align-items: center;
       }
@@ -50,11 +67,11 @@
       margin-left: 16px;
     }
 
-    .deliver-opreator{
+    .deliver-opreator {
       display: flex;
       margin-left: 8px;
       align-items: center;
-      &-name{
+      &-name {
         max-width: 200px;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -62,7 +79,7 @@
         -webkit-line-clamp: 2;
         -webkit-box-orient: vertical;
       }
-      &-phone{
+      &-phone {
         color: #666;
         font-size: 24px;
         border: 1px #ccc solid;
@@ -159,7 +176,7 @@
       align-items: center;
       padding-bottom: 24px;
       margin-bottom: 15px;
-      border-bottom: 1PX solid #ddd;
+      border-bottom: 1px solid #ddd;
       .sp-image {
         margin-right: 20px;
       }
@@ -172,7 +189,7 @@
 
       .icon-dianhua {
         font-size: 30px;
-        color: #0091FF;
+        color: #0091ff;
         margin-left: 20px;
       }
     }
@@ -188,7 +205,7 @@
       position: relative;
       padding-bottom: 24px;
       margin-bottom: 24px;
-      border-bottom: 1PX solid #ddd;
+      border-bottom: 1px solid #ddd;
 
       .icon-shouhuodizhi-duoduan {
         font-size: 38px;
@@ -387,14 +404,14 @@
       margin: 0 0 0 20px;
 
       &.btn-active {
-        border: 1PX solid var(--color-primary);
+        border: 1px solid var(--color-primary);
         color: #fff;
         background-color: var(--color-primary);
       }
     }
   }
 
-  .time-line-item:last-child{
+  .time-line-item:last-child {
     border: none !important;
   }
 }

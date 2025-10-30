@@ -1,3 +1,21 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
 .page-purchase-auth-email {
   height: 100vh;
   background-color: #fff;
@@ -50,18 +68,18 @@
       }
 
       .form-item-message {
-        color: #EC2E3D;
+        color: #ec2e3d;
       }
     }
 
     .login-form {
       .unuse {
-        color: #CCCCCC !important;
+        color: #cccccc !important;
       }
 
       .error-form-item {
         .form-item-control {
-          border: 1PX solid #EC2E3D !important;
+          border: 1px solid #ec2e3d !important;
         }
       }
     }
@@ -76,39 +94,36 @@
         font-size: 28px;
         line-height: 88px;
       }
-
     }
 
     .code-box {
-        display: flex;
-        align-items: center;
-        .code-box-input {
-          .at-input__container {
-            flex: 1;
-            height: 88px;
-            border-radius: 44px;
-            border: 1px solid #707078;
-            margin-right: 26px;
-            padding: 0 36px;
-            box-sizing: border-box;
-            font-size: 28px;
-          }
+      display: flex;
+      align-items: center;
+      .code-box-input {
+        .at-input__container {
+          flex: 1;
+          height: 88px;
+          border-radius: 44px;
+          border: 1px solid #707078;
+          margin-right: 26px;
+          padding: 0 36px;
+          box-sizing: border-box;
+          font-size: 28px;
         }
+      }
     }
 
-    .sp-input__clear{
+    .sp-input__clear {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       color: #fff;
-      background: #D8D8D8;
+      background: #d8d8d8;
       text-align: center;
       line-height: 28px;
     }
 
-
     .mobile-timer {
-
       border-radius: 44px;
 
       width: 200px;
@@ -122,13 +137,11 @@
 
       &.unuse {
         color: var(--color-primary) !important;
-
-
       }
 
       &.mobile-timer__counting {
         border: none !important;
-        background: #EDEDEE !important;
+        background: #ededee !important;
       }
 
       // &::before {
@@ -147,7 +160,7 @@
     .err-info {
       margin: 10px 0 10px 30px;
       font-size: 24px;
-      color: #EC2E3D;
+      color: #ec2e3d;
     }
 
     .success-info {
@@ -161,7 +174,7 @@
       align-items: center;
 
       .icon {
-        color: #1AAD19;
+        color: #1aad19;
         font-size: 32px;
       }
     }
