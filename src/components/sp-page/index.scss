@@ -21,7 +21,7 @@
 
   .sp-page__body {
     box-sizing: border-box;
-    // overflow-y: auto;
+    overflow-y: auto;
   }
 
   .sp-page__footer {
@@ -49,6 +49,9 @@
     justify-content: center;
     gap: 10px;
     height: 80px;
+  }
+  .sp-page__body-content {
+    height: fit-content;
   }
 
   .float-container {

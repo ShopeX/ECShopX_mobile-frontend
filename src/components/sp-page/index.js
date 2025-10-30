@@ -464,21 +464,22 @@ const SpPage = memo(
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
-                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0) 
                 )
                 : 0
             })}
           >
-            <context.Provider value={{}}>{props.children}</context.Provider>
-
-            {!props.loading && <View className='sp-page__powered-by flex items-center justify-center text-center'>
-             <Text>Powered by</Text><SpImage src='powered-logo.png' width={120} />
-            </View>}
+            <View className='sp-page__body-content'>
+              <context.Provider value={{}}>
+                {props.children}
+              </context.Provider>
+              <View className='sp-page__powered-by'>
+                <Text>Powered by</Text><SpImage src='powered-logo.png' width={120} />
+              </View>
+            </View>
           </View>
         )}
         {props.loading && <SpLoading />}
-
-
         {props.renderFooter && (
           <View
             key={lang}
