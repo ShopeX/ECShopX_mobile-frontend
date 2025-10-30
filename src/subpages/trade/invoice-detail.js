@@ -118,7 +118,8 @@ function InvoiceDetail() {
     <SpPage
       className='invoice-detail'
       renderFooter={
-        (info?.invoice_status === 'success'&&info?.invoice_method !== 'offline') || info?.invoice_status === 'pending' ? (
+        (info?.invoice_status === 'success' && info?.invoice_method !== 'offline') ||
+        info?.invoice_status === 'pending' ? (
           <View className='btn-wrap'>
             {info?.invoice_status === 'success' && (
               <View

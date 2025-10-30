@@ -218,9 +218,9 @@ function OfflineTransfer() {
   const handleBatchAccount = (accountItem = {}) => {
     const nInfo = JSON.parse(JSON.stringify(info || {}))
 
-      ;['bank_account_name', 'bank_account_no', 'bank_name', 'china_ums_no'].forEach((item) => {
-        nInfo[item] = accountItem[item]
-      })
+    ;['bank_account_name', 'bank_account_no', 'bank_name', 'china_ums_no'].forEach((item) => {
+      nInfo[item] = accountItem[item]
+    })
 
     setState((draft) => {
       draft.info = nInfo

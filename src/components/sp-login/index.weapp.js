@@ -54,7 +54,6 @@ const SpLogin = forwardRef((props, ref) => {
     }
   }, [visible])
 
- 
   useEffect(() => {
     if (loginModal) {
       fetchPrivacyData()

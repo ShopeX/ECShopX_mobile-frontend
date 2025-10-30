@@ -274,7 +274,10 @@ function Group(props) {
         </View>
       }
     >
-      <ScrollView scrollY style={{ height: '100%',paddingBottom:'20rpx',boxSizing:'border-box' }}>
+      <ScrollView
+        scrollY
+        style={{ height: '100%', paddingBottom: '20rpx', boxSizing: 'border-box' }}
+      >
         <View className='page-header'>
           <View className='user-info'>
             <SpImage src={userInfo.avatar} mode='aspectFit' width={110} height={110} />

@@ -1,4 +1,4 @@
-import React, {  } from 'react'
+import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
@@ -48,7 +48,7 @@ function SpGoodsItem(props) {
     goodsType,
     lazyLoad
   } = props
-  const {isLogin} = useLogin()
+  const { isLogin } = useLogin()
 
   const handleFavClick = async (e) => {
     e.stopPropagation()
@@ -197,7 +197,8 @@ function SpGoodsItem(props) {
                     </View>
                   )}
 
-                  {info.vipPrice > 0 && isLogin &&
+                  {info.vipPrice > 0 &&
+                    isLogin &&
                     info.vipPrice < info.memberPrice &&
                     (!info.svipPrice || info.vipPrice > info.svipPrice) &&
                     enSvipPrice && (
@@ -207,7 +208,8 @@ function SpGoodsItem(props) {
                       </View>
                     )}
 
-                  {info.svipPrice > 0 && isLogin &&
+                  {info.svipPrice > 0 &&
+                    isLogin &&
                     info.svipPrice < info.vipPrice &&
                     info.svipPrice < info.memberPrice &&
                     enSvipPrice && (

@@ -7,7 +7,15 @@ import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { SG_POLICY } from '@/consts'
-import { classNames, showToast, formatTime, isWeixin, isWeb, VERSION_SHUYUN, goToPage } from '@/utils'
+import {
+  classNames,
+  showToast,
+  formatTime,
+  isWeixin,
+  isWeb,
+  VERSION_SHUYUN,
+  goToPage
+} from '@/utils'
 import imgUploader from '@/utils/upload'
 import { View, Input, Picker, Button, ScrollView } from '@tarojs/components'
 import i18n from '@/lang/consts'
@@ -361,78 +369,78 @@ function MemberUserInfo() {
         </AtButton>
       }
     >
-      <ScrollView scrollY style={{height:'100%'}}>
-      <View className='block-container'>
-        <SpCell title='头像' isLink border value={renderAvatar()}></SpCell>
-        <SpCell
-          title='昵称'
-          isLink
-          border
-          value={
-            <Input
-              name='nickname'
-              value={formUserInfo.username}
-              type='nickname'
-              class='input-field'
-              placeholder='请输入昵称'
-              onInput={onChangeUsername}
-              onConfirm={onChangeUsername}
-              onNickNameReview={onChangeUsername}
-            />
-          }
-        ></SpCell>
-        <SpCell
-          isLink={!dmcrm_is_open}
-          title='手机号'
-          value={userInfo?.mobile}
-          onClick={() => {
-            if (VERSION_SHUYUN) return
-            Taro.navigateTo({
-              url: '/subpages/auth/edit-phone'
-            })
-          }}
-        />
-      </View>
-
-      <View className='block-container'>
-        {formItems.map((item, index) => (
-          <SpCell
-            title={item.name}
-            isLink={item.element_type != 'input'}
-            key={`userinfo-item__${index}`}
-            border={index < formItems.length - 1}
-            value={renderFormItem(item)}
-          ></SpCell>
-        ))}
-      </View>
-
-      <View className='block-container'>
-        <SpCell
-          isLink
-          title='隐私政策和用户协议'
-          value={policyAgreeText}
-          onClick={() => {
-            Taro.navigateTo({
-              url: '/subpages/auth/reg-rule?type=privacyAndregister'
-            })
-          }}
-        ></SpCell>
-      </View>
-
-      <View className='block-container'>
-        <SpCell
-          isLink
-          title='注销账号'
-          value='注销后无法恢复，请谨慎操作'
-          onClick={handleLogOff}
-        ></SpCell>
-      </View>
-
-      {isWeb && (
+      <ScrollView scrollY style={{ height: '100%' }}>
         <View className='block-container'>
-          <SpCell isLink title='退出登录' value='退出当前账号' onClick={handleLogOut}></SpCell>
+          <SpCell title='头像' isLink border value={renderAvatar()}></SpCell>
+          <SpCell
+            title='昵称'
+            isLink
+            border
+            value={
+              <Input
+                name='nickname'
+                value={formUserInfo.username}
+                type='nickname'
+                class='input-field'
+                placeholder='请输入昵称'
+                onInput={onChangeUsername}
+                onConfirm={onChangeUsername}
+                onNickNameReview={onChangeUsername}
+              />
+            }
+          ></SpCell>
+          <SpCell
+            isLink={!dmcrm_is_open}
+            title='手机号'
+            value={userInfo?.mobile}
+            onClick={() => {
+              if (VERSION_SHUYUN) return
+              Taro.navigateTo({
+                url: '/subpages/auth/edit-phone'
+              })
+            }}
+          />
         </View>
-      )}
+
+        <View className='block-container'>
+          {formItems.map((item, index) => (
+            <SpCell
+              title={item.name}
+              isLink={item.element_type != 'input'}
+              key={`userinfo-item__${index}`}
+              border={index < formItems.length - 1}
+              value={renderFormItem(item)}
+            ></SpCell>
+          ))}
+        </View>
+
+        <View className='block-container'>
+          <SpCell
+            isLink
+            title='隐私政策和用户协议'
+            value={policyAgreeText}
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+              })
+            }}
+          ></SpCell>
+        </View>
+
+        <View className='block-container'>
+          <SpCell
+            isLink
+            title='注销账号'
+            value='注销后无法恢复，请谨慎操作'
+            onClick={handleLogOff}
+          ></SpCell>
+        </View>
+
+        {isWeb && (
+          <View className='block-container'>
+            <SpCell isLink title='退出登录' value='退出当前账号' onClick={handleLogOut}></SpCell>
+          </View>
+        )}
       </ScrollView>
 
       <SpFloatLayout

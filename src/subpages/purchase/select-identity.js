@@ -87,45 +87,40 @@ function SelectIdentity(props) {
       loading={loading}
       renderFooter={!loading && <CompTabbarActivity />}
     >
-      <ScrollView
-        className='identity-content'
-        scrollY
-        scrollWithAnimation
-      >
-
-      <View className='identity-item' onClick={onAddIdentityChange}>
-        <View className='identity-item-avatar'>
-          <Text className='iconfont icon-tianjia1 add-icon avatar'></Text>
+      <ScrollView className='identity-content' scrollY scrollWithAnimation>
+        <View className='identity-item' onClick={onAddIdentityChange}>
+          <View className='identity-item-avatar'>
+            <Text className='iconfont icon-tianjia1 add-icon avatar'></Text>
+          </View>
+          <View className='add-identity'>添加身份</View>
         </View>
-        <View className='add-identity'>添加身份</View>
-      </View>
-      <View className='content'>
-        <View className='identity'>
-          {identity.map((item, index) => {
-            return (
-              <View key={index} className='identity-item' onClick={() => handleItemClick(item)}>
-                <View className='identity-item-avatar'>
-                  <Image src={item?.logo} className='avatar' />
-                </View>
-                <View className='identity-item-content'>
-                  <View className='content-top'>
-                    <View className='company'>{item.name}</View>
+        <View className='content'>
+          <View className='identity'>
+            {identity.map((item, index) => {
+              return (
+                <View key={index} className='identity-item' onClick={() => handleItemClick(item)}>
+                  <View className='identity-item-avatar'>
+                    <Image src={item?.logo} className='avatar' />
                   </View>
-                  <View className='content-bottom'>
-                    <View className={classNames('role', item.is_relative == 1 ? 'friend' : '')}>
-                      {(item.is_employee == 1 && '员工') || (item.is_relative == 1 && '亲友')}
+                  <View className='identity-item-content'>
+                    <View className='content-top'>
+                      <View className='company'>{item.name}</View>
                     </View>
-                    <View className='account'>{item.login_account}</View>
+                    <View className='content-bottom'>
+                      <View className={classNames('role', item.is_relative == 1 ? 'friend' : '')}>
+                        {(item.is_employee == 1 && '员工') || (item.is_relative == 1 && '亲友')}
+                      </View>
+                      <View className='account'>{item.login_account}</View>
+                    </View>
                   </View>
+                  {curEnterpriseId == item.enterprise_id && (
+                    <View className='identity-item-right'>当前选中</View>
+                  )}
                 </View>
-                {curEnterpriseId == item.enterprise_id && (
-                  <View className='identity-item-right'>当前选中</View>
-                )}
-              </View>
-            )
-          })}
-        </View>
-        {/* {invalidIdentity?.length > 0 && (
+              )
+            })}
+          </View>
+          {/* {invalidIdentity?.length > 0 && (
           <View className='invalid-identity'>
             <View className='title'>已失效身份</View>
             {state.invalidIdentity?.map((item, index) => (
@@ -148,7 +143,7 @@ function SelectIdentity(props) {
             ))}
           </View>
         )} */}
-      </View>
+        </View>
       </ScrollView>
     </SpPage>
   )

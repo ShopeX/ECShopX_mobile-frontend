@@ -169,7 +169,7 @@ function MemberIndex(props) {
       })
       const url = `/pageparams/setting?${pathparams}`
       const { config = [], share } = await req.get(url)
-      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config,share)
+      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config, share)
       const pageData = config.find((wgt) => wgt.name == 'page')
       setState((draft) => {
         draft.wgts = config

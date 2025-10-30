@@ -24,7 +24,14 @@ import {
 import { BUY_TOOL_BTNS } from '@/consts'
 import api from '@/api'
 import { useAsyncCallback } from '@/hooks'
-import { classNames, showToast, entryLaunch, getDistributorId, VERSION_STANDARD, isWeb } from '@/utils'
+import {
+  classNames,
+  showToast,
+  entryLaunch,
+  getDistributorId,
+  VERSION_STANDARD,
+  isWeb
+} from '@/utils'
 import './index.scss'
 
 // 数据类型
@@ -52,12 +59,12 @@ function SpSkuSelect(props) {
   const {
     info,
     open = false,
-    onClose = () => { },
-    onChange = () => { },
+    onClose = () => {},
+    onChange = () => {},
     type,
     hideInputNumber = false,
     salesman = false,
-    onSubscribe = () => { }
+    onSubscribe = () => {}
   } = props
   console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
@@ -162,10 +169,7 @@ function SpSkuSelect(props) {
       const reg = makeReg(sel, row, val)
 
       return Object.keys(skuDictRef.current).some((key) => {
-        return (
-          key.match(reg) &&
-          ['onsale'].includes(skuDictRef.current[key].approveStatus)
-        )
+        return key.match(reg) && ['onsale'].includes(skuDictRef.current[key].approveStatus)
       })
     }
 
@@ -391,7 +395,7 @@ function SpSkuSelect(props) {
     })
   }
 
-  const handleSubscribe = async() => {
+  const handleSubscribe = async () => {
     const { dtid } = $instance.router.params
     // console.log('onSubscribe:subscribe', subscribe)
 
@@ -426,11 +430,11 @@ function SpSkuSelect(props) {
       }
     })
     if (curItem?.store <= 0) {
-     return (
-      <AtButton circle type='primary'  onClick={handleSubscribe}>
-        {BUY_TOOL_BTNS().NOTICE.title}
-      </AtButton>
-     )
+      return (
+        <AtButton circle type='primary' onClick={handleSubscribe}>
+          {BUY_TOOL_BTNS().NOTICE.title}
+        </AtButton>
+      )
     } else if (type == 'picker') {
       return (
         <AtButton circle type='primary' onClick={onClose}>

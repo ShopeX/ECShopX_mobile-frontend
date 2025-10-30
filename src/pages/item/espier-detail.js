@@ -653,12 +653,9 @@ function EspierDetail(props) {
                     })
                   }}
                 >
-                <SpCell
-                  title='规格'
-                  isLink
-                >
-                  <Text className='cell-value'>{skuText}</Text>
-                </SpCell>
+                  <SpCell title='规格' isLink>
+                    <Text className='cell-value'>{skuText}</Text>
+                  </SpCell>
                 </SpLogin>
               </View>
             )}

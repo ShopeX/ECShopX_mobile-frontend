@@ -106,12 +106,7 @@ function StoreItemList() {
       params['category'] = main_cat_id
     }
 
-    const {
-      list,
-      total_count,
-      select_tags_list = [],
-      brand_list
-    } = await api.item.search(params)
+    const { list, total_count, select_tags_list = [], brand_list } = await api.item.search(params)
     console.time('list render')
     const n_list = pickBy(list, doc.goods.ITEM_LIST_GOODS)
     const resLeftList = n_list.filter((item, index) => {
@@ -201,9 +196,6 @@ function StoreItemList() {
     goodsRef.current.reset()
   }
 
-
-
-
   const handleClickStore = (item) => {
     const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
     Taro.navigateTo({
@@ -267,11 +259,7 @@ function StoreItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView
-        className='item-list-scroll'
-        ref={goodsRef}
-        fetch={fetch}
-      >
+      <SpScrollView className='item-list-scroll' ref={goodsRef} fetch={fetch}>
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {

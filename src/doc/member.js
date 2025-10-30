@@ -1,5 +1,3 @@
-
-
 export const VIP_GRADE_ITEM = {
   grade_name: 'grade_name',
   description: 'description',
