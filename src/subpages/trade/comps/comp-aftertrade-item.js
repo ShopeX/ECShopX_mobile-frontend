@@ -38,9 +38,15 @@ function CompTradeItem(props) {
   const onViewStorePage = (e) => {
     if (!VERSION_STANDARD) {
       e.stopPropagation()
-      Taro.navigateTo({
-        url: `/subpages/store/index?id=${distributorId}`
-      })
+      if (distributorId == 0) {
+        Taro.redirectTo({
+          url: '/pages/index'
+        })
+      } else {
+        Taro.navigateTo({
+          url: `/subpages/store/index?id=${distributorId}`
+        })
+      }
     }
   }
 
@@ -52,7 +58,7 @@ function CompTradeItem(props) {
     <View className='comp-tradeitem'>
       <View className='trade-item-hd' onClick={onViewTradeDetail}>
         <View>
-      <View className='shop-info' onClick={onViewStorePage}>
+          <View className='shop-info' onClick={onViewStorePage}>
             <SpImage src={distributorInfo?.logo} width={100} height={100} />
             <View className='shop-name'>
               {distributorInfo?.name}
@@ -75,13 +81,15 @@ function CompTradeItem(props) {
 
         <View className='trade-total'>
           <View className='delivery'></View>
-         {
-            orderClass == 'pointsmall' && <View>
+          {orderClass == 'pointsmall' && (
+            <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>{pointName}</Text>
-              <Text className='point-value' style='font-size: 20px;'>{point}</Text>
+              <Text className='point-value' style='font-size: 20px;'>
+                {point}
+              </Text>
             </View>
-          } 
+          )}
           {orderClass == 'normal' && (
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
