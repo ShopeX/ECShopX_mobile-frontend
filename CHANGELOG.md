@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file. See [standa
 
 ## [3.26.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.25.0...v3.26.0) (2025-11-03)
 
+
+### Features
+
+*  待评价订单增加查看物流入口按钮 ([6ef04ac](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6ef04ac0c4c4bf0491864479657c23803e0e66ba))
+* 更新门店列表 ([dc5f655](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/dc5f65550dfdc52a6c4bd631dbb4fedeac685106))
+* 更新切换店铺加购逻辑 ([35c5509](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/35c550906e8f8c81322a216eb9587d314f471d0b))
+* 更新售后子单金额展示,积分原因展示 ([fb625e1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/fb625e1afc744104d975c75a44d289c8704f89e9))
+* 积分详情展示问题 ([72e9b07](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/72e9b076fde4fc4e6b862ac7455d1e4353d01d4e))
+* 上报导购埋点条件判断 ([89f8331](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/89f8331251244cc25608e449d82f338ccd8b1165))
+* 修复积分下单错误 ([f92b03e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f92b03ea8cc7df0e96d8a6d2d22b97f2ff4bcfeb))
+* 增加入店规则 ([0043318](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/004331832f5a42c8b6a3f53c9da01cb3ce6d2f50))
+
+
+### Bug Fixes
+
+* 更新进店规则 ([00d2f27](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/00d2f271806ff2a363d928ef4ba7dfb703f4d748))
+* 积分下单页增加开发票入口 ([684d662](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/684d662431afb7f3a76a9012678cd75538d21a15))
+* 加购获取店铺id修复 ([162ec85](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/162ec859ea817ae6997c9e64a829f6f579ed9191))
+* 开发票提交按钮增加防抖 ([4298315](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4298315f277c7e0f585628964a7a2c12212c1583))
+* 修复订单跳详情商品错误 ([ddaec9d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/ddaec9d955bfc1d12ed26dd1c224d0afa8cd8979))
+* 修复发票失败文案 ([6b5b631](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6b5b6310fad9886e9ba8c76c6aa06bad45ff91b1))
+* 修复加购取门店值错误,和首页启动取门店值错误 ([7716717](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/771671797e677cbb2c7d175ee06d2fb82cf0fb87))
+* 移除ext.json ([b280636](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/b28063640362aa4ac109fb92442c04f4d20fb883))
+* 已发货订单隐藏仅退款选项 ([45e9072](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/45e9072e0a4b959892e13c7e7138c405025ca191))
+* 运费金额增加积分抵扣 ([3012662](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/30126625cf7630104a012f24170a2e10768b7f71))
+* 种草详情添加进店逻辑 ([4844fe8](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/4844fe8d7a5a8fe0efd75f6191c7a2c59e0ffbbe))
+* 重新触发进店规则 ([daa481e](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/daa481e18465b53413bfdb8dd6e155d83184b305))
+* **custom:** 1015辉绮项目代码同步 ([96749c6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/96749c6acd54cebe6273a0f0fd929aef71889730))
+* **custom:** 分享落地页 ([00127de](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/00127de423788649d8ed769f26421f9908fd9977))
+* **custom:** 辉绮-分享改造 ([06c6099](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/06c6099e4e388db75fb39fa5d2ddb47991bf3619))
+* instore ([f481e1c](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/f481e1cb62104feb44e96ac85ac1c1c5d8f666eb))
+* storeList ([70591fd](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/70591fd9067767d448dc29f6ddfa3f2e484c0035))
+
 ## [3.25.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v3.26.0...v3.25.0) (2025-11-03)
 
 ### Features
