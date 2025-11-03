@@ -64,7 +64,6 @@ function SpSkuSelect(props) {
     type,
     hideInputNumber = false
   } = props
-  console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { purchase_share_info = {} } = useSelector((state) => state.purchase)

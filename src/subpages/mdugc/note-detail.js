@@ -32,7 +32,7 @@ import {
 } from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
-import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
+import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber, buildSharePath } from '@/utils'
 
 import api from '@/api'
 import doc from '@/doc'
@@ -157,10 +157,11 @@ function UgcNoteDetail(props) {
         draft.info['shareNums'] = shareInfo.share_nums
       })
     }
-    console.log(`useShareAppMessage:`, `/subpages/mdugc/note-detail?post_id=${post_id}`)
+    const path = buildSharePath('poster_mdugc_detail', { post_id })
+    console.log(`useShareAppMessage:`, path)
     return {
       title: info.title,
-      path: `/subpages/mdugc/note-detail?post_id=${post_id}`,
+      path,
       imageUrl: info.cover
     }
   })

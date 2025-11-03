@@ -25,6 +25,7 @@ import { SpPrice, SpCell, SpFloatLayout, SpPage, SpImage, SpInput as AtInput } f
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin, entryLaunch, authSetting, showToast, validate } from '@/utils'
+import { debounce } from 'lodash'
 import './invoice.scss'
 
 const initialState = {
@@ -154,7 +155,7 @@ function Invoice(props) {
     })
   }
 
-  const handleClickSubmit = async () => {
+  const handleClickSubmit = debounce(async () => {
     if (!isFull()) {
       return
     }
@@ -202,7 +203,10 @@ function Invoice(props) {
         url: `/subpages/trade/invoice-success?invoice_id=${res.id}`
       })
     }
-  }
+  }, 1000,{
+    leading: true,
+    trailing: false
+  })
 
   const handleChange = (name, val) => {
     const nInfo = JSON.parse(JSON.stringify(state.info || {}))
