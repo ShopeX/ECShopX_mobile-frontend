@@ -82,8 +82,11 @@ function ShareIand() {
 
     // 过滤掉内部使用的参数
     const filteredParams = { ...otherParams }
-    delete filteredParams.scene
+    // delete filteredParams.scene
     delete filteredParams.$taroTimestamp
+    if (router.params?.scene) {
+      filteredParams.scene = router.params.scene
+    }
     const queryString = qs.stringify(filteredParams)
 
     const targetUrl = queryString ? `${welcomeRoutes[from_scene]}?${queryString}` : welcomeRoutes[from_scene]
@@ -120,7 +123,7 @@ function ShareIand() {
     
     // 过滤掉内部使用的参数
     const filteredParams = { ...otherParams }
-    delete filteredParams.scene
+    // delete filteredParams.scene
     delete filteredParams.$taroTimestamp
     
     // 确保路径以 / 开头
