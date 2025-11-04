@@ -84,7 +84,7 @@ function ShareIand() {
     const filteredParams = { ...otherParams }
     // delete filteredParams.scene
     delete filteredParams.$taroTimestamp
-    if (router.params?.scene) {
+    if (router.params?.scene) { // 跳转的时候需要把scene参数传递过去,不然代客下单的时候会有问题
       filteredParams.scene = router.params.scene
     }
     const queryString = qs.stringify(filteredParams)
