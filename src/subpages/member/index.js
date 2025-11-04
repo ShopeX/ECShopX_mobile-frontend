@@ -131,7 +131,7 @@ function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin, getUserInfo } = useLogin({
+  const { isLogin, getUserInfo, isNewUser } = useLogin({
     autoLogin: false,
     // policyUpdateHook: (isUpdate) => {
     //   // isUpdate && setPolicyModal(true)
