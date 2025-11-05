@@ -131,6 +131,7 @@ function CartCheckout(props) {
     scene, // 情景值
     goodType = routerParams.goodType
   } = $instance?.router?.params || {}
+  const { scene: launchScene } = Taro.getLaunchOptionsSync()
   console.log('$instance.router?.params:', $instance.router)
 
   useEffect(() => {
@@ -477,7 +478,7 @@ function CartCheckout(props) {
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
     }
-    if (storageParams?.cxdid && scene) {
+    if (storageParams?.cxdid && launchScene == 1047) {
       url = `${url}&cxdid=${storageParams?.cxdid}`
     }
     Taro.navigateTo({
@@ -806,8 +807,7 @@ function CartCheckout(props) {
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
-    if (storageParams?.cxdid && scene) {
-      debugger
+    if (storageParams?.cxdid && launchScene == 1047) {
       cus_parmas.cxdid = storageParams?.cxdid;
       cus_parmas.distributor_id = storageParams?.dtid;
       cus_parmas.cart_type = "cxd";

@@ -82,11 +82,8 @@ function ShareIand() {
 
     // 过滤掉内部使用的参数
     const filteredParams = { ...otherParams }
-    // delete filteredParams.scene
+    delete filteredParams.scene
     delete filteredParams.$taroTimestamp
-    if (router.params?.scene) { // 跳转的时候需要把scene参数传递过去,不然代客下单的时候会有问题
-      filteredParams.scene = router.params.scene
-    }
     const queryString = qs.stringify(filteredParams)
 
     const targetUrl = queryString ? `${welcomeRoutes[from_scene]}?${queryString}` : welcomeRoutes[from_scene]
@@ -123,7 +120,7 @@ function ShareIand() {
     
     // 过滤掉内部使用的参数
     const filteredParams = { ...otherParams }
-    // delete filteredParams.scene
+    delete filteredParams.scene
     delete filteredParams.$taroTimestamp
     
     // 确保路径以 / 开头
