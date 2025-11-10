@@ -47,7 +47,7 @@ const CompPasswordInput = (props) => {
       <AtInput
         clear
         type={type}
-        placeholder={PASSWORD_TIP}
+        placeholder={PASSWORD_TIP()}
         placeholderClass='input-placeholder'
         onChange={onChange}
         onFocus={onFocus}

@@ -438,8 +438,10 @@ function CartIndex() {
                             onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
                           />
                         </View>
+                      </View>
+                      <View className='shop-cart-item-ft'>
                         <View className='rg'>
-                          <View>
+                          <View className='rg-lt'>
                             <View className='total-price-wrap'>
                               合计：
                               <SpPrice className='total-pirce' value={all_item.total_fee / 100} />

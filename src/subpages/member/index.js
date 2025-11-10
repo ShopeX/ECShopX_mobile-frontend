@@ -505,7 +505,7 @@ function MemberIndex(props) {
   }
 
   const memberBckStyle = {
-    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`
+    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / cover`
   }
 
   return (

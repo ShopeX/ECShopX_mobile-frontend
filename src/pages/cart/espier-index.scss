@@ -28,13 +28,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px 0;
+    padding: 20px;
     /*  #ifdef  alipay  */
     padding-top: 40px;
     /*  #endif  */
     .login-txt {
-      color: $color-brand-accent;
+      color: #999999;
       margin-right: 10px;
+      line-height: 1.2;
+      flex: 1;
     }
     .btn-login {
       background: var(--color-primary);
@@ -42,7 +44,7 @@
       line-height: 40px;
       color: #fff;
       border-radius: 40px;
-      padding: 0 6px;
+      padding: 6px 12px;
     }
   }
   .recommend-icon {
@@ -54,7 +56,10 @@
     padding: 0 16px;
     padding-top: 40px;
     &-shadow {
+      padding: 10px;
+      background: #ffffff;
       box-shadow: 0px 2px 10px 0px #eae7e0;
+      border-radius: 5px;
     }
     &-hd {
       font-size: 30px;
@@ -74,11 +79,15 @@
       .rg {
         display: flex;
         align-items: center;
-        .total-pirce {
-          font-size: 40px;
-        }
-        .btn-calc {
-          margin-left: 16px;
+        width: 100%;
+        .rg-lt {
+          flex: 1;
+          .total-pirce {
+            font-size: 40px;
+          }
+          .btn-calc {
+            margin-left: 16px;
+          }
         }
       }
     }

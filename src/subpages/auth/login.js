@@ -403,7 +403,7 @@ export default class Login extends Component {
                   </View>
                 </View>
               )}
-              {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP}</View>} */}
+              {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP()}</View>} */}
               <View className='btn-text-group'>
                 <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
                   {passwordLogin ? '验证码登录' : '密码登录'}
