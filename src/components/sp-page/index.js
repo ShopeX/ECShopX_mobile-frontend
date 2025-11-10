@@ -175,7 +175,7 @@ const SpPage = memo(
         menuWidth: _menuWidth,
         footerHeight: _height
       })
-    }, [])
+    }, [sys])
 
     useEffect(() => {
       const {
