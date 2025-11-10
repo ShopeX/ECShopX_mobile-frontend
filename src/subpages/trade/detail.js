@@ -41,7 +41,6 @@ import CompTradeCancel from './comps/comp-tradecancel'
 import CompWriteOffCode from './comps/comp-writeoff-code'
 import CompTrackDetail from './comps/comp-track-detail'
 import './detail.scss'
-import { includes } from 'lodash'
 
 const initialState = {
   info: null,
@@ -55,11 +54,11 @@ const initialState = {
   webSocketOpenFlag: false,
   openTrackDetail: false,
   trackDetailList: [],
-  squareRoot: false,  //待开方
-  supplement: false,  //待补充
+  squareRoot: false, //待开方
+  supplement: false, //待补充
   prescriptionUrl: '',
   prescriptionStatus: false,
-  openingTime:'squareRoots',
+  openingTime: 'squareRoots'
 }
 function TradeDetail(props) {
   const [state, setState] = useImmer(initialState)
@@ -91,16 +90,14 @@ function TradeDetail(props) {
   const router = useRouter()
   const websocketRef = useRef(null)
 
-  const isMounted = useRef(true)  // 添加组件挂载状态标志
+  const isMounted = useRef(true) // 添加组件挂载状态标志
 
-  useDidShow(()=>{
-
-  })
+  useDidShow(() => {})
 
   useEffect(() => {
     fetch()
 
-    isMounted.current = true  // 组件挂载时设置为true
+    isMounted.current = true // 组件挂载时设置为true
 
     // 提交售后事件
     Taro.eventCenter.on('onEventAfterSalesApply', () => {
@@ -108,7 +105,6 @@ function TradeDetail(props) {
     })
     // 撤销售后事件
     Taro.eventCenter.on('onEventAfterSalesCancel', () => {
-
       fetch()
     })
     //线下转账
@@ -130,10 +126,9 @@ function TradeDetail(props) {
       Taro.eventCenter.off('onEventOfflineApply')
       Taro.eventCenter.off('onEventInvoiceStatusChange')
 
-      isMounted.current = false  // 组件卸载时设置为false
+      isMounted.current = false // 组件卸载时设置为false
     }
   }, [openingTime])
-
 
   const totalFreightFee = useMemo(() => {
     const { freightFee, freightPointFee } = info || {}
@@ -141,7 +136,7 @@ function TradeDetail(props) {
   }, [info?.freightFee, info?.freightPointFee])
 
   const fetch = async () => {
-    const { order_id  } = await parameter()
+    const { order_id } = await parameter()
     const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态
@@ -154,8 +149,14 @@ function TradeDetail(props) {
       draft.cancelData = isArray(cancelData) ? null : cancelData
       draft.distirbutorInfo = distributor
       draft.loading = false
-      draft.squareRoot = _orderInfo.orderStatus == 'NOTPAY' && _orderInfo.prescriptionStatus == 1 && _orderInfo?.diagnosisData?.id
-      draft.supplement = _orderInfo.orderStatus == 'NOTPAY' && _orderInfo.prescriptionStatus == 1 && isArray(_orderInfo?.diagnosisData)
+      draft.squareRoot =
+        _orderInfo.orderStatus == 'NOTPAY' &&
+        _orderInfo.prescriptionStatus == 1 &&
+        _orderInfo?.diagnosisData?.id
+      draft.supplement =
+        _orderInfo.orderStatus == 'NOTPAY' &&
+        _orderInfo.prescriptionStatus == 1 &&
+        isArray(_orderInfo?.diagnosisData)
     })
   }
 
@@ -247,16 +248,20 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId,activityId,orderClass }) => {
-    if(orderClass == 'employee_purchase'){
+  const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
+    if (orderClass == 'employee_purchase') {
       Taro.navigateTo({
-        url:`/subpages/purchase/espier-detail?id=${itemId}&dtid=${distributorId || 0}&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+        url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
+          distributorId || 0
+        }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
       })
-    }  else if(orderClass == 'pointsmall'){
+    } else if (orderClass == 'pointsmall') {
       Taro.navigateTo({
-        url:`/subpages/pointshop/espier-detail?id=${itemId}&dtid=${distributorId || 0}&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
+        url: `/subpages/pointshop/espier-detail?id=${itemId}&dtid=${
+          distributorId || 0
+        }&activity_id=${activityId}&enterprise_id=${info.enterpriseId}`
       })
-    }else{
+    } else {
       Taro.navigateTo({
         url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
       })
@@ -342,17 +347,17 @@ function TradeDetail(props) {
     if (info.receiptType == 'dada') {
       // 达达同城配，订单状态单独处理
       return ORDER_DADA_STATUS[info.dada?.dadaStatus]?.msg
-    }else if (squareRoot) {
+    } else if (squareRoot) {
       return '待医生开方'
     } else if (supplement) {
       return '待补充处方信息'
     } else if (info.deliveryStatus == 'PARTAIL') {
       return '部分商品已发货'
-  } else if (info.cancelStatus == 'WAIT_PROCESS') {
+    } else if (info.cancelStatus == 'WAIT_PROCESS') {
       return '订单取消，退款处理中'
-    }else if (info.zitiStatus == 'PENDING' && info.orderStatus == "PAYED") {
+    } else if (info.zitiStatus == 'PENDING' && info.orderStatus == 'PAYED') {
       return '等待核销'
-    }  else if (
+    } else if (
       info.orderStatus == 'NOTPAY' &&
       info.payType == 'offline_pay' &&
       info.offlinePayCheckStatus == '0'
@@ -385,7 +390,11 @@ function TradeDetail(props) {
       }
 
       // 自提订单
-      if (info.receiptType == 'ziti' && info.orderStatus == "PAYED" && info.zitiStatus == 'PENDING') {
+      if (
+        info.receiptType == 'ziti' &&
+        info.orderStatus == 'PAYED' &&
+        info.zitiStatus == 'PENDING'
+      ) {
         btns.unshift(tradeActionBtns.WRITE_OFF)
       }
 
@@ -416,7 +425,7 @@ function TradeDetail(props) {
     // const routeParams = await entryLaunch.getRouteParams()
     // return routeParams && routeParams.order_id ? routeParams : storedData
     const order_id = router.params?.order_id
-    return  order_id ? {order_id} : storedData
+    return order_id ? { order_id } : storedData
   }
 
   const handleCallOpreator = () => {
@@ -479,7 +488,6 @@ function TradeDetail(props) {
     })
   }
 
-
   return (
     <SpPage
       className='page-trade-detail'
@@ -495,13 +503,12 @@ function TradeDetail(props) {
                 <SpImage src={getTradeStatusIcon()} width={50} height={50} />
                 <Text className='status-desc'>{getTradeStatusDesc()}</Text>
               </View>
-              {
-                supplement &&
+              {supplement && (
                 <View className='trade-status-desc-name' onClick={onSupplement}>
                   <Text className='iconfont icon-bianji1'></Text>
                   前往补充
                 </View>
-              }
+              )}
 
               {info?.selfDeliveryOperatorName && info?.selfDeliveryOperatorMobile && (
                 <View className='deliver-opreator'>
@@ -513,7 +520,7 @@ function TradeDetail(props) {
                       拨打电话
                     </Text>
                   </View>
-                <View>
+                  <View>
                     <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>
                       订单跟踪
                     </Text>
@@ -541,8 +548,7 @@ function TradeDetail(props) {
           )}
         </View>
 
-        {
-          info?.prescriptionStatus > 0 &&
+        {info?.prescriptionStatus > 0 && (
           <View className='information'>
             <View className='title'>
               <Text className='title-num'>1</Text>
@@ -550,8 +556,14 @@ function TradeDetail(props) {
             </View>
             <View className='titled'>-----</View>
             <View className='titled'>
-              <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>2</Text>
-              <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>医生开方</Text>
+              <Text
+                className={squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}
+              >
+                2
+              </Text>
+              <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
+                医生开方
+              </Text>
             </View>
             <View className='titled'>-----</View>
             <View className='titled'>
@@ -559,9 +571,8 @@ function TradeDetail(props) {
               <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
             </View>
           </View>
-        }
-        {
-          (squareRoot && !supplement) &&
+        )}
+        {squareRoot && !supplement && (
           <View className='opening-time'>
             <View className='opening-time-title'>处方已开具，正在药师审方中，请等待！</View>
             <View className='opening-time-content'>
@@ -572,8 +583,7 @@ function TradeDetail(props) {
               />
             </View>
           </View>
-        }
-          
+        )}
 
         {
           // 普通快递
@@ -635,7 +645,7 @@ function TradeDetail(props) {
           info?.receiptType == 'dada' && info.dada.dadaStatus > 1 && info.dada.dadaStatus !== 5 && (
             <View className='block-container dada-qishou-info'>
               <View className='qishou'>
-                <SpImage src={'qishi.png'} width={80} height={80} />
+                <SpImage src='qishi.png' width={80} height={80} />
                 <Text className='qishou-name'>骑手：{info.dada.dmName}</Text>
                 <Text
                   className='iconfont icon-dianhua'
@@ -721,7 +731,9 @@ function TradeDetail(props) {
               title='总价'
               value={(() => {
                 if (info?.orderClass === 'pointsmall') {
-                  return `${pointName} ${info?.itemPoint}${info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''}`
+                  return `${pointName} ${info?.itemPoint}${
+                    info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
+                  }`
                 } else {
                   return <SpPrice value={info?.itemFee} size={28} />
                 }
@@ -747,19 +759,21 @@ function TradeDetail(props) {
                 )
               })()}
             />
-            {info?.pointFee > 0 &&
+            {info?.pointFee > 0 && (
               <SpCell
                 title='积分抵扣'
                 value={(() => {
                   return <SpPrice value={info?.pointFee} size={28} />
-              })()}
+                })()}
               />
-            }
+            )}
             <SpCell
               title='实付'
               value={(() => {
                 if (info?.orderClass === 'pointsmall') {
-                  return `${pointName} ${info?.point}${info?.totalFee >0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''}`
+                  return `${pointName} ${info?.point}${
+                    info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
+                  }`
                 } else {
                   return <SpPrice value={info?.totalFee} size={28} />
                 }
@@ -769,64 +783,64 @@ function TradeDetail(props) {
         </View>
         {/* <View className='block-container'>
         </View> */}
-        {
-          console.log(info, 'info------')
-        }
+        {console.log(info, 'info------')}
 
-        {
-          info?.prescriptionStatus > 0 && !supplement &&
+        {info?.prescriptionStatus > 0 && !supplement && (
           <View className='block-container order-info'>
             <View className='block-container-label'>处方信息</View>
-            {
-              info?.diagnosisData?.doctor_name &&
+            {info?.diagnosisData?.doctor_name && (
               <SpCell
                 title='开方医生'
                 value={(() => {
+                  return <View>{info?.diagnosisData?.doctor_name}</View>
+                })()}
+              />
+            )}
+            {info?.diagnosisData?.location_url && (
+              <SpCell
+                title='开方记录'
+                value={(() => {
                   return (
-                    <View>
-                      {info?.diagnosisData?.doctor_name}
+                    <View
+                      className='block-container-link'
+                      onClick={() => {
+                        const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
+                        Taro.redirectTo({
+                          url: `/pages/webview?url=${webviewSrc}`
+                        })
+                      }}
+                    >
+                      查看 <Text className='iconfont icon-qianwang-01' />
                     </View>
                   )
                 })()}
               />
-            }
-            {
-              info?.diagnosisData?.location_url &&
-              <SpCell title='开方记录' value={(() => {
-                return (
-                  <View className='block-container-link' onClick={() => {
-                    const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
-                    Taro.redirectTo({
-                      url: `/pages/webview?url=${webviewSrc}`
-                    })
-                  }}>
-                    查看 <Text className='iconfont icon-qianwang-01' />
-                  </View>
-                )
-              })()}
+            )}
+            {info?.prescriptionData?.audit_apothecary_name && (
+              <SpCell
+                title='审方药师'
+                value={(() => {
+                  return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
+                })()}
               />
-            }
-            {info?.prescriptionData?.audit_apothecary_name &&
-              <SpCell title='审方药师' value={(() => {
-                return (
-                  <View>
-                    {info?.prescriptionData?.audit_apothecary_name}
-                  </View>
-                )
-              })()}
+            )}
+            {info?.prescriptionData?.dst_file_path && (
+              <SpCell
+                title='电子处方'
+                value={(() => {
+                  return (
+                    <View
+                      className='block-container-link'
+                      onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
+                    >
+                      查看 <Text className='iconfont icon-qianwang-01' />
+                    </View>
+                  )
+                })()}
               />
-            }
-            {info?.prescriptionData?.dst_file_path && <SpCell title='电子处方' value={(() => {
-              return (
-                <View className='block-container-link' onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}>
-                  查看 <Text className='iconfont icon-qianwang-01' />
-                </View>
-              )
-            })()}
-            />}
+            )}
           </View>
-        }
-
+        )}
 
         <View className='block-container order-info'>
           <View className='block-container-label'>订单信息</View>
@@ -913,13 +927,16 @@ function TradeDetail(props) {
         }}
       />
 
-      <AtFloatLayout title="电子处方" isOpened={prescriptionStatus} onClose={handleClose}>
+      <AtFloatLayout title='电子处方' isOpened={prescriptionStatus} onClose={handleClose}>
         <View className='long-press'>长按可保存处方图片</View>
-        <SpImage src={prescriptionUrl} onClick={() => {
-          Taro.previewImage({
-            urls: prescriptionUrl
-          })
-        }}></SpImage>
+        <SpImage
+          src={prescriptionUrl}
+          onClick={() => {
+            Taro.previewImage({
+              urls: prescriptionUrl
+            })
+          }}
+        ></SpImage>
       </AtFloatLayout>
     </SpPage>
   )
