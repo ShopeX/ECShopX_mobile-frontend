@@ -16,19 +16,18 @@
 // | Contact: 400-821-3106
 // +----------------------------------------------------------------------
 import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import Taro, {
   useRouter,
   useDidShow,
   useDidHide,
   usePageScroll,
-  getCurrentInstance,
-  useReady
+  getCurrentInstance
 } from '@tarojs/taro'
-import { View, Text, ScrollView, Button } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
-import { useSyncCallback, useWhiteShop, useThemsColor, useLogin } from '@/hooks'
+import { useThemsColor, useLogin } from '@/hooks'
 import {
   TAB_PAGES,
   TABBAR_PATH,
@@ -43,7 +42,6 @@ import {
   isWeixin,
   isAlipay,
   isIphoneX,
-  getDistributorId,
   VERSION_IN_PURCHASE,
   isGoodsShelves,
   linkPage,
@@ -93,7 +91,6 @@ const SpPage = memo(
     const [showToTop, setShowToTop] = useState(false)
     const { appName } = sys
     const { themeColor } = useThemsColor()
-    const dispatch = useDispatch()
     const { login } = useLogin()
 
     useEffect(() => {
@@ -178,7 +175,7 @@ const SpPage = memo(
         menuWidth: _menuWidth,
         footerHeight: _height
       })
-    }, [])
+    }, [sys])
 
     useEffect(() => {
       const {
@@ -415,7 +412,6 @@ const SpPage = memo(
                   </View>
                 )}
               </View>
-
               <View
                 className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
                 style={styleNames(pageCenterStyle)}

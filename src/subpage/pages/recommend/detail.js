@@ -60,6 +60,7 @@ export default class recommendDetail extends Component {
         screenWidth: res.screenWidth
       })
     })
+    entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
   }
 

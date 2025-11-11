@@ -28,6 +28,7 @@ import { useImmer } from 'use-immer'
 import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
+import { buildSharePath } from '@/utils'
 
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
@@ -130,7 +131,7 @@ function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin, getUserInfo } = useLogin({
+  const { isLogin, getUserInfo, isNewUser } = useLogin({
     autoLogin: false,
     // policyUpdateHook: (isUpdate) => {
     //   // isUpdate && setPolicyModal(true)
@@ -218,10 +219,11 @@ function MemberIndex(props) {
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })
+    const path = buildSharePath('poster_home', {})
     return {
       title: state.shareInfo.page_share_title || share_title,
       imageUrl: state.shareInfo.page_share_imageUrl || share_pic_wechatapp || logo,
-      path: '/pages/index'
+      path: path
     }
   })
 
@@ -473,13 +475,17 @@ function MemberIndex(props) {
       Taro.navigateTo({ url: link })
     }
   }
+
+  const onLoginChange = (url) => {
+    if (!isLogin || !url) return
+    Taro.navigateTo({ url })
+  }
+
   const VipGradeDom = () => {
     return (
       <View
         className='user-grade-name'
-        onClick={() => {
-          Taro.navigateTo({ url: '/subpages/member/member-level' })
-        }}
+        onClick={() => onLoginChange('/subpages/member/member-level')}
       >
         <Text>
           {
@@ -499,7 +505,7 @@ function MemberIndex(props) {
   }
 
   const memberBckStyle = {
-    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`
+    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / cover`
   }
 
   return (
@@ -521,15 +527,11 @@ function MemberIndex(props) {
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <View className='user-info-card'>
+          <SpLogin newUser={isNewUser} className='user-info-card'>
             <View className='user-info-header'>
               <View
                 className='user-avatar'
-                onClick={() => {
-                  if (isLogin) {
-                    Taro.navigateTo({ url: '/subpages/member/user-info' })
-                  }
-                }}
+                onClick={() => onLoginChange('/subpages/member/user-info')}
                 style={{ width: '72px', height: '72px' }}
               >
                 <SpImage
@@ -545,7 +547,7 @@ function MemberIndex(props) {
                   <>
                     <View
                       className='user-name'
-                      onClick={() => Taro.navigateTo({ url: '/subpages/member/user-info' })}
+                      onClick={() => onLoginChange('/subpages/member/user-info')}
                     >
                       {userInfo?.username || userInfo?.mobile}
                     </View>
@@ -560,9 +562,7 @@ function MemberIndex(props) {
                     </View>
                   </>
                 ) : (
-                  <SpLogin>
-                    <Text className='login-text font-medium text-34'>点击登录</Text>
-                  </SpLogin>
+                  <Text className='login-text font-medium text-34'>点击登录</Text>
                 )}
               </View>
 
@@ -582,47 +582,32 @@ function MemberIndex(props) {
                   className='member-level-bg'
                 /> */}
                 {isLogin && config.menu.member_code && !VERSION_SHUYUN && (
-                  <SpLogin
-                    onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
-                  >
-                    <Text className='iconfont icon-erweima-01'></Text>
-                  </SpLogin>
+                  <Text
+                    className='iconfont icon-erweima-01'
+                    onClick={() => onLoginChange('/marketing/pages/member/member-code')}
+                  ></Text>
                 )}
               </View>
             </View>
 
             <View className='user-stats'>
-              <SpLogin
-                onChange={() => {
-                  Taro.navigateTo({ url: '/subpages/marketing/coupon' })
-                }}
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/marketing/coupon')}
               >
-                <View
-                  className='stat-item'
-                  // onClick={() => }
-                >
-                  <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
-                  <Text className='stat-label'>优惠券</Text>
-                </View>
-              </SpLogin>
-              <SpLogin
-                onChange={() => {
-                  if (VERSION_SHUYUN) {
-                    handleClickLink('/subpages/member/point-rule')
-                  } else {
-                    handleClickLink('/subpages/member/point-detail')
-                  }
-                }}
+                <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
+                <Text className='stat-label'>优惠券</Text>
+              </View>
+
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/member/point-detail')}
               >
-                {!VERSION_SHUYUN && (
-                  <View className='stat-item'>
-                    <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
-                    <Text className='stat-label'>{VERSION_SHUYUN ? '积分规则' : pointName}</Text>
-                  </View>
-                )}
-              </SpLogin>
+                <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
+                <Text className='stat-label'>积分</Text>
+              </View>
             </View>
-          </View>
+          </SpLogin>
           {/* <View className='header-block__ft'></View> */}
         </View>
 

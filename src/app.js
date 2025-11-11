@@ -148,20 +148,63 @@ function App({ children }) {
       if (typeof params.runFlag === 'undefined') {
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
-        // 小程序启动时，如果路由带参有店铺码，则清除导购参数
-        if (typeof params?.dtid !== 'undefined') {
+        // 小程序启动时，如果路由带参有店铺码，则清除导购参数(非导购入口)
+        if (
+          typeof params?.dtid !== 'undefined' &&
+          params?.dtid !== '' &&
+          !params.gu &&
+          !params.gu_user_id
+        ) {
           Taro.removeStorageSync(SG_GUIDE_PARAMS)
           Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
         }
-
         getSystemConfig()
       }
+      initCrm(params)
     })
   })
 
-  useError((error) => {
-    log.error('useError', error)
-  })
+  // useError((error) => {
+  //   log.error('useError', error)
+  // })
+
+  const initCrm = async (params) => {
+    let _ucd = ''
+    //crmcode 区域code, ucd 用户会员 card,source_id, monitor_id, latest_source_id, latest_monitor_id
+    const {
+      crmcode,
+      ucd = '',
+      s = '',
+      m = '',
+      latest_source_id = '',
+      latest_monitor_id = ''
+    } = params || {}
+
+    Taro.setStorageSync('user_card_code', ucd) //对方打开本小程序会传的参数
+    Taro.setStorageSync('sourceInfo', {
+      source_id: s,
+      monitor_id: m,
+      latest_source_id,
+      latest_monitor_id
+    })
+    if (m && s) {
+      await entryLaunch.trackViewNum(m, s)
+    }
+    if (crmcode) {
+      getSystemConfig()
+    }
+    if (ucd) {
+      const token = S.getAuthToken()
+      const userInfo = token ? tokenParse(token) : {}
+      _ucd = userInfo?.user_card_code
+      if (ucd !== _ucd) {
+        //如果有ucd 并且 与本地用户的_ucd相等说明是mob拉起 需要走自动登录
+        S.setAuthToken('')
+        Taro.removeStorageSync('userinfo')
+        return
+      }
+    }
+  }
 
   const getSystemConfig = async () => {
     const [homeRes, appBaseRes, priceSetting, appSettingInfo, enterStoreRule] = await Promise.all([

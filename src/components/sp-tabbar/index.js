@@ -86,7 +86,9 @@ function SpTabbar() {
       if (TABBAR_PATH[tabItem.name] !== navipage) {
         let url =
           tabItem.name == 'customPage'
-            ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}`
+            ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${
+                tabItem.customPageId || tabItem.customPage.id
+              }`
             : TABBAR_PATH[tabItem.name]
         Taro.redirectTo({ url })
       } else {

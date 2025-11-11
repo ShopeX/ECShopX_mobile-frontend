@@ -211,7 +211,7 @@
 	},
 	"m90k2": {
 		"zh-cn": "结算",
-		"en": "Settlement",
+		"en": "Checkout(",
 		"zh-tw": "結算"
 	},
 	"gigb9e4": {
@@ -301,7 +301,7 @@
 	},
 	"ehbda3": {
 		"zh-cn": "待支付",
-		"en": "To be paid",
+		"en": "ORDERED",
 		"zh-tw": "待支付"
 	},
 	"hytrqw4": {
@@ -1001,7 +1001,7 @@
 	},
 	"novtrz8": {
 		"zh-cn": "请输入图形验证码",
-		"en": "Please enter the graphic verification code",
+		"en": "Graphic verification code",
 		"zh-tw": "請輸入圖形驗證碼"
 	},
 	"px9tpm6": {
@@ -1021,12 +1021,12 @@
 	},
 	"4y8729": {
 		"zh-cn": "请输入您的手机号码",
-		"en": "Please enter your mobile phone number",
+		"en": "Mobile",
 		"zh-tw": "請輸入您的手機號碼"
 	},
 	"7b32n16": {
 		"zh-cn": "请输入验证码",
-		"en": "Please enter the verification code",
+		"en": "SMS verification code",
 		"zh-tw": "請輸入驗證碼"
 	},
 	"g3yc2": {
@@ -1141,7 +1141,7 @@
 	},
 	"e434me4": {
 		"zh-cn": "欢迎登录",
-		"en": "Welcome to log in",
+		"en": "LOG IN",
 		"zh-tw": "歡迎登錄"
 	},
 	"gvefve5": {
@@ -1166,7 +1166,7 @@
 	},
 	"fyq8k3": {
 		"zh-cn": "注 册",
-		"en": "Notes",
+		"en": "Register",
 		"zh-tw": "注 冊"
 	},
 	"ijfl3m7": {
@@ -1186,12 +1186,12 @@
 	},
 	"e41f9s4": {
 		"zh-cn": "欢迎注册",
-		"en": "Welcome to register",
+		"en": "Let's get to kown you",
 		"zh-tw": "歡迎註冊"
 	},
 	"ympopk7": {
 		"zh-cn": "同意协议并注册",
-		"en": "Agree to the agreement and register",
+		"en": "Register",
 		"zh-tw": "同意協議並註冊"
 	},
 	"cjxmz36": {
@@ -1451,7 +1451,7 @@
 	},
 	"avj59v4": {
 		"zh-cn": "全部订单",
-		"en": "All orders",
+		"en": "All",
 		"zh-tw": "全部訂單"
 	},
 	"eguon3": {
@@ -2446,7 +2446,7 @@
 	},
 	"ehnue3": {
 		"zh-cn": "待收货",
-		"en": "Pending receipt",
+		"en": "DELIVERING",
 		"zh-tw": "待收貨"
 	},
 	"e7hbq3": {
@@ -2476,7 +2476,7 @@
 	},
 	"i0uxca9": {
 		"zh-cn": "购物车内暂无商品～",
-		"en": "There are no items in the shopping cart for the moment",
+		"en": "Your shopping bag is empty",
 		"zh-tw": "購物車內暫無商品～"
 	},
 	"cys733": {
@@ -3301,7 +3301,7 @@
 	},
 	"118zt87": {
 		"zh-cn": "请输图形验证码",
-		"en": "Please enter the graphic verification code",
+		"en": "Graphic verification code",
 		"zh-tw": "請輸圖形驗證碼"
 	},
 	"e164xn7": {
@@ -3311,7 +3311,7 @@
 	},
 	"y8pn239": {
 		"zh-cn": "请先输入图形验证码",
-		"en": "Please enter the graphic verification code first",
+		"en": "Graphic verification code first",
 		"zh-tw": "請先輸入圖形驗證碼"
 	},
 	"axlb7e9": {
@@ -4831,7 +4831,7 @@
 	},
 	"envnc3": {
 		"zh-cn": "待评价",
-		"en": "To be evaluated",
+		"en": "NOT RATED",
 		"zh-tw": "待評價"
 	},
 	"cu6np3": {
@@ -7891,7 +7891,7 @@
 	},
 	"emxt2": {
 		"zh-cn": "全选",
-		"en": "select all",
+		"en": "All",
 		"zh-tw": "全選"
 	},
 	"avfjpn4": {
@@ -9176,7 +9176,7 @@
 	},
 	"ekeuxo4": {
 		"zh-cn": "点击登录",
-		"en": "Click to log in",
+		"en": "LOG IN/REGISTER",
 		"zh-tw": "點擊登錄"
 	},
 	"d47cob4": {
@@ -9446,17 +9446,17 @@
 	},
 	"519n9jd": {
 		"zh-cn": "授权登录后同步购物车的商品",
-		"en": "After authorizing login, synchronize the items in the shopping cart",
+		"en": "Log in to save or access items saved in your shopping bag",
 		"zh-tw": "授權登錄後同步購物車的商品"
 	},
 	"czmrzp4": {
 		"zh-cn": "授权登录",
-		"en": "Authorized login",
+		"en": "Log in/Register",
 		"zh-tw": "授權登錄"
 	},
 	"j5ric3": {
 		"zh-cn": "结算(",
-		"en": "Settlement",
+		"en": "Checkout(",
 		"zh-tw": "結算("
 	},
 	"426jem9": {
@@ -10381,7 +10381,7 @@
 	},
 	"b3hzjog": {
 		"zh-cn": "密码需由6-16位数字或字母组成",
-		"en": "The password should consist of 6 to 16 digits or letters",
+		"en": "Password",
 		"zh-tw": "密碼需由6-16位數字或字母組成"
 	},
 	"aiqciz4": {
@@ -10646,7 +10646,7 @@
 	},
 	"vhc5i2b": {
 		"zh-cn": "--没有更多数据了--",
-		"en": "-- No more data left --",
+		"en": "No more data available",
 		"zh-tw": "--沒有更多數據了--"
 	},
 	"b5ffqn4": {
@@ -11771,12 +11771,12 @@
 	},
 	"8mg9yc5": {
 		"zh-cn": "发送验证码",
-		"en": "Send verification code",
+		"en": "Send",
 		"zh-tw": "發送驗證碼"
 	},
 	"ev788z4": {
 		"zh-cn": "热门推荐",
-		"en": "Hot Recommendations",
+		"en": "Popular products",
 		"zh-tw": "熱門推薦"
 	},
 	"kwbyw3": {
@@ -12211,7 +12211,7 @@
 	},
 	"edo6j3": {
 		"zh-cn": "待付款",
-		"en": "Pending payment",
+		"en": "ORDERED",
 		"zh-tw": "待付款"
 	},
 	"glednn5": {
@@ -12621,6 +12621,26 @@
 	},
 	"i8gvoy4": {
 		"zh-cn": "订阅成功",
+		"en": "",
+		"zh-tw": ""
+	},
+	"d0x6rc4": {
+		"zh-cn": "批量处理",
+		"en": "",
+		"zh-tw": ""
+	},
+	"7djicl6": {
+		"zh-cn": "请输入订单号",
+		"en": "",
+		"zh-tw": ""
+	},
+	"chl18c4": {
+		"zh-cn": "开票失败",
+		"en": "",
+		"zh-tw": ""
+	},
+	"hp8xmu6": {
+		"zh-cn": "页面跳转失败",
 		"en": "",
 		"zh-tw": ""
 	}

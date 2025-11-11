@@ -18,7 +18,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Video } from '@tarojs/components'
-import { linkPage } from './helper'
 
 import './film.scss'
 
@@ -41,8 +40,6 @@ export default class WgtFilm extends Component {
       screenWidth: res.screenWidth
     })
   }
-
-  handleClickItem = linkPage
 
   resolveSize({ width, height, ratio: tRatio } = {}, screenWidth, base = {}) {
     const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]

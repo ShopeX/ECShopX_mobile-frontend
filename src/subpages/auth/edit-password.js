@@ -117,7 +117,7 @@ const PageEditPassword = () => {
               onChange={handleInputChange('repassword')}
             />
           </View>
-          <View className='form-tip'>{PASSWORD_TIP}</View>
+          <View className='form-tip'>{PASSWORD_TIP()}</View>
 
           <View className='form-submit'>
             <AtButton

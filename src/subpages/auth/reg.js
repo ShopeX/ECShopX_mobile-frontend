@@ -224,7 +224,7 @@ const Reg = () => {
             </View>
           </View>
 
-          {/* <View className='form-tip'>{PASSWORD_TIP}</View> */}
+          {/* <View className='form-tip'>{PASSWORD_TIP()}</View> */}
 
           <View className='form-submit'>
             <AtButton

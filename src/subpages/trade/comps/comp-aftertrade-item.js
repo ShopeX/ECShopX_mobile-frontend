@@ -20,20 +20,19 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { SpImage, SpPrice, SpTradeItem } from '@/components'
+import { SpImage, SpPrice, SpTradeItem, SpCheckboxNew } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
 import { AFTER_SALE_STATUS } from '@/consts'
 import './comp-aftertrade-item.scss'
 
 function CompTradeItem(props) {
-  const { info } = props
+  const { info, isShowChecked = false, selectAftersn = [], onSelect = () => {} } = props
   if (!info) {
     return null
   }
   const {
     aftersalesBn,
     distributorInfo,
-    orderId,
     createdTime,
     aftersalesStatus,
     items,
@@ -76,8 +75,15 @@ function CompTradeItem(props) {
       <View className='trade-item-hd' onClick={onViewTradeDetail}>
         <View>
           <View className='shop-info' onClick={onViewStorePage}>
-            <SpImage src={distributorInfo?.logo} width={100} height={100} />
-            <View className='shop-name'>
+            {/* <SpImage src={distributorInfo?.logo} width={100} height={100} /> */}
+            {isShowChecked && (
+              <SpCheckboxNew
+                checked={selectAftersn.includes(aftersalesBn)}
+                style={{ marginRight: 24 }}
+                onChange={() => onSelect(aftersalesBn)}
+              />
+            )}
+            <View className={`shop-name ${isShowChecked ? '' : 'nochecked'}`}>
               {distributorInfo?.name}
               {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01'></Text>}
             </View>
@@ -88,14 +94,9 @@ function CompTradeItem(props) {
         <View className='trade-state'>{AFTER_SALE_STATUS()[aftersalesStatus]}</View>
       </View>
       <View className='trade-item-bd' onClick={onViewTradeDetail}>
-        {items.map((good) => (
-          <SpTradeItem
-            info={{
-              ...good
-            }}
-          />
+        {items.map((good, goodIns) => (
+          <SpTradeItem key={goodIns} info={{ ...good }} />
         ))}
-
         <View className='trade-total'>
           <View className='delivery'></View>
           {orderClass == 'pointsmall' && (
@@ -116,8 +117,6 @@ function CompTradeItem(props) {
           )}
         </View>
       </View>
-
-      <View className='trade-item-ft'></View>
     </View>
   )
 }

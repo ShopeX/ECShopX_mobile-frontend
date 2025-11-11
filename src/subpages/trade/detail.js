@@ -15,7 +15,7 @@
 // | Author: shopeX Team <mkt@shopex.cn>
 // | Contact: 400-821-3106
 // +----------------------------------------------------------------------
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
@@ -130,11 +130,14 @@ function TradeDetail(props) {
     }
   }, [openingTime])
 
+  const totalFreightFee = useMemo(() => {
+    const { freightFee, freightPointFee } = info || {}
+    return Number(freightFee || 0 + freightPointFee || 0)?.toFixed(2)
+  }, [info?.freightFee, info?.freightPointFee])
+
   const fetch = async () => {
     const { order_id } = await parameter()
-    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(
-      router.params?.id ? `TD${router.params.id}` : order_id
-    )
+    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态
     if (_orderInfo.receiptType == 'ziti' && _orderInfo.zitiStatus == 'PENDING') {
@@ -245,7 +248,7 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId, activityId, orderClass, point }) => {
+  const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
     if (orderClass == 'employee_purchase') {
       Taro.navigateTo({
         url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
@@ -323,7 +326,7 @@ function TradeDetail(props) {
   const getTradeStatusIcon = () => {
     if (info.receiptType == 'dada') {
       // 达达同城配，订单状态单独处理
-      return `${ORDER_DADA_STATUS()[info.dada?.dadaStatus]?.icon}.png` || ''
+      return `${ORDER_DADA_STATUS[info.dada?.dadaStatus]?.icon}.png` || ''
     }
 
     if (squareRoot) {
@@ -337,13 +340,13 @@ function TradeDetail(props) {
     if (info.cancelStatus == 'WAIT_PROCESS') {
       return 'order_dengdai.png'
     }
-    return `${ORDER_STATUS_INFO()[info.orderStatus]?.icon}.png`
+    return `${ORDER_STATUS_INFO[info.orderStatus]?.icon}.png`
   }
 
   const getTradeStatusDesc = () => {
     if (info.receiptType == 'dada') {
       // 达达同城配，订单状态单独处理
-      return ORDER_DADA_STATUS()[info.dada?.dadaStatus]?.msg
+      return ORDER_DADA_STATUS[info.dada?.dadaStatus]?.msg
     } else if (squareRoot) {
       return '待医生开方'
     } else if (supplement) {
@@ -362,7 +365,7 @@ function TradeDetail(props) {
       //展示线下审核的一些状态 0 待处理;1 已审核;2 已拒绝;9 已取消
       return '待商家确认'
     } else {
-      return ORDER_STATUS_INFO()[info.orderStatus]?.msg
+      return ORDER_STATUS_INFO[info.orderStatus]?.msg
     }
   }
 
@@ -492,395 +495,383 @@ function TradeDetail(props) {
       scrollToTopBtn
       renderFooter={renderActionButton()}
     >
-      {info && (
-        <ScrollView className='trade-detail-scroll' scrollY>
-          <View className='trade-status'>
-            {info && (
-              <View className='trade-status-desc'>
-                <View className='trade-status-desc-box'>
-                  <SpImage src={getTradeStatusIcon()} width={50} height={50} />
-                  <Text className='status-desc'>{getTradeStatusDesc()}</Text>
+      <ScrollView className='trade-detail-scroll' scrollY>
+        <View className='trade-status'>
+          {info && (
+            <View className='trade-status-desc'>
+              <View className='trade-status-desc-box'>
+                <SpImage src={getTradeStatusIcon()} width={50} height={50} />
+                <Text className='status-desc'>{getTradeStatusDesc()}</Text>
+              </View>
+              {supplement && (
+                <View className='trade-status-desc-name' onClick={onSupplement}>
+                  <Text className='iconfont icon-bianji1'></Text>
+                  前往补充
                 </View>
-                {supplement && (
-                  <View className='trade-status-desc-name' onClick={onSupplement}>
-                    <Text className='iconfont icon-bianji1'></Text>
-                    前往补充
-                  </View>
-                )}
+              )}
 
-                {info?.selfDeliveryOperatorName && info?.selfDeliveryOperatorMobile && (
-                  <View className='deliver-opreator'>
-                    <View className='deliver-opreator-name'>
-                      配送员:{info?.selfDeliveryOperatorName}
-                    </View>
-                    <View>
-                      <Text className='deliver-opreator-phone' onClick={handleCallOpreator}>
-                        拨打电话
-                      </Text>
-                    </View>
-                    <View>
-                      <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>
-                        订单跟踪
-                      </Text>
-                    </View>
+              {info?.selfDeliveryOperatorName && info?.selfDeliveryOperatorMobile && (
+                <View className='deliver-opreator'>
+                  <View className='deliver-opreator-name'>
+                    配送员:{info?.selfDeliveryOperatorName}
                   </View>
-                )}
-              </View>
-            )}
-            {!!info?.selfDeliveryTime && (
-              <View className='self-delivery-time'>
-                <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
-              </View>
-            )}
+                  <View>
+                    <Text className='deliver-opreator-phone' onClick={handleCallOpreator}>
+                      拨打电话
+                    </Text>
+                  </View>
+                  <View>
+                    <Text className='deliver-opreator-phone' onClick={handleTrackDetail}>
+                      订单跟踪
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
+          {!!info?.selfDeliveryTime && (
+            <View className='self-delivery-time'>
+              <SpCell title='预计送达时间' value={info?.selfDeliveryTime} />
+            </View>
+          )}
 
-            {isShowCancleTime() && (
-              <View className='order-cancel-time'>
-                该订单将为您保留
-                <AtCountdown
-                  format={{ day: '天', hours: '时', minutes: '分', seconds: '秒' }}
-                  isShowDay={info.autoCancelSeconds > 86400}
-                  seconds={info.autoCancelSeconds}
-                  onTimeUp={onCancelTradeTimeUp}
-                />
-              </View>
-            )}
+          {isShowCancleTime() && (
+            <View className='order-cancel-time'>
+              该订单将为您保留
+              <AtCountdown
+                format={{ day: '天', hours: '时', minutes: '分', seconds: '秒' }}
+                isShowDay={info.autoCancelSeconds > 86400}
+                seconds={info.autoCancelSeconds}
+                onTimeUp={onCancelTradeTimeUp}
+              />
+            </View>
+          )}
+        </View>
+
+        {info?.prescriptionStatus > 0 && (
+          <View className='information'>
+            <View className='title'>
+              <Text className='title-num'>1</Text>
+              <Text className='title-text'>填写信息</Text>
+            </View>
+            <View className='titled'>-----</View>
+            <View className='titled'>
+              <Text
+                className={squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}
+              >
+                2
+              </Text>
+              <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
+                医生开方
+              </Text>
+            </View>
+            <View className='titled'>-----</View>
+            <View className='titled'>
+              <Text className={info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>3</Text>
+              <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
+            </View>
           </View>
+        )}
+        {squareRoot && !supplement && (
+          <View className='opening-time'>
+            <View className='opening-time-title'>处方已开具，正在药师审方中，请等待！</View>
+            <View className='opening-time-content'>
+              <AtCountdown
+                format={{ hours: '时', minutes: '分', seconds: '秒' }}
+                seconds={10}
+                onTimeUp={openingTimeUp}
+              />
+            </View>
+          </View>
+        )}
 
-          {info?.prescriptionStatus > 0 && (
-            <View className='information'>
-              <View className='title'>
-                <Text className='title-num'>1</Text>
-                <Text className='title-text'>填写信息</Text>
-              </View>
-              <View className='titled'>-----</View>
-              <View className='titled'>
-                <Text
-                  className={
-                    squareRoot || info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'
-                  }
-                >
-                  2
-                </Text>
-                <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
-                  医生开方
-                </Text>
-              </View>
-              <View className='titled'>-----</View>
-              <View className='titled'>
-                <Text className={info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>3</Text>
-                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
+        {
+          // 普通快递
+          info?.receiptType == 'logistics' && (
+            <View className='block-container address-info'>
+              <SpImage src='shouhuodizhi.png' width={60} height={60} />
+              <View className='receiver-address'>
+                <View className='name-mobile'>
+                  <Text className='name'>{info?.receiverName}</Text>
+                  <Text className='mobile'>{info?.receiverMobile}</Text>
+                </View>
+                <View className='detail-address'>
+                  {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
+                </View>
               </View>
             </View>
-          )}
-          {squareRoot && !supplement && (
-            <View className='opening-time'>
-              <View className='opening-time-title'>处方已开具，正在药师审方中，请等待！</View>
-              <View className='opening-time-content'>
-                <AtCountdown
-                  format={{ hours: '时', minutes: '分', seconds: '秒' }}
-                  seconds={10}
-                  onTimeUp={openingTimeUp}
+          )
+        }
+        {
+          // 门店自提
+          info?.receiptType == 'ziti' && (
+            <View className='block-container ziti-info'>
+              <View>
+                <Text className='label'>自提点:</Text>
+                <Text className='value'>{info.zitiInfo.name}</Text>
+              </View>
+              <View>
+                <Text className='label'>自提地址:</Text>
+                <Text className='value'>{`${info.zitiInfo.province}${info.zitiInfo.city}${info.zitiInfo.area}${info.zitiInfo.address}`}</Text>
+              </View>
+              <View>
+                <Text className='label'>联系电话:</Text>
+                <Text className='value'>{info.zitiInfo.contract_phone}</Text>
+                <Text
+                  className='iconfont icon-dianhua'
+                  onClick={() => {
+                    const { contract_phone } = info.zitiInfo
+                    handleCallPhone(contract_phone)
+                  }}
                 />
               </View>
+              <View>
+                <Text className='label'>提货人:</Text>
+                <Text className='value'>{info.receiverName}</Text>
+              </View>
+              <View>
+                <Text className='label'>提货时间:</Text>
+                <Text className='value'>{`${info.zitiInfo.pickup_date} ${info.zitiInfo.pickup_time[0]}-${info.zitiInfo.pickup_time[1]}`}</Text>
+              </View>
+              <View>
+                <Text className='label'>提货人手机:</Text>
+                <Text className='value'>{info.receiverMobile}</Text>
+              </View>
             </View>
-          )}
-
-          {
-            // 普通快递
-            info?.receiptType == 'logistics' && (
-              <View className='block-container address-info'>
-                <SpImage src='shouhuodizhi.png' width={60} height={60} />
-                <View className='receiver-address'>
-                  <View className='name-mobile'>
-                    <Text className='name'>{info?.receiverName}</Text>
-                    <Text className='mobile'>{info?.receiverMobile}</Text>
-                  </View>
-                  <View className='detail-address'>
-                    {`${info?.receiverState}${info?.receiverCity}${info?.receiverDistrict}${info?.receiverAddress}`}
-                  </View>
-                </View>
+          )
+        }
+        {
+          // 达达同城配，骑手已接单、配送中
+          info?.receiptType == 'dada' && info.dada.dadaStatus > 1 && info.dada.dadaStatus !== 5 && (
+            <View className='block-container dada-qishou-info'>
+              <View className='qishou'>
+                <SpImage src='qishi.png' width={80} height={80} />
+                <Text className='qishou-name'>骑手：{info.dada.dmName}</Text>
+                <Text
+                  className='iconfont icon-dianhua'
+                  onClick={() => {
+                    handleCallPhone(info.dada.dmMobile)
+                  }}
+                />
               </View>
-            )
-          }
-          {
-            // 门店自提
-            info?.receiptType == 'ziti' && (
-              <View className='block-container ziti-info'>
-                <View>
-                  <Text className='label'>自提点:</Text>
-                  <Text className='value'>{info.zitiInfo.name}</Text>
-                </View>
-                <View>
-                  <Text className='label'>自提地址:</Text>
-                  <Text className='value'>{`${info.zitiInfo.province}${info.zitiInfo.city}${info.zitiInfo.area}${info.zitiInfo.address}`}</Text>
-                </View>
-                <View>
-                  <Text className='label'>联系电话:</Text>
-                  <Text className='value'>{info.zitiInfo.contract_phone}</Text>
-                  <Text
-                    className='iconfont icon-dianhua'
-                    onClick={() => {
-                      const { contract_phone } = info.zitiInfo
-                      handleCallPhone(contract_phone)
-                    }}
-                  />
-                </View>
-                <View>
-                  <Text className='label'>提货人:</Text>
-                  <Text className='value'>{info.receiverName}</Text>
-                </View>
-                <View>
-                  <Text className='label'>提货时间:</Text>
-                  <Text className='value'>{`${info.zitiInfo.pickup_date} ${info.zitiInfo.pickup_time[0]}-${info.zitiInfo.pickup_time[1]}`}</Text>
-                </View>
-                <View>
-                  <Text className='label'>提货人手机:</Text>
-                  <Text className='value'>{info.receiverMobile}</Text>
-                </View>
-              </View>
-            )
-          }
-          {
-            // 达达同城配，骑手已接单、配送中
-            info?.receiptType == 'dada' &&
-              info.dada.dadaStatus > 1 &&
-              info.dada.dadaStatus !== 5 && (
-                <View className='block-container dada-qishou-info'>
-                  <View className='qishou'>
-                    <SpImage src='qishi.png' width={80} height={80} />
-                    <Text className='qishou-name'>骑手：{info.dada.dmName}</Text>
-                    <Text
-                      className='iconfont icon-dianhua'
-                      onClick={() => {
-                        handleCallPhone(info.dada.dmMobile)
-                      }}
-                    />
-                  </View>
-                  <View className='dada-desc'>本单由达达同城为您服务</View>
-                </View>
-              )
-          }
-          {
-            // 达达同城配
-            info?.receiptType == 'dada' && (
-              <View className='block-container store-receive-address'>
-                <View className='store-address'>
-                  <Text className='iconfont icon-shouhuodizhi-duoduan' />
-                  <View className='store-address-detail'>
-                    <View className='store-name'>{`${distirbutorInfo?.store_name}`}</View>
-                    <View className='store-address-desc'>{`${distirbutorInfo?.store_address}`}</View>
-                    <View className='store-hour-phone'>
-                      <View className='hour'>
-                        <Text className='label'>门店营业时间：</Text>
-                        <Text className='value'>{distirbutorInfo?.hour}</Text>
-                      </View>
-                      <View className='phone'>
-                        <Text className='label'>门店电话：</Text>
-                        <Text className='value'>{distirbutorInfo?.phone}</Text>
-                        <Text
-                          className='iconfont icon-dianhua'
-                          onClick={() => {
-                            handleCallPhone(distirbutorInfo?.phone)
-                          }}
-                        />
-                      </View>
+              <View className='dada-desc'>本单由达达同城为您服务</View>
+            </View>
+          )
+        }
+        {
+          // 达达同城配
+          info?.receiptType == 'dada' && (
+            <View className='block-container store-receive-address'>
+              <View className='store-address'>
+                <Text className='iconfont icon-shouhuodizhi-duoduan' />
+                <View className='store-address-detail'>
+                  <View className='store-name'>{`${distirbutorInfo?.store_name}`}</View>
+                  <View className='store-address-desc'>{`${distirbutorInfo?.store_address}`}</View>
+                  <View className='store-hour-phone'>
+                    <View className='hour'>
+                      <Text className='label'>门店营业时间：</Text>
+                      <Text className='value'>{distirbutorInfo?.hour}</Text>
                     </View>
-                  </View>
-                </View>
-                <View className='receive-address'>
-                  <Text className='iconfont icon-shouhuodizhi-duoduan' />
-                  <View className='receive-address-detail'>
-                    <View className='address-desc'>{`${info.receiverState}${info.receiverCity}${info.receiverDistrict}${info.receiverAddress}`}</View>
-                    <View className='receive-name-mobile'>
-                      <Text className='name'>{info.receiverName}</Text>
-                      <Text className='mobile'>{info.receiverMobile}</Text>
+                    <View className='phone'>
+                      <Text className='label'>门店电话：</Text>
+                      <Text className='value'>{distirbutorInfo?.phone}</Text>
+                      <Text
+                        className='iconfont icon-dianhua'
+                        onClick={() => {
+                          handleCallPhone(distirbutorInfo?.phone)
+                        }}
+                      />
                     </View>
                   </View>
                 </View>
               </View>
-            )
-          }
-          <View className='block-container'>
-            <View className='trade-shop' onClick={onViewStorePage}>
-              {info?.distributorName}
-              {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01' />}
+              <View className='receive-address'>
+                <Text className='iconfont icon-shouhuodizhi-duoduan' />
+                <View className='receive-address-detail'>
+                  <View className='address-desc'>{`${info.receiverState}${info.receiverCity}${info.receiverDistrict}${info.receiverAddress}`}</View>
+                  <View className='receive-name-mobile'>
+                    <Text className='name'>{info.receiverName}</Text>
+                    <Text className='mobile'>{info.receiverMobile}</Text>
+                  </View>
+                </View>
+              </View>
             </View>
-            {/* <View className='trade-no'>
+          )
+        }
+        <View className='block-container'>
+          <View className='trade-shop' onClick={onViewStorePage}>
+            {info?.distributorName}
+            {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01' />}
+          </View>
+          {/* <View className='trade-no'>
             <Text className='no'>{`订单编号: ${info?.orderId}`}</Text>
             <View className='btn-copy' onClick={hanldeCopy.bind(this, info?.orderId)}>
               复制
             </View>
           </View> */}
-            <View className='trade-goods'>
-              {info?.items?.map((goods, goodsIndex) => (
-                <View className='trade-goods-item' key={goodsIndex}>
-                  <SpTradeItem
-                    info={{
-                      ...goods,
-                      orderClass: info.orderClass
-                    }}
-                    onClick={onClickItem}
-                  />
-                  {/* {renderItemActions(goods)} */}
-                </View>
-              ))}
-            </View>
-            {info && (
-              <View className='trade-price-info'>
-                {enMarketPrice && info?.marketFee > 0 && (
-                  <SpCell title='原价' value={<SpPrice value={info?.marketFee} size={28} />} />
-                )}
-                <SpCell
-                  title='总价'
-                  value={(() => {
-                    if (info?.orderClass === 'pointsmall') {
-                      return `${pointName} ${info?.itemPoint}${
-                        info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
-                      }`
-                    } else {
-                      return <SpPrice value={info?.itemFee} size={28} />
-                    }
-                  })()}
+          <View className='trade-goods'>
+            {info?.items?.map((goods, goodsIndex) => (
+              <View className='trade-goods-item' key={goodsIndex}>
+                <SpTradeItem
+                  info={{
+                    ...goods,
+                    orderClass: info.orderClass
+                  }}
+                  onClick={onClickItem}
                 />
-                <SpCell title='运费' value={<SpPrice value={info?.freightFee} size={28} />} />
-                <SpCell
-                  title='促销'
-                  value={<SpPrice value={info?.promotionDiscount} size={28} />}
-                />
-                <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
-                <SpCell
-                  title='支付方式'
-                  value={(() => {
-                    return (
-                      <View className='pay-way'>
-                        {info?.offlinePayCheckStatus == 1 && (
-                          <View className='pay-way-detail' onClick={handlOfflineDetail}>
-                            查看付款凭证
-                          </View>
-                        )}
-                        {info?.payType == 'offline_pay'
-                          ? info?.offlinePayName
-                          : PAYMENT_TYPE()[info?.payType] || ''}
-                      </View>
-                    )
-                  })()}
-                />
-                {info?.pointFee > 0 && (
-                  <SpCell
-                    title='积分抵扣'
-                    value={(() => {
-                      return <SpPrice value={info?.pointFee} size={28} />
-                    })()}
-                  />
-                )}
-                <SpCell
-                  title='实付'
-                  value={(() => {
-                    if (info?.orderClass === 'pointsmall') {
-                      return `${pointName} ${info?.point}${
-                        info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
-                      }`
-                    } else {
-                      return <SpPrice value={info?.totalFee} size={28} />
-                    }
-                  })()}
-                />
+                {/* {renderItemActions(goods)} */}
               </View>
+            ))}
+          </View>
+          <View className='trade-price-info'>
+            {enMarketPrice && info?.marketFee > 0 && (
+              <SpCell title='原价' value={<SpPrice value={info?.marketFee} size={28} />} />
+            )}
+            <SpCell
+              title='总价'
+              value={(() => {
+                if (info?.orderClass === 'pointsmall') {
+                  return `${pointName} ${info?.itemPoint}${
+                    info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
+                  }`
+                } else {
+                  return <SpPrice value={info?.itemFee} size={28} />
+                }
+              })()}
+            />
+            <SpCell title='运费' value={<SpPrice value={totalFreightFee} size={28} />} />
+            <SpCell title='促销' value={<SpPrice value={info?.promotionDiscount} size={28} />} />
+            <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
+            <SpCell
+              title='支付方式'
+              value={(() => {
+                return (
+                  <View className='pay-way'>
+                    {info?.offlinePayCheckStatus == 1 && (
+                      <View className='pay-way-detail' onClick={handlOfflineDetail}>
+                        查看付款凭证
+                      </View>
+                    )}
+                    {info?.payType == 'offline_pay'
+                      ? info?.offlinePayName
+                      : PAYMENT_TYPE[info?.payType] || ''}
+                  </View>
+                )
+              })()}
+            />
+            {info?.pointFee > 0 && (
+              <SpCell
+                title='积分抵扣'
+                value={(() => {
+                  return <SpPrice value={info?.pointFee} size={28} />
+                })()}
+              />
+            )}
+            <SpCell
+              title='实付'
+              value={(() => {
+                if (info?.orderClass === 'pointsmall') {
+                  return `${pointName} ${info?.point}${
+                    info?.totalFee > 0 ? `+¥${Number(info?.totalFee).toFixed(2)}` : ''
+                  }`
+                } else {
+                  return <SpPrice value={info?.totalFee} size={28} />
+                }
+              })()}
+            />
+          </View>
+        </View>
+        {/* <View className='block-container'>
+        </View> */}
+        {console.log(info, 'info------')}
+
+        {info?.prescriptionStatus > 0 && !supplement && (
+          <View className='block-container order-info'>
+            <View className='block-container-label'>处方信息</View>
+            {info?.diagnosisData?.doctor_name && (
+              <SpCell
+                title='开方医生'
+                value={(() => {
+                  return <View>{info?.diagnosisData?.doctor_name}</View>
+                })()}
+              />
+            )}
+            {info?.diagnosisData?.location_url && (
+              <SpCell
+                title='开方记录'
+                value={(() => {
+                  return (
+                    <View
+                      className='block-container-link'
+                      onClick={() => {
+                        const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
+                        Taro.redirectTo({
+                          url: `/pages/webview?url=${webviewSrc}`
+                        })
+                      }}
+                    >
+                      查看 <Text className='iconfont icon-qianwang-01' />
+                    </View>
+                  )
+                })()}
+              />
+            )}
+            {info?.prescriptionData?.audit_apothecary_name && (
+              <SpCell
+                title='审方药师'
+                value={(() => {
+                  return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
+                })()}
+              />
+            )}
+            {info?.prescriptionData?.dst_file_path && (
+              <SpCell
+                title='电子处方'
+                value={(() => {
+                  return (
+                    <View
+                      className='block-container-link'
+                      onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
+                    >
+                      查看 <Text className='iconfont icon-qianwang-01' />
+                    </View>
+                  )
+                })()}
+              />
             )}
           </View>
-          {/* <View className='block-container'>
-        </View> */}
+        )}
 
-          {info?.prescriptionStatus > 0 && !supplement && (
-            <View className='block-container order-info'>
-              <View className='block-container-label'>处方信息</View>
-              {info?.diagnosisData?.doctor_name && (
-                <SpCell
-                  title='开方医生'
-                  value={(() => {
-                    return <View>{info?.diagnosisData?.doctor_name}</View>
-                  })()}
-                />
-              )}
-              {info?.diagnosisData?.location_url && (
-                <SpCell
-                  title='开方记录'
-                  value={(() => {
-                    return (
-                      <View
-                        className='block-container-link'
-                        onClick={() => {
-                          const webviewSrc = encodeURIComponent(info?.diagnosisData?.location_url)
-                          Taro.redirectTo({
-                            url: `/pages/webview?url=${webviewSrc}`
-                          })
-                        }}
-                      >
-                        查看 <Text className='iconfont icon-qianwang-01' />
-                      </View>
-                    )
-                  })()}
-                />
-              )}
-              {info?.prescriptionData?.audit_apothecary_name && (
-                <SpCell
-                  title='审方药师'
-                  value={(() => {
-                    return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
-                  })()}
-                />
-              )}
-              {info?.prescriptionData?.dst_file_path && (
-                <SpCell
-                  title='电子处方'
-                  value={(() => {
-                    return (
-                      <View
-                        className='block-container-link'
-                        onClick={() => dstFilePath(info?.prescriptionData?.dst_file_path)}
-                      >
-                        查看 <Text className='iconfont icon-qianwang-01' />
-                      </View>
-                    )
-                  })()}
-                />
-              )}
-            </View>
+        <View className='block-container order-info'>
+          <View className='block-container-label'>订单信息</View>
+          <SpCell
+            title='订单编号'
+            value={
+              <View class='flex flex-align-center'>
+                {info?.orderId}
+                <Text className='btn-copy' onClick={hanldeCopy.bind(this, info?.orderId)}>
+                  复制
+                </Text>
+              </View>
+            }
+          />
+          <SpCell title='下单时间' value={info?.createdTime} />
+          <SpCell title='付款时间' value={tradeInfo?.payDate} />
+          {info?.invoice && (
+            <SpCell
+              title='发票信息'
+              value={
+                <View>
+                  <View>{info?.invoice.content}</View>
+                  <View>{info?.invoice.registration_number}</View>
+                </View>
+              }
+            />
           )}
-
-          {info && (
-            <View className='block-container order-info'>
-              <View className='block-container-label'>订单信息</View>
-              <SpCell
-                title='订单编号'
-                value={
-                  <View class='flex flex-align-center'>
-                    {info?.orderId}
-                    <Text className='btn-copy' onClick={hanldeCopy.bind(this, info?.orderId)}>
-                      复制
-                    </Text>
-                  </View>
-                }
-              />
-              <SpCell title='下单时间' value={info?.createdTime} />
-              <SpCell title='付款时间' value={tradeInfo?.payDate} />
-              {info?.invoice && (
-                <SpCell
-                  title='发票信息'
-                  value={
-                    <View>
-                      <View>{info?.invoice.content}</View>
-                      <View>{info?.invoice.registration_number}</View>
-                    </View>
-                  }
-                />
-              )}
-              {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
-            </View>
-          )}
-          <View className='padding-view'></View>
-        </ScrollView>
-      )}
+          {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
+        </View>
+        <View className='padding-view'></View>
+      </ScrollView>
 
       {info?.orderStatus === 'NOTPAY' && (
         <SpCashier

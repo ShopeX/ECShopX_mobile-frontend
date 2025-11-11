@@ -149,6 +149,8 @@ function CartCheckout(props) {
     scene, // 情景值
     goodType = routerParams.goodType
   } = $instance?.router?.params || {}
+  const { scene: launchScene } = Taro.getLaunchOptionsSync()
+  const senceCode = [1011, 1012, 1013, 1047, 1048, 1049] // 扫码进来-代客下单
   console.log('$instance.router?.params:', $instance.router)
 
   useEffect(() => {
@@ -280,6 +282,7 @@ function CartCheckout(props) {
 
   const handlePay = async () => {
     const params = await getParamsInfo()
+    console.log('handlePay:', params)
     // 店铺是否开启社区街道
     if (openStreet) {
       params['subdistrict_parent_id'] = street
@@ -388,6 +391,7 @@ function CartCheckout(props) {
         orderInfo,
         () => {
           entryLaunch.postGuideUV()
+          entryLaunch.postGuideUVBind()
           entryLaunch.postGuideTask()
         }
       )
@@ -481,6 +485,7 @@ function CartCheckout(props) {
 
   const handleCouponsClick = async () => {
     const { cart_type, distributor_id: id } = paramsInfo
+    const storageParams = (await Taro.getStorageSync(SG_GUIDE_PARAMS)) || {}
     const items = detailInfo
       .filter((item) => item.orderItemType !== 'gift')
       .map((item) => {
@@ -496,6 +501,9 @@ function CartCheckout(props) {
     )}&is_checkout=true&cart_type=${cart_type}&distributor_id=${shop_id || id}&source=${source}`
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
+    }
+    if (storageParams?.cxdid && senceCode.includes(launchScene)) {
+      url = `${url}&cxdid=${storageParams?.cxdid}`
     }
     Taro.navigateTo({
       url
@@ -574,6 +582,7 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
+    console.log('cus_parmas:', cus_parmas)
     let orderRes
     try {
       orderRes = await api.cart.total(cus_parmas)
@@ -624,7 +633,8 @@ function CartCheckout(props) {
       deliveryTimeList,
       salespersonInfo,
       point_rule,
-      prescription_status
+      prescription_status,
+      freight_point_fee
     } = orderRes
 
     let subdistrictRes
@@ -685,7 +695,10 @@ function CartCheckout(props) {
       item_point,
       freight_type,
       promotion_discount,
-      prescription_status
+      prescription_status,
+      freight_point_fee,
+      freight_point,
+      total_freight_fee: Number(freight_fee || 0 + freight_point_fee || 0)?.toFixed(2)
     }
 
     const point_info = {
@@ -800,7 +813,7 @@ function CartCheckout(props) {
       //   receiver = pickBy(shop.zitiShop, doc.checkout.ZITI_ADDRESS)
       // }
     }
-    const routerParams = (await Taro.getStorageSync(SG_GUIDE_PARAMS)) || {}
+    const storageParams = (await Taro.getStorageSync(SG_GUIDE_PARAMS)) || {}
     let cus_parmas = {
       ...paramsInfo,
       ...activity,
@@ -820,22 +833,22 @@ function CartCheckout(props) {
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
-    if (routerParams?.cxdid) {
-      cus_parmas.cxdid = routerParams?.cxdid
-      // cus_parmas.distributor_id = routerParams?.dtid
-      cus_parmas.distributor_id = getDistributorId()
+    if (storageParams?.cxdid && senceCode.includes(launchScene)) {
+      debugger
+      cus_parmas.cxdid = storageParams?.cxdid
+      cus_parmas.distributor_id = storageParams?.dtid
       cus_parmas.cart_type = 'cxd'
       cus_parmas.order_type = 'normal_shopguide'
-      cus_parmas.salesman_id = routerParams?.smid
-      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+      cus_parmas.salesman_id = storageParams?.smid
+      cus_parmas.work_userid = storageParams?.gu.split('_')[0] || storageParams?.gu_user_id || ''
     }
 
-    if (routerParams?.gu?.length > 0) {
-      cus_parmas.work_userid = routerParams?.gu.split('_')[0] || routerParams?.gu_user_id || ''
+    if (storageParams?.gu?.length > 0) {
+      cus_parmas.work_userid = storageParams?.gu.split('_')[0] || storageParams?.gu_user_id || ''
     }
-    if (routerParams?.dtid) {
-      cus_parmas.distributor_id = routerParams?.dtid
-    }
+    // if(storageParams?.dtid) { // 如果使用导购的店铺id，可能会出现店铺id不一致的情况，所以不使用导购的店铺id
+    //   cus_parmas.distributor_id = storageParams?.dtid;
+    // }
 
     if (receiptType === 'ziti') {
       delete cus_parmas.receiver_state
@@ -1244,7 +1257,7 @@ function CartCheckout(props) {
           <SpCell
             className='trade-sub__item'
             title='运费：'
-            value={<SpPrice unit='cent' value={totalInfo.freight_fee} />}
+            value={<SpPrice unit='cent' value={totalInfo.total_freight_fee} />}
           />
           <SpCell
             className='trade-sub__item'

@@ -15,4 +15,4 @@
 // | Author: shopeX Team <mkt@shopex.cn>
 // | Contact: 400-821-3106
 // +----------------------------------------------------------------------
-export const PASSWORD_TIP = '密码需由6-16位数字或字母组成'
+export const PASSWORD_TIP = () => '密码需由6-16位数字或字母组成'

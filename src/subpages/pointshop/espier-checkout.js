@@ -99,7 +99,8 @@ function PointShopEspierCheckout() {
     isNeedPackage,
     isPackageOpend,
     openCashier,
-    pointInfo
+    pointInfo,
+    invoiceTitle
   } = state
 
   const {
@@ -147,7 +148,7 @@ function PointShopEspierCheckout() {
     if (receiptType && payType) {
       calcOrder()
     }
-  }, [payType, point_use, address, zitiAddress, receiptType])
+  }, [payType, point_use, address, zitiAddress, receiptType, paramsInfo.invoice_content])
 
   useEffect(() => {
     if (isPackageOpend || isPointOpenModal) {
@@ -156,6 +157,30 @@ function PointShopEspierCheckout() {
       pageRef.current.pageUnLock()
     }
   }, [isPackageOpend, isPointOpenModal])
+
+  useEffect(() => {
+    Taro.eventCenter.on('onEventCheckoutInvoiceChange', (params) => {
+      console.log('onEventCheckoutInvoiceChange:', params)
+      let invoice_parmas = {
+        invoice_content: {
+          ...params
+        }
+      }
+      let invoice_title = ''
+      if (params.company_title) {
+        invoice_title = `${params.invoice_type_code == '02' ? '普票' : '专票'}(${
+          params.company_title
+        })`
+      }
+      setState((draft) => {
+        draft.invoiceTitle = invoice_title
+        draft.paramsInfo = { ...paramsInfo, ...invoice_parmas }
+      })
+    })
+    return () => {
+      Taro.eventCenter.off('onEventCheckoutInvoiceChange')
+    }
+  }, [paramsInfo])
 
   // 是否需要包装
   const getTradeSetting = async () => {
@@ -540,6 +565,22 @@ function PointShopEspierCheckout() {
       draft.openCashier = true
     })
   }
+  // 开发票
+  const handleInvoiceClick = () => {
+    Taro.setStorageSync('invoice_params', paramsInfo?.invoice_content)
+    Taro.navigateTo({
+      url: `/subpages/trade/invoice?page_type=checkout`
+    })
+  }
+
+  const resetInvoice = (e) => {
+    e.stopPropagation()
+    setState((draft) => {
+      draft.invoiceTitle = ''
+      // draft.paramsInfo = { ...paramsInfo, invoice_type: '', invoice_content: {} }
+      draft.paramsInfo = { ...paramsInfo, invoice_content: {} }
+    })
+  }
 
   const renderFooter = () => {
     return (
@@ -643,6 +684,26 @@ function PointShopEspierCheckout() {
           )}
         </View>
       )}
+
+      {totalInfo.invoice_status ? (
+        <SpCell
+          isLink
+          title='开发票'
+          className='cart-checkout__invoice'
+          onClick={handleInvoiceClick}
+          value={
+            <View className='invoice-title'>
+              {invoiceTitle && (
+                <View
+                  onClick={(e) => resetInvoice(e)}
+                  className='iconfont icon-close invoice-close'
+                />
+              )}
+              {invoiceTitle || '否'}
+            </View>
+          }
+        />
+      ) : null}
 
       <View className='cart-checkout__total'>
         <SpCell className='trade-sub__item' title='积分：'>

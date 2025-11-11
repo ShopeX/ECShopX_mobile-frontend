@@ -112,7 +112,8 @@ function CartIndex() {
     Taro.showLoading({ title: '' })
     const { type = 'distributor' } = router?.params || {}
     const params = {
-      shop_type: type
+      shop_type: type,
+      shop_id: shopInfo?.distributor_id
     }
 
     await dispatch(fetchCartList(params))
@@ -328,7 +329,7 @@ function CartIndex() {
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
                     <View className='shop-cart-item-hd'>
                       <Text className='iconfont icon-shop' />
-                      {all_item.shop_name || shopInfo?.store_name || '自营'}
+                      {all_item.shop_name || '自营'}
                     </View>
                     <View className='shop-cart-item-shadow'>
                       {/** 店铺商品开始 */}
@@ -437,8 +438,10 @@ function CartIndex() {
                             onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
                           />
                         </View>
+                      </View>
+                      <View className='shop-cart-item-ft'>
                         <View className='rg'>
-                          <View>
+                          <View className='rg-lt'>
                             <View className='total-price-wrap'>
                               合计：
                               <SpPrice className='total-pirce' value={all_item.total_fee / 100} />

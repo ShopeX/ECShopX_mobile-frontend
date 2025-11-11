@@ -56,7 +56,8 @@ import {
   isAPP,
   showToast,
   getDistributorId,
-  VERSION_STANDARD
+  VERSION_STANDARD,
+  buildSharePath
 } from '@/utils'
 import { fetchUserFavs } from '@/store/slices/user'
 
@@ -120,7 +121,8 @@ const initialState = {
   recommendList: [],
   isParameter: false,
   imgHeightList: [], // 用于存储banner高度
-  navigateMantle: false
+  navigateMantle: false,
+  defaultImageHeight: 520 // 默认图片高度，避免空白
 }
 
 function EspierDetail(props) {
@@ -158,11 +160,13 @@ function EspierDetail(props) {
     recommendList,
     isParameter,
     imgHeightList,
-    navigateMantle
+    navigateMantle,
+    defaultImageHeight
   } = state
 
   useEffect(() => {
     init()
+    entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
   }, [])
 
@@ -253,7 +257,7 @@ function EspierDetail(props) {
     if (userInfo) {
       query['uid'] = userInfo.user_id
     }
-    const path = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const path = buildSharePath('poster_espier_detail', query)
     log.debug(`share path: ${path}`)
     return {
       title: itemName,
@@ -321,16 +325,27 @@ function EspierDetail(props) {
         }
       })
     }
-    const banner = await getMultipleImageInfo(data.imgs)
     setState((draft) => {
       draft.info = {
         ...data,
         subscribe
       }
       draft.play = data.video ? true : false // 辉绮需求
-      draft.imgHeightList = banner
       draft.promotionActivity = data.promotionActivity
+      // 初始化图片高度数组，使用默认高度
+      draft.imgHeightList = new Array(data.imgs.length).fill(draft.defaultImageHeight)
     })
+
+    // 异步计算图片真实高度，不阻塞页面渲染
+    getMultipleImageInfo(data.imgs)
+      .then((heights) => {
+        setState((draft) => {
+          draft.imgHeightList = heights
+        })
+      })
+      .catch((error) => {
+        console.log('计算图片高度失败，使用默认高度:', error)
+      })
 
     if (isAPP() && userInfo) {
       try {
@@ -355,7 +370,7 @@ function EspierDetail(props) {
     }
   }
   const getMultipleImageInfo = async (imageUrls = []) => {
-    let windowWidth = 375
+    let windowWidth = defaultImageHeight
     try {
       const sys = Taro.getSystemInfoSync()
       if (sys && sys.windowWidth) windowWidth = sys.windowWidth
@@ -365,9 +380,9 @@ function EspierDetail(props) {
 
     const promises = imageUrls.map(async (url) => {
       try {
-        const info = await Taro.getImageInfo({ src: url })
-        const imgWidth = Number(info?.width) || 0
-        const imgHeight = Number(info?.height) || 0
+        const imageInfo = await Taro.getImageInfo({ src: url })
+        const imgWidth = Number(imageInfo?.width) || 0
+        const imgHeight = Number(imageInfo?.height) || 0
         if (imgWidth > 0 && imgHeight > 0) {
           return Math.round((windowWidth * imgHeight) / imgWidth)
         }
@@ -519,7 +534,7 @@ function EspierDetail(props) {
                 className='goods-swiper'
                 // current={curImgIdx}
                 onChange={onChangeSwiper}
-                style={{ height: imgHeightList[curImgIdx] + 'px' }}
+                style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
               >
                 {info.imgs.map((img, idx) => (
                   <SwiperItem key={`swiperitem__${idx}`}>
@@ -866,7 +881,7 @@ function EspierDetail(props) {
           <View className='product-parameter-all'>
             {info?.itemParams?.map((item, index) => {
               return (
-                <View className='product-parameter-item'>
+                <View className='product-parameter-item' key={`product-parameter-item__${index}`}>
                   <Text className='title'>{item.attribute_name}</Text>
                   <Text className='content'>{item.attribute_value_name}</Text>
                 </View>
