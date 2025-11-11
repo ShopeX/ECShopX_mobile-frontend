@@ -469,13 +469,13 @@ const SpPage = memo(
                 : 0
             })}
           >
-            <View className='sp-page__body-content'>
+            {/* <View className='sp-page__body-content'>
               <context.Provider value={{}}>{props.children}</context.Provider>
               <View className='sp-page__powered-by'>
                 <Text>Powered by</Text>
                 <SpImage src='powered-logo.png' width={120} />
               </View>
-            </View>
+            </View> */}
           </View>
         )}
         {props.loading && <SpLoading />}
