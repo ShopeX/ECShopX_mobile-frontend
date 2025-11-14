@@ -220,7 +220,7 @@ const Reg = () => {
 
           <View className='form-field'>
             <View className='input-field'>
-              <CompPasswordInput onChange={handleInputChange('password')} />
+              <CompPasswordInput onChange={handleInputChange('password')} value={state.password} />
             </View>
           </View>
 
