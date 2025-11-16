@@ -10,6 +10,24 @@ Node.js (current LTS) and npm are required to run the project. To be sure about 
 cd ecshopx-vshop
 npm i
 ```
+### Configure the .env file
+```
+APP_BASE_URL=https://demo-ecshopx.ishopex.cn/api/h5app/wxapp
+APP_WEBSOCKET=wss://demo-ecshopx.ishopex.cn/ws
+APP_COMPANY_ID=38
+APP_PLATFORM=standard
+APP_CUSTOM_SERVER=https://ecshopx-h5.ex-sandbox.com/
+APP_HOME_PAGE=/pages/index
+APP_TRACK=youshu
+APP_YOUSHU_TOKEN=bi281e87ab2424481a
+APP_ID=wx1e25e45145b70faa
+APP_MAP_KEY=PSPBZ-KQ5CW-CSGRF-ON2S4-K2HQJ-XEBQG
+APP_MAP_NAME=oneX新零售门店定位
+APP_IMAGE_CDN=https://b-img-cdn.yuanyuanke.cn/ecshopx-vshop
+APP_DIANWU_URL=https://demo-ecshopx-dianwu.shopex123.com
+APP_MERCHANT_URL=
+APP_ADAPAY=
+```
 
 ### Run project 
 ```
