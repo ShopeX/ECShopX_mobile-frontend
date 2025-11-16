@@ -51,17 +51,21 @@ APP_ADAPAY=
 ```
 
 ### Run project 
-```
+```shell
+# Compile Mobile Web App
 npm run dev:h5
 ```
-```
+```shell
+# Compile WeChat Mini Program
 npm run dev:weapp
 ```
 
 ### Build packages 
-```
+```shell
+# Compile Mobile Web App
 npm run build:weapp
 ```
-```
+```shell
+# Compile WeChat Mini Program
 npm run build:weapp
 ```
