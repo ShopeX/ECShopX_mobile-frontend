@@ -12,8 +12,12 @@ npm i
 ```
 ### Configure the .env file
 ```
+# Backend API Base URL
 APP_BASE_URL=https://demo-ecshopx.ishopex.cn/api/h5app/wxapp
+  
+# WebSocket Endpoint
 APP_WEBSOCKET=wss://demo-ecshopx.ishopex.cn/ws
+  
 APP_COMPANY_ID=38
 APP_PLATFORM=standard
 APP_CUSTOM_SERVER=https://ecshopx-h5.ex-sandbox.com/
