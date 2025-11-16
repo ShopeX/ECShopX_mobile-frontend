@@ -17,9 +17,13 @@ APP_BASE_URL=https://demo-ecshopx.ishopex.cn/api/h5app/wxapp
   
 # WebSocket Endpoint
 APP_WEBSOCKET=wss://demo-ecshopx.ishopex.cn/ws
-  
-APP_COMPANY_ID=38
+
+# System Tenant ID
+APP_COMPANY_ID=1
+
+# System Business Model (b2c/bbc)
 APP_PLATFORM=standard
+
 APP_CUSTOM_SERVER=https://ecshopx-h5.ex-sandbox.com/
 APP_HOME_PAGE=/pages/index
 APP_TRACK=youshu
