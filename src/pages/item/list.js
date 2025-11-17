@@ -427,44 +427,24 @@ function ItemList() {
             })}
           </View>
         </View>
-      </SpScrollView>
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
-
-      {/* <SpDrawer
-        show={show}
-        onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
-        }}
-        onConfirm={onConfirmBrand}
-        onReset={onResetBrand}
-      >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
+        {/* Sku选择器 */}
+        <MSpSkuSelect
+          open={skuPanelOpen}
+          type={selectType}
+          info={info}
+          onClose={() => {
+            setState((draft) => {
+              draft.skuPanelOpen = false
+            })
+          }}
+          onChange={(skuText, curItem) => {
+            setState((draft) => {
+              draft.skuText = skuText
+              draft.curItem = curItem
+            })
+          }}
         />
-      </SpDrawer> */}
+      </SpScrollView>
     </SpPage>
   )
 }
