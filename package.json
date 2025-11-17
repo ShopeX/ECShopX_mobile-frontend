@@ -6,7 +6,6 @@
   "description": "taro app for bbc",
   "scripts": {
     "clean": "rm -rf node_modules/.cache",
-    "release:h5": "RELEASE=h5 npm run build:h5",
     "lint": "prettier-eslint 'src/**/*.{js,jsx}' --write",
     "build:weapp": "taro build --type weapp --trace-warnings",
     "build:weapp:live": "cross-env APP_LIVE=true taro build --type weapp --trace-warnings",
@@ -39,7 +38,6 @@
     "husky:add": "npx husky add .husky/pre-commit 'npx --no-install lint-staged' & npx husky add .husky/commit-msg 'npx --no-install commitlint --edit \"$1\"'"
   },
   "author": "",
-  "license": "MIT",
   "engines": {
     "node": "16.16.0"
   },

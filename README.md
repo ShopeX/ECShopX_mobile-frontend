@@ -64,7 +64,6 @@ APP_CDN_BUCKET=unat-bucket
 # 更换命令：npm install -g cnpm --registry=https://registry.npm.taobao.org
 
 # 先安装插件
-npm install @shopex/taro-plugin-modules -S --registry=http://registry.npm.ishopex.cn
 
 # 再安装其他依赖
 npm install 
