@@ -214,15 +214,14 @@ function MemberIndex(props) {
   }
 
   // 分享
-  useShareAppMessage(async (res) => {
-    const { share_title, share_pic_wechatapp } = await api.member.getMemberShareConfig()
+  useShareAppMessage(async () => {
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })
     const path = buildSharePath('poster_home', {})
     return {
-      title: state.shareInfo.page_share_title || share_title,
-      imageUrl: state.shareInfo.page_share_imageUrl || share_pic_wechatapp || logo,
+      title: state.shareInfo.page_share_title ,
+      imageUrl: state.shareInfo.page_share_imageUrl || logo,
       path: path
     }
   })
@@ -360,52 +359,8 @@ function MemberIndex(props) {
     })
   }
 
-  const handlePopularChange = async () => {
-    // 推广跳转
-    // 已经是分销员
-    if (userInfo.isPromoter) {
-      Taro.navigateTo({ url: link })
-    } else {
-      const { confirm } = await Taro.showModal({
-        title: '邀请推广',
-        content: '确定申请成为推广员？',
-        showCancel: true,
-        cancel: '取消',
-        confirmText: '确认',
-        confirmColor: '#0b4137'
-      })
-      if (!confirm) return
-      const { status } = await api.distribution.become()
-      if (status) {
-        Taro.showModal({
-          title: '恭喜',
-          content: '已成为推广员',
-          showCancel: false,
-          confirmText: '好'
-        })
-      }
-    }
-  }
 
-  const handlePurchaseChange = async () => {
-    const data = await api.purchase.getUserEnterprises({
-      disabled: 0,
-      distributor_id: getDistributorId()
-    })
-    if (data?.length > 0) {
-      Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
-    } else {
-      Taro.navigateTo({ url: '/pages/purchase/auth' })
-    }
-    dispatch(updatePurchaseShareInfo())
-    dispatch(updateInviteCode())
-    dispatch(updateCurDistributorId(null))
-  }
 
-  const handleClickLink = async (link) => {
-    // await getUserInfoAuth()
-    Taro.navigateTo({ url: link })
-  }
 
   const handleClickService = async (item) => {
     const { link, key } = item

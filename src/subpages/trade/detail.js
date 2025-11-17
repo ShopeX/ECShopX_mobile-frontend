@@ -698,7 +698,7 @@ function TradeDetail(props) {
             </View>
           )
         }
-        <View className='block-container'>
+        {info?.items?.length > 0 && <View className='block-container'>
           <View className='trade-shop' onClick={onViewStorePage}>
             {info?.distributorName}
             {!VERSION_STANDARD && <Text className='iconfont icon-qianwang-01' />}
@@ -780,7 +780,7 @@ function TradeDetail(props) {
               })()}
             />
           </View>
-        </View>
+        </View>}
         {/* <View className='block-container'>
         </View> */}
         {console.log(info, 'info------')}
@@ -842,7 +842,7 @@ function TradeDetail(props) {
           </View>
         )}
 
-        <View className='block-container order-info'>
+        {info?.items?.length > 0 && <View className='block-container order-info'>
           <View className='block-container-label'>订单信息</View>
           <SpCell
             title='订单编号'
@@ -869,8 +869,8 @@ function TradeDetail(props) {
             />
           )}
           {cancelData && <SpCell title='取消原因' value={cancelData?.cancel_reason} />}
-        </View>
-        <View className='padding-view'></View>
+        </View>}
+        {info?.items?.length > 0 && <View className='padding-view'></View>}
       </ScrollView>
 
       {info?.orderStatus === 'NOTPAY' && (
