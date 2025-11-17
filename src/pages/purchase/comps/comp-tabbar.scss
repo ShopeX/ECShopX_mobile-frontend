@@ -16,10 +16,12 @@
  | Contact: 400-821-3106
  +----------------------------------------------------------------------
  */
-.at-badge__num {
-  background-color: var(--color-dianwu-primary);
-}
-.at-tab-bar {
-  height: 100%;
-  position: absolute;
-}
+ .comp-tabbar{
+  .at-badge__num {
+    background-color: var(--color-dianwu-primary);
+  }
+  &.at-tab-bar {
+    height: 100%;
+    position: absolute;
+  }
+ }
