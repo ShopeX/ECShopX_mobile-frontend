@@ -389,8 +389,7 @@ export default class DistributionGoods extends Component {
     console.log(list)
 
     return (
-      <SpPage className='page-distribution-shop' renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
-        <View>
+      <View className='page-distribution-shop'>
           <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
           <SpSearchBar
             showDailog={false}
@@ -438,8 +437,8 @@ export default class DistributionGoods extends Component {
             )}
           </ScrollView>
           <SpToast />
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
         </View>
-      </SpPage>
     )
   }
 }
