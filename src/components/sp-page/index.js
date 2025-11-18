@@ -459,6 +459,7 @@ const SpPage = memo(
             <View className='sp-page__body-content'>
               <context.Provider value={{}}>{props.children}</context.Provider>
               <View className='sp-page__powered-by'>
+                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
                 <Text>Powered by</Text>
                 <SpImage src='powered-logo.png' width={120} />
               </View>
