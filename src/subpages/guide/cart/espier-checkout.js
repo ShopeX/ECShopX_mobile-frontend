@@ -1,20 +1,7 @@
-// +----------------------------------------------------------------------
-// | ECShopX open source E-commerce
-// | ECShopX 开源商城系统
-// +----------------------------------------------------------------------
-// | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
-// +----------------------------------------------------------------------
-// | Corporate Website:  https://www.shopex.cn
-// +----------------------------------------------------------------------
-// | Licensed under the Apache License, Version 2.0
-// | http://www.apache.org/licenses/LICENSE-2.0
-// +----------------------------------------------------------------------
-// | The removal of shopeX copyright information without authorization is prohibited.
-// | 未经授权不可去除shopeX商派相关版权
-// +----------------------------------------------------------------------
-// | Author: shopeX Team <mkt@shopex.cn>
-// | Contact: 400-821-3106
-// +----------------------------------------------------------------------
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -83,7 +70,7 @@ function EspierCheckout(props) {
             <View className='total-num'>共{cartTotalNum}件商品</View>
             <View className='total-info'>
               <View>
-                总计:　
+                总计:
                 <SpPrice value={totalFee} />
               </View>
               <View className='desc-txt'>以实际支付金额为准</View>

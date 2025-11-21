@@ -12624,24 +12624,14 @@
 		"en": "",
 		"zh-tw": ""
 	},
-	"d0x6rc4": {
-		"zh-cn": "批量处理",
-		"en": "",
-		"zh-tw": ""
-	},
-	"7djicl6": {
-		"zh-cn": "请输入订单号",
-		"en": "",
-		"zh-tw": ""
-	},
-	"chl18c4": {
-		"zh-cn": "开票失败",
-		"en": "",
-		"zh-tw": ""
-	},
 	"hp8xmu6": {
 		"zh-cn": "页面跳转失败",
-		"en": "",
-		"zh-tw": ""
+		"en": "Page redirection failed",
+		"zh-tw": "頁面跳轉失敗"
+	},
+	"er67o3": {
+		"zh-cn": "总计:",
+		"en": "Total:",
+		"zh-tw": "總計:"
 	}
 }

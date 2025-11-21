@@ -1,70 +1,90 @@
-# 说明文档
-## .env文件配置信息
-```json
-  {
-    "APP_BASE_URL": "接口访问地址",
-    "APP_WEBSOCKET": "websocket访问地址",
-    "APP_COMPANY_ID": "企业id",
-    "APP_PLATFORM": "打包平台，standard为标准版, platform为平台版",
-    "APP_CUSTOM_SERVER": "域名地址，H5支付回调使用",
-    "APP_HOME_PAGE": "首页访问路径",
-    "APP_MAP_KEY": "H5 腾讯地图使用key",
-    "APP_MAP_NAME": "H5 使用地图name"
-  }
+<p align="center"><img width="600" height="auto" alt="logo1" src="https://github.com/user-attachments/assets/489cc6f9-9108-4db9-860d-70820c99b73a" /></p>
+
+### <p align="center">Mobile Frontend</p>
+
+# Getting started
+Node.js (current LTS) and npm are required to run the project. To be sure about the version compatibility you can enable Node's corepack.
+
+### System Requirements
+Required Node.js Version: 16.16.0. If your current version differs, follow the steps below to switch
 ```
-## npm打包指令
-```bash
-#小程序本地开发编译
-npm run dev:weapp
+nvm install 16.16.0 
+nvm use 16.16.0
+```
 
-#小程序生产打包
-npm run build:weapp 
+### Installation
+```
+cd ecshopx-vshop
+npm i
+```
+### Configure the .env file
+```shell
+# Backend API Base URL
+APP_BASE_URL=
+  
+# WebSocket Endpoint
+APP_WEBSOCKET=
 
-#H5本地开发编译
+# System Tenant ID
+APP_COMPANY_ID=1
+
+# System Business Model (b2c:standard/b2b2c:platform)
+APP_PLATFORM=standard
+  
+# Mobile Web App Payment Callback Domain，used for payment result notifications.
+APP_CUSTOM_SERVER=
+
+# App Homepage Path
+APP_HOME_PAGE=/pages/index
+
+# WeChat Mini Program AppID，required for compiling the mini program
+APP_ID=wx1e25e45145b70faa
+
+# Map Service API Key, used for geocoding user LBS coordinates and providing location-based offline store recommendations.
+APP_MAP_KEY=
+
+# Mapping Service Provider Name
+APP_MAP_NAME=
+
+# Media files OSS Server URL
+APP_IMAGE_CDN=
+
+# Store Operations Tool Domain Address
+APP_DIANWU_URL=
+
+# Merchant Portal Domain Address
+APP_MERCHANT_URL=
+
+# Payment Callback URL for Third-Party Payment Platforms
+APP_ADAPAY=
+```
+
+### Run project 
+```shell
+# Compile Mobile Web App
 npm run dev:h5
+```
+```shell
+# Compile WeChat Mini Program
+npm run dev:weapp
+```
 
-#H5生产打包
+### Build packages 
+```shell
+# Compile Mobile Web App
 npm run build:h5
-
 ```
 
-
-## 注意事项
-- 关于小程序预览，dev:weapp本地开发编译模式下因为主包过大无法上传预览，需要使用build:weapp打包后选择小程序开发工具中的详情->本地设置->上传代码时自动压缩混淆
-
-## shell脚本指令使用
-- dev.sh和run.sh脚本命令使用,conpanys.conf文件为设置env.json文件的配置信息，新增配置需同已有配置格式保持一致,打包完成后需手动更改appid
-
-```bash
-#开发模式使用
-sh dev.sh
-
-#打包使用
-sh run.sh
+```shell
+# Compile WeChat Mini Program
+npm run build:weapp
 ```
 
-cicd test 3
+## License
+Each ECShopX source file included in this distribution is licensed under the Apache License 2.0, together with the additional terms imposed by ShopeX.
 
-## 代码prettier
-npm run prepare
-npx husky add .husky/pre-commit "npx lint-staged --allow-empty"
+Open Software License (Apache 2.0) – Please see LICENSE.txt for the full text of the Apache 2.0 license.
 
-## 如果用ASW打包上传cdn，需要增加以下配置,配置值根据实际情况调整
-APP_PUBLIC_PATH=https://CDN域名
-APP_CDN=aws
-APP_CDN_PATH=ecshopx-vshop/
-APP_CDN_KEY=
-APP_CDN_SCERET=
-APP_CDN_REGION=ap-southeast-2
-APP_CDN_BUCKET=unat-bucket
+每个包含在本发行版中的 ECShopX 源文件，均依据 Apache 2.0 开源许可证与ShopeX商派附加条款进行授权。
 
-
-# 如遇初始化下载时间过长或者network timeout，可更换npm镜像源
-# npm更换淘宝镜像，使用此命令后，npm指令关键词改为（cnpm），例如：npm i 改为 cnpm i
-# 更换命令：npm install -g cnpm --registry=https://registry.npm.taobao.org
-
-# 先安装插件
-npm install @shopex/taro-plugin-modules -S --registry=http://registry.npm.ishopex.cn
-
-# 再安装其他依赖
-npm install 
+开源软件许可协议（Apache 2.0） —— 请参阅 LICENSE.txt 文件以获取 Apache 2.0 协议的完整文本。

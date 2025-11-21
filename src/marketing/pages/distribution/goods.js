@@ -1,20 +1,7 @@
-// +----------------------------------------------------------------------
-// | ECShopX open source E-commerce
-// | ECShopX 开源商城系统
-// +----------------------------------------------------------------------
-// | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
-// +----------------------------------------------------------------------
-// | Corporate Website:  https://www.shopex.cn
-// +----------------------------------------------------------------------
-// | Licensed under the Apache License, Version 2.0
-// | http://www.apache.org/licenses/LICENSE-2.0
-// +----------------------------------------------------------------------
-// | The removal of shopeX copyright information without authorization is prohibited.
-// | 未经授权不可去除shopeX商派相关版权
-// +----------------------------------------------------------------------
-// | Author: shopeX Team <mkt@shopex.cn>
-// | Contact: 400-821-3106
-// +----------------------------------------------------------------------
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
@@ -390,55 +377,55 @@ export default class DistributionGoods extends Component {
 
     return (
       <View className='page-distribution-shop'>
-          <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
-          <SpSearchBar
-            showDailog={false}
-            keyword={query ? query.keywords : ''}
-            onFocus={() => false}
-            onCancel={() => {}}
-            onChange={this.handleSearchChange}
-            onClear={this.handleConfirm.bind(this)}
-            onConfirm={this.handleConfirm.bind(this)}
-          />
-          <FilterBar
-            className='goods-list__tabs'
-            custom
-            current={curFilterIdx}
-            list={filterList}
-            onChange={this.handleFilterChange}
-          ></FilterBar>
+        <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
+        <SpSearchBar
+          showDailog={false}
+          keyword={query ? query.keywords : ''}
+          onFocus={() => false}
+          onCancel={() => {}}
+          onChange={this.handleSearchChange}
+          onClear={this.handleConfirm.bind(this)}
+          onConfirm={this.handleConfirm.bind(this)}
+        />
+        <FilterBar
+          className='goods-list__tabs'
+          custom
+          current={curFilterIdx}
+          list={filterList}
+          onChange={this.handleFilterChange}
+        ></FilterBar>
 
-          <ScrollView
-            className='goods-list__scroll'
-            scrollY
-            scrollTop={scrollTop}
-            scrollWithAnimation
-            onScroll={this.onScroll}
-            onScrollToLower={this.nextPage}
-          >
-            <View className='goods-list'>
-              {list.map((item) => {
-                const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
-                return (
-                  <DistributionGoodsItem
-                    key={item.goods_id}
-                    info={item}
-                    isRelease={isRelease}
-                    shareDataChange={this.shareDataChange}
-                    status={status}
-                    onClick={() => this.handleClickItem(item.goods_id)}
-                  />
-                )
-              })}
-            </View>
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
-            {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-            )}
-          </ScrollView>
-          <SpToast />
-          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-        </View>
+        <ScrollView
+          className='goods-list__scroll'
+          scrollY
+          scrollTop={scrollTop}
+          scrollWithAnimation
+          onScroll={this.onScroll}
+          onScrollToLower={this.nextPage}
+        >
+          <View className='goods-list'>
+            {list.map((item) => {
+              const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
+              return (
+                <DistributionGoodsItem
+                  key={item.goods_id}
+                  info={item}
+                  isRelease={isRelease}
+                  shareDataChange={this.shareDataChange}
+                  status={status}
+                  onClick={() => this.handleClickItem(item.goods_id)}
+                />
+              )
+            })}
+          </View>
+          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+          )}
+        </ScrollView>
+        <SpToast />
+        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+      </View>
     )
   }
 }
