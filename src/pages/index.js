@@ -79,7 +79,8 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   navigateMantle: false,
-  footerHeight: 0
+  footerHeight: 0,
+  distributor_id: null
 }
 
 function Home() {
@@ -113,7 +114,8 @@ function Home() {
     skuPanelOpen,
     selectType,
     navigateMantle,
-    footerHeight
+    footerHeight,
+    distributor_id
   } = state
 
   const dispatch = useDispatch()
@@ -214,6 +216,7 @@ function Home() {
       draft.isShowHomeHeader = isShowHomeHeader
       draft.filterWgts = filterWgts
       draft.loading = false
+      draft.distributor_id = distributor_id
     })
   }
 
@@ -307,7 +310,7 @@ function Home() {
               footerHeight: state.footerHeight
             }}
           >
-            <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
+            <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
               {/* 猜你喜欢 */}
               <SpRecommend className='recommend-block' info={likeList} />
             </HomeWgts>
