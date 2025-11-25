@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef} from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
@@ -117,10 +117,6 @@ function TradeDetail(props) {
     }
   }, [openingTime])
 
-  const totalFreightFee = useMemo(() => {
-    const { freightFee, freightPointFee } = info || {}
-    return Number(freightFee || 0 + freightPointFee || 0)?.toFixed(2)
-  }, [info?.freightFee, info?.freightPointFee])
 
   const fetch = async () => {
     const { order_id } = await parameter()
