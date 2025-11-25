@@ -22,9 +22,7 @@ const CookieConsent = () => {
 
   const fetchCookiePolicy = async () => {
     try {
-      const { content } = await api.shop.getRuleInfo({
-        type: 'cookie_privacy'
-      })
+      const { content } = await api.shop.getCookiePolicy()
       if (content) {
         setPolicyData(content)
         setVisible(true)

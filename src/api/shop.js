@@ -128,3 +128,11 @@ export function checkStoreEnterRule(params) {
 export function getMyStoreWhiteList() {
   return req.get('/distributor/whitelistByMember')
 }
+
+
+// 获取Cookie政策
+export function getCookiePolicy() {
+  return req.get('/shops/protocol', {
+    type: 'cookie_privacy'
+  })
+}
