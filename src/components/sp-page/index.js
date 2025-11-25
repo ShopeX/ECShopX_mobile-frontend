@@ -15,6 +15,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { useThemsColor, useLogin } from '@/hooks'
+import CookieConsent from '@/components/cookie-consent'
 import {
   TAB_PAGES,
   TABBAR_PATH,
@@ -486,6 +487,7 @@ const SpPage = memo(
             )}
           </View>
         )}
+        <CookieConsent />
       </View>
     )
   })

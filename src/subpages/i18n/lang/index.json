@@ -3213,7 +3213,7 @@
 		"zh-cn": "上架成功",
 		"en": "Listed successfully",
 		"zh-tw": "上架成功",
-		750    "ar": "تم الإدراج بنجاح"
+		"ar": "تم الإدراج بنجاح"
 	},
 	"aa12vu4": {
 		"zh-cn": "下架成功",
@@ -15160,5 +15160,41 @@
 		"en": "Total:",
 		"zh-tw": "總計:",
 		"ar": "الإجمالي:"
+	},
+	"chl18c4": {
+		"zh-cn": "开票失败",
+		"en": "Ticket failed",
+		"zh-tw": "開票失敗",
+		"ar": "فشل الفاتورة"
+	},
+	"d0x6rc4": {
+		"zh-cn": "批量处理",
+		"en": "Batch processing",
+		"zh-tw": "批量處理",
+		"ar": "معالجة لوحة واحدة"
+	},
+	"7djicl6": {
+		"zh-cn": "请输入订单号",
+		"en": "Please enter order number",
+		"zh-tw": "請輸入訂單號",
+		"ar": "يرجى إدخال رقم الطلب"
+	},
+	"cx7hgb4": {
+		"zh-cn": "接受所有",
+		"en": "Accept all",
+		"zh-tw": "接受所有",
+		"ar": "قبول الكل"
+	},
+	"czrm8k4": {
+		"zh-cn": "拒绝所有",
+		"en": "Reject all",
+		"zh-tw": "拒絕所有",
+		"ar": "رفض الكل"
+	},
+	"pghukv6": {
+		"zh-cn": "365海淘客",
+		"en": "365 Holiday Trader",
+		"zh-tw": "365海淘客",
+		"ar": "365 هوليداي ترايدر"
 	}
 }
