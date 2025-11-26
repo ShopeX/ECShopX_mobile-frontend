@@ -22,9 +22,9 @@ const CookieConsent = () => {
 
   const fetchCookiePolicy = async () => {
     try {
-      const { content } = await api.shop.getCookiePolicy()
-      if (content) {
-        setPolicyData(content)
+      const { h5_privacy_content } = await api.shop.getCookiePolicy()
+      if (h5_privacy_content) {
+        setPolicyData(h5_privacy_content)
         setVisible(true)
         // 延迟设置动画状态以触发 CSS transition
         setTimeout(() => {
@@ -64,8 +64,8 @@ const CookieConsent = () => {
           <SpHtml content={policyData} />
         </View>
         <View className='cookie-buttons'>
-          <Button className='accept-btn' onClick={handleAccept}>ACCEPT ALL</Button>
-          <Button className='reject-btn' onClick={handleReject}>REJECT ALL</Button>
+          <Button className='accept-btn' onClick={handleAccept}>接受所有</Button>
+          <Button className='reject-btn' onClick={handleReject}>拒绝所有</Button>
         </View>
       </View>
     </View>

@@ -132,7 +132,5 @@ export function getMyStoreWhiteList() {
 
 // 获取Cookie政策
 export function getCookiePolicy() {
-  return req.get('/shops/protocol', {
-    type: 'cookie_privacy'
-  })
+  return req.get('/company/privacy_setting_ck')
 }
