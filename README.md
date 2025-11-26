@@ -14,7 +14,7 @@ nvm use 16.16.0
 
 ### Installation
 ```
-cd ecshopx-vshop
+cd ECShopX_mobile-frontend
 npm i
 ```
 ### Configure the .env file
