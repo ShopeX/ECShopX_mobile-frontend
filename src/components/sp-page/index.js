@@ -11,7 +11,7 @@ import Taro, {
   usePageScroll,
   getCurrentInstance
 } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
 import { useThemsColor, useLogin } from '@/hooks'
@@ -458,7 +458,11 @@ const SpPage = memo(
               <View className='sp-page__powered-by'>
                 {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
                 <Text>Powered by</Text>
-                <SpImage src='powered-logo.png' width={120} />
+                <Image
+                  src='/assets/imgs/powered-logo.png'
+                  className='powered-logo'
+                  mode='widthFix'
+                />
               </View>
             </View>
           </View>

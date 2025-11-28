@@ -1,4 +1,4 @@
-<p align="center"><img width="600" height="auto" alt="logo1" src="https://github.com/user-attachments/assets/489cc6f9-9108-4db9-860d-70820c99b73a" /></p>
+<p align="center"><img width="600" height="416" alt="logo2" src="https://github.com/user-attachments/assets/abf6c4c7-8cb1-477e-aea4-9e526cd8225a" /></p>
 
 ### <p align="center">Mobile Frontend</p>
 
@@ -14,7 +14,7 @@ nvm use 16.16.0
 
 ### Installation
 ```
-cd ecshopx-vshop
+cd ECShopX_mobile-frontend
 npm i
 ```
 ### Configure the .env file
