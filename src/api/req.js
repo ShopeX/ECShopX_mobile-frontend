@@ -183,7 +183,7 @@ class API {
         zhcn: 'zh-CN',
         en: 'en-CN',
         zhtw: 'zh-TW',
-        ar: 'ar'
+        ar: 'ar-SA'
       }
       query['country_code'] = langMap[lang || process.env.APP_COUNTRY_CODE]
     }
