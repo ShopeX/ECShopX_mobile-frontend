@@ -37,6 +37,7 @@ export const TRADE_ITEM = {
   },
   freightFee: ({ freight_fee }) => freight_fee / 100,
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
+  freightType: 'freight_type',
   itemPoint: 'item_point',
   isLogistics: ({ is_logistics }) => is_logistics == '1',
   items: ({ items }) => {

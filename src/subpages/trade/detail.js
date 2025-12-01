@@ -721,14 +721,14 @@ function TradeDetail(props) {
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.itemPoint}${
-                        info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
+                        info?.itemFee ? `+${info?.freightType == 'point' ? `${pointName} ${info?.freightFee*100}` : `+¥${Number(info?.itemFee).toFixed(2)}`}` : ''
                       }`
                     } else {
                       return <SpPrice value={info?.itemFee} size={28} />
                     }
                   })()}
                 />
-                <SpCell title='运费' value={<SpPrice value={info?.freightFee} size={28} />} />
+                <SpCell title='运费' value={info?.freightType == 'point'?`${pointName} ${info?.freightFee*100}`:<SpPrice value={info?.freightFee} size={28} />} />
                 <SpCell
                   title='促销'
                   value={<SpPrice value={info?.promotionDiscount} size={28} />}
