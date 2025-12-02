@@ -10,6 +10,13 @@
     overflow-y: auto;
   }
 
+  .sp-page__loading {
+    height: calc(100vh - 80px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .sp-page__footer {
     position: fixed;
     bottom: 0;
@@ -38,9 +45,13 @@
   }
   .powered-logo {
     width: 120px;
+    height: 32px;
   }
   .sp-page__body-content {
     height: fit-content;
+    min-height: 100%;
+    box-sizing: border-box;
+    position: relative;
   }
 
   .float-container {

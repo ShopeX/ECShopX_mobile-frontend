@@ -2,10 +2,13 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-.at-badge__num {
-  background-color: var(--color-dianwu-primary);
-}
-.at-tab-bar {
-  height: 100%;
-  position: absolute;
+.comp-tabbar {
+  .at-badge__num {
+    background-color: var(--color-dianwu-primary);
+  }
+
+  &.at-tab-bar {
+    height: 100%;
+    position: absolute;
+  }
 }

@@ -480,8 +480,9 @@ function EspierDetail(props) {
       immersive
       title={navigateMantle ? info?.itemName : ' '}
       ref={pageRef}
+      loading={!info}
       renderFloat={
-        <View>
+       info && <View>
           <SpFloatMenuItem
             onClick={() => {
               Taro.navigateTo({ url: '/subpages/member/index' })
@@ -497,7 +498,7 @@ function EspierDetail(props) {
         </View>
       }
       renderFooter={
-        <CompBuytoolbar
+        info && <CompBuytoolbar
           info={info}
           onChange={onChangeToolBar}
           onSubscribe={() => {
@@ -513,7 +514,6 @@ function EspierDetail(props) {
         style='height: 100%;'
         onScroll={handleScroll}
       >
-        {!info && <SpLoading />}
         {info && (
           <View className='goods-contents'>
             <View className='goods-pic-container'>

@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef } from 'react'
+import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, {
   useRouter,
@@ -34,9 +34,6 @@ import {
   isGoodsShelves,
   linkPage,
   VERSION_SHUYUN,
-  validate,
-  hex2rgb,
-  VERSION_STANDARD
 } from '@/utils'
 import context from '@/hooks/usePageContext'
 
@@ -163,7 +160,7 @@ const SpPage = memo(
         menuWidth: _menuWidth,
         footerHeight: _height
       })
-    }, [sys])
+    }, [])
 
     useEffect(() => {
       const {
@@ -268,7 +265,7 @@ const SpPage = memo(
       }
     }))
 
-    const computedNavigationStyle = () => {
+    const computedNavigationStyle = useCallback(() => {
       const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
@@ -285,9 +282,17 @@ const SpPage = memo(
         style['transition'] = 'all 0.15s ease-in'
       }
       return style
-    }
+    }, [
+      props.pageConfig,
+      props.immersive,
+      props.navigateMantle,
+      props.navigateBackgroundColor,
+      state.gNavbarH,
+      state.gStatusBarHeight,
+      state.mantle
+    ])
 
-    const RenderCustomNavigation = () => {
+    const RenderCustomNavigation = useCallback(() => {
       const { windowWidth } = Taro.getWindowInfo()
       let { renderTitle } = props
       let pageCenterStyle = {
@@ -357,8 +362,8 @@ const SpPage = memo(
                         url: isGoodsShelves()
                           ? '/subpages/guide/index'
                           : VERSION_IN_PURCHASE
-                          ? '/pages/purchase/index'
-                          : '/pages/index'
+                            ? '/pages/purchase/index'
+                            : '/pages/index'
                       })
                     }}
                   />
@@ -421,7 +426,22 @@ const SpPage = memo(
           </View>
         </View>
       )
-    }
+    }, [
+      props.renderTitle,
+      props.pageConfig,
+      props.title,
+      props.renderNavigation,
+      props.fixedTopContainer,
+      state.menuWidth,
+      state.navigationLSpace,
+      state.btnReturn,
+      state.btnHome,
+      state.gNavbarH,
+      state.gStatusBarHeight,
+      state.mantle,
+      appName,
+      computedNavigationStyle
+    ])
 
     return (
       <View
@@ -448,26 +468,37 @@ const SpPage = memo(
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
-                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-                  )
+                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                )
                 : 0
             })}
           >
-            <View className='sp-page__body-content'>
+            <View className='sp-page__body-content' style={styleNames({
+              'padding-bottom': Taro.pxTransform(80)
+            })}
+            >
+              {props.loading && <View className='sp-page__loading'>
+                <SpLoading />
+              </View>}
               <context.Provider value={{}}>{props.children}</context.Provider>
-              <View className='sp-page__powered-by'>
-                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+              <View className='sp-page__powered-by w-full' style={styleNames({
+                'position': 'absolute',
+                'bottom': 0,
+                'left': 0,
+                'right': 0,
+                'z-index': 1000
+              })}
+              >
                 <Text>Powered by</Text>
                 <Image
                   src='/assets/imgs/powered-logo.png'
                   className='powered-logo'
-                  mode='widthFix'
+                  mode='contain'
                 />
               </View>
             </View>
           </View>
         )}
-        {props.loading && <SpLoading />}
         {props.renderFooter && (
           <View
             key={lang}
@@ -498,7 +529,7 @@ const SpPage = memo(
 )
 
 SpPage.defaultProps = {
-  onReady: () => {},
+  onReady: () => { },
   btnHomeEnable: true,
   className: '',
   children: null,
