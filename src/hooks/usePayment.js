@@ -8,8 +8,13 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, requirePlugin, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { TRANSFORM_PAYTYPE } from '@/consts'
+import { updateUserInfo } from '@/store/slices/user'
+import configStore from '@/store'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
+
+
+const {store} = configStore()
 
 const initialState = {
   params: '',
@@ -95,7 +100,7 @@ export default (props = {}) => {
     return router.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
   }
 
-  const paySuccess = (params, orderInfo) => {
+  const paySuccess = async(params, orderInfo) => {
     const { activityType } = params
     const { order_id } = orderInfo
     if (isTradeDetaiPage()) {
@@ -111,6 +116,9 @@ export default (props = {}) => {
         Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })
       }
     }
+    // 更新用户信息
+    const _userInfo = await api.member.memberInfo()
+    store.dispatch(updateUserInfo(_userInfo))
   }
 
   const payError = (orderInfo) => {

@@ -162,6 +162,7 @@ function MemberIndex(props) {
     if (isLogin) {
       getUserInfo()
       getMemberCenterData()
+      setMemberBackground()
     }
   })
 
