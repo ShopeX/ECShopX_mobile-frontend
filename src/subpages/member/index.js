@@ -435,7 +435,7 @@ function MemberIndex(props) {
             }[vipInfo.isVip]
           }
         </Text>
-        <SpImage src='fv_chevron_right.png' width={40} />
+        <SpImage src='fv_chevron_right.png' width={40} className='icon-arrowRight-img' />
       </View>
     )
   }

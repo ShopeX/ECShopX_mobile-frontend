@@ -126,7 +126,7 @@ function WgtOrderNavigation(props) {
               onClick={() => handleClickLink('/subpages/trade/list?status=0')}
             >
               <Text>全部订单</Text>
-              <SpImage src='fv_chevron_right.png' width={40} />
+              <SpImage src='fv_chevron_right.png' width={40} className='icon-arrowRight-img' />
             </View>
           </View>
         </View>
