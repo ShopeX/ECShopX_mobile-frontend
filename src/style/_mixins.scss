@@ -255,6 +255,20 @@
       margin: $i + px;
     }
   }
+
+  .rtl-layout,
+  [dir='rtl'] {
+    @for $i from $start through $end {
+      .ml-#{$i} {
+        margin-left: 0;
+        margin-right: $i + px;
+      }
+      .mr-#{$i} {
+        margin-right: 0;
+        margin-left: $i + px;
+      }
+    }
+  }
 }
 
 @mixin generate-padding($start, $end, $step) {
@@ -271,6 +285,20 @@
   @for $i from $start through $end {
     .p-#{$i} {
       padding: $i + px;
+    }
+  }
+
+  .rtl-layout,
+  [dir='rtl'] {
+    @for $i from $start through $end {
+      .pl-#{$i} {
+        padding-left: 0;
+        padding-right: $i + px;
+      }
+      .pr-#{$i} {
+        padding-right: 0;
+        padding-left: $i + px;
+      }
     }
   }
 }

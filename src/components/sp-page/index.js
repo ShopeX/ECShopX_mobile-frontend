@@ -73,6 +73,7 @@ const SpPage = memo(
     const scrollTopRef = useRef(0)
     const sys = useSelector((state) => state.sys)
     const { lang } = useSelector((state) => state.user)
+    const isRTL = lang === 'ar'
     const [showToTop, setShowToTop] = useState(false)
     const { appName } = sys
     const { themeColor } = useThemsColor()
@@ -445,7 +446,7 @@ const SpPage = memo(
 
     return (
       <View
-        className={classNames('sp-page', props.className)}
+        className={classNames('sp-page', props.className, { 'rtl-layout': isRTL })}
         style={styleNames({ ...state.pageTheme, ...state.lockStyle, ...state.pageBackground })}
         ref={wrapRef}
         key={lang}

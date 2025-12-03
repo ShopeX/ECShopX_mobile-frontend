@@ -96,6 +96,9 @@ const userSlice = createSlice({
       state.location = payload
     },
 
+    updateLang: (state, { payload }) => {
+      state.lang = payload
+    },
     closeAdv: (state, { payload }) => {
       state.showAdv = payload
     },
@@ -138,8 +141,8 @@ export const {
   updateLocation,
   updateCheckChief,
   clearUserInfo,
-  updateIsNewUser
-  // updateLang
+  updateIsNewUser,
+  updateLang
 } = userSlice.actions
 
 export default userSlice.reducer

@@ -1,0 +1,43 @@
+/**
+ * RTL Support
+ */
+
+.rtl-layout, [dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+
+  .text-left {
+    text-align: right;
+  }
+
+  .text-right {
+    text-align: left;
+  }
+
+  .fl, .float-left, .pull-left {
+    float: right;
+  }
+
+  .fr, .float-right, .pull-right {
+    float: left;
+  }
+
+  // Fix Taro UI icons if needed (example)
+  .at-icon-chevron-right {
+    transform: rotate(180deg);
+  }
+  
+  .at-icon-chevron-left {
+    transform: rotate(180deg);
+  }
+
+  // Common flex alignments
+  .justify-start {
+    justify-content: flex-start; // In RTL, start is right
+  }
+  
+  .justify-end {
+    justify-content: flex-end; // In RTL, end is left
+  }
+}
+

@@ -32,6 +32,7 @@ import {
   SG_GUIDE_PARAMS_EXPRESSTIME,
   SG_CHECK_STORE_RULE
 } from '@/consts'
+import { updateLang } from '@/store/slices/user'
 import {
   checkAppVersion,
   isWeixin,
@@ -100,7 +101,30 @@ function App({ children }) {
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
-    Taro.eventCenter.on('languageChanged', () => {
+
+    // Initialize RTL
+    const lang = Taro.getStorageSync('lang') || 'en'
+    store.dispatch(updateLang(lang))
+    if (isWeb) {
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+      if (lang === 'ar') {
+        document.documentElement.classList.add('rtl-mode')
+      } else {
+        document.documentElement.classList.remove('rtl-mode')
+      }
+    }
+
+    Taro.eventCenter.on('languageChanged', (data) => {
+      const newLang = data?.lang || Taro.getStorageSync('lang')
+      store.dispatch(updateLang(newLang))
+      if (isWeb) {
+        document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
+        if (newLang === 'ar') {
+          document.documentElement.classList.add('rtl-mode')
+        } else {
+          document.documentElement.classList.remove('rtl-mode')
+        }
+      }
       getSystemConfig()
     })
     //分包异步加载语言包
