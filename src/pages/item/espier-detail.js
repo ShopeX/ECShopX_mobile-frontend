@@ -149,8 +149,6 @@ function EspierDetail(props) {
 
   useEffect(() => {
     init()
-    entryLaunch.postGuideUV()
-    entryLaunch.postGuideTask()
   }, [])
 
   useEffect(() => {

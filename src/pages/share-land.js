@@ -30,10 +30,10 @@ function ShareIand() {
     if (routeParams?.gu || routeParams?.gu_user_id) { // 导购参数处理
       Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
       Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-      if (S.getAuthToken()) {
-        entryLaunch.postGuideUV() // 导购uv上报
-        entryLaunch.postGuideTask() // 导购任务上报
-      }
+      // if (S.getAuthToken()) {
+      //   entryLaunch.postGuideUV() // 导购uv上报
+      //   entryLaunch.postGuideTask() // 导购任务上报
+      // }
     }
     
     if (routeParams?.t == 1) {
@@ -86,6 +86,9 @@ function ShareIand() {
     delete filteredParams.$taroTimestamp
     const queryString = qs.stringify(filteredParams)
 
+    entryLaunch.postGuideUV() // 导购uv上报
+    entryLaunch.postGuideTask(welcomeRoutes[from_scene]) // 导购任务上报
+
     const targetUrl = queryString ? `${welcomeRoutes[from_scene]}?${queryString}` : welcomeRoutes[from_scene]
     console.log('导购任务分享跳转:', targetUrl, welcomeRoutes[from_scene])
 
@@ -128,6 +131,9 @@ function ShareIand() {
     if (normalizedPath && !normalizedPath.startsWith('/')) {
       normalizedPath = '/' + normalizedPath
     }
+
+    entryLaunch.postGuideUV() // 导购uv上报
+    entryLaunch.postGuideTask(normalizedPath) // 导购任务上报
     
     // 构建目标URL
     const queryString = qs.stringify(filteredParams)

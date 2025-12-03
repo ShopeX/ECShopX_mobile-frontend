@@ -549,16 +549,20 @@ class EntryLaunch {
   /**
    * 导购任务埋点上报
    */
-  async postGuideTask() {
+  async postGuideTask(customPath) {
     const { path, params } = $instance.router
+    const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
       '/subpage/pages/recommend/detail': 'activeSeedingDetail',
-      '/pages/marketing/coupon-center': 'activeDiscountCoupon',
-      '/pages/cart/espier-checkout': 'orderPaymentSuccess'
+      '/subpages/marketing/coupon-center': 'activeDiscountCoupon',
+      '/pages/cart/espier-checkout': 'orderPaymentSuccess',
+      '/pages/index': 'activeHomePage',
+      '/pages/recommend/list': 'activeRecommendList',
+      '/subpages/member/index': 'activeMemberCenter'
     }
-    if (!routePath[path]) {
+    if (!routePath[paths]) {
       return
     }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
@@ -571,7 +575,7 @@ class EntryLaunch {
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
-        event_type: routePath[path]
+        event_type: routePath[paths]
       }
       api.wx.taskReportData(_params)
 
@@ -581,7 +585,7 @@ class EntryLaunch {
         event_id: employee_number,
         user_type: 'wechat',
         user_id,
-        event_type: routePath[path],
+        event_type: routePath[paths],
         store_bn: shop_code
       })
     }
