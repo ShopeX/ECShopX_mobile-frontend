@@ -99,7 +99,7 @@ export default class DistributionShopForm extends Component {
 
     return (
       <SpPage className='page-distribution-shop-form'>
-        <View className='shop-form'>
+        <View className='shop-form min-h-full box-border'>
           {info.key == 'shop_name' && (
             <AtInput
               type='text'

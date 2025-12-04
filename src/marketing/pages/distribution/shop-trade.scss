@@ -9,7 +9,7 @@
   .trade-list {
     padding: 24px $edge-margin;
     &__scroll {
-      @include page-scroll(0, 0);
+      height: 100%;
     }
     &__item {
       &-code {

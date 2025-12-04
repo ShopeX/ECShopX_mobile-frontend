@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
-import { SpNavBar } from '@/components'
+import { SpNavBar, SpPage } from '@/components'
 
 import './point-platform.scss'
 
@@ -32,8 +32,8 @@ export default class PointPlatform extends Component {
     const { info } = this.state
     console.log(info)
     return (
-      <View className='page-distribution-statistics'>
-        <SpNavBar title='推广费' leftIconType='chevron-left' />
+      <SpPage className='page-distribution-statistics' title='推广费'>
+        <View className='min-h-full'> 
         <View className='header content-padded-b'>
           <View className='header-top'>
             <View className='view-flex view-flex-justify'>
@@ -104,7 +104,8 @@ export default class PointPlatform extends Component {
             </View>
           </View> */}
         </View>
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }

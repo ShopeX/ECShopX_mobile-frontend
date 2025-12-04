@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { SpCell } from '@/components'
+import { SpCell, SpPage } from '@/components'
 import api from '@/api'
 
 import './shop-setting.scss'
@@ -48,7 +48,8 @@ export default class DistributionShopSetting extends Component {
     const { info } = this.state
 
     return (
-      <View className='page-distribution-shop-setting'>
+      <SpPage className='page-distribution-shop-setting'>
+        <View className='min-h-full'>
         <SpCell
           title='小店名称'
           value={info.shop_name}
@@ -70,7 +71,8 @@ export default class DistributionShopSetting extends Component {
             mode='widthFix'
           />
         </SpCell>
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }

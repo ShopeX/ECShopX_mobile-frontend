@@ -55,7 +55,9 @@ $search-wrap-height: 90px;
       }
     }
   }
-
+    .item-list-scroll{
+    min-height: calc(100% - 322px);
+  }
   .list-scroll-container {
     height: calc(100% - #{$search-wrap-height});
   }

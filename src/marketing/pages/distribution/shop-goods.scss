@@ -21,8 +21,9 @@
   }
   .goods-list {
     padding: 10px 30px;
+    box-sizing: border-box;
     &__scroll {
-      @include page-scroll($searchbar-height + 10, 0);
+      height: calc(100% - 30PX);
     }
     .shop-goods-item {
       margin-bottom: 30px;

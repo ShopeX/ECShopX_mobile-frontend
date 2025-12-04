@@ -5,20 +5,11 @@
 @import '@/style/imports';
 
 .page-distribution-trade {
-  .trade-list__tabs_web {
-    // 浏览器（不包含微信浏览器）
-    margin-top: $navigate-height-h5;
+  .at-tabs {
+    height: 84px;
   }
   .trade-list__scroll {
-    @include page-scroll($tabs-height + $navigate-height, 0);
-    /*  #ifdef  h5  */
-    @include page-scroll($tabs-height + $navigate-height-h5, 0);
-    top: 110px;
-    /*  #endif  */
-  }
-  .trade-list__scroll_web {
-    // 浏览器（不包含微信浏览器）
-    top: $tabs-height + $navigate-height-h5 + 30px;
+    height: calc(100% - 84px);
   }
   .order-no {
     font-size: 30px;

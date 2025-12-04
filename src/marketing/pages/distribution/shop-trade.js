@@ -4,7 +4,7 @@
  */
 import React, { Component } from 'react'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
-import { SpToast, Loading, SpNote } from '@/components'
+import { SpToast, Loading, SpNote, SpPage } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, formatDateTime } from '@/utils'
@@ -74,7 +74,7 @@ export default class DistributionShopTrade extends Component {
     const { list, page, scrollTop } = this.state
 
     return (
-      <View className='page-distribution-shop'>
+      <SpPage className='page-distribution-shop'>
         <ScrollView
           className='trade-list__scroll'
           scrollY
@@ -123,7 +123,7 @@ export default class DistributionShopTrade extends Component {
           )}
         </ScrollView>
         <SpToast />
-      </View>
+      </SpPage>
     )
   }
 }

@@ -12,10 +12,6 @@ view.rtl-layout {
   direction: rtl;
   text-align: right;
 
-  // 确保所有子元素也应用 RTL
-  > * {
-    direction: rtl;
-  }
 
   .text-left {
     text-align: right;
@@ -34,7 +30,7 @@ view.rtl-layout {
   }
 
   // Fix Taro UI icons if needed (example)
-  .at-icon-chevron-right,.icon-arrowRight,.icon-arrowRight-img {
+  .at-icon-chevron-right,.icon-arrowRight,.icon-arrowRight-img,.icon-qianwang-01 {
     transform: rotate(180deg);
   }
   

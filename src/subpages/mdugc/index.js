@@ -232,7 +232,7 @@ function UgcIndex() {
         onConfirm={handleConfirm}
       />
 
-      <View>
+      <>
         <SpTagBar
           className='ugc-tag'
           list={tagsList}
@@ -274,7 +274,7 @@ function UgcIndex() {
             </View>
           </View>
         </SpScrollView>
-      </View>
+      </>
     </SpPage>
   )
 }

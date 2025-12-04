@@ -16,7 +16,6 @@
     .category-comps-not {
       box-sizing: border-box;
       background: #ffffff;
-      @include page-scroll(0, $tabbar-height);
     }
   }
   .search-input-fixed {
@@ -43,13 +42,16 @@
     box-sizing: border-box;
     background: #ffffff;
     /*  #ifdef  weapp  */
-    @include page-scroll(0, $tabbar-height);
+    height:100%;
+    // @include page-scroll(0, $tabbar-height);
     /*  #endif  */
     /*  #ifdef  h5  */
-    @include page-scroll($navigate-height-h5, $tabbar-height);
+    height:100%;
+    // @include page-scroll($navigate-height-h5, $tabbar-height);
     /*  #endif  */
   }
   .shop-category__wrap {
+    height:100%;
     &.all {
       .category-list__scroll {
         width: 100%;
@@ -57,12 +59,10 @@
       }
     }
     .category-list__scroll {
-      @include page-scroll($tabs-height + $navigate-height, 0);
+      height:100%;
       /*  #ifdef  h5  */
-      @include page-scroll($tabs-height + $navigate-height-h5, 0);
+      height:100%;
       /*  #endif  */
-      top: 0;
-      left: 25vw;
       width: 75vw;
     }
   }

@@ -453,16 +453,10 @@ function MemberIndex(props) {
       className='pages-member-index'
       immersive={state.pageData?.base?.isImmersive}
       pageConfig={state.pageData?.base || {}}
-      renderFooter={<SpTabbar height={state.footerHeight} />}
+      renderFooter={<SpTabbar />}
       title='会员中心'
-      onReady={({ footerHeight }) => {
-        setState((draft) => {
-          draft.footerHeight = footerHeight
-        })
-        console.log('onReady', footerHeight)
-      }}
     >
-      <View className='user-info-card-wrapper' style={{ paddingBottom: state.footerHeight }}>
+      <View className='user-info-card-wrapper'>
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}

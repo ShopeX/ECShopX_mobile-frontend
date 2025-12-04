@@ -107,6 +107,7 @@ export default class DistributionShop extends Component {
 
     return (
       <SpPage className='page-distribution-shop'>
+        <View className='min-h-full'>
         <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
           <View className='shop-info'>
             <View className='img-content'>
@@ -173,6 +174,7 @@ export default class DistributionShop extends Component {
             </View>
           </View>
         )}
+        </View>
       </SpPage>
     )
   }

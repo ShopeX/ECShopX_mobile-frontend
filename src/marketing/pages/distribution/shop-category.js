@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
-import { Loading, SpImg, SpNote, SpNavBar } from '@/components'
+import { Loading, SpImg, SpNote, SpNavBar, SpPage } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import S from '@/spx'
@@ -221,8 +221,8 @@ export default class DistributionShopCategory extends Component {
       this.state
     const isHaveLeft = list.length > 0
     return (
-      <View className='page-category-index'>
-        <SpNavBar title='分类' leftIconType='chevron-left' fixed='true' />
+      <SpPage className='page-category-index' renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
+        <View className='h-full'>
         <View
           className={`${
             hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
@@ -294,8 +294,8 @@ export default class DistributionShopCategory extends Component {
             </View>
           </View>
         </View>
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }

@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import { View, Text, Icon, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { BackToTop, Loading, SpNote } from '@/components'
+import { BackToTop, Loading, SpNote, SpPage } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -80,7 +80,7 @@ export default class DistributionWithdrawalsRecord extends Component {
     const { list, page, scrollTop } = this.state
 
     return (
-      <View className='page-distribution-record'>
+      <SpPage className='page-distribution-record'>
         <ScrollView
           className='record-list__scroll'
           scrollY
@@ -136,7 +136,7 @@ export default class DistributionWithdrawalsRecord extends Component {
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
-      </View>
+      </SpPage>
     )
   }
 }

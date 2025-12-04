@@ -447,7 +447,7 @@ const SpPage = memo(
     return (
       <View
         className={classNames('sp-page', props.className, { 'rtl-layout': isRTL })}
-        style={styleNames({ ...state.pageTheme, ...state.lockStyle, ...state.pageBackground })}
+        style={styleNames({ ...state.pageTheme, ...state.pageBackground })}
         ref={wrapRef}
         key={lang}
       >
@@ -464,39 +464,25 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              // 'height': state.lock ? `${state.bodyHeight}px` : '100%',
+              ...state.lockStyle,
               'height': `${state.bodyHeight}px`,
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
-              'padding-bottom': props.renderFooter
-                ? Taro.pxTransform(
-                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-                )
-                : 0
+              'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0) + 80) : Taro.pxTransform(80)
             })}
           >
-            <View className='sp-page__body-content' style={styleNames({
-              'padding-bottom': Taro.pxTransform(80)
-            })}
-            >
-              {props.loading && <View className='sp-page__loading'>
+            {props.loading && (
+              <View className='sp-page__loading'>
                 <SpLoading />
-              </View>}
-              <context.Provider value={{}}>{props.children}</context.Provider>
-              <View className='sp-page__powered-by w-full' style={styleNames({
-                'position': 'absolute',
-                'bottom': 0,
-                'left': 0,
-                'right': 0,
-                'z-index': 1000
-              })}
-              >
-                <Text>Powered by</Text>
-                <Image
-                  src='/assets/imgs/powered-logo.png'
-                  className='powered-logo'
-                  mode='contain'
-                />
               </View>
+            )}
+            <context.Provider value={{}}>{props.children}</context.Provider>
+            <View className='sp-page__powered-by w-full'>
+              <Text>Powered by</Text>
+              <Image
+                src='/assets/imgs/powered-logo.png'
+                className='powered-logo'
+                mode='contain'
+              />
             </View>
           </View>
         )}

@@ -53,7 +53,7 @@
       }
     }
     &__scroll {
-      @include page-scroll($tabs-height + $navigate-height, $tabbar-height);
+      height: calc(100% - 140px);
       /*  #ifdef  h5  */
       // @include page-scroll(
       //   $tabs-height + $navigate-height-h5 + $searchbar-height,

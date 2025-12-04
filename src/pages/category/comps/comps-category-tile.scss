@@ -53,11 +53,13 @@
   .category-comps {
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll($tabs-height + 16px, $tabbar-height);
+    position: static!important;
+    height: 100%;
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll(0, $tabbar-height);
+    position: static!important;
+    height: 100%;
   }
 }

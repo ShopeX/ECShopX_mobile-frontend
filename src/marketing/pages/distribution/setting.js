@@ -4,7 +4,7 @@
  */
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpNavBar } from '@/components'
+import { SpPage } from '@/components'
 import api from '@/api'
 
 import './setting.scss'
@@ -58,8 +58,8 @@ export default class DistributionSetting extends Component {
     const { info, shop_name, isEdit } = this.state
 
     return (
-      <View className='page-distribution-setting'>
-        <SpNavBar title='会员资料' leftIconType='chevron-left' />
+      <SpPage className='page-distribution-setting'>
+        <View className='min-h-full'>
         <View className='content-padded'>会员资料</View>
         <View className='section'>
           <View className='list'>
@@ -88,7 +88,8 @@ export default class DistributionSetting extends Component {
             </View>
           </View>
         </View>
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }

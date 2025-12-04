@@ -20,6 +20,7 @@ import './goods.scss'
 @withBackToTop
 export default class DistributionGoods extends Component {
   $instance = getCurrentInstance()
+  spPageRef = React.createRef()
   constructor(props) {
     super(props)
 
@@ -61,6 +62,7 @@ export default class DistributionGoods extends Component {
       menus: ['shareAppMessage', 'shareTimeline']
     })
     this.firstStatus = true
+    this.spPageRef.current?.pageLock()
     const { status } = this.$instance.router.params
     const { tabList } = this.state
     tabList[1].url += `?status=${status}`
@@ -376,13 +378,12 @@ export default class DistributionGoods extends Component {
     console.log(list)
 
     return (
-      <View className='page-distribution-shop'>
-        <SpNavBar title='推广商品' leftIconType='chevron-left' fixed='true' />
+      <SpPage ref={this.spPageRef} className='page-distribution-shop' renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
         <SpSearchBar
           showDailog={false}
           keyword={query ? query.keywords : ''}
           onFocus={() => false}
-          onCancel={() => {}}
+          onCancel={() => { }}
           onChange={this.handleSearchChange}
           onClear={this.handleConfirm.bind(this)}
           onConfirm={this.handleConfirm.bind(this)}
@@ -424,8 +425,7 @@ export default class DistributionGoods extends Component {
           )}
         </ScrollView>
         <SpToast />
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-      </View>
+      </SpPage>
     )
   }
 }

@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
-import { SpToast, Loading, SpNote } from '@/components'
+import { SpToast, Loading, SpNote, SpPage } from '@/components'
 // import S from '@/spx'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
@@ -92,7 +92,8 @@ export default class DistributionShopAchievement extends Component {
     const { list, page, date, scrollTop } = this.state
 
     return (
-      <View className='page-distribution-shop'>
+      <SpPage className='page-distribution-shop'>
+        <View className='h-full'>
         <View class='page-header'>
           <Picker mode='date' fields='month' onChange={this.handleDateChange}>
             {date ? (
@@ -158,8 +159,9 @@ export default class DistributionShopAchievement extends Component {
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
+        </View>
         <SpToast />
-      </View>
+      </SpPage>
     )
   }
 }

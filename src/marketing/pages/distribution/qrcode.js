@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpNavBar } from '@/components'
+import { SpPage } from '@/components'
 import api from '@/api'
 import userIcon from '@/assets/imgs/user-icon.png'
 
@@ -57,8 +57,8 @@ export default class DistributionQrcode extends Component {
     const { info } = this.state
 
     return (
-      <View className='page-distribution-qrcode' style={'background: ' + colors.data[0].marketing}>
-        <SpNavBar title='二维码' leftIconType='chevron-left' />
+      <SpPage className='page-distribution-qrcode' style={'background: ' + colors.data[0].marketing}>
+        <View className='page-distribution-qrcode-content h-full w-full'>
         <View className='qrcode-bg'>
           <View className='title'>邀请卡</View>
           <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
@@ -69,7 +69,8 @@ export default class DistributionQrcode extends Component {
           </View>
           <View className='tips'>微信扫一扫或长按识别</View>
         </View>
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }

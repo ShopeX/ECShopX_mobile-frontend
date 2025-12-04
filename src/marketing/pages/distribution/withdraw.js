@@ -169,7 +169,18 @@ export default class DistributionWithdraw extends Component {
       payText
     } = this.state
     return (
-      <SpPage className='page-distribution-withdraw'>
+      <SpPage className='page-distribution-withdraw' footerHeight={186} renderFooter={
+        <View className='content-padded'>
+          <Button
+            className='g-button'
+            onClick={this.goWithdraw}
+            disabled={curIdx == 'wechat' && amount > 800}
+          >
+            提现
+          </Button>
+        </View>}
+      >
+        <View className='min-h-full'>
         <View className='withdraw'>
           <View className='withdraw-title'>
             <View className='title'>可提现金额（元）</View>
@@ -232,14 +243,6 @@ export default class DistributionWithdraw extends Component {
           <View className='g-ul-li'>提现申请审核通过后1个工作日后到账，节假日顺延</View>
           <View className='g-ul-li'>修改银行卡信息请前往实名认证信息进行修改</View>
         </View>
-        <View className='content-padded'>
-          <Button
-            className='g-button'
-            onClick={this.goWithdraw}
-            disabled={curIdx == 'wechat' && amount > 800}
-          >
-            提现
-          </Button>
         </View>
       </SpPage>
     )

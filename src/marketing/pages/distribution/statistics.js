@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
-import { SpNavBar } from '@/components'
+import { SpNavBar, SpPage } from '@/components'
 import { pickBy } from '@/utils'
 
 import './statistics.scss'
@@ -47,8 +47,8 @@ export default class DistributionStatistics extends Component {
     const { info } = this.state
 
     return (
-      <View className='page-distribution-statistics'>
-        <SpNavBar title='推广费' leftIconType='chevron-left' />
+      <SpPage className='page-distribution-statistics' >
+        <View className='min-h-full'>
         <View className='header content-padded-b'>
           <View className='header-top'>
             <View className='view-flex view-flex-justify'>
@@ -130,7 +130,8 @@ export default class DistributionStatistics extends Component {
             </View>
           </View>
         </View>
-      </View>
+        </View>
+      </SpPage>
     )
   }
 }
