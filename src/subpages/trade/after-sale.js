@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -120,7 +120,7 @@ function TradeAfterSale(props) {
     const { orderInfo, offline_aftersales_is_open, distributor } = await api.trade.detail(id)
     const reasons = await api.aftersales.reasonList()
     const { intro, is_open } = await api.aftersales.remindDetail()
-    const { offline_aftersales, is_refund_freight } = distributor
+    const { offline_aftersales, is_refund_freight } = distributor || {}
     const _info = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     setState((draft) => {
       draft.info = _info
