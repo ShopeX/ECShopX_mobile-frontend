@@ -464,18 +464,22 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              ...state.lockStyle,
               'height': `${state.bodyHeight}px`,
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0) + 80) : Taro.pxTransform(80)
             })}
           >
+
+            <View className='sp-page__body-content' style={styleNames({ ...state.lockStyle })}>
+              <context.Provider value={{}}>
+                {props.children}
+              </context.Provider>
+            </View>
             {props.loading && (
               <View className='sp-page__loading'>
                 <SpLoading />
               </View>
             )}
-            <context.Provider value={{}}>{props.children}</context.Provider>
             <View className='sp-page__powered-by w-full'>
               <Text>Powered by</Text>
               <Image

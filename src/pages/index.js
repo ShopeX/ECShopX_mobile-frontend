@@ -289,8 +289,8 @@ function Home() {
         })
       }}
     >
-      <View
-        className={classNames('home-body min-h-full', {
+      <ScrollView
+        className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
         scrollY
@@ -316,7 +316,7 @@ function Home() {
             </HomeWgts>
           </WgtsContext.Provider>
         )}
-      </View>
+      </ScrollView>
 
       {/* 小程序收藏提示 */}
       {isWeixin && <MCompAddTip />}
