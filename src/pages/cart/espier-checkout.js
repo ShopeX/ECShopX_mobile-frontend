@@ -129,9 +129,10 @@ function CartCheckout(props) {
     group_id = routerParams.group_id, // 团购id
     source = routerParams.source,
     scene, // 情景值
-    goodType = routerParams.goodType
+    goodType = routerParams.goodType,
+    launchScene = routerParams.launchScene
   } = $instance?.router?.params || {}
-  const { scene: launchScene } = Taro.getLaunchOptionsSync()
+  // const { scene: launchScene } = Taro.getLaunchOptionsSync()
   const senceCode = [1011, 1012, 1013, 1047, 1048, 1049]
   console.log('$instance.router?.params:', $instance.router)
 
@@ -559,7 +560,7 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
-    console.log('cus_parmas:', cus_parmas)
+    console.log('-------cus_parmas------:', cus_parmas)
     let orderRes
     try {
       orderRes = await api.cart.total(cus_parmas)
