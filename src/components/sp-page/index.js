@@ -100,7 +100,7 @@ const SpPage = memo(
       } else {
         setState((draft) => {
           draft.lockStyle = {
-            overflowY: 'auto'
+            'overflow-y': 'auto'
           }
         })
       }

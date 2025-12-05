@@ -456,7 +456,7 @@ function MemberIndex(props) {
       renderFooter={<SpTabbar />}
       title='会员中心'
     >
-      <View className='user-info-card-wrapper'>
+      <View className='user-info-card-wrapper min-h-full'>
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
