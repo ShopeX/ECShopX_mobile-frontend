@@ -47,8 +47,6 @@ function ShareIand() {
 
   // 处理落地页类型
   const handleShareLand = (routeParams) => {
-  const { scene: launchScene } = Taro.getLaunchOptionsSync()
-  console.log('launchScene1:', launchScene)
     const { from_scene, ...otherParams } = routeParams
     const welcomeRoutes = {
       // 导购欢迎语
@@ -83,7 +81,10 @@ function ShareIand() {
     }
 
     // 过滤掉内部使用的参数
-    const filteredParams = { ...otherParams, launchScene: launchScene }
+    let filteredParams = { ...otherParams }
+    if (from_scene === 'poster_espier_checkout') {
+      filteredParams['launchScene'] = 1
+    }
     delete filteredParams.scene
     delete filteredParams.$taroTimestamp
     const queryString = qs.stringify(filteredParams)
@@ -121,12 +122,10 @@ function ShareIand() {
   // 3、其他小程序跳转过来 pages/share-land?target_path=pages/item/espier-detail&id=123
   // 4、小程序卡片跳转过来 pages/share-land?target_path=pages/item/espier-detail&id=123
   const handleGeneralShare = (routeParams) => { // routeParams：pa
-    const { scene: launchScene } = Taro.getLaunchOptionsSync()
-    console.log('launchScene2:', launchScene)
     const { target_path, ...otherParams } = routeParams
     
     // 过滤掉内部使用的参数
-    const filteredParams = { ...otherParams, launchScene: launchScene }
+    let filteredParams = { ...otherParams }
     delete filteredParams.scene
     delete filteredParams.$taroTimestamp
     
@@ -138,6 +137,10 @@ function ShareIand() {
 
     entryLaunch.postGuideUV() // 导购uv上报
     entryLaunch.postGuideTask(normalizedPath) // 导购任务上报
+
+    if (normalizedPath === '/pages/cart/espier-checkout') {
+      filteredParams['launchScene'] = 1
+    }
     
     // 构建目标URL
     const queryString = qs.stringify(filteredParams)
