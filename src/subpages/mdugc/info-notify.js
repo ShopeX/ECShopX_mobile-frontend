@@ -17,14 +17,14 @@ const initialState = {
   infoList: [],
   type: '',
   filterList: [
-    { tag_id: 1, tag_name: '系统', tag_type: infotype.SYSTEM, icon: 'icon-logo', num: 0 },
-    { tag_id: 2, tag_name: '回复', tag_type: infotype.REPLY, icon: 'icon-sixin', num: 0 },
-    { tag_id: 3, tag_name: '赞', tag_type: infotype.LIKE, icon: 'icon-aixin', num: 0 },
-    { tag_id: 4, tag_name: '收藏', tag_type: infotype.FAVORITEPOST, icon: 'icon-redu', num: 0 },
+    { tag_id: 1, tag_name: '系统', tag_type: infotype().SYSTEM, icon: 'icon-logo', num: 0 },
+    { tag_id: 2, tag_name: '回复', tag_type: infotype().REPLY, icon: 'icon-sixin', num: 0 },
+    { tag_id: 3, tag_name: '赞', tag_type: infotype().LIKE, icon: 'icon-aixin', num: 0 },
+    { tag_id: 4, tag_name: '收藏', tag_type: infotype().FAVORITEPOST, icon: 'icon-redu', num: 0 },
     {
       tag_id: 5,
       tag_name: '关注',
-      tag_type: infotype.FOLLOWERUSER,
+      tag_type: infotype().FOLLOWERUSER,
       icon: 'icon-gerenzhongxin',
       num: 0
     }
@@ -102,9 +102,9 @@ function UgcFollowFans() {
   const goToPage = (item) => {
     console.log(item)
     const { type, sub_type, postInfo, from_user_id } = item
-    if (type === infotype.SYSTEM && sub_type === 'refusePost') {
+    if (type === infotype().SYSTEM && sub_type === 'refusePost') {
       Taro.navigateTo({ url: `/subpages/mdugc/note?post_id=${postInfo.post_id}` })
-    } else if (type === infotype.FOLLOWERUSER) {
+    } else if (type === infotype().FOLLOWERUSER) {
       Taro.navigateTo({ url: `/subpages/mdugc/my?user_id=${from_user_id}` })
     } else {
       Taro.navigateTo({ url: `/subpages/mdugc/note-detail?post_id=${postInfo.post_id}` })

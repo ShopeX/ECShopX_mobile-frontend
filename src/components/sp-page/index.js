@@ -206,7 +206,7 @@ const SpPage = memo(
 
     useDidShow(() => {
       const { page, router } = getCurrentInstance()
-      const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router?.path.split('?')[0])
+      const fidx = Object.values(TABBAR_PATH()).findIndex((v) => v == router?.path.split('?')[0])
       const isTabBarPage = fidx > -1
       setState((draft) => {
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(

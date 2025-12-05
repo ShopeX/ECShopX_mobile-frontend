@@ -272,7 +272,7 @@ function PurchaseCheckout(props) {
       try {
         const h5ResInfo = await api.trade.h5create({
           ...params,
-          pay_type: isAPP() ? payType : TRANSFORM_PAYTYPE[payType]
+          pay_type: isAPP() ? payType : TRANSFORM_PAYTYPE()[payType]
         })
         orderInfo = h5ResInfo
         orderId = h5ResInfo.order_id

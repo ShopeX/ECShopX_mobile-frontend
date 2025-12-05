@@ -28,7 +28,7 @@ export default class Cashier extends Component {
     info: null,
     env: '',
     isHasAlipay: true,
-    payType: PAYTYPE.WXH5
+    payType: PAYTYPE().WXH5
   }
 
   componentDidShow() {
@@ -50,7 +50,7 @@ export default class Cashier extends Component {
   }
 
   async fetch() {
-    const { order_id, pay_type = PAYTYPE.WXH5, id } = this.$instance.router.params
+    const { order_id, pay_type = PAYTYPE().WXH5, id } = this.$instance.router.params
 
     let env = ''
     if (browser.weixin) {
@@ -120,10 +120,10 @@ export default class Cashier extends Component {
         </View>
         {!env ? (
           <View>
-            {isHasAlipay && payType === PAYTYPE.ALIH5 && (
+            {isHasAlipay && payType === PAYTYPE().ALIH5 && (
               <AlipayPay orderID={info.order_id} payType='alipayh5' orderType={info.order_type} />
             )}
-            {payType === PAYTYPE.WXH5 && <WeH5Pay orderID={info.order_id} />}
+            {payType === PAYTYPE().WXH5 && <WeH5Pay orderID={info.order_id} />}
           </View>
         ) : (
           <View>

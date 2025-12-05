@@ -8,10 +8,10 @@ import { hex2rgb } from '@/utils'
 
 //没有则获取正确的颜色
 function getColor(field, value) {
-  return value ? value : DEFAULT_THEME[field]
+  return value ? value : DEFAULT_THEME()[field]
 }
 
-const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME
+const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME()
 
 const initialState = {
   initState: false,

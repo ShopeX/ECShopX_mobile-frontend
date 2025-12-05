@@ -75,16 +75,16 @@ function ApplyChief(props) {
       _defaultMsg = '',
       _defaultImg = ''
     // 待审核
-    if (approve_status == CHIEF_APPLY_STATUS.WAITE) {
+    if (approve_status == CHIEF_APPLY_STATUS().WAITE) {
       _isDefault = true
       _defaultMsg = '申请审核中，请耐心等待~'
       _defaultImg = 'apply_loading.png'
-    } else if (approve_status == CHIEF_APPLY_STATUS.RESLOVE) {
+    } else if (approve_status == CHIEF_APPLY_STATUS().RESLOVE) {
       // 审核通过
       _isDefault = true
       _defaultMsg = '恭喜您审核通过！'
       _defaultImg = 'apply_success.png'
-    } else if (approve_status == CHIEF_APPLY_STATUS.REJECT) {
+    } else if (approve_status == CHIEF_APPLY_STATUS().REJECT) {
       // 审核拒绝
       _isDefault = true
       _defaultMsg = '很抱歉！您的审核未通过'
@@ -117,7 +117,7 @@ function ApplyChief(props) {
       if (item.is_required) {
         rules[item.key].push({ required: item.is_required, message: item.required_message })
       }
-      if (item.field_type == FORM_COMP.MOBILE) {
+      if (item.field_type == FORM_COMP().MOBILE) {
         rules[item.key].push({ validate: 'mobile', message: '请输入正确的手机号码' })
       }
     })
@@ -163,7 +163,7 @@ function ApplyChief(props) {
   const renderFormComp = ({ field_type, required_message, is_edit, key }) => {
     let formComp = null
     switch (field_type) {
-      case FORM_COMP.INPUT:
+      case FORM_COMP().INPUT:
         formComp = (
           <AtInput
             clear
@@ -177,8 +177,8 @@ function ApplyChief(props) {
           />
         )
         break
-      case FORM_COMP.NUMBER:
-      case FORM_COMP.MOBILE:
+      case FORM_COMP().NUMBER:
+      case FORM_COMP().MOBILE:
         formComp = (
           <AtInput
             clear
@@ -191,7 +191,7 @@ function ApplyChief(props) {
           />
         )
         break
-      case FORM_COMP.DATE:
+      case FORM_COMP().DATE:
         formComp = (
           <Picker mode='date' onChange={onDateChange.bind(this, key)}>
             <View
@@ -204,7 +204,7 @@ function ApplyChief(props) {
           </Picker>
         )
         break
-      case FORM_COMP.IMAGE:
+      case FORM_COMP().IMAGE:
         formComp = (
           <SpUpload
             value={form[key]}
@@ -250,11 +250,11 @@ function ApplyChief(props) {
   }
 
   const handleClickDefaultBtn = () => {
-    if (approveStatus == CHIEF_APPLY_STATUS.RESLOVE) {
+    if (approveStatus == CHIEF_APPLY_STATUS().RESLOVE) {
       Taro.redirectTo({
         url: '/subpages/community/index'
       })
-    } else if (approveStatus == CHIEF_APPLY_STATUS.REJECT) {
+    } else if (approveStatus == CHIEF_APPLY_STATUS().REJECT) {
       setState((draft) => {
         draft.isDefault = false
       })
@@ -271,15 +271,15 @@ function ApplyChief(props) {
       renderDefault={
         <View
           className={classNames('default-view', {
-            reject: approveStatus == CHIEF_APPLY_STATUS.REJECT
+            reject: approveStatus == CHIEF_APPLY_STATUS().REJECT
           })}
         >
           <SpNote img={defaultImg} title={defaultMsg} />
-          {approveStatus == CHIEF_APPLY_STATUS.REJECT && (
+          {approveStatus == CHIEF_APPLY_STATUS().REJECT && (
             <View className='reject-reason'>{refuseReason}</View>
           )}
-          {(approveStatus == CHIEF_APPLY_STATUS.RESLOVE ||
-            approveStatus == CHIEF_APPLY_STATUS.REJECT) && (
+          {(approveStatus == CHIEF_APPLY_STATUS().RESLOVE ||
+            approveStatus == CHIEF_APPLY_STATUS().REJECT) && (
             <AtButton circle type='primary' onClick={handleClickDefaultBtn}>
               {
                 {

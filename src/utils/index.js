@@ -313,10 +313,10 @@ export function calcTimer(totalSec) {
 
 export function resolveOrderStatus(status, isBackwards) {
   if (isBackwards) {
-    return _findKey(STATUS_TYPES_MAP, (o) => o === status)
+    return _findKey(STATUS_TYPES_MAP(), (o) => o === status)
   }
 
-  return STATUS_TYPES_MAP[status]
+  return STATUS_TYPES_MAP()[status]
 }
 
 export function goToPage(page) {

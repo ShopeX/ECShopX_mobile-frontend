@@ -266,7 +266,7 @@ export default (props = {}) => {
     const { config: appPayConfig } = await api.cashier.getPayment(query)
     try {
       await Taro.SAPPPay.payment({
-        id: TRANSFORM_PAYTYPE[pay_type],
+        id: TRANSFORM_PAYTYPE()[pay_type],
         order_params: appPayConfig
       })
       Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })

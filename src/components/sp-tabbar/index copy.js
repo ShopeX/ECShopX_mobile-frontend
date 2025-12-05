@@ -24,8 +24,8 @@ function SpTabbar(props) {
     return {
       title: item.text,
       name: item.name,
-      iconType: item.iconPath ? '' : TABBAR_ICON[item.name],
-      selectedIconType: item.selectedIconPath ? '' : `${TABBAR_ICON[item.name]}-fill`,
+      iconType: item.iconPath ? '' : TABBAR_ICON()[item.name],
+      selectedIconType: item.selectedIconPath ? '' : `${TABBAR_ICON()[item.name]}-fill`,
       iconPrefixClass: 'iconfont icon',
       image: item.iconPath,
       selectedImage: item.selectedIconPath,
@@ -49,13 +49,13 @@ function SpTabbar(props) {
       if (currentPage == '/pages/custom/custom-page') {
         return tab.customPageId && customPageId == tab.customPageId
       } else {
-        if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
+        if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]]) {
           return (
-            routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
+            routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]] ==
             currentPage
           )
         } else {
-          return TABBAR_PATH[tab.name] == currentPage
+          return TABBAR_PATH()[tab.name] == currentPage
         }
       }
     })
@@ -70,20 +70,20 @@ function SpTabbar(props) {
     // 如果是跳转自定义页面则判断id是否一致
     let otherCustomPage =
       path == '/pages/custom/custom-page' &&
-      path == TABBAR_PATH[tabItem.name] &&
+      path == TABBAR_PATH()[tabItem.name] &&
       tabItem.customPageId != customPageId
-    if (path != TABBAR_PATH[tabItem.name] || otherCustomPage) {
+    if (path != TABBAR_PATH()[tabItem.name] || otherCustomPage) {
       if (tabItem.name == 'purchase') {
         dispatch(updateCurDistributorId(null))
       }
-      if (TABBAR_PATH[tabItem.name] !== navipage) {
+      if (TABBAR_PATH()[tabItem.name] !== navipage) {
         let url =
           tabItem.name == 'customPage'
-            ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}`
-            : TABBAR_PATH[tabItem.name]
+            ? `${TABBAR_PATH()[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}`
+            : TABBAR_PATH()[tabItem.name]
         Taro.redirectTo({ url })
       } else {
-        Taro.navigateTo({ url: TABBAR_PATH[tabItem.name] })
+        Taro.navigateTo({ url: TABBAR_PATH()[tabItem.name] })
       }
     }
   }
