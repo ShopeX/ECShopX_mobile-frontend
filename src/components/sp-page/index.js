@@ -179,6 +179,9 @@ const SpPage = memo(
         draft.currentPage = false
       })
     })
+    useEffect(() => {
+      setShowToTop(props.scrollTop>300)
+    }, [props.scrollTop])
 
     useEffect(() => {
       if (props.pageConfig) {
@@ -248,6 +251,7 @@ const SpPage = memo(
     })
 
     const scrollToTop = () => {
+      props.onClickBackToTop && props.onClickBackToTop()
       Taro.pageScrollTo({
         scrollTop: 0
       })
@@ -544,7 +548,8 @@ SpPage.defaultProps = {
   showNavitionLeft: true,
   title: '', // 页面导航标题
   renderFooter: null,
-  renderFloat: null
+  renderFloat: null,  
+  scrollTop: null
 }
 
 export default SpPage

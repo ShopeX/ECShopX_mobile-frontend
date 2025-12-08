@@ -23,7 +23,9 @@ function SpScrollView(props, ref) {
     style,
     pageSize = 10,
     onLoad = () => {},
-    renderMore
+    renderMore,
+    onScroll=()=>{},
+    scrollTop=0
   } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
@@ -109,7 +111,7 @@ function SpScrollView(props, ref) {
 
   // console.log('sp scrollview:', page.loading, page.hasMore)
   return (
-    <ScrollView className={classNames('sp-scrollview', className)} style={style} ref={wrapRef} scrollY>
+    <ScrollView className={classNames('sp-scrollview', className)} style={style} ref={wrapRef} scrollY onScroll={onScroll} scrollTop={scrollTop}>
       <View className='sp-scrollview-body'>{children}</View>
       {page.hasMore && <SpLoading>正在加载...</SpLoading>}
       {!page.hasMore &&

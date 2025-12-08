@@ -109,7 +109,9 @@ const initialState = {
   isParameter: false,
   imgHeightList: [], // 用于存储banner高度
   navigateMantle: false,
-  defaultImageHeight: 520 // 默认图片高度，避免空白
+  defaultImageHeight: 520, // 默认图片高度，避免空白
+  scrollTop: 0,
+  backTopScrollTop: 0
 }
 
 function EspierDetail(props) {
@@ -148,7 +150,9 @@ function EspierDetail(props) {
     isParameter,
     imgHeightList,
     navigateMantle,
-    defaultImageHeight
+    defaultImageHeight,
+    scrollTop,
+    backTopScrollTop
   } = state
 
   useEffect(() => {
@@ -467,6 +471,7 @@ function EspierDetail(props) {
   const handleScroll = (e) => {
     setState((draft) => {
       draft.navigateMantle = e.detail.scrollTop > 20
+      draft.scrollTop = e.detail.scrollTop
     })
   }
 
@@ -482,6 +487,13 @@ function EspierDetail(props) {
       title={navigateMantle ? info?.itemName : ' '}
       ref={pageRef}
       loading={!info}
+      scrollTop={scrollTop}
+      onClickBackToTop={() => {
+        setState((draft) => {
+          draft.scrollTop = 0
+          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
+        })
+      }}
       renderFloat={
        info && <View>
           <SpFloatMenuItem
@@ -514,6 +526,7 @@ function EspierDetail(props) {
         className='page-item-espierdetail-goods-contents'
         style='height: 100%;'
         onScroll={handleScroll}
+        scrollTop={backTopScrollTop}
       >
         {info && (
           <View className='goods-contents'>

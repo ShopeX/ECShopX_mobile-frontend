@@ -11,6 +11,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { View, Image, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
+import throttle from 'lodash/throttle'
 import {
   SpScreenAd,
   SpPage,
@@ -80,7 +81,9 @@ const initialState = {
   selectType: 'picker',
   navigateMantle: false,
   footerHeight: 0,
-  distributor_id: null
+  distributor_id: null,
+  scrollTop: 0,
+  backTopScrollTop: 0
 }
 
 function Home() {
@@ -115,7 +118,8 @@ function Home() {
     selectType,
     navigateMantle,
     footerHeight,
-    distributor_id
+    distributor_id,
+    backTopScrollTop
   } = state
 
   const dispatch = useDispatch()
@@ -282,24 +286,36 @@ function Home() {
     }
   }
 
-  const handleScroll = (e) => {
+  const handleScroll = throttle((e) => {
     if (pageData?.base?.isImmersive) {
       setState((draft) => {
         draft.navigateMantle = e.detail.scrollTop >= 20
+        draft.scrollTop = e.detail.scrollTop
+      })
+    }else{
+      setState((draft) => {
+        draft.scrollTop = e.detail.scrollTop
       })
     }
-  }
+  }, 100)
 
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
       immersive={pageData?.base?.isImmersive}
+      scrollTop={state.scrollTop}
       // renderNavigation={renderNavigation()}
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
+      onClickBackToTop={() => {
+        setState((draft) => {
+          draft.scrollTop = 0
+          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
+        })
+      }}
       navigateMantle={navigateMantle}
       onReady={({ footerHeight }) => {
         setState((draft) => {
@@ -311,6 +327,7 @@ function Home() {
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
+        scrollTop={state.backTopScrollTop}
         scrollY
         onScroll={handleScroll}
       >

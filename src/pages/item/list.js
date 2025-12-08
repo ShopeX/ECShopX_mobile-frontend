@@ -7,6 +7,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
+import throttle from 'lodash/throttle'
 import {
   SpFilterBar,
   SpTagBar,
@@ -58,7 +59,9 @@ const initialState = {
   skuPanelOpen: false,
   info: null,
   selectType: 'picker',
-  card_id: null // 兑换券
+  card_id: null, // 兑换券
+  scrollTop: 0,
+  backTopScrollTop: 0
 }
 
 function ItemList() {
@@ -79,7 +82,9 @@ function ItemList() {
     info,
     show,
     fixTop,
-    routerParams
+    routerParams,
+    scrollTop,
+    backTopScrollTop
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id, all } = routerParams || {}
@@ -325,13 +330,26 @@ function ItemList() {
       Taro.hideLoading()
     }
   }
+
+  const handleScroll = throttle((e) => {
+    setState((draft) => {
+      draft.scrollTop = e.detail.scrollTop
+    })
+  }, 100)
   return (
     <SpPage
       scrollToTopBtn
       className={classNames('page-item-list', {
         'has-tagbar': tagList.length > 0
       })}
+      scrollTop={scrollTop}
       ref={pageRef}
+      onClickBackToTop={() => {
+        setState((draft) => {
+          draft.scrollTop = 0
+          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
+        })
+      }}
     >
       <View className='search-wrap'>
         {VERSION_STANDARD && card_id && (
@@ -369,7 +387,7 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} scrollTop={backTopScrollTop} onScroll={handleScroll}>
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
