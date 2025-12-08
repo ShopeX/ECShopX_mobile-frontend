@@ -186,38 +186,56 @@ function Home() {
       draft.filterWgts = []
       draft.loading = true
     })
-    // 为了店铺隔离模版和店铺信息保持一致
-    const distributor_id = getDistributorId()
+    try {
+      // 为了店铺隔离模版和店铺信息保持一致
+      const distributor_id = getDistributorId()
 
-    const { config } = await api.shop.getShopTemplate({
-      distributor_id: distributor_id
-    })
-    const searchComp = config.find((wgt) => wgt.name == 'search')
-    const pageData = config.find((wgt) => wgt.name == 'page')
-    let filterWgts = []
-    if (searchComp && searchComp.config.fixTop) {
-      filterWgts = config.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
-    } else {
-      filterWgts = config.filter((wgt) => wgt.name != 'page')
+      const res = await api.shop.getShopTemplate({
+        distributor_id: distributor_id
+      })
+      
+      // 确保返回数据有效
+      if (!res || !res.config || !Array.isArray(res.config)) {
+        log.error('getShopTemplate:', res)
+        setState((draft) => {
+          draft.loading = false
+        })
+        return
+      }
+
+      const { config } = res
+      const searchComp = config.find((wgt) => wgt.name == 'search')
+      const pageData = config.find((wgt) => wgt.name == 'page')
+      let filterWgts = []
+      if (searchComp && searchComp.config && searchComp.config.fixTop) {
+        filterWgts = config.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
+      } else {
+        filterWgts = config.filter((wgt) => wgt.name != 'page')
+      }
+
+      const fixedTop = searchComp && searchComp.config && searchComp.config.fixTop
+      const isShowHomeHeader =
+        VERSION_PLATFORM ||
+        (openScanQrcode == 1 && isWeixin) ||
+        (VERSION_STANDARD && entryStoreByLBS) ||
+        fixedTop
+
+      setState((draft) => {
+        draft.wgts = config
+        draft.searchComp = searchComp
+        draft.pageData = pageData
+        draft.fixedTop = fixedTop
+        draft.isShowHomeHeader = isShowHomeHeader
+        draft.filterWgts = filterWgts
+        draft.loading = false
+        draft.distributor_id = distributor_id
+      })
+    } catch (error) {
+      log.error('fetchWgts:', error)
+      setState((draft) => {
+        draft.loading = false
+      })
     }
-
-    const fixedTop = searchComp && searchComp.config.fixTop
-    const isShowHomeHeader =
-      VERSION_PLATFORM ||
-      (openScanQrcode == 1 && isWeixin) ||
-      (VERSION_STANDARD && entryStoreByLBS) ||
-      fixedTop
-
-    setState((draft) => {
-      draft.wgts = config
-      draft.searchComp = searchComp
-      draft.pageData = pageData
-      draft.fixedTop = fixedTop
-      draft.isShowHomeHeader = isShowHomeHeader
-      draft.filterWgts = filterWgts
-      draft.loading = false
-      draft.distributor_id = distributor_id
-    })
   }
 
   const fetchLikeList = async () => {

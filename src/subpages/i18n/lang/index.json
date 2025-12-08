@@ -15196,5 +15196,17 @@
 		"en": "365 Holiday Trader",
 		"zh-tw": "365海淘客",
 		"ar": "365 هوليداي ترايدر"
+	},
+	"flssepp": {
+		"zh-cn": "getShopTemplate 返回数据格式错误:",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"q4a1yrd": {
+		"zh-cn": "fetchWgts 错误:",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	}
 }

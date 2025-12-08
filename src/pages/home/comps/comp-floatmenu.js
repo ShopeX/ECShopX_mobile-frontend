@@ -27,6 +27,7 @@ function CompFloatMenu(props) {
   }, [])
 
   const fetch = async () => {
+    try {
     const distributionShopId = Taro.getStorageSync(SG_SHARER_UID)
     if (!S.getAuthToken() && !distributionShopId) {
       return
@@ -36,7 +37,7 @@ function CompFloatMenu(props) {
     }
     const res = await api.distribution.info(param)
 
-    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res || {}
+    const { user_id, is_valid='', selfInfo = {}, parentInfo = {} } = res || {}
     let _userId
     if (is_valid) {
       _userId = user_id
@@ -51,6 +52,10 @@ function CompFloatMenu(props) {
         draft.featuredShopId = _userId
         draft.salesPersonList = userInfo.salesPersonList?.total_count > 0 ? false : true
       })
+    }
+    } catch (error) {
+      // 静默处理错误，避免影响首页正常显示
+      console.error('CompFloatMenu fetch error:', error)
     }
   }
 
