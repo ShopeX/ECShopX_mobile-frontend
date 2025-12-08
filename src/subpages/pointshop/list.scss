@@ -16,6 +16,9 @@
     left: 50%;
     transform: translateX(-50%);
   }
+  .item-list-scroll{
+    height: calc(100% - 454px);
+  }
   .point-info {
     width: 710px;
     height: 160px;
