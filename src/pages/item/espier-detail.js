@@ -272,13 +272,14 @@ function EspierDetail(props) {
     if (type == 'pointitem') {
     } else {
       try {
-        console.log('🚀🚀🚀 ~ fetch ~ dtid:', dtid)
 
         const itemDetail = await api.item.detail(id, {
           showError: false,
           distributor_id: getDistributorId()
         })
+        console.log('🚀🚀🚀 ~ fetch ~ itemDetail:', itemDetail)
         data = pickBy(itemDetail, doc.goods.ESPIER_DETAIL_GOODS_INFO)
+
         // if (data.approveStatus == 'instock') {
         //   setState((draft) => {
         //     draft.isDefault = true
@@ -301,7 +302,7 @@ function EspierDetail(props) {
 
     // setNavigationBarTitle(data.itemName)
 
-    console.log(ACTIVITY_LIST()[data.activityType])
+    console.log(ACTIVITY_LIST()[data.activityType],data)
     if (ACTIVITY_LIST()[data.activityType]) {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
@@ -320,7 +321,7 @@ function EspierDetail(props) {
       draft.play = data.video ? true : false // 辉绮需求
       draft.promotionActivity = data.promotionActivity
       // 初始化图片高度数组，使用默认高度
-      draft.imgHeightList = new Array(data.imgs.length).fill(draft.defaultImageHeight)
+      draft.imgHeightList = new Array(data?.imgs?.length).fill(draft.defaultImageHeight)
     })
 
     // 异步计算图片真实高度，不阻塞页面渲染
@@ -523,7 +524,7 @@ function EspierDetail(props) {
                 onChange={onChangeSwiper}
                 style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
               >
-                {info.imgs.map((img, idx) => (
+                {info?.imgs?.map((img, idx) => (
                   <SwiperItem key={`swiperitem__${idx}`}>
                     <View style={setSwiperCss(img)}>
                       <SpImage mode='scaleToFill' src={img} className='swiperitem__img' />
@@ -532,7 +533,7 @@ function EspierDetail(props) {
                 ))}
               </Swiper>
 
-              {info.imgs.length > 1 && (
+              {info?.imgs?.length > 1 && (
                 <View className='swiper-pagegation'>{`${curImgIdx + 1}/${info.imgs.length}`}</View>
               )}
 
