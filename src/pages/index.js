@@ -297,11 +297,7 @@ function Home() {
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
-      onClickBackToTop={() => {
-        setState((draft) => {
-          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
-        })
-      }}
+    
       navigateMantle={navigateMantle}
       onReady={({ footerHeight }) => {
         setState((draft) => {
@@ -309,15 +305,10 @@ function Home() {
         })
       }}
     >
-      <ScrollView
+      <View
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
-        scrollTop={state.backTopScrollTop}
-        scrollY
-        onScroll={(e) => {
-          pageRef.current.handlePageScroll(e?.detail)
-        }}
       >
         {loading && <SpLoading />}
         {isShowHomeHeader && (
@@ -339,7 +330,7 @@ function Home() {
             </HomeWgts>
           </WgtsContext.Provider>
         )}
-      </ScrollView>
+      </View>
 
       {/* 小程序收藏提示 */}
       {isWeixin && <MCompAddTip />}

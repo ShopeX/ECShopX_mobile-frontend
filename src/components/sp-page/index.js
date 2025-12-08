@@ -180,7 +180,7 @@ const SpPage = memo(
       })
     })
     useEffect(() => {
-      setShowToTop(props.scrollTop>300)
+      setShowToTop(props.scrollTop > 300)
     }, [props.scrollTop])
 
     useEffect(() => {
@@ -227,17 +227,15 @@ const SpPage = memo(
       }
     })
 
-    usePageScroll((res) => {
-      handlePageScroll(res)
-    })
-
-    const scrollToTop = () => {
-      props.onClickBackToTop && props.onClickBackToTop()
+    // 回到顶部
+    const scrollToTop = useCallback(() => {
       Taro.pageScrollTo({
-        scrollTop: 0
+        scrollTop: 0,
+        duration: 300
       })
-    }
-    const handlePageScroll = (res) => {
+    }, [])
+
+    usePageScroll((res) => {
       if (!state.lock) {
         scrollTopRef.current = res.scrollTop
       }
@@ -257,7 +255,8 @@ const SpPage = memo(
         setShowToTop(false)
       }
       props.onScroll && props.onScroll(res)
-    }
+    })
+
 
     useImperativeHandle(ref, () => ({
       pageLock: () => {
@@ -270,7 +269,6 @@ const SpPage = memo(
           draft.lock = false
         })
       },
-      handlePageScroll: handlePageScroll
     }))
 
     const computedNavigationStyle = useCallback(() => {
@@ -454,7 +452,7 @@ const SpPage = memo(
     return (
       <View
         className={classNames('sp-page', props.className, { 'rtl-layout': isRTL })}
-        style={styleNames({ ...state.pageTheme, ...state.pageBackground })}
+        style={styleNames({ ...state.pageTheme, ...state.pageBackground, ...state.lockStyle })}
         ref={wrapRef}
         key={lang}
       >
@@ -471,30 +469,30 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'height': `${state.bodyHeight}px`,
               'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
-              'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0) + 80) : Taro.pxTransform(80)
+              'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)) : 0
             })}
           >
-
-            <View className='sp-page__body-content' style={styleNames({ ...state.lockStyle })}>
-              <context.Provider value={{}}>
-                {props.children}
-              </context.Provider>
+            <View className='sp-page__body-content'>
+              <View className='sp-page__body-children'>
+                <context.Provider value={{}}>
+                  {props.children}
+                </context.Provider>
+              </View>
+              <View className='sp-page__powered-by w-full'>
+                <Text>Powered by</Text>
+                <Image
+                  src='/assets/imgs/powered-logo.png'
+                  className='powered-logo'
+                  mode='contain'
+                />
+              </View>
             </View>
             {props.loading && (
               <View className='sp-page__loading'>
                 <SpLoading />
               </View>
             )}
-            <View className='sp-page__powered-by w-full'>
-              <Text>Powered by</Text>
-              <Image
-                src='/assets/imgs/powered-logo.png'
-                className='powered-logo'
-                mode='contain'
-              />
-            </View>
           </View>
         )}
         {props.renderFooter && (
@@ -513,7 +511,7 @@ const SpPage = memo(
         {!props.isDefault && (
           <View className='float-container'>
             {props.renderFloat}
-            {showToTop && props.scrollToTopBtn && (
+            {props.scrollToTopBtn && showToTop && (
               <SpFloatMenuItem onClick={scrollToTop}>
                 <Text className='iconfont icon-zhiding'></Text>
               </SpFloatMenuItem>
@@ -551,7 +549,7 @@ SpPage.defaultProps = {
   showNavitionLeft: true,
   title: '', // 页面导航标题
   renderFooter: null,
-  renderFloat: null,  
+  renderFloat: null,
   scrollTop: null
 }
 

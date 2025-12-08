@@ -7,9 +7,19 @@
 
   .sp-page__body {
     box-sizing: border-box;
-    .sp-page__body-content{
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    
+    .sp-page__body-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
       min-height: 100%;
-      height: 100%;
+    }
+    
+    .sp-page__body-children {
+      flex: 1 0 auto;
     }
   }
 
@@ -46,6 +56,8 @@
     gap: 10px;
     height: 80px!important;
     line-height: 80px!important;
+    margin-top: auto;
+    flex-shrink: 0;
   }
 
   .powered-logo {
