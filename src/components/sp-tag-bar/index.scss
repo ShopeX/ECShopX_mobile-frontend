@@ -4,23 +4,30 @@
  */
 .sp-tag-bar {
   display: flex;
+  width: 100%;
+  box-sizing: border-box;
   background: #fff;
   padding: 10px 0;
   justify-content: space-between;
+
   .tag-bar-hd {
     // width: 87%;
+    width: 100%;
   }
-  .tag-bar-ft {
-  }
+
+  .tag-bar-ft {}
+
   .tag-container {
     white-space: nowrap;
     width: 95%;
   }
+
   .tag-item {
     display: inline-block;
     font-size: 28px;
     color: $color-hint-text;
     margin: 0 20px;
+
     &.active {
       color: $color-primary-text;
       font-size: 34px;
