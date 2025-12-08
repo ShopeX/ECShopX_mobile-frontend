@@ -116,12 +116,8 @@ function ItemList() {
   }, [])
 
   useEffect(() => {
-    if (skuPanelOpen) {
-      pageRef.current.pageLock()
-    } else {
-      pageRef.current.pageUnLock()
-    }
-  }, [skuPanelOpen])
+    pageRef.current.pageLock()
+  }, [])
 
   useEffect(() => {
     if (routerParams) {
