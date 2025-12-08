@@ -60,7 +60,6 @@ const initialState = {
   info: null,
   selectType: 'picker',
   card_id: null, // 兑换券
-  scrollTop: 0,
   backTopScrollTop: 0
 }
 
@@ -83,7 +82,6 @@ function ItemList() {
     show,
     fixTop,
     routerParams,
-    scrollTop,
     backTopScrollTop
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
@@ -331,22 +329,16 @@ function ItemList() {
     }
   }
 
-  const handleScroll = throttle((e) => {
-    setState((draft) => {
-      draft.scrollTop = e.detail.scrollTop
-    })
-  }, 100)
+
   return (
     <SpPage
       scrollToTopBtn
       className={classNames('page-item-list', {
         'has-tagbar': tagList.length > 0
       })}
-      scrollTop={scrollTop}
       ref={pageRef}
       onClickBackToTop={() => {
         setState((draft) => {
-          draft.scrollTop = 0
           draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
         })
       }}
@@ -387,7 +379,10 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} scrollTop={backTopScrollTop} onScroll={handleScroll}>
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} scrollTop={backTopScrollTop} onScroll={(e)=>{
+        pageRef.current.handlePageScroll(e?.detail)
+      }}
+      >
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {

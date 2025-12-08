@@ -110,7 +110,6 @@ const initialState = {
   imgHeightList: [], // 用于存储banner高度
   navigateMantle: false,
   defaultImageHeight: 520, // 默认图片高度，避免空白
-  scrollTop: 0,
   backTopScrollTop: 0
 }
 
@@ -151,7 +150,6 @@ function EspierDetail(props) {
     imgHeightList,
     navigateMantle,
     defaultImageHeight,
-    scrollTop,
     backTopScrollTop
   } = state
 
@@ -468,12 +466,7 @@ function EspierDetail(props) {
       sessionFrom['昵称'] = userInfo.username
     }
   }
-  const handleScroll = (e) => {
-    setState((draft) => {
-      draft.navigateMantle = e.detail.scrollTop > 20
-      draft.scrollTop = e.detail.scrollTop
-    })
-  }
+
 
   return (
     <SpPage
@@ -487,10 +480,8 @@ function EspierDetail(props) {
       title={navigateMantle ? info?.itemName : ' '}
       ref={pageRef}
       loading={!info}
-      scrollTop={scrollTop}
       onClickBackToTop={() => {
         setState((draft) => {
-          draft.scrollTop = 0
           draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
         })
       }}
@@ -525,7 +516,9 @@ function EspierDetail(props) {
         scrollY
         className='page-item-espierdetail-goods-contents'
         style='height: 100%;'
-        onScroll={handleScroll}
+        onScroll={(e)=>{
+          pageRef.current.handlePageScroll(e?.detail)
+        }}
         scrollTop={backTopScrollTop}
       >
         {info && (

@@ -228,6 +228,16 @@ const SpPage = memo(
     })
 
     usePageScroll((res) => {
+      handlePageScroll(res)
+    })
+
+    const scrollToTop = () => {
+      props.onClickBackToTop && props.onClickBackToTop()
+      Taro.pageScrollTo({
+        scrollTop: 0
+      })
+    }
+    const handlePageScroll = (res) => {
       if (!state.lock) {
         scrollTopRef.current = res.scrollTop
       }
@@ -246,15 +256,7 @@ const SpPage = memo(
       } else {
         setShowToTop(false)
       }
-
       props.onScroll && props.onScroll(res)
-    })
-
-    const scrollToTop = () => {
-      props.onClickBackToTop && props.onClickBackToTop()
-      Taro.pageScrollTo({
-        scrollTop: 0
-      })
     }
 
     useImperativeHandle(ref, () => ({
@@ -267,7 +269,8 @@ const SpPage = memo(
         setState((draft) => {
           draft.lock = false
         })
-      }
+      },
+      handlePageScroll: handlePageScroll
     }))
 
     const computedNavigationStyle = useCallback(() => {
