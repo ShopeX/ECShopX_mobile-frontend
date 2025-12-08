@@ -416,8 +416,8 @@ function UgcNoteDetail(props) {
           </View>
           <View className='ugc-author'>
             <View className='author-info' onClick={() => {}}>
-              <SpImage circle src={info.headimgurl} width={88} height={88} />
-              <Text className='author'>{info.username}</Text>
+              <SpImage circle src={info.headimgurl} width={88} height={88} mode='aspectFill' />
+              <Text className='author'>{info.username || info.nickname}</Text>
             </View>
             {!isMyNote() && (
               <SpLogin
