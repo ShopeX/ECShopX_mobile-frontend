@@ -8,6 +8,7 @@ $tag-bar-height: 90px;
   .sp-tag-bar .tag-item.active {
     color: var(--color-primary);
   }
+
   .sp-tag-bar .tag-item {
     height: 90rpx;
     line-height: 90rpx;
@@ -51,18 +52,20 @@ $tag-bar-height: 90px;
     align-items: center;
   }
 
-  .list-scroll-container {
-    height: calc(100% - #{$tag-bar-height});
-    padding-top: 48px;
-  }
+
 
   .tag-bar-hd {
     flex: 1;
   }
 
   .trade-list-scroll {
+    height: calc(100% - 182px);
     .trade-item-wrap {
-      margin: 0 20px 24px;
+      padding-top: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      padding: 0 20px;
     }
   }
 
