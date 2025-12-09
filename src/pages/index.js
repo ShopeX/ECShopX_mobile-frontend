@@ -211,6 +211,7 @@ function Home() {
       const { config } = res
       const searchComp = config.find((wgt) => wgt.name == 'search')
       const pageData = config.find((wgt) => wgt.name == 'page')
+      console.log('pageData:', pageData?.base?.isImmersive)
       let filterWgts = []
       if (searchComp && searchComp.config && searchComp.config.fixTop) {
         filterWgts = config.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
@@ -330,33 +331,37 @@ function Home() {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        {isShowHomeHeader && (
-          <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-        )}
-        {filterWgts.length > 0 && (
-          <WgtsContext.Provider
-            value={{
-              onAddToCart,
-              isTab: true,
-              immersive: pageData?.base?.isImmersive,
-              isShowHomeHeader: isShowHomeHeader && isWeixin,
-              footerHeight: state.footerHeight
-            }}
-          >
-            <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
-              {/* 猜你喜欢 */}
-              <SpRecommend className='recommend-block' info={likeList} />
-            </HomeWgts>
-          </WgtsContext.Provider>
-        )}
-        <View className='sp-page__powered-by w-full'>
-          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-          <Text>Powered by</Text>
-          <Image
-            src='/assets/imgs/powered-logo.png'
-            className='powered-logo'
-            mode='contain'
-          />
+        <View className='home-body-content' style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+          {isShowHomeHeader && (
+            <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
+          )}
+          <View style={{ flex: 1 }}>
+            {filterWgts.length > 0 && (
+              <WgtsContext.Provider
+                value={{
+                  onAddToCart,
+                  isTab: true,
+                  immersive: pageData?.base?.isImmersive,
+                  isShowHomeHeader: isShowHomeHeader && isWeixin,
+                  footerHeight: state.footerHeight
+                }}
+              >
+                <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                  {/* 猜你喜欢 */}
+                  <SpRecommend className='recommend-block' info={likeList} />
+                </HomeWgts>
+              </WgtsContext.Provider>
+            )}
+          </View>
+          <View className='sp-page__powered-by w-full'>
+            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+            <Text>Powered by</Text>
+            <Image
+              src='/assets/imgs/powered-logo.png'
+              className='powered-logo'
+              mode='contain'
+            />
+          </View>
         </View>
       </ScrollView>
 

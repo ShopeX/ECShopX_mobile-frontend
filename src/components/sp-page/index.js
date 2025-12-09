@@ -142,7 +142,7 @@ const SpPage = memo(
         draft.pageTitle = props.title || instanceRef.current?.page?.config?.navigationBarTitleText
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
-        draft.height = !props.immersive ? screenHeight - _gNavbarH : screenHeight
+        draft.height = (!props.immersive&&custom_navigation) ? screenHeight - _gNavbarH : screenHeight
         draft.menuWidth = _menuWidth
         draft.navigationLSpace = _navigationLSpace
         draft.navigationRSpace = _navigationRSpace
@@ -155,13 +155,13 @@ const SpPage = memo(
 
       props.onReady({
         gNavbarH: _gNavbarH,
-        height: !props.isSticky
+        height: !props.immersive
           ? `calc(${windowHeight - _gNavbarH}px - ${_height})`
           : `calc(${windowHeight}px - ${_height})`,
         menuWidth: _menuWidth,
         footerHeight: _height,
       })
-    }, [])
+    }, [props.immersive])
 
     useEffect(() => {
       const {
@@ -181,6 +181,7 @@ const SpPage = memo(
     })
 
     useEffect(() => {
+      if (!state.currentPage) return
       if (props.pageConfig) {
         const { pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } =
           props.pageConfig
@@ -202,7 +203,7 @@ const SpPage = memo(
             })
         }
       }
-    }, [props.pageConfig])
+    }, [props.pageConfig,state.currentPage])
 
     useDidShow(() => {
       const { page, router } = getCurrentInstance()
@@ -286,6 +287,7 @@ const SpPage = memo(
     }))
 
     const computedNavigationStyle = useCallback(() => {
+      if (!state.currentPage) return
       const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
@@ -309,7 +311,8 @@ const SpPage = memo(
       props.navigateBackgroundColor,
       state.gNavbarH,
       state.gStatusBarHeight,
-      state.mantle
+      state.mantle,
+      state.currentPage
     ])
 
     const RenderCustomNavigation = useCallback(() => {
@@ -483,7 +486,7 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
+              'padding-top': `${(!props.immersive&&state.customNavigation) ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)) : 0
             })}
           >
