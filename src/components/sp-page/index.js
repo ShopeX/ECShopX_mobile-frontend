@@ -140,7 +140,7 @@ const SpPage = memo(
       // 计算导航栏高度（如果有自定义导航且不是沉浸式）
       const navbarHeightPx = custom_navigation && !props.immersive ? _gNavbarH : 0
       // 计算 body 高度 = 视口高度 - 导航栏高度 - footer高度
-      const calculatedBodyHeight = `calc(${windowHeight - navbarHeightPx}px - ${Taro.pxTransform(footerHeightPx)})`
+      const calculatedBodyHeight = `calc(${windowHeight - _gNavbarH}px - ${Taro.pxTransform(footerHeightPx)})`
 
       setState((draft) => {
         draft.bodyHeight = calculatedBodyHeight
@@ -505,6 +505,7 @@ const SpPage = memo(
                 </context.Provider>
               </View>
               {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
+                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
                 <Text>Powered by</Text>
                 <Image
                   src='/assets/imgs/powered-logo.png'

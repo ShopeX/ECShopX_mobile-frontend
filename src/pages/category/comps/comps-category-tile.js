@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtTabs, AtTabsPane } from 'taro-ui'
@@ -27,11 +27,16 @@ const initialState = {
 
 const CompsCategoryTile = (props) => {
   const [state, setState] = useImmer(initialState)
+  const pageRef = useRef(null)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
   console.log('==state==', tabList)
   // 获取数据
   useEffect(() => {
     getConfig()
+  }, [])
+
+  useEffect(() => {
+    pageRef.current?.pageLock()
   }, [])
 
   const getConfig = async () => {
@@ -100,6 +105,7 @@ const CompsCategoryTile = (props) => {
   return (
     <SpPage
       className='page-category-index-new'
+      ref={pageRef}
       showpoweredBy={false}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       onReady={({ footerHeight, bodyHeight }) => {
