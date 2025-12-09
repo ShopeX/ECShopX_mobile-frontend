@@ -721,7 +721,7 @@ function TradeDetail(props) {
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.itemPoint}${
-                        info?.itemFee ? `+${info?.freightType == 'point' ? `${pointName} ${info?.freightFee*100}` : `+¥${Number(info?.itemFee).toFixed(2)}`}` : ''
+                        info?.itemFee ? `+${info?.freightType == 'point' ? `${pointName} ${info?.freightFee*100}` : `¥${Number(info?.itemFee).toFixed(2)}`}` : ''
                       }`
                     } else {
                       return <SpPrice value={info?.itemFee} size={28} />
