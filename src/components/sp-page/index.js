@@ -488,11 +488,16 @@ const SpPage = memo(
             })}
           >
             <View className='sp-page__body-content'>
-              <View className='sp-page__body-children'>
+              {!props.loading && <View className='sp-page__body-children'>
                 <context.Provider value={{}}>
                   {props.children}
                 </context.Provider>
-              </View>
+              </View>}
+              {props.loading && (
+                <View className='sp-page__loading'>
+                  <SpLoading />
+                </View>
+              )}
               {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
                 {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
                 <Text>Powered by</Text>
@@ -503,11 +508,6 @@ const SpPage = memo(
                 />
               </View>}
             </View>
-            {props.loading && (
-              <View className='sp-page__loading'>
-                <SpLoading />
-              </View>
-            )}
           </View>
         )}
         {props.renderFooter && (
