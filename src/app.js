@@ -241,6 +241,7 @@ function App({ children }) {
       is_open_recommend: openRecommend,
       is_open_scan_qrcode: openScanQrcode,
       is_open_official_account: openOfficialAccount,
+      is_open_wechatapp_location: openWechatappLocation,
       color_style: { primary, accent, marketing },
       title // 商城应用名称
     } = appBaseRes
@@ -280,6 +281,7 @@ function App({ children }) {
           openRecommend, // 开启猜你喜欢 1开启 2关闭
           openScanQrcode, // 开启扫码功能 1开启 2关闭
           openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
+          openWechatappLocation, // 开启微信小程序定位 1开启 2关闭
           diskDriver: disk_driver,
           appName: title,
           echat,
