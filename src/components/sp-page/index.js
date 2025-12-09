@@ -156,8 +156,8 @@ const SpPage = memo(
       props.onReady({
         gNavbarH: _gNavbarH,
         height: !props.isSticky
-          ? `calc(${screenHeight - _gNavbarH}px - ${_height})`
-          : `calc(${screenHeight}px - ${_height})`,
+          ? `calc(${windowHeight - _gNavbarH}px - ${_height})`
+          : `calc(${windowHeight}px - ${_height})`,
         menuWidth: _menuWidth,
         footerHeight: _height,
       })
