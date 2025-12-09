@@ -108,10 +108,10 @@ const CompsCategoryTile = (props) => {
       ref={pageRef}
       showpoweredBy={false}
       renderFooter={<SpTabbar height={state.footerHeight} />}
-      onReady={({ footerHeight, bodyHeight }) => {
+      onReady={({ footerHeight, height }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
-          draft.bodyHeight = bodyHeight
+          draft.bodyHeight = height
         })
       }}
     >

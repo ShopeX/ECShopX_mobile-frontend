@@ -313,9 +313,9 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ bodyHeight }) => {
+      onReady={({ height }) => {
         setState((draft) => {
-          draft.bodyHeight = bodyHeight
+          draft.bodyHeight = height
         })
       }}
     >

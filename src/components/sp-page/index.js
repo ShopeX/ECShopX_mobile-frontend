@@ -132,18 +132,8 @@ const SpPage = memo(
         _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
       }
 
-      // 计算 footer 高度（像素值）
-      const footerHeightPx = props.renderFooter
-        ? props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-        : 0
-
-      // 计算导航栏高度（如果有自定义导航且不是沉浸式）
-      const navbarHeightPx = custom_navigation && !props.immersive ? _gNavbarH : 0
-      // 计算 body 高度 = 视口高度 - 导航栏高度 - footer高度
-      const calculatedBodyHeight = `calc(${windowHeight - navbarHeightPx}px - ${Taro.pxTransform(footerHeightPx)})`
-
       setState((draft) => {
-        draft.bodyHeight = calculatedBodyHeight
+        draft.bodyHeight = windowHeight
         draft.btnReturn = _btnReturn
         draft.btnHome = _btnHome && props.btnHomeEnable
         draft.customNavigation = custom_navigation
@@ -170,7 +160,6 @@ const SpPage = memo(
           : `calc(${screenHeight}px - ${_height})`,
         menuWidth: _menuWidth,
         footerHeight: _height,
-        bodyHeight: calculatedBodyHeight
       })
     }, [])
 
