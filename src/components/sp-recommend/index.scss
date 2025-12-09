@@ -18,13 +18,13 @@
     display: flex;
     justify-content: space-between;
     padding: 0 16px;
+    gap: 16px;
   }
   .left-container {
-    width: 49%;
+    flex: 1;
   }
   .right-container {
-    width: 49%;
-    margin-left: 16px;
+    flex: 1;
   }
   .goods-item-wrap {
     margin-bottom: 20px;
