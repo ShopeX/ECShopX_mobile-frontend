@@ -21,8 +21,7 @@ const initialState = {
   tabList: [], // 横向tab
   contentList: [],
   hasSeries: false, //是否有多级
-  footerHeight: 0,
-  bodyHeight: 0
+  footerHeight: 0
 }
 
 const CompsCategoryTile = (props) => {
@@ -111,11 +110,10 @@ const CompsCategoryTile = (props) => {
       onReady={({ footerHeight, height }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
-          draft.bodyHeight = height
         })
       }}
     >
-      <View style={{ height: state.bodyHeight }}>
+      <View style={{ height: `calc(100vh - ${state.footerHeight})` }}>
         {tabList.length > 1 && (
           <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
             {tabList.map((item, index) => (
