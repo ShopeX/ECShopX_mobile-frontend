@@ -9,7 +9,7 @@ import Taro, {
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image, ScrollView } from '@tarojs/components'
+import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import throttle from 'lodash/throttle'
 import {
@@ -82,7 +82,8 @@ const initialState = {
   navigateMantle: false,
   footerHeight: 0,
   distributor_id: null,
-  backTopScrollTop: 0
+  backTopScrollTop: -1,
+  bodyHeight: 0
 }
 
 function Home() {
@@ -118,7 +119,8 @@ function Home() {
     navigateMantle,
     footerHeight,
     distributor_id,
-    backTopScrollTop
+    backTopScrollTop,
+    bodyHeight
   } = state
 
   const dispatch = useDispatch()
@@ -196,7 +198,7 @@ function Home() {
       const res = await api.shop.getShopTemplate({
         distributor_id: distributor_id
       })
-      
+
       // 确保返回数据有效
       if (!res || !res.config || !Array.isArray(res.config)) {
         log.error('getShopTemplate:', res)
@@ -293,19 +295,37 @@ function Home() {
       scrollToTopBtn
       immersive={pageData?.base?.isImmersive}
       // renderNavigation={renderNavigation()}
+      showpoweredBy={false}
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
-      renderFooter={<SpTabbar height={state.footerHeight} />}
-      ref={pageRef}
-    
-      navigateMantle={navigateMantle}
-      onReady={({ footerHeight }) => {
+      renderFooter={<SpTabbar />}
+      onScrollToTop={() => {
+        // 先设置为一个很小的非0值，确保触发滚动变化
         setState((draft) => {
-          draft.footerHeight = footerHeight
+          draft.backTopScrollTop = 0.1
+        })
+        // 立即设置为0，滚动到顶部
+        setTimeout(() => {
+          setState((draft) => {
+            draft.backTopScrollTop = 0
+          })
+        }, 0)
+      }}
+      ref={pageRef}
+      navigateMantle={navigateMantle}
+      onReady={({ bodyHeight }) => {
+        setState((draft) => {
+          draft.bodyHeight = bodyHeight
         })
       }}
     >
-      <View
+      <ScrollView
+        scrollY
+        scrollTop={state.backTopScrollTop}
+        onScroll={(e) => {
+          pageRef.current.handlePageScroll(e?.detail)
+        }}
+        style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
@@ -330,7 +350,15 @@ function Home() {
             </HomeWgts>
           </WgtsContext.Provider>
         )}
-      </View>
+        <View className='sp-page__powered-by w-full'>
+          <Text>Powered by</Text>
+          <Image
+            src='/assets/imgs/powered-logo.png'
+            className='powered-logo'
+            mode='contain'
+          />
+        </View>
+      </ScrollView>
 
       {/* 小程序收藏提示 */}
       {isWeixin && <MCompAddTip />}

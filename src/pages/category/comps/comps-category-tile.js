@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { View } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
@@ -41,22 +41,26 @@ const CompsCategoryTile = (props) => {
 
     if (!seriesList.length) {
       const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
+      console.log('res', res)
       const currentList = pickBy(res, {
         name: 'category_name',
         img: 'image_url',
         id: 'id',
         category_id: 'category_id',
+        main_category_id: 'main_category_id',
         children: ({ children }) =>
           pickBy(children, {
             name: 'category_name',
             img: 'image_url',
             id: 'id',
             category_id: 'category_id',
+            main_category_id: 'main_category_id',
             children: ({ children }) =>
               pickBy(children, {
                 name: 'category_name',
                 img: 'image_url',
-                category_id: 'category_id'
+                category_id: 'category_id',
+                main_category_id: 'main_category_id'
               })
           })
       })
@@ -96,6 +100,7 @@ const CompsCategoryTile = (props) => {
   return (
     <SpPage
       className='page-category-index-new'
+      showpoweredBy={false}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       onReady={({ footerHeight, bodyHeight }) => {
         setState((draft) => {

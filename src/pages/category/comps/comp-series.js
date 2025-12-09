@@ -22,6 +22,7 @@ const CompSeries = (props) => {
 
   const handleClickItem = (item) => {
     const { category_id, main_category_id } = item
+    console.log('item', item)
     let url = ''
     if (category_id) {
       url = `/pages/item/list?cat_id=${category_id}&all=true`
@@ -131,6 +132,14 @@ const CompSeries = (props) => {
               )
             })}
           </View>
+        </View>
+        <View className='sp-page__powered-by w-full'>
+          <Text>Powered by</Text>
+          <Image
+            src='/assets/imgs/powered-logo.png'
+            className='powered-logo'
+            mode='contain'
+          />
         </View>
       </ScrollView>
     </View>

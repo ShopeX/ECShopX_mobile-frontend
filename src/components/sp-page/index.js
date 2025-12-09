@@ -136,12 +136,11 @@ const SpPage = memo(
       const footerHeightPx = props.renderFooter
         ? props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
         : 0
-      
+
       // 计算导航栏高度（如果有自定义导航且不是沉浸式）
       const navbarHeightPx = custom_navigation && !props.immersive ? _gNavbarH : 0
-      
       // 计算 body 高度 = 视口高度 - 导航栏高度 - footer高度
-      const calculatedBodyHeight = windowHeight - navbarHeightPx - footerHeightPx
+      const calculatedBodyHeight = `calc(${windowHeight - navbarHeightPx}px - ${Taro.pxTransform(footerHeightPx)})`
 
       setState((draft) => {
         draft.bodyHeight = calculatedBodyHeight
@@ -191,9 +190,6 @@ const SpPage = memo(
         draft.currentPage = false
       })
     })
-    useEffect(() => {
-      setShowToTop(props.scrollTop > 300)
-    }, [props.scrollTop])
 
     useEffect(() => {
       if (props.pageConfig) {
@@ -241,6 +237,7 @@ const SpPage = memo(
 
     // 回到顶部
     const scrollToTop = useCallback(() => {
+      props.onScrollToTop && props.onScrollToTop()
       Taro.pageScrollTo({
         scrollTop: 0,
         duration: 300
@@ -281,6 +278,22 @@ const SpPage = memo(
           draft.lock = false
         })
       },
+      handlePageScroll: (res) => {
+        if (res.scrollTop > 20) {
+          setState((draft) => {
+            draft.mantle = true
+          })
+        } else {
+          setState((draft) => {
+            draft.mantle = false
+          })
+        }
+        if (res.scrollTop > 300) {
+          setShowToTop(true)
+        } else {
+          setShowToTop(false)
+        }
+      }
     }))
 
     const computedNavigationStyle = useCallback(() => {
@@ -491,14 +504,14 @@ const SpPage = memo(
                   {props.children}
                 </context.Provider>
               </View>
-              <View className='sp-page__powered-by w-full'>
+              {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
                 <Text>Powered by</Text>
                 <Image
                   src='/assets/imgs/powered-logo.png'
                   className='powered-logo'
                   mode='contain'
                 />
-              </View>
+              </View>}
             </View>
             {props.loading && (
               <View className='sp-page__loading'>
@@ -562,7 +575,8 @@ SpPage.defaultProps = {
   title: '', // 页面导航标题
   renderFooter: null,
   renderFloat: null,
-  scrollTop: null
+  showpoweredBy: true,
+  onScrollToTop: () => { }
 }
 
 export default SpPage
