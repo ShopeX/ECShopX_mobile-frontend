@@ -7,7 +7,10 @@
   height: 100vh;
   background: #ffffff;
   .at-tabs {
-    height: auto;
+    height: 100%;
+  }
+  .sp-page__body-children{
+    height: 100%;
   }
   .at-tabs__header {
     justify-content: start;
@@ -28,6 +31,12 @@
         background: none;
       }
     }
+  }
+  .at-tabs__body {
+    height: calc(100% - 92px);
+  }
+  .at-tabs-pane,.at-tabs-pane--active {
+    height: 100%;
   }
   .comp-series__nav-list__content {
     opacity: 0.9;

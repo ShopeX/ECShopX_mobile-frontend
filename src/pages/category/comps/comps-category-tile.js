@@ -21,12 +21,14 @@ const initialState = {
   tabList: [], // 横向tab
   contentList: [],
   hasSeries: false, //是否有多级
-  footerHeight: 0
+  footerHeight: 0,
+  bodyHeight: 0
 }
 
 const CompsCategoryTile = (props) => {
   const [state, setState] = useImmer(initialState)
   const { currentList, activeIndex, tabList, contentList, hasSeries } = state
+  console.log('==state==', tabList)
   // 获取数据
   useEffect(() => {
     getConfig()
@@ -87,33 +89,34 @@ const CompsCategoryTile = (props) => {
   const fnSwitchSeries = (index) => {
     setState((draft) => {
       draft.activeIndex = index
-      draft.currentList = draft.contentList[index]
     })
   }
 
-  console.log('==currentList==', currentList, tabList)
 
   return (
     <SpPage
       className='page-category-index-new'
       renderFooter={<SpTabbar height={state.footerHeight} />}
-      onReady={({ footerHeight }) => {
+      onReady={({ footerHeight, bodyHeight }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
+          draft.bodyHeight = bodyHeight
         })
       }}
     >
-      {tabList.length > 1 && (
-        <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
-          {tabList.map((item, index) => (
-            <AtTabsPane current={activeIndex} index={index} key={item.status}></AtTabsPane>
-          ))}
-        </AtTabs>
-      )}
-      <View
-        className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
-      >
-        <CompSeries info={currentList} />
+      <View style={{ height: state.bodyHeight }}>
+        {tabList.length > 1 && (
+          <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
+            {tabList.map((item, index) => (
+              <AtTabsPane current={activeIndex} index={index} key={item.status}>
+                <CompSeries info={contentList[index]} />
+              </AtTabsPane>
+            ))}
+          </AtTabs>
+        )}
+       {!(hasSeries && tabList.length > 1) && <View className='category-comps-not'>
+          <CompSeries info={currentList} />
+        </View>}
       </View>
     </SpPage>
   )
