@@ -251,7 +251,7 @@ function UgcNoteDetail(props) {
     let params = {
       user_id: userInfo.user_id,
       post_id,
-      content: e
+      content: e.detail.value
     }
     if (parentCommentId) {
       params.parent_comment_id = parentCommentId
