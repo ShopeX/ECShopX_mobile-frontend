@@ -119,8 +119,12 @@ function ItemList() {
   }, [])
 
   useEffect(() => {
-    pageRef.current.pageLock()
-  }, [])
+    if (skuPanelOpen) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [skuPanelOpen])
 
   useEffect(() => {
     if (routerParams) {
@@ -337,11 +341,6 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
-      onClickBackToTop={() => {
-        setState((draft) => {
-          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
-        })
-      }}
     >
       <View className='search-wrap'>
         {VERSION_STANDARD && card_id && (
@@ -379,10 +378,7 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} scrollTop={backTopScrollTop} onScroll={(e)=>{
-        pageRef.current.handlePageScroll(e?.detail)
-      }}
-      >
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} >
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
