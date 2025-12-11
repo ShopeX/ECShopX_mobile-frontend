@@ -75,7 +75,7 @@ function CashierResult(props) {
   }
 
   return (
-    <SpPage className='page-cashier-result' navbar={false}>
+    <SpPage className='page-cashier-result'>
       <View className='trade-result'>
         {tradeInfo.tradeState == 'NOTPAY' && <SpLoading />}
         {tradeInfo.tradeState == 'SUCCESS' && (

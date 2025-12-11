@@ -71,7 +71,6 @@ const Audit = () => {
       className={classNames('page-merchant-audit', {
         fail: status == AUDIT_FAIL
       })}
-      navbar={false}
     >
       <MNavBar canBack={false} />
 
