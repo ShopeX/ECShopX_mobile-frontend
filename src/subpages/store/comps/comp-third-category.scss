@@ -100,6 +100,7 @@ $active-good-img-width: 90px;
     background: #fff;
     padding: 14px 24px 0;
     width: calc(100vw - 128px);
+    box-sizing: border-box;
 
     .select-item {
       height: 45px;
