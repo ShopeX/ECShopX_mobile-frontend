@@ -132,7 +132,7 @@ function TradeAfterSale(props) {
         intro,
         is_open
       }
-      draft.offline_freight = _info?.freightFee
+      draft.offline_freight = _info?.freightType == 'cash' ? _info?.freightFee : _info?.freightFeePoint
       if (
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
@@ -225,7 +225,7 @@ function TradeAfterSale(props) {
       evidence_pic: pic
     }
     if (offline_freight_status) {
-      params.freight = offline_freight * 100
+      params.freight = info?.freightType == 'cash' ? offline_freight * 100 : offline_freight
     }
     // 退货退款
     if (aftersales_type == 'REFUND_GOODS') {
@@ -233,8 +233,11 @@ function TradeAfterSale(props) {
         ...params,
         return_type: refundType
       }
-      if (offline_freight > info?.freightFee) {
-        return showToast(`退款金额不能大于¥${info?.freightFee}`)
+      if (offline_freight > info?.freightFee&&info?.freightType == 'cash') {
+        return showToast(`退款运费不能大于¥${info?.freightFee}`)
+      }
+      if (offline_freight > info?.freightFeePoint&&info?.freightType == 'point') {
+        return showToast(`退款运费不能大于积分${info?.freightFeePoint}`)
       }
       // 到店退货
       if (refundType == 'offline') {
