@@ -299,7 +299,6 @@ function TradeAfterSale(props) {
                 <View className='item-wrap' key={`item-wrap__${index}`}>
                   <View className='item-hd'>
                     <SpCheckbox
-                      disabled={!item.leftAftersalesNum}
                       checked={item.checked}
                       onChange={onChangeItemCheck.bind(this, item, index)}
                     />
@@ -374,7 +373,7 @@ function TradeAfterSale(props) {
               <View className='refund-amount'>
                 <SpCell
                   border
-                  title='退运费'
+                  title={`退运费(${info?.freightType == 'cash' ? '¥' : '积分'})`}
                   value={
                     <AtInput
                       name='offline_freight'
