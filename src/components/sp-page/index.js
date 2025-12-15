@@ -266,6 +266,7 @@ const SpPage = memo(
           draft.lock = false
         })
       },
+      // 当页面单独处理滚动事件时，调用此函数
       handlePageScroll: (res) => {
         if (res.scrollTop > 20) {
           setState((draft) => {
