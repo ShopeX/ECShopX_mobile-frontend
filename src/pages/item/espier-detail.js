@@ -786,7 +786,7 @@ function EspierDetail(props) {
                   ))}
                 </View>
               ) : (
-                <SpHtml content={info.intro} />
+                <SpHtml content={info.intro || ''} />
               )}
             </View>
           </View>

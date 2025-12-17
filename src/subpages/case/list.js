@@ -6,6 +6,7 @@ import React, { useEffect, useRef } from 'react'
 import { View, Text, Image, Form, Picker } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtTabBar, AtSearchBar, AtButton } from 'taro-ui'
+import SpTabbar from '@/components/sp-tabbar'
 import { autoGetLocation } from '@/utils/wxApi'
 import api from '@/api'
 import SpPage from '@/components/sp-page'
@@ -43,6 +44,7 @@ const tagListConfig = [
 ]
 
 const initialState = {
+  footerHeight: 0,
   currentLocation: null,
   locationData: defaultLocationData,
   locationList: [],
@@ -412,7 +414,14 @@ function CaseList() {
 
   return (
     <View className='sp-case-list'>
-      <SpPage>
+      <SpPage
+        onReady={({ footerHeight }) => {
+          setState((draft) => {
+            draft.footerHeight = footerHeight
+          })
+        }}
+        renderFooter={<SpTabbar height={state.footerHeight} />}
+      >
         <View className='sp-case-list--head'>
           <AtTabBar
             className='sp-top--tab'
