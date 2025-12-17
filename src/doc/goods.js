@@ -435,6 +435,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
   isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
+  designWorks: 'design_works',
   startNum: 'start_num' // 起订量
 }
 

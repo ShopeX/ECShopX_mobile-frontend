@@ -37,6 +37,7 @@ import * as mdugc from './mdugc'
 import * as salesman from './salesman'
 import * as delivery from './delivery'
 import * as prescriptionDrug from './prescriptionDrug'
+import * as design from './design'
 
 export default {
   article,
@@ -73,5 +74,6 @@ export default {
   mdugc,
   salesman,
   delivery,
-  prescriptionDrug
+  prescriptionDrug,
+  design
 }

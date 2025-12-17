@@ -1,0 +1,275 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+.sp-case-list {
+  .sp-page .sp-page__body .sp-page__body-content {
+    height: 100vh;
+  }
+  .sp-page .sp-page__body .sp-page__body-children {
+    display: flex;
+    flex-direction: column;
+  }
+  .sp-scroll-y {
+    height: 100%;
+  }
+  .sp-loading-emptry {
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  &--wrap {
+    padding: 8px 16px 0;
+    display: flex;
+    gap: 24px 16px;
+    justify-content: space-between;
+  }
+  &--left,
+  &--right {
+    flex: 1;
+  }
+  &--group {
+    display: flex;
+    align-items: center;
+  }
+  &--item {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+    break-inside: avoid;
+    box-sizing: border-box;
+    background-color: #fff;
+    &-content {
+      flex-wrap: wrap;
+      display: flex;
+      margin-top: 10px;
+      gap: 12px;
+      &-tag {
+        background-color: rgba(var(--color-rgb), 0.2);
+        color: var(--color-primary);
+        border-radius: 60px;
+        padding: 4px 12px;
+        font-size: 20px;
+      }
+    }
+    &-desc {
+      background-color: #fff;
+      padding: 24px;
+      &-title {
+        @include multi-ellipsis(2);
+      }
+    }
+    &-image {
+      width: 100%;
+    }
+  }
+  &--head {
+    background-color: rgba(var(--color-rgb), 0.2);
+    padding: 0 16px 24px;
+    &-city {
+      padding-right: 16px;
+      font-weight: bold;
+      font-size: 28px;
+    }
+    .at-tab-bar {
+      box-shadow: 0 0 transparent !important;
+      height: 120px;
+      background-color: rgba(var(--color-rgb), 0.2);
+      padding: 0 120px;
+      &__item {
+        .at-tab-bar__title {
+          font-size: 28px;
+        }
+
+        color: #000;
+        &--active {
+          .at-tab-bar__title {
+            overflow: visible;
+            position: relative;
+            &::before {
+              z-index: 100;
+              position: absolute;
+              bottom: -12px;
+              left: 50%;
+              transform: translateX(-50%);
+              content: '';
+              width: 46px;
+              height: 6px;
+              background-color: var(--color-primary);
+              border-radius: 4px;
+              display: block;
+            }
+            font-size: 32px;
+          }
+
+          font-weight: bold;
+        }
+      }
+    }
+    .sp-search {
+      background-color: #fff;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 36px;
+      &--content {
+        position: relative;
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 50%;
+          left: 0;
+          transform: translateY(-50%);
+          height: 70%;
+          width: 1px;
+          background-color: rgba(var(--color-rgb), 0.2);
+        }
+        flex: 1;
+        .at-search-bar {
+          padding: 0 !important;
+          background-color: transparent !important;
+          margin-left: 1px;
+        }
+        .at-search-bar__input {
+          padding-left: 24px;
+          background-color: #fff;
+        }
+        .at-search-bar__action {
+          display: none;
+        }
+        .at-icon-search {
+          color: var(--color-primary);
+          position: absolute;
+          z-index: 1;
+          right: 0;
+        }
+        .at-search-bar__placeholder {
+          color: #c0bdbd;
+          position: absolute;
+          z-index: 1;
+          left: 0;
+        }
+        .at-search-bar__placeholder-wrap {
+          justify-content: start;
+        }
+      }
+      &--city {
+        position: relative;
+        padding-right: 24px;
+        margin-right: 24px;
+        &::after {
+          position: absolute;
+          right: 0;
+          top: 70%;
+          transform: translateY(-50%);
+          width: 0;
+          height: 0;
+          display: block;
+          content: '';
+          border-color: transparent;
+          border-width: 8px;
+          border-top-color: black;
+          border-style: solid;
+        }
+      }
+    }
+
+    .sp-tag {
+      position: relative;
+      &--head {
+        padding: 32px 48px 0;
+        &-list {
+          flex: 1;
+          display: flex;
+          justify-content: space-between;
+        }
+        &-checked {
+          color: var(--color-primary);
+          .sp-tag--head-item--icon {
+            color: var(--color-primary);
+          }
+        }
+        &-item {
+          position: relative;
+          &--icon {
+            font-size: 32px;
+          }
+        }
+        .iconfont {
+          font-size: 34px;
+        }
+        padding-bottom: 0;
+        display: flex;
+        justify-content: space-around;
+      }
+      &--content {
+        padding: 32px 16px 32px;
+        background-color: #fff;
+        position: absolute;
+        top: 102px;
+        left: -16px;
+        width: 100%;
+        z-index: 100;
+        &-group {
+          margin-bottom: 48px;
+        }
+        &-title {
+          white-space: nowrap;
+          font-size: 28px;
+          font-weight: bold;
+          margin-bottom: 18px;
+          @include multi-ellipsis(2);
+        }
+        &-wrap {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: 32px;
+        }
+        &-list {
+          flex-wrap: wrap;
+          display: flex;
+          gap: 16px;
+        }
+        &-item {
+          border-radius: 8px;
+          padding: 16px;
+          background-color: rgba(var(--color-rgb), 0.2);
+          font-size: 24px;
+        }
+        &-checked {
+          background-color: rgba(var(--color-rgb), 0.2);
+          color: var(--color-primary);
+        }
+        &-action {
+          display: flex;
+          justify-content: space-between;
+          padding: 0 16px;
+          font-size: 28px;
+          font-weight: bold;
+          &-reset {
+            width: 328px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 200px;
+            background-color: rgba(var(--color-rgb), 0.2);
+            border: none;
+            color: #000;
+          }
+          &-submit {
+            width: 328px;
+            height: 100px;
+            line-height: 100px;
+            border-radius: 200px;
+            background-color: var(--color-primary);
+            color: #fff;
+            border: none;
+          }
+        }
+      }
+    }
+  }
+}
