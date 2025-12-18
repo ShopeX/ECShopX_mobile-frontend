@@ -299,6 +299,7 @@ function TradeAfterSale(props) {
                 <View className='item-wrap' key={`item-wrap__${index}`}>
                   <View className='item-hd'>
                     <SpCheckbox
+                      disabled={!item.leftAftersalesNum}
                       checked={item.checked}
                       onChange={onChangeItemCheck.bind(this, item, index)}
                     />
