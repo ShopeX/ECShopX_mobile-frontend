@@ -69,7 +69,6 @@ function SpGoodsItem(props) {
       showToast(fav ? '已移出收藏' : '已加入收藏')
     }
   }
-  console.log(info,'info----')
 
   const onChangeToolBar = (e) => {
     e.stopPropagation()
