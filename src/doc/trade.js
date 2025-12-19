@@ -149,7 +149,9 @@ export const AFTER_TRADE = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId: 'user_id',
   freight: ({ freight }) => freight / 100,
-  progress: 'progress'
+  freightPoint: 'freight',
+  progress: 'progress',
+  freightType: 'freight_type'
 }
 
 export const TRADE_AFTER_SALES_ITEM = {

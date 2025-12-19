@@ -253,7 +253,10 @@ function SpGoodsItem(props) {
         </View>
 
         {isShowStore && (
-          <View className='goods__store' onClick={() => onStoreClick(info)}>
+          <View className='goods__store' onClick={(e) =>{
+            e.stopPropagation()
+            onStoreClick(info)
+          }}>
             <SpImage
               src={info.distributor_info.distributor_info || 'shop_default_logo.png'}
               width={60}

@@ -307,7 +307,7 @@ function TradeAfterSaleDetail(props) {
               </View>
               {info?.freightFee > 0 && (
                 <View className='refund-point'>
-                  <SpCell title='退运费' value={`${info?.freightType == 'point' ? `积分${info?.freightFee}` : `¥${info?.freightFee / 100}`}`}></SpCell>
+                  <SpCell title='退运费' value={`${info?.freightType == 'point' ? `积分${info?.freight * 100}` : `¥${info?.freight}`}`}></SpCell>
                 </View>
               )}
             </View>
