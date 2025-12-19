@@ -97,11 +97,10 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${
-      !!point || goodsType == 'point'
-        ? '/subpages/pointshop/espier-detail'
-        : '/pages/item/espier-detail'
-    }?${qs.stringify(query)}`
+    const url = `${!!point || goodsType == 'point'
+      ? '/subpages/pointshop/espier-detail'
+      : '/pages/item/espier-detail'
+      }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -170,15 +169,17 @@ function SpGoodsItem(props) {
             <View className='goods-price'>
               <View className='gd-price'>
                 {isPurchase && (
-                  <View>
-                    <SpPrice size={36} value={info.price}></SpPrice>
-                    {info.activityPrice && enPurActivityPrice && (
-                      <View className='act-price'>
-                        活动价¥{info.activityPrice.toFixed(2)}
+                  <>
+                    {(info.activityPrice && enPurActivityPrice) ? (
+                      <View className='act-price-wrap'>
+                        <SpPrice value={info.activityPrice} className='act-price' symbol='活动价¥' />
+                        <SpPrice size={24} value={info.price} noSymbol lineThrough />
                         {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
                       </View>
-                    )}
-                  </View>
+                    ) :
+                      <SpPrice size={36} value={info.price} />
+                    }
+                  </>
                 )}
                 {!isPurchase && (
                   <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
@@ -307,9 +308,9 @@ SpGoodsItem.defaultProps = {
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,
-  onChange: () => {},
-  onAddToCart: () => {},
-  onStoreClick: () => {}
+  onChange: () => { },
+  onAddToCart: () => { },
+  onStoreClick: () => { }
 }
 
 export default SpGoodsItem

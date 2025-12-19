@@ -54,6 +54,7 @@ export const TRADE_ITEM = {
       itemPoint: 'item_point',
       itemSpecDesc: 'item_spec_desc',
       num: 'num',
+      salePrice: 'sale_price',
       // 可售后商品数
       leftAftersalesNum: 'left_aftersales_num',
       // 默认售后商品数

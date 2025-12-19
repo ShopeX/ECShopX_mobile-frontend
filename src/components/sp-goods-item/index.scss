@@ -126,9 +126,13 @@
   .mkt-price {
     margin-left: 8px;
   }
+  .act-price-wrap {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
   .act-price {
     color: var(--color-primary);
-    font-size: 24px;
     .sp-price__symbol,
     .sp-price__int,
     .sp-price__decimal {

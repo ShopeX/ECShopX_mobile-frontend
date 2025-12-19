@@ -23,28 +23,14 @@
   }
   .activity-wrap {
     display: flex;
-    align-items: center;
-    background: #fff;
-    border-radius: 32px;
-    height: 62px;
-    // line-height: 62px;
-    padding: 0 16px;
-    margin-left: 10px;
-    color: var(--color-primary);
-    .sp-price__symbol,
-    .sp-price__int,
-    .sp-price__decimal {
-      color: var(--color-primary);
-    }
-    .activity-label {
-      margin-right: 4px;
-      font-size: 24px;
-    }
+    align-items: baseline;
+    gap: 8px;
     .activity-price {
-      height: 62px;
-      line-height: 62px;
-      display: flex;
-      align-items: center;
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        color: var(--color-primary);
+      }
     }
   }
   .point-plus-price {
