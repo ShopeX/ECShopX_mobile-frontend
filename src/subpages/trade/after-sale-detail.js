@@ -18,7 +18,8 @@ import {
   SpFloatLayout,
   SpUpload,
   SpPrice,
-  SpHtml
+  SpHtml,
+  SpPoint
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
 import { pickBy, showToast, isNumber, copyText } from '@/utils'
@@ -280,7 +281,7 @@ function TradeAfterSaleDetail(props) {
           </View>
 
           <View className='refund-detail'>
-            <View className='refund-amount'>
+            {/* <View className='refund-amount'>
               <SpCell
                 title='退款金额'
                 value={<SpPrice value={info?.refund_info?.refundFee || info?.refundFee} />}
@@ -292,11 +293,7 @@ function TradeAfterSaleDetail(props) {
                 value={info?.refund_info?.refundPoint || info?.refundPoint}
               ></SpCell>
             </View>
-            {info?.refund_freight_amount > 0 && (
-              <View className='refund-point'>
-                <SpCell title='退运费' value={info?.refund_freight_amount}></SpCell>
-              </View>
-            )}
+         */}
 
             <View className='refund-detail'>
               <View className='refund-amount'>
@@ -305,11 +302,10 @@ function TradeAfterSaleDetail(props) {
               <View className='refund-point'>
                 <SpCell title='退积分' value={info?.refundPoint}></SpCell>
               </View>
-              {info?.freightFee > 0 && (
                 <View className='refund-point'>
-                  <SpCell title='退运费' value={`${info?.freightType == 'point' ? `积分${info?.freight * 100}` : `¥${info?.freight}`}`}></SpCell>
+                  {info?.freightType == 'point' && <SpCell title='退运费' value={<SpPoint value={info?.freight * 100} />} /> }
+                  {info?.freightType == 'cash' && <SpCell title='退运费' value={<SpPrice value={info?.freight} />} />}
                 </View>
-              )}
             </View>
 
             <View className='refund-type'>
