@@ -54,7 +54,7 @@ function SpGoodsCell(props) {
     if (enPurActivityPrice) {
       return (
         <View className='act-price-wrap'>
-          <SpPrice value={info.price} className='act-price' symbol='活动价¥' />
+          <SpPrice value={info.price} className='act-price' symbol='¥' />
           <SpPrice value={info.salePrice} lineThrough size={24} noSymbol />
         </View>
       )

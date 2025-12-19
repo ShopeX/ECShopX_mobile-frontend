@@ -69,6 +69,7 @@ function SpGoodsItem(props) {
       showToast(fav ? '已移出收藏' : '已加入收藏')
     }
   }
+  console.log(info,'info----')
 
   const onChangeToolBar = (e) => {
     e.stopPropagation()
@@ -172,12 +173,12 @@ function SpGoodsItem(props) {
                   <>
                     {(info.activityPrice && enPurActivityPrice) ? (
                       <View className='act-price-wrap'>
-                        <SpPrice value={info.activityPrice} className='act-price' symbol='活动价¥' />
+                        <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
                         <SpPrice size={24} value={info.price} noSymbol lineThrough />
                         {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
                       </View>
                     ) :
-                      <SpPrice size={36} value={info.price} />
+                    (enPurActivityPrice && <SpPrice size={36} value={info.price} />)
                     }
                   </>
                 )}
@@ -255,7 +256,6 @@ function SpGoodsItem(props) {
         {isShowStore && (
           <View className='goods__store' onClick={(e) =>{
             e.stopPropagation()
-            onStoreClick(info)
           }}>
             <SpImage
               src={info.distributor_info.distributor_info || 'shop_default_logo.png'}
