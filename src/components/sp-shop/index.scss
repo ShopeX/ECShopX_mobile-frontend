@@ -1,0 +1,120 @@
+.sp-shop {
+  padding: 24px 24px;
+  margin: 18px 0;
+  width: 100%;
+  box-sizing: border-box;
+
+  .sp-shop__bd {
+    display: flex;
+    align-items: flex-start;
+    padding-bottom: 14px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .sp-shop__info {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    &-left {
+      display: flex;
+      align-items: center;
+      width: calc(100% - 230px);
+
+      .sp-shop__img {
+        min-width: 108px;
+        width: 108px;
+        height: 108px;
+        background: #ffffff;
+        border-radius: 12px;
+        border: 1PX solid rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+
+      .sp-shop__name {
+        flex: 1;
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 600;
+        font-size: 40px;
+        color: #1a1a1a;
+        height: 56px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-left: 18px;
+      }
+    }
+
+    &-right {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+
+      .sp-shop__like {
+        width: 56px;
+        height: 56px;
+        background: #f8f8f8;
+        border-radius: 28px;
+        border: 1PX solid #ebebeb;
+        box-sizing: border-box;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .like-img {
+          width: 40px;
+          height: 40px;
+        }
+      }
+
+      .sp-shop__link {
+        width: 140px;
+        height: 60px;
+        background: #f8f8f8;
+        border-radius: 12px;
+        border: 1PX solid #ebebeb;
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 500;
+        font-size: 26px;
+        color: #1a1a1a;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+}
+
+// skeleton styles (scoped under sp-shop)
+.sp-shop {
+  .cp-skeleton__block,
+  .cp-skeleton__line {
+    position: relative;
+    overflow: hidden;
+    background: #f2f3f5;
+  }
+
+  .cp-skeleton__line {
+    height: 24px;
+    border-radius: 6px;
+  }
+
+  .cp-skeleton__block::after,
+  .cp-skeleton__line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -150%;
+    height: 100%;
+    width: 150%;
+    background: linear-gradient(90deg, rgba(242,243,245,0) 0%, rgba(255,255,255,0.8) 50%, rgba(242,243,245,0) 100%);
+    animation: sp-shop-skeleton-shimmer 1.2s infinite;
+  }
+}
+
+@keyframes sp-shop-skeleton-shimmer {
+  0% { left: -150%; }
+  100% { left: 100%; }
+}

@@ -110,6 +110,10 @@ import SpSelectModal from './sp-select-modal'
 import SpDeliver from './sp-deliver'
 import SharePurchase from './share-purchase'
 
+
+
+import SpShop from './sp-shop'
+
 export default {}
 
 export {
@@ -218,5 +222,6 @@ export {
   SpInput,
   SpSelectModal,
   SpDeliver,
-  SharePurchase
+  SharePurchase,
+  SpShop 
 }
