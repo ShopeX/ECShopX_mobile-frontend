@@ -85,10 +85,27 @@
       }
     }
   }
+  .sp-goods-item-type {
+    &__item-list {
+      display: flex;
+      flex-direction: row;
+      height: 376px;
+    }
+  }
 }
 
 // skeleton styles (scoped under sp-shop)
 .sp-shop {
+  .cp-skeleton {
+    width: 226px;
+    margin-right: 10px;
+  }
+  .cp-skeleton__block {
+    width: 226px;
+    height: 226px;
+    margin-bottom: 12px;
+    border-radius: 12px;
+  }
   .cp-skeleton__block,
   .cp-skeleton__line {
     position: relative;
@@ -97,7 +114,7 @@
   }
 
   .cp-skeleton__line {
-    height: 24px;
+    height: 100%;
     border-radius: 6px;
   }
 
@@ -111,6 +128,20 @@
     width: 150%;
     background: linear-gradient(90deg, rgba(242,243,245,0) 0%, rgba(255,255,255,0.8) 50%, rgba(242,243,245,0) 100%);
     animation: sp-shop-skeleton-shimmer 1.2s infinite;
+  }
+  .cp-skeleton__title-container {
+    height: 34px;
+  }
+  .cp-skeleton__tag-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    height: 26px;
+  }
+  .cp-skeleton__price-wrapper {
+    height: 30px;
   }
 }
 

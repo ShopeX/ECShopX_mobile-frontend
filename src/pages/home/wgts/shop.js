@@ -1,6 +1,6 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { SpShop } from '@/components'
 import isArray from 'lodash/isArray'
@@ -9,6 +9,10 @@ import './shop.scss'
 function WgtShop(props) {
   const { info, id } = props
   const { base, data = []} = info //是否不限制区域
+  const [currentIndex, setCurrentIndex] = useState(0)
+  useEffect(() => {
+    setCurrentIndex(0)
+  }, [data])
 
   const outStyle = useCallback(() => {
     const { outerMargin, outerBackground } = base
@@ -37,10 +41,14 @@ function WgtShop(props) {
     }
   }, [base])
 
-  const scrollHeight = useMemo(() => {
+  const SwiperHeight = useMemo(() => {
     const { innerPadding } = base
     return `calc(534rpx + ${Taro.pxTransform(innerPadding.paddedt)} + ${Taro.pxTransform(innerPadding.paddedb)})`
   }, [base])
+
+  const handleChange = (e) => {
+    setCurrentIndex(e.detail.current)
+  }
 
 
 
@@ -51,31 +59,30 @@ function WgtShop(props) {
     >
       <View className='wgt-shop__content'>
         {isArray(data) && data.length > 0 && (
-          <View 
-            className={classNames('wgt-shop__content-scroll', {
-              'wgt-shop__content-scroll--snap': data.length > 1
-            })}
-            style={{ height: scrollHeight }}
+          <Swiper
+            nextMargin={data.length > 1 ? '24rpx' : 0}
+            previousMargin={data.length > 1 ? '24rpx' : 0}
+            style={{ height: SwiperHeight }}
+            onChange={handleChange}
+            current={currentIndex}
           >
             {isArray(data) &&
               data?.map((item, index) => {
                 return (
-                  <View 
-                    key={item.id} 
-                    className={classNames('wgt-shop__content-scroll-item', {
-                      'wgt-shop__content-scroll-item--snap': data.length > 1
-                    })}
+                  <SwiperItem key={item.id} className={classNames({
+                    'wgt-shop__content-swiper-item': data.length > 1
+                  })}
                   >
-                    <SpShop
-                      info={item}
-                      style={innerStyle}
-                      isActive
-                      id={index}
-                    />
-                  </View>
+                      <SpShop
+                        info={item}
+                        style={innerStyle}
+                        isActive={currentIndex == index}
+                        id={index}
+                      />
+                  </SwiperItem>
                 )
               })}
-          </View>
+          </Swiper>
         )}
       </View>
     </View>

@@ -93,7 +93,7 @@ function SpShop(props) {
 
   const handleToStore = async () => {
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
-    const { status } = await api.distribution.merchantIsvaild({ distributor_id: distributor_id})
+    const { status } = await api.distribution.merchantIsvaild({ distributor_id: distributor_id })
     if (status) {
       Taro.navigateTo({ url: `/subpages/store/index?id=${distributor_id}` })
     } else {
@@ -107,7 +107,7 @@ function SpShop(props) {
           <View className='sp-shop__info'>
             <View className='sp-shop__info-left' onClick={() => handleToStore('进入店铺', 1)}>
               <View className='sp-shop__img'>
-                <SpImage width={108} height={108} src={info.logo} mode='cover'  placeholderColor='#f2f3f5' />
+                <SpImage width={108} height={108} src={info.logo} mode='cover' placeholderColor='#f2f3f5' />
               </View>
               <View className='sp-shop__name'>{info.name}</View>
             </View>
@@ -129,27 +129,29 @@ function SpShop(props) {
             </View>
           </View>
         </View>
-        {loading && (
-          <View className='sp-goods-item-type' id={`sp-goods-item-type-${id}-${distributor_id}`}>
-            <ScrollView scrollX className='sp-goods-item-type__item-list' enableFlex>
-              {[1, 2, 3, 4].map((i) => (
-                <View className='item-three' key={`goods-skeleton-${i}`}>
-                  <View className='item-three__image-container cp-skeleton__block' />
-                  <View className='item-three__content'>
-                    <View className='item-three__title-container'>
-                      <View className='item-three__title-wrapper'>
-                        <View className='cp-skeleton__line' style={{ width: '80%' }} />
-                      </View>
-                    </View>
-                    <View className='item-three__price-container'>
-                      <View className='cp-skeleton__line' style={{ width: '50%' }} />
-                    </View>
+        {/* {loading && ( */}
+        <View className='sp-goods-item-type' id={`sp-goods-item-type-${id}-${distributor_id}`}>
+          <ScrollView scrollX className='sp-goods-item-type__item-list' enableFlex>
+            {[1, 2, 3, 4].map((i) => (
+              <View className='cp-skeleton' key={`goods-skeleton-${i}`}>
+                <View className='cp-skeleton__image-container cp-skeleton__block' />
+                <View className='cp-skeleton__content'>
+                  <View className='cp-skeleton__title-container'>
+                    <View className='cp-skeleton__line' style={{ width: '80%' }} />
+                  </View>
+                  <View className='cp-skeleton__tag-container'>
+                    <View className='cp-skeleton__line' style={{ width: '30%' }} />
+                    <View className='cp-skeleton__line' style={{ width: '30%' }} />
+                  </View>
+                  <View className='cp-skeleton__price-wrapper'>
+                    <View className='cp-skeleton__line' style={{ width: '80%' }} />
                   </View>
                 </View>
-              ))}
-            </ScrollView>
-          </View>
-        )}
+              </View>
+            ))}
+          </ScrollView>
+        </View>
+        {/* )} */}
         {/* {items.length > 0 && !loading && (
           <SpGoodsItemType list={items}  index={id} did={distributor_id} />
         )} */}
