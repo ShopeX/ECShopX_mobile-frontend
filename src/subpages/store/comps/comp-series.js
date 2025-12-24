@@ -24,10 +24,10 @@ const CompSeries = (props) => {
     const { category_id, main_category_id } = item
     let url = ''
     if (category_id) {
-      url = `/pages/item/list?cat_id=${category_id}`
+      url = `/subpages/item/list?cat_id=${category_id}`
     }
     if (main_category_id) {
-      url = `/pages/item/list?main_cat_id=${main_category_id}`
+      url = `/subpages/item/list?main_cat_id=${main_category_id}`
     }
     if (url) {
       Taro.navigateTo({

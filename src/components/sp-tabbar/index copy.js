@@ -14,7 +14,7 @@ import { updateCurDistributorId } from '@/store/slices/purchase'
 import './index.scss'
 
 function SpTabbar(props) {
-  const navipage = '/pages/item/list?isTabBar=true'
+  const navipage = '/subpages/item/list?isTabBar=true'
   const { colorPrimary, tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const dispatch = useDispatch()

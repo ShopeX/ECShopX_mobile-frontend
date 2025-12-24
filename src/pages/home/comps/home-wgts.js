@@ -10,26 +10,9 @@ import { View } from '@tarojs/components'
 import { SpScrollView, SpSearch } from '@/components'
 import { log } from '@/utils'
 import {
-  WgtSearchHome,
-  WgtFilm,
-  WgtMarquees,
-  WgtSlider,
   WgtImgHotZone,
-  WgtNavigation,
-  WgtCoupon,
-  WgtGoodsScroll,
-  WgtGoodsGrid,
-  WgtGoodsGridTab,
-  WgtShowcase,
-  WgtStore,
-  WgtHeadline,
-  WgtImgGif,
-  WgtHotTopic,
-  WgtFloorImg,
-  WgtNearbyShop,
-  WgtFullSlider,
-  WgtOrderNavigation,
-  WgtShop
+  WgtShop,
+  WgtClassify
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -91,6 +74,7 @@ function HomeWgts(props) {
           >
             {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
             {item.name === 'shop' && <WgtShop info={item} />} {/** 店铺 */}
+            {item.name === 'classify' && <WgtClassify info={item} />} {/** 分类 */}
           </View>
         )
       })}

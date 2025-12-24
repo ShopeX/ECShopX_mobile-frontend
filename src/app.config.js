@@ -17,7 +17,6 @@ const config = {
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
 
-    'pages/item/list', // 商品列表页面
     'pages/item/espier-detail', // 商品详情页面
 
     'pages/article/index', // 文章页面
@@ -90,6 +89,12 @@ const config = {
         'nearly-shop', // 店铺选择
         'shop-list', // 商家列表
         'navigation-ibs' //lbs图片导航
+      ]
+    },
+    {
+      root: 'subpages/item',
+      pages: [
+        'list' // 商品列表页面
       ]
     },
     {

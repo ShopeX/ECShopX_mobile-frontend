@@ -113,6 +113,8 @@ import SharePurchase from './share-purchase'
 
 
 import SpShop from './sp-shop'
+import SpClassifyHorizontal from './sp-classify-horizontal'
+import SpClassifyVertical from './sp-classify-vertical'
 
 export default {}
 
@@ -223,5 +225,7 @@ export {
   SpSelectModal,
   SpDeliver,
   SharePurchase,
-  SpShop 
+  SpShop,
+  SpClassifyHorizontal,
+  SpClassifyVertical
 }

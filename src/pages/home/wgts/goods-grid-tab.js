@@ -29,7 +29,7 @@ function WgtGoodsGridTab(props) {
     if (moreLink) {
       linkPage(moreLink)
     } else {
-      this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
+      this.navigateTo(`/subpages/item/list?dis_id=${info.distributor_id || ''}`)
     }
   }
 

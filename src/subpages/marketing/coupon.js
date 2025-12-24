@@ -73,7 +73,7 @@ function CouponIndex() {
     if (cardType == 'new_gift') {
       if (status == 1) {
         Taro.navigateTo({
-          url: `/pages/item/list?card_id=${cardId}&user_card_id=${id}`
+          url: `/subpages/item/list?card_id=${cardId}&user_card_id=${id}`
         })
       } else if (status == 10) {
         Taro.navigateTo({

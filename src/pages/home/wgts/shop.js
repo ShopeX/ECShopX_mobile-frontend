@@ -57,14 +57,14 @@ function WgtShop(props) {
       'wgt-shop--single': data.length == 1
     })} style={outStyle()} id={`wgt-shop-${id}`}
     >
-      <View className='wgt-shop__content'>
+            <View className='wgt-shop__content' style={{ height: SwiperHeight }}>
         {isArray(data) && data.length > 0 && (
           <Swiper
             nextMargin={data.length > 1 ? '24rpx' : 0}
             previousMargin={data.length > 1 ? '24rpx' : 0}
-            style={{ height: SwiperHeight }}
             onChange={handleChange}
             current={currentIndex}
+            className='wgt-shop__content-swiper'
           >
             {isArray(data) &&
               data?.map((item, index) => {

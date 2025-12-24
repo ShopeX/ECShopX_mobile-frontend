@@ -14,7 +14,7 @@ export function linkPage(type, data) {
       url = '/pages/item/espier-detail?id=' + id
       break
     case 'category':
-      url = '/pages/item/list?cat_id=' + id
+      url = '/subpages/item/list?cat_id=' + id
       break
     case 'article':
       url = '/pages/article/index?id=' + id
@@ -59,7 +59,7 @@ export function linkPage(type, data) {
       }
       break
     case 'tag':
-      url = '/pages/item/list?tag_id=' + id
+      url = '/subpages/item/list?tag_id=' + id
       break
     case 'regactivity':
       url = '/marketing/pages/reservation/goods-reservate?activity_id=' + id

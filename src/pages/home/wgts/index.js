@@ -33,5 +33,6 @@ export { default as WgtHomeHeaderShop } from './home-header-shop'
 export { default as WgtFullSlider } from './full-slider'
 export { default as WgtOrderNavigation } from './order-navigation'
 export { default as WgtShop } from './shop'
+export { default as WgtClassify } from './classify'
 
 export { WgtCoupon, WgtNearbyShop }

@@ -14,7 +14,7 @@ import './index.scss'
 import SpImage from '../sp-image'
 
 function SpTabbar() {
-  const navipage = '/pages/item/list?isTabBar=true'
+  const navipage = '/subpages/item/list?isTabBar=true'
   const [currentIndex, setCurrentIndex] = useState(-1)
   const { tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
