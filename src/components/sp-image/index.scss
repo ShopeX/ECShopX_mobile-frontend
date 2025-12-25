@@ -43,7 +43,6 @@
   // 实际图片样式
   .sp-image-content {
     position: relative;
-    z-index: 2; /* 图片在上层，加载后覆盖占位符 */
     transition: opacity 0.3s ease;
     opacity: 0; /* 初始透明 */
 
