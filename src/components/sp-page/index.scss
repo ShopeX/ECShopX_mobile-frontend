@@ -153,6 +153,7 @@ width: 100vw;
 
     .img-hotzone_zone {
       position: absolute;
+      z-index: 9999;
     }
   }
 }
