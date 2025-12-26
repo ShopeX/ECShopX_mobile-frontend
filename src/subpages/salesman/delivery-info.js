@@ -53,8 +53,8 @@ function TradeDeliveryInfo(props) {
     if (delivery_id) {
       getLogisticsInfo(delivery_id)
       setState((draft) => {
-        draft.deliveryCorpName = delivery_corp_name
-        draft.deliveryCode = delivery_code
+        draft.deliveryCorpName = delivery_corp_name ? decodeURIComponent(delivery_corp_name) : ''
+        draft.deliveryCode = delivery_code ? decodeURIComponent(delivery_code) : ''
       })
     }
   }
