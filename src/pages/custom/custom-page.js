@@ -46,6 +46,8 @@ function CustomPage(props) {
 
   useEffect(() => {
     fetch()
+    entryLaunch.postGuideUV()
+    entryLaunch.postGuideTask()
   }, [])
 
   useEffect(() => {

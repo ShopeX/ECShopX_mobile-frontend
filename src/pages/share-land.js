@@ -89,8 +89,8 @@ function ShareIand() {
     delete filteredParams.$taroTimestamp
     const queryString = qs.stringify(filteredParams)
 
-    entryLaunch.postGuideUV() // 导购uv上报
-    entryLaunch.postGuideTask(welcomeRoutes[from_scene]) // 导购任务上报
+    // entryLaunch.postGuideUV() // 导购uv上报
+    // entryLaunch.postGuideTask(welcomeRoutes[from_scene]) // 导购任务上报
 
     const targetUrl = queryString ? `${welcomeRoutes[from_scene]}?${queryString}` : welcomeRoutes[from_scene]
     console.log('导购任务分享跳转:', targetUrl, welcomeRoutes[from_scene])
