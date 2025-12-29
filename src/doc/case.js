@@ -21,7 +21,7 @@ export const CASE_LIST = {
 export const CASE_DETAIL = {
   cover_pic: 'basicInfo.cover_pic',
   design_name: 'basicInfo.design_name',
-  design_pano_url: 'basicInfo.design_pano_url',
+  design_pano_url: 'basicInfo.design_mesh_url',
   comm_name: 'basicInfo.comm_name',
   levelinfo: 'levelinfo',
   taginfo: 'taginfo',
