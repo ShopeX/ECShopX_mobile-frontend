@@ -3,8 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import Taro, {
-  } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import {
   SpLogin,
@@ -13,7 +12,8 @@ import {
   SpTabbar,
   SpPage,
   SpFloatMenuItem,
-  SpTagBar} from '@/components'
+  SpTagBar
+} from '@/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { pickBy } from '@/utils'

@@ -288,8 +288,6 @@ function Home() {
     }
   }
 
-
-
   return (
     <SpPage
       className='page-index'
@@ -331,7 +329,10 @@ function Home() {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        <View className='home-body-content' style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}>
+        <View
+          className='home-body-content'
+          style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
+        >
           {isShowHomeHeader && (
             <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
           )}
@@ -353,7 +354,7 @@ function Home() {
               </WgtsContext.Provider>
             )}
           </View>
-            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
           {/* <View className='sp-page__powered-by w-full'>
             <Text>Powered by</Text>
             <Image

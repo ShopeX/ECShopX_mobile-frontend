@@ -17,7 +17,7 @@ import { updateUserInfo } from '@/store/slices/user'
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
 
-const {store} = configStore()
+const { store } = configStore()
 
 @connect(({ user, colors, sys }) => ({
   address: user.address,

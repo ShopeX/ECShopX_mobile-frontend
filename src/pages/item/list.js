@@ -333,7 +333,6 @@ function ItemList() {
     }
   }
 
-
   return (
     <SpPage
       scrollToTopBtn
@@ -378,7 +377,7 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch} >
+      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {

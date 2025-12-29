@@ -302,10 +302,14 @@ function TradeAfterSaleDetail(props) {
               <View className='refund-point'>
                 <SpCell title='退积分' value={info?.refundPoint}></SpCell>
               </View>
-                <View className='refund-point'>
-                  {info?.freightType == 'point' && <SpCell title='退运费' value={<SpPoint value={info?.freight * 100} />} /> }
-                  {info?.freightType == 'cash' && <SpCell title='退运费' value={<SpPrice value={info?.freight} />} />}
-                </View>
+              <View className='refund-point'>
+                {info?.freightType == 'point' && (
+                  <SpCell title='退运费' value={<SpPoint value={info?.freight * 100} />} />
+                )}
+                {info?.freightType == 'cash' && (
+                  <SpCell title='退运费' value={<SpPrice value={info?.freight} />} />
+                )}
+              </View>
             </View>
 
             <View className='refund-type'>

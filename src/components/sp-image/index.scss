@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
- .sp-image-container {
+.sp-image-container {
   position: relative;
   overflow: hidden; /* 防止圆角溢出 */
   background-color: transparent;
@@ -56,6 +56,10 @@
 
 // 骨架屏闪烁动效
 @keyframes skeleton-shimmer {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(300%); }
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(300%);
+  }
 }

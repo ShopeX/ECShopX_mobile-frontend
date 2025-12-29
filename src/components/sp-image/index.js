@@ -97,10 +97,9 @@ function SpImage(props) {
             width: '100%',
             height: '100%',
             borderRadius: Taro.pxTransform(props.circle || props.radius),
-            backgroundColor: props.placeholderColor,
+            backgroundColor: props.placeholderColor
           }}
-        >
-        </View>
+        ></View>
       )}
 
       {/* 实际图片组件 */}

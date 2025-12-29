@@ -646,16 +646,14 @@ function PurchaseCheckout(props) {
     )
   }
 
-//原价总和
+  //原价总和
   const renderMarketPrice = useCallback(() => {
     const marketPrice = detailInfo?.reduce((total, item) => {
       const salePrice = item?.salePrice || 0
       const num = item?.num || 1
       return total + salePrice * num
     }, 0)
-    return (
-      <SpPrice value={marketPrice} />
-    )
+    return <SpPrice value={marketPrice} />
   }, [detailInfo])
 
   const renderGoodsComp = () => {

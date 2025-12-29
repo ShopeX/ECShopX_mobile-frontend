@@ -193,5 +193,5 @@ export const TRADE_AFTER_SALES_ITEM = {
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
   returnType: 'return_type',
   freight: ({ freight }) => freight / 100,
-  freightType: 'freight_type',
+  freightType: 'freight_type'
 }

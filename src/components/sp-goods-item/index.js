@@ -113,10 +113,11 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${!!point || goodsType == 'point'
-      ? '/subpages/pointshop/espier-detail'
-      : '/pages/item/espier-detail'
-      }?${qs.stringify(query)}`
+    const url = `${
+      !!point || goodsType == 'point'
+        ? '/subpages/pointshop/espier-detail'
+        : '/pages/item/espier-detail'
+    }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -126,7 +127,7 @@ function SpGoodsItem(props) {
     return null
   }
 
-  console.log(isPurchase, 'isPurchase', info.activityPrice, info, $instance);
+  console.log(isPurchase, 'isPurchase', info.activityPrice, info, $instance)
   // console.log( "favs:", favs );
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   const isShowStore =
@@ -188,14 +189,14 @@ function SpGoodsItem(props) {
               <View className='gd-price'>
                 {isPurchase && (
                   <>
-                    {(info.activityPrice && enPurActivityPrice) ? (
+                    {info.activityPrice && enPurActivityPrice ? (
                       <View className='act-price-wrap'>
                         <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
                         <SpPrice size={24} value={info.price} noSymbol lineThrough />
                       </View>
-                    ) :
-                      (enPurActivityPrice && <SpPrice size={36} value={info.price} />)
-                    }
+                    ) : (
+                      enPurActivityPrice && <SpPrice size={36} value={info.price} />
+                    )}
                   </>
                 )}
                 {!isPurchase && (
@@ -270,9 +271,12 @@ function SpGoodsItem(props) {
         </View>
 
         {isShowStore && (
-          <View className='goods__store' onClick={(e) => {
-            e.stopPropagation()
-          }}>
+          <View
+            className='goods__store'
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
             <SpImage
               src={info.distributor_info.distributor_info || 'shop_default_logo.png'}
               width={60}
@@ -326,9 +330,9 @@ SpGoodsItem.defaultProps = {
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,
-  onChange: () => { },
-  onAddToCart: () => { },
-  onStoreClick: () => { }
+  onChange: () => {},
+  onAddToCart: () => {},
+  onStoreClick: () => {}
 }
 
 export default SpGoodsItem

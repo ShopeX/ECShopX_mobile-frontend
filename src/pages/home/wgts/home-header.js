@@ -13,7 +13,9 @@ import './home-header.scss'
 function WgtHomeHeader(props) {
   const { children, jump = true, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const { openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector((state) => state.sys)
+  const { openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector(
+    (state) => state.sys
+  )
   const { shopInfo } = useSelector((state) => state.shop)
   const handleScanCode = () => {}
 

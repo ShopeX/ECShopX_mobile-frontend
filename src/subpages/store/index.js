@@ -13,14 +13,7 @@ import { View, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { SG_ROUTER_PARAMS } from '@/consts'
 import S from '@/spx'
-import {
-  SpFloatMenuItem,
-  SpPage,
-  SpSearch,
-  SpRecommend,
-  SpSkuSelect,
-  SpLogin
-} from '@/components'
+import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpSkuSelect, SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import {
@@ -37,8 +30,7 @@ import { useNavigation } from '@/hooks'
 import _toString from 'lodash/toString'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import {
-  updateShopCartCount} from '@/store/slices/cart'
+import { updateShopCartCount } from '@/store/slices/cart'
 import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
 import CompTab from './comps/comp-tab'

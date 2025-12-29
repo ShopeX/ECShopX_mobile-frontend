@@ -64,8 +64,12 @@ const CookieConsent = () => {
           <SpHtml content={policyData} />
         </View>
         <View className='cookie-buttons'>
-          <Button className='accept-btn' onClick={handleAccept}>接受所有</Button>
-          <Button className='reject-btn' onClick={handleReject}>拒绝所有</Button>
+          <Button className='accept-btn' onClick={handleAccept}>
+            接受所有
+          </Button>
+          <Button className='reject-btn' onClick={handleReject}>
+            拒绝所有
+          </Button>
         </View>
       </View>
     </View>

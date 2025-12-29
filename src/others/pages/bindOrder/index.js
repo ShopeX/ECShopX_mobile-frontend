@@ -83,7 +83,7 @@ export default class BindOrder extends Component {
         title: '关联成功，请至订单列表查看',
         icon: 'none'
       })
-    } catch (e) { }
+    } catch (e) {}
   }
 
   render() {
@@ -91,15 +91,17 @@ export default class BindOrder extends Component {
     const { colors } = this.props
 
     return (
-      <SpPage className='bindOrder' renderFooter={
-        <View
-          className='btn'
-          style={`background: ${colors.data[0].primary}`}
-          onClick={this.bindOrder.bind(this)}
-        >
-          关联
-        </View>
-      }
+      <SpPage
+        className='bindOrder'
+        renderFooter={
+          <View
+            className='btn'
+            style={`background: ${colors.data[0].primary}`}
+            onClick={this.bindOrder.bind(this)}
+          >
+            关联
+          </View>
+        }
       >
         <View className='min-h-full bind-order-content'>
           <View className='barCode'>

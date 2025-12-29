@@ -2,7 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef, useCallback } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  memo,
+  forwardRef,
+  useCallback
+} from 'react'
 import { useSelector } from 'react-redux'
 import Taro, {
   useRouter,
@@ -33,7 +41,7 @@ import {
   VERSION_IN_PURCHASE,
   isGoodsShelves,
   linkPage,
-  VERSION_SHUYUN,
+  VERSION_SHUYUN
 } from '@/utils'
 import context from '@/hooks/usePageContext'
 import CustomNavigationHeader from './header'
@@ -107,7 +115,7 @@ const SpPage = memo(
     }, [state.lock])
 
     useEffect(() => {
-      if(!isPageVisible) return
+      if (!isPageVisible) return
       instanceRef.current = getCurrentInstance()
       const pages = Taro.getCurrentPages()
       const navigationStyle = instanceRef.current?.page?.config?.navigationStyle
@@ -142,7 +150,8 @@ const SpPage = memo(
         draft.pageTitle = props.title || instanceRef.current?.page?.config?.navigationBarTitleText
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
-        draft.height = (!props.immersive&&custom_navigation) ? screenHeight - _gNavbarH : screenHeight
+        draft.height =
+          !props.immersive && custom_navigation ? screenHeight - _gNavbarH : screenHeight
         draft.menuWidth = _menuWidth
         draft.navigationLSpace = _navigationLSpace
         draft.navigationRSpace = _navigationRSpace
@@ -159,9 +168,9 @@ const SpPage = memo(
           ? `calc(${windowHeight - _gNavbarH}px - ${_height})`
           : `calc(${windowHeight}px - ${_height})`,
         menuWidth: _menuWidth,
-        footerHeight: _height,
+        footerHeight: _height
       })
-    }, [props.immersive,isPageVisible])
+    }, [props.immersive, isPageVisible])
 
     useEffect(() => {
       const {
@@ -254,7 +263,6 @@ const SpPage = memo(
       props.onScroll && props.onScroll(res)
     })
 
-
     useImperativeHandle(ref, () => ({
       pageLock: () => {
         setState((draft) => {
@@ -284,7 +292,6 @@ const SpPage = memo(
         }
       }
     }))
-
 
     return (
       <View
@@ -316,27 +323,30 @@ const SpPage = memo(
         {props.isDefault &&
           (props.renderDefault || <SpNote img={props.defaultImg} title={props.defaultMsg} isUrl />)}
 
-       
         {!props.isDefault && (
           <View
             className='sp-page__body'
             style={styleNames({
-              'padding-top': `${(!props.immersive&&state.customNavigation) ? state.gNavbarH : 0}px`,
-              'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)) : 0
+              'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
+              'padding-bottom': props.renderFooter
+                ? Taro.pxTransform(
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )
+                : 0
             })}
           >
             <View className='sp-page__body-content'>
-              {!props.loading && <View className='sp-page__body-children'>
-                <context.Provider value={{}}>
-                  {props.children}
-                </context.Provider>
-              </View>}
+              {!props.loading && (
+                <View className='sp-page__body-children'>
+                  <context.Provider value={{}}>{props.children}</context.Provider>
+                </View>
+              )}
               {props.loading && (
                 <View className='sp-page__loading'>
                   <SpLoading />
                 </View>
               )}
-                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+              {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
               {/* {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
                 <Text>Powered by</Text>
                 <Image
@@ -378,7 +388,7 @@ const SpPage = memo(
 )
 
 SpPage.defaultProps = {
-  onReady: () => { },
+  onReady: () => {},
   btnHomeEnable: true,
   className: '',
   children: null,
@@ -403,7 +413,7 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => { }
+  onScrollToTop: () => {}
 }
 
 export default SpPage

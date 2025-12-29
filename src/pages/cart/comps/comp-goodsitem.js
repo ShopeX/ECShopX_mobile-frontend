@@ -131,15 +131,22 @@ function CompGoodsItem(props) {
               <View className='goods-price-wrap'>
                 {isPurchase && (
                   <>
-                    
                     {enPurActivityPrice ? (
                       <View className='act-price-wrap'>
                         <SpPrice unit='cent' value={info.price} className='act-price' symbol='¥' />
                         {/* ¥{(info.price / 100).toFixed(2)} */}
-                        <SpPrice unit='cent' value={info.sale_price} size={24} noSymbol lineThrough />
+                        <SpPrice
+                          unit='cent'
+                          value={info.sale_price}
+                          size={24}
+                          noSymbol
+                          lineThrough
+                        />
                         {/* <SpPrice value={info.price / 100} /> */}
                       </View>
-                    ):<SpPrice unit='cent' value={info.sale_price} />}
+                    ) : (
+                      <SpPrice unit='cent' value={info.sale_price} />
+                    )}
                   </>
                 )}
                 {!isPurchase && <SpPrice value={_price / 100} />}

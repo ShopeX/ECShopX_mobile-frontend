@@ -38,15 +38,15 @@ function SpGoodsPrice(props) {
           {/* 内购 && !enPurActivityPrice 不展示,其他情况都展示 */}
           {!(isPurchase && !enPurActivityPrice) ? (
             <View className='activity-wrap'>
-              <SpPrice  className='activity-price' value={activityPrice} symbol='¥' />
+              <SpPrice className='activity-price' value={activityPrice} symbol='¥' />
               {/* <Text className='activity-label'>¥{activityPrice.toFixed(2)}</Text> */}
               <SpPrice size={24} lineThrough noSymbol value={price} />
 
               {/* <SpPrice size={36} className='activity-price' value={activityPrice} /> */}
             </View>
-          ) :
+          ) : (
             <SpPrice size={30} className='sale-price' value={price} />
-          }
+          )}
         </View>
       )}
       {isNaN(activityPrice) && (

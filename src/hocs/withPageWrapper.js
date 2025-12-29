@@ -207,9 +207,9 @@ function withPageWrapper(Component) {
         await resloveCheckUserInStoreWhiteList(currentShopInfo)
       } else {
         // distributor_self 1虚拟 0普通
-        if(currentShopInfo.distributor_self == 1){
+        if (currentShopInfo.distributor_self == 1) {
           // 虚拟店，清除旧的店铺ID
-          dispatch(updateShopInfo({...currentShopInfo,distributor_id: 0}))
+          dispatch(updateShopInfo({ ...currentShopInfo, distributor_id: 0 }))
         } else {
           dispatch(updateShopInfo(currentShopInfo))
         }

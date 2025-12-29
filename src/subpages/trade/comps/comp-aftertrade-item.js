@@ -94,11 +94,9 @@ function CompTradeItem(props) {
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>退款金额</Text>
-              <SpPrice value={refundFee} size={38} />
-              +
-              <Text className='label'>运费</Text>
-              {freightType=='cash'&&<SpPrice value={freight} />}
-              {freightType=='point'&&<SpPoint value={freightPoint}/>}
+              <SpPrice value={refundFee} size={38} />+<Text className='label'>运费</Text>
+              {freightType == 'cash' && <SpPrice value={freight} />}
+              {freightType == 'point' && <SpPoint value={freightPoint} />}
             </View>
           )}
         </View>
