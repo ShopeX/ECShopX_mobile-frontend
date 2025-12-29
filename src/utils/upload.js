@@ -1,0 +1,330 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import Taro from '@tarojs/taro'
+import req from '@/api/req'
+import S from '@/spx'
+import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
+// import COS from './cos'
+import { reject } from 'lodash'
+// import * as qiniu from 'qiniu-js'
+
+const getToken = (params) => {
+  return req.get('espier/image_upload_token', params)
+}
+
+// const uploadURLFromRegionCode = (code) => {
+//   switch(code) {
+//       case 'z0': return'https://up.qiniup.com'
+//       case 'z1': return 'https://up-z1.qiniup.com'
+//       case 'z2': return 'https://up-z2.qiniup.com'
+//       case 'na0': return 'https://up-na0.qiniup.com'
+//       case 'as0': return 'https://up-as0.qiniup.com'
+//       default: console.error('please make the region is with one of [z0, z1, z2, na0, as0]')
+//   }
+// }
+
+function xUploadFile({ host, formData }) {
+  return new Promise((resolve, reject) => {
+    let xmlhttp = new XMLHttpRequest()
+    xmlhttp.open('POST', host, true)
+    xmlhttp.onreadystatechange = (res) => {
+      if (xmlhttp.readyState === 4) {
+        if (xmlhttp.status === 200) {
+          resolve(res)
+        } else {
+          reject(new Error('File upload failed'))
+        }
+      }
+    }
+    xmlhttp.send(formData)
+  })
+}
+
+const upload = {
+  aliUpload: async (item, tokenRes) => {
+    const { accessid, dir, host, policy, signature, filetype } = tokenRes
+    const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+    if (isWeb) {
+      const formData = new FormData()
+      formData.append('key', dir)
+      formData.append('policy', policy)
+      formData.append('OSSAccessKeyId', accessid)
+      formData.append('success_action_status', '200')
+      formData.append('signature', signature)
+      formData.append('name', filename)
+      formData.append('file', item.file.originalFileObj)
+      const res = await xUploadFile({
+        host,
+        formData
+      })
+      return {
+        url: `${host}${dir}`,
+        filetype
+      }
+    } else {
+      const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+      const updata = {
+        url: host,
+        filePath: item.url,
+        name: 'file',
+        withCredentials: false,
+        formData: {
+          name: filename,
+          key: `${dir}`,
+          policy: policy,
+          OSSAccessKeyId: accessid,
+          // 让服务端返回200
+          signature: signature,
+          success_action_status: '200'
+          // 服务端回调
+          // callback: callback
+        },
+        // fileType: 'image',
+        fileType: filetype,
+        header: {
+          // 'Content-Type': 'application/x-www-form-urlencoded', // 只能是这种形式
+          'Content-Type': 'multipart/form-data;charset=UTF-8'
+        },
+        fail: (err) => {
+          // console.log('aliUpload:host', host)
+          console.log('aliUpload:Taro.uploadFile', err)
+        }
+      }
+      // console.log('upload:updata', updata)
+      try {
+        const res = await Taro.uploadFile(updata)
+        // console.log('---aliUpload-upload:res', res)
+        // console.log('---aliUpload-:dir', host, dir)
+        if (!res) {
+          return false
+        }
+        return {
+          url: `${host}${dir}`,
+          filetype
+        }
+      } catch (e) {
+        throw new Error(`aliUpload:${e}`)
+      }
+    }
+  },
+  qiNiuUpload: async (item, tokenRes) => {
+    const { token, key, domain, host, filetype } = tokenRes
+
+    const uploadFile = isAlipay ? my.uploadFile : Taro.uploadFile
+
+    try {
+      const { data } = await uploadFile({
+        url: host,
+        filePath: item.url,
+        // fileType: 'image',
+        fileType: filetype,
+        withCredentials: false,
+        [isAlipay ? 'fileName' : 'name']: 'file',
+        formData: {
+          'token': token,
+          'key': key
+        }
+      })
+      const imgData = JSON.parse(data)
+      if (!imgData.key) {
+        return false
+      }
+      return {
+        url: `${domain}/${imgData.key}`,
+        filetype
+      }
+    } catch (e) {
+      console.error(e)
+      throw new Error(e)
+    }
+  },
+  localUpload: async (item, tokenRes) => {
+    const { filetype, domain } = tokenRes
+    const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+    let header = {
+      Authorization: `Bearer ${S.getAuthToken()}`
+    }
+    if (isWeixin) {
+      header['authorizer-appid'] = getAppId()
+    }
+    try {
+      const res = await Taro.uploadFile({
+        url: `${req.baseURL}espier/uploadlocal`,
+        filePath: item.url,
+        header,
+        withCredentials: false,
+        name: 'images',
+        formData: {
+          name: filename,
+          filetype
+        }
+      })
+      const data = JSON.parse(res.data)
+      const { image_url } = data.data
+      if (!image_url) {
+        return false
+      }
+      return {
+        url: `${domain}/${image_url}`,
+        filetype
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
+  },
+  awsUpload: async (item, tokenRes) => {
+    const {
+      formInputs = {
+        XAmzCredential: '',
+        XAmzAlgorithm: '',
+        XAmzDate: '',
+        Policy: '',
+        XAmzSignature: '',
+        key: ''
+      },
+      formAttributes = {
+        action: ''
+      },
+      filetype
+    } = tokenRes
+    try {
+      const res = await Taro.uploadFile({
+        url: formAttributes.action,
+        filePath: item.url,
+        name: 'file',
+        formData: {
+          key: formInputs.key,
+          'X-Amz-Credential': formInputs.XAmzCredential,
+          'X-Amz-Algorithm': `AES256`,
+          Policy: formInputs.Policy,
+          'X-Amz-Algorithm': formInputs.XAmzAlgorithm,
+          'X-Amz-Date': formInputs.XAmzDate,
+          'X-Amz-Signature': formInputs.XAmzSignature
+        }
+      })
+
+      const { Location } = res.header
+      if (!Location) {
+        return false
+      }
+      return {
+        url: Location,
+        filetype,
+        thumb: item.thumb
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
+  },
+  cosv5Upload: async (item, tokenRes) => {
+    if (!COS) return false
+    const { bucket, region, token, url, filetype } = tokenRes
+    try {
+      var cos = new COS({
+        getAuthorization: function (options, callback) {
+          callback({ Authorization: token })
+        },
+        SimpleUploadMethod: 'putObject'
+      })
+      console.log(item.file.originalFileObj)
+      var params = {
+        Bucket: bucket /* 填写自己的 bucket，必须字段 */,
+        Region: region /* 存储桶所在地域，必须字段 */,
+        Key: url /* 存储在桶里的对象键（例如:1.jpg，a/b/test.txt，图片.jpg）支持中文，必须字段 */
+      }
+      if (isWeixin) {
+        params = { ...params, FilePath: item.url /* 上传文件路径，必须字段 */ }
+      }
+      if (isWeb) {
+        params = { ...params, Body: item.file.originalFileObj /* 上传文件路径，必须字段 */ }
+      }
+      const res = await cos.uploadFile(params)
+      const { Location } = res
+      if (!Location) {
+        return false
+      }
+      return {
+        url: 'https://' + Location,
+        filetype,
+        thumb: item.thumb
+      }
+    } catch (e) {
+      throw new Error(e)
+    }
+  }
+}
+
+const getUploadFun = (dirver) => {
+  switch (dirver) {
+    case 'oss':
+      return 'aliUpload'
+    case 'local':
+      return 'localUpload'
+    case 'aws':
+      return 'awsUpload'
+    case 'cosv5':
+      return 'cosv5Upload'
+    default:
+      return 'qiNiuUpload'
+  }
+}
+
+// 返回对应上传方式
+const uploadImageFn = async (imgFiles, filetype = 'image') => {
+  console.log('---imgFiles---', imgFiles)
+  const imgs = []
+  for (const item of imgFiles) {
+    if (!item.file) {
+      if (item.url) {
+        imgs.push(item)
+      }
+      continue
+    }
+    if (exceedLimit(item.file)) {
+      Taro.showToast({
+        title: '文件大小超出最大限制，请压缩后再上传',
+        icon: 'none'
+      })
+      break
+    }
+    try {
+      const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
+      const { driver, token } = await getToken({ filetype })
+      // const { driver, token } = await getToken({ filetype, filename })
+      const uploadType = getUploadFun(driver)
+      // console.log('----uploadType----', uploadType)
+      let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
+      console.log(uploadType)
+      if (filetype == 'videos' && item.thumb) {
+        const _thumb = {
+          url: item.thumb
+        }
+        const thumbFileName = _thumb.url.slice(_thumb.url.lastIndexOf('/') + 1)
+        const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName })
+        const thumbUploadType = getUploadFun(thumbRes.driver)
+        const thumbImg = await upload[thumbUploadType](
+          { url: _thumb.url },
+          { ...thumbRes.token, filetype: 'image' }
+        )
+        if (thumbImg) {
+          img['thumb'] = thumbImg.url
+        }
+      }
+      console.log('---uploadImageFn---', img)
+      if (!img || !img.url) {
+        continue
+      }
+      imgs.push(img)
+    } catch (err) {
+      console.error('---uploadImageFn---', err.message)
+    }
+  }
+  // console.log('---uploadImageFn---2', imgs)
+  return imgs
+}
+
+export default {
+  uploadImageFn
+}

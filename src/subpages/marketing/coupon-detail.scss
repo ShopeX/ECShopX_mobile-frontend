@@ -1,0 +1,298 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+
+.sp-coupon-detail {
+  position: relative;
+  min-height: 100vh;
+  background-color: #f8f8f8;
+  padding-bottom: 176px;
+  box-sizing: border-box;
+
+  .sp-poster .share-panel__poster {
+    top: 35px;
+  }
+
+  .f500 {
+    font-weight: 500;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    padding: 36px 36px 24px;
+    background-color: #fff;
+    border-bottom: 12px solid;
+    border-image-source: url('~@/assets/imgs/coupon-border.png');
+    border-image-slice: 12 0;
+    border-image-repeat: repeat;
+    border-image-outset: 1;
+
+    &-image {
+      width: 160px;
+      height: 160px;
+    }
+
+    &-info {
+      padding-left: 18px;
+      flex: 1;
+    }
+
+    &-title {
+      font-size: 30px;
+      font-weight: 500;
+      line-height: 35px;
+      color: #1a1a1a;
+      margin: 12px 0;
+      @include multi-ellipsis(2);
+    }
+
+    &-tags {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    &-tag {
+      font-size: 18px;
+      line-height: 21px;
+      font-weight: 400;
+      color: #404040;
+      padding: 0 6px;
+      border: 1px solid #d6d6d6;
+      border-radius: 6px;
+      margin-right: 6px;
+      margin-bottom: 8px;
+
+      &.red {
+        color: var(--color-primary);
+        border-color: rgba(212, 0, 59, 0.15);
+      }
+    }
+
+    &-time {
+      font-size: 20px;
+      line-height: 23px;
+      font-weight: 400;
+      color: #666;
+    }
+  }
+  &__sale-tips {
+    width: calc(100% - 48px);
+    height: 88px;
+    background: rgba(203, 152, 0, 0.1);
+    border-radius: 16px;
+    border: 1px solid rgba(203, 152, 0, 0.15);
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 24px 12px;
+    font-weight: 500;
+    font-size: 24px;
+    color: #cb9800;
+    gap: 12px;
+    margin: 36px 24px 0;
+  }
+
+  &__code {
+    padding: 72px 0 36px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &-text1 {
+      font-size: 30px;
+      color: #1a1a1a;
+      line-height: 35px;
+      font-weight: 500;
+      margin-bottom: 60px;
+    }
+
+    &-image {
+      width: 338px;
+    }
+
+    &-text2 {
+      font-size: 24px;
+      color: #1a1a1a;
+      line-height: 28px;
+      font-weight: 500;
+      margin: 36px 0 60px;
+    }
+
+    &-text3 {
+      font-size: 26px;
+      color: #666;
+      line-height: 30px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    &-text4 {
+      font-size: 26px;
+      color: #576b95;
+      line-height: 30px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+
+      .iconfont {
+        font-size: 32px;
+        margin-right: 6px;
+      }
+    }
+  }
+
+  &__card {
+    padding: 48px 36px;
+    box-sizing: border-box;
+  }
+
+  &__info-section {
+  }
+
+  &__info-item {
+    margin-bottom: 36px;
+  }
+
+  &__info-label {
+    font-size: 28px;
+    line-height: 33px;
+    color: #1a1a1a;
+    font-weight: 500;
+    margin-bottom: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__share {
+    font-weight: 500;
+    font-size: 20px;
+    color: #bfbfbf;
+    line-height: 23px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .iconfont {
+      color: #1a1a1a;
+      font-size: 48px;
+      line-height: 48px;
+    }
+  }
+
+  &__info-value {
+    font-size: 24px;
+    color: #666;
+    line-height: 28px;
+    white-space: pre-line;
+    padding-top: 6px;
+
+    &.available-product {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+
+  &__instructions {
+    margin-top: 12px;
+  }
+
+  &__instruction-item {
+    display: flex;
+    margin-bottom: 12px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__instruction-number {
+    font-size: 28px;
+    color: #333;
+    margin-right: 8px;
+  }
+
+  &__instruction-text {
+    font-size: 28px;
+    color: #333;
+    flex: 1;
+    line-height: 1.5;
+  }
+
+  &__stores {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &__store-item {
+    padding: 16px 24px;
+    background-color: #fff;
+    border-radius: 8px;
+    margin-right: 12px;
+    margin-bottom: 12px;
+    font-size: 26px;
+    font-weight: 400;
+    color: #1a1a1a;
+    line-height: 30px;
+  }
+
+  &__available-product {
+    font-size: 24px;
+    color: #576b95;
+    line-height: 28px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+
+    .iconfont {
+      font-size: 32px;
+    }
+  }
+
+  &__footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px 36px 80px;
+    box-sizing: border-box;
+    background-color: #fff;
+  }
+
+  &__receive-btn {
+    background-color: var(--color-primary) !important;
+    border: none !important;
+    color: #fff !important;
+    font-size: 28px !important;
+    height: 76px !important;
+    line-height: 76px !important;
+    border-radius: 12px !important;
+
+    &.disabled {
+      opacity: 0.15;
+    }
+  }
+  .sp-html {
+    font-size: 24rpx;
+    color: #666666;
+  }
+}

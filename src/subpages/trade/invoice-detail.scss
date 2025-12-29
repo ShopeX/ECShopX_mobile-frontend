@@ -1,0 +1,228 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.invoice-detail {
+  .btn-wrap {
+    padding: 20px 36px 38px 36px;
+    display: flex;
+    justify-content: flex-end;
+    &__item {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+      height: 76px;
+      color: #1a1a1a;
+      background: #fff;
+      border: 2px solid #ebebeb;
+      border-radius: 12px;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 28px;
+      text-align: center;
+      margin-left: 20px;
+    }
+  }
+
+  .scroll-view-container {
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  &__header {
+    background: #ffffff;
+    margin-bottom: 24px;
+  }
+
+  &__amount {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+    .invoice-price {
+      font-family: PingFang SC, PingFang SC !important;
+      font-weight: 600 !important;
+      font-size: 28px !important;
+      color: #1a1a1a !important;
+    }
+  }
+
+  &__status {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 30px;
+    &.pending {
+      color: var(--color-primary);
+    }
+    &.inProgress {
+      color: var(--color-primary);
+    }
+    &.success {
+      color: #1a1a1a;
+    }
+    &.failed {
+      color: #bfbfbf;
+    }
+    &.waste {
+      color: #bfbfbf;
+    }
+  }
+
+  &__tag {
+    padding: 0 6px;
+    height: 26px;
+    background: #f8f8f8;
+    border-radius: 6px;
+    border: 1px solid #d6d6d6;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    font-size: 18px;
+    color: #404040;
+    margin-right: 8px;
+    &.company {
+      background: rgba(87, 107, 149, 0.1);
+      border: 1px solid rgba(87, 107, 149, 0.15);
+      color: #576b95;
+    }
+  }
+
+  &__value {
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 400;
+    font-size: 28px;
+    color: #666666;
+  }
+
+  &__section {
+    margin-top: 24px;
+
+    &:last-child {
+      padding-bottom: 58px;
+    }
+  }
+
+  &__title {
+    padding: 48px 0 24px 36px;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 28px;
+    color: #1a1a1a;
+    background: #ffffff;
+  }
+
+  &__list {
+    padding: 0 36px;
+    background: #ffffff;
+  }
+
+  &__item {
+    padding-bottom: 24px;
+    display: flex;
+    justify-content: space-between;
+
+    &-img {
+      margin-right: 18px;
+      .sp-image-img {
+        border-radius: 8px;
+      }
+    }
+
+    &-name {
+      @include multi-ellipsis(1);
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 26px;
+      color: #1a1a1a;
+      line-height: 30px;
+    }
+
+    &-info {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    &__spec {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 24px;
+      // line-height: 28px;
+      margin-top: 4px;
+      &-label {
+        color: #bfbfbf;
+      }
+      &-value {
+        color: #666666;
+      }
+    }
+
+    &-price {
+      font-family: PingFang SC, PingFang SC !important;
+      font-weight: 600 !important;
+      font-size: 28px !important;
+      color: #1a1a1a !important;
+    }
+  }
+
+  .sp-cell {
+    padding: 0 36px;
+    height: 136px;
+    align-items: center;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 36px;
+      right: 36px;
+      /* prettier-ignore */
+      height: 1PX;
+      bottom: 0;
+      background: #ebebeb;
+    }
+    &__no-border {
+      &:before {
+        border: none;
+        background: transparent;
+      }
+    }
+    &__hd {
+      width: 160px;
+    }
+
+    &__bd {
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    &__ft {
+      display: none;
+      flex: 0;
+    }
+
+    &__title {
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 28px;
+      color: #1a1a1a;
+    }
+  }
+}

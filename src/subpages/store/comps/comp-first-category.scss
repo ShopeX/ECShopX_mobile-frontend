@@ -1,0 +1,224 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+
+$good-img-width: 100px;
+$active-good-img-width: 80px;
+
+.comp-first-category {
+  width: 100%;
+  // height: 150px;
+  background-color: #f5f5f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  position: relative;
+
+  &-content {
+    // height: 150px;
+    display: flex;
+    white-space: nowrap;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 10px 0;
+  }
+
+  &-scrollX {
+  }
+
+  &-scroll-item {
+    width: 18%;
+    // min-width: 110px;
+    // max-width: 110px;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+    &:first-child {
+      padding-left: 24px;
+    }
+
+    &:last-child {
+      padding-right: 50px;
+      // padding-right: 24px;
+    }
+  }
+
+  &-goods-imgbox {
+    width: $good-img-width;
+    height: $good-img-width;
+    border: 5px solid #f5f5f5;
+    border-radius: 50%;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    box-sizing: border-box;
+    background: #ffffff;
+    text {
+      font-size: 18rpx;
+      text-align: center;
+      font-weight: 400;
+      color: #bbbbbb;
+      line-height: $good-img-width;
+    }
+
+    .goods-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &-goods-desc {
+    padding: 4px 10px;
+    margin-top: 14px;
+    font-size: 22px;
+    margin-top: 15px;
+    // height: 36rpx;
+    line-height: 36rpx;
+    color: #444444;
+    border-radius: 5px;
+    text-align: center;
+    // width: 121px;
+    box-sizing: border-box;
+    display: inline-block;
+    @include text-overflow();
+  }
+
+  .active {
+    .comp-first-category-goods-desc {
+      width: 110px;
+      background: var(--color-primary);
+      font-size: 22px;
+      border-radius: 35px;
+      color: #ffffff;
+      margin-left: 14px;
+    }
+
+    .comp-first-category-goods-imgbox {
+      // border-color: var(--color-primary);
+      // transform: scale(1.1);
+      border: 4px solid var(--color-primary);
+    }
+  }
+
+  &-filter {
+    height: 100%;
+    // margin-left: 10px;
+    width: 50px;
+    box-sizing: border-box;
+    box-shadow: -3px 0px 6px -5px rgba(0, 0, 0, 0.2);
+    border-radius: 5px 0px 0px 5px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #fff;
+    text-align: center;
+    padding: 16px 13px;
+
+    text {
+      font-size: 24rpx;
+      font-weight: 400;
+      color: #444444;
+      line-height: 32rpx;
+    }
+  }
+
+  &-float {
+    display: none;
+    width: 100%;
+    height: 95vh;
+    background: rgba(0, 0, 0, 0.3);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 888;
+    box-sizing: border-box;
+  }
+
+  .sp-select-box {
+    display: flex;
+    flex-flow: wrap;
+    background: #f5f5f5;
+    position: relative;
+    // min-height: 500px;
+    width: 100%;
+    box-sizing: border-box;
+    align-items: baseline;
+    padding-top: 40px;
+
+    .comp-first-category-scrollY {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-start;
+      min-height: 500px;
+      max-height: 700px;
+      padding-bottom: 24px;
+      width: 100vw;
+
+      // height: 600px;
+      &::-webkit-scrollbar {
+        display: none;
+        width: 0px !important;
+      }
+
+      .comp-first-category-goods-imgbox {
+        width: $good-img-width;
+        height: $good-img-width;
+        transform: scale(1);
+      }
+
+      .active {
+        .comp-first-category-goods-imgbox {
+          transform: scale(1);
+        }
+      }
+    }
+
+    .comp-first-category-scroll-item {
+      width: 20%;
+      min-width: 20%;
+      max-width: 20%;
+      display: inline-block;
+      height: auto;
+      padding: 0px !important;
+    }
+  }
+
+  .isshow {
+    display: block;
+  }
+
+  .rotate {
+    transform: rotate(-180deg);
+  }
+
+  .icon-arrowDown {
+    font-size: 28px;
+  }
+
+  .icon-close {
+    position: absolute;
+    right: 15px;
+    top: -10px;
+    font-size: 36px;
+    color: #222;
+  }
+}

@@ -1,0 +1,118 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-member-level {
+  .level-hd {
+    background-size: cover;
+    height: 450px;
+    padding-top: 50px;
+    .card-swiper {
+      height: 385px;
+
+      /*  #ifdef  alipay  */
+      width: 110%;
+      margin-left: -80px;
+      /*  #endif  */
+    }
+    .swiper-slide {
+      text-align: center;
+    }
+    .member-card {
+      background: #000;
+      border-radius: 20px;
+      // width: 600px;
+      // height: 375px;
+      // margin-right: 32px;
+      display: inline-block;
+      // margin-top: 32px;
+      position: relative;
+      border-radius: 20px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
+      .level-info {
+        position: absolute;
+        top: 1px;
+        left: 0px;
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        border-radius: 20px 0px 20px 0px;
+        padding: 10px;
+        font-size: 22px;
+      }
+      .sp-image {
+        width: 600px;
+        height: 375px;
+      }
+      // &:first-child {
+      //   margin-left: 75px;
+      // }
+      // &:last-child {
+      //   margin-right: 75px;
+      // }
+      .grade-name {
+        position: absolute;
+        bottom: 76px;
+        left: 30px;
+        font-size: 32px;
+        font-weight: 600;
+        color: #fff;
+      }
+      .grade-discount {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        font-size: 24px;
+        color: #fff;
+        opacity: 0.7;
+      }
+    }
+    // .member-card {
+    //   background-size: contain;
+    //   width: 600px;
+    //   height: 375px;
+    // }
+  }
+  .member-card-scroll {
+    white-space: nowrap;
+    height: 100%;
+  }
+  .content-hd {
+    margin: 56px 20px 0 20px;
+    .title {
+      // width: 256px;
+      height: 45px;
+      font-size: 32px;
+      font-weight: 600;
+      color: #595959;
+      line-height: 45px;
+      padding: 0 20px;
+    }
+  }
+  .content-bd {
+    border-radius: 20px;
+    padding: 32px 40px;
+    .sp-html {
+      color: #444444;
+    }
+  }
+  .content-ft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}

@@ -1,0 +1,95 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+$bottom-height: 120px;
+
+$prefixCls: 'page-merchant-apply';
+
+.#{$prefixCls} {
+  box-sizing: border-box;
+
+  .apply-scroll {
+    @include page-scroll(100px+40px+90px, $bottom-height);
+  }
+
+  &-content {
+    padding: 40px 16px;
+
+    .card {
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      padding: 0 16px;
+
+      .comps-cell {
+        &:not(:last-child) {
+          @include hairline(#dddddd, 0, bottom);
+        }
+      }
+
+      .certificate-information {
+        padding: 29px 0 55px;
+
+        .comps-img-picker {
+          &:not(:last-child) {
+            margin-bottom: 48px;
+          }
+        }
+      }
+    }
+
+    .info {
+      display: flex;
+      align-items: center;
+      color: rgba(169, 177, 194, 1);
+      line-height: 1;
+      margin-bottom: 60px;
+
+      .icon-info,
+      .text {
+        font-size: 24px;
+      }
+      .text {
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .apply-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: $bottom-height;
+    background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+
+    &-text {
+      color: var(--color-primary);
+      margin-left: 44px;
+    }
+
+    &-button {
+      flex-shrink: 0;
+      width: 458px;
+    }
+  }
+}

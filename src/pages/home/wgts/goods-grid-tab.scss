@@ -1,0 +1,100 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.wgt-goods-grid-tab {
+  .scroll-tab {
+    white-space: nowrap;
+  }
+  .tab-item {
+    height: 40px;
+    line-height: 40px;
+    padding: 0 20px;
+    font-size: 28px;
+    display: inline-block;
+    position: relative;
+    color: #999;
+    &.active {
+      color: var(--color-primary);
+      font-weight: bold;
+      font-size: 36px;
+    }
+    &:not(:last-child) {
+      &:after {
+        content: '';
+        display: block;
+        /* prettier-ignore */
+        width: 1PX;
+        height: 30px;
+        background: #e4e4e4;
+        position: absolute;
+        right: 0;
+        top: 0;
+        top: 4px;
+      }
+    }
+  }
+  .tab-body {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 24px;
+    .left-container {
+      width: 50%;
+      padding-left: 16px;
+    }
+    .right-container {
+      width: 50%;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .goodgrid-item {
+      margin-bottom: 16px;
+      box-sizing: border-box;
+      position: relative;
+      .goods-item__hd {
+        overflow: hidden;
+      }
+      .goods-item__bd {
+        padding-top: 16px;
+      }
+      .sp-goods-item {
+        border-radius: 16px;
+        overflow: hidden;
+      }
+    }
+  }
+  .brand-info {
+    position: relative;
+    top: -70px;
+    overflow: hidden;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    box-sizing: border-box;
+  }
+  .btn-more {
+    width: 180px;
+    height: 60px;
+    line-height: 60px;
+    margin: 40px auto;
+    font-size: 24px;
+    /* prettier-ignore */
+    border: 1PX solid var(--color-primary);
+    color: var(--color-primary);
+    text-align: center;
+  }
+}

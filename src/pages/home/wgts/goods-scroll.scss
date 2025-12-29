@@ -1,0 +1,129 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.wgt-goods-scroll {
+  .scroll-goods {
+    width: 100%;
+    height: 100%;
+    white-space: nowrap;
+    display: flex;
+    // align-items: baseline;
+    position: relative;
+    // display: grid;
+
+    .scroll-item {
+      width: 260px;
+      height: 100%;
+      position: relative;
+      background: #fff;
+      border-radius: 16px;
+      margin: 10px 0 0 16px;
+      display: inline-block;
+      &:last-child {
+        margin-right: 16px;
+      }
+      .subscript {
+        position: absolute;
+        left: -8px;
+        top: -8px;
+        width: 80px;
+        height: 80px;
+        z-index: 15;
+        .subscript-img {
+          width: 100%;
+          height: 100%;
+        }
+        .subscript-text {
+          position: absolute;
+          top: 8px;
+          transform: rotate(-45deg);
+          color: #fff;
+          font-size: 24px;
+          z-index: 100;
+        }
+      }
+      .subscript-title {
+        @include multi-ellipsis(1);
+        line-height: 1.4;
+        padding: 16px 16px 0px 16px;
+        color: #222;
+        font-size: 24px;
+        font-weight: bold;
+      }
+      .sp-image {
+        width: 260px;
+        height: 260px;
+      }
+    }
+    .subscript-price {
+      padding: 16px;
+      padding-bottom: 0px;
+      height: 80px;
+      .goods-price {
+        color: #222;
+        font-size: 32px;
+        font-weight: bold;
+        .cur {
+          margin-right: 10px;
+        }
+      }
+      .market-price {
+        font-size: 24px;
+        color: #888;
+        text-decoration: line-through;
+        font-weight: normal;
+      }
+    }
+    // 跨境
+    .nationalInfo {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      font-size: 24px;
+      padding-top: 10px;
+      .nationalFlag {
+        width: 45px;
+        height: 45px;
+        border-radius: 100%;
+        margin-right: 15px;
+      }
+    }
+    .more-link {
+      width: 260px;
+      height: 390px;
+      margin: 10px 16px 0 16px;
+      display: inline-block;
+      position: relative;
+      .sp-image {
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+      .h5-img {
+        height: 100%;
+      }
+      .text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}

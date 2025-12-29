@@ -1,0 +1,298 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.wgt-nearby-shop {
+  .at-activity-indicator--center {
+    top: 35%;
+  }
+  .nearby-shop-content {
+    // background: #fff;
+    border-radius: 16px;
+    margin: 0 16px;
+    min-height: 300px;
+  }
+
+  .scroll-tab {
+    white-space: nowrap;
+    padding: 20px 0 20px 20px;
+    overflow-x: auto;
+    box-sizing: border-box;
+    .tag-item {
+      display: inline-block;
+      margin-right: 20px;
+      padding: 0 10px;
+      background-color: #f5f5f5;
+      border-radius: 48px;
+      height: 48px;
+      line-height: 48px;
+      font-size: 24px;
+      color: #444;
+      text-align: center;
+      &.active {
+        color: var(--color-primary);
+        background: rgba(var(--color-rgb), 0.2);
+      }
+    }
+  }
+
+  .scroll-list {
+    white-space: nowrap;
+    padding: 0 20px 20px;
+    overflow-x: auto;
+  }
+
+  .shop-item {
+    width: 200px;
+    display: inline-block;
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    margin-right: 16px;
+    .shop-banner {
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      height: 140px;
+      position: relative;
+    }
+    .logo-wrap {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fff;
+      box-sizing: border-box;
+    }
+    .shop-info-block {
+      background: #f5f5f5;
+      overflow: hidden;
+      padding-bottom: 13px;
+    }
+    .shop-name {
+      margin-top: 46px;
+      font-size: 26px;
+      color: #000;
+      @include text-overflow();
+      padding: 0 8px;
+    }
+    .shop-ft {
+      height: 40px;
+      padding: 0 8px;
+      overflow-x: auto;
+      box-sizing: border-box;
+      .coupon-item {
+        font-size: 24px;
+        /* prettier-ignore */
+        border: 1PX solid var(--color-primary);
+        color: var(--color-primary);
+        display: inline-block;
+        line-height: 32px;
+        padding: 0 8px;
+        border-radius: 4px;
+        margin-right: 8px;
+      }
+    }
+  }
+  .empty-con {
+    text-align: center;
+    padding: 36px 0;
+    .empty-tip {
+      font-size: 26px;
+      color: #888;
+    }
+    .sp-image {
+      margin: 0 auto 12px;
+    }
+  }
+
+  .shop-list {
+    &-item {
+      background-color: #fff;
+      border-radius: 16px;
+      padding: 24px 16px;
+      margin-bottom: 24px;
+      &-del {
+        display: flex;
+        .shop-logo {
+          width: 150px;
+          height: 150px;
+          margin-right: 24px;
+          border-radius: 16px;
+        }
+        .shop-del {
+          font-family: PingFangSC, PingFang SC;
+          flex: 1;
+          .shop-names {
+            display: flex;
+            justify-content: space-between;
+            .name {
+              width: 453px;
+              font-weight: 600;
+              font-size: 34px;
+              color: #111111;
+              line-height: 42px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+            }
+            .deliver {
+              width: 82px;
+              height: 28px;
+              line-height: 28px;
+              border-radius: 8px;
+              font-size: 20px;
+              color: var(--color-primary);
+              border: 1px solid var(--color-primary);
+              text-align: center;
+            }
+          }
+          .score {
+            display: flex;
+            justify-content: space-between;
+            margin: 12px 0;
+            font-size: 28px;
+            .sales {
+              font-weight: 400;
+              color: #666666;
+              line-height: 22px;
+            }
+            .monthly {
+              color: #f4811f;
+              margin-right: 24px;
+            }
+          }
+          .freight {
+            margin-top: 10px;
+            margin-bottom: 24px;
+            font-weight: 400;
+            font-size: 28px;
+            color: #666;
+            line-height: 33px;
+            &-money {
+              color: #999;
+              margin-left: 10px;
+              text-decoration-line: line-through;
+            }
+          }
+          .coupon-list {
+            width: 100%;
+            overflow-x: auto;
+            .coupon-index {
+              margin-right: 8px;
+            }
+          }
+        }
+      }
+      .coupon-commodity-all {
+        width: 100%;
+        display: flex;
+        .coupon-commodity-nolist {
+          flex-shrink: 0;
+          width: 94px;
+          margin-right: 24px;
+        }
+        .coupon-commodity-list {
+          flex-shrink: 0;
+          width: 150px;
+          margin-right: 24px;
+          .shop-logo {
+            width: 150px;
+            height: 150px;
+            margin-right: 24px;
+            border-radius: 16px;
+          }
+          .coupon-commodity-title {
+            width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            padding: 16px 0;
+            box-sizing: border-box;
+          }
+          .coupon-commodity-price {
+            font-weight: 400;
+            font-size: 24px;
+            color: #bbbbbb;
+            line-height: 33px;
+            text-decoration-line: line-through;
+          }
+        }
+      }
+    }
+
+    .ac_btn {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 690px;
+      background-color: #fff;
+      padding: 24px 16px;
+      border-radius: 16px;
+      background: linear-gradient(270deg, #ffffff 0%, #fbe5d2 80%);
+      .more {
+        font-family: PingFangSC, PingFang SC;
+        font-weight: 500;
+        font-size: 28px;
+        color: #222222;
+        line-height: 40px;
+        text-align: left;
+        font-style: normal;
+        .icon-spiritling-dingwei {
+          color: var(--color-primary);
+          margin-right: 16px;
+          font-size: 28px;
+        }
+      }
+      .icon-qianwang-01 {
+        font-size: 20px;
+      }
+    }
+  }
+  .store-products {
+    .store-products-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .del {
+        width: 354px;
+        min-height: 600px;
+        background: #ffffff;
+        border-radius: 16px;
+        margin-bottom: 16px;
+      }
+    }
+    .ac_btn {
+      width: 100%;
+      .more {
+        width: 181px;
+        height: 61px;
+        line-height: 61px;
+        border-radius: 31px;
+        border: solid 2px #0b4137;
+        font-family: PingFang-SC-Medium;
+        font-size: 21px;
+        text-align: center;
+        margin: 30px auto 50px;
+      }
+    }
+  }
+  .at-activity-indicator {
+    align-items: center;
+    justify-content: center;
+    padding-top: 80px;
+  }
+}

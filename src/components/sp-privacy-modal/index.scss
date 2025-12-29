@@ -1,0 +1,125 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-privacy-modal {
+  $self: &;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2000;
+  transform: translate3D(0, 110%, 0);
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(#000, 0.6);
+    opacity: 0;
+    z-index: 999;
+    transition: all 0.15s ease-in;
+  }
+
+  &.open {
+    transform: translate3D(0, 0, 0);
+
+    #{$self}__overlay {
+      opacity: 1;
+    }
+
+    .modal-container {
+      transform: translate3D(0, -50%, 0);
+      opacity: 1;
+      transition-delay: 0s;
+    }
+  }
+
+  &__active {
+    transform: translate3D(0, 0, 0);
+
+    #{$self}__overlay {
+      opacity: 1;
+    }
+
+    #{$self}__wrap {
+      opacity: 1;
+      visibility: visible;
+      transform: translate3D(0, -50%, 0);
+      transition-delay: 0s;
+    }
+  }
+
+  .modal-container {
+    position: absolute;
+    border-radius: 16px;
+    left: 80px;
+    right: 80px;
+
+    overflow-y: scroll;
+    background: #fff;
+    box-sizing: border-box;
+    top: 50%;
+    z-index: 1000;
+  }
+
+  .modal-hd {
+    padding-top: 73px;
+    font-size: 36px;
+    text-align: center;
+    font-weight: 500;
+    color: #222;
+  }
+
+  .modal-bd {
+    margin: 46px 50px 80px;
+    font-size: 28px;
+    font-weight: 400;
+    color: #333;
+    line-height: 46px;
+
+    .policy-txt {
+      color: var(--color-primary);
+    }
+  }
+
+  .modal-ft {
+    padding: 20px;
+    /*  #ifdef  h5  */
+    padding: 30px 20px 20px;
+
+    /*  #endif  */
+    .at-button {
+      // height: 70px;
+      // line-height: 70px;
+      font-size: 30px;
+    }
+
+    .btn-wrap {
+      margin: 0 20px;
+    }
+
+    .cancel-btn {
+      background: #fff;
+      border: none;
+      color: #999;
+    }
+  }
+}

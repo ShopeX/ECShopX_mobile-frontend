@@ -1,0 +1,74 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-guide-cart-espiercheckout {
+  .checkout-toolbar {
+    display: flex;
+    height: 100%;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  .toolbar-info {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .total-num {
+    font-size: 28px;
+  }
+  .total-info {
+    text-align: right;
+    margin-right: 20px;
+  }
+  .desc-txt {
+    color: #666;
+  }
+  .list-wrap {
+    background-color: #fff;
+    margin: 20px;
+    padding: 20px;
+    &.item-wrap {
+      &:not(:last-child) {
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .checkitem-hd {
+    height: 60px;
+    line-height: 60px;
+  }
+  .goods-item-bd {
+    .item-bd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .item-num {
+      margin-top: 16px;
+    }
+  }
+  .checkout-info {
+    margin: 0 20px 20px;
+    .sp-cell__bd {
+      text-align: right;
+      padding-right: 0;
+    }
+  }
+}

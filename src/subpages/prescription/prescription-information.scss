@@ -1,0 +1,199 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.prescription-information {
+  padding: 24px;
+  // padding-bottom: 400px;
+  .information {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .title {
+      font-size: 24px;
+      &-num {
+        margin-right: 8px;
+        background-color: var(--color-primary);
+        padding: 0 14px;
+        border-radius: 50%;
+        color: #fff;
+      }
+      &-text {
+        font-size: 26px;
+      }
+    }
+    .titled {
+      font-size: 26px;
+      color: #999;
+      &-num {
+        margin-right: 8px;
+        background-color: #999;
+        padding: 0 12px;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 24px;
+      }
+    }
+  }
+  .prompt {
+    padding: 24px 0;
+    color: #999;
+    font-size: 26px;
+  }
+  .medication {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    .personnel {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 40px;
+      &-title {
+        font-size: 34px;
+      }
+      &-name {
+        .icon-bianji1 {
+          font-size: 26px;
+          color: var(--color-primary);
+          margin-right: 8px;
+        }
+        font-size: 26px;
+      }
+    }
+    .relationship {
+      display: flex;
+      .relationship-wrap {
+        display: flex;
+        padding: 24px;
+        border-radius: 8px;
+        background-color: #f1f1f1;
+        margin-right: 24px;
+        position: relative;
+        &-right {
+          white-space: nowrap;
+          margin-left: 24px;
+          .name {
+            font-size: 26px;
+          }
+          .age {
+            font-size: 26px;
+            color: #999;
+          }
+        }
+        .label {
+          position: absolute;
+          top: 0;
+          left: 0;
+          background-color: var(--color-primary);
+          padding: 6px 10px;
+          border-radius: 8px 0 8px 0;
+          color: #fff;
+          font-size: 16px;
+        }
+      }
+      .relationship-wraps {
+        border: 1px solid var(--color-primary);
+      }
+    }
+  }
+  .medication1 {
+    margin-top: 24px;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 24px;
+    .personnel {
+      display: flex;
+      align-items: center;
+      font-size: 34px;
+      &-title {
+        font-size: 26px;
+      }
+    }
+    .medicine {
+      margin-top: 24px;
+      &-top {
+        display: flex;
+        &-right {
+          flex: 1;
+          margin-left: 8px;
+          @include multi-ellipsis(2);
+          height: 40px;
+        }
+      }
+      &-bot {
+        display: flex;
+        flex-wrap: wrap;
+        &-name {
+          margin: 24px 24px 0 0;
+        }
+      }
+    }
+  }
+  .notes {
+    margin-top: 24px;
+    background-color: #fff;
+    overflow: hidden;
+    border-radius: 8px;
+    .at-list::after {
+      border: none;
+    }
+    .at-list__item {
+      padding: 30px 24px;
+    }
+    .notes-textarea {
+      display: flex;
+      padding: 30px 24px;
+      .allergy {
+        white-space: nowrap;
+        margin-left: 8px;
+      }
+    }
+  }
+  .informed {
+    display: flex;
+    background-color: #fff;
+    margin-top: 24px;
+    padding: 30px 24px;
+    border-radius: 8px;
+    &-notice {
+      font-size: 24px;
+      .informed-title {
+        color: var(--color-accent);
+        font-size: 24px;
+      }
+    }
+  }
+  .btn-wrap {
+    padding: 20px 40px;
+    border: transparent 1px solid;
+  }
+  .at-tag--active.at-tag--primary {
+    color: #fff;
+    border-color: var(--color-accent);
+    background-color: var(--color-accent);
+  }
+  .sp-cell {
+    padding: 30px;
+  }
+  .sp-cell__bd {
+    text-align: end;
+  }
+}

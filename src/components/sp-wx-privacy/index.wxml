@@ -1,0 +1,45 @@
+<!-- +----------------------------------------------------------------------
+| ECShopX open source E-commerce
+| ECShopX 开源商城系统 
++----------------------------------------------------------------------
+| Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
++----------------------------------------------------------------------
+| Corporate Website:  https://www.shopex.cn 
++----------------------------------------------------------------------
+| Licensed under the Apache License, Version 2.0
+| http://www.apache.org/licenses/LICENSE-2.0
++----------------------------------------------------------------------
+| The removal of shopeX copyright information without authorization is prohibited.
+| 未经授权不可去除shopeX商派相关版权
++----------------------------------------------------------------------
+| Author: shopeX Team <mkt@shopex.cn>
+| Contact: 400-821-3106
++----------------------------------------------------------------------
+-->
+<view wx:if="{{innerShow}}" class="sp-wx-privacy">
+  <view class="modal-container">
+    <view class="privacy__hd">
+      <text class="privacy__title">{{title}}</text>
+    </view>
+    <view class="privacy__bd">
+      <text class="privacy__tips">为了向您提供更好的服务，我们须向您收集相关的个人信息，了解</text>
+      <text class="privacy__tips privacy-contract" bindtap="openPrivacyContract">{{urlTitle}}</text>
+      <text class="privacy__tips">详细信息。如您同意，请点击“同意”开始接受我们的服务。</text>
+    </view>
+    <view class="privacy__ft">
+      <button
+        id="disagree-btn"
+        type="default"
+        class="disagree-btn"
+        bindtap="handleDisagree"
+      >拒绝</button>
+      <button
+        id="agree-btn"
+        type="default"
+        open-type="agreePrivacyAuthorization"
+        class="agree-btn"
+        bindagreeprivacyauthorization="handleAgree"
+      >同意</button>
+    </view>
+  </view>
+</view>

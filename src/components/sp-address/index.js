@@ -1,0 +1,186 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import Taro from '@tarojs/taro'
+import React, { useCallback, useState, useEffect } from 'react'
+import { useImmer } from 'use-immer'
+import { View, Text, ScrollView } from '@tarojs/components'
+import api from '@/api'
+import { classNames, styleNames } from '@/utils'
+import { SpFloatLayout } from '@/components'
+import { useAsyncCallback } from '@/hooks'
+import './index.scss'
+
+const initialState = {
+  addressList: [],
+  areaData: [],
+  areaList: [],
+  multiIndex: [0, 0, 0],
+  selectValue: [],
+  selectId: [],
+  pindex: 0
+}
+
+function SpAddress(props) {
+  const [state, setState] = useAsyncCallback(initialState)
+  const { addressList, areaList, multiIndex, selectValue, selectId, pindex } = state
+  const { isOpened = false, onClose = () => {}, onChange = () => {} } = props
+  useEffect(() => {
+    fetch()
+  }, [])
+
+  const fetch = async () => {
+    const _addressList = await api.member.areaList()
+    let _areaList,
+      maxLevel = 0
+    const recursionAddress = (list, level = 0) => {
+      if (!list) {
+        return null
+      }
+      level++
+
+      const result = list.map((item) => {
+        return {
+          label: item.label,
+          parent_id: item.parent_id,
+          id: item.id,
+          level,
+          children: recursionAddress(item.children, level)
+        }
+      })
+      if (maxLevel < level) maxLevel = level
+
+      //
+      return result
+    }
+
+    const resAddressList = recursionAddress(_addressList)
+    _areaList = new Array(maxLevel).fill([])
+    _areaList[0] = resAddressList.map(({ parent_id, label, id, level }) => {
+      return {
+        parent_id,
+        id,
+        label,
+        level
+      }
+    })
+    // console.log('resAddressList:', resAddressList, _areaList)
+    setState((draft) => {
+      draft.addressList = resAddressList
+      draft.areaList = _areaList
+    })
+  }
+
+  const handleClickItem = ({ label, id, level }) => {
+    const _areaList = (() => {
+      if (level == 1) {
+        return addressList.find((item) => item.id == id).children
+      } else if (level == 2) {
+        return areaList[1].find((item) => item.id == id).children
+      }
+    })()
+
+    setState(
+      (draft) => {
+        if (_areaList) {
+          draft.areaList[level] = _areaList
+        }
+        if (level < 3) {
+          draft.pindex = level
+        }
+
+        if (selectValue.length < level) {
+          draft.selectValue[level - 1] = {
+            label,
+            id,
+            level
+          }
+        } else {
+          draft.selectValue[level - 1] = {
+            label,
+            id,
+            level
+          }
+          if (level < selectValue.length) {
+            draft.selectValue.splice(level, selectValue.length - level)
+          }
+        }
+      },
+      (state) => {
+        if (state.selectValue.length === 3) {
+          onChange(state.selectValue)
+          onClose()
+        }
+      }
+    )
+  }
+
+  const handleClickSelectItem = ({ parent_id, label, id, level }) => {
+    setState((draft) => {
+      draft.areaList[level - 1] = areaList[level - 1]
+      draft.pindex = level - 1
+    })
+  }
+
+  const randomKey = () => new Date() + Math.random()
+
+  console.log('pindex', pindex)
+  console.log('selectValue', selectValue)
+  console.log('areaList', areaList)
+
+  return (
+    <View className='sp-address'>
+      <View className='address-content'></View>
+      <SpFloatLayout title='选择地址' open={isOpened} onClose={onClose}>
+        <View className='address-hd'>
+          {selectValue.map((vitem, vindex) => (
+            <View
+              className={classNames(`tab-item`, {
+                active: pindex === vindex || (vindex === 2 && pindex === 3)
+              })}
+              key={`tab-item__${randomKey()}`}
+              onClick={handleClickSelectItem.bind(this, vitem)}
+            >
+              {vitem.label}
+            </View>
+          ))}
+          {selectValue.length < areaList.length && <View className='tab-item active'>请选择</View>}
+        </View>
+        <View className='address-bd'>
+          <View
+            className='address-cols'
+            style={styleNames({
+              transform: `translate3d(${-100 * pindex}%, 0px, 0px)`
+            })}
+          >
+            {areaList?.map((item, index) => (
+              <ScrollView className='address-col' scrollY key={`address-col__${index}`}>
+                {item.map((sitem, sindex) => (
+                  <View
+                    className={classNames('address-item', {
+                      active: selectValue?.[index]?.id == sitem.id
+                    })}
+                    key={`address-item__${sindex}`}
+                    onClick={handleClickItem.bind(this, sitem)}
+                  >
+                    {sitem.label}
+                    {selectValue?.[index]?.id == sitem.id && (
+                      <Text className='iconfont icon-zhengque-correct'></Text>
+                    )}
+                  </View>
+                ))}
+              </ScrollView>
+            ))}
+          </View>
+        </View>
+      </SpFloatLayout>
+    </View>
+  )
+}
+
+SpAddress.options = {
+  addGlobalClass: true
+}
+
+export default SpAddress

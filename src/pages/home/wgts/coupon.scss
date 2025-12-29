@@ -1,0 +1,185 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.wgt-coupon {
+  .wgt__body {
+    padding: 0 16px;
+    box-sizing: border-box;
+    white-space: nowrap;
+
+    &.coupon-style-2 {
+      .wgt-coupon-item {
+        display: inline-flex;
+        vertical-align: middle;
+        width: calc(50% - 11px);
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
+      }
+      .coupon-bd {
+        display: block;
+        line-height: 72px;
+        .coupon-amount {
+          width: 100%;
+          height: auto;
+          margin-top: 24px;
+        }
+        .coupon-desc {
+          width: 100%;
+          height: auto;
+          text-align: center;
+          .desc {
+            display: none;
+          }
+        }
+      }
+      .coupon-ft {
+        width: 80px;
+        .btn {
+          writing-mode: vertical-rl;
+          margin: 16px auto 0;
+          letter-spacing: 16px;
+        }
+      }
+    }
+
+    &.coupon-style-3 {
+      .wgt-coupon-item {
+        display: inline-flex;
+        width: calc(45% - 10px);
+        vertical-align: middle;
+        &:not(:last-child) {
+          margin-right: 20px;
+        }
+      }
+      .coupon-bd {
+        display: block;
+        line-height: 72px;
+        .coupon-amount {
+          width: 100%;
+          height: auto;
+          margin-top: 24px;
+        }
+        .coupon-desc {
+          width: 100%;
+          height: auto;
+          text-align: center;
+          .desc {
+            display: none;
+          }
+        }
+      }
+      .coupon-ft {
+        width: 80px;
+        .btn {
+          writing-mode: vertical-rl;
+          margin: 16px auto 0;
+          letter-spacing: 16px;
+        }
+      }
+    }
+  }
+
+  .wgt-coupon-item {
+    background-color: var(--color-primary);
+    height: 180px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    &:before {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 20px;
+      background-color: var(--color-primary);
+      border-radius: 20px;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      left: 0px;
+    }
+    &.has-img {
+      &::before {
+        display: none;
+      }
+    }
+    .coupon-bd {
+      height: 160px;
+      background-color: #fff;
+      flex: 1;
+      margin: 10px 0 10px 10px;
+      display: flex;
+      visibility: initial;
+      .coupon-amount {
+        height: 160px;
+        width: 45%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .value {
+          font-size: 60px;
+          color: var(--color-primary);
+          visibility: initial;
+        }
+        .package-value {
+          font-size: 40px;
+          color: var(--color-primary);
+          visibility: initial;
+        }
+        .symbol {
+          font-size: 36px;
+          color: var(--color-primary);
+          position: relative;
+          top: 8px;
+          margin: 0 4px;
+          visibility: initial;
+        }
+      }
+      .coupon-desc {
+        height: 160px;
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        line-height: 36px;
+        .name {
+          font-size: 30px;
+          color: var(--color-primary);
+          visibility: initial;
+        }
+        .desc {
+          font-size: 24px;
+          color: var(--color-primary);
+          visibility: initial;
+        }
+      }
+    }
+    .coupon-ft {
+      width: 120px;
+      color: #fff;
+      .btn {
+        font-size: 28px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        color: #ffffff;
+        text-align: center;
+        visibility: initial;
+      }
+    }
+  }
+}

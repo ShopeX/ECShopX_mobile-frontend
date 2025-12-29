@@ -1,0 +1,238 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+
+.page-activity-detail {
+  .activity-detail {
+    position: relative;
+    padding: 36px 24px;
+    box-sizing: border-box;
+
+    &__hd {
+      width: 100%;
+      height: 276px;
+      background: var(--color-primary);
+      border-radius: 0 0 150px 150px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      right: 0;
+      z-index: -1;
+      background: linear-gradient(90deg, #f69f62 0%, #f67c62 100%);
+    }
+
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 42px;
+
+      &-left {
+        &-status {
+          font-weight: 600;
+          font-size: 32px;
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+
+          .iconfont {
+            font-size: 62px;
+            margin-right: 10px;
+          }
+        }
+
+        &-reason {
+          margin-left: 72px;
+          font-weight: 400;
+          font-size: 28px;
+          color: #ffffff;
+        }
+      }
+
+      &-right {
+        padding: 8px 24px;
+        background: #ffffff;
+        border-radius: 33px;
+        font-weight: 600;
+        font-size: 28px;
+        color: #31973f;
+      }
+    }
+
+    &__reason {
+      font-weight: 400;
+      font-size: 28px;
+      color: #ffffff;
+    }
+
+    &__info {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 36px 24px;
+      margin-bottom: 24px;
+
+      &-title {
+        font-weight: 600;
+        font-size: 32px;
+        color: #333333;
+        margin-bottom: 16px;
+      }
+
+      &-time {
+        font-weight: 400;
+        font-size: 26px;
+        color: #333333;
+        padding-bottom: 36px;
+        box-sizing: border-box;
+        border-bottom: #979797 1px dashed;
+        margin-bottom: 36px;
+      }
+
+      &-area {
+        display: flex;
+        font-size: 26px;
+        margin-bottom: 24px;
+
+        &-label {
+          font-weight: 500;
+          color: #333333;
+          white-space: nowrap;
+        }
+
+        &-content {
+          font-weight: 400;
+
+          color: #999999;
+        }
+      }
+
+      .no-margin {
+        margin: 0;
+      }
+
+      &-code {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 48px;
+
+        &-box {
+          background: #f5f5f5;
+          border-radius: 16px;
+          padding: 53px 48px;
+          box-sizing: border-box;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+
+        &-title {
+          font-weight: 400;
+          font-size: 28px;
+          color: #333333;
+          margin-bottom: 24px;
+          text-align: center;
+        }
+
+        &-img {
+          padding: 14px;
+          background: #fff;
+          margin-bottom: 16px;
+        }
+
+        &-code {
+          text-align: center;
+          font-weight: 500;
+          font-size: 28px;
+          color: #333333;
+        }
+      }
+    }
+
+    &__form {
+      padding: 46px 24px;
+      background: #ffffff;
+      border-radius: 16px;
+
+      &-item {
+        display: flex;
+        justify-content: space-between;
+        font-size: 28px;
+        font-weight: 400;
+        margin-bottom: 48px;
+
+        &-lable {
+          color: #333333;
+        }
+
+        &-value {
+          font-weight: 400;
+          color: #999999;
+        }
+      }
+    }
+
+    .pic-item {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+
+      .sp-image {
+        margin: 0 0 16px 25px;
+      }
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px 24px 0;
+      box-sizing: border-box;
+
+      &-btn {
+        width: 240px;
+        height: 64px;
+        text-align: center;
+        line-height: 64px;
+        border-radius: 40px;
+        border: 1px solid #979797;
+        font-weight: 500;
+        font-size: 28px;
+        color: #333333;
+        margin-left: 24px;
+      }
+
+      .refill-btn {
+        background: linear-gradient(to right, #f67f70 0%, #cd352a 100%);
+        border: none;
+        color: #fff;
+      }
+
+      .disabled-btn {
+        border: none;
+        color: #fff;
+        background: #d8d8d8;
+      }
+    }
+
+    .sp-image-img {
+      border: 1px solid #c2c2c2;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.screenAd {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  background: #fff;
+  display: none;
+  &.show {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .countDown {
+    position: absolute;
+    right: 30px;
+    min-width: 120px;
+    text-align: center;
+    padding: 0 20px;
+    font-size: 24px;
+    height: 65px;
+    line-height: 65px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background: rgba($color: #333, $alpha: 0.8);
+    color: #fff;
+    z-index: 9999;
+    &.right_top {
+      top: 50px;
+    }
+    &.right_bottom {
+      bottom: 100px;
+    }
+  }
+  .adImg,
+  .adVideo {
+    width: 100%;
+    height: 100%;
+  }
+}

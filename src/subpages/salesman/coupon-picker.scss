@@ -1,0 +1,85 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-marketing-couponpicker {
+  .list-scroll {
+    padding: 20px;
+    .invalid-title {
+      font-weight: bold;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .coupon-item-wrap {
+      display: flex;
+      justify-content: space-between;
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+      .sp-coupon {
+        width: 650px;
+      }
+      .sp-coupon-content {
+        &:before {
+          left: 438px;
+        }
+        &:after {
+          left: 438px;
+        }
+      }
+      .sp-checkbox-new {
+        position: relative;
+        .iconfont {
+          position: absolute;
+          right: 0;
+          top: 76px;
+        }
+      }
+    }
+  }
+  .btn-wrap {
+    display: flex;
+    align-items: center;
+    height: 100px;
+    padding: 0 20px;
+    .sp-checkbox-new {
+      position: relative;
+      justify-content: space-between;
+      &__label {
+        margin: 0 16px 0 0;
+        width: 694px;
+      }
+      .iconfont {
+        position: absolute;
+        right: 0;
+        // top: 76px;
+      }
+    }
+  }
+
+  .sp-coupon-ft {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .coupon-value {
+    margin-top: 0 !important;
+  }
+  .coupon-btn {
+    display: none;
+  }
+}

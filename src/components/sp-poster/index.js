@@ -1,0 +1,293 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import Taro from '@tarojs/taro'
+import { View, Text, Image, Canvas } from '@tarojs/components'
+import { useAsyncCallback } from '@/hooks'
+import { classNames, authSetting, showToast, isWeixin, isAlipay } from '@/utils'
+import GoodsDetailPosterWx from './dw-goodsdetail'
+import GoodsDetailPosterAli from './dw-goodsdetail.alipay'
+import DistributionWx from './dw-distribution'
+import DistributionAli from './dw-distribution.alipay'
+import GuideGoodsDetailPosterWx from './dw-guidegoodsdetail'
+import GuideGoodsDetailPosterAli from './dw-guidegoodsdetail.alipay'
+import GuideCheckoutWx from './dw-guidecheckout'
+import GuideCheckoutAli from './dw-guidecheckout.alipay'
+import StoreCode from './dw-storeCode'
+import PlaceAnOrder from './dw-placeAnOrder'
+import Invite from './dw-invite'
+import PrescriptionCode from './dw-prescriptionCode'
+
+import './index.scss'
+
+const [
+  GoodsDetailPoster,
+  Distribution,
+  GuideGoodsDetailPoster,
+  GuideCheckout,
+  StoreCodes,
+  PlaceAnOrders,
+  Prescription
+] = isAlipay
+  ? [
+      GoodsDetailPosterAli,
+      DistributionAli,
+      GuideGoodsDetailPosterAli,
+      GuideCheckoutAli,
+      StoreCode,
+      PlaceAnOrder,
+      PrescriptionCode
+    ]
+  : [
+      GoodsDetailPosterWx,
+      DistributionWx,
+      GuideGoodsDetailPosterWx,
+      GuideCheckoutWx,
+      StoreCode,
+      PlaceAnOrder,
+      PrescriptionCode
+    ]
+
+const initialState = {
+  poster: null,
+  pxWidth: 200,
+  pxHeight: 200,
+  factor: 1,
+  eleId: 'poster-canvas',
+  ctx: null
+}
+
+function SpPoster(props) {
+  const { info, type, onClose = () => {} } = props
+  const { userInfo } = useSelector((state) => state.user)
+  const { userInfo: guideInfo } = useSelector((state) => state.guide)
+  const [state, setState] = useAsyncCallback(initialState)
+
+  const { poster, pxWidth, pxHeight, eleId, ctx } = state
+
+  console.log('info--------', info)
+
+  useEffect(() => {
+    handleCreatePoster()
+  }, [])
+
+  /**
+   * @description rpx => px 基础方法
+   * @param { number } rpx - 需要转换的数值
+   * @param { boolean} int - 是否为 int
+   * @param { number } [factor] - 转化因子
+   * @returns { number }
+   */
+  const toPx = (rpx, int, factor = 1) => {
+    if (int) {
+      return parseInt(rpx * factor)
+    }
+    return rpx * factor
+  }
+  /**
+   * @description px => rpx
+   * @param { number } px - 需要转换的数值
+   * @param { boolean} int - 是否为 int
+   * @param { number } [factor] - 转化因子
+   * @returns { number }
+   */
+  const toRpx = (px, int, factor = 1) => {
+    if (int) {
+      return parseInt(px / factor)
+    }
+    return px / factor
+  }
+
+  const handleCreatePoster = async () => {
+    Taro.showLoading({
+      title: '海报生成中...'
+    })
+    const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance().page)
+    let canvasObj
+    switch (type) {
+      case 'goodsDetial':
+        canvasObj = new GoodsDetailPoster({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'guideGoodsDetial':
+        canvasObj = new GuideGoodsDetailPoster({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'guideCheckout':
+        canvasObj = new GuideCheckout({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'storeCode':
+        canvasObj = new StoreCodes({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'placeAnOrder':
+        canvasObj = new PlaceAnOrders({
+          ctx,
+          info,
+          userInfo: guideInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'distribution':
+        canvasObj = new Distribution({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'invite':
+        // console.log('invite111')
+        canvasObj = new Invite({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
+      case 'prescriptionCode':
+        canvasObj = new Prescription({
+          ctx,
+          info,
+          userInfo,
+          toPx,
+          toRpx
+        })
+        break
+      default:
+        break
+    }
+    const { canvasWidth, canvasHeight } = await canvasObj.getCanvasSize()
+    setState(
+      (draft) => {
+        draft.pxWidth = canvasWidth
+        draft.pxHeight = canvasHeight
+        draft.ctx = ctx
+      },
+      async (_state) => {
+        await canvasObj.drawPoster()
+        const poster = await getPoster(_state)
+        console.log('handleCreatePoster:getPoster', poster)
+        Taro.hideLoading()
+        setState((draft) => {
+          draft.poster = poster
+        })
+      }
+    )
+  }
+
+  const getPoster = ({ ctx, pxWidth, pxHeight, eleId }) => {
+    return new Promise((resolve, reject) => {
+      try {
+        ctx.draw(false, async () => {
+          if (isWeixin) {
+            const { tempFilePath } = await Taro.canvasToTempFilePath(
+              {
+                x: 0,
+                y: 0,
+                width: pxWidth,
+                height: pxHeight,
+                canvasId: eleId
+              },
+              Taro.getCurrentInstance().page
+            )
+            resolve(tempFilePath)
+          } else if (isAlipay) {
+            my.canvasToTempFilePath({
+              canvasId: eleId,
+              success: ({ apFilePath }) => {
+                console.log('success', apFilePath)
+                resolve(apFilePath)
+              }
+            })
+          }
+        })
+      } catch (e) {
+        console.error(e)
+        reject(e)
+      }
+    })
+  }
+
+  const saveToAlbum = () => {
+    authSetting(
+      'writePhotosAlbum',
+      () => {
+        savePoster()
+      },
+      () => {
+        showToast('请设置允许保存到相册')
+      }
+    )
+  }
+
+  const savePoster = () => {
+    Taro.saveImageToPhotosAlbum({
+      filePath: poster,
+      success: (res) => {
+        showToast('保存成功')
+      },
+      fail: (res) => {
+        console.log(res)
+        showToast('保存失败')
+      }
+    })
+  }
+
+  return (
+    <View className={classNames('sp-poster')}>
+      <View className='share-panel__overlay'></View>
+      {poster && (
+        <View className='share-panel__poster'>
+          <View className='poster-container'>
+            <Image className='poster' src={poster} mode='widthFix' />
+          </View>
+          <View className='poster-ft'>
+            <Text className='iconfont icon-guanbi' onClick={onClose}></Text>
+            <View className='poster-save' onClick={saveToAlbum}>
+              <Text className='iconfont icon-download'></Text>
+              保存图片
+            </View>
+          </View>
+        </View>
+      )}
+      <Canvas
+        className='canvasbox'
+        canvasId='poster-canvas'
+        id='poster-canvas'
+        width={pxWidth}
+        height={pxHeight}
+        style={`width:${pxWidth}px; height:${pxHeight}px;`}
+      />
+    </View>
+  )
+}
+
+export default SpPoster

@@ -1,0 +1,46 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-note {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 0;
+
+  /*  #ifdef  alipay  */
+  margin-top: 200px;
+  /*  #endif  */
+  .default-img {
+    margin-top: 120px;
+  }
+  &__img {
+    width: 76px * 4;
+    height: 85px * 4;
+    margin: 0 auto 48px;
+    display: block;
+  }
+  &__text {
+    color: #999;
+    margin-top: 20px;
+  }
+  &__btn {
+    width: 180px;
+    margin-top: 10px;
+  }
+}

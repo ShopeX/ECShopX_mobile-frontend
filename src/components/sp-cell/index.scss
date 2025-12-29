@@ -1,0 +1,93 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+$cell-prefix: 'sp-cell';
+
+.sp-cell {
+  background: #fff;
+  padding: 24px $edge-size;
+  display: flex;
+  align-items: center;
+  // @include hairline($color-border-gray-light, 75px, bottom);
+  color: $color-primary-text;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    left: 20px;
+    right: 20px;
+    /* prettier-ignore */
+    height: 1PX;
+    bottom: 0;
+    background: #f5f5f5;
+  }
+  &__no-border {
+    &:before {
+      border: none;
+      background: transparent;
+    }
+  }
+  &__bd {
+    flex: 1;
+    padding: 0 20px;
+    color: #666;
+  }
+  &__xin {
+    color: brown;
+  }
+  &__title {
+    color: #333;
+    font-size: 30px;
+  }
+  &__ft {
+    color: $color-gray-light;
+  }
+  &__link {
+    width: 30px;
+    .iconfont {
+      font-size: 36px;
+      color: rgba($color-gray-light, 0.8);
+    }
+  }
+  &__icon {
+    display: block;
+    width: 45px;
+    height: 45px;
+    color: rgba($color-gray-light, 0.8);
+    font-size: 40px;
+    margin-right: 8px;
+    margin-left: -8px;
+  }
+
+  &.commonStyle {
+    @include hairline(#dddddd, 0, top, bottom);
+
+    .#{$cell-prefix}__hd {
+      width: 120px;
+    }
+    .#{$cell-prefix}__bd {
+      overflow: hidden;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+    }
+    .#{$cell-prefix}__ft {
+      padding: 0 15rpx;
+    }
+  }
+}

@@ -1,0 +1,182 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-goods-item {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 24px;
+
+  .goods-item {
+    &__hd {
+      // padding-top: 100%;
+      // position: relative;
+      // .sp-image {
+      //   position: absolute;
+      //   top: 0;
+      //   bottom: 0;
+      //   right: 0;
+      //   left: 0;
+      // }
+    }
+
+    &__bd {
+      border-radius: 0;
+      padding: 16px 16px 0;
+
+      .goods-title {
+        font-size: 24px;
+        color: #222;
+        font-weight: bold;
+        @include multi-ellipsis(2);
+        // padding-top: 15px;
+        // padding: 15px;
+        .prescription-drug {
+          font-size: 18px;
+          color: var(--color-primary);
+          padding: 0 4px;
+          border-radius: 4px;
+          border: 1px solid var(--color-primary);
+          line-height: 34px;
+          margin-right: 8px;
+        }
+      }
+
+      .goods-desc {
+        font-size: 24px;
+        color: $color-hint-text;
+        @include multi-ellipsis(2);
+      }
+
+      .promotions {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 16px;
+
+        .promotion-tag {
+          /* prettier-ignore */
+          border: 1PX solid var(--color-primary);
+          color: var(--color-primary);
+          font-size: 22px;
+          border-radius: 8px;
+          padding: 0 11px;
+          height: 32px;
+          line-height: 32px;
+          margin-right: 10px;
+        }
+      }
+
+      .bd-block {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 16px;
+
+        &-rg {
+          display: flex;
+          flex-direction: column;
+          flex: 1;
+          align-items: flex-end;
+          justify-content: flex-end;
+          .iconfont {
+            font-size: 40px;
+            color: #666;
+          }
+
+          .icon-shoucang-01 {
+          }
+
+          .icon-shoucanghover-01 {
+            color: var(--color-primary);
+          }
+
+          .icon-gouwuche2 {
+            margin-top: 10px;
+            font-size: 38px;
+            color: var(--color-primary);
+          }
+
+          .btn-exchange {
+            font-size: 26px;
+            padding: 2px 8px;
+            color: var(--color-primary);
+            border: 1px solid var(--color-primary);
+            border-radius: 8px;
+          }
+        }
+      }
+    }
+
+    &__ft {
+      // margin-top: 40px;
+      // padding: 0 20px 20px;
+      // display: flex;
+      // align-items: center;
+      // .brand-logo {
+      //   border-radius: 50%;
+      //   overflow: hidden;
+      // }
+    }
+  }
+
+  .goods-brand-wrap {
+    height: 50px;
+  }
+
+  .mkt-price {
+    margin-left: 8px;
+  }
+  .act-price {
+    color: var(--color-primary);
+    font-size: 24px;
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: var(--color-primary);
+    }
+  }
+
+  .goods__store {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+
+    .sp-image-img {
+      border-radius: 60px;
+      object-fit: cover;
+    }
+
+    .store-name {
+      color: #222;
+      font-weight: 400;
+      font-size: 24px;
+      margin-left: 8px;
+    }
+  }
+
+  .vip-price,
+  .svip-price {
+    display: flex;
+    align-items: center;
+
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: #666;
+    }
+  }
+}

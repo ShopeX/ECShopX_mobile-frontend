@@ -1,0 +1,109 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.pages-member-user-info {
+  .sp-page__body {
+    padding: 0 0 20px 0;
+  }
+
+  .sp-page__footer {
+    padding: 20px 20px 0;
+  }
+
+  .block-container {
+    margin: 20px 30px;
+
+    .sp-cell {
+      &:first-child {
+        border-top-left-radius: 16px;
+        border-top-right-radius: 16px;
+      }
+
+      &:last-child {
+        border-bottom-left-radius: 16px;
+        border-bottom-right-radius: 16px;
+      }
+    }
+
+    .sp-cell__ft {
+      max-width: 400px;
+    }
+
+    .input-field {
+      text-align: right;
+      color: #666;
+      /*  #ifdef  h5  */
+      visibility: inherit;
+      /*  #endif  */
+    }
+  }
+
+  .avatar-wrapper {
+    padding: 0;
+    background: transparent;
+    border-color: transparent;
+    /*  #ifdef  h5  */
+    visibility: inherit;
+
+    /*  #endif  */
+    &:after {
+      border-width: 0;
+    }
+  }
+
+  .input-placeholder {
+    color: #a5a5a5;
+  }
+
+  .picker-value {
+    color: #666;
+
+    &.disabled {
+      color: #e4e4e4;
+    }
+
+    &.placeholder {
+      color: #a5a5a5;
+    }
+  }
+
+  .sp-float-layout-bd {
+    max-height: 600px;
+    padding: 0;
+  }
+
+  .checkout-item {
+    margin: 24px;
+
+    .sp-checkbox-new {
+      justify-content: flex-start;
+      // flex-direction: row-reverse;
+    }
+  }
+
+  .lang-list {
+    padding: 20px 0;
+
+    .lang-item {
+      height: 64px;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+    }
+  }
+}

@@ -1,0 +1,145 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-address-edit {
+  .scroll-view-container {
+    height: 100%;
+    .scroll-view-body {
+      overflow: hidden;
+      padding: 0 16px;
+    }
+  }
+
+  .submit-btn {
+    font-size: 30px;
+  }
+
+  .page-address-edit__form {
+    border-radius: 16px;
+    padding: 8px 32px;
+    margin-top: 24px;
+
+    .sp-cell {
+      padding: 26px 0;
+
+      &__hd {
+        width: 176px;
+      }
+
+      &__bd {
+        padding-top: 4px;
+      }
+
+      &__title {
+        color: #666;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .sp-cell__ft {
+    color: #ccc;
+  }
+
+  &__form {
+    background: #fff;
+    padding: $edge-size;
+    margin: 0 0 $edge-margin;
+  }
+
+  .picker {
+    text {
+      font-size: 28px;
+    }
+
+    &__title {
+      font-size: $font-size;
+      margin-right: 16px;
+      width: 172px;
+    }
+
+    .pick-value {
+      color: #333;
+    }
+
+    span.pick-value-null {
+      color: #ccc;
+    }
+
+    text.pick-value-null {
+      color: #808080;
+    }
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .logistics-no {
+    .at-input {
+      margin-bottom: 0;
+      padding: 0;
+
+      &:after {
+        border-color: transparent;
+      }
+
+      &__input {
+        padding-right: 0;
+      }
+    }
+
+    .at-textarea {
+      overflow: hidden;
+      border: none;
+      width: 100%;
+      height: 100px;
+      padding: 0 18px 12px 0;
+
+      &__textarea {
+        color: #333;
+        font-size: 28px;
+        height: 100%;
+      }
+    }
+
+    .taro-textarea {
+      font-size: 30px !important;
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
+  }
+
+  .default_address {
+    border-radius: 16px;
+    margin: 22px 0;
+    padding-right: 0px;
+
+    .sp-cell__title {
+      font-size: 28px;
+    }
+  }
+
+  .at-input input {
+    font-size: 28px;
+  }
+
+  .detail-address {
+    padding-bottom: 0 !important;
+    align-items: flex-start !important;
+  }
+}

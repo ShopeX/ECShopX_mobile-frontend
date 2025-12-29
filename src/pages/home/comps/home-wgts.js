@@ -1,0 +1,137 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import React, { useEffect, useRef } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro from '@tarojs/taro'
+import { View } from '@tarojs/components'
+import { SpScrollView, SpSearch } from '@/components'
+import { log } from '@/utils'
+import {
+  WgtSearchHome,
+  WgtFilm,
+  WgtMarquees,
+  WgtSlider,
+  WgtImgHotZone,
+  WgtNavigation,
+  WgtCoupon,
+  WgtGoodsScroll,
+  WgtGoodsGrid,
+  WgtGoodsGridTab,
+  WgtShowcase,
+  WgtStore,
+  WgtHeadline,
+  WgtImgGif,
+  WgtHotTopic,
+  WgtFloorImg,
+  WgtNearbyShop,
+  WgtFullSlider,
+  WgtOrderNavigation
+} from '../wgts'
+import './home-wgts.scss'
+
+const initialState = {
+  localWgts: [],
+  searchMethod: null
+}
+function HomeWgts(props) {
+  const { wgts, dtid, onLoad = () => {}, children, copywriting = false } = props
+  const [state, setState] = useImmer(initialState)
+  const { localWgts, searchMethod } = state
+  // const wgtsRef = useRef()
+
+  // useEffect(() => {
+  //   wgtsRef.current.reset()
+  // }, [wgts])
+
+  // const fetch = ({ pageIndex, pageSize }) => {
+  //   const x = pageSize * pageIndex
+  //   const twgt = wgts.slice(x - pageSize, x > wgts.length ? wgts.length : x)
+  //   log.debug(
+  //     `${pageIndex}; ${pageSize}; ${wgts.length}; ${x - pageSize}; ${
+  //       x > wgts.length ? wgts.length : x
+  //     }`
+  //   )
+
+  //   const storeClick = () => {
+  //     Taro.navigateTo({
+  //       url: `/subpages/store/item-list?dtid=${dtid}`
+  //     })
+  //   }
+  //   let searchMethod = dtid && storeClick
+
+  //   setState((draft) => {
+  //     draft.localWgts[pageIndex - 1] = twgt
+  //     draft.searchMethod = searchMethod
+  //   })
+
+  //   return {
+  //     total: wgts.length
+  //   }
+  // }
+
+  const storeClick = () => {
+    Taro.navigateTo({
+      url: `/subpages/store/item-list?dtid=${dtid}`
+    })
+  }
+
+  return (
+    <View className='home-wgts'>
+      {wgts.map((item, idx) => {
+        return (
+          <View
+            className='wgt-wrap'
+            key={`${item.name}${idx}`}
+            data-idx={idx}
+            data-name={item.name}
+          >
+            {/* {item.name === "search" && <WgtSearchHome info={item} />} */}
+            {item.name === 'search' && <SpSearch info={item} onClick={storeClick} />} {/** 搜索 */}
+            {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
+            {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 文字轮播 */}
+            {item.name === 'slider' && <WgtSlider isHomeSearch info={item} />} {/** 轮播 */}
+            {item.name === 'navigation' && <WgtNavigation info={item} />} {/** 图片导航 */}
+            {item.name === 'coupon' && <WgtCoupon info={item} />} {/** 优惠券 */}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
+            {/** 商品滚动 */}
+            {item.name === 'goodsScroll' && (
+              <WgtGoodsScroll info={item} index={idx} type='good-scroll' />
+            )}
+            {/** 商品栅格 */}
+            {item.name === 'goodsGrid' && <WgtGoodsGrid info={item} index={idx} type='good-grid' />}
+            {/** 商品Tab */}
+            {item.name === 'goodsGridTab' && (
+              <WgtGoodsGridTab info={item} index={idx} type='good-grid-tab' />
+            )}
+            {item.name === 'showcase' && <WgtShowcase info={item} />} {/** 橱窗 */}
+            {item.name === 'headline' && <WgtHeadline info={item} />} {/** 文字标题 */}
+            {item.name === 'img-gif' && <WgtImgGif info={item} />} {/** 视频图 */}
+            {item.name === 'hotTopic' && <WgtHotTopic info={item} />} {/** 热点话题 */}
+            {item.name === 'floorImg' && <WgtFloorImg info={item} />} {/** 楼层图片 */}
+            {item.name === 'store' && <WgtStore info={item} />} {/** 推荐商铺 */}
+            {item.name === 'nearbyShop' && <WgtNearbyShop info={item} />} {/** 附近商家 */}
+            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />}{' '}
+            {/** 全屏轮播 */}
+            {item.name === 'orderNavigation' && <WgtOrderNavigation info={item} />}{' '}
+            {/** 订单导航 */}
+          </View>
+        )
+      })}
+      {children}
+    </View>
+  )
+}
+
+HomeWgts.options = {
+  addGlobalClass: true
+}
+
+HomeWgts.defaultProps = {
+  wgts: [],
+  dtid: ''
+}
+
+export default HomeWgts

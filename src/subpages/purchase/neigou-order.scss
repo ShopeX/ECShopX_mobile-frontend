@@ -1,0 +1,176 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+page {
+  padding-top: 92rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  .order-tabbar {
+    width: 100%;
+    height: 92rpx;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    background-color: #fff;
+    border-radius: 0px 0px 64px 64px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    .order-item {
+      flex: 1;
+      display: block;
+      text-align: center;
+      font-size: 28px;
+      font-weight: 400;
+      color: #999999;
+    }
+    .active {
+      font-size: 36px;
+      font-weight: 600;
+      color: #222222;
+    }
+  }
+  .neigou-order {
+    padding: 0 32rpx;
+    .good-item {
+      margin-top: 32rpx;
+      .item-title {
+        font-size: 30rpx;
+        font-weight: 600;
+        color: #111111;
+      }
+      .item-content {
+        width: 100%;
+        background-color: #fff;
+        margin-top: 16rpx;
+        border-radius: 16rpx;
+        padding: 24rpx 16rpx;
+        box-sizing: border-box;
+        .content-head {
+          .head-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            .head-top-left {
+              // display: flex;
+              .neigou {
+                font-size: 20rpx;
+                color: #ffffff;
+                background: #4980ff;
+                border-radius: 4rspx;
+                padding: 0 1rpx;
+                box-sizing: border-box;
+              }
+              .order-num {
+                margin-left: 10rpx;
+                font-size: 24px;
+                font-weight: 400;
+                color: #333333;
+              }
+            }
+            .order-status {
+              font-size: 28px;
+              font-weight: 400;
+              color: #f4811f;
+            }
+          }
+          .order-time {
+            font-size: 24px;
+            font-weight: 400;
+            color: #999999;
+          }
+        }
+        .content-good {
+          width: 100%;
+          display: flex;
+          margin-top: 32rpx;
+          .good-img {
+            width: 130rpx;
+            height: 130rpx;
+            background: #f5f5f5;
+            border-radius: 16rpx;
+          }
+          .good-content {
+            flex: 1;
+            margin-left: 24rpx;
+            .good-content-top {
+              display: flex;
+              justify-content: space-between;
+              font-size: 28rpx;
+              color: #222222;
+              .good-price {
+                font-size: 28rpx;
+                font-weight: 600;
+                color: #111111;
+              }
+            }
+            .good-content-bottom {
+              display: flex;
+              justify-content: space-between;
+              font-size: 24rpx;
+              color: #999999;
+              margin-top: 16rpx;
+            }
+          }
+        }
+        .content-pay {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          padding: 24rpx 16rpx;
+          box-sizing: border-box;
+          background: #f8f8f8;
+          font-size: 24px;
+          color: #111111;
+          .all-count {
+            color: #666666;
+          }
+          .actual-price {
+            margin: 0 16rpx;
+          }
+          .price-account {
+            font-size: 36rpx;
+          }
+        }
+        .item-option {
+          width: 100%;
+          display: flex;
+          justify-content: flex-end;
+          font-size: 24px;
+          color: #222222;
+          margin-top: 32rpx;
+          .option-order {
+            padding: 11rpx 24rpx;
+            box-sizing: border-box;
+            border-radius: 28rpx;
+            border: 1px solid #999;
+            margin-right: 16rpx;
+          }
+          .option-pay {
+            padding: 11rpx 24rpx;
+            box-sizing: border-box;
+            border-radius: 28rpx;
+            border: 1px solid #f4811f;
+            color: #f4811f;
+          }
+        }
+      }
+    }
+  }
+}

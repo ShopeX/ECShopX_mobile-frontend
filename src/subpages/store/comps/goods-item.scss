@@ -1,0 +1,272 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-category-goods-item {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 24px;
+  position: relative;
+
+  .goods-item {
+    &__hd {
+      // padding-top: 100%;
+      // position: relative;
+      // width: 150px;
+      // height: 150px;
+      // background: rgba(0, 0, 0, 0.4);
+      // border-radius: 8px;
+      // overflow: hidden;
+
+      .sp-image {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        left: 0;
+      }
+
+      .image-wrap {
+        position: relative;
+        width: 160px;
+        height: 160px;
+      }
+
+      .shouqin-icon {
+        width: 100%;
+        height: 100%;
+        border-radius: 8px;
+        position: absolute !important;
+        top: -18px;
+        right: 0;
+        bottom: 0;
+        left: -18px;
+        overflow: hidden;
+        padding: 20px;
+        // background: rgba(0, 0, 0, 0.5);
+      }
+
+      // .replenishment{
+      //   height: 100%;
+      //   border-radius: 8px;
+      //   position: absolute !important;
+      //     top: -18px;
+      //     right: 0;
+      //     bottom: 0;
+      //     left: -18px;
+      //     overflow: hidden;
+      //     padding: 20px;
+
+      //   .shouqin-icon {
+      //     width: 100%;
+      //   height: 100%;
+      //     // background: rgba(0, 0, 0, 0.5);
+
+      //   }
+      // }
+
+      .shuiyin {
+        position: absolute;
+        right: 0;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        padding: 8px 20px;
+        border-radius: 15px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24px;
+        z-index: 99;
+        color: #fff;
+      }
+
+      .shuiyin-show {
+        background: rgba(var(--color-rgb), 0.6);
+      }
+
+      .shuiyin-nostore {
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    &__bd {
+      border-radius: 0;
+      padding: 0px 16px;
+
+      .goods-title {
+        // height: 66px;
+        width: 312px;
+        font-size: 30px;
+        color: #222;
+        font-weight: bold;
+        @include multi-ellipsis(1);
+        padding-top: 15px;
+      }
+
+      .goods-desc {
+        font-size: 24px;
+        color: $color-hint-text;
+        @include multi-ellipsis(1);
+      }
+
+      // .goods-info {
+      //   margin-bottom: 16px;
+      // }
+
+      .gd-price {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        .sp-price {
+          font-size: 32px;
+          font-weight: bold;
+          color: var(--color-primary);
+
+          &__symbol {
+            margin-right: 10px;
+          }
+        }
+        .unit-price {
+          font-size: 22px;
+          font-family: PingFangSC, PingFang SC;
+          font-weight: 400;
+          color: #bbbbbb;
+          margin-left: 20px;
+          text-decoration: line-through;
+        }
+
+        .unit {
+          color: #bbbbbb;
+          font-size: 24px;
+        }
+      }
+
+      .promotion-tag-direct {
+        border: 1px solid #f4811f;
+        color: #f4811f;
+        font-size: 22px;
+        border-radius: 8px;
+        padding: 0 11px;
+        height: 32px;
+        line-height: 32px;
+        margin-right: 10px;
+      }
+
+      .mk-price {
+        .sp-price {
+          font-size: 24px;
+          color: #888;
+          text-decoration: line-through;
+          font-weight: normal;
+        }
+      }
+
+      .promotions {
+        display: flex;
+        flex-wrap: wrap;
+        height: 32px;
+        margin-top: 22px;
+
+        .promotion-tag {
+          border: 1px solid var(--color-primary);
+          color: var(--color-primary);
+          font-size: 28px;
+          border-radius: 8px;
+          padding: 0 11px;
+          height: 32px;
+          line-height: 32px;
+          margin-right: 10px;
+        }
+      }
+
+      .bd-block {
+        display: flex;
+        justify-content: space-between;
+        padding-top: 28px;
+
+        &-lf {
+        }
+
+        .goods-price {
+          width: 100%;
+        }
+        &-rg {
+          .iconfont {
+            font-size: 40px;
+            color: #666;
+          }
+
+          .icon-shoucanghover-01 {
+            color: var(--color-primary);
+          }
+        }
+      }
+    }
+
+    &__ft {
+      // margin-top: 40px;
+      // padding: 0 20px 20px;
+      // display: flex;
+      // align-items: center;
+      // .brand-logo {
+      //   border-radius: 50%;
+      //   overflow: hidden;
+      // }
+    }
+  }
+
+  .icon-gouwuche2 {
+    margin-right: 24px;
+    font-size: 40px;
+    color: var(--color-primary);
+  }
+
+  .goods__store {
+    padding-top: 16px;
+    color: $color-gray;
+    font-size: 20px;
+    letter-spacing: 0;
+
+    &-entry {
+      color: #333;
+    }
+  }
+
+  .goods-info-box {
+    margin-top: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .goods-store {
+      color: #999;
+      font-size: 22px;
+    }
+
+    .goods-cart {
+      .icon-gouwuche {
+        background: var(--color-primary);
+        color: #fff;
+        border-radius: 50%;
+        font-size: 34px;
+        padding: 5px;
+      }
+    }
+  }
+}

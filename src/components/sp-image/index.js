@@ -1,0 +1,96 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import React, { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro from '@tarojs/taro'
+import { View, Image } from '@tarojs/components'
+import { classNames, styleNames, isNumber, isBoolean, isBase64, log } from '@/utils'
+import './index.scss'
+
+const initialState = {
+  loadSuccess: false
+}
+function SpImage(props) {
+  let {
+    src,
+    className,
+    mode = 'widthFix',
+    width = 'auto',
+    height,
+    onClick = () => {},
+    onError = () => {},
+    onLoad = () => {},
+    lazyLoad = false,
+    circle = false,
+    isShowMenuByLongpress = true
+  } = props
+  const [state, setState] = useImmer(initialState)
+  const { loadSuccess } = state
+  const { diskDriver } = useSelector((state) => state.sys)
+
+  if (!src) {
+    src = 'default.jpg'
+  }
+
+  let imgUrl = /^http/.test(src) || isBase64(src) ? src : `${process.env.APP_IMAGE_CDN}/${src}`
+
+  if (diskDriver === 'qiniu') {
+    if (width != 'auto') {
+      imgUrl = `${imgUrl}?imageView2/2/q/60${width ? '/w/' + Math.floor(width / 2) : ''}${
+        height ? '/h/' + Math.floor(height / 2) : ''
+      }`
+    }
+  }
+
+  const handleOnLoad = (e) => {
+    // console.log('handleOnLoad:', e)
+    onLoad(e)
+    setState((draft) => {
+      draft.loadSuccess = true
+    })
+  }
+  // console.log('SpImage:', circle)
+  return (
+    <View
+      className={classNames(
+        {
+          'sp-image': true,
+          'sp-image-loading': !loadSuccess && lazyLoad,
+          'sp-image-loadsuccess': loadSuccess && lazyLoad
+        },
+        className
+      )}
+      style={styleNames({
+        width: isNumber(width) ? `${width / 2}px` : '',
+        height: isNumber(height) ? `${height / 2}px` : ''
+      })}
+      onClick={onClick}
+    >
+      <Image
+        className='sp-image-img'
+        style={styleNames({
+          'border-radius': isNumber(circle)
+            ? `${circle / 2}px`
+            : isBoolean(circle) && circle
+            ? `${width / 2}px`
+            : 0
+        })}
+        src={imgUrl}
+        mode={mode}
+        // onError={onError}
+        onLoad={handleOnLoad}
+        // lazyLoad={lazyLoad}
+        showMenuByLongpress={isShowMenuByLongpress}
+      />
+    </View>
+  )
+}
+
+SpImage.options = {
+  addGlobalClass: true
+}
+
+export default SpImage

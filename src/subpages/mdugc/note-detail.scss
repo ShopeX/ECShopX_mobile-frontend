@@ -1,0 +1,481 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-ugc-detail {
+  .note-pic-container {
+    position: relative;
+  }
+
+  .note-swiper {
+    height: 750px;
+  }
+
+  .video-container {
+    position: absolute;
+    background: #000;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    .item-video {
+      width: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 100;
+      // height: auto;
+    }
+    .btn-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  .btn-video {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    color: #222;
+    display: flex;
+    align-items: center;
+    background: #e8eae7;
+    border-radius: 30px;
+    padding: 6px;
+    box-sizing: border-box;
+    z-index: 100;
+    .play-icon {
+      margin-right: 6px;
+    }
+    &.playing {
+      padding: 6px 20px;
+    }
+  }
+
+  .movable-item {
+    height: 40px;
+    font-size: 22px;
+    line-height: 40px;
+    color: rgb(255, 253, 253);
+    border-bottom: 2px solid #fff;
+    padding-left: 10px;
+    position: absolute;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background: #fff;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      transform: translate(0, 50%);
+    }
+  }
+
+  .swiper-pagegation {
+    position: absolute;
+    right: 0;
+    bottom: 20px;
+    display: inline-block;
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    font-size: 22px;
+    border-radius: 14px 0 0 14px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0 12px;
+    opacity: 0.5;
+  }
+
+  .ugc-author {
+    padding: 32px;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .author-info {
+      flex: 1;
+      display: flex;
+      align-items: center;
+
+      .author {
+        margin-left: 16px;
+        color: #111;
+      }
+    }
+
+    .btn-follow {
+      width: 140px;
+      height: 60px;
+      text-align: center;
+      line-height: 60px;
+      border-radius: 30px;
+      font-size: 28px;
+      background: #f5f5f5;
+      color: #666666;
+
+      &.follow {
+        background: var(--color-primary);
+        color: #fff;
+      }
+    }
+  }
+
+  .ugc-content {
+    padding: 0 32px;
+    background-color: #fff;
+
+    .title {
+      font-size: 30px;
+      font-weight: bold;
+      color: #111;
+    }
+
+    .content {
+      font-size: 26px;
+      color: #222;
+      margin-top: 32px;
+    }
+
+    .topic-list {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 72px 0;
+    }
+
+    .topic-item {
+      height: 40px;
+      line-height: 40px;
+      font-size: 28px;
+      color: var(--color-primary);
+      margin-right: 24px;
+      margin-bottom: 24px;
+      text-decoration: underline;
+    }
+
+    .content-datetime {
+      padding-bottom: 40px;
+      font-size: 24px;
+      color: #999;
+    }
+  }
+
+  .remmend-goods {
+    padding: 0 16px;
+    background-color: #fff;
+    overflow: hidden;
+
+    .wgt-floor-img {
+      border-top: 1px solid #dddddd;
+      margin-top: 24px;
+      padding: 40px 0;
+    }
+  }
+
+  .comment-list {
+    background-color: #fff;
+    padding: 24px 16px;
+  }
+
+  .comment-body {
+    margin: 0 16px;
+
+    .comment-num {
+      font-size: 24px;
+      color: #222;
+      margin-bottom: 40px;
+    }
+
+    .comment-item {
+      display: flex;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      position: relative;
+
+      .item-bd {
+        margin: 0 16px;
+        flex: 1;
+
+        .author {
+          color: #999;
+          font-size: 24px;
+        }
+
+        .comment-content {
+          font-size: 26px;
+          color: #222;
+          line-height: 38px;
+          margin-top: 4px;
+        }
+
+        .create-time {
+          font-size: 22px;
+          color: #999;
+          margin-left: 10px;
+        }
+      }
+
+      .first-comment {
+        display: flex;
+
+        .comment-info {
+          flex: 1;
+        }
+
+        .comment-likes {
+          width: 50px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          .iconfont {
+            font-size: 38px;
+          }
+
+          .icon-dianzan {
+            color: #222;
+          }
+
+          .icon-dianzanFilled {
+            color: var(--color-primary);
+          }
+
+          .like-num {
+            color: #222;
+            font-size: 22px;
+          }
+        }
+      }
+
+      &:after {
+        content: '';
+        height: 1px;
+        position: absolute;
+        left: 76px;
+        right: 0;
+        bottom: 0;
+        background-color: #ddd;
+      }
+    }
+
+    .sub-comment {
+      margin-top: 24px;
+    }
+
+    .sub-comment-item {
+      display: flex;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+
+      .sitem-bd {
+        margin: 0 16px;
+        flex: 1;
+
+        .author {
+          color: #999;
+          font-size: 24px;
+        }
+
+        .comment-content {
+          font-size: 26px;
+          color: #222;
+          line-height: 38px;
+          margin-top: 4px;
+        }
+
+        .create-time {
+          font-size: 22px;
+          color: #999;
+          margin-left: 10px;
+        }
+      }
+
+      .sitem-ft {
+        width: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        .iconfont {
+          font-size: 38px;
+        }
+
+        .icon-dianzan {
+          color: #222;
+        }
+
+        .icon-dianzanFilled {
+          color: var(--color-primary);
+        }
+
+        .like-num {
+          color: #222;
+          font-size: 22px;
+        }
+      }
+    }
+  }
+
+  .comment-empty {
+    padding: 80px 0;
+    text-align: center;
+
+    .icon-pinglun {
+      font-size: 40px;
+      color: #222;
+    }
+
+    .empty-text {
+      margin-top: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .t1 {
+      font-size: 24px;
+      color: #999;
+    }
+
+    .t2 {
+      font-size: 24px;
+      color: #222;
+      text-decoration: underline;
+    }
+  }
+
+  .action-container {
+    padding: 20px;
+    display: flex;
+
+    .comment-input {
+      width: 244px;
+      height: 60px;
+      line-height: 60px;
+      background: #f5f5f5;
+      border-radius: 40px;
+      padding: 0 24px;
+
+      .icon-bianji1 {
+        font-size: 32px;
+        color: #666;
+      }
+
+      .placeholder {
+        color: #666;
+      }
+    }
+
+    .btn-action-list {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+
+      .action-item {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+
+        .btn-wrap {
+          display: flex;
+          align-items: center;
+        }
+
+        .iconfont {
+          font-size: 40px;
+          margin-right: 4px;
+        }
+
+        .icon-dianzanFilled,
+        .icon-shoucanghover-01 {
+          color: var(--color-primary);
+        }
+
+        .action-item-text {
+          font-size: 24px;
+          color: #222;
+        }
+
+        &.at-button {
+          height: initial;
+          border-width: 0;
+          padding: 0;
+          line-height: initial;
+
+          .at-button__text {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+
+  .input-comment {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    z-index: 999;
+    padding: 20px;
+
+    .at-input {
+      margin: 0;
+
+      &::after {
+        display: none;
+      }
+
+      &__input {
+        background-color: #f5f5f5;
+        border-radius: 16px;
+        padding: 10px 16px;
+        font-size: 26px;
+        color: #666;
+      }
+    }
+
+    // &_text {
+    //   width: 100%;
+    //   padding: 0px 20px;
+    //   box-sizing: border-box;
+    //   height: 70px;
+    //   line-height: 70px;
+    //   font-size: 27px;
+    //   background-color: #eeeeee;
+    //   border-radius: 20px;
+    // }
+  }
+
+  .icon-bianji,
+  .icon-shanchu {
+    font-size: 36px;
+  }
+}

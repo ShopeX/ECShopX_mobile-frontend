@@ -1,0 +1,134 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+$tag-bar-height: 90px;
+
+.page-activity-info {
+  .activity-info {
+    &__pic {
+      position: relative;
+
+      .activity-swiper {
+        height: 750px !important;
+
+        .sp-image {
+          box-sizing: border-box;
+          height: 750px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+
+    &__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+
+      .is-disabled {
+        background: #c0c0c0 !important;
+      }
+
+      &-num {
+        font-weight: 400;
+        font-size: 24px;
+        color: #333333;
+
+        &-active {
+          color: var(--color-primary);
+          margin: 0 12px 0 12px;
+        }
+      }
+
+      &-btn {
+        width: 458px;
+        height: 80px;
+        text-align: center;
+        line-height: 80px;
+        background: linear-gradient(to right, #f67f70 0%, #cd352a 100%) !important;
+        box-shadow: 0px -1px 0px 0px rgba(0, 0, 0, 0.1);
+        border-radius: 40px;
+        font-weight: 500;
+        font-size: 32px;
+        color: #ffffff;
+        margin: 0 !important;
+        border: none;
+      }
+    }
+
+    &__content {
+      margin-bottom: 24px;
+      background: #fff;
+      padding: 24px;
+      box-sizing: border-box;
+    }
+
+    &__title {
+      font-weight: 600;
+      font-size: 32px;
+      color: #333333;
+      margin-bottom: 16px;
+    }
+
+    &__member {
+      display: flex;
+
+      &-detail {
+        padding: 6px 24px;
+        border: 1px solid var(--color-primary);
+        font-weight: 500;
+        font-size: 24px;
+        color: var(--color-primary);
+        border-radius: 22px;
+      }
+    }
+
+    &__address {
+      font-weight: 400;
+      font-size: 28px;
+      color: #333333;
+      margin-bottom: 16px;
+
+      .iconfont {
+        color: #999;
+        font-size: 24px;
+        margin-right: 16px;
+      }
+    }
+
+    .detail-address {
+      margin-bottom: 24px;
+    }
+
+    &__time {
+      font-weight: 400;
+      font-size: 26px;
+      color: #999999;
+    }
+
+    &__detail {
+      font-weight: 600;
+      font-size: 28px;
+      color: #333333;
+      margin-bottom: 15px;
+    }
+  }
+}

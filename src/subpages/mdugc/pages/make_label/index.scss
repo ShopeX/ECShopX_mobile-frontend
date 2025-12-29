@@ -1,0 +1,98 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.ugcindex {
+  width: 100%;
+  padding: 0 24px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #ffffff;
+  &_search {
+    .search-inputugc__bar {
+      padding-left: 0;
+    }
+    .at-icon-search {
+      color: var(--color-primary) !important;
+      font-size: 30px;
+      font-weight: bold;
+    }
+    .at-icon-search::after {
+      content: '';
+      width: 1px;
+      height: 34px;
+      border-right: 1px solid #bbbbbb;
+      position: relative;
+      margin-left: 12px;
+    }
+    .at-search-bar__input {
+      padding: 0 80px;
+    }
+  }
+  &_list {
+    &__scroll {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      padding: 0 30px;
+      margin: 0 auto;
+      bottom: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+      &_scrolls {
+        width: 100%;
+        &_item {
+          width: 100%;
+          padding: 30px 25px;
+          font-size: 28px;
+          color: #222222;
+          font-weight: 400;
+          border-bottom: 1px solid #dddddd;
+          &_r {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 37px;
+            border-radius: 19px;
+            border: solid 2px #000000;
+            font-size: 22px;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            &_icon {
+              margin-right: 10px;
+            }
+          }
+        }
+        &_item.top {
+          position: relative;
+        }
+      }
+    }
+  }
+  .float-menus {
+    right: 33px;
+  }
+  &_floatmenus {
+    .float-menus {
+      bottom: 220px;
+    }
+  }
+}

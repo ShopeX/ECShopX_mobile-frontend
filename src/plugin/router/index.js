@@ -1,0 +1,24 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import Taro, { getCurrentInstance, getCurrentPages } from '@tarojs/taro'
+
+class PRouter {
+  constructor() {
+    console.log('Taro', Taro)
+  }
+
+  init() {
+    console.log('Taro', Taro)
+
+    const _navigateTo = Taro.navigateTo
+    Taro.navigateTo = (params) => {
+      const { url } = params
+      params.url = params.url.replace(/^\/pages\/item\/espier-detail/, '/subpages/member/index')
+      _navigateTo(params)
+    }
+  }
+}
+
+export default new PRouter()

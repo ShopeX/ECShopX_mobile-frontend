@@ -1,0 +1,72 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+
+.page-complaint {
+  background: #fff;
+  margin: 30px;
+  /*  #ifdef  h5  */
+  padding-top: $navigate-height-h5;
+  /*  #endif  */
+  .flex {
+    display: flex;
+  }
+
+  .pege-header {
+    background: #fff;
+    padding: 25px;
+
+    .exclusive-header {
+      margin-top: 20px;
+      &__info {
+        flex: 1;
+        margin-left: 30px;
+        &-name {
+          font-size: 34px;
+        }
+        &-store_name {
+          margin-top: 20px;
+        }
+      }
+    }
+  }
+
+  .complaint-reason {
+    margin-top: 40px;
+    background-color: #fff;
+    padding: 25px;
+    &__textarea {
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      border-color: #efefef;
+    }
+  }
+
+  .complaint-upload {
+    margin-top: 40px;
+    background: #fff;
+    padding: 25px;
+  }
+
+  .complaint-button {
+    margin-top: 40px;
+    padding: 25px;
+    padding-bottom: 70px;
+  }
+}

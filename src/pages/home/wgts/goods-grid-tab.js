@@ -1,0 +1,194 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import React, { useState, useContext } from 'react'
+import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
+import { View, ScrollView, Text } from '@tarojs/components'
+import { SpGoodsItem, SpImage } from '@/components'
+import { classNames, styleNames, pickBy, linkPage } from '@/utils'
+import doc from '@/doc'
+import { WgtsContext } from './wgts-context'
+import './goods-grid-tab.scss'
+
+function WgtGoodsGridTab(props) {
+  const { info } = props
+  if (!info) {
+    return null
+  }
+
+  const [current, setCurrent] = useState(0)
+  const { onAddToCart } = useContext(WgtsContext)
+  const router = useRouter()
+  const isPurchase = router.path == '/subpages/purchase/index'
+
+  const { base, config, list } = info
+
+  const handleClickMore = () => {
+    const { moreLink } = info.config
+    if (moreLink) {
+      linkPage(moreLink)
+    } else {
+      this.navigateTo(`/pages/item/list?dis_id=${info.distributor_id || ''}`)
+    }
+  }
+
+  const handleAddToCart = async ({ itemId, distributorId }) => {
+    onAddToCart({ itemId, distributorId })
+  }
+
+  return (
+    <View
+      className={classNames('wgt', 'wgt-goods-grid-tab', {
+        wgt__padded: base.padded
+      })}
+    >
+      {/* {base.title && (
+        <View className="wgt-head">
+          <Text className="wgt-title">{base.title}</Text>
+          <Text className="wgt-subtitle">{base.subtitle}</Text>
+        </View>
+      )} */}
+      {base.title && (
+        <View className='wgt-head'>
+          <View className='wgt-hd'>
+            <Text className='wgt-title'>{base.title}</Text>
+            <Text className='wgt-subtitle'>{base.subtitle}</Text>
+          </View>
+          {config.moreLink?.linkPage && (
+            <View className='wgt-more' onClick={handleClickMore}>
+              <View className='three-dot'></View>
+            </View>
+          )}
+        </View>
+      )}
+      <View className='wgt-body'>
+        <ScrollView className='scroll-tab' scrollX>
+          {list.map((item, index) => (
+            <View
+              className={classNames('tab-item', {
+                active: current == index
+              })}
+              key={`tab-item__${index}`}
+              onClick={() => {
+                setCurrent(index)
+              }}
+            >
+              {item.tabTitle}
+            </View>
+          ))}
+        </ScrollView>
+        <View className='tabs-container'>
+          {list.map((item, index) => {
+            const _list =
+              item?.pointGoods?.filter((el) => el.goodsId)?.length > 0
+                ? item?.pointGoods
+                : item?.goodsList
+            const leftFilterGoods = _list.filter((leftgoods, leftindex) => {
+              if (leftindex % 2 == 0) {
+                return leftgoods
+              }
+            })
+            const rightFilterGoods = _list.filter((rightgoods, rightindex) => {
+              if (rightindex % 2 == 1) {
+                return rightgoods
+              }
+            })
+
+            return (
+              current == index && (
+                <View className='tab-body' key={`tab-body__${index}`}>
+                  <View className='left-container'>
+                    {leftFilterGoods.map((good, index) => {
+                      const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
+                      return (
+                        <View className='goodgrid-item' key={`goods-item__${index}`}>
+                          <SpGoodsItem
+                            info={data}
+                            isPurchase={isPurchase}
+                            showPrice={config.showPrice}
+                            showAddCart={config.addCart}
+                            renderBrand={
+                              config.brand && (
+                                <View
+                                  className='brand-info'
+                                  style={styleNames({
+                                    'width': '64px',
+                                    'height': '64px',
+                                    'border-radius': '32px',
+                                    'padding': '2px'
+                                  })}
+                                >
+                                  <SpImage
+                                    src={data.brand}
+                                    width={120}
+                                    height={120}
+                                    circle
+                                    mode='scaleToFill'
+                                  />
+                                </View>
+                              )
+                            }
+                            onAddToCart={handleAddToCart}
+                          />
+                        </View>
+                      )
+                    })}
+                  </View>
+                  <View className='right-container'>
+                    {rightFilterGoods.map((good, index) => {
+                      const data = pickBy(good, doc.goods.WGT_GOODS_GRID_TAB)
+                      return (
+                        <View className='goodgrid-item' key={`goods-item__${index}`}>
+                          <SpGoodsItem
+                            info={data}
+                            isPurchase={isPurchase}
+                            showPrice={config.showPrice}
+                            showAddCart={config.addCart}
+                            renderBrand={
+                              config.brand && (
+                                <View
+                                  className='brand-info'
+                                  style={styleNames({
+                                    'width': '64px',
+                                    'height': '64px',
+                                    'border-radius': '32px',
+                                    'padding': '2px'
+                                  })}
+                                >
+                                  <SpImage
+                                    src={data.brand}
+                                    width={120}
+                                    height={120}
+                                    circle
+                                    mode='scaleToFill'
+                                  />
+                                </View>
+                              )
+                            }
+                            onAddToCart={handleAddToCart}
+                          />
+                        </View>
+                      )
+                    })}
+                  </View>
+                </View>
+              )
+            )
+          })}
+        </View>
+        {config.moreLink?.id && (
+          <View className='btn-more' onClick={() => linkPage(config.moreLink)}>
+            查看更多
+          </View>
+        )}
+      </View>
+    </View>
+  )
+}
+
+WgtGoodsGridTab.options = {
+  addGlobalClass: true
+}
+
+export default WgtGoodsGridTab

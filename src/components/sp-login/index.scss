@@ -1,0 +1,123 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-login {
+  display: initial;
+
+  .login-btn {
+    border-width: 0;
+    height: auto;
+    line-height: initial;
+    padding: 0;
+    background-color: transparent;
+    display: initial;
+    font-size: inherit;
+
+    &:after {
+      border-width: 0;
+    }
+  }
+
+  .ali-button {
+    background: transparent;
+  }
+
+  .login-modal {
+    background: #fff;
+    border-radius: 16px;
+    line-height: normal;
+
+    &__hd {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      &--alipay {
+        height: 70px;
+      }
+
+      .sp-image {
+        position: relative;
+        top: -60px;
+
+        .sp-image-img {
+          background-color: #fff;
+          box-shadow: 0 0 6px 0px #d2cdcd;
+        }
+      }
+
+      .nick-name {
+        font-size: 32px;
+        font-weight: 500;
+        color: #222222;
+        position: relative;
+        top: -40px;
+      }
+    }
+
+    &__bd {
+      font-size: 28px;
+      font-weight: 400;
+      color: #666666;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .agreement-content {
+      display: flex;
+      justify-content: center;
+      font-size: 26px;
+      margin: 50px 0 30px;
+
+      padding: 0px 50px;
+      align-items: flex-start;
+
+      .sp-checkbox-new {
+        .icon-round {
+          font-size: 36px;
+        }
+        .icon-roundcheckfill {
+          font-size: 36px;
+        }
+        &__label {
+          display: none;
+        }
+      }
+      .agreement-list {
+        margin-left: 4px;
+        color: #666;
+      }
+      .agreement-name {
+        font-size: 26px;
+        color: #666;
+      }
+    }
+
+    &__ft {
+      text-align: center;
+
+      .at-button--primary,
+      .alipay-button--primary {
+        width: 370px;
+        height: 80px;
+      }
+
+      padding: 0 50px 50px;
+    }
+  }
+}

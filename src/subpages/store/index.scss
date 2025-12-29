@@ -1,0 +1,143 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-page.ipx .sp-page__footer {
+  height: 160px !important;
+}
+// .at-float-layout .layout-body {
+//   font-size: 28px;
+//   padding:0;
+//   height: 556px;
+// }
+.sale-price {
+}
+.sale-price {
+  .sp-price__symbol {
+    color: var(--color-primary);
+    font-size: 28px;
+  }
+  .sp-price__int {
+    color: var(--color-primary);
+    font-size: 42px;
+  }
+  .sp-price__decimal {
+    color: var(--color-primary);
+    font-size: 28px;
+  }
+}
+
+.page-store-index {
+  .search {
+    width: 100%;
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 2;
+    background: transparent;
+  }
+
+  .sp-search {
+    width: 100%;
+    padding: 0 15px;
+  }
+  .header-block {
+    padding-top: 150px;
+    // background: transparent;
+    // box-shadow: inset 0px -242px 700px 0px rgba(255, 255, 255, 0.4);
+  }
+  .header-block-pad {
+    padding-top: 80px;
+  }
+  .icon-huiyuanzhongxin {
+    font-size: 38px;
+  }
+  .icon-gouwuche {
+    font-size: 38px;
+  }
+  .title-container {
+    justify-content: flex-start !important;
+    .sp-search {
+      width: 75%;
+      background: transparent;
+    }
+  }
+  .switchs {
+    position: sticky;
+    z-index: 99;
+    height: 50px;
+    font-family: PingFangSC, PingFang SC;
+    font-weight: 600;
+    font-size: 36px;
+    color: #222222;
+    line-height: 50px;
+    padding: 20px 24px;
+    .switching {
+      font-weight: 500;
+      // font-size: 28px;
+      color: #444444;
+    }
+    .switchings {
+      border-bottom: 8px solid var(--color-primary);
+    }
+    .switched {
+      margin-left: 60px;
+    }
+  }
+  .cart-layout {
+    .sp-price__symbol {
+      color: #e50113;
+      font-size: 28px;
+    }
+    .sp-price__int {
+      color: #e50113;
+      font-size: 42px;
+    }
+    .sp-price__decimal {
+      color: #e50113;
+      font-size: 28px;
+    }
+  }
+  .sp-page__footer {
+    .sp-price__symbol {
+      color: #e50113;
+      font-weight: 600;
+    }
+    .sp-price__int {
+      color: #e50113;
+      font-weight: 600;
+    }
+    .sp-price__decimal {
+      color: #e50113;
+      font-weight: 600;
+    }
+  }
+  .comp-shop-brand-cart {
+    .sp-price__symbol {
+      color: #e50113;
+      font-weight: 600;
+    }
+    .sp-price__int {
+      color: #e50113;
+      font-weight: 600;
+    }
+    .sp-price__decimal {
+      color: #e50113;
+      font-weight: 600;
+    }
+  }
+}

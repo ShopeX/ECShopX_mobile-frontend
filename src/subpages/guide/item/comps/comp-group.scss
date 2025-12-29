@@ -1,0 +1,89 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-group {
+  margin: 0 16px;
+  background-color: #fff;
+  &-hd {
+    color: #222;
+    padding: 20px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &-bd {
+    color: #222;
+    padding: 0 16px 20px;
+  }
+  &-ft {
+    width: 144px;
+  }
+  .group-item {
+    display: flex;
+    &-hd {
+      .sp-image {
+        border-radius: 40px;
+        overflow: hidden;
+      }
+      margin-right: 20px;
+    }
+    &-bd {
+      flex: 1;
+    }
+  }
+  .group-info {
+    font-size: 24px;
+  }
+  .group-num {
+    color: #ec2e3d;
+  }
+  .group-time {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+  }
+  .at-countdown {
+    margin-left: 6px;
+    margin-top: 2px;
+    display: flex;
+    &__item {
+      display: flex;
+      &:first-child {
+        .at-countdown__separator {
+          position: relative;
+          top: -1px;
+        }
+      }
+    }
+    &__time-box {
+      font-size: 24px;
+      border-width: 0;
+      font-family: inherit;
+      text-align: center;
+      font-weight: 400;
+      &::after {
+        display: none;
+      }
+    }
+    &__separator {
+      font-size: 24px;
+      position: relative;
+      top: -4px;
+    }
+  }
+}

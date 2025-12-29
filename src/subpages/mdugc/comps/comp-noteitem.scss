@@ -1,0 +1,137 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-note-item {
+  background-color: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  padding-bottom: 24px;
+  position: relative;
+
+  .badges-list {
+    display: flex;
+    position: absolute;
+    top: 16px;
+    left: 16px;
+
+    .badge-item {
+      background-color: var(--color-primary);
+      color: #fff;
+      padding: 0 4px;
+      font-size: 23px;
+      border-radius: 4px;
+    }
+  }
+
+  .note-item {
+    &__hd {
+      position: relative;
+
+      .verify-fail {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background-color: rgba(0, 0, 0, 0.3);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .icon-jingshiFilled {
+          font-size: 38px;
+          color: #fff;
+        }
+
+        .message {
+          font-size: 30px;
+          color: #fff;
+          display: flex;
+          align-items: center;
+        }
+
+        .btn-edit {
+          margin-top: 20px;
+          width: 180px;
+          height: 60px;
+          line-height: 60px;
+          border-radius: 30px;
+          text-align: center;
+          border: 1px solid #fff;
+          color: #fff;
+          font-size: 26px;
+        }
+      }
+    }
+
+    &__bd {
+      border-radius: 0;
+      padding: 16px 16px 0;
+
+      .note-title {
+        font-size: 28px;
+        color: #222;
+        @include multi-ellipsis(2);
+      }
+
+      .ugc-author {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 40px;
+
+        .author-info {
+          display: flex;
+          align-items: center;
+        }
+
+        .author {
+          width: 200px;
+          font-size: 22px;
+          margin-left: 4px;
+          color: #666;
+          @include text-overflow();
+        }
+
+        .likes-num {
+          display: flex;
+          align-items: center;
+        }
+
+        .iconfont {
+          font-size: 32px;
+        }
+
+        .icon-dianzan {
+          color: #666;
+        }
+
+        .icon-dianzanFilled {
+          color: var(--color-primary);
+        }
+
+        .like-num {
+          font-size: 22px;
+          color: #666;
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+}

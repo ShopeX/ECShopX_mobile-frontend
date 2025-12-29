@@ -1,0 +1,497 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import React, { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { useImmer } from 'use-immer'
+import Taro from '@tarojs/taro'
+import { AtButton } from 'taro-ui'
+import { SpPage, SpCell, SpImage, SpFloatLayout, SpCheckbox } from '@/components'
+import { useLogin, useModal } from '@/hooks'
+import api from '@/api'
+import { SG_POLICY } from '@/consts'
+import {
+  classNames,
+  showToast,
+  formatTime,
+  isWeixin,
+  isWeb,
+  VERSION_SHUYUN,
+  goToPage
+} from '@/utils'
+import imgUploader from '@/utils/upload'
+import { View, Input, Picker, Button, ScrollView } from '@tarojs/components'
+import i18n from '@/lang/consts'
+import './user-info.scss'
+
+const initialState = {
+  formItems: [],
+  formUserInfo: {},
+  checkboxPickerTitle: '',
+  showCheckboxPicker: false,
+  checkboxKey: '',
+  checkboxList: [],
+  dmcrm_is_open: false
+}
+
+function MemberUserInfo() {
+  const [state, setState] = useImmer(initialState)
+  const { showModal } = useModal()
+  const dispatch = useDispatch()
+  const lang = Taro.getStorageSync('lang')
+  console.log('lang', lang, 'i18n', i18n)
+  const {
+    formItems,
+    formUserInfo,
+    checkboxPickerTitle,
+    showCheckboxPicker,
+    checkboxKey,
+    checkboxList,
+    dmcrm_is_open
+  } = state
+  const { userInfo = {} } = useSelector((_state) => _state.user)
+  const pageRef = useRef()
+  const { getUserInfo, logout } = useLogin()
+
+  useEffect(() => {
+    getCommonSetting()
+    getFormItem()
+  }, [])
+
+  useEffect(() => {
+    pageRef.current?.pageLock()
+  }, [])
+
+  // console.log('userInfo ******', userInfo)
+
+  const getCommonSetting = async () => {
+    const res = await api.category.getCommonSetting()
+    setState((draft) => {
+      draft.dmcrm_is_open = res?.dmcrm_is_open
+    })
+  }
+  const getFormItem = async () => {
+    const data = await api.user.regParam({
+      is_edite_page: true
+    })
+    const {
+      other_params: { custom_data }
+    } = userInfo || { other_params: { custom_data: {} } }
+    const _formItems = []
+    const _formUserInfo = {
+      language: userInfo?.language || 'zh',
+      avatar: userInfo?.avatar,
+      username: userInfo?.username,
+      ...custom_data
+    }
+    Object.keys(data).forEach((key) => {
+      const value = custom_data?.[key] || userInfo?.[key]
+      if (data[key].is_open) {
+        if (key !== 'mobile' && key !== 'username') {
+          _formItems.push(data[key])
+        }
+      }
+      if (data[key].element_type == 'checkbox') {
+        _formUserInfo[key] =
+          value && value.length > 0
+            ? value.split(',').map((item) => ({ name: item, ischecked: true }))
+            : []
+      } else {
+        _formUserInfo[key] = value || ''
+      }
+      if (key === 'sex') {
+        _formUserInfo[key] = data[key].select[value]
+      }
+    })
+
+    setState((draft) => {
+      draft.formItems = _formItems
+      draft.formUserInfo = _formUserInfo
+    })
+  }
+
+  const renderText = ({ key, required_message }) => {
+    return (
+      <Input
+        name={key}
+        class='input-field'
+        value={formUserInfo[key]}
+        placeholder={required_message}
+        onInput={onChangePicker.bind(this, key)}
+      />
+    )
+  }
+
+  const renderNumber = ({ key, range: { start, end }, required_message }) => {
+    return (
+      <Input
+        name={key}
+        type='number'
+        value={formUserInfo[key]}
+        max={end}
+        min={start}
+        placeholder={required_message}
+        onInput={onChangePicker.bind(this, key)}
+      />
+    )
+  }
+
+  const onChangePicker = (key, e) => {
+    setState((draft) => {
+      draft.formUserInfo[key] = e.detail.value
+    })
+  }
+
+  const onChangeSelectPicker = (key, e) => {
+    const item = formItems.find((_item) => _item.key == key)
+    const { select } = item
+    setState((draft) => {
+      draft.formUserInfo[key] = select[e.detail.value]
+    })
+  }
+
+  const getIndexBySelecValue = (key) => {
+    const item = formItems.find((_item) => _item.key == key)
+    const { select } = item
+    return select.findIndex((s) => s == formUserInfo[key])
+  }
+
+  const renderDatePicker = ({ key, required_message }) => {
+    return (
+      <Picker mode='date' value={formUserInfo[key]} onChange={onChangePicker.bind(this, key)}>
+        <View
+          className={classNames('picker-value', {
+            'placeholder': !formUserInfo[key]
+          })}
+        >
+          {formUserInfo[key] || required_message}
+        </View>
+      </Picker>
+    )
+  }
+
+  const renderRadioPicker = ({ key, required_message, select }) => {
+    return (
+      <Picker
+        mode='selector'
+        value={getIndexBySelecValue(key)}
+        onChange={onChangeSelectPicker.bind(this, key)}
+        range={select}
+      >
+        <View
+          className={classNames('picker-value', {
+            'placeholder': !formUserInfo[key]
+          })}
+        >
+          {formUserInfo[key] || required_message}
+        </View>
+      </Picker>
+    )
+  }
+
+  const renderCheckboxPicker = ({ name, key, required_message, checkbox }) => {
+    return (
+      <View
+        className={classNames('picker-value', {
+          'placeholder': formUserInfo[key].length == 0
+        })}
+        onClick={() => {
+          const _checkboxList = checkbox.map((item) => {
+            const fd = formUserInfo[key].find((k) => k.name == item.name)
+            const isChecked = fd ? fd.ischecked : false
+            return {
+              name: item.name,
+              ischecked: isChecked
+            }
+          })
+
+          setState((draft) => {
+            draft.showCheckboxPicker = true
+            draft.checkboxKey = key
+            draft.checkboxPickerTitle = `选择${name}`
+            draft.checkboxList = _checkboxList
+          })
+        }}
+      >
+        {formUserInfo[key].length > 0
+          ? formUserInfo[key]
+              .filter((item) => !!item.ischecked)
+              .map((item) => item.name)
+              .join(',')
+          : required_message}
+      </View>
+    )
+  }
+
+  const compType = {
+    1: renderText,
+    2: renderNumber,
+    3: renderDatePicker,
+    4: renderRadioPicker,
+    5: renderCheckboxPicker
+  }
+
+  const renderFormItem = (item) => {
+    const { field_type } = item
+
+    return compType[field_type] && compType[field_type](item)
+  }
+
+  const saveUserInfo = async () => {
+    const { avatar, username } = formUserInfo
+    await api.member.updateMemberInfo({
+      username,
+      avatar
+    })
+    await api.member.setMemberInfo({
+      ...formUserInfo
+    })
+    showToast('修改成功')
+    await getUserInfo(true)
+    setTimeout(() => {
+      Taro.navigateBack()
+    }, 200)
+  }
+
+  const handleLogOff = async () => {
+    const { status, msg } = await api.member.deleteMember({ is_delete: '0' })
+    if (!status) {
+      await Taro.showModal({
+        content: msg,
+        confirmText: '我知道了'
+      })
+    } else {
+      Taro.navigateTo({
+        url: `/marketing/pages/member/destroy-member?phone=${userInfo?.mobile}`
+      })
+    }
+  }
+
+  // H5退出账号
+  const handleLogOut = async () => {
+    logout()
+    showToast('退出登录成功')
+    if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
+      // eslint-disable-next-line
+      goToPage(process.env.APP_HOME_PAGE)
+    } else {
+      Taro.redirectTo({
+        url: process.env.APP_HOME_PAGE
+      })
+    }
+  }
+
+  const onChooseAvatar = async (e) => {
+    const res = await imgUploader.uploadImageFn([
+      {
+        file: {
+          path: e.detail.avatarUrl
+        },
+        url: e.detail.avatarUrl
+      }
+    ])
+    setState((draft) => {
+      draft.formUserInfo.avatar = res[0]?.url
+    })
+  }
+
+  // const hanldeShowSwitchLanguage = async () => {
+  //   console.log('lang', lang)
+  //   const res = await showModal({
+  //     title: `提示`,
+  //     content: '请确认是否切换语言',
+  //     confirmText: '确定',
+  //     cancelText: '取消'
+  //   })
+  //   if (res.confirm) {
+  //     globalThis.$changeLang(lang === 'zh-cn' ? 'en' : 'zh-cn')
+  //     Taro.reLaunch({
+  //       url: '/subpages/member/index'
+  //     })
+  //   }
+  // }
+
+  const onUploadAvatarFile = async () => {
+    const { tempFiles = [] } = await Taro.chooseImage({
+      count: 1
+    })
+    console.log('onUploadAvatarFile:tempFiles', tempFiles)
+    if (tempFiles.length > 0) {
+      const imgFiles = tempFiles.slice(0, 1).map((item) => {
+        return {
+          file: item,
+          url: item.path
+        }
+      })
+      const res = await imgUploader.uploadImageFn(imgFiles)
+      console.log('onUploadAvatarFile:res', res)
+      // https://resource/apml16866fa5e90bd3dd72409b11e4f68679.jpg
+      setState((draft) => {
+        draft.formUserInfo.avatar = res[0].url
+        // draft.formUserInfo.avatar = imgFiles[0].url
+      })
+    }
+  }
+
+  const onChangeUsername = (e) => {
+    setState((draft) => {
+      draft.formUserInfo.username = e.detail.value
+    })
+  }
+
+  const { agreeTime } = Taro.getStorageSync(SG_POLICY)
+  let policyAgreeText = ''
+  if (agreeTime) {
+    policyAgreeText = `${formatTime(agreeTime, 'YYYY年MM月DD日')}同意`
+  }
+
+  // console.log('formUserInfo:', formUserInfo)
+
+  const renderAvatar = () => {
+    if (isWeixin) {
+      return (
+        <Button class='avatar-wrapper' open-type='chooseAvatar' onChooseAvatar={onChooseAvatar}>
+          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle />
+        </Button>
+      )
+    } else {
+      return (
+        <View class='avatar-wrapper' onClick={onUploadAvatarFile}>
+          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle />
+        </View>
+      )
+    }
+  }
+  return (
+    <SpPage
+      ref={pageRef}
+      className='pages-member-user-info'
+      renderFooter={
+        <AtButton circle type='primary' onClick={saveUserInfo}>
+          保存
+        </AtButton>
+      }
+    >
+      <ScrollView scrollY style={{ height: '100%' }}>
+        <View className='block-container'>
+          <SpCell title='头像' isLink border value={renderAvatar()}></SpCell>
+          <SpCell
+            title='昵称'
+            isLink
+            border
+            value={
+              <Input
+                name='nickname'
+                value={formUserInfo.username}
+                type='nickname'
+                class='input-field'
+                placeholder='请输入昵称'
+                onInput={onChangeUsername}
+                onConfirm={onChangeUsername}
+                onNickNameReview={onChangeUsername}
+              />
+            }
+          ></SpCell>
+          <SpCell
+            isLink={!dmcrm_is_open}
+            title='手机号'
+            value={userInfo?.mobile}
+            onClick={() => {
+              if (VERSION_SHUYUN) return
+              Taro.navigateTo({
+                url: '/subpages/auth/edit-phone'
+              })
+            }}
+          />
+        </View>
+
+        <View className='block-container'>
+          {formItems.map((item, index) => (
+            <SpCell
+              title={item.name}
+              isLink={item.element_type != 'input'}
+              key={`userinfo-item__${index}`}
+              border={index < formItems.length - 1}
+              value={renderFormItem(item)}
+            ></SpCell>
+          ))}
+        </View>
+
+        <View className='block-container'>
+          <SpCell
+            isLink
+            title='隐私政策和用户协议'
+            value={policyAgreeText}
+            onClick={() => {
+              Taro.navigateTo({
+                url: '/subpages/auth/reg-rule?type=privacyAndregister'
+              })
+            }}
+          ></SpCell>
+        </View>
+
+        <View className='block-container'>
+          <SpCell
+            isLink
+            title='注销账号'
+            value='注销后无法恢复，请谨慎操作'
+            onClick={handleLogOff}
+          ></SpCell>
+        </View>
+
+        {isWeb && (
+          <View className='block-container'>
+            <SpCell isLink title='退出登录' value='退出当前账号' onClick={handleLogOut}></SpCell>
+          </View>
+        )}
+      </ScrollView>
+
+      <SpFloatLayout
+        title={checkboxPickerTitle}
+        open={showCheckboxPicker}
+        onClose={() => {
+          setState((draft) => {
+            draft.showCheckboxPicker = false
+          })
+        }}
+        renderFooter={
+          <AtButton
+            circle
+            type='primary'
+            onClick={() => {
+              // const fd = checkboxList.filter((item) => !!item.checked)
+              setState((draft) => {
+                draft.formUserInfo[checkboxKey] = checkboxList
+                draft.showCheckboxPicker = false
+              })
+            }}
+          >
+            确定
+          </AtButton>
+        }
+      >
+        {checkboxList.map((item, index) => (
+          <View className='checkout-item' key={`checkout-item__${index}`}>
+            <SpCheckbox
+              checked={item.ischecked}
+              onChange={(e) => {
+                setState((draft) => {
+                  draft.checkboxList[index].ischecked = e
+                })
+              }}
+            >
+              {item.name}
+            </SpCheckbox>
+          </View>
+        ))}
+      </SpFloatLayout>
+    </SpPage>
+  )
+}
+
+MemberUserInfo.options = {
+  addGlobalClass: true
+}
+
+export default MemberUserInfo

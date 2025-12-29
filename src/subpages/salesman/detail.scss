@@ -1,0 +1,417 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-trade-detail {
+  .trade-detail-scroll {
+    height: 100%;
+    padding: 0 16px;
+    box-sizing: border-box;
+  }
+
+  .block-container {
+    padding: 24px 16px;
+    border-radius: 16px;
+    background-color: #fff;
+    margin-bottom: 24px;
+
+    &-label {
+      font-size: 30px;
+      color: #222;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+  }
+
+  .padding-view {
+    height: 1px;
+  }
+
+  .trade-status {
+    padding: 48px 16px;
+
+    .trade-status-desc {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &-box {
+        display: flex;
+        align-items: center;
+      }
+    }
+
+    .iconfont {
+      font-size: 52px;
+      color: #666;
+      margin-right: 10px;
+    }
+
+    .status-desc {
+      font-size: 40px;
+      color: #222;
+      font-weight: 500;
+      margin-left: 16px;
+    }
+
+    .deliver-opreator {
+      display: flex;
+      margin-left: 8px;
+      align-items: center;
+      &-name {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+      }
+      &-phone {
+        color: #666;
+        font-size: 24px;
+        border: 1px #ccc solid;
+        margin-left: 8px;
+        border-radius: 10px;
+      }
+    }
+
+    .order-cancel-time {
+      margin-top: 10px;
+      font-size: 26px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .at-countdown {
+        margin-left: 6px;
+
+        .at-countdown__time {
+          font-family: Arial, Helvetica, sans-serif;
+          font-size: 28px;
+        }
+
+        .at-countdown__separator {
+          font-size: 26px;
+          position: relative;
+          top: 2px;
+        }
+      }
+    }
+  }
+
+  .address-info {
+    display: flex;
+    align-items: center;
+    padding: 26px 24px;
+    background-color: #fff;
+    box-shadow: 0px 2px 10px 0px rgba(234, 231, 224, 1);
+
+    .receiver-address {
+      margin-left: 24px;
+    }
+
+    .address-detail {
+      font-size: 30px;
+      font-weight: 600;
+      color: #222222;
+    }
+
+    .name {
+      font-size: 30px;
+      color: #222;
+      font-weight: 500;
+      margin-right: 20px;
+    }
+
+    .mobile {
+      font-size: 28px;
+      color: #222;
+    }
+
+    .detail-address {
+      font-size: 24px;
+      color: #222;
+      margin-top: 10px;
+    }
+  }
+
+  .ziti-info {
+    line-height: 50px;
+
+    .label {
+      font-size: 28px;
+      color: #333;
+      margin-right: 16px;
+      font-weight: 600;
+    }
+
+    .value {
+      font-size: 28px;
+      color: #666;
+    }
+
+    .icon-dianhua {
+      font-size: 28px;
+      color: #666;
+      margin-left: 20px;
+    }
+  }
+
+  .dada-qishou-info {
+    .qishou {
+      display: flex;
+      align-items: center;
+      padding-bottom: 24px;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+      .sp-image {
+        margin-right: 20px;
+      }
+
+      .qishou-name {
+        font-size: 32px;
+        color: #222;
+        font-weight: 500;
+      }
+
+      .icon-dianhua {
+        font-size: 30px;
+        color: #0091ff;
+        margin-left: 20px;
+      }
+    }
+
+    .dada-desc {
+      font-size: 24px;
+      color: #aaa;
+    }
+  }
+
+  .store-receive-address {
+    .store-address {
+      position: relative;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid #ddd;
+
+      .icon-shouhuodizhi-duoduan {
+        font-size: 38px;
+        color: #999;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &-detail {
+        margin: 10px 0 0 50px;
+
+        .store-name {
+          font-weight: 500;
+          font-size: 30px;
+          color: #222;
+        }
+
+        .store-address-desc {
+          font-weight: 400;
+          font-size: 28px;
+          color: #666;
+          margin-top: 16px;
+        }
+
+        .store-hour-phone {
+          margin-top: 16px;
+
+          .label {
+            font-size: 24px;
+            color: #999;
+          }
+
+          .value {
+            font-size: 24px;
+            color: #444;
+          }
+        }
+
+        .icon-dianhua {
+          font-size: 26px;
+          color: #666;
+          margin-left: 20px;
+        }
+      }
+    }
+
+    .receive-address {
+      position: relative;
+
+      .icon-shouhuodizhi-duoduan {
+        font-size: 38px;
+        color: #999;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+
+      &-detail {
+        margin: 10px 0 0 50px;
+
+        .address-info {
+          font-weight: 500;
+          color: #222;
+          font-size: 30px;
+        }
+
+        .receive-name-mobile {
+          margin-top: 16px;
+
+          .name {
+            font-weight: 400;
+            color: #666;
+            font-size: 28px;
+            margin-right: 20px;
+          }
+
+          .mobile {
+            font-weight: 400;
+            color: #666;
+            font-size: 28px;
+          }
+        }
+      }
+    }
+  }
+
+  .sp-cell {
+    padding: 16px 0;
+
+    &__title {
+      color: #222;
+    }
+
+    &__value {
+      color: #222;
+      font-weight: 600;
+    }
+
+    &__link {
+      display: none;
+    }
+  }
+
+  .order-info {
+    .sp-cell__value {
+      color: #999;
+      font-weight: normal;
+    }
+  }
+
+  .trade-shop {
+    font-size: 30px;
+    font-weight: 600;
+    color: #222;
+    display: flex;
+    align-items: center;
+
+    .icon-qianwang-01 {
+      font-size: 20px;
+      color: #222;
+      margin-left: 6px;
+    }
+  }
+
+  .trade-no {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+
+    .no {
+      font-size: 24px;
+      font-weight: 600;
+      color: #222222;
+      margin-right: 20px;
+    }
+  }
+
+  .trade-goods {
+    margin-top: 24px;
+
+    .trade-goods-item {
+      &:not(:first-child) {
+        margin-top: 24px;
+      }
+    }
+
+    .sp-trade-item {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+    }
+
+    .item-actions {
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: flex-end;
+
+      .at-button {
+        margin: 0 0 0 20px;
+        height: 48px;
+        line-height: 48px;
+
+        &.btn-active {
+          background-color: var(--color-primary);
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .trade-price-info {
+    margin-top: 32px;
+  }
+
+  .btn-copy {
+    width: 72px;
+    height: 34px;
+    background: #f5f5f5;
+    border-radius: 17px;
+    font-size: 22px;
+    font-weight: 400;
+    color: #222222;
+    line-height: 34px;
+    text-align: center;
+    display: inline-block;
+    margin-left: 10px;
+  }
+
+  .action-button-wrap {
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+
+    .at-button {
+      margin: 0 0 0 20px;
+
+      &.btn-active {
+        border: 1px solid var(--color-primary);
+        color: #fff;
+        background-color: var(--color-primary);
+      }
+    }
+  }
+
+  .time-line-item:last-child {
+    border: none !important;
+  }
+}

@@ -1,0 +1,376 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.pages-member-index {
+  background-color: #f5f5f5;
+
+  .sp-area-select {
+    padding-left: calc(24px - 7px);
+  }
+
+  .sp-page__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .render-title {
+    height: 100%;
+  }
+
+  .header-block {
+    height: 570px;
+    background: linear-gradient(177deg, #fff2e0 9%, #dbbf8c 45%, #f8f8f8 100%);
+    position: relative;
+
+    &__ft {
+      height: 24px;
+      background: #fff;
+      border-radius: 24px 24px 0 0;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  .user-info-card {
+    background-color: #fff;
+    border-radius: 16px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    position: absolute;
+    bottom: 54px;
+    left: 24px;
+    right: 24px;
+    height: 280px;
+    box-sizing: border-box;
+  }
+
+  .user-info-header {
+    height: 108px;
+  }
+
+  .user-avatar {
+    width: 144px;
+    height: 144px;
+    border-radius: 50%;
+    border: 2px solid #ebebeb;
+    overflow: hidden;
+    position: absolute;
+    left: 36px;
+    top: -36px;
+
+    .avatar-img {
+      width: 100%;
+      height: 100%;
+      background-color: #f5f5f5;
+    }
+  }
+
+  .user-details {
+    margin-top: 12px;
+    margin-left: 198px;
+
+    .user-name {
+      font-weight: 500;
+      font-size: 34px;
+      color: #1a1a1a;
+      line-height: 40px;
+    }
+
+    .user-vip {
+      display: flex;
+      align-items: center;
+      width: 130px;
+      height: 32px;
+    }
+
+    .user-vip-wrapper {
+      margin-top: 4px;
+      margin-left: -8px;
+    }
+
+    .login-text {
+      color: #1a1a1a;
+    }
+  }
+
+  .bd-item-value,
+  .bd-item-value text {
+    color: #333;
+    font-size: 36px;
+  }
+  .point-rule {
+    font-size: 24px !important;
+    margin-left: 8px;
+  }
+
+  .qr-code-btn {
+    position: absolute;
+    // width: 120px;
+    // height: 88px;
+    top: 0px;
+    right: 0px;
+    border-top-right-radius: 16px;
+    overflow: hidden;
+
+    .user-vip-code {
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+
+      .iconfont {
+        font-size: 48px;
+        color: #fff;
+      }
+    }
+
+    .qr-code-img {
+      width: 100%;
+      height: 100%;
+    }
+
+    .member-level-bg {
+      width: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+
+    .qr-code {
+      position: absolute;
+      top: 12px;
+      right: 24px;
+    }
+
+    /* 确保三角形可以溢出容器 */
+    &-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 30rpx;
+      height: 88rpx;
+      background: linear-gradient(-100deg, transparent 50%, #fff 0%);
+      background-size: 100%;
+
+      // &::before {
+      //   content: '';
+      //   position: absolute;
+      //   top: 0;
+      //   right: 0;
+      //   width: 0;
+      //   height: 0;
+      //   background-color: transparent;
+      //   border-style: solid;
+      //   border-width: 0 0 80px 20px;
+      //   border-color: transparent #fff transparent transparent;
+      // }
+    }
+
+    // &__content {
+    //   position: relative;
+    //   background-color: #f0f0f0;
+    //   border-radius: 12px;
+    //   padding: 20px;
+    //   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    // }
+  }
+
+  // .qr-code-btn {
+  //   width: 60px;
+  //   height: 60px;
+  //   display: flex;
+  //   align-items: center;
+  //   justify-content: center;
+  //   background-color: #f5f5f5;
+  //   border-radius: 8px;
+  //   position: absolute;
+  //   right: 0px;
+  //   top: 0px;
+
+  //   .iconfont {
+  //     font-size: 36px;
+  //     color: #333;
+  //   }
+  // }
+
+  .user-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 42px;
+    padding: 0 36px;
+    box-sizing: border-box;
+  }
+
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    gap: 12px;
+
+    .stat-value {
+      height: 42px;
+      font-family: D-DIN-PRO, D-DIN-PRO;
+      font-weight: 600;
+      font-size: 42px;
+      color: #404040;
+      text-align: center;
+      line-height: 42px;
+    }
+
+    .stat-label {
+      font-size: 26px;
+      color: #bfbfbf;
+      line-height: 30px;
+      font-weight: 400;
+      text-align: center;
+    }
+  }
+
+  .order-section {
+    padding: 24px 48px 24px 48px;
+    background: #fff;
+  }
+
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 36px;
+
+    .section-header-title {
+      font-weight: 500;
+      font-size: 30px;
+      color: #1a1a1a;
+    }
+
+    .view-all {
+      display: flex;
+      align-items: center;
+
+      .view-all-text {
+        font-size: 26px;
+        color: #666666;
+        font-weight: 400;
+      }
+
+      .iconfont {
+        font-size: 24px;
+        color: #999;
+      }
+    }
+  }
+
+  .order-icons {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .order-section-ft {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    gap: 22px;
+    padding-top: 36px;
+  }
+
+  .order-section-ft-item {
+    flex: 1;
+
+    &-info {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      height: 88px;
+      background: #f8f8f8;
+      border-radius: 16px;
+      border: 1px solid #ebebeb;
+      text-align: center;
+
+      .icon-label {
+        font-weight: 500;
+        font-size: 28px;
+        color: #1a1a1a;
+      }
+    }
+  }
+
+  .order-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .icon-wrapper {
+    position: relative;
+    margin-bottom: 8px;
+
+    .order-icon-bg {
+      width: 108px;
+      height: 108px;
+      background: #f8f8f8;
+      border-radius: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .order-icon {
+      width: 56px;
+      height: 56px;
+    }
+
+    .order-badge {
+      position: absolute;
+      top: 10px;
+      right: -10px;
+      height: 30px;
+      min-width: 30px;
+      line-height: 30px;
+      text-align: center;
+      background-color: var(--color-primary);
+      color: #fff;
+      border-radius: 44px;
+      font-size: 20px;
+      display: inline-block;
+    }
+  }
+
+  .icon-label {
+    font-size: 24px;
+    color: #404040;
+    line-height: 28px;
+  }
+  .icon-erweima-01 {
+    position: absolute;
+    top: 12px;
+    right: 24px;
+    color: var(--color-primary);
+    font-size: 38px;
+  }
+  .user-grade-name {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+    color: #777777;
+  }
+}

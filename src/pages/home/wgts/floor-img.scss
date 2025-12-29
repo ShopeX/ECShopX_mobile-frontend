@@ -1,0 +1,83 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.wgt-floor-img {
+  // .exclusive_list {
+  //   background-size: contain;
+  // }
+  // .exclusive_list_two {
+  //   display: flex;
+  //   align-items: center;
+  //   // padding: 0 20px;
+  //   overflow-x: scroll;
+  //   white-space: nowrap;
+  //   &::-webkit-scrollbar {
+  //     width: 0 !important;
+  //   }
+  .wgt-bd {
+    padding: 0 0 0 16px;
+  }
+
+  .img-list {
+    height: 100%;
+    white-space: nowrap;
+    position: relative;
+  }
+
+  .img-item {
+    display: inline-block;
+    margin-right: 16px;
+    width: 256px;
+    vertical-align: top;
+  }
+
+  // .lis:first-child {
+  //   margin-left: 16px;
+  // }
+  .title {
+    text-align: center;
+    font-size: 26px;
+    margin-top: 16px;
+    font-weight: 600;
+    color: #222;
+    line-height: 32px;
+    max-width: 256px;
+    padding: 0px 16px;
+    // @include multi-ellipsis(1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* display: -webkit-box; */
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    word-break: break-all;
+  }
+
+  .exclusive_list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .distributor {
+    display: flex;
+    &-name {
+      font-size: 22px;
+      margin-left: 4px;
+      color: #666;
+      @include text-overflow();
+    }
+  }
+}

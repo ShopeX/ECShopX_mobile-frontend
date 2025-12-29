@@ -1,0 +1,98 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.slider {
+  width: 100%;
+  position: relative;
+  &_swiper {
+    width: 100vw;
+    background-color: #eeeeee;
+    &_i {
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      &_word {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        &_text {
+          position: absolute;
+          transform-origin: 0% 0%;
+          &_i {
+            height: 40px;
+            font-size: 22px;
+            line-height: 40px;
+            color: rgb(255, 253, 253);
+            border-bottom: 2px solid #fff;
+            padding-left: 10px;
+          }
+          &_i::after {
+            content: '';
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            background: rgb(255, 255, 255);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            transform: translate(-100%, 50%);
+          }
+        }
+      }
+    }
+    &_video {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+    }
+    &_imgs {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &_img {
+      position: relative;
+    }
+  }
+  &_spot {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    &_i {
+      width: 14px;
+      height: 14px;
+      margin: 0 10px;
+      border-radius: 50%;
+      border: solid 2px #ffffff;
+      &_active {
+        background-color: #ffffff;
+      }
+    }
+  }
+}

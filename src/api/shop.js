@@ -1,0 +1,130 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
+import req from './req'
+
+export function getShop(params = {}) {
+  return req.get('/distributor/is_valid', params)
+}
+
+// 获取白名单店铺
+export function checkUserInWhite(params = {}) {
+  return req.get('/distributor/checkUserInWhite', params)
+}
+
+export function list(params = {}) {
+  return req.get('/distributor/list', params)
+}
+
+export function getStoreStatus(params = {}) {
+  return req.get('/nostores/getstatus', params)
+}
+
+export function getNearbyShop(params) {
+  return req.get('/distributor/list', params)
+}
+
+// 总店店铺信息及协议
+export function getStoreBaseInfo(params = {}) {
+  return req.get('/shops/info', params)
+}
+
+// 协议信息获取
+export function getRuleInfo(params = {}) {
+  return req.get('/shops/protocol', params)
+}
+
+// 获取总店信息
+export function getDefaultShop(params = {}) {
+  return req.get('/distributor/default', params)
+}
+
+// 获取总店信息
+export function getHeadquarters(params = {}) {
+  return req.get('/distributor/self', params)
+}
+
+//
+export function getPageParamsConfig({
+  page_name,
+  template_name = platformTemplateName,
+  version = 'v1.0.1'
+}) {
+  return req.get('/pageparams/setting', {
+    page_name,
+    template_name,
+    version
+  })
+}
+
+// 获取tabbars和小程序配置
+export function getAppConfig() {
+  return req.get('/pagestemplate/setInfo')
+}
+
+// 获取首页配置
+export function homeSetting() {
+  return req.get('common/setting', {
+    type: 'frontend'
+  })
+}
+
+/**
+ * @function APP启动获取全局配置
+ */
+export function getAppBaseInfo() {
+  return req.get(`pagestemplate/baseinfo`, {
+    page_name: 'color_style',
+    template_name: platformTemplateName,
+    version: 'v1.0.1'
+  })
+}
+
+/**
+ * @function 平台首页模版配置
+ */
+export function getShopTemplate(params) {
+  return req.get(`/pagestemplate/detail`, {
+    template_name: 'yykweishop',
+    weapp_pages: 'index',
+    ...params
+  })
+}
+
+/**
+ * @function 店铺首页模版配置
+ */
+export function getStoreShopTemplate(params) {
+  return req.get(`/pagestemplate/shopDetail`, {
+    template_name: 'yykweishop',
+    weapp_pages: 'index',
+    ...params
+  })
+}
+
+// 获取高德地图key
+export function getMapKeyDetail(params) {
+  return req.get('/third_party/map/key', params)
+}
+
+// 获取小程序价格配置
+export function getAppGoodsPriceSetting() {
+  return req.get('/setting/itemPrice')
+}
+
+// 获取店铺进店规则
+export function getStoreEnterRule() {
+  return req.get('/distributor/config/inRule')
+}
+
+// 验证导购员店铺是否有效，如果已登录，则验证用户和当前导购绑定的店铺是否有效
+export function checkStoreEnterRule(params) {
+  return req.post('/distributor/config/inRule/check', params)
+}
+
+// 查询当前用户绑定的白名单店铺
+export function getMyStoreWhiteList() {
+  return req.get('/distributor/whitelistByMember')
+}

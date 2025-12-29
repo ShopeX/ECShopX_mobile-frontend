@@ -1,0 +1,140 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-invoice-modal {
+  $self: &;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  transform: translate3D(0, 110%, 0);
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(#000, 0.6);
+    opacity: 0;
+    z-index: 998;
+  }
+
+  &__container {
+    background: #ffffff;
+    position: absolute;
+    border-radius: 12px;
+    z-index: 999;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 580px;
+  }
+
+  &.open {
+    transform: translate3D(0, 0, 0);
+    .comp-invoice-modal__overlay {
+      opacity: 1;
+    }
+
+    .comp-invoice-modal__container {
+      height: fit-content;
+      opacity: 1;
+      transition: all 0.3s ease-in-out;
+    }
+  }
+
+  &-box {
+    padding: 60px 48px;
+  }
+  &__header {
+    padding-bottom: 18px;
+    text-align: center;
+    font-family: PingFang SC, PingFang SC;
+    font-weight: 500;
+    font-size: 34px;
+    color: #1a1a1a;
+  }
+
+  &__content {
+    padding-bottom: 48px;
+    .email-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tips-box {
+      padding-top: 18px;
+      text-align: center;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 30px;
+      color: #666666;
+    }
+    .at-input {
+      margin: 0 !important;
+      padding: 0 10px !important;
+      background: #f8f8f8;
+      border-radius: 16px;
+      border: 1px solid #ebebeb;
+      flex: 1;
+      &__input {
+        margin-right: 0;
+        padding-right: 0 !important;
+        padding-left: 0 !important;
+        border-width: 0 !important;
+        text-align: center;
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 400;
+        font-size: 28px;
+        color: #1a1a1a;
+        height: 72px;
+      }
+    }
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .close-btn,
+    .confirm-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 230px;
+      height: 88px;
+      border-radius: 12px;
+      border: 2px solid #ebebeb;
+      font-family: PingFang SC, PingFang SC;
+      font-weight: 400;
+      font-size: 28px;
+      color: #666666;
+    }
+    .confirm-btn {
+      background: var(--color-primary);
+      color: #ffffff;
+      border: 2px solid var(--color-primary);
+    }
+  }
+}

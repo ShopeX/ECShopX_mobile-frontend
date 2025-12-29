@@ -1,0 +1,78 @@
+.sp-wx-privacy {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+.sp-wx-privacy.true {
+  display: block;
+}
+.sp-wx-privacy.false {
+  display: none;
+}
+.sp-wx-privacy .modal-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px 16px 0 0;
+  overflow: hidden;
+  background-color: #fff;
+}
+.sp-wx-privacy .privacy__hd {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.sp-wx-privacy .privacy__hd .privacy__title {
+  font-size: 30px;
+  font-weight: bold;
+}
+.sp-wx-privacy .privacy__bd {
+  background: #fff;
+  margin: 0px 40px;
+  line-height: 48px;
+  text-align: left;
+}
+.sp-wx-privacy .privacy__bd .privacy__tips {
+  font-size: 28px;
+  color: #666;
+}
+.sp-wx-privacy .privacy__bd .privacy-contract {
+  color: #333;
+  font-weight: bold;
+}
+.sp-wx-privacy .privacy__ft {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 50px;
+  margin-bottom: 30px;
+}
+.sp-wx-privacy .privacy__ft .disagree-btn {
+  font-size: 28px;
+  background: #F2F2F2;
+  color: #09C160;
+  height: 80px;
+  line-height: 80px;
+  width: 200px;
+}
+.sp-wx-privacy .privacy__ft .disagree-btn:after {
+  border-width: 0;
+}
+
+.sp-wx-privacy .privacy__ft .agree-btn {
+  font-size: 28px;
+  background: #09C160;
+  color: #fff;
+  height: 80px;
+  line-height: 80px;
+  width: 200px;
+}
+.sp-wx-privacy .privacy__ft .agree-btn:after {
+  border-width: 0;
+}

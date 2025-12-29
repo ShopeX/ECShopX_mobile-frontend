@@ -1,0 +1,108 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-community-withdraw {
+  padding: 30px 30px;
+  .withdraw-hd {
+    margin: 10px 0 32px;
+    .label {
+      font-weight: 400;
+      color: #666666;
+      line-height: 40px;
+    }
+  }
+  .withdraw-bd {
+    padding: 24px 24px 46px;
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 32px;
+    .label {
+      font-weight: 400;
+      color: #666666;
+      line-height: 40px;
+    }
+    .withdraw-money {
+      display: flex;
+      align-items: flex-end;
+      margin-top: 70px;
+    }
+    .rmb {
+      font-size: 50px;
+      font-weight: 600;
+      color: #222222;
+      line-height: 70px;
+    }
+    .at-input {
+      flex: 1;
+      margin-bottom: 0;
+      padding: 0 16px;
+
+      &:after {
+        border-color: transparent;
+      }
+      &__input {
+        font-size: 70px;
+        font-weight: 400;
+        color: #222;
+        height: 80px;
+      }
+    }
+    .btn-allwithdraw {
+      /* prettier-ignore */
+      border: 1PX solid var(--color-primary);
+      width: 160px;
+      height: 50px;
+      border-radius: 40px;
+      .at-button__text {
+        height: 50px;
+        color: var(--color-primary);
+        font-size: 24px;
+        line-height: 48px;
+      }
+    }
+  }
+  .withdraw-ft {
+    margin-bottom: 32px;
+    padding: 24px 24px 44px;
+    background-color: #fff;
+    border-radius: 16px;
+    .label {
+      font-weight: 400;
+      color: #666666;
+      line-height: 40px;
+    }
+    .sp-cell {
+      padding: 0;
+      margin-top: 40px;
+    }
+    .icon-dianpushouye {
+      color: var(--color-primary);
+      font-size: 32px;
+      margin-right: 6px;
+    }
+  }
+  .withdraw-tip {
+    margin: 0 24px;
+    font-size: 24px;
+    color: #aaaaaa;
+    line-height: 42px;
+  }
+  .btn-wrap {
+    padding: 20px;
+  }
+}

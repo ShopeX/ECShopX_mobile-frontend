@@ -1,0 +1,85 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-trade-evaluate {
+  .sp-page__body {
+    overflow: auto;
+  }
+
+  .goods-item-wrap {
+    padding: 24px 16px;
+    background-color: #fff;
+    border-radius: 16px;
+    margin: 24px 16px 0;
+  }
+
+  .goods-info {
+    display: flex;
+
+    .goods-name {
+      font-size: 24px;
+      color: #666;
+      margin: 16px 0 0 24px;
+    }
+  }
+
+  .goods-rate {
+    display: flex;
+    align-items: center;
+    margin-top: 32px;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 24px;
+
+    .label {
+      font-size: 28px;
+      color: #222;
+      margin-right: 40px;
+    }
+
+    .at-rate__icon {
+      &--on {
+        color: #d92128;
+      }
+    }
+  }
+
+  .goods-textarea {
+    .at-textarea {
+      border-width: 0;
+      padding: 20px 0;
+    }
+
+    .at-textarea__textarea {
+      font-size: 24px;
+      color: #aaa;
+    }
+  }
+
+  .goods-rate-images {
+    .file-item {
+      margin-bottom: 0;
+    }
+    .btn-upload {
+      margin-bottom: 0;
+    }
+  }
+
+  .btn-wraps {
+    padding: 20px;
+  }
+}

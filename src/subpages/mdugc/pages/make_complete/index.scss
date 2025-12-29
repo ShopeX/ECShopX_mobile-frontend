@@ -1,0 +1,94 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.ugcindex {
+  width: 100%;
+  padding: 0 30px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #ffffff;
+  &_search {
+    .search-inputugc__bar {
+      padding-left: 0;
+    }
+  }
+  &_list {
+    &__scroll {
+      position: absolute;
+      top: 80px;
+      left: 0;
+      width: 100%;
+      padding: 0 30px;
+      margin: 0 auto;
+      bottom: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      z-index: 1;
+      &_scrolls {
+        width: 100%;
+        display: flex;
+        display: flex;
+        justify-content: space-between;
+        &_item {
+          width: 48.7%;
+          margin-top: 30px;
+          .goods-item {
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            &__cont {
+              background: #f2f2f2;
+              padding: 40px;
+            }
+            &__desc {
+              display: none;
+            }
+            &__extra {
+            }
+            &__title {
+              text-align: center;
+              font-size: 26px;
+            }
+            &__price-market {
+              display: none;
+            }
+            &__price {
+              padding-right: 0;
+              color: #000000;
+              .package-price {
+                text-align: center;
+                font-size: 26px;
+              }
+            }
+            &__actions {
+              display: none;
+            }
+          }
+        }
+      }
+    }
+  }
+  .float-menus {
+    right: 33px;
+  }
+  &_floatmenus {
+    .float-menus {
+      bottom: 220px;
+    }
+  }
+}

@@ -1,0 +1,86 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+
+.page-distribution-subordinate {
+  height: 100%;
+  .client-list__tabs {
+    /*  #ifdef  h5  */
+    top: $navigate-height-h5;
+    /*  #endif  */
+  }
+  .subordinate-list__scroll {
+    @include page-scroll(94px, 0);
+    // height: calc(100vh - #{$tabs-height + $navigate-height});
+    /*  #ifdef  h5  */
+    @include page-scroll($tabs-height + $navigate-height-h5, 0);
+    // height: calc(100vh - #{$tabs-height + $navigate-height-h5});
+    top: 160px;
+    /*  #endif  */
+  }
+
+  .list {
+    min-height: calc(100vh - #{$tabs-height + $navigate-height});
+    /*  #ifdef  h5  */
+    min-height: calc(100vh - #{$tabs-height + $navigate-height-h5});
+    /*  #endif  */
+  }
+  .avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background: #eee;
+    margin-right: 20px;
+    border: 4px solid #ccc;
+  }
+  .name {
+    font-size: 32px;
+  }
+  .level-name {
+    font-size: 28px;
+    color: #999;
+  }
+  .mobile {
+    font-size: 28px;
+    color: #999;
+  }
+  .bind-date {
+    color: #999;
+    text-align: right;
+  }
+  .child {
+    .avatar {
+      border-color: #2372c7;
+    }
+  }
+  .Gchild {
+    .avatar {
+      border-color: #6dc8e1;
+    }
+  }
+  .GGchild {
+    .avatar {
+      border-color: #d8eef5;
+    }
+  }
+  .sp-tabs-hd .tab-item-active .name {
+    border-bottom: 4px solid var(--color-dianwu-primary);
+    color: var(--color-dianwu-primary);
+  }
+}

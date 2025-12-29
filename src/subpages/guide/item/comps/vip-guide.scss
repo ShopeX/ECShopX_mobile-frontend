@@ -1,0 +1,70 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+//@import '@/style/imports';
+
+.vip-guide {
+  display: flex;
+  padding: 20px;
+  margin-bottom: 20px;
+  align-items: center;
+  background: #fffdf1;
+  color: #9e8d66;
+  border-radius: 10px;
+  &-content {
+    flex: 1;
+    padding-right: 20px;
+  }
+  .vip-price {
+    display: flex;
+    align-items: center;
+    padding-bottom: 15px;
+    .cur {
+      font-size: 24px;
+    }
+    .vip-price-amount {
+      font-size: 34px;
+      letter-spacing: 0;
+      @include text-overflow();
+      font-weight: bold;
+    }
+  }
+  .vip-guide-text {
+    line-height: 1.2;
+    font-size: 26px;
+  }
+  .vip-tag {
+    height: 42px;
+    line-height: 42px;
+    padding: 0 10px;
+    margin-right: 15px;
+    border-radius: 5px;
+    background: #c3b086;
+    color: #fff;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  .vip-apply {
+    padding: 0 20px;
+    height: 60px;
+    line-height: 58px;
+    border: 1px solid rgba(158, 141, 102, 0.3);
+    border-radius: 8px;
+    font-size: 24px;
+  }
+}

@@ -1,0 +1,15 @@
+node_modules
+dist
+src/utils/qqmap-wx-jssdk.js
+src/utils/qqmap-wx-jssdk.min.js
+src/utils/cos/cos-js-sdk-v5.min.js
+src/utils/cos/cos-wx-sdk-v5.min.js
+src/utils/cos/index.js
+src/utils/qt_mini.umd.js
+src/components/sp-html/mp-html
+src/components/wxParse/
+!.eslintrc.js
+**/*.scss
+package-lock.json
+.DS_Store
+

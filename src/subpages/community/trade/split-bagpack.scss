@@ -1,0 +1,85 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '@/style/imports';
+.wuliu-detail {
+  .title-status {
+    background-color: #f7e5e4;
+    height: 65px;
+    padding-left: 10px;
+    color: #82565d;
+    font-weight: 500;
+    line-height: 65px;
+  }
+
+  .wuliu-detail {
+    .wuliu-detail-item {
+      @include clearfix();
+      padding: 0 20px 30px;
+      background-color: #fff;
+      margin-bottom: 20px;
+      .wuliu-status {
+        padding-top: 25px;
+        display: flex;
+        justify-content: space-between;
+        padding: 30px 10px 10px 10px;
+        align-items: center;
+        .biao-icon {
+          color: #ba0c29;
+          //   padding: 10px;
+          font-size: 34px;
+          .icon-text {
+            margin-left: 20px;
+            font-size: 30px;
+          }
+        }
+        .wuliu-order {
+          color: #909399;
+        }
+      }
+      .wuliu-info {
+        text-align: right;
+        padding: 10px;
+        //   margin-top: 10px;
+        //   font-size: 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .good-list {
+        @include clearfix();
+        padding: 10px 10px 20px;
+
+        margin: 15px 0;
+        overflow-x: auto;
+        height: 130px;
+        white-space: nowrap;
+        .order-item__img {
+          width: 120px;
+          height: 120px;
+          margin-right: 35px;
+          border-radius: 6px;
+        }
+      }
+      .ft-tips {
+        margin-top: 25px;
+        color: #909399;
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '../../style/imports.scss';
+
+.coupon-modal {
+  .at-modal {
+    &__container {
+      border-radius: 20px;
+      width: 90% !important;
+    }
+  }
+  .coupon-list-ticket {
+    padding-bottom: 10px;
+    height: 900px;
+  }
+  .title {
+    text-align: center;
+    font-size: 50px;
+    color: #422d0a;
+    background: #f5f0e2;
+    font-weight: bolder;
+    padding: 10px 0px;
+    position: relative;
+  }
+  .coupon-scroll {
+    background: #f5f0e2;
+  }
+  .button {
+    padding: 15px 0px;
+    background: linear-gradient(270deg, #f5bf5a 0%, #ffe6b5 100%);
+    border-radius: 45px;
+    box-shadow: -5px 8px 0px 0px #f6be87, -5px 7px 0px 0px #ffe0a8;
+    text-align: center;
+    width: 80%;
+    margin: 25px auto;
+    color: #724120;
+  }
+  .poster-close-btn {
+    width: 50px;
+    height: 50px;
+    margin-top: 20px;
+    line-height: 50px;
+    text-align: center;
+    box-shadow: inset 0 0 0 1px #b5a488;
+    border-radius: 100%;
+    color: #b5a488;
+    font-size: 40px;
+    background: #f5f0e2;
+    position: absolute;
+    right: 5%;
+    top: 0;
+    // cursor: pointer;
+  }
+}

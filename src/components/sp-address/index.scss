@@ -1,0 +1,74 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.sp-address {
+  .sp-float-layout-bd {
+    padding: 0;
+  }
+
+  .address-hd {
+    display: flex;
+    align-items: center;
+    padding: 20px 40px 10px;
+
+    .tab-item {
+      margin-right: 20px;
+
+      &.active {
+        color: var(--color-primary);
+        font-weight: 600;
+      }
+    }
+  }
+
+  .address-bd {
+    padding: 10px 0 20px;
+    height: 600px;
+    overflow: auto;
+
+    .address-cols {
+      display: flex;
+      transition-duration: 300ms;
+    }
+
+    .address-col {
+      width: 100%;
+      flex-shrink: 0;
+      height: 600px;
+      padding: 0 40px;
+      box-sizing: border-box;
+    }
+  }
+
+  .address-item {
+    padding: 10px 0;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+
+    &.active {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .iconfont {
+      font-size: 36px;
+      color: var(--color-primary);
+    }
+  }
+}

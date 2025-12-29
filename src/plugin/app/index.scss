@@ -1,0 +1,120 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+/*
+* 分享模块
+*/
+body {
+  &.lock {
+    overflow: hidden !important;
+  }
+}
+.mapp-share {
+  &.close {
+    display: none;
+  }
+  &__bg {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    // &.close {
+    //   display: none;
+    // }
+  }
+  &__poster {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 250px;
+    z-index: 2000;
+    visibility: hidden;
+    &.active {
+      visibility: visible;
+    }
+    .poster-img__wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 480px;
+    }
+  }
+  &__body {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    z-index: 2000;
+
+    .mapp-share__close {
+      position: absolute;
+      right: 20px;
+      width: 60px;
+      top: -80px;
+    }
+    .mapp-share__hd {
+      display: flex;
+      list-style: none;
+      border-bottom: 1px solid #cecece;
+      li {
+        flex: 1;
+        padding: 20px 10px;
+        text-align: center;
+        position: relative;
+        &.active {
+          color: #000;
+          font-weight: 600;
+          &:after {
+            content: '';
+            display: block;
+            position: absolute;
+            width: 120px;
+            height: 2px;
+            background: #000;
+            left: 50%;
+            transform: translate(-50%, 0);
+          }
+        }
+      }
+    }
+    .mapp-share__bd {
+      padding: 20px 0;
+      .share-item__wrap {
+        display: none;
+        list-style: none;
+        justify-content: space-around;
+        &.active {
+          display: flex;
+        }
+      }
+      .share-item {
+        text-align: center;
+        .share-image {
+          width: 80px;
+          height: 80px;
+        }
+      }
+    }
+  }
+}

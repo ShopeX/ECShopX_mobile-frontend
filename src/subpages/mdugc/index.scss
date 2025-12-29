@@ -1,0 +1,102 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-ugc-index {
+  .search-input {
+    padding: 16px 24px;
+    background: #fff;
+    box-sizing: border-box;
+    height: auto;
+
+    .at-icon-search {
+      color: var(--color-primary);
+
+      &:after {
+        content: '';
+        width: 1px;
+        height: 34px;
+        border-right: 1px solid #bbbbbb;
+        position: relative;
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .ugc-tag {
+    &.sp-tag-bar {
+      padding: 16px 12px;
+      .tag-item {
+        padding: 14px 24px;
+        background-color: #f5f5f5;
+        border-radius: 30px;
+        color: #222;
+        font-size: 24px;
+
+        &.active {
+          color: var(--color-primary);
+          background-color: rgba(var(--color-rgb), 0.2);
+          font-size: 24px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
+
+  .ugc-filter {
+    background-color: #fff;
+    .sp-tag-bar {
+      padding: 24px;
+      border-top-left-radius: 40px;
+      border-top-right-radius: 40px;
+      background-color: #f5f5f5;
+      .tag-item {
+        margin-right: 40px;
+      }
+    }
+    .at-search-bar__input {
+      padding: 0 80px;
+    }
+  }
+
+  .list-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 16px 16px;
+
+    .left-container {
+      width: 350px;
+    }
+
+    .right-container {
+      width: 350px;
+      // padding-left: 20px;
+    }
+
+    .note-item-wrap {
+      margin-bottom: 20px;
+      // box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+      border-radius: 2px;
+      position: relative;
+    }
+  }
+
+  .icon-huiyuanzhongxin,
+  .icon-tianjia1 {
+    font-size: 36px;
+  }
+}

@@ -1,0 +1,78 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-dianwu-login {
+  height: 100vh;
+  background-color: #fff;
+  padding: 0 32px;
+  overflow: hidden;
+
+  .head-block {
+    margin-top: 20%;
+    &__title {
+      font-size: 52px;
+      font-weight: 400;
+      color: #111a34;
+    }
+    &__desc {
+      font-weight: 300;
+      color: #858b9c;
+    }
+  }
+
+  .login-form {
+    margin-top: 100px;
+  }
+
+  .head-form {
+    margin-bottom: 30px;
+    &__title {
+      font-size: 32px;
+      font-weight: 400;
+      color: #111a34;
+    }
+  }
+
+  .code-field {
+    display: flex;
+  }
+
+  .btn-text {
+    color: var(--color-dianwu-primary);
+    font-size: 32px;
+    font-weight: 400;
+  }
+
+  .at-button--primary {
+    background-color: var(--color-dianwu-primary) !important;
+    border-color: var(--color-dianwu-primary) !important;
+  }
+
+  .sp-form-item {
+    .at-input {
+      border-width: 0;
+      flex: 1;
+      padding: 16px 0;
+    }
+    .form-item-control {
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e2e4ea;
+    }
+  }
+}

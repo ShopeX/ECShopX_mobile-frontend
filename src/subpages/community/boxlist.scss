@@ -1,0 +1,89 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-good-boxlist {
+  .tab-container {
+    height: 90px;
+  }
+  .boxlist-list {
+    padding: 20px 0;
+    .goods-item {
+      display: flex;
+      background-color: #fff;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    .item-hd {
+      .sp-image {
+        width: 140px;
+      }
+      margin-right: 20px;
+    }
+    .item-bd {
+      flex: 1;
+    }
+  }
+  .item-info {
+    display: flex;
+    justify-content: space-between;
+    height: 80px;
+    margin-top: 10px;
+    .item-name {
+      @include multi-ellipsis(2);
+      line-height: 40px;
+      width: 380px;
+    }
+    .item-sku {
+      color: #666;
+      width: 170px;
+      text-align: right;
+      font-size: 26px;
+    }
+  }
+  .item-no-num {
+    .item-no {
+      color: #666;
+    }
+    .item-num {
+      color: var(--color-primary);
+      font-size: 30px;
+    }
+  }
+  .item-no-num {
+    display: flex;
+    justify-content: space-between;
+  }
+  .box-num {
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 32px;
+    color: var(--color-primary);
+  }
+  .date-time-item {
+    display: flex;
+    justify-content: flex-end;
+    .picker-value {
+    }
+    .date-picker {
+      margin-right: 20px;
+    }
+  }
+}

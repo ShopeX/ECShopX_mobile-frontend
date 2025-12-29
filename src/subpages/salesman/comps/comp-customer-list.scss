@@ -1,0 +1,69 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-customer-list {
+  &-scroll {
+    &-list {
+      margin: 16px 24px 0 24px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      padding: 24px 20px;
+      image {
+        width: 88px;
+        height: 88px !important;
+        border-radius: 50%;
+        margin-right: 20px;
+      }
+      .details {
+        .customer {
+          display: flex;
+          font-family: PingFangSC, PingFang SC;
+          view {
+            text:nth-child(1) {
+              margin-left: 0px;
+              font-weight: 500;
+              font-size: 28px;
+              color: #222222;
+              line-height: 40px;
+            }
+            text:nth-child(2) {
+              margin-left: 0px;
+              font-size: 24px;
+              line-height: 40px;
+              color: #9197a6;
+            }
+          }
+          text {
+            margin-left: 24px;
+            font-size: 24px;
+            color: #868c9d;
+            line-height: 33px;
+          }
+        }
+        .source {
+          margin-top: 8px;
+          font-weight: 400;
+          font-size: 24px;
+          color: #868c9d;
+          line-height: 33px;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,49 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-other-login {
+  position: relative;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+  .text {
+    color: rgba(197, 202, 213, 1);
+    font-size: 26px;
+    position: relative;
+    margin: -18px auto 0;
+    background-color: white;
+    width: 200px;
+  }
+  .loginway {
+    padding: 24px 0 10px 0;
+    @include flex-center();
+
+    .wechat {
+      width: 90px;
+      height: 90px;
+      border: 1px solid #c5cad5;
+      border-radius: 50%;
+      color: rgba(0, 200, 0, 1);
+
+      @include flex-center();
+
+      .icon-weixin {
+        font-size: 40px;
+      }
+    }
+  }
+}

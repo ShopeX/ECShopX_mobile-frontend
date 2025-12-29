@@ -1,0 +1,171 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.add-personnel {
+  padding: 24px;
+  .btn-wrap {
+    padding: 20px 40px;
+    border: transparent 1px solid;
+  }
+  .prompt {
+    padding: 24px 0;
+    color: #999;
+    font-size: 24px;
+    .icon-bg-security {
+      font-size: 26px;
+      color: #219e15;
+    }
+  }
+
+  .gender {
+    display: flex;
+    .genders {
+      margin-left: 24px;
+    }
+  }
+
+  .ages {
+    color: #ccc;
+    font-size: 28rpx;
+  }
+
+  .sp-input {
+    color: #333;
+    font-size: 28px;
+  }
+
+  .scroll-view-container {
+    background: #fff;
+    border-radius: 8px;
+    .scroll-view-body {
+      overflow: hidden;
+      padding: 0 24px;
+    }
+  }
+
+  .page-address-edit__form {
+    border-radius: 16px;
+
+    .sp-cell {
+      padding: 26px 0;
+
+      &__hd {
+        width: 220px;
+      }
+
+      &__bd {
+        padding-top: 4px;
+      }
+
+      &__title {
+        color: #666;
+        font-size: 24px;
+      }
+    }
+  }
+
+  .sp-cell__ft {
+    color: #ccc;
+  }
+
+  &__form {
+    padding: $edge-size;
+    margin: 0 0 $edge-margin;
+  }
+
+  .picker {
+    text {
+      font-size: 28px;
+    }
+
+    &__title {
+      font-size: $font-size;
+      margin-right: 16px;
+      width: 172px;
+    }
+
+    .pick-value {
+      color: #333;
+    }
+
+    span.pick-value-null {
+      color: #ccc;
+    }
+
+    text.pick-value-null {
+      color: #808080;
+    }
+  }
+
+  .border-bottom {
+    border-bottom: 1px solid #dddddd;
+  }
+
+  .logistics-no {
+    .at-input {
+      margin-bottom: 0;
+      padding: 0;
+
+      &:after {
+        border-color: transparent;
+      }
+
+      &__input {
+        padding-right: 0;
+      }
+    }
+
+    .at-textarea {
+      overflow: hidden;
+      border: none;
+      width: 100%;
+      height: 100px;
+      padding: 0 18px 12px 0;
+
+      &__textarea {
+        color: #333;
+        font-size: 28px;
+        height: 100%;
+      }
+    }
+
+    .taro-textarea {
+      font-size: 30px !important;
+      font-family: PingFangSC-Regular, PingFang SC;
+    }
+  }
+
+  .default_address {
+    border-radius: 16px;
+    margin: 22px 0;
+    padding-right: 0px;
+
+    .sp-cell__title {
+      font-size: 28px;
+    }
+  }
+
+  .at-input input {
+    font-size: 28px;
+  }
+
+  .detail-address {
+    padding-bottom: 0 !important;
+    align-items: flex-start !important;
+  }
+}

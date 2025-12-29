@@ -1,0 +1,17 @@
+.temp/
+.rn_temp/
+node_modules/
+.DS_Store
+.idea/
+.h5_dev_dist
+release.*
+dist_iwa.zip
+sitemap.json
+dist/
+.history
+.swc
+.vscode
+.env.local
+.cursor/
+AGENTS.md
+openspec/

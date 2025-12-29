@@ -1,0 +1,145 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-point-detail {
+  overflow-x: hidden;
+  .point-detail-hd {
+    width: 850px;
+    height: 300px;
+    background: var(--color-primary);
+    border-radius: 0 0 150px 150px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .point-info {
+    width: 710px;
+    height: 190px;
+    background: #ffffff;
+    border-radius: 16px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: -80px;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    &-hd {
+      display: flex;
+      justify-content: space-between;
+      .label {
+        color: #444;
+        font-size: 24px;
+      }
+    }
+    .point-table {
+      display: flex;
+      align-items: center;
+    }
+  }
+  .icon-jifen-01-01 {
+    font-size: 40px;
+    color: var(--color-primary);
+  }
+
+  .point-rule {
+    padding: 0 10px;
+    height: 36px;
+    border-radius: 20px;
+    /* prettier-ignore */
+    border: 1PX solid #999;
+    color: #999;
+    font-size: 24px;
+    text-align: center;
+  }
+  .point-total {
+    font-size: 56px;
+    font-weight: 600;
+    color: #111;
+    margin-top: 20px;
+  }
+  .point-type {
+    display: flex;
+    padding: 20px 24px;
+    background-color: #fff;
+    .btn-pointtype {
+      margin-right: 24px;
+      width: 110px;
+      height: 58px;
+      line-height: 58px;
+      border-radius: 29px;
+      text-align: center;
+      background: #f0f0f0;
+      color: #888;
+      &.active {
+        background: rgba(var(--color-rgb), 0.2);
+        color: var(--color-primary);
+      }
+    }
+  }
+  .point-list {
+    margin-top: 120px;
+    padding: 0 20px;
+    .title {
+      color: #222;
+      padding: 0 20px;
+      margin-bottom: 20px;
+    }
+    &-body {
+      border-radius: 16px;
+    }
+    .point-item {
+      display: flex;
+      padding: 24px;
+      /* prettier-ignore */
+      border-top: 1PX solid #eee;
+      .point-item-hd {
+        flex: 1;
+      }
+      .name {
+        height: 33px;
+        font-size: 26px;
+        font-weight: 500;
+        color: #222;
+        line-height: 33px;
+      }
+      .created,
+      .order-no {
+        height: 30px;
+        font-size: 22px;
+        font-weight: 400;
+        color: #aaa;
+        line-height: 30px;
+      }
+      .point-value {
+        font-size: 26px;
+        margin-top: 30px;
+        &.in {
+          color: var(--color-primary);
+          font-weight: 600;
+        }
+        &.out {
+          color: #888;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+  .sp-scrollview-body {
+    background-color: #fff;
+  }
+}

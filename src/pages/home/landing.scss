@@ -1,0 +1,153 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+@import '../../style/imports';
+
+.page-member-integral {
+  padding-bottom: $tabbar-height;
+  .sp-icon-pay,
+  .sp-icon-clock,
+  .sp-icon-baoguo,
+  .sp-icon-comment {
+    @include iconfont-gradient(linear-gradient(90deg, #faa761, #fa3515));
+  }
+  .sp-icon-star,
+  .sp-icon-thumb {
+    @include iconfont-gradient(linear-gradient(270deg, #af6ff7, #cd3ae3));
+  }
+  .sp-icon-money,
+  .sp-icon-hongbao {
+    @include iconfont-gradient(linear-gradient(90deg, #fad346, #f7b11c));
+  }
+  .sp-icon-setting,
+  .sp-icon-help {
+    @include iconfont-gradient(linear-gradient(103deg, #7fd5fa, #2580fc));
+  }
+  .sp-icon-location {
+    @include iconfont-gradient(linear-gradient(270deg, #2757c5, #7298fd));
+  }
+  .sp-icon-qrcode {
+    @include iconfont-gradient(linear-gradient(90deg, #b4ec51, #429321));
+  }
+}
+
+.member-integral {
+  &__hd {
+    background: #fa3515;
+    background: linear-gradient(180deg, rgba(#fa9461, 1) 0%, rgba(#fa3515, 1) 100%);
+    height: 280px;
+    overflow: hidden;
+    position: relative;
+    &:before {
+      transform: rotate(40deg) translate3D(0, -72%, 0);
+      background: linear-gradient(348deg, rgba(#fff, 0) 0%, rgba(#fff, 1) 100%);
+      content: '';
+      width: 300px;
+      height: 300px;
+      display: block;
+      position: absolute;
+      top: 0;
+      right: 0;
+    }
+  }
+  &__bd {
+    position: relative;
+    margin-top: -30px;
+  }
+}
+
+.integral {
+  &-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 0 0;
+    color: $color-brand-primary-text;
+    &__status {
+      padding: $edge-margin 0;
+      display: flex;
+      align-items: center;
+      color: #666;
+      font-size: 24px;
+      justify-content: space-around;
+    }
+  }
+  &-number {
+    &__text {
+      font-weight: bold;
+      font-size: 60px;
+    }
+  }
+  &-text {
+    margin-top: 30px;
+    font-weight: bold;
+    font-size: 36px;
+  }
+  &-sec {
+    background: #fff;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0 30px 30px;
+    &__share {
+      height: 60px;
+      line-height: 60px;
+      flex: 1;
+      text-align: left;
+      padding-left: 30px;
+    }
+  }
+}
+
+.member-pay {
+  box-sizing: border-box;
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 40px 30px 0 30px;
+    &-item {
+      width: 200px;
+      border: 1px solid $color-brand-primary;
+      background-color: $color-brand-primary-text;
+      margin: 20px 0;
+    }
+    &-active {
+      background-color: $color-brand-primary;
+      color: $color-brand-primary-text;
+    }
+    .extra-regard {
+      width: 100%;
+      margin: 20px 0;
+      text-align: center;
+      &__Text {
+        color: $color-brand-primary;
+      }
+    }
+  }
+  .otherNumber {
+    margin: 30px;
+  }
+}
+
+.at-modal__content {
+  text-align: center;
+  display: flex;
+  align-items: center;
+}

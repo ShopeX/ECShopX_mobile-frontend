@@ -1,0 +1,105 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.comp-shopitem {
+  padding: 24px 16px;
+  background: #fff;
+  display: flex;
+  margin-bottom: 5px;
+  .shopitem-hd {
+    width: 100px;
+    height: 100px;
+    border-radius: 20px;
+    /* prettier-ignore */
+    border: 1PX solid #ddd;
+    overflow: hidden;
+    .shop-image {
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .shopitem-bd {
+    width: 100%;
+    // margin-left: 25px;
+  }
+  .shop-info {
+    display: flex;
+    align-items: center;
+    .name,
+    .distance {
+      @include text-overflow();
+    }
+    .name {
+      width: 70%;
+      font-weight: bold;
+      color: #111;
+      // margin-left: 24px;
+    }
+    .distance {
+      font-size: 22px;
+      color: var(--color-primary);
+      max-width: 20%;
+      height: 26px;
+      line-height: 26px;
+      padding: 0px 2px;
+      border-radius: 8px;
+      /* prettier-ignore */
+      border: 1PX solid var(--color-primary);
+      margin-right: 24px;
+    }
+  }
+
+  .shop-desc {
+    font-size: 24px;
+    color: #999;
+    line-height: 36px;
+    @include text-overflow();
+  }
+
+  .icon-clock1 {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+
+  .icon-dizhiguanli-01 {
+    font-size: 26px;
+    margin-right: 5px;
+  }
+
+  .shop-tag {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 8px;
+    overflow: auto;
+    white-space: nowrap;
+    flex-grow: 1;
+    .tag {
+      /* prettier-ignore */
+      border: 1PX solid var(--color-primary);
+      padding: 2px 6px;
+      color: var(--color-primary);
+      font-size: 22px;
+      border-radius: 10px;
+      margin-right: 10px;
+    }
+  }
+  // .shop-tag::-webkit-scrollbar {
+  //   display: none;
+  // }
+}

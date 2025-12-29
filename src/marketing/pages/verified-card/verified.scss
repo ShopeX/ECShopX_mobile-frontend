@@ -1,0 +1,69 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+.page-distribution-index {
+  .page-bd {
+    background-color: #fff;
+    padding: 30px;
+    height: 100vh;
+  }
+  .at-input {
+    padding: 16px 0;
+    margin: 0 0 20px;
+
+    // &:after {
+    //   border-color: #d6e4ef;
+    // }
+    // border-bottom: 1px solid;
+  }
+  .btn {
+    margin-top: 30px;
+  }
+  .bt {
+    .picker {
+      padding: 16px 0;
+      margin: 0 0 $edge-size;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1px solid rgba($color-brand-primary, 0.2);
+      &__title {
+        font-size: $font-size;
+        margin-right: 16px;
+        width: 172px;
+      }
+      .pick-value {
+        color: #333;
+      }
+      span.pick-value-null {
+        color: #ccc;
+      }
+      text.pick-value-null {
+        color: #808080;
+      }
+    }
+    // .pick-value {
+    //     color: #333;
+    //   }
+    //   span.pick-value-null {
+    //     color: #ccc;
+    //   }
+    //   text.pick-value-null {
+    //     color: #808080;
+    //   }
+  }
+}

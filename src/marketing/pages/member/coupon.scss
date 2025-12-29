@@ -1,0 +1,98 @@
+/* +----------------------------------------------------------------------
+ | ECShopX open source E-commerce
+ | ECShopX 开源商城系统 
+ +----------------------------------------------------------------------
+ | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
+ +----------------------------------------------------------------------
+ | Corporate Website:  https://www.shopex.cn 
+ +----------------------------------------------------------------------
+ | Licensed under the Apache License, Version 2.0
+ | http://www.apache.org/licenses/LICENSE-2.0
+ +----------------------------------------------------------------------
+ | The removal of shopeX copyright information without authorization is prohibited.
+ | 未经授权不可去除shopeX商派相关版权
+ +----------------------------------------------------------------------
+ | Author: shopeX Team <mkt@shopex.cn>
+ | Contact: 400-821-3106
+ +----------------------------------------------------------------------
+ */
+
+.coupon-list {
+  background: #f6f6f6;
+  .navbar_padtop {
+    padding-top: $navigate-height;
+  }
+  &__scroll {
+    @include page-scroll(100px, $edge-margin);
+    box-sizing: border-box;
+    padding-top: 20px;
+    bottom: 105px;
+  }
+  &.has-navbar {
+    .coupon-list__scroll {
+      top: $navigate-height + 100px;
+    }
+  }
+
+  .at-tabs__header {
+    .at-tabs__item {
+      flex: 0 0 180px;
+      font-weight: 400;
+    }
+    .at-tabs__item-underline {
+      height: 6px;
+      width: 30%;
+      left: 35%;
+    }
+  }
+  &__tabs {
+    .at-tabs__item--active {
+      font-size: 34px !important;
+    }
+    .at-tabs__item {
+      font-size: 28px;
+      color: #999999;
+    }
+  }
+}
+
+.coupon-bottom {
+  width: 77%;
+  padding: 30px 89px;
+  display: flex;
+  justify-content: space-around;
+  /*  #ifdef  h5  */
+  width: 100%;
+  padding: 35px 0px;
+  justify-content: space-evenly;
+  /*  #endif  */
+  background: #ffffff;
+  position: fixed;
+  z-index: 999;
+  bottom: 0;
+  border-radius: 0px 2px 2px 0px;
+  box-shadow: 0px 0px 12px 0px rgba(0, 0, 0, 0.14);
+  .left {
+    height: 40px;
+    font-size: 28px;
+    font-weight: 400;
+    color: #222222;
+    line-height: 40px;
+    // text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+  }
+  .middle {
+    color: #bbbbbb;
+  }
+  .right {
+    height: 40px;
+    font-size: 28px;
+    font-weight: 400;
+    color: #f4811f;
+    line-height: 40px;
+    // text-shadow: 0px 0px 12px rgba(0, 0, 0, 0.14);
+    .icon {
+      width: 24.55px;
+      height: 18px;
+    }
+  }
+}
