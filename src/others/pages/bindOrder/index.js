@@ -8,7 +8,7 @@ import { View, Input, Image } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { SpNavBar } from '@/components'
+import { SpNavBar, SpPage } from '@/components'
 
 import './index.scss'
 
@@ -91,62 +91,67 @@ export default class BindOrder extends Component {
     const { colors } = this.props
 
     return (
-      <View className='bindOrder'>
-        <SpNavBar title='线下订单关联' leftIconType='chevron-left' fixed='true' />
-        <View className='barCode'>
-          <View className='line'>
-            请输入或者扫码录入订单号
-            <View className='iconfont icon-info' onClick={this.showTips.bind(this, 1)}></View>
+      <SpPage
+        className='bindOrder'
+        renderFooter={
+          <View
+            className='btn'
+            style={`background: ${colors.data[0].primary}`}
+            onClick={this.bindOrder.bind(this)}
+          >
+            关联
           </View>
-          <View className='input'>
-            <Input
-              className='text'
-              value={barCode}
-              type='text'
-              placeholder='订单号'
-              onInput={this.inputChange.bind(this, 'barCode')}
-            />
-            <View className='iconfont icon-scan' onClick={this.scanCode.bind(this)}></View>
-          </View>
-        </View>
-        <View className='barCode'>
-          <View className='line'>
-            请输入订单随机码
-            <View className='iconfont icon-info' onClick={this.showTips.bind(this, 0)}></View>
-          </View>
-          <View className='input'>
-            <Input
-              className='text'
-              value={randomCode}
-              type='text'
-              placeholder='随机码'
-              onInput={this.inputChange.bind(this, 'randomCode')}
-            />
-          </View>
-        </View>
-        <View
-          className='btn'
-          style={`background: ${colors.data[0].primary}`}
-          onClick={this.bindOrder.bind(this)}
-        >
-          关联
-        </View>
-        <AtModal isOpened={showModal} className='tipsModal' onClose={this.hideModal.bind(this)}>
-          <AtModalContent>
-            {tips}
-            <Image src={tipImg} className='img' mode='aspectFit' />
-          </AtModalContent>
-          <AtModalAction>
-            <View
-              className='confirm'
-              onClick={this.hideModal.bind(this)}
-              style={`background: ${colors.data[0].primary}`}
-            >
-              确认
+        }
+      >
+        <View className='min-h-full bind-order-content'>
+          <View className='barCode'>
+            <View className='line'>
+              请输入或者扫码录入订单号
+              <View className='iconfont icon-info' onClick={this.showTips.bind(this, 1)}></View>
             </View>
-          </AtModalAction>
-        </AtModal>
-      </View>
+            <View className='input'>
+              <Input
+                className='text'
+                value={barCode}
+                type='text'
+                placeholder='订单号'
+                onInput={this.inputChange.bind(this, 'barCode')}
+              />
+              <View className='iconfont icon-scan' onClick={this.scanCode.bind(this)}></View>
+            </View>
+          </View>
+          <View className='barCode'>
+            <View className='line'>
+              请输入订单随机码
+              <View className='iconfont icon-info' onClick={this.showTips.bind(this, 0)}></View>
+            </View>
+            <View className='input'>
+              <Input
+                className='text'
+                value={randomCode}
+                type='text'
+                placeholder='随机码'
+                onInput={this.inputChange.bind(this, 'randomCode')}
+              />
+            </View>
+          </View>
+          <AtModal isOpened={showModal} className='tipsModal' onClose={this.hideModal.bind(this)}>
+            <AtModalContent>
+              {tips}
+              <Image src={tipImg} className='img' mode='aspectFit' />
+            </AtModalContent>
+            <AtModalAction>
+              <View
+                className='confirm'
+                onClick={this.hideModal.bind(this)}
+                style={`background: ${colors.data[0].primary}`}
+              >
+                确认
+              </View>
+            </AtModalAction>
+          </AtModal>
+        </View>
+      </SpPage>
     )
   }
 }

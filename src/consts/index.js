@@ -2,14 +2,14 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-export const STATUS_TYPES_MAP = {
+export const STATUS_TYPES_MAP = () => ({
   NOTPAY: 'WAIT_BUYER_PAY',
   PAYED: 'WAIT_SELLER_SEND_GOODS',
   WAIT_BUYER_CONFIRM: 'WAIT_BUYER_CONFIRM_GOODS',
   DONE: 'TRADE_SUCCESS',
   CANCEL: 'TRADE_CLOSED',
   PART_PAYMENT: 'WAIT_BUYER_PAY'
-}
+})
 
 export const ORDER_STATUS_INFO = () => ({
   NOTPAY: {
@@ -101,6 +101,10 @@ export const AFTER_SALE_TYPE = () => [
   { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
 ]
 
+export const AFTER_SALE_TYPE1 = () => [
+  { title: '退货退款', icon: 'icon-tuikuantuihuo-01', type: 'REFUND_GOODS' }
+]
+
 export const REFUND_FEE_TYPE = () => [
   { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 'logistics' },
   { title: '到店退货', desc: '前往线下门店退货', value: 'offline' }
@@ -153,17 +157,17 @@ export const ACTIVITY_STATUS = () => ({
 
 export const DEFAULT_POINT_NAME = () => '积分'
 
-export const DEFAULT_THEME = {
+export const DEFAULT_THEME = () => ({
   colorPrimary: '#d42f29',
   colorMarketing: '#fba629',
   colorAccent: '#2e3030'
-}
+})
 
-export const WGTS_NAV_MAP = {
+export const WGTS_NAV_MAP = () => ({
   luckdraw: '/pages/member/point-draw'
-}
+})
 
-export const TABBAR_PATH = {
+export const TABBAR_PATH = () => ({
   home: '/pages/index',
   category: '/pages/category/index',
   cart: '/pages/cart/espier-index',
@@ -174,9 +178,9 @@ export const TABBAR_PATH = {
   ugc: '/subpages/mdugc/index',
   customPage: '/pages/custom/custom-page',
   purchase: '/subpages/purchase/select-identity?is_redirt=1'
-}
+})
 
-export const TABBAR_ICON = {
+export const TABBAR_ICON = () => ({
   home: 'shouye',
   category: 'fenlei',
   cart: 'gwche',
@@ -185,21 +189,21 @@ export const TABBAR_ICON = {
   liveroom: 'zhibo',
   allGoods: 'quanbushangpin',
   ugc: 'shequ'
-}
+})
 
-export const PURCHASE_TABBAR_PATH = {
+export const PURCHASE_TABBAR_PATH = () => ({
   home: '/subpages/purchase/index',
   category: '/subpages/purchase/category',
   cart: '/subpages/purchase/espier-index',
   member: '/subpages/purchase/member'
-}
+})
 
-export const PURCHASE_TABBAR_ICON = {
+export const PURCHASE_TABBAR_ICON = () => ({
   home: 'shouye',
   category: 'fenlei',
   cart: 'gwche',
   member: 'huiyuan'
-}
+})
 
 export const BUY_TOOL_BTNS = () => ({
   NOTICE: { title: '到货通知', key: 'notice', btnStatus: 'active' },
@@ -246,13 +250,13 @@ export const COUPON_TYPE = () => ({
   }
 })
 
-export const PAYTYPE = {
+export const PAYTYPE = () => ({
   /** h5环境下 */
   WXH5: 'wxpayh5',
   ALIH5: 'alipayh5',
   /** 微信H5环境下 */
   WXH5JS: 'wxpayjs'
-}
+})
 
 export const PAYMENT_TYPE = () => ({
   wxpay: '微信支付',
@@ -277,7 +281,7 @@ export const PAYMENT_TYPE = () => ({
   offline_pay: '线下转账'
 })
 
-export const TRANSFORM_PAYTYPE = {
+export const TRANSFORM_PAYTYPE = () => ({
   'wxpayh5': 'wxpayh5',
   'alipayh5': 'alipay',
   'wxpayjs': 'wxpayjs',
@@ -286,7 +290,7 @@ export const TRANSFORM_PAYTYPE = {
   'alipayapp': 'alipay',
   'adapay': 'adapay',
   'point': 'point'
-}
+})
 
 export const POINT_TYPE = () => ({
   1: '注册送积分',
@@ -303,7 +307,7 @@ export const POINT_TYPE = () => ({
   12: '管理员手动调整积分'
 })
 
-export const FORM_COMP = {
+export const FORM_COMP = () => ({
   INPUT: 1,
   NUMBER: 2,
   DATE: 3,
@@ -311,13 +315,13 @@ export const FORM_COMP = {
   CHECKBOX: 5,
   MOBILE: 6,
   IMAGE: 7
-}
+})
 
-export const CHIEF_APPLY_STATUS = {
+export const CHIEF_APPLY_STATUS = () => ({
   WAITE: 0,
   RESLOVE: 1,
   REJECT: 2
-}
+})
 
 export const GOODS_TYPE = () => ({
   'normal': '普通商品',
@@ -350,13 +354,13 @@ export const enumdays = () => ({
   2: '后天'
 })
 
-export const infotype = {
+export const infotype = () => ({
   SYSTEM: 'system',
   REPLY: 'reply',
   LIKE: 'like',
   FAVORITEPOST: 'favoritePost',
   FOLLOWERUSER: 'followerUser'
-}
+})
 
 export const DELIVERY_PERSONNEL_INFORMATION = () => [
   {

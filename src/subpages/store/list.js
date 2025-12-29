@@ -71,6 +71,7 @@ function NearlyShop(props) {
 
   useEffect(() => {
     fetchDefaultShop()
+    queryUserDistrict()
   }, [])
 
   useEffect(() => {
@@ -95,6 +96,14 @@ function NearlyShop(props) {
       draft.refresh = true
     })
   }
+  const queryUserDistrict = useCallback(async () => {
+    if (!location?.lat || !location?.lng) return
+    await entryLaunch.isOpenPosition(async (res) => {
+      if (res.lat) {
+        dispatch(updateLocation(res))
+      }
+    })
+  }, [location?.lat, location?.lng])
 
   const fetchShop = async ({ pageIndex, pageSize }) => {
     let params = {

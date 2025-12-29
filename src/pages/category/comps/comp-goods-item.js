@@ -93,7 +93,7 @@ function CompGoodsItem(props) {
         shop_type: 'distributor'
       })
     )
-    dispatch(updateCount({ shop_type: 'distributor' }))
+    dispatch(updateCount({ shop_type: 'distributor', shop_id: distributorId }))
     Taro.hideLoading()
     showToast('成功加入购物车')
   }

@@ -8,10 +8,10 @@ import { hex2rgb } from '@/utils'
 
 //没有则获取正确的颜色
 function getColor(field, value) {
-  return value ? value : DEFAULT_THEME[field]
+  return value ? value : DEFAULT_THEME()[field]
 }
 
-const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME
+const { colorPrimary, colorMarketing, colorAccent } = DEFAULT_THEME()
 
 const initialState = {
   initState: false,
@@ -64,6 +64,7 @@ const initialState = {
   openRecommend: 1,
   openScanQrcode: 1,
   openOfficialAccount: 1,
+  openWechatappLocation: 1,
   priceSetting: {
     cart_page: {
       market_price: false
@@ -84,7 +85,7 @@ const sysSlice = createSlice({
   initialState,
   reducers: {
     setSysConfig: (state, { payload }) => {
-      const { colorPrimary, tabbar, colorMarketing, colorAccent } = payload
+      const { colorPrimary, tabbar, colorMarketing, colorAccent, openWechatappLocation } = payload
       const rgb = hex2rgb(getColor('colorPrimary', colorPrimary)).join(',')
       return {
         ...state,
@@ -93,7 +94,10 @@ const sysSlice = createSlice({
         colorMarketing: getColor('colorMarketing', colorMarketing),
         colorAccent: getColor('colorAccent', colorAccent),
         tabbar: tabbar ? tabbar : initialState.tabbar,
-        rgb
+        rgb,
+        openWechatappLocation: openWechatappLocation
+          ? openWechatappLocation
+          : initialState.openWechatappLocation
       }
     },
     updatePageTitle: (state, { payload }) => {

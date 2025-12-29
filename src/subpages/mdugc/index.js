@@ -2,40 +2,23 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useCallback, useRef } from 'react'
-import Taro, {
-  getCurrentInstance,
-  useShareAppMessage,
-  useShareTimeline,
-  useDidShow
-} from '@tarojs/taro'
-import { AtButton } from 'taro-ui'
-import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
-import { useSelector, useDispatch } from 'react-redux'
+import React, { useEffect, useRef } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
 import {
   SpLogin,
-  SpToast,
-  Loading,
-  SpNote,
   SpSearchBar,
   SpScrollView,
   SpTabbar,
-  FloatMenus,
-  FloatMenuItem,
   SpPage,
   SpFloatMenuItem,
-  SpTagBar,
-  SpDefault,
-  CompTabbar
+  SpTagBar
 } from '@/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
-import { useLogin, useNavigation } from '@/hooks'
-import { pickBy, showToast, navigateTo } from '@/utils'
+import { pickBy } from '@/utils'
 import doc from '@/doc'
-import S from '@/spx'
 import CompNoteItem from './comps/comp-noteitem'
-import TagsBarcheck from './comps/comp-tags-barcheck'
 
 import './index.scss'
 
@@ -232,7 +215,7 @@ function UgcIndex() {
         onConfirm={handleConfirm}
       />
 
-      <View>
+      <>
         <SpTagBar
           className='ugc-tag'
           list={tagsList}
@@ -274,7 +257,7 @@ function UgcIndex() {
             </View>
           </View>
         </SpScrollView>
-      </View>
+      </>
     </SpPage>
   )
 }

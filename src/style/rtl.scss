@@ -1,0 +1,167 @@
+/**
+ * RTL Support
+ */
+
+// 全局 RTL 支持：应用到所有页面容器
+.rtl-layout,
+[dir='rtl'],
+[dir='rtl'] page,
+[dir='rtl'] view,
+page.rtl-layout,
+view.rtl-layout {
+  direction: rtl;
+  text-align: right;
+
+  .text-left {
+    text-align: right;
+  }
+
+  .text-right {
+    text-align: left;
+  }
+
+  .fl,
+  .float-left,
+  .pull-left {
+    float: right;
+  }
+
+  .fr,
+  .float-right,
+  .pull-right {
+    float: left;
+  }
+
+  // Fix Taro UI icons if needed (example)
+  .at-icon-chevron-right,
+  .icon-arrowRight,
+  .icon-arrowRight-img,
+  .icon-qianwang-01 {
+    transform: rotate(180deg);
+  }
+
+  .at-icon-chevron-left,
+  .icon-arrowLeft,
+  .icon-arrowLeft-img {
+    transform: rotate(180deg);
+  }
+
+  // Common flex alignments
+  .justify-start {
+    justify-content: flex-start; // In RTL, start is right
+  }
+
+  .justify-end {
+    justify-content: flex-end; // In RTL, end is left
+  }
+
+  // Header block RTL fixes
+  .header-block {
+    .user-avatar {
+      left: auto !important;
+      right: 36px !important;
+    }
+
+    .user-details {
+      margin-left: 0 !important;
+      margin-right: 198px !important;
+    }
+
+    .qr-code-btn {
+      right: auto !important;
+      left: 0px !important;
+      border-top-right-radius: 0 !important;
+      border-top-left-radius: 16px !important;
+    }
+
+    .icon-erweima-01 {
+      right: auto !important;
+      left: 24px !important;
+    }
+
+    .qr-code {
+      right: auto !important;
+      left: 24px !important;
+    }
+
+    .member-level-bg {
+      right: auto !important;
+      left: 0 !important;
+    }
+
+    .qr-code-btn-left {
+      left: auto !important;
+      right: 0 !important;
+    }
+
+    .user-info-card {
+      left: 24px !important;
+      right: 24px !important;
+    }
+
+    .user-vip-wrapper {
+      margin-left: 0 !important;
+      margin-right: -8px !important;
+    }
+  }
+
+  // Purchase member header block
+  .page-purchase-member {
+    .header-block {
+      .usericon {
+        margin-right: 0 !important;
+        margin-left: 20px !important;
+      }
+
+      .icon-erweima-01 {
+        right: auto !important;
+        left: 24px !important;
+      }
+    }
+
+    .header-hd {
+      &__body {
+        margin-top: 20px;
+      }
+    }
+
+    .order-bradge {
+      right: auto !important;
+      left: 45px !important;
+    }
+
+    .purchase-order-bradge {
+      left: 70px !important;
+    }
+  }
+
+  // Purchase share header block
+  .page-purchase-index {
+    .header-block {
+      .usericon {
+        margin-right: 0 !important;
+        margin-left: 20px !important;
+      }
+
+      .icon-erweima-01 {
+        right: auto !important;
+        left: 24px !important;
+      }
+    }
+  }
+
+  // Distribution goods page RTL fixes
+  .page-distribution-shop {
+    .goods-list {
+      &__toolbar {
+        left: auto !important;
+        right: 0 !important;
+      }
+    }
+
+    .drawer-footer {
+      right: auto !important;
+      left: 0 !important;
+    }
+  }
+}

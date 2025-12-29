@@ -1,4 +1,4 @@
-<p align="center"><img width="500" height="auto" alt="logo1" src="https://github.com/user-attachments/assets/097cbde6-cedd-42d0-a2d8-a0a0430289b5" /></p>
+<p align="center"><img width="600" height="416" alt="logo2" src="https://github.com/user-attachments/assets/abf6c4c7-8cb1-477e-aea4-9e526cd8225a" /></p>
 
 ### <p align="center">Mobile Frontend</p>
 
@@ -14,7 +14,7 @@ nvm use 16.16.0
 
 ### Installation
 ```
-cd ecshopx-vshop
+cd ECShopX_mobile-frontend
 npm i
 ```
 ### Configure the .env file
@@ -28,8 +28,8 @@ APP_WEBSOCKET=
 # System Tenant ID
 APP_COMPANY_ID=1
 
-# System Business Model (b2c/bbc)
-APP_PLATFORM=b2c
+# System Business Model (b2c:standard/b2b2c:platform)
+APP_PLATFORM=standard
   
 # Mobile Web App Payment Callback Domain，used for payment result notifications.
 APP_CUSTOM_SERVER=
@@ -74,7 +74,17 @@ npm run dev:weapp
 # Compile Mobile Web App
 npm run build:h5
 ```
+
 ```shell
 # Compile WeChat Mini Program
 npm run build:weapp
 ```
+
+## License
+Each ECShopX source file included in this distribution is licensed under the Apache License 2.0, together with the additional terms imposed by ShopeX.
+
+Open Software License (Apache 2.0) – Please see LICENSE.txt for the full text of the Apache 2.0 license.
+
+每个包含在本发行版中的 ECShopX 源文件，均依据 Apache 2.0 开源许可证与ShopeX商派附加条款进行授权。
+
+开源软件许可协议（Apache 2.0） —— 请参阅 LICENSE.txt 文件以获取 Apache 2.0 协议的完整文本。

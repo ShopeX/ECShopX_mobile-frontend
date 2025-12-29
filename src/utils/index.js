@@ -313,10 +313,10 @@ export function calcTimer(totalSec) {
 
 export function resolveOrderStatus(status, isBackwards) {
   if (isBackwards) {
-    return _findKey(STATUS_TYPES_MAP, (o) => o === status)
+    return _findKey(STATUS_TYPES_MAP(), (o) => o === status)
   }
 
-  return STATUS_TYPES_MAP[status]
+  return STATUS_TYPES_MAP()[status]
 }
 
 export function goToPage(page) {
@@ -883,6 +883,22 @@ export const pxToRpx = (px) => {
 
 export const pxToUnitRpx = (px) => {
   return Taro.pxTransform(px * 2)
+}
+
+/**
+ * 构建统一分享路径
+ * @param {string} from_scene - 目标页面类型
+ * @param {object} params - 路径参数
+ * @returns {string} 统一的分享落地页路径
+ */
+export function buildSharePath(from_scene, params = {}) {
+  const shareParams = {
+    from_scene: from_scene,
+    ...params
+  }
+  const queryString = qs.stringify(shareParams)
+  debugger
+  return `/pages/share-land${queryString ? '?' + queryString : ''}`
 }
 
 export {

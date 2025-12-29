@@ -42,7 +42,6 @@ function useThemsColor() {
     // 检查是否找到匹配项
     const status = regex !== null && prefixes[regex]
     const newPrefixes = prefixes[regex]
-
     // 查找与给定路由匹配的主题
     const theme = {
       // 如果没有找到匹配项，则使用默认主题

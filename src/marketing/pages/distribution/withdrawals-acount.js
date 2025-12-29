@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
-import { SpInput as AtInput } from '@/components'
+import { SpInput as AtInput, SpPage } from '@/components'
 import { showToast } from '@/utils'
 import api from '@/api'
 
@@ -78,8 +78,27 @@ export default class DistributionWithdrawalsAcount extends Component {
     console.log('00', hasBind)
 
     return (
-      <View className='page-distribution-acount'>
-        <View className='section list message'>
+      <SpPage
+        className='page-distribution-acount'
+        footerHeight={186}
+        renderFooter={
+          <>
+            <View className='content-padded'>
+              <Button type='primary' onClick={this.handleSubmit}>
+                确认绑定
+              </Button>
+              {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
+          { hasBind && !isEdit && <Button type="primary" onClick={this.handleClick}>修改支付宝账号</Button> }
+          { hasBind && isEdit && <Button type="primary" onClick={this.handleSubmit}>确认修改并保存</Button> } */}
+            </View>
+            <View className='g-ul'>
+              <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
+              {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
+            </View>
+          </>
+        }
+      >
+        <View className='section list message min-h-full'>
           <AtInput
             className='message-input'
             title='开户人姓名'
@@ -148,19 +167,7 @@ export default class DistributionWithdrawalsAcount extends Component {
               />
           } */}
         </View>
-        <View className='content-padded'>
-          <Button type='primary' onClick={this.handleSubmit}>
-            确认绑定
-          </Button>
-          {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
-          { hasBind && !isEdit && <Button type="primary" onClick={this.handleClick}>修改支付宝账号</Button> }
-          { hasBind && isEdit && <Button type="primary" onClick={this.handleSubmit}>确认修改并保存</Button> } */}
-        </View>
-        <View className='g-ul'>
-          <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
-          {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
-        </View>
-      </View>
+      </SpPage>
     )
   }
 }

@@ -49,7 +49,11 @@ function withPageWrapper(Component) {
       if (VERSION_STANDARD && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) {
         // 云店进店规则
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 1)
-        await checkEnterStoreRule()
+        try {
+          await checkEnterStoreRule()
+        } catch (error) {
+          console.log('error', error)
+        }
         setState(true)
       } else {
         setState(true)
@@ -68,7 +72,7 @@ function withPageWrapper(Component) {
           const rule = ruleList.shift()
           if (!rule) {
             // 规则轮询检测完毕
-            await checkStoreWhiteList()
+            await checkStoreWhiteList(dtid)
             return resolve()
           }
 

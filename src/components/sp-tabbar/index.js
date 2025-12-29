@@ -34,13 +34,13 @@ function SpTabbar() {
           console.log('customPageId', customPageId, tab.customPageId)
           return tab.customPageId && customPageId == tab.customPageId
         } else {
-          if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]]) {
+          if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]]) {
             return (
-              routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH[tab.name]] ==
+              routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]] ==
               currentPage
             )
           } else {
-            return TABBAR_PATH[tab.name] == currentPage
+            return TABBAR_PATH()[tab.name] == currentPage
           }
         }
       })
@@ -67,17 +67,19 @@ function SpTabbar() {
     // 如果是跳转自定义页面则判断id是否一致
     let otherCustomPage =
       path == '/pages/custom/custom-page' &&
-      path == TABBAR_PATH[tabItem.name] &&
+      path == TABBAR_PATH()[tabItem.name] &&
       tabItem.customPageId != customPageId
-    if (path != TABBAR_PATH[tabItem.name] || otherCustomPage) {
-      if (TABBAR_PATH[tabItem.name] !== navipage) {
+    if (path != TABBAR_PATH()[tabItem.name] || otherCustomPage) {
+      if (TABBAR_PATH()[tabItem.name] !== navipage) {
         let url =
           tabItem.name == 'customPage'
-            ? `${TABBAR_PATH[tabItem.name]}?isTabBar=true&id=${tabItem.customPageId}`
-            : TABBAR_PATH[tabItem.name]
+            ? `${TABBAR_PATH()[tabItem.name]}?isTabBar=true&id=${
+                tabItem.customPageId || tabItem.customPage.id
+              }`
+            : TABBAR_PATH()[tabItem.name]
         Taro.redirectTo({ url })
       } else {
-        Taro.navigateTo({ url: TABBAR_PATH[tabItem.name] })
+        Taro.navigateTo({ url: TABBAR_PATH()[tabItem.name] })
       }
     }
   }
@@ -114,8 +116,8 @@ function SpTabbar() {
                 <Text
                   className={`iconfont ${
                     index == currentIndex
-                      ? `icon-${TABBAR_ICON[item.name]}-fill`
-                      : `icon-${TABBAR_ICON[item.name]}`
+                      ? `icon-${TABBAR_ICON()[item.name]}-fill`
+                      : `icon-${TABBAR_ICON()[item.name]}`
                   }`}
                 ></Text>
               )}

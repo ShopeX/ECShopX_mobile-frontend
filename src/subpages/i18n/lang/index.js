@@ -4,6 +4,7 @@
  */
 // 导入国际化JSON文件
 import langJSON from './index.json'
+
 ;(function () {
   // 定义翻译函数
   let $t = function (key, val, nameSpace) {
@@ -74,7 +75,11 @@ const langMap = {
   'zhcn':
     globalThis && globalThis.lang && globalThis.lang.zhcn
       ? globalThis.lang.zhcn
-      : globalThis._getJSONKey('zh-cn', langJSON)
+      : globalThis._getJSONKey('zh-cn', langJSON),
+  'ar':
+    globalThis && globalThis.lang && globalThis.lang.ar
+      ? globalThis.lang.ar
+      : globalThis._getJSONKey('ar', langJSON)
 }
 globalThis.langMap = langMap
 // 存储语言是否存在

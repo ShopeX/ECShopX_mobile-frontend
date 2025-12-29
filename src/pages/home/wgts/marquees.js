@@ -42,7 +42,7 @@ export default class WgtMarquees extends Component {
   handleClickItem = (id) => {
     if (id) {
       Taro.navigateTo({
-        url: `/subpage/pages/recommend/detail?id=${id}`
+        url: `/pages/recommend/detail?id=${id}`
       })
     }
   }

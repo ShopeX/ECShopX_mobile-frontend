@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { linkPage } from './helper'
 
 import './writing.scss'
 
@@ -25,8 +24,6 @@ export default class WgtHeading extends Component {
       curIdx: 0
     }
   }
-
-  handleClickItem = linkPage
 
   handleSwiperChange = (e) => {
     const { current } = e.detail

@@ -40,7 +40,7 @@ function SpTradeItem(props) {
             {itemName}
           </View>
           {orderClass == 'pointsmall' && (
-            <Text>
+            <Text style={{ display: 'flex', justifyContent: 'flex-end', width: '150rpx' }}>
               {`${pointName}: ${itemPoint}`}{' '}
               {price > 0 ? (
                 <Text>

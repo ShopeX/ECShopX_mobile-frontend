@@ -36,5 +36,6 @@ export const POINT_LIST_ITEM = {
   outinType: ({ income, outcome }) => (income ? 'in' : outcome ? 'out' : ''),
   point: ({ point }) => thousandthFormat(point),
   orderId: 'order_id',
+  point_desc: 'point_desc',
   created: ({ created }) => formatDateTime(created)
 }

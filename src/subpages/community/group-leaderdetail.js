@@ -9,7 +9,7 @@ import Taro, { useShareAppMessage, useDidShow, getCurrentInstance } from '@taroj
 import { View, Text, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
 import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
-import { calcTimer, pickBy, log, isArray } from '@/utils'
+import { calcTimer, pickBy, log, isArray, buildSharePath } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
 
@@ -55,7 +55,7 @@ function GroupLeaderDetail(props) {
   }
 
   useShareAppMessage(() => {
-    const path = `/subpages/community/group-memberdetail?activity_id=${detail.activityId}`
+    const path = buildSharePath('poster_community_memberdetail', { activity_id: detail.activityId })
     log.debug(`share path: ${path}`)
     return {
       imageUrl: shareImageUrl,

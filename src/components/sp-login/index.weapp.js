@@ -99,6 +99,8 @@ const SpLogin = forwardRef((props, ref) => {
       // const { uid } = entryLaunch.getLaunchParams()
       const { uid, dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
       const { gu_user_id, gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
+      const { source_id, monitor_id, latest_source_id, latest_monitor_id } =
+        Taro.getStorageSync('sourceInfo') // 千人千码参数
       if (uid) {
         // 分销绑定
         params['uid'] = uid
@@ -121,6 +123,19 @@ const SpLogin = forwardRef((props, ref) => {
       if (work_userid) {
         params['channel'] = 1
         params['work_userid'] = work_userid
+      }
+
+      if (source_id) {
+        params['source_id'] = source_id
+      }
+      if (monitor_id) {
+        params['monitor_id'] = monitor_id
+      }
+      if (latest_source_id) {
+        params['latest_source_id'] = latest_source_id
+      }
+      if (latest_monitor_id) {
+        params['latest_monitor_id'] = latest_monitor_id
       }
 
       try {

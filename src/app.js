@@ -32,6 +32,7 @@ import {
   SG_GUIDE_PARAMS_EXPRESSTIME,
   SG_CHECK_STORE_RULE
 } from '@/consts'
+import { updateLang } from '@/store/slices/user'
 import {
   checkAppVersion,
   isWeixin,
@@ -100,7 +101,30 @@ function App({ children }) {
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
-    Taro.eventCenter.on('languageChanged', () => {
+
+    // Initialize RTL
+    const lang = Taro.getStorageSync('lang') || 'en'
+    store.dispatch(updateLang(lang))
+    if (isWeb) {
+      document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+      if (lang === 'ar') {
+        document.documentElement.classList.add('rtl-mode')
+      } else {
+        document.documentElement.classList.remove('rtl-mode')
+      }
+    }
+
+    Taro.eventCenter.on('languageChanged', (data) => {
+      const newLang = data?.lang || Taro.getStorageSync('lang')
+      store.dispatch(updateLang(newLang))
+      if (isWeb) {
+        document.documentElement.dir = newLang === 'ar' ? 'rtl' : 'ltr'
+        if (newLang === 'ar') {
+          document.documentElement.classList.add('rtl-mode')
+        } else {
+          document.documentElement.classList.remove('rtl-mode')
+        }
+      }
       getSystemConfig()
     })
     //分包异步加载语言包
@@ -135,20 +159,39 @@ function App({ children }) {
       if (typeof params.runFlag === 'undefined') {
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
-        // 小程序启动时，如果路由带参有店铺码，则清除导购参数
-        if (typeof params?.dtid !== 'undefined') {
+        // 小程序启动时，如果路由带参有店铺码，则清除导购参数(非导购入口)
+        if (
+          typeof params?.dtid !== 'undefined' &&
+          params?.dtid !== '' &&
+          !params.gu &&
+          !params.gu_user_id
+        ) {
           Taro.removeStorageSync(SG_GUIDE_PARAMS)
           Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
         }
-
         getSystemConfig()
       }
+      initCrm(params)
     })
   })
 
-  useError((error) => {
-    log.error('useError', error)
-  })
+  // useError((error) => {
+  //   log.error('useError', error)
+  // })
+
+  const initCrm = async (params) => {
+    const { s = '', m = '', latest_source_id = '', latest_monitor_id = '' } = params || {}
+
+    Taro.setStorageSync('sourceInfo', {
+      source_id: s,
+      monitor_id: m,
+      latest_source_id,
+      latest_monitor_id
+    })
+    if (m && s) {
+      await entryLaunch.trackViewNum(m, s)
+    }
+  }
 
   const getSystemConfig = async () => {
     const [homeRes, appBaseRes, priceSetting, appSettingInfo, enterStoreRule] = await Promise.all([
@@ -174,6 +217,7 @@ function App({ children }) {
       is_open_recommend: openRecommend,
       is_open_scan_qrcode: openScanQrcode,
       is_open_official_account: openOfficialAccount,
+      is_open_wechatapp_location: openWechatappLocation,
       color_style: { primary, accent, marketing },
       title // 商城应用名称
     } = appBaseRes
@@ -213,6 +257,7 @@ function App({ children }) {
           openRecommend, // 开启猜你喜欢 1开启 2关闭
           openScanQrcode, // 开启扫码功能 1开启 2关闭
           openOfficialAccount, // 开启关注公众号组件 1开启 2关闭
+          openWechatappLocation, // 开启微信小程序定位 1开启 2关闭
           diskDriver: disk_driver,
           appName: title,
           echat,

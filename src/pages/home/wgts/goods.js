@@ -16,9 +16,10 @@ import api from '@/api'
 import './goods.scss'
 
 @connect(
-  ({ cart, user }) => ({
+  ({ cart, user, shop }) => ({
     cart,
-    favs: user.favs
+    favs: user.favs,
+    shop
   }),
   (dispatch) => ({
     onFastbuy: (item) => dispatch({ type: 'cart/fastbuy', payload: { item } }),
@@ -169,7 +170,7 @@ export default class WgtGoods extends Component {
 
         await api.cart.add({
           item_id: item_data.item_id,
-          distributor_id: id,
+          distributor_id: this.props?.shop?.shopInfo?.distributor_id,
           num: 1,
           shop_type: 'distributor'
         })

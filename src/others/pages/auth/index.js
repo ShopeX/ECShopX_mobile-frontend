@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { Loading } from '@/components'
+import { Loading, SpPage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { normalizeQuerys, getAppId } from '@/utils'
@@ -107,23 +107,25 @@ export default class AuthLogin extends Component {
     const { showAuth } = this.state
     const user = Taro.getStorageSync('userinfo')
 
-    if (!showAuth) {
-      return <Loading />
-    }
+    // if (!showAuth) {
+    //   return <Loading />
+    // }
 
     return (
-      <View className='authLogin'>
-        <View className='welcome'>尊敬的{user.username}</View>
-        <View className='content'>您即将在门店大屏登录并在门店进行购物，请您确认是否登录</View>
-        <View className='btnGroup'>
-          <View className='comfirm' onClick={this.comfimLogin.bind(this)}>
-            确认
-          </View>
-          <View className='cancel' onClick={this.cancel.bind(this)}>
-            取消
+      <SpPage className='authLogin' loading={!showAuth}>
+        <View className='min-h-full'>
+          <View className='welcome'>尊敬的{user.username}</View>
+          <View className='content'>您即将在门店大屏登录并在门店进行购物，请您确认是否登录</View>
+          <View className='btnGroup'>
+            <View className='comfirm' onClick={this.comfimLogin.bind(this)}>
+              确认
+            </View>
+            <View className='cancel' onClick={this.cancel.bind(this)}>
+              取消
+            </View>
           </View>
         </View>
-      </View>
+      </SpPage>
     )
   }
 }

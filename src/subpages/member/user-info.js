@@ -97,12 +97,42 @@ function MemberUserInfo() {
           value && value.length > 0
             ? value.split(',').map((item) => ({ name: item, ischecked: true }))
             : []
+      } else if (
+        (data[key].element_type == 'select' || data[key].element_type == 'radio') &&
+        data[key].select &&
+        data[key].select.length > 0
+      ) {
+        // 如果是select或radio类型，需要将数字索引转换为对应的文本值
+        const select = data[key].select
+        if (value !== null && value !== undefined && value !== '') {
+          if (
+            typeof Number(value) === 'number' &&
+            Number(value) >= 0 &&
+            Number(value) < select.length
+          ) {
+            // 如果是数字索引，转换为文本值
+            _formUserInfo[key] = select[value]
+          } else if (select.includes(value)) {
+            // 如果已经是文本值，直接使用
+            _formUserInfo[key] = value
+          } else {
+            // 其他情况使用原值
+            _formUserInfo[key] = value
+          }
+        } else {
+          _formUserInfo[key] = ''
+        }
       } else {
         _formUserInfo[key] = value || ''
       }
-      if (key === 'sex') {
-        _formUserInfo[key] = data[key].select[value]
-      }
+      // if(key === 'sex'){
+      //   const sexType = {
+      //     0:'未知',
+      //     1:'男',
+      //     2:'女'
+      //   }
+      //     _formUserInfo[key] = sexType[value]
+      // }
     })
 
     setState((draft) => {

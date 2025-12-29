@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar } from '@/components'
+import { Loading, SpNote, SpNavBar, SpPage } from '@/components'
 import api from '@/api'
 import { hasNavbar, pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
@@ -93,10 +93,9 @@ export default class DistributionTrade extends Component {
     console.log(list)
 
     return (
-      <View className='page-distribution-trade'>
-        <SpNavBar title='订单' leftIconType='chevron-left' />
+      <SpPage className='page-distribution-trade'>
         <AtTabs
-          className={`trade-list__tabs ${hasNavbar && 'trade-list__tabs_web'}`}
+          className='trade-list__tabs'
           current={curTabIdx}
           tabList={tabList}
           onClick={this.handleClickTab}
@@ -106,7 +105,7 @@ export default class DistributionTrade extends Component {
           ))}
         </AtTabs>
         <ScrollView
-          className={`trade-list__scroll ${hasNavbar && 'trade-list__scroll_web'}`}
+          className='trade-list__scroll'
           scrollY
           scrollTop={scrollTop}
           onScrollToLower={this.nextPage}
@@ -151,7 +150,7 @@ export default class DistributionTrade extends Component {
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
-      </View>
+      </SpPage>
     )
   }
 }

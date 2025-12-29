@@ -112,7 +112,7 @@ function InvoiceDetail() {
       'pending': '待开票',
       'inProgress': '开票中',
       'success': '开票成功',
-      'failed': '已作废',
+      'failed': '开票失败',
       'waste': '已作废'
     }
     return statusMap[info?.invoice_status] || info?.invoice_status

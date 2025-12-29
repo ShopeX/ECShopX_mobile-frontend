@@ -60,7 +60,7 @@ export default class WgtSliderHotzone extends Component {
       return
     }
 
-    linkPage(item.linkPage, item.id, item)
+    linkPage(item)
   }
   onClickAddCart = async (id) => {
     if (!S.getAuthToken()) {

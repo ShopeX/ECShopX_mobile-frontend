@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Image, Text, Button } from '@tarojs/components'
-import { Loading, SpNote } from '@/components'
+import { Loading, SpNote, SpPage } from '@/components'
 import { classNames, pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
@@ -17,6 +17,7 @@ import './shop-category.scss'
 @withBackToTop
 export default class DistributionShopCategory extends Component {
   $instance = getCurrentInstance()
+  spPageRef = React.createRef()
   constructor(props) {
     super(props)
 
@@ -57,6 +58,7 @@ export default class DistributionShopCategory extends Component {
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })
+    this.spPageRef.current?.pageLock()
     const { status } = this.$instance.router.params
     const { tabList } = this.state
     tabList[0].url += `?status=${status}`
@@ -280,26 +282,18 @@ export default class DistributionShopCategory extends Component {
       goodIds
     } = this.state
     return (
-      <View className='page-category-index good-category'>
-        {/* <View className='category-banner'>
-              <Image
-                className='banner-img'
-                src={shop_pic || null}
-                mode='aspectFill'
-          />
-      </View> */}
+      <SpPage
+        ref={this.spPageRef}
+        className='page-category-index good-category'
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
         <View
           className={`${
             hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
           }`}
         >
-          {/* <SeriesItem
-            isChanged={isChanged}
-            info={list}
-            content= {contentList}
-            defaultId={defaultId}
-            onClick = {this.handleClickCategory.bind(this)}
-          /> */}
           <View className='category-list'>
             <ScrollView className='category-list__nav' scrollY>
               <View className='category-nav'>
@@ -381,8 +375,7 @@ export default class DistributionShopCategory extends Component {
             </View>
           </View>
         </View>
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-      </View>
+      </SpPage>
     )
   }
 }

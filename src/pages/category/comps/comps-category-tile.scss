@@ -1,27 +1,15 @@
-/* +----------------------------------------------------------------------
- | ECShopX open source E-commerce
- | ECShopX 开源商城系统 
- +----------------------------------------------------------------------
- | Copyright (c) 2003-2025 ShopeX,Inc.All rights reserved.
- +----------------------------------------------------------------------
- | Corporate Website:  https://www.shopex.cn 
- +----------------------------------------------------------------------
- | Licensed under the Apache License, Version 2.0
- | http://www.apache.org/licenses/LICENSE-2.0
- +----------------------------------------------------------------------
- | The removal of shopeX copyright information without authorization is prohibited.
- | 未经授权不可去除shopeX商派相关版权
- +----------------------------------------------------------------------
- | Author: shopeX Team <mkt@shopex.cn>
- | Contact: 400-821-3106
- +----------------------------------------------------------------------
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
  */
 .page-category-index-new {
   width: 100%;
-  height: 100vh;
   background: #ffffff;
   .at-tabs {
-    height: auto;
+    height: 100%;
+  }
+  .sp-page__body-children {
+    height: 100%;
   }
   .at-tabs__header {
     justify-content: start;
@@ -42,6 +30,13 @@
         background: none;
       }
     }
+  }
+  .at-tabs__body {
+    height: calc(100% - 92px);
+  }
+  .at-tabs-pane,
+  .at-tabs-pane--active {
+    height: 100%;
   }
   .comp-series__nav-list__content {
     opacity: 0.9;
@@ -67,11 +62,13 @@
   .category-comps {
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll($tabs-height + 16px, $tabbar-height);
+    position: static !important;
+    height: 100%;
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
-    @include page-scroll(0, $tabbar-height);
+    position: static !important;
+    height: 100%;
   }
 }

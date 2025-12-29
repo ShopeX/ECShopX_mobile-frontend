@@ -7,6 +7,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
+import throttle from 'lodash/throttle'
 import {
   SpFilterBar,
   SpTagBar,
@@ -58,7 +59,8 @@ const initialState = {
   skuPanelOpen: false,
   info: null,
   selectType: 'picker',
-  card_id: null // 兑换券
+  card_id: null, // 兑换券
+  backTopScrollTop: 0
 }
 
 function ItemList() {
@@ -79,7 +81,8 @@ function ItemList() {
     info,
     show,
     fixTop,
-    routerParams
+    routerParams,
+    backTopScrollTop
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { cat_id, main_cat_id, tag_id, card_id, user_card_id, all } = routerParams || {}
@@ -116,12 +119,8 @@ function ItemList() {
   }, [])
 
   useEffect(() => {
-    if (skuPanelOpen) {
-      pageRef.current.pageLock()
-    } else {
-      pageRef.current.pageUnLock()
-    }
-  }, [skuPanelOpen])
+    pageRef.current.pageLock()
+  }, [])
 
   useEffect(() => {
     if (routerParams) {
@@ -329,6 +328,7 @@ function ItemList() {
       Taro.hideLoading()
     }
   }
+
   return (
     <SpPage
       scrollToTopBtn
@@ -336,6 +336,11 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
+      onClickBackToTop={() => {
+        setState((draft) => {
+          draft.backTopScrollTop = state.backTopScrollTop == 0 ? -1 : 0
+        })
+      }}
     >
       <View className='search-wrap'>
         {VERSION_STANDARD && card_id && (
@@ -373,7 +378,16 @@ function ItemList() {
           onChange={handleFilterChange}
         />
       </View>
-      <SpScrollView className='item-list-scroll' auto={false} ref={goodsRef} fetch={fetch}>
+      <SpScrollView
+        className='item-list-scroll'
+        auto={false}
+        ref={goodsRef}
+        fetch={fetch}
+        scrollTop={backTopScrollTop}
+        onScroll={(e) => {
+          pageRef.current.handlePageScroll(e?.detail)
+        }}
+      >
         <View className='goods-list'>
           <View className='left-container'>
             {leftList.map((list, idx) => {
@@ -414,44 +428,24 @@ function ItemList() {
             })}
           </View>
         </View>
-      </SpScrollView>
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
-
-      {/* <SpDrawer
-        show={show}
-        onClose={() => {
-          setState(v => {
-            v.show = false;
-          });
-        }}
-        onConfirm={onConfirmBrand}
-        onReset={onResetBrand}
-      >
-        <View className="brand-title">品牌</View>
-        <SpSelect
-          multiple
-          info={brandList}
-          value={brandSelect}
-          onChange={onChangeBrand}
+        {/* Sku选择器 */}
+        <MSpSkuSelect
+          open={skuPanelOpen}
+          type={selectType}
+          info={info}
+          onClose={() => {
+            setState((draft) => {
+              draft.skuPanelOpen = false
+            })
+          }}
+          onChange={(skuText, curItem) => {
+            setState((draft) => {
+              draft.skuText = skuText
+              draft.curItem = curItem
+            })
+          }}
         />
-      </SpDrawer> */}
+      </SpScrollView>
     </SpPage>
   )
 }

@@ -27,30 +27,35 @@ function CompFloatMenu(props) {
   }, [])
 
   const fetch = async () => {
-    const distributionShopId = Taro.getStorageSync(SG_SHARER_UID)
-    if (!S.getAuthToken() && !distributionShopId) {
-      return
-    }
-    const param = {
-      user_id: distributionShopId || userInfo?.user_id
-    }
-    const res = await api.distribution.info(param)
+    try {
+      const distributionShopId = Taro.getStorageSync(SG_SHARER_UID)
+      if (!S.getAuthToken() && !distributionShopId) {
+        return
+      }
+      const param = {
+        user_id: distributionShopId || userInfo?.user_id
+      }
+      const res = await api.distribution.info(param)
 
-    const { user_id, is_valid, selfInfo = {}, parentInfo = {} } = res || {}
-    let _userId
-    if (is_valid) {
-      _userId = user_id
-    } else if (selfInfo?.is_valid) {
-      _userId = selfInfo.user_id
-    } else if (parentInfo?.is_valid) {
-      _userId = parentInfo.user_id
-    }
-    if (_userId) {
-      setState((draft) => {
-        draft.showStore = true
-        draft.featuredShopId = _userId
-        draft.salesPersonList = userInfo.salesPersonList?.total_count > 0 ? false : true
-      })
+      const { user_id, is_valid = '', selfInfo = {}, parentInfo = {} } = res || {}
+      let _userId
+      if (is_valid) {
+        _userId = user_id
+      } else if (selfInfo?.is_valid) {
+        _userId = selfInfo.user_id
+      } else if (parentInfo?.is_valid) {
+        _userId = parentInfo.user_id
+      }
+      if (_userId) {
+        setState((draft) => {
+          draft.showStore = true
+          draft.featuredShopId = _userId
+          draft.salesPersonList = userInfo.salesPersonList?.total_count > 0 ? false : true
+        })
+      }
+    } catch (error) {
+      // 静默处理错误，避免影响首页正常显示
+      console.error('CompFloatMenu fetch error:', error)
     }
   }
 

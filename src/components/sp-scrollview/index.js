@@ -23,7 +23,9 @@ function SpScrollView(props, ref) {
     style,
     pageSize = 10,
     onLoad = () => {},
-    renderMore
+    renderMore,
+    onScroll = () => {},
+    scrollTop = 0
   } = props
   // const scope = useScope();
   const { page, getTotal, nextPage, resetPage } = usePage({
@@ -109,7 +111,14 @@ function SpScrollView(props, ref) {
 
   // console.log('sp scrollview:', page.loading, page.hasMore)
   return (
-    <View className={classNames('sp-scrollview', className)} style={style} ref={wrapRef}>
+    <ScrollView
+      className={classNames('sp-scrollview', className)}
+      style={style}
+      ref={wrapRef}
+      scrollY
+      onScroll={onScroll}
+      scrollTop={scrollTop}
+    >
       <View className='sp-scrollview-body'>{children}</View>
       {page.hasMore && <SpLoading>正在加载...</SpLoading>}
       {!page.hasMore &&
@@ -124,7 +133,7 @@ function SpScrollView(props, ref) {
           <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
         ))}
       <View className={classNames('scrollview-bottom', `scrollview-${vid}`)}></View>
-    </View>
+    </ScrollView>
   )
 }
 

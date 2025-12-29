@@ -35,9 +35,8 @@ class DistributionPoster {
     // const { dtid } =
 
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
-    const url =
-      isOpenShop && shop_status == 1 ? `marketing/pages/distribution/shop-home` : `pages/index`
-    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`
+    const type = isOpenShop && shop_status == 1 ? `poster_shop_home` : `poster_home`
+    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?path=pages/share-land&appid=${appid}&company_id=${company_id}&user_id=${user_id}&from_scene=${type}`
     console.log('wxappCode:', wxappCode)
 
     const pic = qrcode_bg_img || `${process.env.APP_IMAGE_CDN}/fenxiao_bk.png`

@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
-import { Loading, SpImg, SpNote, SpNavBar } from '@/components'
+import { Loading, SpImg, SpNote, SpNavBar, SpPage } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import S from '@/spx'
@@ -221,81 +221,86 @@ export default class DistributionShopCategory extends Component {
       this.state
     const isHaveLeft = list.length > 0
     return (
-      <View className='page-category-index'>
-        <SpNavBar title='分类' leftIconType='chevron-left' fixed='true' />
-        <View
-          className={`${
-            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
-          }`}
-        >
-          <View className='category-list'>
-            {isHaveLeft > 0 && (
-              <ScrollView className='category-list__nav' scrollY>
-                <View className='category-nav'>
-                  {list.map((item, index) => (
-                    <View
-                      className={classNames(
-                        'category-nav__content',
-                        currentIndex == index ? 'category-nav__content-checked' : null
-                      )}
-                      key={`${item.name}${index}`}
-                      onClick={this.handleClickCategoryNav.bind(this, index, item)}
-                    >
-                      {item.hot && <Text className='hot-tag'></Text>}
-                      {item.name}
-                    </View>
-                  ))}
-                </View>
-              </ScrollView>
-            )}
-            {/*右*/}
-            <View className={`shop-category__wrap ${!isHaveLeft && 'all'}`}>
-              <ScrollView
-                className='category-list__scroll'
-                scrollY
-                scrollTop={scrollTop}
-                scrollWithAnimation
-                onScroll={this.handleScroll}
-                onScrollToLower={this.nextPage}
-              >
-                <View className='grid-goods'>
-                  {contentList.length > 0 &&
-                    contentList.map((item) => (
+      <SpPage
+        className='page-category-index'
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
+        <View className='h-full'>
+          <View
+            className={`${
+              hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
+            }`}
+          >
+            <View className='category-list'>
+              {isHaveLeft > 0 && (
+                <ScrollView className='category-list__nav' scrollY>
+                  <View className='category-nav'>
+                    {list.map((item, index) => (
                       <View
-                        className={`goodItem ${item.isOutSale && 'outSale'}`}
-                        key={item.item_id}
-                        onClick={this.handleClickItem.bind(this, item)}
+                        className={classNames(
+                          'category-nav__content',
+                          currentIndex == index ? 'category-nav__content-checked' : null
+                        )}
+                        key={`${item.name}${index}`}
+                        onClick={this.handleClickCategoryNav.bind(this, index, item)}
                       >
-                        <View className='left'>
-                          {/* <SpImg
+                        {item.hot && <Text className='hot-tag'></Text>}
+                        {item.name}
+                      </View>
+                    ))}
+                  </View>
+                </ScrollView>
+              )}
+              {/*右*/}
+              <View className={`shop-category__wrap ${!isHaveLeft && 'all'}`}>
+                <ScrollView
+                  className='category-list__scroll'
+                  scrollY
+                  scrollTop={scrollTop}
+                  scrollWithAnimation
+                  onScroll={this.handleScroll}
+                  onScrollToLower={this.nextPage}
+                >
+                  <View className='grid-goods'>
+                    {contentList.length > 0 &&
+                      contentList.map((item) => (
+                        <View
+                          className={`goodItem ${item.isOutSale && 'outSale'}`}
+                          key={item.item_id}
+                          onClick={this.handleClickItem.bind(this, item)}
+                        >
+                          <View className='left'>
+                            {/* <SpImg
                             lazyLoad
                             width='400'
                             mode='aspectFill'
                             img-class='goodImg'
                             src={item.img}
                           /> */}
-                          <Image src={item.img} lazyLoad className='goodImg' />
-                        </View>
-                        <View className='right'>
-                          <View className='goodName'>{item.title}</View>
-                          <View className='goodPrice'>
-                            <Text className='symbol'>¥</Text>
-                            {item.price}
+                            <Image src={item.img} lazyLoad className='goodImg' />
+                          </View>
+                          <View className='right'>
+                            <View className='goodName'>{item.title}</View>
+                            <View className='goodPrice'>
+                              <Text className='symbol'>¥</Text>
+                              {item.price}
+                            </View>
                           </View>
                         </View>
-                      </View>
-                    ))}
-                </View>
-                {page.isLoading ? <Loading>正在加载...</Loading> : null}
-                {!page.isLoading && !page.hasNext && !contentList.length && (
-                  <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-                )}
-              </ScrollView>
+                      ))}
+                  </View>
+                  {page.isLoading ? <Loading>正在加载...</Loading> : null}
+                  {!page.isLoading && !page.hasNext && !contentList.length && (
+                    <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+                  )}
+                </ScrollView>
+              </View>
             </View>
           </View>
         </View>
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-      </View>
+      </SpPage>
     )
   }
 }

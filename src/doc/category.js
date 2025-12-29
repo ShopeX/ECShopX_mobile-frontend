@@ -9,7 +9,9 @@ export const CATEGORY_LIST = {
   img: 'img',
   children: 'children',
   hot: 'hot',
-  id: 'id'
+  id: 'id',
+  category_id: 'category_id',
+  main_category_id: 'main_category_id'
 }
 
 export const CATEGORY_STORE_LIST = {

@@ -289,27 +289,19 @@ function TradeAfterSaleDetail(props) {
             <View className='refund-point'>
               <SpCell
                 title='退积分'
-                value={<SpPrice value={info?.refund_info?.refundPoint || info?.refundPoint} />}
+                value={info?.refund_info?.refundPoint || info?.refundPoint}
               ></SpCell>
             </View>
-            {info?.refund_freight_amount > 0 && (
-              <View className='refund-point'>
-                <SpCell title='退运费' value={info?.refund_freight_amount}></SpCell>
-              </View>
-            )}
-
-            <View className='refund-detail'>
-              <View className='refund-amount'>
-                <SpCell title='退款金额' value={<SpPrice value={info?.refundFee} />}></SpCell>
-              </View>
-              <View className='refund-point'>
-                <SpCell title='退积分' value={info?.refundPoint}></SpCell>
-              </View>
-              {info?.freight > 0 && (
-                <View className='refund-point'>
-                  <SpCell title='退运费' value={info?.freight}></SpCell>
-                </View>
-              )}
+            {/* {info?.freight_type=='cash' && ( */}
+            <View className='refund-point'>
+              <SpCell
+                title='退运费'
+                value={`${
+                  info?.freightType == 'point'
+                    ? `积分${info?.freightFee}`
+                    : `¥${info?.freightFee / 100}`
+                }`}
+              ></SpCell>
             </View>
 
             <View className='refund-type'>

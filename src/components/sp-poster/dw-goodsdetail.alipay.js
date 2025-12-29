@@ -41,7 +41,7 @@ class GoodsDetailPoster {
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
     // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
     const res = await Taro.request({
-      url: `${host}/api/h5app/alipaymini/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`, //仅为示例，并非真实的接口地址
+      url: `${host}/api/h5app/alipaymini/qrcode.png?page=${`pages/share-land`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}&from_scene=poster_espier_detail`, //仅为示例，并非真实的接口地址
       header: {
         'content-type': 'application/json' // 默认值
       }

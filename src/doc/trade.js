@@ -37,6 +37,7 @@ export const TRADE_ITEM = {
   },
   freightFee: ({ freight_fee }) => freight_fee / 100,
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
+  freightType: 'freight_type',
   itemPoint: 'item_point',
   isLogistics: ({ is_logistics }) => is_logistics == '1',
   items: ({ items }) => {
@@ -116,12 +117,15 @@ export const TRADE_ITEM = {
   pointFee: ({ point_fee }) => point_fee / 100,
   invoice_amount: 'invoice_amount',
   invoiceAble: 'invoice_able',
-  invoiceId: 'invoice_id'
+  invoiceId: 'invoice_id',
+  freightPointFee: ({ freight_point_fee }) => freight_point_fee / 100,
+  freightPoint: ({ freight_point }) => freight_point
 }
 
 export const SHOP_INFO = {}
 
 export const AFTER_TRADE = {
+  aftersalesAddress: 'aftersales_address',
   aftersalesBn: 'aftersales_bn',
   aftersalesStatus: 'aftersales_status',
   createdTime: ({ create_time }) => formatDateTime(create_time * 1000),
@@ -142,7 +146,8 @@ export const AFTER_TRADE = {
   orderId: 'order_id',
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId: 'user_id',
-  freight: ({ freight }) => freight / 100
+  freight: ({ freight }) => freight / 100,
+  progress: 'progress'
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
@@ -158,8 +163,8 @@ export const TRADE_AFTER_SALES_ITEM = {
       pic: ({ orderItem }) => orderItem.pic,
       itemName: ({ orderItem }) => orderItem.item_name,
       itemSpecDesc: ({ orderItem }) => orderItem.item_spec_desc,
-      num: ({ orderItem }) => orderItem.refundNum,
-      price: ({ orderItem }) => orderItem.total_fee,
+      num: 'num',
+      price: ({ refund_fee, num }) => refund_fee / num / 100,
       isPrescription: ({ orderItem }) => orderItem.is_prescription
     })
   },
@@ -172,8 +177,9 @@ export const TRADE_AFTER_SALES_ITEM = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   refund_info: ({ refund_info }) => {
     return pickBy(refund_info, {
-      refundFee: ({ refunded_fee }) => refunded_fee / 100,
-      refundPoint: 'refund_point'
+      refundFee: ({ refund_fee }) => refund_fee / 100,
+      refundPoint: 'refund_point',
+      freight: ({ freight }) => freight / 100
     })
   },
   refundPoint: 'refund_point',
@@ -183,5 +189,7 @@ export const TRADE_AFTER_SALES_ITEM = {
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
   returnType: 'return_type',
   freight: ({ freight }) => freight / 100,
+  freightFee: ({ order_info }) => order_info.freight_fee,
+  freightType: ({ order_info }) => order_info.freight_type,
   refund_freight_amount: ({ refund_freight_amount }) => refund_freight_amount / 100
 }

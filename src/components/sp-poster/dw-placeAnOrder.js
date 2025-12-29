@@ -30,9 +30,9 @@ class StoreCode {
   async drawPoster() {
     const { orderId, detailInfo, totalInfo } = this.info
     const { appid, company_id } = getExtConfigData()
-    const path = `subpages/trade/detail`
+    const path = `poster_trade_detail`
     // const path = `subpages/member/index`
-    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=${path}&appid=${appid}&company_id=${company_id}&order_id=${orderId}`
+    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=pages/share-land&appid=${appid}&company_id=${company_id}&order_id=${orderId}&from_scene=${path}`
 
     const pic = `${process.env.APP_IMAGE_CDN}/bg_fxhb.png`
     // 背景图片

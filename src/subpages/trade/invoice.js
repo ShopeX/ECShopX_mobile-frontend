@@ -12,6 +12,7 @@ import { SpPrice, SpCell, SpFloatLayout, SpPage, SpImage, SpInput as AtInput } f
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin, entryLaunch, authSetting, showToast, validate } from '@/utils'
+import { debounce } from 'lodash'
 import './invoice.scss'
 
 const initialState = {
@@ -141,55 +142,62 @@ function Invoice(props) {
     })
   }
 
-  const handleClickSubmit = async () => {
-    if (!isFull()) {
-      return
-    }
-    if (info?.email && !validate.isEmail(info?.email)) {
-      showToast('请输入正确的电子邮箱')
-      return
-    }
-    if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
-      showToast(`请同意${protocolTitle}`)
-      return
-    }
-    if (info?.invoice_type == 'enterprise' && info?.company_tax_number?.length != 18) {
-      showToast('纳税人识别号应为18位')
-      return
-    }
-    let params = {
-      invoice_type_code: info?.invoice_type_code,
-      invoice_type: info?.invoice_type,
-      company_title:
-        info?.invoice_type == 'enterprise' ? info?.company_title : info.individual_title,
-      email: info?.email
-    }
-    if (params.invoice_type === 'enterprise') {
-      params = {
-        ...params,
-        ...info
+  const handleClickSubmit = debounce(
+    async () => {
+      if (!isFull()) {
+        return
       }
-    }
-    if (page_type === 'checkout') {
-      Taro.eventCenter.trigger('onEventCheckoutInvoiceChange', params)
-      Taro.navigateBack()
-    } else {
-      if (invoice_id) {
+      if (info?.email && !validate.isEmail(info?.email)) {
+        showToast('请输入正确的电子邮箱')
+        return
+      }
+      if (protocolShow && info.invoice_type_code === '01' && !protocolCheck) {
+        showToast(`请同意${protocolTitle}`)
+        return
+      }
+      if (info?.invoice_type == 'enterprise' && info?.company_tax_number?.length != 18) {
+        showToast('纳税人识别号应为18位')
+        return
+      }
+      let params = {
+        invoice_type_code: info?.invoice_type_code,
+        invoice_type: info?.invoice_type,
+        company_title:
+          info?.invoice_type == 'enterprise' ? info?.company_title : info.individual_title,
+        email: info?.email
+      }
+      if (params.invoice_type === 'enterprise') {
         params = {
           ...params,
-          invoice_id: invoice_id
+          ...info
         }
       }
-      const res = await api.trade[invoice_id ? 'updateInvoice' : 'applyInvoice']({
-        ...params,
-        order_id: order_id
-      })
-      Taro.eventCenter.trigger('onEventInvoiceStatusChange')
-      Taro.redirectTo({
-        url: `/subpages/trade/invoice-success?invoice_id=${res.id}`
-      })
+      if (page_type === 'checkout') {
+        Taro.eventCenter.trigger('onEventCheckoutInvoiceChange', params)
+        Taro.navigateBack()
+      } else {
+        if (invoice_id) {
+          params = {
+            ...params,
+            invoice_id: invoice_id
+          }
+        }
+        const res = await api.trade[invoice_id ? 'updateInvoice' : 'applyInvoice']({
+          ...params,
+          order_id: order_id
+        })
+        Taro.eventCenter.trigger('onEventInvoiceStatusChange')
+        Taro.redirectTo({
+          url: `/subpages/trade/invoice-success?invoice_id=${res.id}`
+        })
+      }
+    },
+    1000,
+    {
+      leading: true,
+      trailing: false
     }
-  }
+  )
 
   const handleChange = (name, val) => {
     const nInfo = JSON.parse(JSON.stringify(state.info || {}))

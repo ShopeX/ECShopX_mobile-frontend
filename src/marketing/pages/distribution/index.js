@@ -150,7 +150,6 @@ export default class DistributionDashboard extends Component {
     }
     return (
       <SpPage className='page-distribution-index'>
-        <SpNavBar title='推广管理' leftIconType='chevron-left' />
         <View className='header' style={'background: ' + colors.data[0].marketing}>
           <View className='view-flex view-flex-middle'>
             <Image

@@ -32,7 +32,8 @@ import {
   classNames,
   pickBy,
   showToast,
-  log
+  log,
+  buildSharePath
 } from '@/utils'
 import {
   updatePurchaseShareInfo,
@@ -172,11 +173,17 @@ function Home() {
         const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
         const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
         const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
-        log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
+        const params = {
+          code: data.invite_code,
+          enterprise_id,
+          activity_id
+        }
+        const path = buildSharePath('poster_purchase_auth', params)
+        log.debug(path)
         resolve({
           title: activityInfo.name,
           imageUrl: activityInfo.share_pic,
-          path: `/pages/purchase/auth?code=${data.invite_code}&enterprise_id=${enterprise_id}&activity_id=${activity_id}`
+          path
         })
       }
     })

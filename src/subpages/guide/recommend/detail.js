@@ -12,7 +12,7 @@ import { AtButton } from 'taro-ui'
 import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
-import { pickBy, log } from '@/utils'
+import { pickBy, log, buildSharePath } from '@/utils'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
 import './detail.scss'
 
@@ -50,7 +50,7 @@ function GuideRecommendDetail(props) {
       gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
-    const sharePath = `/subpage/pages/recommend/detail?${qs.stringify(query)}`
+    const sharePath = buildSharePath('poster_recommend_detail', query)
     log.debug(`【guide/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {
       title: title,

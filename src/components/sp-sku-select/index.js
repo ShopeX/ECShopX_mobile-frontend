@@ -70,11 +70,11 @@ function SpSkuSelect(props) {
     salesman = false,
     onSubscribe = () => {}
   } = props
-  console.log('SpSkuSelect:info', info)
   // const [state, setState] = useImmer(initialState)
   const [state, setState] = useAsyncCallback(initialState)
   const { selection, disabledSet, curItem, skuText, num, loading, minNum } = state
   const { customerLnformation } = useSelector((state) => state.cart)
+  const { shopInfo } = useSelector((state) => state.shop)
   const dispatch = useDispatch()
   const skuDictRef = useRef({})
 
@@ -270,7 +270,11 @@ function SpSkuSelect(props) {
 
     let params = {}
 
-    const { dtid } = Taro.getStorageSync(SG_ROUTER_PARAMS)
+    // 加购
+    const dtid = VERSION_STANDARD
+      ? shopInfo?.distributor_id
+      : Taro.getStorageSync(SG_ROUTER_PARAMS)?.distributor_id
+
     if (dtid && dtid !== 'undefined') {
       params = {
         shop_type: 'distributor',
@@ -322,7 +326,7 @@ function SpSkuSelect(props) {
       discount_fee: valid_cart[0]?.discount_fee || '', //优惠金额
       storeDetails: valid_cart[0] || {}
     }
-    dispatch(updateCount({ shop_type: 'distributor' }))
+    dispatch(updateCount({ shop_type: 'distributor', shop_id: distributor_id }))
     dispatch(updateShopCartCount(shopCats))
   }
 

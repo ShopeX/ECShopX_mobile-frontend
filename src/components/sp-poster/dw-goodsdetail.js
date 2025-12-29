@@ -43,7 +43,7 @@ class GoodsDetailPoster {
     const { itemId, imgs, price, distributorId } = this.info
     const { user_id, avatar } = this.userInfo || {}
 
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}&dtid=${distributorId}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/share-land`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}&dtid=${distributorId}&from_scene=poster_espier_detail`
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
 
     const pic = imgs[0].replace('http:', 'https:')

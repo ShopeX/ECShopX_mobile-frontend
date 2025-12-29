@@ -22,6 +22,7 @@ const CompSeries = (props) => {
 
   const handleClickItem = (item) => {
     const { category_id, main_category_id } = item
+    console.log('item', item)
     let url = ''
     if (category_id) {
       url = `/pages/item/list?cat_id=${category_id}&all=true`
@@ -108,7 +109,7 @@ const CompSeries = (props) => {
               className='category__banner'
               mode='widthFix'
               src={currentTopImg}
-              onClick={() => handleCustomClick(currentID)}
+              onClick={() => handleClickItem(info[activeIndex])}
             />
           )}
           <View className='comp-series__content_box'>
@@ -131,6 +132,11 @@ const CompSeries = (props) => {
               )
             })}
           </View>
+        </View>
+        <View className='sp-page__powered-by w-full'>
+          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          <Text>Powered by</Text>
+          <Image src='/assets/imgs/powered-logo.png' className='powered-logo' mode='contain' />
         </View>
       </ScrollView>
     </View>

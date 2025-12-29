@@ -19,7 +19,15 @@ import S from '@/spx'
 import { View } from '@tarojs/components'
 import { SpPage, SpSearch, SpSkuSelect, SpTabbar, SpLogin } from '@/components'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import { getDistributorId, log, entryLaunch, pickBy, showToast, VERSION_STANDARD } from '@/utils'
+import {
+  getDistributorId,
+  log,
+  entryLaunch,
+  pickBy,
+  showToast,
+  VERSION_STANDARD,
+  buildSharePath
+} from '@/utils'
 import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
 import { useLogin, useNavigation, useLocation, useModal } from '@/hooks'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
@@ -50,6 +58,7 @@ function CustomPage(props) {
 
   useEffect(() => {
     fetch()
+    entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
   }, [])
 
@@ -113,8 +122,11 @@ function CustomPage(props) {
   const getAppShareInfo = async () => {
     const { id } = await entryLaunch.getRouteParams($instance.router.params)
     const { userId } = Taro.getStorageSync('userinfo')
-    const query = userId ? `?uid=${userId}&id=${id}` : `?id=${id}`
-    let path = `/pages/custom/custom-page${query}`
+    const params = { id }
+    if (userId) {
+      params.uid = userId
+    }
+    const path = buildSharePath('poster_custom_page', params)
 
     log.debug(`getAppShareInfo: ${path}`)
     return {

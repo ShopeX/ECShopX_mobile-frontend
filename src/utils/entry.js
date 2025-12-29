@@ -304,14 +304,11 @@ async function getStoreStatus() {
 //   })
 // }
 // 新增千人千码跟踪记录
-function trackViewNum(monitor_id, source_id) {
-  let _session = Taro.getStorageSync('_session')
-  if (!_session) {
-    return true
-  }
-
+async function trackViewNum(monitor_id, source_id) {
   if (monitor_id && source_id) {
-    let param = { source_id: source_id, monitor_id: monitor_id }
+    const logRes = await Taro.login()
+    const res = await api.wx.getYoushuOpenid({ code: logRes.code })
+    let param = { source_id: source_id, monitor_id: monitor_id, open_id: res?.openid }
     api.track.viewnum(param)
   }
   return true

@@ -44,12 +44,12 @@ function CompTabbar(props) {
     return {
       title: item.text,
       name: item.name,
-      iconType: item.iconPath ? '' : PURCHASE_TABBAR_ICON[item.name],
-      selectedIconType: item.selectedIconPath ? '' : `${PURCHASE_TABBAR_ICON[item.name]}-fill`,
+      iconType: item.iconPath ? '' : PURCHASE_TABBAR_ICON()[item.name],
+      selectedIconType: item.selectedIconPath ? '' : `${PURCHASE_TABBAR_ICON()[item.name]}-fill`,
       iconPrefixClass: 'iconfont icon',
       image: item.iconPath,
       selectedImage: item.selectedIconPath,
-      url: PURCHASE_TABBAR_PATH[item.name],
+      url: PURCHASE_TABBAR_PATH()[item.name],
       urlRedirect: true,
       text: item.text.indexOf('购物车') > -1 && cartCount > 0 ? cartCount : null,
       max: item.max
@@ -61,13 +61,13 @@ function CompTabbar(props) {
   if (pages.length > 0) {
     const currentPage = pages[pages.length - 1].route
     currentIndex = tabList?.findIndex((tab) => {
-      if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[PURCHASE_TABBAR_PATH[tab.name]]) {
+      if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[PURCHASE_TABBAR_PATH()[tab.name]]) {
         return (
-          routerIntercept.routes?.[process.env.APP_PLATFORM]?.[PURCHASE_TABBAR_PATH[tab.name]] ==
+          routerIntercept.routes?.[process.env.APP_PLATFORM]?.[PURCHASE_TABBAR_PATH()[tab.name]] ==
           `/${currentPage}`
         )
       } else {
-        return PURCHASE_TABBAR_PATH[tab.name] == `/${currentPage}`
+        return PURCHASE_TABBAR_PATH()[tab.name] == `/${currentPage}`
       }
     })
   }

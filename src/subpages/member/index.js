@@ -15,6 +15,7 @@ import { useImmer } from 'use-immer'
 import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
+import { buildSharePath } from '@/utils'
 
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
@@ -117,7 +118,7 @@ function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
   const $instance = getCurrentInstance()
   const { updateAddress } = useLocation()
-  const { isLogin, getUserInfo } = useLogin({
+  const { isLogin, getUserInfo, isNewUser } = useLogin({
     autoLogin: false,
     // policyUpdateHook: (isUpdate) => {
     //   // isUpdate && setPolicyModal(true)
@@ -161,6 +162,7 @@ function MemberIndex(props) {
     if (isLogin) {
       getUserInfo()
       getMemberCenterData()
+      setMemberBackground()
     }
   })
 
@@ -200,15 +202,15 @@ function MemberIndex(props) {
   }
 
   // 分享
-  useShareAppMessage(async (res) => {
-    const { share_title, share_pic_wechatapp } = await api.member.getMemberShareConfig()
+  useShareAppMessage(async () => {
     const { logo } = await api.distribution.getDistributorInfo({
       distributor_id: 0
     })
+    const path = buildSharePath('poster_home', {})
     return {
-      title: state.shareInfo.page_share_title || share_title,
-      imageUrl: state.shareInfo.page_share_imageUrl || share_pic_wechatapp || logo,
-      path: '/pages/index'
+      title: state.shareInfo.page_share_title,
+      imageUrl: state.shareInfo.page_share_imageUrl || logo,
+      path: path
     }
   })
 
@@ -345,53 +347,6 @@ function MemberIndex(props) {
     })
   }
 
-  const handlePopularChange = async () => {
-    // 推广跳转
-    // 已经是分销员
-    if (userInfo.isPromoter) {
-      Taro.navigateTo({ url: link })
-    } else {
-      const { confirm } = await Taro.showModal({
-        title: '邀请推广',
-        content: '确定申请成为推广员？',
-        showCancel: true,
-        cancel: '取消',
-        confirmText: '确认',
-        confirmColor: '#0b4137'
-      })
-      if (!confirm) return
-      const { status } = await api.distribution.become()
-      if (status) {
-        Taro.showModal({
-          title: '恭喜',
-          content: '已成为推广员',
-          showCancel: false,
-          confirmText: '好'
-        })
-      }
-    }
-  }
-
-  const handlePurchaseChange = async () => {
-    const data = await api.purchase.getUserEnterprises({
-      disabled: 0,
-      distributor_id: getDistributorId()
-    })
-    if (data?.length > 0) {
-      Taro.navigateTo({ url: '/subpages/purchase/select-identity?is_redirt=1' })
-    } else {
-      Taro.navigateTo({ url: '/pages/purchase/auth' })
-    }
-    dispatch(updatePurchaseShareInfo())
-    dispatch(updateInviteCode())
-    dispatch(updateCurDistributorId(null))
-  }
-
-  const handleClickLink = async (link) => {
-    // await getUserInfoAuth()
-    Taro.navigateTo({ url: link })
-  }
-
   const handleClickService = async (item) => {
     const { link, key } = item
     // 分销推广
@@ -460,13 +415,17 @@ function MemberIndex(props) {
       Taro.navigateTo({ url: link })
     }
   }
+
+  const onLoginChange = (url) => {
+    if (!isLogin || !url) return
+    Taro.navigateTo({ url })
+  }
+
   const VipGradeDom = () => {
     return (
       <View
         className='user-grade-name'
-        onClick={() => {
-          Taro.navigateTo({ url: '/subpages/member/member-level' })
-        }}
+        onClick={() => onLoginChange('/subpages/member/member-level')}
       >
         <Text>
           {
@@ -476,7 +435,7 @@ function MemberIndex(props) {
             }[vipInfo.isVip]
           }
         </Text>
-        <SpImage src='fv_chevron_right.png' width={40} />
+        <SpImage src='fv_chevron_right.png' width={40} className='icon-arrowRight-img' />
       </View>
     )
   }
@@ -486,7 +445,7 @@ function MemberIndex(props) {
   }
 
   const memberBckStyle = {
-    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / contain`
+    background: `url('${userInfo?.gradeInfo?.grade_background}') no-repeat center center / cover`
   }
 
   return (
@@ -494,29 +453,19 @@ function MemberIndex(props) {
       className='pages-member-index'
       immersive={state.pageData?.base?.isImmersive}
       pageConfig={state.pageData?.base || {}}
-      renderFooter={<SpTabbar height={state.footerHeight} />}
+      renderFooter={<SpTabbar />}
       title='会员中心'
-      onReady={({ footerHeight }) => {
-        setState((draft) => {
-          draft.footerHeight = footerHeight
-        })
-        console.log('onReady', footerHeight)
-      }}
     >
-      <View className='user-info-card-wrapper' style={{ paddingBottom: state.footerHeight }}>
+      <View className='user-info-card-wrapper min-h-full'>
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
         >
-          <View className='user-info-card'>
+          <SpLogin newUser={isNewUser} className='user-info-card'>
             <View className='user-info-header'>
               <View
                 className='user-avatar'
-                onClick={() => {
-                  if (isLogin) {
-                    Taro.navigateTo({ url: '/subpages/member/user-info' })
-                  }
-                }}
+                onClick={() => onLoginChange('/subpages/member/user-info')}
                 style={{ width: '72px', height: '72px' }}
               >
                 <SpImage
@@ -532,7 +481,7 @@ function MemberIndex(props) {
                   <>
                     <View
                       className='user-name'
-                      onClick={() => Taro.navigateTo({ url: '/subpages/member/user-info' })}
+                      onClick={() => onLoginChange('/subpages/member/user-info')}
                     >
                       {userInfo?.username || userInfo?.mobile}
                     </View>
@@ -547,9 +496,7 @@ function MemberIndex(props) {
                     </View>
                   </>
                 ) : (
-                  <SpLogin>
-                    <Text className='login-text font-medium text-34'>点击登录</Text>
-                  </SpLogin>
+                  <Text className='login-text font-medium text-34'>点击登录</Text>
                 )}
               </View>
 
@@ -569,47 +516,32 @@ function MemberIndex(props) {
                   className='member-level-bg'
                 /> */}
                 {isLogin && config.menu.member_code && !VERSION_SHUYUN && (
-                  <SpLogin
-                    onChange={handleClickLink.bind(this, '/marketing/pages/member/member-code')}
-                  >
-                    <Text className='iconfont icon-erweima-01'></Text>
-                  </SpLogin>
+                  <Text
+                    className='iconfont icon-erweima-01'
+                    onClick={() => onLoginChange('/marketing/pages/member/member-code')}
+                  ></Text>
                 )}
               </View>
             </View>
 
             <View className='user-stats'>
-              <SpLogin
-                onChange={() => {
-                  Taro.navigateTo({ url: '/subpages/marketing/coupon' })
-                }}
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/marketing/coupon')}
               >
-                <View
-                  className='stat-item'
-                  // onClick={() => }
-                >
-                  <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
-                  <Text className='stat-label'>优惠券</Text>
-                </View>
-              </SpLogin>
-              <SpLogin
-                onChange={() => {
-                  if (VERSION_SHUYUN) {
-                    handleClickLink('/subpages/member/point-rule')
-                  } else {
-                    handleClickLink('/subpages/member/point-detail')
-                  }
-                }}
+                <Text className='stat-value'>{isLogin ? state.couponCount || 0 : '···'}</Text>
+                <Text className='stat-label'>优惠券</Text>
+              </View>
+
+              <View
+                className='stat-item'
+                onClick={() => onLoginChange('/subpages/member/point-detail')}
               >
-                {!VERSION_SHUYUN && (
-                  <View className='stat-item'>
-                    <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
-                    <Text className='stat-label'>{VERSION_SHUYUN ? '积分规则' : pointName}</Text>
-                  </View>
-                )}
-              </SpLogin>
+                <Text className='stat-value'>{isLogin ? state.point || 0 : '···'}</Text>
+                <Text className='stat-label'>积分</Text>
+              </View>
             </View>
-          </View>
+          </SpLogin>
           {/* <View className='header-block__ft'></View> */}
         </View>
 

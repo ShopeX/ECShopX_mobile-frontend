@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
-import { SpCell } from '@/components'
+import { SpCell, SpPage } from '@/components'
 import api from '@/api'
 
 import './shop-setting.scss'
@@ -48,29 +48,31 @@ export default class DistributionShopSetting extends Component {
     const { info } = this.state
 
     return (
-      <View className='page-distribution-shop-setting'>
-        <SpCell
-          title='小店名称'
-          value={info.shop_name}
-          onClick={this.handleClick.bind(this, 'shop_name')}
-          border
-          isLink
-        />
-        <SpCell
-          title='小店描述'
-          value={info.brief}
-          onClick={this.handleClick.bind(this, 'brief')}
-          border
-          isLink
-        />
-        <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
-          <Image
-            className='shop-sign'
-            src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}
-            mode='widthFix'
+      <SpPage className='page-distribution-shop-setting'>
+        <View className='min-h-full'>
+          <SpCell
+            title='小店名称'
+            value={info.shop_name}
+            onClick={this.handleClick.bind(this, 'shop_name')}
+            border
+            isLink
           />
-        </SpCell>
-      </View>
+          <SpCell
+            title='小店描述'
+            value={info.brief}
+            onClick={this.handleClick.bind(this, 'brief')}
+            border
+            isLink
+          />
+          <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
+            <Image
+              className='shop-sign'
+              src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}
+              mode='widthFix'
+            />
+          </SpCell>
+        </View>
+      </SpPage>
     )
   }
 }

@@ -43,8 +43,8 @@ class GuideCheckoutPoster {
      * smid: 78,//导购id
      * distributor_id: 103,//门店id
      */
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/cart/espier-checkout`}&
-    appid=${appid}&company_id=${company_id}&cxdid=${salesPromotionId}&smid=${salesperson_id}&distributor_id=${distributor_id}&gu=${gu}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=pages/share-land&
+    appid=${appid}&company_id=${company_id}&cxdid=${salesPromotionId}&smid=${salesperson_id}&distributor_id=${distributor_id}&gu=${gu}&from_scene=poster_espier_checkout`
     console.log('wxappCode:', wxappCode)
 
     // 太阳码

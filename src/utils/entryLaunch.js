@@ -10,11 +10,7 @@ import dayjs from 'dayjs'
 import { showToast, log, isArray, VERSION_STANDARD, resolveUrlParamsParse } from '@/utils'
 import configStore from '@/store'
 import _isEqual from 'lodash/isEqual'
-import {
-  SG_ROUTER_PARAMS,
-  SG_GUIDE_PARAMS_UPDATETIME,
-  SG_GUIDE_PARAMS
-} from '@/consts/localstorage'
+import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
 
@@ -68,6 +64,8 @@ class EntryLaunch {
           ..._options,
           ...res
         }
+        delete _options?.distributorInfo
+        delete _options?.salespersonInfo
       }
     } else {
       _options = params
@@ -418,8 +416,8 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    const routerParams =
-      Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
+    if (!S.getAuthToken()) return
+    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
     const { gu, gu_user_id } = routerParams || {}
     let work_userid = ''
     if (gu) {
@@ -432,7 +430,17 @@ class EntryLaunch {
       await api.user.uniquevisito({
         work_userid
       })
-      // 导购关系绑定
+    }
+  }
+
+  /**
+   * 导购关系绑定
+   */
+  async postGuideUVBind() {
+    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
+    const { gu } = routerParams || {}
+    if (gu) {
+      const [work_userid] = gu.split('_')
       await api.user.bindSaleperson({
         work_userid
       })
@@ -443,8 +451,7 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask() {
-    const { path } = $instance.router
-    let params = await this.getRouteParams($instance.router)
+    const { path, params } = $instance.router
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
@@ -455,44 +462,71 @@ class EntryLaunch {
     if (!routePath[path]) {
       return
     }
-    if (path == '/pages/cart/espier-checkout') {
-      params = Taro.getStorageSync(SG_ROUTER_PARAMS) || Taro.getStorageSync(SG_GUIDE_PARAMS)
-    }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
-    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = params
-    let work_userid = ''
-    let shop_code = ''
-    if (gu) {
-      const [employeenumber, shopcode] = gu.split('_')
-      work_userid = employeenumber
-      shop_code = shopcode
-    }
-    if (gu_user_id) {
-      work_userid = gu_user_id
-    }
-    if (work_userid && S.getAuthToken()) {
+    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = await this.getRouteParams(
+      params
+    )
+    if (gu && S.getAuthToken()) {
+      const [employee_number, shop_code] = gu.split('_')
       const _params = {
-        employee_number: work_userid,
+        employee_number,
         subtask_id,
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
         event_type: routePath[path]
       }
-      if (subtask_id) {
-        api.wx.taskReportData(_params)
-      }
+      api.wx.taskReportData(_params)
 
       const { userInfo } = store.getState().user
       const { user_id } = userInfo
       api.wx.interactiveReportData({
-        event_id: work_userid,
+        event_id: employee_number,
         user_type: 'wechat',
         user_id,
         event_type: routePath[path],
         store_bn: shop_code
       })
     }
+  }
+
+  // 任务中心上报
+  async postCenterTask(info) {
+    const res = await api.task.getTaskList()
+    // console.log('infouu--',Taro.getStorageSync('task_shop_rule_id'),res,info);
+    if (res?.rule_list && res?.rule_list.length > 0) {
+      res?.rule_list.forEach(async (item) => {
+        const goodsIdList = item?.binding_items && JSON.parse(item.binding_items)
+        const distributorsList = item?.binding_distributors && JSON.parse(item.binding_distributors)
+        try {
+          const { page_delay = 0 } = item?.common_condition
+          if (
+            (info?.ruleId == item?.id ||
+              goodsIdList.includes(info?.goodsId) ||
+              (item?.special_type == '3' && goodsIdList.length == 0) ||
+              (item?.special_type == '2' && distributorsList.length == 0)) &&
+            item.done == 0
+          ) {
+            setTimeout(async () => {
+              await api.task.completeTask({ activity_id: item?.activity_id, rule_id: item.id })
+            }, page_delay * 1000)
+          }
+        } catch (error) {
+          console.log(error)
+        }
+      })
+    }
+  }
+
+  // 千人千码上报
+  async trackViewNum(monitor_id, source_id) {
+    if (monitor_id && source_id) {
+      const logRes = await Taro.login()
+      const res = await api.wx.getYoushuOpenid({ code: logRes.code })
+      let param = { source_id: source_id, monitor_id: monitor_id, open_id: res?.openid }
+      api.track.viewnum(param)
+    }
+    return true
   }
 }
 

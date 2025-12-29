@@ -5,7 +5,7 @@
 import React, { Component } from 'react'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar } from '@/components'
+import { Loading, SpNote, SpNavBar, SpPage } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
@@ -89,8 +89,7 @@ export default class DistributionSubordinate extends Component {
     const { list, page, curTabIdx, tabList, scrollTop } = this.state
 
     return (
-      <View className='page-distribution-subordinate'>
-        <SpNavBar title='我的会员' leftIconType='chevron-left' fixed='true' />
+      <SpPage className='page-distribution-subordinate'>
         <AtTabs
           className='client-list__tabs'
           current={curTabIdx}
@@ -150,7 +149,7 @@ export default class DistributionSubordinate extends Component {
             <SpNote img='trades_empty.png'>暂无数据~</SpNote>
           )}
         </ScrollView>
-      </View>
+      </SpPage>
     )
   }
 }

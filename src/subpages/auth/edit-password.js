@@ -12,7 +12,6 @@ import api from '@/api'
 import { useLogin } from '@/hooks'
 import { useImmer } from 'use-immer'
 import { setTokenAndRedirect, getToken, pushHistory, clearHistory } from './util'
-import { PASSWORD_TIP } from './const'
 import './edit-password.scss'
 
 const SYMBOL = 'login'
@@ -104,7 +103,7 @@ const PageEditPassword = () => {
               onChange={handleInputChange('repassword')}
             />
           </View>
-          <View className='form-tip'>{PASSWORD_TIP}</View>
+          <View className='form-tip'>密码需由6-16位数字或字母组成</View>
 
           <View className='form-submit'>
             <AtButton

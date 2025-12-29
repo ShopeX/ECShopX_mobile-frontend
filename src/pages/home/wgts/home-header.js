@@ -13,13 +13,15 @@ import './home-header.scss'
 function WgtHomeHeader(props) {
   const { children, jump = true, isSetHight } = props
   const { location = {} } = useSelector((state) => state.user)
-  const { openScanQrcode, entryStoreByLBS } = useSelector((state) => state.sys)
+  const { openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector(
+    (state) => state.sys
+  )
   const { shopInfo } = useSelector((state) => state.shop)
   const handleScanCode = () => {}
 
   return (
     <View className={classNames('home-header')}>
-      {VERSION_STANDARD && entryStoreByLBS && (
+      {VERSION_STANDARD && entryStoreByLBS && openWechatappLocation == 1 && (
         <View
           className='left-block'
           onClick={() => {
@@ -33,7 +35,7 @@ function WgtHomeHeader(props) {
         </View>
       )}
 
-      {VERSION_PLATFORM && (
+      {VERSION_PLATFORM && openWechatappLocation == 1 && (
         <View
           className='left-block'
           onClick={() => {

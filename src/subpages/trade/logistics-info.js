@@ -8,23 +8,26 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import S from '@/spx'
-import { View, Picker } from '@tarojs/components'
+import { View, Picker, Text } from '@tarojs/components'
 import { LOGISTICS_CODE } from '@/consts'
 import { SpPage, SpCell, SpInput as AtInput, SpToast } from '@/components'
-import { showToast } from '@/utils'
+import { showToast, copyText } from '@/utils'
 import './logistics-info.scss'
 
 const initialState = {
   logi_no: '',
   corpIndex: 0,
-  expressList: []
+  expressList: [],
+  afterInfo: null
 }
 function TradeLogisticsInfo(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { logi_no, expressList, corpIndex } = state
+  const { logi_no, expressList, corpIndex, afterInfo } = state
+  const { item_id, order_id, aftersales_bn, type = 'single' } = $instance.router.params
 
   useEffect(() => {
+    const aftersInfo = Taro.getStorageSync('moreAftersalesBn') || null
     const _expressList = Object.keys(LOGISTICS_CODE()).map((key) => {
       return {
         name: LOGISTICS_CODE()[key],
@@ -33,11 +36,15 @@ function TradeLogisticsInfo(props) {
     })
     setState((draft) => {
       draft.expressList = _expressList
+      draft.afterInfo = aftersInfo
     })
+    return () => {
+      Taro.removeStorageSync('moreAftersalesBn')
+    }
   }, [])
 
   const onSubmit = async () => {
-    const { item_id, order_id, aftersales_bn } = $instance.router.params
+    const aftersInfo = Taro.getStorageSync('moreAftersalesBn') || null
     const corp_code = expressList[corpIndex]?.code
     if (!corp_code) {
       showToast('请填写物流公司')
@@ -51,10 +58,11 @@ function TradeLogisticsInfo(props) {
       await api.aftersales.sendback({
         item_id,
         order_id,
-        aftersales_bn,
+        aftersales_bn: aftersales_bn,
         logi_no,
         corp_code,
-        showError: false
+        showError: false,
+        aftersales_data: aftersInfo?.aftersalesBn
       })
       showToast('操作成功')
       setTimeout(() => {
@@ -91,6 +99,31 @@ function TradeLogisticsInfo(props) {
         </View>
       }
     >
+      {type == 'more' && (
+        <View className='after-address'>
+          <SpCell title='回寄信息:'>
+            <>
+              <View className='contact-mobile'>
+                <Text className='contact'>{afterInfo?.address?.aftersales_contact}</Text>
+                <Text className='mobile'>{afterInfo?.address?.aftersales_mobile}</Text>
+              </View>
+              <View
+                className='btn-copy'
+                circle
+                size='small'
+                onClick={() => {
+                  copyText(
+                    `${afterInfo?.address?.aftersales_contact} ${afterInfo?.address?.aftersales_mobile}\n${afterInfo?.address?.aftersales_address}`
+                  )
+                }}
+              >
+                复制
+              </View>
+            </>
+          </SpCell>
+          <View className='address-detail'>{afterInfo?.address?.aftersales_address}</View>
+        </View>
+      )}
       <SpCell
         className='logistics-company'
         title='物流公司'

@@ -34,7 +34,8 @@ function CouponPicker(props) {
       distributor_id,
       source,
       goodType,
-      coupon = null
+      coupon = null,
+      cxdid
     } = $instance.router.params
     const params = {
       page_no: pageIndex,
@@ -46,7 +47,8 @@ function CouponPicker(props) {
       valid: true,
       is_checkout,
       cart_type,
-      iscrossborder: 0
+      iscrossborder: 0,
+      cxdid
     }
     const { list, total_count: total } = await api.cart.coupons(params)
 

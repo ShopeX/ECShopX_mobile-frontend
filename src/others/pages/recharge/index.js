@@ -12,8 +12,12 @@ import S from '@/spx'
 import { classNames } from '@/utils'
 import api from '@/api'
 import PaymentPicker from '@/pages/cart/comps/payment-picker'
+import configStore from '@/store'
+import { updateUserInfo } from '@/store/slices/user'
 // /Users/zhangqing/projectTwo/ecshopx-vshop/src/pages/cart/comps/payment-picker.js
 import './index.scss'
+
+const { store } = configStore()
 
 @connect(({ user, colors, sys }) => ({
   address: user.address,
@@ -70,6 +74,7 @@ export default class Recharge extends Component {
   // 获取会员详情
   getMemberInfo() {
     api.member.memberInfo().then((res) => {
+      store.dispatch(updateUserInfo(res))
       this.setState({
         deposit: res.deposit
       })

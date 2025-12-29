@@ -79,7 +79,7 @@ export default class WgtLimittimeSlider extends Component {
                 >
                   <View
                     style={`padding: 0 ${Taro.pxTransform(config.sliderSpace || 0)}`}
-                    onClick={this.handleClickItem.bind(this, item.linkPage, item.id)}
+                    onClick={this.handleClickItem.bind(this, item)}
                   >
                     <Image mode='widthFix' className='slider-item__img' src={item.imgUrl} />
                   </View>

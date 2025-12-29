@@ -114,6 +114,8 @@ export default class Login extends Component {
   }
 
   async handleSubmit() {
+    const { source_id, monitor_id, latest_source_id, latest_monitor_id } =
+      Taro.getStorageSync('sourceInfo') // 千人千码参数
     const { redirect } = this.$instance.router.params
     const { loginType } = this.state
     const { mobile, password, vcode } = this.state.info
@@ -148,6 +150,19 @@ export default class Login extends Component {
     }
 
     params['auth_type'] = 'local'
+
+    if (source_id) {
+      params['source_id'] = source_id
+    }
+    if (monitor_id) {
+      params['monitor_id'] = monitor_id
+    }
+    if (latest_source_id) {
+      params['latest_source_id'] = latest_source_id
+    }
+    if (latest_monitor_id) {
+      params['latest_monitor_id'] = latest_monitor_id
+    }
 
     try {
       const { token, error_message } = await api.wx.newloginh5(params)
@@ -376,7 +391,7 @@ export default class Login extends Component {
                   </View>
                 </View>
               )}
-              {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP}</View>} */}
+              {/* {passwordLogin && <View className='form-tip'>{PASSWORD_TIP()}</View>} */}
               <View className='btn-text-group'>
                 <Text className='btn-text' onClick={this.handleToggleLogin.bind(this)}>
                   {passwordLogin ? '验证码登录' : '密码登录'}

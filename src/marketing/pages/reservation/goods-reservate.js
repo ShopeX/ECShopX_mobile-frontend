@@ -201,6 +201,15 @@ function GoodReservate(props) {
     })
   }
 
+  const onChangeNumber = (e, key) => {
+    // 只允许输入数字
+    const value = e.replace(/[^\d]/g, '')
+    const _form = JSON.parse(JSON.stringify(form))
+    _form[key] = value
+    setState((draft) => {
+      draft.form = _form
+    })
+  }
   const handleSelectChange = (e, key, options, form_element) => {
     console.log(e, key, options, form_element)
     let value
@@ -255,7 +264,6 @@ function GoodReservate(props) {
     const { field_title, field_name, id, form_element, options = [] } = item
     switch (form_element) {
       case 'text':
-      case 'number':
         return (
           <AtInput
             name={id}
@@ -263,6 +271,16 @@ function GoodReservate(props) {
             type={form_element}
             placeholder={`请填写${field_title}`}
             onChange={(e) => onChange(e, id)}
+          />
+        )
+      case 'number':
+        return (
+          <AtInput
+            name={id}
+            value={form[id]}
+            type={form_element}
+            placeholder={`请填写${field_title}`}
+            onChange={(e) => onChangeNumber(e, id)}
           />
         )
       case 'textarea':

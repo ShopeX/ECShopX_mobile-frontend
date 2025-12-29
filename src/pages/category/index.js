@@ -45,10 +45,10 @@ function StoreItemList(props) {
   }
 
   return (
-    <SpPage>
+    <>
       {state.layout === 1 && <CompsAddPurchase />}
       {state.layout === 2 && <CompsCategoryNew />}
-    </SpPage>
+    </>
   )
 }
 

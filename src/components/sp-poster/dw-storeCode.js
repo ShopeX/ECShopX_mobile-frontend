@@ -29,8 +29,8 @@ class StoreCode {
 
   async drawPoster() {
     const { appid, company_id } = getExtConfigData()
-    const path = `subpages/store/index`
-    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=${path}&appid=${appid}&company_id=${company_id}&uid=${this.info.user_id}&dtid=${this.info.distributor_id}&qr=Y`
+    const path = `poster_store_index`
+    const wxappCode = `${process.env.APP_BASE_URL}/promoter/qrcode.png?page=pages/share-land&appid=${appid}&company_id=${company_id}&uid=${this.info.user_id}&dtid=${this.info.distributor_id}&qr=Y&from_scene=${path}`
 
     const pic = `${process.env.APP_IMAGE_CDN}/bg_fxhb.png`
     console.log('goods pic:', pic)

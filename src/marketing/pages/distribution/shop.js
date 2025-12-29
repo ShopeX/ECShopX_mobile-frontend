@@ -107,72 +107,74 @@ export default class DistributionShop extends Component {
 
     return (
       <SpPage className='page-distribution-shop'>
-        <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
-          <View className='shop-info'>
-            <View className='img-content'>
-              <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
-            </View>
-            <View>
-              <View className='shop-name'>
-                {info.shop_name || `${info.username}的小店(未设置名称)`}
+        <View className='min-h-full'>
+          <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
+            <View className='shop-info'>
+              <View className='img-content'>
+                <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
               </View>
-              <View className='shop-desc'>{info.brief || '店主很懒什么都没留下'}</View>
+              <View>
+                <View className='shop-name'>
+                  {info.shop_name || `${info.username}的小店(未设置名称)`}
+                </View>
+                <View className='shop-desc'>{info.brief || '店主很懒什么都没留下'}</View>
+              </View>
             </View>
+            <Navigator className='shop-setting' url='/marketing/pages/distribution/shop-setting'>
+              <Text class='iconfont icon-settings'></Text>
+            </Navigator>
           </View>
-          <Navigator className='shop-setting' url='/marketing/pages/distribution/shop-setting'>
-            <Text class='iconfont icon-settings'></Text>
-          </Navigator>
-        </View>
-        {info.shop_pic && (
-          <View>
-            <Image className='banner-img' src={info.shop_pic} mode='widthFix' />
-          </View>
-        )}
-        <View className='section content-center'>
-          <View className='content-padded-b shop-achievement'>
-            <View className='achievement-label'>小店任务返佣额 </View>
-            <View className='achievement-amount'>
-              <Text className='amount-cur'>¥</Text> {info.turnover / 100}
+          {info.shop_pic && (
+            <View>
+              <Image className='banner-img' src={info.shop_pic} mode='widthFix' />
             </View>
-          </View>
-          {/* <View className='content-padded-b shop-achievement'>
+          )}
+          <View className='section content-center'>
+            <View className='content-padded-b shop-achievement'>
+              <View className='achievement-label'>小店任务返佣额 </View>
+              <View className='achievement-amount'>
+                <Text className='amount-cur'>¥</Text> {info.turnover / 100}
+              </View>
+            </View>
+            {/* <View className='content-padded-b shop-achievement'>
             <View className='achievement-label'>小店返佣积分</View>
             <View className='achievement-amount'>{info.point || 0} <Text className='amount-cur'>分</Text> </View>
           </View> */}
-        </View>
-        <View className='shop-block'>
-          <View
-            className=' shop-nav-item width'
-            onClick={this.handleClick.bind(this, 'achievement')}
-          >
-            <View className='iconfont icon-chart iconsize'></View>
-            <View>我的业绩</View>
           </View>
-          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'goods')}>
-            <View className='iconfont icon-errorList iconsize'></View>
-            <View>任务商品</View>
-          </View>
-          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'trade')}>
-            <View className='iconfont icon-list1 iconsize'></View>
-            <View>小店订单</View>
+          <View className='shop-block'>
+            <View
+              className=' shop-nav-item width'
+              onClick={this.handleClick.bind(this, 'achievement')}
+            >
+              <View className='iconfont icon-chart iconsize'></View>
+              <View>我的业绩</View>
+            </View>
+            <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'goods')}>
+              <View className='iconfont icon-errorList iconsize'></View>
+              <View>任务商品</View>
+            </View>
+            <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'trade')}>
+              <View className='iconfont icon-list1 iconsize'></View>
+              <View>小店订单</View>
+            </View>
+            {info.disabled == 0 && (
+              <View className='shop-nav-item width'>
+                <Button openType='share' className='share-btn'>
+                  <View className='iconfont icon-share2 iconsize'></View>
+                  <View>分享小店</View>
+                </Button>
+              </View>
+            )}
           </View>
           {info.disabled == 0 && (
-            <View className='shop-nav-item width'>
-              <Button openType='share' className='share-btn'>
-                <View className='iconfont icon-share2 iconsize'></View>
-                <View>分享小店</View>
-              </Button>
+            <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
+              <View className='main'>
+                <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
+                <View className='title'>预览小店</View>
+              </View>
             </View>
           )}
         </View>
-        {info.disabled == 0 && (
-          <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
-            <View className='main'>
-              <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
-              <View className='title'>预览小店</View>
-            </View>
-          </View>
-        )}
       </SpPage>
     )
   }

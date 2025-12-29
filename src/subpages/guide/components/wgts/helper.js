@@ -3,15 +3,15 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import { WGTS_NAV_MAP } from '@/consts'
 
-export function linkPage(type, id, item) {
+export function linkPage(item) {
+  const { id } = item
   // console.log('[首页模版点击：linkPage]-type',type)
   // console.log('[首页模版点击：linkPage]-id', id)
   // console.log('[首页模版点击：linkPage]-item',item)
   let url = ''
 
-  switch (type) {
+  switch (item.linkPage) {
     case 'goods':
       url = '/subpages/guide/item/espier-detail?id=' + id
       break
@@ -37,8 +37,8 @@ export function linkPage(type, id, item) {
   //   return
   // }
 
-  let is_arr = Array.isArray(type) //活动 ['activity','满折/满减/满赠/限时特惠/任选']
-  is_arr && (url = `/guide/item/promotion-list?type=${type[1]}&id=${id}`)
+  let is_arr = Array.isArray(item.linkPage) //活动 ['activity','满折/满减/满赠/限时特惠/任选']
+  is_arr && (url = `/guide/item/promotion-list?type=${item.linkPage[1]}&id=${id}`)
 
   Taro.navigateTo({
     url

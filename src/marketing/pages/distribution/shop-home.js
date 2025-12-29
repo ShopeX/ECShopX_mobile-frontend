@@ -6,7 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, Input } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
-import { BackToTop, Loading, SpNavBar, SpImg, SpNote } from '@/components'
+import { BackToTop, Loading, SpNavBar, SpImg, SpNote, SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import qs from 'qs'
@@ -466,14 +466,19 @@ export default class DistributionShopHome extends Component {
       }
     ]
 
-    if (!info.is_valid) {
-      return <Loading />
-    }
+    // if (!info.is_valid) {
+    //   return <Loading />
+    // }
 
     return (
-      <View className='page-distribution-shop'>
-        <CustomHeader isWhite={paddindTop > 0} isHome={isHome} statusBarHeight={statusBarHeight} />
-        <SpNavBar title='小店' leftIconType='chevron-left' fixed='true' />
+      <SpPage
+        className='page-distribution-shop'
+        title='小店'
+        showToTop
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
         <View className='shop-banner'>
           <View className='shop-def'>
             <Image
@@ -590,10 +595,8 @@ export default class DistributionShopHome extends Component {
             </SpNote>
           )}
         </View>
-        <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} />
-
-        <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-      </View>
+        {/* <BackToTop show={showBackToTop} onClick={this.scrollBackToTop.bind(this)} /> */}
+      </SpPage>
     )
   }
 }

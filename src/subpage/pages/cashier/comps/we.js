@@ -2,16 +2,6 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-/*
- * @Author: Arvin
- * @GitHub: https://github.com/973749104
- * @Blog: https://liuhgxu.com
- * @Description: 说明
- * @FilePath: /unite-vshop/src/subpage/pages/cashier/comps/we.js
- * @Date: 2020-11-19 14:22:17
- * @LastEditors: Arvin
- * @LastEditTime: 2020-11-19 15:20:48
- */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'

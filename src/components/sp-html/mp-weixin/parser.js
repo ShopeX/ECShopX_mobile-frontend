@@ -1,7 +1,3 @@
-/**
- * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
- * See LICENSE file for license details.
- */
 'use strict'
 function t(t) {
   for (var i = Object.create(null), s = t.split(','), e = s.length; e--; ) i[s[e]] = !0

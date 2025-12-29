@@ -209,7 +209,7 @@ export default (props) => {
         btns.push(tradeActionBtns.AFTER_SALES)
       }
     } else if (orderStatus == 'DONE') {
-      // btns.push(tradeActionBtns.LOGISTICS)
+      btns.push(tradeActionBtns.LOGISTICS)
       if (canApplyAftersales) {
         btns.push(tradeActionBtns.AFTER_SALES)
       }

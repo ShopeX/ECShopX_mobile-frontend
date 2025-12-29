@@ -169,77 +169,87 @@ export default class DistributionWithdraw extends Component {
       payText
     } = this.state
     return (
-      <SpPage className='page-distribution-withdraw'>
-        <View className='withdraw'>
-          <View className='withdraw-title'>
-            <View className='title'>可提现金额（元）</View>
-            <View className='content'>{cashWithdrawalRebate / 100}</View>
+      <SpPage
+        className='page-distribution-withdraw'
+        footerHeight={186}
+        renderFooter={
+          <View className='content-padded'>
+            <Button
+              className='g-button'
+              onClick={this.goWithdraw}
+              disabled={curIdx == 'wechat' && amount > 800}
+            >
+              提现
+            </Button>
           </View>
-          <View className='withdraw-body'>
-            <View style={{ color: '#666666' }}>提现金额</View>
-            <View className='withdraw-flex'>
-              <AtInput
-                className='withdraw-body-input'
-                onChange={this.handleChange.bind(this)}
-                type='digit'
-                title='¥'
-                value={amount}
-                clear
-              />
-              <View className='withdraw-body-btn' onClick={this.handleWithdrawAll}>
-                全部提现
+        }
+      >
+        <View className='min-h-full'>
+          <View className='withdraw'>
+            <View className='withdraw-title'>
+              <View className='title'>可提现金额（元）</View>
+              <View className='content'>{cashWithdrawalRebate / 100}</View>
+            </View>
+            <View className='withdraw-body'>
+              <View style={{ color: '#666666' }}>提现金额</View>
+              <View className='withdraw-flex'>
+                <AtInput
+                  className='withdraw-body-input'
+                  onChange={this.handleChange.bind(this)}
+                  type='digit'
+                  title='¥'
+                  value={amount}
+                  clear
+                />
+                <View className='withdraw-body-btn' onClick={this.handleWithdrawAll}>
+                  全部提现
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        <View className='section list'>
-          <View className='list-item' style='position: relative'>
-            {payList.length > 0 && (
-              <Picker
-                onChange={this.handlePick.bind(this)}
-                mode='selector'
-                range={payList}
-                rangeKey='name'
-              >
-                <View className='pay-type-picker'></View>
-              </Picker>
-            )}
-            <View className='label'>提现方式</View>
-            <View className='list-item-txt content-right'>{payText[curIdx]}</View>
-            <View className='iconfont item-icon-go icon-arrowRight'></View>
-          </View>
-          {curIdx === 'alipay' && (
-            <Navigator url='/marketing/pages/distribution/withdrawals-acount' className='list-item'>
-              <View className='label'>提现账户</View>
-              <View className='list-item-txt content-right'>
-                {alipay_account ? alipay_account : '去设置'}
-              </View>
+          <View className='section list'>
+            <View className='list-item' style='position: relative'>
+              {payList.length > 0 && (
+                <Picker
+                  onChange={this.handlePick.bind(this)}
+                  mode='selector'
+                  range={payList}
+                  rangeKey='name'
+                >
+                  <View className='pay-type-picker'></View>
+                </Picker>
+              )}
+              <View className='label'>提现方式</View>
+              <View className='list-item-txt content-right'>{payText[curIdx]}</View>
               <View className='iconfont item-icon-go icon-arrowRight'></View>
-            </Navigator>
-          )}
-          {curIdx == 'bankcard' && bank_code && (
-            <View className='list-item'>
-              <View className='label'>银行卡</View>
-              <View className='list-item-txt content-right'>{bank_code}</View>
             </View>
-          )}
-        </View>
-        <View className='g-ul'>
-          {curIdx == 'wechat' && (
-            <View className='g-ul-li'>每月只能提取2次，每次需大于等于{limit_rebate}元</View>
-          )}
-          <View className='g-ul-li'>提现至银行卡需实名认证</View>
-          <View className='g-ul-li'>提现申请审核通过后1个工作日后到账，节假日顺延</View>
-          <View className='g-ul-li'>修改银行卡信息请前往实名认证信息进行修改</View>
-        </View>
-        <View className='content-padded'>
-          <Button
-            className='g-button'
-            onClick={this.goWithdraw}
-            disabled={curIdx == 'wechat' && amount > 800}
-          >
-            提现
-          </Button>
+            {curIdx === 'alipay' && (
+              <Navigator
+                url='/marketing/pages/distribution/withdrawals-acount'
+                className='list-item'
+              >
+                <View className='label'>提现账户</View>
+                <View className='list-item-txt content-right'>
+                  {alipay_account ? alipay_account : '去设置'}
+                </View>
+                <View className='iconfont item-icon-go icon-arrowRight'></View>
+              </Navigator>
+            )}
+            {curIdx == 'bankcard' && bank_code && (
+              <View className='list-item'>
+                <View className='label'>银行卡</View>
+                <View className='list-item-txt content-right'>{bank_code}</View>
+              </View>
+            )}
+          </View>
+          <View className='g-ul'>
+            {curIdx == 'wechat' && (
+              <View className='g-ul-li'>每月只能提取2次，每次需大于等于{limit_rebate}元</View>
+            )}
+            <View className='g-ul-li'>提现至银行卡需实名认证</View>
+            <View className='g-ul-li'>提现申请审核通过后1个工作日后到账，节假日顺延</View>
+            <View className='g-ul-li'>修改银行卡信息请前往实名认证信息进行修改</View>
+          </View>
         </View>
       </SpPage>
     )

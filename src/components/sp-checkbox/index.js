@@ -14,20 +14,22 @@ function SpCheckboxNew(props) {
     checked = false,
     label,
     onChange = () => {},
-    disabled = false
+    disabled = false,
+    canCancel = false
   } = props
 
   const [isChecked, setChecked] = useState(checked)
 
-  const onChangeCheckbox = () => {
-    if (disabled) return
+  const onChangeCheckbox = (e) => {
+    e.stopPropagation()
+    if (disabled || canCancel) return
     setChecked(!isChecked)
     onChange && onChange(!isChecked)
   }
 
   useEffect(() => {
     setChecked(props.checked)
-  })
+  }, [props.checked])
 
   return (
     <View

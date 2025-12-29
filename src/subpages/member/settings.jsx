@@ -88,6 +88,7 @@ const Settings = () => {
             <View className='lang-item' key={`lang-item__${index}`}>
               <SpCheckbox
                 checked={item.key == state.selectLang}
+                canCancel={item.key == state.selectLang}
                 onChange={(e) => {
                   setState((draft) => {
                     draft.selectLang = item.key

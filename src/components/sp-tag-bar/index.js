@@ -10,6 +10,7 @@ import './index.scss'
 
 function SpTagBar(props) {
   const { list, value, children, className = '', onChange = () => {} } = props
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const isChecked = (item) => {
     return (
@@ -23,16 +24,24 @@ function SpTagBar(props) {
   return (
     <View className={classNames('sp-tag-bar', className)}>
       <View className='tag-bar-hd'>
-        <ScrollView className='tag-container' scrollX enhanced show-scrollbar={false}>
+        <ScrollView
+          className='tag-container'
+          scrollX
+          enhanced
+          show-scrollbar={false}
+          scrollIntoView={`tag-item__${Math.max(currentIndex - 1, 0)}`}
+        >
           {list.map((item, index) => (
             <View
               className={classNames('tag-item', {
                 active: isChecked(item)
               })}
               onClick={() => {
+                setCurrentIndex(index)
                 onChange(index, item)
               }}
               key={`tag-item__${index}`}
+              id={`tag-item__${index}`}
             >
               {item.tag_name}
               {item.num ? `(${item.num})` : ''}

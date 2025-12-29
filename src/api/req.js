@@ -182,7 +182,8 @@ class API {
       const langMap = {
         zhcn: 'zh-CN',
         en: 'en-CN',
-        zhtw: 'zh-TW'
+        zhtw: 'zh-TW',
+        ar: 'ar-SA'
       }
       query['country_code'] = langMap[lang || process.env.APP_COUNTRY_CODE]
     }

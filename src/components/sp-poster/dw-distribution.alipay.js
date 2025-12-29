@@ -35,13 +35,12 @@ class DistributionPoster {
     const { isOpenShop, shop_status, qrcode_bg_img } = this.info
     const { user_id, avatar } = this.userInfo
     // const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`
-    const url =
-      isOpenShop && shop_status == 1 ? `marketing/pages/distribution/shop-home` : `pages/index`
+    const type = isOpenShop && shop_status == 1 ? `poster_shop_home` : `poster_home`
     let wxappCode
     // TODO 获取微信二维码的接口，需要换alipay  https://ecshopx1.shopex123.com/api/h5app/alipaymini/qrcode.png?company_id=1&page=page/index
     // const res = await api.alipay.alipay_qrcode(`page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${itemId}&uid=${user_id}`)
     const res = await Taro.request({
-      url: `${host}/api/h5app/alipaymini/qrcode.png?path=${url}&appid=${appid}&company_id=${company_id}&user_id=${user_id}`, //仅为示例，并非真实的接口地址
+      url: `${host}/api/h5app/alipaymini/qrcode.png?path=pages/share-land&appid=${appid}&company_id=${company_id}&user_id=${user_id}from_scene=${type}`, //仅为示例，并非真实的接口地址
       header: {
         'content-type': 'application/json' // 默认值
       }

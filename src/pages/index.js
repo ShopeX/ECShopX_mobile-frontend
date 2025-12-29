@@ -9,8 +9,9 @@ import Taro, {
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image, ScrollView } from '@tarojs/components'
+import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
+import throttle from 'lodash/throttle'
 import {
   SpScreenAd,
   SpPage,
@@ -40,7 +41,8 @@ import {
   pickBy,
   log,
   showToast,
-  entryLaunch
+  entryLaunch,
+  buildSharePath
 } from '@/utils'
 import { updateShopInfo } from '@/store/slices/shop'
 import {
@@ -78,7 +80,10 @@ const initialState = {
   skuPanelOpen: false,
   selectType: 'picker',
   navigateMantle: false,
-  footerHeight: 0
+  footerHeight: 0,
+  distributor_id: null,
+  backTopScrollTop: -1,
+  bodyHeight: 0
 }
 
 function Home() {
@@ -112,7 +117,10 @@ function Home() {
     skuPanelOpen,
     selectType,
     navigateMantle,
-    footerHeight
+    footerHeight,
+    distributor_id,
+    backTopScrollTop,
+    bodyHeight
   } = state
 
   const dispatch = useDispatch()
@@ -150,7 +158,7 @@ function Home() {
     if (VERSION_STANDARD) {
       params = Object.assign(params, { dtid: getCurrentShopId() })
     }
-    let path = `/pages/index${isEmpty(params) ? '' : '?' + resolveStringifyParams(params)}`
+    const path = buildSharePath('poster_home', params)
 
     console.log('useShareAppMessage path:', path, params)
 
@@ -183,37 +191,57 @@ function Home() {
       draft.filterWgts = []
       draft.loading = true
     })
-    // 为了店铺隔离模版和店铺信息保持一致
-    const distributor_id = getDistributorId()
+    try {
+      // 为了店铺隔离模版和店铺信息保持一致
+      const distributor_id = getDistributorId()
 
-    const { config } = await api.shop.getShopTemplate({
-      distributor_id: distributor_id
-    })
-    const searchComp = config.find((wgt) => wgt.name == 'search')
-    const pageData = config.find((wgt) => wgt.name == 'page')
-    let filterWgts = []
-    if (searchComp && searchComp.config.fixTop) {
-      filterWgts = config.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
-    } else {
-      filterWgts = config.filter((wgt) => wgt.name != 'page')
+      const res = await api.shop.getShopTemplate({
+        distributor_id: distributor_id
+      })
+
+      // 确保返回数据有效
+      if (!res || !res.config || !Array.isArray(res.config)) {
+        log.error('getShopTemplate:', res)
+        setState((draft) => {
+          draft.loading = false
+        })
+        return
+      }
+
+      const { config } = res
+      const searchComp = config.find((wgt) => wgt.name == 'search')
+      const pageData = config.find((wgt) => wgt.name == 'page')
+      console.log('pageData:', pageData?.base?.isImmersive)
+      let filterWgts = []
+      if (searchComp && searchComp.config && searchComp.config.fixTop) {
+        filterWgts = config.filter((wgt) => wgt.name !== 'search' && wgt.name != 'page')
+      } else {
+        filterWgts = config.filter((wgt) => wgt.name != 'page')
+      }
+
+      const fixedTop = searchComp && searchComp.config && searchComp.config.fixTop
+      const isShowHomeHeader =
+        VERSION_PLATFORM ||
+        (openScanQrcode == 1 && isWeixin) ||
+        (VERSION_STANDARD && entryStoreByLBS) ||
+        fixedTop
+
+      setState((draft) => {
+        draft.wgts = config
+        draft.searchComp = searchComp
+        draft.pageData = pageData
+        draft.fixedTop = fixedTop
+        draft.isShowHomeHeader = isShowHomeHeader
+        draft.filterWgts = filterWgts
+        draft.loading = false
+        draft.distributor_id = distributor_id
+      })
+    } catch (error) {
+      log.error('fetchWgts:', error)
+      setState((draft) => {
+        draft.loading = false
+      })
     }
-
-    const fixedTop = searchComp && searchComp.config.fixTop
-    const isShowHomeHeader =
-      VERSION_PLATFORM ||
-      (openScanQrcode == 1 && isWeixin) ||
-      (VERSION_STANDARD && entryStoreByLBS) ||
-      fixedTop
-
-    setState((draft) => {
-      draft.wgts = config
-      draft.searchComp = searchComp
-      draft.pageData = pageData
-      draft.fixedTop = fixedTop
-      draft.isShowHomeHeader = isShowHomeHeader
-      draft.filterWgts = filterWgts
-      draft.loading = false
-    })
   }
 
   const fetchLikeList = async () => {
@@ -260,58 +288,78 @@ function Home() {
     }
   }
 
-  const handleScroll = (e) => {
-    if (pageData?.base?.isImmersive) {
-      setState((draft) => {
-        draft.navigateMantle = e.detail.scrollTop >= 20
-      })
-    }
-  }
-
   return (
     <SpPage
       className='page-index'
       scrollToTopBtn
       immersive={pageData?.base?.isImmersive}
       // renderNavigation={renderNavigation()}
+      showpoweredBy={false}
       pageConfig={pageData?.base || {}}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
+      onScrollToTop={() => {
+        // 先设置为一个很小的非0值，确保触发滚动变化
+        setState((draft) => {
+          draft.backTopScrollTop = 0.1
+        })
+        // 立即设置为0，滚动到顶部
+        setTimeout(() => {
+          setState((draft) => {
+            draft.backTopScrollTop = 0
+          })
+        }, 0)
+      }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ footerHeight }) => {
+      onReady={({ height }) => {
         setState((draft) => {
-          draft.footerHeight = footerHeight
+          draft.bodyHeight = height
         })
       }}
     >
       <ScrollView
+        scrollY
+        scrollTop={state.backTopScrollTop}
+        onScroll={(e) => {
+          pageRef.current.handlePageScroll(e?.detail)
+        }}
+        style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
-        scrollY
-        onScroll={handleScroll}
       >
-        {loading && <SpLoading />}
-        {isShowHomeHeader && (
-          <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-        )}
-        {filterWgts.length > 0 && (
-          <WgtsContext.Provider
-            value={{
-              onAddToCart,
-              isTab: true,
-              immersive: pageData?.base?.isImmersive,
-              isShowHomeHeader: isShowHomeHeader && isWeixin,
-              footerHeight: state.footerHeight
-            }}
-          >
-            <HomeWgts wgts={filterWgts} onLoad={fetchLikeList}>
-              {/* 猜你喜欢 */}
-              <SpRecommend className='recommend-block' info={likeList} />
-            </HomeWgts>
-          </WgtsContext.Provider>
-        )}
+        <View
+          className='home-body-content'
+          style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
+        >
+          {isShowHomeHeader && (
+            <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
+          )}
+          <View style={{ flex: 1 }}>
+            {filterWgts.length > 0 && (
+              <WgtsContext.Provider
+                value={{
+                  onAddToCart,
+                  isTab: true,
+                  immersive: pageData?.base?.isImmersive,
+                  isShowHomeHeader: isShowHomeHeader && isWeixin,
+                  footerHeight: state.footerHeight
+                }}
+              >
+                <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                  {/* 猜你喜欢 */}
+                  <SpRecommend className='recommend-block' info={likeList} />
+                </HomeWgts>
+              </WgtsContext.Provider>
+            )}
+          </View>
+          <View className='sp-page__powered-by w-full'>
+            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+            <Text>Powered by</Text>
+            <Image src='/assets/imgs/powered-logo.png' className='powered-logo' mode='contain' />
+          </View>
+        </View>
       </ScrollView>
 
       {/* 小程序收藏提示 */}

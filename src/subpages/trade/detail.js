@@ -119,9 +119,7 @@ function TradeDetail(props) {
 
   const fetch = async () => {
     const { order_id } = await parameter()
-    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(
-      router.params?.id ? `TD${router.params.id}` : order_id
-    )
+    const { distributor, orderInfo, tradeInfo, cancelData } = await api.trade.detail(order_id)
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     // 自提订单未核销，开启websocket监听核销状态
     if (_orderInfo.receiptType == 'ziti' && _orderInfo.zitiStatus == 'PENDING') {
@@ -232,7 +230,7 @@ function TradeDetail(props) {
     }
   }
 
-  const onClickItem = ({ itemId, distributorId, activityId, orderClass, point }) => {
+  const onClickItem = ({ itemId, distributorId, activityId, orderClass }) => {
     if (orderClass == 'employee_purchase') {
       Taro.navigateTo({
         url: `/subpages/purchase/espier-detail?id=${itemId}&dtid=${
@@ -722,14 +720,29 @@ function TradeDetail(props) {
                   value={(() => {
                     if (info?.orderClass === 'pointsmall') {
                       return `${pointName} ${info?.itemPoint}${
-                        info?.itemFee ? `+¥${Number(info?.itemFee).toFixed(2)}` : ''
+                        info?.itemFee
+                          ? `+${
+                              info?.freightType == 'point'
+                                ? `${pointName} ${info?.freightFee * 100}`
+                                : `¥${Number(info?.itemFee).toFixed(2)}`
+                            }`
+                          : ''
                       }`
                     } else {
                       return <SpPrice value={info?.itemFee} size={28} />
                     }
                   })()}
                 />
-                <SpCell title='运费' value={<SpPrice value={info?.freightFee} size={28} />} />
+                <SpCell
+                  title='运费'
+                  value={
+                    info?.freightType == 'point' ? (
+                      `${pointName} ${info?.freightFee * 100}`
+                    ) : (
+                      <SpPrice value={info?.freightFee} size={28} />
+                    )
+                  }
+                />
                 <SpCell
                   title='促销'
                   value={<SpPrice value={info?.promotionDiscount} size={28} />}
@@ -777,6 +790,7 @@ function TradeDetail(props) {
           </View>
           {/* <View className='block-container'>
         </View> */}
+          {console.log(info, 'info------')}
 
           {info?.prescriptionStatus > 0 && !supplement && (
             <View className='block-container order-info'>

@@ -58,6 +58,7 @@ function CompTradeCancel(props) {
               className={classNames('reason-item', {
                 'active': index === reasonIndex
               })}
+              key={`reason-item-${index}`}
               onClick={() => {
                 setState((draft) => {
                   draft.reasonIndex = index

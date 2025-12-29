@@ -2,20 +2,28 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  memo,
+  forwardRef,
+  useCallback
+} from 'react'
+import { useSelector } from 'react-redux'
 import Taro, {
   useRouter,
   useDidShow,
   useDidHide,
   usePageScroll,
-  getCurrentInstance,
-  useReady
+  getCurrentInstance
 } from '@tarojs/taro'
-import { View, Text, ScrollView, Button } from '@tarojs/components'
+import { View, Text, Button, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
-import { useSyncCallback, useWhiteShop, useThemsColor, useLogin } from '@/hooks'
+import { useThemsColor, useLogin } from '@/hooks'
+import CookieConsent from '@/components/cookie-consent'
 import {
   TAB_PAGES,
   TABBAR_PATH,
@@ -30,14 +38,10 @@ import {
   isWeixin,
   isAlipay,
   isIphoneX,
-  getDistributorId,
   VERSION_IN_PURCHASE,
   isGoodsShelves,
   linkPage,
-  VERSION_SHUYUN,
-  validate,
-  hex2rgb,
-  VERSION_STANDARD
+  VERSION_SHUYUN
 } from '@/utils'
 import context from '@/hooks/usePageContext'
 
@@ -77,10 +81,10 @@ const SpPage = memo(
     const scrollTopRef = useRef(0)
     const sys = useSelector((state) => state.sys)
     const { lang } = useSelector((state) => state.user)
+    const isRTL = lang === 'ar'
     const [showToTop, setShowToTop] = useState(false)
     const { appName } = sys
     const { themeColor } = useThemsColor()
-    const dispatch = useDispatch()
     const { login } = useLogin()
 
     useEffect(() => {
@@ -104,7 +108,7 @@ const SpPage = memo(
       } else {
         setState((draft) => {
           draft.lockStyle = {
-            overflowY: 'auto'
+            'overflow-y': 'auto'
           }
         })
       }
@@ -146,7 +150,8 @@ const SpPage = memo(
         draft.pageTitle = props.title || instanceRef.current?.page?.config?.navigationBarTitleText
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
-        draft.height = !props.immersive ? screenHeight - _gNavbarH : screenHeight
+        draft.height =
+          !props.immersive && custom_navigation ? screenHeight - _gNavbarH : screenHeight
         draft.menuWidth = _menuWidth
         draft.navigationLSpace = _navigationLSpace
         draft.navigationRSpace = _navigationRSpace
@@ -159,13 +164,13 @@ const SpPage = memo(
 
       props.onReady({
         gNavbarH: _gNavbarH,
-        height: !props.isSticky
-          ? `calc(${screenHeight - _gNavbarH}px - ${_height})`
-          : `calc(${screenHeight}px - ${_height})`,
+        height: !props.immersive
+          ? `calc(${windowHeight - _gNavbarH}px - ${_height})`
+          : `calc(${windowHeight}px - ${_height})`,
         menuWidth: _menuWidth,
         footerHeight: _height
       })
-    }, [])
+    }, [props.immersive])
 
     useEffect(() => {
       const {
@@ -185,6 +190,7 @@ const SpPage = memo(
     })
 
     useEffect(() => {
+      if (!state.currentPage) return
       if (props.pageConfig) {
         const { pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } =
           props.pageConfig
@@ -206,11 +212,11 @@ const SpPage = memo(
             })
         }
       }
-    }, [props.pageConfig])
+    }, [props.pageConfig, state.currentPage])
 
     useDidShow(() => {
       const { page, router } = getCurrentInstance()
-      const fidx = Object.values(TABBAR_PATH).findIndex((v) => v == router?.path.split('?')[0])
+      const fidx = Object.values(TABBAR_PATH()).findIndex((v) => v == router?.path.split('?')[0])
       const isTabBarPage = fidx > -1
       setState((draft) => {
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
@@ -227,6 +233,15 @@ const SpPage = memo(
         })
       }
     })
+
+    // 回到顶部
+    const scrollToTop = useCallback(() => {
+      props.onScrollToTop && props.onScrollToTop()
+      Taro.pageScrollTo({
+        scrollTop: 0,
+        duration: 300
+      })
+    }, [])
 
     usePageScroll((res) => {
       if (!state.lock) {
@@ -247,15 +262,8 @@ const SpPage = memo(
       } else {
         setShowToTop(false)
       }
-
       props.onScroll && props.onScroll(res)
     })
-
-    const scrollToTop = () => {
-      Taro.pageScrollTo({
-        scrollTop: 0
-      })
-    }
 
     useImperativeHandle(ref, () => ({
       pageLock: () => {
@@ -267,10 +275,27 @@ const SpPage = memo(
         setState((draft) => {
           draft.lock = false
         })
+      },
+      handlePageScroll: (res) => {
+        if (res.scrollTop > 20) {
+          setState((draft) => {
+            draft.mantle = true
+          })
+        } else {
+          setState((draft) => {
+            draft.mantle = false
+          })
+        }
+        if (res.scrollTop > 300) {
+          setShowToTop(true)
+        } else {
+          setShowToTop(false)
+        }
       }
     }))
 
-    const computedNavigationStyle = () => {
+    const computedNavigationStyle = useCallback(() => {
+      if (!state.currentPage) return
       const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
       let style = {
         'height': `${state.gNavbarH}px`,
@@ -287,9 +312,18 @@ const SpPage = memo(
         style['transition'] = 'all 0.15s ease-in'
       }
       return style
-    }
+    }, [
+      props.pageConfig,
+      props.immersive,
+      props.navigateMantle,
+      props.navigateBackgroundColor,
+      state.gNavbarH,
+      state.gStatusBarHeight,
+      state.mantle,
+      state.currentPage
+    ])
 
-    const RenderCustomNavigation = () => {
+    const RenderCustomNavigation = useCallback(() => {
       const { windowWidth } = Taro.getWindowInfo()
       let { renderTitle } = props
       let pageCenterStyle = {
@@ -402,7 +436,6 @@ const SpPage = memo(
                   </View>
                 )}
               </View>
-
               <View
                 className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
                 style={styleNames(pageCenterStyle)}
@@ -424,12 +457,27 @@ const SpPage = memo(
           </View>
         </View>
       )
-    }
+    }, [
+      props.renderTitle,
+      props.pageConfig,
+      props.title,
+      props.renderNavigation,
+      props.fixedTopContainer,
+      state.menuWidth,
+      state.navigationLSpace,
+      state.btnReturn,
+      state.btnHome,
+      state.gNavbarH,
+      state.gStatusBarHeight,
+      state.mantle,
+      appName,
+      computedNavigationStyle
+    ])
 
     return (
       <View
-        className={classNames('sp-page', props.className)}
-        style={styleNames({ ...state.pageTheme, ...state.lockStyle, ...state.pageBackground })}
+        className={classNames('sp-page', props.className, { 'rtl-layout': isRTL })}
+        style={styleNames({ ...state.pageTheme, ...state.pageBackground, ...state.lockStyle })}
         ref={wrapRef}
         key={lang}
       >
@@ -446,9 +494,7 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              // 'height': state.lock ? `${state.bodyHeight}px` : '100%',
-              'height': `${state.bodyHeight}px`,
-              'padding-top': `${state.customNavigation && !props.immersive ? state.gNavbarH : 0}px`,
+              'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
                     props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
@@ -457,16 +503,30 @@ const SpPage = memo(
             })}
           >
             <View className='sp-page__body-content'>
-              <context.Provider value={{}}>{props.children}</context.Provider>
-              <View className='sp-page__powered-by'>
-                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-                <Text>Powered by</Text>
-                <SpImage src='powered-logo.png' width={120} />
-              </View>
+              {!props.loading && (
+                <View className='sp-page__body-children'>
+                  <context.Provider value={{}}>{props.children}</context.Provider>
+                </View>
+              )}
+              {props.loading && (
+                <View className='sp-page__loading'>
+                  <SpLoading />
+                </View>
+              )}
+              {props.showpoweredBy && (
+                <View className='sp-page__powered-by w-full'>
+                  {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+                  <Text>Powered by</Text>
+                  <Image
+                    src='/assets/imgs/powered-logo.png'
+                    className='powered-logo'
+                    mode='contain'
+                  />
+                </View>
+              )}
             </View>
           </View>
         )}
-        {props.loading && <SpLoading />}
         {props.renderFooter && (
           <View
             key={lang}
@@ -483,13 +543,14 @@ const SpPage = memo(
         {!props.isDefault && (
           <View className='float-container'>
             {props.renderFloat}
-            {showToTop && props.scrollToTopBtn && (
+            {props.scrollToTopBtn && showToTop && (
               <SpFloatMenuItem onClick={scrollToTop}>
                 <Text className='iconfont icon-zhiding'></Text>
               </SpFloatMenuItem>
             )}
           </View>
         )}
+        <CookieConsent />
       </View>
     )
   })
@@ -520,7 +581,9 @@ SpPage.defaultProps = {
   showNavitionLeft: true,
   title: '', // 页面导航标题
   renderFooter: null,
-  renderFloat: null
+  renderFloat: null,
+  showpoweredBy: true,
+  onScrollToTop: () => {}
 }
 
 export default SpPage

@@ -19,7 +19,7 @@ import {
 } from '@/components'
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
-import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber } from '@/utils'
+import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber, buildSharePath } from '@/utils'
 
 import api from '@/api'
 import doc from '@/doc'
@@ -144,10 +144,11 @@ function UgcNoteDetail(props) {
         draft.info['shareNums'] = shareInfo.share_nums
       })
     }
-    console.log(`useShareAppMessage:`, `/subpages/mdugc/note-detail?post_id=${post_id}`)
+    const path = buildSharePath('poster_mdugc_detail', { post_id })
+    console.log(`useShareAppMessage:`, path)
     return {
       title: info.title,
-      path: `/subpages/mdugc/note-detail?post_id=${post_id}`,
+      path,
       imageUrl: info.cover
     }
   })
@@ -250,7 +251,7 @@ function UgcNoteDetail(props) {
     let params = {
       user_id: userInfo.user_id,
       post_id,
-      content: e
+      content: e.detail.value
     }
     if (parentCommentId) {
       params.parent_comment_id = parentCommentId
@@ -415,8 +416,8 @@ function UgcNoteDetail(props) {
           </View>
           <View className='ugc-author'>
             <View className='author-info' onClick={() => {}}>
-              <SpImage circle src={info.headimgurl} width={88} height={88} />
-              <Text className='author'>{info.username}</Text>
+              <SpImage circle src={info.headimgurl} width={88} height={88} mode='aspectFill' />
+              <Text className='author'>{info.username || info.nickname}</Text>
             </View>
             {!isMyNote() && (
               <SpLogin

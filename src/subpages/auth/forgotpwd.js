@@ -207,7 +207,7 @@ const PageBindPhone = () => {
           <View className='form-field'>
             <CompPasswordInput onChange={handleInputChange('password')} />
           </View>
-          {/* <View className='form-tip'>{PASSWORD_TIP}</View> */}
+          {/* <View className='form-tip'>{PASSWORD_TIP()}</View> */}
 
           <View className='form-submit'>
             <AtButton

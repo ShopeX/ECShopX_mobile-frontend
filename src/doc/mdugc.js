@@ -11,6 +11,7 @@ export const UGC_LIST = {
   title: 'title',
   headimgurl: 'userInfo.headimgurl',
   username: 'userInfo.username',
+  nickname: 'userInfo.nickname',
   likes: 'likes',
   status: 'status',
   likeStatus: ({ like_status }) => {
@@ -58,6 +59,7 @@ export const UGC_DETAIL = {
   userId: 'user_id',
   headimgurl: ({ userInfo }) => userInfo?.headimgurl,
   username: ({ userInfo }) => userInfo?.username,
+  nickname: ({ userInfo }) => userInfo?.nickname,
   created: ({ created }) => {
     return formatDateTime(created, 'YYYY-MM-DD')
   },

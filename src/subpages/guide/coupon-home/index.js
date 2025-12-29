@@ -16,7 +16,7 @@ import { SpPage, SpScrollView, CouponItem } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
-import { pickBy, log } from '@/utils'
+import { pickBy, log, buildSharePath } from '@/utils'
 import { useQwLogin } from '@/hooks'
 import {
   BaHomeWgts,
@@ -76,7 +76,7 @@ function GuideCouponIndex(props) {
       // subtask_id: subtaskId
     }
 
-    const path = `/subpages/marketing/coupon-center?${qs.stringify(query)}`
+    const path = buildSharePath('poster_coupon_center', query)
     log.debug(`getAppShareInfo: ${path}`)
     return {
       title: title,

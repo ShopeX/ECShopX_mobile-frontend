@@ -20,7 +20,7 @@ export function linkPage(type, data) {
       url = '/pages/article/index?id=' + id
       break
     case 'planting':
-      url = '/subpage/pages/recommend/detail?id=' + id
+      url = '/pages/recommend/detail?id=' + id
       break
     case 'custom_page':
       url = '/pages/custom/custom-page?id=' + id

@@ -84,7 +84,11 @@ class Lang {
       'zhtw':
         globalThis && globalThis.lang && globalThis.lang.zhtw
           ? globalThis.lang.zhtw
-          : globalThis._getJSONKey('zh-tw', langJSON)
+          : globalThis._getJSONKey('zh-tw', langJSON),
+      'ar':
+        globalThis && globalThis.lang && globalThis.lang.ar
+          ? globalThis.lang.ar
+          : globalThis._getJSONKey('ar', langJSON)
     }
     globalThis.langMap = langMap
     // 存储语言是否存在

@@ -143,7 +143,7 @@ export default class ItemFav extends Component {
           link = detailUrl
           break
         case 1:
-          link = `/subpage/pages/recommend/detail?id=${item.item_id}`
+          link = `/pages/recommend/detail?id=${item.item_id}`
           break
         case 2:
           link = `/subpages/store/index?id=${item.distributor_id}`

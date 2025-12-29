@@ -8,7 +8,6 @@ import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
 import { SpInput as AtInput } from '@/components'
-import { PASSWORD_TIP } from '../const'
 import './comp-password-input.scss'
 
 const initialValue = {
@@ -34,7 +33,7 @@ const CompPasswordInput = (props) => {
       <AtInput
         clear
         type={type}
-        placeholder={PASSWORD_TIP}
+        placeholder='密码需由6-16位数字或字母组成'
         placeholderClass='input-placeholder'
         onChange={onChange}
         onFocus={onFocus}
