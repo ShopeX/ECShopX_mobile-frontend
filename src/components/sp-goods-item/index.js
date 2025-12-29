@@ -2,9 +2,9 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import Taro from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage, SpPoint, SpPrice, SpVipLabel } from '@/components'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
@@ -12,42 +12,58 @@ import { useLogin } from '@/hooks'
 import qs from 'qs'
 import S from '@/spx'
 
-import { classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE } from '@/utils'
+import { classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE, isWeixin } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 
 import './index.scss'
+
+const $instance = Taro.getCurrentInstance()
 
 function SpGoodsItem(props) {
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const { priceSetting } = useSelector((state) => state.sys)
-  const { cart_page, item_page, order_page } = priceSetting
+  const [isPurchase, setIsPurchase] = useState(false)
+  const { item_page } = priceSetting
+  const loadingRef = useRef(false)
   const {
     market_price: enMarketPrice,
     member_price: enMemberPrice,
     svip_price: enSvipPrice
   } = item_page
+  useEffect(() => {
+    getIsPurchase()
+  }, [])
+  useDidShow(() => {
+    loadingRef.current = false
+    getIsPurchase()
+  })
+  const getIsPurchase = () => {
+    if (loadingRef.current) return
+    loadingRef.current = true
+    let isPurchase = false
+    if (isWeixin) {
+      isPurchase = $instance.page.route.includes('subpages/purchase')
+    } else {
+      isPurchase = $instance.page.path.includes('subpages/purchase')
+    }
+    setIsPurchase(isPurchase)
+  }
+
   const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
   const { items_page = {} } = priceDisplayConfig
-  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
+  const { activity_price: enPurActivityPrice } = items_page
   const {
     onClick,
-    onChange,
     onAddToCart,
-    onStoreClick,
-    showMarketPrice,
     showFav,
     showAddCart,
-    showSku,
-    noCurSymbol,
-    info,
-    isPointitem,
+    info = null,
     renderFooter,
     showPromotion,
     showPrice,
     hideStore,
     renderBrand,
-    isPurchase,
     mode,
     goodsType,
     lazyLoad
@@ -56,7 +72,7 @@ function SpGoodsItem(props) {
 
   const handleFavClick = async (e) => {
     e.stopPropagation()
-    const { itemId, is_fav } = info
+    const { itemId } = info
     const fav = favs.findIndex((item) => item.item_id == itemId) > -1
     if (!fav) {
       await dispatch(addUserFav(itemId))
@@ -111,10 +127,12 @@ function SpGoodsItem(props) {
     return null
   }
 
+  console.log(isPurchase, 'isPurchase', info.activityPrice, info, $instance)
   // console.log( "favs:", favs );
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   const isShowStore =
     !hideStore && VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info)
+  if (!info) return null
   return (
     <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
       <View className='goods-item__hd'>
@@ -170,29 +188,30 @@ function SpGoodsItem(props) {
             <View className='goods-price'>
               <View className='gd-price'>
                 {isPurchase && (
-                  <View>
-                    <SpPrice size={36} value={info.price}></SpPrice>
-                    {info.activityPrice && enPurActivityPrice && (
-                      <View className='act-price'>
-                        活动价¥{info.activityPrice.toFixed(2)}
-                        {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
+                  <>
+                    {info.activityPrice && enPurActivityPrice ? (
+                      <View className='act-price-wrap'>
+                        <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
+                        <SpPrice size={24} value={info.price} noSymbol lineThrough />
                       </View>
+                    ) : (
+                      enPurActivityPrice && <SpPrice size={36} value={info.price} />
                     )}
-                  </View>
+                  </>
                 )}
                 {!isPurchase && (
                   <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
                 )}
-                {info.marketPrice > 0 && enMarketPrice && (
+                {/* {info.marketPrice > 0 && enMarketPrice && (
                   <SpPrice
                     size={26}
                     className='mkt-price'
                     lineThrough
                     value={info.marketPrice}
                   ></SpPrice>
-                )}
+                )} */}
               </View>
-              {!info.activityPrice && isLogin && (
+              {!info.activityPrice && isLogin && !isPurchase && (
                 <View className='more-price'>
                   {info.memberPrice < info.price && enMemberPrice && (
                     <View className='vip-price'>
@@ -252,7 +271,12 @@ function SpGoodsItem(props) {
         </View>
 
         {isShowStore && (
-          <View className='goods__store' onClick={() => onStoreClick(info)}>
+          <View
+            className='goods__store'
+            onClick={(e) => {
+              e.stopPropagation()
+            }}
+          >
             <SpImage
               src={info.distributor_info.distributor_info || 'shop_default_logo.png'}
               width={60}
@@ -303,7 +327,6 @@ SpGoodsItem.defaultProps = {
   showPrice: true,
   hideStore: false,
   renderBrand: null,
-  isPurchase: false,
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,

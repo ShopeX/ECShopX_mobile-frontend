@@ -382,13 +382,25 @@ function MemberUserInfo() {
     if (isWeixin) {
       return (
         <Button class='avatar-wrapper' open-type='chooseAvatar' onChooseAvatar={onChooseAvatar}>
-          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle />
+          <SpImage
+            src={formUserInfo.avatar || 'user_icon.png'}
+            width={110}
+            height={110}
+            circle
+            mode='aspectFill'
+          />
         </Button>
       )
     } else {
       return (
         <View class='avatar-wrapper' onClick={onUploadAvatarFile}>
-          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle />
+          <SpImage
+            src={formUserInfo.avatar || 'user_icon.png'}
+            width={110}
+            height={110}
+            circle
+            mode='aspectFill'
+          />
         </View>
       )
     }

@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
@@ -470,6 +470,15 @@ function TradeDetail(props) {
     })
   }
 
+  const renderMarketPrice = useCallback(() => {
+    const marketPrice = info?.items?.reduce((total, item) => {
+      const salePrice = item?.salePrice || 0
+      const num = item?.num || 1
+      return total + salePrice * num
+    }, 0)
+    return <SpPrice unit='cent' value={marketPrice} size={28} />
+  }, [info?.items])
+
   return (
     <SpPage
       className='page-trade-detail'
@@ -713,7 +722,7 @@ function TradeDetail(props) {
             {info && (
               <View className='trade-price-info'>
                 {enMarketPrice && info?.marketFee > 0 && (
-                  <SpCell title='原价' value={<SpPrice value={info?.marketFee} size={28} />} />
+                  <SpCell title='原价' value={renderMarketPrice()} />
                 )}
                 <SpCell
                   title='总价'

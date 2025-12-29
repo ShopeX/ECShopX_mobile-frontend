@@ -8,6 +8,7 @@
     overflow: hidden;
     &_zone {
       position: absolute;
+      z-index: 1;
     }
   }
 }

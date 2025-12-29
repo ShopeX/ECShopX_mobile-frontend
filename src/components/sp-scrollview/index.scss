@@ -8,4 +8,21 @@
     height: 1PX;
     // background: #ff0;
   }
+
+  // 固定容器包裹状态提示，保持 DOM 结构稳定，避免滚动位置重置
+  .sp-scrollview-footer {
+    min-height: 50px;
+    // 使用 contain 属性优化渲染性能
+    contain: layout style;
+  }
+
+  // 保持加载提示和"没有更多"提示的样式一致
+  .sp-loading,
+  .sp-note.no-more {
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 0;
+  }
 }

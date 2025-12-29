@@ -51,17 +51,15 @@ function SpGoodsCell(props) {
   }
 
   const renderPurchasePrice = () => {
-    return (
-      <>
-        <SpPrice value={info.salePrice}></SpPrice>
-        {enPurActivityPrice && (
-          <View className='act-price'>
-            活动价¥{info.price.toFixed(2)}
-            {/* <SpPrice value={info.price}></SpPrice> */}
-          </View>
-        )}
-      </>
-    )
+    if (enPurActivityPrice) {
+      return (
+        <View className='act-price-wrap'>
+          <SpPrice value={info.price} className='act-price' symbol='¥' />
+          <SpPrice value={info.salePrice} lineThrough size={24} noSymbol />
+        </View>
+      )
+    }
+    return <SpPrice value={info.salePrice} />
   }
 
   // console.log('isNaN(memberPrice):', info.orderItemType)

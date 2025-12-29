@@ -160,6 +160,21 @@ function EspierDetail(props) {
   }, [])
 
   useEffect(() => {
+    if (
+      packageOpen ||
+      skuPanelOpen ||
+      sharePanelOpen ||
+      posterModalOpen ||
+      promotionOpen ||
+      isParameter
+    ) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen, isParameter])
+
+  useEffect(() => {
     const { path } = $instance.router
     if (id && path === '/pages/item/espier-detail') {
       fetch()
@@ -201,12 +216,6 @@ function EspierDetail(props) {
       isWeixin ? video.stop() : video.pause()
     }
   }, [play])
-
-  useEffect(() => {
-    Taro.nextTick(() => {
-      pageRef.current && pageRef.current.pageLock()
-    })
-  }, [])
 
   useEffect(() => {
     if (dtid) {
@@ -514,15 +523,7 @@ function EspierDetail(props) {
       }
     >
       <View className='page-item-espierdetail__header-bg'></View>
-      <ScrollView
-        scrollY
-        className='page-item-espierdetail-goods-contents'
-        style='height: 100%;'
-        onScroll={(e) => {
-          pageRef.current.handlePageScroll(e?.detail)
-        }}
-        scrollTop={backTopScrollTop}
-      >
+      <ScrollView scrollY className='page-item-espierdetail-goods-contents' style='height: 100%;'>
         {info && (
           <View className='goods-contents'>
             <View className='goods-pic-container'>

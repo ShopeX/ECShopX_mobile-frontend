@@ -21,8 +21,7 @@ const initialState = {
   tabList: [], // 横向tab
   contentList: [],
   hasSeries: false, //是否有多级
-  footerHeight: 0,
-  bodyHeight: 0
+  footerHeight: 0
 }
 
 const CompsCategoryTile = (props) => {
@@ -110,7 +109,6 @@ const CompsCategoryTile = (props) => {
       onReady={({ footerHeight, height }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
-          draft.bodyHeight = height
         })
       }}
     >

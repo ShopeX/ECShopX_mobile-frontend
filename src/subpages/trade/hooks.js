@@ -49,7 +49,11 @@ export default (props) => {
       action: ({ orderId, isAllDelivery, ordersDeliveryId, deliveryCorpName, deliveryCode }) => {
         if (isAllDelivery) {
           Taro.navigateTo({
-            url: `/subpages/trade/delivery-info?delivery_corp_name=${deliveryCorpName}&delivery_code=${deliveryCode}&delivery_id=${ordersDeliveryId}`
+            url: `/subpages/trade/delivery-info?delivery_corp_name=${encodeURIComponent(
+              deliveryCorpName || ''
+            )}&delivery_code=${encodeURIComponent(
+              deliveryCode || ''
+            )}&delivery_id=${ordersDeliveryId}`
           })
         } else {
           Taro.navigateTo({

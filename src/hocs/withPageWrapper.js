@@ -183,7 +183,7 @@ function withPageWrapper(Component) {
       // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
       if (
         dtid > 0 &&
-        currentShopInfo.distributor_id !== 0 &&
+        currentShopInfo.distributor_self != 0 &&
         currentShopInfo.distributor_id !== dtid &&
         entryDefalutStore == 2 // 兜底策略指定页面
       ) {
@@ -192,7 +192,7 @@ function withPageWrapper(Component) {
         })
       }
 
-      if (currentShopInfo.distributor_id != 0 && currentShopInfo.open_divided == '1') {
+      if (currentShopInfo.distributor_self != 0 && currentShopInfo.open_divided == '1') {
         // 开启了店铺白名单
         if (!S.getAuthToken()) {
           console.log(`[进店规则] rule: store is open divided, no auth token`)
@@ -206,7 +206,13 @@ function withPageWrapper(Component) {
         // 去检查当前用户是否在店铺白名单中
         await resloveCheckUserInStoreWhiteList(currentShopInfo)
       } else {
-        dispatch(updateShopInfo(currentShopInfo))
+        // distributor_self 1虚拟 0普通
+        if (currentShopInfo.distributor_self == 1) {
+          // 虚拟店，清除旧的店铺ID
+          dispatch(updateShopInfo({ ...currentShopInfo, distributor_id: 0 }))
+        } else {
+          dispatch(updateShopInfo(currentShopInfo))
+        }
       }
     }
 

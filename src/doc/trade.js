@@ -37,6 +37,7 @@ export const TRADE_ITEM = {
   },
   freightFee: ({ freight_fee }) => freight_fee / 100,
   itemFee: ({ item_fee_new }) => item_fee_new / 100,
+  freightFeePoint: ({ freight_fee }) => freight_fee,
   freightType: 'freight_type',
   itemPoint: 'item_point',
   isLogistics: ({ is_logistics }) => is_logistics == '1',
@@ -53,6 +54,7 @@ export const TRADE_ITEM = {
       itemPoint: 'item_point',
       itemSpecDesc: 'item_spec_desc',
       num: 'num',
+      salePrice: 'sale_price',
       // 可售后商品数
       leftAftersalesNum: 'left_aftersales_num',
       // 默认售后商品数
@@ -147,7 +149,9 @@ export const AFTER_TRADE = {
   refundFee: ({ refund_fee }) => refund_fee / 100,
   userId: 'user_id',
   freight: ({ freight }) => freight / 100,
-  progress: 'progress'
+  freightPoint: 'freight',
+  progress: 'progress',
+  freightType: 'freight_type'
 }
 
 export const TRADE_AFTER_SALES_ITEM = {
@@ -189,7 +193,5 @@ export const TRADE_AFTER_SALES_ITEM = {
   createTime: ({ create_time }) => formatDateTime(create_time * 1000),
   returnType: 'return_type',
   freight: ({ freight }) => freight / 100,
-  freightFee: ({ order_info }) => order_info.freight_fee,
-  freightType: ({ order_info }) => order_info.freight_type,
-  refund_freight_amount: ({ refund_freight_amount }) => refund_freight_amount / 100
+  freightType: 'freight_type'
 }

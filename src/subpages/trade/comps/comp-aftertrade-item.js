@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { SpImage, SpPrice, SpTradeItem, SpCheckboxNew } from '@/components'
+import { SpImage, SpPrice, SpTradeItem, SpCheckboxNew, SpPoint } from '@/components'
 import { VERSION_STANDARD } from '@/utils'
 import { AFTER_SALE_STATUS } from '@/consts'
 import './comp-aftertrade-item.scss'
@@ -28,7 +28,9 @@ function CompTradeItem(props) {
     orderClass = 'normal',
     point,
     distributorId,
-    freight
+    freight,
+    freightType,
+    freightPoint
   } = info
   // const { pointName } = useSelector((state) => state.sys)
 
@@ -92,7 +94,9 @@ function CompTradeItem(props) {
             <View>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>退款金额</Text>
-              <SpPrice value={totalPrice} size={38} />
+              <SpPrice value={refundFee} size={38} />+<Text className='label'>运费</Text>
+              {freightType == 'cash' && <SpPrice value={freight} />}
+              {freightType == 'point' && <SpPoint value={freightPoint} />}
             </View>
           )}
         </View>
