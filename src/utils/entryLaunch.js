@@ -417,16 +417,9 @@ class EntryLaunch {
    */
   async postGuideUV() {
     if (!S.getAuthToken()) return
-    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
-    const { gu, gu_user_id } = routerParams || {}
-    let work_userid = ''
+    const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu) {
-      work_userid = gu.split('_')[0]
-    }
-    if (gu_user_id) {
-      work_userid = gu_user_id
-    }
-    if (work_userid) {
+      const [work_userid] = gu.split('_')
       await api.user.uniquevisito({
         work_userid
       })
@@ -437,8 +430,7 @@ class EntryLaunch {
    * 导购关系绑定
    */
   async postGuideUVBind() {
-    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
-    const { gu } = routerParams || {}
+    const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu) {
       const [work_userid] = gu.split('_')
       await api.user.bindSaleperson({
@@ -450,22 +442,24 @@ class EntryLaunch {
   /**
    * 导购任务埋点上报
    */
-  async postGuideTask() {
+  async postGuideTask(customPath) {
     const { path, params } = $instance.router
+    const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
       '/subpage/pages/recommend/detail': 'activeSeedingDetail',
-      '/pages/marketing/coupon-center': 'activeDiscountCoupon',
-      '/pages/cart/espier-checkout': 'orderPaymentSuccess'
+      '/subpages/marketing/coupon-center': 'activeDiscountCoupon',
+      '/pages/cart/espier-checkout': 'orderPaymentSuccess',
+      '/pages/index': 'activeHomePage',
+      '/pages/recommend/list': 'activeRecommendList',
+      '/subpages/member/index': 'activeMemberCenter'
     }
-    if (!routePath[path]) {
+    if (!routePath[paths]) {
       return
     }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
-    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = await this.getRouteParams(
-      params
-    )
+    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu && S.getAuthToken()) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {
@@ -474,8 +468,9 @@ class EntryLaunch {
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
-        event_type: routePath[path]
+        event_type: routePath[paths]
       }
+      console.log('导购埋点上报')
       api.wx.taskReportData(_params)
 
       const { userInfo } = store.getState().user
@@ -484,7 +479,7 @@ class EntryLaunch {
         event_id: employee_number,
         user_type: 'wechat',
         user_id,
-        event_type: routePath[path],
+        event_type: routePath[paths],
         store_bn: shop_code
       })
     }

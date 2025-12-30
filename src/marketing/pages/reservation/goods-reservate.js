@@ -92,9 +92,7 @@ function GoodReservate(props) {
 
     //无模板跳活动详情
     if (activity_info.temp_id == '0') {
-      Taro.redirectTo({
-        url: `/marketing/pages/member/activity-info?activity_id=${activity_info.activity_id}`
-      })
+      Taro.redirectTo({ url: `/marketing/pages/member/activity-info?activity_id=${activity_info.activity_id}` })
       return
     }
 
@@ -257,7 +255,15 @@ function GoodReservate(props) {
       draft.showCheckboxPanel = false
     })
   }
-
+  const onChangeNumber = (e, key) => {
+    // 只允许输入数字
+    const value = e.replace(/[^\d]/g, '')
+    const _form = JSON.parse(JSON.stringify(form))
+    _form[key] = value
+    setState((draft) => {
+      draft.form = _form
+    })
+  }
   console.log('form', form, 'rules', rules)
 
   const renderFormItem = (item) => {
@@ -306,10 +312,10 @@ function GoodReservate(props) {
               form_element == 'date'
                 ? form[id]
                 : [
-                    options?.findIndex((item) => item.value == form[id]) != -1
-                      ? options?.findIndex((item) => item.value == form[id])
-                      : 0
-                  ]
+                  options?.findIndex((item) => item.value == form[id]) != -1
+                    ? options?.findIndex((item) => item.value == form[id])
+                    : 0
+                ]
             }
             onChange={(e) => handleSelectChange(e, id, options, form_element)}
           >
