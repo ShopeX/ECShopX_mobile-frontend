@@ -94,7 +94,7 @@ const config = {
             path.resolve(__dirname, './../src/lang/consts.js')
           ],
           globalPath: path.resolve(__dirname, './../src/subpages/i18n/lang'),
-          targetLangList: ['en', 'zh-tw','ar'], // 目标语言
+          targetLangList: ['en', 'zh-tw', 'ar'], // 目标语言
           originLang: 'zh-cn', // 源语言
           translator: process.env.APP_I18N_APP_KEY
             ? new YoudaoTranslator({
@@ -158,7 +158,7 @@ const config = {
             path.resolve(__dirname, './../src/lang/consts.js')
           ],
           globalPath: path.resolve(__dirname, './../src/subpages/i18n/lang'),
-          targetLangList: ['en', 'zh-tw','ar'], // 目标语言
+          targetLangList: ['en', 'zh-tw', 'ar'], // 目标语言
           originLang: 'zh-cn', // 源语言
           translator: process.env.APP_I18N_APP_KEY
             ? new YoudaoTranslator({

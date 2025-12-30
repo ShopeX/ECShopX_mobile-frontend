@@ -282,7 +282,13 @@ export default class DistributionShopCategory extends Component {
       goodIds
     } = this.state
     return (
-      <SpPage ref={this.spPageRef} className='page-category-index good-category' renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
+      <SpPage
+        ref={this.spPageRef}
+        className='page-category-index good-category'
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
         <View
           className={`${
             hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'

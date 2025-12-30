@@ -160,6 +160,21 @@ function EspierDetail(props) {
   }, [])
 
   useEffect(() => {
+    if (
+      packageOpen ||
+      skuPanelOpen ||
+      sharePanelOpen ||
+      posterModalOpen ||
+      promotionOpen ||
+      isParameter
+    ) {
+      pageRef.current.pageLock()
+    } else {
+      pageRef.current.pageUnLock()
+    }
+  }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen, isParameter])
+
+  useEffect(() => {
     const { path } = $instance.router
     if (id && path === '/pages/item/espier-detail') {
       fetch()
@@ -201,12 +216,6 @@ function EspierDetail(props) {
       isWeixin ? video.stop() : video.pause()
     }
   }, [play])
-
-  useEffect(() => {
-    Taro.nextTick(() => {
-      pageRef.current && pageRef.current.pageLock()
-    })
-  }, [])
 
   useEffect(() => {
     if (dtid) {
@@ -274,7 +283,6 @@ function EspierDetail(props) {
     if (type == 'pointitem') {
     } else {
       try {
-
         const itemDetail = await api.item.detail(id, {
           showError: false,
           distributor_id: getDistributorId()
@@ -304,7 +312,7 @@ function EspierDetail(props) {
 
     // setNavigationBarTitle(data.itemName)
 
-    console.log(ACTIVITY_LIST()[data.activityType],data)
+    console.log(ACTIVITY_LIST()[data.activityType], data)
     if (ACTIVITY_LIST()[data.activityType]) {
       Taro.setNavigationBarColor({
         frontColor: '#ffffff',
@@ -485,45 +493,41 @@ function EspierDetail(props) {
       loading={!info}
       onClickBackToTop={() => {
         setState((draft) => {
-          draft.backTopScrollTop = state.backTopScrollTop==0?-1:0
+          draft.backTopScrollTop = state.backTopScrollTop == 0 ? -1 : 0
         })
       }}
       renderFloat={
-       info && <View>
-          <SpFloatMenuItem
-            onClick={() => {
-              Taro.navigateTo({ url: '/subpages/member/index' })
-            }}
-          >
-            <Text className='iconfont icon-huiyuanzhongxin'></Text>
-          </SpFloatMenuItem>
-          <SpChat sessionFrom={JSON.stringify(sessionFrom)}>
-            <SpFloatMenuItem>
-              <Text className='iconfont icon-headphones'></Text>
+        info && (
+          <View>
+            <SpFloatMenuItem
+              onClick={() => {
+                Taro.navigateTo({ url: '/subpages/member/index' })
+              }}
+            >
+              <Text className='iconfont icon-huiyuanzhongxin'></Text>
             </SpFloatMenuItem>
-          </SpChat>
-        </View>
+            <SpChat sessionFrom={JSON.stringify(sessionFrom)}>
+              <SpFloatMenuItem>
+                <Text className='iconfont icon-headphones'></Text>
+              </SpFloatMenuItem>
+            </SpChat>
+          </View>
+        )
       }
       renderFooter={
-        info && <CompBuytoolbar
-          info={info}
-          onChange={onChangeToolBar}
-          onSubscribe={() => {
-            fetch()
-          }}
-        />
+        info && (
+          <CompBuytoolbar
+            info={info}
+            onChange={onChangeToolBar}
+            onSubscribe={() => {
+              fetch()
+            }}
+          />
+        )
       }
     >
       <View className='page-item-espierdetail__header-bg'></View>
-      <ScrollView
-        scrollY
-        className='page-item-espierdetail-goods-contents'
-        style='height: 100%;'
-        onScroll={(e)=>{
-          pageRef.current.handlePageScroll(e?.detail)
-        }}
-        scrollTop={backTopScrollTop}
-      >
+      <ScrollView scrollY className='page-item-espierdetail-goods-contents' style='height: 100%;'>
         {info && (
           <View className='goods-contents'>
             <View className='goods-pic-container'>

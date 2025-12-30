@@ -252,8 +252,7 @@ function StoreItemList(props) {
         <View
           className='right-container'
           style={styleNames({
-            paddingTop: thirdList.length > 0 && '40px',
-            height: thirdList.length > 0 && '535px'
+            paddingTop: thirdList.length > 0 && '40px'
           })}
         >
           {thirdList.length > 0 && (

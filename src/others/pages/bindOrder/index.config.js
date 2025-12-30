@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-    navigationBarTitleText: '线下订单关联'
+  navigationBarTitleText: '线下订单关联'
 }

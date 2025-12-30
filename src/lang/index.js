@@ -88,7 +88,7 @@ class Lang {
       'ar':
         globalThis && globalThis.lang && globalThis.lang.ar
           ? globalThis.lang.ar
-          : globalThis._getJSONKey('ar', langJSON),
+          : globalThis._getJSONKey('ar', langJSON)
     }
     globalThis.langMap = langMap
     // 存储语言是否存在

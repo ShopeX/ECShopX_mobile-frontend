@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef, useCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Taro, {
   useShareAppMessage,
   useShareTimeline,
@@ -10,27 +10,14 @@ import Taro, {
   getCurrentInstance
 } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { AtFloatLayout } from 'taro-ui'
 import { useSelector, useDispatch } from 'react-redux'
 import { SG_ROUTER_PARAMS } from '@/consts'
 import S from '@/spx'
-import {
-  SpFloatMenuItem,
-  SpPage,
-  SpSearch,
-  SpRecommend,
-  SpFloatLayout,
-  SpSkuSelect,
-  SpLogin
-} from '@/components'
+import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpSkuSelect, SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import {
-  isWeixin,
   getDistributorId,
-  VERSION_STANDARD,
-  VERSION_PLATFORM,
-  VERSION_B2C,
   classNames,
   entryLaunch,
   pickBy,
@@ -39,19 +26,11 @@ import {
   buildSharePath
 } from '@/utils'
 import { useImmer } from 'use-immer'
-import { useNavigation, useDebounce } from '@/hooks'
+import { useNavigation } from '@/hooks'
 import _toString from 'lodash/toString'
-import qs from 'qs'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import {
-  updateShopCartCount,
-  fetchCartList,
-  updateCount,
-  updateCartItemNum,
-  deleteCartItem
-} from '@/store/slices/cart'
-import CompTabbar from './comps/comp-tabbar'
+import { updateShopCartCount } from '@/store/slices/cart'
 import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
 import CompTab from './comps/comp-tab'

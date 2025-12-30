@@ -174,14 +174,14 @@ function ActivityIist(props) {
         onConfirm={handleConfirm}
       />
       <SpTagBar list={tradeStatus} value={status} onChange={onChangeTradeState} />
-        <SpScrollView
-          className='trade-list-scroll'
-          auto={false}
-          ref={recordRef}
-          fetch={fetch}
-          emptyMsg='没有查询到订单'
-        >
-          <View className='trade-item-wrap'>
+      <SpScrollView
+        className='trade-list-scroll'
+        auto={false}
+        ref={recordRef}
+        fetch={fetch}
+        emptyMsg='没有查询到订单'
+      >
+        <View className='trade-item-wrap'>
           {recordList.map((item, index) => (
             <View className='trade-item-wrap-item' key={index}>
               <CompActivityItem
@@ -191,9 +191,9 @@ function ActivityIist(props) {
                 onBtnAction={onBtnAction}
               />
             </View>
-          ))} 
-          </View>
-        </SpScrollView>
+          ))}
+        </View>
+      </SpScrollView>
 
       <SpSelectModal
         isOpened={isOpened}

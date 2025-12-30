@@ -2,7 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef, useImperativeHandle, memo, forwardRef, useCallback } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useRef,
+  useImperativeHandle,
+  memo,
+  forwardRef,
+  useCallback
+} from 'react'
 import { useSelector } from 'react-redux'
 import Taro, {
   useRouter,
@@ -33,10 +41,10 @@ import {
   VERSION_IN_PURCHASE,
   isGoodsShelves,
   linkPage,
-  VERSION_SHUYUN,
+  VERSION_SHUYUN
 } from '@/utils'
 import context from '@/hooks/usePageContext'
-
+import CustomNavigationHeader from './header'
 import './index.scss'
 
 const initialState = {
@@ -60,8 +68,7 @@ const initialState = {
   pageBackground: {},
   pageTheme: {},
   showLeftContainer: false,
-  windowHeight: 0,
-  currentPage: false
+  windowHeight: 0
 }
 
 const SpPage = memo(
@@ -75,6 +82,7 @@ const SpPage = memo(
     const { lang } = useSelector((state) => state.user)
     const isRTL = lang === 'ar'
     const [showToTop, setShowToTop] = useState(false)
+    const [isPageVisible, setIsPageVisible] = useState(true) // 页面是否显示
     const { appName } = sys
     const { themeColor } = useThemsColor()
     const { login } = useLogin()
@@ -107,9 +115,10 @@ const SpPage = memo(
     }, [state.lock])
 
     useEffect(() => {
+      if (!isPageVisible) return
       instanceRef.current = getCurrentInstance()
       const pages = Taro.getCurrentPages()
-      const { navigationStyle } = instanceRef.current?.page?.config
+      const navigationStyle = instanceRef.current?.page?.config?.navigationStyle
 
       let _gNavbarH = 0 // 导航栏高度
       let _gStatusBarHeight = 0 // 状态栏高度
@@ -131,7 +140,6 @@ const SpPage = memo(
         _navigationLSpace = windowWidth - menuButton.right
         _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
       }
-
       setState((draft) => {
         draft.bodyHeight = windowHeight
         draft.btnReturn = _btnReturn
@@ -142,7 +150,8 @@ const SpPage = memo(
         draft.pageTitle = props.title || instanceRef.current?.page?.config?.navigationBarTitleText
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
-        draft.height = (!props.immersive&&custom_navigation) ? screenHeight - _gNavbarH : screenHeight
+        draft.height =
+          !props.immersive && custom_navigation ? screenHeight - _gNavbarH : screenHeight
         draft.menuWidth = _menuWidth
         draft.navigationLSpace = _navigationLSpace
         draft.navigationRSpace = _navigationRSpace
@@ -159,9 +168,9 @@ const SpPage = memo(
           ? `calc(${windowHeight - _gNavbarH}px - ${_height})`
           : `calc(${windowHeight}px - ${_height})`,
         menuWidth: _menuWidth,
-        footerHeight: _height,
+        footerHeight: _height
       })
-    }, [props.immersive])
+    }, [props.immersive, isPageVisible])
 
     useEffect(() => {
       const {
@@ -174,14 +183,7 @@ const SpPage = memo(
       }
     }, [])
 
-    useDidHide(() => {
-      setState((draft) => {
-        draft.currentPage = false
-      })
-    })
-
     useEffect(() => {
-      if (!state.currentPage) return
       if (props.pageConfig) {
         const { pageBackgroundColor, pageBackgroundImage, navigateBackgroundColor } =
           props.pageConfig
@@ -203,9 +205,10 @@ const SpPage = memo(
             })
         }
       }
-    }, [props.pageConfig,state.currentPage])
+    }, [props.pageConfig])
 
     useDidShow(() => {
+      setIsPageVisible(true) // 页面显示时设置为true
       const { page, router } = getCurrentInstance()
       const fidx = Object.values(TABBAR_PATH()).findIndex((v) => v == router?.path.split('?')[0])
       const isTabBarPage = fidx > -1
@@ -213,7 +216,6 @@ const SpPage = memo(
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
           `/${page?.route}`
         )
-        draft.currentPage = true
         draft.isTabBarPage = isTabBarPage
       })
 
@@ -223,6 +225,11 @@ const SpPage = memo(
           menus: ['shareAppMessage', 'shareTimeline']
         })
       }
+    })
+
+    useDidHide(() => {
+      console.log('useDidHide🚀')
+      setIsPageVisible(false) // 页面隐藏时设置为false
     })
 
     // 回到顶部
@@ -256,7 +263,6 @@ const SpPage = memo(
       props.onScroll && props.onScroll(res)
     })
 
-
     useImperativeHandle(ref, () => ({
       pageLock: () => {
         setState((draft) => {
@@ -268,6 +274,7 @@ const SpPage = memo(
           draft.lock = false
         })
       },
+      // 当页面单独处理滚动事件时，调用此函数
       handlePageScroll: (res) => {
         if (res.scrollTop > 20) {
           setState((draft) => {
@@ -286,186 +293,6 @@ const SpPage = memo(
       }
     }))
 
-    const computedNavigationStyle = useCallback(() => {
-      if (!state.currentPage) return
-      const { navigateBackgroundColor, navigateBackgroundImage } = props.pageConfig || {}
-      let style = {
-        'height': `${state.gNavbarH}px`,
-        'padding-top': `${state.gStatusBarHeight}px`,
-        'background-size': '100% 100%',
-        'background-repeat': 'no-repeat',
-        'background-position': 'center'
-      }
-      if (!props.immersive || (props.immersive && state.mantle) || props.navigateMantle) {
-        style['background-image'] = `url(${navigateBackgroundImage})`
-        style['background-color'] = props.pageConfig?.navigateBackgroundColor
-          ? navigateBackgroundColor
-          : props.navigateBackgroundColor
-        style['transition'] = 'all 0.15s ease-in'
-      }
-      return style
-    }, [
-      props.pageConfig,
-      props.immersive,
-      props.navigateMantle,
-      props.navigateBackgroundColor,
-      state.gNavbarH,
-      state.gStatusBarHeight,
-      state.mantle,
-      state.currentPage
-    ])
-
-    const RenderCustomNavigation = useCallback(() => {
-      const { windowWidth } = Taro.getWindowInfo()
-      let { renderTitle } = props
-      let pageCenterStyle = {
-        'width': windowWidth - state.menuWidth * 2 - state.navigationLSpace * 2 + 'px'
-      }
-      let pageTitleStyle = {}
-      let navigationBarTitleText = ''
-      if (props.pageConfig) {
-        const { titleStyle, titleColor, titleBackgroundImage, titlePosition } = props.pageConfig
-        // 页面标题
-        if (titleStyle == '1') {
-          renderTitle = (
-            <Text
-              style={styleNames({
-                color: titleColor
-              })}
-            >
-              {props.title || navigationBarTitleText || appName}
-            </Text>
-          )
-        } else if (titleStyle == '2') {
-          renderTitle = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
-        }
-        pageCenterStyle = {
-          'color': titleColor,
-          'position': 'relative'
-        }
-        pageTitleStyle = {
-          'color': props.pageConfig?.titleColor
-        }
-      } else {
-        navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
-      }
-
-      return (
-        <View className='custom-navigation' style={styleNames(computedNavigationStyle())}>
-          <View className='custom-navigation__content h-full'>
-            <View
-              className='custom-navigation__body w-full h-full flex box-border'
-              style={{
-                padding: `0 ${state.navigationLSpace}px 0 ${state.navigationLSpace}px`
-              }}
-            >
-              <View
-                className='custom-navigation__left-block flex items-center'
-                style={{
-                  gap: `${state.navigationLSpace}px`,
-                  width: `${state.menuWidth}px`,
-                  height: '100%'
-                }}
-              >
-                {state.btnReturn && (
-                  <SpImage
-                    src='fv_back.png'
-                    width={36}
-                    height={36}
-                    onClick={() => Taro.navigateBack()}
-                  />
-                )}
-                {state.btnHome && (
-                  <SpImage
-                    src='fv_home.png'
-                    width={36}
-                    height={36}
-                    onClick={() => {
-                      Taro.reLaunch({
-                        url: isGoodsShelves()
-                          ? '/subpages/guide/index'
-                          : VERSION_IN_PURCHASE
-                            ? '/pages/purchase/index'
-                            : '/pages/index'
-                      })
-                    }}
-                  />
-                )}
-                {props.pageConfig?.pTitleHotSetting?.imgUrl && (
-                  <View className='p-title-hot-img'>
-                    <SpImage src={props.pageConfig?.pTitleHotSetting?.imgUrl} mode='aspectFit' />
-                    {props.pageConfig?.pTitleHotSetting?.data?.map((citem) => {
-                      if (citem.id == 'customerService') {
-                        return (
-                          <Button
-                            key={citem.id}
-                            className='img-hotzone_zone opacity-0'
-                            type='button'
-                            style={styleNames({
-                              width: `${citem.widthPer * 100}%`,
-                              height: `${citem.heightPer * 100}%`,
-                              top: `${citem.topPer * 100}%`,
-                              left: `${citem.leftPer * 100}%`
-                            })}
-                            openType='contact'
-                          />
-                        )
-                      }
-                      return (
-                        <View
-                          key={citem.id}
-                          className='img-hotzone_zone'
-                          style={styleNames({
-                            width: `${citem.widthPer * 100}%`,
-                            height: `${citem.heightPer * 100}%`,
-                            top: `${citem.topPer * 100}%`,
-                            left: `${citem.leftPer * 100}%`
-                          })}
-                          onClick={() => linkPage(citem)}
-                        />
-                      )
-                    })}
-                  </View>
-                )}
-              </View>
-              <View
-                className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
-                style={styleNames(pageCenterStyle)}
-              >
-                {props.renderNavigation ? (
-                  <context.Provider value={{}}>{props.renderNavigation}</context.Provider>
-                ) : (
-                  <View className='title-container' style={styleNames(pageTitleStyle)}>
-                    {renderTitle || props.title || navigationBarTitleText}
-                    {props.fixedTopContainer}
-                  </View>
-                )}
-              </View>
-              <View
-                className='custom-navigation__right-block'
-                style={{ width: `${state.menuWidth}px` }}
-              ></View>
-            </View>
-          </View>
-        </View>
-      )
-    }, [
-      props.renderTitle,
-      props.pageConfig,
-      props.title,
-      props.renderNavigation,
-      props.fixedTopContainer,
-      state.menuWidth,
-      state.navigationLSpace,
-      state.btnReturn,
-      state.btnHome,
-      state.gNavbarH,
-      state.gStatusBarHeight,
-      state.mantle,
-      appName,
-      computedNavigationStyle
-    ])
-
     return (
       <View
         className={classNames('sp-page', props.className, { 'rtl-layout': isRTL })}
@@ -473,43 +300,61 @@ const SpPage = memo(
         ref={wrapRef}
         key={lang}
       >
-        {hasNavbar && !state.isTabBarPage && props.navbar && (
-          <SpNavBar title={state.pageTitle} onClickLeftIcon={props.onClickLeftIcon} />
+        {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
+        {state.customNavigation && (
+          <CustomNavigationHeader
+            pageConfig={props.pageConfig}
+            title={props.title}
+            appName={appName}
+            renderNavigation={props.renderNavigation}
+            fixedTopContainer={props.fixedTopContainer}
+            immersive={props.immersive}
+            navigateMantle={props.navigateMantle}
+            navigateBackgroundColor={props.navigateBackgroundColor}
+            gNavbarH={state.gNavbarH}
+            gStatusBarHeight={state.gStatusBarHeight}
+            menuWidth={state.menuWidth}
+            navigationLSpace={state.navigationLSpace}
+            btnReturn={state.btnReturn}
+            btnHome={state.btnHome}
+            mantle={state.mantle}
+          />
         )}
-
         {props.isDefault &&
           (props.renderDefault || <SpNote img={props.defaultImg} title={props.defaultMsg} isUrl />)}
 
-        {/* 没有页面自动义头部配置样式，自动生成自定义导航 */}
-        {state.customNavigation && RenderCustomNavigation()}
         {!props.isDefault && (
           <View
             className='sp-page__body'
             style={styleNames({
-              'padding-top': `${(!props.immersive&&state.customNavigation) ? state.gNavbarH : 0}px`,
-              'padding-bottom': props.renderFooter ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)) : 0
+              'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
+              'padding-bottom': props.renderFooter
+                ? Taro.pxTransform(
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )
+                : 0
             })}
           >
             <View className='sp-page__body-content'>
-              {!props.loading && <View className='sp-page__body-children'>
-                <context.Provider value={{}}>
-                  {props.children}
-                </context.Provider>
-              </View>}
+              {!props.loading && (
+                <View className='sp-page__body-children'>
+                  <context.Provider value={{}}>{props.children}</context.Provider>
+                </View>
+              )}
               {props.loading && (
                 <View className='sp-page__loading'>
                   <SpLoading />
                 </View>
               )}
-              {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
-                {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+              {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+              {/* {props.showpoweredBy && <View className='sp-page__powered-by w-full'>
                 <Text>Powered by</Text>
                 <Image
                   src='/assets/imgs/powered-logo.png'
                   className='powered-logo'
                   mode='contain'
                 />
-              </View>}
+              </View>} */}
             </View>
           </View>
         )}
@@ -543,7 +388,7 @@ const SpPage = memo(
 )
 
 SpPage.defaultProps = {
-  onReady: () => { },
+  onReady: () => {},
   btnHomeEnable: true,
   className: '',
   children: null,
@@ -554,7 +399,6 @@ SpPage.defaultProps = {
   isDefault: false,
   isSticky: false, // 是否粘性吸顶
   immersive: false, // 沉浸式导航
-  navbar: false,
   navigateMantle: false, // 页面向下滚动，沉浸式导航开启蒙层背景色
   navigationLeftBlockWidthFull: false,
   navigateBackgroundColor: '#fff', // 导航背景色
@@ -569,7 +413,7 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => { }
+  onScrollToTop: () => {}
 }
 
 export default SpPage
