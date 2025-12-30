@@ -82,9 +82,16 @@ class RouteIntercept {
     } else {
       const _navigateTo = Taro.navigateTo
       const _redirectTo = Taro.redirectTo
+
       Taro.navigateTo = (params) => {
         const _params = this.formartParams(params)
-        _navigateTo(_params)
+        // 检查页面栈深度，如果达到9层，先销毁部分旧页面
+        const pages = getCurrentPages()
+        if (pages.length > 8) {
+          _redirectTo(_params)
+        } else {
+          _navigateTo(_params)
+        }
       }
 
       Taro.redirectTo = (params) => {
