@@ -475,19 +475,20 @@ function TradeAfterSale(props) {
           </AtButton>
         }
       >
-        {refundTypeList?.length > 0 && refundTypeList?.map((item, index) => (
-          <View className='refund-type-item' key={`refund-type-item__${index}`}>
-            <SpCheckbox
-              checked={item.value == selectRefundValue}
-              onChange={onChangeRefundType.bind(this, item)}
-            >
-              <View className='refund-item-wrap'>
-                <View className='title'>{item.title}</View>
-                <View className='desc'>{item.desc}</View>
-              </View>
-            </SpCheckbox>
-          </View>
-        ))}
+        {refundTypeList?.length > 0 &&
+          refundTypeList?.map((item, index) => (
+            <View className='refund-type-item' key={`refund-type-item__${index}`}>
+              <SpCheckbox
+                checked={item.value == selectRefundValue}
+                onChange={onChangeRefundType.bind(this, item)}
+              >
+                <View className='refund-item-wrap'>
+                  <View className='title'>{item.title}</View>
+                  <View className='desc'>{item.desc}</View>
+                </View>
+              </SpCheckbox>
+            </View>
+          ))}
       </SpFloatLayout>
     </SpPage>
   )

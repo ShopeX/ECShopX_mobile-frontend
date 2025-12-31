@@ -117,7 +117,7 @@ export default (props = {}) => {
         console.error('导购上报失败:', error)
       }
     }, 100) // 延迟100ms确保token设置完成
-    
+
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量

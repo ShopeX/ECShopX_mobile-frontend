@@ -821,11 +821,11 @@ function CartCheckout(props) {
     }
     // 处理导购数据(旧)
     if (storageParams?.cxdid && isLaunchScene) {
-      cus_parmas.cxdid = storageParams?.cxdid;
-      cus_parmas.distributor_id = storageParams?.dtid;
-      cus_parmas.cart_type = "cxd";
-      cus_parmas.order_type = "normal_shopguide";
-      cus_parmas.salesman_id = storageParams?.smid;
+      cus_parmas.cxdid = storageParams?.cxdid
+      cus_parmas.distributor_id = storageParams?.dtid
+      cus_parmas.cart_type = 'cxd'
+      cus_parmas.order_type = 'normal_shopguide'
+      cus_parmas.salesman_id = storageParams?.smid
       cus_parmas.work_userid = storageParams?.gu.split('_')[0] || storageParams?.gu_user_id || ''
     }
 

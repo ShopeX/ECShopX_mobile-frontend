@@ -16,11 +16,11 @@ import './comp-buytoolbar.scss'
 
 function CompGoodsBuyToolbar(props) {
   const {
-    onAddCart = () => { },
-    onFastBuy = () => { },
+    onAddCart = () => {},
+    onFastBuy = () => {},
     info,
-    onChange = () => { },
-    onSubscribe = () => { }
+    onChange = () => {},
+    onSubscribe = () => {}
   } = props
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { favs = [] } = useSelector((state) => state.user)
