@@ -171,4 +171,7 @@ view.rtl-layout {
       margin-right: 0 !important;
     }
   }
+  .member-level-bg{
+    transform: scaleX(-1);
+  }
 }
