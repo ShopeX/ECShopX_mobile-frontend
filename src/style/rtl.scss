@@ -164,4 +164,11 @@ view.rtl-layout {
       left: 0 !important;
     }
   }
+
+  .comp-goodsitem {
+    &-hd {
+      margin-left: 20px;
+      margin-right: 0 !important;
+    }
+  }
 }
