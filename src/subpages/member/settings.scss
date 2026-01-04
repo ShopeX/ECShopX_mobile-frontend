@@ -7,4 +7,14 @@
     justify-content: flex-start;
     // flex-direction: row-reverse;
   }
+  .lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    .lang-item {
+      height: 64px;
+      display: flex;
+      align-items: center;
+    }
+  }
 }
