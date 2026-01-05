@@ -104,7 +104,10 @@ function CompGoodsBuyToolbar(props) {
     const { dtid, card_id, user_card_id } = $instance.router.params
     if (key == 'notice') {
       const { subscribe } = info
-      if (subscribe) return false
+      if (subscribe) {
+        showToast('您已订阅到货通知')
+        return false
+      }
 
       if (isWeb) {
         showToast('请在小程序完成商品到货通知')
