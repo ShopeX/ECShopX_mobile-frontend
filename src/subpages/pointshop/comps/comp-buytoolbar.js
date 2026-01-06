@@ -45,8 +45,7 @@ function CompGoodsBuyToolbar(props) {
       return
     }
     if (info.store == 0) {
-      // 云店不可以订阅
-      btns.push(BUY_TOOL_BTNS().NOTICE)
+      btns.push(BUY_TOOL_BTNS().NO_STORE)
       return
     }
 
