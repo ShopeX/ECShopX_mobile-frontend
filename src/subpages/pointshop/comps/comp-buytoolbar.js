@@ -46,15 +46,7 @@ function CompGoodsBuyToolbar(props) {
     }
     if (info.store == 0) {
       // 云店不可以订阅
-      if (process.env.APP_PLATFORM == 'standard') {
-        btns.push(BUY_TOOL_BTNS().NOTICE)
-      } else {
-        if (info.subscribe) {
-          btns.push(BUY_TOOL_BTNS().SUBSCRIBE)
-        } else {
-          btns.push(BUY_TOOL_BTNS().NOTICE)
-        }
-      }
+      btns.push(BUY_TOOL_BTNS().NOTICE)
       return
     }
 
@@ -102,34 +94,7 @@ function CompGoodsBuyToolbar(props) {
 
   const onChangeLogin = async ({ key }) => {
     const { dtid, card_id, user_card_id } = $instance.router.params
-    if (key == 'notice') {
-      const { subscribe } = info
-      if (subscribe) {
-        showToast('您已订阅到货通知')
-        return false
-      }
-
-      if (isWeb) {
-        showToast('请在小程序完成商品到货通知')
-        return
-      }
-
-      await api.user.subscribeGoods(info.itemId, { distributor_id: dtid })
-      const { template_id } = await api.user.newWxaMsgTmpl({
-        temp_name: 'yykweishop',
-        source_type: 'goods'
-      })
-      Taro.requestSubscribeMessage({
-        tmplIds: template_id,
-        success: () => {
-          onSubscribe()
-          showToast('订阅成功')
-        },
-        fail: () => {
-          onSubscribe()
-        }
-      })
-    } else if (key == 'exchange') {
+   if (key == 'exchange') {
       const { itemId } = info
       const { status } = await api.cart.exchangeGood({
         item_id: itemId,
