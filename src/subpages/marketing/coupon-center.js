@@ -12,6 +12,7 @@ import qs from 'qs'
 import { View, Text } from '@tarojs/components'
 import { pickBy, showToast, isWeixin, entryLaunch } from '@/utils'
 import { SpPage, SpScrollView, SpCoupon } from '@/components'
+import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './coupon-center.scss'
 
 const initialState = {
@@ -21,7 +22,11 @@ function CouponCenter(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
-
+  const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
+  let work_userid = ''
+  if (gu) {
+    work_userid = gu.split('_')[0]
+  }
   useEffect(() => {
     entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
@@ -88,9 +93,13 @@ function CouponCenter(props) {
   }
 
   const getCoupon = async ({ cardId }, index) => {
-    const { status } = await api.member.homeCouponGet({
+    const params = {
       card_id: cardId
-    })
+    }
+    if (work_userid) {
+      params.work_userid = work_userid
+    }
+    const { status } = await api.member.homeCouponGet(params)
     if (status) {
       if (status.total_lastget_num <= 0) {
         setState((draft) => {
