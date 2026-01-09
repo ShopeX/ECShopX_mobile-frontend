@@ -19,6 +19,7 @@ import * as trade from './trade'
 import * as mdugc from './mdugc'
 import * as purchase from './purchase'
 import * as activity from './activity'
+import * as cases from './case'
 
 export default {
   address,
@@ -37,5 +38,6 @@ export default {
   trade,
   mdugc,
   purchase,
-  activity
+  activity,
+  case: cases
 }

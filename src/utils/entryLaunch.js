@@ -195,6 +195,10 @@ class EntryLaunch {
                 lng: res.longitude,
                 lat: res.latitude
               })
+              S.set('currentLocation', {
+                lng: res.longitude,
+                lat: res.latitude
+              })
             } else {
               resolve({})
               reject({ message: res.errMsg })

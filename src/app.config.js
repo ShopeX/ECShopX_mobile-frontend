@@ -231,6 +231,15 @@ const config = {
         // "pages/make_system/index",
       ]
     },
+    // 案例
+    {
+      root: 'subpages/case',
+      pages: [
+        'list',
+        'detail',
+        'view-case'
+      ]
+    },
     {
       root: 'marketing',
       pages: [

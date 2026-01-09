@@ -475,6 +475,10 @@ function EspierDetail(props) {
     }
   }
 
+  const goToCaseView = () => {
+    Taro.navigateTo({ url: `/subpages/case/view-case?design_works=${JSON.stringify(info.designWorks)}` })
+  }
+
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -598,6 +602,9 @@ function EspierDetail(props) {
                 {/* 拼团、秒杀、限时特惠不显示 */}
                 {!ACTIVITY_LIST()[info.activityType] && (
                   <SpGoodsPrice info={curItem ? curItem : info} />
+                )}
+                {info.designWorks && info.designWorks.length > 0 && (
+                  <View className='goods-info-case' onClick={goToCaseView}>查看案例</View>
                 )}
               </View>
 
@@ -783,7 +790,7 @@ function EspierDetail(props) {
                   ))}
                 </View>
               ) : (
-                <SpHtml content={info.intro} />
+                <SpHtml content={info.intro || ''} />
               )}
             </View>
           </View>

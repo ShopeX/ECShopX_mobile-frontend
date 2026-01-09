@@ -1,0 +1,51 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+.sp-case-list {
+  &--wrap {
+    padding: 16px 16px 0;
+    display: flex;
+    gap: 24px 16px;
+    justify-content: space-between;
+  }
+  &--left,
+  &--right {
+    flex: 1;
+  }
+  &--group {
+    display: flex;
+    align-items: center;
+  }
+  &--item {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 16px;
+    break-inside: avoid;
+    box-sizing: border-box;
+    background-color: #fff;
+    &-content {
+      flex-wrap: wrap;
+      display: flex;
+      margin-top: 10px;
+      gap: 12px;
+      &-tag {
+        background-color: rgba(var(--color-rgb), 0.2);
+        color: var(--color-primary);
+        border-radius: 60px;
+        padding: 4px 12px;
+        font-size: 20px;
+      }
+    }
+    &-desc {
+      background-color: #fff;
+      padding: 24px;
+      &-title {
+        @include multi-ellipsis(1);
+      }
+    }
+    &-image {
+      width: 100%;
+    }
+  }
+}
