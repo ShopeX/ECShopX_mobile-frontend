@@ -4,12 +4,15 @@
  */
 .comp-goodsitem {
   display: flex;
+  overflow: hidden;
   &-hd {
     margin-right: 20px;
   }
   &-bd {
     flex: 1;
     position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
   }
   &-image {
     width: 220px;
@@ -70,6 +73,8 @@
   .item-tags {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+    overflow: hidden;
     .item-tag {
       /* prettier-ignore */
       border: 1PX solid var(--color-primary);
@@ -82,6 +87,12 @@
       margin-right: 10px;
       display: inline-block;
       margin: 0 10px 4px 0;
+      flex-shrink: 0;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
+      box-sizing: border-box;
     }
   }
   .goods-title {
