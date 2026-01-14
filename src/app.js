@@ -127,6 +127,7 @@ function App({ children }) {
       }
       getSystemConfig()
     })
+
     //分包异步加载语言包
     if (process.env.TARO_ENV === 'weapp') {
       __non_webpack_require__ &&

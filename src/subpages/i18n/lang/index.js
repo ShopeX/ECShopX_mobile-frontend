@@ -103,7 +103,11 @@ const withStorageCommonLang =
 // 从本地存储中获取通用语言，如果不存在则使用空字符串
 const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('') : ''
 // 从本地存储中获取当前语言，如果不存在则使用源语言
-const baseLang = withStorageLang ? globalThis.localStorage.getItem('lang') : 'en'
+const baseLang = withStorageLang
+  ? globalThis.localStorage.getItem('lang')
+  : process.env.APP_I18N_ORIGIN_LANG
+
+debugger
 const lang = commonLang ? commonLang : baseLang
 // 根据当前语言设置翻译函数的语言包
 globalThis.$t.locale(globalThis.langMap[lang], 'lang')
