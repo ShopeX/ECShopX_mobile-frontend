@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.2.3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.2.2...v4.2.3) (2026-01-15)
+
+
+### Bug Fixes
+
+* **custom:** eCX-7778修改昵称不生效 ([e3daf7d](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/e3daf7d08ee68aa0f3a84d2de5d2e7c40a05c091))
+
 ### [4.2.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.2.1...v4.2.2) (2026-01-14)
 
 
