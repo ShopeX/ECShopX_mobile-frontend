@@ -6,7 +6,7 @@ import WgtCoupon from './coupon'
 import WgtNearbyShop from './nearby-shop'
 
 export { default as HeaderHome } from './header-home'
-export { default as WgtSlider } from './slider'
+export { default as WgtSlider } from './slider/index'
 export { default as WgtPlateType } from './plate-type'
 export { default as WgtLimittimeSlider } from './limittime-slider'
 

@@ -7,12 +7,12 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { SpScrollView, SpSearch } from '@/components'
 import { log } from '@/utils'
 import {
   WgtImgHotZone,
   WgtShop,
-  WgtClassify
+  WgtClassify,
+  WgtSlider
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -72,9 +72,7 @@ function HomeWgts(props) {
             data-idx={idx}
             data-name={item.name}
           >
-            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} />} {/** 热区图 */}
-            {item.name === 'shop' && <WgtShop info={item} />} {/** 店铺 */}
-            {item.name === 'classify' && <WgtClassify info={item} />} {/** 分类 */}
+            {item.name === 'slider' && <WgtSlider info={item} />} {/** 轮播 */}
           </View>
         )
       })}
