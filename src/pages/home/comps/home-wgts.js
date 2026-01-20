@@ -73,6 +73,7 @@ function HomeWgts(props) {
             data-name={item.name}
           >
             {item.name === 'slider' && <WgtSlider info={item} />} {/** 轮播 */}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />} {/** 热区 */}
           </View>
         )
       })}
