@@ -12,7 +12,8 @@ import {
   WgtImgHotZone,
   WgtShop,
   WgtClassify,
-  WgtSlider
+  WgtSlider,
+  WgtFilm
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -74,6 +75,7 @@ function HomeWgts(props) {
           >
             {item.name === 'slider' && <WgtSlider info={item} />} {/** 轮播 */}
             {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />} {/** 热区 */}
+            {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
           </View>
         )
       })}
