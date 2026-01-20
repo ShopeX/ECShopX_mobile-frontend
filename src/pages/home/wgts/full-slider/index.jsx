@@ -385,16 +385,12 @@ function WgtFullSlider(props) {
       className={classNames('wgt wgt_full_slider', { wgt_padded: base.padded })}
       style={styleNames({
         ...outerStyle,
-        height: height || '100vh',
-        minHeight: height || '100vh'
+        height: height,
+        minHeight: height
       })}
     >
       <View 
         className='wgt_full_slider-wrap' 
-        style={styleNames({ 
-          height: height || '100%',
-          minHeight: height || '100%'
-        })}
       >
         <Swiper
           className='wgt_full_slider-swiper'
