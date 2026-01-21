@@ -78,21 +78,25 @@ export default class DistributionWithdrawalsAcount extends Component {
     console.log('00', hasBind)
 
     return (
-      <SpPage className='page-distribution-acount' footerHeight={186} renderFooter={
-        <>
-          <View className='content-padded'>
-            <Button type='primary' onClick={this.handleSubmit}>
-              确认绑定
-            </Button>
-            {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
+      <SpPage
+        className='page-distribution-acount'
+        footerHeight={186}
+        renderFooter={
+          <>
+            <View className='content-padded'>
+              <Button type='primary' onClick={this.handleSubmit}>
+                确认绑定
+              </Button>
+              {/* { !hasBind && <Button type="primary" onClick={this.handleSubmit}>确认绑定</Button> }
           { hasBind && !isEdit && <Button type="primary" onClick={this.handleClick}>修改支付宝账号</Button> }
           { hasBind && isEdit && <Button type="primary" onClick={this.handleSubmit}>确认修改并保存</Button> } */}
-          </View>
-          <View className='g-ul'>
-            <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
-            {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
-          </View></>
-      }
+            </View>
+            <View className='g-ul'>
+              <View className='g-ul-li'>请务必准确填写开户人姓名和支付宝账号</View>
+              {/* <View className="g-ul-li">支持支付宝账户的修改，但每天仅限1次</View> */}
+            </View>
+          </>
+        }
       >
         <View className='section list message min-h-full'>
           <AtInput

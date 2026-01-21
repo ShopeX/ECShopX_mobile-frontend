@@ -276,8 +276,8 @@ class GuideCheckoutPoster {
       },
       drawOptions
     )
-    const totalInitPrice = totalFee.toFixed(2).split('.')[0]
-    const totalFloatPrice = `.${totalFee.toFixed(2).split('.')[1]}`
+    const totalInitPrice = itemFee.toFixed(2).split('.')[0]
+    const totalFloatPrice = `.${itemFee.toFixed(2).split('.')[1]}`
     drawText(
       {
         x: 110,
@@ -348,8 +348,8 @@ class GuideCheckoutPoster {
       },
       drawOptions
     )
-    const itemInitPrice = itemFee.toFixed(2).split('.')[0]
-    const itemFloatPrice = `.${itemFee.toFixed(2).split('.')[1]}`
+    const itemInitPrice = totalFee.toFixed(2).split('.')[0]
+    const itemFloatPrice = `.${totalFee.toFixed(2).split('.')[1]}`
     drawText(
       {
         x: 110,

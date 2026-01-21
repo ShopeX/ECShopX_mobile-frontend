@@ -105,8 +105,8 @@ const CustomNavigationHeader = memo((props) => {
         url: isGoodsShelves()
           ? '/subpages/guide/index'
           : VERSION_IN_PURCHASE
-            ? '/pages/purchase/index'
-            : '/pages/index'
+          ? '/pages/purchase/index'
+          : '/pages/index'
       })
     }
 
@@ -120,21 +120,9 @@ const CustomNavigationHeader = memo((props) => {
         }}
       >
         {btnReturn && (
-          <SpImage
-            src='fv_back.png'
-            width={36}
-            height={36}
-            onClick={() => Taro.navigateBack()}
-          />
+          <SpImage src='fv_back.png' width={36} height={36} onClick={() => Taro.navigateBack()} />
         )}
-        {btnHome && (
-          <SpImage
-            src='fv_home.png'
-            width={36}
-            height={36}
-            onClick={handleHomeClick}
-          />
-        )}
+        {btnHome && <SpImage src='fv_home.png' width={36} height={36} onClick={handleHomeClick} />}
         {pageConfig?.pTitleHotSetting?.imgUrl && renderHotZone()}
       </View>
     )
@@ -148,7 +136,7 @@ const CustomNavigationHeader = memo((props) => {
 
     if (pageConfig) {
       const { titleStyle, titleColor, titleBackgroundImage } = pageConfig
-      
+
       if (titleStyle === '1') {
         titleContent = (
           <Text style={styleNames({ color: titleColor })}>
@@ -162,7 +150,7 @@ const CustomNavigationHeader = memo((props) => {
         navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
         titleContent = title || navigationBarTitleText || appName
       }
-      
+
       pageTitleStyle = { color: pageConfig?.titleColor }
     } else {
       navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
@@ -201,13 +189,7 @@ const CustomNavigationHeader = memo((props) => {
         )}
       </View>
     )
-  }, [
-    renderNavigation,
-    pageConfig?.titleColor,
-    menuWidth,
-    navigationLSpace,
-    renderTitle
-  ])
+  }, [renderNavigation, pageConfig?.titleColor, menuWidth, navigationLSpace, renderTitle])
 
   return (
     <View className='custom-navigation' style={styleNames(computedNavigationStyle())}>
@@ -220,10 +202,7 @@ const CustomNavigationHeader = memo((props) => {
         >
           {renderLeftBlock()}
           {renderCenterBlock()}
-          <View
-            className='custom-navigation__right-block'
-            style={{ width: `${menuWidth}px` }}
-          />
+          <View className='custom-navigation__right-block' style={{ width: `${menuWidth}px` }} />
         </View>
       </View>
     </View>

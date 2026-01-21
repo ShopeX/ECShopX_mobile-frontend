@@ -378,12 +378,18 @@ export default class DistributionGoods extends Component {
     console.log(list)
 
     return (
-      <SpPage ref={this.spPageRef} className='page-distribution-shop' renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
+      <SpPage
+        ref={this.spPageRef}
+        className='page-distribution-shop'
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
         <SpSearchBar
           showDailog={false}
           keyword={query ? query.keywords : ''}
           onFocus={() => false}
-          onCancel={() => { }}
+          onCancel={() => {}}
           onChange={this.handleSearchChange}
           onClear={this.handleConfirm.bind(this)}
           onConfirm={this.handleConfirm.bind(this)}

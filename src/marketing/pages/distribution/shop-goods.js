@@ -231,7 +231,7 @@ export default class DistributionShopGoods extends Component {
               showDailog={false}
               keyword={query ? query.keywords : ''}
               onFocus={() => false}
-              onCancel={() => { }}
+              onCancel={() => {}}
               onChange={this.handleSearchChange}
               onClear={this.handleConfirm.bind(this)}
               onConfirm={this.handleConfirm.bind(this)}

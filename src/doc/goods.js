@@ -21,9 +21,8 @@ export const WGT_GOODS_GRID = {
   isPoint: 'is_point',
   point: 'point',
   price: ({ price }) => price / 100, // 销售价
-  activityPrice: ({ promotionActivity, act_price }) => {
-    let _aprice = (promotionActivity && promotionActivity[0]?.activity_price) || act_price
-    return _aprice / 100
+  activityPrice: ({ act_price }) => {
+    return act_price / 100
   }, // 秒杀价
   marketPrice: ({ promotionActivity }) =>
     promotionActivity && promotionActivity[0]?.market_price / 100, // 原价

@@ -88,7 +88,7 @@ class Lang {
       'ar':
         globalThis && globalThis.lang && globalThis.lang.ar
           ? globalThis.lang.ar
-          : globalThis._getJSONKey('ar', langJSON),
+          : globalThis._getJSONKey('ar', langJSON)
     }
     globalThis.langMap = langMap
     // 存储语言是否存在
@@ -120,15 +120,24 @@ class Lang {
       isFunction(globalThis._localStorage.getItem) &&
       globalThis._localStorage.getItem('')
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
-    const commonLang = withStorageCommonLang ? globalThis._localStorage.getItem('') : ''
+    const commonLang = withStorageCommonLang
+      ? globalThis._localStorage.getItem('')
+      : process.env.APP_DEFAULT_LANGUAGE
     // 从本地存储中获取当前语言，如果不存在则使用源语言
-    const baseLang = withStorageLang ? globalThis._localStorage.getItem('lang') : 'en'
+    const baseLang = withStorageLang
+      ? globalThis._localStorage.getItem('lang')
+      : process.env.APP_DEFAULT_LANGUAGE
+
     const lang = commonLang ? commonLang : baseLang
+    console.log('lang', lang)
+    console.log('commonLang', commonLang)
+    console.log('baseLang', baseLang)
+    console.log('process.env.APP_DEFAULT_LANGUAGE', process.env.APP_DEFAULT_LANGUAGE)
     // 如果本地存储中没有语言设置，则使用环境变量中的默认语言
     if (!globalThis._localStorage.getItem('lang')) {
       try {
-        const defaultLang = process.env.APP_I18N_ORIGIN_LANG
-          ? process.env.APP_I18N_ORIGIN_LANG
+        const defaultLang = process.env.APP_DEFAULT_LANGUAGE
+          ? process.env.APP_DEFAULT_LANGUAGE
           : 'en'
         // 设置默认语言
         globalThis._localStorage.setItem('lang', defaultLang)

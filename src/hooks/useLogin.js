@@ -107,9 +107,17 @@ export default (props = {}) => {
     S.setAuthToken(token)
     setIsLogin(true)
     await getUserInfo()
-    // 导购UV统计
-    entryLaunch.postGuideUV()
-    entryLaunch.postGuideTask()
+    // 使用setTimeout确保token已经完全设置到存储中
+    setTimeout(async () => {
+      try {
+        // 导购UV统计
+        await entryLaunch.postGuideUV()
+        await entryLaunch.postGuideTask()
+      } catch (error) {
+        console.error('导购上报失败:', error)
+      }
+    }, 100) // 延迟100ms确保token设置完成
+
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量

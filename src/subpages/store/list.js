@@ -287,7 +287,6 @@ function NearlyShop(props) {
               placeholder='请输入想搜索的店铺'
               confirmType='search'
               value={state.keyword}
-              disabled={!location?.address}
               onInput={onInputChange}
               onConfirm={onConfirmSearch}
             />

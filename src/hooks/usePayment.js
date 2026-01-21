@@ -13,8 +13,7 @@ import configStore from '@/store'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
 
-
-const {store} = configStore()
+const { store } = configStore()
 
 const initialState = {
   params: '',
@@ -100,7 +99,7 @@ export default (props = {}) => {
     return router.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
   }
 
-  const paySuccess = async(params, orderInfo) => {
+  const paySuccess = async (params, orderInfo) => {
     const { activityType } = params
     const { order_id } = orderInfo
     if (isTradeDetaiPage()) {
@@ -247,10 +246,12 @@ export default (props = {}) => {
     const loc = window.location
     const redirect_url = `${loc.protocol}//${loc.host}${cashierResultUrl}?order_id=${order_id}`
     if (!res.mweb_url) {
+      window.location.replace(redirect_url)
       //积分抵扣了所有金额，订单直接支付完成了
-      window.location.href = redirect_url
+      // window.location.href = redirect_url
     } else {
-      window.location.href = `${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`
+      window.location.replace(`${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`)
+      // window.location.href = `${res.mweb_url}&redirect_url=${encodeURIComponent(redirect_url)}`
     }
   }
 

@@ -180,12 +180,7 @@ function App({ children }) {
   // })
 
   const initCrm = async (params) => {
-    const {
-      s = '',
-      m = '',
-      latest_source_id = '',
-      latest_monitor_id = ''
-    } = params || {}
+    const { s = '', m = '', latest_source_id = '', latest_monitor_id = '' } = params || {}
 
     Taro.setStorageSync('sourceInfo', {
       source_id: s,

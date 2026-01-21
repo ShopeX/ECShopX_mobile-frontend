@@ -107,8 +107,6 @@ function SpScrollView(props, ref) {
     }
   }))
 
-  
-
   // console.log('sp scrollview:', page.loading, page.hasMore)
   return (
     <View className={classNames('sp-scrollview', className)} style={style} ref={wrapRef}>

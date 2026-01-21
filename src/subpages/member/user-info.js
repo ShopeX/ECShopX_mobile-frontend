@@ -97,11 +97,19 @@ function MemberUserInfo() {
           value && value.length > 0
             ? value.split(',').map((item) => ({ name: item, ischecked: true }))
             : []
-      } else if ((data[key].element_type == 'select' || data[key].element_type == 'radio') && data[key].select && data[key].select.length > 0) {
+      } else if (
+        (data[key].element_type == 'select' || data[key].element_type == 'radio') &&
+        data[key].select &&
+        data[key].select.length > 0
+      ) {
         // 如果是select或radio类型，需要将数字索引转换为对应的文本值
         const select = data[key].select
         if (value !== null && value !== undefined && value !== '') {
-          if (typeof Number(value) === 'number' && Number(value) >= 0 && Number(value) < select.length) {
+          if (
+            typeof Number(value) === 'number' &&
+            Number(value) >= 0 &&
+            Number(value) < select.length
+          ) {
             // 如果是数字索引，转换为文本值
             _formUserInfo[key] = select[value]
           } else if (select.includes(value)) {
@@ -374,13 +382,25 @@ function MemberUserInfo() {
     if (isWeixin) {
       return (
         <Button class='avatar-wrapper' open-type='chooseAvatar' onChooseAvatar={onChooseAvatar}>
-          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle mode='aspectFill' />
+          <SpImage
+            src={formUserInfo.avatar || 'user_icon.png'}
+            width={110}
+            height={110}
+            circle
+            mode='aspectFill'
+          />
         </Button>
       )
     } else {
       return (
         <View class='avatar-wrapper' onClick={onUploadAvatarFile}>
-          <SpImage src={formUserInfo.avatar || 'user_icon.png'} width={110} height={110} circle mode='aspectFill' />
+          <SpImage
+            src={formUserInfo.avatar || 'user_icon.png'}
+            width={110}
+            height={110}
+            circle
+            mode='aspectFill'
+          />
         </View>
       )
     }

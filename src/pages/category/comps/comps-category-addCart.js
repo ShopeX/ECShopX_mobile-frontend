@@ -46,7 +46,8 @@ const initialState = {
   info: null,
   skuPanelOpen: false,
   selectType: 'picker',
-  footerHeight: 0
+  footerHeight: 0,
+  bodyHeight: 0
 }
 
 function CompsCategoryAddCart(props) {
@@ -381,12 +382,14 @@ function CompsCategoryAddCart(props) {
       className={classNames('page-category-index-old')}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
-      onReady={({ footerHeight }) => {
+      onReady={({ footerHeight,height }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
+          draft.bodyHeight = height
         })
       }}
     >
+      <View className='container-content' style={{ height: state.bodyHeight }}>
       <View className='container-hd'>
         <View className='category-search'>
           <SpCategorySearch onConfirm={handleConfirm} />
@@ -438,7 +441,7 @@ function CompsCategoryAddCart(props) {
           </ScrollView>
         </View>
       </View>
-
+      </View>
       {/* Sku选择器 */}
       <MSpSkuSelect
         open={skuPanelOpen}

@@ -100,7 +100,6 @@ const CompsCategoryTile = (props) => {
     })
   }
 
-
   return (
     <SpPage
       className='page-category-index-new'
@@ -123,9 +122,11 @@ const CompsCategoryTile = (props) => {
             ))}
           </AtTabs>
         )}
-       {!(hasSeries && tabList.length > 1) && <View className='category-comps-not'>
-          <CompSeries info={currentList} />
-        </View>}
+        {!(hasSeries && tabList.length > 1) && (
+          <View className='category-comps-not'>
+            <CompSeries info={currentList} />
+          </View>
+        )}
       </View>
     </SpPage>
   )

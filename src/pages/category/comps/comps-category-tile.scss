@@ -8,11 +8,11 @@
   .at-tabs {
     height: 100%;
   }
-  .sp-page__body-children{
+  .sp-page__body-children {
     height: 100%;
   }
   .at-tabs__header {
-    justify-content: start;
+    justify-content: center;
     height: 92px;
     .at-tabs__item {
       flex: none;
@@ -34,7 +34,8 @@
   .at-tabs__body {
     height: calc(100% - 94px);
   }
-  .at-tabs-pane,.at-tabs-pane--active {
+  .at-tabs-pane,
+  .at-tabs-pane--active {
     height: 100%;
   }
   .comp-series__nav-list__content {
@@ -61,13 +62,13 @@
   .category-comps {
     box-sizing: border-box;
     background: #ffffff;
-    position: static!important;
+    position: static !important;
     height: 100%;
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
-    position: static!important;
+    position: static !important;
     height: 100%;
   }
 }

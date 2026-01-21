@@ -109,8 +109,18 @@ class API {
     }
     this.baseURL = baseURL
 
+    // 从域名获取 company_id，例如 m38.shopex123.com -> 38
+    let company_id = process.env.APP_COMPANY_ID
+    if (isWeb && typeof global !== 'undefined' && global.location) {
+      const hostname = global.location.hostname
+      const match = hostname.match(/^m(\d+)\./)
+      if (match && match[1]) {
+        company_id = match[1]
+      }
+    }
+
     const options = {
-      company_id: process.env.APP_COMPANY_ID
+      company_id: company_id
     }
     if (isWeixin) {
       const extConfig = getExtConfigData()

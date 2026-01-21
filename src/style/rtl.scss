@@ -4,14 +4,13 @@
 
 // 全局 RTL 支持：应用到所有页面容器
 .rtl-layout,
-[dir="rtl"],
-[dir="rtl"] page,
-[dir="rtl"] view,
+[dir='rtl'],
+[dir='rtl'] page,
+[dir='rtl'] view,
 page.rtl-layout,
 view.rtl-layout {
   direction: rtl;
   text-align: right;
-
 
   .text-left {
     text-align: right;
@@ -21,20 +20,29 @@ view.rtl-layout {
     text-align: left;
   }
 
-  .fl, .float-left, .pull-left {
+  .fl,
+  .float-left,
+  .pull-left {
     float: right;
   }
 
-  .fr, .float-right, .pull-right {
+  .fr,
+  .float-right,
+  .pull-right {
     float: left;
   }
 
   // Fix Taro UI icons if needed (example)
-  .at-icon-chevron-right,.icon-arrowRight,.icon-arrowRight-img,.icon-qianwang-01 {
+  .at-icon-chevron-right,
+  .icon-arrowRight,
+  .icon-arrowRight-img,
+  .icon-qianwang-01 {
     transform: rotate(180deg);
   }
-  
-  .at-icon-chevron-left,.icon-arrowLeft,.icon-arrowLeft-img {
+
+  .at-icon-chevron-left,
+  .icon-arrowLeft,
+  .icon-arrowLeft-img {
     transform: rotate(180deg);
   }
 
@@ -42,7 +50,7 @@ view.rtl-layout {
   .justify-start {
     justify-content: flex-start; // In RTL, start is right
   }
-  
+
   .justify-end {
     justify-content: flex-end; // In RTL, end is left
   }
@@ -157,5 +165,13 @@ view.rtl-layout {
     }
   }
 
+  .comp-goodsitem {
+    &-hd {
+      margin-left: 20px;
+      margin-right: 0 !important;
+    }
+  }
+  .member-level-bg{
+    transform: scaleX(-1);
+  }
 }
-
