@@ -14,7 +14,6 @@ import { WgtsContext } from '../wgts-context'
 import { getBaseOuterStyle } from '../helper'
 import './index.scss'
 
-
 const $instance = getCurrentInstance()
 const initState = {
   curIdx: 0,
@@ -27,7 +26,7 @@ const initState = {
 function WgtFullSlider(props) {
   const [state, setState] = useImmer(initState)
   const { info = null, index } = props
-  
+
   // 从 params 中获取配置和数据，兼容两种数据结构
   // 1. 新结构：info.params.config, info.params.data, info.params.base
   // 2. 旧结构：info.config, info.data, info.base
@@ -35,7 +34,7 @@ function WgtFullSlider(props) {
   const base = params.base || {}
   const config = params.config || {}
   const data = params.data || []
-  
+
   const { curIdx, play, localData, show, height } = state
   const {
     isTab = false,
@@ -75,10 +74,10 @@ function WgtFullSlider(props) {
     const heightS = immersive ? 0 : 89
     const homeHeight = isShowHomeHeader ? 90 : 0
     const tabHeight = isTab ? footerHeight : 0
-    
+
     setState((draft) => {
-      draft.height = isTab 
-        ? `calc(100vh - ${homeHeight}rpx - ${heightS}px - ${tabHeight?tabHeight:"0px"})`
+      draft.height = isTab
+        ? `calc(100vh - ${homeHeight}rpx - ${heightS}px - ${tabHeight ? tabHeight : '0px'})`
         : `calc(100vh - ${homeHeight}rpx - ${heightS}px)`
     })
   }, [immersive, isShowHomeHeader, isTab, footerHeight])
@@ -381,7 +380,7 @@ function WgtFullSlider(props) {
   if (localData.length === 0 || !show) return null
 
   return (
-    <View 
+    <View
       className={classNames('wgt wgt_full_slider', { wgt_padded: base.padded })}
       style={styleNames({
         ...outerStyle,
@@ -389,9 +388,7 @@ function WgtFullSlider(props) {
         minHeight: height
       })}
     >
-      <View 
-        className='wgt_full_slider-wrap' 
-      >
+      <View className='wgt_full_slider-wrap'>
         <Swiper
           className='wgt_full_slider-swiper'
           autoplay={config.autoplay}

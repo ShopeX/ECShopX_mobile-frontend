@@ -67,7 +67,7 @@ const Slider = (props) => {
   const swiperChange = (e) => {
     const { current } = e.detail
     const prevIdx = curIdx
-    
+
     // 先暂停上一个视频
     if (data[prevIdx]?.media_type === 'video') {
       setTimeout(() => {
@@ -133,8 +133,7 @@ const Slider = (props) => {
       const styleStr = `width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${
         ele.topPer * 100
       }%; left: ${ele.leftPer * 100}%`
-      const needLogin =
-        needLoginPageType.includes(ele.id) || needLoginPage.includes(ele.linkPage)
+      const needLogin = needLoginPageType.includes(ele.id) || needLoginPage.includes(ele.linkPage)
       if (needLogin) {
         return (
           <SpLogin key={`hotzone_${idx}`} onChange={() => linkPage(ele)}>
@@ -155,15 +154,18 @@ const Slider = (props) => {
 
   // 渲染覆盖层热区
   const renderOverlayHotZones = (item) => {
-    if (!item.overlayHotData || !Array.isArray(item.overlayHotData) || item.overlayHotData.length === 0) {
+    if (
+      !item.overlayHotData ||
+      !Array.isArray(item.overlayHotData) ||
+      item.overlayHotData.length === 0
+    ) {
       return null
     }
     return item.overlayHotData.map((ele, idx) => {
       const styleStr = `width: ${ele.widthPer * 100}%; height: ${ele.heightPer * 100}%; top: ${
         ele.topPer * 100
       }%; left: ${ele.leftPer * 100}%`
-      const needLogin =
-        needLoginPageType.includes(ele.id) || needLoginPage.includes(ele.linkPage)
+      const needLogin = needLoginPageType.includes(ele.id) || needLoginPage.includes(ele.linkPage)
       if (needLogin) {
         return (
           <SpLogin key={`overlayhot_${idx}`} onChange={() => linkPage(ele)}>

@@ -1,0 +1,323 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+.wgt-couponcard {
+  width: 100%;
+  box-sizing: border-box;
+  .wgt-couponcard-item-btn-disable {
+    background: #d6d6d6 !important;
+    color: #ffffff !important;
+    border: none !important;
+  }
+
+  .wgt-couponcard-inner {
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .wgt-couponcard-item-list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    scroll-snap-type: x mandatory;
+    overflow-x: scroll;
+  }
+  &-one {
+    .wgt-couponcard-item {
+      // background-image: url('../../../../assets/imgs/wgt/couponbg1.png');
+      width: 100%;
+      flex-direction: row;
+      padding: 24px 36px;
+      box-sizing: border-box;
+      height: 156px;
+
+      .wgt-couponcard-item-body {
+        display: flex;
+        align-items: center;
+        height: 100%;
+
+        .wgt-couponcard-item-header {
+          padding-right: 24px;
+          height: 60px;
+          display: flex;
+          align-items: baseline;
+          justify-content: center;
+        }
+
+        .wgt-couponcard-item-info {
+          border-left: 2px dashed #ebebeb;
+          flex: 1;
+          flex-shrink: 0;
+          padding: 0 24px;
+          height: 100%;
+          box-sizing: border-box;
+          justify-content: flex-start;
+          align-items: flex-start;
+          .use-title {
+            text-align: left;
+          }
+          .use-desc {
+            text-align: left;
+            margin-top: 4px;
+            margin-bottom: 12px;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+
+          .use-time {
+            font-weight: 400;
+            font-size: 18px;
+            color: #bfbfbf;
+            text-align: left;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+          }
+        }
+      }
+
+      .wgt-couponcard-item-btn,
+      .wgt-couponcard-item-btn-look {
+        min-width: 144px;
+        height: 50px;
+        border-radius: 8px;
+        padding: 0px;
+        margin: 0px;
+        line-height: 50px;
+        text-align: center;
+      }
+    }
+  }
+
+  &-two {
+    .wgt-couponcard-item {
+      width: calc(100% / 2);
+      height: 206px;
+      justify-content: space-between;
+      padding: 32px 24px 24px;
+      box-sizing: border-box;
+    }
+
+    .wgt-couponcard-item-body {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 18px;
+      border-bottom: 2px solid #ebebeb;
+      padding-bottom: 16px;
+      width: 100%;
+      height: 84px;
+      box-sizing: border-box;
+
+      .wgt-couponcard-item-header {
+        .coupon-title {
+          line-height: 100%;
+        }
+      }
+
+      .wgt-couponcard-item-info {
+        justify-content: flex-start;
+        align-items: flex-start;
+
+        .use-desc {
+          text-align: left;
+          height: 30px;
+        }
+      }
+    }
+
+    .wgt-couponcard-item-btn,
+    .wgt-couponcard-item-btn-look {
+      width: 210px;
+      height: 50px;
+      line-height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 16px;
+    }
+  }
+
+  &-three {
+    .wgt-couponcard-item {
+      // background-image: url('../../../../assets/imgs/wgt/couponbg3.png');
+      height: 252px;
+      width: calc(100% / 3);
+      padding: 24px;
+      box-sizing: border-box;
+
+      .wgt-couponcard-item-header {
+        width: 100%;
+        border-bottom: 2px dashed #ebebeb;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        height: 72px;
+        box-sizing: border-box;
+      }
+      .use-desc {
+        height: 30px;
+      }
+      .wgt-couponcard-item-btn {
+        margin-top: 12px;
+        width: 132px;
+        height: 42px;
+        line-height: 42px;
+      }
+      .wgt-couponcard-item-btn-look {
+        margin-top: 12px;
+        width: 156px;
+        height: 42px;
+        line-height: 42px;
+      }
+    }
+  }
+
+  &-more {
+    .wgt-couponcard-item {
+      width: 204px;
+      min-width: 204px;
+      max-width: 204px;
+      height: 252px;
+      padding: 24px;
+      box-sizing: border-box;
+      scroll-snap-align: start;
+
+      .wgt-couponcard-item-header {
+        width: 100%;
+        border-bottom: 2px dashed #ebebeb;
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        height: 72px;
+        box-sizing: border-box;
+      }
+
+      .wgt-couponcard-item-btn {
+        width: 132px;
+        margin-top: 12px;
+        height: 42px;
+        line-height: 42px;
+      }
+      .wgt-couponcard-item-btn-look {
+        width: 156px;
+        margin-top: 12px;
+        height: 42px;
+        line-height: 42px;
+      }
+    }
+  }
+
+  &-item {
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+    border-radius: 12px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    .wgt-couponcard-item-body {
+      width: 100%;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+
+    .wgt-couponcard-item-header {
+      display: flex;
+      justify-content: center;
+      align-items: baseline;
+
+      .coupon-title {
+        font-family: D-DIN-PRO, D-DIN-PRO;
+        font-weight: 600;
+        font-size: 60px;
+        line-height: 60px;
+        color: var(--color-primary);
+        text-align: left;
+        font-style: normal;
+        text-transform: none;
+      }
+
+      .coupon-unit {
+        font-family: D-DIN-PRO-Medium, D-DIN-PRO-Medium;
+        font-weight: 500;
+        font-size: 36px;
+        color: var(--color-primary);
+      }
+    }
+
+    .wgt-couponcard-item-info {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+
+      .use-title {
+        font-family: PingFang SC, PingFang SC;
+        font-weight: 500;
+        font-size: 26px;
+        color: #1a1a1a;
+        text-align: center;
+        line-height: 36px;
+        height: 36px;
+        min-height: 36px;
+        width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .use-desc {
+        font-weight: 400;
+        font-size: 22px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        color: #1a1a1a;
+        width: 100%;
+        text-align: center;
+        line-height: 30px;
+        height: 30px;
+        min-height: 30px;
+      }
+    }
+
+    .wgt-couponcard-item-btn {
+      font-weight: 500;
+      font-size: 24px;
+      color: #ffffff;
+      border-radius: 8px;
+      text-align: center;
+    }
+    .wgt-couponcard-item-btn-look {
+      font-weight: 500;
+      font-size: 24px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #1a1a1a;
+      color: #1a1a1a;
+      text-align: center;
+    }
+  }
+
+  .wgt-couponcard-item-one {
+    //   background-image: url('../../../../assets/imgs/wgt/couponbg1.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+
+  .wgt-couponcard-item-two {
+    //   background-image: url('../../../../assets/imgs/wgt/couponbg2.png');
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: left center;
+  }
+}

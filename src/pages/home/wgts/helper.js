@@ -119,20 +119,20 @@ export function getOuterMarginStyle(outerMargin) {
   }
 
   const style = {}
-  
+
   // 处理边距
   if (outerMargin.paddedt !== undefined && outerMargin.paddedt !== null) {
     style.paddingTop = Taro.pxTransform(outerMargin.paddedt)
   }
-  
+
   if (outerMargin.paddedb !== undefined && outerMargin.paddedb !== null) {
     style.paddingBottom = Taro.pxTransform(outerMargin.paddedb)
   }
-  
+
   if (outerMargin.paddedl !== undefined && outerMargin.paddedl !== null) {
     style.paddingLeft = Taro.pxTransform(outerMargin.paddedl)
   }
-  
+
   if (outerMargin.paddedr !== undefined && outerMargin.paddedr !== null) {
     style.paddingRight = Taro.pxTransform(outerMargin.paddedr)
   }
@@ -169,11 +169,11 @@ export function getOuterBackgroundStyle(outerBackground) {
   }
 
   const style = {}
-  
+
   if (outerBackground.color) {
     style.backgroundColor = outerBackground.color
   }
-  
+
   if (outerBackground.image) {
     style.backgroundImage = `url(${outerBackground.image})`
     style.backgroundSize = 'cover'
@@ -199,19 +199,19 @@ export function getInnerPaddingStyle(innerPadding) {
   }
 
   const style = {}
-  
+
   if (innerPadding.paddedt !== undefined && innerPadding.paddedt !== null) {
     style.paddingTop = Taro.pxTransform(innerPadding.paddedt)
   }
-  
+
   if (innerPadding.paddedb !== undefined && innerPadding.paddedb !== null) {
     style.paddingBottom = Taro.pxTransform(innerPadding.paddedb)
   }
-  
+
   if (innerPadding.paddedl !== undefined && innerPadding.paddedl !== null) {
     style.paddingLeft = Taro.pxTransform(innerPadding.paddedl)
   }
-  
+
   if (innerPadding.paddedr !== undefined && innerPadding.paddedr !== null) {
     style.paddingRight = Taro.pxTransform(innerPadding.paddedr)
   }
@@ -234,11 +234,20 @@ export function getInnerBackgroundStyle(innerBackground) {
   }
 
   const style = {}
-  
+
   if (innerBackground.type === 'solid' && innerBackground.color) {
     style.backgroundColor = innerBackground.color
-  } else if (innerBackground.type === 'gradient' && innerBackground.startColor && innerBackground.endColor) {
+  } else if (
+    innerBackground.type === 'gradient' &&
+    innerBackground.startColor &&
+    innerBackground.endColor
+  ) {
     style.backgroundImage = `linear-gradient(${innerBackground.startColor}, ${innerBackground.endColor})`
+  } else if (innerBackground.type === 'pic' && innerBackground.bgPic) {
+    style.backgroundImage = `url(${innerBackground.bgPic})`
+    style.backgroundSize = 'cover'
+    style.backgroundPosition = 'center'
+    style.backgroundRepeat = 'no-repeat'
   }
 
   return style
@@ -257,11 +266,11 @@ export function getBaseOuterStyle(base) {
 
   // outerMargin 现在可能包含背景配置，所以先处理 outerMargin
   const outerMarginStyle = getOuterMarginStyle(base.outerMargin)
-  
+
   // 如果 outerMargin 中没有背景配置，再尝试从 outerBackground 获取
   // 但优先使用 outerMargin 中的背景配置
   const outerBackgroundStyle = getOuterBackgroundStyle(base.outerBackground)
-  
+
   // 合并样式，outerMargin 的样式优先级更高
   return {
     ...outerBackgroundStyle,

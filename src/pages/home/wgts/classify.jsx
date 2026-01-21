@@ -21,7 +21,6 @@ function WgtClassify(props) {
     }
   }, [data])
 
-
   const handleSubCategoryClick = (item) => {
     const store_ids = item?.store_ids?.join(',') || ''
     const category_id = item?.id

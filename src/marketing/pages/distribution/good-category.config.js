@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-    navigationBarTitleText: '分类'
+  navigationBarTitleText: '分类'
 }

@@ -13,8 +13,7 @@ import configStore from '@/store'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
 
-
-const {store} = configStore()
+const { store } = configStore()
 
 const initialState = {
   params: '',
@@ -100,7 +99,7 @@ export default (props = {}) => {
     return router.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
   }
 
-  const paySuccess = async(params, orderInfo) => {
+  const paySuccess = async (params, orderInfo) => {
     const { activityType } = params
     const { order_id } = orderInfo
     if (isTradeDetaiPage()) {

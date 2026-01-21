@@ -24,7 +24,13 @@ function SpTagBar(props) {
   return (
     <View className={classNames('sp-tag-bar', className)}>
       <View className='tag-bar-hd'>
-        <ScrollView className='tag-container' scrollX enhanced show-scrollbar={false} scrollIntoView={`tag-item__${Math.max(currentIndex-1, 0)}`}>
+        <ScrollView
+          className='tag-container'
+          scrollX
+          enhanced
+          show-scrollbar={false}
+          scrollIntoView={`tag-item__${Math.max(currentIndex - 1, 0)}`}
+        >
           {list.map((item, index) => (
             <View
               className={classNames('tag-item', {

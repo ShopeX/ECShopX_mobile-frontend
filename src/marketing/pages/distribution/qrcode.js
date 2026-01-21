@@ -57,18 +57,21 @@ export default class DistributionQrcode extends Component {
     const { info } = this.state
 
     return (
-      <SpPage className='page-distribution-qrcode' style={'background: ' + colors.data[0].marketing}>
+      <SpPage
+        className='page-distribution-qrcode'
+        style={'background: ' + colors.data[0].marketing}
+      >
         <View className='page-distribution-qrcode-content h-full w-full'>
-        <View className='qrcode-bg'>
-          <View className='title'>邀请卡</View>
-          <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
-          <View className='name'>{info.username}</View>
-          <View className='welcome-words'>邀你一起加入，推广赢奖励</View>
-          <View className='qrcode'>
-            <Image src={info.qrcode} mode='aspectFit' />
+          <View className='qrcode-bg'>
+            <View className='title'>邀请卡</View>
+            <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
+            <View className='name'>{info.username}</View>
+            <View className='welcome-words'>邀你一起加入，推广赢奖励</View>
+            <View className='qrcode'>
+              <Image src={info.qrcode} mode='aspectFit' />
+            </View>
+            <View className='tips'>微信扫一扫或长按识别</View>
           </View>
-          <View className='tips'>微信扫一扫或长按识别</View>
-        </View>
         </View>
       </SpPage>
     )

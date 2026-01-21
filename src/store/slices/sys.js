@@ -95,7 +95,9 @@ const sysSlice = createSlice({
         colorAccent: getColor('colorAccent', colorAccent),
         tabbar: tabbar ? tabbar : initialState.tabbar,
         rgb,
-        openWechatappLocation: openWechatappLocation ? openWechatappLocation : initialState.openWechatappLocation
+        openWechatappLocation: openWechatappLocation
+          ? openWechatappLocation
+          : initialState.openWechatappLocation
       }
     },
     updatePageTitle: (state, { payload }) => {

@@ -50,27 +50,27 @@ export default class DistributionShopSetting extends Component {
     return (
       <SpPage className='page-distribution-shop-setting'>
         <View className='min-h-full'>
-        <SpCell
-          title='小店名称'
-          value={info.shop_name}
-          onClick={this.handleClick.bind(this, 'shop_name')}
-          border
-          isLink
-        />
-        <SpCell
-          title='小店描述'
-          value={info.brief}
-          onClick={this.handleClick.bind(this, 'brief')}
-          border
-          isLink
-        />
-        <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
-          <Image
-            className='shop-sign'
-            src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}
-            mode='widthFix'
+          <SpCell
+            title='小店名称'
+            value={info.shop_name}
+            onClick={this.handleClick.bind(this, 'shop_name')}
+            border
+            isLink
           />
-        </SpCell>
+          <SpCell
+            title='小店描述'
+            value={info.brief}
+            onClick={this.handleClick.bind(this, 'brief')}
+            border
+            isLink
+          />
+          <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
+            <Image
+              className='shop-sign'
+              src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}
+              mode='widthFix'
+            />
+          </SpCell>
         </View>
       </SpPage>
     )

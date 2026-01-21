@@ -34,7 +34,7 @@ function WgtImgHotZone(props) {
       ...outerStyle,
       width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
     }
-    
+
     // 高度优先级：config.imgHeight > animation模式下的imgHeight > auto
     if (config.imgHeight) {
       style.height = Taro.pxTransform(config.imgHeight)
@@ -43,7 +43,7 @@ function WgtImgHotZone(props) {
     } else {
       style.height = 'auto'
     }
-    
+
     return style
   }, [outerStyle, config.imgWidth, config.imgHeight, isVertical, imgHeight])
 
@@ -75,28 +75,21 @@ function WgtImgHotZone(props) {
       style: getZoneStyle(item)
     }
 
-    const clickHandler = () => handleClickItem({
-      ...item,
-      distributor_id
-    })
+    const clickHandler = () =>
+      handleClickItem({
+        ...item,
+        distributor_id
+      })
 
     if (needLogin(item)) {
       return (
-        <SpLogin
-          key={`imghotzone-login-${index}`}
-          onChange={clickHandler}
-        >
+        <SpLogin key={`imghotzone-login-${index}`} onChange={clickHandler}>
           <View {...zoneProps} />
         </SpLogin>
       )
     }
 
-    return (
-      <View
-        {...zoneProps}
-        onClick={clickHandler}
-      />
-    )
+    return <View {...zoneProps} onClick={clickHandler} />
   }
 
   return (
@@ -107,10 +100,7 @@ function WgtImgHotZone(props) {
       })}
       id={`wgt-imghot-zone-${id}`}
     >
-      <View
-        className='wgt-imghot-zone__body'
-        style={bodyStyle}
-      >
+      <View className='wgt-imghot-zone__body' style={bodyStyle}>
         <SpImage
           src={config.imgUrl}
           className='wgt-imghot-zone__body-img'
@@ -123,4 +113,3 @@ function WgtImgHotZone(props) {
 }
 
 export default React.memo(WgtImgHotZone)
-

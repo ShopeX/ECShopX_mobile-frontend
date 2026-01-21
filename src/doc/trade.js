@@ -192,5 +192,5 @@ export const TRADE_AFTER_SALES_ITEM = {
   freight: ({ freight }) => freight / 100,
   freightFee: ({ order_info }) => order_info.freight_fee,
   freightType: ({ order_info }) => order_info.freight_type,
-  refund_freight_amount: ({ refund_freight_amount }) => refund_freight_amount / 100,
+  refund_freight_amount: ({ refund_freight_amount }) => refund_freight_amount / 100
 }

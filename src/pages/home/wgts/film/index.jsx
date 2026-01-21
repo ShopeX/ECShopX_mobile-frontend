@@ -40,7 +40,7 @@ function WgtFilm(props) {
     }
 
     // 计算实际可用宽度（减去边距）
-    const padding = (config.padded || base.padded) ? 32 : 0 // 16px * 2
+    const padding = config.padded || base.padded ? 32 : 0 // 16px * 2
     const availableWidth = screenWidth - padding
 
     const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]
@@ -78,7 +78,15 @@ function WgtFilm(props) {
       height: `${h}px`,
       objectFit
     }
-  }, [screenWidth, base.proportion, base.padded, config.width, config.height, config.ratio, config.padded])
+  }, [
+    screenWidth,
+    base.proportion,
+    base.padded,
+    config.width,
+    config.height,
+    config.ratio,
+    config.padded
+  ])
 
   const handleClickItem = linkPage
 

@@ -15,7 +15,8 @@ import {
   WgtSlider,
   WgtFilm,
   WgtMarquees,
-  WgtFullSlider
+  WgtFullSlider,
+  WgtCouponCard
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -76,10 +77,14 @@ function HomeWgts(props) {
             data-name={item.name}
           >
             {item.name === 'slider' && <WgtSlider info={item} />} {/** 轮播 */}
-            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />} {/** 热区 */}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />}{' '}
+            {/** 热区 */}
             {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
             {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 跑马灯 */}
-            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />} {/** 全屏轮播 */}
+            {item.name === 'fullSlider' && <WgtFullSlider info={item} index={idx} />}{' '}
+            {/** 全屏轮播 */}
+            {item.name === 'couponCard' && <WgtCouponCard info={item} id={item.id || idx} />}{' '}
+            {/** 优惠券卡片 */}
           </View>
         )
       })}

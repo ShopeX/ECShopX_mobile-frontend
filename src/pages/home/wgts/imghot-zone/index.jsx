@@ -13,7 +13,7 @@ import './index.scss'
 
 function WgtImgHotZone(props) {
   const { info, id } = props
-  
+
   // 从 params 中获取配置和数据，兼容两种数据结构
   // 1. 新结构：info.params.config, info.params.data, info.params.base
   // 2. 旧结构：info.config, info.data, info.base
@@ -21,7 +21,7 @@ function WgtImgHotZone(props) {
   const base = params.base || {}
   const config = params.config || {}
   const data = params.data || []
-  
+
   // 获取 distributor_id
   const distributor_id = useMemo(() => {
     return getDistributorId()
@@ -33,12 +33,12 @@ function WgtImgHotZone(props) {
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
     const style = getBaseOuterStyle(base)
-    
+
     // 纵向布局时，外层容器高度优先使用 base.imgHeight
     if (isVertical && base.imgHeight) {
       style.height = Taro.pxTransform(base.imgHeight)
     }
-    
+
     return style
   }, [base, isVertical])
 
@@ -47,7 +47,7 @@ function WgtImgHotZone(props) {
     const style = {
       width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
     }
-    
+
     // 纵向布局时，优先使用 base.imgHeight
     if (isVertical && base.imgHeight) {
       style.height = Taro.pxTransform(base.imgHeight)
@@ -57,7 +57,7 @@ function WgtImgHotZone(props) {
     } else {
       style.height = 'auto'
     }
-    
+
     return style
   }, [config.imgWidth, config.imgHeight, isVertical, base.imgHeight])
 
@@ -89,28 +89,21 @@ function WgtImgHotZone(props) {
       style: getZoneStyle(item)
     }
 
-    const clickHandler = () => handleClickItem({
-      ...item,
-      distributor_id
-    })
+    const clickHandler = () =>
+      handleClickItem({
+        ...item,
+        distributor_id
+      })
 
     if (needLogin(item)) {
       return (
-        <SpLogin
-          key={`imghotzone-login-${index}`}
-          onChange={clickHandler}
-        >
+        <SpLogin key={`imghotzone-login-${index}`} onChange={clickHandler}>
           <View {...zoneProps} />
         </SpLogin>
       )
     }
 
-    return (
-      <View
-        {...zoneProps}
-        onClick={clickHandler}
-      />
-    )
+    return <View {...zoneProps} onClick={clickHandler} />
   }
 
   if (!info || !config.imgUrl) {
@@ -126,10 +119,7 @@ function WgtImgHotZone(props) {
       id={`wgt-imghot-zone-${id || ''}`}
       style={styleNames(outerStyle)}
     >
-      <View
-        className='wgt-imghot-zone__body'
-        style={styleNames(bodyStyle)}
-      >
+      <View className='wgt-imghot-zone__body' style={styleNames(bodyStyle)}>
         <SpImage
           src={config.imgUrl}
           className='wgt-imghot-zone__body-img'

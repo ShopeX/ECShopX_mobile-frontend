@@ -136,11 +136,7 @@ const CompSeries = (props) => {
         <View className='sp-page__powered-by w-full'>
           {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
           <Text>Powered by</Text>
-          <Image
-            src='/assets/imgs/powered-logo.png'
-            className='powered-logo'
-            mode='contain'
-          />
+          <Image src='/assets/imgs/powered-logo.png' className='powered-logo' mode='contain' />
         </View>
       </ScrollView>
     </View>

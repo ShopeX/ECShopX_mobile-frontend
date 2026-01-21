@@ -84,7 +84,7 @@ function CompNoteItem(props) {
         </View>
         <View className='ugc-author'>
           <View className='author-info' onClick={() => {}}>
-            <SpImage circle src={info.headimgurl} width={32} height={32}  mode='aspectFill' />
+            <SpImage circle src={info.headimgurl} width={32} height={32} mode='aspectFill' />
             <View className='author'>{info.username || info.nickname}</View>
           </View>
           <SpLogin className='likes-num' onChange={handleCollection}>

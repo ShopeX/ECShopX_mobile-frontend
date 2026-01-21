@@ -471,7 +471,14 @@ export default class DistributionShopHome extends Component {
     // }
 
     return (
-      <SpPage className='page-distribution-shop' title='小店' showToTop renderFooter={<AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />}>
+      <SpPage
+        className='page-distribution-shop'
+        title='小店'
+        showToTop
+        renderFooter={
+          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+        }
+      >
         <View className='shop-banner'>
           <View className='shop-def'>
             <Image

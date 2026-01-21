@@ -4,6 +4,7 @@
  */
 import WgtCoupon from './coupon'
 import WgtNearbyShop from './nearby-shop'
+import WgtCouponCard from './couponcard/index'
 
 export { default as HeaderHome } from './header-home'
 export { default as WgtSlider } from './slider/index'
@@ -35,4 +36,4 @@ export { default as WgtOrderNavigation } from './order-navigation'
 export { default as WgtShop } from './shop'
 export { default as WgtClassify } from './classify'
 
-export { WgtCoupon, WgtNearbyShop }
+export { WgtCoupon, WgtNearbyShop, WgtCouponCard }

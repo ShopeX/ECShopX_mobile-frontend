@@ -69,14 +69,7 @@ function WgtMarquees(props) {
         })}
       >
         {config.direction === 'vertical' && (
-          <Swiper
-            className='marquees'
-            autoplay
-            circular
-            interval={5000}
-            duration={300}
-            vertical
-          >
+          <Swiper className='marquees' autoplay circular interval={5000} duration={300} vertical>
             {data.map((item, idx) => (
               <SwiperItem key={`marquees-item__${idx}`} className='marquees-item'>
                 <View

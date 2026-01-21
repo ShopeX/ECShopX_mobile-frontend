@@ -8,7 +8,7 @@ import './shop.scss'
 
 function WgtShop(props) {
   const { info, id } = props
-  const { base, data = []} = info //是否不限制区域
+  const { base, data = [] } = info //是否不限制区域
   const [currentIndex, setCurrentIndex] = useState(0)
   useEffect(() => {
     setCurrentIndex(0)
@@ -43,21 +43,24 @@ function WgtShop(props) {
 
   const SwiperHeight = useMemo(() => {
     const { innerPadding } = base
-    return `calc(534rpx + ${Taro.pxTransform(innerPadding.paddedt)} + ${Taro.pxTransform(innerPadding.paddedb)})`
+    return `calc(534rpx + ${Taro.pxTransform(innerPadding.paddedt)} + ${Taro.pxTransform(
+      innerPadding.paddedb
+    )})`
   }, [base])
 
   const handleChange = (e) => {
     setCurrentIndex(e.detail.current)
   }
 
-
-
   return (
-    <View className={classNames('wgt-shop wgt-shop--horizontal', {
-      'wgt-shop--single': data.length == 1
-    })} style={outStyle()} id={`wgt-shop-${id}`}
+    <View
+      className={classNames('wgt-shop wgt-shop--horizontal', {
+        'wgt-shop--single': data.length == 1
+      })}
+      style={outStyle()}
+      id={`wgt-shop-${id}`}
     >
-            <View className='wgt-shop__content' style={{ height: SwiperHeight }}>
+      <View className='wgt-shop__content' style={{ height: SwiperHeight }}>
         {isArray(data) && data.length > 0 && (
           <Swiper
             nextMargin={data.length > 1 ? '24rpx' : 0}
@@ -69,16 +72,18 @@ function WgtShop(props) {
             {isArray(data) &&
               data?.map((item, index) => {
                 return (
-                  <SwiperItem key={item.id} className={classNames({
-                    'wgt-shop__content-swiper-item': data.length > 1
-                  })}
+                  <SwiperItem
+                    key={item.id}
+                    className={classNames({
+                      'wgt-shop__content-swiper-item': data.length > 1
+                    })}
                   >
-                      <SpShop
-                        info={item}
-                        style={innerStyle}
-                        isActive={currentIndex == index}
-                        id={index}
-                      />
+                    <SpShop
+                      info={item}
+                      style={innerStyle}
+                      isActive={currentIndex == index}
+                      id={index}
+                    />
                   </SwiperItem>
                 )
               })}

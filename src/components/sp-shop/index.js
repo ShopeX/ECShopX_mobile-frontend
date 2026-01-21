@@ -15,7 +15,7 @@ const initialState = {
   loading: true
 }
 function SpShop(props) {
-  const { info, style, isActive, goods_id, id = 0, } = props
+  const { info, style, isActive, goods_id, id = 0 } = props
   const [state, setState] = useImmer(initialState)
   const { isFav, items, loading } = state
   // tip: 平台自营info为空数组
@@ -58,7 +58,7 @@ function SpShop(props) {
       try {
         const res = await api.wgts.getShelvesGoods({
           data_type: 'distributor',
-          data_value: distributor_id,
+          data_value: distributor_id
         })
         setState((draft) => {
           draft.items = pickBy(res, doc.wgt.WGTGOODSITEM)
@@ -107,14 +107,22 @@ function SpShop(props) {
           <View className='sp-shop__info'>
             <View className='sp-shop__info-left' onClick={() => handleToStore('进入店铺', 1)}>
               <View className='sp-shop__img'>
-                <SpImage width={108} height={108} src={info.logo} mode='cover' placeholderColor='#f2f3f5' />
+                <SpImage
+                  width={108}
+                  height={108}
+                  src={info.logo}
+                  mode='cover'
+                  placeholderColor='#f2f3f5'
+                />
               </View>
               <View className='sp-shop__name'>{info.name}</View>
             </View>
             <View className='sp-shop__info-right'>
-              <SpLogin onChange={() => {
-                handleFavStore()
-              }}>
+              <SpLogin
+                onChange={() => {
+                  handleFavStore()
+                }}
+              >
                 <View className='sp-shop__like'>
                   <SpImage
                     src={isFav ? 'fv_star_fav.png' : 'fv_star_outline.png'}

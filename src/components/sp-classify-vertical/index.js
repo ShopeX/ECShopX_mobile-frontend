@@ -7,19 +7,22 @@ function CompCategoryItem(props) {
   const { data = null, onClick = () => {} } = props
   console.log(data, 'data-22---')
 
-  const handleClick = (item,index) => {
-    onClick(item,index)
+  const handleClick = (item, index) => {
+    onClick(item, index)
   }
 
-  const handleTitleClick = (item,index) => {
-    onClick(item,index)
+  const handleTitleClick = (item, index) => {
+    onClick(item, index)
   }
 
   if (!data) return null
   return (
     <View className='sp-classify-vertical'>
       {data?.title && (
-        <View className='sp-classify-vertical__header' onClick={() => handleTitleClick(data,1,data?.title)}>
+        <View
+          className='sp-classify-vertical__header'
+          onClick={() => handleTitleClick(data, 1, data?.title)}
+        >
           <Text className='sp-classify-vertical__title'>{data?.title}</Text>
           <View className='sp-classify-vertical__arrow'></View>
         </View>
@@ -27,7 +30,11 @@ function CompCategoryItem(props) {
 
       <View className='sp-classify-vertical__items'>
         {data?.children?.map((ele, index) => (
-          <View key={index} className='sp-classify-vertical__item' onClick={() => handleClick(ele,index)}>
+          <View
+            key={index}
+            className='sp-classify-vertical__item'
+            onClick={() => handleClick(ele, index)}
+          >
             <View className='sp-classify-vertical__image'>
               <SpImage src={ele.image} mode='aspectFill' />
             </View>
