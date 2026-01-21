@@ -115,7 +115,7 @@ const CompSeries = (props) => {
             {currentChildren.map((item, index) => {
               return item.children ? (
                 <View className='new' key={index}>
-                  <View className='group-title'>{item.name}</View>
+                  {item.name && <View className='group-title'>{item.name}</View>}
                   <View className='content-group'>
                     {item.children.map((child) => renderCategoryHandler(child))}
                   </View>

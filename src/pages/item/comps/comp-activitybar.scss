@@ -92,6 +92,13 @@
       }
     }
   }
+  .activity-price {
+    .sp-price__symbol,
+    .sp-price__int,
+    .sp-price__decimal {
+      color: #fff !important;
+    }
+  }
   .activitybar-footer {
     background: #fff;
     padding: 20px;

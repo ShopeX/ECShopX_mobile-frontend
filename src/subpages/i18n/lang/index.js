@@ -5,9 +5,7 @@
 // 导入国际化JSON文件
 import langJSON from './index.json'
 
-;
-
-(function () {
+;(function () {
   // 定义翻译函数
   let $t = function (key, val, nameSpace) {
     // 获取指定命名空间下的语言包
@@ -103,9 +101,15 @@ const withStorageCommonLang =
   isFunction(globalThis.localStorage.getItem) &&
   globalThis.localStorage.getItem('')
 // 从本地存储中获取通用语言，如果不存在则使用空字符串
-const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('') : ''
+const commonLang = withStorageCommonLang
+  ? globalThis.localStorage.getItem('')
+  : process.env.APP_DEFAULT_LANGUAGE
 // 从本地存储中获取当前语言，如果不存在则使用源语言
-const baseLang = withStorageLang ? globalThis.localStorage.getItem('lang') : 'en'
+const baseLang = withStorageLang
+  ? globalThis.localStorage.getItem('lang')
+  : process.env.APP_DEFAULT_LANGUAGE
+console.log('baseLang', baseLang, process.env.APP_DEFAULT_LANGUAGE)
+console.log('commonLang', commonLang)
 const lang = commonLang ? commonLang : baseLang
 // 根据当前语言设置翻译函数的语言包
 globalThis.$t.locale(globalThis.langMap[lang], 'lang')
