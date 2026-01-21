@@ -16,7 +16,10 @@ import {
   WgtFilm,
   WgtMarquees,
   WgtFullSlider,
-  WgtCouponCard
+  WgtCouponCard,
+  WgtSpeedkill,
+  WgtGroup,
+  WgtHotranking
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -85,6 +88,12 @@ function HomeWgts(props) {
             {/** 全屏轮播 */}
             {item.name === 'couponCard' && <WgtCouponCard info={item} id={item.id || idx} />}{' '}
             {/** 优惠券卡片 */}
+            {item.name === 'speedkill' && <WgtSpeedkill info={item} id={item.id || idx} />}{' '}
+            {/** 秒杀 */}
+            {item.name === 'group' && <WgtGroup info={item} id={item.id || idx} />}{' '}
+            {/** 拼团 */}
+            {item.name === 'hotranking' && <WgtHotranking info={item} id={item.id || idx} />}{' '}
+            {/** 热门排行榜 */}
           </View>
         )
       })}

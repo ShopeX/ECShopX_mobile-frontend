@@ -35,5 +35,8 @@ export { default as WgtFullSlider } from './full-slider/index'
 export { default as WgtOrderNavigation } from './order-navigation'
 export { default as WgtShop } from './shop'
 export { default as WgtClassify } from './classify'
+export { default as WgtSpeedkill } from './speedkill/index'
+export { default as WgtGroup } from './group/index'
+export { default as WgtHotranking } from './hotranking/index'
 
 export { WgtCoupon, WgtNearbyShop, WgtCouponCard }
