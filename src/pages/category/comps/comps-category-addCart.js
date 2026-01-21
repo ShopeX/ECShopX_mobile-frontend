@@ -180,7 +180,7 @@ function CompsCategoryAddCart(props) {
   // }
 
   const getCategoryList = async () => {
-    // ecsahopex ：商品管理分类   云店/官网/内购：商品销售分类
+    // ecshopex ：商品管理分类   云店/官网/内购：商品销售分类
     const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
 
     const currentList = pickBy(res, {

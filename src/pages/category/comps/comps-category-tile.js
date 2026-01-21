@@ -47,7 +47,8 @@ const CompsCategoryTile = (props) => {
     if (classify) return
 
     if (!addCar) {
-      const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
+      // 平铺模式-关闭自定义分类-统一取销售分类
+      const res = await api.category.get()
       console.log('res', res)
       const currentList = pickBy(res, {
         name: 'category_name',
