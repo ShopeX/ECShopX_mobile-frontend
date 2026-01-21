@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
 import { AtNoticebar } from 'taro-ui'
-import { getBaseOuterStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 function WgtMarquees(props) {
@@ -32,7 +32,7 @@ function WgtMarquees(props) {
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
-    return getBaseOuterStyle(base)
+    return getGlobalBaseStyle(base.outerMargin)
   }, [base])
 
   const handleClickItem = (id) => {

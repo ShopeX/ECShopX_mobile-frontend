@@ -6,7 +6,7 @@ import React, { useState, useEffect, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Video, Text } from '@tarojs/components'
 import { classNames, styleNames, linkPage } from '@/utils'
-import { getBaseOuterStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const $instance = getCurrentInstance()
@@ -30,7 +30,7 @@ function WgtFilm(props) {
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
-    return getBaseOuterStyle(base)
+    return getGlobalBaseStyle(base.outerMargin)
   }, [base])
 
   // 计算视频尺寸

@@ -1,0 +1,106 @@
+$name: 'sp-search-one';
+
+.#{$name} {
+  display: flex;
+  align-items: center;
+  height: 64px;
+  width: 100%;
+  position: relative;
+
+  &.btn-show {
+    .#{$name}__input-wrap {
+      border-radius: 12px 0 0 12px;
+    }
+  }
+
+  &__input-wrap {
+    flex: 1;
+    height: 64px;
+    // background: #f8f8f8;
+    border-radius: 12px;
+    border: 1px solid #ebebeb;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    padding-left: 12px;
+    padding-right: 12px;
+    overflow: hidden;
+  }
+
+  &__icon {
+    font-size: 40px !important;
+    color: #999;
+    margin-right: 6px;
+  }
+
+  &__placeholder {
+    font-size: 28px;
+    color: #bfbfbf;
+    height: 100%;
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__swiper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  &__input {
+    flex: 1;
+    height: 100%;
+    font-size: 28px;
+    color: #333;
+    background-color: transparent;
+    text-align: left;
+    padding: 0 !important;
+    margin: 0 0 0 6px !important;
+    display: flex;
+    align-items: center;
+    .at-input__container {
+      width: 100%;
+    }
+    .at-input__input {
+      width: 100%;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  }
+  .placeholder-text {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    overflow: hidden;
+    .omit-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__close {
+    visibility: hidden;
+
+    &.focus {
+      visibility: visible;
+    }
+  }
+
+  &__search-btn {
+    width: 108px;
+    height: 64px;
+    background-color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 12px 12px 0;
+  }
+
+  &__search-text {
+    font-size: 26px;
+    color: #ffffff;
+  }
+}

@@ -8,7 +8,7 @@ import { View } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { linkPage, classNames, styleNames, isArray, getDistributorId } from '@/utils'
 import { needLoginPage, needLoginPageType } from '@/consts'
-import { getBaseOuterStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 function WgtImgHotZone(props) {
@@ -32,7 +32,7 @@ function WgtImgHotZone(props) {
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
-    const style = getBaseOuterStyle(base)
+    const style = getGlobalBaseStyle(base.outerMargin)
 
     // 纵向布局时，外层容器高度优先使用 base.imgHeight
     if (isVertical && base.imgHeight) {

@@ -19,7 +19,7 @@ import { SpHtml, SpLogin } from '@/components'
 import { useSelector } from 'react-redux'
 import api from '@/api'
 import doc from '@/doc'
-import { getBaseOuterStyle, getBaseInnerStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const $instance = getCurrentInstance()
@@ -60,33 +60,14 @@ function WgtCouponCard(props) {
     })
   }
 
-  // 获取外层样式（包含 outerMargin 和背景配置）
+  // 获取外层样式
   const outerStyle = useMemo(() => {
-    return getBaseOuterStyle(base)
-  }, [base])
+    return getGlobalBaseStyle(outerMargin)
+  }, [outerMargin])
 
-  // 获取内层样式（包含 innerPadding 和 innerBackground）
+  // 获取内层样式
   const innerStyle = useMemo(() => {
-    if (!innerPadding) return {}
-
-    // innerPadding 包含边距和背景配置，需要拆分为 innerPadding 和 innerBackground
-    const baseForInner = {
-      innerPadding: {
-        paddedt: innerPadding.paddedt,
-        paddedb: innerPadding.paddedb,
-        paddedl: innerPadding.paddedl,
-        paddedr: innerPadding.paddedr
-      },
-      innerBackground: {
-        type: innerPadding.bgType === 'color' ? 'solid' : innerPadding.bgType,
-        color: innerPadding.bgColor,
-        startColor: innerPadding.startColor,
-        endColor: innerPadding.endColor,
-        bgPic: innerPadding.bgPic // 添加 bgPic 字段，用于 pic 类型
-      }
-    }
-
-    return getBaseInnerStyle(baseForInner)
+    return getGlobalBaseStyle(innerPadding)
   }, [innerPadding])
   const receiveBtnStyle = useMemo(() => {
     const { color, textColor } = receiveBtn

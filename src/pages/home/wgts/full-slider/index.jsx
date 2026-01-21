@@ -11,7 +11,7 @@ import { classNames, styleNames, linkPage } from '@/utils'
 import { cloneDeep } from 'lodash'
 import { needLoginPageType, needLoginPage } from '@/consts'
 import { WgtsContext } from '../wgts-context'
-import { getBaseOuterStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const $instance = getCurrentInstance()
@@ -45,7 +45,7 @@ function WgtFullSlider(props) {
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
-    return getBaseOuterStyle(base)
+    return getGlobalBaseStyle(base.outerMargin)
   }, [base])
 
   // 初始化数据

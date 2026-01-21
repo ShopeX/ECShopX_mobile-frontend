@@ -9,7 +9,7 @@ import { SpImage, SpLogin } from '@/components'
 import { useImmer } from 'use-immer'
 import { classNames, styleNames, linkPage } from '@/utils'
 import { needLoginPageType, needLoginPage } from '@/consts'
-import { getBaseOuterStyle } from '../helper'
+import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const $instance = getCurrentInstance()
@@ -35,7 +35,7 @@ const Slider = (props) => {
 
   // 获取外层样式（包含 outerMargin）
   const outerStyle = useMemo(() => {
-    return getBaseOuterStyle(base)
+    return getGlobalBaseStyle(base.outerMargin)
   }, [base])
 
   useEffect(() => {
