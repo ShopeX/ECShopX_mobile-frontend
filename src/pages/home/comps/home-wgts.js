@@ -97,6 +97,8 @@ function HomeWgts(props) {
             {/** 热门排行榜 */}
             {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />}{' '}
             {/** 商品 */}
+            {item.name === 'classify' && <WgtClassify info={item} id={item.id || idx} />}{' '}
+            {/** 分类 */}
           </View>
         )
       })}

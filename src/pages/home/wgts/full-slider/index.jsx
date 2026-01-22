@@ -45,7 +45,7 @@ function WgtFullSlider(props) {
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
-    return getGlobalBaseStyle(base.outerMargin)
+    return getGlobalBaseStyle(base.outerMargin || {})
   }, [base])
 
   // 初始化数据
