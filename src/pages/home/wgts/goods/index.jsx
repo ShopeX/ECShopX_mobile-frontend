@@ -7,7 +7,7 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
-import { SpGoodsHeroCard, SpGoodsCompactCard } from '@/components/sp-render-goods'
+import GoodsLayout from '../goods-layout'
 import doc from '@/doc'
 import api from '@/api'
 import { getGlobalBaseStyle } from '../helper'
@@ -193,55 +193,16 @@ export default function WgtGoods(props) {
             ))}
           </View>
         )}
-        {/* grids 布局：一列网格 */}
-        {base.goodsLayout === 'one' && (
-          <View className='wgt-goods__one-list'>
-            {goodsList?.map((item, index) => (
-              <SpGoodsCompactCard
-                className={classNames({
-                  'mb-18': index != goodsList.length - 1
-                })}
-                key={item.item_id}
-                info={item}
-                onClick={() => handleClickItem(item, index + 1)}
-              />
-            ))}
-          </View>
-        )}
-        {/* grids 布局：二列网格 */}
-        {base.goodsLayout === 'two' && (
-          <View className='wgt-goods__two-list'>
-            <View className='wgt-goods__two-list-left'>
-              {goodsLeftList?.map((item, index) => (
-                <SpGoodsHeroCard
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => handleClickItem(item, index + 1)}
-                />
-              ))}
-            </View>
-            <View className='wgt-goods__two-list-right'>
-              {goodsRightList?.map((item, index) => (
-                <SpGoodsHeroCard
-                  key={item.item_id}
-                  info={item}
-                  onClick={() => handleClickItem(item, index + 1)}
-                />
-              ))}
-            </View>
-          </View>
-        )}
-        {/* grids 布局：三列网格 */}
-        {base.goodsLayout === 'three' && (
-          <View className='wgt-goods__three-list'>
-            {goodsList?.map((item, index) => (
-              <SpGoodsHeroCard
-                key={item.item_id}
-                info={item}
-                onClick={() => handleClickItem(item, index + 1)}
-              />
-            ))}
-          </View>
+        {/* grids 布局 */}
+        {['one', 'two', 'three'].includes(base.goodsLayout) && (
+          <GoodsLayout
+            layout={base.goodsLayout}
+            goodsList={goodsList}
+            goodsLeftList={goodsLeftList}
+            goodsRightList={goodsRightList}
+            onClickItem={handleClickItem}
+            classNamePrefix='wgt-goods'
+          />
         )}
       </View>
     </View>
