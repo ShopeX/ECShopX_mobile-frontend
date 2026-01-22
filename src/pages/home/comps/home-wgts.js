@@ -19,7 +19,8 @@ import {
   WgtCouponCard,
   WgtSpeedkill,
   WgtGroup,
-  WgtHotranking
+  WgtHotranking,
+  WgtGoods
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -94,6 +95,8 @@ function HomeWgts(props) {
             {/** 拼团 */}
             {item.name === 'hotranking' && <WgtHotranking info={item} id={item.id || idx} />}{' '}
             {/** 热门排行榜 */}
+            {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />}{' '}
+            {/** 商品 */}
           </View>
         )
       })}
