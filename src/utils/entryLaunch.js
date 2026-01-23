@@ -14,7 +14,6 @@ import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
 
-const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
 const $instance = getCurrentInstance()
 const { store } = configStore()
 class EntryLaunch {
@@ -265,28 +264,28 @@ class EntryLaunch {
   }
 
   /**
-   * @function 根据地址解析经纬度--腾讯
+   * @function 根据地址解析经纬度
    */
   async getLnglatByAddress(address) {
-    const res = await Taro.request({
-      url: `${geocodeUrl}`,
-      data: {
-        key: process.env.APP_MAP_KEY,
-        address,
-        output: 'json'
+    try {
+      const res = await api.wx.getAreaByAddress({ address })
+      if (res && res.status === 0) {
+        const { result } = res
+        return {
+          address: result.title,
+          province: result.address_components.province,
+          city: result.address_components.city,
+          district: result.address_components.district,
+          lng: result.location.lng,
+          lat: result.location.lat
+        }
+      } else {
+        return {
+          error: '地址解析错误'
+        }
       }
-    })
-    if (res.data.status === 0) {
-      const { result } = res.data
-      return {
-        address: result.title,
-        province: result.address_components.province,
-        city: result.address_components.city,
-        district: result.address_components.district,
-        lng: result.location.lng,
-        lat: result.location.lat
-      }
-    } else {
+    } catch (error) {
+      console.error('getLnglatByAddress error:', error)
       return {
         error: '地址解析错误'
       }
@@ -310,31 +309,31 @@ class EntryLaunch {
   }
 
   /**
-   * @function 根据经纬度解析地址 -- 腾讯
-   * @params lnglat Array
+   * @function 根据经纬度解析地址
+   * @params lng Number 经度
+   * @params lat Number 纬度
    */
   async getAddressByLnglatWebAPI(lng, lat) {
-    const res = await Taro.request({
-      url: `${geocodeUrl}`,
-      data: {
-        key: process.env.APP_MAP_KEY,
-        location: `${lat},${lng}`
+    try {
+      const res = await api.wx.getAreaByLnglat({ lng, lat })
+      console.log('getAddressByLnglatWebAPI res:', res)
+      if (res && res.address) {
+        const { address_component: { province, city, district }, address } = res
+        return {
+          lng,
+          lat,
+          address,
+          province,
+          city: isArray(city) ? province : city,
+          district
+        }
+      } else {
+        return {
+          error: '地址解析错误'
+        }
       }
-    })
-    if (res.data.status == 0) {
-      const {
-        address,
-        address_component: { province, city, district }
-      } = res.data.result
-      return {
-        lng,
-        lat,
-        address: address,
-        province: province,
-        city: isArray(city) ? province : city,
-        district: district
-      }
-    } else {
+    } catch (error) {
+      console.error('getAddressByLnglatWebAPI error:', error)
       return {
         error: '地址解析错误'
       }

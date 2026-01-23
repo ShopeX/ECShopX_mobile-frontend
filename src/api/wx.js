@@ -157,3 +157,13 @@ export function getWxAuth(params) {
 export function getIsNew(params) {
   return req.post(`/member/is_new`, params)
 }
+
+// 根据地址解析经纬度
+export function getAreaByAddress(params) {
+  return req.get(`/distributor/getAreaByAddress`, params)
+}
+
+// 根据经纬度解析地址
+export function getAreaByLnglat(params) {
+  return req.get(`/distributor/getAreaByJwd`, params)
+}
