@@ -1,0 +1,59 @@
+.wgt-comps {
+    &__nav {
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        background-color: #ffffff;
+        z-index: 9999;
+        &-area {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          box-sizing: border-box;
+        }
+    
+        &-left-img,
+        &-right-img {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+    
+        &-scroll {
+          flex: 1;
+          overflow: hidden;
+        }
+    
+        &-list {
+          display: flex;
+          align-items: center;
+          white-space: nowrap;
+        }
+    
+        &-item {
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-sizing: border-box;
+          cursor: pointer;
+          transition: all 0.3s ease;
+    
+          &-text {
+            font-size: 28px;
+            white-space: nowrap;
+          }
+    
+          &-img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+    
+          &--active {
+            font-weight: 600;
+          }
+        }
+      }
+}

@@ -83,7 +83,9 @@ const initialState = {
   footerHeight: 0,
   distributor_id: null,
   backTopScrollTop: -1,
-  bodyHeight: 0
+  bodyHeight: 0,
+  scrollIntoView: '',
+  navBarHeight: 0
 }
 
 function Home() {
@@ -120,7 +122,8 @@ function Home() {
     footerHeight,
     distributor_id,
     backTopScrollTop,
-    bodyHeight
+    bodyHeight,
+    navBarHeight
   } = state
 
   const dispatch = useDispatch()
@@ -312,9 +315,10 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height }) => {
+      onReady={({ height, gNavbarH }) => {
         setState((draft) => {
           draft.bodyHeight = height
+          draft.navBarHeight = gNavbarH
         })
       }}
     >
@@ -324,6 +328,7 @@ function Home() {
         onScroll={(e) => {
           pageRef.current.handlePageScroll(e?.detail)
         }}
+        scrollIntoView={state.scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
@@ -343,8 +348,14 @@ function Home() {
                   onAddToCart,
                   isTab: true,
                   immersive: pageData?.base?.isImmersive,
+                  navBarHeight: state.navBarHeight,
                   isShowHomeHeader: isShowHomeHeader && isWeixin,
-                  footerHeight: state.footerHeight
+                  footerHeight: state.footerHeight,
+                  setScrollIntoView: (view) => {
+                    setState((draft) => {
+                      draft.scrollIntoView = view
+                    })
+                  }
                 }}
               >
                 <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>

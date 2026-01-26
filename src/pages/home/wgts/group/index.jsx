@@ -7,11 +7,11 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
-import GoodsLayout from '../goods-layout'
 import doc from '@/doc'
 import api from '@/api'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
+import GoodsLayout from '../goods-layout'
 import './index.scss'
 
 export default function WgtGroup(props) {
