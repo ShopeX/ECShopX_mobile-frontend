@@ -116,7 +116,6 @@ function withPageWrapper(Component) {
                 return nextRule()
               }
             }
-            debugger
             if (shopInfo?.distributor_id) {
               // 如果缓存中存在店铺，需校验当前店铺是否在白名单中
               await checkStoreWhiteList(shopInfo?.distributor_id)
