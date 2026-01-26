@@ -93,7 +93,7 @@ function CompGoodsBuyToolbar(props) {
 
   const onChangeLogin = async ({ key }) => {
     const { dtid, card_id, user_card_id } = $instance.router.params
-   if (key == 'exchange') {
+    if (key == 'exchange') {
       const { itemId } = info
       const { status } = await api.cart.exchangeGood({
         item_id: itemId,
