@@ -500,7 +500,6 @@ function MemberIndex(props) {
                 )}
               </View>
 
-
               {isLogin && (
                 <View className='qr-code-btn'>
                   <SpImage

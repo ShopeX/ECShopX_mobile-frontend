@@ -32,7 +32,10 @@ function SpTabbar() {
       const currentIndex = tabList?.findIndex((tab) => {
         if (currentPage == '/pages/custom/custom-page') {
           console.log('customPageId', customPageId, tab.customPageId, tab?.customPage?.id)
-          return (tab.customPageId || tab?.customPage?.id) && (customPageId == tab.customPageId || customPageId == tab?.customPage?.id)
+          return (
+            (tab.customPageId || tab?.customPage?.id) &&
+            (customPageId == tab.customPageId || customPageId == tab?.customPage?.id)
+          )
         } else {
           if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]]) {
             return (

@@ -382,7 +382,7 @@ function CompsCategoryAddCart(props) {
       className={classNames('page-category-index-old')}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
-      onReady={({ footerHeight,height }) => {
+      onReady={({ footerHeight, height }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
           draft.bodyHeight = height
@@ -390,57 +390,57 @@ function CompsCategoryAddCart(props) {
       }}
     >
       <View className='container-content' style={{ height: state.bodyHeight }}>
-      <View className='container-hd'>
-        <View className='category-search'>
-          <SpCategorySearch onConfirm={handleConfirm} />
-        </View>
-        <CompFirstCategory
-          cusIndex={categoryFirstIndex}
-          list={seriesList}
-          onClick={onFirstCategoryClick}
-        />
-      </View>
-      <View className='container-bd'>
-        <View className='left-container'>
-          <CompSecondCategory
-            cusIndex={categorySecondIndex}
-            list={secondList}
-            onClick={onSecondCategoryClick}
+        <View className='container-hd'>
+          <View className='category-search'>
+            <SpCategorySearch onConfirm={handleConfirm} />
+          </View>
+          <CompFirstCategory
+            cusIndex={categoryFirstIndex}
+            list={seriesList}
+            onClick={onFirstCategoryClick}
           />
         </View>
+        <View className='container-bd'>
+          <View className='left-container'>
+            <CompSecondCategory
+              cusIndex={categorySecondIndex}
+              list={secondList}
+              onClick={onSecondCategoryClick}
+            />
+          </View>
 
-        <View
-          className='right-container'
-          style={styleNames({
-            paddingTop: thirdList.length == 0 && '0px'
-          })}
-        >
-          {thirdList.length > 0 && (
-            <View className='right-container-fixed'>
-              <CompThirdCategory
-                cusIndex={categoryThirdIndex}
-                list={thirdList}
-                onClick={onThirdCategoryClick}
-                typeIndex={cusIndex}
-              />
-            </View>
-          )}
-          <ScrollView className='goods-list-container' scrollY>
-            <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
-              {allList.map((item, index) => (
-                <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <CompGoodsItem
-                    onStoreClick={handleClickStore}
-                    onAddToCart={handleAddToCart}
-                    hideStore
-                    info={item}
-                  />
-                </View>
-              ))}
-            </SpScrollView>
-          </ScrollView>
+          <View
+            className='right-container'
+            style={styleNames({
+              paddingTop: thirdList.length == 0 && '0px'
+            })}
+          >
+            {thirdList.length > 0 && (
+              <View className='right-container-fixed'>
+                <CompThirdCategory
+                  cusIndex={categoryThirdIndex}
+                  list={thirdList}
+                  onClick={onThirdCategoryClick}
+                  typeIndex={cusIndex}
+                />
+              </View>
+            )}
+            <ScrollView className='goods-list-container' scrollY>
+              <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
+                {allList.map((item, index) => (
+                  <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
+                    <CompGoodsItem
+                      onStoreClick={handleClickStore}
+                      onAddToCart={handleAddToCart}
+                      hideStore
+                      info={item}
+                    />
+                  </View>
+                ))}
+              </SpScrollView>
+            </ScrollView>
+          </View>
         </View>
-      </View>
       </View>
       {/* Sku选择器 */}
       <MSpSkuSelect
