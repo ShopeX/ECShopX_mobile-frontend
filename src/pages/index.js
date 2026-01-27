@@ -85,7 +85,8 @@ const initialState = {
   backTopScrollTop: -1,
   bodyHeight: 0,
   scrollIntoView: '',
-  navBarHeight: 0
+  navBarHeight: 0,
+  scrollTop: 0
 }
 
 function Home() {
@@ -326,7 +327,11 @@ function Home() {
         scrollY
         scrollTop={state.backTopScrollTop}
         onScroll={(e) => {
+          console.log('onScroll', e?.detail)
           pageRef.current.handlePageScroll(e?.detail)
+          setState((draft) => {
+            draft.scrollTop = e?.detail?.scrollTop
+          })
         }}
         scrollIntoView={state.scrollIntoView}
         style={{ height: state.bodyHeight }}
@@ -351,6 +356,7 @@ function Home() {
                   navBarHeight: state.navBarHeight,
                   isShowHomeHeader: isShowHomeHeader && isWeixin,
                   footerHeight: state.footerHeight,
+                  scrollTop: state.scrollTop,
                   setScrollIntoView: (view) => {
                     setState((draft) => {
                       draft.scrollIntoView = view

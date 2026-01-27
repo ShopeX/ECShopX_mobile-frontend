@@ -19,7 +19,6 @@ import './index.scss'
  * @param {Object} props.navStyle - 导航栏样式
  * @param {Object} props.navItemAreaStyle - 导航项区域样式
  * @param {Function} props.getNavItemStyle - 获取导航项样式的函数
- * @param {string} props.classNamePrefix - CSS类名前缀，如 'wgt-location-module'
  * @param {string} props.animate - 动画方向：'horizontal' | 'vertical'
  */
 export default function LocationModuleNavBar(props) {
@@ -31,19 +30,17 @@ export default function LocationModuleNavBar(props) {
     navStyle,
     navItemAreaStyle,
     getNavItemStyle,
-    classNamePrefix = 'wgt-location-module',
-    animate = 'horizontal'
+    id = ''
   } = props
 
-  const isVertical = animate === 'vertical'
 
   return (
-    <View className='wgt-comps__nav' style={styleNames(navStyle)}>
+    <View className='wgt-comps__nav' id={id} style={styleNames(navStyle)}>
       {/* 导航项区域 */}
       <View className='wgt-comps__nav-area' style={styleNames(navItemAreaStyle)}>
         {/* 左侧/顶部图片 */}
         {base.leftimgUrl && (
-          <View className={`wgt-comps__nav-${isVertical ? 'top' : 'left'}-img`}>
+          <View className='wgt-comps__nav-left-img'>
             <SpImage src={base.leftimgUrl} />
           </View>
         )}
@@ -51,8 +48,7 @@ export default function LocationModuleNavBar(props) {
         {/* 导航项列表 */}
         <ScrollView 
           className='wgt-comps__nav-scroll'
-          scrollX={!isVertical}
-          scrollY={isVertical}
+          scrollX
           scrollWithAnimation
         >
           <View 
@@ -71,7 +67,7 @@ export default function LocationModuleNavBar(props) {
                 <View
                   key={`nav-item-${index}`}
                   className={classNames(`wgt-comps__nav-item`, {
-                    [`${classNamePrefix}__nav-item--active`]: isActive
+                    [`wgt-comps__nav-item--active`]: isActive
                   })}
                   style={styleNames(getNavItemStyle(item, isActive))}
                   onClick={() => onNavClick(index)}
@@ -94,7 +90,7 @@ export default function LocationModuleNavBar(props) {
 
         {/* 右侧/底部图片 */}
         {base.rightimgUrl && (
-          <View className={`wgt-comps__nav-${isVertical ? 'bottom' : 'right'}-img`}>
+          <View className='wgt-comps__nav-right-img'>
             <SpImage src={base.rightimgUrl} />
           </View>
         )}

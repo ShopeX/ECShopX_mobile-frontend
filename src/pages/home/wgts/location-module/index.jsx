@@ -2,10 +2,11 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useMemo, useContext } from 'react'
+import React, { useState, useMemo, useContext, useRef, useEffect, useCallback, useLayoutEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { classNames } from '@/utils'
+import { classNames, pxToRpx, getElementRectBox } from '@/utils'
+import throttle from 'lodash/throttle'
 import { getGlobalBaseStyle } from '../helper'
 import LocationModuleNavBar from '../comps/nav-bar'
 import {
@@ -25,10 +26,12 @@ import {
 import './index.scss'
 import { WgtsContext } from '../wgts-context'
 
+
 export default function WgtLocationModule(props) {
   const { info, id } = props
-  const { setScrollIntoView, immersive, navBarHeight } = useContext(WgtsContext)
+  const { setScrollIntoView, immersive, navBarHeight, scrollTop } = useContext(WgtsContext)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const isClickTab = useRef(false)
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
@@ -55,34 +58,104 @@ export default function WgtLocationModule(props) {
   // 获取导航项样式
   const getNavItemStyle = (item, isActive) => {
     const textColor = isActive
-      ? item.navitemactivecolor || '#1A1A1A'
-      : item.navitemcolor || '#666666'
+      ? item.navitemactivecolor
+      : item.navitemcolor
 
     return {
       height: Taro.pxTransform(base.navitemheight || 40),
       color: textColor,
-      border: base.navitemborder ? `1px solid ${base.navitembordercolor || '#ffffff'}` : 'none',
+      border: base.navitemborder ? `1px solid ${base.navitembordercolor || 'transparent'}` : 'none',
       borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
     }
   }
 
   // 处理导航项点击
   const handleNavClick = (index) => {
+    isClickTab.current = true
     setCurrentIndex(index)
     setScrollIntoView(`#content-section-${index}-${id}`)
+    setTimeout(() => {
+      isClickTab.current = false
+    }, 500)
   }
 
   if (!info || !navList || navList.length === 0) {
     return null
   }
 
-  // 收集所有导航项的 children
-  const allChildren = navList.reduce((acc, item) => {
-    if (item.children && item.children.length > 0) {
-      acc.push(...item.children)
+  const handleScrollUpdate = useCallback(async () => {
+    try {
+      // 如果是点击触发的滚动，不更新 index
+      if (isClickTab.current) {
+        return
+      }
+      console.log('scrollTop', scrollTop)
+      const viewportTop = calculateNavBarHeight
+      // 获取所有内容区域的位置信息
+      const positions = await Promise.all(
+        navList.map(async (_, index) => {
+          try {
+            const rect = await getElementRectBox(`#content-section-${index}-${id}`)
+            return { ...rect, index } // 保存原始索引
+          } catch (err) {
+            console.error('获取元素位置失败', err)
+            return null
+          }
+        })
+      )
+
+      // 过滤掉无效的位置信息并按照位置排序
+      const validPositions = positions.filter((pos) => pos !== null).sort((a, b) => a.top - b.top)
+
+      if (validPositions.length === 0) return
+
+      // 找到最接近导航栏下方的元素
+      let targetIndex = -1
+      let minDistance = Infinity
+
+      validPositions.forEach((pos) => {
+        const elementTop = pos.top
+        const elementBottom = pos.bottom
+
+        // 计算元素与导航栏下方的距离
+        let distance
+
+        if (elementTop <= viewportTop && elementBottom > viewportTop) {
+          // 元素跨越导航栏位置，优先选择
+          distance = 0
+        } else if (elementBottom <= viewportTop) {
+          // 元素在导航栏上方
+          distance = viewportTop - elementBottom
+        } else {
+          // 元素在导航栏下方
+          distance = elementTop - viewportTop
+        }
+
+        // 更新最小距离
+        if (distance < minDistance) {
+          minDistance = distance
+          targetIndex = pos.index
+        }
+      })
+
+
+      // 只在找到有效索引且不是当前索引时更新
+      if (targetIndex >= 0 && targetIndex !== currentIndex && targetIndex < navList.length) {
+      setCurrentIndex(targetIndex)
+      }
+    } catch (error) {
+      console.error('获取元素位置失败', error)
     }
-    return acc
-  }, [])
+  }, [calculateNavBarHeight, data, currentIndex])
+
+  // 创建节流函数 - 优化滚动性能
+  const throttledScrollUpdate = useMemo(() => {
+    return throttle(handleScrollUpdate, 350)
+  }, [handleScrollUpdate])
+
+  useLayoutEffect(() => {
+    throttledScrollUpdate()
+  }, [scrollTop])
 
   // 计算 LocationModuleNavBar 的高度（单位：rpx）
   // 注意：此函数不包含图片高度，图片高度需要动态获取
@@ -99,17 +172,16 @@ export default function WgtLocationModule(props) {
 
     const navItemHeight = base.navitemheight
 
-    const totalHeight =
+    const totalHeight =pxToRpx(
       outerPaddingTop +
       outerPaddingBottom +
       navAreaPaddingTop +
       navAreaPaddingBottom +
-      navItemHeight
-
+      navItemHeight)
     if (immersive) {
-      return `calc(-${totalHeight}rpx - ${navBarHeight}px)`
+      return pxToRpx(navBarHeight)+totalHeight
     }
-    return `-${totalHeight}rpx`
+    return totalHeight
   }, [base, immersive, navBarHeight])
 
   // 打印计算结果（用于调试）
@@ -127,8 +199,7 @@ export default function WgtLocationModule(props) {
           navStyle={navStyle}
           navItemAreaStyle={navItemAreaStyle}
           getNavItemStyle={getNavItemStyle}
-          classNamePrefix='wgt-location-module'
-          animate='vertical'
+          id={`wgt-comps__nav_${id}`}
         />
 
         {/* 内容区域 - 显示所有导航项的 children */}
@@ -139,7 +210,7 @@ export default function WgtLocationModule(props) {
                 <View key={index} className='wgt-location-module__content-section'>
                   <View
                     className='wgt-location-module__content-section-line'
-                    style={{ top: `${calculateNavBarHeight}` }}
+                    style={{ top: `-${calculateNavBarHeight}rpx` }}
                     id={`content-section-${index}-${id}`}
                   />
                   {item.children.length > 0 &&
