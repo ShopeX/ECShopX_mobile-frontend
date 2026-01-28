@@ -881,6 +881,11 @@ export const pxToRpx = (px) => {
   return parseInt((screenWidth * px) / 375)
 }
 
+export const rpxToPx = (rpx) => {
+  const { windowWidth } = Taro.getSystemInfoSync()
+  return parseInt(rpx * (windowWidth / 750))
+}
+
 export const pxToUnitRpx = (px) => {
   return Taro.pxTransform(px * 2)
 }
@@ -910,6 +915,23 @@ const getMobAppExtraData = () => {
   return {
     ucd: aioucd
   }
+}
+
+export const getElementRectBox = (eid) => {
+  return new Promise((resolve, reject) => {
+    const query = Taro.createSelectorQuery()
+    query.select(eid).boundingClientRect()
+    setTimeout(() => {
+      try {
+        query.exec((res) => {
+          const [rectBox = {}] = res
+          resolve(rectBox)
+        })
+      } catch (error) {
+        reject(err)
+      }
+    }, 100)
+  })
 }
 
 export {

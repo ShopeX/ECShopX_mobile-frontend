@@ -83,7 +83,10 @@ const initialState = {
   footerHeight: 0,
   distributor_id: null,
   backTopScrollTop: -1,
-  bodyHeight: 0
+  bodyHeight: 0,
+  scrollIntoView: '',
+  navBarHeight: 0,
+  scrollTop: 0
 }
 
 function Home() {
@@ -120,7 +123,8 @@ function Home() {
     footerHeight,
     distributor_id,
     backTopScrollTop,
-    bodyHeight
+    bodyHeight,
+    navBarHeight
   } = state
 
   const dispatch = useDispatch()
@@ -312,9 +316,10 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height }) => {
+      onReady={({ height, gNavbarH }) => {
         setState((draft) => {
           draft.bodyHeight = height
+          draft.navBarHeight = gNavbarH
         })
       }}
     >
@@ -322,8 +327,13 @@ function Home() {
         scrollY
         scrollTop={state.backTopScrollTop}
         onScroll={(e) => {
+          console.log('onScroll', e?.detail)
           pageRef.current.handlePageScroll(e?.detail)
+          setState((draft) => {
+            draft.scrollTop = e?.detail?.scrollTop
+          })
         }}
+        scrollIntoView={state.scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
@@ -343,8 +353,15 @@ function Home() {
                   onAddToCart,
                   isTab: true,
                   immersive: pageData?.base?.isImmersive,
+                  navBarHeight: state.navBarHeight,
                   isShowHomeHeader: isShowHomeHeader && isWeixin,
-                  footerHeight: state.footerHeight
+                  footerHeight: state.footerHeight,
+                  scrollTop: state.scrollTop,
+                  setScrollIntoView: (view) => {
+                    setState((draft) => {
+                      draft.scrollIntoView = view
+                    })
+                  }
                 }}
               >
                 <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>

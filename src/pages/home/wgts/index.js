@@ -38,5 +38,7 @@ export { default as WgtClassify } from './classify/index'
 export { default as WgtSpeedkill } from './speedkill/index'
 export { default as WgtGroup } from './group/index'
 export { default as WgtHotranking } from './hotranking/index'
+export { default as WgtLocationModule } from './location-module/index'
+export { default as WgtContentPartition } from './content-partition/index'
 
 export { WgtCoupon, WgtNearbyShop, WgtCouponCard }

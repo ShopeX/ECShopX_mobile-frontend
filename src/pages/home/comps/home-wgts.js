@@ -20,7 +20,9 @@ import {
   WgtSpeedkill,
   WgtGroup,
   WgtHotranking,
-  WgtGoods
+  WgtGoods,
+  WgtLocationModule,
+  WgtContentPartition
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -32,6 +34,8 @@ function HomeWgts(props) {
   const { wgts, dtid, onLoad = () => {}, children, copywriting = false } = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
+
+  console.log(wgts, 'wgts')
   // const wgtsRef = useRef()
 
   // useEffect(() => {
@@ -81,7 +85,7 @@ function HomeWgts(props) {
             data-name={item.name}
           >
             {item.name === 'slider' && <WgtSlider info={item} />} {/** 轮播 */}
-            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />}{' '}
+            {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={item.id || idx} />}
             {/** 热区 */}
             {item.name === 'film' && <WgtFilm info={item} />} {/** 视频 */}
             {item.name === 'marquees' && <WgtMarquees info={item} />} {/** 跑马灯 */}
@@ -97,6 +101,14 @@ function HomeWgts(props) {
             {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />} {/** 商品 */}
             {item.name === 'classify' && <WgtClassify info={item} id={item.id || idx} />}{' '}
             {/** 分类 */}
+            {item.name === 'locationModule' && (
+              <WgtLocationModule info={item} id={item.id || idx} />
+            )}
+            {/** */}
+            {item.name === 'contentPartition' && (
+              <WgtContentPartition info={item} id={item.id || idx} />
+            )}
+            {/** */}
           </View>
         )
       })}
