@@ -49,10 +49,10 @@ export default function WgtSpeedkill(props) {
       try {
         const distributorId = getDistributorId()
         const _data = await api.seckill.getWidgetItems({
-            data_type: 'seckill',
-            data_value: data.id || '',
-            data_count: base.dataCount,
-            distributor_id: distributorId || '',
+          data_type: 'seckill',
+          data_value: data.id || '',
+          data_count: base.dataCount,
+          distributor_id: distributorId || ''
         })
         console.log(_data, 'data-getWidgetItems')
         // 如果 items 已经有数据，直接使用
@@ -76,8 +76,6 @@ export default function WgtSpeedkill(props) {
 
     fetchSeckillGoods()
   }, [data.id, base.dataCount])
-
-
 
   // TODO 获取秒杀信息待定
   const getSeckillInfo = (list) => {
@@ -302,13 +300,13 @@ export default function WgtSpeedkill(props) {
               {/* grids 布局：三列网格 */}
               {base.goodsLayout === 'three' && (
                 <View className='wgt-speedkill__three-list'>
-                    {goodsList?.map((item, index) => (
-                      <SpGoodsHeroCard
-                        key={item.item_id}
-                        info={item}
-                        onClick={() => handleClickItem(item, index + 1)}
-                      />
-                    ))}
+                  {goodsList?.map((item, index) => (
+                    <SpGoodsHeroCard
+                      key={item.item_id}
+                      info={item}
+                      onClick={() => handleClickItem(item, index + 1)}
+                    />
+                  ))}
                 </View>
               )}
             </>

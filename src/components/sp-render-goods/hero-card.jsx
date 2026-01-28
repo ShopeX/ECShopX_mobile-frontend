@@ -17,7 +17,7 @@ function SpGoodsHeroCard(props) {
       onClick(info)
       return
     }
-    let query = { id: itemId, dtid: distributorId??''}
+    let query = { id: itemId, dtid: distributorId ?? '' }
     const url = `/pages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
       url

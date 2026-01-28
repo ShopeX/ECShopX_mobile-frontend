@@ -26,7 +26,6 @@ export default function WgtGroup(props) {
   const base = params.base || {}
   const data = params.data || {}
 
-
   const { onAddToCart } = useContext(WgtsContext)
 
   // 获取外层样式（包含 outerMargin 和背景配置）

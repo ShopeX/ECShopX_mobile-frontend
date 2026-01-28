@@ -91,12 +91,10 @@ function HomeWgts(props) {
             {/** 优惠券卡片 */}
             {item.name === 'speedkill' && <WgtSpeedkill info={item} id={item.id || idx} />}{' '}
             {/** 秒杀 */}
-            {item.name === 'group' && <WgtGroup info={item} id={item.id || idx} />}{' '}
-            {/** 拼团 */}
+            {item.name === 'group' && <WgtGroup info={item} id={item.id || idx} />} {/** 拼团 */}
             {item.name === 'hotranking' && <WgtHotranking info={item} id={item.id || idx} />}{' '}
             {/** 热门排行榜 */}
-            {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />}{' '}
-            {/** 商品 */}
+            {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />} {/** 商品 */}
             {item.name === 'classify' && <WgtClassify info={item} id={item.id || idx} />}{' '}
             {/** 分类 */}
           </View>

@@ -44,7 +44,7 @@ export default function WgtGoods(props) {
       setLoading(true)
       try {
         const distributorId = getDistributorId()
-        
+
         // 根据 dataType 确定 data_type
         const dataType = base.dataType
         let dataValue = data?.id || ''
@@ -57,11 +57,11 @@ export default function WgtGoods(props) {
           data_count: base.dataCount,
           distributor_id: distributorId || ''
         })
-        
+
         // 如果 items 已经有数据，直接使用
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
-          console.log(goods, 'goods',base)
+          console.log(goods, 'goods', base)
           setGoodsList(goods.slice(0, base.dataCount))
           if (base.goodsLayout === 'two') {
             const _itemListLeft = goods.filter((item, index) => index % 2 == 0)

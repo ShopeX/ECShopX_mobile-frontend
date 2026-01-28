@@ -8,7 +8,6 @@ import { classNames, styleNames } from '@/utils'
 
 import './compact-card.scss'
 
-
 function SpGoodsCompactCard(props) {
   const {
     info = null,
@@ -17,8 +16,8 @@ function SpGoodsCompactCard(props) {
     top,
     showTop,
     onClickGio = () => {},
-    onChangeRegionauth=()=>{}  } = props
-
+    onChangeRegionauth = () => {}
+  } = props
 
   const handleClick = () => {
     if (!info) return
@@ -36,7 +35,7 @@ function SpGoodsCompactCard(props) {
       }
     }
     const url = `/pages/item/espier-detail?${qs.stringify(query)}`
-     onChangeRegionauth(info)
+    onChangeRegionauth(info)
     Taro.navigateTo({
       url
     })
@@ -117,16 +116,17 @@ function SpGoodsCompactCard(props) {
           <View className='price-wrapper'>
             <SpPrice size={34} value={finalPrice} style={{ marginRight: '6px' }} weight={600} />
 
-            {Number(info.marketPrice||0) > 0 && Number(finalPrice||0) < Number(info.marketPrice||0) && (
-              <SpPrice
-                size={24}
-                noSymbol
-                // noDecimal
-                className='market-price'
-                lineThrough
-                value={info.marketPrice}
-              />
-            )}
+            {Number(info.marketPrice || 0) > 0 &&
+              Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+                <SpPrice
+                  size={24}
+                  noSymbol
+                  // noDecimal
+                  className='market-price'
+                  lineThrough
+                  value={info.marketPrice}
+                />
+              )}
           </View>
 
           {info.discountRate && (

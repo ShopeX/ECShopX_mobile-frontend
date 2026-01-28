@@ -8,7 +8,6 @@ import { classNames } from '@/utils'
 
 import './grid-card.scss'
 
-
 function SpGoodsGridCard(props) {
   const { info = null, onClick, mode = 'aspectFill' } = props
   const handleClick = () => {
@@ -29,11 +28,9 @@ function SpGoodsGridCard(props) {
 
     const url = `/pages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
-        url
-      })
+      url
+    })
   }
-
-
 
   if (!info) {
     return null
@@ -55,7 +52,7 @@ function SpGoodsGridCard(props) {
           style={{ width: '100%', height: '100%' }}
           placeholderColor='#f2f3f5'
         />
-      {info.store <= 0 && (
+        {info.store <= 0 && (
           <View className='soldout-mask'>
             <View className='soldout-mask-text'>
               <Text>已售罄</Text>
@@ -83,32 +80,40 @@ function SpGoodsGridCard(props) {
           {info.itemName}
         </View>
 
-        {(info.promotion?.length > 0 || info?.couponList?.length > 0) && <View id={`${props.id}-tag-wrapper`} className='tag-wrapper flex align-center'>
-          {info.promotion?.map((tag, index) => (
-            <SpTag className='tag-wrapper__tag' key={index} label={tag.tag_name} type={tag.type} />
-          ))}
-          {info?.couponList?.map((coupon, index) => (
-            <SpTag
-              className='tag-wrapper__tag'
-              key={index}
-              label={coupon.discount_rule}
-              type='warning'
-            />
-          ))}
-        </View>}
+        {(info.promotion?.length > 0 || info?.couponList?.length > 0) && (
+          <View id={`${props.id}-tag-wrapper`} className='tag-wrapper flex align-center'>
+            {info.promotion?.map((tag, index) => (
+              <SpTag
+                className='tag-wrapper__tag'
+                key={index}
+                label={tag.tag_name}
+                type={tag.type}
+              />
+            ))}
+            {info?.couponList?.map((coupon, index) => (
+              <SpTag
+                className='tag-wrapper__tag'
+                key={index}
+                label={coupon.discount_rule}
+                type='warning'
+              />
+            ))}
+          </View>
+        )}
 
         <View className='sp-goods-grid-card__price'>
           <View className='price-wrapper'>
             <SpPrice size={30} value={finalPrice} style={{ marginRight: '6px' }} weight={600} />
-            {Number(info.marketPrice||0) > 0 && Number(finalPrice||0) < Number(info.marketPrice||0) && (
-              <SpPrice
-                size={22}
-                noSymbol
-                className='market-price'
-                lineThrough
-                value={info.marketPrice}
-              />
-            )}
+            {Number(info.marketPrice || 0) > 0 &&
+              Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+                <SpPrice
+                  size={22}
+                  noSymbol
+                  className='market-price'
+                  lineThrough
+                  value={info.marketPrice}
+                />
+              )}
           </View>
         </View>
       </View>

@@ -13,12 +13,12 @@ import './index.scss'
 
 function WgtClassify(props) {
   const { info, id } = props
-  
+
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
   const base = params.base || {}
   const data = params.data || {}
-  
+
   const [list, setList] = useState([])
   const { dataType, animate } = base
 

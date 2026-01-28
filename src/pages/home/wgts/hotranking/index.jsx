@@ -169,7 +169,9 @@ export default function WgtHotranking(props) {
                   {index < 3 && (
                     <View
                       className={classNames('wgt-hotranking__activity-item-rank-tag', {
-                        [`wgt-hotranking__activity-item-rank-tag__${index === 0 ? 'one' : index === 1 ? 'two' : 'three'}`]: true
+                        [`wgt-hotranking__activity-item-rank-tag__${
+                          index === 0 ? 'one' : index === 1 ? 'two' : 'three'
+                        }`]: true
                       })}
                     >
                       <Text>{index + 1}</Text>
