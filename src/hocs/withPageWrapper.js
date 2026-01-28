@@ -22,7 +22,7 @@ function withPageWrapper(Component) {
     const { initState, entryStoreRules, entryStoreByLBS, entryDefalutStore, guidderTemplateId } =
       useSelector((state) => state.sys)
     const { shopInfo } = useSelector((state) => state.shop)
-    const { location } = useSelector((state) => state.user)
+    const { location, userInfo } = useSelector((state) => state.user)
 
     const { showModal } = useModal()
     const { showLoinModal } = useModalLogin()
@@ -42,7 +42,7 @@ function withPageWrapper(Component) {
           resolveInStoreRule()
         }, 1000)
       }
-    }, [shopInfo])
+    }, [shopInfo, userInfo])
 
     const resolveInStoreRule = async () => {
       // 启动时（冷启动+热启动）执行云店进店规则
