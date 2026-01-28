@@ -903,14 +903,11 @@ export function buildSharePath(from_scene, params = {}) {
 
 const getMobAppExtraData = () => {
   const store = configStore()
-  const { regionauth } = store.getState()
-  const { regionauthInfo } = regionauth || {}
-  const code = regionauthInfo?.regionauth_code
+
   const token = S.getAuthToken()
   const userInfo = token ? tokenParse(token) : {}
   const aioucd = userInfo?.user_card_code
   return {
-    crmcode: code,
     ucd: aioucd
   }
 }

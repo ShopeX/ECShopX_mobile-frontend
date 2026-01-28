@@ -5,9 +5,7 @@
 // 导入国际化JSON文件
 import langJSON from './index.json'
 
-;
-
-(function () {
+;(function () {
   // 定义翻译函数
   let $t = function (key, val, nameSpace) {
     // 获取指定命名空间下的语言包
@@ -117,4 +115,12 @@ const lang = commonLang ? commonLang : baseLang
 globalThis.$t.locale(globalThis.langMap[lang], 'lang')
 globalThis.$changeLang = (lang) => {
   globalThis.$t.locale(globalThis.langMap[lang], 'lang')
+}
+Taro.$changeLang = (lang) => {
+  globalThis._localStorage.setItem('lang', lang)
+  globalThis.$t.locale(globalThis.langMap[lang], 'lang')
+  // 触发语言变化事件，让其他地方能够监听到
+  if (Taro.eventCenter) {
+    Taro.eventCenter.trigger('languageChanged', { lang, langMap: globalThis.langMap[lang] })
+  }
 }

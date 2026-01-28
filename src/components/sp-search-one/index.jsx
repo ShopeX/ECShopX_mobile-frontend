@@ -21,18 +21,9 @@ function SpSearchOne(props) {
   const placeholderRef = useRef(null)
   const indexRef = useRef(0)
   const [inputValue, setInputValue] = useState(props.value)
-  const { searchPlaceholderContents } = useSelector((state) => state.regionauth)
   useEffect(() => {
     setInputValue(props.value)
   }, [props.value])
-
-  useEffect(() => {
-    if (searchPlaceholderContents?.length > 0) {
-      placeholderRef.current = searchPlaceholderContents?.[0]
-    } else if (searchPlaceholderContents?.length == 0) {
-      placeholderRef.current = null
-    }
-  }, [searchPlaceholderContents])
 
   const handlePlaceholderClick = (e) => {
     e.stopPropagation()
@@ -60,8 +51,6 @@ function SpSearchOne(props) {
   }
   const handlePlaceholderChange = (e) => {
     indexRef.current = e.detail.current
-    const newValue = searchPlaceholderContents?.[e.detail.current]
-    placeholderRef.current = newValue
   }
 
   const handleSearch = () => {
@@ -104,27 +93,9 @@ function SpSearchOne(props) {
         <SpImage src='fv_search.png' width={40} height={40} />
         {!props.inputEnabled && (
           <View className='sp-search-one__placeholder ml-6' onClick={handlePlaceholderClick}>
-            {searchPlaceholderContents.length > 0 ? (
-              <Swiper
-                className='sp-search-one__swiper'
-                vertical
-                interval={3000}
-                circular
-                autoplay
-                style={{ height: '100%' }}
-                onChange={handlePlaceholderChange}
-              >
-                {searchPlaceholderContents?.map((item, index) => (
-                  <SwiperItem className='placeholder-text text-28' key={index}>
-                    <Text className='omit-text'>{item?.text}</Text>
-                  </SwiperItem>
-                ))}
-              </Swiper>
-            ) : (
-              <View className='placeholder-text text-28'>
-                <Text className='omit-text'>{props.placeholder}</Text>
-              </View>
-            )}
+            <View className='placeholder-text text-28'>
+              <Text className='omit-text'>{props.placeholder}</Text>
+            </View>
           </View>
         )}
 

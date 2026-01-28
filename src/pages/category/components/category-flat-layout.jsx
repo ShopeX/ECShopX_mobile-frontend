@@ -24,17 +24,11 @@ const initialState = {
 
 function CategoryFlatLayout() {
   const [state, setState] = useImmer(initialState)
-  const { regionauthInfo = {} } = useSelector((reduxState) => reduxState.regionauth)
   const { activeTab, categories, subCategories, filterWgts, loading } = state
 
   useEffect(() => {
-    if (regionauthInfo?.regionauth_id) {
-      setState((draft) => {
-        draft.loading = true
-      })
-      gettabsList()
-    }
-  }, [regionauthInfo])
+    gettabsList()
+  }, [])
 
   const gettabsList = async () => {
     try {

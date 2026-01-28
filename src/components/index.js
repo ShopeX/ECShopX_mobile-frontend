@@ -114,6 +114,7 @@ import SpSearchOne from './sp-search-one'
 import SpShop from './sp-shop'
 import SpClassifyHorizontal from './sp-classify-horizontal'
 import SpClassifyVertical from './sp-classify-vertical'
+import SpBrandIndexes from './sp-brand-indexes'
 
 export default {}
 
@@ -227,5 +228,6 @@ export {
   SpSearchOne,
   SpShop,
   SpClassifyHorizontal,
-  SpClassifyVertical
+  SpClassifyVertical,
+  SpBrandIndexes
 }

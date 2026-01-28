@@ -38,6 +38,9 @@ function StoreItemList(props) {
       page_name: 'category'
     })
     const { addCar, classify } = list?.[0]?.params || {}
+    console.log('==list==', list)
+    console.log('==addCar==', addCar)
+    console.log('==classify==', classify)
     setState((draft) => {
       draft.layout = addCar && !classify ? 2 : 1
     })

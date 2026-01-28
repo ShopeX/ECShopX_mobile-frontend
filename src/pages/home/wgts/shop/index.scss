@@ -1,0 +1,20 @@
+.wgt-shop {
+  width: 100%;
+  box-sizing: border-box;
+
+  &--horizontal {
+    height: fit-content;
+  }
+
+  &--single {
+    padding-right: 24px;
+  }
+  &__content-swiper {
+    height: 100%;
+  }
+  &__content-swiper-item {
+    width: 100%;
+    box-sizing: border-box;
+    padding-right: 24px;
+  }
+}
