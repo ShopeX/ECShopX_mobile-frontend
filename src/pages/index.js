@@ -96,7 +96,7 @@ function Home() {
   const pageRef = useRef()
   const loginRef = useRef()
 
-  const { openRecommend, appName, openScanQrcode, entryStoreByLBS } = useSelector(
+  const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector(
     (state) => state.sys
   )
   const { shopInfo } = useSelector((state) => state.shop)
@@ -221,9 +221,9 @@ function Home() {
 
       const fixedTop = searchComp && searchComp.config && searchComp.config.fixTop
       const isShowHomeHeader =
-        VERSION_PLATFORM ||
+        (VERSION_STANDARD && entryStoreByLBS && openWechatappLocation == 1) ||
+        (VERSION_PLATFORM && openWechatappLocation == 1) ||
         (openScanQrcode == 1 && isWeixin) ||
-        (VERSION_STANDARD && entryStoreByLBS) ||
         fixedTop
 
       setState((draft) => {
