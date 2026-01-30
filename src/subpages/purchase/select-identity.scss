@@ -69,15 +69,15 @@
       .content-bottom {
         display: flex;
         margin-top: 5px;
+        gap: 8px;
         .role {
-          width: 70px;
           height: 35px;
+          padding: 0 10px;
           font-size: 22px;
           text-align: center;
           line-height: 35px;
           background-color: #fbf2e9;
           color: #f4811f;
-          margin-right: 8px;
           border-radius: 6px;
         }
         .friend {
