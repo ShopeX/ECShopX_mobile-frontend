@@ -329,33 +329,33 @@ function Home() {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        <View
-          className='home-body-content'
-          style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
-        >
-          {isShowHomeHeader && (
-            <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-          )}
-          <View style={{ flex: 1 }}>
-            {filterWgts.length > 0 && (
-              <WgtsContext.Provider
-                value={{
-                  onAddToCart,
-                  isTab: true,
-                  immersive: pageData?.base?.isImmersive,
-                  isShowHomeHeader: isShowHomeHeader && isWeixin,
-                  footerHeight: state.footerHeight
-                }}
-              >
-                <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
-                  {/* 猜你喜欢 */}
-                  <SpRecommend className='recommend-block' info={likeList} />
-                </HomeWgts>
-              </WgtsContext.Provider>
+          <View
+            className='home-body-content'
+            style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
+          >
+            {isShowHomeHeader && (
+              <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
             )}
-          </View>
-          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-          {/* <View className='sp-page__powered-by w-full'>
+            <View style={{ flex: 1 }}>
+              {filterWgts.length > 0 && (
+                <WgtsContext.Provider
+                  value={{
+                    onAddToCart,
+                    isTab: true,
+                    immersive: pageData?.base?.isImmersive,
+                    isShowHomeHeader: isShowHomeHeader && isWeixin,
+                    footerHeight: state.footerHeight
+                  }}
+                >
+                  <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                    {/* 猜你喜欢 */}
+                    <SpRecommend className='recommend-block' info={likeList} />
+                  </HomeWgts>
+                </WgtsContext.Provider>
+              )}
+            </View>
+            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+            {/* <View className='sp-page__powered-by w-full'>
             <Text>Powered by</Text>
             <Image
               src='/assets/imgs/powered-logo.png'
@@ -363,35 +363,35 @@ function Home() {
               mode='contain'
             />
           </View> */}
-        </View>
+          </View>
       </ScrollView>
 
-      {/* 小程序收藏提示 */}
-      {isWeixin && <MCompAddTip />}
+          {/* 小程序收藏提示 */}
+          {isWeixin && <MCompAddTip />}
 
-      {/* 开屏广告 */}
-      {isWeixin && !showAdv && <SpScreenAd />}
+          {/* 开屏广告 */}
+      {isWeixin &&  <SpScreenAd />}
 
-      {/* 优惠券包 */}
-      {VERSION_STANDARD && <SpCouponPackage />}
+          {/* 优惠券包 */}
+          {VERSION_STANDARD && <SpCouponPackage />}
 
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
+          {/* Sku选择器 */}
+          <MSpSkuSelect
+            open={skuPanelOpen}
+            type={selectType}
+            info={info}
+            onClose={() => {
+              setState((draft) => {
+                draft.skuPanelOpen = false
+              })
+            }}
+            onChange={(skuText, curItem) => {
+              setState((draft) => {
+                draft.skuText = skuText
+                draft.curItem = curItem
+              })
+            }}
+          />
     </SpPage>
   )
 }
