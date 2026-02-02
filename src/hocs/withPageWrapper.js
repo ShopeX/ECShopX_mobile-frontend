@@ -10,7 +10,7 @@ import useModalLogin from '@/hooks/useModalLogin'
 import { updateShopInfo } from '@/store/slices/shop'
 import { updateLocation } from '@/store/slices/user'
 import { SG_CHECK_STORE_RULE } from '@/consts'
-import { VERSION_STANDARD, isEmpty, entryLaunch } from '@/utils'
+import { VERSION_STANDARD, isEmpty, entryLaunch, isWeixin, isWeb } from '@/utils'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import api from '@/api'
 import S from '@/spx'
@@ -46,7 +46,10 @@ function withPageWrapper(Component) {
 
     const resolveInStoreRule = async () => {
       // 启动时（冷启动+热启动）执行云店进店规则
-      if (VERSION_STANDARD && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) {
+      if (
+        VERSION_STANDARD &&
+        ((isWeixin && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) || isWeb)
+      ) {
         // 云店进店规则
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 1)
         try {
@@ -113,7 +116,6 @@ function withPageWrapper(Component) {
                 return nextRule()
               }
             }
-
             if (shopInfo?.distributor_id) {
               // 如果缓存中存在店铺，需校验当前店铺是否在白名单中
               await checkStoreWhiteList(shopInfo?.distributor_id)
@@ -218,7 +220,9 @@ function withPageWrapper(Component) {
 
     const handleToLogin = async () => {
       try {
-        await showLoinModal()
+        if (isWeixin) {
+          await showLoinModal()
+        }
         return true
       } catch (error) {
         const res = await showModal({

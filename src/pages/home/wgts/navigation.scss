@@ -3,14 +3,23 @@
  * See LICENSE file for license details.
  */
 .wgt-navigation {
+  width: 100%;
   .wgt-bd {
     display: flex;
     justify-content: space-between;
     padding: 0px 8px;
+    width: 100%;
+    gap: 8px;
+    box-sizing: border-box;
   }
   .nav-item {
-    padding: 0 8px;
+    flex: 1;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     .nav-img {
       border-radius: 16px;
       overflow: hidden;
@@ -21,7 +30,6 @@
     }
     .nav-name {
       font-size: 26px;
-      margin-top: 10px;
       @include multi-ellipsis(1);
     }
   }

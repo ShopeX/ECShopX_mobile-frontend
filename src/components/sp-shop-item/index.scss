@@ -81,7 +81,7 @@ $prefixCls: 'sp-shop-item';
   }
 
   .express {
-    // width: 85px;
+    min-width: 85px;
     // @include hairline($blue-color,0,left,right,top,bottom);
     border: 1px solid $blue-color;
     height: 30px;
@@ -96,8 +96,8 @@ $prefixCls: 'sp-shop-item';
     opacity: 0.8;
   }
   .expressed {
-    width: 82px;
-    height: 28px;
+    min-width: 82px;
+    min-height: 28px;
     line-height: 28px;
     padding: 1px 4px;
     border-radius: 8px;
