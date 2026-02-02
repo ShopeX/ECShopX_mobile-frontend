@@ -341,13 +341,13 @@ function NearlyShop(props) {
         </SpScrollView>
       </View>
 
-      {headquarters && (
+      {/* {headquarters && (
         <View className='shop-bottom' onClick={() => handleClickShop(headquarters)}>
           <Image className='img' src={headquarters.logo} mode='aspectFill' />
           {headquarters.store_name}
           <View className='iconfont icon-arrowRight' />
         </View>
-      )}
+      )} */}
 
       <SpAddress
         isOpened={isSpAddressOpened}

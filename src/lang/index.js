@@ -122,13 +122,13 @@ class Lang {
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
     const commonLang = withStorageCommonLang
       ? globalThis._localStorage.getItem('')
-      : process.env.APP_DEFAULT_LANGUAGE
+      : ''
     // 从本地存储中获取当前语言，如果不存在则使用源语言
     const baseLang = withStorageLang
       ? globalThis._localStorage.getItem('lang')
       : process.env.APP_DEFAULT_LANGUAGE
 
-    const lang = commonLang ? commonLang : baseLang
+    const lang = baseLang || commonLang || process.env.APP_DEFAULT_LANGUAGE || 'en'
     console.log('lang', lang)
     console.log('commonLang', commonLang)
     console.log('baseLang', baseLang)
