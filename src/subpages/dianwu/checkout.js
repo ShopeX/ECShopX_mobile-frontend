@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import { View, Text } from '@tarojs/components'
 import { AtTextarea, AtModal, AtModalHeader, AtModalContent } from 'taro-ui'
 import {

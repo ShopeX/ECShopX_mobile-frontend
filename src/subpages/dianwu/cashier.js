@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useDidHide } from '@tarojs/taro'
 import api from '@/api'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import { View, Text, ScrollView, Camera } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtButton, AtCurtain } from 'taro-ui'
 import {
