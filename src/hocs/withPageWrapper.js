@@ -46,10 +46,7 @@ function withPageWrapper(Component) {
 
     const resolveInStoreRule = async () => {
       // 启动时（冷启动+热启动）执行云店进店规则
-      if (
-        VERSION_STANDARD &&
-        ((isWeixin && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) || isWeb)
-      ) {
+      if (VERSION_STANDARD && Taro.getStorageSync(SG_CHECK_STORE_RULE) == 0) {
         // 云店进店规则
         Taro.setStorageSync(SG_CHECK_STORE_RULE, 1)
         try {
