@@ -558,7 +558,7 @@ function MemberIndex(props) {
 
         <CompMenu
           accessMenu={{
-            purchase: config.purchaseRes.is_open,
+            purchase: false,
             popularize: userInfo ? userInfo.popularize : false,
             salesPersonList: state.salesPersonList,
             deliveryStaffList: state.deliveryStaffList,
