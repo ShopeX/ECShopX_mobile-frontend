@@ -46,6 +46,7 @@ import {
   VERSION_STANDARD,
   buildSharePath
 } from '@/utils'
+import { saveBrowseItem } from '@/utils/browseHistory'
 import { fetchUserFavs } from '@/store/slices/user'
 
 import doc from '@/doc'
@@ -333,6 +334,9 @@ function EspierDetail(props) {
       // 初始化图片高度数组，使用默认高度
       draft.imgHeightList = new Array(data?.imgs?.length).fill(draft.defaultImageHeight)
     })
+
+    // 进入详情页算一次浏览，写入本地浏览记录（最多 10 条）
+    saveBrowseItem({ ...data, distributorId: data.distributorId ?? dtid })
 
     // 异步计算图片真实高度，不阻塞页面渲染
     getMultipleImageInfo(data.imgs)

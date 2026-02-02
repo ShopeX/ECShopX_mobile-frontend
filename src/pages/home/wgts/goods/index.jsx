@@ -2,11 +2,12 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useEffect, useMemo, useContext } from 'react'
-import Taro from '@tarojs/taro'
+import React, { useState, useEffect, useMemo, useContext, useCallback } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
+import { getBrowseHistoryList } from '@/utils/browseHistory'
 import doc from '@/doc'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
@@ -39,13 +40,41 @@ export default function WgtGoods(props) {
     return getGlobalBaseStyle(base.innerPadding)
   }, [base.innerPadding])
 
+  // 从本地存储刷新浏览记录（供 useDidShow 和 useEffect 复用）
+  const refreshHistoryGoods = useCallback(() => {
+    if (base.dataType !== 'history') return
+    const count = Math.min(base.dataCount || 10, 10)
+    const list = getBrowseHistoryList(count)
+    const goods = list.map((item) => pickBy(item, doc.goods.WGT_SPEEDKILL_GOODS))
+    setGoodsList(goods)
+    if (base.goodsLayout === 'two') {
+      setGoodsLeftList(goods.filter((_, i) => i % 2 === 0))
+      setGoodsRightList(goods.filter((_, i) => i % 2 === 1))
+    }
+  }, [base.dataType, base.dataCount, base.goodsLayout])
+
+  // 页面再次显示时（如从详情返回）重新读取本地浏览记录
+  useDidShow(() => {
+    refreshHistoryGoods()
+  })
+
   // 获取商品数据
   useEffect(() => {
     const fetchGoods = async () => {
       setLoading(true)
       try {
-        const distributorId = getDistributorId()
         const dataType = base.dataType
+        const count = Math.min(base.dataCount || 10, 10) // 本地浏览记录最多 10 条
+
+        // 浏览记录：从本地存储读取（进入商品详情页时写入，最多 10 条）
+        if (dataType === 'history') {
+          refreshHistoryGoods()
+          setLoading(false)
+          return
+        }
+
+        // 其他类型：走挂件商品接口
+        const distributorId = getDistributorId()
         let dataValue = data?.id || ''
         if (['items', 'price'].includes(dataType)) {
           dataValue = data?.id?.split(',') || ''
@@ -53,12 +82,12 @@ export default function WgtGoods(props) {
         const _data = await api.seckill.getWidgetItems({
           data_type: dataType,
           data_value: dataValue,
-          data_count: base.dataCount,
+          data_count: count,
           distributor_id: distributorId || ''
         })
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
-          setGoodsList(goods.slice(0, base.dataCount))
+          setGoodsList(goods.slice(0, count))
           if (base.goodsLayout === 'two') {
             const _itemListLeft = goods.filter((item, index) => index % 2 == 0)
             const _itemListRight = goods.filter((item, index) => index % 2 == 1)
@@ -80,6 +109,10 @@ export default function WgtGoods(props) {
   const handleClickMore = () => {
     if (base.moreLink && base.moreLink.length > 0) {
       linkPage(base.moreLink[0])
+    } else if (base.dataType === 'history') {
+      Taro.navigateTo({
+        url: '/marketing/pages/member/item-history'
+      })
     } else {
       Taro.navigateTo({
         url: '/subpages/item/list'
@@ -96,6 +129,12 @@ export default function WgtGoods(props) {
   }
 
   if (!info) {
+    return null
+  }
+
+  // 数据条数小于 dataCount 时不展示挂件
+  const dataCount = base.dataCount || 1
+  if (!loading && goodsList.length < dataCount) {
     return null
   }
 
