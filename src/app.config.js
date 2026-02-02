@@ -100,7 +100,8 @@ const config = {
         'point-rule', // 积分规则
         'member-level', // 会员等级
         'user-info', // 个人信息
-        'settings' // 设置
+        'settings', // 设置
+        'qrcode' // 会员码
       ]
     },
     {

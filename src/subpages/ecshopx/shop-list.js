@@ -70,9 +70,9 @@ function shopList(props) {
     const query = {
       page,
       pageSize,
-      province: location.lat ? location.province : '北京市',
-      city: location.lat ? location.city : '北京市',
-      area: location.lat ? location.district : '昌平区',
+      province: location?.lat ? location.province : '北京市',
+      city: location?.lat ? location.city : '北京市',
+      area: location?.lat ? location.district : '昌平区',
       type: 0,
       show_discount: 1,
       show_marketing_activity: 1,
@@ -80,8 +80,8 @@ function shopList(props) {
       is_delivery: businessServices.includes('delivery') ? 1 : undefined,
       is_dada: businessServices.includes('dada') ? 1 : undefined,
       distributor_tag_id: brandSelect.join(),
-      lng: location.lng,
-      lat: location.lat,
+      lng: location?.lng,
+      lat: location?.lat,
       //是否展示积分
       show_score: 1,
       sort_type: curFilterIdx,

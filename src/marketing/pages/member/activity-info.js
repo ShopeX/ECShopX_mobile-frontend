@@ -52,13 +52,15 @@ function ActivityInfo(props) {
       draft.imgHeightList = new Array(_info?.pics?.length).fill(draft.defaultImageHeight)
     })
     // 异步计算图片真实高度，不阻塞页面渲染
-    getMultipleImageInfo(_info?.pics).then(heights => {
-      setState((draft) => {
-        draft.imgHeightList = heights
+    getMultipleImageInfo(_info?.pics)
+      .then((heights) => {
+        setState((draft) => {
+          draft.imgHeightList = heights
+        })
       })
-    }).catch(error => {
-      console.log('计算图片高度失败，使用默认高度:', error)
-    })
+      .catch((error) => {
+        console.log('计算图片高度失败，使用默认高度:', error)
+      })
   }
 
   const getMultipleImageInfo = async (imageUrls = []) => {
@@ -223,7 +225,12 @@ function ActivityInfo(props) {
       {info && (
         <ScrollView scrollY className='activity-info__pic' style={{ height: `calc(100vh - 71px)` }}>
           <View className='ctivity-info__pic-container'>
-            <Swiper className='activity-swiper' indicatorDots onChange={onChangeSwiper} style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}>
+            <Swiper
+              className='activity-swiper'
+              indicatorDots
+              onChange={onChangeSwiper}
+              style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
+            >
               {info?.pics.map((img, idx) => (
                 <SwiperItem key={`swiperitem__${idx}`}>
                   <SpImage mode='widthFix' src={img} width={windowWidth * 2}></SpImage>

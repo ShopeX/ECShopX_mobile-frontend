@@ -431,7 +431,6 @@ function MemberUserInfo() {
                 placeholder='请输入昵称'
                 onInput={onChangeUsername}
                 onConfirm={onChangeUsername}
-                onNickNameReview={onChangeUsername}
               />
             }
           ></SpCell>

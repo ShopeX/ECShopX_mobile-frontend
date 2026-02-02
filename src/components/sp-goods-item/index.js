@@ -88,6 +88,7 @@ function SpGoodsItem(props) {
 
   const onChangeToolBar = (e) => {
     e.stopPropagation()
+    console.log('info', info)
     onAddToCart(info)
   }
 

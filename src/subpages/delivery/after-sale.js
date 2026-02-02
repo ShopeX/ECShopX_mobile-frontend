@@ -41,7 +41,7 @@ const initialState = {
   // 用于云店后台交易设置-到店退货关闭时判断
   offlineAftersalesIsOpen: false,
   offlineAftersales: false,
-  refundTypeList: REFUND_FEE_TYPE,
+  refundTypeList: REFUND_FEE_TYPE(),
   refundStore: '', // 退货门店
   contact: '', // 联系人
   mobile: '', // 联系电话
@@ -267,7 +267,7 @@ function TradeAfterSale(props) {
 
           <View className='refund-items'>
             <View className='items-container'>
-              {info?.items.map((item, index) => (
+              {info?.items?.map((item, index) => (
                 <View className='item-wrap' key={`item-wrap__${index}`}>
                   <View className='item-hd'>
                     <SpCheckbox
@@ -475,19 +475,20 @@ function TradeAfterSale(props) {
           </AtButton>
         }
       >
-        {refundTypeList.map((item, index) => (
-          <View className='refund-type-item' key={`refund-type-item__${index}`}>
-            <SpCheckbox
-              checked={item.value == selectRefundValue}
-              onChange={onChangeRefundType.bind(this, item)}
-            >
-              <View className='refund-item-wrap'>
-                <View className='title'>{item.title}</View>
-                <View className='desc'>{item.desc}</View>
-              </View>
-            </SpCheckbox>
-          </View>
-        ))}
+        {refundTypeList?.length > 0 &&
+          refundTypeList?.map((item, index) => (
+            <View className='refund-type-item' key={`refund-type-item__${index}`}>
+              <SpCheckbox
+                checked={item.value == selectRefundValue}
+                onChange={onChangeRefundType.bind(this, item)}
+              >
+                <View className='refund-item-wrap'>
+                  <View className='title'>{item.title}</View>
+                  <View className='desc'>{item.desc}</View>
+                </View>
+              </SpCheckbox>
+            </View>
+          ))}
       </SpFloatLayout>
     </SpPage>
   )

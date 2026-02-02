@@ -88,19 +88,11 @@ function App({ children }) {
         Taro.removeStorageSync(SG_GUIDE_PARAMS_UPDATETIME)
       }
     }
-    const { show_time } = await api.promotion.getScreenAd()
-    let showAdv
-    if (show_time === 'always') {
-      showAdv = false
-      store.dispatch({
-        type: 'user/closeAdv',
-        payload: showAdv
-      })
-    }
   }, [])
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
+    Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
     // Initialize RTL
     const lang = Taro.getStorageSync('lang') || 'en'
