@@ -114,7 +114,7 @@ function SpGoodsCompactCard(props) {
 
         <View className='sp-goods-compact-card__price'>
           <View className='price-wrapper'>
-            <SpPrice size={34} value={finalPrice} style={{ marginRight: '6px' }} weight={600} />
+            <SpPrice className='current-price' size={34} value={finalPrice} style={{ marginRight: '6px' }} weight={600} />
 
             {Number(info.marketPrice || 0) > 0 &&
               Number(finalPrice || 0) < Number(info.marketPrice || 0) && (

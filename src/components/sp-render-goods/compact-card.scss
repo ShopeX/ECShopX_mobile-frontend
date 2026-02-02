@@ -117,6 +117,45 @@
       gap: 8px;
     }
 
+    // 当前价格样式
+    .current-price {
+      font-family: D-DIN-PRO, D-DIN-PRO;
+      font-weight: 600;
+      font-size: 34rpx;
+      color: #1A1A1A;
+
+      .sp-price__symbol {
+        font-family: D-DIN-PRO, D-DIN-PRO;
+        font-weight: 500;
+        font-size: 26rpx;
+        color: #1A1A1A;
+      }
+      .sp-price__int,
+      .sp-price__decimal {
+        font-family: D-DIN-PRO, D-DIN-PRO;
+        font-weight: 600;
+        font-size: 34rpx;
+        color: #1A1A1A;
+      }
+    }
+
+    // 划线价（market-price）样式
+    .market-price {
+      font-family: D-DIN-PRO, D-DIN-PRO;
+      font-weight: 500;
+      font-size: 26rpx;
+      color: #1A1A1A;
+
+      .sp-price__symbol,
+      .sp-price__int,
+      .sp-price__decimal {
+        font-family: D-DIN-PRO, D-DIN-PRO;
+        font-weight: 500;
+        font-size: 26rpx;
+        color: #1A1A1A;
+      }
+    }
+
     .discount-tag {
       color: var(--color-primary);
       display: flex;

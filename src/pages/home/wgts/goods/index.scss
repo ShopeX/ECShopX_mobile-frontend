@@ -6,39 +6,40 @@
 .wgt-goods {
   box-sizing: border-box;
 
-  .wgt-head {
+  .wgt-goods-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 16px;
     box-sizing: border-box;
+    padding-bottom: 18px;
 
-    .wgt-hd {
+    .wgt-goods-head-hd {
       display: flex;
       align-items: center;
       flex: 1;
 
-      .wgt-title {
+      .wgt-goods-head-title {
         font-size: 32px;
         font-weight: 600;
         line-height: 1.5;
       }
 
-      .wgt-title-image {
+      .wgt-goods-head-title-image {
         max-height: 40px;
         width: auto;
       }
     }
 
-    .wgt-more {
+    .wgt-goods-head-more {
       display: flex;
       align-items: center;
       cursor: pointer;
     }
   }
 
-  .wgt-body {
+  .wgt-goods-body {
     box-sizing: border-box;
+    border-radius: 16px;
   }
 
   // default 布局：活动商品列表
@@ -51,15 +52,14 @@
   }
 
   &__activity-item {
-    background: #ffffff;
-    width: 198px;
+    width: 157px;
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
 
     &-img {
-      width: 198px;
-      height: 198px;
+      width: 157px;
+      height: 157px;
       background: #d6d6d6;
       overflow: hidden;
       position: relative;
@@ -94,12 +94,12 @@
     }
 
     &-info {
-      padding: 8px 12px 16px;
+      padding: 8px 24px 20px;
     }
 
     &-title {
-      font-size: 24px;
-      color: #000000;
+      font-size: 22px;
+      color: #404040;
       text-align: center;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -111,21 +111,21 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
-    height: 42px;
+    height: 28px;
     overflow: hidden;
+    color: #1A1A1A;
 
     &__unit {
-      font-family: D-DIN-PRO-Medium;
+      font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 500;
       font-size: 22px;
-      color: #404040;
     }
 
     &__text {
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 600;
-      font-size: 30px;
-      color: #1a1a1a;
+      font-size: 28px;
+      color: #1A1A1A;
     }
   }
 

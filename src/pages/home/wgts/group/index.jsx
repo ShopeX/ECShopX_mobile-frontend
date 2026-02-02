@@ -9,6 +9,7 @@ import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
+import { AtIcon } from 'taro-ui'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
 import GoodsLayout from '../goods-layout'
@@ -52,7 +53,6 @@ export default function WgtGroup(props) {
           data_count: base.dataCount,
           distributor_id: distributorId || ''
         })
-        // 如果 items 已经有数据，直接使用
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
           setGoodsList(goods.slice(0, base.dataCount))
@@ -62,7 +62,6 @@ export default function WgtGroup(props) {
             setGoodsLeftList(_itemListLeft)
             setGoodsRightList(_itemListRight)
           }
-          return
         }
       } catch (error) {
         console.error('获取拼团商品失败:', error)
@@ -93,17 +92,9 @@ export default function WgtGroup(props) {
     })
   }
 
-  // 处理加入购物车
-  const handleAddToCart = async ({ itemId, distributorId }) => {
-    if (onAddToCart) {
-      onAddToCart({ itemId, distributorId })
-    }
-  }
-
   // 处理拼团标签
-  const setGroup = (tags) => {
+  const renderGroupTag = (tags) => {
     if (!tags || !Array.isArray(tags) || tags.length === 0) return null
-    // 返回第一个标签的文本
     return <Text>{tags[0].tag_name || tags[0]}</Text>
   }
 
@@ -113,60 +104,56 @@ export default function WgtGroup(props) {
 
   return (
     <View
-      className={classNames('wgt wgt-group', {
-        'wgt__padded': base.padded
-      })}
+      className={classNames('wgt wgt-group')}
       style={styleNames(outerStyle)}
       id={`wgt-group-${id || ''}`}
     >
-      {/* 标题区域 */}
-      {(base.titleText?.type === 'text' && base.titleText?.text) ||
-      (base.titleText?.type === 'image' && base.titleText?.image) ? (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            {base.titleText?.type === 'text' && base.titleText?.text && (
-              <Text
-                className='wgt-title'
-                style={styleNames({
-                  color: base.titleColor || '#000000'
-                })}
+      <View className='wgt-group-body' style={styleNames(innerStyle)}>
+        {(base.titleText?.type === 'text' && base.titleText?.text) ||
+        (base.titleText?.type === 'image' && base.titleText?.image) ||
+        base.moreBtn?.show ? (
+          <View className='wgt-group-head'>
+            <View className='wgt-group-head-hd'>
+              {base.titleText?.type === 'text' && base.titleText?.text && (
+                <Text
+                  className='wgt-group-head-title'
+                  style={styleNames({ color: base.titleColor })}
+                >
+                  {base.titleText.text}
+                </Text>
+              )}
+              {base.titleText?.type === 'image' && base.titleText?.image && (
+                <SpImage src={base.titleText.image} className='wgt-group-head-title-image' />
+              )}
+            </View>
+            {base.moreBtn?.show && (
+              <View
+                className='wgt-group-head-more'
+                onClick={handleClickMore}
+                style={styleNames({ color: base.moreBtn?.color })}
               >
-                {base.titleText.text}
-              </Text>
-            )}
-            {base.titleText?.type === 'image' && base.titleText?.image && (
-              <SpImage src={base.titleText.image} className='wgt-title-image' />
+                <Text>查看更多</Text>
+                <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
+              </View>
             )}
           </View>
-          {base.moreBtn?.show && (
-            <View
-              className='wgt-more'
-              onClick={handleClickMore}
-              style={styleNames({
-                color: base.moreBtn?.color || '#000000'
-              })}
-            >
-              <View className='three-dot'></View>
-            </View>
-          )}
-        </View>
-      ) : null}
-
-      {/* 商品列表区域 */}
-      <View className='wgt-body' style={styleNames(innerStyle)}>
+        ) : null}
         {/* default 布局：活动商品列表 */}
-        {base.goodsLayout === 'default' && (
+        {(!base.goodsLayout || base.goodsLayout === 'default') && (
           <View className='wgt-group__activity-list'>
             {goodsList.map((item, index) => (
               <View
                 className='wgt-group__activity-item'
                 key={index}
-                onClick={() => {
-                  handleClickItem(item, index)
-                }}
+                onClick={() => handleClickItem(item, index)}
               >
                 <View className='wgt-group__activity-item-img'>
-                  <SpImage src={item.pic || item.imgUrl} width={198} height={198} />
+                  <SpImage
+                    src={item.pic || item.imgUrl}
+                    width={154}
+                    height={154}
+                    mode='aspectFill'
+                  />
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
@@ -174,11 +161,12 @@ export default function WgtGroup(props) {
                       </View>
                     </View>
                   )}
-                  {setGroup(item.tags) && (
-                    <View className='wgt-group__activity-item-group-tag'>
-                      {setGroup(item.tags)}
-                    </View>
-                  )}
+                  {(() => {
+                    const tag = renderGroupTag(item.tags)
+                    return tag ? (
+                      <View className='wgt-group__activity-item-group-tag'>{tag}</View>
+                    ) : null
+                  })()}
                 </View>
                 <View className='wgt-group__activity-item-info'>
                   <View className='wgt-group__activity-item-title'>
@@ -199,7 +187,6 @@ export default function WgtGroup(props) {
             ))}
           </View>
         )}
-        {/* grids 布局 */}
         {['one', 'two', 'three'].includes(base.goodsLayout) && (
           <GoodsLayout
             layout={base.goodsLayout}

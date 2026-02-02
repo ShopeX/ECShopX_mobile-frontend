@@ -9,6 +9,7 @@ import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
+import { AtIcon } from 'taro-ui'
 import GoodsLayout from '../goods-layout'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
@@ -38,11 +39,19 @@ export default function WgtSpeedkill(props) {
     return getGlobalBaseStyle(base.innerPadding)
   }, [base.innerPadding])
 
+  // 是否有标题（兼容 titleText 与 titleType/titleText/titleImage）
+  const hasTitle =
+    (base.titleText?.type === 'text' && base.titleText?.text) ||
+    (base.titleText?.type === 'image' && base.titleText?.image) ||
+    (base.titleType === 'text' && base.titleText) ||
+    (base.titleType === 'image' && base.titleImage)
+
+  // 是否显示更多（兼容 moreBtn 与 showMoreBtn）
+  const showMore = base.moreBtn?.show ?? base.showMoreBtn
+
   // 获取秒杀商品数据
   useEffect(() => {
     const fetchSeckillGoods = async () => {
-      // 否则从 API 获取
-      console.log(data.id, 'data-seckillGoodsList')
       if (!data.id) return
 
       setLoading(true)
@@ -54,8 +63,6 @@ export default function WgtSpeedkill(props) {
           data_count: base.dataCount,
           distributor_id: distributorId || ''
         })
-        console.log(_data, 'data-getWidgetItems')
-        // 如果 items 已经有数据，直接使用
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
           setGoodsList(goods.slice(0, base.dataCount))
@@ -65,7 +72,6 @@ export default function WgtSpeedkill(props) {
             setGoodsLeftList(_itemListLeft)
             setGoodsRightList(_itemListRight)
           }
-          return
         }
       } catch (error) {
         console.error('获取秒杀商品失败:', error)
@@ -155,123 +161,107 @@ export default function WgtSpeedkill(props) {
     })
   }
 
-  // 处理加入购物车
-  const handleAddToCart = async ({ itemId, distributorId }) => {
-    if (onAddToCart) {
-      onAddToCart({ itemId, distributorId })
-    }
-  }
-
   if (!info || !data.id) {
     return null
   }
 
-  // 过滤左右列商品（用于 grid 布局）
-
   return (
     <View
-      className={classNames('wgt wgt-speedkill', {
-        'wgt__padded': base.padded
-      })}
+      className={classNames('wgt wgt-speedkill')}
       style={styleNames(outerStyle)}
       id={`wgt-speedkill-${id || ''}`}
     >
-      {/* 标题区域 */}
-      {(base.titleType === 'text' && base.titleText) ||
-      (base.titleType === 'image' && base.titleImage) ? (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            {base.titleType === 'text' && base.titleText && (
-              <Text
-                className='wgt-title'
-                style={styleNames({
-                  color: base.titleColor || '#000000'
-                })}
+      <View className='wgt-speedkill-body' style={styleNames(innerStyle)}>
+        {(hasTitle || showMore) ? (
+          <View className='wgt-speedkill-head'>
+            <View className='wgt-speedkill-head-hd'>
+              {(base.titleText?.type === 'text' && base.titleText?.text) && (
+                <Text
+                  className='wgt-speedkill-head-title'
+                  style={styleNames({ color: base.titleColor })}
+                >
+                  {base.titleText.text}
+                </Text>
+              )}
+              {(base.titleText?.type === 'image' && base.titleText?.image) && (
+                <SpImage src={base.titleText.image} className='wgt-speedkill-head-title-image' />
+              )}
+              {base.titleType === 'text' && base.titleText && !base.titleText?.type && (
+                <Text
+                  className='wgt-speedkill-head-title'
+                  style={styleNames({ color: base.titleColor })}
+                >
+                  {base.titleText}
+                </Text>
+              )}
+              {base.titleType === 'image' && base.titleImage && !base.titleText?.type && (
+                <SpImage src={base.titleImage} className='wgt-speedkill-head-title-image' />
+              )}
+            </View>
+            {showMore && (
+              <View
+                className='wgt-speedkill-head-more'
+                onClick={handleClickMore}
+                style={styleNames({ color: base.moreBtn?.color || base.moreBtnColor })}
               >
-                {base.titleText}
-              </Text>
-            )}
-            {base.titleType === 'image' && base.titleImage && (
-              <SpImage src={base.titleImage} className='wgt-title-image' />
+                <Text>查看更多</Text>
+                <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color || base.moreBtnColor} />
+              </View>
             )}
           </View>
-          {base.showMoreBtn && (
-            <View
-              className='wgt-more'
-              onClick={handleClickMore}
-              style={styleNames({
-                color: base.moreBtnColor || '#000000'
-              })}
-            >
-              <View className='three-dot'></View>
-            </View>
-          )}
-        </View>
-      ) : null}
-
-      {/* 商品列表区域 */}
-      <View className='wgt-body' style={styleNames(innerStyle)}>
-        {loading ? (
-          <View className='wgt-loading'>加载中...</View>
-        ) : (
-          goodsList.length > 0 &&
-          goodsList.length >= base.dataCount && (
-            <>
-              {/* default 布局：活动商品列表 */}
-              {base.goodsLayout === 'default' && (
-                <View className='wgt-speedkill__activity-list'>
-                  {goodsList.map((item, index) => (
-                    <View
-                      className='wgt-speedkill__activity-item'
-                      key={index}
-                      onClick={() => {
-                        handleClickItem(item, index)
-                      }}
-                    >
-                      <View className='wgt-speedkill__activity-item-img'>
-                        <SpImage src={item.pic || item.imgUrl} width={198} height={198} />
-                        {item.store <= 0 && (
-                          <View className='soldout-mask'>
-                            <View className='soldout-mask-text'>
-                              <Text>已售罄</Text>
-                            </View>
-                          </View>
-                        )}
-                      </View>
-                      <View className='wgt-speedkill__activity-item-info'>
-                        <View className='wgt-speedkill__activity-item-title'>
-                          {item.itemName || item.title}
-                        </View>
-                        <View className='wgt-speedkill__activity-item-price'>
-                          <Text className='wgt-speedkill__activity-item-price__activity_name'>
-                            秒杀价
-                          </Text>
-                          <Text className='wgt-speedkill__activity-item-price__unit'>￥</Text>
-                          <Text className='wgt-speedkill__activity-item-price__text'>
-                            {item.mainPrice ||
-                              (item.activityPrice
-                                ? item.activityPrice.toFixed(2)
-                                : item.price?.toFixed(2) || '0.00')}
-                          </Text>
-                        </View>
+        ) : null}
+        {/* default 布局：活动商品列表 */}
+        {(!base.goodsLayout || base.goodsLayout === 'default') && (
+          <View className='wgt-speedkill__activity-list'>
+            {goodsList.map((item, index) => (
+              <View
+                className='wgt-speedkill__activity-item'
+                key={index}
+                onClick={() => handleClickItem(item, index)}
+              >
+                <View className='wgt-speedkill__activity-item-img'>
+                  <SpImage
+                    src={item.pic || item.imgUrl}
+                    width={154}
+                    height={154}
+                    mode='aspectFill'
+                  />
+                  {item.store <= 0 && (
+                    <View className='soldout-mask'>
+                      <View className='soldout-mask-text'>
+                        <Text>已售罄</Text>
                       </View>
                     </View>
-                  ))}
+                  )}
                 </View>
-              )}
-              {/* grids 布局 */}
-              {['one', 'two', 'three'].includes(base.goodsLayout) && (
-                <GoodsLayout
-                  layout={base.goodsLayout}
-                  goodsList={goodsList}
-                  goodsLeftList={goodsLeftList}
-                  goodsRightList={goodsRightList}
-                  onClickItem={handleClickItem}
-                  classNamePrefix='wgt-speedkill'
-                />
-              )}
-            </>
-          )
+                <View className='wgt-speedkill__activity-item-info'>
+                  <View className='wgt-speedkill__activity-item-title'>
+                    {item.itemName || item.title}
+                  </View>
+                  <View className='wgt-speedkill__activity-item-price'>
+                    <Text className='wgt-speedkill__activity-item-price__activity_name'>秒杀价</Text>
+                    <Text className='wgt-speedkill__activity-item-price__unit'>￥</Text>
+                    <Text className='wgt-speedkill__activity-item-price__text'>
+                      {item.mainPrice ||
+                        (item.activityPrice
+                          ? item.activityPrice.toFixed(2)
+                          : item.price?.toFixed(2) || '0.00')}
+                    </Text>
+                  </View>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+        {['one', 'two', 'three'].includes(base.goodsLayout) && (
+          <GoodsLayout
+            layout={base.goodsLayout}
+            goodsList={goodsList}
+            goodsLeftList={goodsLeftList}
+            goodsRightList={goodsRightList}
+            onClickItem={handleClickItem}
+            classNamePrefix='wgt-speedkill'
+          />
         )}
       </View>
     </View>

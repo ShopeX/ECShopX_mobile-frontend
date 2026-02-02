@@ -6,39 +6,39 @@
 .wgt-group {
   box-sizing: border-box;
 
-  .wgt-head {
+  .wgt-group-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 16px;
     box-sizing: border-box;
-
-    .wgt-hd {
+    padding-bottom: 18px;
+    .wgt-group-head-hd {
       display: flex;
       align-items: center;
       flex: 1;
 
-      .wgt-title {
+      .wgt-group-head-title {
         font-size: 32px;
         font-weight: 600;
         line-height: 1.5;
       }
 
-      .wgt-title-image {
+      .wgt-group-head-title-image {
         max-height: 40px;
         width: auto;
       }
     }
 
-    .wgt-more {
+    .wgt-group-head-more {
       display: flex;
       align-items: center;
       cursor: pointer;
     }
   }
 
-  .wgt-body {
+  .wgt-group-body {
     box-sizing: border-box;
+    border-radius: 16px;
   }
 
   // default 布局：活动商品列表
@@ -51,15 +51,14 @@
   }
 
   &__activity-item {
-    background: #ffffff;
-    width: 198px;
+    width: 157px;
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
 
     &-img {
-      width: 198px;
-      height: 198px;
+      width: 157px;
+      height: 157px;
       background: #d6d6d6;
       overflow: hidden;
       position: relative;
@@ -97,27 +96,28 @@
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 9;
-      background: var(--color-primary);
       height: 28px;
-      line-height: 28px;
-      text-align: center;
+      border-radius: 8px 0px 8px 0px;
+      z-index: 99;
+      padding: 0 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      background: var(--color-primary);
       font-family: PingFang SC, PingFang SC;
       font-weight: 500;
-      font-size: 20px;
+      font-size: 18px;
       color: #ffffff;
-      padding: 0px 12px;
-      border-radius: 12px 0px 12px 0px;
-      z-index: 99;
     }
 
     &-info {
-      padding: 8px 12px 16px;
+      padding: 8px 24px 20px;
     }
 
     &-title {
-      font-size: 24px;
-      color: #000000;
+      font-size: 22px;
+      color: #404040;
       text-align: center;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -129,28 +129,29 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
-    height: 42px;
+    height: 28px;
     overflow: hidden;
+    color: #1A1A1A;
 
     &__activity_name {
       font-family: PingFang SC, PingFang SC;
       font-weight: 400;
       font-size: 20px;
       color: var(--color-primary);
+      margin-right: 4px;
     }
 
     &__unit {
-      font-family: D-DIN-PRO-Medium;
+      font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 500;
       font-size: 22px;
-      color: var(--color-primary);
     }
 
     &__text {
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 600;
-      font-size: 30px;
-      color: var(--color-primary);
+      font-size: 28px;
+      color: #1A1A1A;
     }
   }
 

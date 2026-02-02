@@ -77,6 +77,8 @@ function App({ children }) {
       checkAppVersion()
     }
 
+    getFontFace()
+
     // 导购参数缓存处理
     const guideUpdateTime = Taro.getStorageSync(SG_GUIDE_PARAMS_UPDATETIME) || 0
     const guideExpressTime = Taro.getStorageSync(SG_GUIDE_PARAMS_EXPRESSTIME) || 0
@@ -280,6 +282,48 @@ function App({ children }) {
     } catch (error) {
       console.log(error)
     }
+  }
+  const getFontFace = () => {
+    wx.loadFontFace({
+      family: 'D-DIN-PRO',
+      global: true,
+      source:
+        'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-600-SemiBold.otf?t=1718810009',
+      success: () => {
+      },
+      fail: () => {
+      }
+    })
+    wx.loadFontFace({
+      family: 'D-DIN-PRO-Regular',
+      global: true,
+      source:
+        'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-400-Regular.otf?t=1718810009',
+      success: () => {
+      },
+      fail: () => {
+      }
+    })
+    wx.loadFontFace({
+      family: 'D-DIN-PRO-Medium',
+      global: true,
+      source:
+        'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-500-Medium.otf?t=1718810009',
+      success: () => {
+      },
+      fail: () => {
+      }
+    })
+    wx.loadFontFace({
+      family: 'D-DIN-PRO-ExtraBold',
+      global: true,
+      source:
+        'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-800-ExtraBold.otf?t=1718810009',
+      success: () => {
+      },
+      fail: () => {
+      }
+    })
   }
 
   return <Provider store={store}>{children}</Provider>

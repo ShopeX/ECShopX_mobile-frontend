@@ -9,6 +9,7 @@ import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
+import { AtIcon } from 'taro-ui'
 import GoodsLayout from '../goods-layout'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
@@ -44,8 +45,6 @@ export default function WgtGoods(props) {
       setLoading(true)
       try {
         const distributorId = getDistributorId()
-
-        // 根据 dataType 确定 data_type
         const dataType = base.dataType
         let dataValue = data?.id || ''
         if (['items', 'price'].includes(dataType)) {
@@ -57,11 +56,8 @@ export default function WgtGoods(props) {
           data_count: base.dataCount,
           distributor_id: distributorId || ''
         })
-
-        // 如果 items 已经有数据，直接使用
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
-          console.log(goods, 'goods', base)
           setGoodsList(goods.slice(0, base.dataCount))
           if (base.goodsLayout === 'two') {
             const _itemListLeft = goods.filter((item, index) => index % 2 == 0)
@@ -69,7 +65,6 @@ export default function WgtGoods(props) {
             setGoodsLeftList(_itemListLeft)
             setGoodsRightList(_itemListRight)
           }
-          return
         }
       } catch (error) {
         console.error('获取商品失败:', error)
@@ -100,73 +95,61 @@ export default function WgtGoods(props) {
     })
   }
 
-  // 处理加入购物车
-  const handleAddToCart = async ({ itemId, distributorId }) => {
-    if (onAddToCart) {
-      onAddToCart({ itemId, distributorId })
-    }
-  }
-
   if (!info) {
     return null
   }
 
   return (
     <View
-      className={classNames('wgt wgt-goods', {
-        'wgt__padded': base.padded
-      })}
+      className={classNames('wgt wgt-goods')}
       style={styleNames(outerStyle)}
       id={`wgt-goods-${id || ''}`}
     >
-      {/* 标题区域 */}
-      {(base.titleText?.type === 'text' && base.titleText?.text) ||
-      (base.titleText?.type === 'image' && base.titleText?.image) ? (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            {base.titleText?.type === 'text' && base.titleText?.text && (
-              <Text
-                className='wgt-title'
-                style={styleNames({
-                  color: base.titleColor || '#000000'
-                })}
+      <View className='wgt-goods-body' style={styleNames(innerStyle)}>
+        {(base.titleText?.type === 'text' && base.titleText?.text) ||
+        (base.titleText?.type === 'image' && base.titleText?.image)||base.moreBtn?.show ? (
+          <View className='wgt-goods-head'>
+            <View className='wgt-goods-head-hd'>
+              {base.titleText?.type === 'text' && base.titleText?.text && (
+                <Text
+                  className='wgt-goods-head-title'
+                  style={styleNames({ color: base.titleColor })}
+                >
+                  {base.titleText.text}
+                </Text>
+              )}
+              {base.titleText?.type === 'image' && base.titleText?.image && (
+                <SpImage src={base.titleText.image} className='wgt-goods-head-title-image' />
+              )}
+            </View>
+            {base.moreBtn?.show && (
+              <View
+                className='wgt-goods-head-more'
+                onClick={handleClickMore}
+                style={styleNames({ color: base.moreBtn?.color })}
               >
-                {base.titleText.text}
-              </Text>
-            )}
-            {base.titleText?.type === 'image' && base.titleText?.image && (
-              <SpImage src={base.titleText.image} className='wgt-title-image' />
+                <Text>查看更多</Text>
+                <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
+              </View>
             )}
           </View>
-          {base.moreBtn?.show && (
-            <View
-              className='wgt-more'
-              onClick={handleClickMore}
-              style={styleNames({
-                color: base.moreBtn?.color || '#000000'
-              })}
-            >
-              <View className='three-dot'></View>
-            </View>
-          )}
-        </View>
-      ) : null}
-
-      {/* 商品列表区域 */}
-      <View className='wgt-body' style={styleNames(innerStyle)}>
+        ) : null}
         {/* default 布局：活动商品列表 */}
-        {base.goodsLayout === 'default' && (
+        {(!base.goodsLayout || base.goodsLayout === 'default') && (
           <View className='wgt-goods__activity-list'>
             {goodsList.map((item, index) => (
               <View
                 className='wgt-goods__activity-item'
                 key={index}
-                onClick={() => {
-                  handleClickItem(item, index)
-                }}
+                onClick={() => handleClickItem(item, index)}
               >
                 <View className='wgt-goods__activity-item-img'>
-                  <SpImage src={item.pic || item.imgUrl} width={198} height={198} />
+                  <SpImage
+                    src={item.pic || item.imgUrl}
+                    width={154}
+                    height={154}
+                    mode='aspectFill'
+                  />
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
@@ -193,7 +176,6 @@ export default function WgtGoods(props) {
             ))}
           </View>
         )}
-        {/* grids 布局 */}
         {['one', 'two', 'three'].includes(base.goodsLayout) && (
           <GoodsLayout
             layout={base.goodsLayout}

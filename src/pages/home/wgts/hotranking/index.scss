@@ -6,39 +6,40 @@
 .wgt-hotranking {
   box-sizing: border-box;
 
-  .wgt-head {
+  .wgt-hotranking-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 16px;
     box-sizing: border-box;
+    padding-bottom: 18px;
 
-    .wgt-hd {
+    .wgt-hotranking-head-hd {
       display: flex;
       align-items: center;
       flex: 1;
 
-      .wgt-title {
+      .wgt-hotranking-head-title {
         font-size: 32px;
         font-weight: 600;
         line-height: 1.5;
       }
 
-      .wgt-title-image {
+      .wgt-hotranking-head-title-image {
         max-height: 40px;
         width: auto;
       }
     }
 
-    .wgt-more {
+    .wgt-hotranking-head-more {
       display: flex;
       align-items: center;
       cursor: pointer;
     }
   }
 
-  .wgt-body {
+  .wgt-hotranking-body {
     box-sizing: border-box;
+    border-radius: 16px;
   }
 
   // default 布局：活动商品列表
@@ -51,15 +52,14 @@
   }
 
   &__activity-item {
-    background: #ffffff;
-    width: 198px;
+    width: 157px;
     flex-shrink: 0;
     border-radius: 12px;
     overflow: hidden;
 
     &-img {
-      width: 198px;
-      height: 198px;
+      width: 157px;
+      height: 157px;
       background: #d6d6d6;
       overflow: hidden;
       position: relative;
@@ -100,12 +100,11 @@
       height: 28px;
       border-radius: 8px 0px 8px 0px;
       text-align: center;
-      line-height: 28px;
       font-family: D-DIN-PRO-ExtraBold, D-DIN-PRO-ExtraBold;
       font-weight: 800;
+      box-sizing: border-box;
       font-size: 18px;
-      background: #efefef;
-      border: 2px solid rgba(153, 153, 153, 0.25);
+      border: 1PX solid rgba(153, 153, 153, 0.25);
       color: #999999;
       z-index: 99;
       padding: 0 8px;
@@ -113,33 +112,34 @@
       align-items: center;
       justify-content: center;
       box-sizing: border-box;
+      background: rgba(153, 153, 153, 0.15);
 
       &__one {
         background: #f6efd8;
         color: #cb9800;
-        border: 2px solid rgba(203, 152, 0, 0.25);
+        border: 1PX solid rgba(203, 152, 0, 0.25);
       }
 
       &__two {
         background: #e6e9ef;
-        border: 2px solid rgba(87, 107, 149, 0.25);
+        border: 1PX solid rgba(87, 107, 149, 0.25);
         color: #576b95;
       }
 
       &__three {
         background: #ffe5d7;
-        border: 2px solid rgba(222, 127, 72, 0.25);
+        border: 1PX solid rgba(222, 127, 72, 0.25);
         color: #de7f48;
       }
     }
 
     &-info {
-      padding: 8px 12px 16px;
+      padding: 8px 24px 20px;
     }
 
     &-title {
-      font-size: 24px;
-      color: #000000;
+      font-size: 22px;
+      color: #404040;
       text-align: center;
       text-overflow: ellipsis;
       overflow: hidden;
@@ -151,21 +151,21 @@
     display: flex;
     align-items: baseline;
     justify-content: center;
-    height: 42px;
+    height: 28px;
     overflow: hidden;
+    color: #1A1A1A;
 
     &__unit {
-      font-family: D-DIN-PRO-Medium;
+      font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 500;
       font-size: 22px;
-      color: #404040;
     }
 
     &__text {
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 600;
-      font-size: 30px;
-      color: #1a1a1a;
+      font-size: 28px;
+      color: #1A1A1A;
     }
   }
 

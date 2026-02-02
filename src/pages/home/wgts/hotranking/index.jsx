@@ -9,6 +9,7 @@ import { SpImage } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
 import doc from '@/doc'
 import api from '@/api'
+import { AtIcon } from 'taro-ui'
 import GoodsLayout from '../goods-layout'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
@@ -92,11 +93,6 @@ export default function WgtHotranking(props) {
   }
 
   // 处理加入购物车
-  const handleAddToCart = async ({ itemId, distributorId }) => {
-    if (onAddToCart) {
-      onAddToCart({ itemId, distributorId })
-    }
-  }
 
   if (!info) {
     return null
@@ -104,49 +100,45 @@ export default function WgtHotranking(props) {
 
   return (
     <View
-      className={classNames('wgt wgt-hotranking', {
-        'wgt__padded': base.padded
-      })}
+      className={classNames('wgt wgt-hotranking')}
       style={styleNames(outerStyle)}
       id={`wgt-hotranking-${id || ''}`}
     >
-      {/* 标题区域 */}
-      {(base.titleText?.type === 'text' && base.titleText?.text) ||
-      (base.titleText?.type === 'image' && base.titleText?.image) ? (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            {base.titleText?.type === 'text' && base.titleText?.text && (
-              <Text
-                className='wgt-title'
-                style={styleNames({
-                  color: base.titleColor || '#000000'
-                })}
+      {/* 标题区域：有标题或「查看更多」时展示 header */}
+      <View className='wgt-hotranking-body' style={styleNames(innerStyle)}>
+        {(base.titleText?.type === 'text' && base.titleText?.text) ||
+        (base.titleText?.type === 'image' && base.titleText?.image) ||
+        base.moreBtn?.show ? (
+          <View className='wgt-hotranking-head'>
+            <View className='wgt-hotranking-head-hd'>
+              {base.titleText?.type === 'text' && base.titleText?.text && (
+                <Text
+                  className='wgt-hotranking-head-title'
+                  style={styleNames({
+                    color: base.titleColor
+                  })}
+                >
+                  {base.titleText.text}
+                </Text>
+              )}
+              {base.titleText?.type === 'image' && base.titleText?.image && (
+                <SpImage src={base.titleText.image} className='wgt-hotranking-head-title-image' />
+              )}
+            </View>
+            {base.moreBtn?.show && (
+              <View
+                className='wgt-hotranking-head-more'
+                onClick={handleClickMore}
+                style={styleNames({ color: base.moreBtn?.color })}
               >
-                {base.titleText.text}
-              </Text>
-            )}
-            {base.titleText?.type === 'image' && base.titleText?.image && (
-              <SpImage src={base.titleText.image} className='wgt-title-image' />
+                <Text>查看更多</Text>
+                <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
+              </View>
             )}
           </View>
-          {base.moreBtn?.show && (
-            <View
-              className='wgt-more'
-              onClick={handleClickMore}
-              style={styleNames({
-                color: base.moreBtn?.color || '#000000'
-              })}
-            >
-              <View className='three-dot'></View>
-            </View>
-          )}
-        </View>
-      ) : null}
-
-      {/* 商品列表区域 */}
-      <View className='wgt-body' style={styleNames(innerStyle)}>
+        ) : null}
         {/* default 布局：活动商品列表 */}
-        {base.goodsLayout === 'default' && (
+        {(!base.goodsLayout || base.goodsLayout === 'default') && (
           <View className='wgt-hotranking__activity-list'>
             {goodsList.map((item, index) => (
               <View
@@ -157,7 +149,12 @@ export default function WgtHotranking(props) {
                 }}
               >
                 <View className='wgt-hotranking__activity-item-img'>
-                  <SpImage src={item.pic || item.imgUrl} width={198} height={198} />
+                  <SpImage
+                    src={item.pic || item.imgUrl}
+                    width={154}
+                    height={154}
+                    mode='aspectFill'
+                  />
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
@@ -166,7 +163,7 @@ export default function WgtHotranking(props) {
                     </View>
                   )}
                   {/* 排名标签 */}
-                  {index < 3 && (
+                  {index < 3 ? (
                     <View
                       className={classNames('wgt-hotranking__activity-item-rank-tag', {
                         [`wgt-hotranking__activity-item-rank-tag__${
@@ -174,6 +171,10 @@ export default function WgtHotranking(props) {
                         }`]: true
                       })}
                     >
+                      <Text>TOP.{index + 1}</Text>
+                    </View>
+                  ) : (
+                    <View className={classNames('wgt-hotranking__activity-item-rank-tag')}>
                       <Text>{index + 1}</Text>
                     </View>
                   )}
