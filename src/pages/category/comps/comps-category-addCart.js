@@ -445,6 +445,7 @@ function CompsCategoryAddCart(props) {
           </ScrollView>
         </View>
       </View>
+      </View>
 
       {/* Sku选择器 */}
       <MSpSkuSelect
