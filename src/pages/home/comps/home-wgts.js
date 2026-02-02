@@ -22,7 +22,8 @@ import {
   WgtHotranking,
   WgtGoods,
   WgtLocationModule,
-  WgtContentPartition
+  WgtContentPartition,
+  WgtOrderNavigation
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -31,7 +32,7 @@ const initialState = {
   searchMethod: null
 }
 function HomeWgts(props) {
-  const { wgts, dtid, onLoad = () => {}, children, copywriting = false } = props
+  const { wgts, dtid, onLoad = () => { }, children, copywriting = false } = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
 
@@ -104,11 +105,12 @@ function HomeWgts(props) {
             {item.name === 'locationModule' && (
               <WgtLocationModule info={item} id={item.id || idx} />
             )}
-            {/** */}
             {item.name === 'contentPartition' && (
               <WgtContentPartition info={item} id={item.id || idx} />
             )}
-            {/** */}
+            {item.name === 'orderNavigation' && (
+              <WgtOrderNavigation info={item} id={item.id || idx} />
+            )}
           </View>
         )
       })}
