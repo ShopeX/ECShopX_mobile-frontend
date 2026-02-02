@@ -37,7 +37,7 @@ function SpClassifyHorizontal(props) {
               className='sp-classify-horizontal-item-image'
               id={`sp-classify-horizontal-item-image-${index}`}
             >
-              <SpImage src={item.image} mode='aspectFill' width={92} height={92} />
+              {item.image && <SpImage src={item.image} mode='aspectFill' width={92} height={92} />}
             </View>
             <View className='sp-classify-horizontal-item-name'>{item.name}</View>
           </View>
