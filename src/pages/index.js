@@ -103,7 +103,8 @@ function Home() {
   const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
-  const { location } = useSelector((state) => state.user)
+  const { location, address } = useSelector((state) => state.user)
+  const nearbyText = address?.city || location?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
   const {
@@ -300,6 +301,7 @@ function Home() {
       // renderNavigation={renderNavigation()}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
+      nearbyText={nearbyText}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {

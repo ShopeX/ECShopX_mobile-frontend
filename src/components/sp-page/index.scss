@@ -5,6 +5,14 @@
 .sp-page {
   box-sizing: border-box;
   width: 100vw;
+  .sp-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    height: 100%;
+    width: 100%;
+  }
   .sp-page__body {
     box-sizing: border-box;
     min-height: 100vh;
@@ -96,6 +104,173 @@
     }
   }
 
+  /* wgt-page：与 Vue 页面设置组件一致 */
+  .wgt-page {
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    direction: ltr;
+
+    .title-function {
+      height: 64rpx;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+
+      .title-function-image {
+        height: 100%;
+        aspect-ratio: 1/1;
+      }
+
+      /* 热区图：整体在左侧，内容左对齐 */
+      &.p-title-hot-img {
+        justify-content: flex-start;
+        width: 64rpx;
+        min-width: 64rpx;
+      }
+    }
+
+    &-content {
+      height: 100%;
+      width: 100%;
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: 50%;
+      overflow: hidden;
+    }
+
+    .header-container {
+      height: 64rpx;
+      margin-top: 26rpx;
+      line-height: 64rpx;
+      padding: 0 30rpx;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 20rpx;
+      /* 功能区（返回、首页、热区图/附近门店）统一在左边，标题/搜索占右侧 */
+      justify-content: flex-start;
+
+      .nav-left-capsule {
+        flex-shrink: 0;
+      }
+
+      &.has-nearby {
+        .title-function.nearby-function {
+          max-width: 168rpx;
+          flex-shrink: 0;
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          .nearby-function-text {
+            font-size: 28rpx;
+            color: #333;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 120rpx;
+          }
+
+          .nearby-function-icon {
+            font-size: 28rpx;
+            color: #333;
+          }
+        }
+
+        .title-search {
+          padding-left: 0;
+
+          .search-container {
+            max-width: none;
+          }
+        }
+      }
+
+      .title-text {
+        font-size: 28rpx;
+        color: #333;
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .title-image {
+        height: 100%;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+
+      .title-search {
+        flex: 1;
+        min-width: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 0;
+        position: relative;
+        z-index: 2;
+        padding-right: 170rpx;
+        box-sizing: border-box;
+
+        .search-container {
+          display: flex;
+          width: 100%;
+          max-width: 600rpx;
+          border-radius: 8rpx;
+          overflow: hidden;
+          position: relative;
+
+          .search-input {
+            flex: 1;
+            height: 64rpx;
+            padding: 0 24rpx 0 40rpx;
+            border: 1px solid #e0e0e0;
+            border-right: none;
+            border-radius: 8rpx 0 0 8rpx;
+            background-color: #fff;
+            font-size: 28rpx;
+          }
+
+          .search-icon {
+            position: absolute;
+            left: 10rpx;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 32rpx;
+            color: #999;
+            pointer-events: none;
+            z-index: 1;
+          }
+
+          .search-button {
+            height: 64rpx;
+            padding: 0 20rpx;
+            border: none;
+            border-radius: 0 8rpx 8rpx 0;
+            font-size: 28rpx;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+            flex-shrink: 0;
+          }
+        }
+      }
+
+      .nav-left-capsule {
+        flex-shrink: 0;
+      }
+    }
+  }
+
   .custom-navigation {
     box-sizing: border-box;
     position: fixed;
@@ -115,6 +290,7 @@
       text-overflow: ellipsis;
       -o-text-overflow: ellipsis;
       -webkit-text-overflow: ellipsis;
+      width: 100%;
     }
 
     &.mantle {

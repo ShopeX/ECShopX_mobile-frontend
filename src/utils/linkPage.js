@@ -9,6 +9,7 @@ import configStore from '@/store'
 const { store } = configStore()
 
 function linkPage(data) {
+  console.log('linkPage----', data)
   const {
     id,
     title,

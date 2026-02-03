@@ -318,6 +318,9 @@ const SpPage = memo(
             btnReturn={state.btnReturn}
             btnHome={state.btnHome}
             mantle={state.mantle}
+            onNearbyClick={props.onNearbyClick}
+            nearbyText={props.nearbyText}
+            onSearchConfirm={props.onSearchConfirm}
           />
         )}
         {props.isDefault &&
@@ -413,7 +416,10 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => {}
+  onScrollToTop: () => {},
+  onNearbyClick: null,
+  nearbyText: '',
+  onSearchConfirm: null
 }
 
 export default SpPage
