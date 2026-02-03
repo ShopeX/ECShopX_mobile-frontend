@@ -87,10 +87,11 @@ export default function WgtGoods(props) {
         })
         if (_data && Array.isArray(_data) && _data.length > 0) {
           const goods = pickBy(_data, doc.goods.WGT_SPEEDKILL_GOODS)
-          setGoodsList(goods.slice(0, count))
+          let _goods = goods.slice(0, count)
+          setGoodsList(_goods)
           if (base.goodsLayout === 'two') {
-            const _itemListLeft = goods.filter((item, index) => index % 2 == 0)
-            const _itemListRight = goods.filter((item, index) => index % 2 == 1)
+            const _itemListLeft = _goods.filter((item, index) => index % 2 == 0)
+            const _itemListRight = _goods.filter((item, index) => index % 2 == 1)
             setGoodsLeftList(_itemListLeft)
             setGoodsRightList(_itemListRight)
           }
