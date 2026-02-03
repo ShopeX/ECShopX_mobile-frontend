@@ -81,6 +81,14 @@
     justify-content: center;
     align-items: flex-end;
     flex-direction: column;
+    box-sizing: border-box;
+    /* 禁止 CSS 穿透：样式隔离，避免页面/父级样式影响浮层内容 */
+    isolation: isolate;
+    font-size: 28px;
+    color: #333;
+    line-height: 1.5;
+    font-family: inherit;
+    text-align: left;
 
     .icon-zhiding {
       font-size: 34px;
