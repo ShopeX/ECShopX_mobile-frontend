@@ -221,13 +221,7 @@ function WgtCouponCard(props) {
                 </View>
                 <View className='wgt-couponcard-item-info'>
                   <View className='use-title'>{item.title}</View>
-                  {item?.cardSource == 'mob' ? (
-                    <View className='use-desc'>
-                      <SpHtml content={item.description} />
-                    </View>
-                  ) : (
-                    <View className='use-desc'>{item.discount_rule}</View>
-                  )}
+                    <View className='use-desc'>{item.description}</View>
                   {couponCardList.length == 1 && <View className='use-time'>{item.validDate}</View>}
                 </View>
               </View>

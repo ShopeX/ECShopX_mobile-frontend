@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { SpImage } from '@/components'
@@ -11,15 +11,7 @@ import './index.scss'
 
 /**
  * 位置模块导航栏组件
- * @param {Object} props
- * @param {Array} props.navList - 导航项列表
- * @param {number} props.currentIndex - 当前选中的导航项索引
- * @param {Function} props.onNavClick - 导航项点击回调
- * @param {Object} props.base - 配置对象
- * @param {Object} props.navStyle - 导航栏样式
- * @param {Object} props.navItemAreaStyle - 导航项区域样式
- * @param {Function} props.getNavItemStyle - 获取导航项样式的函数
- * @param {string} props.animate - 动画方向：'horizontal' | 'vertical'
+ * showLeftImg 在组件内部维护，避免父组件 setState 导致整块回滚
  */
 export default function LocationModuleNavBar(props) {
   const {
@@ -30,32 +22,57 @@ export default function LocationModuleNavBar(props) {
     navStyle,
     navItemAreaStyle,
     getNavItemStyle,
-    id = ''
+    id = '',
+    scrollIntoView = '',
+    handleScrollToUpper = () => {},
+    handleScrollToLower = () => {},
+    handleClickLeftImg = () => {},
+    handleClickRightImg = () => {}
   } = props
+
+  const [showLeftImg, setShowLeftImg] = useState(false)
+
+  const onScrollToUpper = useCallback(() => {
+    setShowLeftImg(false)
+    handleScrollToUpper()
+  }, [handleScrollToUpper])
+
+  const onScrollToLower = useCallback(() => {
+    setShowLeftImg(true)
+    handleScrollToLower()
+  }, [handleScrollToLower])
+
+  console.log(scrollIntoView, 'scrollIntoView')
 
   return (
     <View className='wgt-comps__nav' id={id} style={styleNames(navStyle)}>
       {/* 导航项区域 */}
       <View className='wgt-comps__nav-area' style={styleNames(navItemAreaStyle)}>
         {/* 左侧/顶部图片 */}
-        {base.leftimgUrl && (
-          <View className='wgt-comps__nav-left-img'>
-            <SpImage src={base.leftimgUrl} />
-          </View>
+        {base.leftimgUrl &&  (
+          <SpImage
+            onClick={() => handleClickLeftImg()}
+            src={base.leftimgUrl}
+            mode='heightFix'
+            className='wgt-comps__nav-left-img'
+            style={{ display: showLeftImg ? 'block' : 'none' }}
+          />
         )}
 
         {/* 导航项列表 */}
-        <ScrollView className='wgt-comps__nav-scroll' scrollX scrollWithAnimation>
-          <View
-            className='wgt-comps__nav-list'
-            style={{
-              gap: base.navitemmargin?.paddedlr
-                ? Taro.pxTransform(base.navitemmargin.paddedlr)
-                : base.navitemmargin
-                ? Taro.pxTransform(base.navitemmargin)
-                : 0
-            }}
-          >
+        <ScrollView
+          className='wgt-comps__nav-scroll'
+          scrollX
+          scrollIntoView={scrollIntoView}
+          onScrollToUpper={onScrollToUpper}
+          onScrollToLower={onScrollToLower}
+          bounces={false}
+          showScrollbar={false}
+          scrollWithAnimation
+          enhanced
+          scrollAnchoring
+        >
+          <View className='wgt-comps__nav-list'>
             {navList.map((item, index) => {
               const isActive = index === currentIndex
               return (
@@ -64,6 +81,7 @@ export default function LocationModuleNavBar(props) {
                   className={classNames(`wgt-comps__nav-item`, {
                     [`wgt-comps__nav-item--active`]: isActive
                   })}
+                  id={`nav-item-${index}-${id}`}
                   style={styleNames(getNavItemStyle(item, isActive))}
                   onClick={() => onNavClick(index)}
                 >
@@ -71,9 +89,13 @@ export default function LocationModuleNavBar(props) {
                     <SpImage
                       src={isActive && item.navitemactiveimg ? item.navitemactiveimg : item.imgUrl}
                       className='wgt-comps__nav-item-img'
+                      mode='heightFix'
                     />
                   ) : (
                     <Text className='wgt-comps__nav-item-text'>{item.navItemName}</Text>
+                  )}
+                  {base.navitemborder && isActive && (
+                    <View className='wgt-comps__nav-item-border' style={{ backgroundColor: `${base.navitembordercolor || 'transparent'}` }} />
                   )}
                 </View>
               )
@@ -83,9 +105,13 @@ export default function LocationModuleNavBar(props) {
 
         {/* 右侧/底部图片 */}
         {base.rightimgUrl && (
-          <View className='wgt-comps__nav-right-img'>
-            <SpImage src={base.rightimgUrl} />
-          </View>
+          <SpImage
+            onClick={() => handleClickRightImg()}
+            src={base.rightimgUrl}
+            mode='heightFix'
+            className='wgt-comps__nav-right-img'
+            style={{ display: !showLeftImg ? 'block' : 'none' }}
+          />
         )}
       </View>
     </View>

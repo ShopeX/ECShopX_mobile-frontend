@@ -30,10 +30,10 @@ export const STORECLASSIFY = {
 
 export const WGTCOUPON = {
   title: 'title',
-  validDate: ({ valid_date, start_date, end_date }) =>
+  validDate: ({ valid_date, begin_date, end_date }) =>
     valid_date ||
-    (start_date && end_date
-      ? `${formatTime(start_date * 1000, 'YYYY.MM.DD HH:mm')}-${formatTime(
+    (begin_date && end_date
+      ? `${formatTime(begin_date * 1000, 'YYYY.MM.DD HH:mm')}-${formatTime(
           end_date * 1000,
           'YYYY.MM.DD HH:mm'
         )}`
@@ -90,7 +90,7 @@ export const WGTCOUPON = {
       return valid
     }
   },
-  discount_rule: 'discount_rule',
+  description: 'description',
   canUsedShops: 'canUsedShops',
   dayStockNum: 'stockNum', //日剩余库存
   stockNum: 'realStockNum', //总剩余库存

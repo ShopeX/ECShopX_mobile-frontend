@@ -15,7 +15,7 @@ import './index.scss'
 export default function WgtContentPartition(props) {
   const { info, id } = props
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [scrollIntoView, setScrollIntoView] = useState('')
+  const [scrollIntoView, setScrollIntoView] = useState(``)
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
@@ -28,9 +28,8 @@ export default function WgtContentPartition(props) {
     const activeIndex = navList.findIndex((item) => item.isActive)
     if (activeIndex >= 0) {
       setCurrentIndex(activeIndex)
-      setScrollIntoView(`content-section-${activeIndex}`)
-    } else if (navList.length > 0) {
-      setScrollIntoView('content-section-0')
+    } else {
+      setCurrentIndex(0)
     }
   }, [navList])
 
@@ -47,26 +46,47 @@ export default function WgtContentPartition(props) {
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {
     const navitemarea = base.navitemarea || {}
-    return getGlobalBaseStyle(navitemarea)
+    return {
+      ...getGlobalBaseStyle(navitemarea),
+      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+    }
   }, [base.navitemarea])
 
   // 获取导航项样式
   const getNavItemStyle = (item, isActive) => {
-    const textColor = isActive
-      ? item.navitemactivecolor || '#1A1A1A'
-      : item.navitemcolor || '#666666'
+    console.log(item, isActive, 'item, isActive')
+    const textColor = isActive ? item.navitemactivecolor : item.navitemcolor
 
     return {
       height: Taro.pxTransform(base.navitemheight || 40),
       color: textColor,
-      border: base.navitemborder ? `1px solid ${base.navitembordercolor || '#ffffff'}` : 'none',
-      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+      backgroundColor: isActive
+        ? item.navitemactivebg || 'transparent'
+        : item.navitembg || 'transparent',
+      paddingLeft: `${Taro.pxTransform(base.navitemmargin || 0)}`,
+      paddingRight: `${Taro.pxTransform(base.navitemmargin || 0)}`
     }
   }
 
   // 处理导航项点击
   const handleNavClick = (index) => {
     setCurrentIndex(index)
+    let viewIndex = index > 0 ? index - 1 : 0
+    setScrollIntoView(`nav-item-${viewIndex}-${id}`)
+  }
+
+  const handleScrollToUpper = () => {
+    setScrollIntoView('')
+  }
+  const handleScrollToLower = () => {
+    setScrollIntoView('')
+  }
+
+  const handleClickLeftImg = () => {
+    setScrollIntoView(`nav-item-0-${id}`)
+  }
+  const handleClickRightImg = () => {
+    setScrollIntoView(`nav-item-${navList.length - 1}-${id}`)
   }
 
   if (!info || !navList || navList.length === 0) {
@@ -94,7 +114,12 @@ export default function WgtContentPartition(props) {
           navItemAreaStyle={navItemAreaStyle}
           getNavItemStyle={getNavItemStyle}
           classNamePrefix='wgt-content-partition'
-          animate='vertical'
+          id={id}
+          scrollIntoView={scrollIntoView}
+          handleScrollToUpper={handleScrollToUpper}
+          handleScrollToLower={handleScrollToLower}
+          handleClickLeftImg={handleClickLeftImg}
+          handleClickRightImg={handleClickRightImg}
         />
 
         {/* 内容区域 - 显示所有导航项的 children */}

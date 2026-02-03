@@ -38,6 +38,7 @@ export default function WgtLocationModule(props) {
   const { info, id } = props
   const { setScrollIntoView, immersive, navBarHeight, scrollTop } = useContext(WgtsContext)
   const [currentIndex, setCurrentIndex] = useState(0)
+  const [scrollView, setScrollView] = useState(``)
   const isClickTab = useRef(false)
 
   // 从 params 中获取配置和数据，兼容两种数据结构
@@ -51,7 +52,7 @@ export default function WgtLocationModule(props) {
     console.log(immersive, navBarHeight, 'immersive,navBarHeight')
     return {
       ...getGlobalBaseStyle(base.outerMargin),
-      position: base.navSticky ? 'sticky' : 'inherit',
+      position: base.navSticky ? 'sticky' : 'relative',
       top: immersive ? `${navBarHeight}px` : 0
     }
   }, [base.outerMargin, base.navSticky, immersive, navBarHeight])
@@ -59,18 +60,23 @@ export default function WgtLocationModule(props) {
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {
     const navitemarea = base.navitemarea || {}
-    return getGlobalBaseStyle(navitemarea)
-  }, [base.navitemarea])
+    return {
+      ...getGlobalBaseStyle(navitemarea),
+      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+    }
+  }, [base.navitemarea, base.navitemradius])
 
   // 获取导航项样式
   const getNavItemStyle = (item, isActive) => {
     const textColor = isActive ? item.navitemactivecolor : item.navitemcolor
-
     return {
       height: Taro.pxTransform(base.navitemheight || 40),
       color: textColor,
-      border: base.navitemborder ? `1px solid ${base.navitembordercolor || 'transparent'}` : 'none',
-      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+      backgroundColor: isActive
+        ? item.navitemactivebg || 'transparent'
+        : item.navitembg || 'transparent',
+      paddingLeft: `${Taro.pxTransform(base.navitemmargin || 0)}`,
+      paddingRight: `${Taro.pxTransform(base.navitemmargin || 0)}`
     }
   }
 
@@ -78,10 +84,26 @@ export default function WgtLocationModule(props) {
   const handleNavClick = (index) => {
     isClickTab.current = true
     setCurrentIndex(index)
+    let viewIndex = index > 0 ? index - 1 : 0
+    setScrollView(`nav-item-${viewIndex}-${id}`)
     setScrollIntoView(`#content-section-${index}-${id}`)
     setTimeout(() => {
       isClickTab.current = false
     }, 500)
+  }
+
+  const handleScrollToUpper = () => {
+    setScrollView('')
+  }
+  const handleScrollToLower = () => {
+    setScrollView('')
+  }
+
+  const handleClickLeftImg = () => {
+    setScrollView(`nav-item-0-${id}`)
+  }
+  const handleClickRightImg = () => {
+    setScrollView(`nav-item-${navList.length - 1}-${id}`)
   }
 
   if (!info || !navList || navList.length === 0) {
@@ -203,8 +225,13 @@ export default function WgtLocationModule(props) {
           base={base}
           navStyle={navStyle}
           navItemAreaStyle={navItemAreaStyle}
+          scrollIntoView={scrollView}
           getNavItemStyle={getNavItemStyle}
-          id={`wgt-comps__nav_${id}`}
+          id={id}
+          handleScrollToUpper={handleScrollToUpper}
+          handleScrollToLower={handleScrollToLower}
+          handleClickLeftImg={handleClickLeftImg}
+          handleClickRightImg={handleClickRightImg}
         />
 
         {/* 内容区域 - 显示所有导航项的 children */}

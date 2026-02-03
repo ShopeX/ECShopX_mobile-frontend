@@ -7,7 +7,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { platformTemplateName, entryLaunch } from '@/utils'
-import { SpPage, SpSearchOne } from '@/components'
+import { SpPage, SpSearchOne, SpTabbar } from '@/components'
 import CompsAddPurchase from './comps/comps-category-addCart'
 import CategoryFlatLayout from './components/category-flat-layout'
 import './index.scss'
@@ -52,7 +52,7 @@ function StoreItemList(props) {
       // renderNavigation={<SpSearchOne />}
       ref={pageRef}
       showLive
-      renderFooter={<></>}
+      renderFooter={<SpTabbar />}
     >
       {state.layout === 1 && <CompsAddPurchase />}
       {state.layout === 2 && <CategoryFlatLayout />}

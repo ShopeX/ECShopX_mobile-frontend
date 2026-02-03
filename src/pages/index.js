@@ -83,7 +83,8 @@ const initialState = {
   footerHeight: 0,
   distributor_id: null,
   backTopScrollTop: null,
-  bodyHeight: 0
+  bodyHeight: 0,
+  scrollIntoView: null
 }
 
 function Home() {
@@ -120,7 +121,8 @@ function Home() {
     footerHeight,
     distributor_id,
     backTopScrollTop,
-    bodyHeight
+    bodyHeight,
+    scrollIntoView
   } = state
 
   const dispatch = useDispatch()
@@ -327,6 +329,7 @@ function Home() {
         onScroll={(e) => {
           pageRef.current.handlePageScroll(e?.detail)
         }}
+        scrollIntoView={scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
@@ -348,7 +351,12 @@ function Home() {
                     isTab: true,
                     immersive: pageData?.base?.isImmersive,
                     isShowHomeHeader: isShowHomeHeader && isWeixin,
-                    footerHeight: state.footerHeight
+                    footerHeight: state.footerHeight,
+                    setScrollIntoView: (view) => {
+                      setState((draft) => {
+                        draft.scrollIntoView = view
+                      })
+                    }
                   }}
                 >
                   <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
