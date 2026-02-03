@@ -207,25 +207,27 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby })}
           style={showHeaderContent ? styleNames(containerStyle()) : {}}
         >
-          {/* 左侧：返回、首页 */}
-          {btnReturn && (
-            <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
-              <SpImage src='fv_back.png' width={36} height={36} />
-            </View>
+          {/* 左侧：返回、首页、功能区三者只显示一个 */}
+          {showHeaderContent && showFunctionArea ? (
+            <>
+              {/* 有功能区时只显示功能区（热区图或附近门店） */}
+              {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
+              {functionAreaType === 'nearby' && renderNearby()}
+            </>
+          ) : (
+            <>
+              {btnReturn && (
+                <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
+                  <SpImage src='fv_back.png' width={36} height={36} />
+                </View>
+              )}
+              {btnHome && !btnReturn && (
+                <View className='nav-left-capsule' onClick={handleHomeClick}>
+                  <SpImage src='fv_home.png' width={36} height={36} />
+                </View>
+              )}
+            </>
           )}
-          {btnHome && !btnReturn && (
-            <View className='nav-left-capsule' onClick={handleHomeClick}>
-              <SpImage src='fv_home.png' width={36} height={36} />
-            </View>
-          )}
-          {/* 功能区：热区图 */}
-          {showHeaderContent &&
-            showFunctionArea &&
-            functionAreaType === 'hotzone' &&
-            hotzoneImgUrl &&
-            renderHotZone()}
-          {/* 功能区：附近门店 */}
-          {showHeaderContent && showFunctionArea && functionAreaType === 'nearby' && renderNearby()}
           {/* 标题区：搜索 */}
           {showHeaderContent && titleStyle === '3' && renderSearch()}
           {/* 标题区：页面名称 */}
