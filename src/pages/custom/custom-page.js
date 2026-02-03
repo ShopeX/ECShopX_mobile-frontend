@@ -3,20 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, {
   useRouter,
   getCurrentInstance,
   useShareAppMessage,
-  useShareTimeline,
-  useDidShow
-} from '@tarojs/taro'
+  useShareTimeline} from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
-import S from '@/spx'
-import { View } from '@tarojs/components'
 import { SpPage, SpSearch, SpSkuSelect, SpTabbar, SpLogin } from '@/components'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import {
@@ -25,15 +21,12 @@ import {
   entryLaunch,
   pickBy,
   showToast,
-  VERSION_STANDARD,
   buildSharePath
 } from '@/utils'
-import { platformTemplateName, transformPlatformUrl } from '@/utils/platform'
-import { useLogin, useNavigation, useLocation, useModal } from '@/hooks'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import { platformTemplateName } from '@/utils/platform'
+import { useNavigation } from '@/hooks'
 import req from '@/api/req'
 import HomeWgts from '@/pages/home/comps/home-wgts'
-import { updateShopInfo } from '@/store/slices/shop'
 import './custom-page.scss'
 
 const initialState = {
@@ -50,6 +43,8 @@ function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { setNavigationBarTitle } = useNavigation()
+  const { address, location } = useSelector((s) => s.user)
+  const nearbyText = address?.city || location?.city || ''
   const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)
   const pageRef = useRef()
@@ -89,11 +84,11 @@ function CustomPage(props) {
     })
   }
 
-  useShareAppMessage(async (res) => {
+  useShareAppMessage(async () => {
     return getAppShareInfo()
   })
 
-  useShareTimeline(async (res) => {
+  useShareTimeline(async () => {
     return getAppShareInfo()
   })
 
@@ -152,6 +147,7 @@ function CustomPage(props) {
       scrollToTopBtn
       className='page-custom-page'
       pageConfig={pageData?.base}
+      nearbyText={nearbyText}
       loading={loading}
       title={shareInfo?.page_name}
       ref={pageRef}
