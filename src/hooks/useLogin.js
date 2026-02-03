@@ -21,7 +21,7 @@ import {
 } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
-import { INVITE_ACTIVITY_ID } from '@/consts'
+import { INVITE_ACTIVITY_ID, SG_CHECK_STORE_RULE } from '@/consts'
 
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {}, loginSuccess = () => {} } = props
@@ -121,6 +121,7 @@ export default (props = {}) => {
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量
+    Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
     if (redirect_url) {
       Taro.redirectTo({ url: decodeURIComponent(redirect_url) })

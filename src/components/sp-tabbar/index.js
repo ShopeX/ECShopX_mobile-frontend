@@ -7,9 +7,10 @@ import React, { useEffect, useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { TABBAR_PATH, TABBAR_ICON, DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
+import { TABBAR_PATH, TABBAR_ICON, SG_CHECK_STORE_RULE } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, isWeb, isIphoneX } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
+import S from '@/spx'
 import './index.scss'
 import SpImage from '../sp-image'
 
@@ -80,6 +81,12 @@ function SpTabbar() {
                 tabItem.customPageId || tabItem.customPage.id
               }`
             : TABBAR_PATH()[tabItem.name]
+
+        if (!S.getAuthToken()) {
+          // 未登录时清空店铺进店规则检查
+          Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+        }
+
         Taro.redirectTo({ url })
       } else {
         Taro.navigateTo({ url: TABBAR_PATH()[tabItem.name] })

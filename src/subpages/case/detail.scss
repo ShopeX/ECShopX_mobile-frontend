@@ -1,0 +1,102 @@
+.case-detail {
+  &-houseView {
+    padding: 24px;
+    &-name {
+      font-size: 32px;
+      margin-bottom: 24px;
+    }
+    &-wrap {
+      width: 100%;
+      height: 500px;
+    }
+    &-item,
+    &-img {
+      width: 100%;
+    }
+  }
+  background-color: #fff;
+  &-head {
+    width: 100%;
+    &--img {
+      width: 100%;
+    }
+  }
+  &-houseType {
+    width: 100%;
+    &-swiper {
+      width: 100%;
+      height: 750px;
+    }
+    &-img {
+      width: 100%;
+    }
+  }
+  &-design {
+    padding: 32px;
+    margin: 0 32px;
+    transform: translateY(-36px);
+    border-radius: 16px;
+    background: #ffffff;
+    box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+    &-head {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    &-tagList {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 32px;
+      text-align: center;
+      &-item {
+        &-category {
+          font-size: 24px;
+          margin-bottom: 16px;
+        }
+        &-name {
+          font-size: 28px;
+          font-weight: bold;
+        }
+      }
+    }
+    &-title {
+      font-size: 32px;
+      font-weight: bold;
+      max-width: 400px;
+      @include multi-ellipsis(1);
+      margin-bottom: 40px;
+    }
+    &-lf {
+      display: flex;
+      align-items: center;
+      margin-bottom: 32px;
+      &-name {
+        font-size: 24px;
+      }
+    }
+    &-head-lf {
+      display: flex;
+      justify-content: space-between;
+    }
+    &-3d {
+      background-color: var(--color-primary);
+      overflow: hidden;
+      border-radius: 200px;
+      color: #fff;
+      width: 200px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+    }
+    .icon-3Dzhanshi {
+      font-size: 48px;
+      margin-right: 8px;
+      color: #fff;
+    }
+    .icon-loufang {
+      font-size: 32px;
+      margin-right: 16px;
+      color: #0fdbcd;
+    }
+  }
+}

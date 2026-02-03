@@ -94,6 +94,7 @@ function App({ children }) {
 
   useLaunch((options) => {
     console.log('useLaunch ***********', options)
+    Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
     // Initialize RTL
     const lang = Taro.getStorageSync('lang') || 'en'
