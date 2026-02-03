@@ -9,8 +9,8 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
-import doc from '@/doc'
 import { classNames, pickBy, thousandthFormat } from '@/utils'
+import doc from '@/subpages/doc'
 import './point-detail.scss'
 
 const btns = [

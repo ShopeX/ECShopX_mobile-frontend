@@ -18,7 +18,7 @@ import { SpPage, SpScrollView, SpSearchBar, SpPrice } from '@/components'
 import { pickBy, copyText } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 
 import CompOrderItem from './comps/comp-orderitem'

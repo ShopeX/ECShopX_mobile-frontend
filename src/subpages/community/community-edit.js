@@ -10,7 +10,7 @@ import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpPickerAddress, SpInput as AtInput } from '@/components'
 import { showToast, pickBy } from '@/utils'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 import './community-edit.scss'
 

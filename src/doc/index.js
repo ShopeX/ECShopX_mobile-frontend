@@ -11,8 +11,6 @@ import * as checkout from './checkout'
 import * as category from './category'
 import * as article from './article'
 import * as payment from './payment'
-import * as community from './community'
-import * as point from './point'
 import * as member from './member'
 import * as trade from './trade'
 import * as mdugc from './mdugc'
@@ -31,8 +29,6 @@ export default {
   category,
   article,
   payment,
-  community,
-  point,
   member,
   trade,
   mdugc,

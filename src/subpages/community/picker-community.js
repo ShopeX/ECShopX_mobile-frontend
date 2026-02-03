@@ -11,7 +11,7 @@ import { SpPage, SpScrollView, SpCheckbox } from '@/components'
 import { AtButton } from 'taro-ui'
 import { pickBy } from '@/utils'
 import api from '@/api'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import { updateSelectCommunityZiti } from '@/store/slices/community'
 import './picker-community.scss'
 
