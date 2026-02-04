@@ -124,12 +124,9 @@ function WgtCouponCard(props) {
       })
       if (!status) return
       showToast('优惠券领取成功')
-      api.track.adTrack({
-        action_type: 'CLAIM_OFFER',
-        coupon_id: cardId
-      })
       getCouponCardList()
     } catch (error) {
+      console.log('error', error)
       showToast('优惠券领取失败')
       getCouponCardList()
     }
