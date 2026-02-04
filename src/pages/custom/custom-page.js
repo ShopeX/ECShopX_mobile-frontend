@@ -9,20 +9,14 @@ import Taro, {
   useRouter,
   getCurrentInstance,
   useShareAppMessage,
-  useShareTimeline} from '@tarojs/taro'
+  useShareTimeline
+} from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import { SpPage, SpSearch, SpSkuSelect, SpTabbar, SpLogin } from '@/components'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import {
-  getDistributorId,
-  log,
-  entryLaunch,
-  pickBy,
-  showToast,
-  buildSharePath
-} from '@/utils'
+import { getDistributorId, log, entryLaunch, pickBy, showToast, buildSharePath } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import { useNavigation } from '@/hooks'
 import req from '@/api/req'

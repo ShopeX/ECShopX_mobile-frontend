@@ -318,7 +318,10 @@ class EntryLaunch {
       const res = await api.wx.getAreaByLnglat({ lng, lat })
       console.log('getAddressByLnglatWebAPI res:', res)
       if (res && res.address) {
-        const { address_component: { province, city, district }, address } = res
+        const {
+          address_component: { province, city, district },
+          address
+        } = res
         return {
           lng,
           lat,

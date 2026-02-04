@@ -11,9 +11,7 @@ export const CASE_LIST = {
   cover_pic: 'cover_pic',
   design_name: 'design_name',
   tagList: ({ taginfo }) =>
-    taginfo
-      ? taginfo.filter((tagItem) => tagItem.tag_category_name === '风格')
-      : [],
+    taginfo ? taginfo.filter((tagItem) => tagItem.tag_category_name === '风格') : [],
   taginfo: 'taginfo'
 }
 
@@ -27,4 +25,3 @@ export const CASE_DETAIL = {
   taginfo: 'taginfo',
   picinfo: 'picinfo'
 }
-

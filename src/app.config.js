@@ -240,11 +240,7 @@ const config = {
     // 案例
     {
       root: 'subpages/case',
-      pages: [
-        'list',
-        'detail',
-        'view-case'
-      ]
+      pages: ['list', 'detail', 'view-case']
     },
     {
       root: 'marketing',

@@ -120,9 +120,7 @@ class Lang {
       isFunction(globalThis._localStorage.getItem) &&
       globalThis._localStorage.getItem('')
     // 从本地存储中获取通用语言，如果不存在则使用空字符串
-    const commonLang = withStorageCommonLang
-      ? globalThis._localStorage.getItem('')
-      : ''
+    const commonLang = withStorageCommonLang ? globalThis._localStorage.getItem('') : ''
     // 从本地存储中获取当前语言，如果不存在则使用源语言
     const baseLang = withStorageLang
       ? globalThis._localStorage.getItem('lang')

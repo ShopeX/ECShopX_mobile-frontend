@@ -49,7 +49,7 @@ export default function LocationModuleNavBar(props) {
       {/* 导航项区域 */}
       <View className='wgt-comps__nav-area' style={styleNames(navItemAreaStyle)}>
         {/* 左侧/顶部图片 */}
-        {base.leftimgUrl &&  (
+        {base.leftimgUrl && (
           <SpImage
             onClick={() => handleClickLeftImg()}
             src={base.leftimgUrl}
@@ -95,7 +95,10 @@ export default function LocationModuleNavBar(props) {
                     <Text className='wgt-comps__nav-item-text'>{item.navItemName}</Text>
                   )}
                   {base.navitemborder && isActive && (
-                    <View className='wgt-comps__nav-item-border' style={{ backgroundColor: `${base.navitembordercolor || 'transparent'}` }} />
+                    <View
+                      className='wgt-comps__nav-item-border'
+                      style={{ backgroundColor: `${base.navitembordercolor || 'transparent'}` }}
+                    />
                   )}
                 </View>
               )

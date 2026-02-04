@@ -97,9 +97,8 @@ function Home() {
   const pageRef = useRef()
   const loginRef = useRef()
 
-  const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector(
-    (state) => state.sys
-  )
+  const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } =
+    useSelector((state) => state.sys)
   const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
@@ -407,7 +406,6 @@ function Home() {
           />
         </>
       </ScrollView>
-
     </SpPage>
   )
 }

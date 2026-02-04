@@ -413,38 +413,38 @@ function CompsCategoryAddCart(props) {
             />
           </View>
 
-        <View
-          className='right-container'
-          style={styleNames({
-            paddingTop: thirdList.length == 0 && '0px'
-          })}
-        >
-          {thirdList.length > 0 && (
-            <View className='right-container-fixed'>
-              <CompThirdCategory
-                cusIndex={categoryThirdIndex}
-                list={thirdList}
-                onClick={onThirdCategoryClick}
-                typeIndex={cusIndex}
-              />
-            </View>
-          )}
-          <ScrollView className='goods-list-container' scrollY>
-            <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
-              {allList?.map((item, index) => (
-                <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <CompGoodsItem
-                    onStoreClick={handleClickStore}
-                    onAddToCart={handleAddToCart}
-                    hideStore
-                    info={item}
-                  />
-                </View>
-              ))}
-            </SpScrollView>
-          </ScrollView>
+          <View
+            className='right-container'
+            style={styleNames({
+              paddingTop: thirdList.length == 0 && '0px'
+            })}
+          >
+            {thirdList.length > 0 && (
+              <View className='right-container-fixed'>
+                <CompThirdCategory
+                  cusIndex={categoryThirdIndex}
+                  list={thirdList}
+                  onClick={onThirdCategoryClick}
+                  typeIndex={cusIndex}
+                />
+              </View>
+            )}
+            <ScrollView className='goods-list-container' scrollY>
+              <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
+                {allList?.map((item, index) => (
+                  <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
+                    <CompGoodsItem
+                      onStoreClick={handleClickStore}
+                      onAddToCart={handleAddToCart}
+                      hideStore
+                      info={item}
+                    />
+                  </View>
+                ))}
+              </SpScrollView>
+            </ScrollView>
+          </View>
         </View>
-      </View>
       </View>
 
       {/* Sku选择器 */}

@@ -172,10 +172,10 @@ export default function WgtSpeedkill(props) {
       id={`wgt-speedkill-${id || ''}`}
     >
       <View className='wgt-speedkill-body' style={styleNames(innerStyle)}>
-        {(hasTitle || showMore) ? (
+        {hasTitle || showMore ? (
           <View className='wgt-speedkill-head'>
             <View className='wgt-speedkill-head-hd'>
-              {(base.titleText?.type === 'text' && base.titleText?.text) && (
+              {base.titleText?.type === 'text' && base.titleText?.text && (
                 <Text
                   className='wgt-speedkill-head-title'
                   style={styleNames({ color: base.titleColor })}
@@ -183,7 +183,7 @@ export default function WgtSpeedkill(props) {
                   {base.titleText.text}
                 </Text>
               )}
-              {(base.titleText?.type === 'image' && base.titleText?.image) && (
+              {base.titleText?.type === 'image' && base.titleText?.image && (
                 <SpImage src={base.titleText.image} className='wgt-speedkill-head-title-image' />
               )}
               {base.titleType === 'text' && base.titleText && !base.titleText?.type && (
@@ -205,7 +205,11 @@ export default function WgtSpeedkill(props) {
                 style={styleNames({ color: base.moreBtn?.color || base.moreBtnColor })}
               >
                 <Text>查看更多</Text>
-                <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color || base.moreBtnColor} />
+                <AtIcon
+                  value='chevron-right'
+                  size={14}
+                  color={base.moreBtn?.color || base.moreBtnColor}
+                />
               </View>
             )}
           </View>
@@ -239,7 +243,9 @@ export default function WgtSpeedkill(props) {
                     {item.itemName || item.title}
                   </View>
                   <View className='wgt-speedkill__activity-item-price'>
-                    <Text className='wgt-speedkill__activity-item-price__activity_name'>秒杀价</Text>
+                    <Text className='wgt-speedkill__activity-item-price__activity_name'>
+                      秒杀价
+                    </Text>
                     <Text className='wgt-speedkill__activity-item-price__unit'>￥</Text>
                     <Text className='wgt-speedkill__activity-item-price__text'>
                       {item.mainPrice ||

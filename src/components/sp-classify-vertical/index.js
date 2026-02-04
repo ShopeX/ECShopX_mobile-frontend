@@ -36,7 +36,7 @@ function CompCategoryItem(props) {
             onClick={() => handleClick(ele, index)}
           >
             <View className='sp-classify-vertical__image'>
-             {ele.image && <SpImage src={ele.image} mode='aspectFill' />}
+              {ele.image && <SpImage src={ele.image} mode='aspectFill' />}
             </View>
             <Text className='sp-classify-vertical__name'>{ele.name}</Text>
           </View>

@@ -290,40 +290,32 @@ function App({ children }) {
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-600-SemiBold.otf?t=1718810009',
-      success: () => {
-      },
-      fail: () => {
-      }
+      success: () => {},
+      fail: () => {}
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-Regular',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-400-Regular.otf?t=1718810009',
-      success: () => {
-      },
-      fail: () => {
-      }
+      success: () => {},
+      fail: () => {}
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-Medium',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-500-Medium.otf?t=1718810009',
-      success: () => {
-      },
-      fail: () => {
-      }
+      success: () => {},
+      fail: () => {}
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-ExtraBold',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-800-ExtraBold.otf?t=1718810009',
-      success: () => {
-      },
-      fail: () => {
-      }
+      success: () => {},
+      fail: () => {}
     })
   }
 

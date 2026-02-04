@@ -9,7 +9,6 @@ import { SpImage } from '@/components'
 import { styleNames, classNames } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
 
-
 const CustomNavigationHeader = memo((props) => {
   const {
     pageConfig = {},
@@ -59,7 +58,15 @@ const CustomNavigationHeader = memo((props) => {
       style.transition = 'all 0.15s ease-in'
     }
     return style
-  }, [value, immersive, mantle, navigateMantle, navigateBackgroundColor, gNavbarH, gStatusBarHeight])
+  }, [
+    value,
+    immersive,
+    mantle,
+    navigateMantle,
+    navigateBackgroundColor,
+    gNavbarH,
+    gStatusBarHeight
+  ])
 
   const contentStyle = useCallback(() => {
     const navBg = value?.navigateBackgroundColor || navigateBackgroundColor || '#fff'
@@ -80,8 +87,7 @@ const CustomNavigationHeader = memo((props) => {
     }
   }, [value])
 
-  const showFunctionArea =
-    value?.pTitleHotSetting?.type && value.pTitleHotSetting.type !== 'none'
+  const showFunctionArea = value?.pTitleHotSetting?.type && value.pTitleHotSetting.type !== 'none'
   const functionAreaType = value?.pTitleHotSetting?.type || 'none'
   const functionAreaHotzone = value?.pTitleHotSetting?.hotzone || value?.pTitleHotSetting || {}
   const hotzoneImgUrl = functionAreaHotzone?.imgUrl
@@ -99,8 +105,8 @@ const CustomNavigationHeader = memo((props) => {
       url: isGoodsShelves()
         ? '/subpages/guide/index'
         : VERSION_IN_PURCHASE
-          ? '/pages/purchase/index'
-          : '/pages/index'
+        ? '/pages/purchase/index'
+        : '/pages/index'
     })
   }, [])
 
@@ -194,7 +200,12 @@ const CustomNavigationHeader = memo((props) => {
   const renderTitleImage = useCallback(() => {
     if (!value?.titleBackgroundImage) return null
     return (
-      <SpImage className='title-image' src={value.titleBackgroundImage} mode='heightFix' style={{ height: '64rpx' }} />
+      <SpImage
+        className='title-image'
+        src={value.titleBackgroundImage}
+        mode='heightFix'
+        style={{ height: '64rpx' }}
+      />
     )
   }, [value?.titleBackgroundImage])
 

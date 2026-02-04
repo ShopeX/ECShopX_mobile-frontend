@@ -101,9 +101,7 @@ const withStorageCommonLang =
   isFunction(globalThis.localStorage.getItem) &&
   globalThis.localStorage.getItem('')
 // 从本地存储中获取通用语言，如果不存在则使用空字符串
-const commonLang = withStorageCommonLang
-  ? globalThis.localStorage.getItem('')
-  : ''
+const commonLang = withStorageCommonLang ? globalThis.localStorage.getItem('') : ''
 // 从本地存储中获取当前语言，如果不存在则使用源语言
 const baseLang = withStorageLang
   ? globalThis.localStorage.getItem('lang')

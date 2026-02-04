@@ -147,7 +147,8 @@ export default function WgtGoods(props) {
     >
       <View className='wgt-goods-body' style={styleNames(innerStyle)}>
         {(base.titleText?.type === 'text' && base.titleText?.text) ||
-        (base.titleText?.type === 'image' && base.titleText?.image)||base.moreBtn?.show ? (
+        (base.titleText?.type === 'image' && base.titleText?.image) ||
+        base.moreBtn?.show ? (
           <View className='wgt-goods-head'>
             <View className='wgt-goods-head-hd'>
               {base.titleText?.type === 'text' && base.titleText?.text && (

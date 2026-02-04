@@ -90,7 +90,7 @@ function PointShopList() {
         { title: '全部' },
         { title: '销量' },
         { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
-     ]
+      ]
     })
   }, [])
 

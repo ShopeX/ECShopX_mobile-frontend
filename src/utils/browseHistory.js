@@ -24,10 +24,22 @@ export function saveBrowseItem(item) {
     distributor_id: item.distributor_id ?? item.distributorId,
     item_name: item.item_name ?? item.itemName,
     pics: item.pics ?? (item.imgs ? [item.imgs].flat() : []),
-    main_img: item.main_img ?? item.img ?? (item.pics && item.pics[0]) ?? (item.imgs && (Array.isArray(item.imgs) ? item.imgs[0] : item.imgs)),
-    price: typeof item.price === 'number' ? Math.round(item.price * 100) : (item.price ?? 0),
-    market_price: typeof item.marketPrice === 'number' ? Math.round(item.marketPrice * 100) : (typeof item.market_price === 'number' ? item.market_price : 0),
-    activity_price: item.activityPrice != null ? Math.round(Number(item.activityPrice) * 100) : (item.activity_price ?? undefined),
+    main_img:
+      item.main_img ??
+      item.img ??
+      (item.pics && item.pics[0]) ??
+      (item.imgs && (Array.isArray(item.imgs) ? item.imgs[0] : item.imgs)),
+    price: typeof item.price === 'number' ? Math.round(item.price * 100) : item.price ?? 0,
+    market_price:
+      typeof item.marketPrice === 'number'
+        ? Math.round(item.marketPrice * 100)
+        : typeof item.market_price === 'number'
+        ? item.market_price
+        : 0,
+    activity_price:
+      item.activityPrice != null
+        ? Math.round(Number(item.activityPrice) * 100)
+        : item.activity_price ?? undefined,
     store: item.store ?? 0,
     promotion_activity: item.promotion_activity,
     kaquan_list: item.kaquan_list ?? item.couponList,

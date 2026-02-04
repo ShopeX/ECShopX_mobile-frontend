@@ -10,7 +10,7 @@ import { useImmer } from 'use-immer'
 import './view-case.scss'
 
 const initialState = {
-  designWorks: [],
+  designWorks: []
 }
 
 function ViewCase() {
@@ -52,9 +52,7 @@ function ViewCase() {
                     src={item.cover_pic}
                   ></Image>
                   <View className='sp-case-list--item-desc'>
-                    <View className='sp-case-list--item-desc-title'>
-                      {item.design_name}
-                    </View>
+                    <View className='sp-case-list--item-desc-title'>{item.design_name}</View>
                   </View>
                 </View>
               )

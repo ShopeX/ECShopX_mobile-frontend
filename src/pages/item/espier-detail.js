@@ -480,7 +480,9 @@ function EspierDetail(props) {
   }
 
   const goToCaseView = () => {
-    Taro.navigateTo({ url: `/subpages/case/view-case?design_works=${JSON.stringify(info.designWorks)}` })
+    Taro.navigateTo({
+      url: `/subpages/case/view-case?design_works=${JSON.stringify(info.designWorks)}`
+    })
   }
 
   return (
@@ -608,7 +610,9 @@ function EspierDetail(props) {
                   <SpGoodsPrice info={curItem ? curItem : info} />
                 )}
                 {info.designWorks && info.designWorks.length > 0 && (
-                  <View className='goods-info-case' onClick={goToCaseView}>查看案例</View>
+                  <View className='goods-info-case' onClick={goToCaseView}>
+                    查看案例
+                  </View>
                 )}
               </View>
 

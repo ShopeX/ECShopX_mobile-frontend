@@ -221,7 +221,7 @@ function WgtCouponCard(props) {
                 </View>
                 <View className='wgt-couponcard-item-info'>
                   <View className='use-title'>{item.title}</View>
-                    <View className='use-desc'>{item.description}</View>
+                  <View className='use-desc'>{item.description}</View>
                   {couponCardList.length == 1 && <View className='use-time'>{item.validDate}</View>}
                 </View>
               </View>
