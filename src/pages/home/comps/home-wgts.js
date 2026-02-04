@@ -11,6 +11,7 @@ import { log } from '@/utils'
 import {
   WgtImgHotZone,
   WgtShop,
+  WgtStoreAlphabet,
   WgtClassify,
   WgtSlider,
   WgtFilm,
@@ -32,7 +33,7 @@ const initialState = {
   searchMethod: null
 }
 function HomeWgts(props) {
-  const { wgts, dtid, onLoad = () => { }, children, copywriting = false } = props
+  const { wgts, dtid, onLoad = () => {}, children, copywriting = false } = props
   const [state, setState] = useImmer(initialState)
   const { localWgts, searchMethod } = state
 
@@ -100,6 +101,10 @@ function HomeWgts(props) {
             {item.name === 'hotranking' && <WgtHotranking info={item} id={item.id || idx} />}{' '}
             {/** 热门排行榜 */}
             {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />} {/** 商品 */}
+            {item.name === 'storeAlphabet' && (
+              <WgtStoreAlphabet info={item} id={item.id || idx} />
+            )}{' '}
+            {/** 字母表店铺 */}
             {item.name === 'classify' && <WgtClassify info={item} id={item.id || idx} />}{' '}
             {/** 分类 */}
             {item.name === 'locationModule' && (

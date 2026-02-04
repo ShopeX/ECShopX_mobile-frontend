@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames } from '@/utils'
-import { SpShop, SpBrandIndexes } from '@/components'
+import { SpShop } from '@/components'
 import isArray from 'lodash/isArray'
 import { useSelector } from 'react-redux'
 import { getGlobalBaseStyle } from '../helper'
@@ -11,7 +11,7 @@ import './index.scss'
 function WgtShop(props) {
   const { info, id } = props
   const { base = {}, data = [], noRegionauth = false, pagetype } = info || {} //是否不限制区域
-  const { dataType, displayType } = base || {}
+  const { displayType } = base || {}
   const [currentIndex, setCurrentIndex] = useState(0)
   const { regionauthInfo = {} } = useSelector((reduxState) => reduxState.regionauth || {})
 
@@ -36,11 +36,6 @@ function WgtShop(props) {
     return `calc(534rpx + ${paddedt} + ${paddedb})`
   }, [base])
 
-  // 字母索引渲染
-  const renderLetter = useMemo(() => {
-    return <SpBrandIndexes data={dataType == 'all' ? [] : data} dataType={dataType} base={base} />
-  }, [dataType, data, base])
-
   const handleChange = (e) => {
     setCurrentIndex(e.detail.current)
   }
@@ -52,7 +47,6 @@ function WgtShop(props) {
   return (
     <View
       className={classNames('wgt-shop', {
-        'wgt-shop--alphabet': displayType == 'alphabet',
         'wgt-shop--horizontal': displayType == 'horizontal',
         'wgt-shop--single': data.length == 1
       })}
@@ -60,11 +54,6 @@ function WgtShop(props) {
       id={`wgt-shop-${id}`}
     >
       <View className='wgt-shop__content'>
-        {displayType == 'alphabet' && (
-          <View className='wgt-shop__content-inner' style={innerStyle}>
-            {renderLetter}
-          </View>
-        )}
         {displayType == 'horizontal' && isArray(data) && data.length > 0 && (
           <Swiper
             nextMargin={data.length > 1 ? '24rpx' : 0}

@@ -11,7 +11,14 @@ import classNames from 'classnames'
 import api from '@/api'
 import { platformTemplateName } from '@/utils'
 import { SpImage, SpLoading } from '@/components'
-import { WgtShop, WgtClassify, WgtImgHotZone, WgtSlider, WgtFilm } from '@/pages/home/wgts'
+import {
+  WgtShop,
+  WgtStoreAlphabet,
+  WgtClassify,
+  WgtImgHotZone,
+  WgtSlider,
+  WgtFilm
+} from '@/pages/home/wgts'
 import './category-flat-layout.scss'
 
 const initialState = {
@@ -60,6 +67,7 @@ function CategoryFlatLayout() {
             ...params
           }
         })
+        console.log(wgts, 'wgts')
         setState((draft) => {
           draft.filterWgts = wgts.filter((item) => item.name !== 'page')
           draft.activeTab = item.category_id
@@ -169,6 +177,7 @@ function CategoryFlatLayout() {
               {filterWgts?.map((item, index) => (
                 <>
                   {item.name == 'shop' && <WgtShop info={item} id={index + 1} />}
+                  {item.name == 'storeAlphabet' && <WgtStoreAlphabet info={item} id={index + 1} />}
                   {item.name == 'classify' && <WgtClassify info={item} id={index + 1} />}
                   {item.name === 'imgHotzone' && <WgtImgHotZone info={item} id={index + 1} />}{' '}
                   {/** 热区图 */}
