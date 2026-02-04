@@ -32,11 +32,14 @@ const Slider = (props) => {
   const base = params.base || {}
   const config = params.config || {}
   const data = params.data || []
-
   // 获取外层样式（包含 outerMargin）
   const outerStyle = useMemo(() => {
-    return getGlobalBaseStyle(base.outerMargin)
-  }, [base])
+    return {
+      ...getGlobalBaseStyle(base.outerMargin),
+      height: `${Taro.pxTransform(config.firstScreenHeight * 2)}`
+    }
+  }, [base, config.firstScreenHeight])
+
 
   useEffect(() => {
     // 初始化时，如果有视频且设置了自动播放，则播放
@@ -269,33 +272,12 @@ const Slider = (props) => {
   return (
     <View
       className={classNames('wgt wgt-slider', {
-        'wgt__padded': base.padded
+        
       })}
       style={styleNames(outerStyle)}
     >
-      {base.title && (
-        <View className='wgt-head'>
-          <View className='wgt-hd'>
-            <View className='wgt-title'>{base.title}</View>
-            {base.subtitle && <View className='wgt-subtitle'>{base.subtitle}</View>}
-          </View>
-        </View>
-      )}
 
       {config && (
-        <View
-          className={classNames('slider-swiper-wrap', {
-            padded: config.padded
-          })}
-        >
-          {data[0] && (
-            <SpImage
-              className={classNames('placeholder-img', {
-                rounded: config.rounded
-              })}
-              src={data[0].imgUrl || data[0].videoUrl}
-            />
-          )}
           <Swiper
             className='slider-img'
             circular
@@ -308,7 +290,6 @@ const Slider = (props) => {
           >
             {renderItems}
           </Swiper>
-        </View>
       )}
 
       {data.length > 1 && (
