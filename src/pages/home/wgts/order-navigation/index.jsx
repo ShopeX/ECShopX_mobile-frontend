@@ -9,9 +9,9 @@ import { SpImage, SpLogin } from '@/components'
 import { classNames, isWeb } from '@/utils'
 import { useLogin } from '@/hooks'
 import api from '@/api'
+import { AtIcon } from 'taro-ui'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
-import { AtIcon } from 'taro-ui'
 
 const initList = [
   {
@@ -134,9 +134,7 @@ export default function WgtOrderNavigation(props) {
           <SpLogin onChange={() => handleClickLink(item.link)} key={`wgt-order-item__${idx}`}>
             <View className='wgt-order-navigation-item'>
               <View className='wgt-order-navigation-wrapper'>
-                <View
-                  className='wgt-order-navigation-bg'
-                >
+                <View className='wgt-order-navigation-bg'>
                   <SpImage
                     src={item.imgUrl || initList[idx]?.imgUrl}
                     className={

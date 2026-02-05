@@ -31,8 +31,8 @@ function WgtImgHotZone(props) {
   // 容器样式
   const bodyStyle = useMemo(() => {
     const style = {
-      ...outerStyle,
-      width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
+      ...outerStyle
+      // width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
     }
 
     // 高度优先级：config.imgHeight > animation模式下的imgHeight > auto

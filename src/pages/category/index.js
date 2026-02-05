@@ -4,6 +4,7 @@
  */
 import React, { useEffect, useRef } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import { platformTemplateName, entryLaunch } from '@/utils'
@@ -13,7 +14,8 @@ import CategoryFlatLayout from './components/category-flat-layout'
 import './index.scss'
 
 const initialState = {
-  layout: 0 // 0: 默认, 1: 带购物车布局, 2: 带分类布局
+  layout: 0, // 0: 默认, 1: 带购物车布局, 2: 带分类布局
+  containerHeight: '' // 由 SpPage onReady 回填，用于容器高度
 }
 
 function StoreItemList(props) {
@@ -46,16 +48,30 @@ function StoreItemList(props) {
     })
   }
 
+  const handlePageReady = (info) => {
+    if (info?.height) {
+      setState((draft) => {
+        draft.containerHeight = info.height
+      })
+    }
+  }
+
   return (
     <SpPage
       className='page-category'
-      // renderNavigation={<SpSearchOne />}
+      renderNavigation={<SpSearchOne />}
       ref={pageRef}
       showLive
       renderFooter={<SpTabbar />}
+      onReady={handlePageReady}
     >
-      {state.layout === 1 && <CompsAddPurchase />}
-      {state.layout === 2 && <CategoryFlatLayout />}
+      <View
+        className='page-category__container'
+        style={{ height: state.containerHeight || '100%' }}
+      >
+        {state.layout === 1 && <CompsAddPurchase />}
+        {state.layout === 2 && <CategoryFlatLayout />}
+      </View>
     </SpPage>
   )
 }

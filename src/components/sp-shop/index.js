@@ -4,7 +4,7 @@ import Taro from '@tarojs/taro'
 import { Text, View, ScrollView } from '@tarojs/components'
 import { SpImage, SpGoodsItemType, SpLogin } from '@/components'
 import api from '@/api'
-import { pickBy } from '@/utils'
+import { pickBy, showToast, navigateToStoreByDistributorId } from '@/utils'
 import S from '@/spx'
 import doc from '@/doc'
 import './index.scss'
@@ -95,7 +95,7 @@ function SpShop(props) {
     // 判断当前店铺关联商户是否被禁用 isVaild：true有效
     const { status } = await api.distribution.merchantIsvaild({ distributor_id: distributor_id })
     if (status) {
-      Taro.navigateTo({ url: `/subpages/store/index?id=${distributor_id}` })
+      await navigateToStoreByDistributorId(distributor_id)
     } else {
       showToast('店铺已注销，去别的店铺看看吧')
     }

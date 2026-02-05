@@ -4,6 +4,7 @@ import { View, ScrollView } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { navigateToStoreByDistributorId } from '@/utils'
 import './index.scss'
 
 const initialState = {
@@ -97,12 +98,9 @@ function SpBrandIndexes(props) {
 
   const { list, activeLetter, loading } = state
 
-  // 处理店铺点击
+  // 处理店铺点击：云店则切换店铺并跳转首页，bbc 则跳转店铺详情页
   const handleClick = async (item, pindex, index, title) => {
-    // 跳转到店铺详情页
-    Taro.navigateTo({
-      url: `/subpages/store/index?id=${item.distributor_id}`
-    })
+    await navigateToStoreByDistributorId(item.distributor_id)
   }
 
   // 处理字母索引点击

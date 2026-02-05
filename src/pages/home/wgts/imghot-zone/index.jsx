@@ -45,7 +45,7 @@ function WgtImgHotZone(props) {
   // 容器样式（图片容器）
   const bodyStyle = useMemo(() => {
     const style = {
-      width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
+      // width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
     }
 
     // 纵向布局时，优先使用 base.imgHeight
