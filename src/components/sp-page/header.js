@@ -6,8 +6,9 @@ import React, { useCallback, memo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Input, Button } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { styleNames, classNames } from '@/utils'
+import { styleNames, classNames, VERSION_STANDARD } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
+import { useSelector } from 'react-redux'
 
 const CustomNavigationHeader = memo((props) => {
   const {
@@ -30,6 +31,7 @@ const CustomNavigationHeader = memo((props) => {
   const value = pageConfig
   const titleStyle = value?.titleStyle
   const showHeaderContent = value && titleStyle !== '0'
+  const { shopInfo } = useSelector((state) => state.shop)
 
   const headerStyle = useCallback(() => {
     const style = {
@@ -127,8 +129,8 @@ const CustomNavigationHeader = memo((props) => {
   }, [hotzoneImgUrl, functionAreaHotzone])
 
   const handleNearbyClick = useCallback(() => {
-    if (onNearbyClick) {
-      onNearbyClick()
+    if (VERSION_STANDARD) {
+      Taro.navigateTo({ url: '/subpages/store/list' })
     } else {
       Taro.navigateTo({ url: '/subpages/ecshopx/nearly-shop' })
     }
@@ -137,7 +139,9 @@ const CustomNavigationHeader = memo((props) => {
   const renderNearby = useCallback(() => {
     return (
       <View className='title-function nearby-function' onClick={handleNearbyClick}>
-        <Text className='nearby-function-text'>{nearbyText || '选择地区'}</Text>
+        <Text className='nearby-function-text'>
+          {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
+        </Text>
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
