@@ -57,7 +57,6 @@ import doc from '@/doc'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import withPageWrapper from '@/hocs/withPageWrapper'
 import HomeWgts from './home/comps/home-wgts'
-import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
@@ -341,9 +340,6 @@ function Home() {
             className='home-body-content'
             style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
           >
-            {isShowHomeHeader && (
-              <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-            )}
             <View style={{ flex: 1 }}>
               {filterWgts.length > 0 && (
                 <WgtsContext.Provider
