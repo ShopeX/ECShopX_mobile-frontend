@@ -47,10 +47,6 @@ function NearlyShop(props) {
     keyword,
     refresh,
     type,
-    queryProvice,
-    queryCity,
-    queryDistrict,
-    queryAddress,
     isToken
   } = state
   const [policyModal, setPolicyModal] = useState(false)

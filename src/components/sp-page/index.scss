@@ -110,7 +110,7 @@
     direction: ltr;
 
     .title-function {
-      height: 64rpx;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -124,8 +124,8 @@
       /* 热区图：整体在左侧，内容左对齐 */
       &.p-title-hot-img {
         justify-content: flex-start;
-        width: 64rpx;
-        min-width: 64rpx;
+        width: 64px;
+        min-width: 64px;
       }
     }
 
@@ -139,14 +139,14 @@
     }
 
     .header-container {
-      height: 64rpx;
-      margin-top: 26rpx;
-      line-height: 64rpx;
-      padding: 0 30rpx;
+      height: 64px;
+      margin-top: 52px;
+      line-height: 64px;
+      padding: 0 30px;
       position: relative;
       display: flex;
       align-items: center;
-      gap: 20rpx;
+      gap: 20px;
       /* 功能区（返回、首页、热区图/附近门店）统一在左边，标题/搜索占右侧 */
       justify-content: flex-start;
 
@@ -156,7 +156,7 @@
 
       &.has-nearby {
         .title-function.nearby-function {
-          max-width: 168rpx;
+          max-width: 168px;
           flex-shrink: 0;
           text-align: center;
           display: flex;
@@ -164,16 +164,16 @@
           justify-content: center;
 
           .nearby-function-text {
-            font-size: 28rpx;
+            font-size: 28px;
             color: #333;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 120rpx;
+            max-width: 120px;
           }
 
           .nearby-function-icon {
-            font-size: 28rpx;
+            font-size: 28px;
             color: #333;
           }
         }
@@ -188,7 +188,7 @@
       }
 
       .title-text {
-        font-size: 28rpx;
+        font-size: 28px;
         color: #333;
         flex: 1;
         min-width: 0;
@@ -212,45 +212,45 @@
         margin-left: 0;
         position: relative;
         z-index: 2;
-        padding-right: 170rpx;
+        padding-right: 170px;
         box-sizing: border-box;
 
         .search-container {
           display: flex;
           width: 100%;
-          max-width: 600rpx;
-          border-radius: 8rpx;
+          max-width: 600px;
+          border-radius: 8px;
           overflow: hidden;
           position: relative;
 
           .search-input {
             flex: 1;
-            height: 64rpx;
-            padding: 0 24rpx 0 40rpx;
+            height: 64px;
+            padding: 0 24px 0 40px;
             border: 1px solid #e0e0e0;
             border-right: none;
-            border-radius: 8rpx 0 0 8rpx;
+            border-radius: 8px 0 0 8px;
             background-color: #fff;
-            font-size: 28rpx;
+            font-size: 28px;
           }
 
           .search-icon {
             position: absolute;
-            left: 10rpx;
+            left: 10px;
             top: 50%;
             transform: translateY(-50%);
-            font-size: 32rpx;
+            font-size: 32px;
             color: #999;
             pointer-events: none;
             z-index: 1;
           }
 
           .search-button {
-            height: 64rpx;
-            padding: 0 20rpx;
+            height: 64px;
+            padding: 0 20px;
             border: none;
-            border-radius: 0 8rpx 8rpx 0;
-            font-size: 28rpx;
+            border-radius: 0 8px 8px 0;
+            font-size: 28px;
             display: flex;
             align-items: center;
             justify-content: center;

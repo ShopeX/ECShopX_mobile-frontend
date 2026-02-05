@@ -34,29 +34,19 @@ const CustomNavigationHeader = memo((props) => {
   const headerStyle = useCallback(() => {
     const style = {
       height: `${gNavbarH}px`,
-      paddingTop: `${gStatusBarHeight}px`,
       backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center'
     }
-    const newNavigateStyle = value?.newNavigateStyle
-    if (newNavigateStyle?.color) {
-      style.backgroundColor = newNavigateStyle.color
+    if (value?.navigateBackgroundColorr) {
+      style.backgroundColor = value?.navigateBackgroundColor
     }
-    if (newNavigateStyle?.image) {
-      style.backgroundImage = `url(${newNavigateStyle.image})`
+    if (value?.navigateBackgroundImage) {
+      style.backgroundImage = `url(${value?.navigateBackgroundImage})`
       style.backgroundSize = 'cover'
       style.backgroundPosition = 'center'
     }
-    if (!newNavigateStyle?.color && !newNavigateStyle?.image) {
-      if (!immersive || (immersive && mantle) || navigateMantle) {
-        style.backgroundColor = value?.navigateBackgroundColor || navigateBackgroundColor
-        style.backgroundImage = value?.navigateBackgroundImage
-          ? `url(${value.navigateBackgroundImage})`
-          : undefined
-      }
-      style.transition = 'all 0.15s ease-in'
-    }
+    style.transition = 'all 0.15s ease-in'
     return style
   }, [
     value,
@@ -68,22 +58,10 @@ const CustomNavigationHeader = memo((props) => {
     gStatusBarHeight
   ])
 
-  const contentStyle = useCallback(() => {
-    const navBg = value?.navigateBackgroundColor || navigateBackgroundColor || '#fff'
-    return {
-      backgroundColor: navBg,
-      backgroundImage: value?.navigateBackgroundImage
-        ? `url(${value.navigateBackgroundImage})`
-        : undefined,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center'
-    }
-  }, [value, navigateBackgroundColor])
-
   const containerStyle = useCallback(() => {
     return {
-      textAlign: value?.titlePosition || 'center',
-      color: value?.titleColor || '#333'
+      textAlign: value?.titlePosition,
+      color: value?.titleColor
     }
   }, [value])
 
@@ -105,8 +83,8 @@ const CustomNavigationHeader = memo((props) => {
       url: isGoodsShelves()
         ? '/subpages/guide/index'
         : VERSION_IN_PURCHASE
-        ? '/pages/purchase/index'
-        : '/pages/index'
+          ? '/pages/purchase/index'
+          : '/pages/index'
     })
   }, [])
 
@@ -213,7 +191,7 @@ const CustomNavigationHeader = memo((props) => {
 
   return (
     <View className='wgt-page' style={styleNames(headerStyle())} onClick={props.onClickHeader}>
-      <View className='wgt-page-content' style={styleNames(contentStyle())}>
+      <View className='wgt-page-content'>
         <View
           className={classNames('header-container', { 'has-nearby': hasNearby })}
           style={showHeaderContent ? styleNames(containerStyle()) : {}}
