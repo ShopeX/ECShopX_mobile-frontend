@@ -205,6 +205,8 @@ export default function WgtLocationModule(props) {
         navAreaPaddingBottom +
         navItemHeight
     )
+    console.log(navBarHeight, 'totalHeight',totalHeight)
+
     if (immersive) {
       return pxToRpx(navBarHeight) + totalHeight
     }

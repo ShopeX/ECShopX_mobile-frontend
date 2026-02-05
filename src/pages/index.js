@@ -83,7 +83,8 @@ const initialState = {
   distributor_id: null,
   backTopScrollTop: null,
   bodyHeight: 0,
-  scrollIntoView: null
+  scrollIntoView: null,
+  navbarHeight: 0
 }
 
 function Home() {
@@ -94,7 +95,6 @@ function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
   const pageRef = useRef()
-  const loginRef = useRef()
 
   const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } =
     useSelector((state) => state.sys)
@@ -107,20 +107,13 @@ function Home() {
   const { updateAddress } = useLocation()
   const {
     wgts,
-    loading,
-    searchComp,
     pageData,
-    fixedTop,
     filterWgts,
     isShowHomeHeader,
     info,
     skuPanelOpen,
     selectType,
     navigateMantle,
-    footerHeight,
-    distributor_id,
-    backTopScrollTop,
-    bodyHeight,
     scrollIntoView
   } = state
 
@@ -155,7 +148,7 @@ function Home() {
     }
   }, [skuPanelOpen])
 
-  useShareAppMessage(async (res) => {
+  useShareAppMessage(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
     if (VERSION_STANDARD) {
@@ -172,7 +165,7 @@ function Home() {
     }
   })
 
-  useShareTimeline(async (res) => {
+  useShareTimeline(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
     if (VERSION_STANDARD) {
@@ -259,15 +252,6 @@ function Home() {
   }
 
   // 定位
-  const fetchLocation = () => {
-    if (!location && ((VERSION_STANDARD && entryStoreByLBS) || VERSION_PLATFORM)) {
-      try {
-        updateAddress()
-      } catch (e) {
-        console.error('map location fail:', e)
-      }
-    }
-  }
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
@@ -317,9 +301,10 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height }) => {
+      onReady={({ height, gNavbarH }) => {
         setState((draft) => {
           draft.bodyHeight = height
+          draft.navbarHeight = gNavbarH
         })
       }}
     >
@@ -348,6 +333,7 @@ function Home() {
                     isTab: true,
                     immersive: pageData?.base?.isImmersive,
                     isShowHomeHeader: isShowHomeHeader && isWeixin,
+                    navBarHeight: state.navbarHeight,
                     footerHeight: state.footerHeight,
                     setScrollIntoView: (view) => {
                       setState((draft) => {
