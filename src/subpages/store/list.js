@@ -325,14 +325,14 @@ function NearlyShop(props) {
             {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
-        {address && isToken && (
+        {(address?.county) && isToken && (
           <View className='block-title block-flex'>
             <View>我的收货地址</View>
           </View>
         )}
 
         <View className='receive-address'>
-          {address && isToken && (
+          {(address?.county) && isToken && (
             <View
               className='address'
               onClick={() => onLocationChange(address)}
