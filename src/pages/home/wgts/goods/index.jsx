@@ -133,9 +133,7 @@ export default function WgtGoods(props) {
     return null
   }
 
-  // 数据条数小于 dataCount 时不展示挂件
-  const dataCount = base.dataCount || 1
-  if (!loading && goodsList.length < dataCount) {
+  if (!loading) {
     return null
   }
 

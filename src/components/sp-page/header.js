@@ -151,7 +151,7 @@ const CustomNavigationHeader = memo((props) => {
           <Text className='iconfont icon-sousuo-01 search-icon' />
           <Input
             className='search-input'
-            placeholder='底纹词滚动展示'
+            placeholder=''
             onConfirm={(e) => onSearchConfirm && onSearchConfirm(e.detail?.value)}
           />
           <View className='search-button' style={styleNames(searchButtonStyle())}>
