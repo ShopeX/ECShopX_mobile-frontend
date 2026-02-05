@@ -21,7 +21,7 @@ export default function WgtGoods(props) {
   const [goodsList, setGoodsList] = useState([])
   const [goodsLeftList, setGoodsLeftList] = useState([])
   const [goodsRightList, setGoodsRightList] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
@@ -96,9 +96,9 @@ export default function WgtGoods(props) {
             setGoodsRightList(_itemListRight)
           }
         }
+        setLoading(false)
       } catch (error) {
         console.error('获取商品失败:', error)
-      } finally {
         setLoading(false)
       }
     }
@@ -129,11 +129,7 @@ export default function WgtGoods(props) {
     })
   }
 
-  if (!info) {
-    return null
-  }
-
-  if (!loading) {
+  if (!info || loading) {
     return null
   }
 
