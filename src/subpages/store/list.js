@@ -95,13 +95,13 @@ function NearlyShop(props) {
     getTokenFromStorage()
   })
 
-    // 在需要获取 Token 的地方调用该函数
-    const getTokenFromStorage = async () => {
-      let res = await Taro.getStorage({ key: 'token' })
-      setState((draft) => {
-        draft.isToken = res?.data ? true : false
-      })
-    }
+  // 在需要获取 Token 的地方调用该函数
+  const getTokenFromStorage = async () => {
+    let res = await Taro.getStorage({ key: 'token' })
+    setState((draft) => {
+      draft.isToken = res?.data ? true : false
+    })
+  }
 
   const fetchDefaultShop = async () => {
     const res = await api.shop.getDefaultShop()
@@ -333,10 +333,9 @@ function NearlyShop(props) {
 
         <View className='receive-address'>
           {address && isToken && (
-            <View
-              className='address'
-              onClick={() => onLocationChange(address)}
-            >{`${address.province || ''}${address.city || ''}${address?.county || ''}${address?.adrdetail || ''}`}</View>
+            <View className='address' onClick={() => onLocationChange(address)}>{`${
+              address.province || ''
+            }${address.city || ''}${address?.county || ''}${address?.adrdetail || ''}`}</View>
           )}
         </View>
       </View>

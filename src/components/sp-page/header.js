@@ -83,8 +83,8 @@ const CustomNavigationHeader = memo((props) => {
       url: isGoodsShelves()
         ? '/subpages/guide/index'
         : VERSION_IN_PURCHASE
-          ? '/pages/purchase/index'
-          : '/pages/index'
+        ? '/pages/purchase/index'
+        : '/pages/index'
     })
   }, [])
 

@@ -40,7 +40,6 @@ const Slider = (props) => {
     }
   }, [base, config.firstScreenHeight])
 
-
   useEffect(() => {
     // 初始化时，如果有视频且设置了自动播放，则播放
     if (data.length > 0 && data[curIdx]?.media_type === 'video' && data[curIdx]?.autoplay) {
@@ -270,26 +269,20 @@ const Slider = (props) => {
   }, [data, curIdx, play, config.rounded])
 
   return (
-    <View
-      className={classNames('wgt wgt-slider', {
-        
-      })}
-      style={styleNames(outerStyle)}
-    >
-
+    <View className={classNames('wgt wgt-slider', {})} style={styleNames(outerStyle)}>
       {config && (
-          <Swiper
-            className='slider-img'
-            circular
-            autoplay={config.autoplay !== false}
-            current={curIdx}
-            interval={config.interval || 3000}
-            duration={300}
-            onChange={dotChange}
-            onAnimationFinish={swiperChange}
-          >
-            {renderItems}
-          </Swiper>
+        <Swiper
+          className='slider-img'
+          circular
+          autoplay={config.autoplay !== false}
+          current={curIdx}
+          interval={config.interval || 3000}
+          duration={300}
+          onChange={dotChange}
+          onAnimationFinish={swiperChange}
+        >
+          {renderItems}
+        </Swiper>
       )}
 
       {data.length > 1 && (
