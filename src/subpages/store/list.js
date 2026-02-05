@@ -280,7 +280,7 @@ function NearlyShop(props) {
     <SpPage className='page-store-list' ref={pageRef}>
       <View className='search-block'>
         <View className='search-bar'>
-          <View className='region-picker'>
+          {/* <View className='region-picker'>
             <View
               className='pick-title'
               onClick={() => {
@@ -291,9 +291,8 @@ function NearlyShop(props) {
             >
               <View className='iconfont icon-periscope'></View>
               <Text className='pick-address'>{chooseValue.join('') || '选择地区'}</Text>
-              {/* <Text className='iconfont icon-arrowDown'></Text> */}
             </View>
-          </View>
+          </View> */}
 
           <View className='search-comp-wrap'>
             <Text className='iconfont icon-sousuo-01'></Text>
