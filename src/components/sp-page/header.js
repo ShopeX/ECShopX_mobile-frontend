@@ -38,7 +38,8 @@ const CustomNavigationHeader = memo((props) => {
       height: `${gNavbarH}px`,
       backgroundSize: '100% 100%',
       backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center'
+      backgroundPosition: 'center',
+      paddingTop: `${gStatusBarHeight}px`,
     }
     if (value?.navigateBackgroundColorr) {
       style.backgroundColor = value?.navigateBackgroundColor
