@@ -150,7 +150,7 @@ const CustomNavigationHeader = memo((props) => {
 
   const renderSearch = useCallback(() => {
     return (
-      <View className='title-search' onClick={() => Taro.navigateTo({ url: '/subpages/search/index' })}>
+      <View className='title-search' onClick={() => Taro.navigateTo({ url: '/subpages/item/list' })}>
         <View className='search-container'>
           <Text className='iconfont icon-sousuo-01 search-icon' />
           {value?.showSearchButton && (
