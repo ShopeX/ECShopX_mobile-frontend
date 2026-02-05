@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useCallback, useRef, useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { View, Text, Picker, Input, Image } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -37,7 +37,8 @@ const initialState = {
   headquarters: null,
   isRecommend: false,
   isSpAddressOpened: false,
-  refresh: false
+  refresh: false,
+  isToken: false
 }
 
 function NearlyShop(props) {
@@ -60,7 +61,8 @@ function NearlyShop(props) {
     queryProvice,
     queryCity,
     queryDistrict,
-    queryAddress
+    queryAddress,
+    isToken
   } = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
@@ -72,6 +74,7 @@ function NearlyShop(props) {
   useEffect(() => {
     fetchDefaultShop()
     queryUserDistrict()
+    getTokenFromStorage()
   }, [])
 
   useEffect(() => {
@@ -87,6 +90,18 @@ function NearlyShop(props) {
       pageRef.current.pageUnLock()
     }
   }, [isSpAddressOpened])
+
+  useDidShow(() => {
+    getTokenFromStorage()
+  })
+
+    // 在需要获取 Token 的地方调用该函数
+    const getTokenFromStorage = async () => {
+      let res = await Taro.getStorage({ key: 'token' })
+      setState((draft) => {
+        draft.isToken = res?.data ? true : false
+      })
+    }
 
   const fetchDefaultShop = async () => {
     const res = await api.shop.getDefaultShop()
@@ -310,18 +325,18 @@ function NearlyShop(props) {
             {location?.address ? (state.locationIng ? '定位中...' : '重新定位') : '开启定位'}
           </View>
         </View>
-        {address && (
+        {address && isToken && (
           <View className='block-title block-flex'>
             <View>我的收货地址</View>
           </View>
         )}
 
         <View className='receive-address'>
-          {address && (
+          {address && isToken && (
             <View
               className='address'
               onClick={() => onLocationChange(address)}
-            >{`${address.province}${address.city}${address.county}${address.adrdetail}`}</View>
+            >{`${address.province || ''}${address.city || ''}${address?.county || ''}${address?.adrdetail || ''}`}</View>
           )}
         </View>
       </View>
