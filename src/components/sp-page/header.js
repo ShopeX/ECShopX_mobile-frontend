@@ -41,7 +41,7 @@ const CustomNavigationHeader = memo((props) => {
       backgroundPosition: 'center',
       paddingTop: `${gStatusBarHeight}px`,
     }
-    if (value?.navigateBackgroundColorr) {
+    if (value?.navigateBackgroundColor) {
       style.backgroundColor = value?.navigateBackgroundColor
     }
     if (value?.navigateBackgroundImage) {
@@ -149,19 +149,15 @@ const CustomNavigationHeader = memo((props) => {
   }, [handleNearbyClick, nearbyText])
 
   const renderSearch = useCallback(() => {
-    if (titleStyle !== '3' || !value?.showSearchButton) return null
     return (
-      <View className='title-search'>
+      <View className='title-search' onClick={() => Taro.navigateTo({ url: '/subpages/search/index' })}>
         <View className='search-container'>
           <Text className='iconfont icon-sousuo-01 search-icon' />
-          <Input
-            className='search-input'
-            placeholder=''
-            onConfirm={(e) => onSearchConfirm && onSearchConfirm(e.detail?.value)}
-          />
-          <View className='search-button' style={styleNames(searchButtonStyle())}>
-            <Text>搜索</Text>
-          </View>
+          {value?.showSearchButton && (
+            <View className='search-button' style={styleNames(searchButtonStyle())}>
+              <Text>搜索</Text>
+            </View>
+          )}
         </View>
       </View>
     )
