@@ -131,12 +131,12 @@ function NearlyShop(props) {
 
     // 构建位置相关参数
     if (filterType == 1) {
-      const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
+      // const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
       params = {
         ...params,
-        province: chooseProvince,
-        city: chooseCity,
-        area: chooseDistrict
+        // province: chooseProvince,
+        // city: chooseCity,
+        // area: chooseDistrict
       }
       if (keyword) {
         params = {
