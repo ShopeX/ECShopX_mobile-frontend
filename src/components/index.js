@@ -80,6 +80,7 @@ import SpFloatLayout from './sp-float-layout'
 import SpOrderItem from './sp-order-item'
 import SpSkuSelect from './sp-sku-select'
 import SpPoster from './sp-poster'
+import SpPoweredBy from './sp-powered-by'
 import SpChat from './sp-chat'
 import SpGoodsPrice from './sp-goods-price'
 import SpRecommendItem from './sp-recommend-item'
@@ -196,6 +197,7 @@ export {
   SpOrderItem,
   SpSkuSelect,
   SpPoster,
+  SpPoweredBy,
   SpChat,
   SpGoodsPrice,
   SpRecommendItem,

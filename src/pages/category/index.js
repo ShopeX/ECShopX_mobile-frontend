@@ -64,6 +64,7 @@ function StoreItemList(props) {
       showLive
       renderFooter={<SpTabbar />}
       onReady={handlePageReady}
+      showpoweredBy={false}
     >
       <View
         className='page-category__container'

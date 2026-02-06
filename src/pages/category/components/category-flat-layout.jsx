@@ -10,7 +10,7 @@ import { useImmer } from 'use-immer'
 import classNames from 'classnames'
 import api from '@/api'
 import { platformTemplateName } from '@/utils'
-import { SpImage, SpLoading } from '@/components'
+import { SpImage, SpLoading, SpPoweredBy } from '@/components'
 import {
   WgtShop,
   WgtStoreAlphabet,
@@ -188,6 +188,9 @@ function CategoryFlatLayout() {
                   {item.name === 'film' && <WgtFilm info={item} id={index + 1} />} {/** 视频 */}
                 </>
               ))}
+              <View className='category-flat-layout__powered-by-wrap'>
+                <SpPoweredBy />
+              </View>
             </ScrollView>
           )}
         </>

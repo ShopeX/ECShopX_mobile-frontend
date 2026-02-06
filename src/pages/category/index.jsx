@@ -53,6 +53,7 @@ function StoreItemList(props) {
       ref={pageRef}
       showLive
       renderFooter={<></>}
+      showpoweredBy={false}
     >
       {state.layout === 1 && <CompsAddPurchase />}
       {state.layout === 2 && <CategoryFlatLayout />}
