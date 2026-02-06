@@ -36,9 +36,6 @@ const initialState = {
 function CustomPage(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
-  const { setNavigationBarTitle } = useNavigation()
-  const { address, location } = useSelector((s) => s.user)
-  const nearbyText = address?.city || location?.city || ''
   const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)
   const pageRef = useRef()
@@ -137,11 +134,8 @@ function CustomPage(props) {
   return (
     <SpPage
       btnHomeEnable={router.params.fromConnect !== 'davild'}
-      immersive={pageData?.base?.isImmersive}
       scrollToTopBtn
       className='page-custom-page'
-      pageConfig={pageData?.base}
-      nearbyText={nearbyText}
       loading={loading}
       title={shareInfo?.page_name}
       ref={pageRef}

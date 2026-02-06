@@ -41,7 +41,7 @@ const CustomNavigationHeader = memo((props) => {
       backgroundPosition: 'center',
       paddingTop: `${gStatusBarHeight}px`
     }
-    if (value?.navigateBackgroundColorr) {
+    if (value?.navigateBackgroundColor) {
       style.backgroundColor = value?.navigateBackgroundColor
     }
     if (value?.navigateBackgroundImage) {
@@ -139,7 +139,7 @@ const CustomNavigationHeader = memo((props) => {
 
   const renderNearby = useCallback(() => {
     return (
-      <View className='title-function nearby-function' onClick={handleNearbyClick}>
+      <View className='title-function nearby-function' onClick={handleNearbyClick} style={{ color: value?.titleColor }}>
         <Text className='nearby-function-text'>
           {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
         </Text>
@@ -149,19 +149,15 @@ const CustomNavigationHeader = memo((props) => {
   }, [handleNearbyClick, nearbyText])
 
   const renderSearch = useCallback(() => {
-    if (titleStyle !== '3' || !value?.showSearchButton) return null
     return (
-      <View className='title-search'>
+      <View className='title-search' onClick={() => Taro.navigateTo({ url: '/subpages/item/list' })}>
         <View className='search-container'>
           <Text className='iconfont icon-sousuo-01 search-icon' />
-          <Input
-            className='search-input'
-            placeholder=''
-            onConfirm={(e) => onSearchConfirm && onSearchConfirm(e.detail?.value)}
-          />
-          <View className='search-button' style={styleNames(searchButtonStyle())}>
-            <Text>搜索</Text>
-          </View>
+          {value?.showSearchButton && (
+            <View className='search-button' style={styleNames(searchButtonStyle())}>
+              <Text>搜索</Text>
+            </View>
+          )}
         </View>
       </View>
     )

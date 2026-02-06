@@ -59,7 +59,10 @@ function StoreItemList(props) {
   return (
     <SpPage
       className='page-category'
-      renderNavigation={<SpSearchOne />}
+      pageConfig={{
+        titleStyle:'3',
+        navigateBackgroundColor:'#fff'
+      }}
       ref={pageRef}
       showLive
       renderFooter={<SpTabbar />}

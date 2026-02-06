@@ -146,7 +146,6 @@
 
           .nearby-function-text {
             font-size: 28px;
-            color: #333;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
@@ -155,7 +154,6 @@
 
           .nearby-function-icon {
             font-size: 28px;
-            color: #333;
           }
         }
 
@@ -203,17 +201,9 @@
           border-radius: 8px;
           overflow: hidden;
           position: relative;
-
-          .search-input {
-            flex: 1;
-            height: 64px;
-            padding: 0 24px 0 40px;
-            border: 1px solid #e0e0e0;
-            border-right: none;
-            border-radius: 8px 0 0 8px;
-            background-color: #fff;
-            font-size: 28px;
-          }
+          border: 1PX solid #e0e0e0;
+          background-color: #fff;
+          height: 64px;
 
           .search-icon {
             position: absolute;
@@ -237,6 +227,8 @@
             justify-content: center;
             white-space: nowrap;
             flex-shrink: 0;
+            position: absolute;
+            right: 0;
           }
         }
       }
