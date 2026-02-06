@@ -219,14 +219,16 @@ const Slider = (props) => {
               <>
                 <Video
                   src={item.videoUrl}
-                  controls={false}
                   autoplay={item.autoplay&&curIdx === idx}
                   objectFit='cover'
-                  showCenterPlayBtn={false}
                   showFullscreenBtn={false}
+                  showProgress={false}
                   muted={false}
+                  showPlayBtn={false}
                   id={`sliderVideo_${idx}`}
                   className='slider-video'
+                  poster={item.imgUrl}
+                  enableProgressGesture={false}
                 />
               </>
             )}
