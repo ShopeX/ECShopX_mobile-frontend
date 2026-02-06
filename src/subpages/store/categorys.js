@@ -133,7 +133,7 @@ function StoreItemList(props) {
     console.log('handleConfirm', val)
     if (val) {
       Taro.navigateTo({
-        url: `/pages/item/list?keywords=${val}`
+        url: `/subpages/item/list?keywords=${val}`
       })
     }
   }

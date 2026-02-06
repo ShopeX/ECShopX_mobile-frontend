@@ -115,10 +115,15 @@ function SpSkuSelect(props) {
       skuDictRef.current[key] = item
     })
     // 默认选中有库存并且前端可销售的sku
-    const defaultSpecItem = specItems.find(
+    let defaultSpecItem = specItems.find(
       (item) => item.store > 0 && ['onsale'].includes(item.approveStatus)
     )
-    let selection = Array(specItems.length).fill(null)
+    // 如果都没有库存，默认选择第一个可销售的规格
+    if (!defaultSpecItem) {
+      defaultSpecItem = specItems.find((item) => ['onsale'].includes(item.approveStatus))
+    }
+
+    let selection = Array(skuList.length).fill(null)
     if (defaultSpecItem) {
       selection = defaultSpecItem.specItem.map((item) => item.specId)
     }
@@ -412,7 +417,9 @@ function SpSkuSelect(props) {
       return
     }
 
-    await api.user.subscribeGoods(curItem?.itemId, { distributor_id: dtid })
+    await api.user.subscribeGoods(curItem ? curItem.itemId : info.itemId, {
+      distributor_id: dtid
+    })
     const { template_id } = await api.user.newWxaMsgTmpl({
       temp_name: 'yykweishop',
       source_type: 'goods'
@@ -437,7 +444,8 @@ function SpSkuSelect(props) {
         btnTxt = BUY_TOOL_BTNS()[key].title
       }
     })
-    if (curItem?.store <= 0) {
+    const isNoStore = info.nospec ? info.store <= 0 : curItem?.store <= 0
+    if (isNoStore) {
       return (
         <AtButton circle type='primary' onClick={handleSubscribe}>
           {BUY_TOOL_BTNS().NOTICE.title}

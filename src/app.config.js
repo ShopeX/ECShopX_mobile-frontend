@@ -17,7 +17,6 @@ const config = {
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
 
-    'pages/item/list', // 商品列表页面
     'pages/item/espier-detail', // 商品详情页面
 
     'pages/article/index', // 文章页面
@@ -93,6 +92,12 @@ const config = {
       ]
     },
     {
+      root: 'subpages/item',
+      pages: [
+        'list' // 商品列表页面
+      ]
+    },
+    {
       root: 'subpages/member',
       pages: [
         'index', // 会员中心
@@ -100,7 +105,8 @@ const config = {
         'point-rule', // 积分规则
         'member-level', // 会员等级
         'user-info', // 个人信息
-        'settings' // 设置
+        'settings', // 设置
+        'qrcode' // 会员码
       ]
     },
     {
@@ -230,6 +236,11 @@ const config = {
         // "pages/make_collection/index",
         // "pages/make_system/index",
       ]
+    },
+    // 案例
+    {
+      root: 'subpages/case',
+      pages: ['list', 'detail', 'view-case']
     },
     {
       root: 'marketing',

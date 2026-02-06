@@ -6,9 +6,9 @@
 @font-face {
   font-family: 'iconfont';
   /* Project id 869421 */
-  src: url('//at.alicdn.com/t/c/font_869421_eqvv6wqt86.woff2?t=1750303283759') format('woff2'),
-    url('//at.alicdn.com/t/c/font_869421_eqvv6wqt86.woff?t=1750303283759') format('woff'),
-    url('//at.alicdn.com/t/c/font_869421_eqvv6wqt86.ttf?t=1750303283759') format('truetype');
+  src: url('//at.alicdn.com/t/c/font_869421_p0hn5lka3hd.woff2?t=1765797575841') format('woff2'),
+    url('//at.alicdn.com/t/c/font_869421_p0hn5lka3hd.woff?t=1765797575841') format('woff'),
+    url('//at.alicdn.com/t/c/font_869421_p0hn5lka3hd.ttf?t=1765797575841') format('truetype');
 }
 .iconfont {
   font-family: 'iconfont' !important;
@@ -1544,4 +1544,12 @@
 
 .icon-arrowRight:before {
   content: '\e726';
+}
+
+.icon-3Dzhanshi:before {
+  content: '\e6d4';
+}
+
+.icon-loufang:before {
+  content: '\e6d5';
 }

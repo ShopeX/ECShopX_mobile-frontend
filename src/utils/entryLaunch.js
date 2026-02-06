@@ -14,7 +14,6 @@ import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
 
-const geocodeUrl = 'https://apis.map.qq.com/ws/geocoder/v1'
 const $instance = getCurrentInstance()
 const { store } = configStore()
 class EntryLaunch {
@@ -195,6 +194,10 @@ class EntryLaunch {
                 lng: res.longitude,
                 lat: res.latitude
               })
+              S.set('currentLocation', {
+                lng: res.longitude,
+                lat: res.latitude
+              })
             } else {
               resolve({})
               reject({ message: res.errMsg })
@@ -261,28 +264,28 @@ class EntryLaunch {
   }
 
   /**
-   * @function 根据地址解析经纬度--腾讯
+   * @function 根据地址解析经纬度
    */
   async getLnglatByAddress(address) {
-    const res = await Taro.request({
-      url: `${geocodeUrl}`,
-      data: {
-        key: process.env.APP_MAP_KEY,
-        address,
-        output: 'json'
+    try {
+      const res = await api.wx.getAreaByAddress({ address })
+      if (res && res.status === 0) {
+        const { result } = res
+        return {
+          address: result.title,
+          province: result.address_components.province,
+          city: result.address_components.city,
+          district: result.address_components.district,
+          lng: result.location.lng,
+          lat: result.location.lat
+        }
+      } else {
+        return {
+          error: '地址解析错误'
+        }
       }
-    })
-    if (res.data.status === 0) {
-      const { result } = res.data
-      return {
-        address: result.title,
-        province: result.address_components.province,
-        city: result.address_components.city,
-        district: result.address_components.district,
-        lng: result.location.lng,
-        lat: result.location.lat
-      }
-    } else {
+    } catch (error) {
+      console.error('getLnglatByAddress error:', error)
       return {
         error: '地址解析错误'
       }
@@ -306,31 +309,34 @@ class EntryLaunch {
   }
 
   /**
-   * @function 根据经纬度解析地址 -- 腾讯
-   * @params lnglat Array
+   * @function 根据经纬度解析地址
+   * @params lng Number 经度
+   * @params lat Number 纬度
    */
   async getAddressByLnglatWebAPI(lng, lat) {
-    const res = await Taro.request({
-      url: `${geocodeUrl}`,
-      data: {
-        key: process.env.APP_MAP_KEY,
-        location: `${lat},${lng}`
+    try {
+      const res = await api.wx.getAreaByLnglat({ lng, lat })
+      console.log('getAddressByLnglatWebAPI res:', res)
+      if (res && res.address) {
+        const {
+          address_component: { province, city, district },
+          address
+        } = res
+        return {
+          lng,
+          lat,
+          address,
+          province,
+          city: isArray(city) ? province : city,
+          district
+        }
+      } else {
+        return {
+          error: '地址解析错误'
+        }
       }
-    })
-    if (res.data.status == 0) {
-      const {
-        address,
-        address_component: { province, city, district }
-      } = res.data.result
-      return {
-        lng,
-        lat,
-        address: address,
-        province: province,
-        city: isArray(city) ? province : city,
-        district: district
-      }
-    } else {
+    } catch (error) {
+      console.error('getAddressByLnglatWebAPI error:', error)
       return {
         error: '地址解析错误'
       }
@@ -417,16 +423,9 @@ class EntryLaunch {
    */
   async postGuideUV() {
     if (!S.getAuthToken()) return
-    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
-    const { gu, gu_user_id } = routerParams || {}
-    let work_userid = ''
+    const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu) {
-      work_userid = gu.split('_')[0]
-    }
-    if (gu_user_id) {
-      work_userid = gu_user_id
-    }
-    if (work_userid) {
+      const [work_userid] = gu.split('_')
       await api.user.uniquevisito({
         work_userid
       })
@@ -437,8 +436,7 @@ class EntryLaunch {
    * 导购关系绑定
    */
   async postGuideUVBind() {
-    const routerParams = Taro.getStorageSync(SG_GUIDE_PARAMS)
-    const { gu } = routerParams || {}
+    const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu) {
       const [work_userid] = gu.split('_')
       await api.user.bindSaleperson({
@@ -450,22 +448,25 @@ class EntryLaunch {
   /**
    * 导购任务埋点上报
    */
-  async postGuideTask() {
+  async postGuideTask(customPath) {
     const { path, params } = $instance.router
+    const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
       '/subpage/pages/recommend/detail': 'activeSeedingDetail',
-      '/pages/marketing/coupon-center': 'activeDiscountCoupon',
-      '/pages/cart/espier-checkout': 'orderPaymentSuccess'
+      '/subpages/marketing/coupon-center': 'activeDiscountCoupon',
+      '/pages/cart/espier-checkout': 'orderPaymentSuccess',
+      '/pages/index': 'activeHomePage',
+      '/pages/recommend/list': 'activeRecommendList',
+      '/subpages/member/index': 'activeMemberCenter'
     }
-    if (!routePath[path]) {
+    if (!routePath[paths]) {
       return
     }
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
-    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } = await this.getRouteParams(
-      params
-    )
+    const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } =
+      Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu && S.getAuthToken()) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {
@@ -474,8 +475,9 @@ class EntryLaunch {
         distributor_id: dtid,
         shop_code,
         item_id: item_id || id,
-        event_type: routePath[path]
+        event_type: routePath[paths]
       }
+      console.log('导购埋点上报')
       api.wx.taskReportData(_params)
 
       const { userInfo } = store.getState().user
@@ -484,7 +486,7 @@ class EntryLaunch {
         event_id: employee_number,
         user_type: 'wechat',
         user_id,
-        event_type: routePath[path],
+        event_type: routePath[paths],
         store_bn: shop_code
       })
     }

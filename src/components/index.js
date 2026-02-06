@@ -80,6 +80,7 @@ import SpFloatLayout from './sp-float-layout'
 import SpOrderItem from './sp-order-item'
 import SpSkuSelect from './sp-sku-select'
 import SpPoster from './sp-poster'
+import SpPoweredBy from './sp-powered-by'
 import SpChat from './sp-chat'
 import SpGoodsPrice from './sp-goods-price'
 import SpRecommendItem from './sp-recommend-item'
@@ -109,6 +110,12 @@ import SpInput from './sp-input'
 import SpSelectModal from './sp-select-modal'
 import SpDeliver from './sp-deliver'
 import SharePurchase from './share-purchase'
+import SpSearchOne from './sp-search-one'
+
+import SpShop from './sp-shop'
+import SpClassifyHorizontal from './sp-classify-horizontal'
+import SpClassifyVertical from './sp-classify-vertical'
+import SpBrandIndexes from './sp-brand-indexes'
 
 export default {}
 
@@ -190,6 +197,7 @@ export {
   SpOrderItem,
   SpSkuSelect,
   SpPoster,
+  SpPoweredBy,
   SpChat,
   SpGoodsPrice,
   SpRecommendItem,
@@ -218,5 +226,10 @@ export {
   SpInput,
   SpSelectModal,
   SpDeliver,
-  SharePurchase
+  SharePurchase,
+  SpSearchOne,
+  SpShop,
+  SpClassifyHorizontal,
+  SpClassifyVertical,
+  SpBrandIndexes
 }

@@ -34,10 +34,10 @@ function ShareIand() {
       // 导购参数处理
       Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
       Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
-      if (S.getAuthToken()) {
-        entryLaunch.postGuideUV() // 导购uv上报
-        entryLaunch.postGuideTask() // 导购任务上报
-      }
+      // if (S.getAuthToken()) {
+      //   entryLaunch.postGuideUV() // 导购uv上报
+      //   entryLaunch.postGuideTask() // 导购任务上报
+      // }
     }
 
     if (routeParams?.t == 1) {
@@ -57,7 +57,7 @@ function ShareIand() {
       'guide_welcome_couponlist': '/subpages/marketing/coupon-center', // 导购欢迎语--商城优惠券中心
       'guide_welcome_recommend': '/pages/recommend/list', // 导购欢迎语--商城种草
       'guide_welcome_member': '/subpages/member/index', // 导购欢迎语--商城会员中心
-      'guide_welcome_itemlist': '/pages/item/list', // 导购欢迎语--商城商品列表
+      'guide_welcome_itemlist': '/subpages/item/list', // 导购欢迎语--商城商品列表
 
       // 导购任务
       'guide_task_home': '/pages/index', // 导购任务-管理端-小程序首页
@@ -83,10 +83,16 @@ function ShareIand() {
     }
 
     // 过滤掉内部使用的参数
-    const filteredParams = { ...otherParams }
+    let filteredParams = { ...otherParams }
+    if (from_scene === 'poster_espier_checkout') {
+      filteredParams['launchScene'] = 1
+    }
     delete filteredParams.scene
     delete filteredParams.$taroTimestamp
     const queryString = qs.stringify(filteredParams)
+
+    // entryLaunch.postGuideUV() // 导购uv上报
+    // entryLaunch.postGuideTask(welcomeRoutes[from_scene]) // 导购任务上报
 
     const targetUrl = queryString
       ? `${welcomeRoutes[from_scene]}?${queryString}`
@@ -124,7 +130,7 @@ function ShareIand() {
     const { target_path, ...otherParams } = routeParams
 
     // 过滤掉内部使用的参数
-    const filteredParams = { ...otherParams }
+    let filteredParams = { ...otherParams }
     delete filteredParams.scene
     delete filteredParams.$taroTimestamp
 
@@ -132,6 +138,13 @@ function ShareIand() {
     let normalizedPath = target_path
     if (normalizedPath && !normalizedPath.startsWith('/')) {
       normalizedPath = '/' + normalizedPath
+    }
+
+    entryLaunch.postGuideUV() // 导购uv上报
+    entryLaunch.postGuideTask(normalizedPath) // 导购任务上报
+
+    if (normalizedPath === '/pages/cart/espier-checkout') {
+      filteredParams['launchScene'] = 1
     }
 
     // 构建目标URL

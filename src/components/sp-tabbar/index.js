@@ -7,14 +7,15 @@ import React, { useEffect, useState } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { TABBAR_PATH, TABBAR_ICON, DEFAULT_SAFE_AREA_HEIGHT } from '@/consts'
+import { TABBAR_PATH, TABBAR_ICON, SG_CHECK_STORE_RULE } from '@/consts'
 import { classNames, styleNames, getCurrentRoute, isWeb, isIphoneX } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
+import S from '@/spx'
 import './index.scss'
 import SpImage from '../sp-image'
 
 function SpTabbar() {
-  const navipage = '/pages/item/list?isTabBar=true'
+  const navipage = '/subpages/item/list?isTabBar=true'
   const [currentIndex, setCurrentIndex] = useState(-1)
   const { tabbar = {} } = useSelector((state) => state.sys)
   const { cartCount = 0 } = useSelector((state) => state.cart)
@@ -31,8 +32,11 @@ function SpTabbar() {
       } = getCurrentRoute()
       const currentIndex = tabList?.findIndex((tab) => {
         if (currentPage == '/pages/custom/custom-page') {
-          console.log('customPageId', customPageId, tab.customPageId)
-          return tab.customPageId && customPageId == tab.customPageId
+          console.log('customPageId', customPageId, tab.customPageId, tab?.customPage?.id)
+          return (
+            (tab.customPageId || tab?.customPage?.id) &&
+            (customPageId == tab.customPageId || customPageId == tab?.customPage?.id)
+          )
         } else {
           if (routerIntercept.routes?.[process.env.APP_PLATFORM]?.[TABBAR_PATH()[tab.name]]) {
             return (
@@ -77,6 +81,12 @@ function SpTabbar() {
                 tabItem.customPageId || tabItem.customPage.id
               }`
             : TABBAR_PATH()[tabItem.name]
+
+        if (!S.getAuthToken()) {
+          // 未登录时清空店铺进店规则检查
+          Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+        }
+
         Taro.redirectTo({ url })
       } else {
         Taro.navigateTo({ url: TABBAR_PATH()[tabItem.name] })

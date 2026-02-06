@@ -3,44 +3,58 @@
  * See LICENSE file for license details.
  */
 .sp-price {
-  font-family: PingFangSC-Regular, PingFang SC;
+  font-family: D-DIN-PRO-Regular;
+  height: 100%;
+
   &.line-through {
-    color: $color-hint-text;
+    color: #bfbfbf;
+    position: relative;
     text-decoration: line-through;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     .sp-price__symbol {
       font-size: 20px;
-      color: $color-hint-text;
+      color: #bfbfbf;
     }
+
     .sp-price__int {
       font-size: 24px;
-      color: $color-hint-text;
+      color: #bfbfbf;
     }
+
     .sp-price__decimal {
       font-size: 24px;
-      color: $color-hint-text;
+      color: #bfbfbf;
     }
   }
 
   &__symbol {
     margin-right: 5px;
-    color: $color-primary-text;
+    color: $dark-text;
     font-size: 24px;
+    font-weight: 500;
   }
+
   &__int {
-    color: $color-primary-text;
+    color: $dark-text;
     font-size: 32px;
   }
+
   &__decimal {
-    color: $color-primary-text;
+    color: $dark-text;
     font-size: 28px;
   }
+
   &__primary {
     .sp-price__symbol {
       color: var(--color-primary);
     }
+
     .sp-price__int {
       color: var(--color-primary);
     }
+
     .sp-price__decimal {
       color: var(--color-primary);
     }

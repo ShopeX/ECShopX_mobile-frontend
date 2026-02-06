@@ -13,6 +13,7 @@ import doc from '@/doc'
 import api from '@/api'
 import { pickBy, formatTime, entryLaunch } from '@/utils'
 import { useModal } from '@/hooks'
+import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './coupon-detail.scss'
 
 const initialState = {
@@ -33,7 +34,11 @@ const SpCouponDetail = (props) => {
   const { showModal, closeModal } = useModal()
   const [state, setState] = useImmer(initialState)
   const { info, sharePanelOpen, posterModalOpen, posterIsReady } = state
-
+  const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
+  let work_userid = ''
+  if (gu) {
+    work_userid = gu.split('_')[0]
+  }
   const { params } = $instance?.router || {}
   const init = async () => {
     const {
@@ -107,9 +112,13 @@ const SpCouponDetail = (props) => {
       return
     }
     setIsLoading(true)
-    const { status } = await api.member.homeCouponGet({
+    const params = {
       card_id: info.card_id
-    })
+    }
+    if (work_userid) {
+      params.work_userid = work_userid
+    }
+    const { status } = await api.member.homeCouponGet(params)
     console.log('status', status)
     if (!status) {
       setIsLoading(false)
@@ -152,7 +161,7 @@ const SpCouponDetail = (props) => {
     Taro.navigateTo({
       url: info.use_all_items
         ? `/pages/index`
-        : `/pages/item/list?card_id=${
+        : `/subpages/item/list?card_id=${
             info.card_id || info.id
           }&channel_id=${channel_id}&source=${source}`
     })
@@ -174,7 +183,7 @@ const SpCouponDetail = (props) => {
         Taro.redirectTo({
           url: info.use_all_items
             ? `/pages/index`
-            : `/pages/item/list?card_id=${
+            : `/subpages/item/list?card_id=${
                 info.card_id || info.id
               }&channel_id=${channel_id}&source=${source}`
         })
@@ -185,7 +194,7 @@ const SpCouponDetail = (props) => {
         Taro.reLaunch({ url: '/pages/index' })
       } else {
         Taro.navigateTo({
-          url: `/pages/item/list?shop_code=${shop_code || ''}`
+          url: `/subpages/item/list?shop_code=${shop_code || ''}`
         })
       }
     }

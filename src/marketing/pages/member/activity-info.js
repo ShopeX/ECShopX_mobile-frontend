@@ -23,11 +23,14 @@ const initialState = {
     { label: '代他人报名', value: '1' }
   ],
   keyword: '',
-  loading: false
+  loading: false,
+  imgHeightList: [], // 用于存储banner高度
+  curImgIdx: 0,
+  defaultImageHeight: 375 // 默认图片高度，避免空白
 }
 function ActivityInfo(props) {
   const [state, setState] = useImmer(initialState)
-  const { info, isOpened, selectOptions, keyword, loading } = state
+  const { info, isOpened, selectOptions, imgHeightList, defaultImageHeight, curImgIdx } = state
   const router = useRouter()
   const { windowWidth } = Taro.getSystemInfoSync()
   const { setNavigationBarTitle } = useNavigation()
@@ -46,7 +49,47 @@ function ActivityInfo(props) {
     setNavigationBarTitle(_info?.activityName)
     setState((draft) => {
       draft.info = _info
+      draft.imgHeightList = new Array(_info?.pics?.length).fill(draft.defaultImageHeight)
     })
+    // 异步计算图片真实高度，不阻塞页面渲染
+    getMultipleImageInfo(_info?.pics)
+      .then((heights) => {
+        setState((draft) => {
+          draft.imgHeightList = heights
+        })
+      })
+      .catch((error) => {
+        console.log('计算图片高度失败，使用默认高度:', error)
+      })
+  }
+
+  const getMultipleImageInfo = async (imageUrls = []) => {
+    let windowsWidth = defaultImageHeight
+    try {
+      const sys = Taro.getSystemInfoSync()
+      if (sys && sys.windowWidth) {
+        windowsWidth = sys.windowWidth
+      }
+    } catch (e) {
+      console.log('获取系统信息失败，使用默认宽度:', e)
+    }
+
+    const promises = imageUrls.map(async (url) => {
+      try {
+        const imageInfo = await Taro.getImageInfo({ src: url })
+        const imgWidth = Number(imageInfo?.width) || 0
+        const imgHeight = Number(imageInfo?.height) || 0
+        if (imgWidth > 0 && imgHeight > 0) {
+          return Math.round((windowsWidth * imgHeight) / imgWidth)
+        }
+        return Math.round(windowsWidth)
+      } catch (error) {
+        console.log('获取图片信息失败:', url, error)
+        return Math.round(windowsWidth)
+      }
+    })
+
+    return Promise.all(promises)
   }
 
   const registrationSubmitFetch = async () => {
@@ -150,6 +193,12 @@ function ActivityInfo(props) {
     return (joinLimit <= totalJoinNum && joinLimit != 0) || (!isAllowDuplicate && recordId)
   }, [info])
 
+  const onChangeSwiper = async (e) => {
+    await setState((draft) => {
+      draft.curImgIdx = e.detail.current
+    })
+  }
+
   const renderFooter = () => {
     return (
       <View className='activity-info__footer'>
@@ -174,19 +223,21 @@ function ActivityInfo(props) {
     <SpPage scrollToTopBtn className='page-activity-info' renderFooter={renderFooter()}>
       {!info && <SpLoading />}
       {info && (
-        <>
-          <ScrollView scrollY className='activity-info__pic' style='height: 100%;'>
-            <View className='ctivity-info__pic-container'>
-              <Swiper className='activity-swiper' indicatorDots>
-                {info?.pics.map((img, idx) => (
-                  <SwiperItem key={`swiperitem__${idx}`}>
-                    <SpImage mode='widthFix' src={img} width={windowWidth * 2}></SpImage>
-                  </SwiperItem>
-                ))}
-              </Swiper>
-            </View>
-          </ScrollView>
-
+        <ScrollView scrollY className='activity-info__pic' style={{ height: `calc(100vh - 71px)` }}>
+          <View className='ctivity-info__pic-container'>
+            <Swiper
+              className='activity-swiper'
+              indicatorDots
+              onChange={onChangeSwiper}
+              style={{ height: (imgHeightList[curImgIdx] || defaultImageHeight) + 'px' }}
+            >
+              {info?.pics.map((img, idx) => (
+                <SwiperItem key={`swiperitem__${idx}`}>
+                  <SpImage mode='widthFix' src={img} width={windowWidth * 2}></SpImage>
+                </SwiperItem>
+              ))}
+            </Swiper>
+          </View>
           <View className='activity-info__content'>
             <View className='activity-info__title'>{info.activityName}</View>
             <View className='activity-info__member'>
@@ -215,7 +266,6 @@ function ActivityInfo(props) {
               )}
             </View>
           )}
-
           <View className='activity-info__content'>
             <View className='activity-info__detail'>活动详情</View>
             {isArray(info.content) ? (
@@ -235,7 +285,7 @@ function ActivityInfo(props) {
               <SpHtml content={info.content} />
             )}
           </View>
-        </>
+        </ScrollView>
       )}
 
       <SpSelectModal

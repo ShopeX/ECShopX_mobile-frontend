@@ -164,4 +164,30 @@ view.rtl-layout {
       left: 0 !important;
     }
   }
+
+  .comp-goodsitem {
+    &-hd {
+      margin-left: 20px;
+      margin-right: 0 !important;
+    }
+  }
+  .member-level-bg {
+    transform: scaleX(-1);
+  }
+
+  // Fix AtTabsPane in RTL layout
+  // AtTabsPane 在 RTL 布局下的修复
+  // 问题：direction: rtl 会影响 transform: translateX() 的方向，导致除了第一个面板外其他面板无法正确显示
+  // 解决：让 AtTabs 容器保持 LTR 方向，这样 transform 的方向就不会被反转
+  .at-tabs {
+    direction: ltr !important; // 强制 AtTabs 使用 LTR 方向，避免影响 transform
+
+    .at-tabs__body {
+      direction: ltr !important; // 确保 body 也是 LTR，transform 才能正常工作
+    }
+
+    .at-tabs-pane {
+      direction: rtl !important; // 但内容区域保持 RTL，确保文本和布局正确
+    }
+  }
 }

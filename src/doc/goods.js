@@ -4,6 +4,55 @@
  */
 import { pickBy } from '@/utils'
 
+export const GOODS_DETAIL_PROMOTION_TAG = (
+  { promotion_activity = [], discount_rate, specific_crowd = {}, activity_info = {} },
+  isGoodDetail
+) => {
+  const mapTagType = (type) => {
+    let t = ''
+    switch (type) {
+      case 'full_minus':
+      case 'full_discount':
+      case 'full_gift':
+        t = 'danger'
+        break
+      default:
+        t = ''
+    }
+    return t
+  }
+
+  let promotionTag = promotion_activity
+    .filter((item) => {
+      return mapTagType(item.tag_type || item.marketing_type)
+    })
+    ?.map((item) => {
+      return {
+        promotion_id: item.promotion_id || item.marketing_id,
+        //标签展示类型映射
+        type: mapTagType(item.tag_type || item.marketing_type),
+        activity_price: item.activity_price,
+        item_id: item.item_id || item.marketing_id,
+        tag_name: item.tag_name || item.promotion_tag,
+        tag_type: item.tag_type || item.marketing_type,
+        tag_desc: item.marketing_desc || item.tag_desc
+      }
+    })
+  //如果有秒杀则不展示定向折扣标签,商品详情和列表数据格式不一样区分开来
+  const isShowSpecificCrowd = isGoodDetail
+    ? activity_info.seckill_type != 'limited_time_sale'
+    : !promotion_activity?.some((item) => item.tag_type == 'limited_time_sale')
+
+  if (specific_crowd.id && isShowSpecificCrowd) {
+    promotionTag.push({
+      type: 'target',
+      tag_name: specific_crowd.promotion_tag,
+      tag_desc: specific_crowd.specific_desc
+    })
+  }
+  return promotionTag
+}
+
 export const WGT_GOODS_GRID = {
   cross: {
     key: 'origincountry_img_url',
@@ -434,6 +483,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
   isPrescription: 'is_prescription',
   medicineData: 'medicine_data',
   isMedicine: 'is_medicine',
+  designWorks: 'design_works',
   startNum: 'start_num' // 起订量
 }
 
@@ -443,4 +493,62 @@ export const PACKGOODS_INFO = {
   num: '',
   price: ({ price }) => price / 100,
   marketPrice: ({ market_price }) => market_price / 100
+}
+
+export const WGT_SPEEDKILL_GOODS = {
+  goodsId: 'goods_id',
+  itemId: 'item_id',
+  itemName: 'item_name',
+  store: 'store',
+  originalPrice: 'market_price',
+  distributorId: 'distributor_id',
+  pic: ({ pics, main_img }) => main_img || pics[0] || '',
+  mainPrice: ({ price, activity_price }) => (activity_price || price) / 100,
+  price: ({ price }) => price / 100, // 销售价
+  activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价、内购价
+  sales: 'sales',
+  discount_rate: ({ discount_rate }) =>
+    discount_rate ? String((discount_rate / 10).toFixed(1)) : null,
+  promotionSkill: ({ promotion_activity }) => {
+    const skill =
+      promotion_activity && promotion_activity.length
+        ? promotion_activity?.find((item) => item.tag_type == 'limited_time_sale')
+        : null
+    return skill
+  },
+  promotionGroup: ({ promotion_activity }) => {
+    const group =
+      promotion_activity && promotion_activity.length
+        ? promotion_activity?.find((item) => item.tag_type == 'single_group')
+        : null
+    return group
+  },
+  couponList: ({ kaquan_list }) => kaquan_list || [],
+  score: 'score',
+  memberPreference: 'memberpreference_activity',
+  spu_var: 'goods_bn',
+  spuName_var: 'item_name',
+  sku_var: ({ spec_items, item_id }) => {
+    return spec_items && spec_items.filter((i) => i.item_id == item_id)[0]?.item_bn
+  },
+  skuName_var: ({ spec_items, item_id }) => {
+    const item_spec = spec_items && spec_items.filter((i) => i.item_id == item_id)[0]?.item_spec
+    const result = item_spec?.map((i) => i.spec_value_name).join(' ')
+    return result
+  },
+  firstCategory_var: ({ item_category_main }) => {
+    return item_category_main && item_category_main[0]?.category_name
+  },
+  secondCategory_var: ({ item_category_main }) => {
+    return item_category_main && item_category_main[1]?.category_name
+  },
+  thirdCategory_var: ({ item_category_main }) => {
+    return item_category_main && item_category_main[2]?.category_name
+  },
+  brandName_var: 'goods_brand',
+  productPrice_var: ({ activity_price, price }) => {
+    return (activity_price || price) / 100
+  },
+  discount_var: ({ discount_rate }) =>
+    discount_rate ? String((discount_rate / 10).toFixed(1)) : null
 }

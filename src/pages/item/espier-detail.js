@@ -46,6 +46,7 @@ import {
   VERSION_STANDARD,
   buildSharePath
 } from '@/utils'
+import { saveBrowseItem } from '@/utils/browseHistory'
 import { fetchUserFavs } from '@/store/slices/user'
 
 import doc from '@/doc'
@@ -334,6 +335,9 @@ function EspierDetail(props) {
       draft.imgHeightList = new Array(data?.imgs?.length).fill(draft.defaultImageHeight)
     })
 
+    // 进入详情页算一次浏览，写入本地浏览记录（最多 10 条）
+    saveBrowseItem({ ...data, distributorId: data.distributorId ?? dtid })
+
     // 异步计算图片真实高度，不阻塞页面渲染
     getMultipleImageInfo(data.imgs)
       .then((heights) => {
@@ -475,6 +479,12 @@ function EspierDetail(props) {
     }
   }
 
+  const goToCaseView = () => {
+    Taro.navigateTo({
+      url: `/subpages/case/view-case?design_works=${JSON.stringify(info.designWorks)}`
+    })
+  }
+
   return (
     <SpPage
       className='page-item-espierdetail'
@@ -598,6 +608,11 @@ function EspierDetail(props) {
                 {/* 拼团、秒杀、限时特惠不显示 */}
                 {!ACTIVITY_LIST()[info.activityType] && (
                   <SpGoodsPrice info={curItem ? curItem : info} />
+                )}
+                {info.designWorks && info.designWorks.length > 0 && (
+                  <View className='goods-info-case' onClick={goToCaseView}>
+                    查看案例
+                  </View>
                 )}
               </View>
 
@@ -783,7 +798,7 @@ function EspierDetail(props) {
                   ))}
                 </View>
               ) : (
-                <SpHtml content={info.intro} />
+                <SpHtml content={info.intro || ''} />
               )}
             </View>
           </View>

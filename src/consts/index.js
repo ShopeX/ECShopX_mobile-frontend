@@ -174,9 +174,10 @@ export const TABBAR_PATH = () => ({
   member: '/subpages/member/index',
   article: '/pages/recommend/list',
   liveroom: '/pages/liveroom/index',
-  allGoods: '/pages/item/list?isTabBar=true',
+  allGoods: '/subpages/item/list?isTabBar=true',
   ugc: '/subpages/mdugc/index',
   customPage: '/pages/custom/custom-page',
+  kujiale: '/subpages/case/list',
   purchase: '/subpages/purchase/select-identity?is_redirt=1'
 })
 

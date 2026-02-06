@@ -15,7 +15,7 @@ function compSecondCategory(props) {
   return (
     <View className='comp-second-category'>
       <ScrollView className='comp-second-category-scroll' scrollY>
-        {list.map((item, index) => (
+        {list?.map((item, index) => (
           <View
             className={`category-item ${index == cusIndex ? 'active' : ''}`}
             key={index}

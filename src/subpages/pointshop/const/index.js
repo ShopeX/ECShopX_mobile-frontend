@@ -61,20 +61,40 @@ export const initialState = {
   isPointOpenModal: false
 }
 
-export const deliveryList = [
-  {
-    type: 'logistics',
-    name: '普通快递',
-    key: 'is_delivery'
-  },
-  {
-    type: 'dada',
-    name: '同城配',
-    key: 'is_dada'
-  },
-  {
-    type: 'ziti',
-    name: '自提',
-    key: 'is_ziti'
-  }
-]
+// export const deliveryList = [
+//   {
+//     type: 'logistics',
+//     name: '普通快递',
+//     key: 'is_delivery'
+//   },
+//   {
+//     type: 'dada',
+//     name: '同城配',
+//     key: 'is_dada'
+//   },
+//   {
+//     type: 'ziti',
+//     name: '自提',
+//     key: 'is_ziti'
+//   }
+// ]
+
+export const deliveryList = () => {
+  return [
+    {
+      type: 'logistics',
+      name: '普通快递',
+      key: 'is_delivery'
+    },
+    {
+      type: 'dada',
+      name: '同城配',
+      key: 'is_dada'
+    },
+    {
+      type: 'ziti',
+      name: '自提',
+      key: 'is_ziti'
+    }
+  ]
+}

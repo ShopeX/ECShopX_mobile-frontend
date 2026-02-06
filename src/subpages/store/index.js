@@ -398,7 +398,7 @@ function StoreIndex() {
 
       <View
         className={searchComp ? 'header-block' : 'header-block-pad'}
-        style={{ background: `${pageData?.base?.pageBackgroundColor}` }}
+        style={{ background: `url('${storeInfo?.banner}') no-repeat center center / cover` }}
       >
         <CompShopBrand storeInfo={storeInfo} dtid={distributorId} />
       </View>

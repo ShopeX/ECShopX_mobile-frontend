@@ -31,12 +31,12 @@ import * as merchant from './merchant'
 import * as purchase from './purchase'
 import * as guide from './guide'
 import * as dianwu from './dianwu'
-import * as community from './community'
 import * as im from './im'
 import * as mdugc from './mdugc'
 import * as salesman from './salesman'
 import * as delivery from './delivery'
 import * as prescriptionDrug from './prescriptionDrug'
+import * as design from './design'
 
 export default {
   article,
@@ -68,10 +68,10 @@ export default {
   merchant,
   purchase,
   dianwu,
-  community,
   im,
   mdugc,
   salesman,
   delivery,
-  prescriptionDrug
+  prescriptionDrug,
+  design
 }

@@ -10,7 +10,7 @@ import { View, Text, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpButton, SpUpload, SpCell } from '@/components'
 import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
 import { calcTimer, pickBy, log, isArray, buildSharePath } from '@/utils'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 
 import CompGroupTabbar from './comps/comp-groupbar'

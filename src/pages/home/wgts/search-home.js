@@ -36,7 +36,7 @@ export default class WgtSearchHome extends Component {
   searchTap = () => {
     const { dis_id } = this.props
     const dId = dis_id ? `?dis_id=${dis_id}` : ''
-    const url = dId ? `/others/pages/store/list${dId}` : `/pages/item/list`
+    const url = dId ? `/others/pages/store/list${dId}` : `/subpages/item/list`
     Taro.navigateTo({
       url
     })

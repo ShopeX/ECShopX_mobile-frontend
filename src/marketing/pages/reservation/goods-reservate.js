@@ -201,15 +201,6 @@ function GoodReservate(props) {
     })
   }
 
-  const onChangeNumber = (e, key) => {
-    // 只允许输入数字
-    const value = e.replace(/[^\d]/g, '')
-    const _form = JSON.parse(JSON.stringify(form))
-    _form[key] = value
-    setState((draft) => {
-      draft.form = _form
-    })
-  }
   const handleSelectChange = (e, key, options, form_element) => {
     console.log(e, key, options, form_element)
     let value
@@ -257,7 +248,15 @@ function GoodReservate(props) {
       draft.showCheckboxPanel = false
     })
   }
-
+  const onChangeNumber = (e, key) => {
+    // 只允许输入数字
+    const value = e.replace(/[^\d]/g, '')
+    const _form = JSON.parse(JSON.stringify(form))
+    _form[key] = value
+    setState((draft) => {
+      draft.form = _form
+    })
+  }
   console.log('form', form, 'rules', rules)
 
   const renderFormItem = (item) => {

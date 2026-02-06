@@ -1,0 +1,45 @@
+.sp-classify-horizontal {
+  &-list {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 36px;
+  }
+
+  &-item {
+    display: inline-block;
+    text-align: center;
+    width: 96px;
+    flex-shrink: 0;
+    overflow: hidden;
+    &:first-child {
+      margin-left: 0;
+    }
+
+    &.active {
+      .sp-classify-horizontal-item-name {
+        font-weight: 500;
+        color: var(--color-primary);
+      }
+    }
+  }
+
+  &-item-image {
+    margin-bottom: 6px;
+    width: 92px;
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    border: 1px solid #ebebeb;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+
+  &-item-name {
+    font-size: 24px;
+    color: #666666;
+    text-align: center;
+    width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+}

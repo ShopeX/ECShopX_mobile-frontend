@@ -17,7 +17,6 @@ import {
   SpSearch,
   SpPrivacyModal,
   SpTabbar,
-  SpSkuSelect,
   SpFloatMenus,
   SharePurchase,
   SpPoster,
@@ -47,11 +46,12 @@ import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtHomeHeader } from '@/pages/home/wgts'
 import configStore from '@/store'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
+import CompSkuSelect from './comps/comp-skuselect'
 import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const MSpPrivacyModal = React.memo(SpPrivacyModal)
-const MSpSkuSelect = React.memo(SpSkuSelect)
+const MSpSkuSelect = React.memo(CompSkuSelect)
 
 const initialState = {
   wgts: [],

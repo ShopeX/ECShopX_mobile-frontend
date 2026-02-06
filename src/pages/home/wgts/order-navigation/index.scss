@@ -3,77 +3,67 @@
  * See LICENSE file for license details.
  */
 .wgt-order-navigation {
-  padding: 24px 24px 24px 24px;
-  .wgt-bd {
+  .wgt-order-navigation-bd {
     display: flex;
     justify-content: space-between;
-    padding: 0px 8px;
+
     .sp-login {
       flex: 1;
     }
   }
-  .wgt-head {
-    padding: 0px !important;
-    .wgt-hd {
-      justify-content: space-between;
-      .wgt-title {
-        max-width: 70% !important;
-        font-weight: normal !important;
-        font-size: 30px !important;
-      }
-      .wgt-morelink {
-        display: flex;
-        align-items: center;
-        font-size: 26px;
-      }
+
+  .wgt-order-navigation-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+
+    .wgt-order-navigation-title {
+      max-width: 70% !important;
+      font-size: 36px;
+      font-weight: 600;
     }
-  }
-  .nav-item {
-    padding: 0 8px;
-    text-align: center;
-    .nav-img {
-      border-radius: 16px;
-      overflow: hidden;
-      image {
-        width: 100%;
-        height: 100%;
-      }
-    }
-    .nav-name {
+
+    .wgt-order-navigation-morelink {
+      display: flex;
+      align-items: center;
       font-size: 26px;
-      margin-top: 10px;
-      @include multi-ellipsis(1);
     }
   }
-  .wgt-order-item {
+
+  .wgt-order-navigation-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    .wgt-order-wrapper {
+    gap: 8px;
+
+    .wgt-order-navigation-wrapper {
       position: relative;
-      margin-bottom: 8px;
-      .wgt-order-bg {
-        width: 110px;
-        height: 110px;
+
+      .wgt-order-navigation-bg {
+        width: 108px;
+        height: 108px;
         background: #f8f8f8;
+        background: radial-gradient(70.71% 70.71% at 100% 50%, #ffffff 0%, #f8f8f8 100%);
         border-radius: 54px;
         display: flex;
         align-items: center;
         justify-content: center;
         overflow: hidden;
       }
-      .wgt-order-icon-mr {
+
+      .wgt-order-navigation-icon-mr {
         width: 56px;
         height: 56px;
       }
-      .wgt-order-icon {
-        height: 100%;
-        width: 100%;
-        //   width: 56px;
-        //   height: 56px;
+
+      .wgt-order-navigation-icon {
+        width: 56px;
+        height: 56px;
       }
-      .wgt-order-badge {
+
+      .wgt-order-navigation-badge {
         position: absolute;
         top: 10px;
         right: -10px;
@@ -88,7 +78,8 @@
         display: inline-block;
       }
     }
-    .wgt-order-label {
+
+    .wgt-order-navigation-label {
       font-size: 24px;
       color: #404040;
       line-height: 28px;

@@ -11,7 +11,7 @@ import { useImmer } from 'use-immer'
 
 import { SpTab, SpScrollView, SpPage, SpCell, SpImage } from '@/components'
 import { pickBy, showToast } from '@/utils'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 
 import './boxlist.scss'

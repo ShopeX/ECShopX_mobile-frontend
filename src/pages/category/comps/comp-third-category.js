@@ -56,7 +56,7 @@ function CompThirdCategory(props) {
     <View className='comp-third-category'>
       <ScrollView className='comp-third-category-scroll' scrollX scrollIntoView={scrollIntoView}>
         <View className='scroll-container'>
-          {list.map((el, index) => (
+          {list?.map((el, index) => (
             <View
               className={`category-item ${index == cusIndex ? 'active' : ''}`}
               key={el.id}

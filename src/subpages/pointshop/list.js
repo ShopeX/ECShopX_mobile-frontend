@@ -43,11 +43,7 @@ const initialState = {
   rightList: [],
   brandList: [],
   pointSelect: [],
-  filterList: [
-    { title: '全部' },
-    { title: '销量' },
-    { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
-  ],
+  filterList: [],
   curFilterIdx: 0,
   sort: -1,
   tagList: [],
@@ -89,7 +85,13 @@ function PointShopList() {
   const goodsRef = useRef()
 
   useEffect(() => {
-    getInitConfig()
+    setState((draft) => {
+      draft.filterList = [
+        { title: '全部' },
+        { title: '销量' },
+        { title: '积分', icon: ['icon-shengxu-01', 'icon-jiangxu-01'], sort: 1 }
+      ]
+    })
   }, [])
 
   useEffect(() => {

@@ -93,7 +93,7 @@ function CompGoodsItem(props) {
         shop_type: 'distributor'
       })
     )
-    dispatch(updateCount({ shop_type: 'distributor', shop_id: distributorId }))
+    dispatch(updateCount({ shop_type: 'distributor' }))
     Taro.hideLoading()
     showToast('成功加入购物车')
   }
@@ -116,7 +116,14 @@ function CompGoodsItem(props) {
     <View className={classNames('comp-goods-item')}>
       <View className='goods-item__hd' onClick={handleClick.bind(this)}>
         <View className='image-wrap'>
-          <SpImage className='main-image' src={info.pic} mode='aspectFill' circle={16} />
+          <SpImage
+            className='main-image'
+            width={160}
+            height={160}
+            src={info.pic}
+            mode='aspectFill'
+            circle={16}
+          />
         </View>
       </View>
       <View className='goods-item__bd'>
@@ -176,9 +183,9 @@ function CompGoodsItem(props) {
         <View className='promotions'>
           {showPromotion && info.promotion && info.promotion.length > 0 && (
             <View>
-              {info?.promotion.map((item, index) => (
+              {info?.promotion?.map((item, index) => (
                 <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                  {PROMOTION_TAG()[item.tag_type]}
+                  {PROMOTION_TAG[item.tag_type]}
                 </Text>
               ))}
             </View>

@@ -18,7 +18,7 @@ function SpSearch(props) {
       onClick()
     } else {
       Taro.navigateTo({
-        url: `/pages/item/list`
+        url: `/subpages/item/list`
       })
     }
   }

@@ -55,7 +55,7 @@ function SpShopItem(props) {
             <View className='score'>
               {rate} 月销：{salesCount}
             </View>
-            {is_dada && <View className='express'>达达配送</View>}
+            {is_dada == 1 && <View className='express'>达达配送</View>}
             {selfDeliveryRule?.is_open && is_self_delivery && (
               <View className='expressed'>商家自配</View>
             )}

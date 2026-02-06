@@ -15193,54 +15193,708 @@
 	},
 	"flssepp": {
 		"zh-cn": "getShopTemplate 返回数据格式错误:",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "getShopTemplate returned data format error:",
+		"zh-tw": "getShopTemplate 返回數據格式錯誤:",
+		"ar": "خطأ في تنسيق البيانات المستلمة من getShopTemplate:"
 	},
 	"q4a1yrd": {
 		"zh-cn": "fetchWgts 错误:",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "fetchWgts error:",
+		"zh-tw": "fetchWgts 錯誤:",
+		"ar": "خطأ في fetchWgts:"
 	},
 	"i8wll3": {
 		"zh-cn": "积分 ",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Points ",
+		"zh-tw": "積分 ",
+		"ar": "النقاط "
 	},
 	"gp0pu0a": {
 		"zh-cn": "退款金额不能大于积分",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Refund amount cannot be greater than points",
+		"zh-tw": "退款金額不能大於積分",
+		"ar": "لا يمكن أن يكون مبلغ الاسترداد أكبر من النقاط"
 	},
 	"92dw619": {
 		"zh-cn": "退款运费不能大于¥",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Refund shipping cannot be greater than ¥",
+		"zh-tw": "退款運費不能大於¥",
+		"ar": "لا يمكن أن تكون رسوم شحن الاسترداد أكبر من ¥"
 	},
 	"332lmda": {
 		"zh-cn": "退款运费不能大于积分",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Refund shipping cannot be greater than points",
+		"zh-tw": "退款運費不能大於積分",
+		"ar": "لا يمكن أن تكون رسوم شحن الاسترداد أكبر من النقاط"
 	},
 	"irkwrj4": {
 		"zh-cn": "退运费(",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Refund shipping (",
+		"zh-tw": "退運費(",
+		"ar": "استرداد رسوم الشحن ("
 	},
 	"e4gc9n4": {
 		"zh-cn": "活动价¥",
+		"en": "Event price ¥",
+		"zh-tw": "活動價¥",
+		"ar": "سعر النشاط ¥"
+	},
+	"ihl1gt4": {
+		"zh-cn": "进入店铺",
+		"en": "Enter store",
+		"zh-tw": "進入店鋪",
+		"ar": "دخول المتجر"
+	},
+	"4fyj4e4": {
+		"zh-cn": "”导购“",
+		"en": "\"Shopping Guide\"",
+		"zh-tw": "”導購“",
+		"ar": "\"دليل التسوق\""
+	},
+	"11u6oq3": {
+		"zh-cn": "，抵扣",
+		"en": ", deduct",
+		"zh-tw": "，抵扣",
+		"ar": "، خصم"
+	},
+	"atzm3z4": {
+		"zh-cn": "包含运费",
+		"en": "Including shipping",
+		"zh-tw": "包含運費",
+		"ar": "شامل رسوم الشحن"
+	},
+	"shgaim5": {
+		"zh-cn": "手机号登录",
+		"en": "Login with mobile number",
+		"zh-tw": "手機號登錄",
+		"ar": "تسجيل الدخول برقم الهاتف"
+	},
+	"opxa4a6": {
+		"zh-cn": "账号密码登录",
+		"en": "Login with account and password",
+		"zh-tw": "賬號密碼登錄",
+		"ar": "تسجيل الدخول بالحساب وكلمة المرور"
+	},
+	"f2552": {
+		"zh-cn": "合计",
+		"en": "Total",
+		"zh-tw": "合計",
+		"ar": "الإجمالي"
+	},
+	"e5cu23": {
+		"zh-cn": "已优惠",
+		"en": "Discounted",
+		"zh-tw": "已優惠",
+		"ar": "تم الخصم"
+	},
+	"gn4y2": {
+		"zh-cn": "应收",
+		"en": "Receivable",
+		"zh-tw": "應收",
+		"ar": "المبلغ المستحق"
+	},
+	"1z1djr5": {
+		"zh-cn": "查询内容:",
+		"en": "Query content:",
+		"zh-tw": "查詢內容:",
+		"ar": "محتوى الاستعلام:"
+	},
+	"dcs5yx4": {
+		"zh-cn": "收起明细",
+		"en": "Collapse details",
+		"zh-tw": "收起明細",
+		"ar": "طي التفاصيل"
+	},
+	"c1nshv4": {
+		"zh-cn": "展开明细",
+		"en": "Expand details",
+		"zh-tw": "展開明細",
+		"ar": "توسيع التفاصيل"
+	},
+	"c6hyr44": {
+		"zh-cn": "实际支付",
+		"en": "Actual payment",
+		"zh-tw": "實際支付",
+		"ar": "الدفع الفعلي"
+	},
+	"erte2": {
+		"zh-cn": "发布",
+		"en": "Publish",
+		"zh-tw": "發佈",
+		"ar": "نشر"
+	},
+	"eywkls5": {
+		"zh-cn": "寄回地址:",
+		"en": "Return address:",
+		"zh-tw": "寄回地址:",
+		"ar": "عنوان الإرجاع:"
+	},
+	"d3hx6o4": {
+		"zh-cn": "收件人:",
+		"en": "Recipient:",
+		"zh-tw": "收件人:",
+		"ar": "المستلم:"
+	},
+	"kqesjh5": {
+		"zh-cn": "联系方式:",
+		"en": "Contact info:",
+		"zh-tw": "聯繫方式:",
+		"ar": "معلومات الاتصال:"
+	},
+	"gzyn0z4": {
+		"zh-cn": "营业时间",
+		"en": "Business hours",
+		"zh-tw": "營業時間",
+		"ar": "ساعات العمل"
+	},
+	"fju1": {
+		"zh-cn": "人",
+		"en": "people",
+		"zh-tw": "人",
+		"ar": "شخص"
+	},
+	"hkg3407": {
+		"zh-cn": "小店任务返佣额",
+		"en": "Store task commission amount",
+		"zh-tw": "小店任務返傭額",
+		"ar": "مبلغ عمولة مهام المتجر"
+	},
+	"1oftwe6": {
+		"zh-cn": "查看指标明细",
+		"en": "View metric details",
+		"zh-tw": "查看指標明細",
+		"ar": "عرض تفاصيل المؤشرات"
+	},
+	"7n979sb": {
+		"zh-cn": "查看历史业绩请选择日期",
+		"en": "Select a date to view historical performance",
+		"zh-tw": "查看歷史業績請選擇日期",
+		"ar": "يرجى اختيار تاريخ لعرض الأداء التاريخي"
+	},
+	"po31": {
+		"zh-cn": "至",
+		"en": "to",
+		"zh-tw": "至",
+		"ar": "إلى"
+	},
+	"eslew3": {
+		"zh-cn": "您获得",
+		"en": "You obtained",
+		"zh-tw": "您獲得",
+		"ar": "لقد حصلت على"
+	},
+	"tnpw1z6": {
+		"zh-cn": ": 有效期至",
+		"en": ": Valid until",
+		"zh-tw": ": 有效期至",
+		"ar": ": صالح حتى"
+	},
+	"h34gtt6": {
+		"zh-cn": "货币汇率：1",
+		"en": "Currency exchange rate: 1",
+		"zh-tw": "貨幣匯率：1",
+		"ar": "سعر صرف العملة: 1"
+	},
+	"bw1xrq4": {
+		"zh-cn": "实付款:",
+		"en": "Actual payment:",
+		"zh-tw": "實付款:",
+		"ar": "المبلغ المدفوع فعلياً:"
+	},
+	"ae03vv4": {
+		"zh-cn": "优惠购买",
+		"en": "Discounted purchase",
+		"zh-tw": "優惠購買",
+		"ar": "شراء بخصم"
+	},
+	"skao5t5": {
+		"zh-cn": "当前门店:",
+		"en": "Current store:",
+		"zh-tw": "當前門店:",
+		"ar": "المتجر الحالي:"
+	},
+	"uyb7zu5": {
+		"zh-cn": "额外奖励:",
+		"en": "Extra reward:",
+		"zh-tw": "額外獎勵:",
+		"ar": "مكافأة إضافية:"
+	},
+	"pa712": {
+		"zh-cn": "送达",
+		"en": "Delivered",
+		"zh-tw": "送達",
+		"ar": "تم التوصيل"
+	},
+	"insejb5": {
+		"zh-cn": "配送门店:",
+		"en": "Delivery store:",
+		"zh-tw": "配送門店:",
+		"ar": "متجر التوصيل:"
+	},
+	"fu6jm54": {
+		"zh-cn": "立即加入",
+		"en": "Join now",
+		"zh-tw": "立即加入",
+		"ar": "انضم الآن"
+	},
+	"df6o2b4": {
+		"zh-cn": "有效期至",
+		"en": "Valid until",
+		"zh-tw": "有效期至",
+		"ar": "صالح حتى"
+	},
+	"bwfjlk5": {
+		"zh-cn": "活动规则：",
+		"en": "Activity rules:",
+		"zh-tw": "活動規則：",
+		"ar": "قواعد النشاط:"
+	},
+	"i50kg24": {
+		"zh-cn": "购买数量",
+		"en": "Purchase quantity",
+		"zh-tw": "購買數量",
+		"ar": "كمية الشراء"
+	},
+	"df5yfu4": {
+		"zh-cn": "有效期:",
+		"en": "Validity period:",
+		"zh-tw": "有效期:",
+		"ar": "فترة الصلاحية:"
+	},
+	"ufifsk5": {
+		"zh-cn": "已跟团数量",
+		"en": "Number of people joined",
+		"zh-tw": "已跟團數量",
+		"ar": "عدد المنضمين للمجموعة"
+	},
+	"4fhcrh5": {
+		"zh-cn": "团员备注:",
+		"en": "Member remarks:",
+		"zh-tw": "團員備註:",
+		"ar": "ملاحظات العضو:"
+	},
+	"bca1075": {
+		"zh-cn": "订单时间:",
+		"en": "Order time:",
+		"zh-tw": "訂單時間:",
+		"ar": "وقت الطلب:"
+	},
+	"8nywqi5": {
+		"zh-cn": "退款单号:",
+		"en": "Refund number:",
+		"zh-tw": "退款單號:",
+		"ar": "رقم الاسترداد:"
+	},
+	"kvr2w85": {
+		"zh-cn": "申请时间:",
+		"en": "Application time:",
+		"zh-tw": "申請時間:",
+		"ar": "وقت التقديم:"
+	},
+	"wynjmp7": {
+		"zh-cn": "您当前的积分为",
+		"en": "Your current points are ",
+		"zh-tw": "您當前的積分為",
+		"ar": "نقاطك الحالية هي "
+	},
+	"123aml3": {
+		"zh-cn": "，需要",
+		"en": ", need ",
+		"zh-tw": "，需要",
+		"ar": "، تحتاج إلى "
+	},
+	"gg96v46": {
+		"zh-cn": "积分才能抽奖",
+		"en": " points to draw",
+		"zh-tw": "積分才能抽獎",
+		"ar": " نقاط للمشاركة في السحب"
+	},
+	"ea8513": {
+		"zh-cn": "库存:",
+		"en": "Stock:",
+		"zh-tw": "庫存:",
+		"ar": "المخزون:"
+	},
+	"l2kqy3": {
+		"zh-cn": "货号:",
+		"en": "Item number:",
+		"zh-tw": "貨號:",
+		"ar": "رقم الصنف:"
+	},
+	"d1wdq4": {
+		"zh-cn": "(余额:",
+		"en": "(Balance:",
+		"zh-tw": "(餘額:",
+		"ar": "(الرصيد:"
+	},
+	"jr7wm3": {
+		"zh-cn": "获得了",
+		"en": "Obtained ",
+		"zh-tw": "獲得了",
+		"ar": "تم الحصول على "
+	},
+	"v7pf44c": {
+		"zh-cn": "护肤/彩妆/面膜/指甲油",
+		"en": "Skincare/Makeup/Mask/Nail Polish",
+		"zh-tw": "護膚/彩妝/面膜/指甲油",
+		"ar": "العناية بالبشرة/المكياج/القناع/طلاء الأظافر"
+	},
+	"cyugx3": {
+		"zh-cn": "合计:",
+		"en": "Total:",
+		"zh-tw": "合計:",
+		"ar": "الإجمالي:"
+	},
+	"c1jea3": {
+		"zh-cn": "优惠:",
+		"en": "Discount:",
+		"zh-tw": "優惠:",
+		"ar": "الخصم:"
+	},
+	"dsi9s3": {
+		"zh-cn": "实付:",
+		"en": "Actual paid:",
+		"zh-tw": "實付:",
+		"ar": "المدفوع فعلياً:"
+	},
+	"awgo3n4": {
+		"zh-cn": "原价：¥",
+		"en": "Original price: ¥",
+		"zh-tw": "原價：¥",
+		"ar": "السعر الأصلي: ¥"
+	},
+	"chptrb4": {
+		"zh-cn": "总价：¥",
+		"en": "Total price: ¥",
+		"zh-tw": "總價：¥",
+		"ar": "السعر الإجمالي: ¥"
+	},
+	"iqvz784": {
+		"zh-cn": "运费：¥",
+		"en": "Shipping: ¥",
+		"zh-tw": "運費：¥",
+		"ar": "رسوم الشحن: ¥"
+	},
+	"ap73mw4": {
+		"zh-cn": "促销：¥",
+		"en": "Promotion: ¥",
+		"zh-tw": "促銷：¥",
+		"ar": "العرض الترويجي: ¥"
+	},
+	"xb9r5x5": {
+		"zh-cn": "优惠券：¥",
+		"en": "Coupon: ¥",
+		"zh-tw": "優惠券：¥",
+		"ar": "القسيمة: ¥"
+	},
+	"asocrs4": {
+		"zh-cn": "刷新成功",
+		"en": "Refresh successful",
+		"zh-tw": "刷新成功",
+		"ar": "تم التحديث بنجاح"
+	},
+	"t33rz7f": {
+		"zh-cn": "温馨提示：如商户无法识别二维码",
+		"en": "Tips: If the merchant cannot recognize the QR code",
+		"zh-tw": "溫馨提示：如商戶無法識別二維碼",
+		"ar": "نصيحة: إذا لم يتمكن التاجر من التعرف على رمز QR"
+	},
+	"w7ckyf9": {
+		"zh-cn": "您可以尝试刷新重试",
+		"en": "You can try to refresh and retry",
+		"zh-tw": "您可以嘗試刷新重試",
+		"ar": "يمكنك محاولة التحديث والمحاولة مرة أخرى"
+	},
+	"4246vl8": {
+		"zh-cn": "您已订阅到货通知",
+		"en": "You have subscribed to arrival notification",
+		"zh-tw": "您已訂閱到貨通知",
+		"ar": "لقد اشتركت في إشعار الوصول"
+	},
+	"4lzdau5": {
+		"zh-cn": "查看优惠券",
+		"en": "View coupons",
+		"zh-tw": "查看優惠券",
+		"ar": "عرض القسائم"
+	},
+	"xu4bgj5": {
+		"zh-cn": "今日已领完",
+		"en": "Sold out today",
+		"zh-tw": "今日已領完",
+		"ar": "نفدت الكمية اليوم"
+	},
+	"ex5jl3": {
+		"zh-cn": "拼团价",
+		"en": "Group price",
+		"zh-tw": "拼團價",
+		"ar": "سعر المجموعة"
+	},
+	"ad50zh4": {
+		"zh-cn": "今日开抢",
+		"en": "Starts today",
+		"zh-tw": "今日開搶",
+		"ar": "يبدأ اليوم"
+	},
+	"das2ux4": {
+		"zh-cn": "明日开抢",
+		"en": "Starts tomorrow",
+		"zh-tw": "明日開搶",
+		"ar": "يبدأ غداً"
+	},
+	"iccnd3": {
+		"zh-cn": "秒杀价",
+		"en": "Flash sale price",
+		"zh-tw": "秒殺價",
+		"ar": "سعر البيع الخاطف"
+	},
+	"8j96rej": {
+		"zh-cn": "创建 observer 失败 for ",
+		"en": "Failed to create observer for ",
+		"zh-tw": "創建 observer 失敗 for ",
+		"ar": "فشل إنشاء المراقب لـ "
+	},
+	"tfzsrt6": {
+		"zh-cn": "创建观察者 ",
+		"en": "Create observer ",
+		"zh-tw": "創建觀察者 ",
+		"ar": "إنشاء مراقب "
+	},
+	"eaqva4": {
+		"zh-cn": " 失败:",
+		"en": " failed:",
+		"zh-tw": " 失敗:",
+		"ar": " فشل:"
+	},
+	"jee6h84": {
+		"zh-cn": "销量排序",
+		"en": "Sort by sales",
+		"zh-tw": "銷量排序",
+		"ar": "ترتيب حسب المبيعات"
+	},
+	"fq5i7o4": {
+		"zh-cn": "积分排序",
+		"en": "Sort by points",
+		"zh-tw": "積分排序",
+		"ar": "ترتيب حسب النقاط"
+	},
+	"x6dm12h": {
+		"zh-cn": "该商品暂无库存，您可以订阅到货通知",
 		"en": "",
 		"zh-tw": "",
 		"ar": ""
 	},
-	"ihl1gt4": {
-		"zh-cn": "进入店铺",
+	"faiu2": {
+		"zh-cn": "在售",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"ktc7oh6": {
+		"zh-cn": "暂无店铺数据",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"jaxhy84": {
+		"zh-cn": "门店列表",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"lkyyp3": {
+		"zh-cn": "选择省",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"lku0y3": {
+		"zh-cn": "选择市",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"lkrwa3": {
+		"zh-cn": "选择区",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"e3mr2": {
+		"zh-cn": "不限",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"avkyen4": {
+		"zh-cn": "全部门店",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"9iip079": {
+		"zh-cn": "门店位置信息不完整",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"gnkwj76": {
+		"zh-cn": "暂无联系电话",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"i7dtn3": {
+		"zh-cn": "离你 ",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"qsft46": {
+		"zh-cn": "搜索门店名称",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"1iv25h9": {
+		"zh-cn": "搜索暂无匹配的门店",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"a8r9964": {
+		"zh-cn": "专属门店",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"fd3laa4": {
+		"zh-cn": "电话咨询",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"gpql5j4": {
+		"zh-cn": "联系顾问",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"cqasy3": {
+		"zh-cn": "到这去",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"64cgiy7": {
+		"zh-cn": "长按识别二维码",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"e7xrau4": {
+		"zh-cn": "添加导购",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"ue5d4uc": {
+		"zh-cn": "长按扫码联系您的专属顾问",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"cozcb04": {
+		"zh-cn": "您的顾问",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"daldz24": {
+		"zh-cn": "晚安家居",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"dlopzd4": {
+		"zh-cn": "查看案例",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"h6pg2": {
+		"zh-cn": "户型",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"qka62": {
+		"zh-cn": "风格",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"qf2l2": {
+		"zh-cn": "面积",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"1fu8w4": {
+		"zh-cn": "3D方案",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"fludt3": {
+		"zh-cn": "杭州市",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"hge52": {
+		"zh-cn": "排序",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"ddqmdj4": {
+		"zh-cn": "本地案例",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"amvpnc4": {
+		"zh-cn": "全国案例",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"ebo52": {
+		"zh-cn": "全国",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"d5drqf4": {
+		"zh-cn": "搜索文案",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"x89ezg7": {
+		"zh-cn": "底纹词滚动展示",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"ug8hdo8": {
+		"zh-cn": "店铺信息获取失败",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"l5392": {
+		"zh-cn": "离你",
 		"en": "",
 		"zh-tw": "",
 		"ar": ""

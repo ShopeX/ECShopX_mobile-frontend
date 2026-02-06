@@ -1,0 +1,83 @@
+.wgt-comps {
+  &__nav {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    background-color: #ffffff;
+    z-index: 99;
+    width: 100%;
+    &-area {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      box-sizing: border-box;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    &-left-img,
+    &-right-img {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      position: absolute;
+      z-index: 100;
+      .sp-image-content {
+        height: 100%;
+      }
+    }
+    &-left-img {
+      left: 0;
+    }
+    &-right-img {
+      right: 0;
+    }
+
+    &-scroll {
+      flex: 1;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    &-list {
+      display: flex;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    &-item {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-sizing: border-box;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      &-text {
+        font-size: 28px;
+        white-space: nowrap;
+      }
+
+      &-img {
+        height: 100%;
+      }
+      &-border {
+        bottom: 0;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: block;
+        width: 40px;
+        height: 4px;
+        border-radius: 2px;
+      }
+
+      &--active {
+        font-weight: 600;
+      }
+    }
+  }
+}

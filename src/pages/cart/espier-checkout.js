@@ -134,10 +134,10 @@ function CartCheckout(props) {
     group_id = routerParams.group_id, // 团购id
     source = routerParams.source,
     scene, // 情景值
-    goodType = routerParams.goodType
+    goodType = routerParams.goodType,
+    launchScene = routerParams.launchScene
   } = $instance?.router?.params || {}
-  const { scene: launchScene } = Taro.getLaunchOptionsSync()
-  const senceCode = [1011, 1012, 1013, 1047, 1048, 1049] // 扫码进来-代客下单
+  const isLaunchScene = launchScene == 1 ? true : false
   console.log('$instance.router?.params:', $instance.router)
 
   useEffect(() => {
@@ -489,7 +489,7 @@ function CartCheckout(props) {
     if (couponInfo?.coupon_code) {
       url = `${url}&coupon=${couponInfo?.coupon_code}`
     }
-    if (storageParams?.cxdid && senceCode.includes(launchScene)) {
+    if (storageParams?.cxdid && isLaunchScene) {
       url = `${url}&cxdid=${storageParams?.cxdid}`
     }
     Taro.navigateTo({
@@ -569,7 +569,7 @@ function CartCheckout(props) {
     Taro.showLoading({ title: '' })
     // calc.current = true
     const cus_parmas = await getParamsInfo()
-    console.log('cus_parmas:', cus_parmas)
+    console.log('-------cus_parmas------:', cus_parmas)
     let orderRes
     try {
       orderRes = await api.cart.total(cus_parmas)
@@ -820,8 +820,7 @@ function CartCheckout(props) {
       distributor_id: receiptType === 'ziti' && ziti_shopid ? ziti_shopid : shop_id
     }
     // 处理导购数据(旧)
-    if (storageParams?.cxdid && senceCode.includes(launchScene)) {
-      debugger
+    if (storageParams?.cxdid && isLaunchScene) {
       cus_parmas.cxdid = storageParams?.cxdid
       cus_parmas.distributor_id = storageParams?.dtid
       cus_parmas.cart_type = 'cxd'

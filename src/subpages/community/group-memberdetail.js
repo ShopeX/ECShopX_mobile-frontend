@@ -9,7 +9,7 @@ import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
 import { SpPage, SpImage, SpPrice, SpFloatLayout, SpInputNumber } from '@/components'
 import { AtButton, AtCountdown, AtProgress } from 'taro-ui'
 import { useImmer } from 'use-immer'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 import { isArray, navigateTo, calcTimer, pickBy, showToast } from '@/utils'
 

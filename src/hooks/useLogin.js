@@ -21,7 +21,7 @@ import {
 } from '@/utils'
 import S from '@/spx'
 import { SG_POLICY } from '@/consts/localstorage'
-import { INVITE_ACTIVITY_ID } from '@/consts'
+import { INVITE_ACTIVITY_ID, SG_CHECK_STORE_RULE } from '@/consts'
 
 export default (props = {}) => {
   const { autoLogin = false, policyUpdateHook = () => {}, loginSuccess = () => {} } = props
@@ -107,12 +107,21 @@ export default (props = {}) => {
     S.setAuthToken(token)
     setIsLogin(true)
     await getUserInfo()
-    // 导购UV统计
-    entryLaunch.postGuideUV()
-    entryLaunch.postGuideTask()
+    // 使用setTimeout确保token已经完全设置到存储中
+    setTimeout(async () => {
+      try {
+        // 导购UV统计
+        await entryLaunch.postGuideUV()
+        await entryLaunch.postGuideTask()
+      } catch (error) {
+        console.error('导购上报失败:', error)
+      }
+    }, 100) // 延迟100ms确保token设置完成
+
     dispatch(updateIsNewUser(false))
     dispatch(fetchUserFavs())
     dispatch(updateCount({ shop_type: 'distributor', shop_id: getDistributorId() })) // 获取购物车商品数量
+    Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
     console.log('useLogin setToken redirect_url:', redirect_url, decodeURIComponent(redirect_url))
     if (redirect_url) {
       Taro.redirectTo({ url: decodeURIComponent(redirect_url) })

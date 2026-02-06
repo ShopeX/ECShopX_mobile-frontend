@@ -881,6 +881,11 @@ export const pxToRpx = (px) => {
   return parseInt((screenWidth * px) / 375)
 }
 
+export const rpxToPx = (rpx) => {
+  const { windowWidth } = Taro.getSystemInfoSync()
+  return parseInt(rpx * (windowWidth / 750))
+}
+
 export const pxToUnitRpx = (px) => {
   return Taro.pxTransform(px * 2)
 }
@@ -899,6 +904,34 @@ export function buildSharePath(from_scene, params = {}) {
   const queryString = qs.stringify(shareParams)
   debugger
   return `/pages/share-land${queryString ? '?' + queryString : ''}`
+}
+
+const getMobAppExtraData = () => {
+  const store = configStore()
+
+  const token = S.getAuthToken()
+  const userInfo = token ? tokenParse(token) : {}
+  const aioucd = userInfo?.user_card_code
+  return {
+    ucd: aioucd
+  }
+}
+
+export const getElementRectBox = (eid) => {
+  return new Promise((resolve, reject) => {
+    const query = Taro.createSelectorQuery()
+    query.select(eid).boundingClientRect()
+    setTimeout(() => {
+      try {
+        query.exec((res) => {
+          const [rectBox = {}] = res
+          resolve(rectBox)
+        })
+      } catch (error) {
+        reject(err)
+      }
+    }, 100)
+  })
 }
 
 export {
@@ -927,7 +960,8 @@ export {
   resolveStringifyParams,
   resolveUrlParamsParse,
   getCurrentShopId,
-  getMemberLevel
+  getMemberLevel,
+  getMobAppExtraData
 }
 
 export * from './platforms'

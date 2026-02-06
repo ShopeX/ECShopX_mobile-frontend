@@ -4,90 +4,121 @@
  */
 import React, { useCallback, memo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text, Input, Button } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { styleNames } from '@/utils'
+import { styleNames, classNames, VERSION_STANDARD } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
-import context from '@/hooks/usePageContext'
+import { useSelector } from 'react-redux'
 
 const CustomNavigationHeader = memo((props) => {
   const {
-    pageConfig,
+    pageConfig = {},
     title,
     appName,
-    renderNavigation,
-    fixedTopContainer,
     immersive,
     navigateMantle,
     navigateBackgroundColor,
     gNavbarH,
     gStatusBarHeight,
-    menuWidth,
-    navigationLSpace,
     btnReturn,
     btnHome,
-    mantle
+    mantle,
+    onNearbyClick,
+    onSearchConfirm,
+    nearbyText
   } = props
 
-  // 计算导航栏样式
-  const computedNavigationStyle = useCallback(() => {
-    const { navigateBackgroundColor: configBgColor, navigateBackgroundImage } = pageConfig || {}
-    let style = {
-      'height': `${gNavbarH}px`,
-      'padding-top': `${gStatusBarHeight}px`,
-      'background-size': '100% 100%',
-      'background-repeat': 'no-repeat',
-      'background-position': 'center'
+  const value = pageConfig
+  const titleStyle = value?.titleStyle
+  const showHeaderContent = value && titleStyle !== '0'
+  const { shopInfo } = useSelector((state) => state.shop)
+
+  const headerStyle = useCallback(() => {
+    const style = {
+      height: `${gNavbarH}px`,
+      backgroundSize: '100% 100%',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'center',
+      paddingTop: `${gStatusBarHeight}px`
     }
-    if (!immersive || (immersive && mantle) || navigateMantle) {
-      style['background-image'] = `url(${navigateBackgroundImage})`
-      style['background-color'] = pageConfig?.navigateBackgroundColor
-        ? configBgColor
-        : navigateBackgroundColor
-      style['transition'] = 'all 0.15s ease-in'
+    if (value?.navigateBackgroundColor) {
+      style.backgroundColor = value?.navigateBackgroundColor
     }
+    if (value?.navigateBackgroundImage) {
+      style.backgroundImage = `url(${value?.navigateBackgroundImage})`
+      style.backgroundSize = 'cover'
+      style.backgroundPosition = 'center'
+    }
+    style.transition = 'all 0.15s ease-in'
     return style
   }, [
-    pageConfig,
+    value,
     immersive,
+    mantle,
     navigateMantle,
     navigateBackgroundColor,
     gNavbarH,
-    gStatusBarHeight,
-    mantle
+    gStatusBarHeight
   ])
 
-  // 渲染热区
+  const containerStyle = useCallback(() => {
+    return {
+      textAlign: value?.titlePosition,
+      color: value?.titleColor
+    }
+  }, [value])
+
+  const showFunctionArea = value?.pTitleHotSetting?.type && value.pTitleHotSetting.type !== 'none'
+  const functionAreaType = value?.pTitleHotSetting?.type || 'none'
+  const functionAreaHotzone = value?.pTitleHotSetting?.hotzone || value?.pTitleHotSetting || {}
+  const hotzoneImgUrl = functionAreaHotzone?.imgUrl
+  const searchButtonStyle = useCallback(() => {
+    const searchButtonColor = value?.searchButtonColor
+    if (!searchButtonColor) return {}
+    return {
+      backgroundColor: searchButtonColor.bgColor,
+      color: searchButtonColor.textColor
+    }
+  }, [value?.searchButtonColor])
+
+  const handleHomeClick = useCallback(() => {
+    Taro.reLaunch({
+      url: isGoodsShelves()
+        ? '/subpages/guide/index'
+        : VERSION_IN_PURCHASE
+        ? '/pages/purchase/index'
+        : '/pages/index'
+    })
+  }, [])
+
   const renderHotZone = useCallback(() => {
-    const { imgUrl, data } = pageConfig?.pTitleHotSetting || {}
-    if (!imgUrl || !data) return null
-
+    const data = functionAreaHotzone?.data || []
+    if (!hotzoneImgUrl) return null
     return (
-      <View className='p-title-hot-img'>
-        <SpImage src={imgUrl} mode='aspectFit' />
-        {data.map((citem) => {
+      <View className='title-function p-title-hot-img'>
+        <SpImage className='title-function-image' src={hotzoneImgUrl} mode='aspectFit' />
+        {(Array.isArray(data) ? data : []).map((citem) => {
           const hotZoneStyle = {
-            width: `${citem.widthPer * 100}%`,
-            height: `${citem.heightPer * 100}%`,
-            top: `${citem.topPer * 100}%`,
-            left: `${citem.leftPer * 100}%`
+            position: 'absolute',
+            width: `${(citem.widthPer ?? 0) * 100}%`,
+            height: `${(citem.heightPer ?? 0) * 100}%`,
+            top: `${(citem.topPer ?? 0) * 100}%`,
+            left: `${(citem.leftPer ?? 0) * 100}%`,
+            zIndex: 1
           }
-
           if (citem.id === 'customerService') {
             return (
               <Button
-                key={citem.id}
+                key={citem.id || Math.random()}
                 className='img-hotzone_zone opacity-0'
-                type='button'
                 style={styleNames(hotZoneStyle)}
                 openType='contact'
               />
             )
           }
-
           return (
             <View
-              key={citem.id}
+              key={citem.id || Math.random()}
               className='img-hotzone_zone'
               style={styleNames(hotZoneStyle)}
               onClick={() => linkPage(citem)}
@@ -96,113 +127,110 @@ const CustomNavigationHeader = memo((props) => {
         })}
       </View>
     )
-  }, [pageConfig?.pTitleHotSetting])
+  }, [hotzoneImgUrl, functionAreaHotzone])
 
-  // 渲染左侧按钮区域
-  const renderLeftBlock = useCallback(() => {
-    const handleHomeClick = () => {
-      Taro.reLaunch({
-        url: isGoodsShelves()
-          ? '/subpages/guide/index'
-          : VERSION_IN_PURCHASE
-          ? '/pages/purchase/index'
-          : '/pages/index'
-      })
-    }
-
-    return (
-      <View
-        className='custom-navigation__left-block flex items-center'
-        style={{
-          gap: `${navigationLSpace}px`,
-          width: `${menuWidth}px`,
-          height: '100%'
-        }}
-      >
-        {btnReturn && (
-          <SpImage src='fv_back.png' width={36} height={36} onClick={() => Taro.navigateBack()} />
-        )}
-        {btnHome && <SpImage src='fv_home.png' width={36} height={36} onClick={handleHomeClick} />}
-        {pageConfig?.pTitleHotSetting?.imgUrl && renderHotZone()}
-      </View>
-    )
-  }, [btnReturn, btnHome, menuWidth, navigationLSpace, pageConfig?.pTitleHotSetting, renderHotZone])
-
-  // 渲染标题
-  const renderTitle = useCallback(() => {
-    let titleContent = null
-    let pageTitleStyle = {}
-    let navigationBarTitleText = ''
-
-    if (pageConfig) {
-      const { titleStyle, titleColor, titleBackgroundImage } = pageConfig
-
-      if (titleStyle === '1') {
-        titleContent = (
-          <Text style={styleNames({ color: titleColor })}>
-            {title || navigationBarTitleText || appName}
-          </Text>
-        )
-      } else if (titleStyle === '2') {
-        titleContent = <SpImage src={titleBackgroundImage} height={72} mode='heightFix' />
-      } else {
-        // 如果 titleStyle 不匹配，使用默认逻辑
-        navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
-        titleContent = title || navigationBarTitleText || appName
-      }
-
-      pageTitleStyle = { color: pageConfig?.titleColor }
+  const handleNearbyClick = useCallback(() => {
+    if (VERSION_STANDARD) {
+      Taro.navigateTo({ url: '/subpages/store/list' })
     } else {
-      navigationBarTitleText = getCurrentInstance().page?.config?.navigationBarTitleText
-      titleContent = title || navigationBarTitleText || appName
+      Taro.navigateTo({ url: '/subpages/ecshopx/nearly-shop' })
     }
+  }, [onNearbyClick])
 
-    return (
-      <View className='title-container' style={styleNames(pageTitleStyle)}>
-        {titleContent}
-        {fixedTopContainer}
-      </View>
-    )
-  }, [pageConfig, title, fixedTopContainer, appName])
-
-  // 渲染中间区域
-  const renderCenterBlock = useCallback(() => {
-    const { windowWidth } = Taro.getWindowInfo()
-    const centerWidth = windowWidth - menuWidth * 2 - navigationLSpace * 2
-    const pageCenterStyle = {
-      width: `${centerWidth}px`,
-      ...(pageConfig?.titleColor && {
-        color: pageConfig.titleColor,
-        position: 'relative'
-      })
-    }
-
+  const renderNearby = useCallback(() => {
     return (
       <View
-        className='custom-navigation__center-block flex-1 flex items-center justify-items-center'
-        style={styleNames(pageCenterStyle)}
+        className='title-function nearby-function'
+        onClick={handleNearbyClick}
+        style={{ color: value?.titleColor }}
       >
-        {renderNavigation ? (
-          <context.Provider value={{}}>{renderNavigation}</context.Provider>
-        ) : (
-          renderTitle()
-        )}
+        <Text className='nearby-function-text'>
+          {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
+        </Text>
+        <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [renderNavigation, pageConfig?.titleColor, menuWidth, navigationLSpace, renderTitle])
+  }, [handleNearbyClick, nearbyText])
+
+  const renderSearch = useCallback(() => {
+    return (
+      <View
+        className='title-search'
+        onClick={() => Taro.navigateTo({ url: '/subpages/item/list' })}
+      >
+        <View className='search-container'>
+          <Text className='iconfont icon-sousuo-01 search-icon' />
+          {value?.showSearchButton && (
+            <View className='search-button' style={styleNames(searchButtonStyle())}>
+              <Text>搜索</Text>
+            </View>
+          )}
+        </View>
+      </View>
+    )
+  }, [titleStyle, value?.showSearchButton, onSearchConfirm, searchButtonStyle])
+
+  const renderTitleText = useCallback(() => {
+    const navTitle =
+      title ||
+      value?.wgtName ||
+      getCurrentInstance().page?.config?.navigationBarTitleText ||
+      appName
+    return (
+      <View className='title-text'>
+        <Text>{navTitle}</Text>
+      </View>
+    )
+  }, [title, value?.wgtName, appName])
+
+  const renderTitleImage = useCallback(() => {
+    if (!value?.titleBackgroundImage) return null
+    return (
+      <SpImage
+        className='title-image'
+        src={value.titleBackgroundImage}
+        mode='heightFix'
+        style={{ height: '64rpx' }}
+      />
+    )
+  }, [value?.titleBackgroundImage])
+
+  const hasNearby = showFunctionArea && functionAreaType === 'nearby'
 
   return (
-    <View className='custom-navigation' style={styleNames(computedNavigationStyle())}>
-      <View className='custom-navigation__content h-full'>
+    <View className='wgt-page' style={styleNames(headerStyle())} onClick={props.onClickHeader}>
+      <View className='wgt-page-content'>
         <View
-          className='custom-navigation__body w-full h-full flex box-border'
-          style={{
-            padding: `0 ${navigationLSpace}px 0 ${navigationLSpace}px`
-          }}
+          className={classNames('header-container', { 'has-nearby': hasNearby })}
+          style={showHeaderContent ? styleNames(containerStyle()) : {}}
         >
-          {renderLeftBlock()}
-          {renderCenterBlock()}
-          <View className='custom-navigation__right-block' style={{ width: `${menuWidth}px` }} />
+          {/* 左侧：返回、首页、功能区三者只显示一个 */}
+          {showHeaderContent && showFunctionArea ? (
+            <>
+              {/* 有功能区时只显示功能区（热区图或附近门店） */}
+              {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
+              {functionAreaType === 'nearby' && renderNearby()}
+            </>
+          ) : (
+            <>
+              {btnReturn && (
+                <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
+                  <SpImage src='fv_back.png' width={36} height={36} />
+                </View>
+              )}
+              {btnHome && !btnReturn && (
+                <View className='nav-left-capsule' onClick={handleHomeClick}>
+                  <SpImage src='fv_home.png' width={36} height={36} />
+                </View>
+              )}
+            </>
+          )}
+          {/* 标题区：搜索 */}
+          {showHeaderContent && titleStyle === '3' && renderSearch()}
+          {/* 标题区：页面名称 */}
+          {showHeaderContent && titleStyle === '1' && renderTitleText()}
+          {/* 标题区：图片 */}
+          {showHeaderContent && titleStyle === '2' && renderTitleImage()}
         </View>
       </View>
     </View>

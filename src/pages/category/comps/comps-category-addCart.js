@@ -7,19 +7,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { Text, View, Image, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import {
-  SpScrollView,
-  SpPage,
-  SpTabbar,
-  SpCategorySearch,
-  SpSkuSelect,
-  SpLogin
-} from '@/components'
+import { SpScrollView, SpPage, SpCategorySearch, SpSkuSelect, SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 import S from '@/spx'
-import { platformTemplateName } from '@/utils/platform'
 import { pickBy, classNames, styleNames, showToast, VERSION_PLATFORM, entryLaunch } from '@/utils'
 import CompFirstCategory from './comp-first-category'
 import CompSecondCategory from './comp-second-category'
@@ -46,7 +38,8 @@ const initialState = {
   info: null,
   skuPanelOpen: false,
   selectType: 'picker',
-  footerHeight: 0
+  gNavbarHeight: 0,
+  height: 0
 }
 
 function CompsCategoryAddCart(props) {
@@ -68,7 +61,9 @@ function CompsCategoryAddCart(props) {
     thirdList,
     info,
     skuPanelOpen,
-    selectType
+    selectType,
+    gNavbarHeight,
+    height
   } = state
 
   const goodsRef = useRef()
@@ -100,7 +95,7 @@ function CompsCategoryAddCart(props) {
 
   //   const query = { template_name: platformTemplateName, version: 'v1.0.1', page_name: 'category' }
   //   const { list } = await api.category.getCategory(query)
-  //   const seriesList = (list[0] && list[0].params.data[0]?.content) || []
+  //   const seriesList = (list[0] && list[0].params?.data[0]?.content) || []
   //   if(seriesList){
   //     //type  false:main_category 管理分类  true:category_id 销售分类
   //     seriesList.forEach(element => {
@@ -180,7 +175,7 @@ function CompsCategoryAddCart(props) {
 
   const getCategoryList = async () => {
     // ecsahopex ：商品管理分类   云店/官网/内购：商品销售分类
-    const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {})
+    const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 0 } : {})
 
     const currentList = pickBy(res, {
       name: 'category_name',
@@ -208,13 +203,13 @@ function CompsCategoryAddCart(props) {
     setState((draft) => {
       draft.seriesList = currentList
       draft.hasSeries = true
-      draft.cat_id = currentList[0].id
+      draft.cat_id = currentList[0]?.id
       draft.cat_type = currentList[0]?.type
     })
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { dis_id = null } = $instance.router.params
+    const { dis_id = null } = $instance?.router?.params || {}
     const params = {
       page: pageIndex,
       pageSize,
@@ -230,7 +225,7 @@ function CompsCategoryAddCart(props) {
     if (cat_type) {
       params.category_id = cat_id
     } else {
-      params.main_category = cat_id
+      params.category = cat_id
     }
 
     const { list: _list, total_count } = await api.item.search(params)
@@ -255,7 +250,7 @@ function CompsCategoryAddCart(props) {
     console.log('handleConfirm', val)
     if (val) {
       Taro.navigateTo({
-        url: `/pages/item/list?keywords=${val}`
+        url: `/subpages/item/list?keywords=${val}`
       })
     }
   }
@@ -314,7 +309,7 @@ function CompsCategoryAddCart(props) {
     await api.purchase.addPurchaseCart(params)
     showToast('加入购物车成功')
     // let changeList = JSON.parse(JSON.stringify(newList))
-    // changeList.map(l=>{
+    // changeList?.map(l=>{
     //   if(l.item_id == item.item_id){
     //     l.cart_num = Number(l.cart_num) + 1
     //   }
@@ -379,15 +374,16 @@ function CompsCategoryAddCart(props) {
     <SpPage
       scrollToTopBtn
       className={classNames('page-category-index-old')}
-      renderFooter={<SpTabbar height={state.footerHeight} />}
       ref={pageRef}
-      onReady={({ footerHeight }) => {
+      onReady={(e) => {
+        console.log('onReady', e)
         setState((draft) => {
-          draft.footerHeight = footerHeight
+          draft.gNavbarHeight = e.gNavbarH
+          draft.height = e.height
         })
       }}
     >
-      <View className='container-hd'>
+      <View className='container-hd' style={{ top: `${gNavbarHeight}px` }}>
         <View className='category-search'>
           <SpCategorySearch onConfirm={handleConfirm} />
         </View>
@@ -397,7 +393,10 @@ function CompsCategoryAddCart(props) {
           onClick={onFirstCategoryClick}
         />
       </View>
-      <View className='container-bd'>
+      <View
+        className='container-bd'
+        style={{ top: `calc(${gNavbarHeight}px + 266rpx)`, height: `calc(${height} - 266rpx)` }}
+      >
         <View className='left-container'>
           <CompSecondCategory
             cusIndex={categorySecondIndex}
@@ -405,37 +404,46 @@ function CompsCategoryAddCart(props) {
             onClick={onSecondCategoryClick}
           />
         </View>
+        <View className='container-bd'>
+          <View className='left-container'>
+            <CompSecondCategory
+              cusIndex={categorySecondIndex}
+              list={secondList}
+              onClick={onSecondCategoryClick}
+            />
+          </View>
 
-        <View
-          className='right-container'
-          style={styleNames({
-            paddingTop: thirdList.length == 0 && '0px'
-          })}
-        >
-          {thirdList.length > 0 && (
-            <View className='right-container-fixed'>
-              <CompThirdCategory
-                cusIndex={categoryThirdIndex}
-                list={thirdList}
-                onClick={onThirdCategoryClick}
-                typeIndex={cusIndex}
-              />
-            </View>
-          )}
-          <ScrollView className='goods-list-container' scrollY>
-            <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
-              {allList.map((item, index) => (
-                <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
-                  <CompGoodsItem
-                    onStoreClick={handleClickStore}
-                    onAddToCart={handleAddToCart}
-                    hideStore
-                    info={item}
-                  />
-                </View>
-              ))}
-            </SpScrollView>
-          </ScrollView>
+          <View
+            className='right-container'
+            style={styleNames({
+              paddingTop: thirdList.length == 0 && '0px'
+            })}
+          >
+            {thirdList.length > 0 && (
+              <View className='right-container-fixed'>
+                <CompThirdCategory
+                  cusIndex={categoryThirdIndex}
+                  list={thirdList}
+                  onClick={onThirdCategoryClick}
+                  typeIndex={cusIndex}
+                />
+              </View>
+            )}
+            <ScrollView className='goods-list-container' scrollY>
+              <SpScrollView className='scroll-view-goods' ref={goodsRef} fetch={fetch} auto={false}>
+                {allList?.map((item, index) => (
+                  <View className='goods-item-wrap' key={`goods-item-l__${index}`}>
+                    <CompGoodsItem
+                      onStoreClick={handleClickStore}
+                      onAddToCart={handleAddToCart}
+                      hideStore
+                      info={item}
+                    />
+                  </View>
+                ))}
+              </SpScrollView>
+            </ScrollView>
+          </View>
         </View>
       </View>
 

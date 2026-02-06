@@ -17,23 +17,23 @@ class RouteIntercept {
         '/subpages/member/index': '/subpages/purchase/member',
         '/pages/category/index': '/subpages/purchase/category',
         '/pages/cart/espier-index': '/subpages/purchase/espier-index',
-        '/pages/item/list': '/subpages/purchase/list'
+        '/subpages/item/list': '/subpages/purchase/list'
       },
       'standard': {
         // 如果是standard并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
-        '/pages/item/list': '/subpages/purchase/list',
+        '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       },
       'platform': {
         // 如果是platform并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
-        '/pages/item/list': '/subpages/purchase/list',
+        '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       },
       'b2c': {
         // 如果是b2c并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
-        '/pages/item/list': '/subpages/purchase/list',
+        '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       }
@@ -82,9 +82,16 @@ class RouteIntercept {
     } else {
       const _navigateTo = Taro.navigateTo
       const _redirectTo = Taro.redirectTo
+
       Taro.navigateTo = (params) => {
         const _params = this.formartParams(params)
-        _navigateTo(_params)
+        // 检查页面栈深度，如果达到9层，先销毁部分旧页面
+        const pages = getCurrentPages()
+        if (pages.length > 8) {
+          _redirectTo(_params)
+        } else {
+          _navigateTo(_params)
+        }
       }
 
       Taro.redirectTo = (params) => {

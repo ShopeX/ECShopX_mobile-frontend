@@ -41,18 +41,7 @@ function NearlyShop(props) {
     }
   })
   const [state, setState] = useImmer(initialState)
-  const {
-    chooseValue,
-    isSpAddressOpened,
-    keyword,
-    refresh,
-    type,
-    queryProvice,
-    queryCity,
-    queryDistrict,
-    queryAddress,
-    isToken
-  } = state
+  const { chooseValue, isSpAddressOpened, keyword, refresh, type, isToken } = state
   const [policyModal, setPolicyModal] = useState(false)
   const { location = {}, address } = useSelector((state) => state.user)
   const shopRef = useRef()

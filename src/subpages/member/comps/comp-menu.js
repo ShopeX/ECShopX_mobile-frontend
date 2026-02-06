@@ -28,14 +28,14 @@ function CompMenu(props) {
       link: '/subpages/dianwu/index'
     })
   }
-  if ((VERSION_PLATFORM || VERSION_STANDARD) && isWeixin && accessMenu.purchase) {
-    menus = menus.concat({
-      key: 'purchase',
-      name: '内购',
-      icon: 'm_menu_jiatingfengxiang.png',
-      link: '/pages/purchase/auth'
-    })
-  }
+  // if ((VERSION_PLATFORM || VERSION_STANDARD) && isWeixin && accessMenu.purchase) {
+  //   menus = menus.concat({
+  //     key: 'purchase',
+  //     name: '内购',
+  //     icon: 'm_menu_jiatingfengxiang.png',
+  //     link: '/pages/purchase/auth'
+  //   })
+  // }
 
   // if (accessMenu.salesPersonList?.total_count > 0) {
   //   menus = menus.concat([

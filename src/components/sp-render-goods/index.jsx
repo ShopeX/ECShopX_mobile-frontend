@@ -1,0 +1,252 @@
+import React, { Component, useEffect } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { View, Text, Image } from '@tarojs/components'
+import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
+import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
+import qs from 'qs'
+import api from '@/api'
+import S from '@/spx'
+
+import { isObject, classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE } from '@/utils'
+import { PROMOTION_TAG } from '@/consts'
+
+import './index.scss'
+
+function SpGoodsCard(props) {
+  const dispatch = useDispatch()
+  const { favs = [] } = useSelector((state) => state.user)
+  const { priceSetting } = useSelector((state) => state.sys)
+  const { cart_page, item_page, order_page } = priceSetting
+  const {
+    market_price: enMarketPrice,
+    member_price: enMemberPrice,
+    svip_price: enSvipPrice
+  } = item_page
+  const { priceDisplayConfig = {} } = useSelector((state) => state.purchase)
+  const { items_page = {} } = priceDisplayConfig
+  const { activity_price: enPurActivityPrice, sale_price: enPurSalePrice } = items_page
+
+  const {
+    onClick,
+    onChange = () => {},
+    onAddToCart = () => {},
+    onStoreClick = () => {},
+    showMarketPrice = true,
+    showFav = false,
+    showAddCart = false,
+    showSku = false,
+    noCurSymbol = false,
+    info = null,
+    isPointitem = false,
+    renderFooter = null,
+    showPromotion = true,
+    showPrice = true,
+    hideStore = false,
+    renderBrand,
+    isPurchase = false,
+    mode = 'widthFix'
+  } = props
+
+  const handleFavClick = async (e) => {
+    e.stopPropagation()
+    const { itemId, is_fav } = info
+    const fav = favs.findIndex((item) => item.item_id == itemId) > -1
+    if (!fav) {
+      await dispatch(addUserFav(itemId))
+    } else {
+      await dispatch(deleteUserFav(itemId))
+    }
+    await dispatch(fetchUserFavs())
+    console.log('fav', fav)
+    if (S.getAuthToken()) {
+      showToast(fav ? '已移出收藏' : '已加入收藏')
+    }
+  }
+
+  const onChangeToolBar = (e) => {
+    e.stopPropagation()
+    onAddToCart(info)
+  }
+
+  const handleClick = () => {
+    const { itemId, distributorId, card_id, code, user_card_id, point } = info
+    if (onClick) {
+      onClick()
+      return
+    }
+    let query = { id: itemId }
+    if (typeof distributorId != 'undefined') {
+      query = {
+        ...query,
+        dtid: distributorId
+      }
+    }
+    if (card_id) {
+      query = {
+        ...query,
+        card_id,
+        code,
+        user_card_id
+      }
+    }
+
+    const url = `${
+      !!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
+    }?${qs.stringify(query)}`
+    Taro.navigateTo({
+      url
+    })
+  }
+
+  if (!info) {
+    return null
+  }
+
+  const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
+  const isShowStore =
+    !hideStore && VERSION_PLATFORM && info.distributor_info && !Array.isArray(info.distributor_info)
+
+  return (
+    <View className={classNames('sp-goods-item')} onClick={handleClick.bind(this)}>
+      <View className='goods-item__hd'>
+        <SpImage lazyLoad src={info.pic} mode={mode} />
+      </View>
+      {renderBrand && <View className='goods-brand-wrap'>{renderBrand}</View>}
+      <View className='goods-item__bd'>
+        <View className='goods-info'>
+          <View className='goods-title'>
+            {info?.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
+            {info.itemName}
+          </View>
+          <View className='goods-desc'>{info.brief}</View>
+        </View>
+
+        {/* 促销活动标签 */}
+        {showPromotion && info.promotion && info.promotion.length > 0 && (
+          <View className='promotions'>
+            {info.promotion?.map((item, index) => (
+              <Text className='promotion-tag' key={`promotion-tag__${index}`}>
+                {PROMOTION_TAG[item.tag_type]}
+              </Text>
+            ))}
+          </View>
+        )}
+
+        <View className='bd-block'>
+          {/* 商品价格、积分 */}
+          {info.point && (
+            <View className='goods-point'>
+              <SpPoint value={info.point} />
+              {info.price > 0 ? <Text style='margin: 0 4px;'>+</Text> : ''}
+              {info.price > 0 ? <SpPrice primary size={32} value={info.price} /> : ''}
+            </View>
+          )}
+
+          {!info.point && showPrice && (
+            <View className='goods-price'>
+              <View className='gd-price'>
+                {isPurchase && (
+                  <View>
+                    <SpPrice size={36} value={info.price}></SpPrice>
+                    {info.activityPrice && enPurActivityPrice && (
+                      <View className='act-price'>
+                        活动价¥{info.activityPrice.toFixed(2)}
+                        {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
+                      </View>
+                    )}
+                  </View>
+                )}
+                {!isPurchase && (
+                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                )}
+                {info.marketPrice > 0 && enMarketPrice && (
+                  <SpPrice
+                    size={26}
+                    className='mkt-price'
+                    lineThrough
+                    value={info.marketPrice}
+                  ></SpPrice>
+                )}
+              </View>
+              {!info.activityPrice && (
+                <View className='more-price'>
+                  {info.memberPrice < info.price && enMemberPrice && (
+                    <View className='vip-price'>
+                      <SpPrice value={info.memberPrice} />
+                      <SpVipLabel content='会员价' type='member' />
+                    </View>
+                  )}
+
+                  {info.vipPrice > 0 &&
+                    info.vipPrice < info.memberPrice &&
+                    (!info.svipPrice || info.vipPrice > info.svipPrice) &&
+                    enSvipPrice && (
+                      <View className='vip-price'>
+                        <SpPrice value={info.vipPrice} />
+                        <SpVipLabel content='VIP' type='vip' />
+                      </View>
+                    )}
+
+                  {info.svipPrice > 0 &&
+                    info.svipPrice < info.vipPrice &&
+                    info.svipPrice < info.memberPrice &&
+                    enSvipPrice && (
+                      <View className='svip-price'>
+                        <SpPrice value={info.svipPrice} />
+                        <SpVipLabel content='SVIP' type='svip' />
+                      </View>
+                    )}
+                </View>
+              )}
+            </View>
+          )}
+
+          <View className='bd-block-rg'>
+            {showFav && !VERSION_IN_PURCHASE && (
+              <View onClick={(e) => handleFavClick(e)}>
+                <Text
+                  className={classNames(
+                    'iconfont',
+                    isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
+                  )}
+                />
+              </View>
+            )}
+
+            {showAddCart && (
+              <View onClick={(e) => onChangeToolBar(e)}>
+                <Text className='iconfont icon-gouwuche2' />
+              </View>
+            )}
+
+            {info.point && <View className='btn-exchange'>兑换</View>}
+          </View>
+        </View>
+
+        {isShowStore && (
+          <View className='goods__store' onClick={() => onStoreClick(info)}>
+            <SpImage
+              src={info.distributor_info.distributor_info || 'shop_default_logo.png'}
+              width={60}
+              height={60}
+            />
+            <Text className='store-name'>{info.distributor_info.name}</Text>
+
+            {/* <Text className='goods__store-entry'>
+              进店<Text className='iconfont icon-arrowRight'></Text>
+            </Text> */}
+          </View>
+        )}
+      </View>
+
+      <View className='goods-item__ft'>{renderFooter}</View>
+    </View>
+  )
+}
+
+SpGoodsCard.options = {
+  addGlobalClass: true
+}
+
+export default SpGoodsCard

@@ -9,6 +9,7 @@ import configStore from '@/store'
 const { store } = configStore()
 
 function linkPage(data) {
+  console.log('linkPage----', data)
   const {
     id,
     title,
@@ -23,7 +24,7 @@ function linkPage(data) {
   const { id: dtid } = getCurrentInstance().router.params
   if (id === 'homeSearch') {
     Taro.navigateTo({
-      url: '/pages/item/list'
+      url: '/subpages/item/list'
     })
     return
   }
@@ -60,11 +61,11 @@ function linkPage(data) {
       url = `/pages/item/espier-detail?id=${id}&dtid=${distributor_id}`
       break
     case 'sale_category':
-      url = '/pages/item/list?cat_id=' + id
+      url = '/subpages/item/list?cat_id=' + id
       break
     case 'category':
     case 'management_category':
-      url = '/pages/item/list?main_cat_id=' + id
+      url = '/subpages/item/list?main_cat_id=' + id
       break
     case 'article':
       url = '/pages/article/index?id=' + id
@@ -131,7 +132,7 @@ function linkPage(data) {
       // }
       break
     case 'tag':
-      url = '/pages/item/list?tag_id=' + id
+      url = '/subpages/item/list?tag_id=' + id
       break
     case 'regactivity':
       url = '/marketing/pages/reservation/goods-reservate?activity_id=' + id

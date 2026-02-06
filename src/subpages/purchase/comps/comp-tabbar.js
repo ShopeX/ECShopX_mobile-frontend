@@ -51,8 +51,9 @@ function CompTabbar(props) {
       selectedImage: item.selectedIconPath,
       url: PURCHASE_TABBAR_PATH()[item.name],
       urlRedirect: true,
-      text: item.text.indexOf('购物车') > -1 && cartCount > 0 ? cartCount : null,
-      max: item.max
+      // text: item.text.indexOf('购物车') > -1 && cartCount > 0 ? cartCount : null,
+      text: item.name == 'cart' && cartCount > 0 ? cartCount : null,
+      max: item.max || '99'
     }
   })
 

@@ -57,7 +57,6 @@ import doc from '@/doc'
 import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import withPageWrapper from '@/hocs/withPageWrapper'
 import HomeWgts from './home/comps/home-wgts'
-import { WgtHomeHeader, WgtHomeHeaderShop } from './home/wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
@@ -82,8 +81,10 @@ const initialState = {
   navigateMantle: false,
   footerHeight: 0,
   distributor_id: null,
-  backTopScrollTop: -1,
-  bodyHeight: 0
+  backTopScrollTop: null,
+  bodyHeight: 0,
+  scrollIntoView: null,
+  navbarHeight: 0
 }
 
 function Home() {
@@ -94,33 +95,26 @@ function Home() {
   const [state, setState] = useImmer(initialState)
   const [likeList, setLikeList] = useImmer([])
   const pageRef = useRef()
-  const loginRef = useRef()
 
-  const { openRecommend, appName, openScanQrcode, entryStoreByLBS } = useSelector(
-    (state) => state.sys
-  )
+  const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } =
+    useSelector((state) => state.sys)
   const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
-  const { location } = useSelector((state) => state.user)
+  const { location, address } = useSelector((state) => state.user)
+  const nearbyText = address?.city || location?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
   const {
     wgts,
-    loading,
-    searchComp,
     pageData,
-    fixedTop,
     filterWgts,
     isShowHomeHeader,
     info,
     skuPanelOpen,
     selectType,
     navigateMantle,
-    footerHeight,
-    distributor_id,
-    backTopScrollTop,
-    bodyHeight
+    scrollIntoView
   } = state
 
   const dispatch = useDispatch()
@@ -136,6 +130,8 @@ function Home() {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
     dispatch(updateEnterpriseId())
+    // 通知挂件（如浏览记录）刷新本地数据
+    Taro.eventCenter.trigger('homePageShow')
   })
 
   useEffect(() => {
@@ -152,7 +148,7 @@ function Home() {
     }
   }, [skuPanelOpen])
 
-  useShareAppMessage(async (res) => {
+  useShareAppMessage(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
     if (VERSION_STANDARD) {
@@ -169,7 +165,7 @@ function Home() {
     }
   })
 
-  useShareTimeline(async (res) => {
+  useShareTimeline(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
     if (VERSION_STANDARD) {
@@ -221,9 +217,9 @@ function Home() {
 
       const fixedTop = searchComp && searchComp.config && searchComp.config.fixTop
       const isShowHomeHeader =
-        VERSION_PLATFORM ||
+        (VERSION_STANDARD && entryStoreByLBS && openWechatappLocation == 1) ||
+        (VERSION_PLATFORM && openWechatappLocation == 1) ||
         (openScanQrcode == 1 && isWeixin) ||
-        (VERSION_STANDARD && entryStoreByLBS) ||
         fixedTop
 
       setState((draft) => {
@@ -256,15 +252,6 @@ function Home() {
   }
 
   // 定位
-  const fetchLocation = () => {
-    if (!location && ((VERSION_STANDARD && entryStoreByLBS) || VERSION_PLATFORM)) {
-      try {
-        updateAddress()
-      } catch (e) {
-        console.error('map location fail:', e)
-      }
-    }
-  }
 
   const onAddToCart = async ({ itemId, distributorId }) => {
     Taro.showLoading()
@@ -296,9 +283,11 @@ function Home() {
       // renderNavigation={renderNavigation()}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
+      nearbyText={nearbyText}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {
+        console.log('onScrollToTop')
         // 先设置为一个很小的非0值，确保触发滚动变化
         setState((draft) => {
           draft.backTopScrollTop = 0.1
@@ -312,9 +301,10 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height }) => {
+      onReady={({ height, gNavbarH }) => {
         setState((draft) => {
           draft.bodyHeight = height
+          draft.navbarHeight = gNavbarH
         })
       }}
     >
@@ -324,70 +314,80 @@ function Home() {
         onScroll={(e) => {
           pageRef.current.handlePageScroll(e?.detail)
         }}
+        scrollIntoView={scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
-        <View
-          className='home-body-content'
-          style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
-        >
-          {isShowHomeHeader && (
-            <WgtHomeHeader>{fixedTop && <SpSearch info={searchComp} />}</WgtHomeHeader>
-          )}
-          <View style={{ flex: 1 }}>
-            {filterWgts.length > 0 && (
-              <WgtsContext.Provider
-                value={{
-                  onAddToCart,
-                  isTab: true,
-                  immersive: pageData?.base?.isImmersive,
-                  isShowHomeHeader: isShowHomeHeader && isWeixin,
-                  footerHeight: state.footerHeight
-                }}
-              >
-                <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
-                  {/* 猜你喜欢 */}
-                  <SpRecommend className='recommend-block' info={likeList} />
-                </HomeWgts>
-              </WgtsContext.Provider>
-            )}
-          </View>
-          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-          <View className='sp-page__powered-by w-full'>
+        <>
+          <View
+            className='home-body-content'
+            style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
+          >
+            <View style={{ flex: 1 }}>
+              {filterWgts.length > 0 && (
+                <WgtsContext.Provider
+                  value={{
+                    onAddToCart,
+                    isTab: true,
+                    immersive: pageData?.base?.isImmersive,
+                    isShowHomeHeader: isShowHomeHeader && isWeixin,
+                    navBarHeight: state.navbarHeight,
+                    footerHeight: state.footerHeight,
+                    setScrollIntoView: (view) => {
+                      setState((draft) => {
+                        draft.scrollIntoView = view
+                      })
+                    }
+                  }}
+                >
+                  <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                    {/* 猜你喜欢 */}
+                    <SpRecommend className='recommend-block' info={likeList} />
+                  </HomeWgts>
+                </WgtsContext.Provider>
+              )}
+            </View>
+            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+            {/* <View className='sp-page__powered-by w-full'>
             <Text>Powered by</Text>
-            <Image src='/assets/imgs/powered-logo.png' className='powered-logo' mode='contain' />
+            <Image
+              src='/assets/imgs/powered-logo.png'
+              className='powered-logo'
+              mode='contain'
+            />
+          </View> */}
           </View>
-        </View>
+
+          {/* 小程序收藏提示 */}
+          {isWeixin && <MCompAddTip />}
+
+          {/* 开屏广告 */}
+          {isWeixin && !showAdv && <SpScreenAd />}
+
+          {/* 优惠券包 */}
+          {VERSION_STANDARD && <SpCouponPackage />}
+
+          {/* Sku选择器 */}
+          <MSpSkuSelect
+            open={skuPanelOpen}
+            type={selectType}
+            info={info}
+            onClose={() => {
+              setState((draft) => {
+                draft.skuPanelOpen = false
+              })
+            }}
+            onChange={(skuText, curItem) => {
+              setState((draft) => {
+                draft.skuText = skuText
+                draft.curItem = curItem
+              })
+            }}
+          />
+        </>
       </ScrollView>
-
-      {/* 小程序收藏提示 */}
-      {isWeixin && <MCompAddTip />}
-
-      {/* 开屏广告 */}
-      {isWeixin && !showAdv && <SpScreenAd />}
-
-      {/* 优惠券包 */}
-      {VERSION_STANDARD && <SpCouponPackage />}
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
     </SpPage>
   )
 }

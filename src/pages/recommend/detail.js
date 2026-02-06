@@ -47,15 +47,20 @@ function GuideRecommendDetail(props) {
   })
 
   useShareAppMessage(async () => {
-    const { salesperson_id, work_userid, distributor_id, shop_code } = userInfo
     const { subtask_id } = router.params
     const query = {
       id: itemId,
-      dtid: distributor_id,
-      smid: salesperson_id,
-      gu: `${work_userid}_${shop_code}`,
       subtask_id
     }
+
+    // 如果有userInfo，添加相关参数
+    if (userInfo) {
+      const { salesperson_id, work_userid, distributor_id, shop_code } = userInfo
+      query.dtid = distributor_id
+      query.smid = salesperson_id
+      query.gu = `${work_userid}_${shop_code}`
+    }
+
     const sharePath = buildSharePath('poster_recommend_detail', query)
     log.debug(`【/pages/recommend/detail】onShareAppMessage path: ${sharePath}`)
     return {

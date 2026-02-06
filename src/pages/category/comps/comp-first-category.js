@@ -35,7 +35,7 @@ function CompFirstCategory(props) {
   }
 
   const renderCategoryItem = () => {
-    return list.map((item, index) => (
+    return list?.map((item, index) => (
       <View
         className={`category-item ${index == cusIndex ? 'active' : ''}`}
         key={index}
@@ -43,7 +43,14 @@ function CompFirstCategory(props) {
         id={`category-${index}`}
       >
         <View className='category-image'>
-          <SpImage src={item.img} width={100} height={100} circle={100} lazyLoad />
+          <SpImage
+            src={item.img}
+            mode='aspectFill'
+            width={100}
+            height={100}
+            circle={100}
+            lazyLoad
+          />
         </View>
         <View className='category-name'>{item.name}</View>
       </View>

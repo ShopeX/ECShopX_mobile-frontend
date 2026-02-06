@@ -21,7 +21,7 @@ import Taro, {
 } from '@tarojs/taro'
 import { View, Text, Button, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage } from '@/components'
+import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpPoweredBy } from '@/components'
 import { useThemsColor, useLogin } from '@/hooks'
 import CookieConsent from '@/components/cookie-consent'
 import {
@@ -318,6 +318,8 @@ const SpPage = memo(
             btnReturn={state.btnReturn}
             btnHome={state.btnHome}
             mantle={state.mantle}
+            nearbyText={props.nearbyText}
+            onSearchConfirm={props.onSearchConfirm}
           />
         )}
         {props.isDefault &&
@@ -349,12 +351,7 @@ const SpPage = memo(
               {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
               {props.showpoweredBy && (
                 <View className='sp-page__powered-by w-full'>
-                  <Text>Powered by</Text>
-                  <Image
-                    src='/assets/imgs/powered-logo.png'
-                    className='powered-logo'
-                    mode='contain'
-                  />
+                  <SpPoweredBy />
                 </View>
               )}
             </View>
@@ -415,7 +412,9 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => {}
+  onScrollToTop: () => {},
+  nearbyText: '',
+  onSearchConfirm: null
 }
 
 export default SpPage

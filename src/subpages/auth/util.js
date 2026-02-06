@@ -5,6 +5,7 @@
 import S from '@/spx'
 import { showToast } from '@/utils'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { SG_CHECK_STORE_RULE } from '@/consts'
 
 //跳转到注册页
 function navigationToReg(redirect) {
@@ -41,7 +42,9 @@ async function setTokenAndRedirect(token = '', tokenSetSuccessCallback) {
       : redirect
       ? decodeURIComponent(redirect)
       : '/subpages/member/index'
-    // Taro.redirectTo({ url })
+    // 清空店铺进店规则检查
+    Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
+    debugger
     window.location.href = `${window.location.origin}${url}`
   }
 }

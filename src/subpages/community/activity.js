@@ -10,7 +10,7 @@ import { SpPage, SpScrollView, SpFilterBar, SpPrice } from '@/components'
 import { pickBy, classNames, showToast } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import doc from '@/doc'
+import doc from '@/subpages/doc'
 import api from '@/api'
 
 import CompTabbar from './comps/comp-tabbar'

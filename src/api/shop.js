@@ -133,3 +133,16 @@ export function getMyStoreWhiteList() {
 export function getCookiePolicy() {
   return req.get('/company/privacy_setting_ck')
 }
+
+// 按首字母排序获取店铺列表
+export function getShopListByLetter(params = {}) {
+  return req.get('/distributor/get_all_distributor', {
+    ...params
+    // sort_type: 5  // 固定值5，表示按首字母升序排列
+  })
+}
+
+// 获取店铺分类列表
+export function getCategoryList(params = {}) {
+  return req.get('/distributor/get_category_list', params)
+}
