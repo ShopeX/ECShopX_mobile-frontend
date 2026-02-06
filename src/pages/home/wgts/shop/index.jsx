@@ -13,7 +13,6 @@ function WgtShop(props) {
   const { base = {}, data = [], noRegionauth = false, pagetype } = info || {} //是否不限制区域
   const { displayType } = base || {}
   const [currentIndex, setCurrentIndex] = useState(0)
-  const { regionauthInfo = {} } = useSelector((reduxState) => reduxState.regionauth || {})
 
   useEffect(() => {
     setCurrentIndex(0)
@@ -44,17 +43,18 @@ function WgtShop(props) {
     // 点击事件处理
   }
 
+  console.log(data, 'data')
+
   return (
     <View
       className={classNames('wgt-shop', {
-        'wgt-shop--horizontal': displayType == 'horizontal',
         'wgt-shop--single': data.length == 1
       })}
       style={outStyle()}
       id={`wgt-shop-${id}`}
     >
       <View className='wgt-shop__content'>
-        {displayType == 'horizontal' && isArray(data) && data.length > 0 && (
+        {isArray(data) && data.length > 0 && (
           <Swiper
             nextMargin={data.length > 1 ? '24rpx' : 0}
             previousMargin={data.length > 1 ? '24rpx' : 0}

@@ -24,7 +24,7 @@ import {
   WgtGoods,
   WgtLocationModule,
   WgtContentPartition,
-  WgtOrderNavigation
+  WgtOrderNavigation,
 } from '../wgts'
 import './home-wgts.scss'
 
@@ -116,6 +116,7 @@ function HomeWgts(props) {
             {item.name === 'orderNavigation' && (
               <WgtOrderNavigation info={item} id={item.id || idx} />
             )}
+            {item.name === 'shop' && <WgtShop info={item} id={item.id || idx} />}
           </View>
         )
       })}
