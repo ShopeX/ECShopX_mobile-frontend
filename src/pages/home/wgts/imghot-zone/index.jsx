@@ -49,15 +49,15 @@ function WgtImgHotZone(props) {
     }
 
     // 纵向布局时，优先使用 base.imgHeight
-    if (isVertical && base.imgHeight) {
-      style.height = Taro.pxTransform(base.imgHeight)
-    } else if (config.imgHeight) {
-      // 横向布局时，使用 config.imgHeight
-      style.height = Taro.pxTransform(config.imgHeight)
-    } else {
-      style.height = 'auto'
-    }
-
+    // if (isVertical && base.imgHeight) {
+    //   style.height = Taro.pxTransform(base.imgHeight)
+    // } else if (config.imgHeight) {
+    //   // 横向布局时，使用 config.imgHeight
+    //   style.height = Taro.pxTransform(config.imgHeight)
+    // } else {
+    //   style.height = 'auto'
+    // }
+    style.height = 'auto'
     return style
   }, [config.imgWidth, config.imgHeight, isVertical, base.imgHeight])
 

@@ -2,91 +2,39 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useEffect, useMemo } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import React, { useMemo } from 'react'
 import { View, Video, Text } from '@tarojs/components'
 import { classNames, styleNames, linkPage } from '@/utils'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
-const $instance = getCurrentInstance()
+// proportion 与比例 class 的映射：0=16:9, 1=9:16, 2=4:3, 3=3:4, 4=1:1
+const RATIO_CLASS_MAP = ['16-9', '9-16', '4-3', '3-4', '1-1']
 
 function WgtFilm(props) {
   const { info } = props
-  const [screenWidth, setScreenWidth] = useState(null)
 
   // 从 params 中获取配置和数据，兼容两种数据结构
-  // 1. 新结构：info.params.config, info.params.data, info.params.base
-  // 2. 旧结构：info.config, info.data, info.base
   const params = info?.params || info || {}
   const base = params.base || {}
   const config = params.config || {}
   const data = params.data || []
-
-  useEffect(() => {
-    const res = Taro.getSystemInfoSync()
-    setScreenWidth(res.screenWidth)
-  }, [])
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
     return getGlobalBaseStyle(base.outerMargin)
   }, [base])
 
-  // 计算视频尺寸
-  const videoSize = useMemo(() => {
-    if (!screenWidth) {
-      return { width: '100%', height: 'auto', objectFit: 'contain' }
-    }
+  // 根据 base.proportion / config.ratio 得到比例 class，用 aspect-ratio mixin 渲染
+  const videoWrapClass = useMemo(() => {
+    if (config.ratio === 'square') return 'wgt-film__video-wrap--1-1'
+    if (config.ratio === 'rectangle') return 'wgt-film__video-wrap--16-9'
+    const proportion = base.proportion ?? 0
+    const key = RATIO_CLASS_MAP[proportion] || RATIO_CLASS_MAP[0]
+    return `wgt-film__video-wrap--${key}`
+  }, [base.proportion, config.ratio])
 
-    // 计算实际可用宽度（减去边距）
-    const padding = config.padded || base.padded ? 32 : 0 // 16px * 2
-    const availableWidth = screenWidth - padding
-
-    const aspectRatios = [16 / 9, 9 / 16, 4 / 3, 3 / 4, 1 / 1]
-    const { proportion = 0 } = base
-    let ratio = aspectRatios[proportion]
-
-    let w = '100%',
-      h
-    let objectFit = 'contain'
-    const defaultHeight = Math.round(availableWidth / ratio)
-
-    if (config.width && config.height) {
-      ratio = config.width / config.height
-      if (ratio <= 10 / 16) {
-        h = defaultHeight
-      } else {
-        objectFit = 'cover'
-        h = Math.round(availableWidth / ratio)
-      }
-    } else {
-      h = defaultHeight
-    }
-
-    if (config.ratio === 'square') {
-      // 1:1
-      objectFit = 'cover'
-      h = availableWidth
-    } else if (config.ratio === 'rectangle') {
-      // 16:9
-      h = defaultHeight
-    }
-
-    return {
-      width: w,
-      height: `${h}px`,
-      objectFit
-    }
-  }, [
-    screenWidth,
-    base.proportion,
-    base.padded,
-    config.width,
-    config.height,
-    config.ratio,
-    config.padded
-  ])
+  const objectFit = config.ratio === 'square' ? 'cover' : 'contain'
 
   const handleClickItem = linkPage
 
@@ -109,20 +57,16 @@ function WgtFilm(props) {
           </View>
         </View>
       )}
-      <View
-        className={classNames('slider-wrap')}
-        style={styleNames({
-          width: videoSize.width,
-          height: videoSize.height
-        })}
-      >
-        <Video
-          className='flim-video'
-          direction={90}
-          src={data[0].url}
-          controls
-          objectFit={videoSize.objectFit}
-        />
+      <View className={classNames('wgt-film__video-wrap', videoWrapClass)}>
+        <View className='wgt-film__video-inner'>
+          <Video
+            className='flim-video'
+            direction={90}
+            src={data[0].url}
+            controls
+            objectFit={objectFit}
+          />
+        </View>
       </View>
     </View>
   )

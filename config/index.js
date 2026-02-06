@@ -57,7 +57,10 @@ const config = {
   sourceRoot: 'src',
   outputRoot: DIST_PATH,
   sass: {
-    resource: path.resolve(__dirname, '..', 'src/style/imports.scss'),
+    resource:
+      process.env.TARO_ENV === 'weapp'
+        ? ['src/style/imports.scss', 'src/style/weapp-mixins.scss']
+        : ['src/style/imports.scss', 'src/style/h5-mixins.scss'],
     projectDirectory: path.resolve(__dirname, '..')
   },
 

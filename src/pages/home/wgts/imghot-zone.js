@@ -36,14 +36,14 @@ function WgtImgHotZone(props) {
     }
 
     // 高度优先级：config.imgHeight > animation模式下的imgHeight > auto
-    if (config.imgHeight) {
-      style.height = Taro.pxTransform(config.imgHeight)
-    } else if (isVertical) {
-      style.height = Taro.pxTransform(imgHeight)
-    } else {
-      style.height = 'auto'
-    }
-
+    // if (config.imgHeight) {
+    //   style.height = Taro.pxTransform(config.imgHeight)
+    // } else if (isVertical) {
+    //   style.height = Taro.pxTransform(imgHeight)
+    // } else {
+    // style.height = 'auto'
+    // }
+    style.height = 'auto'
     return style
   }, [outerStyle, config.imgWidth, config.imgHeight, isVertical, imgHeight])
 

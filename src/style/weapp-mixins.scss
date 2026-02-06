@@ -1,0 +1,19 @@
+@mixin aspect-ratio($width: 1, $height: 1, $useFallback: true) {
+  // 计算 padding-top 降级比例
+  $ratio: $width / $height;
+  $padding: percentage($height / $width);
+  // 降级方案：使用 padding-top 模拟宽高比
+
+  position: relative;
+  padding-top: $padding;
+  width: 100%;
+  flex-grow: 0;
+  // 使用 > 选择器确保仅匹配直接子元素
+  > view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
