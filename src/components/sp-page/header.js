@@ -139,7 +139,11 @@ const CustomNavigationHeader = memo((props) => {
 
   const renderNearby = useCallback(() => {
     return (
-      <View className='title-function nearby-function' onClick={handleNearbyClick} style={{ color: value?.titleColor }}>
+      <View
+        className='title-function nearby-function'
+        onClick={handleNearbyClick}
+        style={{ color: value?.titleColor }}
+      >
         <Text className='nearby-function-text'>
           {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
         </Text>
@@ -150,7 +154,10 @@ const CustomNavigationHeader = memo((props) => {
 
   const renderSearch = useCallback(() => {
     return (
-      <View className='title-search' onClick={() => Taro.navigateTo({ url: '/subpages/item/list' })}>
+      <View
+        className='title-search'
+        onClick={() => Taro.navigateTo({ url: '/subpages/item/list' })}
+      >
         <View className='search-container'>
           <Text className='iconfont icon-sousuo-01 search-icon' />
           {value?.showSearchButton && (

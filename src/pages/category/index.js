@@ -60,8 +60,8 @@ function StoreItemList(props) {
     <SpPage
       className='page-category'
       pageConfig={{
-        titleStyle:'3',
-        navigateBackgroundColor:'#fff'
+        titleStyle: '3',
+        navigateBackgroundColor: '#fff'
       }}
       ref={pageRef}
       showLive

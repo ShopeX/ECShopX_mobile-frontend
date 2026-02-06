@@ -449,12 +449,7 @@ function MemberIndex(props) {
   }
 
   return (
-    <SpPage
-      className='pages-member-index'
-      immersive
-      renderFooter={<SpTabbar />}
-      title='会员中心'
-    >
+    <SpPage className='pages-member-index' immersive renderFooter={<SpTabbar />} title='会员中心'>
       <View className='user-info-card-wrapper min-h-full'>
         <View
           className='header-block'

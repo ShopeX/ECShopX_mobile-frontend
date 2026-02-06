@@ -79,8 +79,9 @@
         .soldout-mask-text {
           background-color: rgba(0, 0, 0, 0.5);
           border-radius: 50%;
-          width: 68px;
-          height: 68px;
+          padding: 10px;
+          width: fit-content;
+          aspect-ratio: 1/1;
           display: flex;
           justify-content: center;
           align-items: center;
@@ -113,7 +114,7 @@
     justify-content: center;
     height: 28px;
     overflow: hidden;
-    color: #1A1A1A;
+    color: #1a1a1a;
 
     &__activity_name {
       font-family: PingFang SC, PingFang SC;
@@ -133,7 +134,7 @@
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 600;
       font-size: 28px;
-      color: #1A1A1A;
+      color: #1a1a1a;
     }
   }
 

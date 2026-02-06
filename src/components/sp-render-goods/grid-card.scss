@@ -18,12 +18,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
       .soldout-mask-text {
         background-color: rgba(0, 0, 0, 0.5);
         border-radius: 50%;
-        width: 138px;
-        height: 138px;
+        padding: 10px;
+        width: fit-content;
+        aspect-ratio: 1/1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -55,7 +56,7 @@
     }
   }
   &__title-promotion {
-    height:34px;
+    height: 34px;
     @include multi-ellipsis(1);
   }
 

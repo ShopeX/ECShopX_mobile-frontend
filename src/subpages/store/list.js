@@ -133,7 +133,7 @@ function NearlyShop(props) {
     if (filterType == 1) {
       // const [chooseProvince, chooseCity, chooseDistrict] = chooseValue
       params = {
-        ...params,
+        ...params
         // province: chooseProvince,
         // city: chooseCity,
         // area: chooseDistrict

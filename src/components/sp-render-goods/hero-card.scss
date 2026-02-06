@@ -11,7 +11,7 @@
     position: relative;
     overflow: hidden;
 
- .soldout-mask {
+    .soldout-mask {
       position: absolute;
       top: 0;
       left: 0;
@@ -21,12 +21,13 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: rgba(255,255,255,0.5);
+      background: rgba(255, 255, 255, 0.5);
       .soldout-mask-text {
         background-color: rgba(0, 0, 0, 0.5);
         border-radius: 50%;
-        width: 138px;
-        height: 138px;
+        padding: 10px;
+        width: fit-content;
+        aspect-ratio: 1/1;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -83,20 +84,20 @@
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 600;
       font-size: 34rpx;
-      color: #1A1A1A;
+      color: #1a1a1a;
 
       .sp-price__symbol {
         font-family: D-DIN-PRO, D-DIN-PRO;
         font-weight: 500;
         font-size: 26rpx;
-        color: #1A1A1A;
+        color: #1a1a1a;
       }
       .sp-price__int,
       .sp-price__decimal {
         font-family: D-DIN-PRO, D-DIN-PRO;
         font-weight: 600;
         font-size: 34rpx;
-        color: #1A1A1A;
+        color: #1a1a1a;
       }
     }
 
@@ -105,7 +106,7 @@
       font-family: D-DIN-PRO, D-DIN-PRO;
       font-weight: 500;
       font-size: 26rpx;
-      color: #1A1A1A;
+      color: #1a1a1a;
 
       .sp-price__symbol,
       .sp-price__int,
@@ -113,7 +114,7 @@
         font-family: D-DIN-PRO, D-DIN-PRO;
         font-weight: 500;
         font-size: 26rpx;
-        color: #1A1A1A;
+        color: #1a1a1a;
       }
     }
 

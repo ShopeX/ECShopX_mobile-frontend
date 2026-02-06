@@ -154,7 +154,9 @@ export default function WgtGoods(props) {
                 </Text>
               )}
               {base.titleText?.type === 'image' && base.titleText?.image && (
-                <SpImage src={base.titleText.image} className='wgt-goods-head-title-image' />
+                <View className='wgt-goods-head-title-image'>
+                  <SpImage src={base.titleText.image} mode='heightFix' />
+                </View>
               )}
             </View>
             {base.moreBtn?.show && (
