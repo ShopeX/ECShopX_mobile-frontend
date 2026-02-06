@@ -25,8 +25,9 @@
       .soldout-mask-text {
         background-color: rgba(0, 0, 0, 0.5);
         border-radius: 50%;
-        width: 138px;
-        height: 138px;
+        padding: 10px;
+        width: fit-content;
+        aspect-ratio: 1/1;
         display: flex;
         justify-content: center;
         align-items: center;
