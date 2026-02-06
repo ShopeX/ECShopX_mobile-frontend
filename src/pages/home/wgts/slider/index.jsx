@@ -15,15 +15,15 @@ import './index.scss'
 const $instance = getCurrentInstance()
 
 const initialState = {
-  currentDot: 0,
   curIdx: 0,
-  play: false
+  play: false,
+  showPoster: false
 }
 
 const Slider = (props) => {
   const { info } = props
   const [state, setState] = useImmer(initialState)
-  const { currentDot, curIdx, play } = state
+  const { curIdx, play, showPoster } = state
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   // 1. 新结构：info.params.config, info.params.data, info.params.base
@@ -58,13 +58,6 @@ const Slider = (props) => {
     linkPage(item)
   }
 
-  // 轮播切换事件
-  const dotChange = (e) => {
-    const { current } = e.detail
-    setState((draft) => {
-      draft.currentDot = current
-    })
-  }
 
   const swiperChange = (e) => {
     const { current } = e.detail
@@ -227,20 +220,14 @@ const Slider = (props) => {
                 <Video
                   src={item.videoUrl}
                   controls={false}
-                  autoplay={item.autoplay}
+                  autoplay={item.autoplay&&curIdx === idx}
                   objectFit='cover'
                   showCenterPlayBtn={false}
                   showFullscreenBtn={false}
                   muted={false}
                   id={`sliderVideo_${idx}`}
                   className='slider-video'
-                >
-                  {!play && item.imgUrl && (
-                    <Image className='poster' mode='widthFix' src={item.imgUrl} />
-                  )}
-                </Video>
-                {/* 热区 */}
-                {renderHotZones(item)}
+                />
               </>
             )}
 
@@ -278,7 +265,6 @@ const Slider = (props) => {
           current={curIdx}
           interval={config.interval || 3000}
           duration={300}
-          onChange={dotChange}
           onAnimationFinish={swiperChange}
         >
           {renderItems}
@@ -300,14 +286,14 @@ const Slider = (props) => {
           {config.dot !== false &&
             data.map((dot, dotIdx) => (
               <View
-                className={classNames('dot-item', { active: currentDot === dotIdx })}
+                className={classNames('dot-item', { active: curIdx === dotIdx })}
                 key={`dot-item__${dotIdx}`}
               ></View>
             ))}
 
           {config.dot === false && (
             <View className='pagination-count'>
-              {currentDot + 1}/{data.length}
+              {curIdx + 1}/{data.length}
             </View>
           )}
         </View>
