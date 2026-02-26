@@ -71,6 +71,10 @@
           .total-pirce {
             font-size: 40px;
           }
+          .total-price-wrap {
+            display: flex;
+            align-items: center;
+          }
           .btn-calc {
             margin-left: 16px;
           }
@@ -186,6 +190,8 @@
     }
   }
   .discount-price-wrap {
+    display: flex;
+    align-items: center;
     color: var(--color-primary);
     line-height: 24px;
     .total-pirce {
