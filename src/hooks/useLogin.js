@@ -102,7 +102,7 @@ export default (props = {}) => {
   }
 
   const setToken = async (token) => {
-    const { redirect_url } = $instance.router.params
+    const { redirect_url } = $instance?.router?.params
     console.log('redirect_url', redirect_url)
     S.setAuthToken(token)
     setIsLogin(true)

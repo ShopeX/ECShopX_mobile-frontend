@@ -63,7 +63,7 @@ export default class DistributionGoods extends Component {
     })
     this.firstStatus = true
     this.spPageRef.current?.pageLock()
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const { tabList } = this.state
     tabList[1].url += `?status=${status}`
     this.setState(
@@ -363,7 +363,7 @@ export default class DistributionGoods extends Component {
     })
   }
   render() {
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const {
       list,
       page,

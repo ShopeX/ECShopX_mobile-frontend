@@ -48,7 +48,7 @@ function TradeList(props) {
   const router = useRouter()
 
   useEffect(() => {
-    const { status = 0 } = router.params
+    const { status = 0 } = router?.params
     setState((draft) => {
       draft.status = status
     })

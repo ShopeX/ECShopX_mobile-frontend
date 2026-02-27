@@ -26,7 +26,7 @@ export default class make_fabulous extends Component {
   }
 
   async componentDidMount() {
-    let { num } = this.$router.params
+    let { num } = this.$router?.params
     let data = {
       type: 'like'
     }

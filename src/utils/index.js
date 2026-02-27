@@ -162,8 +162,8 @@ export const isIphoneX = () => {
 export function getCurrentRoute() {
   const router = getCurrentInstance().router
   // eslint-disable-next-line
-  const { $taroTimestamp, ...params } = router.params || {}
-  const path = router.path
+  const { $taroTimestamp, ...params } = router?.params || {}
+  const path = router?.path
   const fullPath = `${path}${Object.keys(params).length > 0 ? '?' + qs.stringify(params) : ''}`
 
   return {
@@ -489,7 +489,7 @@ function validColor(color) {
  * } data 新增上报数据
  */
 export async function buriedPoint(data) {
-  const params = getCurrentInstance().router.params
+  const params = getCurrentInstance()?.router?.params
   let {
     gu,
     subtask_id = '',

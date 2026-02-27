@@ -99,7 +99,7 @@ export default class StoreIndex extends Component {
   }
 
   async componentDidMount() {
-    const options = await normalizeQuerys(this.$instance.router.params)
+    const options = await normalizeQuerys(this.$instance?.router?.params)
     this.setState(
       {
         dtid: options.id || options.dtid
@@ -300,7 +300,7 @@ export default class StoreIndex extends Component {
     if (cur !== current) {
       const curTab = this.state.tabList[current]
       const { url } = curTab
-      // const options = await normalizeQuerys(this.$router.params);
+      // const options = await normalizeQuerys(this.$router?.params);
       const id = this.state.dtid
       const param = current === 1 ? `?dis_id=${id}` : `?id=${id}`
       const fullPath = getCurrentRoute(this.$router).fullPath.split('?')[0]

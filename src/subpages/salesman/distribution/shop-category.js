@@ -63,7 +63,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   async fetchInfo() {
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     const query = {
@@ -112,7 +112,7 @@ export default class DistributionShopCategory extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
 
@@ -196,7 +196,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   handleClickItem = (item) => {
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     let id = distributionShopId || userId

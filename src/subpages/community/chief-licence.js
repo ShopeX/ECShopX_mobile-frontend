@@ -26,7 +26,7 @@ function PointRule(props) {
   }, [])
 
   const aggrementAndExplanation = async () => {
-    const { distributor_id } = $instance.router.params
+    const { distributor_id } = $instance?.router?.params
     const { aggrement } = await api.community.aggrementAndExplanation({ distributor_id })
     setState((draft) => {
       draft.content = aggrement

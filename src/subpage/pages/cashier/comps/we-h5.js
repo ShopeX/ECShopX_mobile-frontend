@@ -32,7 +32,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     const { orderType = 'normal' } = this.props
 
     const params = {

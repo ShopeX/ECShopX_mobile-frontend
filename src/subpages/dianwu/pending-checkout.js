@@ -43,7 +43,7 @@ const initialState = {
 }
 function DianwuPendingCheckout(props) {
   const $instance = getCurrentInstance()
-  const { distributor_id, from } = $instance.router.params
+  const { distributor_id, from } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
   const { list } = state
   const { member } = useSelector((state) => state.dianwu)

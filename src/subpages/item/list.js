@@ -91,7 +91,7 @@ function ItemList() {
 
   const goodsRef = useRef()
   const pageRef = useRef()
-  // console.log('$instance.router.params', $instance.router?.params)
+  // console.log('$instance?.router?.params', $instance.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
       dispatch(fetchUserFavs())
@@ -100,7 +100,7 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    entryLaunch.getRouteParams($instance.router.params).then((params) => {
+    entryLaunch.getRouteParams($instance?.router?.params).then((params) => {
       const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id, all = false } = params
 
       setState((draft) => {
@@ -140,7 +140,7 @@ function ItemList() {
 
   const fetch = async ({ pageIndex, pageSize }) => {
     // card_id: 兑换券id
-    const { mcid, cid } = $instance.router.params
+    const { mcid, cid } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,

@@ -31,7 +31,7 @@ function TradeDeliveryInfo(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id, delivery_id, delivery_corp_name, delivery_code } = router.params
+    const { order_id, delivery_id, delivery_corp_name, delivery_code } = router?.params
     // 拆单发货
     if (order_id) {
       const data = await api.trade.deliveryLists({ order_id })

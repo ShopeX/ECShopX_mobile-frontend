@@ -37,7 +37,7 @@ function CompWriteOffCode(props) {
   }, [isOpened])
 
   const fetchCode = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const { qrcode_url, pickup_code } = await api.trade.zitiCode({ order_id })
     setState((draft) => {
       draft.qrcode = qrcode_url

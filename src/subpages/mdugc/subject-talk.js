@@ -33,7 +33,7 @@ function UgcSubjectTalk(props) {
   }, [keyword])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { topic_ids } = router.params
+    const { topic_ids } = router?.params
     const topicIds = decodeURIComponent(topic_ids).split(',')
     const params = {
       page: pageIndex,
@@ -71,7 +71,7 @@ function UgcSubjectTalk(props) {
   }
 
   const handleClickItem = ({ topicId, topicName }) => {
-    const { event } = router.params
+    const { event } = router?.params
     let tempSelected
     if (selected.has(topicId)) {
       selected.delete(topicId)

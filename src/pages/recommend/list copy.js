@@ -61,7 +61,7 @@ export default class RecommendList extends Component {
   }
 
   componentDidShow() {
-    const params = this.$instance.router.params
+    const params = this.$instance?.router?.params
     if (params) {
       const { id, name } = params
       this.setState({

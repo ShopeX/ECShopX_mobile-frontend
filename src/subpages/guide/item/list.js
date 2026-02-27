@@ -99,7 +99,7 @@ function ItemList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id } = $instance.router.params
+    const { cat_id } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,

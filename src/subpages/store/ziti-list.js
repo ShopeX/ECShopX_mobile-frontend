@@ -89,7 +89,7 @@ export default class StoreZitiList extends Component {
     const entryStoreByLBS = this.props.entryStoreByLBS
     const { page_no: page, page_size: pageSize } = params
     const { shop_id, order_type, cart_type, seckill_id, ticket, bargain_id } =
-      this.$instance.router.params
+      this.$instance?.router?.params
     const query = {
       ...this.state.query,
       page,

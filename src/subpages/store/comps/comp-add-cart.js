@@ -117,7 +117,7 @@ function CompAddCart(props) {
   const handleClick = useDebounce(async (item, num) => {
     console.log(`onChangeCartGoodsItem:`, item, num)
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
     getCartList()
   }, 200)

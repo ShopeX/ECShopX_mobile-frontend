@@ -95,7 +95,7 @@ export default class mdugcmember extends Component {
 
       return
     }
-    let { user_id } = this.$router.params
+    let { user_id } = this.$router?.params
     let file_drafts = wx.getStorageSync('md_drafts')
     let { userinfo } = this.state
     let userid = ''

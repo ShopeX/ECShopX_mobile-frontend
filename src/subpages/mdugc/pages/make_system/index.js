@@ -26,7 +26,7 @@ export default class make_system extends Component {
   }
 
   async componentDidMount() {
-    let { num } = this.$router.params
+    let { num } = this.$router?.params
     let data = {
       type: 'system'
     }

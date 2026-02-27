@@ -42,7 +42,7 @@ const SendOutGoods = () => {
   })
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const {
       orderInfo,
       total = 1,
@@ -58,7 +58,7 @@ const SendOutGoods = () => {
   }
 
   const handleClickToEdit = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     let params = {
       order_id,
       self_delivery_operator_id: information.selfDeliveryOperatorId,

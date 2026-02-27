@@ -74,7 +74,7 @@ export default class Pay extends Component {
 
   // 获取数据
   getOrderInfo = async () => {
-    const { bargain_id } = this.$instance.router.params
+    const { bargain_id } = this.$instance?.router?.params
     const { bargain_info = {}, user_bargain_info = {} } = await api.boost.getUserBargain({
       bargain_id,
       has_order: true

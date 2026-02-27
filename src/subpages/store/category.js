@@ -34,7 +34,7 @@ const CategoryIndex = (props) => {
   }, [])
 
   const getConfig = async () => {
-    const { dtid } = $instance.router.params
+    const { dtid } = $instance?.router?.params
     const query = {
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -70,7 +70,7 @@ const CategoryIndex = (props) => {
   }
 
   const handleClickItem = (item) => {
-    const { dtid } = $instance.router.params
+    const { dtid } = $instance?.router?.params
     const { category_id = '', main_category_id, is_main_category } = item
     let url = ''
     if (category_id) {

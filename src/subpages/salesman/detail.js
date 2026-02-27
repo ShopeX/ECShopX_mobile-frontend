@@ -86,7 +86,7 @@ function TradeDetail(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     let params = {
       isSalesmanPage: 1,

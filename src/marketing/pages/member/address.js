@@ -43,7 +43,7 @@ function AddressIndex(props) {
   }
 
   const fetch = async (isDelete = false) => {
-    const { isPicker, receipt_type = '', city = '' } = $instance.router.params
+    const { isPicker, receipt_type = '', city = '' } = $instance?.router?.params
     if (isPicker) {
       setState((draft) => {
         draft.isPicker = true

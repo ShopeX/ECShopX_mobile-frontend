@@ -80,7 +80,7 @@ export default class TradeRefundSendback extends Component {
 
   handleSubmit = async () => {
     const { logi_no, corp_code } = this.state
-    const { item_id, order_id, aftersales_bn } = this.$instance.router.params
+    const { item_id, order_id, aftersales_bn } = this.$instance?.router?.params
 
     if (!corp_code) {
       S.toast('请填写物流公司')

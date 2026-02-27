@@ -169,7 +169,7 @@ export default class DistributionShopHome extends Component {
 
   // 获取小店信息
   getShopInfo = async () => {
-    // const options = this.$instance.router.params
+    // const options = this.$instance?.router?.params
     const { tabList } = this.state
     // 当前登录用户
     const { userId } = Taro.getStorageSync('userinfo')
@@ -211,7 +211,7 @@ export default class DistributionShopHome extends Component {
     tabList[0].url += `?featuredshop=${param.user_id}`
     tabList[1].url += `?featuredshop=${param.user_id}`
     // 是否当前页面
-    const isCurrentPage = this.$instance.router.path.indexOf('distribution/shop-home') !== -1
+    const isCurrentPage = this.$instance?.router?.path.indexOf('distribution/shop-home') !== -1
     if (isCurrentPage) {
       Taro.setNavigationBarTitle({
         title: shop_name || `${nickname || username || mobile}的小店`

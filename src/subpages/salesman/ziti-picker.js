@@ -32,7 +32,7 @@ function StoreZitiPicker(props) {
   }, [])
 
   const fetchZitiList = async () => {
-    const { distributor_id, zitiId, cart_type } = $instance.router.params
+    const { distributor_id, zitiId, cart_type } = $instance?.router?.params
     let _params = {
       cart_type,
       distributor_id,

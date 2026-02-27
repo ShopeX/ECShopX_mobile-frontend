@@ -57,7 +57,7 @@ function UgcNoteDetail(props) {
   const pageRef = useRef()
   const listRef = useRef()
   const { windowWidth } = Taro.getSystemInfoSync()
-  const { post_id } = router.params
+  const { post_id } = router?.params
 
   useEffect(() => {
     getPostDetail()

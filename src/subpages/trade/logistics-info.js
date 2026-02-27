@@ -24,7 +24,7 @@ function TradeLogisticsInfo(props) {
   const $instance = getCurrentInstance()
   const [state, setState] = useImmer(initialState)
   const { logi_no, expressList, corpIndex, afterInfo } = state
-  const { item_id, order_id, aftersales_bn, type = 'single' } = $instance.router.params
+  const { item_id, order_id, aftersales_bn, type = 'single' } = $instance?.router?.params
 
   useEffect(() => {
     const aftersInfo = Taro.getStorageSync('moreAftersalesBn') || null

@@ -56,7 +56,7 @@ function ApplyChief(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const $instance = getCurrentInstance()
   const formRef = useRef()
-  const { distributor_id: dtid, scene = '' } = $instance.router.params
+  const { distributor_id: dtid, scene = '' } = $instance?.router?.params
   let distributor_id = dtid
   if (scene) {
     const { did } = qs.parse(decodeURIComponent(scene))

@@ -49,7 +49,7 @@ function DianwuChangePrice(props) {
   const { member } = useSelector((state) => state.dianwu)
 
   useEffect(() => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     fetchCheckout(params)
   }, [])
@@ -98,7 +98,7 @@ function DianwuChangePrice(props) {
   }
 
   const getChangePriceParams = (_items) => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
     const tItems = _items.map((item) => {
@@ -150,7 +150,7 @@ function DianwuChangePrice(props) {
 
   // 一键改价确定
   const handleGlobalChangePrice = async () => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
 

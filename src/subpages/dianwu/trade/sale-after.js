@@ -97,7 +97,7 @@ function DianwuTradeSaleAfter(props) {
     if (!reason) {
       return showToast('请选择退款原因')
     }
-    const { trade_id } = $instance.router.params
+    const { trade_id } = $instance?.router?.params
     const [img] = pic || []
     const items = info?.items
       .filter((item) => item.checked)

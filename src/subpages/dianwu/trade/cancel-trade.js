@@ -46,7 +46,7 @@ function DianwuTradeCancel(props) {
     // if(!reason) {
     //   return showToast('请选择订单取消原因')
     // }
-    // const { trade_id } = $instance.router.params
+    // const { trade_id } = $instance?.router?.params
     // await api.dianwu.cancelTrade({
     //   order_id: trade_id,
     //   cancel_reason: reason

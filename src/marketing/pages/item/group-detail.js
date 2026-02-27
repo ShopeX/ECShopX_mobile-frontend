@@ -31,14 +31,14 @@ export default class GroupDetail extends Component {
   }
 
   async componentDidMount() {
-    const options = await normalizeQuerys(this.$instance.router.params)
+    const options = await normalizeQuerys(this.$instance?.router?.params)
     const curStore = Taro.getStorageSync('curStore')
     if (!curStore) await entry.entryLaunch({ ...options }, true)
     this.fetchDetail()
   }
 
   async fetchDetail() {
-    const { team_id } = this.$instance.router.params
+    const { team_id } = this.$instance?.router?.params
     console.log('team_id', team_id)
     const { distributor_id } = Taro.getStorageSync('curStore')
     const params = { distributor_id }

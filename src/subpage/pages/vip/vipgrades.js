@@ -80,7 +80,7 @@ export default class VipIndex extends Component {
 
   async fetchInfo() {
     const { cur, list } = await api.vip.getList()
-    const { grade_name: name } = this.$instance.router.params
+    const { grade_name: name } = this.$instance?.router?.params
 
     const tabList = pickBy(list, {
       title: ({ grade_name }) => grade_name,

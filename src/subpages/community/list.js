@@ -23,7 +23,7 @@ const initialState = {
 function ListIndex(props) {
   const [state, setState] = useImmer(initialState)
   const $instance = getCurrentInstance()
-  const { chief_id, distributor_id } = $instance.router.params
+  const { chief_id, distributor_id } = $instance?.router?.params
   const { list } = state
   const goodsRef = useRef()
 

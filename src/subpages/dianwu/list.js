@@ -34,7 +34,7 @@ function DianWuList() {
   const { keywords, typeList, current, list, cartList } = state
   const goodsRef = useRef()
   const $instance = getCurrentInstance()
-  const { distributor_id } = $instance.router.params
+  const { distributor_id } = $instance?.router?.params
 
   // useDianWuLogin()
 

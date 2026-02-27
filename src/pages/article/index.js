@@ -26,7 +26,7 @@ export default class ArticleIndex extends Component {
   }
 
   async fetch() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     const info = await api.article.detail(id)
 
     info.updated_str = formatTime(info.updated * 1000, 'YYYY-MM-DD HH:mm')

@@ -139,7 +139,7 @@ function DianwuCheckout(props) {
   }
 
   useEffect(() => {
-    const { distributor_id } = $instance.router.params
+    const { distributor_id } = $instance?.router?.params
     setState((draft) => {
       draft.distributor_id = distributor_id
     })

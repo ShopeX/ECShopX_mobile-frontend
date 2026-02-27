@@ -96,7 +96,7 @@ function StoreItemList(props) {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { dis_id = null } = $instance.router.params
+    const { dis_id = null } = $instance?.router?.params
     const params = {
       page: pageIndex,
       pageSize,

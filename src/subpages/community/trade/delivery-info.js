@@ -229,7 +229,7 @@ export default class TradeDetail extends Component {
 
   async fetch() {
     Taro.showLoading({ title: '' })
-    let { delivery_type, delivery_id, order_type, order_id } = this.$instance.router.params
+    let { delivery_type, delivery_id, order_type, order_id } = this.$instance?.router?.params
     let list
     if (delivery_type == 'new') {
       list = await api.trade.deliveryInfoNew({ delivery_id })
@@ -243,9 +243,9 @@ export default class TradeDetail extends Component {
     })
     this.setState({
       list: nList,
-      deliverycorp: this.$instance.router.params.delivery_corp,
-      deliverycode: this.$instance.router.params.delivery_code,
-      deliveryname: this.$instance.router.params.delivery_name
+      deliverycorp: this.$instance?.router?.params.delivery_corp,
+      deliverycode: this.$instance?.router?.params.delivery_code,
+      deliveryname: this.$instance?.router?.params.delivery_name
     })
     Taro.hideLoading()
   }

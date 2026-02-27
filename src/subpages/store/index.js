@@ -287,7 +287,7 @@ function StoreIndex() {
   }
 
   // const settlement = () => {
-  //   const { type = 'distributor' } = router.params
+  //   const { type = 'distributor' } = router?.params
   //   const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } =
   //     shopCartCount.storeDetails
   //   const query = {

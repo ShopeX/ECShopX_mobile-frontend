@@ -32,7 +32,7 @@ function UgcFollowFans() {
   const listRef = useRef('')
 
   useEffect(() => {
-    const { type } = router.params
+    const { type } = router?.params
     setState((draft) => {
       draft.curFilterIndex = type === 'user' ? 1 : 0
       draft.type = type

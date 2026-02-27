@@ -29,7 +29,7 @@ function TradeStorePicker(props) {
   }, [keywords])
 
   const fetch = async () => {
-    const { distributor_id, refund_store } = $instance.router.params
+    const { distributor_id, refund_store } = $instance?.router?.params
     let params = {
       distributor_id,
       distributor_name: keywords

@@ -192,9 +192,9 @@ function SpSkuSelect(props) {
     let _activity_id = activity_id
     let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if (router.params.activity_id && router.params.enterprise_id) {
-      _activity_id = router.params.activity_id
-      _enterprise_id = router.params.enterprise_id
+    if (router?.params.activity_id && router?.params.enterprise_id) {
+      _activity_id = router?.params.activity_id
+      _enterprise_id = router?.params.enterprise_id
     }
 
     const { nospec } = info
@@ -239,9 +239,9 @@ function SpSkuSelect(props) {
     let _activity_id = activity_id
     let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if (router.params.activity_id && router.params.enterprise_id) {
-      _activity_id = router.params.activity_id
-      _enterprise_id = router.params.enterprise_id
+    if (router?.params.activity_id && router?.params.enterprise_id) {
+      _activity_id = router?.params.activity_id
+      _enterprise_id = router?.params.enterprise_id
     }
 
     const itemId = curItem ? curItem.itemId : info.itemId
@@ -273,7 +273,7 @@ function SpSkuSelect(props) {
     }
 
     // 订单详情点进来的商品去结算
-    if (router.params.activity_id && router.params.enterprise_id) {
+    if (router?.params.activity_id && router?.params.enterprise_id) {
       url += `&activity_id=${_activity_id}&enterprise_id=${_enterprise_id}`
     }
 

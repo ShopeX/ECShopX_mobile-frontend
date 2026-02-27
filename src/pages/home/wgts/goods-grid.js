@@ -22,7 +22,7 @@ function WgtGoodsGrid(props) {
   const newData = Array.isArray(data) ? data : []
   const goods = pickBy(newData, doc.goods.WGT_GOODS_GRID) || []
   const router = useRouter()
-  const isPurchase = router.path == '/subpages/purchase/index'
+  const isPurchase = router?.path == '/subpages/purchase/index'
 
   const { onAddToCart } = useContext(WgtsContext)
 

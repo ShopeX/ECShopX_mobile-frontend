@@ -34,7 +34,7 @@ export default class CashierResult extends Component {
   }
 
   async fetch() {
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     const { orderInfo, tradeInfo } = await api.cashier.getOrderDetail(order_id)
 
     if (tradeInfo.orderId.indexOf('CZ') !== -1) {

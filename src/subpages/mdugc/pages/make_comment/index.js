@@ -27,7 +27,7 @@ export default class make_comment extends Component {
   }
 
   async componentDidMount() {
-    let { num } = this.$router.params
+    let { num } = this.$router?.params
     let data = {
       type: 'reply'
     }

@@ -58,7 +58,7 @@ function Invoice(props) {
   } = state
 
   useEffect(() => {
-    entryLaunch.getRouteParams($router.params).then((params) => {
+    entryLaunch.getRouteParams($router?.params).then((params) => {
       setState((draft) => {
         draft.invoice_amount = params?.invoice_amount || 0
         draft.order_id = params?.order_id || ''

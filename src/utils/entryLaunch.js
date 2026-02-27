@@ -139,7 +139,7 @@ class EntryLaunch {
     const pages = Taro.getCurrentPages()
     const currentPage = pages[pages.length - 1]
     const { dtid } =
-      process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router.params
+      process.env.TARO_ENV == 'weapp' ? currentPage.options : currentPage.$router?.params
     let storeQuery = {} // 店铺查询参数
     if (dtid) {
       storeQuery = {

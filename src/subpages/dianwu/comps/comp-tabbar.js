@@ -56,7 +56,7 @@ function CompTabbar(props) {
   const handleTabbarClick = async (index) => {
     const tabItem = tabList[index]
     const { path } = $instance
-    const { distributor_id } = $instance.router.params
+    const { distributor_id } = $instance?.router?.params
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     if (path != tabItem.url) {
       Taro.redirectTo({

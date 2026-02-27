@@ -52,7 +52,7 @@ export default class TradeCancel extends Component {
       return S.toast('请输入其他理由')
     }
 
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     const data = {
       order_id,
       cancel_reason: reason[curReasonIdx],

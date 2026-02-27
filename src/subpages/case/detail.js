@@ -16,7 +16,7 @@ function CaseDetail() {
   const [state, setState] = useImmer(initialState)
   const { detail } = state
   const $instance = getCurrentInstance()
-  const { design_id, plan_id } = $instance.router.params || {}
+  const { design_id, plan_id } = $instance?.router?.params || {}
   const { levelinfo } = detail || {}
 
   const handleTo3DPage = () => {

@@ -516,9 +516,9 @@ function PurchaseCheckout(props) {
     let _activity_id = activity_id
     let _enterprise_id = enterprise_id
     // 订单详情点进来的商品
-    if (router.params.activity_id && router.params.enterprise_id) {
-      _activity_id = router.params.activity_id
-      _enterprise_id = router.params.enterprise_id
+    if (router?.params.activity_id && router?.params.enterprise_id) {
+      _activity_id = router?.params.activity_id
+      _enterprise_id = router?.params.enterprise_id
     }
 
     let ziti_shopid

@@ -144,7 +144,7 @@ function MemberIndex(props) {
       getMemberCenterData()
       setMemberBackground()
       getEmployeeIsOpen()
-      const { redirect } = $instance.router.params
+      const { redirect } = $instance?.router?.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
       }

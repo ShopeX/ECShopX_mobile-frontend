@@ -57,7 +57,7 @@ function CustomPage(props) {
   }, [skuPanelOpen])
 
   const fetch = async () => {
-    const { id, isTabBar } = await entryLaunch.getRouteParams($instance.router.params)
+    const { id, isTabBar } = await entryLaunch.getRouteParams($instance?.router?.params)
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -106,7 +106,7 @@ function CustomPage(props) {
   }
 
   const getAppShareInfo = async () => {
-    const { id } = await entryLaunch.getRouteParams($instance.router.params)
+    const { id } = await entryLaunch.getRouteParams($instance?.router?.params)
     const { userId } = Taro.getStorageSync('userinfo')
     const params = { id }
     if (userId) {
@@ -133,7 +133,7 @@ function CustomPage(props) {
   const pageData = wgts.find((wgt) => wgt.name == 'page')
   return (
     <SpPage
-      btnHomeEnable={router.params.fromConnect !== 'davild'}
+      btnHomeEnable={router?.params.fromConnect !== 'davild'}
       scrollToTopBtn
       className='page-custom-page'
       loading={loading}

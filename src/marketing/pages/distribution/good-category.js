@@ -59,7 +59,7 @@ export default class DistributionShopCategory extends Component {
       menus: ['shareAppMessage', 'shareTimeline']
     })
     this.spPageRef.current?.pageLock()
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const { tabList } = this.state
     tabList[0].url += `?status=${status}`
     this.setState({
@@ -269,7 +269,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   render() {
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const {
       list,
       hasSeries,

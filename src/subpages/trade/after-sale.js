@@ -116,7 +116,7 @@ function TradeAfterSale(props) {
   }
 
   const fetch = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     const { orderInfo, offline_aftersales_is_open, distributor } = await api.trade.detail(id)
     const reasons = await api.aftersales.reasonList()
     const { intro, is_open } = await api.aftersales.remindDetail()
@@ -201,7 +201,7 @@ function TradeAfterSale(props) {
   }
 
   const onSubmit = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     const checkedItems = info?.items.filter((item) => !!item.checked)
     if (checkedItems.length == 0) {
       return showToast('请选择需要售后的商品')

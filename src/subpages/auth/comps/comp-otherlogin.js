@@ -13,7 +13,7 @@ const CompOtherLogin = () => {
   const handleClickWexin = async () => {
     const $instance = getCurrentInstance()
     //跳转
-    const { redirect = '' } = $instance.router.params
+    const { redirect = '' } = $instance?.router?.params
     const redirectUrl =
       !!redirect && redirect !== 'undefined' ? redirect : process.env.APP_HOME_PAGE
     let { oauth_url = '' } = await api.wx.getWxAuth({

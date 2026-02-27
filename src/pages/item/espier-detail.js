@@ -234,7 +234,7 @@ function EspierDetail(props) {
   })
 
   const salesmanShare = async () => {
-    let params = $instance.router.params
+    let params = $instance?.router?.params
     if (params?.qr == 'Y') {
       let param = {
         promoter_user_id: params?.uid,

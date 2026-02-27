@@ -20,7 +20,7 @@ function DianWuInvoice() {
   const [state, setState] = useImmer(initialState)
   const { billInfo, realFee, isInvoiced } = state
   //trade_id传递过来的订单id 获取订单发票详情
-  const { trade_id } = $instance.router.params
+  const { trade_id } = $instance?.router?.params
   useEffect(() => {
     getBillInfo()
   }, [])

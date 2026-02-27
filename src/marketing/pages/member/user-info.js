@@ -149,7 +149,7 @@ export default class Reg extends Component {
     try {
       if (isWeapp) {
         const uid = Taro.getStorageSync('distribution_shop_id')
-        const { union_id, open_id } = this.$instance.router.params
+        const { union_id, open_id } = this.$instance?.router?.params
         const trackParams = Taro.getStorageSync('trackParams')
         let params = {
           ...data,

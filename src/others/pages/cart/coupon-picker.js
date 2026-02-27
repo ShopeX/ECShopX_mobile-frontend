@@ -46,7 +46,7 @@ export default class CouponPicker extends Component {
       distributor_id,
       source,
       goodType
-    } = this.$instance.router.params
+    } = this.$instance?.router?.params
     // const { curCoupon } = this.props
     const { page_no: page, page_size: pageSize } = query
 

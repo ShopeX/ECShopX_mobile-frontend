@@ -83,7 +83,7 @@ function Cart() {
   // 商品数量变化
   const onChangeInputNumber = useDebounce(async (num, item) => {
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(
       updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1, ...customerLnformation })
     )
@@ -92,7 +92,7 @@ function Cart() {
 
   //结算
   const balance = (item) => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',

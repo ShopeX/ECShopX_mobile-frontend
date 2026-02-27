@@ -89,7 +89,7 @@ export default class DetailPluspriceList extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      marketing_id: this.$instance.router.params.marketing_id,
+      marketing_id: this.$instance?.router?.params.marketing_id,
       page,
       pageSize
     }

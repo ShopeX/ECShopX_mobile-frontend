@@ -36,7 +36,7 @@ function CouponPicker(props) {
       source,
       goodType,
       coupon = null
-    } = $instance.router.params
+    } = $instance?.router?.params
     const params = {
       page_no: pageIndex,
       page_size: pageSize,

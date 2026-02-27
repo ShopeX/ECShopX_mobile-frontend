@@ -91,7 +91,7 @@ function CompGoodsBuyToolbar(props) {
   RenderBtns()
 
   const onChangeLogin = async ({ key }) => {
-    const { dtid, card_id, user_card_id } = $instance.router.params
+    const { dtid, card_id, user_card_id } = $instance?.router?.params
     console.log('onChangeLogin:', key)
     if (key == 'notice') {
       const { subscribe } = info

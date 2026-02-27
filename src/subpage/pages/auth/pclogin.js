@@ -32,8 +32,8 @@ export default class PcAuth extends Component {
   }
 
   async componentDidMount() {
-    if (this.$instance.router.params.scene) {
-      const query = decodeURIComponent(this.$instance.router.params.scene)
+    if (this.$instance?.router?.params.scene) {
+      const query = decodeURIComponent(this.$instance?.router?.params.scene)
       const queryStr = decodeURIComponent(query)
       const res = parseUrlStr(queryStr)
       this.query = res

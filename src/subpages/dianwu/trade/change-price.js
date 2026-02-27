@@ -59,7 +59,7 @@ function DianwuChangePrice(props) {
     receiptType
   } = state
   const $instance = getCurrentInstance()
-  const { trade_id } = $instance.router.params
+  const { trade_id } = $instance?.router?.params
 
   useEffect(() => {
     fetchOrderInfo()

@@ -126,7 +126,7 @@ const SpPage = memo(
       let _navigationLSpace = 0 // 导航栏左间距
       let _navigationRSpace = 0 // 导航栏右间距
       const { screenHeight, windowWidth, windowHeight } = Taro.getWindowInfo()
-      const [absolutePath] = router.path.split('?')
+      const [absolutePath] = router?.path.split('?')
       const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
       const _btnReturn = pages.length > 1 && !TAB_PAGES.includes(absolutePath)
       const _btnHome = pages.length == 1 && !TAB_PAGES.includes(absolutePath)
@@ -220,7 +220,7 @@ const SpPage = memo(
       })
 
       // 导购货架分包路由，隐藏所有分享入口
-      if (router.path.indexOf('/subpages/guide') > -1) {
+      if (router?.path.indexOf('/subpages/guide') > -1) {
         Taro.hideShareMenu({
           menus: ['shareAppMessage', 'shareTimeline']
         })

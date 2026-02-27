@@ -88,7 +88,7 @@ function SpCashier(props) {
     } else if (isWeb) {
       platform = 'h5'
     }
-    const { shop_id } = $instance.router.params
+    const { shop_id } = $instance?.router?.params
     let params = {}
     if (salesman) {
       params = {

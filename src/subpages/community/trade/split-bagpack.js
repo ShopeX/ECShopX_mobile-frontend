@@ -45,7 +45,7 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { order_id, order_type } = this.$instance.router.params
+    const { order_id, order_type } = this.$instance?.router?.params
     const data = await api.trade.deliveryLists({ order_id })
 
     let { delivery_num, list } = data

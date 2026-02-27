@@ -64,7 +64,7 @@ function UgcTopicList() {
 
   // 列表
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { topic_id, topic_name } = router.params
+    const { topic_id, topic_name } = router?.params
     let params = {
       page: pageIndex,
       pageSize,

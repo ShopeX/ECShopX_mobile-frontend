@@ -30,7 +30,7 @@ export default class make_follow extends Component {
   }
 
   async componentDidShow() {
-    let { num } = this.$router.params
+    let { num } = this.$router?.params
     let data = {
       type: 'followerUser'
     }

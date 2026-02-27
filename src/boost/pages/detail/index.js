@@ -71,7 +71,7 @@ export default class Detail extends Component {
   // 获取助力详情wechat-taroturntable
   getBoostDetail = async () => {
     Taro.showLoading({ mask: true })
-    const { bargain_id } = this.$instance.router.params
+    const { bargain_id } = this.$instance?.router?.params
 
     const {
       bargain_info = {},

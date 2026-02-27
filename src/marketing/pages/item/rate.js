@@ -38,7 +38,7 @@ export default class TradeRate extends Component {
   }
 
   async fetch() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     const data = await api.trade.detail(id)
     Taro.showLoading({
       mask: true

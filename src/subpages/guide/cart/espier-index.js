@@ -41,7 +41,7 @@ function CartIndex() {
 
   const { colorPrimary } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
-  const { tabbar = 1 } = router.params
+  const { tabbar = 1 } = router?.params
 
   useDidShow(() => {
     fetch()
@@ -53,7 +53,7 @@ function CartIndex() {
 
   const getCartList = async () => {
     Taro.showLoading({ title: '' })
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const params = {
       shop_type: type
     }
@@ -172,7 +172,7 @@ function CartIndex() {
 
   const onChangeCartGoodsItem = async (item, num) => {
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(
       updateCartItemNum({
         shop_id,
@@ -198,7 +198,7 @@ function CartIndex() {
   }
 
   const handleCheckout = (item) => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',

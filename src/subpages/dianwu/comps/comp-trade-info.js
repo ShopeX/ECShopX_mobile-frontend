@@ -33,7 +33,7 @@ function CompTradeInfo(props) {
   }, [])
 
   const fetch = async () => {
-    const { trade_id } = $instance.router.params
+    const { trade_id } = $instance?.router?.params
     const { orderInfo, distributor } = await api.dianwu.getTradeDetail(trade_id)
     const info = pickBy(orderInfo, doc.dianwu.ORDER_INFO)
     const {

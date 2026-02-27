@@ -45,7 +45,7 @@ export default class SeckillGoodsList extends Component {
     // }, () => {
     //   this.nextPage()
     // })
-    console.log(this.$instance.router.params, 41)
+    console.log(this.$instance?.router?.params, 41)
     this.nextPage()
     api.wx.shareSetting({ shareindex: 'seckill' }).then((res) => {
       this.setState({
@@ -55,7 +55,7 @@ export default class SeckillGoodsList extends Component {
   }
 
   onShareAppMessage() {
-    const seckill_id = this.$instance.router.params.seckill_id
+    const seckill_id = this.$instance?.router?.params.seckill_id
     const res = this.state.shareInfo
     const { userId } = Taro.getStorageSync('userinfo')
     let query = userId ? `?uid=${userId}` : ''
@@ -111,8 +111,8 @@ export default class SeckillGoodsList extends Component {
     const { page_no: page, page_size: pageSize } = params
     const dtid = getDistributorId()
     const query = {
-      seckill_id: this.$instance.router.params.seckill_id,
-      type: this.$instance.router.params.seckill_type,
+      seckill_id: this.$instance?.router?.params.seckill_id,
+      type: this.$instance?.router?.params.seckill_type,
       distributor_id: dtid,
       page,
       pageSize

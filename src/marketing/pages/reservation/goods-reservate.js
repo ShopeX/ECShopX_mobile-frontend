@@ -77,9 +77,9 @@ function GoodReservate(props) {
   const fetchActivity = async () => {
     let activity_info = {}
     let recordInfo = {}
-    let isEdit = router.params.record_id
+    let isEdit = router?.params.record_id
     const res = await api.user.registrationActivity({
-      activity_id: router.params.activity_id
+      activity_id: router?.params.activity_id
     })
     activity_info = res.activity_info
     if (activity_info.join_limit == res.total_join_num && res.total_join_num != 0 && !isEdit) {
@@ -98,10 +98,10 @@ function GoodReservate(props) {
       return
     }
 
-    if (router.params.record_id) {
+    if (router?.params.record_id) {
       //编辑
       recordInfo = await api.user.registrationRecordInfo({
-        record_id: router.params.record_id
+        record_id: router?.params.record_id
       })
     }
 
@@ -407,9 +407,9 @@ function GoodReservate(props) {
     new_subdata.formdata.content = JSON.stringify(formDatacontent)
     console.log('new_subdata', new_subdata, _content)
 
-    if (router.params.record_id) {
+    if (router?.params.record_id) {
       //编辑
-      new_subdata.record_id = router.params.record_id
+      new_subdata.record_id = router?.params.record_id
     }
     try {
       const res = await api.user.registrationSubmit(new_subdata)

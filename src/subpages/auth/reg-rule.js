@@ -29,7 +29,7 @@ export default class RegRule extends Component {
   async fetch() {
     let data = ''
     let navBarTitle = '协议'
-    const { type } = this.$instance.router.params
+    const { type } = this.$instance?.router?.params
     Taro.showLoading({ title: '' })
     if (type === '1') {
       // 充值协议

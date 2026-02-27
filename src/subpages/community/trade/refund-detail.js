@@ -29,7 +29,7 @@ export default class TradeRefundDetail extends Component {
   }
 
   async fetch() {
-    const { aftersales_bn, item_id, order_id } = this.$instance.router.params
+    const { aftersales_bn, item_id, order_id } = this.$instance?.router?.params
     // const { detail: info, order_info:orderInfo,progress,reason} = await api.aftersales.info({
     //   aftersales_bn,
     //   item_id,

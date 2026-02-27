@@ -120,7 +120,7 @@ function PointShopList() {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { dis_id, cat_id, main_cat_id } = $instance.router.params
+    const { dis_id, cat_id, main_cat_id } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,

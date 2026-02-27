@@ -57,7 +57,7 @@ function Group(props) {
   const pageRef = useRef('')
 
   useEffect(() => {
-    if ($instance.router.params.id) {
+    if ($instance?.router?.params.id) {
       fetchActivity()
     }
     Taro.nextTick(() => {
@@ -66,7 +66,7 @@ function Group(props) {
   }, [])
 
   const fetchActivity = async () => {
-    const res = await api.community.getChiefActivity($instance.router.params.id)
+    const res = await api.community.getChiefActivity($instance?.router?.params.id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
     const { activityIntro, activityName, activityPics, startTime, endTime, shareImageUrl } = pickBy(
       res,
@@ -224,7 +224,7 @@ function Group(props) {
       end_time: `${endDate} ${endTime}`,
       share_image_url: shareImageUrl
     }
-    let cur_id = $instance.router.params.id
+    let cur_id = $instance?.router?.params.id
     let act_id
     // 修改活动
     if (cur_id) {

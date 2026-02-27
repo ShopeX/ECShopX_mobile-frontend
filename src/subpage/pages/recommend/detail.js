@@ -78,7 +78,7 @@ export default class recommendDetail extends Component {
 
   // 确认本人文章是否已收藏
   confirmCollectArticle = async () => {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     console.log('this.$instance.router:', this.$instance.router)
     if (S.getAuthToken()) {
       const res = await api.article.collectArticleInfo({ article_id: id })
@@ -106,7 +106,7 @@ export default class recommendDetail extends Component {
   }
 
   async fetchContent() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     console.log('this.$instance.router:', this.$instance.router)
     // 关注数加1
     const resFocus = await api.article.focus(id)
@@ -152,7 +152,7 @@ export default class recommendDetail extends Component {
   }*/
 
   handleClickBar = async (type) => {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     if (type === 'like') {
       const { count } = await api.article.praise(id)
       this.detailInfo(id)
@@ -193,7 +193,7 @@ export default class recommendDetail extends Component {
   handleShare() {}
 
   handleClickGoods = () => {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     this.detailInfo(id)
   }
 

@@ -40,9 +40,9 @@ export default class Flop extends Component {
   // 获取助力详情wechat-taroturntable
   getBoostDetail = async () => {
     Taro.showLoading({ mask: true })
-    let { bargain_id, user_id } = this.$instance.router.params
-    if (this.$instance.router.params.scene) {
-      const query = await normalizeQuerys(this.$instance.router.params)
+    let { bargain_id, user_id } = this.$instance?.router?.params
+    if (this.$instance?.router?.params.scene) {
+      const query = await normalizeQuerys(this.$instance?.router?.params)
       if (query.bid) {
         bargain_id = query.bid
       }

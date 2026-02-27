@@ -67,7 +67,7 @@ function ActivityDetail(props) {
 
   const fetch = async (isVerify) => {
     const res = await api.user.registrationRecordInfo({
-      record_id: router.params.record_id
+      record_id: router?.params.record_id
     })
 
     console.log(res)

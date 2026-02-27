@@ -27,7 +27,7 @@ export default class DistributionShopForm extends Component {
 
   componentDidMount() {
     // const { imgs } = this.state
-    const { key, val } = this.$instance.router.params
+    const { key, val } = this.$instance?.router?.params
     this.setState({
       info: {
         key,

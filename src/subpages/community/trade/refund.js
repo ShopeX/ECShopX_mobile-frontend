@@ -51,7 +51,7 @@ export default class TradeRefund extends Component {
 
   componentDidMount() {
     this.fetch()
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const { segTypes, curSegIdx } = this.state
     let curIndex = 0
     segTypes.map((item, index) => {
@@ -68,7 +68,7 @@ export default class TradeRefund extends Component {
     })
 
     const { aftersales_bn, order_id, isDelivery, delivery_status, deliverData } =
-      this.$instance.router.params
+      this.$instance?.router?.params
     let detail = deliverData ? JSON.parse(deliverData) : null
     // 获取售后原因
     const reasonList = await api.aftersales.reasonList()
@@ -202,7 +202,7 @@ export default class TradeRefund extends Component {
     const reason = this.state.reason[curReasonIdx]
     const aftersales_type = segTypes[curSegIdx].status
     const evidence_pic = this.state.imgs.map(({ url }) => url)
-    const { order_id, aftersales_bn, deliverData } = this.$instance.router.params
+    const { order_id, aftersales_bn, deliverData } = this.$instance?.router?.params
     let detail = deliverData
     const data = {
       detail,

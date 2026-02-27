@@ -94,7 +94,7 @@ function UgcNote(props) {
   }
 
   const getNoteDetail = async () => {
-    const { post_id } = router.params
+    const { post_id } = router?.params
     if (post_id) {
       const { post_info } = await api.mdugc.postdetail({
         post_id
@@ -151,7 +151,7 @@ function UgcNote(props) {
 
   // 发布笔记|草稿
   const releaseNote = async (type) => {
-    const { md_drafts, post_id } = router.params
+    const { md_drafts, post_id } = router?.params
     if (type == 1) {
       // 保存草稿
       if (

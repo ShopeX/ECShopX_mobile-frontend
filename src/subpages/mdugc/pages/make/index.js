@@ -112,8 +112,8 @@ export default class Make extends Component {
   }
 
   async componentDidMount() {
-    console.log(this.$router.params) // 页面参数获取
-    let { md_drafts, post_id } = this.$router.params
+    console.log(this.$router?.params) // 页面参数获取
+    let { md_drafts, post_id } = this.$router?.params
     // if(md_drafts=="true"){
     //   let file_drafts=wx.getStorageSync('md_drafts')
     //   file_drafts=JSON.parse(file_drafts)
@@ -622,7 +622,7 @@ export default class Make extends Component {
   // 上传笔记|草稿
   oncreate = async (is_draft) => {
     const { memberData } = this.props
-    let { md_drafts, post_id } = this.$router.params
+    let { md_drafts, post_id } = this.$router?.params
 
     console.log('memberData', memberData)
     let { file_video, file_img, file_text, file_commodity, file_word } = this.state
@@ -941,7 +941,7 @@ export default class Make extends Component {
       isOpened,
       uploadtype
     } = this.state
-    let { post_id } = this.$router.params
+    let { post_id } = this.$router?.params
     return (
       <View className='makeindex'>
         <NavBar

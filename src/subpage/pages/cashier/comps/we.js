@@ -20,7 +20,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    let { code } = this.$instance.router.params
+    let { code } = this.$instance?.router?.params
 
     let { open_id } = await api.wx.getOpenid({ code })
 

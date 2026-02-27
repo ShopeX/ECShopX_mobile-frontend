@@ -22,7 +22,7 @@ const initialState = {
 function DianwuCollectionResult(props) {
   const $instance = getCurrentInstance()
   const { member } = useSelector((state) => state.dianwu)
-  const { order_id, trade_id, pay_type } = $instance.router.params
+  const { order_id, trade_id, pay_type } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
   const { distributor, info, operatorInfo } = state
 

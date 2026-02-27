@@ -91,12 +91,12 @@ export default (props = {}) => {
 
   // 当前路由是订单详情页
   const isTradeDetaiPage = () => {
-    return router.path?.split('?')[0] == '/subpages/trade/detail'
+    return router?.path?.split('?')[0] == '/subpages/trade/detail'
   }
 
   // 当前路由是内购
   const isPurchasePage = () => {
-    return router.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
+    return router?.path?.split('?')[0] == '/subpages/purchase/espier-checkout'
   }
 
   const paySuccess = async (params, orderInfo) => {
@@ -127,7 +127,7 @@ export default (props = {}) => {
     //   return
     // }
     // 社区拼团订单
-    if (!isTradeDetaiPage() && router.path != '/subpages/community/order') {
+    if (!isTradeDetaiPage() && router?.path != '/subpages/community/order') {
       if (trade_source_type == 'normal_community') {
         Taro.redirectTo({ url: `/subpages/community/order` })
       } else {
@@ -189,7 +189,7 @@ export default (props = {}) => {
   // 微信H5 JSDK
   const wxpayjsPay = async (params, orderInfo) => {
     // const $instance = getCurrentInstance()
-    const { order_id, code } = router.params
+    const { order_id, code } = router?.params
     if (!code) {
       // 微信客户端code授权
       const loc = window.location

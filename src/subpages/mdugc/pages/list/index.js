@@ -34,7 +34,7 @@ export default class mdugclist extends Component {
   }
 
   componentDidMount() {
-    let { item } = this.$router.params
+    let { item } = this.$router?.params
     item = JSON.parse(item)
     let { topic_id, topic_name } = item
     this.setState(

@@ -57,7 +57,7 @@ export default class DistributionShopCategory extends Component {
       withShareTicket: true,
       menus: ['shareAppMessage', 'shareTimeline']
     })
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const { tabList } = this.state
     tabList[0].url += `?status=${status}`
     this.setState({
@@ -266,7 +266,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   render() {
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const {
       list,
       hasSeries,

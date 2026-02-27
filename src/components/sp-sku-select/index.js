@@ -409,7 +409,7 @@ function SpSkuSelect(props) {
   }
 
   const handleSubscribe = async () => {
-    const { dtid } = $instance.router.params
+    const { dtid } = $instance?.router?.params
     // console.log('onSubscribe:subscribe', subscribe)
 
     if (isWeb) {

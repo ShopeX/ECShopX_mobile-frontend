@@ -48,7 +48,7 @@ export default class mdugcdetails extends Component {
   }
   async onShareAppMessage(res) {
     let that = this
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     let { file_details } = this.state
     if (res.from === 'button') {
       // 来自页面内转发按钮
@@ -78,12 +78,12 @@ export default class mdugcdetails extends Component {
     }
   }
   componentDidShow() {
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     this.getpostdetail(item_id)
   }
   componentDidMount() {
     // 判断是否是笔记作者
-    // let {item_id}=this.$router.params
+    // let {item_id}=this.$router?.params
     // this.getpostdetail(item_id)
   }
   // 获取详情
@@ -132,7 +132,7 @@ export default class mdugcdetails extends Component {
     Taro.navigateTo({ url })
   }
   async fetch(params) {
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     const { memberData } = this.props
     const { page_no: page, page_size: pageSize } = params
     params = {
@@ -154,7 +154,7 @@ export default class mdugcdetails extends Component {
   }
   // 获取二级评论列表
   getcommentlist = async (item) => {
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     let { commentlist } = this.state
     let comment_id = item.comment_id
     const { memberData } = this.props
@@ -282,7 +282,7 @@ export default class mdugcdetails extends Component {
   setinput = async (e) => {
     console.log('这是文本', e, e.detail.value)
     let { theory, comment_act, commentlist, page, totalnum } = this.state
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     const { memberData } = this.props
     let data = {
       user_id: memberData.memberInfo.user_id,
@@ -454,7 +454,7 @@ export default class mdugcdetails extends Component {
         }
       } else {
         console.log('确认删除作品')
-        let { item_id } = that.$router.params
+        let { item_id } = that.$router?.params
         let data = {
           post_id: [item_id]
         }
@@ -514,7 +514,7 @@ export default class mdugcdetails extends Component {
 
       return
     }
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     let { theory, comment_act, commentlist } = this.state
     const { memberData } = this.props
     let that = this
@@ -582,7 +582,7 @@ export default class mdugcdetails extends Component {
 
       return
     }
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     const { memberData } = this.props
     let { file_details } = this.state
     let data = {
@@ -626,7 +626,7 @@ export default class mdugcdetails extends Component {
 
       return
     }
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     let { file_details } = this.state
     let data = {
       post_id: item_id
@@ -726,7 +726,7 @@ export default class mdugcdetails extends Component {
   }
   // 销毁组件触发
   componentWillUnmount() {
-    let { item_id } = this.$router.params
+    let { item_id } = this.$router?.params
     let { old_isheart, file_details } = this.state
     let pages = Taro.getCurrentPages() // 获取当前的页面栈
     if (pages.length > 1) {

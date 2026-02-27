@@ -238,7 +238,7 @@ function CartIndex() {
   const onChangeCartGoodsItem = useDebounce(async (item, num) => {
     console.log(`onChangeCartGoodsItem:`, item, num)
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
     getCartList()
   }, 200)
@@ -256,7 +256,7 @@ function CartIndex() {
   }
 
   const handleCheckout = (item) => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',

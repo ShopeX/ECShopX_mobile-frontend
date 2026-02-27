@@ -45,7 +45,7 @@ function SpChat(props) {
       }
     } else if (meiqia?.is_open) {
       // 获取店铺美洽配置
-      const { dtid } = $instance.router.params
+      const { dtid } = $instance?.router?.params
       const meiqiaConfig = await api.im.getImConfigByDistributor(dtid)
       const { channel, meiqia_url } = meiqiaConfig
       let chat_link = ''

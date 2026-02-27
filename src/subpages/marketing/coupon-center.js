@@ -38,7 +38,7 @@ function CouponCenter(props) {
       item_id = '',
       itemid = '',
       card_id
-    } = await entryLaunch.getRouteParams($instance.router.params)
+    } = await entryLaunch.getRouteParams($instance?.router?.params)
     const params = {
       page_no: pageIndex,
       page_size: pageSize,

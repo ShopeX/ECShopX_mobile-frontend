@@ -97,7 +97,7 @@ export default class WgtGoodsScroll extends Component {
 
     const { base, data, config, more } = info
     const { timer, boxHeight } = this.state
-    const isPurchase = this.$instance.router.path == '/subpages/purchase/index'
+    const isPurchase = this.$instance?.router?.path == '/subpages/purchase/index'
     const goods = pickBy(data, doc.goods.WGT_GOODS_SCROLL)
 
     return (

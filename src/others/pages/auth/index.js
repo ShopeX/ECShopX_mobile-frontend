@@ -34,9 +34,9 @@ export default class AuthLogin extends Component {
 
   // 扫码
   scanCode = async () => {
-    let { token, scene } = this.$instance.router.params
+    let { token, scene } = this.$instance?.router?.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$instance.router.params)
+      const { t } = await normalizeQuerys(this.$instance?.router?.params)
       token = t
     }
     const { code } = await Taro.login()
@@ -61,9 +61,9 @@ export default class AuthLogin extends Component {
 
   // 确认登录
   comfimLogin = async () => {
-    let { token, scene } = this.$instance.router.params
+    let { token, scene } = this.$instance?.router?.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$instance.router.params)
+      const { t } = await normalizeQuerys(this.$instance?.router?.params)
       token = t
     }
     const { code } = await Taro.login()

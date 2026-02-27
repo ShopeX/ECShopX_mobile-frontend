@@ -42,12 +42,12 @@ function AddPersonnel() {
   }, [])
 
   const initNavigationBarTitle = () => {
-    const { id } = router.params
+    const { id } = router?.params
     return id ? '编辑用药人' : '添加用药人'
   }
 
   const medicationPersonnel = async () => {
-    const { id } = router.params
+    const { id } = router?.params
     if (id) {
       let res = await api.prescriptionDrug.medicationPersonnelDetail({ id })
       res.relationship = res.relationship - 1
@@ -89,12 +89,12 @@ function AddPersonnel() {
       ...info,
       relationship: Number(info.relationship) + 1
     }
-    if (router.params.id) {
+    if (router?.params.id) {
       await api.prescriptionDrug.putMedicationPersonnel(params)
     } else {
       await api.prescriptionDrug.medicationPersonnel(params)
     }
-    showToast(`${router.params.id ? '编辑' : '添加'}成功`)
+    showToast(`${router?.params.id ? '编辑' : '添加'}成功`)
     setTimeout(() => {
       Taro.navigateBack()
     }, 300)

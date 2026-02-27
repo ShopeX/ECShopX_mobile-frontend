@@ -41,7 +41,7 @@ function ActivityInfo(props) {
 
   const fetch = async () => {
     const { activity_info, total_join_num } = await api.user.registrationActivity({
-      activity_id: router.params.activity_id
+      activity_id: router?.params.activity_id
     })
 
     let _info = pickBy(activity_info, doc.activity.ACTIVITY_DETAIL)

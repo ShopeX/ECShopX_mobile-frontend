@@ -34,7 +34,7 @@ const initialState = {
 
 function GroupLeaderDetail(props) {
   const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router.params
+  const { activity_id } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
 
   const { info, timer, loading, chiefInfo, items, isOpened, activeIndex } = state

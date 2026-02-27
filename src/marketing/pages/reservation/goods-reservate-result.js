@@ -32,7 +32,7 @@ function GoodReservateResult(props) {
 
   const fetch = async () => {
     const { activity_info } = await api.user.registrationActivity({
-      activity_id: router.params.activity_id
+      activity_id: router?.params.activity_id
     })
     const _info = pickBy(activity_info, {
       joinTips: 'join_tips',

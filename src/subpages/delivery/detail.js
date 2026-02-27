@@ -55,7 +55,7 @@ const Detail = () => {
   }, [statusDelivery])
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const {
       orderInfo,
       total = 1,

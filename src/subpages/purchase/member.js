@@ -134,7 +134,7 @@ function MemberIndex(props) {
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
-  const isPurchaseHome = router.params?.from == 'purchase_home'
+  const isPurchaseHome = router?.params?.from == 'purchase_home'
 
   useDidShow(() => {
     getMemberCenterData()

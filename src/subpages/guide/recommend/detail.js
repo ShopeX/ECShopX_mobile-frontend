@@ -42,7 +42,7 @@ function GuideRecommendDetail(props) {
 
   useShareAppMessage(async () => {
     const { salesperson_id, work_userid, distributor_id, shop_code } = userInfo
-    const { subtask_id } = $instance.router.params
+    const { subtask_id } = $instance?.router?.params
     const query = {
       id: itemId,
       dtid: distributor_id,
@@ -60,7 +60,7 @@ function GuideRecommendDetail(props) {
   })
 
   const fetch = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     // 关注数加1
     const resFocus = await api.article.focus(id)
     const res = await api.article.detail(id)

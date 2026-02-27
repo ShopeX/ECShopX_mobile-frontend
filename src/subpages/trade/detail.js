@@ -406,7 +406,7 @@ function TradeDetail(props) {
     const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
     // const routeParams = await entryLaunch.getRouteParams()
     // return routeParams && routeParams.order_id ? routeParams : storedData
-    const order_id = router.params?.order_id
+    const order_id = router?.params?.order_id
     return order_id ? { order_id } : storedData
   }
 
