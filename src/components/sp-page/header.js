@@ -202,7 +202,7 @@ const CustomNavigationHeader = memo((props) => {
       <View className='wgt-page-content'>
         <View
           className={classNames('header-container', { 'has-nearby': hasNearby })}
-          style={showHeaderContent ? styleNames(containerStyle()) : {}}
+          style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
           <View className='header-container-left'>
             {/* 左侧：返回、首页、功能区三者只显示一个 */}
@@ -227,7 +227,7 @@ const CustomNavigationHeader = memo((props) => {
               </>
             )}
           </View>
-          <View className='title-container' style={{ width: `calc(100% - ${navigationRSpace}px)` }}>
+          <View className='title-container'>
             {/* 标题区：搜索 */}
             {showHeaderContent && titleStyle === '3' && renderSearch()}
             {/* 标题区：页面名称 */}

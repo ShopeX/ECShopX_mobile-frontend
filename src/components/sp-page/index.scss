@@ -14,6 +14,8 @@
     align-items: center;
     justify-content: center;
     overflow: hidden;
+    flex: 1;
+    min-width: 0;
     text-overflow: ellipsis;
     white-space: nowrap;
     -o-text-overflow: ellipsis;
@@ -141,6 +143,7 @@
       position: relative;
       display: flex;
       align-items: center;
+      box-sizing: border-box;
       gap: 20px;
       /* 功能区（返回、首页、热区图/附近门店）统一在左边，标题/搜索占右侧 */
       justify-content: flex-start;
