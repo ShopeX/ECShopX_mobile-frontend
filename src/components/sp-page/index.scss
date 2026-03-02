@@ -5,6 +5,20 @@
 .sp-page {
   box-sizing: border-box;
   width: 100vw;
+  .header-container-left {
+    display: flex;
+    align-items: center;
+  }
+  .title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    -o-text-overflow: ellipsis;
+    -webkit-text-overflow: ellipsis;
+  }
   .sp-page-header {
     display: flex;
     align-items: center;

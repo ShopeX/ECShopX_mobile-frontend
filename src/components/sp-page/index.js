@@ -320,6 +320,7 @@ const SpPage = memo(
             mantle={state.mantle}
             nearbyText={props.nearbyText}
             onSearchConfirm={props.onSearchConfirm}
+            navigationRSpace={state.navigationRSpace}
           />
         )}
         {props.isDefault &&
