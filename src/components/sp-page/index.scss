@@ -8,6 +8,8 @@
   .header-container-left {
     display: flex;
     align-items: center;
+    box-sizing: border-box;
+    padding-left: 30px;
   }
   .title-container {
     display: flex;
@@ -139,7 +141,6 @@
 
     .header-container {
       height: 100%;
-      padding: 0 30px 0 35px;
       position: relative;
       display: flex;
       align-items: center;
@@ -154,7 +155,7 @@
 
       &.has-nearby {
         .title-function.nearby-function {
-          max-width: 168px;
+          max-width: 100%;
           flex-shrink: 0;
           text-align: center;
           display: flex;

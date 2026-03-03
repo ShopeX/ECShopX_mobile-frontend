@@ -204,7 +204,7 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby })}
           style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
-          <View className='header-container-left'>
+          <View className='header-container-left' style={styleNames({ width: `${navigationRSpace}px` })}>
             {/* 左侧：返回、首页、功能区三者只显示一个 */}
             {showHeaderContent && showFunctionArea ? (
               <>
