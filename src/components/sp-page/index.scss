@@ -10,6 +10,7 @@
     align-items: center;
     box-sizing: border-box;
     padding-left: 30px;
+    padding-right: 20px;
   }
   .title-container {
     display: flex;
@@ -145,8 +146,6 @@
       display: flex;
       align-items: center;
       box-sizing: border-box;
-      gap: 20px;
-      /* 功能区（返回、首页、热区图/附近门店）统一在左边，标题/搜索占右侧 */
       justify-content: flex-start;
 
       .nav-left-capsule {
@@ -187,11 +186,6 @@
       .title-text {
         font-size: 28px;
         color: #333;
-        flex: 1;
-        min-width: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
       }
 
       .title-image {
@@ -209,7 +203,7 @@
         margin-left: 0;
         position: relative;
         z-index: 2;
-        padding-right: 170px;
+        padding-right: 10px;
         box-sizing: border-box;
 
         .search-container {
