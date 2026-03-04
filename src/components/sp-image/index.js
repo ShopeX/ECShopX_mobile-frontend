@@ -87,7 +87,7 @@ function SpImage(props) {
   return (
     <View
       className={classNames('sp-image-container sp-image', props.className)}
-      style={containerStyle}
+      style={{ ...containerStyle, ...props.style }}
     >
       {/* 加载占位区域（未加载时显示） */}
       {!state.loadSuccess && (
@@ -148,6 +148,7 @@ SpImage.defaultProps = {
   ratio: [],
   src: '',
   width: '',
+  style: {},
   placeholderColor: 'transparent',
   onClick: () => {},
   onError: () => {},

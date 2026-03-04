@@ -5,7 +5,7 @@
 import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance, useShareAppMessage, useShareTimeline } from '@tarojs/taro'
-import { View, Text, Swiper, SwiperItem, Video, ScrollView } from '@tarojs/components'
+import { View, Text, Swiper, SwiperItem, Video, ScrollView, Image } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { AtFloatLayout, AtButton } from 'taro-ui'
 import {
@@ -546,7 +546,7 @@ function EspierDetail(props) {
                 {info?.imgs?.map((img, idx) => (
                   <SwiperItem key={`swiperitem__${idx}`}>
                     <View style={setSwiperCss(img)}>
-                      <SpImage mode='scaleToFill' src={img} className='swiperitem__img' />
+                      <Image mode='scaleToFill' src={img} className='swiperitem__img' />
                     </View>
                   </SwiperItem>
                 ))}
