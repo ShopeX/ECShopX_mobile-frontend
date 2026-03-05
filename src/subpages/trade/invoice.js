@@ -20,7 +20,7 @@ const initialState = {
     invoice_type_code: '02', // 01:数电票(增值税专用发票) 02:数电票(普通发票)
     invoice_type: 'individual', // individual:个人 enterprise:企业
     company_title: '', // 抬头名称
-    individual_title: '个人', // 个人抬头
+    individual_title: '', // 个人抬头
     company_tax_number: '', // 公司税号
     company_address: '', // 公司地址
     company_telephone: '', // 公司电话
@@ -73,7 +73,7 @@ function Invoice(props) {
         invoice_type_code: params?.invoice_type_code || '02',
         invoice_type: params?.invoice_type || 'individual',
         company_title: params?.invoice_type == 'enterprise' ? params?.company_title : '',
-        individual_title: params?.invoice_type != 'enterprise' ? params?.company_title : '个人',
+        individual_title: params?.invoice_type != 'enterprise' ? params?.company_title : '',
         company_tax_number: params?.company_tax_number || '',
         company_address: params?.company_address || '',
         company_telephone: params?.company_telephone || '',
@@ -163,7 +163,7 @@ function Invoice(props) {
         invoice_type_code: info?.invoice_type_code,
         invoice_type: info?.invoice_type,
         company_title:
-          info?.invoice_type == 'enterprise' ? info?.company_title : info.individual_title,
+          info?.invoice_type == 'enterprise' ? info?.company_title : '',
         email: info?.email
       }
       if (params.invoice_type === 'enterprise') {

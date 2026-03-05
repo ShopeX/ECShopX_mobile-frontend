@@ -131,7 +131,7 @@ function CompTradeItem(props) {
             <SpPrice value={selfDeliveryFee} size={38} />
           </View>
           {orderClass == 'pointsmall' && (
-            <View>
+            <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>{pointName}</Text>
               <Text className='point-value' style='font-size: 20px;'>
@@ -140,7 +140,7 @@ function CompTradeItem(props) {
             </View>
           )}
           {orderClass == 'normal' && (
-            <View>
+            <View style={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center' }}>
               <Text className='num'>{`共${totalNum}件`}</Text>
               <Text className='label'>实付金额</Text>
               <SpPrice value={totalFee} size={38} />
