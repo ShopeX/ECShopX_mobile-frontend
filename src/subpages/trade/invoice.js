@@ -346,7 +346,7 @@ function Invoice(props) {
               <AtInput
                 name='individual_title'
                 value={info?.individual_title}
-                placeholder=''
+                placeholder='必填'
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('individual_title', e)}
               />
@@ -358,7 +358,7 @@ function Invoice(props) {
                 <AtInput
                   name='company_title'
                   value={info?.company_title}
-                  placeholder=''
+                  placeholder='必填'
                   placeholderClass='input-placeholder'
                   onChange={(e) => handleChange('company_title', e)}
                 />
@@ -367,7 +367,7 @@ function Invoice(props) {
                 <AtInput
                   name='company_tax_number'
                   value={info?.company_tax_number}
-                  placeholder=''
+                  placeholder='必填'
                   placeholderClass='input-placeholder'
                   onChange={(e) => handleChange('company_tax_number', e)}
                 />
@@ -441,7 +441,7 @@ function Invoice(props) {
               <AtInput
                 name='email'
                 value={info?.email}
-                placeholder=''
+                placeholder='必填'
                 placeholderClass='input-placeholder'
                 onChange={(e) => handleChange('email', e)}
               />
