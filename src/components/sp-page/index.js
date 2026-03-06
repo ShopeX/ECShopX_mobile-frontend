@@ -331,7 +331,7 @@ const SpPage = memo(
           <View
             className='sp-page__body'
             style={styleNames({
-              'padding-top': `${state.customNavigation ? state.gNavbarH : 0}px`,
+              'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
                     props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)

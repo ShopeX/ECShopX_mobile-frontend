@@ -303,7 +303,7 @@ function Home() {
       navigateMantle={navigateMantle}
       onReady={({ gNavbarH,footerHeight }) => {
         setState((draft) => {
-          draft.bodyHeight = `calc(100vh - ${gNavbarH}px - ${footerHeight})`
+          draft.bodyHeight = `calc(100vh - ${pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
         })
       }}
