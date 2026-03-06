@@ -301,9 +301,9 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height, gNavbarH }) => {
+      onReady={({ gNavbarH,footerHeight }) => {
         setState((draft) => {
-          draft.bodyHeight = height
+          draft.bodyHeight = `calc(100vh - ${gNavbarH}px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
         })
       }}
@@ -315,7 +315,7 @@ function Home() {
           pageRef.current.handlePageScroll(e?.detail)
         }}
         scrollIntoView={scrollIntoView}
-        style={{ height: state.bodyHeight }}
+        style={{ height: state.bodyHeight}}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
