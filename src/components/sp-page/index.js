@@ -321,6 +321,7 @@ const SpPage = memo(
             nearbyText={props.nearbyText}
             onSearchConfirm={props.onSearchConfirm}
             navigationRSpace={state.navigationRSpace}
+            showNavitionLeft={props.showNavitionLeft}
           />
         )}
         {props.isDefault &&

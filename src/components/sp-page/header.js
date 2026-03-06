@@ -26,7 +26,8 @@ const CustomNavigationHeader = memo((props) => {
     onNearbyClick,
     onSearchConfirm,
     nearbyText,
-    navigationRSpace
+    navigationRSpace,
+    showNavitionLeft
   } = props
 
   const value = pageConfig
@@ -202,7 +203,7 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby })}
           style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
-          <View className='header-container-left' style={styleNames({ width: `${navigationRSpace}px` })}>
+          {showNavitionLeft && <View className='header-container-left' style={styleNames({ width: `${navigationRSpace}px` })}>
             {/* 左侧：返回、首页、功能区三者只显示一个 */}
             {showHeaderContent && showFunctionArea ? (
               <>
@@ -224,8 +225,8 @@ const CustomNavigationHeader = memo((props) => {
                 )}
               </>
             )}
-          </View>
-          <View className='title-container'>
+          </View>}
+          <View className='title-container' style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}>
             {/* 标题区：搜索 */}
             {showHeaderContent && titleStyle === '3' && renderSearch()}
             {/* 标题区：页面名称 */}

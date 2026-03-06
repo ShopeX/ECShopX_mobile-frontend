@@ -68,6 +68,7 @@ function StoreItemList(props) {
       renderFooter={<SpTabbar />}
       onReady={handlePageReady}
       showpoweredBy={false}
+      showNavitionLeft={false}
     >
       <View
         className='page-category__container'

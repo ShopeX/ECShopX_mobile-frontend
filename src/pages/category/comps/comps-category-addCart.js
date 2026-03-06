@@ -374,6 +374,7 @@ function CompsCategoryAddCart(props) {
     <SpPage
       scrollToTopBtn
       className={classNames('page-category-index-old')}
+      showNavitionLeft={false}
       ref={pageRef}
       onReady={(e) => {
         console.log('onReady', e)
