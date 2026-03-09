@@ -7,13 +7,14 @@ import React, {
   useMemo,
   useContext,
   useRef,
-  useEffect,
   useCallback,
+  useEffect,
   useLayoutEffect
 } from 'react'
-import Taro from '@tarojs/taro'
+import Taro, { usePageScroll } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { classNames, pxToRpx, getElementRectBox } from '@/utils'
+import { classNames, pxToRpx, rpxToPx, getElementRectBox } from '@/utils'
+import { usePageContext } from '@/hooks/usePageContext'
 import throttle from 'lodash/throttle'
 import { getGlobalBaseStyle } from '../helper'
 import LocationModuleNavBar from '../comps/nav-bar'
@@ -36,10 +37,12 @@ import { WgtsContext } from '../wgts-context'
 
 export default function WgtLocationModule(props) {
   const { info, id } = props
-  const { setScrollIntoView, immersive, navBarHeight, scrollTop } = useContext(WgtsContext)
+
+  const { setScrollIntoView, immersive, navBarHeight } = useContext(WgtsContext)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [scrollView, setScrollView] = useState(``)
   const isClickTab = useRef(false)
+  const { scrollTop } = usePageContext()
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
@@ -116,8 +119,6 @@ export default function WgtLocationModule(props) {
       if (isClickTab.current) {
         return
       }
-      console.log('scrollTop', scrollTop)
-      const viewportTop = calculateNavBarHeight
       // 获取所有内容区域的位置信息
       const positions = await Promise.all(
         navList.map(async (_, index) => {
@@ -131,48 +132,35 @@ export default function WgtLocationModule(props) {
         })
       )
 
-      // 过滤掉无效的位置信息并按照位置排序
-      const validPositions = positions.filter((pos) => pos !== null).sort((a, b) => a.top - b.top)
-
+      // 过滤掉无效的位置信息（top 需为数字）
+      const validPositions = positions.filter(
+        (pos) => pos != null && typeof pos.top === 'number'
+      )
       if (validPositions.length === 0) return
 
-      // 找到最接近导航栏下方的元素
-      let targetIndex = -1
-      let minDistance = Infinity
+      // 取 top 为负值的 section 中 top 最大的那个（负值里最接近 0，即刚离开视口顶部的那块）作为当前 tab
+      const negativeTops = validPositions.filter((pos) => pos.top < 0)
+      let targetIndex
+      if (negativeTops.length > 0) {
+        const maxNegative = negativeTops.reduce((a, b) =>
+          a.top > b.top ? a : b
+        )
+        targetIndex = maxNegative.index
+      } else {
+        // 没有负值说明都在视口下方，取 top 最小的（最先进入视口的）
+        const firstInView = validPositions.reduce((a, b) =>
+          a.top < b.top ? a : b
+        )
+        targetIndex = firstInView.index
+      }
 
-      validPositions.forEach((pos) => {
-        const elementTop = pos.top
-        const elementBottom = pos.bottom
-
-        // 计算元素与导航栏下方的距离
-        let distance
-
-        if (elementTop <= viewportTop && elementBottom > viewportTop) {
-          // 元素跨越导航栏位置，优先选择
-          distance = 0
-        } else if (elementBottom <= viewportTop) {
-          // 元素在导航栏上方
-          distance = viewportTop - elementBottom
-        } else {
-          // 元素在导航栏下方
-          distance = elementTop - viewportTop
-        }
-
-        // 更新最小距离
-        if (distance < minDistance) {
-          minDistance = distance
-          targetIndex = pos.index
-        }
-      })
-
-      // 只在找到有效索引且不是当前索引时更新
       if (targetIndex >= 0 && targetIndex !== currentIndex && targetIndex < navList.length) {
         setCurrentIndex(targetIndex)
       }
     } catch (error) {
       console.error('获取元素位置失败', error)
     }
-  }, [calculateNavBarHeight, data, currentIndex])
+  }, [id, navList, currentIndex])
 
   // 创建节流函数 - 优化滚动性能
   const throttledScrollUpdate = useMemo(() => {
@@ -198,14 +186,11 @@ export default function WgtLocationModule(props) {
 
     const navItemHeight = base.navitemheight
 
-    const totalHeight = pxToRpx(
-      outerPaddingTop +
+    const totalHeight = outerPaddingTop +
         outerPaddingBottom +
         navAreaPaddingTop +
         navAreaPaddingBottom +
         navItemHeight
-    )
-    console.log(navBarHeight, 'totalHeight', totalHeight)
 
     if (immersive) {
       return pxToRpx(navBarHeight) + totalHeight

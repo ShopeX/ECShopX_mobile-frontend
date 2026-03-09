@@ -19,9 +19,9 @@ import Taro, {
   usePageScroll,
   getCurrentInstance
 } from '@tarojs/taro'
-import { View, Text, Button, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-import { SpNavBar, SpFloatMenuItem, SpNote, SpLoading, SpImage, SpPoweredBy } from '@/components'
+import { SpFloatMenuItem, SpNote, SpLoading, SpPoweredBy } from '@/components'
 import { useThemsColor, useLogin } from '@/hooks'
 import CookieConsent from '@/components/cookie-consent'
 import {
@@ -34,13 +34,9 @@ import {
 import {
   classNames,
   styleNames,
-  hasNavbar,
   isWeixin,
   isAlipay,
   isIphoneX,
-  VERSION_IN_PURCHASE,
-  isGoodsShelves,
-  linkPage,
   VERSION_SHUYUN
 } from '@/utils'
 import context from '@/hooks/usePageContext'
@@ -68,7 +64,8 @@ const initialState = {
   pageBackground: {},
   pageTheme: {},
   showLeftContainer: false,
-  windowHeight: 0
+  windowHeight: 0,
+  scrollTop: 0
 }
 
 const SpPage = memo(
@@ -244,6 +241,9 @@ const SpPage = memo(
     usePageScroll((res) => {
       if (!state.lock) {
         scrollTopRef.current = res.scrollTop
+        setState((draft) => {
+          draft.scrollTop = res.scrollTop
+        })
       }
       if (res.scrollTop > 20) {
         setState((draft) => {
@@ -276,6 +276,9 @@ const SpPage = memo(
       },
       // 当页面单独处理滚动事件时，调用此函数
       handlePageScroll: (res) => {
+        setState((draft) => {
+          draft.scrollTop = res.scrollTop
+        })
         if (res.scrollTop > 20) {
           setState((draft) => {
             draft.mantle = true
@@ -342,7 +345,7 @@ const SpPage = memo(
             <View className='sp-page__body-content'>
               {!props.loading && (
                 <View className='sp-page__body-children'>
-                  <context.Provider value={{}}>{props.children}</context.Provider>
+                  <context.Provider value={{ scrollTop: state.scrollTop }}>{props.children}</context.Provider>
                 </View>
               )}
               {props.loading && (
