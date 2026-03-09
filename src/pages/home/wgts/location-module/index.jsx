@@ -198,8 +198,6 @@ export default function WgtLocationModule(props) {
     return totalHeight
   }, [base, immersive, navBarHeight])
 
-  // 打印计算结果（用于调试）
-  console.log('LocationModuleNavBar 高度计算:', calculateNavBarHeight)
 
   return (
     <View className={classNames('wgt wgt-location-module')} id={`wgt-location-module-${id || ''}`}>

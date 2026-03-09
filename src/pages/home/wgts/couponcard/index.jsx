@@ -2,21 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useMemo, useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import {
-  pxToUnitRpx,
   classNames,
   pickBy,
   isWeixin,
-  showToast,
-  getMobAppExtraData,
-  styleNames
-} from '@/utils'
+  showToast} from '@/utils'
 import { useImmer } from 'use-immer'
-import { SpHtml, SpLogin } from '@/components'
-import { useSelector } from 'react-redux'
+import { SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { getGlobalBaseStyle } from '../helper'

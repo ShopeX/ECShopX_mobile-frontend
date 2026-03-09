@@ -29,8 +29,10 @@ export default function WgtContentPartition(props) {
     const activeIndex = navList.findIndex((item) => item.isActive)
     if (activeIndex >= 0) {
       setCurrentIndex(activeIndex)
+      setChildren(navList[activeIndex]?.children || [])
     } else {
       setCurrentIndex(0)
+      setChildren(navList[0]?.children || [])
     }
   }, [navList])
 
