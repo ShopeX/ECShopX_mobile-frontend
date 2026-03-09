@@ -2,21 +2,22 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useEffect, useMemo } from 'react'
+import React, { useState, useEffect, useMemo, useContext } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { SpImage } from '@/components'
-import { classNames, styleNames } from '@/utils'
+import { View } from '@tarojs/components'
+import { classNames, pxToRpx } from '@/utils'
 import { getGlobalBaseStyle } from '../helper'
 import HomeWgts from '../../comps/home-wgts'
 import ContentPartitionNavBar from '../comps/nav-bar'
+import { WgtsContext } from '../wgts-context'
 import './index.scss'
 
 export default function WgtContentPartition(props) {
   const { info, id } = props
+  const { immersive, navBarHeight, setScrollIntoView } = useContext(WgtsContext)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [scrollIntoView, setScrollIntoView] = useState(``)
-
+  const [scrollView, setScrollView] = useState(``)
+  const [children, setChildren] = useState([])
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
   const base = params.base || {}
@@ -33,15 +34,14 @@ export default function WgtContentPartition(props) {
     }
   }, [navList])
 
-  // 获取导航栏样式
+  // 获取导航栏样式（与 location-module 一致）
   const navStyle = useMemo(() => {
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: base.navSticky ? 0 : 'auto',
-      zIndex: base.navSticky ? 100 : 'auto'
+      top: immersive ? `${navBarHeight}px` : 0
     }
-  }, [base.navbg, base.navpadded, base.navSticky])
+  }, [base.outerMargin, base.navSticky, immersive, navBarHeight])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {
@@ -50,7 +50,7 @@ export default function WgtContentPartition(props) {
       ...getGlobalBaseStyle(navitemarea),
       borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
     }
-  }, [base.navitemarea])
+  }, [base.navitemarea, base.navitemradius])
 
   // 获取导航项样式
   const getNavItemStyle = (item, isActive) => {
@@ -70,37 +70,64 @@ export default function WgtContentPartition(props) {
 
   // 处理导航项点击
   const handleNavClick = (index) => {
-    setCurrentIndex(index)
-    let viewIndex = index > 0 ? index - 1 : 0
-    setScrollIntoView(`nav-item-${viewIndex}-${id}`)
+    initContetn(index)
   }
 
   const handleScrollToUpper = () => {
-    setScrollIntoView('')
+    setScrollView('')
   }
   const handleScrollToLower = () => {
-    setScrollIntoView('')
+    setScrollView('')
   }
 
   const handleClickLeftImg = () => {
-    setScrollIntoView(`nav-item-0-${id}`)
+    setScrollView(`nav-item-0-${id}`)
   }
   const handleClickRightImg = () => {
-    setScrollIntoView(`nav-item-${navList.length - 1}-${id}`)
+    setScrollView(`nav-item-${navList.length - 1}-${id}`)
   }
 
   if (!info || !navList || navList.length === 0) {
     return null
   }
 
-  const currentNavItem = navList[currentIndex] || navList[0]
-  const children = currentNavItem?.children || []
+  const initContetn = (index) => {
+    let viewIndex = index > 0 ? index - 1 : 0
+    setScrollView(`nav-item-${viewIndex}-${id}`)
+    setCurrentIndex(index)
+    setChildren(navList[index]?.children || [])
+    Taro.nextTick(() => {
+      setScrollIntoView(`wgt-content-partition-section-${index}-${id}`)
+    })
+  }
+  const calculateNavBarHeight = useMemo(() => {
+    // 外层容器的 padding（outerMargin）
+    const outerMargin = base.outerMargin || {}
+    const outerPaddingTop = outerMargin.paddedt || 0
+    const outerPaddingBottom = outerMargin.paddedb || 0
+
+    // 导航项区域的 padding（navitemarea）
+    const navitemarea = base.navitemarea || {}
+    const navAreaPaddingTop = navitemarea.paddedt || 0
+    const navAreaPaddingBottom = navitemarea.paddedb || 0
+
+    const navItemHeight = base.navitemheight
+
+    const totalHeight = outerPaddingTop +
+        outerPaddingBottom +
+        navAreaPaddingTop +
+        navAreaPaddingBottom +
+        navItemHeight
+
+    if (immersive) {
+      return pxToRpx(navBarHeight) + totalHeight
+    }
+    return totalHeight
+  }, [base, immersive, navBarHeight])
 
   return (
     <View
-      className={classNames('wgt wgt-content-partition', {
-        'wgt__padded': base.padded
-      })}
+      className={classNames('wgt wgt-content-partition')}
       id={`wgt-content-partition-${id || ''}`}
     >
       <View className='wgt-content-partition__container'>
@@ -115,7 +142,7 @@ export default function WgtContentPartition(props) {
           getNavItemStyle={getNavItemStyle}
           classNamePrefix='wgt-content-partition'
           id={id}
-          scrollIntoView={scrollIntoView}
+          scrollIntoView={scrollView}
           handleScrollToUpper={handleScrollToUpper}
           handleScrollToLower={handleScrollToLower}
           handleClickLeftImg={handleClickLeftImg}
@@ -124,6 +151,7 @@ export default function WgtContentPartition(props) {
 
         {/* 内容区域 - 显示所有导航项的 children */}
         <View className='wgt-content-partition__content'>
+      <View id={`wgt-content-partition-section-${currentIndex}-${id}`} className='wgt-content-partition__section-line' style={{ top: `-${calculateNavBarHeight}rpx` }} />
           {children.length > 0 && <HomeWgts wgts={children} />}
         </View>
       </View>
