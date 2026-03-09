@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import WgtCoupon from './coupon'
-import WgtNearbyShop from './nearby-shop'
+// import WgtNearbyShop from './nearby-shop'
 import WgtCouponCard from './couponcard/index'
 
 // export { default as HeaderHome } from './header-home'
@@ -27,7 +27,6 @@ export { default as WgtMarquees } from './marquees/index'
 export { default as WgtStore } from './store'
 export { default as WgtHeadline } from './headline'
 // export { default as WgtImgGif } from './img-gif'
-export { default as WgtHotTopic } from './hot-topic'
 export { default as WgtFloorImg } from './floor-img'
 export { default as WgtHomeHeader } from './home-header'
 export { default as WgtHomeHeaderShop } from './home-header-shop'
@@ -42,4 +41,4 @@ export { default as WgtHotranking } from './hotranking/index'
 export { default as WgtLocationModule } from './location-module/index'
 export { default as WgtContentPartition } from './content-partition/index'
 
-export { WgtCoupon, WgtNearbyShop, WgtCouponCard }
+export { WgtCoupon,  WgtCouponCard }

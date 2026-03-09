@@ -58,7 +58,6 @@ const Slider = (props) => {
     linkPage(item)
   }
 
-
   const swiperChange = (e) => {
     const { current } = e.detail
     const prevIdx = curIdx
@@ -192,9 +191,7 @@ const Slider = (props) => {
               rounded: config.rounded
             })}
             onClick={() => {
-              if (item.media_type !== 'video') {
-                handleClickItem(item)
-              } else {
+              if (item.media_type == 'video') {
                 togglePlay(idx)
               }
             }}
@@ -202,13 +199,7 @@ const Slider = (props) => {
             {/* 图片类型 */}
             {item.media_type === 'img' && item.imgUrl && (
               <>
-                {needLoginItem ? (
-                  <SpLogin onChange={() => handleClickItem(item)}>
-                    <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
-                  </SpLogin>
-                ) : (
-                  <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
-                )}
+                <SpImage src={item.imgUrl} className='slider-item__img' lazyLoad />
                 {/* 热区 */}
                 {renderHotZones(item)}
               </>
@@ -219,7 +210,7 @@ const Slider = (props) => {
               <>
                 <Video
                   src={item.videoUrl}
-                  autoplay={item.autoplay&&curIdx === idx}
+                  autoplay={item.autoplay && curIdx === idx}
                   objectFit='cover'
                   showFullscreenBtn={false}
                   showProgress={false}

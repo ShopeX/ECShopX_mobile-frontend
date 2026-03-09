@@ -106,7 +106,6 @@ function WgtSlider(props) {
                         className={classNames('wrapper-img', {
                           'rounded': config.rounded
                         })}
-                        onClick={() => handleClickItem(item)}
                       >
                         <SpImage src={item.imgUrl} lazyLoad />
                       </View>
