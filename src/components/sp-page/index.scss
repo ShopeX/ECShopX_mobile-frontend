@@ -157,7 +157,7 @@
 
       &.has-nearby {
         .title-function.nearby-function {
-          max-width: 100%;
+          width: 100%;
           flex-shrink: 0;
           text-align: center;
           display: flex;
@@ -169,7 +169,8 @@
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            max-width: 120px;
+            flex: 1;
+            min-width: 0;
           }
 
           .nearby-function-icon {

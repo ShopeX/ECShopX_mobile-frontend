@@ -27,7 +27,8 @@ const CustomNavigationHeader = memo((props) => {
     onSearchConfirm,
     nearbyText,
     navigationRSpace,
-    showNavitionLeft
+    showNavitionLeft,
+    statusBarBgColor
   } = props
 
   const value = pageConfig
@@ -43,8 +44,11 @@ const CustomNavigationHeader = memo((props) => {
       backgroundPosition: 'center',
       paddingTop: `${gStatusBarHeight}px`
     }
-    if (value?.navigateBackgroundColor) {
-      style.backgroundColor = value?.navigateBackgroundColor
+    // 吸顶挂件配置的 statusBarBgColor 优先用于页面顶部 header（状态栏）背景
+    const headerBg = statusBarBgColor ?? value?.navigateBackgroundColor
+    console.log(headerBg, 'headerBg')
+    if (headerBg) {
+      style.backgroundColor = headerBg
     }
     if (value?.navigateBackgroundImage) {
       style.backgroundImage = `url(${value?.navigateBackgroundImage})`
@@ -60,7 +64,8 @@ const CustomNavigationHeader = memo((props) => {
     navigateMantle,
     navigateBackgroundColor,
     gNavbarH,
-    gStatusBarHeight
+    gStatusBarHeight,
+    statusBarBgColor
   ])
 
   const containerStyle = useCallback(() => {

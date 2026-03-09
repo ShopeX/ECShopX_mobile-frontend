@@ -65,7 +65,9 @@ const initialState = {
   pageTheme: {},
   showLeftContainer: false,
   windowHeight: 0,
-  scrollTop: 0
+  scrollTop: 0,
+  statusBarBgColor: null,
+  statusBarBgColorSourceId: null // 仅由设置过颜色的挂件 sourceId 清除，避免多挂件冲突
 }
 
 const SpPage = memo(
@@ -75,6 +77,18 @@ const SpPage = memo(
     const [state, setState] = useImmer(initialState)
     const wrapRef = useRef(null)
     const scrollTopRef = useRef(0)
+    const setStatusBarBgColorFromSticky = useCallback((color, sourceId) => {
+      setState((draft) => {
+        if (color != null) {
+          if (draft.statusBarBgColor === color && draft.statusBarBgColorSourceId === sourceId) return
+          draft.statusBarBgColor = color
+          draft.statusBarBgColorSourceId = sourceId
+        } else if (draft.statusBarBgColorSourceId === sourceId) {
+          draft.statusBarBgColor = null
+          draft.statusBarBgColorSourceId = null
+        }
+      })
+    }, [])
     const sys = useSelector((state) => state.sys)
     const { lang } = useSelector((state) => state.user)
     const isRTL = lang === 'ar'
@@ -325,6 +339,7 @@ const SpPage = memo(
             onSearchConfirm={props.onSearchConfirm}
             navigationRSpace={state.navigationRSpace}
             showNavitionLeft={props.showNavitionLeft}
+            statusBarBgColor={state.statusBarBgColor}
           />
         )}
         {props.isDefault &&
@@ -345,7 +360,11 @@ const SpPage = memo(
             <View className='sp-page__body-content'>
               {!props.loading && (
                 <View className='sp-page__body-children'>
-                  <context.Provider value={{ scrollTop: state.scrollTop }}>{props.children}</context.Provider>
+                  <context.Provider value={{
+                    scrollTop: state.scrollTop,
+                    setStatusBarBgColorFromSticky
+                  }}
+                  >{props.children}</context.Provider>
                 </View>
               )}
               {props.loading && (
