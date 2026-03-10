@@ -95,7 +95,7 @@ function CategoryFlatLayout() {
 
   const handleSubCategoryClick = (item, pindex, index, category_name) => {
     Taro.navigateTo({
-      url: `/subpages/item/list?category_id=${item.category_id}&cate_name=${item.category_name}&hide_search=1`
+      url: `/subpages/item/list?cat_id=${item.category_id}&cate_name=${item.category_name}&hide_search=1`
     })
   }
 
@@ -139,7 +139,7 @@ function CategoryFlatLayout() {
                 className='flex justify-between pt-48 pb-24 pl-32 pr-32'
                 onClick={() => {
                   Taro.navigateTo({
-                    url: `/subpages/item/list?category_id=${category.category_id}&cate_name=${category.category_name}&hide_search=1`
+                    url: `/subpages/item/list?cat_id=${category.category_id}&cate_name=${category.category_name}&hide_search=1`
                   })
                 }}
               >

@@ -14,7 +14,7 @@ import * as trade from './trade'
 import * as purchase from './purchase'
 import * as wgt from './wgt'
 
-// 仅分包用，分包内直接 import from '@/doc/xxx': address, shop, member, mdugc, activity, case
+// 仅分包用，分包内直接 import from '@/doc/xxx': shop, member, mdugc, activity, case（address 已删除，无引用）
 
 export default {
   goods,

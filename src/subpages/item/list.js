@@ -3,11 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { useRef, useEffect, useState } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import throttle from 'lodash/throttle'
 import {
   SpFilterBar,
   SpTagBar,
@@ -15,8 +14,6 @@ import {
   SpSearchBar,
   SpPage,
   SpScrollView,
-  SpDrawer,
-  SpSelect,
   SpSkuSelect
 } from '@/components'
 import { fetchUserFavs } from '@/store/slices/user'
@@ -25,9 +22,7 @@ import api from '@/api'
 import {
   pickBy,
   classNames,
-  isWeixin,
   getDistributorId,
-  styleNames,
   entryLaunch,
   VERSION_STANDARD,
   showToast
@@ -71,7 +66,6 @@ function ItemList() {
     leftList,
     rightList,
     selectType,
-    brandList,
     skuPanelOpen,
     brandSelect,
     curFilterIdx,
@@ -79,13 +73,10 @@ function ItemList() {
     tagList,
     curTagIdx,
     info,
-    show,
     fixTop,
-    routerParams,
-    backTopScrollTop
-  } = state
+    routerParams  } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
-  const { cat_id, main_cat_id, tag_id, card_id, user_card_id, all } = routerParams || {}
+  const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
   const dispatch = useDispatch()
 
@@ -189,7 +180,6 @@ function ItemList() {
     const {
       list,
       total_count,
-      item_params_list = [],
       select_tags_list = [],
       brand_list
     } = await api.item.search(params)
@@ -282,30 +272,8 @@ function ItemList() {
     goodsRef.current.reset()
   }
 
-  const onChangeBrand = (val) => {
-    setState((draft) => {
-      draft.brandSelect = val
-    })
-  }
 
-  const onConfirmBrand = async () => {
-    await setState((draft) => {
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
-  const onResetBrand = async () => {
-    await setState((draft) => {
-      draft.brandSelect = []
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
   const handleClickStore = (item) => {
     const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
