@@ -20,6 +20,7 @@ import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
 import { updateSelectGoods, updateSelectCommunityZiti } from '@/store/slices/community'
 import dayjs from 'dayjs'
@@ -66,7 +67,7 @@ function Group(props) {
   }, [])
 
   const fetchActivity = async () => {
-    const res = await api.community.getChiefActivity($instance?.router?.params.id)
+    const res = await communityApi.getChiefActivity($instance?.router?.params.id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
     const { activityIntro, activityName, activityPics, startTime, endTime, shareImageUrl } = pickBy(
       res,
@@ -228,10 +229,10 @@ function Group(props) {
     let act_id
     // 修改活动
     if (cur_id) {
-      await api.community.modiflyChiefActivity(cur_id, params)
+      await communityApi.modiflyChiefActivity(cur_id, params)
       act_id = cur_id
     } else {
-      const { activity_id } = await api.community.createChiefActivity(params)
+      const { activity_id } = await communityApi.createChiefActivity(params)
       act_id = activity_id
     }
 

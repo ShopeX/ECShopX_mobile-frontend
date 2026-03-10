@@ -15,9 +15,11 @@ import {
   SpTagBar
 } from '@/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { useImmer } from 'use-immer'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
+import * as mdugcDoc from '@/doc/mdugc'
 import CompNoteItem from './comps/comp-noteitem'
 
 import './index.scss'
@@ -78,9 +80,9 @@ function UgcIndex() {
       page: 1,
       pageSize: 8
     }
-    const { list } = await api.mdugc.topiclist(data)
+    const { list } = await mdugcApi.topiclist(data)
     setState((draft) => {
-      draft.tagsList = pickBy(list, doc.mdugc.MDUGC_TOPICLIST)
+      draft.tagsList = pickBy(list, mdugcDoc.MDUGC_TOPICLIST)
     })
   }
 
@@ -101,9 +103,9 @@ function UgcIndex() {
       }
     }
 
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
 
-    let nList = pickBy(list, doc.mdugc.UGC_LIST)
+    let nList = pickBy(list, mdugcDoc.UGC_LIST)
 
     const resLeftList = nList.filter((item, index) => {
       if (index % 2 == 0) {

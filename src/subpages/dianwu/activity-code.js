@@ -9,6 +9,7 @@ import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpImage, SpSelectModal } from '@/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import QRCode from 'qrcode'
 import doc from '@/doc'
 import { pickBy, showToast } from '@/utils'
@@ -29,7 +30,7 @@ function ActivityCode(props) {
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      await api.dianwu.registrationVerify(JSON.parse(result))
+      await dianwuApi.registrationVerify(JSON.parse(result))
       Taro.hideLoading()
       showToast('核销成功')
     } else {

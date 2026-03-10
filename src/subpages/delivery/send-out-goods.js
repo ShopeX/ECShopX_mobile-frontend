@@ -6,6 +6,7 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { pickBy, showToast, classNames } from '@/utils'
@@ -73,7 +74,7 @@ const SendOutGoods = () => {
       }
     })
     console.log(params, 'params')
-    await api.delivery.orderDelivery(params)
+    await deliveryApi.orderDelivery(params)
     showToast('发货成功')
     setTimeout(() => {
       Taro.navigateBack({

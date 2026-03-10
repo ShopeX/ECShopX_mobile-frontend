@@ -13,6 +13,7 @@ import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 import { SearchBar, TagsBarcheck, Scrollitem } from '../../components'
 import './index.scss'
@@ -128,7 +129,7 @@ export default class mdugcindex extends Component {
       page: 1,
       pageSize: 8
     }
-    let { list } = await api.mdugc.topiclist(data)
+    let { list } = await mdugcApi.topiclist(data)
     let nList = pickBy(list, {
       topic_id: 'topic_id',
       topic_name: 'topic_name'
@@ -236,7 +237,7 @@ export default class mdugcindex extends Component {
       sort: istag == 1 ? 'likes desc' : 'created desc',
       content: val
     }
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
     console.log('list, total', list, total)
     let nList = []
     if (list) {

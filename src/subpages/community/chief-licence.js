@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import { View, ScrollView, RichText } from '@tarojs/components'
 import { SpPage } from '@/components'
@@ -27,7 +28,7 @@ function PointRule(props) {
 
   const aggrementAndExplanation = async () => {
     const { distributor_id } = $instance?.router?.params
-    const { aggrement } = await api.community.aggrementAndExplanation({ distributor_id })
+    const { aggrement } = await communityApi.aggrementAndExplanation({ distributor_id })
     setState((draft) => {
       draft.content = aggrement
     })

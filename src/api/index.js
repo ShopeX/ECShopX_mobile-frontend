@@ -20,23 +20,21 @@ import * as user from './user'
 import * as vip from './vip'
 import * as group from './group'
 import * as groupBy from './groupBy'
-import * as boost from './boost'
 import * as wx from './wx'
 import * as alipay from './alipay'
 import * as wheel from './wheel'
 import * as pointitem from './pointitem'
 import * as liveroom from './liveroom'
 import * as wgts from './wgts'
-import * as merchant from './merchant'
 import * as purchase from './purchase'
 import * as guide from './guide'
-import * as dianwu from './dianwu'
 import * as im from './im'
-import * as mdugc from './mdugc'
 import * as salesman from './salesman'
-import * as delivery from './delivery'
 import * as prescriptionDrug from './prescriptionDrug'
 import * as design from './design'
+
+// 仅分包使用的 api 不再从主包 index 导出，分包内请直接 import from '@/api/community' 等，以减小主包体积
+// 分包用: community, dianwu, game, boost, mdugc, delivery, merchant
 
 export default {
   article,
@@ -59,19 +57,14 @@ export default {
   group,
   groupBy,
   wheel,
-  boost,
   pointitem,
   guide,
   alipay,
   liveroom,
   wgts,
-  merchant,
   purchase,
-  dianwu,
   im,
-  mdugc,
   salesman,
-  delivery,
   prescriptionDrug,
   design
 }

@@ -12,6 +12,7 @@ import { usePayment } from '@/hooks'
 import qs from 'qs'
 import { log, pickBy, showToast } from '@/utils'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
 
 import { useImmer } from 'use-immer'
@@ -40,7 +41,7 @@ const EspierCheckout = () => {
 
   const fetch = async () => {
     const goodsItems = JSON.parse(decodeURIComponent(items))
-    const activityInfo = await api.community.getActiveDetail(activity_id)
+    const activityInfo = await communityApi.getActiveDetail(activity_id)
     const { distributor_id, extra_data } = activityInfo
     const params = {
       order_type: 'normal_community',

@@ -12,6 +12,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { TagsBar, Scrollitem, TabBar } from '../../components'
 
 import './index.scss'
@@ -111,7 +112,7 @@ export default class mdugclist extends Component {
       sort: istag == 1 ? 'likes desc' : 'created desc',
       topics: [curTagId]
     }
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
     console.log('list, total', list, total)
     let nList = []
     if (list) {

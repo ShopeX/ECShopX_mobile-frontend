@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -61,7 +62,7 @@ function DianwuPendingCheckout(props) {
       distributor_id,
       user_id: member?.userId
     }
-    const { list: _list, total_count } = await api.dianwu.penddingList(params)
+    const { list: _list, total_count } = await dianwuApi.penddingList(params)
     console.log('PENDING_ITEM:', pickBy(_list, doc.dianwu.PENDING_ITEM))
     setState((draft) => {
       draft.list[pageIndex - 1] = pickBy(_list, doc.dianwu.PENDING_ITEM)
@@ -88,19 +89,19 @@ function DianwuPendingCheckout(props) {
       confirmText: '确认'
     })
     if (!confirm) return
-    await api.dianwu.penddingDelete({ pending_id: pendingId })
+    await dianwuApi.penddingDelete({ pending_id: pendingId })
     listRef.current.reset()
   }
 
   const handleFetchOrder = async ({ pendingId, userId }) => {
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
-    await api.dianwu.fetchPendding({
+    await dianwuApi.fetchPendding({
       pending_id: pendingId,
       user_id: member?.userId,
       distributor_id
     })
     if (userId != 0) {
-      const userInfo = await api.dianwu.getMemberByUserId({ user_id: userId })
+      const userInfo = await dianwuApi.getMemberByUserId({ user_id: userId })
       const _userInfo = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
       dispatch(selectMember(_userInfo))
     }

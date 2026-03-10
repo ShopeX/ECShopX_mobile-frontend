@@ -6,6 +6,7 @@ import api from '@/api'
 import SpPage from '@/components/sp-page'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
+import * as caseDoc from '@/doc/case'
 import './detail.scss'
 
 const initialState = {
@@ -29,7 +30,7 @@ function CaseDetail() {
 
   const getDetailInfo = () => {
     api.design.getDesignDetail({ design_id, plan_id }).then((data) => {
-      const detailData = pickBy(data, doc.case.CASE_DETAIL)
+      const detailData = pickBy(data, caseDoc.CASE_DETAIL)
 
       detailData.tagList =
         detailData.taginfo && detailData.taginfo.length > 0

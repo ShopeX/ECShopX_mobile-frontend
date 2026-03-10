@@ -8,6 +8,7 @@ import { SpPage } from '@/components'
 import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import './invoice.scss'
 
 const initialState = {
@@ -25,7 +26,7 @@ function DianWuInvoice() {
     getBillInfo()
   }, [])
   async function getBillInfo() {
-    const res = await api.dianwu.getTradeDetail(trade_id)
+    const res = await dianwuApi.getTradeDetail(trade_id)
     const { orderInfo } = res
     setState((draft) => {
       draft.isInvoiced = orderInfo.is_invoiced
@@ -43,7 +44,7 @@ function DianWuInvoice() {
     })
     if (confirm) {
       //确定开票
-      const { success } = await api.dianwu.openBill({
+      const { success } = await dianwuApi.openBill({
         order_id: trade_id,
         status: true
       })

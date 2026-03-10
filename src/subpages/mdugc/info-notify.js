@@ -9,6 +9,7 @@ import { View, Text } from '@tarojs/components'
 import { SpPage, SpTagBar, SpScrollView, SpImage } from '@/components'
 import { infotype } from '@/consts'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import dayjs from 'dayjs'
 import './info-notify.scss'
 
@@ -63,10 +64,10 @@ function UgcFollowFans() {
     let data = {
       type
     }
-    await api.mdugc.messagesetTohasRead(data)
+    await mdugcApi.messagesetTohasRead(data)
   }
   const getInfoList = async () => {
-    let { message_info } = await api.mdugc.messagedashboard()
+    let { message_info } = await mdugcApi.messagedashboard()
     let list = JSON.parse(JSON.stringify(filterList))
     list.map((item) => {
       message_info.map((ele) => {
@@ -90,7 +91,7 @@ function UgcFollowFans() {
       pageSize,
       type
     }
-    const { list, total_count: total } = await api.mdugc.messagelist(params)
+    const { list, total_count: total } = await mdugcApi.messagelist(params)
 
     console.log(list, '----- ')
     Taro.stopPullDownRefresh()

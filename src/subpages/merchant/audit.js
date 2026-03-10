@@ -10,6 +10,7 @@ import { SpPage, SpImage, Loading } from '@/components'
 import { classNames, copyText, showToast } from '@/utils'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import * as merchantApi from '@/api/merchant'
 import {
   AUDITING,
   AUDIT_SUCCESS,
@@ -37,7 +38,7 @@ const Audit = () => {
   }, [])
 
   const getAuditStatus = async () => {
-    const { audit_status, audit_memo, mobile, password } = await api.merchant.getAuditstatus()
+    const { audit_status, audit_memo, mobile, password } = await merchantApi.getAuditstatus()
     setState((draft) => {
       draft.status = audit_status
       draft.memo = audit_memo
@@ -60,7 +61,7 @@ const Audit = () => {
   }
 
   const onResetPsd = async () => {
-    const { password } = await api.merchant.getResetPsd()
+    const { password } = await merchantApi.getResetPsd()
     setState((draft) => {
       draft.password = password
     })

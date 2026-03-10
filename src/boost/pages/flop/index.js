@@ -8,6 +8,7 @@ import { View, Image, Progress, Text, Button } from '@tarojs/components'
 import { pickBy, normalizeQuerys } from '@/utils'
 import { SpNavBar, SpLogin, SpFloatPrivacy } from '@/components'
 import api from '@/api'
+import * as boostApi from '@/api/boost'
 import S from '@/spx'
 import { connect } from 'react-redux'
 import './index.scss'
@@ -55,7 +56,7 @@ export default class Flop extends Component {
       user_bargain_info = {},
       bargain_log = {},
       user_info = {}
-    } = await api.boost.getUserBargain({
+    } = await boostApi.getUserBargain({
       bargain_id,
       user_id
     })
@@ -107,7 +108,7 @@ export default class Flop extends Component {
       headimgurl: myInfo.avatar
     }
     try {
-      const res = await api.boost.postDiscount(param)
+      const res = await boostApi.postDiscount(param)
       const price = Math.abs(res.cutdown_num / 100).toFixed(2)
       const msg = res.cutdown_num > 0 ? `太棒了！成功助力好友` : `对不起，助力失败！增加${price}`
       Taro.hideLoading()

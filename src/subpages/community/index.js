@@ -12,6 +12,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { pickBy } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 
 import './index.scss'
 
@@ -90,7 +91,7 @@ const Index = () => {
       tab_status: tabType,
       activity_name: searchValue
     }
-    const { list, total_count: total } = await api.community.getMemberActivityList(params)
+    const { list, total_count: total } = await communityApi.getMemberActivityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ACTIVITY_LIST)
     setState((draft) => {
       draft.activityList = [...activityList, ...n_list]
@@ -164,7 +165,7 @@ const Index = () => {
             code: res.result
           }
           try {
-            const result = await api.community.scanOrderCode(parmas)
+            const result = await communityApi.scanOrderCode(parmas)
             S.toast(result.msg)
           } catch (e) {
             Taro.showToast({

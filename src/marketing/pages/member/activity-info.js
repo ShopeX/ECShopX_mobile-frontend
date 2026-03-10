@@ -9,6 +9,7 @@ import { View, ScrollView, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpPage, SpHtml, SpLoading, SpImage, SpSelectModal } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import * as activityDoc from '@/doc/activity'
 import { AtButton } from 'taro-ui'
 import { pickBy, isArray, classNames } from '@/utils'
 import { useNavigation } from '@/hooks'
@@ -44,7 +45,7 @@ function ActivityInfo(props) {
       activity_id: router?.params.activity_id
     })
 
-    let _info = pickBy(activity_info, doc.activity.ACTIVITY_DETAIL)
+    let _info = pickBy(activity_info, activityDoc.ACTIVITY_DETAIL)
     _info.totalJoinNum = total_join_num
     setNavigationBarTitle(_info?.activityName)
     setState((draft) => {

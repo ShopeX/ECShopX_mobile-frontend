@@ -11,6 +11,7 @@ import { AtButton, AtCountdown, AtProgress } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import { isArray, navigateTo, calcTimer, pickBy, showToast } from '@/utils'
 
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
@@ -44,7 +45,7 @@ function GroupLeaderDetail(props) {
   }, [])
 
   const fetch = async () => {
-    const info = await api.community.getActiveDetail(activity_id)
+    const info = await communityApi.getActiveDetail(activity_id)
 
     let timer = null
     if (info.last_second > 0) {

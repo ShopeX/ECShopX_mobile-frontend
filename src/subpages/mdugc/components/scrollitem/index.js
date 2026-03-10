@@ -8,6 +8,7 @@ import { View, Image, Text, Block } from '@tarojs/components'
 import { SpImage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { styleNames, getThemeStyle } from '@/utils'
 import { connect } from 'react-redux'
 
@@ -77,7 +78,7 @@ export default class Scrollitem extends Component {
       user_id: memberData.memberInfo.user_id,
       post_id: item.item_id
     }
-    let res = await api.mdugc.postlike(data)
+    let res = await mdugcApi.postlike(data)
     let message = ''
     if (res.action) {
       if (res.action == 'unlike') {

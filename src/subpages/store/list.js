@@ -14,6 +14,7 @@ import api from '@/api'
 import { useLogin } from '@/hooks'
 import { SG_ROUTER_PARAMS, SG_CHECK_STORE_RULE } from '@/consts/localstorage'
 import doc from '@/doc'
+import * as shopDoc from '@/doc/shop'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
 
@@ -178,7 +179,7 @@ function NearlyShop(props) {
     const { list, total_count: total, defualt_address, is_recommend } = await api.shop.list(params)
     // 未开启店铺隔离时，直接获取所有店铺数据
     setState((draft) => {
-      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      draft.shopList = draft.shopList.concat(pickBy(list, shopDoc.SHOP_ITEM))
       draft.isRecommend = is_recommend === 1
       draft.defualt_address = defualt_address
       draft.refresh = false

@@ -10,6 +10,7 @@ import { View, ScrollView, Button } from '@tarojs/components'
 import { SpPage, SpScrollView, SpTagBar, SpImage, SpSelectModal } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
 import './item-activity.scss'
@@ -86,7 +87,7 @@ function ItemActivity(props) {
       status
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
-    const nList = pickBy(list, doc.activity.RECORD_LIST)
+    const nList = pickBy(list, activityDoc.RECORD_LIST)
     setState((draft) => {
       draft.recordList = [...recordList, ...nList]
     })

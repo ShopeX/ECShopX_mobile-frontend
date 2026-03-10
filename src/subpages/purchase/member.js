@@ -27,6 +27,7 @@ import {
   SpPage
 } from '@/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import {
   navigateTo,
   getThemeStyle,
@@ -228,7 +229,7 @@ function MemberIndex(props) {
       menu = { ...menuRes.list[0].params.data }
     }
     // if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_IN_PURCHASE)) {
-    //   const { result, status } = await api.dianwu.is_admin()
+    //   const { result, status } = await dianwuApi.is_admin()
     //   S.set('DIANWU_CONFIG', result, status)
     //   menu = {
     //     ...menu,

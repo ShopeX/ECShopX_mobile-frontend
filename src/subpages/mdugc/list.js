@@ -23,10 +23,12 @@ import {
   SpFloatMenuItem
 } from '@/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
 import { pickBy, showToast, navigateTo } from '@/utils'
 import doc from '@/doc'
+import * as mdugcDoc from '@/doc/mdugc'
 import S from '@/spx'
 import CompNoteItem from './comps/comp-noteitem'
 
@@ -71,9 +73,9 @@ function UgcTopicList() {
       sort: curFilterIndex == 0 ? 'likes desc' : 'created desc',
       topics: [topic_id]
     }
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
 
-    let nList = pickBy(list, doc.mdugc.UGC_LIST)
+    let nList = pickBy(list, mdugcDoc.UGC_LIST)
 
     const resLeftList = nList.filter((item, index) => {
       if (index % 2 == 0) {

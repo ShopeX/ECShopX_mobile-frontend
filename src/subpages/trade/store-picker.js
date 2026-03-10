@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
+import * as shopDoc from '@/doc/shop'
 import { View } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpSearchInput, SpNote } from '@/components'
@@ -49,7 +50,7 @@ function TradeStorePicker(props) {
 
     const { list: _list } = await api.aftersales.getAfterSaleStoreList(params)
     setState((draft) => {
-      draft.list = pickBy(_list, doc.shop.STORE_ITEM)
+      draft.list = pickBy(_list, shopDoc.STORE_ITEM)
       draft.refundStore = refund_store
     })
   }

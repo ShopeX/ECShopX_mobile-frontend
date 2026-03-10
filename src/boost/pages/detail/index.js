@@ -9,6 +9,7 @@ import { SpNavBar, SpHtmlContent } from '@/components'
 import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
+import * as boostApi from '@/api/boost'
 import { connect } from 'react-redux'
 // import config from './index.config.js'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
@@ -79,7 +80,7 @@ export default class Detail extends Component {
       bargain_order = {},
       bargain_log = {},
       user_info = {}
-    } = await api.boost.getUserBargain({
+    } = await boostApi.getUserBargain({
       bargain_id,
       has_order: true
     })
@@ -168,7 +169,7 @@ export default class Detail extends Component {
   // 绘制海报
   drawPoster = async () => {
     const { info, adPic, userInfo } = this.state
-    const codeUrl = await api.boost.getCodeUrl({
+    const codeUrl = await boostApi.getCodeUrl({
       bargain_id: info.bargain_id,
       user_id: userInfo.user_id
     })
@@ -280,7 +281,7 @@ export default class Detail extends Component {
       this.props.onFastbuy(info.item_id, 1)
       Taro.navigateTo({ url })
     } else {
-      const res = await api.boost.postUserBargain({
+      const res = await boostApi.postUserBargain({
         bargain_id: info.bargain_id
       })
       if (res) {

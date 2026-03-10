@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { AtButton } from 'taro-ui'
 import qs from 'qs'
@@ -55,7 +56,7 @@ function DianwuChangePrice(props) {
   }, [])
 
   const fetchCheckout = async (params) => {
-    const res = await api.dianwu.checkout(params)
+    const res = await dianwuApi.checkout(params)
     const {
       items: _items,
       itemFeeNew,

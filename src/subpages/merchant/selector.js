@@ -8,6 +8,7 @@ import { useRef } from 'react'
 
 import { SpSearchBar, SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
+import * as merchantApi from '@/api/merchant'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateMerchantType, updateBusinessScope, updateBank } from '@/store/slices/merchant'
 import { useImmer } from 'use-immer'
@@ -47,11 +48,11 @@ const Selector = () => {
     let list = [],
       total_count = 0
     if (isBank) {
-      const res = await api.merchant.bank_list(params)
+      const res = await merchantApi.bank_list(params)
       list = res.list
       total_count = res.total_count
     } else {
-      const res = await api.merchant.type_list(params)
+      const res = await merchantApi.type_list(params)
       list = res.list
       total_count = res.total_count
     }

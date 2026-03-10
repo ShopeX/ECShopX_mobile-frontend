@@ -10,6 +10,7 @@ import { classNames } from '@/utils'
 import { SpPage, SpCell } from '@/components'
 import { useSelector } from 'react-redux'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import { AtNoticebar } from 'taro-ui'
 import CompTabbar from './comps/comp-tabbar'
 import './my.scss'
@@ -33,7 +34,7 @@ const MyPage = () => {
       title: '加载中',
       icon: 'none'
     })
-    const res = await api.delivery.selfdeliveryList({ ...deliveryPersonnel })
+    const res = await deliveryApi.selfdeliveryList({ ...deliveryPersonnel })
     setState((draft) => {
       draft.information = res.list[0]
     })

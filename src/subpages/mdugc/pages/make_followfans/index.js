@@ -12,6 +12,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
@@ -74,7 +75,7 @@ export default class make_followfans extends Component {
       user_id,
       user_type: type
     }
-    const { list, total_count: total } = await api.mdugc.followerlist(params)
+    const { list, total_count: total } = await mdugcApi.followerlist(params)
     console.log('list, total', list, total)
 
     this.setState(
@@ -97,7 +98,7 @@ export default class make_followfans extends Component {
       user_id: item.user_id,
       follower_user_id: memberData.memberInfo.user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       // 取消关注
       item.mutal_follow = 0

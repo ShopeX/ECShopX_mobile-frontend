@@ -12,6 +12,7 @@ import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
 import { calcTimer, pickBy, log, isArray, buildSharePath } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 
 import CompGroupTabbar from './comps/comp-groupbar'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
@@ -41,7 +42,7 @@ function GroupLeaderDetail(props) {
   }, [])
 
   const fetchDetial = async () => {
-    const res = await api.community.getChiefActivity(activity_id)
+    const res = await communityApi.getChiefActivity(activity_id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
     let timer = {}
     if (res.last_second > 0) {

@@ -22,6 +22,7 @@ import imgUploader from '@/utils/upload'
 import { pickBy } from '@/utils'
 import { AtTextarea, AtImagePicker, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { TagsBar, NavBar, Popups } from '../../components'
 import './index.scss'
 
@@ -122,7 +123,7 @@ export default class Make extends Component {
     //     file_video,file_img,file_text,file_commodity,file_word
     //   })
     // }else
-    let res = await api.mdugc.postsetting({ type: 'video' })
+    let res = await mdugcApi.postsetting({ type: 'video' })
     console.log('视频是否开启上传', res['video.enable'])
     this.setState({
       videoenable: res['video.enable']
@@ -137,7 +138,7 @@ export default class Make extends Component {
       let data = {
         post_id
       }
-      let { post_info } = await api.mdugc.postdetail(data)
+      let { post_info } = await mdugcApi.postdetail(data)
       if (post_info) {
         console.log('这是详情', post_info)
         // 视频
@@ -732,7 +733,7 @@ export default class Make extends Component {
     }
 
     console.log('传递参数', data)
-    let res = await api.mdugc.create(data)
+    let res = await mdugcApi.create(data)
     if (res.message) {
       Taro.hideLoading()
       Taro.showToast({

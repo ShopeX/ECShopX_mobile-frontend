@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View } from '@tarojs/components'
 import { SpCell } from '@/components'
@@ -34,7 +35,7 @@ function CompTradeInfo(props) {
 
   const fetch = async () => {
     const { trade_id } = $instance?.router?.params
-    const { orderInfo, distributor } = await api.dianwu.getTradeDetail(trade_id)
+    const { orderInfo, distributor } = await dianwuApi.getTradeDetail(trade_id)
     const info = pickBy(orderInfo, doc.dianwu.ORDER_INFO)
     const {
       user_id,
@@ -53,7 +54,7 @@ function CompTradeInfo(props) {
       ziti_info
     } = info
     const { store_address, store_name } = distributor
-    const { username, mobile } = await api.dianwu.getMemberByUserId({ user_id })
+    const { username, mobile } = await dianwuApi.getMemberByUserId({ user_id })
 
     let _buyMember = ''
     let _receiveName = ''

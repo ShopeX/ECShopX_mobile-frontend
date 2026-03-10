@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 
 import CompTabbar from './comps/comp-tabbar'
 
@@ -43,7 +44,7 @@ function ActivityPage() {
       pageSize,
       order_by: tabType
     }
-    const { list, total_count: total } = await api.community.getActivityList(params)
+    const { list, total_count: total } = await communityApi.getActivityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ACTIVITY_LIST)
     setState((draft) => {
       draft.activityList = [...activityList, ...n_list]
@@ -64,7 +65,7 @@ function ActivityPage() {
   const onModalChange = async (isOpened, type) => {
     if (type == 'confirm') {
       const { activityId } = currentInfo
-      api.community.confirmDelivery(activityId).then((res) => {
+      communityApi.confirmDelivery(activityId).then((res) => {
         showToast('操作成功')
         setState((draft) => {
           draft.curTabIdx = 0
@@ -87,7 +88,7 @@ function ActivityPage() {
   }
 
   const onCloseChange = async (info) => {
-    await api.community.closeCode({ activity_id: info.activityId }).then((res) => {
+    await communityApi.closeCode({ activity_id: info.activityId }).then((res) => {
       showToast('核销成功')
     })
   }

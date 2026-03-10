@@ -16,6 +16,7 @@ import S from '@/spx'
 import { SpFloatMenuItem, SpPage, SpSearch, SpRecommend, SpSkuSelect, SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import * as shopDoc from '@/doc/shop'
 import {
   getDistributorId,
   classNames,
@@ -177,7 +178,7 @@ function StoreIndex() {
       setState((draft) => {
         draft.wgts = config
         draft.distributorId = distributor_id
-        draft.storeInfo = pickBy(storeInfo, doc.shop.STORE_INFO)
+        draft.storeInfo = pickBy(storeInfo, shopDoc.STORE_INFO)
         draft.loading = false
       })
       await shopping(distributor_id)

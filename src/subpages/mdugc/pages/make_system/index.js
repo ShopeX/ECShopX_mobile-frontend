@@ -10,6 +10,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 import './index.scss'
 
@@ -31,7 +32,7 @@ export default class make_system extends Component {
       type: 'system'
     }
     if (num) {
-      let { type } = await api.mdugc.messagesetTohasRead(data)
+      let { type } = await mdugcApi.messagesetTohasRead(data)
     }
 
     this.nextPage()
@@ -47,7 +48,7 @@ export default class make_system extends Component {
       pageSize,
       type: 'system'
     }
-    const { list, total_count: total } = await api.mdugc.messagelist(params)
+    const { list, total_count: total } = await mdugcApi.messagelist(params)
     console.log('list, total', list, total)
 
     const nList = pickBy(list, {

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -34,7 +35,7 @@ function CommunityWithdrawBank(props) {
   }, [])
 
   const fetch = async () => {
-    const { bank_name, bankcard_no } = await api.community.getCashWithDrawAccount()
+    const { bank_name, bankcard_no } = await communityApi.getCashWithDrawAccount()
     setState((draft) => {
       draft.form.bankName = bank_name
       draft.form.bankNum = bankcard_no
@@ -51,7 +52,7 @@ function CommunityWithdrawBank(props) {
     formRef.current.onSubmit(async () => {
       console.log(form)
       const { bankName, bankNum } = form
-      await api.community.updateCashWithDrawAccount({
+      await communityApi.updateCashWithDrawAccount({
         bank_name: bankName,
         bankcard_no: bankNum
       })

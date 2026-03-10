@@ -18,6 +18,7 @@ import {
 } from '@/store/slices/cart'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import qs from 'qs'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
@@ -121,7 +122,7 @@ function Cart() {
       isSalesmanPage: 1,
       ...customerLnformation
     }
-    await api.delivery.cartdelbat(params)
+    await deliveryApi.cartdelbat(params)
     await getCartList()
   }
 

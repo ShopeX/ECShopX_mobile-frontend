@@ -11,6 +11,7 @@ import { AtButton } from 'taro-ui'
 import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
 import { classNames } from '@/utils'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 import './comp-noteitem.scss'
 
@@ -47,7 +48,7 @@ function CompNoteItem(props) {
 
   const handleCollection = async () => {
     const { postId } = info
-    const { action, likes } = await api.mdugc.postlike({
+    const { action, likes } = await mdugcApi.postlike({
       user_id: userInfo.user_id,
       post_id: postId
     })

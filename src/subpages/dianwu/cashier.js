@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useDidHide } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View, Text, ScrollView, Camera } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtButton, AtCurtain } from 'taro-ui'
@@ -106,7 +107,7 @@ function DianWuCashier() {
 
   const handleSearchByKeyword = async (keywords) => {
     Taro.showLoading({ title: '' })
-    const { list: goodsList } = await api.dianwu.goodsItems({
+    const { list: goodsList } = await dianwuApi.goodsItems({
       page: 1,
       pageSize: 100,
       keywords
@@ -125,7 +126,7 @@ function DianWuCashier() {
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      const { list } = await api.dianwu.getMembers({
+      const { list } = await dianwuApi.getMembers({
         user_card_code: result.split('_')[1]
       })
       // console.log(pickBy(list, doc.dianwu.MEMBER_ITEM))
@@ -144,7 +145,7 @@ function DianWuCashier() {
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      await api.dianwu.scanAddToCart({
+      await dianwuApi.scanAddToCart({
         barcode: result,
         distributor_id
       })
@@ -157,7 +158,7 @@ function DianWuCashier() {
   }
 
   const getCashierList = async (dtid) => {
-    const { valid_cart } = await api.dianwu.getCartDataList({
+    const { valid_cart } = await dianwuApi.getCartDataList({
       user_id: member?.userId,
       distributor_id: dtid || distributor_id
     })
@@ -167,7 +168,7 @@ function DianWuCashier() {
   }
 
   const onChangeInputNumber = useDebounce(async ({ cartId, itemId }, num) => {
-    await api.dianwu.updateCartData({
+    await dianwuApi.updateCartData({
       cart_id: cartId,
       item_id: itemId,
       num,
@@ -187,12 +188,12 @@ function DianWuCashier() {
       confirmText: '确认'
     })
     if (!confirm) return
-    await api.dianwu.deleteCartData(cartId)
+    await dianwuApi.deleteCartData(cartId)
     getCashierList()
   }
 
   const handleAddToCart = async ({ itemId }) => {
-    await api.dianwu.addToCart({
+    await dianwuApi.addToCart({
       item_id: itemId,
       num: 1,
       distributor_id
@@ -207,7 +208,7 @@ function DianWuCashier() {
       scanIsUseableRef.current = false
       audioContextRef.current.play()
       try {
-        await api.dianwu.scanAddToCart({
+        await dianwuApi.scanAddToCart({
           barcode: e.detail.result,
           distributor_id
         })
@@ -225,7 +226,7 @@ function DianWuCashier() {
   // 选择会员
   const handleSelectMember = async () => {
     const [item] = searchMemberResult
-    const userInfo = await api.dianwu.getMemberByUserId({ user_id: item.userId })
+    const userInfo = await dianwuApi.getMemberByUserId({ user_id: item.userId })
     const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
     dispatch(
       selectMember({
@@ -262,7 +263,7 @@ function DianWuCashier() {
     })
     if (confirm) {
       try {
-        await api.dianwu.orderPendding({
+        await dianwuApi.orderPendding({
           user_id: member?.userId,
           distributor_id,
           showError: false
@@ -298,9 +299,9 @@ function DianWuCashier() {
   }
 
   const handleCreateMember = async () => {
-    const res = await api.dianwu.createMember({ mobile })
+    const res = await dianwuApi.createMember({ mobile })
     const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    const userInfo = await api.dianwu.getMemberByUserId({ user_id: newUser.userId })
+    const userInfo = await dianwuApi.getMemberByUserId({ user_id: newUser.userId })
     const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
     dispatch(
       selectMember({
@@ -323,7 +324,7 @@ function DianWuCashier() {
 
   const handleConfirm = async () => {
     if (validate.isMobileNum(mobile)) {
-      const { list } = await api.dianwu.getMembers({
+      const { list } = await dianwuApi.getMembers({
         mobile
       })
       setState((draft) => {

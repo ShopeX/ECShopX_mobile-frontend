@@ -12,6 +12,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as merchantApi from '@/api/merchant'
 import S from '@/spx'
 import { updateBank, updateBusinessScope, updateMerchantType } from '@/store/slices/merchant'
 import {
@@ -280,7 +281,7 @@ const Apply = () => {
       }
     }
     try {
-      await api.merchant.save(params)
+      await merchantApi.save(params)
       if (step === 3) {
         S.delete(MerchantStepKey, true)
         Taro.redirectTo({
@@ -319,7 +320,7 @@ const Apply = () => {
       bank_card_front_url,
       legal_certid_front_url,
       legal_cert_id_back_url
-    } = await api.merchant.detail()
+    } = await merchantApi.detail()
 
     //有保存过才赋值
     if (merchant_type_id) {
@@ -390,7 +391,7 @@ const Apply = () => {
     setState((state) => {
       state.formloading = true
     })
-    const { step } = await api.merchant.getStep()
+    const { step } = await merchantApi.getStep()
     const is_audit = step == 4
     //如果是审核失败跳回第一步
     if (is_audit) {
@@ -416,7 +417,7 @@ const Apply = () => {
 
   const getMerchatType = async () => {
     if (merchantOptions.length === 2) return
-    const { settled_type } = await api.merchant.getSetting()
+    const { settled_type } = await merchantApi.getSetting()
     const options = settled_type.map((item) => {
       if (item === 'enterprise') {
         return { value: item, label: '企业' }

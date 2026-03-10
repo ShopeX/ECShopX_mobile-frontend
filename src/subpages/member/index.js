@@ -19,6 +19,7 @@ import { buildSharePath, getMemberLevel } from '@/utils'
 
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import {
   navigateTo,
   getThemeStyle,
@@ -386,7 +387,7 @@ function MemberIndex(props) {
       }
     }
     if (key == 'community') {
-      const res = await api.community.checkChief()
+      const res = await communityApi.checkChief()
       dispatch(updateCheckChief(res))
       if (res.status) {
         Taro.navigateTo({ url: link })

@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
+import * as boostApi from '@/api/boost'
 import { SpNavBar } from '@/components'
 
 import './index.scss'
@@ -34,7 +35,7 @@ export default class PayDetail extends Component {
   // 获取支付订单信息
   getOrderInfo = async () => {
     const { bargain_id } = this.$instance?.router?.params
-    const { bargain_order = {} } = await api.boost.getUserBargain({
+    const { bargain_order = {} } = await boostApi.getUserBargain({
       bargain_id,
       has_order: true
     })
@@ -70,7 +71,7 @@ export default class PayDetail extends Component {
   // 获取订单详情
   getOrderDetail = async () => {
     const { order_id, bargain_id } = this.$instance?.router?.params
-    const { orderInfo } = await api.boost.getOrderDetail({
+    const { orderInfo } = await boostApi.getOrderDetail({
       order_id,
       bargain_id
     })
@@ -89,7 +90,7 @@ export default class PayDetail extends Component {
       total_fee: info.num_total
     }
     try {
-      const res = await api.boost.getPayConfig(param)
+      const res = await boostApi.getPayConfig(param)
       if (res.appId) {
         await Taro.requestPayment(res)
         Taro.showToast({

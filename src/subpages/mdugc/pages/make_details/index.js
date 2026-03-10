@@ -13,6 +13,7 @@ import { withPager, withBackToTop, withPointitem } from '@/hocs'
 
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { Swiperugc, Popups } from '../../components'
 import './index.scss'
 
@@ -61,7 +62,7 @@ export default class mdugcdetails extends Component {
     }
     const isAuth = S.getAuthToken()
     if (isAuth) {
-      let share = await api.mdugc.postshare(data)
+      let share = await mdugcApi.postshare(data)
       if (share.post_id == item_id) {
         console.log('share', share.share_nums)
         file_details.share_nums = share.share_nums
@@ -99,7 +100,7 @@ export default class mdugcdetails extends Component {
     let data = {
       post_id: id
     }
-    let res = await api.mdugc.postdetail(data)
+    let res = await mdugcApi.postdetail(data)
     // console.log("这是笔记详情",res,res.post_info,memberData,memberData.memberInfo.user_id,res.post_info.user_id)
     isoneself = memberData.memberInfo && memberData.memberInfo.user_id == res.post_info.user_id
     if (res.post_info) {
@@ -143,7 +144,7 @@ export default class mdugcdetails extends Component {
     if (memberData.memberInfo) {
       params.user_id = memberData.memberInfo.user_id
     }
-    const { list, total_count: total } = await api.mdugc.commentlist(params)
+    const { list, total_count: total } = await mdugcApi.commentlist(params)
     console.log('list, total', list, total)
 
     this.setState({
@@ -178,7 +179,7 @@ export default class mdugcdetails extends Component {
       data.user_id = memberData.memberInfo.user_id
     }
 
-    const { list, total_count: total } = await api.mdugc.commentlist(data)
+    const { list, total_count: total } = await mdugcApi.commentlist(data)
 
     data.page_no += 1
     if (commentlist[comment_id]) {
@@ -303,7 +304,7 @@ export default class mdugcdetails extends Component {
     } else {
       console.log('生成一级评论')
     }
-    let res = await api.mdugc.commentcreate(data)
+    let res = await mdugcApi.commentcreate(data)
     console.log('这是发布评论', res)
     Taro.showToast({
       icon: 'none',
@@ -416,7 +417,7 @@ export default class mdugcdetails extends Component {
             totalnum = page.total - 1
           }
         }
-        let res = await api.mdugc.commentdelete(data)
+        let res = await mdugcApi.commentdelete(data)
         if (res.comment_id) {
           try {
             theory.forEach((theoryi, idx) => {
@@ -458,7 +459,7 @@ export default class mdugcdetails extends Component {
         let data = {
           post_id: [item_id]
         }
-        let res = await api.mdugc.postdelete(data)
+        let res = await mdugcApi.postdelete(data)
         if (res.message) {
           Taro.showToast({
             icon: 'none',
@@ -523,7 +524,7 @@ export default class mdugcdetails extends Component {
       post_id: item_id,
       comment_id
     }
-    let res = await api.mdugc.commentlike(data)
+    let res = await mdugcApi.commentlike(data)
     console.log('点赞返回', res)
 
     if (res.action) {
@@ -590,7 +591,7 @@ export default class mdugcdetails extends Component {
       post_id: item_id
     }
     let message = ''
-    let res = await api.mdugc.postlike(data)
+    let res = await mdugcApi.postlike(data)
     if (res.action) {
       if (res.action == 'unlike') {
         file_details.like_status = 0
@@ -632,7 +633,7 @@ export default class mdugcdetails extends Component {
       post_id: item_id
     }
     let message = ''
-    let res = await api.mdugc.postfavorite(data)
+    let res = await mdugcApi.postfavorite(data)
     if (res.action) {
       if (res.action == 'unfavorite') {
         message = '取消收藏'
@@ -674,7 +675,7 @@ export default class mdugcdetails extends Component {
       user_id: file_details.user_id,
       follower_user_id: memberData.memberInfo.user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       // 取消关注
       file_details.follow_status = 0

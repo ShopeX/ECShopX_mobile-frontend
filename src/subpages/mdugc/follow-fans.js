@@ -9,6 +9,7 @@ import Taro, { usePullDownRefresh, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpPage, SpTagBar, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 import './follow-fans.scss'
 
@@ -57,7 +58,7 @@ function UgcFollowFans() {
       user_id: user_id,
       user_type: type
     }
-    const { list = [], total_count: total } = await api.mdugc.followerlist(params)
+    const { list = [], total_count: total } = await mdugcApi.followerlist(params)
     setState((draft) => {
       draft.followlist = [...followlist, ...list]
     })
@@ -82,7 +83,7 @@ function UgcFollowFans() {
       user_id: item.user_id,
       follower_user_id: user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       console.log(item.mutal_follow)
       // 取消关注

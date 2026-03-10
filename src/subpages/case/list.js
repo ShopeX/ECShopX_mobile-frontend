@@ -15,6 +15,7 @@ import { classNames, pickBy, entryLaunch } from '@/utils'
 import S from '@/spx'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
+import * as caseDoc from '@/doc/case'
 import './list.scss'
 
 const defaultChecked = [
@@ -184,7 +185,7 @@ function CaseList() {
     }
     const res = await api.design.getDesignList(options)
     const { total_count, list: nList } = res
-    const list = pickBy(nList, doc.case.CASE_LIST)
+    const list = pickBy(nList, caseDoc.CASE_LIST)
 
     const nleftList = []
     const nrightList = []

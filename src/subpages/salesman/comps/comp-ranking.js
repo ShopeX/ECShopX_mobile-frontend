@@ -6,6 +6,7 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import { View, Text, Image } from '@tarojs/components'
 import { SpTime, SpImage, SpCustomPicker } from '@/components'
 import { classNames } from '@/utils'
@@ -69,7 +70,7 @@ function CompRanking(props) {
       username: selectorCheckedIndex == 0 ? deliverylnformation : '',
       mobile: selectorCheckedIndex == 1 ? deliverylnformation : ''
     }
-    const { list: _list, total_count } = await api.dianwu.datacubeDeliverystaffdata(res)
+    const { list: _list, total_count } = await dianwuApi.datacubeDeliverystaffdata(res)
     Taro.hideLoading()
     setState((draft) => {
       draft.list = _list.slice(0, 5)

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/doc'
 import { AtTabs, AtTextarea } from 'taro-ui'
 import {
@@ -131,7 +132,7 @@ function DianwuTradeSaleAfter(props) {
       description,
       evidence_pic: [img]
     }
-    await api.dianwu.salesAfterApply(params)
+    await dianwuApi.salesAfterApply(params)
     let type = 3
     if (params.aftersales_type == 'ONLY_REFUND') {
       type = 3

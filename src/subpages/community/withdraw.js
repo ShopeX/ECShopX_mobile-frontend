@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -30,7 +31,7 @@ function CommunityWitdraw(props) {
   })
 
   const fetch = async () => {
-    const { bank_name, bankcard_no } = await api.community.getCashWithDrawAccount()
+    const { bank_name, bankcard_no } = await communityApi.getCashWithDrawAccount()
     setState((draft) => {
       draft.bankName = bank_name
       draft.bankCardNo = bankcard_no
@@ -55,7 +56,7 @@ function CommunityWitdraw(props) {
       return
     }
 
-    await api.community.chiefCashWithdraw({
+    await communityApi.chiefCashWithdraw({
       money: money * 100,
       pay_type: 'bankcard' //bankcard=银行卡;alipay=支付宝;wechat=微信
     })

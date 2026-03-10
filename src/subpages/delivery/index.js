@@ -10,6 +10,7 @@ import { SpPage, SpTime, SpCustomPicker } from '@/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import S from '@/spx'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompTabbar from './comps/comp-tabbar'
@@ -60,7 +61,7 @@ const Index = () => {
       ...deliveryPersonnel,
       from: 'api'
     }
-    const res = await api.delivery.datacubeDeliverystaffdata(params)
+    const res = await deliveryApi.datacubeDeliverystaffdata(params)
     Taro.hideLoading()
     res.self_delivery_fee_count = S.formatMoney(res.self_delivery_fee_count / 100)
     res.refund_fee_count = S.formatMoney(res.refund_fee_count / 100)
@@ -71,7 +72,7 @@ const Index = () => {
   }
 
   const distributor = async () => {
-    const { list } = await api.delivery.getDistributorList({
+    const { list } = await deliveryApi.getDistributorList({
       page: 1,
       page_size: 1000,
       self_delivery_operator_id: deliveryPersonnel.self_delivery_operator_id

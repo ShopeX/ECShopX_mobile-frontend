@@ -11,6 +11,7 @@ import { SpPage, SpScrollView, SpTagBar, SpImage, SpSelectModal } from '@/compon
 import api from '@/api'
 import QRCode from 'qrcode'
 import doc from '@/doc'
+import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import './activity-detail.scss'
 
@@ -71,7 +72,7 @@ function ActivityDetail(props) {
     })
 
     console.log(res)
-    const _info = pickBy(res, doc.activity.RECORD_DETAIL)
+    const _info = pickBy(res, activityDoc.RECORD_DETAIL)
     if (isVerify) {
       if (_info.status == 'passed') return
       if (_info.status == 'verified' && verifyRef.current) {

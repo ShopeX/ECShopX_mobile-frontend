@@ -12,6 +12,7 @@ import { useImmer } from 'use-immer'
 import { navigateTo } from '@/utils'
 import { AtModal } from 'taro-ui'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 
 import './comp-groupbar.scss'
 
@@ -64,7 +65,7 @@ function CompGroupTabbar(props) {
   }
 
   const handleConfirm = async () => {
-    api.community.updateActivityStatus(info.activityId, { activity_status }).then((res) => {
+    communityApi.updateActivityStatus(info.activityId, { activity_status }).then((res) => {
       onRefresh()
     })
     handleClose()

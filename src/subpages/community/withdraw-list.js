@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { SpScrollView } from '@/components'
@@ -22,7 +23,7 @@ function WithdrawList(props) {
   const { list } = state
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { list, total_count } = await api.community.getCashWithDraw({
+    const { list, total_count } = await communityApi.getCashWithDraw({
       page: pageIndex,
       pageSize
     })

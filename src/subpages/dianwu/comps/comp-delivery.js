@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { usePullDownRefresh, useRouter, useDidShow } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPage, SpScrollView } from '@/components'
@@ -46,7 +47,7 @@ function CompDelivery(props) {
       username: selectorCheckedIndex == 0 ? deliverylnformation : '',
       mobile: selectorCheckedIndex == 1 ? deliverylnformation : ''
     }
-    const { list: _list, total_count } = await api.dianwu.accountaManagement(res)
+    const { list: _list, total_count } = await dianwuApi.accountaManagement(res)
     _list.forEach((item) => {
       const date = new Date(item.created * 1000)
       const year = date.getFullYear()

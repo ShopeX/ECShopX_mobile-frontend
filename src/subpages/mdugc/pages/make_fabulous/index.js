@@ -10,6 +10,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 import './index.scss'
 
@@ -34,7 +35,7 @@ export default class make_fabulous extends Component {
     // num=Number(num)
     if (num) {
       console.log('触发num')
-      let { type } = await api.mdugc.messagesetTohasRead(data)
+      let { type } = await mdugcApi.messagesetTohasRead(data)
     }
     this.nextPage()
   }
@@ -49,7 +50,7 @@ export default class make_fabulous extends Component {
       pageSize,
       type: 'like'
     }
-    const { list, total_count: total } = await api.mdugc.messagelist(params)
+    const { list, total_count: total } = await mdugcApi.messagelist(params)
     console.log('list, total', list, total)
 
     const nList = pickBy(list, {

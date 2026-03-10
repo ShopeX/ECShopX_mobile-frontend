@@ -24,6 +24,7 @@ import {
   SearchBar
 } from '@/components'
 import doc from '@/doc'
+import * as shopDoc from '@/doc/shop'
 import { classNames, pickBy } from '@/utils'
 import api from '@/api'
 import { Tracker } from '@/service'
@@ -89,7 +90,7 @@ function shopList(props) {
       name
     }
     const { list, total_count, tagList } = await api.shop.list(query)
-    const _list = pickBy(list, doc.shop.SHOP_ITEM)
+    const _list = pickBy(list, shopDoc.SHOP_ITEM)
     const _tagList = pickBy(tagList, doc.goods.BUSINESS_LIST_TAG)
     console.log('_list', _list)
     await setState((v) => {

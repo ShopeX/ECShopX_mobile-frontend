@@ -20,6 +20,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
 import CompTradeItem from './comps/comp-tradeitem'
@@ -91,7 +92,7 @@ function CommunityOrder(props) {
       const {
         list,
         pager: { count }
-      } = await api.community.getCommunityList(params)
+      } = await communityApi.getCommunityList(params)
       const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
       setState((draft) => {
         draft.orderList = [...orderList, ...n_list]
