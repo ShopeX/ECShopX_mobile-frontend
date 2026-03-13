@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { updateUserInfo, updateCheckChief } from '@/store/slices/user'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import { platformTemplateName } from '@/utils/platform'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { SG_APP_CONFIG } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -46,6 +46,7 @@ import { updateDeliveryPersonnel } from '@/store/slices/cart'
 
 import CompMenu from './comps/comp-menu'
 import './index.scss'
+import SpPoweredBy from '@/components/sp-powered-by'
 
 const initialConfigState = {
   banner: {
@@ -112,7 +113,8 @@ const initialState = {
   shareInfo: {},
   footerHeight: 0,
   pageData: null,
-  shareInfo: {}
+  shareInfo: {},
+  bodyHeight: 0
 }
 
 function MemberIndex(props) {
@@ -176,8 +178,8 @@ function MemberIndex(props) {
       })
       const url = `/pageparams/setting?${pathparams}`
       const { config = [], share } = await req.get(url)
-      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config, share)
       const pageData = config.find((wgt) => wgt.name == 'page')
+      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config, share, pageData)
       setState((draft) => {
         draft.wgts = config
         draft.pageData = pageData
@@ -450,8 +452,20 @@ function MemberIndex(props) {
   }
 
   return (
-    <SpPage className='pages-member-index' immersive renderFooter={<SpTabbar />} title='会员中心'>
-      <View className='user-info-card-wrapper min-h-full'>
+    <SpPage className='pages-member-index'
+      loading={state.loading}
+      immersive={state.pageData?.base?.isImmersive}
+      showpoweredBy={false}
+      pageConfig={state.pageData?.base || {}}
+      renderFooter={<SpTabbar />}
+      title='会员中心'
+      onReady={({ gNavbarH, footerHeight }) => {
+        setState((draft) => {
+          draft.bodyHeight = `calc(100vh - ${state.pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
+        })
+      }}
+    >
+      <ScrollView scrollY className='user-info-card-wrapper' style={{ height: state.bodyHeight }}>
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
@@ -563,7 +577,9 @@ function MemberIndex(props) {
           isPromoter={userInfo ? userInfo.isPromoter : false}
           onLink={handleClickService}
         />
-      </View>
+        {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          <SpPoweredBy />
+      </ScrollView>
     </SpPage>
   )
 }

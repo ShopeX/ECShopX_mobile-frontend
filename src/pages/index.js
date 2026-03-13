@@ -62,6 +62,7 @@ import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
 
 import './home/index.scss'
+import SpPoweredBy from '@/components/sp-powered-by'
 
 const MCompAddTip = React.memo(CompAddTip)
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -280,14 +281,12 @@ function Home() {
       className='page-index'
       scrollToTopBtn
       immersive={pageData?.base?.isImmersive}
-      // renderNavigation={renderNavigation()}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
       nearbyText={nearbyText}
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {
-        console.log('onScrollToTop')
         // 先设置为一个很小的非0值，确保触发滚动变化
         setState((draft) => {
           draft.backTopScrollTop = 0.1
@@ -301,7 +300,7 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ gNavbarH,footerHeight }) => {
+      onReady={({ gNavbarH, footerHeight }) => {
         setState((draft) => {
           draft.bodyHeight = `calc(100vh - ${pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
@@ -315,7 +314,7 @@ function Home() {
           pageRef.current.handlePageScroll(e?.detail)
         }}
         scrollIntoView={scrollIntoView}
-        style={{ height: state.bodyHeight}}
+        style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
@@ -350,14 +349,7 @@ function Home() {
               )}
             </View>
             {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-            {/* <View className='sp-page__powered-by w-full'>
-            <Text>Powered by</Text>
-            <Image
-              src='/assets/imgs/powered-logo.png'
-              className='powered-logo'
-              mode='contain'
-            />
-          </View> */}
+            <SpPoweredBy />
           </View>
 
           {/* 小程序收藏提示 */}
