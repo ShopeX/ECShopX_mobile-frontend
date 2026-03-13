@@ -154,6 +154,20 @@
       box-sizing: border-box;
       justify-content: flex-start;
 
+      /* Web 端：标题区保持 flex 布局，仅保证居中不撑满；左侧占位用 min-width 避免标题偏右 */
+      &.is-web .header-container-left {
+        min-width: 80px; /* 与左侧返回/首页按钮区域对称，标题视觉居中 */
+      }
+      &.is-web .title-container {
+        padding-left: 0;
+      }
+      &.is-web .title-search {
+        flex: 1;
+        min-width: 0;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+
       .nav-left-capsule {
         flex-shrink: 0;
       }

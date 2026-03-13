@@ -205,12 +205,14 @@ const CustomNavigationHeader = memo((props) => {
     <View className='wgt-page' style={styleNames(headerStyle())} onClick={props.onClickHeader}>
       <View className='wgt-page-content'>
         <View
-          className={classNames('header-container', { 'has-nearby': hasNearby })}
+          className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
           style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
-          {showNavitionLeft && <View className={
-            classNames('header-container-left', { 'is-web': isWeb })
-          } style={styleNames({ width:`${navigationRSpace}px` })}>
+          {showNavitionLeft && (
+          <View
+            className={classNames('header-container-left', { 'is-web': isWeb })}
+            style={styleNames({ width: `${navigationRSpace}px` })}
+          >
             {/* 左侧：返回、首页、功能区三者只显示一个 */}
             {showHeaderContent && showFunctionArea ? (
               <>
@@ -232,7 +234,8 @@ const CustomNavigationHeader = memo((props) => {
                 )}
               </>
             )}
-          </View>}
+          </View>
+          )}
           <View className='title-container' style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}>
             {/* 标题区：搜索 */}
             {showHeaderContent && titleStyle === '3' && renderSearch()}
