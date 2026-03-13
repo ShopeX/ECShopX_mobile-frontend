@@ -154,18 +154,40 @@
       box-sizing: border-box;
       justify-content: flex-start;
 
-      /* Web 端：标题区保持 flex 布局，仅保证居中不撑满；左侧占位用 min-width 避免标题偏右 */
+      /* Web 端：标题文字相对整栏（header-container）绝对居中，不随左侧按钮偏移 */
       &.is-web .header-container-left {
-        min-width: 80px; /* 与左侧返回/首页按钮区域对称，标题视觉居中 */
+        min-width: 80px;
       }
       &.is-web .title-container {
         padding-left: 0;
+        /* 不设 position，让 .title-text 的 absolute 相对 .header-container，才能整栏居中 */
+      }
+      &.is-web .title-container:has(.title-text),
+      &.is-web .title-container:has(.title-image) {
+        min-height: 44px;
+      }
+      /* 相对当前 .header-container 定位，实现整栏居中（& 已是 .header-container，不要再写 .header-container 子选择器） */
+      &.is-web .title-text {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        text-align: center;
+        display: block;
       }
       &.is-web .title-search {
         flex: 1;
         min-width: 0;
         max-width: 600px;
         margin: 0 auto;
+      }
+      /* Web 端：标题图片整栏水平居中（用 50% + translate 保证不被左侧占位影响） */
+      &.is-web .title-image {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
       }
 
       .nav-left-capsule {
@@ -210,7 +232,7 @@
       }
 
       .title-image {
-        height: 100%;
+        height: 64px;
         display: inline-block;
         flex-shrink: 0;
       }
