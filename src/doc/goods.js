@@ -550,5 +550,8 @@ export const WGT_SPEEDKILL_GOODS = {
     return (activity_price || price) / 100
   },
   discount_var: ({ discount_rate }) =>
-    discount_rate ? String((discount_rate / 10).toFixed(1)) : null
+    discount_rate ? String((discount_rate / 10).toFixed(1)) : null,
+  // 积分商品：data_type=pointsmall_items 时接口返回，用于挂件展示积分不展示价格
+  point: ({ point, point_exchange }) =>
+    point != null ? point : point_exchange != null ? point_exchange : null
 }

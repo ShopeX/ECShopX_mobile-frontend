@@ -5,7 +5,7 @@
 import React, { useState, useEffect, useMemo, useContext, useCallback } from 'react'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import { SpImage } from '@/components'
+import { SpImage, SpPoint } from '@/components'
 import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/utils'
 import { getBrowseHistoryList } from '@/utils/browseHistory'
 import doc from '@/doc'
@@ -29,6 +29,7 @@ export default function WgtGoods(props) {
   const data = params.data || {}
 
   const { onAddToCart } = useContext(WgtsContext)
+  const isPointsmallItems = base.dataType === 'pointsmall_items'
 
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
@@ -121,8 +122,15 @@ export default function WgtGoods(props) {
     }
   }
 
-  // 处理商品点击
+  // 处理商品点击：积分商品跳积分详情，否则走 linkPage
   const handleClickItem = (item) => {
+    const itemId = item.item_id ?? item.itemId
+    if (isPointsmallItems || item.point != null) {
+      Taro.navigateTo({
+        url: `/subpages/pointshop/espier-detail?id=${itemId}`
+      })
+      return
+    }
     linkPage({
       linkPage: 'goods',
       id: item.goodsId || item.item_id || item.itemId
@@ -199,15 +207,21 @@ export default function WgtGoods(props) {
                   <View className='wgt-goods__activity-item-title'>
                     {item.itemName || item.title}
                   </View>
-                  <View className='wgt-goods__activity-item-price'>
-                    <Text className='wgt-goods__activity-item-price__unit'>￥</Text>
-                    <Text className='wgt-goods__activity-item-price__text'>
-                      {item.mainPrice ||
-                        (item.activityPrice
-                          ? item.activityPrice.toFixed(2)
-                          : item.price?.toFixed(2) || '0.00')}
-                    </Text>
-                  </View>
+                  {isPointsmallItems ? (
+                    <View className='wgt-goods__activity-item-point'>
+                      <SpPoint value={item.point ?? item.point_exchange ?? 0} />
+                    </View>
+                  ) : (
+                    <View className='wgt-goods__activity-item-price'>
+                      <Text className='wgt-goods__activity-item-price__unit'>￥</Text>
+                      <Text className='wgt-goods__activity-item-price__text'>
+                        {item.mainPrice ||
+                          (item.activityPrice
+                            ? item.activityPrice.toFixed(2)
+                            : item.price?.toFixed(2) || '0.00')}
+                      </Text>
+                    </View>
+                  )}
                 </View>
               </View>
             ))}
@@ -221,6 +235,7 @@ export default function WgtGoods(props) {
             goodsRightList={goodsRightList}
             onClickItem={handleClickItem}
             classNamePrefix='wgt-goods'
+            showPrice={!isPointsmallItems}
           />
         )}
       </View>
