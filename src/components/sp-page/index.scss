@@ -12,6 +12,9 @@
     box-sizing: border-box;
     padding-left: 20px;
     padding-right: 20px;
+    &.is-web {
+      width: 240px !important;
+    }
   }
   .title-container {
     display: flex;

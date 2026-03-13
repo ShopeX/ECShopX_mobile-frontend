@@ -6,7 +6,7 @@ import React, { useCallback, memo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Input, Button } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { styleNames, classNames, VERSION_STANDARD } from '@/utils'
+import { styleNames, classNames, VERSION_STANDARD, isWeb } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
 import { useSelector } from 'react-redux'
 
@@ -39,10 +39,10 @@ const CustomNavigationHeader = memo((props) => {
   const headerStyle = useCallback(() => {
     const style = {
       height: `${gNavbarH}px`,
-      backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      paddingTop: `${gStatusBarHeight}px`
+      'background-size': '100% 100%',
+      'background-repeat': 'no-repeat',
+      'background-position': 'center',
+      'padding-top': `${gStatusBarHeight}px`
     }
     // 吸顶挂件配置的 statusBarBgColor 优先用于页面顶部 header（状态栏）背景
     const headerBg = statusBarBgColor ?? value?.navigateBackgroundColor
@@ -51,9 +51,9 @@ const CustomNavigationHeader = memo((props) => {
       style.backgroundColor = headerBg
     }
     if (value?.navigateBackgroundImage) {
-      style.backgroundImage = `url(${value?.navigateBackgroundImage})`
-      style.backgroundSize = 'cover'
-      style.backgroundPosition = 'center'
+      style['background-image'] = `url(${value?.navigateBackgroundImage})`
+      style['background-size'] = 'cover'
+      style['background-position'] = 'center'
     }
     style.transition = 'all 0.15s ease-in'
     return style
@@ -82,8 +82,8 @@ const CustomNavigationHeader = memo((props) => {
     const searchButtonColor = value?.searchButtonColor
     if (!searchButtonColor) return {}
     return {
-      backgroundColor: searchButtonColor.bgColor,
-      color: searchButtonColor.textColor
+      'background-color': searchButtonColor.bgColor,
+      'color': searchButtonColor.textColor
     }
   }, [value?.searchButtonColor])
 
@@ -156,7 +156,7 @@ const CustomNavigationHeader = memo((props) => {
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [handleNearbyClick, nearbyText])
+  }, [handleNearbyClick, nearbyText, shopInfo?.name, value?.titleColor])
 
   const renderSearch = useCallback(() => {
     return (
@@ -208,7 +208,9 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby })}
           style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
-          {showNavitionLeft && <View className='header-container-left' style={styleNames({ width: `${navigationRSpace}px` })}>
+          {showNavitionLeft && <View className={
+            classNames('header-container-left', { 'is-web': isWeb })
+          } style={styleNames({ width:`${navigationRSpace}px` })}>
             {/* 左侧：返回、首页、功能区三者只显示一个 */}
             {showHeaderContent && showFunctionArea ? (
               <>

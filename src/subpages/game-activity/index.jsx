@@ -164,10 +164,10 @@ const GameActivity = () => {
   const getPageStyle = () => {
     if (activityConfig?.backgroundImage) {
       return {
-        backgroundImage: `url(${activityConfig.backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        'background-image': `url(${activityConfig.backgroundImage})`,
+        'background-size': 'cover',
+        'background-position': 'center',
+        'background-repeat': 'no-repeat'
       }
     }
     return {}
@@ -207,11 +207,11 @@ const GameActivity = () => {
                 <View className='sp-game-activity__footer'>
                   <View
                     style={styleNames({
-                      backgroundColor: activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
+                      'background-color': activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
                       color: activityConfig?.recordFormConfig?.rule?.[1] || '#000',
-                      backgroundImage: `url(${activityConfig?.recordFormConfig?.img})`,
-                      backgroundSize: '100% auto',
-                      backgroundRepeat: 'no-repeat'
+                      'background-image': `url(${activityConfig?.recordFormConfig?.img})`,
+                      'background-size': '100% auto',
+                      'background-repeat': 'no-repeat'
                     })}
                     className='sp-game-activity__footer-btn'
                     onClick={() =>

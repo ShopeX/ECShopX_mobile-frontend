@@ -36,6 +36,7 @@ import {
   styleNames,
   isWeixin,
   isAlipay,
+  isWeb,
   isIphoneX,
   VERSION_SHUYUN
 } from '@/utils'
@@ -138,7 +139,11 @@ const SpPage = memo(
       let _navigationRSpace = 0 // 导航栏右间距
       const { screenHeight, windowWidth, windowHeight } = Taro.getWindowInfo()
       const [absolutePath] = router?.path.split('?')
-      const custom_navigation = isWeixin ? navigationStyle === 'custom' : false
+      // 小程序/支付宝：按页面 config 是否 custom；H5：有 pageConfig 或 immersive 时也使用自定义顶栏以支持相同顶部样式
+      const custom_navigation =
+        isWeixin || isAlipay
+          ? navigationStyle === 'custom'
+          : isWeb && !!(props.pageConfig || props.immersive)
       const _btnReturn = pages.length > 1 && !TAB_PAGES.includes(absolutePath)
       const _btnHome = pages.length == 1 && !TAB_PAGES.includes(absolutePath)
       if (isWeixin || isAlipay) {
@@ -150,6 +155,10 @@ const SpPage = memo(
         _menuWidth = menuButton.width
         _navigationLSpace = windowWidth - menuButton.right
         _navigationRSpace = menuButton.width + (windowWidth - menuButton.right)
+      } else if (isWeb && custom_navigation) {
+        // H5 下使用自定义顶栏时给默认高度，使 pageConfig/immersive 样式生效
+        _gNavbarH = props.navigateHeight || DEFAULT_NAVIGATE_HEIGHT
+        _gStatusBarHeight = 0
       }
       setState((draft) => {
         draft.bodyHeight = windowHeight
@@ -181,7 +190,7 @@ const SpPage = memo(
         menuWidth: _menuWidth,
         footerHeight: _height
       })
-    }, [props.immersive, isPageVisible])
+    }, [props.immersive, props.pageConfig, isPageVisible])
 
     useEffect(() => {
       const {

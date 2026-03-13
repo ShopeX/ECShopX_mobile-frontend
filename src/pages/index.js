@@ -131,6 +131,8 @@ function Home() {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
     dispatch(updateEnterpriseId())
+    // 从店铺页返回时刷新地址/店铺信息，使顶部 nearby-function-text 立即更新
+    updateAddress()
     // 通知挂件（如浏览记录）刷新本地数据
     Taro.eventCenter.trigger('homePageShow')
   })

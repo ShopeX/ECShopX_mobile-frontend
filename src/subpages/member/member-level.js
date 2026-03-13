@@ -64,10 +64,10 @@ function MemberLevel(props) {
       return {}
     }
     return {
-      backgroundImage: `url(${item.grade_background})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
+      'background-image': `url(${item.grade_background})`,
+      'background-size': 'cover',
+      'background-position': 'center',
+      'background-repeat': 'no-repeat'
     }
   }
 

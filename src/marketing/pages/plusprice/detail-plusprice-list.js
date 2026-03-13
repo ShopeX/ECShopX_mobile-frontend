@@ -159,8 +159,8 @@ export default class DetailPluspriceList extends Component {
       <View
         className='page-plusprice'
         style={{
-          backgroundImage: `url(${isSetBackground})`,
-          backgroundSize: isSetBackground ? 'cover' : 'contain'
+          'background-image': `url(${isSetBackground})`,
+          'background-size': isSetBackground ? 'cover' : 'contain'
         }}
       >
         <SpNavBar title='微商城' />

@@ -140,17 +140,17 @@ export function getGlobalBaseStyle(baseStyle) {
   // 处理背景
   const bgType = baseStyle.bgType
   if (bgType === 'color' && baseStyle.bgColor) {
-    style.backgroundColor = baseStyle.bgColor
+    style['background-color'] = baseStyle.bgColor
   } else if (bgType === 'pic' && baseStyle.bgPic) {
-    style.backgroundImage = `url(${baseStyle.bgPic})`
-    style.backgroundSize = 'cover'
-    style.backgroundPosition = 'center'
-    style.backgroundRepeat = 'no-repeat'
+    style['background-image'] = `url(${baseStyle.bgPic})`
+    style['background-size'] = 'cover'
+    style['background-position'] = 'center'
+    style['background-repeat'] = 'no-repeat'
   } else if (bgType === 'gradient' && baseStyle.startColor) {
     // 如果 endColor 为空，使用 startColor 作为结束颜色（单色渐变）
     const endColor = baseStyle.endColor || baseStyle.startColor
-    style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
-    style.backgroundSize = 'cover'
+    style['background-image'] = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+    style['background-size'] = 'cover'
   }
 
   return style
