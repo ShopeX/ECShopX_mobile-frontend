@@ -1,15 +1,24 @@
 /**
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
+ * 公众号/服务号冷启动时不在顶层 import S，否则会 ReferenceError: Can't find variable: S
  */
-import S from '@/spx'
 import { transformPlatformUrl } from '@/utils/platform'
 import req from './req'
 
+function getS() {
+  return (
+    (typeof global !== 'undefined' && global.__SPX__) ||
+    (typeof globalThis !== 'undefined' && globalThis.__SPX__) ||
+    null
+  )
+}
+
 function createHead() {
+  const s = getS()
   return {
     header: {
-      'x-wxapp-session': (S && S.getAuthToken()) || '',
+      'x-wxapp-session': (s && s.getAuthToken && s.getAuthToken()) || '',
       'salesperson-type': 'shopping_guide'
     }
   }

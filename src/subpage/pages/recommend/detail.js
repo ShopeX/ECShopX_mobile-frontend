@@ -79,7 +79,7 @@ export default class recommendDetail extends Component {
   // 确认本人文章是否已收藏
   confirmCollectArticle = async () => {
     const { id } = this.$instance?.router?.params
-    console.log('this.$instance.router:', this.$instance.router)
+    console.log('this.$instance?.router:', this.$instance?.router)
     if (S.getAuthToken()) {
       const res = await api.article.collectArticleInfo({ article_id: id })
       if (res.length === 0) {
@@ -107,7 +107,7 @@ export default class recommendDetail extends Component {
 
   async fetchContent() {
     const { id } = this.$instance?.router?.params
-    console.log('this.$instance.router:', this.$instance.router)
+    console.log('this.$instance?.router:', this.$instance?.router)
     // 关注数加1
     const resFocus = await api.article.focus(id)
 
@@ -144,7 +144,7 @@ export default class recommendDetail extends Component {
     if(!S.getAuthToken()){
       return false
     }
-    const { id } = getCurrentInstance().params
+    const { id } = getCurrentInstance()?.params
     const { status } = await api.article.praiseCheck(id)
     this.setState({
       praiseCheckStatus: status

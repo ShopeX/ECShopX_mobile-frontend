@@ -35,7 +35,7 @@ function Cart() {
   const { allChecked, current } = state
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
-  const router = $instance.router
+  const router = $instance?.router
   const {
     validSalesmanCart = [],
     invalidSalesmanCart = [],

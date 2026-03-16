@@ -39,7 +39,7 @@ class EntryLaunch {
    * @function 获取小程序路由参数
    */
   async getRouteParams(options) {
-    const params = options?.query || options?.params || $instance.router?.params || {}
+    const params = options?.query || options?.params || $instance?.router?.params || {}
 
     const pageStack = Taro.getCurrentPages()
 
@@ -56,7 +56,7 @@ class EntryLaunch {
     }
 
     let _options = {}
-    console.log('$instance.router?.params', $instance.router?.params)
+    console.log('$instance?.router?.params', $instance?.router?.params)
     if (params?.scene) {
       console.log('params scene:', params.scene, resolveUrlParamsParse(params.scene))
       _options = {
@@ -457,7 +457,7 @@ class EntryLaunch {
    * 导购任务埋点上报
    */
   async postGuideTask(customPath) {
-    const { path, params } = $instance.router
+    const { path, params } = $instance?.router
     const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',

@@ -131,7 +131,7 @@ function PurchaseCheckout(props) {
     scene, // 情景值
     goodType,
     ticket = null
-  } = $instance.router?.params || {}
+  } = $instance?.router?.params || {}
 
   useEffect(() => {
     if (isLogin) {

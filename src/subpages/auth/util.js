@@ -33,7 +33,7 @@ async function setTokenAndRedirect(token = '', tokenSetSuccessCallback) {
   const hasToken = setToken(token)
 
   const $instance = this ? this.$instance : getCurrentInstance()
-  const router = $instance.router
+  const router = $instance?.router
   if (hasToken) {
     await tokenSetSuccessCallback?.()
     const { redi_url, redirect } = router?.params

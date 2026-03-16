@@ -39,7 +39,7 @@ export default class DetailPluspriceList extends Component {
 
   componentDidMount() {
     console.log('---componentDidMount---')
-    // const { marketing_id } = getCurrentInstance().params
+    // const { marketing_id } = getCurrentInstance()?.params
     // this.setState({
     //   query: {
     //     marketing_id: marketing_id

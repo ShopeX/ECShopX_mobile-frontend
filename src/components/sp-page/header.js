@@ -180,7 +180,7 @@ const CustomNavigationHeader = memo((props) => {
     const navTitle =
       title ||
       value?.wgtName ||
-      getCurrentInstance().page?.config?.navigationBarTitleText ||
+      getCurrentInstance()?.page?.config?.navigationBarTitleText ||
       appName
     return (
         <Text className='title-text'>{navTitle}</Text>

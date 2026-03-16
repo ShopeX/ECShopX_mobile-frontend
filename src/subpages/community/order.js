@@ -65,7 +65,7 @@ function CommunityOrder(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
   const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router?.params
+  const { activity_id } = $instance?.router?.params
 
   const { keywords, orderList, curTabIdx, isOpened, remark, payLoading } = state
   const fetch = async ({ pageIndex, pageSize }) => {
@@ -267,7 +267,7 @@ function CommunityOrder(props) {
         title: '支付成功',
         icon: 'success'
       })
-      const { fullPath } = getCurrentRoute($instance.router?.params || {})
+      const { fullPath } = getCurrentRoute($instance?.router?.params || {})
       Taro.redirectTo({
         url: fullPath
       })

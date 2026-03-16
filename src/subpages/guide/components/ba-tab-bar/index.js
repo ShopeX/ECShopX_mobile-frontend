@@ -121,7 +121,7 @@ export default class TabBar extends Component {
   updateCurTab() {
     this.fetchCart()
     const { tabList, localCurrent } = this.state
-    const fullPath = getCurrentRoute(getCurrentInstance().router).fullPath.split('?')[0]
+    const fullPath = getCurrentRoute(getCurrentInstance()?.router).fullPath.split('?')[0]
     if (tabList.length == 0) {
       return
     }
@@ -145,7 +145,7 @@ export default class TabBar extends Component {
       })
     }
 
-    const { path } = getCurrentRoute(getCurrentInstance().router)
+    const { path } = getCurrentRoute(getCurrentInstance()?.router)
     if (this.state.tabList[cartTabIdx] && path === this.state.tabList[cartTabIdx].url) {
       updateCartCount('')
       return
@@ -163,7 +163,7 @@ export default class TabBar extends Component {
       const curTab = this.state.tabList[current]
       const { url, withLogin } = curTab
       console.log('tabbar-withLogin', url, withLogin)
-      const fullPath = getCurrentRoute(getCurrentInstance().router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(getCurrentInstance()?.router).fullPath.split('?')[0]
       // if (withLogin && !S.getAuthToken()) {
       //   return Taro.navigateTo({
       //     url: process.env.APP_AUTH_PAGE

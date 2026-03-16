@@ -80,7 +80,7 @@ export default class DistributionShopHome extends Component {
 
   async componentDidMount() {
     // if (!S.getAuthToken()) {
-    //   const { path } = this.$instance.router
+    //   const { path } = this.$instance?.router
     //   const params = await entryLaunch.getRouteParams()
     //   const redirect = encodeURIComponent(`${path}?${qs.stringify(params)}`)
     //   Taro.navigateTo({
@@ -338,7 +338,7 @@ export default class DistributionShopHome extends Component {
       const curTab = this.state.tabList[current]
       const { url, urlRedirect } = curTab
 
-      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance?.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
           Taro.navigateTo({ url })

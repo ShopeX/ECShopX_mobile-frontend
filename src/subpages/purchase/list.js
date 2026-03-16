@@ -79,7 +79,7 @@ function ItemList() {
   const dispatch = useDispatch()
 
   const goodsRef = useRef()
-  // console.log('$instance?.router?.params', $instance.router?.params)
+  // console.log('$instance?.router?.params', $instance?.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
       dispatch(fetchUserFavs())

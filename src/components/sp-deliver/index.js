@@ -92,7 +92,7 @@ function SpDeliver(props, ref) {
   } = state
   const formRef = useRef()
   const $instance = getCurrentInstance()
-  const { cart_type } = $instance.router?.params || {}
+  const { cart_type } = $instance?.router?.params || {}
   // useEffect(() => {
   //   fetch()
   // }, [])

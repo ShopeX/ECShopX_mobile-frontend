@@ -105,8 +105,8 @@ function PointShopEspierCheckout() {
     scene, // 情景值
     goodType,
     ticket = null
-  } = $instance.router?.params || {}
-  console.log('$instance.router?.params:', $instance)
+  } = $instance?.router?.params || {}
+  console.log('$instance?.router?.params:', $instance)
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()

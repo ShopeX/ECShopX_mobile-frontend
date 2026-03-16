@@ -37,7 +37,7 @@ export const transformPlatformUrl = (url) => {
 // 授权页面
 export const goToAuthPage = () => {
   const $instance = useMemo(getCurrentInstance, [])
-  const router = $instance.router
+  const router = $instance?.router
   const { path } = router
   Taro.navigateTo({
     url: `/pages/auth/login?redirect=`

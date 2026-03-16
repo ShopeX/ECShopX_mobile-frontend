@@ -26,7 +26,7 @@ const PageEditPassword = () => {
 
   const {
     params: { phone, unionid, vcode }
-  } = $instance.router
+  } = $instance?.router
 
   const [state, setState] = useImmer(initialValue)
 

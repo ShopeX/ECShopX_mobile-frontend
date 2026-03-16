@@ -131,7 +131,7 @@ function CartCheckout(props) {
     scene, // 情景值
     goodType = routerParams.goodType
   } = $instance?.router?.params || {}
-  console.log('$instance.router?.params:', $instance.router)
+  console.log('$instance?.router?.params:', $instance?.router)
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()

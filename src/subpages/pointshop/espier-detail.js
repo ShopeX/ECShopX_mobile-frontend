@@ -111,7 +111,7 @@ function PointShopEspierDetail(props) {
   }, [])
 
   useEffect(() => {
-    const { path } = $instance.router
+    const { path } = $instance?.router
     if (id && path === '/subpages/pointshop/espier-detail') {
       fetch()
     }

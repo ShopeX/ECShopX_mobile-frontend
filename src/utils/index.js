@@ -168,7 +168,7 @@ export const isIphoneX = () => {
 
 // TODO: 验证方法在h5及边界情况稳定性
 export function getCurrentRoute() {
-  const router = getCurrentInstance().router
+  const router = getCurrentInstance()?.router
   // eslint-disable-next-line
   const { $taroTimestamp, ...params } = router?.params || {}
   const path = router?.path

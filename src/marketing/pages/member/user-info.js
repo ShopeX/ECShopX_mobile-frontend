@@ -286,7 +286,7 @@ export default class Reg extends Component {
   }
 
   handleGetPhoneNumber = async (e) => {
-    // let { code } = getCurrentInstance().params
+    // let { code } = getCurrentInstance()?.params
     // try {
     //   await Taro.checkSession()
     // } catch (e) {

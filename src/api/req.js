@@ -155,8 +155,8 @@ class API {
     this.isRefreshingToken = false
     getS().logout()
     setTimeout(() => {
-      console.log(getCurrentInstance().router)
-      const { path, params } = getCurrentInstance().router
+      console.log(getCurrentInstance()?.router)
+      const { path, params } = getCurrentInstance()?.router
       delete params.$taroTimestamp
       const fullPath = Object.keys(params).length > 0 ? `${path}?${qs.stringify(params)}` : path
       let url

@@ -11,7 +11,7 @@ export default function withPointitem(Component) {
     }
 
     isPointitem() {
-      const options = getCurrentInstance().params
+      const options = getCurrentInstance()?.params
       return options && options.type === 'pointitem'
     }
 

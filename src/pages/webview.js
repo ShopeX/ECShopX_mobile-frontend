@@ -10,7 +10,7 @@ import { View, WebView } from '@tarojs/components'
 const initialState = {}
 function WebviewIndex() {
   const $instance = getCurrentInstance()
-  const { url } = $instance.router?.params
+  const { url } = $instance?.router?.params
   const webviewSrc = decodeURIComponent(url)
 
   return (

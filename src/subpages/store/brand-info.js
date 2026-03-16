@@ -26,7 +26,7 @@ const PageBrandInfo = () => {
 
   const {
     params: { distributor_id }
-  } = $instance.router
+  } = $instance?.router
 
   const getDetail = async () => {
     const {

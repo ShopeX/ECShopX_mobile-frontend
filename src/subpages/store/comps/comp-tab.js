@@ -26,7 +26,7 @@ function CompTab(props) {
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
   const $instance = getCurrentInstance()
-  const router = $instance.router
+  const router = $instance?.router
 
   if (!shopCartCount) {
     return null

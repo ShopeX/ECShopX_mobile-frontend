@@ -176,7 +176,7 @@ function EspierDetail(props) {
   }, [packageOpen, skuPanelOpen, sharePanelOpen, posterModalOpen, promotionOpen, isParameter])
 
   useEffect(() => {
-    const { path } = $instance.router
+    const { path } = $instance?.router
     if (id && path === '/pages/item/espier-detail') {
       fetch()
     }

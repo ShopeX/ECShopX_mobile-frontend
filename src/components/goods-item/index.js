@@ -9,11 +9,10 @@ import { SpImg, PointLine } from '@/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import { isObject, classNames, isWeb, VERSION_PLATFORM } from '@/utils'
-import configStore from '@/store'
 
 import './index.scss'
 
-const { store } = configStore()
+/** 不在此处调用 configStore()，否则首页加载会触发 reducer 循环依赖报错；@connect 会从 Provider 取 store */
 
 @connect(
   ({ colors, user }) => ({

@@ -59,7 +59,7 @@ function CartIndex() {
 
   const dispatch = useDispatch()
   const $instance = getCurrentInstance()
-  const router = $instance.router
+  const router = $instance?.router
 
   const [state, setState] = useImmer(initialState)
   const { current, recommendList, policyModal, cartRemind } = state

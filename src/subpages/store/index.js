@@ -64,7 +64,7 @@ function StoreIndex() {
   const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance()
-  const router = $instance.router
+  const router = $instance?.router
 
   const {
     wgts,

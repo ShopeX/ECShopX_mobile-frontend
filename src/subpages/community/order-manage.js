@@ -67,7 +67,7 @@ function CheifOrderManage(props) {
   const { checkIsChief } = useSelector((state) => state.user)
   const orderRef = useRef()
   const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router?.params
+  const { activity_id } = $instance?.router?.params
 
   const {
     keywords,

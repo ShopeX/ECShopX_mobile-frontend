@@ -97,7 +97,7 @@ export default class GroupDetail extends Component {
 
     if (!S.getAuthToken()) {
       showToast('请先登录')
-      const { params, path } = this.$instance.router
+      const { params, path } = this.$instance?.router
       let url = ''
       if (isWeixin || isAlipay) {
         url = `/subpages/member/index?redirect=${encodeURIComponent(

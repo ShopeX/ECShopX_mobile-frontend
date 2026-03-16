@@ -40,7 +40,7 @@ const BoxList = () => {
     state
   const goodsRef = useRef()
   const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router?.params
+  const { activity_id } = $instance?.router?.params
 
   // useEffect(() => {
   //   if (startDate && startTime && endDate && endTime) {
