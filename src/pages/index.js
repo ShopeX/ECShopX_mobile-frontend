@@ -151,6 +151,45 @@ function Home() {
     }
   }, [skuPanelOpen])
 
+  // H5：手动滚动到目标 section，等布局完成再测量并预留吸顶导航高度
+  useEffect(() => {
+    if (process.env.TARO_ENV !== 'h5' || !scrollIntoView) return
+    const id = String(scrollIntoView).replace(/^#/, '')
+    if (!id) return
+    const navH = state.navbarHeight || 0
+    let cancelled = false
+    const run = () => {
+      if (cancelled) return
+      Taro.createSelectorQuery()
+        .select('.home-body')
+        .node()
+        .exec((res) => {
+          if (cancelled) return
+          let scrollNode = res?.[0]?.node
+          if (!scrollNode) return
+          if (scrollNode.scrollHeight <= scrollNode.clientHeight && scrollNode.firstElementChild) {
+            const child = scrollNode.firstElementChild
+            if (child.scrollHeight > child.clientHeight) scrollNode = child
+          }
+          const target = document.getElementById(id)
+          if (!target) return
+          const targetRect = target.getBoundingClientRect()
+          const scrollRect = scrollNode.getBoundingClientRect()
+          const top = scrollNode.scrollTop + (targetRect.top - scrollRect.top) - navH
+          scrollNode.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+        })
+    }
+    const t = setTimeout(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(run)
+      })
+    }, 80)
+    return () => {
+      cancelled = true
+      clearTimeout(t)
+    }
+  }, [scrollIntoView, state.navbarHeight])
+
   useShareAppMessage(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
     let params = getCurrentPageRouteParams()
@@ -311,11 +350,11 @@ function Home() {
     >
       <ScrollView
         scrollY
-        scrollTop={state.backTopScrollTop}
+        scrollTop={state.backTopScrollTop != null ? state.backTopScrollTop : undefined}
         onScroll={(e) => {
-          pageRef.current.handlePageScroll(e?.detail)
+          pageRef.current?.handlePageScroll(e?.detail)
         }}
-        scrollIntoView={scrollIntoView}
+        scrollIntoView={process.env.TARO_ENV === 'h5' ? undefined : scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin

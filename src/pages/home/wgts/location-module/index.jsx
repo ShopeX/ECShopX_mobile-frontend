@@ -111,7 +111,8 @@ export default function WgtLocationModule(props) {
     setCurrentIndex(index)
     let viewIndex = index > 0 ? index - 1 : 0
     setScrollView(`nav-item-${viewIndex}-${id}`)
-    setScrollIntoView(`#content-section-${index}-${id}`)
+    // scrollIntoView 传纯 id，不要 # 前缀，否则 H5/小程序 可能匹配不到导致滚回顶部
+    setScrollIntoView(`content-section-${index}-${id}`)
     setTimeout(() => {
       isClickTab.current = false
     }, 500)
