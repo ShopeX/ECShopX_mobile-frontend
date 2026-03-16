@@ -6,7 +6,6 @@ import React, { useEffect } from 'react'
 import Taro, { useRouter } from '@tarojs/taro'
 import dayjs from 'dayjs'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS, SG_GUIDE_PARAMS_UPDATETIME } from '@/consts'
-import S from '@/spx'
 import qs from 'qs'
 import { entryLaunch, showToast } from '@/utils'
 
