@@ -30,7 +30,8 @@ import {
   pickBy,
   log,
   showToast,
-  buildSharePath
+  buildSharePath,
+  isWeb
 } from '@/utils'
 import {
   updatePurchaseShareInfo,
@@ -124,23 +125,21 @@ function Home() {
   // 仅当定位结果真正变化（如城市/区县）时重拉首页配置，避免每次 useDidShow→updateAddress 导致 location 引用变化就整页重载
   useEffect(() => {
     if (!location || !VERSION_STANDARD) return
-    const key = [location.city, location.district, location.lat, location.lng].filter(Boolean).join('|')
-    if (locationKeyRef.current === key) return
-    locationKeyRef.current = key
     fetchWgts()
   }, [location])
 
   useEffect(() => {
     if (skuPanelOpen) {
-      pageRef.current.pageLock()
+      pageRef.current?.pageLock()
     } else {
-      pageRef.current.pageUnLock()
+      pageRef.current?.pageUnLock()
     }
   }, [skuPanelOpen])
 
   // H5：手动滚动到目标 section，等布局完成再测量并预留吸顶导航高度
   useEffect(() => {
-    if (process.env.TARO_ENV !== 'h5' || !scrollIntoView) return
+    if (!isWeb || !scrollIntoView) return
+    console.log('scrollIntoView:', scrollIntoView)
     const id = String(scrollIntoView).replace(/^#/, '')
     if (!id) return
     const navH = state.navbarHeight || 0

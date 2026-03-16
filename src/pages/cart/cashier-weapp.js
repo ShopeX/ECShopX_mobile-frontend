@@ -24,7 +24,7 @@ const initialState = {
   orderInfo: {}
 }
 function CashierWeApp(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   // const { params, orderInfo } = $instance?.router?.params
   // const _params = JSON.parse(decodeURIComponent(params))
   // const _orderInfo = JSON.parse(decodeURIComponent(orderInfo))

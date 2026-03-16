@@ -34,7 +34,7 @@ const initialState = {
   footerHeight: 0
 }
 function CustomPage(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)

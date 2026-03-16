@@ -68,7 +68,7 @@ function DianWuCashier() {
   const pageRef = useRef()
   const scanIsUseableRef = useRef(true)
   const audioContextRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()

@@ -17,7 +17,7 @@ import './index.scss'
   memberData: user.userInfo
 }))
 export default class Flop extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

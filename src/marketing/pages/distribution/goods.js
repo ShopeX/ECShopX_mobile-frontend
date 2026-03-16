@@ -19,7 +19,7 @@ import './goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionGoods extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   spPageRef = React.createRef()
   constructor(props) {
     super(props)

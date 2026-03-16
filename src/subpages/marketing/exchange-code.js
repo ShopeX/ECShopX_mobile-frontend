@@ -20,7 +20,7 @@ const initialState = {
   distributorInfo: null
 }
 function ExChangeCode() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { qrcodeUrl, barcodeUrl, codeContent, distributorInfo } = state
   const { from = 'espier-detail' } = $instance?.router?.params

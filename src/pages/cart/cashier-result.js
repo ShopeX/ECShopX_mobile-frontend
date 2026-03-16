@@ -22,7 +22,7 @@ const initialState = {
 }
 
 function CashierResult(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { cashierPayment } = usePayment()
   const [state, setState] = useImmer(initialState)

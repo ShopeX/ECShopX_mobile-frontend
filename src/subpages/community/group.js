@@ -54,7 +54,7 @@ function Group(props) {
   const { qrcode, activityName, comps, startDate, startTime, endDate, endTime, shareImageUrl } =
     state
   const dispatch = useDispatch()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const pageRef = useRef('')
 
   useEffect(() => {

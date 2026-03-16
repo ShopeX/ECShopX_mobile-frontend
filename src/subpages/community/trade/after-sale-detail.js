@@ -28,7 +28,7 @@ import './after-sale-detail.scss'
   pointName: sys.pointName
 }))
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

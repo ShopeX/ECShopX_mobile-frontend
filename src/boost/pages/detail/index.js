@@ -23,7 +23,7 @@ import './index.scss'
   })
 )
 export default class Detail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {

@@ -37,7 +37,7 @@ import './vipgrades.scss'
   })
 )
 export default class VipIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

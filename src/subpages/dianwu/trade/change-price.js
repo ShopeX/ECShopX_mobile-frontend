@@ -59,7 +59,7 @@ function DianwuChangePrice(props) {
     pointFreightFee,
     receiptType
   } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { trade_id } = $instance?.router?.params
 
   useEffect(() => {

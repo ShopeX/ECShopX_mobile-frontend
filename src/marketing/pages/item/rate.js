@@ -22,7 +22,7 @@ import './rate.scss'
   () => ({})
 )
 export default class TradeRate extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

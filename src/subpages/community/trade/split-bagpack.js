@@ -30,7 +30,7 @@ import './split-bagpack.scss'
 //   })
 // }
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

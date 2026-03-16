@@ -96,7 +96,7 @@ const initialState = {
 }
 
 function EspierDetail(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   // const { type, id, dtid } = $instance?.router?.params
   // const { type, id, dtid } = await entryLaunch.getRouteParams()
   const pageRef = useRef()

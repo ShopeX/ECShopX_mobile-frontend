@@ -20,7 +20,7 @@ import './detail.scss'
 }))
 @withPager
 export default class recommendDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     props = props || {}
     // props.pageSize = 50

@@ -46,7 +46,7 @@ const initialState = {
 }
 
 function GoodReservate(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
   const dispatch = useDispatch()

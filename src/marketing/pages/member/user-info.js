@@ -31,7 +31,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
   () => ({})
 )
 export default class Reg extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

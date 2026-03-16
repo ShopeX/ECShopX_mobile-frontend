@@ -16,7 +16,7 @@ import './qrcode.scss'
   colors: colors.current
 }))
 export default class DistributionQrcode extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -20,7 +20,7 @@ import './shop-home.scss'
 
 @withPager
 export default class DistributionShopHome extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -20,7 +20,7 @@ const initialState = {
   isDefault: false
 }
 function StoreZitiPicker(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { zitiList, zitiId, isDefault } = state
   const dispatch = useDispatch()

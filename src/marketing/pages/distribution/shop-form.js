@@ -15,7 +15,7 @@ import api from '@/api'
 import './shop-form.scss'
 
 export default class DistributionShopForm extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

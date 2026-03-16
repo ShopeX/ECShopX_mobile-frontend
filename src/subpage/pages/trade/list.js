@@ -35,7 +35,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradeList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

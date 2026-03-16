@@ -23,7 +23,7 @@ const initialState = {
   info: {},
   pageLoading: false
 }
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 
 const SpCouponDetail = (props) => {
   const [isValid, setIsValid] = useState(false)

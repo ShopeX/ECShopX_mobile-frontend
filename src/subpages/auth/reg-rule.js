@@ -13,7 +13,7 @@ import './reg-rule.scss'
 
 @withPager
 export default class RegRule extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

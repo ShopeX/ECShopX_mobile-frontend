@@ -25,7 +25,7 @@ const initialState = {
 }
 
 const CategoryIndex = (props) => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { currentList, pIndex, sIndex, tabList, contentList, hasSeries } = state
   // 获取数据

@@ -11,7 +11,7 @@ import './comp-otherlogin.scss'
 
 const CompOtherLogin = () => {
   const handleClickWexin = async () => {
-    const $instance = getCurrentInstance()
+    const $instance = getCurrentInstance() || {}
     //跳转
     const { redirect = '' } = $instance?.router?.params
     const redirectUrl =

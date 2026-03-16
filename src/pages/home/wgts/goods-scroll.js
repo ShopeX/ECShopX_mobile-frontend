@@ -19,7 +19,7 @@ export default class WgtGoodsScroll extends Component {
     addGlobalClass: true,
     info: null
   }
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)

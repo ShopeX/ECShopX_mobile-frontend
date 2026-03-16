@@ -16,7 +16,7 @@ import './shop-goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopGoods extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

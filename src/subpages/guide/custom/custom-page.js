@@ -41,7 +41,7 @@ const initState = {
 
 function GuideCustomPage() {
   const [state, setState] = useImmer(initState)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { setNavigationBarTitle } = useNavigation()
   const { isLogin, login } = useQwLogin({
     autoLogin: true

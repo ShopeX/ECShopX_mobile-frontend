@@ -22,7 +22,7 @@ import '../../pages/member/qrcode-buy.scss'
 @withPager
 @withBackToTop
 export default class QrcodeBuy extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

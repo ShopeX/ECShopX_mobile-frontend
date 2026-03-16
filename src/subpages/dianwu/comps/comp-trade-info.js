@@ -25,7 +25,7 @@ const initialState = {
 
 function CompTradeInfo(props) {
   const { onFetch = () => {} } = props
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { tradeId, buyMember, receiptType, receiveName, receiveDate, receiveAddress } = state
 

@@ -13,7 +13,7 @@ import payFailPng from '../../../assets/imgs/pay_fail.png'
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

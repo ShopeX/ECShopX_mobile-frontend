@@ -43,7 +43,7 @@ const initialState = {
 }
 
 function CompsCategoryAddCart(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   // const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const {

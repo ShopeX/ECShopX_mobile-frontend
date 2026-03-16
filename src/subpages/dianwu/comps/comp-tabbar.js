@@ -30,7 +30,7 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { colorPrimary } = useSelector((state) => state.sys)
 
   const tabList = TABBAR_LIST.map((item) => {

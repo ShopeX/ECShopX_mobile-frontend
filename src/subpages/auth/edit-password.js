@@ -22,7 +22,7 @@ const initialValue = {
 }
 
 const PageEditPassword = () => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const {
     params: { phone, unionid, vcode }

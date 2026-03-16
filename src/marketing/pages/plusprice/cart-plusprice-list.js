@@ -20,7 +20,7 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

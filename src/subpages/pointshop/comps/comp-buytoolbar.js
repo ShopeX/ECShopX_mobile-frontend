@@ -24,7 +24,7 @@ function CompGoodsBuyToolbar(props) {
   } = props
   const { cartCount = 0 } = useSelector((state) => state.cart)
   const { favs = [] } = useSelector((state) => state.user)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const dispatch = useDispatch()
   const btns = []
 

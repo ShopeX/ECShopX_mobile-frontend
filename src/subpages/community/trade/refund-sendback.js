@@ -33,7 +33,7 @@ import './refund-sendback.scss'
 //   'JTSD': '极兔速递',
 // }
 export default class TradeRefundSendback extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -12,7 +12,7 @@ import { needLoginPageType, needLoginPage } from '@/consts'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 
 const initialState = {
   curIdx: 0,

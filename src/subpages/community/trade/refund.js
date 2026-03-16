@@ -21,7 +21,7 @@ import './refund.scss'
   colors: colors.current
 }))
 export default class TradeRefund extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

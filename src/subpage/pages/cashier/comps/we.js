@@ -10,7 +10,7 @@ import api from '@/api'
 import './we.scss'
 
 export default class WeappBtn extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }

@@ -23,7 +23,7 @@ import './index.scss'
 }))
 @withLogin()
 export default class Cashier extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   state = {
     info: null,
     env: '',

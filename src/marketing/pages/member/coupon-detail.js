@@ -15,7 +15,7 @@ import './coupon-detail.scss'
   colors: colors.current
 }))
 export default class CouponDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -16,7 +16,7 @@ import './trade.scss'
 @withPager
 @withBackToTop
 export default class DistributionTrade extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

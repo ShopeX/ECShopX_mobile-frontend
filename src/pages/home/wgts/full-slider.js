@@ -13,7 +13,7 @@ import { needLoginPageType, needLoginPage } from '@/consts'
 import { WgtsContext } from './wgts-context'
 import './full-slider.scss'
 
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 const initState = {
   curIdx: 0,
   play: false,

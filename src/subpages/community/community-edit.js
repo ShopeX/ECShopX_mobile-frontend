@@ -23,7 +23,7 @@ const initialState = {
 function CommunityEdit(props) {
   const [state, setState] = useImmer(initialState)
   const { ziti_name, address, areaValue, province, city, area } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { id } = $instance?.router?.params
   useEffect(() => {
     if (id) {

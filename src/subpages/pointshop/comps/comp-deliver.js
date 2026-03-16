@@ -72,7 +72,7 @@ function CompDeliver(props, ref) {
     activeTimeId
   } = state
   const formRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { cart_type } = $instance?.router?.params || {}
   // useEffect(() => {
   //   fetch()

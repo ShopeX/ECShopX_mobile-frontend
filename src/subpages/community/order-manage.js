@@ -66,7 +66,7 @@ function CheifOrderManage(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const { checkIsChief } = useSelector((state) => state.user)
   const orderRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
 
   const {

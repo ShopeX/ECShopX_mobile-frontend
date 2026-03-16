@@ -29,7 +29,7 @@ export default (props = {}) => {
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
   const { invite_code } = useSelector((state) => state.purchase)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   // const policyTime = useRef(0)
 
   useEffect(() => {

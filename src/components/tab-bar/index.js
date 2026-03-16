@@ -15,7 +15,7 @@ const defaultTabList = []
 //   cartCount: cart.cartCount
 // }))
 export default class TabBar extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

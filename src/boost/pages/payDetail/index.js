@@ -13,7 +13,7 @@ import { SpNavBar } from '@/components'
 import './index.scss'
 
 export default class PayDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

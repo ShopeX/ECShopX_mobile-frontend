@@ -22,7 +22,7 @@ function getS() {
   )
 }
 
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 const { store } = configStore()
 class EntryLaunch {
   constructor() {

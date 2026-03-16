@@ -37,7 +37,7 @@ function CompAddCart(props) {
   const { open = false, onMaskCloses = {}, parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const router = $instance?.router
   const plus_buy_activity = shopCartCount?.storeDetails?.plus_buy_activity?.[0]
   const exchange_item = plus_buy_activity?.plus_item

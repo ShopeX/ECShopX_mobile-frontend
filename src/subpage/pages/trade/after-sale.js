@@ -23,7 +23,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class AfterSale extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

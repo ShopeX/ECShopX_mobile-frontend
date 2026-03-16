@@ -20,7 +20,7 @@ const TEXTCOUNT = 255
   colors: colors.current
 }))
 export default class TradeCancel extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)

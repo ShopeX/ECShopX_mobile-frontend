@@ -23,7 +23,7 @@ function SpLogin(props) {
       updateAddress()
     }
   })
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   /**
    *
    */

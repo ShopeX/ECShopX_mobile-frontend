@@ -17,7 +17,7 @@ import { getDtidIdUrl } from '@/utils/helper'
 import './group-detail.scss'
 
 export default class GroupDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)

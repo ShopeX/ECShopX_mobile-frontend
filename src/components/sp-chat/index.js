@@ -22,7 +22,7 @@ function SpChat(props) {
   const [state, setState] = useImmer(initialState)
   const { isWeAppKefu } = state
   const { echat, meiqia } = useSelector((state) => state.sys)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   useEffect(() => {
     init()

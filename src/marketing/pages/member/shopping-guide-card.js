@@ -14,7 +14,7 @@ import { normalizeQuerys } from '@/utils'
 import './shopping-guide-card.scss'
 
 export default class ShoppingGuideCard extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

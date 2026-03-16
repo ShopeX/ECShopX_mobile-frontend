@@ -23,7 +23,7 @@ import './espier-evaluation.scss'
 @withPager
 @withBackToTop
 export default class Evaluation extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }

@@ -51,7 +51,7 @@ function PurchaseAuthPhone(props) {
     is_activity = ''
   } = params
   const { showModal } = useModal()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   useEffect(() => {
     getLoginCode()

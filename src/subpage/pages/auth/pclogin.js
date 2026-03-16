@@ -26,7 +26,7 @@ function parseUrlStr(urlStr) {
 }
 
 export default class PcAuth extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   state = {
     checkStatus: false
   }

@@ -24,7 +24,7 @@ export default (props = {}) => {
   // const [state, setState] = useImmer(initialState)
   // const { params, orderInfo } = state
   const cashierResultUrl = `/pages/cart/cashier-result`
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const currentPath = $instance?.router?.path
   const router = useRouter()
   const callbackRef = useRef()
@@ -188,7 +188,7 @@ export default (props = {}) => {
 
   // 微信H5 JSDK
   const wxpayjsPay = async (params, orderInfo) => {
-    // const $instance = getCurrentInstance()
+    // const $instance = getCurrentInstance() || {}
     const { order_id, code } = router?.params
     if (!code) {
       // 微信客户端code授权

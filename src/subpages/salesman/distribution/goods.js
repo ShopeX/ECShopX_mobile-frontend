@@ -29,7 +29,7 @@ import './goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionGoods extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

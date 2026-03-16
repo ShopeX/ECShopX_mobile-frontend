@@ -17,7 +17,7 @@ import './landing.scss'
   })
 )
 export default class Landing extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

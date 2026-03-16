@@ -24,7 +24,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { selectedId, isPicker, list } = state
   const colors = useSelector((state) => state.sys)

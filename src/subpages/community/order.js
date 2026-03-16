@@ -64,7 +64,7 @@ function CommunityOrder(props) {
   const [isShowSearch, setIsShowSearch] = useState(false)
   const { colorPrimary } = useSelector((state) => state.sys)
   const orderRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
 
   const { keywords, orderList, curTabIdx, isOpened, remark, payLoading } = state

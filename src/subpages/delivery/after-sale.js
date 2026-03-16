@@ -54,7 +54,7 @@ const initialState = {
 }
 
 function TradeAfterSale(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const {

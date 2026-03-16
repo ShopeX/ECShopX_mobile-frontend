@@ -56,7 +56,7 @@ import CompPointUse from './comps/comp-pointuse'
 import './espier-checkout.scss'
 
 function CartCheckout(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true
   })

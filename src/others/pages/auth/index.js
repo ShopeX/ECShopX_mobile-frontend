@@ -13,7 +13,7 @@ import { normalizeQuerys, getAppId } from '@/utils'
 import './index.scss'
 
 export default class AuthLogin extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {

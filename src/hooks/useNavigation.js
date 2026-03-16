@@ -15,10 +15,10 @@ export default (props = {}) => {
       })
     }
 
-    const { page } = getCurrentInstance()
+    const { page } = getCurrentInstance() || {}
     const allPages = Taro.getCurrentPages()
-    console.log('allPages:', allPages)
-    page.config['navigationBarTitleText'] = title
+    console.log('allPages:', allPages,page)
+    page && (page.config.navigationBarTitleText = title)
   }
 
   return {

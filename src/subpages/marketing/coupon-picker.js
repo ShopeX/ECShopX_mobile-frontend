@@ -20,7 +20,7 @@ const initialState = {
   select: null
 }
 function CouponPicker(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   let { couponListVaild, couponListInVaild, select } = state
   const dispatch = useDispatch()

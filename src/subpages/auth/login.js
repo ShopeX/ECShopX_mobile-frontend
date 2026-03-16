@@ -23,7 +23,7 @@ import './login.scss'
   (dispatch) => ({ dispatch })
 )
 export default class Login extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

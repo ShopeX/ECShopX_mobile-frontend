@@ -17,7 +17,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class TradePickList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)

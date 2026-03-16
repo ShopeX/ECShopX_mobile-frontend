@@ -119,7 +119,7 @@ const initialState = {
 
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
   const { isLogin, getUserInfo, isNewUser } = useLogin({
     autoLogin: false,

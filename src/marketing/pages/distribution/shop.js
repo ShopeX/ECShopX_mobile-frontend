@@ -17,7 +17,7 @@ import './shop.scss'
   colors: colors.current
 }))
 export default class DistributionShop extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

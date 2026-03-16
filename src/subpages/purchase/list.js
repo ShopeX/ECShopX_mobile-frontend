@@ -56,7 +56,7 @@ const initialState = {
 }
 
 function ItemList() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     keywords,

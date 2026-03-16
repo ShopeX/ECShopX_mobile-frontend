@@ -63,7 +63,7 @@ function StoreIndex() {
   const { openRecommend, colorPrimary } = useSelector((state) => state.sys)
   const { shopCartCount } = useSelector((state) => state.cart)
   const { setNavigationBarTitle } = useNavigation()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const router = $instance?.router
 
   const {

@@ -17,7 +17,7 @@ const initialState = {
   isInvoiced: false
 }
 function DianWuInvoice() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { billInfo, realFee, isInvoiced } = state
   //trade_id传递过来的订单id 获取订单发票详情

@@ -55,7 +55,7 @@ function ApplyChief(props) {
     loading
   } = state
   const { colorPrimary } = useSelector((state) => state.sys)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const formRef = useRef()
   const { distributor_id: dtid, scene = '' } = $instance?.router?.params
   let distributor_id = dtid

@@ -78,7 +78,7 @@ function DianwuCheckout(props) {
     checkout_order_id
   } = state
   const pageRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()

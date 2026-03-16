@@ -47,7 +47,7 @@ import CompDeliver from './comps/comp-deliver'
 import './espier-checkout.scss'
 
 function PointShopEspierCheckout() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true,

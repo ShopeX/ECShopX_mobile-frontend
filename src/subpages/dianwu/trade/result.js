@@ -37,7 +37,7 @@ const tipMessage = {
 }
 
 function DianwuTradeResult(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { type = '1' } = $instance?.router?.params
 
   const { title, desc } = tipMessage[type]

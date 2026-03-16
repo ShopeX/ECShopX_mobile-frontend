@@ -19,7 +19,7 @@ const initialState = {
 }
 function PointRule(props) {
   const [state, setState] = useImmer(initialState)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { content } = state
 
   useEffect(() => {

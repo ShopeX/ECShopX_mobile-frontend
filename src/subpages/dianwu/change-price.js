@@ -46,7 +46,7 @@ function DianwuChangePrice(props) {
     globalPrice,
     globalFreightFee
   } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { member } = useSelector((state) => state.dianwu)
 
   useEffect(() => {

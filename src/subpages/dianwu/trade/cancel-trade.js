@@ -35,7 +35,7 @@ const initialState = {
 }
 
 function DianwuTradeCancel(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { info, reason, reasons } = state
 

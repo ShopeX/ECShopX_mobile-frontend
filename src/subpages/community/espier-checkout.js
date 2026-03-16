@@ -26,7 +26,7 @@ const initialState = {
 }
 
 const EspierCheckout = () => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { activity_id, items } = $instance?.router?.params
   const { address, chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { cashierPayment } = usePayment()

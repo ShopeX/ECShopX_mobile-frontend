@@ -34,7 +34,7 @@ function Cart() {
   const [state, setState] = useImmer(initialConfigState)
   const { allChecked, current } = state
   const dispatch = useDispatch()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const router = $instance?.router
   const {
     validSalesmanCart = [],

@@ -15,7 +15,7 @@ import './deliver.scss'
   colors: colors.current
 }))
 export default class Deliver extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static defaultProps = {
     list: [],
     curStore: {},

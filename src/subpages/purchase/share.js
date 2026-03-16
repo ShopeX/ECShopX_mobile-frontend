@@ -19,7 +19,7 @@ import './share.scss'
 }))
 @withPager
 export default class PurchaseIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

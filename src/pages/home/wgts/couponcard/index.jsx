@@ -17,7 +17,7 @@ import doc from '@/doc'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 function WgtCouponCard(props) {
   const [state, setState] = useImmer({
     couponCardList: []

@@ -22,7 +22,7 @@ import './goods-reservate.scss'
 @withPager
 @withBackToTop
 export default class GoodsReservate extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

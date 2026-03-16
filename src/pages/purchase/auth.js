@@ -55,7 +55,7 @@ function PurchaseAuth() {
   const dispatch = useDispatch()
   const codeRef = useRef()
   const { showModal } = useModal()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
 
   const { invite_code, activity_id, enterprise_id, is_activity } = state

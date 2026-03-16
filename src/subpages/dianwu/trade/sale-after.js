@@ -62,7 +62,7 @@ const initialState = {
 }
 
 function DianwuTradeSaleAfter(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     tradeId,

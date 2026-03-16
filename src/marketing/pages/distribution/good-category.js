@@ -16,7 +16,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   spPageRef = React.createRef()
   constructor(props) {
     super(props)

@@ -49,7 +49,7 @@ function SpCashier(props) {
     salesman = false,
     isPurchase = false
   } = props
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { userInfo } = useSelector((state) => state.user)
   const { customerLnformation } = useSelector((state) => state.cart)
   const [state, setState] = useImmer(initialState)

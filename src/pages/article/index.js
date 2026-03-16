@@ -12,7 +12,7 @@ import { formatTime } from '@/utils'
 import './index.scss'
 
 export default class ArticleIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

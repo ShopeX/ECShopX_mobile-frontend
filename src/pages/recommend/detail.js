@@ -29,7 +29,7 @@ const initialState = {
   collectArticleStatus: false
 }
 function GuideRecommendDetail(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { img, shareImageUrl, itemId, title, content, articleFocusNum, updated } = state
   const { userInfo } = useSelector((state) => state.guide)

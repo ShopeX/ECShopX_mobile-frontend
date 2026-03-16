@@ -25,7 +25,7 @@ function CompTab(props) {
   const { popFrame = {} } = props
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const router = $instance?.router
 
   if (!shopCartCount) {

@@ -12,7 +12,7 @@ import api from '@/api'
 import './refund-detail.scss'
 
 export default class TradeRefundDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

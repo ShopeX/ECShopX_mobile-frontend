@@ -115,7 +115,7 @@ const initialState = {
 }
 
 function EspierDetail(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const pageRef = useRef()
 
   const { userInfo } = useSelector((state) => state.user)

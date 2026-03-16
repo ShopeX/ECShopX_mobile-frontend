@@ -19,7 +19,7 @@ const initialState = {
   couponList: []
 }
 function CouponCenter(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
   const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)

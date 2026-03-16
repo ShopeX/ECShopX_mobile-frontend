@@ -37,7 +37,7 @@ function GuideCouponIndex(props) {
   const { isLogin, login } = useQwLogin({
     autoLogin: true
   })
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { subtask_id = '' } = getCurrentInstance()?.router?.params
   const [state, setState] = useImmer(initialState)
   const { list } = state

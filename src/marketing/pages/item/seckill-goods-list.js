@@ -20,7 +20,7 @@ import './seckill-goods-list.scss'
 @withPager
 @withBackToTop
 export default class SeckillGoodsList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -23,7 +23,7 @@ import './coupon-picker.scss'
 )
 @withPager
 export default class CouponPicker extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {

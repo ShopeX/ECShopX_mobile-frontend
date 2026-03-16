@@ -21,7 +21,7 @@ const initialState = {
   money: ''
 }
 function CommunityWitdraw(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { withdraw } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
   const { bankName, bankCardNo, money } = state

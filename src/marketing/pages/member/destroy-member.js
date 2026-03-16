@@ -18,7 +18,7 @@ const { store } = configStore()
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {

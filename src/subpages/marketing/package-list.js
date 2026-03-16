@@ -22,7 +22,7 @@ const initialState = {
 }
 
 function PackageList(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { id, distributor_id } = $instance?.router?.params
   const dispatch = useDispatch()
   const [state, setState] = useImmer(initialState)

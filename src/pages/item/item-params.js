@@ -13,7 +13,7 @@ import { ParamsItem } from './comps'
 import './item-params.scss'
 
 export default class ItemParams extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)

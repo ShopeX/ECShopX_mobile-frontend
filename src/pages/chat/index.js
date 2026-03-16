@@ -10,7 +10,7 @@ import { SpPage } from '@/components'
 import './index.scss'
 
 function ChatIndex(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { url } = $instance?.router?.params
   const webviewSrc = decodeURIComponent(url)

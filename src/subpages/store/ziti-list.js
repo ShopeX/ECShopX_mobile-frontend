@@ -34,7 +34,7 @@ import './ziti-list.scss'
 @withPager
 @withBackToTop
 export default class StoreZitiList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 

@@ -17,7 +17,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
