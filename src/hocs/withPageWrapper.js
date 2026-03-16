@@ -108,11 +108,10 @@ function withPageWrapper(Component) {
           // 白名单规则
           if (rule.key === 'shop_white') {
             if (!S.getAuthToken()) {
-              console.log(`[进店规则] rule:shop_white, no auth token`)
-              const loginResult = await handleToLogin()
-              if (!loginResult) {
-                return nextRule()
-              }
+              // 微信不允许首页直接弹出登录/授权，不再主动弹窗，先走后续规则
+              // const loginResult = await handleToLogin()
+              console.log(`[进店规则] rule:shop_white, no auth token, skip login modal`)
+              return nextRule()
             }
             if (shopInfo?.distributor_id) {
               // 如果缓存中存在店铺，需校验当前店铺是否在白名单中
@@ -195,13 +194,17 @@ function withPageWrapper(Component) {
       if (currentShopInfo.distributor_self != 0 && currentShopInfo.open_divided == '1') {
         // 开启了店铺白名单
         if (!S.getAuthToken()) {
-          console.log(`[进店规则] rule: store is open divided, no auth token`)
-          const loginResult = await handleToLogin()
-          if (!loginResult) {
-            // 退出小程序
-            Taro.exitMiniProgram()
-            throw new Error('EXIT_MINI_PROGRAM')
-          }
+          // 微信不允许首页直接弹出登录授权，不再主动弹窗，先允许进入并设置店铺信息，需登录时再引导
+          console.log(`[进店规则] store open_divided, no auth token, skip login modal`)
+          dispatch(updateShopInfo(currentShopInfo))
+          return
+          // console.log(`[进店规则] rule: store is open divided, no auth token`)
+          // const loginResult = await handleToLogin()
+          // if (!loginResult) {
+          //   // 退出小程序
+          //   Taro.exitMiniProgram()
+          //   throw new Error('EXIT_MINI_PROGRAM')
+          // }
         }
         // 去检查当前用户是否在店铺白名单中
         await resloveCheckUserInStoreWhiteList(currentShopInfo)
