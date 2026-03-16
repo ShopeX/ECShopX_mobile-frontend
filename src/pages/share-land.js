@@ -56,7 +56,7 @@ function ShareIand() {
       'guide_welcome_couponlist': '/subpages/marketing/coupon-center', // 导购欢迎语--商城优惠券中心
       'guide_welcome_recommend': '/pages/recommend/list', // 导购欢迎语--商城种草
       'guide_welcome_member': '/subpages/member/index', // 导购欢迎语--商城会员中心
-      'guide_welcome_itemlist': '/subpages/item/list', // 导购欢迎语--商城商品列表
+      'guide_welcome_itemlist': '/pages/item/list', // 导购欢迎语--商城商品列表
 
       // 导购任务
       'guide_task_home': '/pages/index', // 导购任务-管理端-小程序首页
@@ -78,7 +78,8 @@ function ShareIand() {
       'poster_community_memberdetail': '/subpages/community/group-memberdetail', // 小程序-海报分享&页面转发-社区
       'poster_coupon_center': '/subpages/marketing/coupon-center', // 小程序-海报分享&页面转发-领券中心
       'poster_mdugc_detail': '/subpages/mdugc/note-detail', // 小程序-海报分享&页面转发-笔记详情
-      'poster_pointshop_espier_detail': '/subpages/pointshop/espier-detail' // 小程序-海报分享&页面转发-积分商品详情
+      'poster_pointshop_espier_detail': '/subpages/pointshop/espier-detail', // 小程序-海报分享&页面转发-积分商品详情
+      'poster_goods_reservate': '/marketing/pages/reservation/goods-reservate' // 小程序-海报分享&页面转发-预约商品
     }
 
     // 过滤掉内部使用的参数
@@ -145,7 +146,7 @@ function ShareIand() {
     if (normalizedPath === '/pages/cart/espier-checkout') {
       filteredParams['launchScene'] = 1
     }
-
+    
     // 构建目标URL
     const queryString = qs.stringify(filteredParams)
     const targetUrl = queryString ? `${normalizedPath}?${queryString}` : normalizedPath
