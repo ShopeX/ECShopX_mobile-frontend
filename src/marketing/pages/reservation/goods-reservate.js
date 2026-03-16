@@ -110,18 +110,24 @@ function GoodReservate(props) {
     let _formList = []
 
     if (isEdit) {
-      //编辑
-      _formList = recordInfo?.content?.[0]?.formdata ?? []
+      // 编辑：合并所有 content 区块，并为每项标记 contentIndex 便于提交时按块回填
+      const contentBlocks = recordInfo?.content ?? []
+      _formList = contentBlocks.flatMap((block, idx) =>
+        (block.formdata || []).map((f) => ({ ...f, contentIndex: idx }))
+      )
     } else {
-      //新增
-      _formList = activity_info?.formdata?.content?.[0]?.formdata ?? []
+      // 新增：合并所有 content 区块展示，并为每项标记 contentIndex
+      const contentBlocks = activity_info?.formdata?.content ?? []
+      _formList = contentBlocks.flatMap((block, idx) =>
+        (block.formdata || []).map((f) => ({ ...f, contentIndex: idx }))
+      )
     }
     let _form = {}
     let _rules = {}
     if (_formList.length) {
       _formList.forEach((item) => {
         if (item.options && !isEdit) {
-          //新增才需要转换
+          // 新增才需要转换
           item.options = JSON.parse(item.options)
         }
 
@@ -370,19 +376,29 @@ function GoodReservate(props) {
 
   console.log('formList', formList)
 
-  const renderFormList = (list = []) => {
+  const contentBlocks = info?.formdata?.content ?? []
+
+  const renderFormList = () => {
+    if (!formList.length) return null
     return (
-      <>
-        {list.length > 0 && (
-          <SpForm ref={formRef} className='form-list' formData={form} rules={rules}>
-            {list.map((item, idx) => (
-              <SpFormItem label={item.field_title} prop={item.id} key={idx}>
-                {renderFormItem(item)}
-              </SpFormItem>
-            ))}
-          </SpForm>
-        )}
-      </>
+      <SpForm ref={formRef} className='form-list' formData={form} rules={rules}>
+        {contentBlocks.map((block, blockIdx) => {
+          const blockFields = formList.filter((item) => item.contentIndex === blockIdx)
+          if (!blockFields.length) return null
+          return (
+            <View key={blockIdx} className='form-block'>
+              {block.title ? (
+                <View className='form-block__title'>{block.title}</View>
+              ) : null}
+              {blockFields.map((item, idx) => (
+                <SpFormItem label={item.field_title} prop={item.id} key={item.id || idx}>
+                  {renderFormItem(item)}
+                </SpFormItem>
+              ))}
+            </View>
+          )
+        })}
+      </SpForm>
     )
   }
 
@@ -395,17 +411,18 @@ function GoodReservate(props) {
   const handleSubmit = async () => {
     const { activity_id } = info
     let new_subdata = { activity_id, formdata: { content: [] }, distributor_id: getDistributorId() }
-    const _content = formList.map((item) => ({
-      ...item,
-      answer: ['idcard', 'otherfile'].includes(item.form_element)
-        ? flatArray(form[item.id])
-        : form[item.id]
-    }))
-    let formDatacontent = _cloneDeep(info.formdata?.content)
-
-    formDatacontent[0].formdata = _content
+    const formDatacontent = (info.formdata?.content || []).map((block, blockIdx) => {
+      const blockFields = formList.filter((item) => item.contentIndex === blockIdx)
+      const formdata = blockFields.map((item) => ({
+        ...item,
+        answer: ['idcard', 'otherfile'].includes(item.form_element)
+          ? flatArray(form[item.id])
+          : form[item.id]
+      }))
+      return { ..._cloneDeep(block), formdata }
+    })
     new_subdata.formdata.content = JSON.stringify(formDatacontent)
-    console.log('new_subdata', new_subdata, _content)
+    console.log('new_subdata', new_subdata, formDatacontent)
 
     if (router?.params.record_id) {
       //编辑
@@ -501,7 +518,7 @@ function GoodReservate(props) {
               提示：欲在天津会场出席的s大家看我喝点酒哈我觉得回家啊我活动空间啊我和贷记卡文化科技大会。
             </View> */}
 
-            <View className='page-good-reservate__form'>{renderFormList(formList)}</View>
+            <View className='page-good-reservate__form'>{renderFormList()}</View>
           </View>
         </ScrollView>
       </View>
