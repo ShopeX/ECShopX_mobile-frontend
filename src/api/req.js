@@ -186,15 +186,15 @@ class API {
     if (company_id) {
       query['company_id'] = company_id
     }
-    const lang = Taro.getStorageSync('lang')
-    if (lang) {
-      const langMap = {
-        zhcn: 'zh-CN',
-        en: 'en-CN',
-        zhtw: 'zh-TW',
-        ar: 'ar-SA'
-      }
-      query['country_code'] = langMap[lang || process.env.APP_COUNTRY_CODE]
+    const lang = Taro.getStorageSync('lang') || process.env.APP_DEFAULT_LANGUAGE || process.env.APP_COUNTRY_CODE
+    const langMap = {
+      zhcn: 'zh-CN',
+      en: 'en-CN',
+      zhtw: 'zh-TW',
+      ar: 'ar-SA'
+    }
+    if (langMap[lang]) {
+      query['country_code'] = langMap[lang]
     }
     if (!methodIsGet) {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'

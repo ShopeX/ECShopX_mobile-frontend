@@ -96,8 +96,12 @@ function App({ children }) {
     console.log('useLaunch ***********', options)
     Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
-    // Initialize RTL
-    const lang = Taro.getStorageSync('lang') || 'en'
+    // Initialize RTL；首次进入时 Taro 无 lang，需写入默认语言，否则 baseinfo 等首请求不会带 country_code
+    let lang = Taro.getStorageSync('lang')
+    if (!lang) {
+      lang = process.env.APP_DEFAULT_LANGUAGE || 'en'
+      Taro.setStorageSync('lang', lang)
+    }
     store.dispatch(updateLang(lang))
     if (isWeb) {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
