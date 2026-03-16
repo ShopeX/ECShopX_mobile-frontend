@@ -4,7 +4,7 @@
  */
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import qs from 'qs'
-import S from '@/spx'
+import spxInstance from '@/spx'
 import {
   isAlipay,
   isWeixin,
@@ -16,6 +16,15 @@ import {
 } from '@/utils'
 import log from '@/utils/log'
 import { HTTP_STATUS } from './consts'
+
+// 惰性获取 spx：req 与 spx 存在循环依赖（spx→api→req→spx），加载时 spxInstance 可能尚未就绪
+function getS() {
+  return (
+    (typeof global !== 'undefined' && global.__SPX__) ||
+    (typeof globalThis !== 'undefined' && globalThis.__SPX__) ||
+    spxInstance
+  )
+}
 
 function addQuery(url, query) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + query
@@ -109,18 +118,8 @@ class API {
     }
     this.baseURL = baseURL
 
-    // 从域名获取 company_id，例如 m38.shopex123.com -> 38
-    let company_id = process.env.APP_COMPANY_ID
-    if (isWeb && typeof global !== 'undefined' && global.location) {
-      const hostname = global.location.hostname
-      const match = hostname.match(/^m(\d+)\./)
-      if (match && match[1]) {
-        company_id = match[1]
-      }
-    }
-
     const options = {
-      company_id: company_id
+      company_id: process.env.APP_COMPANY_ID
     }
     if (isWeixin) {
       const extConfig = getExtConfigData()
@@ -154,7 +153,7 @@ class API {
   handleLogout() {
     this.requestQueue.destroy()
     this.isRefreshingToken = false
-    S.logout()
+    getS().logout()
     setTimeout(() => {
       console.log(getCurrentInstance().router)
       const { path, params } = getCurrentInstance().router
@@ -187,7 +186,7 @@ class API {
     if (company_id) {
       query['company_id'] = company_id
     }
-    const lang = Taro.getStorageSync('lang') || process.env.APP_DEFAULT_LANGUAGE
+    const lang = Taro.getStorageSync('lang')
     if (lang) {
       const langMap = {
         zhcn: 'zh-CN',
@@ -195,13 +194,13 @@ class API {
         zhtw: 'zh-TW',
         ar: 'ar-SA'
       }
-      query['country_code'] = langMap[lang]
+      query['country_code'] = langMap[lang || process.env.APP_COUNTRY_CODE]
     }
     if (!methodIsGet) {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
 
-    const token = S.getAuthToken()
+    const token = getS().getAuthToken()
     if (token) {
       header['Authorization'] = `Bearer ${token}`
     }
@@ -280,7 +279,7 @@ class API {
 
   async refreshToken() {
     this.isRefreshingToken = true
-    const token = S.getAuthToken()
+    const token = getS().getAuthToken()
     console.log('refreshToken', 66)
     try {
       await this.makeReq(
@@ -300,7 +299,7 @@ class API {
           }
 
           const newToken = res.header.Authorization.split(' ')[1]
-          S.setAuthToken(newToken)
+          getS().setAuthToken(newToken)
         }
       )
     } catch (e) {
@@ -338,7 +337,7 @@ class API {
       if (
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
         (res.data.data && res.data.data.code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
-        S.getAuthToken()
+        getS().getAuthToken()
       ) {
         // token失效时重造请求，并刷新token
         if (!this.isRefreshingToken) {
