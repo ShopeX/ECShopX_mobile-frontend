@@ -156,9 +156,9 @@ export default class EvaluationDetail extends Component {
     if (S.getAuthToken()) {
       this.setState({ showCommentPanel: true })
     } else {
-      S.toast('请登录后再评论')
+      S?.toast('请登录后再评论')
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
     }
   }

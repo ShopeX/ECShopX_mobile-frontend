@@ -47,13 +47,13 @@ export default class DistributionDashboard extends Component {
   handleSubmit(e) {
     let { info } = this.state
     if (!info.user_name) {
-      return S.toast('请输入真实姓名')
+      return S?.toast('请输入真实姓名')
     }
     if (!info.id_card || !/^(\d{18,18}|\d{15,15}|\d{17,17}X)$/.test(info.id_card)) {
-      return S.toast('请输入正确的身份证号码')
+      return S?.toast('请输入正确的身份证号码')
     }
     if (!info.user_mobile || !/1\d{10}/.test(info.user_mobile)) {
-      return S.toast('请输入正确的手机号')
+      return S?.toast('请输入正确的手机号')
     }
     let obj = {
       user_name: info.user_name,

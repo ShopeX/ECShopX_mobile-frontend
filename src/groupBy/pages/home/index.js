@@ -69,7 +69,7 @@ export default class GroupByIndex extends Component {
     //     icon: 'none',
     //     title: '请登录'
     //   }).then(() => {
-    //     S.login(this, true)
+    //     S?.login(this, true)
     //   })
     //   return
     // }

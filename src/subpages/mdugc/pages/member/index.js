@@ -82,7 +82,7 @@ export default class mdugcmember extends Component {
   async componentDidMount() {
     let { memberData } = this.props
     console.log(123, memberData)
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
         icon: 'none',
@@ -324,7 +324,7 @@ export default class mdugcmember extends Component {
   }
   // 关注|取消关注
   followercreate = async () => {
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',

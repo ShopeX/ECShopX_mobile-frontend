@@ -90,7 +90,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S.toast('修改成功')
+        S?.toast('修改成功')
       }
 
       setTimeout(() => {
@@ -127,7 +127,7 @@ function AddressIndex(props) {
 
     const { selectedId } = state
     await api.member.addressDelete(item.address_id)
-    S.toast('删除成功')
+    S?.toast('删除成功')
 
     if (selectedId === item.address_id) {
       updateChooseAddress(null)
@@ -156,7 +156,7 @@ function AddressIndex(props) {
     if (pages.length > 1) {
       let { path } = pages[pages.length - 2]
       if (CHECKOUT_PAGE == path.split('?')[0]) {
-        S.set('FROM_ADDRESS', true)
+        S?.set('FROM_ADDRESS', true)
       }
     }
     Taro.navigateBack()

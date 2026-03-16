@@ -19,7 +19,7 @@ const initialState = {
   list: [],
   valList: [],
   total_count: 0,
-  datas: S.getNowDate(),
+  datas: S?.getNowDate(),
   datasType: 2
 }
 

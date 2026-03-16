@@ -143,7 +143,7 @@ export default class TradeRefund extends Component {
     }
 
     if (data.length > 3) {
-      S.toast('最多上传3张图片')
+      S?.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
 
@@ -224,7 +224,7 @@ export default class TradeRefund extends Component {
     Tracker.dispatch('ORDER_REFUND', orderInfo)
 
     try {
-      S.toast('操作成功')
+      S?.toast('操作成功')
       setTimeout(() => {
         Taro.redirectTo({
           url: `/subpage/pages/trade/detail?id=${order_id}`

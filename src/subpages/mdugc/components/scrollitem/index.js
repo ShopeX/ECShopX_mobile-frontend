@@ -59,7 +59,7 @@ export default class Scrollitem extends Component {
   oncollection = async () => {
     let { item, memberData } = this.props
 
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
         icon: 'none',

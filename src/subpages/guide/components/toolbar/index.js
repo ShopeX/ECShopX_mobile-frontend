@@ -21,7 +21,7 @@ export default class SpToolbar extends Component {
 
   render() {
     const { inline } = this.props
-    const ipxClass = S.get('ipxClass') || ''
+    const ipxClass = S?.get('ipxClass') || ''
 
     return (
       <View className={classNames('sp-toolbar', { 'sp-toolbar__inline': inline }, ipxClass)}>

@@ -80,7 +80,7 @@ export default class DistributionShopForm extends Component {
     }
 
     if (data.length > 1) {
-      S.toast('最多上传1张图片')
+      S?.toast('最多上传1张图片')
     }
     const imgFiles = data.slice(0, 1)
     const res = await imgUploader.uploadImageFn(imgFiles)

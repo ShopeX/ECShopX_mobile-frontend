@@ -17,13 +17,13 @@ function navigationToReg(redirect) {
 //设置token
 function setToken(token = '') {
   if (token) {
-    S.setAuthToken(token)
+    S?.setAuthToken(token)
     return true
   }
 }
 
 function getToken() {
-  return S.getAuthToken()
+  return S?.getAuthToken()
 }
 
 function getRedirectUrl() {}

@@ -29,8 +29,8 @@ export default function WgtContentPartition(props) {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [scrollView, setScrollView] = useState(``)
   const [children, setChildren] = useState([])
+  const isFirstRender = useRef(true)
   const navBarObserveId = `content-partition-nav-observe-${id}`
-  const STICKY_TOP_THRESHOLD = 15
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
   const base = params.base || {}
@@ -39,6 +39,7 @@ export default function WgtContentPartition(props) {
 
   // 初始化：找到第一个激活的导航项
   useEffect(() => {
+    if (isFirstRender.current) {
     const activeIndex = navList.findIndex((item) => item.isActive)
     if (activeIndex >= 0) {
       setCurrentIndex(activeIndex)
@@ -46,6 +47,8 @@ export default function WgtContentPartition(props) {
     } else {
       setCurrentIndex(0)
       setChildren(navList[0]?.children || [])
+    }
+    isFirstRender.current = false
     }
   }, [navList])
 

@@ -33,7 +33,7 @@ const initialConfigState = {
   info: {},
   parameter: {
     datetype: 2,
-    date: S.getNowDate(),
+    date: S?.getNowDate(),
     distributor_id: ''
   },
   selector: []
@@ -63,9 +63,9 @@ const Index = () => {
     }
     const res = await deliveryApi.datacubeDeliverystaffdata(params)
     Taro.hideLoading()
-    res.self_delivery_fee_count = S.formatMoney(res.self_delivery_fee_count / 100)
-    res.refund_fee_count = S.formatMoney(res.refund_fee_count / 100)
-    res.total_fee_count = S.formatMoney(res.total_fee_count / 100)
+    res.self_delivery_fee_count = S?.formatMoney(res.self_delivery_fee_count / 100)
+    res.refund_fee_count = S?.formatMoney(res.refund_fee_count / 100)
+    res.total_fee_count = S?.formatMoney(res.total_fee_count / 100)
     setState((draft) => {
       draft.info = res
     })

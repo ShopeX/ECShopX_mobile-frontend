@@ -166,7 +166,7 @@ const Index = () => {
           }
           try {
             const result = await communityApi.scanOrderCode(parmas)
-            S.toast(result.msg)
+            S?.toast(result.msg)
           } catch (e) {
             Taro.showToast({
               icon: 'none',

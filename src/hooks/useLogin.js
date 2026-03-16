@@ -33,7 +33,7 @@ export default (props = {}) => {
   // const policyTime = useRef(0)
 
   useEffect(() => {
-    const token = S.getAuthToken()
+    const token = S?.getAuthToken()
     if (!token) {
       autoLogin && !VERSION_SHUYUN && login()
     } else {
@@ -43,7 +43,7 @@ export default (props = {}) => {
   }, [])
 
   useEffect(() => {
-    const token = S.getAuthToken()
+    const token = S?.getAuthToken()
     if (userInfo && token) {
       setIsLogin(true)
     }
@@ -95,7 +95,7 @@ export default (props = {}) => {
   }
 
   const logout = () => {
-    S.clearAuthToken()
+    S?.clearAuthToken()
     dispatch(clearUserInfo())
     dispatch(clearCart())
     dispatch(purchaseClearCart())
@@ -104,7 +104,7 @@ export default (props = {}) => {
   const setToken = async (token) => {
     const { redirect_url } = $instance?.router?.params
     console.log('redirect_url', redirect_url)
-    S.setAuthToken(token)
+    S?.setAuthToken(token)
     setIsLogin(true)
     await getUserInfo()
     // 使用setTimeout确保token已经完全设置到存储中
@@ -131,7 +131,7 @@ export default (props = {}) => {
   const getUserInfo = async (refresh) => {
     if (!userInfo || refresh) {
       let params = {}
-      const activity_id = S.get(INVITE_ACTIVITY_ID, true)
+      const activity_id = S?.get(INVITE_ACTIVITY_ID, true)
       if (activity_id) {
         params = { activity_id }
       }
@@ -204,7 +204,7 @@ export default (props = {}) => {
   const getUserInfoAuth = (validate = true) => {
     return new Promise((resolve, reject) => {
       console.log('getUserInfoAuth:获取用户信息授权（小程序）')
-      const token = S.getAuthToken()
+      const token = S?.getAuthToken()
       if (!token && validate) {
         showToast('请先登录')
         return

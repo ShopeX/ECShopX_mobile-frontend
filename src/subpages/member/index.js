@@ -265,7 +265,7 @@ function MemberIndex(props) {
       const { result, status } = await api.member.is_admin()
       console.log('env:result', result)
       console.log('env:status', status)
-      S.set('DIANWU_CONFIG', result, status)
+      S?.set('DIANWU_CONFIG', result, status)
       menu = {
         ...menu,
         dianwu: status

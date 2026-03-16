@@ -33,7 +33,7 @@ const initialConfigState = {
   info: {},
   parameter: {
     datetype: 2,
-    date: S.getNowDate(),
+    date: S?.getNowDate(),
     distributor_id: ''
   },
   selector: [],
@@ -59,8 +59,8 @@ const Index = () => {
     }
     const res = await api.salesman.getSalesmanCount(params)
     Taro.hideLoading()
-    res.total_Fee = S.formatMoney(res.total_Fee / 100)
-    res.refund_Fee = S.formatMoney(res.refund_Fee / 100)
+    res.total_Fee = S?.formatMoney(res.total_Fee / 100)
+    res.refund_Fee = S?.formatMoney(res.refund_Fee / 100)
     setState((draft) => {
       draft.info = res
     })

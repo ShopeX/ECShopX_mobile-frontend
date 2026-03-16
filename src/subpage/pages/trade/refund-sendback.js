@@ -82,12 +82,12 @@ export default class TradeRefundSendback extends Component {
     const { item_id, order_id, aftersales_bn } = this.$instance?.router?.params
 
     if (!corp_code) {
-      S.toast('请填写物流公司')
+      S?.toast('请填写物流公司')
       return
     }
 
     if (!logi_no) {
-      S.toast('请填写物流单号')
+      S?.toast('请填写物流单号')
       return
     }
 
@@ -99,7 +99,7 @@ export default class TradeRefundSendback extends Component {
       corp_code
     })
 
-    S.toast('操作成功')
+    S?.toast('操作成功')
     setTimeout(() => {
       Taro.redirectTo({
         url: '/subpage/pages/trade/after-sale'

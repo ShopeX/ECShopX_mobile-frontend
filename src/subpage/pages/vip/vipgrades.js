@@ -165,7 +165,7 @@ export default class VipIndex extends Component {
       })
 
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
 
       return
@@ -213,7 +213,7 @@ export default class VipIndex extends Component {
             icon: 'none'
           })
         }
-        S.getMemberInfo()
+        S?.getMemberInfo()
         this.setState({ visible: true })
       } catch (e) {
         Taro.showToast({
@@ -239,7 +239,7 @@ export default class VipIndex extends Component {
           showCancel: false,
           success: function (res) {
             console.log('success')
-            S.getMemberInfo()
+            S?.getMemberInfo()
             // that.fetchCouponCardList()
             this.setState({ visible: true })
             // Taro.navigateBack()

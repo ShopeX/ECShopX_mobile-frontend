@@ -94,7 +94,7 @@ export default (props) => {
     // })
     // if (newarr.length > 0) {
     //   newarr.forEach((item) => {
-    //     let res = S.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
+    //     let res = S?.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
     //     newarrs.push(res)
     //   })
     //   const minNumber = Math.min(...newarrs)

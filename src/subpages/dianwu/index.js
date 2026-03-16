@@ -27,8 +27,8 @@ const Index = () => {
   // })
 
   const createWebviewUrl = async () => {
-    const { openid, unionid, app_id, app_type, company_id } = S.get('DIANWU_CONFIG', true)
-    const token = S.getAuthToken()
+    const { openid, unionid, app_id, app_type, company_id } = S?.get('DIANWU_CONFIG', true)
+    const token = S?.getAuthToken()
     const routeParams = await entryLaunch.getRouteParams()
     const { path = '', ...queryParams } = routeParams
 

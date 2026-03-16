@@ -177,7 +177,7 @@ function CartCheckout(props) {
   }, [isLogin])
 
   useEffect(() => {
-    const token = S.getAuthToken()
+    const token = S?.getAuthToken()
     if (!token && !isWeb) {
       Taro.redirectTo({
         url: `/subpages/member/index`

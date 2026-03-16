@@ -105,7 +105,7 @@ export default class DrugInfo extends Component {
     }
 
     if (data.length > 3) {
-      S.toast('最多上传3张图片')
+      S?.toast('最多上传3张图片')
     }
     const imgFiles = data.slice(0, 3)
     let promises = []

@@ -280,7 +280,7 @@ export default class PackageItem extends Component {
       })
 
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
 
       return

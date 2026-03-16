@@ -232,7 +232,7 @@ const NavBar = (props) => {
     if (!confirm) {
       return
     }
-    S.logout()
+    S?.logout()
     onLogout?.()
     // eslint-disable-next-line
     Taro.redirectTo({

@@ -29,7 +29,7 @@ export default class ShoppingGuideCard extends Component {
       title: '导购名片'
     })
 
-    let token = S.getAuthToken()
+    let token = S?.getAuthToken()
 
     this.setState({
       token
@@ -46,7 +46,7 @@ export default class ShoppingGuideCard extends Component {
   }
 
   componentDidMount() {
-    let token = S.getAuthToken()
+    let token = S?.getAuthToken()
 
     this.fetch(token)
     if (!token) return

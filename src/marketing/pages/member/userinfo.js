@@ -80,7 +80,7 @@ export default class UserInfo extends Component {
       }
     } else {
       // if (isAgree == 1) {
-      S.OAuthWxUserProfile(() => {
+      S?.OAuthWxUserProfile(() => {
         // this.setState({
         //   showTimes: this.state.showTimes + 1
         // })
@@ -251,7 +251,7 @@ export default class UserInfo extends Component {
       })
       showToast('修改成功')
 
-      await S.getMemberInfo()
+      await S?.getMemberInfo()
 
       Taro.reLaunch({
         url: '/subpages/member/index'

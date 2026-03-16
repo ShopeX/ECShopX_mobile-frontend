@@ -88,8 +88,8 @@ function UgcMember(props) {
     listRef.current.reset()
   }, [curFilterIndex])
   const isMember = async () => {
-    const isAuth = S.getAuthToken()
-    const memberData = await S.getMemberInfo()
+    const isAuth = S?.getAuthToken()
+    const memberData = await S?.getMemberInfo()
     console.log(memberData, '------')
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({

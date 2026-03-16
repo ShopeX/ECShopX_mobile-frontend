@@ -45,7 +45,7 @@ export default class mdugcindex extends Component {
   }
 
   async componentDidMount() {
-    const res = await S.getMemberInfo()
+    const res = await S?.getMemberInfo()
     this.props.setMemberInfo(res)
     console.log(123, this.props)
     this.gettopicslist()
@@ -284,7 +284,7 @@ export default class mdugcindex extends Component {
   }
   // 浮动按钮跳转
   topages = (url) => {
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',

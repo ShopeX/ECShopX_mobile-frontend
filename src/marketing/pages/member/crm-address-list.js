@@ -65,7 +65,7 @@ export default class CrmAddressList extends Component {
     })
     try {
       await api.member.addressCreateOrUpdate(item)
-      S.toast('创建成功')
+      S?.toast('创建成功')
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)

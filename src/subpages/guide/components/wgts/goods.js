@@ -64,7 +64,7 @@ export default class WgtGoods extends Component {
     const { info, sourcetype, title, author, source, componentIndex } = this.props
     e.stopPropagation()
     if (!S.getAuthToken()) {
-      S.login(this)
+      S?.login(this)
       return false
     }
     /*if(info.data) {

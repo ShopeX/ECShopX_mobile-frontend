@@ -72,7 +72,7 @@ function TradeLogisticsInfo(props) {
       }, 1000)
     } catch (error) {
       console.log(error)
-      S.toast(error.message)
+      S?.toast(error.message)
     }
   }
 

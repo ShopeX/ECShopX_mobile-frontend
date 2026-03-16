@@ -69,7 +69,7 @@ export default class SpFloatPrivacy extends Component {
 
   handleConfirm() {
     this.handleValidate(() => {
-      S.OAuthWxUserProfile(() => {
+      S?.OAuthWxUserProfile(() => {
         this.props.onChange()
       }, true)
     })
@@ -89,7 +89,7 @@ export default class SpFloatPrivacy extends Component {
             username: userInfo.nickName,
             avatar: userInfo.avatar
           })
-          await S.getMemberInfo()
+          await S?.getMemberInfo()
           this.props.onChange()
         }
       })

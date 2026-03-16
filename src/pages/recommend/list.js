@@ -50,7 +50,7 @@ function RecommendList() {
       list,
       total_count: total,
       province_list
-    } = S.getAuthToken()
+    } = S?.getAuthToken()
       ? await api.article.authList(queryParams)
       : await api.article.list(queryParams)
 

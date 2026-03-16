@@ -88,7 +88,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S.toast('修改成功')
+        S?.toast('修改成功')
       }
 
       setTimeout(() => {

@@ -488,7 +488,7 @@ function PurchaseCheckout(props) {
     }
 
     if (real_use_point && real_use_point < point_use) {
-      S.toast(`${pointName}有调整`)
+      S?.toast(`${pointName}有调整`)
     }
 
     Taro.hideLoading()

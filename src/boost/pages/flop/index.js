@@ -35,7 +35,7 @@ export default class Flop extends Component {
 
   componentDidMount() {
     this.getBoostDetail()
-    S.getAuthToken() && this.handleClickWxOAuth()
+    S?.getAuthToken() && this.handleClickWxOAuth()
   }
 
   // 获取助力详情wechat-taroturntable

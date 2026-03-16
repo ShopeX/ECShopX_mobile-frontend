@@ -337,7 +337,7 @@ export default class TradeList extends Component {
       evaluate
     } = this.state
 
-    const isLogin = S.getAuthToken()
+    const isLogin = S?.getAuthToken()
 
     return (
       <View

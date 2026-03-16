@@ -25,7 +25,7 @@ export default class Youshu extends Base {
     this.actions = actions
     this.sr = sr
 
-    const token = S.getAuthToken()
+    const token = S?.getAuthToken()
 
     if (token) {
       const userInfo = tokenParse(token)

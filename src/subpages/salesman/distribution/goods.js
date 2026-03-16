@@ -383,7 +383,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S.toast('上架成功')
+            S?.toast('上架成功')
           }
         )
       }
@@ -397,7 +397,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S.toast('下架成功')
+            S?.toast('下架成功')
           }
         )
       }

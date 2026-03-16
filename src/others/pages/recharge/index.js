@@ -133,7 +133,7 @@ export default class Recharge extends Component {
   // 支付
   recharge = () => {
     if (!S.getAuthToken()) {
-      return S.toast('请先登录')
+      return S?.toast('请先登录')
     }
     // const userInfo = Taro.getStorageSync('userinfo')
     const { recharge_rule_id, currentShop, value, payType } = this.state

@@ -188,7 +188,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds: [...this.state.goodsIds, id]
           },
           () => {
-            S.toast('上架成功')
+            S?.toast('上架成功')
           }
         )
       }
@@ -201,7 +201,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds
           },
           () => {
-            S.toast('下架成功')
+            S?.toast('下架成功')
           }
         )
       }

@@ -219,7 +219,7 @@ function CaseList() {
   }
 
   const getStorageLocation = async () => {
-    const currentLocation = S.get('currentLocation')
+    const currentLocation = S?.get('currentLocation')
     if (currentLocation) {
       const data = await entryLaunch.getAddressByLnglatWebAPI(
         currentLocation.longitude,
@@ -249,7 +249,7 @@ function CaseList() {
   const handleAutoGetLoaction = () => {
     autoGetLocation().then((data) => {
       const { latitude, longitude } = data
-      S.set('currentLocation', {
+      S?.set('currentLocation', {
         latitude,
         longitude
       })

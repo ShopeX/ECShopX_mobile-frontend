@@ -156,7 +156,7 @@ function MemberIndex(props) {
 
   useDidShow(() => {
     if (S.get(MERCHANT_TOKEN, true)) {
-      S.delete(MERCHANT_TOKEN, true)
+      S?.delete(MERCHANT_TOKEN, true)
     }
     if (S.get(SG_TOKEN)) {
       setHeaderBlock()
@@ -230,7 +230,7 @@ function MemberIndex(props) {
     }
     // if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_IN_PURCHASE)) {
     //   const { result, status } = await dianwuApi.is_admin()
-    //   S.set('DIANWU_CONFIG', result, status)
+    //   S?.set('DIANWU_CONFIG', result, status)
     //   menu = {
     //     ...menu,
     //     dianwu: status
@@ -272,7 +272,7 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let params = {}
-    const activity_id = purchase_share_info?.activity_id || S.get(INVITE_ACTIVITY_ID, true)
+    const activity_id = purchase_share_info?.activity_id || S?.get(INVITE_ACTIVITY_ID, true)
 
     if (activity_id) {
       params = { activity_id }

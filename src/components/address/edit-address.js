@@ -204,11 +204,11 @@ export default class EditAddress extends Component {
     }
 
     if (!data.username) {
-      return S.toast('请输入收件人')
+      return S?.toast('请输入收件人')
     }
 
     if (!data.telephone) {
-      return S.toast('请输入手机号')
+      return S?.toast('请输入手机号')
     }
 
     if (!data.province) {
@@ -218,14 +218,14 @@ export default class EditAddress extends Component {
     }
 
     if (!data.adrdetail) {
-      return S.toast('请输入详细地址')
+      return S?.toast('请输入详细地址')
     }
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {
-        S.toast('修改成功')
+        S?.toast('修改成功')
       } else {
-        S.toast('创建成功')
+        S?.toast('创建成功')
       }
       setTimeout(() => {
         Taro.navigateBack()
@@ -237,7 +237,7 @@ export default class EditAddress extends Component {
 
   handleDelete = async (address_id) => {
     await api.member.addressDelete(address_id)
-    S.toast('删除成功')
+    S?.toast('删除成功')
     setTimeout(() => {
       Taro.navigateBack()
     }, 700)

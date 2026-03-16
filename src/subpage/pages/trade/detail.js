@@ -518,7 +518,7 @@ export default class TradeDetail extends Component {
     const { webSocketIsOpen, restartOpenWebsoect } = this.state
     // websocket 开始
     if (!webSocketIsOpen) {
-      const token = S.getAuthToken()
+      const token = S?.getAuthToken()
       Taro.connectSocket({
         url: process.env.APP_WEBSOCKET,
         header: {
@@ -594,7 +594,7 @@ export default class TradeDetail extends Component {
         restartOpenWebsoect: false
       },
       () => {
-        const token = S.getAuthToken()
+        const token = S?.getAuthToken()
         Taro.connectSocket({
           url: process.env.APP_WEBSOCKET,
           header: {

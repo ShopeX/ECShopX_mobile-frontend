@@ -107,7 +107,7 @@ function UgcTopicList() {
 
   // 浮动按钮跳转
   const onHandleMenuItem = (url) => {
-    // const isAuth = S.getAuthToken()
+    // const isAuth = S?.getAuthToken()
     // if (!isAuth) {
     //   showToast('请先登录')
     //   return

@@ -108,17 +108,17 @@ export default class QrcodeBuy extends Component {
 
   handleLoginClick = () => {
     if (this.state.isCkeckTips === false) {
-      return S.toast('请先同意用户协议')
+      return S?.toast('请先同意用户协议')
     }
     Taro.navigateTo({
       url: '/subpage/pages/auth/wxauth'
     })
-    // S.login(this, true)
+    // S?.login(this, true)
   }
 
   handleCamera = async () => {
     if (!S.getAuthToken()) {
-      return S.toast('请先授权')
+      return S?.toast('请先授权')
     }
     // const distributor = Taro.getStorageSync('curStore')
     const odtid = Taro.getStorageSync('odtid')
@@ -132,7 +132,7 @@ export default class QrcodeBuy extends Component {
         }
         try {
           const result = await api.user.scancodeAddcart(query)
-          S.toast(result.msg)
+          S?.toast(result.msg)
         } catch (e) {
           Taro.showToast({
             icon: 'none',
