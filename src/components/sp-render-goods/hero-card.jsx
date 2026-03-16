@@ -90,9 +90,7 @@ function SpGoodsHeroCard(props) {
         )}
         <View className='sp-goods-hero-card__price'>
           <View className='price-wrapper'>
-            {info.point != null && info.point !== '' ? (
-              <SpPoint value={info.point} />
-            ) : showPrice ? (
+            {showPrice ? (
               <>
                 <SpPrice
                   className='current-price'
@@ -118,7 +116,7 @@ function SpGoodsHeroCard(props) {
                   </View>
                 )}
               </>
-            ) : null}
+            ) : <SpPoint value={info.point} />}
           </View>
         </View>
       </View>
