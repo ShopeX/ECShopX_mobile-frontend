@@ -112,6 +112,11 @@ function Home() {
     setNavigationBarTitle(appName)
   }, [])
 
+  // 首次进入时 useDidShow 可能在组件挂载前就触发了，导致不会执行，这里补一次
+  useEffect(() => {
+    updateAddress()
+  }, [])
+
   useDidShow(() => {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())

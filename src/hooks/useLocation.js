@@ -16,25 +16,28 @@ export default (props) => {
   /**
    * 未登录状态 && 授权定位  == 定位
    * 未登录状态  && 不授权定位  == 默认值
+   * 仅当位置相对上次有变化时才请求逆地理（getAreaByJwd）并更新 store
    */
   const updateAddress = async () => {
     if (S.getAuthToken()) {
       await addressLogic()
     } else {
-      const res1 = await fetchLocation()
+      const res1 = await fetchLocation(location?.lng, location?.lat)
+      if (res1 === null) return // 位置未变化，不更新
       if (res1 instanceof Object && res1.lat) {
         dispatch(updateLocation(res1))
       }
     }
   }
 
-  // 获取当前定位
-  const fetchLocation = async () => {
+  // 获取当前定位，仅位置变化时才解析地址
+  const fetchLocation = async (previousLng, previousLat) => {
     try {
       const res = await new Promise((resolve) => {
-        entryLaunch.isOpenPosition((res1) => {
-          resolve(res1)
-        })
+        entryLaunch.isOpenPosition(
+          (res1) => resolve(res1),
+          previousLng != null && previousLat != null ? { previousLng, previousLat } : {}
+        )
       })
       return res
     } catch (e) {
@@ -132,7 +135,8 @@ export default (props) => {
   const addressLogic = async () => {
     const { list } = await api.member.addressList()
     const arr = await processingAddress(list)
-    const res = await fetchLocation()
+    const res = await fetchLocation(location?.lng, location?.lat)
+    if (res === null) return // 位置未变化，不更新
     // 开启定位
     if (res instanceof Object && res.lat) {
       if (arr.length == 0) {
