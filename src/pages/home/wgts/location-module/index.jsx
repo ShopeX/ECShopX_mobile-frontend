@@ -64,7 +64,7 @@ export default function WgtLocationModule(props) {
     const navitemarea = base.navitemarea || {}
     return {
       ...getGlobalBaseStyle(navitemarea),
-      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+      'border-radius': base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
     }
   }, [base.navitemarea, base.navitemradius])
 
@@ -74,11 +74,11 @@ export default function WgtLocationModule(props) {
     return {
       height: Taro.pxTransform(base.navitemheight || 40),
       color: textColor,
-      backgroundColor: isActive
+      'background-color': isActive
         ? item.navitemactivebg || 'transparent'
         : item.navitembg || 'transparent',
-      paddingLeft: `${Taro.pxTransform(base.navitemmargin || 0)}`,
-      paddingRight: `${Taro.pxTransform(base.navitemmargin || 0)}`
+      'padding-left': `${Taro.pxTransform(base.navitemmargin || 0)}`,
+      'padding-right': `${Taro.pxTransform(base.navitemmargin || 0)}`
     }
   }
 

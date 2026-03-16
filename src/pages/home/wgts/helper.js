@@ -122,19 +122,19 @@ export function getGlobalBaseStyle(baseStyle) {
 
   // 处理边距
   if (baseStyle.paddedt !== undefined && baseStyle.paddedt !== null) {
-    style.paddingTop = Taro.pxTransform(baseStyle.paddedt)
+    style['padding-top'] = Taro.pxTransform(baseStyle.paddedt)
   }
 
   if (baseStyle.paddedb !== undefined && baseStyle.paddedb !== null) {
-    style.paddingBottom = Taro.pxTransform(baseStyle.paddedb)
+    style['padding-bottom'] = Taro.pxTransform(baseStyle.paddedb)
   }
 
   if (baseStyle.paddedl !== undefined && baseStyle.paddedl !== null) {
-    style.paddingLeft = Taro.pxTransform(baseStyle.paddedl)
+    style['padding-left'] = Taro.pxTransform(baseStyle.paddedl)
   }
 
   if (baseStyle.paddedr !== undefined && baseStyle.paddedr !== null) {
-    style.paddingRight = Taro.pxTransform(baseStyle.paddedr)
+    style['padding-right'] = Taro.pxTransform(baseStyle.paddedr)
   }
 
   // 处理背景
