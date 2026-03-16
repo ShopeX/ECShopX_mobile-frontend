@@ -85,15 +85,14 @@ const Settings = () => {
       >
         <View className='lang-list'>
           {state.languageList.map((item, index) => (
-            <View className='lang-item' key={`lang-item__${index}`}>
+            <View className='lang-item' key={`lang-item__${index}`} onClick={() => {
+              setState((draft) => {
+                draft.selectLang = item.key
+              })
+            }}>
               <SpCheckbox
                 checked={item.key == state.selectLang}
                 canCancel={item.key == state.selectLang}
-                onChange={(e) => {
-                  setState((draft) => {
-                    draft.selectLang = item.key
-                  })
-                }}
               >
                 {item.name}
               </SpCheckbox>
