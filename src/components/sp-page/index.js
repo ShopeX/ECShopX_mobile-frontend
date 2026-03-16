@@ -349,6 +349,13 @@ const SpPage = memo(
             navigationRSpace={state.navigationRSpace}
             showNavitionLeft={props.showNavitionLeft}
             statusBarBgColor={state.statusBarBgColor}
+            immersiveScrollRevealBgColor={
+              props.immersive &&
+              props.pageConfig?.immersiveScrollBgColor &&
+              state.scrollTop >= 50
+                ? props.pageConfig.immersiveScrollBgColor
+                : null
+            }
           />
         )}
         {props.isDefault &&

@@ -28,7 +28,8 @@ const CustomNavigationHeader = memo((props) => {
     nearbyText,
     navigationRSpace,
     showNavitionLeft,
-    statusBarBgColor
+    statusBarBgColor,
+    immersiveScrollRevealBgColor
   } = props
 
   const value = pageConfig
@@ -44,9 +45,9 @@ const CustomNavigationHeader = memo((props) => {
       'background-position': 'center',
       'padding-top': `${gStatusBarHeight}px`
     }
-    // 吸顶挂件配置的 statusBarBgColor 优先用于页面顶部 header（状态栏）背景
-    const headerBg = statusBarBgColor ?? value?.navigateBackgroundColor
-    console.log(headerBg, 'headerBg')
+    // 吸顶挂件 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
+    const headerBg =
+      statusBarBgColor ?? immersiveScrollRevealBgColor ?? value?.navigateBackgroundColor
     if (headerBg) {
       style.backgroundColor = headerBg
     }
@@ -65,7 +66,8 @@ const CustomNavigationHeader = memo((props) => {
     navigateBackgroundColor,
     gNavbarH,
     gStatusBarHeight,
-    statusBarBgColor
+    statusBarBgColor,
+    immersiveScrollRevealBgColor
   ])
 
   const containerStyle = useCallback(() => {

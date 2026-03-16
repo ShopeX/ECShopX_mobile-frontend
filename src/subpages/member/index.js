@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro, { useDidShow, useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { updateUserInfo, updateCheckChief } from '@/store/slices/user'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import { platformTemplateName } from '@/utils/platform'
@@ -119,6 +119,7 @@ const initialState = {
 
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
+  const pageRef = useRef(null)
   const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
   const { isLogin, getUserInfo, isNewUser } = useLogin({
@@ -452,7 +453,9 @@ function MemberIndex(props) {
   }
 
   return (
-    <SpPage className='pages-member-index'
+    <SpPage
+      ref={pageRef}
+      className='pages-member-index'
       loading={state.loading}
       immersive={state.pageData?.base?.isImmersive}
       showpoweredBy={false}
@@ -465,7 +468,14 @@ function MemberIndex(props) {
         })
       }}
     >
-      <ScrollView scrollY className='user-info-card-wrapper' style={{ height: state.bodyHeight }}>
+      <ScrollView
+        scrollY
+        className='user-info-card-wrapper'
+        style={{ height: state.bodyHeight }}
+        onScroll={(e) => {
+          pageRef.current?.handlePageScroll?.({ scrollTop: e.detail.scrollTop })
+        }}
+      >
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
