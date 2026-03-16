@@ -16,6 +16,7 @@ import api from '@/api'
 import S from '@/spx'
 
 function withPageWrapper(Component) {
+  try {
   return function EnhancedComponent(props) {
     console.log('withPageWrapper', props)
     const dispatch = useDispatch()
@@ -318,6 +319,10 @@ function withPageWrapper(Component) {
     } else {
       return null
     }
+  }
+} catch (error) {
+  console.log('error', error)
+  return null
   }
 }
 

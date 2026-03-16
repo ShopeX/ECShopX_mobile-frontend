@@ -28,7 +28,6 @@ export default function WgtGoods(props) {
   const base = params.base || {}
   const data = params.data || {}
 
-  const { onAddToCart } = useContext(WgtsContext)
   const isPointsmallItems = base.dataType === 'pointsmall_items'
 
   // 获取外层样式（包含 outerMargin 和背景配置）
@@ -125,7 +124,7 @@ export default function WgtGoods(props) {
   // 处理商品点击：积分商品跳积分详情，否则走 linkPage
   const handleClickItem = (item) => {
     const itemId = item.item_id ?? item.itemId
-    if (isPointsmallItems || item.point != null) {
+    if (isPointsmallItems) {
       Taro.navigateTo({
         url: `/subpages/pointshop/espier-detail?id=${itemId}`
       })

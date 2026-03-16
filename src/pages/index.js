@@ -2,38 +2,27 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Taro, {
-  getCurrentInstance,
   useShareAppMessage,
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import throttle from 'lodash/throttle'
 import {
   SpScreenAd,
   SpPage,
-  SpSearch,
   SpRecommend,
   SpTabbar,
   SpCouponPackage,
-  SpSkuSelect,
-  SpPrivacyModal,
-  SpLogin,
-  SpLoading
-} from '@/components'
+  SpSkuSelect} from '@/components'
 import api from '@/api'
 import {
   isWeixin,
-  isAPP,
-  isEmpty,
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
-  VERSION_IN_PURCHASE,
-  VERSION_B2C,
   classNames,
   getCurrentPageRouteParams,
   resolveStringifyParams,
@@ -41,20 +30,17 @@ import {
   pickBy,
   log,
   showToast,
-  entryLaunch,
   buildSharePath
 } from '@/utils'
-import { updateShopInfo } from '@/store/slices/shop'
 import {
   updatePurchaseShareInfo,
   updateInviteCode,
   updateEnterpriseId
 } from '@/store/slices/purchase'
-import S from '@/spx'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal, useEffectAsync } from '@/hooks'
 import doc from '@/doc'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
+import SpPoweredBy from '@/components/sp-powered-by'
 import withPageWrapper from '@/hocs/withPageWrapper'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
@@ -62,7 +48,6 @@ import CompAddTip from './home/comps/comp-addtip'
 import CompFloatMenu from './home/comps/comp-floatmenu'
 
 import './home/index.scss'
-import SpPoweredBy from '@/components/sp-powered-by'
 
 const MCompAddTip = React.memo(CompAddTip)
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -106,6 +91,7 @@ function Home() {
   const nearbyText = address?.city || location?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
+  const locationKeyRef = useRef('')
   const {
     wgts,
     pageData,
@@ -123,8 +109,6 @@ function Home() {
   useEffectAsync(async () => {
     fetchWgts()
     setNavigationBarTitle(appName)
-
-    log.info({ str: 'hello world' }, 'info log', 100, [1, 2, 3])
   }, [])
 
   useDidShow(() => {
@@ -137,10 +121,13 @@ function Home() {
     Taro.eventCenter.trigger('homePageShow')
   })
 
+  // 仅当定位结果真正变化（如城市/区县）时重拉首页配置，避免每次 useDidShow→updateAddress 导致 location 引用变化就整页重载
   useEffect(() => {
-    if (location && VERSION_STANDARD) {
-      fetchWgts()
-    }
+    if (!location || !VERSION_STANDARD) return
+    const key = [location.city, location.district, location.lat, location.lng].filter(Boolean).join('|')
+    if (locationKeyRef.current === key) return
+    locationKeyRef.current = key
+    fetchWgts()
   }, [location])
 
   useEffect(() => {
