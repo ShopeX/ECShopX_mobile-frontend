@@ -210,6 +210,11 @@ export default function WgtGoods(props) {
                   {isPointsmallItems ? (
                     <View className='wgt-goods__activity-item-point'>
                       <SpPoint value={item.point ?? item.point_exchange ?? 0} />
+                      {Number(item.price || 0) > 0 && (
+                        <Text className='wgt-goods__activity-item-price__unit' style={{ marginLeft: '4px' }}>
+                          +￥{(item.price || 0).toFixed(2)}
+                        </Text>
+                      )}
                     </View>
                   ) : (
                     <View className='wgt-goods__activity-item-price'>

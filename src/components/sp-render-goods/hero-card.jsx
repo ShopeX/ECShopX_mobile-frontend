@@ -116,7 +116,23 @@ function SpGoodsHeroCard(props) {
                   </View>
                 )}
               </>
-            ) : <SpPoint value={info.point} />}
+            ) : (
+              <>
+                <SpPoint value={info.point} />
+                {Number(info.price || 0) > 0 && (
+                  <>
+                    <Text style={{ margin: '0 4px' }}>+</Text>
+                    <SpPrice
+                      className='current-price'
+                      size={34}
+                      value={info.price}
+                      style={{ marginRight: '6px' }}
+                      weight={600}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </View>
         </View>
       </View>

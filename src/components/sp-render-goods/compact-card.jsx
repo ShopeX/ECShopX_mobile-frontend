@@ -117,7 +117,7 @@ function SpGoodsCompactCard(props) {
 
         <View className='sp-goods-compact-card__price'>
           <View className='price-wrapper'>
-            { showPrice ? (
+            {showPrice ? (
               <>
                 <SpPrice
                   className='current-price'
@@ -137,7 +137,23 @@ function SpGoodsCompactCard(props) {
                     />
                   )}
               </>
-            ) :  <SpPoint value={info.point} />}
+            ) : (
+              <>
+                <SpPoint value={info.point} />
+                {Number(info.price || 0) > 0 && (
+                  <>
+                    <Text style={{ margin: '0 4px' }}>+</Text>
+                    <SpPrice
+                      className='current-price'
+                      size={34}
+                      value={info.price}
+                      style={{ marginRight: '6px' }}
+                      weight={600}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </View>
 
           {showPrice && !info.point && info.discountRate && (

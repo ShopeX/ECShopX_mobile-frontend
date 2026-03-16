@@ -45,7 +45,6 @@
   // default 布局：活动商品列表
   &__activity-list {
     display: flex;
-    align-items: center;
     gap: 10px;
     scroll-snap-type: x mandatory;
     overflow-x: auto;
@@ -163,4 +162,5 @@
     color: #999;
     font-size: 28px;
   }
+
 }
