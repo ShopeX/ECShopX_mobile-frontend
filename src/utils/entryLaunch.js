@@ -12,15 +12,7 @@ import _isEqual from 'lodash/isEqual'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
-
-// 惰性获取 spx，避免服务号冷启动时 S 未就绪（与 utils 中 getS 逻辑一致，不能从 utils 引入防循环依赖）
-function getS() {
-  return (
-    (typeof global !== 'undefined' && global.__SPX__) ||
-    (typeof globalThis !== 'undefined' && globalThis.__SPX__) ||
-    require('@/spx').default
-  )
-}
+import S from '@/spx'
 
 const $instance = getCurrentInstance() || {}
 const { store } = configStore()
@@ -208,7 +200,7 @@ class EntryLaunch {
                 lng: res.longitude,
                 lat: res.latitude
               })
-              getS().set('currentLocation', {
+              S.set('currentLocation', {
                 lng: res.longitude,
                 lat: res.latitude
               })
@@ -467,7 +459,7 @@ class EntryLaunch {
    * 导购UV统计
    */
   async postGuideUV() {
-    if (!getS().getAuthToken()) return
+    if (!S.getAuthToken()) return
     const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
     if (gu) {
       const [work_userid] = gu.split('_')
@@ -512,7 +504,7 @@ class EntryLaunch {
     // gu_user_id: 欢迎语上带过来的员工编号, 同work_user_id
     const { gu, subtask_id, item_id, dtid, smid, gu_user_id, id } =
       Taro.getStorageSync(SG_GUIDE_PARAMS) || {}
-    if (gu && getS().getAuthToken()) {
+    if (gu && S.getAuthToken()) {
       const [employee_number, shop_code] = gu.split('_')
       const _params = {
         employee_number,

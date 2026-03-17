@@ -10,6 +10,7 @@ import copy from 'copy-to-clipboard'
 import { STATUS_TYPES_MAP, SG_ROUTER_PARAMS } from '@/consts'
 import api from '@/api'
 import configStore from '@/store'
+import S from '@/spx'
 import _get from 'lodash/get'
 import _findKey from 'lodash/findKey'
 import _pickBy from 'lodash/pickBy'
@@ -28,15 +29,6 @@ import checkAppVersion from './updateManager'
 import linkPage from './linkPage'
 
 const { store } = configStore()
-
-// 惰性获取 spx，避免服务号冷启动打开 custom-page 等页时 utils→spx 循环依赖导致 S 未就绪
-function getS() {
-  return (
-    (typeof global !== 'undefined' && global.__SPX__) ||
-    (typeof globalThis !== 'undefined' && globalThis.__SPX__) ||
-    require('@/spx').default
-  )
-}
 
 const isPrimitiveType = (val, type) => Object.prototype.toString.call(val) === type
 
@@ -292,7 +284,7 @@ export function copyText(text, msg = '内容已复制') {
         return
       }
       if (copy(text)) {
-        getS().toast(msg)
+        S.toast(msg)
         resolve(text)
       } else {
         reject()
@@ -532,7 +524,7 @@ export async function buriedPoint(data) {
     }
     api.wx.taskReportData(newData)
   }
-  if (data.event_type && getS().getAuthToken() && employee_number) {
+  if (data.event_type && S.getAuthToken() && employee_number) {
     const { userId } = Taro.getStorageSync('userinfo')
     api.wx.interactiveReportData({
       event_id: employee_number,
@@ -917,7 +909,7 @@ export function buildSharePath(from_scene, params = {}) {
 const getMobAppExtraData = () => {
   const store = configStore()
 
-  const token = getS().getAuthToken()
+  const token = S.getAuthToken()
   const userInfo = token ? tokenParse(token) : {}
   const aioucd = userInfo?.user_card_code
   return {
