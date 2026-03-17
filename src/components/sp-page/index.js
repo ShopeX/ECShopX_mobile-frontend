@@ -24,6 +24,7 @@ import { useImmer } from 'use-immer'
 import { SpFloatMenuItem, SpNote, SpLoading, SpPoweredBy } from '@/components'
 import { useThemsColor, useLogin } from '@/hooks'
 import CookieConsent from '@/components/cookie-consent'
+import S from '@/spx'
 import {
   TAB_PAGES,
   TABBAR_PATH,
@@ -197,7 +198,7 @@ const SpPage = memo(
         referrerInfo: { appId: fromAppId }
       } = Taro.getLaunchOptionsSync()
 
-      if (fromAppId && !S.getAuthToken() && VERSION_SHUYUN) {
+      if (fromAppId && !S?.getAuthToken() && VERSION_SHUYUN) {
         //数云：第三方小程序跳来需要免登
         login(fromAppId)
       }
