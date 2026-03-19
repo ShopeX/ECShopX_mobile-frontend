@@ -11,7 +11,6 @@ import S from '@/spx'
 import { goToPage, isWeb, VERSION_IN_PURCHASE } from '@/utils'
 import { connect } from 'react-redux'
 import DestoryConfirm from './comps/destory-comfirm-modal'
-
 import './member-setting.scss'
 
 @connect(

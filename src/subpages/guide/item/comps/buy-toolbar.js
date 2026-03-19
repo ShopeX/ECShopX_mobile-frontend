@@ -8,7 +8,6 @@ import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtBadge } from 'taro-ui'
 import { FormIdCollector } from '@/components'
-
 import './buy-toolbar.scss'
 
 @connect(({ colors }) => ({

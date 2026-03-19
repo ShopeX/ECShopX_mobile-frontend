@@ -5,14 +5,14 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
-import { SpPage, SpNavBar, SpCheckbox, SpFloatPrivacy } from '@/components'
+import { SpPage, SpNavBar, SpCheckbox } from '@/components'
+import { SpFloatPrivacy } from '@/subpages/components'
 import api from '@/api'
 import { connect } from 'react-redux'
 import S from '@/spx'
 import { showToast, tokenParse, tokenParseH5, isWeixin, isWxWeb } from '@/utils'
 import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
-
 import './userinfo.scss'
 
 @connect(

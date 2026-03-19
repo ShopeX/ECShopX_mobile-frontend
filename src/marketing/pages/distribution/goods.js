@@ -13,7 +13,6 @@ import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
-
 import './goods.scss'
 
 @withPager

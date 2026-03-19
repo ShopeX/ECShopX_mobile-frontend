@@ -12,14 +12,12 @@ import { AtCountdown, AtButton, AtProgress } from 'taro-ui'
 import { calcTimer, pickBy, log, isArray, buildSharePath } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
-
 import CompGroupTabbar from './comps/comp-groupbar'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
 import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 import CompGroupLogList from './comps/comp-grouploglist'
 import CompGoodsItem from './comps/comp-goodsitem'
 import CompWgts from './comps/comp-wgts'
-
 import './group-leaderdetail.scss'
 
 const initialState = {

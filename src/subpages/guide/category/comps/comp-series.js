@@ -7,7 +7,6 @@ import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { SpLoading, SpImage } from '@/components'
 import { classNames, styleNames } from '@/utils'
-
 import './comp-series.scss'
 
 const CompSeries = (props) => {

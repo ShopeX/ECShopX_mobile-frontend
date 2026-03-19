@@ -8,9 +8,7 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpNote, BackToTop, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-
 import api from '@/api'
-
 import './index.scss'
 
 @withPager

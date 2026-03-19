@@ -6,12 +6,12 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
-import { SpPage, SpTime, SpCustomPicker } from '@/components'
+import { SpPage } from '@/components'
+import { SpTime, SpCustomPicker } from '@/subpages/components'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-
 import './index.scss'
 
 const initialConfigState = {

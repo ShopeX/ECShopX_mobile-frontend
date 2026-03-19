@@ -8,9 +8,9 @@ import { View, Image, Input, Button } from '@tarojs/components'
 import { isWeb, isWeixin } from '@/utils'
 import { connect } from 'react-redux'
 import api from '@/api'
-import { SpTimer, SpPage } from '@/components'
+import { SpPage } from '@/components'
+import { SpTimer } from '@/subpages/components'
 import { updateUserInfo } from '@/store/slices/user'
-
 import './edit-phone.scss'
 
 @connect(

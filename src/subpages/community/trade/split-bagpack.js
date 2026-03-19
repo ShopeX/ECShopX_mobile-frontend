@@ -7,10 +7,10 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown } from 'taro-ui'
-import { Loading, SpToast, SpNavBar, FloatMenuMeiQia, SpImg } from '@/components'
+import { Loading, SpToast, SpNavBar, SpImg } from '@/components'
+import { FloatMenuMeiQia } from '@/subpages/components'
 import { pickBy, formatTime, resolveOrderStatus } from '@/utils'
 import api from '@/api'
-
 import './split-bagpack.scss'
 
 @connect(({ colors }) => ({

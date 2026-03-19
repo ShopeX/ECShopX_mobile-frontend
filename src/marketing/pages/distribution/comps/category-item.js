@@ -10,7 +10,6 @@ import { Loading, GoodsItem, SpNote } from '@/components'
 import { classNames, pickBy } from '@/utils'
 //import {AtTabBar, AtTabsPane} from "taro-ui";
 import api from '@/api'
-
 import './category-item.scss'
 
 @connect((store) => ({

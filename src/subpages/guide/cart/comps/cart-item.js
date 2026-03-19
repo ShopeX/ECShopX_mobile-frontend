@@ -8,7 +8,6 @@ import { View, Text, Image } from '@tarojs/components'
 import { Price } from '@/components'
 import InputNumber from '@/components/input-number'
 import { isObject, classNames } from '@/utils'
-
 import './cart-item.scss'
 
 export default class GoodsItem extends Component {

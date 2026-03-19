@@ -13,7 +13,6 @@ import api from '@/api'
 import { isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
-
 import './edit-address.scss'
 
 const initialState = {

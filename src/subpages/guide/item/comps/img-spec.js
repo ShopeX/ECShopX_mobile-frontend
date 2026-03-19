@@ -16,7 +16,6 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, ScrollView, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
-
 import './img-spec.scss'
 
 export default class ImgSpec extends Component {

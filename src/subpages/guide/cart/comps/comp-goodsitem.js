@@ -5,7 +5,6 @@
 import React from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage } from '@/components'
-
 import './comp-goodsitem.scss'
 
 function CompGoodsItem(props) {

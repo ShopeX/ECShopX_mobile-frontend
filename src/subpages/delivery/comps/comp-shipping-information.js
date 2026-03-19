@@ -11,7 +11,6 @@ import { pickBy, showToast, classNames, isArray } from '@/utils'
 import { SpUpload } from '@/components'
 import { AtList, AtListItem, AtTextarea } from 'taro-ui'
 import { useSyncCallback } from '@/hooks'
-
 import './comp-shipping-information.scss'
 
 // list: [

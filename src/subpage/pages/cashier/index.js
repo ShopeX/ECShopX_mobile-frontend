@@ -15,7 +15,6 @@ import getPaymentList from '@/utils/payment'
 import { PAYTYPE } from '@/consts'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
 import { deleteForm } from './util'
-
 import './index.scss'
 
 @connect(({ sys }) => ({

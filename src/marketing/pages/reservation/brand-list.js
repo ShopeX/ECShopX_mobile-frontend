@@ -10,7 +10,6 @@ import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer } from 'taro-ui'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
-
 import './brand-list.scss'
 
 @withPager

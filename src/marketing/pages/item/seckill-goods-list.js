@@ -11,7 +11,6 @@ import { AtCountdown } from 'taro-ui'
 import { connect } from 'react-redux'
 import api from '@/api'
 import { classNames, pickBy, isNavbar, getDistributorId } from '@/utils'
-
 import './seckill-goods-list.scss'
 
 @connect(({ colors }) => ({

@@ -12,7 +12,6 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { pickBy } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
-
 import './index.scss'
 
 import CompTabbar from './comps/comp-tabbar'

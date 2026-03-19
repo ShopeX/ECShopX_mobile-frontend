@@ -13,7 +13,6 @@ import api from '@/api'
 import { classNames, isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
-
 import './edit-deliveryman.scss'
 
 const initialState = {

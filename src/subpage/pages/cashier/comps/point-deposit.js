@@ -7,9 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { connect } from 'react-redux'
 import { View } from '@tarojs/components'
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
-
 import api from '@/api'
-
 import './point-deposit.scss'
 
 @connect(({ sys }) => ({

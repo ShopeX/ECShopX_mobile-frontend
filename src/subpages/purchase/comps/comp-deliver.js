@@ -10,7 +10,6 @@ import { useImmer } from 'use-immer'
 import { AddressChoose } from '@/components'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import api from '@/api'
-
 import { deliveryList } from '../const'
 import './comp-deliver.scss'
 

@@ -13,15 +13,8 @@ import Taro, {
 import { AtButton } from 'taro-ui'
 import { View, Image, Text, Button, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import {
-  SpLogin,
-  SpScrollView,
-  SpTagBar,
-  FloatMenus,
-  FloatMenuItem,
-  SpPage,
-  SpFloatMenuItem
-} from '@/components'
+import { SpLogin, SpScrollView, SpPage, SpFloatMenuItem } from '@/components'
+import { SpTagBar, FloatMenus, FloatMenuItem } from '@/subpages/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation } from '@/hooks'
@@ -29,7 +22,6 @@ import { pickBy, showToast, navigateTo } from '@/utils'
 import doc from '@/doc'
 import S from '@/spx'
 import CompNoteItem from './comps/comp-noteitem'
-
 import './list.scss'
 
 const initialState = {

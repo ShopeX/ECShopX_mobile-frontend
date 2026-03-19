@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Form, Text, Image } from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
-
 import './index.scss'
 
 export default class SearchBar extends Component {

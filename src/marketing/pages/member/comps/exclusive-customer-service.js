@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { AtAvatar } from 'taro-ui'
-
 import './exclusive-customer-service.scss'
 
 export default class ExclusiveCustomerService extends Component {

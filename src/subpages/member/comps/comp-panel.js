@@ -5,7 +5,6 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
-
 import './comp-panel.scss'
 
 function CompPanel(props) {

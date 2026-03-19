@@ -26,7 +26,6 @@ import {
 import { Tracker } from '@/service'
 import S from '@/spx'
 import TradeItem from './comps/new-item'
-
 import './list.scss'
 
 @connect(({ colors, purchase }) => ({

@@ -5,19 +5,12 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import {
-  Loading,
-  FloatMenus,
-  FloatMenuItem,
-  GoodsEvaluation,
-  GoodsComment,
-  SpNavBar
-} from '@/components'
+import { Loading, SpNavBar } from '@/components'
+import { FloatMenus, FloatMenuItem, GoodsEvaluation, GoodsComment } from '@/subpages/components'
 import api from '@/api'
 import { withBackToTop, withPager } from '@/hocs'
 import { normalizeQuerys } from '@/utils'
 import entry from '@/utils/entry'
-
 import './espier-evaluation.scss'
 
 @withPager

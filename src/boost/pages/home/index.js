@@ -10,7 +10,6 @@ import api from '@/api'
 import { debounce, pickBy } from '@/utils'
 import LoadingMore from '../../component/loadingMore'
 import BargainItem from '../../component/bargainItem'
-
 import './index.scss'
 
 export default class Home extends Component {

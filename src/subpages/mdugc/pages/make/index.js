@@ -16,7 +16,6 @@ import {
   PageContainer
 } from '@tarojs/components'
 import { SpImg, SpInput as AtInput } from '@/components'
-
 import { connect } from 'react-redux'
 import imgUploader from '@/utils/upload'
 import { pickBy } from '@/utils'

@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { linkPage } from './helper'
-
 import './navigation.scss'
 
 export default class WgtNavigation extends Component {

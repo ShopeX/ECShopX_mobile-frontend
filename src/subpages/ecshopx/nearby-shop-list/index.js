@@ -4,16 +4,9 @@
  */
 import Taro, { useState, useEffect, useCallback } from '@tarojs/taro'
 import { View, ScrollView, Image } from '@tarojs/components'
-import {
-  SpNavBar,
-  SpNewInput,
-  SpNewFilterbar,
-  SpNewShopItem,
-  SpNewFilterDrawer,
-  SpLoadMore
-} from '@/components'
+import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewFilterDrawer, SpLoadMore } from '@/components'
+import { SpNewShopItem } from '@/subpages/components'
 import { classNames, isNavbar, JumpPageIndex } from '@/utils'
-
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks'
 import {

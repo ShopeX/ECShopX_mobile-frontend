@@ -5,14 +5,14 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress, Canvas } from '@tarojs/components'
-import { SpNavBar, SpHtmlContent } from '@/components'
+import { SpNavBar } from '@/components'
+import { SpHtmlContent } from '@/subpages/components'
 import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
 import { connect } from 'react-redux'
 // import config from './index.config.js'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
-
 import './index.scss'
 
 @connect(

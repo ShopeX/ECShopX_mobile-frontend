@@ -8,7 +8,6 @@ import { View, Text, Image, Button } from '@tarojs/components'
 import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
 import { SpNavBar } from '@/components'
-
 import './index.scss'
 
 export default class PayDetail extends Component {

@@ -6,14 +6,12 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import S from '@/spx'
-
-import { SpNote, BackToTop, FloatMenus, FloatMenuItem, SpTabbar } from '@/components'
+import { SpNote, BackToTop, SpTabbar } from '@/components'
+import { FloatMenus, FloatMenuItem } from '@/subpages/components'
 import { pickBy } from '@/utils'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop } from '@/hocs'
-
 import api from '@/api'
-
 import { SearchBar, TagsBarcheck, Scrollitem } from '../../components'
 import './index.scss'
 

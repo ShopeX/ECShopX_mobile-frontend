@@ -9,7 +9,6 @@ import api from '@/api'
 import { formatDateTime } from '@/utils'
 import paySuccessPng from '../../../assets/imgs/pay_success.png'
 import payFailPng from '../../../assets/imgs/pay_fail.png'
-
 import './cashier-result.scss'
 
 export default class CashierResult extends Component {

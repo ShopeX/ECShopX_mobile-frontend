@@ -11,7 +11,6 @@ import { AtButton } from 'taro-ui'
 import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
 import { classNames } from '@/utils'
 import api from '@/api'
-
 import './comp-noteitem.scss'
 
 const initialState = {

@@ -10,7 +10,6 @@ import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
-
 import './comp-paymentpicker.scss'
 
 function CompPaymentPicker(props) {

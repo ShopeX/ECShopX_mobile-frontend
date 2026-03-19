@@ -7,7 +7,6 @@ import { entryLaunch, showToast } from '@/utils'
 import Taro from '@tarojs/taro'
 import { SpPage } from '@/components'
 import api from '@/api'
-
 import { SG_ROUTER_PARAMS } from '@/consts'
 
 function Payment() {

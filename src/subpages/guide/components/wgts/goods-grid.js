@@ -9,7 +9,6 @@ import { SpGoodsItem, SpImage } from '@/components'
 import { pickBy, classNames, styleNames, showToast } from '@/utils'
 import api from '@/api'
 import { useImmer } from 'use-immer'
-
 import doc from '@/doc'
 import BaSkuSelect from '../ba-sku-select'
 import './goods-grid.scss'

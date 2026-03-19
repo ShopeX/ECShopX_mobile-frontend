@@ -9,7 +9,6 @@ import { BackToTop, Loading, SpNote, SpSearchInput } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
-
 import './withdrawals-record.scss'
 
 @withPager

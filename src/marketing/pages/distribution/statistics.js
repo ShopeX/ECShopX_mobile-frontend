@@ -7,7 +7,6 @@ import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar, SpPage } from '@/components'
 import { pickBy } from '@/utils'
-
 import './statistics.scss'
 
 export default class DistributionStatistics extends Component {

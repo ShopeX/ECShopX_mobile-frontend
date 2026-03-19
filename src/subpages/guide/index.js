@@ -22,7 +22,6 @@ import {
   BaNavBar
 } from '@/subpages/guide/components'
 // import { WgtHomeHeader } from '@/pages/home/wgts'
-
 import './index.scss'
 
 const initState = {

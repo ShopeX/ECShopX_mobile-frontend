@@ -8,7 +8,6 @@ import { AtButton, AtProgress } from 'taro-ui'
 import { View, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice, SpInputNumber } from '@/components'
 import { useImmer } from 'use-immer'
-
 import './comp-goodsitembuy.scss'
 
 const initialState = {

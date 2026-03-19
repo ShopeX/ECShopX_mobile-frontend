@@ -8,12 +8,10 @@ import { Image, View, Picker } from '@tarojs/components'
 import { AtList, AtListItem } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-
 import { SpTab, SpScrollView, SpPage, SpCell, SpImage } from '@/components'
 import { pickBy, showToast } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
-
 import './boxlist.scss'
 
 // const TAB_LIST = [

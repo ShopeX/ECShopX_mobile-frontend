@@ -13,10 +13,8 @@ import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { SpPage, SpScrollView } from '@/components'
 import { DELIVERY_PERSONNEL_INFORMATION } from '@/consts'
-
 import CompShippingInformation from './comps/comp-shipping-information'
 import CompTradeItem from './comps/comp-tradeitem'
-
 import './send-out-goods.scss'
 
 const initialConfigState = {

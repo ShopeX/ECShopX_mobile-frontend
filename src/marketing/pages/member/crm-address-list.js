@@ -10,7 +10,6 @@ import { connect } from 'react-redux'
 import { SpToast, SpCell, SpNavBar, SpCheckbox } from '@/components'
 import S from '@/spx'
 import api from '@/api'
-
 import './crm-address-list.scss'
 
 const ADDRESS_ID = 'third_data'

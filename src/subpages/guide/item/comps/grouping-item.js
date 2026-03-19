@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer } from '@/utils'
-
 import './grouping-item.scss'
 
 export default class GroupingItem extends Component {

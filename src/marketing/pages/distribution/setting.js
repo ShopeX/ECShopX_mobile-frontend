@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpPage } from '@/components'
 import api from '@/api'
-
 import './setting.scss'
 
 export default class DistributionSetting extends Component {

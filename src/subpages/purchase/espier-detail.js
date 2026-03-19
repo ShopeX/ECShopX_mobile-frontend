@@ -30,7 +30,6 @@ import {
   isAPP,
   getDistributorId
 } from '@/utils'
-
 import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
@@ -49,7 +48,6 @@ import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
 import CompSkuSelect from './comps/comp-skuselect'
-
 import './espier-detail.scss'
 
 const MSpSkuSelect = React.memo(CompSkuSelect)

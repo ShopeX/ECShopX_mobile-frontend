@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import { AtRate, AtTextarea, AtImagePicker } from 'taro-ui'
 import imgUploader from '@/utils/upload'
-
 import './rate.scss'
 
 @connect(

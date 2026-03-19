@@ -35,7 +35,6 @@ import CompShopBrand from './comps/comp-shopbrand'
 import Categorys from './categorys'
 import CompTab from './comps/comp-tab'
 import CompAddCart from './comps/comp-add-cart'
-
 import './index.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)

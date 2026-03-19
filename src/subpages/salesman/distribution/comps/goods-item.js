@@ -8,7 +8,6 @@ import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
 import { classNames } from '@/utils'
 // import api from '@/api'
-
 import './goods-item.scss'
 
 export default class DistributionGoodsItem extends Component {

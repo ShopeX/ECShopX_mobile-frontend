@@ -12,7 +12,6 @@ import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute, classNames, isNavbar } from '@/utils'
 // import { Tracker } from '@/service'
 import TradeItem from './comps/item'
-
 import './list.scss'
 
 @connect(({ colors }) => ({

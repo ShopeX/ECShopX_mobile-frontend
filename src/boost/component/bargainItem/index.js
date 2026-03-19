@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress } from '@tarojs/components'
-
 import './index.scss'
 
 export default class BargainItem extends Component {

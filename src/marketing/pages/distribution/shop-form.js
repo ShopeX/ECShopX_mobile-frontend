@@ -11,7 +11,6 @@ import imgUploader from '@/utils/upload'
 import S from '@/spx'
 import api from '@/api'
 // import req from '@/api/req'
-
 import './shop-form.scss'
 
 export default class DistributionShopForm extends Component {

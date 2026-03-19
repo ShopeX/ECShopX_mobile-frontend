@@ -20,11 +20,9 @@ import {
 import S from '@/spx'
 import { WgtFloorImg } from '@/pages/home/wgts'
 import { classNames, isWeb, isWeixin, showToast, pickBy, isNumber, buildSharePath } from '@/utils'
-
 import api from '@/api'
 import doc from '@/doc'
 import { useImmer } from 'use-immer'
-
 import './note-detail.scss'
 
 const initialState = {

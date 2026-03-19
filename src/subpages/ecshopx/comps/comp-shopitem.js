@@ -5,7 +5,6 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
-
 import './comp-shopitem.scss'
 
 function CompShopItem(props) {

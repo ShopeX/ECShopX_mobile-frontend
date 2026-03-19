@@ -5,12 +5,10 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-
 import { SpNote, BackToTop, Loading } from '@/components'
 import { connect } from 'react-redux'
 import { pickBy, styleNames, getThemeStyle } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-
 import api from '@/api'
 import { SearchBar } from '../../components'
 import './index.scss'

@@ -6,7 +6,8 @@ import React, { Component } from 'react'
 import { View, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { classNames, formatPriceToHundred } from '@/utils'
-import { SpNewShopItem, SpOrderItem } from '@/components'
+import { SpOrderItem } from '@/components'
+import { SpNewShopItem } from '@/subpages/components'
 import './index.scss'
 
 @connect(({ colors, sys }) => ({

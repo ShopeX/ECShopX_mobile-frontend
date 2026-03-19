@@ -14,7 +14,6 @@ import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
-
 import './nearly-shop.scss'
 
 const initialState = {

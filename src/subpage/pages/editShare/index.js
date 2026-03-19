@@ -10,7 +10,6 @@ import api from '@/api'
 import req from '@/api/req'
 import { getAppId, isAlipay } from '@/utils'
 import { connect } from 'react-redux'
-
 import './index.scss'
 
 // canvas宽高

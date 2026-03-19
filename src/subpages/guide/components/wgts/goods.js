@@ -8,9 +8,7 @@ import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { connect } from 'react-redux'
 import api from '@/api'
-
 import S from '@/spx'
-
 import './goods.scss'
 
 @connect(

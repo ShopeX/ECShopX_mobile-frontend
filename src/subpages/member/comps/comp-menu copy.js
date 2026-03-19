@@ -17,7 +17,6 @@ import {
   VERSION_B2C
 } from '@/utils'
 import { SG_APP_CONFIG } from '@/consts'
-
 import './comp-menu.scss'
 
 const MENUS = [

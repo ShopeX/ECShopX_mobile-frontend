@@ -7,10 +7,10 @@ import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import api from '@/api'
 import { View, Text, Image } from '@tarojs/components'
-import { SpTime, SpImage, SpCustomPicker } from '@/components'
+import { SpImage } from '@/components'
+import { SpTime, SpCustomPicker } from '@/subpages/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
-
 import './comp-ranking.scss'
 
 const initialState = {

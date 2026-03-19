@@ -46,13 +46,10 @@ import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import S from '@/spx'
-
 import { initialState } from './const'
-
 import CompDelivers from './comps/comp-delivers'
 import CompSelectPackage from './comps/comp-selectpackage'
 import CompPointUse from './comps/comp-pointuse'
-
 import './espier-checkout.scss'
 
 function CartCheckout(props) {

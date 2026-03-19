@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Video } from '@tarojs/components'
-
 import './film.scss'
 
 export default class WgtFilm extends Component {

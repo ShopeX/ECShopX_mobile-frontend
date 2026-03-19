@@ -12,7 +12,6 @@ import api from '@/api'
 import doc from '@/doc'
 import recommendation from '@/assets/imgs/recommendation.png'
 import { SpScrollView, SpPrice, SpImage, SpShopCoupon, SpGoodsItem } from '@/components'
-
 import './comp-navigation-classification.scss'
 
 /**

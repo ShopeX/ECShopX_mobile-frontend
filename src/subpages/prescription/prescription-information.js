@@ -13,7 +13,6 @@ import { relationship } from '@/consts'
 import { AtTag, AtList, AtListItem, AtTextarea, AtButton } from 'taro-ui'
 import { classNames, isWeixin, showToast, pickBy } from '@/utils'
 import CompMedicationPersonnel from './comps/comp-medication-personnel'
-
 import './prescription-information.scss'
 
 const initialState = {

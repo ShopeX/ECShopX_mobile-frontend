@@ -13,7 +13,6 @@ import api from '@/api'
 import S from '@/spx'
 import qs from 'qs'
 import { getDtidIdUrl } from '@/utils/helper'
-
 import './group-detail.scss'
 
 export default class GroupDetail extends Component {

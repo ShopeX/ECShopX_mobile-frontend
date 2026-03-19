@@ -12,7 +12,6 @@ import { useImmer } from 'use-immer'
 import { navigateTo } from '@/utils'
 import { AtModal } from 'taro-ui'
 import api from '@/api'
-
 import './comp-groupbar.scss'
 
 const initialState = {

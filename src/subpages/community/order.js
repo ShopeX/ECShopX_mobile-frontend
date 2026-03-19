@@ -23,7 +23,6 @@ import api from '@/api'
 import CompOrderItem from './comps/comp-orderitem'
 import CompTabbar from './comps/comp-tabbar'
 import CompTradeItem from './comps/comp-tradeitem'
-
 import './order.scss'
 
 const initialState = {

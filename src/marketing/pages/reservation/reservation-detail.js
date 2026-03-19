@@ -11,7 +11,6 @@ import { AtDrawer } from 'taro-ui'
 import { SpCell } from '@/components'
 import api from '@/api'
 import { pickBy, classNames } from '@/utils'
-
 import './reservation-detail.scss'
 
 @withPager

@@ -11,7 +11,6 @@ import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar, SpCheckboxNew } from '
 import { connect } from 'react-redux'
 import api from '@/api'
 import { pickBy, hasNavbar, getDistributorId } from '@/utils'
-
 import './plusprice.scss'
 
 @connect(({ colors }) => ({

@@ -12,7 +12,6 @@ import imgUploader from '@/utils/upload'
 import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
 import { SpPage, SpSearchBar, SpScrollView, SpCell, SpNote } from '@/components'
-
 import './subject-talk.scss'
 
 const initialState = {

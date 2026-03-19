@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Image, Text, Swiper, Video, SwiperItem } from '@tarojs/components'
-
 import './index.scss'
 
 export default class Swiperugc extends Component {

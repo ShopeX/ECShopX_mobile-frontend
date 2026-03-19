@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames } from '@/utils'
 import S from '@/spx'
-
 import './index.scss'
 
 export default class SpToolbar extends Component {

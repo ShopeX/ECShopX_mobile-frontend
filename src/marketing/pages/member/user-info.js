@@ -7,19 +7,12 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtForm, AtButton } from 'taro-ui'
-import {
-  SpToast,
-  SpTimer,
-  SpNavBar,
-  FormIdCollector,
-  SpCheckbox,
-  SpInput as AtInput
-} from '@/components'
+import { SpToast, SpNavBar, FormIdCollector, SpCheckbox, SpInput as AtInput } from '@/components'
+import { SpTimer } from '@/subpages/components'
 import { classNames, isString, isArray } from '@/utils'
 // import { Tracker } from '@/service'
 import S from '@/spx'
 import api from '@/api'
-
 import './user-info.scss'
 
 const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP

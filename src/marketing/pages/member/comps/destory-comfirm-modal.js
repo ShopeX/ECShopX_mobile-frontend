@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
-
 import './destory-comfirm-modal.scss'
 
 @connect(({ colors }) => ({

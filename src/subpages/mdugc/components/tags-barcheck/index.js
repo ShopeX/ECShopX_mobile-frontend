@@ -7,7 +7,6 @@ import Taro from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { classNames } from '@/utils'
-
 import './index.scss'
 
 @connect(({ colors }) => ({

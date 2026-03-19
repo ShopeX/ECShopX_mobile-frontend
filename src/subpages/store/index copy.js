@@ -6,15 +6,8 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import {
-  SpToast,
-  Loading,
-  BackToTop,
-  SpRecommend,
-  SpCellCoupon,
-  SpPage,
-  SpFloatMenuItem
-} from '@/components'
+import { SpToast, Loading, BackToTop, SpRecommend, SpPage, SpFloatMenuItem } from '@/components'
+import { SpCellCoupon } from '@/subpages/components'
 import { AtTabBar } from 'taro-ui'
 import req from '@/api/req'
 import api from '@/api'
@@ -49,7 +42,6 @@ import {
   WgtHotTopic
 } from '@/pages/home/wgts'
 import CompHeader from './comps/comp-header'
-
 import './index.scss'
 
 @connect((store) => ({

@@ -9,9 +9,7 @@ import { SpNote, BackToTop, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import { connect } from 'react-redux'
-
 import api from '@/api'
-
 import './index.scss'
 
 @connect(({ member }) => ({

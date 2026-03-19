@@ -20,10 +20,8 @@ import {
   updateCount
 } from '@/store/slices/purchase'
 import { SpPage, SpPrice, SpLogin, SpDefault, SpCheckboxNew, SpPrivacyModal } from '@/components'
-
 import CompGoodsItem from '@/pages/cart/comps/comp-goodsitem'
 import CompTabbar from './comps/comp-tabbar'
-
 import './espier-index.scss'
 
 const initialState = {

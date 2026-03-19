@@ -9,7 +9,6 @@ import { Loading, SpNote, SpNavBar, SpPage } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { classNames, pickBy } from '@/utils'
-
 import './subordinate.scss'
 
 @withPager

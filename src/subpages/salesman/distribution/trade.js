@@ -10,7 +10,6 @@ import { Loading, SpNote, SpNavBar, SpTabs, SpSearchInput, SpPage } from '@/comp
 import api from '@/api'
 import { hasNavbar, pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-
 import './trade.scss'
 
 @withPager

@@ -41,7 +41,6 @@ import {
   isAPP,
   buildSharePath
 } from '@/utils'
-
 import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
@@ -52,7 +51,6 @@ import { ACTIVITY_LIST } from '@/consts'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
 import CompEvaluation from './comps/comp-evaluation'
 import CompBuytoolbar from './comps/comp-buytoolbar'
-
 import './espier-detail.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)

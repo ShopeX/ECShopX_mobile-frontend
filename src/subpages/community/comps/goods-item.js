@@ -5,7 +5,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
-
 import './goods-item.scss'
 
 const GoodsItem = () => {

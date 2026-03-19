@@ -5,7 +5,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
-
 import './wp-goods-item.scss'
 
 const WaitPayGoodsItem = () => {

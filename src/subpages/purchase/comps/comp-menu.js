@@ -7,7 +7,6 @@ import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { isWeb } from '@/utils'
 import CompPanel from './comp-panel'
-
 import './comp-menu.scss'
 
 const MENUS = [

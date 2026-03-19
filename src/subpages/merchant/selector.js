@@ -5,7 +5,6 @@
 import Taro, { useRouter } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
 import { useRef } from 'react'
-
 import { SpSearchBar, SpPage, SpScrollView, SpImage } from '@/components'
 import api from '@/api'
 import { useSelector, useDispatch } from 'react-redux'

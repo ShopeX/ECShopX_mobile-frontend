@@ -8,7 +8,6 @@ import { AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text } from '@tarojs/components'
-
 import './comp-selectpackage.scss'
 
 const initialState = {

@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import userIcon from '@/assets/imgs/user-icon.png'
-
 import './qrcode.scss'
 
 @connect(({ colors }) => ({

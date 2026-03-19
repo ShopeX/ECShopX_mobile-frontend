@@ -12,7 +12,6 @@ import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin } from '@/utils'
-
 import './address.scss'
 
 const ADDRESS_ID = 'address_id'

@@ -5,21 +5,13 @@
 import React, { useEffect, useRef } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
-import {
-  SpLogin,
-  SpSearchBar,
-  SpScrollView,
-  SpTabbar,
-  SpPage,
-  SpFloatMenuItem,
-  SpTagBar
-} from '@/components'
+import { SpLogin, SpSearchBar, SpScrollView, SpTabbar, SpPage, SpFloatMenuItem } from '@/components'
+import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
 import CompNoteItem from './comps/comp-noteitem'
-
 import './index.scss'
 
 function UgcIndex() {

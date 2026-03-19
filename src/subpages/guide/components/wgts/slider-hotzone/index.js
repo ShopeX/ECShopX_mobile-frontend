@@ -13,7 +13,6 @@ import { linkPage } from '../helper'
 import SliderTypeOne from './slider-typeone'
 import SliderTypeTwo from './slider-typetwo'
 import SliderTypeThree from './slider-typethree'
-
 import '../slider.scss'
 
 @connect(

@@ -5,7 +5,6 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { styleNames, classNames } from '@/utils'
-
 import './comp-vipcard.scss'
 
 function CompVipCard(props) {

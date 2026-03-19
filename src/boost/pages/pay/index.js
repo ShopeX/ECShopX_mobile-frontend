@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import api from '@/api'
 import { SpNavBar, AddressChoose } from '@/components'
-
 import './index.scss'
 
 @connect(
