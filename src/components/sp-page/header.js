@@ -49,7 +49,7 @@ const CustomNavigationHeader = memo((props) => {
     const headerBg =
       statusBarBgColor ?? immersiveScrollRevealBgColor ?? value?.navigateBackgroundColor
     if (headerBg) {
-      style.backgroundColor = headerBg
+      style['background-color'] = headerBg
     }
     if (value?.navigateBackgroundImage) {
       style['background-image'] = `url(${value?.navigateBackgroundImage})`

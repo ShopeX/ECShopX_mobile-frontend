@@ -151,8 +151,8 @@ function GoodsItem(props) {
               key={item.tag_id}
               style={styleNames({
                 color: item.font_color,
-                borderColor: item.tag_color,
-                backgroundColor: item.tag_color
+                'border-color': item.tag_color,
+                'background-color': item.tag_color
               })}
             >
               {item.tag_name}

@@ -284,7 +284,7 @@ export default class TradeRefund extends Component {
           current={curSegIdx}
           tabList={segTypes}
           onClick={this.handleClickTab}
-          customStyle={{ color: colors.data[0].primary, backgroundColor: colors.data[0].primary }}
+          customStyle={{ color: colors.data[0].primary, 'background-color': colors.data[0].primary }}
         >
           {/* {segTypes.map((panes, pIdx) => (
             <AtTabsPane current={curSegIdx} key={panes.status} index={pIdx}></AtTabsPane>

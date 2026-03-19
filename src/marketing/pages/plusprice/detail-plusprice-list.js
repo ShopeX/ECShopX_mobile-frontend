@@ -167,7 +167,7 @@ export default class DetailPluspriceList extends Component {
           <View className='title'> {promotion_activity.marketing_name} </View>
           <View
             className='plusprice-goods__timer'
-            style={{ backgroundColor: timeBackgroundColor ? timeBackgroundColor : '#FC682D' }}
+            style={{ 'background-color': timeBackgroundColor ? timeBackgroundColor : '#FC682D' }}
           >
             <View>
               <Text className='time-text'>距结束</Text>

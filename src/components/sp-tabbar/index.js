@@ -95,7 +95,7 @@ function SpTabbar() {
   }
 
   return (
-    <View className='sp-tabbar' style={{ backgroundColor: backgroundColor }}>
+    <View className='sp-tabbar' style={{ 'background-color': backgroundColor }}>
       {tabList?.map((item, index) => {
         const iconPath = index == currentIndex ? item.selectedIconPath : item.iconPath
         return (
