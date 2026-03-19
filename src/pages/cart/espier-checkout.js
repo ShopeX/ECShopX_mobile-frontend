@@ -138,7 +138,6 @@ function CartCheckout(props) {
     launchScene = routerParams.launchScene
   } = $instance?.router?.params || {}
   const isLaunchScene = launchScene == 1 ? true : false
-  console.log('$instance?.router?.params:', $instance?.router)
 
   useEffect(() => {
     Taro.eventCenter.on('onEventCheckoutInvoiceChange', (params) => {

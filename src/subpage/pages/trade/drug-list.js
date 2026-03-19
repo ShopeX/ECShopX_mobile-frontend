@@ -11,7 +11,6 @@ import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, getCurrentRoute } from '@/utils'
 import TradeItem from './comps/item'
 // import { Tracker } from '@/service'
-
 import './list.scss'
 
 @withPager

@@ -16,16 +16,8 @@ import { updateUserInfo } from '@/store/slices/user'
 import { updateIsOpenPurchase } from '@/store/slices/purchase'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-
-import {
-  SpLogin,
-  SpImage,
-  SpPrice,
-  CouponModal,
-  SpPrivacyModal,
-  SpTabbar,
-  SpPage
-} from '@/components'
+import { SpLogin, SpImage, SpPrice, SpPrivacyModal, SpTabbar, SpPage } from '@/components'
+import { CouponModal } from '@/subpages/components'
 import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import {
@@ -50,7 +42,6 @@ import CompPanel from './comps/comp-panel'
 import CompMenu from './comps/comp-menu'
 import CompTabbar from './comps/comp-tabbar'
 import CompHelpCenter from './comps/comp-helpcenter'
-
 import './member.scss'
 
 const initialConfigState = {

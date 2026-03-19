@@ -10,7 +10,6 @@ import api from '@/api'
 import { SpPage } from '@/components'
 import { log } from '@/utils'
 // import { Tracker } from '@/service'
-
 import './shop.scss'
 
 @connect(({ colors }) => ({

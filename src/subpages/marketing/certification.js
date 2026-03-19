@@ -6,13 +6,11 @@ import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Form, Button, Image } from '@tarojs/components'
 import { useSelector } from 'react-redux'
-
 import { useImmer } from 'use-immer'
 import S from '@/spx'
 import { SpPage, SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
-
 import './certification.scss'
 
 const initialState = {

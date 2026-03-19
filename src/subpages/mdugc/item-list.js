@@ -12,7 +12,6 @@ import { pickBy, getDistributorId, classNames } from '@/utils'
 import entry from '@/utils/entry'
 import doc from '@/doc'
 import api from '@/api'
-
 import './item-list.scss'
 
 const initialState = {

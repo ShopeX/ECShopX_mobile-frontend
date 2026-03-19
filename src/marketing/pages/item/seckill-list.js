@@ -9,7 +9,6 @@ import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
 import { AtCountdown, AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
-
 import './seckill-list.scss'
 
 @withPager

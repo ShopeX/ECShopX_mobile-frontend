@@ -18,7 +18,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
 import { SYMBOL } from '../util'
-
 import './alipay.scss'
 
 export default class AlipayBtn extends Component {

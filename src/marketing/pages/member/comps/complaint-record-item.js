@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import { View, Image } from '@tarojs/components'
 import { AtAvatar, AtTextarea } from 'taro-ui'
 import { formatDateTime } from '@/utils'
-
 import './complaint-record-item.scss'
 
 export default class ComplaintRecordItem extends Component {

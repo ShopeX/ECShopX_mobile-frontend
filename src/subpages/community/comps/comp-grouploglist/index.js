@@ -10,7 +10,6 @@ import { useImmer } from 'use-immer'
 import api from '@/api'
 import * as communityApi from '@/api/community'
 import { useAsyncCallback } from '@/hooks'
-
 import './index.scss'
 
 const initialState = {

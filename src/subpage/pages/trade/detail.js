@@ -7,7 +7,8 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button, Image, ScrollView } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtCountdown, AtFloatLayout } from 'taro-ui'
-import { Loading, SpNavBar, FloatMenuMeiQia, SpNewShopItem, SpCell, SpImage } from '@/components'
+import { Loading, SpNavBar, SpCell, SpImage } from '@/components'
+import { FloatMenuMeiQia, SpNewShopItem } from '@/subpages/components'
 import {
   pickBy,
   formatDateTime,
@@ -41,7 +42,6 @@ import OnRoad from '../../assets/dada4.png'
 import Cancel from '../../assets/dada5.png'
 import Success from '../../assets/dada6.png'
 import DadaGoStore from '../../assets/dada7.png'
-
 import './detail.scss'
 
 // 订单状态和图片匹配

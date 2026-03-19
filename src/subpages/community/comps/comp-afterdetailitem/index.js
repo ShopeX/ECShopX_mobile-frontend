@@ -10,7 +10,6 @@ import { copyText } from '@/utils'
 import InputNumber from '@/components/input-number'
 import SpCheckbox from '@/components/checkbox'
 import { SpOrderItem } from '@/components'
-
 import './index.scss'
 
 export default class CompAfterDetailItem extends Component {

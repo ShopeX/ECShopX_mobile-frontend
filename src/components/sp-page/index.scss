@@ -100,6 +100,9 @@
     box-sizing: border-box;
     /* 禁止 CSS 穿透：样式隔离，避免页面/父级样式影响浮层内容 */
     touch-action: none;
+    box-sizing: border-box;
+    /* 禁止 CSS 穿透：样式隔离，避免页面/父级样式影响浮层内容 */
+    touch-action: none;
 
     .icon-zhiding {
       font-size: 34px;
@@ -302,6 +305,7 @@
     top: 0;
     z-index: 1000;
     direction: ltr;
+    direction: ltr;
     &__body {
       align-items: center;
     }
@@ -313,6 +317,7 @@
       text-overflow: ellipsis;
       -o-text-overflow: ellipsis;
       -webkit-text-overflow: ellipsis;
+      width: 100%;
       width: 100%;
     }
 

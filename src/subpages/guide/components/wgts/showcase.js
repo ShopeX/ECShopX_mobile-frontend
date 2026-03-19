@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { navigateTo } from '@/utils'
 import { linkPage } from './helper'
-
 import './showcase.scss'
 
 export default class WgtShowCase extends Component {

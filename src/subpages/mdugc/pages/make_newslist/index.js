@@ -5,7 +5,6 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 

@@ -3,7 +3,6 @@
  * See LICENSE file for license details.
  */
 import { isFunction, getSystemInfo } from '@/utils/ugcnavbar'
-
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'

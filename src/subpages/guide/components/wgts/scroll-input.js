@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
 import { connect } from 'react-redux'
-
 import './search-home.scss'
 
 @connect(

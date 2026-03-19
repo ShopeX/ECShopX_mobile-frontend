@@ -9,7 +9,6 @@ import { SpImage } from '@/components'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
-
 import './slider.scss'
 
 const initialState = {

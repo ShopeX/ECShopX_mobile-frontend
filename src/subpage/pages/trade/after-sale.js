@@ -14,7 +14,6 @@ import { withLogin, withPager } from '@/hocs'
 import { AFTER_SALE_STATUS } from '@/consts'
 import _mapKeys from 'lodash/mapKeys'
 import TradeItem from './comps/item'
-
 import './list.scss'
 
 @connect(({ colors }) => ({

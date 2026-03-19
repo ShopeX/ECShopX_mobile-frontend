@@ -9,7 +9,6 @@ import S from '@/spx'
 import { SpNote, BackToTop, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
-
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 

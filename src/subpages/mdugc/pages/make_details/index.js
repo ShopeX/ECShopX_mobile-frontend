@@ -5,12 +5,11 @@
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Input, Image, ScrollView, Button } from '@tarojs/components'
-
-import { FloatMenus, FloatMenuItem, BackToTop, Loading } from '@/components'
+import { BackToTop, Loading } from '@/components'
+import { FloatMenus, FloatMenuItem } from '@/subpages/components'
 import S from '@/spx'
 import { connect } from 'react-redux'
 import { withPager, withBackToTop, withPointitem } from '@/hocs'
-
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'

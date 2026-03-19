@@ -14,7 +14,6 @@ import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
 import { SpPage, SpImage, SpUpload, SpInput as AtInput } from '@/components'
 import doc from '@/doc'
-
 import './note.scss'
 
 const initialState = {

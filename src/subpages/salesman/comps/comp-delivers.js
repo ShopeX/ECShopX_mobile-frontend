@@ -21,7 +21,6 @@ import { enumdays } from '@/consts'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import dayjs from 'dayjs'
 import api from '@/api'
-
 import { deliveryList } from '../const'
 import './comp-delivers.scss'
 

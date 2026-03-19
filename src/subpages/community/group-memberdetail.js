@@ -13,14 +13,11 @@ import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
 import { isArray, navigateTo, calcTimer, pickBy, showToast } from '@/utils'
-
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
-
 import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 import CompGroupLogList from './comps/comp-grouploglist'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
 import CompWgts from './comps/comp-wgts'
-
 import './group-memberdetail.scss'
 
 const initialState = {

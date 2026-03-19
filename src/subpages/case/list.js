@@ -185,7 +185,7 @@ function CaseList() {
     }
     const res = await api.design.getDesignList(options)
     const { total_count, list: nList } = res
-    const list = pickBy(nList, caseDoc.CASE_LIST)
+    const list = pickBy(nList, doc.case.CASE_LIST)
 
     const nleftList = []
     const nrightList = []

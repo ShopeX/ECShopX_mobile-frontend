@@ -14,7 +14,6 @@ import { addCart, updateCount } from '@/store/slices/cart'
 import { showToast, log } from '@/utils'
 import api from '@/api'
 import CompPackageItem from './comps/comp-packageitem'
-
 import './package-list.scss'
 
 const initialState = {

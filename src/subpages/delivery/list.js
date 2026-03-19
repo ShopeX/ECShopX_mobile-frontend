@@ -7,7 +7,8 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { SpPage, SpScrollView, SpTagBar, SpImage, SpTradeItem, SpFloatLayout } from '@/components'
+import { SpPage, SpScrollView, SpImage, SpTradeItem, SpFloatLayout } from '@/components'
+import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
@@ -16,7 +17,6 @@ import { DELIVERY_PERSONNEL_INFORMATION } from '@/consts'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompShippingInformation from './comps/comp-shipping-information'
 import btnHooks from './btn-hooks'
-
 import './list.scss'
 
 const initialState = {

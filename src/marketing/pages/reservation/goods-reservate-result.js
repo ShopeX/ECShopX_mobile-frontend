@@ -12,7 +12,6 @@ import { SpCell, SpPage, SpAddress, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import { useNavigation } from '@/hooks'
-
 import './goods-reservate-result.scss'
 
 const initialState = {

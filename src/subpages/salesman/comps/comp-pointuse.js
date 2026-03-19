@@ -8,7 +8,6 @@ import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 
 import { useSelector } from 'react-redux'
 import { SpNumberKeyBoard, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
-
 import './comp-pointuse.scss'
 
 const initialState = {

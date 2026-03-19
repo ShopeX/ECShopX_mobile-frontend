@@ -6,10 +6,8 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { Button, View, Text } from '@tarojs/components'
 import { connect } from 'react-redux'
-
 import { SpCheckbox, SpCell } from '@/components'
 import { AtActionSheet } from 'taro-ui'
-
 import './index.scss'
 
 @connect(({ colors }) => ({

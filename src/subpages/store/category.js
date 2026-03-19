@@ -13,7 +13,6 @@ import { pickBy, classNames, styleNames } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import { SpPage, SpImage } from '@/components'
 import CompTabbar from './comps/comp-tabbar'
-
 import './category.scss'
 
 const initialState = {

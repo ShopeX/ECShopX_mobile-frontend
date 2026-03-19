@@ -10,7 +10,6 @@ import { pickBy } from '@/utils'
 import api from '@/api'
 import * as boostApi from '@/api/boost'
 import { SpNavBar, AddressChoose } from '@/components'
-
 import './index.scss'
 
 @connect(

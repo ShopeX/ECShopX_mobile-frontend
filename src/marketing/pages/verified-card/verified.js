@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-
 import './index.scss'
 import './verified.scss'
 

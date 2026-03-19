@@ -8,16 +8,8 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs } from 'taro-ui'
-import {
-  SpFilterBar,
-  SpTagBar,
-  SpGoodsItem,
-  SpSearchBar,
-  SpPage,
-  SpScrollView,
-  SpDrawer,
-  SpSelect
-} from '@/components'
+import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSelect } from '@/components'
+import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
 import api from '@/api'
@@ -31,7 +23,6 @@ import {
   VERSION_STANDARD
 } from '@/utils'
 import S from '@/spx'
-
 import './list.scss'
 
 const initialState = {

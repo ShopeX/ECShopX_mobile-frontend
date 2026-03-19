@@ -10,7 +10,6 @@ import { classNames, pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-
 import './shop-category.scss'
 
 @withPager

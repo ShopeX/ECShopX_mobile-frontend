@@ -8,7 +8,6 @@ import { SpNavBar, SpPage } from '@/components'
 import { withLogin } from '@/hocs'
 import userIcon from '@/assets/imgs/user-icon.png'
 import api from '@/api'
-
 import './member-code.scss'
 
 export default class MemberCode extends Component {

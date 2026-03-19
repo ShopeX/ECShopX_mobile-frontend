@@ -11,7 +11,6 @@ import { View, Text, Button } from '@tarojs/components'
 import api from '@/api'
 import { relationship } from '@/consts'
 import { showToast, validate } from '@/utils'
-
 import './comp-medication-personnel.scss'
 
 function CompMedicationPersonnel(props) {

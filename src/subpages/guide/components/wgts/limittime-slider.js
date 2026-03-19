@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Swiper, SwiperItem } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { linkPage } from './helper'
-
 import './limittime-slider.scss'
 
 export default class WgtLimittimeSlider extends Component {

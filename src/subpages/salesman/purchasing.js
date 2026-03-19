@@ -6,15 +6,8 @@ import Taro, { getCurrentInstance, useRouter, useDidShow } from '@tarojs/taro'
 import React, { useEffect, useState, useCallback, useRef } from 'react'
 import { Text, View } from '@tarojs/components'
 import { classNames, pickBy, showToast } from '@/utils'
-import {
-  SpImage,
-  SpPage,
-  SpTabs,
-  SpSearchInput,
-  SpNavFilter,
-  SpSkuSelect,
-  SpScrollView
-} from '@/components'
+import { SpImage, SpPage, SpTabs, SpSearchInput, SpSkuSelect, SpScrollView } from '@/components'
+import { SpNavFilter } from '@/subpages/components'
 import { updateSalesmanCount, updateShopSalesmanCartCount } from '@/store/slices/cart'
 import { platformTemplateName } from '@/utils/platform'
 import { useSelector, useDispatch } from 'react-redux'

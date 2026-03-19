@@ -5,7 +5,6 @@
 import React, { useEffect } from 'react'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
-
 import './comp-first-category.scss'
 
 const initialState = {

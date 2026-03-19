@@ -23,7 +23,6 @@ import api from '@/api'
 import * as communityApi from '@/api/community'
 
 import CompOrderItem from './comps/comp-orderitem'
-
 import './order-manage.scss'
 
 const initialState = {

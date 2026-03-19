@@ -56,7 +56,7 @@ function ShareIand() {
       'guide_welcome_couponlist': '/subpages/marketing/coupon-center', // 导购欢迎语--商城优惠券中心
       'guide_welcome_recommend': '/pages/recommend/list', // 导购欢迎语--商城种草
       'guide_welcome_member': '/subpages/member/index', // 导购欢迎语--商城会员中心
-      'guide_welcome_itemlist': '/pages/item/list', // 导购欢迎语--商城商品列表
+      'guide_welcome_itemlist': '/subpages/item/list', // 导购欢迎语--商城商品列表
 
       // 导购任务
       'guide_task_home': '/pages/index', // 导购任务-管理端-小程序首页

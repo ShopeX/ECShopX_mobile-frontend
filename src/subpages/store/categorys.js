@@ -11,7 +11,6 @@ import { SpScrollView } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
-
 import { pickBy, classNames, styleNames, showToast } from '@/utils'
 import CompFirstCategory from './comps/comp-first-category'
 import CompSecondCategory from './comps/comp-second-category'

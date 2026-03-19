@@ -9,7 +9,6 @@ import { connect } from 'react-redux'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-
 import './index.scss'
 
 @connect(({ colors }) => ({

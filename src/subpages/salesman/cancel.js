@@ -12,7 +12,6 @@ import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
 import { Tracker } from '@/service'
 import { dealTextAreaValue } from '@/utils/platform'
-
 import './cancel.scss'
 
 const TEXTCOUNT = 255

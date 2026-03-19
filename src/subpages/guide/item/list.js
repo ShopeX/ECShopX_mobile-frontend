@@ -9,23 +9,8 @@ import Taro, { useDidShow, getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtDrawer, AtTabs } from 'taro-ui'
-import {
-  BackToTop,
-  Loading,
-  TagsBar,
-  SpFilterBar,
-  GoodsItem,
-  SpTagBar,
-  SpGoodsItem,
-  SpSearchBar,
-  SpNavBar,
-  SpLoadMore,
-  TabBar,
-  SpPage,
-  SpScrollView,
-  SpDrawer,
-  SpSelect
-} from '@/components'
+import { BackToTop, Loading, GoodsItem, SpGoodsItem, SpSearchBar, SpNavBar, SpLoadMore, TabBar, SpPage, SpScrollView, SpSelect } from '@/components'
+import { TagsBar, SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import doc from '@/doc'
 import api from '@/api'
 import { pickBy, classNames, isWeixin, isWeb, styleNames } from '@/utils'
@@ -37,7 +22,6 @@ import {
   BaTabBar,
   BaNavBar
 } from '@/subpages/guide/components'
-
 import './list.scss'
 
 const initialState = {

@@ -7,15 +7,9 @@ import { View, Text } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import {
-  SpFilterBar,
-  SpTagBar,
-  SpGoodsItem,
-  SpSearchBar,
-  SpPage,
-  SpScrollView,
-  SpSkuSelect
-} from '@/components'
+import throttle from 'lodash/throttle'
+import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSelect, SpSkuSelect } from '@/components'
+import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import { fetchUserFavs } from '@/store/slices/user'
 import doc from '@/doc'
 import api from '@/api'
@@ -28,7 +22,6 @@ import {
   showToast
 } from '@/utils'
 import S from '@/spx'
-
 import './list.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)

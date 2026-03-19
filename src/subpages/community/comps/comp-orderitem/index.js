@@ -9,7 +9,6 @@ import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpPrice, SpImage } from '@/components'
 import { useSelector } from 'react-redux'
 import { classNames } from '@/utils'
-
 import './index.scss'
 
 function CompOrderItem(props) {

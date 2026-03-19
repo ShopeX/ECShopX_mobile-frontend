@@ -6,7 +6,6 @@ import React, { useEffect } from 'react'
 import { View, ScrollView, Text } from '@tarojs/components'
 import { SpSelect } from '@/components'
 import { useImmer } from 'use-immer'
-
 import './comp-third-category.scss'
 
 const initialState = {

@@ -11,7 +11,6 @@ import api from '@/api'
 import { connect } from 'react-redux'
 import { withPager } from '@/hocs'
 import { pickBy, classNames, isNavbar, JumpStoreIndex, hasNavbar } from '@/utils'
-
 import './coupon.scss'
 
 @connect(({ colors }) => ({

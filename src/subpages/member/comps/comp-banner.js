@@ -6,7 +6,6 @@ import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames, styleNames } from '@/utils'
-
 import './comp-banner.scss'
 
 function CompsBanner(props) {

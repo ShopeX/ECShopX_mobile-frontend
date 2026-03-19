@@ -17,7 +17,6 @@ import doc from '@/doc'
 import * as shopDoc from '@/doc/shop'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
-
 import './list.scss'
 
 const defaultChooseValue = ['北京市', '北京市', '昌平区']

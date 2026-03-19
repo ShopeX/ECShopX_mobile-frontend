@@ -10,7 +10,6 @@ import S from '@/spx'
 import api from '@/api'
 import { Loading } from '@/components'
 import { normalizeQuerys } from '@/utils'
-
 import './shopping-guide-card.scss'
 
 export default class ShoppingGuideCard extends Component {

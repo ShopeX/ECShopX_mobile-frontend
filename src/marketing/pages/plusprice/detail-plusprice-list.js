@@ -12,7 +12,6 @@ import { connect } from 'react-redux'
 import api from '@/api'
 import { pickBy, validColor, isString, getDistributorId } from '@/utils'
 import NormalBackground from '../../assets/plusprice-head.png'
-
 import './plusprice.scss'
 
 @connect(({ colors }) => ({

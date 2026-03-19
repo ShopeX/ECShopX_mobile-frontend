@@ -9,7 +9,6 @@ import { AtAvatar, AtTextarea, AtButton, AtImagePicker } from 'taro-ui'
 import { Loading, SpNavBar } from '@/components'
 import api from '@/api'
 import imgUploader from '@/utils/upload'
-
 import './complaint.scss'
 
 export default class Complaint extends Component {

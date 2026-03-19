@@ -20,7 +20,6 @@ import { WgtHomeHeader } from '@/pages/home/wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import { parse } from 'qs'
 import CompNavigationClassification from './comps/comp-navigation-classification'
-
 import './navigation-ibs.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)

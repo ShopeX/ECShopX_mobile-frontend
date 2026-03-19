@@ -17,7 +17,6 @@ import CompShippingInformation from './comps/comp-shipping-information'
 import tradeHooks from './hooks'
 import CompTradeItem from './comps/comp-tradeitem'
 import btnHooks from './btn-hooks'
-
 import './detail.scss'
 
 const initialConfigState = {

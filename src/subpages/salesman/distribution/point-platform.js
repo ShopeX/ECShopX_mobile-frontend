@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import { View, Text, Navigator } from '@tarojs/components'
 import api from '@/api'
 import { SpNavBar } from '@/components'
-
 import './point-platform.scss'
 
 export default class PointPlatform extends Component {

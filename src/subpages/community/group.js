@@ -7,15 +7,8 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
-import {
-  SpPage,
-  SpImage,
-  SpButton,
-  SpUpload,
-  SpCell,
-  SpPicker,
-  SpInput as AtInput
-} from '@/components'
+import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpInput } from '@/components'
+import { SpPicker } from '@/subpages/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'

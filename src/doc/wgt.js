@@ -98,7 +98,6 @@ export const WGTCOUPON = {
   remainingNum: ({ get_num, quantity }) => quantity - get_num
 }
 
-
 export const WGTGOODSITEM = {
   goodsId: 'goods_id',
   itemId: 'item_id',

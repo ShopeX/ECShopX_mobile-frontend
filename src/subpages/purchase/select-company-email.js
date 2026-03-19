@@ -12,17 +12,9 @@ import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
 import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
-
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
-import {
-  SpForm,
-  SpFormItem,
-  SpTimer,
-  SpPage,
-  SpPrivacyModal,
-  SpInput as AtInput
-} from '@/components'
-
+import { SpForm, SpFormItem, SpPage, SpPrivacyModal, SpInput as AtInput } from '@/components'
+import { SpTimer } from '@/subpages/components'
 import CompBottomTip from './comps/comp-bottomTip'
 import './select-company-email.scss'
 

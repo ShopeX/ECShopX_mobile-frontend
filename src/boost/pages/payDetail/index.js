@@ -9,7 +9,6 @@ import { pickBy, formatDateTime } from '@/utils'
 import api from '@/api'
 import * as boostApi from '@/api/boost'
 import { SpNavBar } from '@/components'
-
 import './index.scss'
 
 export default class PayDetail extends Component {

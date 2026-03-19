@@ -6,20 +6,12 @@ import React, { useRef, useEffect, useState } from 'react'
 import { View } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
-import {
-  SpFilterBar,
-  SpTagBar,
-  SpGoodsItem,
-  SpSearchBar,
-  SpPage,
-  SpScrollView,
-  SpSkuSelect
-} from '@/components'
+import { SpGoodsItem, SpSearchBar, SpPage, SpScrollView, SpSkuSelect } from '@/components'
+import { SpFilterBar, SpTagBar } from '@/subpages/components'
 import doc from '@/doc'
 import api from '@/api'
 import { pickBy, classNames, showToast } from '@/utils'
 import { Tracker } from '@/service'
-
 import './item-list.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)

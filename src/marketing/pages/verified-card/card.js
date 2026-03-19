@@ -13,7 +13,6 @@ import api from '@/api'
 import req from '@/api/req'
 import { pickBy, classNames } from '@/utils'
 // import bankData from './hfpayBankData.json'
-
 import './verified.scss'
 
 @connect(({ colors }) => ({

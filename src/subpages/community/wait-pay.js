@@ -9,7 +9,6 @@ import { SpPage, SpImage, SpPrice } from '@/components'
 import qs from 'qs'
 import { log } from '@/utils'
 import WpGoodsItem from './comps/wp-goods-item'
-
 import './wait-pay.scss'
 
 const WaitPay = () => {

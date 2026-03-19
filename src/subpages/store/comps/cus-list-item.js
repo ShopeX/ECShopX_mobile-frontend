@@ -4,7 +4,6 @@
  */
 import Taro, { memo } from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
-
 import './cus-list-item.scss'
 
 const StoreListItem = (props) => {

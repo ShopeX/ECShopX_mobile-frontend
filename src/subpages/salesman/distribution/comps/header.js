@@ -15,7 +15,6 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-
 import './header.scss'
 
 export default class HeaderCustom extends Component {

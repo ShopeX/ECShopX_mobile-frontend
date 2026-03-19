@@ -6,7 +6,8 @@ import React, { useRef } from 'react'
 import { View, ScrollView, Image } from '@tarojs/components'
 import { AtModal } from 'taro-ui'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { SpPage, SpScrollView, SpFilterBar, SpPrice } from '@/components'
+import { SpPage, SpScrollView, SpPrice } from '@/components'
+import { SpFilterBar } from '@/subpages/components'
 import { pickBy, classNames, showToast } from '@/utils'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
@@ -15,7 +16,6 @@ import api from '@/api'
 import * as communityApi from '@/api/community'
 
 import CompTabbar from './comps/comp-tabbar'
-
 import './activity.scss'
 
 const initialState = {

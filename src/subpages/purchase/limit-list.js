@@ -10,7 +10,6 @@ import doc from '@/doc'
 import { SpScrollView, SpNote, SpPage } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-
 import './limit-list.scss'
 
 const initialState = {

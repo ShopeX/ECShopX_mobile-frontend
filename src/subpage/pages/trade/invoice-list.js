@@ -11,7 +11,6 @@ import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, authSetting } from '@/utils'
 import TradeItem from './comps/item'
-
 import './invoice-list.scss'
 
 @withPager

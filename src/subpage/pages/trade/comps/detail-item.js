@@ -8,7 +8,6 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText, getThemeStyle, styleNames, JumpGoodDetail } from '@/utils'
 import { SpOrderItem } from '@/components'
-
 import './detail-item.scss'
 
 export default class DetailItem extends Component {

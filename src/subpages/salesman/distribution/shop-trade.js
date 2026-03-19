@@ -8,7 +8,6 @@ import { SpToast, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, formatDateTime } from '@/utils'
-
 import './shop-trade.scss'
 
 @withPager

@@ -11,7 +11,6 @@ import S from '@/spx'
 import { SpPage, SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
-
 import './certification.scss'
 
 const initialState = {

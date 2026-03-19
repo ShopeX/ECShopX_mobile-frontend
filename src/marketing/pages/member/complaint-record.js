@@ -9,7 +9,6 @@ import { Loading, SpNavBar } from '@/components'
 import { AtAvatar, AtButton } from 'taro-ui'
 import api from '@/api'
 import ComplaintRecordItem from './comps/complaint-record-item'
-
 import './complaint-record.scss'
 
 export default class ComplaintRecord extends Component {

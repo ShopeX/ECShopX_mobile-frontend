@@ -46,9 +46,7 @@ import doc from '@/doc'
 import qs from 'qs'
 import S from '@/spx'
 import { initialState } from './const'
-
 import CompDeliver from './comps/comp-deliver'
-
 import './espier-checkout.scss'
 
 function PurchaseCheckout(props) {

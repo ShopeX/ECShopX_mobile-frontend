@@ -7,9 +7,7 @@ import { useEffect, useState } from 'react'
 import { ScrollView, View, Text } from '@tarojs/components'
 import { showToast, isArray, isUndefined } from '@/utils'
 import { SpPage, SpLoading } from '@/components'
-
 import { useSelector, useDispatch } from 'react-redux'
-
 import { useImmer } from 'use-immer'
 import api from '@/api'
 import * as merchantApi from '@/api/merchant'

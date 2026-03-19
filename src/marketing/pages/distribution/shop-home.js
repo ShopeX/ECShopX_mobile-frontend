@@ -15,7 +15,6 @@ import { withPager, withLogin } from '@/hocs'
 import { getCurrentRoute, pickBy, entryLaunch, log } from '@/utils'
 import entry from '@/utils/entry'
 import CustomHeader from './comps/header'
-
 import './shop-home.scss'
 
 @withPager

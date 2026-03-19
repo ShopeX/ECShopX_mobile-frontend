@@ -7,9 +7,8 @@ import { useSelector } from 'react-redux'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { SpTagBar } from '@/components'
+import { SpTagBar } from '@/subpages/components'
 import { classNames, formatDateTime, VERSION_IN_PURCHASE } from '@/utils'
-
 import './comp-trade-type.scss'
 
 function CompTrackType(props) {

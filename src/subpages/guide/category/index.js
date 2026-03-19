@@ -15,7 +15,6 @@ import { SpPage, SpTabbar } from '@/components'
 import { useQwLogin } from '@/hooks'
 import { BaTabBar, BaNavBar } from '@/subpages/guide/components'
 import CompSeries from './comps/comp-series'
-
 import './index.scss'
 
 const initialState = {

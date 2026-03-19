@@ -11,7 +11,6 @@ import { AtTabBar } from 'taro-ui'
 import S from '@/spx'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-
 import './shop-category.scss'
 
 @withPager

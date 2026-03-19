@@ -9,7 +9,6 @@ import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { pickBy } from '@/utils'
-
 import './item-activity.scss'
 
 @withPager

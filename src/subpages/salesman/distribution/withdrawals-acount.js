@@ -8,7 +8,6 @@ import { View, Text, Button } from '@tarojs/components'
 import { showToast } from '@/utils'
 import { SpInput as AtInput } from '@/components'
 import api from '@/api'
-
 import './withdrawals-acount.scss'
 
 export default class DistributionWithdrawalsAcount extends Component {

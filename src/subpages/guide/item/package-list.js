@@ -10,7 +10,6 @@ import { BackToTop, Loading, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import PackageItem from './comps/package-item'
-
 import './package-list.scss'
 
 @withPager

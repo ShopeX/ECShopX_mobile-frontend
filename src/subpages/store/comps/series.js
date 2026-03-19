@@ -8,7 +8,6 @@ import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { Loading } from '@/components'
 import { classNames } from '@/utils'
-
 import './series.scss'
 
 @connect(({ store, colors }) => ({

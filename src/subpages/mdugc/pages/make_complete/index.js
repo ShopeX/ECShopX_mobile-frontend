@@ -6,12 +6,10 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import S from '@/spx'
-
 import { SpNote, BackToTop, GoodsItem, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
-
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 

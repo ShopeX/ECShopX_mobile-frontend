@@ -16,7 +16,6 @@ import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
 import { buildSharePath, getMemberLevel } from '@/utils'
-
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
 import * as communityApi from '@/api/community'
@@ -43,7 +42,6 @@ import {
 } from '@/store/slices/purchase'
 import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
-
 import CompMenu from './comps/comp-menu'
 import './index.scss'
 import SpPoweredBy from '@/components/sp-powered-by'

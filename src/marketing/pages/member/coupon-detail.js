@@ -8,7 +8,6 @@ import { View, Image, Input } from '@tarojs/components'
 import { connect } from 'react-redux'
 import api from '@/api'
 // import { classNames, pickBy } from '@/utils'
-
 import './coupon-detail.scss'
 
 @connect(({ colors }) => ({

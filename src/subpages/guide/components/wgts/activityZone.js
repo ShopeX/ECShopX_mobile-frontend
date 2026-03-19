@@ -8,7 +8,6 @@ import { View, ScrollView } from '@tarojs/components'
 // import { SpTabList, AvitivityGoodsItem } from '@/components'
 import api from '@/api'
 import { pickBy, navigateTo } from '@/utils'
-
 import './activityZone.scss'
 
 export default class activityZone extends Component {

@@ -9,7 +9,6 @@ import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
-
 import './item-guess.scss'
 
 @withPager

@@ -5,7 +5,6 @@
 import React, { useEffect, useRef, useCallback } from 'react'
 import Taro, { getCurrentInstance, useRouter, usePullDownRefresh } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
-
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
 import { useImmer } from 'use-immer'

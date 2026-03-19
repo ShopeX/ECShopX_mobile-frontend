@@ -8,7 +8,6 @@ import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
 import { isArray, showToast } from '@/utils'
 import { SpPage, SpSearchInput, SpInput as AtInput } from '@/components'
 import api from '@/api'
-
 import './withdraw.scss'
 
 export default class DistributionWithdraw extends Component {

@@ -14,7 +14,6 @@ import { classNames, isWxWeb, showToast } from '@/utils'
 import { SG_USER_INFO } from '@/consts/localstorage'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
-
 import './edit-deliveryman-salesman.scss'
 
 const initialState = {

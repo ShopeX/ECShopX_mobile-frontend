@@ -11,7 +11,6 @@ import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
 import { calcTimer, isNavbar, classNames, getDistributorId } from '@/utils'
-
 import './group-list.scss'
 
 @withPager

@@ -6,7 +6,6 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { SpGoodsItem, SpImage } from '@/components'
-
 import './goods-scroll.scss'
 
 export default class WgtGoodsScroll extends Component {

@@ -7,23 +7,14 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { platformTemplateName } from '@/utils/platform'
 import { AtTabBar } from 'taro-ui'
-import {
-  SpToast,
-  Loading,
-  FilterBar,
-  SpNote,
-  SpSearchInput,
-  SpNavBar,
-  SpNavFilter,
-  SpPage
-} from '@/components'
+import { SpToast, Loading, FilterBar, SpNote, SpSearchInput, SpNavBar, SpPage } from '@/components'
+import { SpNavFilter } from '@/subpages/components'
 import S from '@/spx'
 import { getDtidIdUrl } from '@/utils/helper'
 import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
-
 import './goods.scss'
 
 @withPager

@@ -7,9 +7,9 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
-import { SpFloatLayout, SpTimeLineItem } from '@/components'
+import { SpFloatLayout } from '@/components'
+import { SpTimeLineItem } from '@/subpages/components'
 import { classNames, formatDateTime } from '@/utils'
-
 import './comp-track-detail.scss'
 
 function CompTrackDetail(props) {

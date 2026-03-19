@@ -4,7 +4,6 @@
  */
 import React, { Component } from 'react'
 import { View, Button } from '@tarojs/components'
-
 import './other-orders-item.scss'
 
 export default class OtherOrdersItem extends Component {

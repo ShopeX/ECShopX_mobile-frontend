@@ -7,7 +7,8 @@ import { useEffect, useState } from 'react'
 import { Text, View } from '@tarojs/components'
 import { navigateTo, validate, showToast } from '@/utils'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpPage, SpGoodsInvalidItems, SpGoodsItems, SpDefault } from '@/components'
+import { SpPage, SpDefault } from '@/components'
+import { SpGoodsInvalidItems, SpGoodsItems } from '@/subpages/components'
 import { useImmer } from 'use-immer'
 import { useLogin, useDepChange, useDebounce } from '@/hooks'
 import {
@@ -22,7 +23,6 @@ import * as deliveryApi from '@/api/delivery'
 import qs from 'qs'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
-
 import './cart.scss'
 
 const initialConfigState = {

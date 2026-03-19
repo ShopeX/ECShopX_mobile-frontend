@@ -11,10 +11,8 @@ import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import { addCart, updateCount } from '@/store/slices/cart'
 import qs from 'qs'
 import S from '@/spx'
-
 import { classNames, showToast, styleNames, VERSION_PLATFORM } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
-
 import './goods-item.scss'
 
 function GoodsItem(props) {

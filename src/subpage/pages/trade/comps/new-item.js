@@ -7,8 +7,8 @@ import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { classNames, formatPriceToHundred } from '@/utils'
-import { SpOrderItem, SpNewShopItem } from '@/components'
-
+import { SpOrderItem } from '@/components'
+import { SpNewShopItem } from '@/subpages/components'
 import './new-item.scss'
 
 @connect(({ colors, sys }) => ({

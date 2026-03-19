@@ -7,7 +7,6 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { SpCell, SpPage } from '@/components'
 import api from '@/api'
-
 import './shop-setting.scss'
 
 export default class DistributionShopSetting extends Component {

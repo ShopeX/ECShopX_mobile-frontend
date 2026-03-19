@@ -19,7 +19,6 @@ import { connect } from 'react-redux'
 // import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import { isArray } from '@/utils'
-
 import './activity-detail.scss'
 
 @connect(({ colors }) => ({

@@ -42,7 +42,6 @@ import {
   navigateTo,
   buildSharePath
 } from '@/utils'
-
 import doc from '@/doc'
 import entryLaunch from '@/utils/entryLaunch'
 import qs from 'qs'
@@ -60,7 +59,6 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-
 import './espier-detail.scss'
 
 const MBaSkuSelect = React.memo(BaSkuSelect)
