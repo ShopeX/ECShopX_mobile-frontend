@@ -129,9 +129,9 @@ export default function WgtContentPartition(props) {
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: immersive ? `${navBarHeight}px` : 0
+      top: base.navSticky ? `${navBarHeight}px` : 0
     }
-  }, [base.outerMargin, base.navSticky, immersive, navBarHeight])
+  }, [base.outerMargin, base.navSticky, navBarHeight])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {

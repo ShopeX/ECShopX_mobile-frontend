@@ -51,13 +51,12 @@ export default function WgtLocationModule(props) {
 
   // 获取导航栏样式
   const navStyle = useMemo(() => {
-    console.log(immersive, navBarHeight, 'immersive,navBarHeight')
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: immersive ? `${navBarHeight}px` : 0
+      top: base.navSticky ? `${navBarHeight}px` : 0
     }
-  }, [base.outerMargin, base.navSticky, immersive, navBarHeight])
+  }, [base.outerMargin, base.navSticky, navBarHeight])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {
