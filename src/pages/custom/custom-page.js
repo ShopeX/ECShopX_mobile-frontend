@@ -11,13 +11,11 @@ import Taro, {
   useShareAppMessage,
   useShareTimeline,
 } from '@tarojs/taro'
-import { ScrollView } from '@tarojs/components'
-import api from '@/api'
-import doc from '@/doc'
+import { ScrollView, View } from '@tarojs/components'
 import qs from 'qs'
-import { SpPage, SpSearch, SpSkuSelect, SpTabbar, SpLogin } from '@/components'
+import { SpPage, SpSkuSelect, SpTabbar, SpLogin, SpPoweredBy } from '@/components'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
-import { getDistributorId, log, entryLaunch, pickBy, showToast, buildSharePath } from '@/utils'
+import { getDistributorId, log, entryLaunch, buildSharePath } from '@/utils'
 import { platformTemplateName } from '@/utils/platform'
 import req from '@/api/req'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -157,39 +155,43 @@ function CustomPage(props) {
         >
           <HomeWgts wgts={filterWgts} />
         </WgtsContext.Provider>
+        {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+        <View className='sp-page__powered-by w-full'>
+          <SpPoweredBy />
+        </View>
+
+        {/* Sku选择器 */}
+        <MSpSkuSelect
+          open={skuPanelOpen}
+          type={selectType}
+          info={info}
+          onClose={() => {
+            setState((draft) => {
+              draft.skuPanelOpen = false
+            })
+          }}
+          onChange={(skuText, curItem) => {
+            setState((draft) => {
+              draft.skuText = skuText
+              draft.curItem = curItem
+            })
+          }}
+        />
+
+        {/* 登录组件 */}
+        <SpLogin
+          ref={loginRef}
+          newUser
+          onChange={() => {
+            // 新注册会员登录成功
+            // 登录成功后需要获取店铺信息，然后查看店铺
+            checkEnterStoreRule()
+          }}
+          onPolicyClose={() => {
+            onPolicyChange(false)
+          }}
+        ></SpLogin>
       </ScrollView>
-
-      {/* Sku选择器 */}
-      <MSpSkuSelect
-        open={skuPanelOpen}
-        type={selectType}
-        info={info}
-        onClose={() => {
-          setState((draft) => {
-            draft.skuPanelOpen = false
-          })
-        }}
-        onChange={(skuText, curItem) => {
-          setState((draft) => {
-            draft.skuText = skuText
-            draft.curItem = curItem
-          })
-        }}
-      />
-
-      {/* 登录组件 */}
-      <SpLogin
-        ref={loginRef}
-        newUser
-        onChange={() => {
-          // 新注册会员登录成功
-          // 登录成功后需要获取店铺信息，然后查看店铺
-          checkEnterStoreRule()
-        }}
-        onPolicyClose={() => {
-          onPolicyChange(false)
-        }}
-      ></SpLogin>
     </SpPage>
   )
 }
