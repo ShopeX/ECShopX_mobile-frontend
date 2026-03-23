@@ -163,7 +163,7 @@ function Invoice(props) {
         invoice_type_code: info?.invoice_type_code,
         invoice_type: info?.invoice_type,
         company_title:
-          info?.invoice_type == 'enterprise' ? info?.company_title : '',
+          info?.invoice_type == 'enterprise' ? info?.company_title : info?.individual_title,
         email: info?.email
       }
       if (params.invoice_type === 'enterprise') {
