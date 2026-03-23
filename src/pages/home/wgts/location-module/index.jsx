@@ -54,9 +54,9 @@ export default function WgtLocationModule(props) {
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: base.navSticky ? `${navBarHeight}px` : 0
+      top: base.navSticky && immersive ? `${navBarHeight}px` : '0px'
     }
-  }, [base.outerMargin, base.navSticky, navBarHeight])
+  }, [base.outerMargin, base.navSticky, navBarHeight, immersive])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {

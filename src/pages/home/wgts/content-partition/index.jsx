@@ -79,7 +79,7 @@ export default function WgtContentPartition(props) {
       getElementRectBox(`#wgt-content-partition-sticky-trigger-${id}`).catch(() => null),
       getElementRectBox(`#wgt-content-partition-section-sentinel-${id}`).catch(() => null)
     ])
-    const navBarPx = rpxToPx(calculateNavBarHeight - navBarHeight)
+    const navBarPx = rpxToPx(calculateNavBarHeight)
     const inStickyZone = triggerRect != null && triggerRect.top <= navBarPx
     const stillOverContent = sentinelRect != null && sentinelRect.top > navBarPx
     if (inStickyZone && stillOverContent) {
@@ -92,8 +92,7 @@ export default function WgtContentPartition(props) {
     statusBarSourceId,
     base.statusBarBgColor,
     setStatusBarBgColorFromSticky,
-    calculateNavBarHeight,
-    navBarHeight
+    calculateNavBarHeight
   ])
 
   const throttledScrollUpdate = useMemo(
@@ -102,7 +101,7 @@ export default function WgtContentPartition(props) {
   )
 
   useLayoutEffect(() => {
-    if (immersive && base.statusBarBgColor) {
+    if (base.navSticky && base.statusBarBgColor) {
       throttledScrollUpdate()
       // 仅 tab 切换时：布局变化后 nextTick 再跑一次，用新布局判断颜色，避免「切换 tab 颜色没了」
       const tabChanged = prevTabIndexRef.current !== currentIndex
@@ -115,7 +114,7 @@ export default function WgtContentPartition(props) {
     }
   }, [
     scrollTop,
-    immersive,
+    base.navSticky,
     currentIndex,
     throttledScrollUpdate,
     base.statusBarBgColor,
@@ -129,9 +128,9 @@ export default function WgtContentPartition(props) {
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: base.navSticky ? `${navBarHeight}px` : 0
+      top: base.navSticky && immersive ? `${navBarHeight}px` : '0px'
     }
-  }, [base.outerMargin, base.navSticky, navBarHeight])
+  }, [base.outerMargin, base.navSticky, navBarHeight, immersive])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {

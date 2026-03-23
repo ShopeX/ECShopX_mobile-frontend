@@ -16,7 +16,8 @@ import {
   SpRecommend,
   SpTabbar,
   SpCouponPackage,
-  SpPoweredBy
+  SpPoweredBy,
+  SpSkuSelect
 } from '@/components'
 import api from '@/api'
 import {
@@ -42,7 +43,6 @@ import {
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal, useEffectAsync } from '@/hooks'
 import doc from '@/doc'
-import SpPoweredBy from '@/components/sp-powered-by'
 import withPageWrapper from '@/hocs/withPageWrapper'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
