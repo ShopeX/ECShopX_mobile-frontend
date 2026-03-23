@@ -287,7 +287,6 @@ function Home() {
       renderFloat={wgts.length > 0 && <CompFloatMenu />}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {
-        console.log('onScrollToTop')
         // 先设置为一个很小的非0值，确保触发滚动变化
         setState((draft) => {
           draft.backTopScrollTop = 0.1
@@ -321,11 +320,6 @@ function Home() {
         })}
       >
         <>
-          <View
-            className='home-body-content'
-            style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
-          >
-            <View style={{ flex: 1 }}>
               {filterWgts.length > 0 && (
                 <WgtsContext.Provider
                   value={{
@@ -348,7 +342,6 @@ function Home() {
                   </HomeWgts>
                 </WgtsContext.Provider>
               )}
-            </View>
             {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
             {/* <View className='sp-page__powered-by w-full'>
             <Text>Powered by</Text>
@@ -358,7 +351,6 @@ function Home() {
               mode='contain'
             />
           </View> */}
-          </View>
 
           {/* 小程序收藏提示 */}
           {isWeixin && <MCompAddTip />}

@@ -160,7 +160,7 @@ const SpPage = memo(
 
       const _height = props.renderFooter
         ? Taro.pxTransform(props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0))
-        : 0
+        : Taro.pxTransform(0)
 
       props.onReady({
         gNavbarH: _gNavbarH,
