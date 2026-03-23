@@ -352,11 +352,6 @@ function Home() {
         })}
       >
         <>
-          <View
-            className='home-body-content'
-            style={{ minHeight: '100%', display: 'flex', flexDirection: 'column' }}
-          >
-            <View style={{ flex: 1 }}>
               {filterWgts.length > 0 && (
                 <WgtsContext.Provider
                   value={{
@@ -379,10 +374,15 @@ function Home() {
                   </HomeWgts>
                 </WgtsContext.Provider>
               )}
-            </View>
             {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-            <SpPoweredBy />
-          </View>
+            {/* <View className='sp-page__powered-by w-full'>
+            <Text>Powered by</Text>
+            <Image
+              src='/assets/imgs/powered-logo.png'
+              className='powered-logo'
+              mode='contain'
+            />
+          </View> */}
 
           {/* 小程序收藏提示 */}
           {isWeixin && <MCompAddTip />}
