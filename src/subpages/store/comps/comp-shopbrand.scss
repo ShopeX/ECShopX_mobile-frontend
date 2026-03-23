@@ -9,23 +9,36 @@
   padding-bottom: 20px;
   .shop-brand-hd {
     display: flex;
+    align-items: flex-start;
     padding: 16px;
-    height: 80px;
+    min-height: 80px;
   }
   .store-logo {
     position: relative;
     top: -60px;
+    flex-shrink: 0;
     background: #ffffff;
     border-radius: 16px;
     overflow: hidden;
   }
   .store-info {
     flex: 1;
+    min-width: 0;
     margin-left: 16px;
     .store-name {
+      min-width: 0;
       font-size: 32px;
       font-weight: 600;
       color: #222222;
+      height: 64px;
+      line-height: 32px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
     }
   }
   .store-score-desc {
@@ -43,6 +56,7 @@
   }
 
   .btn-attention {
+    flex-shrink: 0;
     padding: 0 10px;
     height: 44px;
     line-height: 44px;
