@@ -77,15 +77,16 @@
 
   .slider-pagination {
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
     bottom: 20px;
     z-index: 200;
     box-sizing: border-box;
     padding: 20px;
     display: flex;
+    left: 0;
+    right: 0;
 
     &.cover {
+      width: 100%;
       position: initial;
     }
 

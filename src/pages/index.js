@@ -16,7 +16,8 @@ import {
   SpRecommend,
   SpTabbar,
   SpCouponPackage,
-  SpSkuSelect} from '@/components'
+  SpPoweredBy
+} from '@/components'
 import api from '@/api'
 import {
   isWeixin,
@@ -375,14 +376,9 @@ function Home() {
                 </WgtsContext.Provider>
               )}
             {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-            {/* <View className='sp-page__powered-by w-full'>
-            <Text>Powered by</Text>
-            <Image
-              src='/assets/imgs/powered-logo.png'
-              className='powered-logo'
-              mode='contain'
-            />
-          </View> */}
+            <View className='sp-page__powered-by w-full'>
+            <SpPoweredBy />
+          </View>
 
           {/* 小程序收藏提示 */}
           {isWeixin && <MCompAddTip />}
