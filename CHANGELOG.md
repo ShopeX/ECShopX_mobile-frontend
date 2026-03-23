@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.3.7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.3.6...v4.3.7) (2026-03-23)
+
+
+### Features
+
+* **custom-page:** align top nav with home, ScrollView scroll sync ([d5da39a](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/d5da39af21ec3b62be928f3cba27577bc3912b44))
+* show SpPoweredBy on home and custom page; fix slider pagination layout ([7cce9b7](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/7cce9b7c1f4e071cecf7ed930919270760176047))
+
 ### [4.3.6](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.3.5...v4.3.6) (2026-03-20)
 
 ### [4.3.5](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.3.3...v4.3.5) (2026-03-20)
