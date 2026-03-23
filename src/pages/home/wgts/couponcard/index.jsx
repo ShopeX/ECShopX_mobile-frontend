@@ -67,7 +67,7 @@ function WgtCouponCard(props) {
   const receiveBtnStyle = useMemo(() => {
     const { color, textColor } = receiveBtn
     return {
-      'background-color': color,
+      backgroundColor: color,
       color: textColor
     }
   }, [receiveBtn])

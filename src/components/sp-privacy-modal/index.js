@@ -4,13 +4,12 @@
  */
 import React, { useState, useEffect } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Image, Button, Text } from '@tarojs/components'
+import { View, Text, RootPortal } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
-import { SpImage } from '@/components'
 import api from '@/api'
 import { classNames, styleNames } from '@/utils'
-import { useLogin } from '@/hooks'
+import { useLogin, useThemsColor } from '@/hooks'
 
 import './index.scss'
 
@@ -21,6 +20,7 @@ const initState = {
 }
 
 function SpPrivacyModal(props) {
+  const { themeColor } = useThemsColor()
   const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
   const { open = false, onCancel = () => {}, onConfirm = () => {} } = props
   const [info, setInfo] = useImmer(initState)
@@ -56,11 +56,13 @@ function SpPrivacyModal(props) {
     onCancel()
   }
 
-  return (
+  // RootPortal 脱离 SpPage，根节点需注入 themeColor()，子树内 var(--color-primary) 才能生效
+  const modal = (
     <View
       className={classNames('sp-privacy-modal', {
         'open': open
       })}
+      style={styleNames(themeColor())}
     >
       <View className='sp-privacy-modal__overlay'></View>
       <View className='modal-container'>
@@ -95,6 +97,13 @@ function SpPrivacyModal(props) {
       </View>
     </View>
   )
+
+  // 微信小程序：scroll-view 内图片等同层渲染节点可能盖住普通 fixed 层；挂到页面根节点保证最顶层
+  if (process.env.TARO_ENV === 'weapp') {
+    return <RootPortal>{modal}</RootPortal>
+  }
+
+  return modal
 }
 
 SpPrivacyModal.options = {
