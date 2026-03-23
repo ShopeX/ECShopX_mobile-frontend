@@ -3,7 +3,6 @@
  * See LICENSE file for license details.
  */
 import React, { Component, useEffect } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Swiper, SwiperItem } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { useImmer } from 'use-immer'
