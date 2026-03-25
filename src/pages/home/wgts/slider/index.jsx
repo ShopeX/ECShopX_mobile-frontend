@@ -250,6 +250,7 @@ const Slider = (props) => {
 
   return (
     <View className={classNames('wgt wgt-slider', {})} style={styleNames(outerStyle)}>
+      <View className='wgt-slider-wrap'>
       {config && (
         <Swiper
           className='slider-img'
@@ -264,7 +265,7 @@ const Slider = (props) => {
         </Swiper>
       )}
 
-      {data.length > 1 && (
+      {data.length >= 1 && (
         <View
           className={classNames(
             'slider-pagination',
@@ -291,6 +292,7 @@ const Slider = (props) => {
           )}
         </View>
       )}
+      </View>
     </View>
   )
 }
