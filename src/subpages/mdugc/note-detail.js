@@ -222,8 +222,12 @@ function UgcNoteDetail(props) {
     })
   }
 
-  // 点赞评论
+  // 点赞评论（入口已由 SpLogin 包裹，此处兜底防未登录）
   const handleCommentLike = async (comment_id, pindex, index) => {
+    if (!userInfo?.user_id) {
+      showToast('请先登录')
+      return
+    }
     const { action, likes } = await mdugcApi.commentlike({
       user_id: userInfo.user_id,
       post_id,
@@ -245,20 +249,31 @@ function UgcNoteDetail(props) {
     })
   }
 
-  // 提交回复
+  // 提交回复（需已登录；未登录时应在输入前经 SpLogin）
   const onSubmitComment = async (e) => {
-    console.log('onSubmitComment:', e)
+    if (!S.getAuthToken() || !userInfo?.user_id) {
+      showToast('请先登录')
+      setState((draft) => {
+        draft.showCommentInput = false
+      })
+      return
+    }
+    const raw = e?.detail?.value ?? e?.detail ?? comment
+    const content = String(raw ?? '').trim()
+    if (!content) {
+      return
+    }
     let params = {
       user_id: userInfo.user_id,
       post_id,
-      content: e.detail.value
+      content
     }
     if (parentCommentId) {
       params.parent_comment_id = parentCommentId
     }
     const res = await mdugcApi.commentcreate(params)
     showToast(res.message)
-    listRef.current.reset()
+    listRef.current?.reset()
     setState((draft) => {
       draft.comment = ''
       draft.showCommentInput = false
@@ -317,10 +332,12 @@ function UgcNoteDetail(props) {
       }
       renderFooter={
         <View className='action-container'>
-          <View className='comment-input' onClick={handleCommitReply}>
-            <Text className='iconfont icon-bianji1'></Text>
-            <Text className='placeholder'>留言评论...</Text>
-          </View>
+          <SpLogin onChange={handleCommitReply}>
+            <View className='comment-input'>
+              <Text className='iconfont icon-bianji1'></Text>
+              <Text className='placeholder'>留言评论...</Text>
+            </View>
+          </SpLogin>
           <View className='btn-action-list'>
             <SpLogin className='action-item' onChange={likeNote}>
               <View className='btn-wrap'>
@@ -512,9 +529,8 @@ function UgcNoteDetail(props) {
                     <View className='first-comment'>
                       <View className='comment-info'>
                         <View className='author'>{item.username}</View>
-                        <View
-                          className='comment-content'
-                          onClick={() => {
+                        <SpLogin
+                          onChange={() => {
                             setState((draft) => {
                               draft.showCommentInput = true
                               draft.parentCommentId = item.commentId
@@ -522,18 +538,21 @@ function UgcNoteDetail(props) {
                             })
                           }}
                         >
-                          {item.content}
-                          <Text className='create-time'>{item.created}</Text>
-                        </View>
+                          <View className='comment-content'>
+                            {item.content}
+                            <Text className='create-time'>{item.created}</Text>
+                          </View>
+                        </SpLogin>
                       </View>
                       <View className='comment-likes'>
-                        <Text
-                          className={classNames('iconfont', {
-                            'icon-dianzan': item.likeStatus == 0,
-                            'icon-dianzanFilled': item.likeStatus == 1
-                          })}
-                          onClick={handleCommentLike.bind(this, item.commentId, index)}
-                        ></Text>
+                        <SpLogin onChange={() => handleCommentLike(item.commentId, index)}>
+                          <Text
+                            className={classNames('iconfont', {
+                              'icon-dianzan': item.likeStatus == 0,
+                              'icon-dianzanFilled': item.likeStatus == 1
+                            })}
+                          ></Text>
+                        </SpLogin>
                         <Text className='like-num'>{item.likes}</Text>
                       </View>
                     </View>
@@ -552,18 +571,18 @@ function UgcNoteDetail(props) {
                               </View>
                             </View>
                             <View className='sitem-ft'>
-                              <Text
-                                className={classNames('iconfont', {
-                                  'icon-dianzan': citem.likeStatus == 0,
-                                  'icon-dianzanFilled': citem.likeStatus == 1
-                                })}
-                                onClick={handleCommentLike.bind(
-                                  this,
-                                  citem.commentId,
-                                  index,
-                                  cindex
-                                )}
-                              ></Text>
+                              <SpLogin
+                                onChange={() =>
+                                  handleCommentLike(citem.commentId, index, cindex)
+                                }
+                              >
+                                <Text
+                                  className={classNames('iconfont', {
+                                    'icon-dianzan': citem.likeStatus == 0,
+                                    'icon-dianzanFilled': citem.likeStatus == 1
+                                  })}
+                                ></Text>
+                              </SpLogin>
                               <Text className='like-num'>{citem.likes}</Text>
                             </View>
                           </View>
