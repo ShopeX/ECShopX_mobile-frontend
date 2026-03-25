@@ -19,11 +19,14 @@
   }
 
   .rounded {
+    border-radius: 16px!important;
+    overflow: hidden;
     .sp-image-content {
       border-radius: 16px!important;
       overflow: hidden;
     }
   }
+
 
   .slider-item {
     position: relative;
@@ -96,10 +99,6 @@
     display: flex;
     left: 0;
     right: 0;
-
-    &.cover {
-      bottom: 0px;
-    }
 
     &.left {
       justify-content: flex-start;
