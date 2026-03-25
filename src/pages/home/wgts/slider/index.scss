@@ -6,6 +6,13 @@
 .wgt-slider {
   box-sizing: border-box;
   width: 100%;
+  height: 100%;
+
+  &-content {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
 
   &-wrap {
     position: relative;
@@ -91,14 +98,16 @@
   }
 
   .slider-pagination {
-    position: absolute;
-    bottom: 0px;
-    z-index: 200;
-    box-sizing: border-box;
-    padding: 20px;
+    height: 56px;
+    width: 100%;
+    align-items: center;
     display: flex;
-    left: 0;
-    right: 0;
+    &.dot-cover {
+      position: absolute;
+      bottom: 0px;
+      left: 0;
+      right: 0;
+    }
 
     &.left {
       justify-content: flex-start;

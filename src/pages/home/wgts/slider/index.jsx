@@ -23,7 +23,7 @@ const initialState = {
 const Slider = (props) => {
   const { info } = props
   const [state, setState] = useImmer(initialState)
-  const { curIdx, play, showPoster } = state
+  const { curIdx, play } = state
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   // 1. 新结构：info.params.config, info.params.data, info.params.base
@@ -35,8 +35,7 @@ const Slider = (props) => {
   // 获取外层样式（包含 outerMargin）
   const outerStyle = useMemo(() => {
     return {
-      ...getGlobalBaseStyle(base.outerMargin),
-      height: `${Taro.pxTransform(config.firstScreenHeight * 2)}`
+      ...getGlobalBaseStyle(base.outerMargin)
     }
   }, [base, config.firstScreenHeight])
 
@@ -54,9 +53,6 @@ const Slider = (props) => {
   }
 
   // 处理点击事件
-  const handleClickItem = (item) => {
-    linkPage(item)
-  }
 
   const swiperChange = (e) => {
     const { current } = e.detail
@@ -181,9 +177,6 @@ const Slider = (props) => {
   // 渲染轮播项
   const renderItems = useMemo(() => {
     return data.map((item, idx) => {
-      const needLoginItem =
-        needLoginPageType.includes(item.id) || needLoginPage.includes(item.linkPage)
-
       return (
         <SwiperItem key={`slider-item__${idx}`} className='slider-item'>
           <View
@@ -246,52 +239,57 @@ const Slider = (props) => {
         </SwiperItem>
       )
     })
-  }, [data, curIdx, play, config.rounded])
+  }, [data, curIdx, play, config.rounded, config.firstScreenHeight])
 
   return (
-    <View className={classNames('wgt wgt-slider', {})} style={styleNames(outerStyle)}>
-      <View className='wgt-slider-wrap'>
-      {config && (
-        <Swiper
-          className='slider-img'
-          circular
-          autoplay={config.autoplay !== false}
-          current={curIdx}
-          interval={config.interval || 3000}
-          duration={300}
-          onAnimationFinish={swiperChange}
-        >
-          {renderItems}
-        </Swiper>
-      )}
-
-      {data.length >= 1 && (
-        <View
-          className={classNames(
-            'slider-pagination',
-            config.dotLocation || 'center',
-            config.shape || 'circle',
-            config.dotColor || 'dark',
-            {
-              cover: !config.dotCover
-            }
-          )}
-        >
-          {config.dot !== false &&
-            data.map((dot, dotIdx) => (
-              <View
-                className={classNames('dot-item', { active: curIdx === dotIdx })}
-                key={`dot-item__${dotIdx}`}
-              ></View>
-            ))}
-
-          {config.dot === false && (
-            <View className='pagination-count'>
-              {curIdx + 1}/{data.length}
-            </View>
+    <View className={classNames('wgt wgt-slider')} style={styleNames(outerStyle)}>
+      <View className='wgt-slider-content'>
+        <View className='wgt-slider-wrap'>
+          {config && (
+            <Swiper
+              className='slider-img'
+              circular
+              autoplay={config.autoplay !== false}
+              current={curIdx}
+              interval={config.interval || 3000}
+              duration={300}
+              onAnimationFinish={swiperChange}
+              style={styleNames({
+                height: `${Taro.pxTransform(config.firstScreenHeight * 2)}`
+              })}
+            >
+              {renderItems}
+            </Swiper>
           )}
         </View>
-      )}
+
+        {data.length >= 1 && (
+          <View
+            className={classNames(
+              'slider-pagination',
+              config.dotLocation || 'center',
+              config.shape || 'circle',
+              config.dotColor || 'dark',
+              {
+                'dot-cover': config.dotCover
+              }
+            )}
+          >
+            {config.dot !== false &&
+              data.map((dot, dotIdx) => (
+                <View
+                  className={classNames('dot-item', { active: curIdx === dotIdx })}
+                  key={`dot-item__${dotIdx}`}
+                ></View>
+              ))}
+
+            {config.dot === false && (
+              <View className='pagination-count'>
+                {curIdx + 1}/{data.length}
+              </View>
+            )}
+          </View>
+        )}
       </View>
     </View>
   )
