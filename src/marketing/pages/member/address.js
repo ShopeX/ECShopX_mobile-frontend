@@ -64,7 +64,8 @@ function AddressIndex(props) {
     if (address) {
       selectedId = address[ADDRESS_ID]
     } else {
-      selectedId = list.find((addr) => addr.is_def > 0) || null
+      const defAddr = list.find((addr) => addr.is_def > 0)
+      selectedId = defAddr ? defAddr[ADDRESS_ID] : null
     }
     setState((draft) => {
       ;(draft.list = newList), (draft.selectedId = selectedId)
@@ -128,7 +129,18 @@ function AddressIndex(props) {
     await api.member.addressDelete(item.address_id)
     S?.toast('删除成功')
 
-    if (selectedId === item.address_id) {
+    const deletedId = item[ADDRESS_ID]
+    const reduxId = address?.[ADDRESS_ID] ?? address?.address_id
+    const matchesRedux =
+      deletedId != null &&
+      reduxId != null &&
+      String(reduxId) === String(deletedId)
+    const matchesSelected =
+      deletedId != null &&
+      selectedId != null &&
+      String(selectedId) === String(deletedId)
+
+    if (matchesRedux || matchesSelected) {
       updateChooseAddress(null)
     }
 

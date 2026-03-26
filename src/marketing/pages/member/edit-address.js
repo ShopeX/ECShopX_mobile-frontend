@@ -173,13 +173,12 @@ function AddressIndex(props) {
     Taro.showLoading('正在提交')
 
     try {
-      await api.member.addressCreateOrUpdate(data)
-      if (data.address_id) {
-        showToast('修改成功')
-      } else {
-        showToast('创建成功')
-      }
-      updateChooseAddress(data)
+      const wasUpdate = !!data.address_id
+      const saveRes = await api.member.addressCreateOrUpdate(data)
+      const merged =
+        saveRes && typeof saveRes === 'object' ? { ...data, ...saveRes } : data
+      showToast(wasUpdate ? '修改成功' : '创建成功')
+      updateChooseAddress(merged)
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
