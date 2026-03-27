@@ -46,7 +46,11 @@ function WgtHomeHeader(props) {
             }
           }}
         >
-          <View className='address'>{location?.address || '北京市北京市昌平区'}</View>
+          <View className='address'>
+            {location?.address ||
+              [location?.province, location?.city, location?.district].filter(Boolean).join('') ||
+              '选择地区'}
+          </View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       )}
