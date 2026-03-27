@@ -125,7 +125,7 @@ function UgcNoteDetail(props) {
     const { list, total_count: total } = await mdugcApi.commentlist(params)
     const _commentList = pickBy(list, mdugcDoc.COMMENT_INFO)
     setState((draft) => {
-      draft.commentList = [...draft.commentList, ..._commentList]
+      draft.commentList =pageIndex == 1 ? _commentList : [...draft.commentList, ..._commentList]
       draft.commentTotal = total
     })
     return {
