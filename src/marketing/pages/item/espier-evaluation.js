@@ -16,7 +16,7 @@ import './espier-evaluation.scss'
 @withPager
 @withBackToTop
 export default class Evaluation extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }
@@ -35,9 +35,9 @@ export default class Evaluation extends Component {
   }
 
   async componentWillMount() {
-    // const query = await normalizeQuerys(this.$instance.router.params)
-    // this.$instance.router.params.id = query.id
-    // await entry.entryLaunch(this.$instance.router.params, false)
+    // const query = await normalizeQuerys(this.$instance?.router?.params)
+    // this.$instance?.router?.params.id = query.id
+    // await entry.entryLaunch(this.$instance?.router?.params, false)
   }
 
   componentDidMount() {
@@ -50,11 +50,11 @@ export default class Evaluation extends Component {
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
-    const { order_type } = this.$instance.router.params
+    const { order_type } = this.$instance?.router?.params
     const query = {
       page,
       pageSize,
-      item_id: this.$instance.router.params.id,
+      item_id: this.$instance?.router?.params.id,
       order_type
     }
     const { list, total_count } = await api.item.evaluationList(query)
@@ -146,7 +146,7 @@ export default class Evaluation extends Component {
 
   handleClickViewEvaluation = (item) => {
     Taro.navigateTo({
-      url: `/marketing/pages/item/espier-evaluation-detail?id=${this.$instance.router.params.id}&rate_id=${item.rate_id}&company_id=${item.company_id}&item_id=${item.item_id}`
+      url: `/marketing/pages/item/espier-evaluation-detail?id=${this.$instance?.router?.params.id}&rate_id=${item.rate_id}&company_id=${item.company_id}&item_id=${item.item_id}`
     })
   }
 

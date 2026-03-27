@@ -30,7 +30,7 @@ const TABBAR_LIST = [
 ]
 
 function CompTabbar(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { colorPrimary } = useSelector((state) => state.sys)
 
   const tabList = TABBAR_LIST.map((item) => {
@@ -56,7 +56,7 @@ function CompTabbar(props) {
   const handleTabbarClick = async (index) => {
     const tabItem = tabList[index]
     const { path } = $instance
-    const { distributor_id } = $instance.router.params
+    const { distributor_id } = $instance?.router?.params
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     if (path != tabItem.url) {
       Taro.redirectTo({

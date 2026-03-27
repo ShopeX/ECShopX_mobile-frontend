@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/doc'
 import { AtTabs, AtTextarea } from 'taro-ui'
 import {
@@ -61,7 +62,7 @@ const initialState = {
 }
 
 function DianwuTradeSaleAfter(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     tradeId,
@@ -97,7 +98,7 @@ function DianwuTradeSaleAfter(props) {
     if (!reason) {
       return showToast('请选择退款原因')
     }
-    const { trade_id } = $instance.router.params
+    const { trade_id } = $instance?.router?.params
     const [img] = pic || []
     const items = info?.items
       .filter((item) => item.checked)
@@ -131,7 +132,7 @@ function DianwuTradeSaleAfter(props) {
       description,
       evidence_pic: [img]
     }
-    await api.dianwu.salesAfterApply(params)
+    await dianwuApi.salesAfterApply(params)
     let type = 3
     if (params.aftersales_type == 'ONLY_REFUND') {
       type = 3

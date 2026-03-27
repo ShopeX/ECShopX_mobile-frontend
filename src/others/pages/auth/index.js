@@ -13,7 +13,7 @@ import { normalizeQuerys, getAppId } from '@/utils'
 import './index.scss'
 
 export default class AuthLogin extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {
@@ -23,9 +23,9 @@ export default class AuthLogin extends Component {
 
   componentDidMount() {
     if (!S.getAuthToken()) {
-      S.toast('请先登录')
+      S?.toast('请先登录')
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
       return
     }
@@ -34,9 +34,9 @@ export default class AuthLogin extends Component {
 
   // 扫码
   scanCode = async () => {
-    let { token, scene } = this.$instance.router.params
+    let { token, scene } = this.$instance?.router?.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$instance.router.params)
+      const { t } = await normalizeQuerys(this.$instance?.router?.params)
       token = t
     }
     const { code } = await Taro.login()
@@ -61,9 +61,9 @@ export default class AuthLogin extends Component {
 
   // 确认登录
   comfimLogin = async () => {
-    let { token, scene } = this.$instance.router.params
+    let { token, scene } = this.$instance?.router?.params
     if (!token && scene) {
-      const { t } = await normalizeQuerys(this.$instance.router.params)
+      const { t } = await normalizeQuerys(this.$instance?.router?.params)
       token = t
     }
     const { code } = await Taro.login()

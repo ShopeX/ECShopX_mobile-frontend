@@ -49,7 +49,7 @@ const GameActivity = () => {
 
     try {
       // 获取页面参数，只需获取游戏类型，不需要活动ID
-      const { type, id } = Taro.getCurrentInstance().router.params
+      const { type, id } = Taro.getCurrentInstance()?.router?.params
 
       // 调用API获取活动配置
       const response = await getGameConfig({ id })
@@ -164,10 +164,10 @@ const GameActivity = () => {
   const getPageStyle = () => {
     if (activityConfig?.backgroundImage) {
       return {
-        backgroundImage: `url(${activityConfig.backgroundImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        'background-image': `url(${activityConfig.backgroundImage})`,
+        'background-size': 'cover',
+        'background-position': 'center',
+        'background-repeat': 'no-repeat'
       }
     }
     return {}
@@ -207,11 +207,11 @@ const GameActivity = () => {
                 <View className='sp-game-activity__footer'>
                   <View
                     style={styleNames({
-                      backgroundColor: activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
+                      'background-color': activityConfig?.recordFormConfig?.rule?.[0] || '#fff',
                       color: activityConfig?.recordFormConfig?.rule?.[1] || '#000',
-                      backgroundImage: `url(${activityConfig?.recordFormConfig?.img})`,
-                      backgroundSize: '100% auto',
-                      backgroundRepeat: 'no-repeat'
+                      'background-image': `url(${activityConfig?.recordFormConfig?.img})`,
+                      'background-size': '100% auto',
+                      'background-repeat': 'no-repeat'
                     })}
                     className='sp-game-activity__footer-btn'
                     onClick={() =>

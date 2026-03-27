@@ -2,8 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-.page-index {
+ .page-index {
   .home-body {
     height: 100%;
+  }
+
+  /* 首页数据加载中，避免白屏 */
+  .home-loading {
+    flex: 1;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

@@ -20,13 +20,13 @@ const initialState = {
 const PageBrandInfo = () => {
   const [state, setState] = useImmer(initialState)
 
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { storeInfo, fav } = state
 
   const {
     params: { distributor_id }
-  } = $instance.router
+  } = $instance?.router
 
   const getDetail = async () => {
     const {

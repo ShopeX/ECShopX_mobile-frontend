@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View, Text } from '@tarojs/components'
 import { AtTextarea, AtModal, AtModalHeader, AtModalContent } from 'taro-ui'
@@ -77,7 +78,7 @@ function DianwuCheckout(props) {
     checkout_order_id
   } = state
   const pageRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
@@ -90,7 +91,7 @@ function DianwuCheckout(props) {
     })
     if (confirm) {
       try {
-        await api.dianwu.orderPendding({
+        await dianwuApi.orderPendding({
           user_id: member?.userId,
           distributor_id,
           showError: false
@@ -139,7 +140,7 @@ function DianwuCheckout(props) {
   }
 
   useEffect(() => {
-    const { distributor_id } = $instance.router.params
+    const { distributor_id } = $instance?.router?.params
     setState((draft) => {
       draft.distributor_id = distributor_id
     })
@@ -161,7 +162,7 @@ function DianwuCheckout(props) {
   }, [isOpened, couponLayout])
 
   const getUserCardList = async () => {
-    const { list } = await api.dianwu.getUserCardList({
+    const { list } = await dianwuApi.getUserCardList({
       user_id: member?.userId,
       distributor_id
     })
@@ -184,7 +185,7 @@ function DianwuCheckout(props) {
       }
     }
     Taro.showLoading({ title: '' })
-    const res = await api.dianwu.checkout(params)
+    const res = await dianwuApi.checkout(params)
     if (res.extraTips) {
       Taro.hideLoading()
       await Taro.showModal({
@@ -310,7 +311,7 @@ function DianwuCheckout(props) {
         markdown
       }
     }
-    const { order_id } = await api.dianwu.createOrder(params)
+    const { order_id } = await dianwuApi.createOrder(params)
 
     //存在处方药要把order_id存起来
     if (!prescriptionStatus == 0) {
@@ -327,7 +328,7 @@ function DianwuCheckout(props) {
     if (errMsg == 'scanCode:ok') {
       console.log(`handleClickScanCode:`, result)
       const order_id = await createOrder()
-      const { trade_info } = await api.dianwu.orderPayment({
+      const { trade_info } = await dianwuApi.orderPayment({
         order_id,
         auth_code: result
       })
@@ -353,7 +354,7 @@ function DianwuCheckout(props) {
     })
     if (!res.confirm) return
     const order_id = await createOrder()
-    await api.dianwu.orderPayment({
+    await dianwuApi.orderPayment({
       order_id,
       pay_type: 'pos'
     })
@@ -366,7 +367,7 @@ function DianwuCheckout(props) {
   const handleClickOfflinePay = async () => {
     Taro.showLoading({ title: '正在创建订单中', mask: true })
     const order_id = await createOrder()
-    await api.dianwu.orderPayment({
+    await dianwuApi.orderPayment({
       order_id,
       pay_type: 'offline_pay',
       pay_channel: 'offline_pay'

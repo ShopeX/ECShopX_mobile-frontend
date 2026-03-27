@@ -13,10 +13,10 @@ import S from '@/spx'
 import { SG_DIANWU_TOKEN } from '@/consts/localstorage'
 
 export default (props = {}) => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   useEffect(() => {
-    const { token } = $instance.router?.params || {}
+    const { token } = $instance?.router?.params || {}
     if (token) {
       Taro.setStorageSync(SG_DIANWU_TOKEN, token)
     }

@@ -15,7 +15,7 @@ import './trade.scss'
 @withPager
 @withBackToTop
 export default class DistributionTrade extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -36,7 +36,7 @@ export default class DistributionTrade extends Component {
 
   async fetch(params) {
     const { curTabIdx } = this.state
-    const { type } = this.$instance.router.params
+    const { type } = this.$instance?.router?.params
     const { page_no: page, page_size: pageSize } = params
     const query = {
       brokerage_source: type,

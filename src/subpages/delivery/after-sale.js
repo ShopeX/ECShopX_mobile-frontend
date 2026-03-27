@@ -54,7 +54,7 @@ const initialState = {
 }
 
 function TradeAfterSale(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const {
@@ -107,7 +107,7 @@ function TradeAfterSale(props) {
   }
 
   const fetch = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     const { orderInfo, offline_aftersales_is_open, distributor } = await api.trade.detail(id, {
       ...deliveryPersonnel
     })
@@ -180,7 +180,7 @@ function TradeAfterSale(props) {
   }
 
   const onSubmit = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     const checkedItems = info?.items.filter((item) => !!item.checked)
     if (checkedItems.length == 0) {
       return showToast('请选择需要售后的商品')

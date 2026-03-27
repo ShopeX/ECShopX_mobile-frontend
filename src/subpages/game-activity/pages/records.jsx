@@ -13,7 +13,7 @@ const SpRecordLayout = () => {
   const [records, setRecords] = useState([])
   const $instance = Taro.getCurrentInstance()
 
-  const { path, params } = $instance.router
+  const { path, params } = $instance?.router
   const id = params.id
   useEffect(() => {
     initData()

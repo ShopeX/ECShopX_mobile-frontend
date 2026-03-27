@@ -21,7 +21,7 @@ export default (props = {}) => {
   // const policyTime = useRef(0)
 
   useEffect(() => {
-    const token = S.getAuthToken()
+    const token = S?.getAuthToken()
     if (!token) {
       autoLogin && login()
     } else {
@@ -79,7 +79,7 @@ export default (props = {}) => {
   }
 
   const setToken = async (token) => {
-    S.setAuthToken(token)
+    S?.setAuthToken(token)
   }
 
   return {

@@ -23,6 +23,7 @@ import {
 } from '@/utils'
 import { usePayment } from '@/hooks'
 import S from '@/spx'
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import tradeHooks from './hooks'
 import CompTradeCancel from './comps/comp-tradecancel'
 import CompWriteOffCode from './comps/comp-writeoff-code'
@@ -245,7 +246,7 @@ function TradeDetail(props) {
       })
     } else {
       Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
+        url: `/subpages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
       })
     }
   }
@@ -406,7 +407,7 @@ function TradeDetail(props) {
     const storedData = Taro.getStorageSync(SG_ROUTER_PARAMS)
     // const routeParams = await entryLaunch.getRouteParams()
     // return routeParams && routeParams.order_id ? routeParams : storedData
-    const order_id = router.params?.order_id
+    const order_id = router?.params?.order_id
     return order_id ? { order_id } : storedData
   }
 
@@ -485,6 +486,7 @@ function TradeDetail(props) {
       loading={loading}
       scrollToTopBtn
       renderFooter={renderActionButton()}
+      renderFloat={<FloatSalesperson />}
     >
       {info && (
         <ScrollView className='trade-detail-scroll' scrollY>

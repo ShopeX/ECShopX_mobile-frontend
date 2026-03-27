@@ -3,15 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useCallback, useRef, useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { View, Text, Picker, Input } from '@tarojs/components'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, useStore } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
 import { usePage, useLogin } from '@/hooks'
 import doc from '@/doc'
+import * as shopDoc from '@/doc/shop'
 import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
 import './nearly-shop.scss'
@@ -46,6 +47,28 @@ function NearlyShop(props) {
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
+  const reduxStore = useStore()
+
+  /** 从地址页返回时：若当前选中地址已在服务端删除，清空 Redux，避免「我的收货地址」仍显示旧数据 */
+  useDidShow(() => {
+    if (!isLogin) return
+    ;(async () => {
+      try {
+        const { list } = await api.member.addressList()
+        const addr = reduxStore.getState().user.address
+        const aid = addr?.address_id
+        if (addr == null || aid == null || aid === '') return
+        const exists = (list || []).some(
+          (a) => a?.address_id != null && String(a.address_id) === String(aid)
+        )
+        if (!exists) {
+          dispatch(updateChooseAddress(null))
+        }
+      } catch (e) {
+        console.error('nearly-shop addressList sync', e)
+      }
+    })()
+  })
 
   useEffect(() => {
     if (refresh) {
@@ -149,7 +172,7 @@ function NearlyShop(props) {
     const { list, total_count: total, defualt_address } = await api.shop.list(params)
 
     setState((draft) => {
-      draft.shopList = draft.shopList.concat(pickBy(list, doc.shop.SHOP_ITEM))
+      draft.shopList = draft.shopList.concat(pickBy(list, shopDoc.SHOP_ITEM))
       draft.refresh = false
     })
 

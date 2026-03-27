@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import qs from 'qs'
 import { CHIEF_APPLY_STATUS, FORM_COMP } from '@/consts'
@@ -54,9 +55,9 @@ function ApplyChief(props) {
     loading
   } = state
   const { colorPrimary } = useSelector((state) => state.sys)
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const formRef = useRef()
-  const { distributor_id: dtid, scene = '' } = $instance.router.params
+  const { distributor_id: dtid, scene = '' } = $instance?.router?.params
   let distributor_id = dtid
   if (scene) {
     const { did } = qs.parse(decodeURIComponent(scene))
@@ -68,7 +69,7 @@ function ApplyChief(props) {
   }, [])
 
   const getApplyChief = async () => {
-    const { approve_status, refuse_reason } = await api.community.getApplyChief({
+    const { approve_status, refuse_reason } = await communityApi.getApplyChief({
       distributor_id
     })
     let _isDefault = false,
@@ -106,7 +107,7 @@ function ApplyChief(props) {
   }
 
   const fetch = async () => {
-    const res = await api.community.getAppayFields({
+    const res = await communityApi.getAppayFields({
       distributor_id
     })
     let form = {},
@@ -130,7 +131,7 @@ function ApplyChief(props) {
   }
 
   const aggrementAndExplanation = async () => {
-    let { explanation } = await api.community.aggrementAndExplanation({ distributor_id })
+    let { explanation } = await communityApi.aggrementAndExplanation({ distributor_id })
     if (isAlipay) {
       explanation = htmlStringToNodeArray(explanation)
     }
@@ -224,7 +225,7 @@ function ApplyChief(props) {
     formRef.current.onSubmit(async () => {
       console.log(form)
       if (agree) {
-        await api.community.applyChief({
+        await communityApi.applyChief({
           ...form,
           distributor_id
         })

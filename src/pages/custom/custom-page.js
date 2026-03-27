@@ -35,7 +35,7 @@ const initialState = {
   navbarHeight: 0
 }
 function CustomPage(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar, scrollIntoView, navbarHeight } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -43,7 +43,9 @@ function CustomPage(props) {
   const loginRef = useRef()
   const router = useRouter()
   const { location, address } = useSelector((state) => state.user)
-  const nearbyText = address?.city || location?.city || ''
+  const nearbyText = address?.adrdetail
+    ? address?.city || address?.province || ''
+    : location?.city || location?.province || address?.city || ''
 
   useEffect(() => {
     fetch()
@@ -60,7 +62,7 @@ function CustomPage(props) {
   }, [skuPanelOpen])
 
   const fetch = async () => {
-    const { id, isTabBar } = await entryLaunch.getRouteParams($instance.router.params)
+    const { id, isTabBar } = await entryLaunch.getRouteParams($instance?.router?.params)
     const pathparams = qs.stringify({
       template_name: platformTemplateName,
       version: 'v1.0.1',
@@ -87,7 +89,7 @@ function CustomPage(props) {
   })
 
   const getAppShareInfo = async () => {
-    const { id } = await entryLaunch.getRouteParams($instance.router.params)
+    const { id } = await entryLaunch.getRouteParams($instance?.router?.params)
     const { userId } = Taro.getStorageSync('userinfo')
     const params = { id }
     if (userId) {
@@ -113,7 +115,7 @@ function CustomPage(props) {
   }
   return (
     <SpPage
-      btnHomeEnable={router.params.fromConnect !== 'davild'}
+      btnHomeEnable={router?.params.fromConnect !== 'davild'}
       scrollToTopBtn
       className='page-custom-page'
       showpoweredBy={false}

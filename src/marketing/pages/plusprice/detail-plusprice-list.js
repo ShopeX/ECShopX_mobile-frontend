@@ -20,7 +20,7 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -38,7 +38,7 @@ export default class DetailPluspriceList extends Component {
 
   componentDidMount() {
     console.log('---componentDidMount---')
-    // const { marketing_id } = getCurrentInstance().params
+    // const { marketing_id } = getCurrentInstance()?.params
     // this.setState({
     //   query: {
     //     marketing_id: marketing_id
@@ -94,14 +94,14 @@ export default class DetailPluspriceList extends Component {
     const { distributor_id } = item
     // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${distributor_id}`
+      url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${distributor_id}`
     })
   }
 
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      marketing_id: this.$instance.router.params.marketing_id,
+      marketing_id: this.$instance?.router?.params.marketing_id,
       page,
       pageSize
     }
@@ -158,8 +158,8 @@ export default class DetailPluspriceList extends Component {
       <View
         className='page-plusprice'
         style={{
-          backgroundImage: `url(${isSetBackground})`,
-          backgroundSize: isSetBackground ? 'cover' : 'contain'
+          'background-image': `url(${isSetBackground})`,
+          'background-size': isSetBackground ? 'cover' : 'contain'
         }}
       >
         <SpNavBar title='微商城' />
@@ -167,7 +167,7 @@ export default class DetailPluspriceList extends Component {
           <View className='title'> {promotion_activity.marketing_name} </View>
           <View
             className='plusprice-goods__timer'
-            style={{ backgroundColor: timeBackgroundColor ? timeBackgroundColor : '#FC682D' }}
+            style={{ 'background-color': timeBackgroundColor ? timeBackgroundColor : '#FC682D' }}
           >
             <View>
               <Text className='time-text'>距结束</Text>

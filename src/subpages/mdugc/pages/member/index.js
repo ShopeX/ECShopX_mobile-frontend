@@ -13,6 +13,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { Scrollitem, Popups } from '../../components'
 import './index.scss'
 
@@ -79,7 +80,7 @@ export default class mdugcmember extends Component {
   async componentDidMount() {
     let { memberData } = this.props
     console.log(123, memberData)
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
         icon: 'none',
@@ -93,7 +94,7 @@ export default class mdugcmember extends Component {
 
       return
     }
-    let { user_id } = this.$router.params
+    let { user_id } = this.$router?.params
     let file_drafts = wx.getStorageSync('md_drafts')
     let { userinfo } = this.state
     let userid = ''
@@ -140,7 +141,7 @@ export default class mdugcmember extends Component {
       userInfo,
       follow_status,
       draft_post
-    } = await api.mdugc.followerstat(data)
+    } = await mdugcApi.followerstat(data)
     popnum[0].num = post_all_nums
     popnum[1].num = likes
     userinfos.headimgurl = userInfo.headimgurl
@@ -242,7 +243,7 @@ export default class mdugcmember extends Component {
     if (curTagId > 0) {
       params.searchType = curTagId == 1 ? 'favorite' : 'like'
     }
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
     console.log('list, total', list, total)
     let nList = []
     if (list) {
@@ -321,7 +322,7 @@ export default class mdugcmember extends Component {
   }
   // 关注|取消关注
   followercreate = async () => {
-    const isAuth = S.getAuthToken()
+    const isAuth = S?.getAuthToken()
     if (!isAuth) {
       Taro.showToast({
         icon: 'none',
@@ -341,7 +342,7 @@ export default class mdugcmember extends Component {
       user_id: userinfo.userid,
       follower_user_id: memberData.memberInfo.user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       userinfo.follow_status = 0
       userinfo.followers = userinfo.followers - 1

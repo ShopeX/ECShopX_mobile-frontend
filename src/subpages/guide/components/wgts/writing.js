@@ -43,8 +43,8 @@ export default class WgtWriting extends Component {
       return null
     }
 
-    const { config, base, data } = info
-    const curContent = (data[curIdx] || {}).content
+    const { config, base, data = [] } = info
+    const curContent = ((data || [])[curIdx] || {}).content
     let contentArr = []
     if (curContent) {
       contentArr = curContent.split('\n')

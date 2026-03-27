@@ -61,7 +61,7 @@
       font-size: 32px;
       font-weight: bold;
       max-width: 400px;
-      @include multi-ellipsis(1);
+      @include multi-ellipsis(2);
       margin-bottom: 40px;
     }
     &-lf {

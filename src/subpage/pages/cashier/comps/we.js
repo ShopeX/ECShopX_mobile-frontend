@@ -9,7 +9,7 @@ import api from '@/api'
 import './we.scss'
 
 export default class WeappBtn extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }
@@ -19,7 +19,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    let { code } = this.$instance.router.params
+    let { code } = this.$instance?.router?.params
 
     let { open_id } = await api.wx.getOpenid({ code })
 

@@ -26,7 +26,7 @@ export default class Make_img extends Component {
 
   componentWillMount() {
     console.log(1, getCurrentInstance())
-    let { imgurl, imgurls } = getCurrentInstance().router.params
+    let { imgurl, imgurls } = getCurrentInstance()?.router?.params
     console.log('imgurl2', imgurl, imgurls)
     if (imgurl) {
       // 首次进入

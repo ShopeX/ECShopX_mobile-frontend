@@ -96,8 +96,12 @@ function App({ children }) {
     console.log('useLaunch ***********', options)
     Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
 
-    // Initialize RTL
-    const lang = Taro.getStorageSync('lang') || 'en'
+    // Initialize RTL；首次进入时 Taro 无 lang，需写入默认语言，否则 baseinfo 等首请求不会带 country_code
+    let lang = Taro.getStorageSync('lang')
+    if (!lang) {
+      lang = process.env.APP_DEFAULT_LANGUAGE || 'en'
+      Taro.setStorageSync('lang', lang)
+    }
     store.dispatch(updateLang(lang))
     if (isWeb) {
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
@@ -291,32 +295,32 @@ function App({ children }) {
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-600-SemiBold.otf?t=1718810009',
-      success: () => {},
-      fail: () => {}
+      success: () => { },
+      fail: () => { }
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-Regular',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-400-Regular.otf?t=1718810009',
-      success: () => {},
-      fail: () => {}
+      success: () => { },
+      fail: () => { }
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-Medium',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-500-Medium.otf?t=1718810009',
-      success: () => {},
-      fail: () => {}
+      success: () => { },
+      fail: () => { }
     })
     wx.loadFontFace({
       family: 'D-DIN-PRO-ExtraBold',
       global: true,
       source:
         'https://b-img-cdn.yuanyuanke.cn/fv-vshop/D-DIN-PRO/D-DIN-PRO-800-ExtraBold.otf?t=1718810009',
-      success: () => {},
-      fail: () => {}
+      success: () => { },
+      fail: () => { }
     })
   }
 

@@ -23,7 +23,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.sys)
   const { address } = useSelector((state) => state.user)
@@ -42,7 +42,7 @@ function AddressIndex(props) {
   }
 
   const fetch = async (isDelete = false) => {
-    const { isPicker, receipt_type = '', city = '' } = $instance.router.params
+    const { isPicker, receipt_type = '', city = '' } = $instance?.router?.params
     if (isPicker) {
       setState((draft) => {
         draft.isPicker = true
@@ -64,7 +64,8 @@ function AddressIndex(props) {
     if (address) {
       selectedId = address[ADDRESS_ID]
     } else {
-      selectedId = list.find((addr) => addr.is_def > 0) || null
+      const defAddr = list.find((addr) => addr.is_def > 0)
+      selectedId = defAddr ? defAddr[ADDRESS_ID] : null
     }
     setState((draft) => {
       ;(draft.list = newList), (draft.selectedId = selectedId)
@@ -89,7 +90,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S.toast('修改成功')
+        S?.toast('修改成功')
       }
 
       setTimeout(() => {
@@ -126,9 +127,20 @@ function AddressIndex(props) {
 
     const { selectedId } = state
     await api.member.addressDelete(item.address_id)
-    S.toast('删除成功')
+    S?.toast('删除成功')
 
-    if (selectedId === item.address_id) {
+    const deletedId = item[ADDRESS_ID]
+    const reduxId = address?.[ADDRESS_ID] ?? address?.address_id
+    const matchesRedux =
+      deletedId != null &&
+      reduxId != null &&
+      String(reduxId) === String(deletedId)
+    const matchesSelected =
+      deletedId != null &&
+      selectedId != null &&
+      String(selectedId) === String(deletedId)
+
+    if (matchesRedux || matchesSelected) {
       updateChooseAddress(null)
     }
 
@@ -155,7 +167,7 @@ function AddressIndex(props) {
     if (pages.length > 1) {
       let { path } = pages[pages.length - 2]
       if (CHECKOUT_PAGE == path.split('?')[0]) {
-        S.set('FROM_ADDRESS', true)
+        S?.set('FROM_ADDRESS', true)
       }
     }
     Taro.navigateBack()

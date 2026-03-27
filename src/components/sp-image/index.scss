@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-.sp-image-container {
+ .sp-image-container {
   position: relative;
   overflow: hidden; /* 防止圆角溢出 */
   background-color: transparent;
@@ -11,16 +11,17 @@
   align-items: center;
   justify-content: center;
 
-  // 占位符样式
+  // 占位符样式（加载中骨架闪，加载完成后淡出）
   .sp-image-placeholder {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1; /* 占位符在上层，加载前显示 */
+    z-index: 1;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    transition: opacity 0.2s ease;
+    opacity: 1;
+    transition: opacity 0.25s ease-out;
     pointer-events: none;
 
     &::after {
@@ -38,18 +39,23 @@
       );
       animation: skeleton-shimmer 1.2s ease-in-out infinite;
     }
+
+    &.sp-image-placeholder--hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
 
-  // 实际图片样式
+  // 实际图片：加载完成后淡入过渡
   .sp-image-content {
     position: relative;
-    transition: opacity 0.3s ease;
-    opacity: 0; /* 初始透明 */
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
 
     &.sp-image--loaded {
-      opacity: 1; /* 加载成功后渐显 */
-      width: 100%;
-      height: 100%;
+      opacity: 1;
     }
   }
 }

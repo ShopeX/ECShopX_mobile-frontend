@@ -25,7 +25,7 @@ import './activity-detail.scss'
   colors: colors.current
 }))
 export default class ActivityDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -40,7 +40,7 @@ export default class ActivityDetail extends Component {
 
   async fetch() {
     const { content } = await api.user.registrationRecordInfo({
-      record_id: this.$instance.router.params.record_id
+      record_id: this.$instance?.router?.params.record_id
     })
 
     let answer_data = []

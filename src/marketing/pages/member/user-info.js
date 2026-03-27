@@ -24,7 +24,7 @@ const isWeapp = Taro.getEnv() === Taro.ENV_TYPE.WEAPP
   () => ({})
 )
 export default class Reg extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -121,28 +121,28 @@ export default class Reg extends Component {
     }
 
     if (!data.mobile || !/1\d{10}/.test(data.mobile)) {
-      return S.toast('请输入正确的手机号')
+      return S?.toast('请输入正确的手机号')
     }
 
     if (!isWeapp && !data.vcode) {
-      return S.toast('请输入验证码')
+      return S?.toast('请输入验证码')
     }
 
     /*if (!data.password) {
-      return S.toast('请输入密码')
+      return S?.toast('请输入密码')
     }*/
     this.state.list.map((item) => {
       return item.is_required
         ? item.is_required && data[item.key]
           ? true
-          : S.toast(`请输入${item.name}`)
+          : S?.toast(`请输入${item.name}`)
         : null
     })
 
     try {
       if (isWeapp) {
         const uid = Taro.getStorageSync('distribution_shop_id')
-        const { union_id, open_id } = this.$instance.router.params
+        const { union_id, open_id } = this.$instance?.router?.params
         const trackParams = Taro.getStorageSync('trackParams')
         let params = {
           ...data,
@@ -166,13 +166,13 @@ export default class Reg extends Component {
 
         const { code } = await Taro.login()
         const { token } = await api.wx.login({ code })
-        S.setAuthToken(token)
+        S?.setAuthToken(token)
       } else {
         const res = await api.user.reg(data)
-        S.setAuthToken(res.token)
+        S?.setAuthToken(res.token)
       }
 
-      S.toast('注册成功')
+      S?.toast('注册成功')
       setTimeout(() => {
         Taro.redirectTo({
           url: '/subpages/member/index'
@@ -234,7 +234,7 @@ export default class Reg extends Component {
   }
 
   handleErrorToastClose = () => {
-    S.closeToast()
+    S?.closeToast()
   }
 
   handleTimerStart = async (resolve) => {
@@ -242,10 +242,10 @@ export default class Reg extends Component {
     const { mobile, yzm } = this.state.info
     const { imgInfo } = this.state
     if (!/1\d{10}/.test(mobile)) {
-      return S.toast('请输入正确的手机号')
+      return S?.toast('请输入正确的手机号')
     }
     if (!(mobile.length === 11 && yzm)) {
-      return S.toast('请输入手机号和图形验证码')
+      return S?.toast('请输入手机号和图形验证码')
     }
 
     const query = {
@@ -256,7 +256,7 @@ export default class Reg extends Component {
     }
     try {
       await api.user.regSmsCode(query)
-      S.toast('发送成功')
+      S?.toast('发送成功')
     } catch (error) {
       return false
     }
@@ -279,7 +279,7 @@ export default class Reg extends Component {
   }
 
   handleGetPhoneNumber = async (e) => {
-    // let { code } = getCurrentInstance().params
+    // let { code } = getCurrentInstance()?.params
     // try {
     //   await Taro.checkSession()
     // } catch (e) {

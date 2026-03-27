@@ -13,6 +13,7 @@ class RouteIntercept {
     this.routes = {
       'in_purchase': {
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/subpages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout',
         '/subpages/member/index': '/subpages/purchase/member',
         '/pages/category/index': '/subpages/purchase/category',
@@ -23,22 +24,25 @@ class RouteIntercept {
         // 如果是standard并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
         '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/subpages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       },
       'platform': {
         // 如果是platform并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
         '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/subpages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       },
       'b2c': {
         // 如果是b2c并且store里有活动id时,会存在内购商城，内购商城里的页面需要进行进行路由代理
         '/subpages/item/list': '/subpages/purchase/list',
         '/pages/item/espier-detail': '/subpages/purchase/espier-detail',
+        '/subpages/item/espier-detail': '/subpages/purchase/espier-detail',
         '/pages/cart/espier-checkout': '/subpages/purchase/espier-checkout'
       }
       // 'standard': {
-      //   '/pages/item/espier-detail': '/subpages/pointshop/espier-detail',
+      //   '/subpages/item/espier-detail': '/subpages/pointshop/espier-detail',
       //   '/pages/cart/espier-checkout': '/subpages/pointshop/espier-checkout'
       // }
     }

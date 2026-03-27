@@ -9,6 +9,7 @@ import { SpPage, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import CompShopList from './comps/comp-shop-list'
 import './selectShop.scss'
 
@@ -56,7 +57,7 @@ const SelectShop = () => {
     }
     params[basis.key] = basis.keywords
 
-    const { total_count, list: lists } = await api.delivery.getDistributorList(params)
+    const { total_count, list: lists } = await deliveryApi.getDistributorList(params)
     lists.map((item) => {
       item.updated = formatTime(item.updated * 1000, 'YYYY-MM-DD')
     })

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpImage, SpPrice } from '@/components'
+import { SpImage, SpPrice, SpPoint } from '@/components'
 import SpTag from '@/components/sp-tag/index'
 import Taro from '@tarojs/taro'
 import qs from 'qs'
@@ -15,6 +15,7 @@ function SpGoodsCompactCard(props) {
     mode = 'aspectFill',
     top,
     showTop,
+    showPrice = true,
     onClickGio = () => {},
     onChangeRegionauth = () => {}
   } = props
@@ -26,7 +27,7 @@ function SpGoodsCompactCard(props) {
       onClick(info)
       return
     }
-    const { itemId, distributorId } = info
+    const { itemId, distributorId, point } = info
     let query = { id: itemId }
     if (typeof distributorId !== 'undefined') {
       query = {
@@ -34,7 +35,9 @@ function SpGoodsCompactCard(props) {
         dtid: distributorId
       }
     }
-    const url = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const url = point
+      ? `/subpages/pointshop/espier-detail?${qs.stringify(query)}`
+      : `/subpages/item/espier-detail?${qs.stringify(query)}`
     onChangeRegionauth(info)
     Taro.navigateTo({
       url
@@ -114,28 +117,46 @@ function SpGoodsCompactCard(props) {
 
         <View className='sp-goods-compact-card__price'>
           <View className='price-wrapper'>
-            <SpPrice
-              className='current-price'
-              size={34}
-              value={finalPrice}
-              style={{ marginRight: '6px' }}
-              weight={600}
-            />
-
-            {Number(info.marketPrice || 0) > 0 &&
-              Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+            {showPrice ? (
+              <>
                 <SpPrice
-                  size={24}
-                  noSymbol
-                  // noDecimal
-                  className='market-price'
-                  lineThrough
-                  value={info.marketPrice}
+                  className='current-price'
+                  size={34}
+                  value={finalPrice}
+                  style={{ marginRight: '6px' }}
+                  weight={600}
                 />
-              )}
+                {Number(info.marketPrice || 0) > 0 &&
+                  Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+                    <SpPrice
+                      size={24}
+                      noSymbol
+                      className='market-price'
+                      lineThrough
+                      value={info.marketPrice}
+                    />
+                  )}
+              </>
+            ) : (
+              <>
+                <SpPoint value={info.point} />
+                {Number(info.price || 0) > 0 && (
+                  <>
+                    <Text style={{ margin: '0 4px' }}>+</Text>
+                    <SpPrice
+                      className='current-price'
+                      size={34}
+                      value={info.price}
+                      style={{ marginRight: '6px' }}
+                      weight={600}
+                    />
+                  </>
+                )}
+              </>
+            )}
           </View>
 
-          {info.discountRate && (
+          {showPrice && !info.point && info.discountRate && (
             <View className='discount-tag'>
               <Text className='discount-tag__value'>{info.discountRate}</Text>
               <Text className='discount-tag__unit'>折</Text>
@@ -161,6 +182,7 @@ SpGoodsCompactCard.defaultProps = {
   width: 218,
   top: 0,
   showTop: false,
+  showPrice: true,
   onLoad: () => {}
 }
 

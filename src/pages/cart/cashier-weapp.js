@@ -24,24 +24,24 @@ const initialState = {
   orderInfo: {}
 }
 function CashierWeApp(props) {
-  const $instance = getCurrentInstance()
-  // const { params, orderInfo } = $instance.router.params
+  const $instance = getCurrentInstance() || {}
+  // const { params, orderInfo } = $instance?.router?.params
   // const _params = JSON.parse(decodeURIComponent(params))
   // const _orderInfo = JSON.parse(decodeURIComponent(orderInfo))
   const [state, setState] = useImmer(initialState)
   const { price, order_id, create_time, params, orderInfo } = state
 
   const { cashierPayment } = usePayment()
-  const { source } = $instance.router.params
+  const { source } = $instance?.router?.params
   useEffect(() => {
-    const { order_id, source } = $instance.router.params
+    const { order_id, source } = $instance?.router?.params
     if (order_id) {
       fetch()
     }
   }, [])
 
   const fetch = async () => {
-    const { order_id, code, source } = $instance.router.params
+    const { order_id, code, source } = $instance?.router?.params
     if (isWxWeb && !code) {
       // 微信客户端code授权
       const loc = window.location
@@ -84,7 +84,7 @@ function CashierWeApp(props) {
   }
 
   const handlePay = async () => {
-    const { source } = $instance.router.params
+    const { source } = $instance?.router?.params
     let _params = { ...params }
     if (source) {
       _params.source = source

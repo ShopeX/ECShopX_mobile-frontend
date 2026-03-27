@@ -37,7 +37,7 @@ const initialState = {
 }
 
 function OfflineTransfer() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((_state) => _state.colors.current)
   const { params } = useRouter()

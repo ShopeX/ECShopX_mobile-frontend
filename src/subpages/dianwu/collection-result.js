@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
@@ -20,9 +21,9 @@ const initialState = {
   operatorInfo: null
 }
 function DianwuCollectionResult(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { member } = useSelector((state) => state.dianwu)
-  const { order_id, trade_id, pay_type } = $instance.router.params
+  const { order_id, trade_id, pay_type } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
   const { distributor, info, operatorInfo } = state
 
@@ -39,7 +40,7 @@ function DianwuCollectionResult(props) {
     // msg: "支付中，请稍后再查询支付结果"
     // pay_type: "wxpaypos"
     // status: "USERPAYING"
-    const { status } = await api.dianwu.getPaymentResultByOrder({
+    const { status } = await dianwuApi.getPaymentResultByOrder({
       trade_id
     })
     if (status == 'USERPAYING') {
@@ -52,7 +53,7 @@ function DianwuCollectionResult(props) {
   }
 
   const fetchOrderInfo = async () => {
-    const { distributor, orderInfo, operatorInfo } = await api.dianwu.getTradeDetail(order_id)
+    const { distributor, orderInfo, operatorInfo } = await dianwuApi.getTradeDetail(order_id)
     const {
       items,
       pay_type,
@@ -73,7 +74,7 @@ function DianwuCollectionResult(props) {
     } = orderInfo
     let username, mobile
     if (user_id != 0) {
-      const { username: _username, mobile: _mobile } = await api.dianwu.getMemberByUserId({
+      const { username: _username, mobile: _mobile } = await dianwuApi.getMemberByUserId({
         user_id
       })
       username = _username

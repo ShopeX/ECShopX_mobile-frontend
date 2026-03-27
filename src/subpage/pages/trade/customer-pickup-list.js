@@ -19,7 +19,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradePickList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)
@@ -123,7 +123,7 @@ export default class TradePickList extends Component {
     const { tid } = trade
     if (type === 'confirm') {
       await api.trade.confirm(tid)
-      const { fullPath } = getCurrentRoute(this.$instance.router)
+      const { fullPath } = getCurrentRoute(this.$instance?.router)
       Taro.redirectTo({
         url: fullPath
       })

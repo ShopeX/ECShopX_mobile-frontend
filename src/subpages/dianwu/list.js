@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { AtButton, AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { useDianWuLogin } from '@/hooks'
 import { View, Text } from '@tarojs/components'
@@ -33,8 +34,8 @@ function DianWuList() {
   const [state, setState] = useImmer(initialState)
   const { keywords, typeList, current, list, cartList } = state
   const goodsRef = useRef()
-  const $instance = getCurrentInstance()
-  const { distributor_id } = $instance.router.params
+  const $instance = getCurrentInstance() || {}
+  const { distributor_id } = $instance?.router?.params
 
   // useDianWuLogin()
 
@@ -63,7 +64,7 @@ function DianWuList() {
       }
     }
     Taro.showLoading({ title: '' })
-    const { list: _list, total_count } = await api.dianwu.goodsItems(params)
+    const { list: _list, total_count } = await dianwuApi.goodsItems(params)
     Taro.hideLoading()
 
     setState((draft) => {
@@ -76,7 +77,7 @@ function DianWuList() {
   }
 
   const handleAddToCart = async ({ itemId }) => {
-    await api.dianwu.addToCart({
+    await dianwuApi.addToCart({
       item_id: itemId,
       num: 1,
       distributor_id
@@ -86,7 +87,7 @@ function DianWuList() {
   }
 
   const getCashierList = async () => {
-    const { valid_cart } = await api.dianwu.getCartDataList({
+    const { valid_cart } = await dianwuApi.getCartDataList({
       distributor_id
     })
     setState((draft) => {

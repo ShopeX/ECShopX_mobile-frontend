@@ -18,7 +18,7 @@ const { store } = configStore()
   colors: colors.current
 }))
 export default class SettingIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {
@@ -76,7 +76,7 @@ export default class SettingIndex extends Component {
     const { colors } = this.props
     return (
       <SpPage className='destory-member'>
-        <View className='title'>将{this.$instance.router.params?.phone}的账号注销</View>
+        <View className='title'>将{this.$instance?.router?.params?.phone}的账号注销</View>
         <View className='content'>
           <View className='margin fonts'>
             账号注销后，你在相关产品/服务留存的的信息将被清空且无法找回，具体包括：

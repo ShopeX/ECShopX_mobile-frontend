@@ -19,7 +19,7 @@ import './plusprice.scss'
 @withPager
 @withBackToTop
 export default class DetailPluspriceList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -40,7 +40,7 @@ export default class DetailPluspriceList extends Component {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
+      url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
     })
   }
   handleSelectGoods = (item, checked) => {
@@ -88,7 +88,7 @@ export default class DetailPluspriceList extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const query = {
-      marketing_id: this.$instance.router.params.marketing_id,
+      marketing_id: this.$instance?.router?.params.marketing_id,
       page,
       pageSize
     }

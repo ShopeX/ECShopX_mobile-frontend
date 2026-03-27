@@ -11,6 +11,7 @@ import { SpPage, SpScrollView, SpCheckbox } from '@/components'
 import { AtButton } from 'taro-ui'
 import { pickBy } from '@/utils'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
 import { updateSelectCommunityZiti } from '@/store/slices/community'
 import './picker-community.scss'
@@ -36,7 +37,7 @@ function PickerCommunity(props) {
   })
 
   const fetchZitiList = async () => {
-    const res = await api.community.getActivityZiti()
+    const res = await communityApi.getActivityZiti()
     setState((draft) => {
       draft.list = pickBy(res, doc.community.COMMUNITY_ZITI)
     })

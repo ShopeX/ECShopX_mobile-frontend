@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { pickBy, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import imgUploader from '@/utils/upload'
 import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
@@ -32,14 +33,14 @@ function UgcSubjectTalk(props) {
   }, [keyword])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { topic_ids } = router.params
+    const { topic_ids } = router?.params
     const topicIds = decodeURIComponent(topic_ids).split(',')
     const params = {
       page: pageIndex,
       pageSize,
       topic_name: keyword
     }
-    const { list = [], total_count: total } = await api.mdugc.topiclist(params)
+    const { list = [], total_count: total } = await mdugcApi.topiclist(params)
     const _topicList = pickBy(list, {
       topicId: 'topic_id',
       topicName: 'topic_name'
@@ -58,7 +59,7 @@ function UgcSubjectTalk(props) {
   }
 
   const handleAddSubjectTalk = async () => {
-    const { topic_name, topic_id, message, status } = await api.mdugc.topiccreate({
+    const { topic_name, topic_id, message, status } = await mdugcApi.topiccreate({
       user_id: userInfo.user_id,
       topic_name: keyword
     })
@@ -70,7 +71,7 @@ function UgcSubjectTalk(props) {
   }
 
   const handleClickItem = ({ topicId, topicName }) => {
-    const { event } = router.params
+    const { event } = router?.params
     let tempSelected
     if (selected.has(topicId)) {
       selected.delete(topicId)

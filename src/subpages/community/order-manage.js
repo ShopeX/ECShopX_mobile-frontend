@@ -20,6 +20,8 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
+
 import CompOrderItem from './comps/comp-orderitem'
 import './order-manage.scss'
 
@@ -63,8 +65,8 @@ function CheifOrderManage(props) {
   const { colorPrimary } = useSelector((state) => state.sys)
   const { checkIsChief } = useSelector((state) => state.user)
   const orderRef = useRef()
-  const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router?.params
+  const $instance = getCurrentInstance() || {}
+  const { activity_id } = $instance?.router?.params
 
   const {
     keywords,
@@ -91,7 +93,7 @@ function CheifOrderManage(props) {
       list,
       pager: { count: total },
       statistics
-    } = await api.community.getCommunityList(params)
+    } = await communityApi.getCommunityList(params)
     const n_list = pickBy(list, doc.community.COMMUNITY_ORDER_LIST)
     setState((draft) => {
       draft.orderList = [...orderList, ...n_list]
@@ -274,7 +276,7 @@ function CheifOrderManage(props) {
   }
 
   const onCopyClick = async () => {
-    const { url } = await api.community.exportOrder({ activity_id })
+    const { url } = await communityApi.exportOrder({ activity_id })
     await copyText(url, '复制成功，请从浏览器打开')
   }
 

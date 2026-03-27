@@ -1,0 +1,137 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ * 对齐 Popup 组件 qiwei-wechat-content / popup 布局
+ */
+@import '@/style/imports.scss';
+
+.consult-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.22s ease;
+
+  &--enter {
+    opacity: 1;
+  }
+}
+
+.consult-modal-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.consult-modal {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 10vw;
+  transform: translateY(32px);
+  opacity: 0;
+  transition:
+    transform 0.32s cubic-bezier(0.25, 0.8, 0.25, 1),
+    opacity 0.28s ease;
+}
+
+.consult-modal-overlay--enter .consult-modal {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* 与 popup .qiwei-wechat-content 一致 */
+.qiwei-wechat-content {
+  position: relative;
+  background-color: #fff;
+  margin: 0 auto;
+  width: 80vw;
+  max-width: 640px;
+  border-radius: 30px;
+  padding: 64px 48px 48px;
+  box-sizing: border-box;
+  height: max-content;
+
+  .inner-text {
+    font-size: 28px;
+    color: #000;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .qr-code {
+    width: 100%;
+    background-color: #f7f7f7;
+    border-radius: 22px;
+    overflow: hidden;
+    margin: 30px auto 0;
+    box-sizing: border-box;
+    padding-bottom: 32px;
+
+    .first-tip {
+      font-size: 20px;
+      line-height: 43px;
+      color: #000;
+      text-align: center;
+      padding-top: 30px;
+      margin-bottom: 12px;
+    }
+
+    .qrcode-image {
+      display: block;
+      width: 280px;
+      height: 280px;
+      margin: 0 auto 25px;
+    }
+
+    .store-name {
+      font-size: 28px;
+      line-height: 54px;
+      color: #000;
+      text-align: center;
+      padding: 0 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .proxy {
+      font-size: 28px;
+      color: #f78b43;
+      text-align: center;
+      padding: 8px 16px 0;
+      box-sizing: border-box;
+    }
+  }
+
+  .close-btn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .iconfont {
+      font-size: 32px;
+      color: #666;
+    }
+  }
+}

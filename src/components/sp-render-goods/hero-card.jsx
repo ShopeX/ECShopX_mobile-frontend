@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text } from '@tarojs/components'
-import { SpImage, SpPrice } from '@/components'
+import { SpImage, SpPrice, SpPoint } from '@/components'
 import SpTag from '@/components/sp-tag/index'
 import Taro from '@tarojs/taro'
 import qs from 'qs'
@@ -8,17 +8,19 @@ import { classNames } from '@/utils'
 import './hero-card.scss'
 
 function SpGoodsHeroCard(props) {
-  const { info = null, onClick, mode = 'aspectFill' } = props
+  const { info = null, onClick, mode = 'aspectFill', showPrice = true } = props
 
   const handleClick = async () => {
     if (!info) return
-    const { itemId, distributorId } = info
+    const { itemId, distributorId, point } = info
     if (onClick) {
       onClick(info)
       return
     }
     let query = { id: itemId, dtid: distributorId ?? '' }
-    const url = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const url = point
+      ? `/subpages/pointshop/espier-detail?${qs.stringify(query)}`
+      : `/subpages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -88,28 +90,48 @@ function SpGoodsHeroCard(props) {
         )}
         <View className='sp-goods-hero-card__price'>
           <View className='price-wrapper'>
-            <SpPrice
-              className='current-price'
-              size={34}
-              value={finalPrice}
-              style={{ marginRight: '6px' }}
-              weight={600}
-            />
-            {Number(info.marketPrice || 0) > 0 &&
-              Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+            {showPrice ? (
+              <>
                 <SpPrice
-                  size={24}
-                  noSymbol
-                  className='market-price'
-                  lineThrough
-                  value={info.marketPrice}
+                  className='current-price'
+                  size={34}
+                  value={finalPrice}
+                  style={{ marginRight: '6px' }}
+                  weight={600}
                 />
-              )}
-            {info.discountRate && (
-              <View className='discount-tag'>
-                <Text className='discount-tag__value'>{info.discountRate}</Text>
-                <Text className='discount-tag__unit'>折</Text>
-              </View>
+                {Number(info.marketPrice || 0) > 0 &&
+                  Number(finalPrice || 0) < Number(info.marketPrice || 0) && (
+                    <SpPrice
+                      size={24}
+                      noSymbol
+                      className='market-price'
+                      lineThrough
+                      value={info.marketPrice}
+                    />
+                  )}
+                {info.discountRate && (
+                  <View className='discount-tag'>
+                    <Text className='discount-tag__value'>{info.discountRate}</Text>
+                    <Text className='discount-tag__unit'>折</Text>
+                  </View>
+                )}
+              </>
+            ) : (
+              <>
+                <SpPoint value={info.point} />
+                {Number(info.price || 0) > 0 && (
+                  <>
+                    <Text style={{ margin: '0 4px' }}>+</Text>
+                    <SpPrice
+                      className='current-price'
+                      size={34}
+                      value={info.price}
+                      style={{ marginRight: '6px' }}
+                      weight={600}
+                    />
+                  </>
+                )}
+              </>
             )}
           </View>
         </View>
@@ -130,6 +152,7 @@ SpGoodsHeroCard.defaultProps = {
   onClick: null,
   mode: 'aspectFill',
   width: 200,
+  showPrice: true,
   onLoad: () => {}
 }
 

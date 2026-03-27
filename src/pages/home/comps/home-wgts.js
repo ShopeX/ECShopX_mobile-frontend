@@ -24,7 +24,7 @@ import {
   WgtGoods,
   WgtLocationModule,
   WgtContentPartition,
-  WgtOrderNavigation
+  WgtOrderNavigation,
 } from '../wgts'
 import './home-wgts.scss'
 

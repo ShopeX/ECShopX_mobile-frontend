@@ -2,39 +2,29 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Taro, {
-  getCurrentInstance,
   useShareAppMessage,
   useShareTimeline,
   useDidShow
 } from '@tarojs/taro'
-import { View, Image, ScrollView, Text } from '@tarojs/components'
+import { View, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import throttle from 'lodash/throttle'
 import {
   SpScreenAd,
   SpPage,
-  SpSearch,
   SpRecommend,
   SpTabbar,
   SpCouponPackage,
-  SpSkuSelect,
-  SpPrivacyModal,
-  SpLogin,
-  SpLoading,
-  SpPoweredBy
+  SpPoweredBy,
+  SpSkuSelect
 } from '@/components'
 import api from '@/api'
 import {
   isWeixin,
-  isAPP,
-  isEmpty,
   getDistributorId,
   VERSION_STANDARD,
   VERSION_PLATFORM,
-  VERSION_IN_PURCHASE,
-  VERSION_B2C,
   classNames,
   getCurrentPageRouteParams,
   resolveStringifyParams,
@@ -42,21 +32,19 @@ import {
   pickBy,
   log,
   showToast,
-  entryLaunch,
-  buildSharePath
+  buildSharePath,
+  isWeb
 } from '@/utils'
-import { updateShopInfo } from '@/store/slices/shop'
 import {
   updatePurchaseShareInfo,
   updateInviteCode,
   updateEnterpriseId
 } from '@/store/slices/purchase'
-import S from '@/spx'
 import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal, useEffectAsync } from '@/hooks'
 import doc from '@/doc'
-import { SG_ROUTER_PARAMS } from '@/consts/localstorage'
 import withPageWrapper from '@/hocs/withPageWrapper'
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
@@ -99,11 +87,13 @@ function Home() {
 
   const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } =
     useSelector((state) => state.sys)
-  const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
+  const { shopInfo } = useSelector((state) => state.shop)
   const { location, address } = useSelector((state) => state.user)
-  const nearbyText = address?.city || location?.city || ''
+  const nearbyText = address?.adrdetail
+    ? address?.city || address?.province || ''
+    : location?.city || location?.province || address?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
   const {
@@ -123,31 +113,77 @@ function Home() {
   useEffectAsync(async () => {
     fetchWgts()
     setNavigationBarTitle(appName)
+  }, [])
 
-    log.info({ str: 'hello world' }, 'info log', 100, [1, 2, 3])
+  // 首次进入时 useDidShow 可能在组件挂载前就触发了，导致不会执行，这里补一次
+  useEffect(() => {
+    updateAddress()
   }, [])
 
   useDidShow(() => {
     dispatch(updatePurchaseShareInfo())
     dispatch(updateInviteCode())
     dispatch(updateEnterpriseId())
+    // 从店铺页返回时刷新地址/店铺信息，使顶部 nearby-function-text 立即更新
+    updateAddress()
     // 通知挂件（如浏览记录）刷新本地数据
     Taro.eventCenter.trigger('homePageShow')
   })
 
+  // 定位变化或选择店铺后（distributor_id 变化）重新拉取首页
   useEffect(() => {
-    if (location && VERSION_STANDARD) {
+    if (VERSION_STANDARD && (location || shopInfo?.distributor_id)) {
       fetchWgts()
     }
-  }, [location])
+  }, [location, shopInfo?.distributor_id])
 
   useEffect(() => {
     if (skuPanelOpen) {
-      pageRef.current.pageLock()
+      pageRef.current?.pageLock()
     } else {
-      pageRef.current.pageUnLock()
+      pageRef.current?.pageUnLock()
     }
   }, [skuPanelOpen])
+
+  // H5：手动滚动到目标 section，等布局完成再测量并预留吸顶导航高度
+  useEffect(() => {
+    if (!isWeb || !scrollIntoView) return
+    console.log('scrollIntoView:', scrollIntoView)
+    const id = String(scrollIntoView).replace(/^#/, '')
+    if (!id) return
+    const navH = state.navbarHeight || 0
+    let cancelled = false
+    const run = () => {
+      if (cancelled) return
+      Taro.createSelectorQuery()
+        .select('.home-body')
+        .node()
+        .exec((res) => {
+          if (cancelled) return
+          let scrollNode = res?.[0]?.node
+          if (!scrollNode) return
+          if (scrollNode.scrollHeight <= scrollNode.clientHeight && scrollNode.firstElementChild) {
+            const child = scrollNode.firstElementChild
+            if (child.scrollHeight > child.clientHeight) scrollNode = child
+          }
+          const target = document.getElementById(id)
+          if (!target) return
+          const targetRect = target.getBoundingClientRect()
+          const scrollRect = scrollNode.getBoundingClientRect()
+          const top = scrollNode.scrollTop + (targetRect.top - scrollRect.top) - navH
+          scrollNode.scrollTo({ top: Math.max(0, top), behavior: 'smooth' })
+        })
+    }
+    const t = setTimeout(() => {
+      requestAnimationFrame(() => {
+        requestAnimationFrame(run)
+      })
+    }, 80)
+    return () => {
+      cancelled = true
+      clearTimeout(t)
+    }
+  }, [scrollIntoView, state.navbarHeight])
 
   useShareAppMessage(async () => {
     const { title, imageUrl } = await api.wx.shareSetting({ shareindex: 'index' })
@@ -281,11 +317,9 @@ function Home() {
       className='page-index'
       scrollToTopBtn
       immersive={pageData?.base?.isImmersive}
-      // renderNavigation={renderNavigation()}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
-      nearbyText={nearbyText}
-      renderFloat={wgts.length > 0 && <CompFloatMenu />}
+      renderFloat={wgts.length > 0 && <><CompFloatMenu /><FloatSalesperson /></>}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {
         // 先设置为一个很小的非0值，确保触发滚动变化
@@ -301,50 +335,50 @@ function Home() {
       }}
       ref={pageRef}
       navigateMantle={navigateMantle}
-      onReady={({ height, gNavbarH }) => {
+      onReady={({ gNavbarH, footerHeight }) => {
         setState((draft) => {
-          draft.bodyHeight = height
+          draft.bodyHeight = `calc(100vh - ${pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
         })
       }}
     >
       <ScrollView
         scrollY
-        scrollTop={state.backTopScrollTop}
+        scrollTop={state.backTopScrollTop != null ? state.backTopScrollTop : undefined}
         onScroll={(e) => {
-          pageRef.current.handlePageScroll(e?.detail)
+          pageRef.current?.handlePageScroll(e?.detail)
         }}
-        scrollIntoView={scrollIntoView}
+        scrollIntoView={process.env.TARO_ENV === 'h5' ? undefined : scrollIntoView}
         style={{ height: state.bodyHeight }}
         className={classNames('home-body', {
           'has-home-header': isShowHomeHeader && isWeixin
         })}
       >
         <>
-              {filterWgts.length > 0 && (
-                <WgtsContext.Provider
-                  value={{
-                    onAddToCart,
-                    isTab: true,
-                    immersive: pageData?.base?.isImmersive,
-                    isShowHomeHeader: isShowHomeHeader && isWeixin,
-                    navBarHeight: state.navbarHeight,
-                    footerHeight: state.footerHeight,
-                    setScrollIntoView: (view) => {
-                      setState((draft) => {
-                        draft.scrollIntoView = view
-                      })
-                    }
-                  }}
-                >
-                  <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
-                    {/* 猜你喜欢 */}
-                    <SpRecommend className='recommend-block' info={likeList} />
-                  </HomeWgts>
-                </WgtsContext.Provider>
-              )}
-            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-            <View className='sp-page__powered-by w-full'>
+          {filterWgts.length > 0 && (
+            <WgtsContext.Provider
+              value={{
+                onAddToCart,
+                isTab: true,
+                immersive: pageData?.base?.isImmersive,
+                isShowHomeHeader: isShowHomeHeader && isWeixin,
+                navBarHeight: state.navbarHeight,
+                footerHeight: state.footerHeight,
+                setScrollIntoView: (view) => {
+                  setState((draft) => {
+                    draft.scrollIntoView = view
+                  })
+                }
+              }}
+            >
+              <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                {/* 猜你喜欢 */}
+                <SpRecommend className='recommend-block' info={likeList} />
+              </HomeWgts>
+            </WgtsContext.Provider>
+          )}
+          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          <View className='sp-page__powered-by w-full'>
             <SpPoweredBy />
           </View>
 

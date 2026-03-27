@@ -34,7 +34,7 @@ import './list.scss'
 }))
 @withPager
 export default class TradeList extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -55,7 +55,7 @@ export default class TradeList extends Component {
   }
 
   componentDidMount() {
-    const { status = 0, evaluate = 1 } = this.$instance.router.params
+    const { status = 0, evaluate = 1 } = this.$instance?.router?.params
     const _tabList = JSON.parse(JSON.stringify(this.state.tabList))
     if (evaluate == 1) {
       _tabList.push({ title: '待评价', status: '7', is_rate: 0 })
@@ -256,7 +256,7 @@ export default class TradeList extends Component {
 
     if (type === 'confirm') {
       await api.trade.confirm(tid)
-      const { fullPath } = getCurrentRoute(this.$instance.router)
+      const { fullPath } = getCurrentRoute(this.$instance?.router)
       Taro.redirectTo({
         url: fullPath
       })
@@ -336,7 +336,7 @@ export default class TradeList extends Component {
       evaluate
     } = this.state
 
-    const isLogin = S.getAuthToken()
+    const isLogin = S?.getAuthToken()
 
     return (
       <View

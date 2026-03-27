@@ -29,10 +29,10 @@ const initialValue = {
 }
 
 const PageBindPhone = () => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const {
     params: { phone, redi_url }
-  } = $instance.router
+  } = $instance?.router
 
   const [state, setState] = useImmer(initialValue)
 

@@ -41,7 +41,7 @@ function PurchaseAuthEmail(props) {
         { validate: 'email', message: '请输入正确的邮箱' },
         {
           validate: async (value) => {
-            const { enterprise_id } = router.params
+            const { enterprise_id } = router?.params
             try {
               const params = {
                 email: value
@@ -69,7 +69,7 @@ function PurchaseAuthEmail(props) {
     enterprise_sn,
     activity_id,
     is_activity = ''
-  } = router.params
+  } = router?.params
 
   const onInputChange = (key, value) => {
     setState((draft) => {

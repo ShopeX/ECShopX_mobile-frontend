@@ -2,25 +2,24 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+
 .sp-page.ipx .sp-page__footer {
   height: 160px !important;
 }
-// .at-float-layout .layout-body {
-//   font-size: 28px;
-//   padding:0;
-//   height: 556px;
-// }
-.sale-price {
-}
+
+
+
 .sale-price {
   .sp-price__symbol {
     color: var(--color-primary);
     font-size: 28px;
   }
+
   .sp-price__int {
     color: var(--color-primary);
     font-size: 42px;
   }
+
   .sp-price__decimal {
     color: var(--color-primary);
     font-size: 28px;
@@ -28,40 +27,71 @@
 }
 
 .page-store-index {
+  .sp-page__body-children {
+    height: 100%;
+
+    .search-scroll {
+      height: 100%;
+    }
+  }
+
   .search {
     width: 100%;
     position: fixed;
     left: 0;
     right: 0;
     z-index: 2;
-    background: transparent;
+    height: 120px;
+    transition: background-color 0.2s ease;
+    background: transparent !important;
+
+    &--solid {
+      background: #fff !important;
+      box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1) !important;
+
+      .sp-search {
+        padding: 0 15px;
+
+        &-block {
+          border: 1PX solid #000;
+          box-sizing: border-box;
+        }
+      }
+    }
   }
 
   .sp-search {
     width: 100%;
     padding: 0 15px;
   }
+
   .header-block {
     padding-top: 150px;
     // background: transparent;
     // box-shadow: inset 0px -242px 700px 0px rgba(255, 255, 255, 0.4);
   }
+
   .header-block-pad {
     padding-top: 80px;
   }
+
   .icon-huiyuanzhongxin {
     font-size: 38px;
   }
+
   .icon-gouwuche {
     font-size: 38px;
   }
+
   .title-container {
     justify-content: flex-start !important;
+
     .sp-search {
       width: 75%;
       background: transparent;
     }
   }
+
   .switchs {
     position: sticky;
     z-index: 99;
@@ -72,55 +102,67 @@
     color: #222222;
     line-height: 50px;
     padding: 20px 24px;
+
     .switching {
       font-weight: 500;
       // font-size: 28px;
       color: #444444;
     }
+
     .switchings {
       border-bottom: 8px solid var(--color-primary);
     }
+
     .switched {
       margin-left: 60px;
     }
   }
+
   .cart-layout {
     .sp-price__symbol {
       color: #e50113;
       font-size: 28px;
     }
+
     .sp-price__int {
       color: #e50113;
       font-size: 42px;
     }
+
     .sp-price__decimal {
       color: #e50113;
       font-size: 28px;
     }
   }
+
   .sp-page__footer {
     .sp-price__symbol {
       color: #e50113;
       font-weight: 600;
     }
+
     .sp-price__int {
       color: #e50113;
       font-weight: 600;
     }
+
     .sp-price__decimal {
       color: #e50113;
       font-weight: 600;
     }
   }
+
   .comp-shop-brand-cart {
     .sp-price__symbol {
       color: #e50113;
       font-weight: 600;
     }
+
     .sp-price__int {
       color: #e50113;
       font-weight: 600;
     }
+
     .sp-price__decimal {
       color: #e50113;
       font-weight: 600;

@@ -19,7 +19,7 @@ const initialState = {
   couponList: []
 }
 function CouponCenter(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
   const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
@@ -38,7 +38,7 @@ function CouponCenter(props) {
       item_id = '',
       itemid = '',
       card_id
-    } = await entryLaunch.getRouteParams($instance.router.params)
+    } = await entryLaunch.getRouteParams($instance?.router?.params)
     const params = {
       page_no: pageIndex,
       page_size: pageSize,
@@ -46,6 +46,9 @@ function CouponCenter(props) {
       card_id,
       distributor_id,
       item_id: item_id || itemid
+    }
+    if (work_userid) {
+      params.work_userid = work_userid
     }
     const {
       list,

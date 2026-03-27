@@ -9,7 +9,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import classNames from 'classnames'
 import api from '@/api'
-import { platformTemplateName } from '@/utils'
+import { getDistributorId, platformTemplateName } from '@/utils'
 import { SpImage, SpLoading, SpPoweredBy } from '@/components'
 import {
   WgtShop,
@@ -39,7 +39,9 @@ function CategoryFlatLayout() {
 
   const gettabsList = async () => {
     try {
-      const res = await api.category.get({})
+      const res = await api.category.get({
+        distributor_id: getDistributorId()
+      })
       setState((draft) => {
         draft.categories = res
       })
@@ -95,7 +97,7 @@ function CategoryFlatLayout() {
 
   const handleSubCategoryClick = (item, pindex, index, category_name) => {
     Taro.navigateTo({
-      url: `/subpages/item/list?category_id=${item.category_id}&cate_name=${item.category_name}&hide_search=1`
+      url: `/subpages/item/list?cat_id=${item.category_id}&cate_name=${item.category_name}&hide_search=1`
     })
   }
 
@@ -139,7 +141,7 @@ function CategoryFlatLayout() {
                 className='flex justify-between pt-48 pb-24 pl-32 pr-32'
                 onClick={() => {
                   Taro.navigateTo({
-                    url: `/subpages/item/list?category_id=${category.category_id}&cate_name=${category.category_name}&hide_search=1`
+                    url: `/subpages/item/list?cat_id=${category.category_id}&cate_name=${category.category_name}&hide_search=1`
                   })
                 }}
               >

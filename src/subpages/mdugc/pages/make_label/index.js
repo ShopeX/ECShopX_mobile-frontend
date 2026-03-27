@@ -10,6 +10,7 @@ import { connect } from 'react-redux'
 import { pickBy, styleNames, getThemeStyle } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { SearchBar } from '../../components'
 import './index.scss'
 
@@ -87,7 +88,7 @@ export default class make_label extends Component {
       pageSize,
       tag_name: val
     }
-    const { list, total_count: total } = await api.mdugc.taglist(params)
+    const { list, total_count: total } = await mdugcApi.taglist(params)
     console.log('list, total', list, total)
 
     const nList = pickBy(list, {
@@ -132,7 +133,7 @@ export default class make_label extends Component {
       user_id: memberData.memberInfo.user_id,
       tag_name: val
     }
-    let { tag_id, tag_name, message, status } = await api.mdugc.tagcreate(data)
+    let { tag_id, tag_name, message, status } = await mdugcApi.tagcreate(data)
     if (status == 1) {
       this.topages({ tag_name, tag_id })
     }

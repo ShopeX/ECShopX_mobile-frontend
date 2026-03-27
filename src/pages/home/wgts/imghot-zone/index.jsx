@@ -33,33 +33,30 @@ function WgtImgHotZone(props) {
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
     const style = getGlobalBaseStyle(base.outerMargin)
-
-    // 纵向布局时，外层容器高度优先使用 base.imgHeight
-    if (isVertical && base.imgHeight) {
-      style.height = Taro.pxTransform(base.imgHeight)
+    if (isVertical) {
+      const pr = base.outerMargin?.paddedr
+      style.width = `calc(100% - ${Taro.pxTransform(pr)})`
     }
-
     return style
   }, [base, isVertical])
 
   // 容器样式（图片容器）
   const bodyStyle = useMemo(() => {
     const style = {
-      // width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : undefined
+      width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : '100%'
     }
 
     // 纵向布局时，优先使用 base.imgHeight
-    // if (isVertical && base.imgHeight) {
-    //   style.height = Taro.pxTransform(base.imgHeight)
-    // } else if (config.imgHeight) {
-    //   // 横向布局时，使用 config.imgHeight
-    //   style.height = Taro.pxTransform(config.imgHeight)
-    // } else {
-    //   style.height = 'auto'
-    // }
-    style.height = 'auto'
+    if (isVertical && base.imgHeight) {
+      style.height = Taro.pxTransform(base.imgHeight)
+    } else if (config.imgHeight) {
+      // 横向布局时，使用 config.imgHeight
+      style.height = Taro.pxTransform(config.imgHeight)
+    } else {
+      style.height = 'auto'
+    }
     return style
-  }, [config.imgWidth, config.imgHeight, isVertical, base.imgHeight])
+  }, [config.imgWidth, config.imgHeight, isVertical, base.imgHeight, base.outerMargin])
 
   // 点击处理
   const handleClickItem = async (item) => {

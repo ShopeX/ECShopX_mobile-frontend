@@ -23,7 +23,7 @@ import './coupon-picker.scss'
 )
 @withPager
 export default class CouponPicker extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {
@@ -46,7 +46,7 @@ export default class CouponPicker extends Component {
       distributor_id,
       source,
       goodType
-    } = this.$instance.router.params
+    } = this.$instance?.router?.params
     // const { curCoupon } = this.props
     const { page_no: page, page_size: pageSize } = query
 

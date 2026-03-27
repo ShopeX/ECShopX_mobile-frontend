@@ -21,7 +21,7 @@ import './rate.scss'
   () => ({})
 )
 export default class TradeRate extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -37,7 +37,7 @@ export default class TradeRate extends Component {
   }
 
   async fetch() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     const data = await api.trade.detail(id)
     Taro.showLoading({
       mask: true

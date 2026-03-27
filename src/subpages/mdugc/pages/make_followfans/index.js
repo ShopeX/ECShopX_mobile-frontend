@@ -11,6 +11,7 @@ import { SpNote, BackToTop, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
@@ -35,7 +36,7 @@ export default class make_followfans extends Component {
     'backgroundTextStyle': 'dark'
   }
   componentDidShow() {
-    const { type, user_id } = getCurrentInstance().router.params
+    const { type, user_id } = getCurrentInstance()?.router?.params
     const { memberData } = this.props
 
     let title = ''
@@ -64,7 +65,7 @@ export default class make_followfans extends Component {
   // 列表
   async fetch(params) {
     const { page_no, page_size } = params
-    const { user_id } = getCurrentInstance().router.params
+    const { user_id } = getCurrentInstance()?.router?.params
     let { type } = this.state
     let { memberData } = this.props
     params = {
@@ -73,7 +74,7 @@ export default class make_followfans extends Component {
       user_id,
       user_type: type
     }
-    const { list, total_count: total } = await api.mdugc.followerlist(params)
+    const { list, total_count: total } = await mdugcApi.followerlist(params)
     console.log('list, total', list, total)
 
     this.setState(
@@ -96,7 +97,7 @@ export default class make_followfans extends Component {
       user_id: item.user_id,
       follower_user_id: memberData.memberInfo.user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       // 取消关注
       item.mutal_follow = 0
@@ -138,7 +139,7 @@ export default class make_followfans extends Component {
 
   render() {
     const { list, page, showBackToTop, scrollTop } = this.state
-    const { type, user_id } = getCurrentInstance().router.params
+    const { type, user_id } = getCurrentInstance()?.router?.params
 
     return (
       <View className='follow'>

@@ -20,7 +20,7 @@ const InvoiceSuccess = () => {
   const { invoice_id } = state
 
   useEffect(() => {
-    entryLaunch.getRouteParams($router.params).then((params) => {
+    entryLaunch.getRouteParams($router?.params).then((params) => {
       if (params?.invoice_id) {
         setState((draft) => {
           draft.invoice_id = params.invoice_id

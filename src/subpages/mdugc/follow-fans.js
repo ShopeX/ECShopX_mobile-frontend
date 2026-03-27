@@ -10,6 +10,8 @@ import { View } from '@tarojs/components'
 import { SpPage, SpScrollView, SpImage } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
+
 import './follow-fans.scss'
 
 const initialState = {
@@ -32,7 +34,7 @@ function UgcFollowFans() {
   const listRef = useRef('')
 
   useEffect(() => {
-    const { type } = router.params
+    const { type } = router?.params
     setState((draft) => {
       draft.curFilterIndex = type === 'user' ? 1 : 0
       draft.type = type
@@ -57,7 +59,7 @@ function UgcFollowFans() {
       user_id: user_id,
       user_type: type
     }
-    const { list = [], total_count: total } = await api.mdugc.followerlist(params)
+    const { list = [], total_count: total } = await mdugcApi.followerlist(params)
     setState((draft) => {
       draft.followlist = [...followlist, ...list]
     })
@@ -82,7 +84,7 @@ function UgcFollowFans() {
       user_id: item.user_id,
       follower_user_id: user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       console.log(item.mutal_follow)
       // 取消关注

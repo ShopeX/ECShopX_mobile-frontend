@@ -8,6 +8,7 @@ import { SpPage, SpHtml } from '@/components'
 import { isWeb, classNames } from '@/utils'
 import { useState, useEffect } from 'react'
 import api from '@/api'
+import * as merchantApi from '@/api/merchant'
 import { MNavBar } from './comps'
 import './agreement.scss'
 
@@ -15,7 +16,7 @@ const Agreement = () => {
   const [content, setContent] = useState('')
 
   const getContent = async () => {
-    const { content } = await api.merchant.getSetting()
+    const { content } = await merchantApi.getSetting()
     setContent(content)
   }
 

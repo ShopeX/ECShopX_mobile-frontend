@@ -28,12 +28,12 @@ export default class make_follow extends Component {
   }
 
   async componentDidShow() {
-    let { num } = this.$router.params
+    let { num } = this.$router?.params
     let data = {
       type: 'followerUser'
     }
     if (num) {
-      let { type } = await api.mdugc.messagesetTohasRead(data)
+      let { type } = await mdugcApi.messagesetTohasRead(data)
     }
     this.resetPage()
     this.setState(
@@ -56,7 +56,7 @@ export default class make_follow extends Component {
       pageSize,
       type: 'followerUser'
     }
-    const { list, total_count: total } = await api.mdugc.messagelist(params)
+    const { list, total_count: total } = await mdugcApi.messagelist(params)
     console.log('list, total', list, total)
 
     const nList = pickBy(list, {
@@ -84,7 +84,7 @@ export default class make_follow extends Component {
       user_id: list[i].from_user_id,
       follower_user_id: memberData.memberInfo.user_id
     }
-    let res = await api.mdugc.followercreate(data)
+    let res = await mdugcApi.followercreate(data)
     if (res.action == 'unfollow') {
       list[i].mutal_follow = 0
       Taro.showToast({

@@ -51,7 +51,7 @@ function PurchaseAuthPhone(props) {
     is_activity = ''
   } = params
   const { showModal } = useModal()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   useEffect(() => {
     getLoginCode()
@@ -60,8 +60,8 @@ function PurchaseAuthPhone(props) {
 
   // 企业二维码扫码登录
   // const getQrcodeEid = async () => {
-  //   if ($instance.router.params.scene) {
-  //     const query = await normalizeQuerys($instance.router.params)
+  //   if ($instance?.router?.params.scene) {
+  //     const query = await normalizeQuerys($instance?.router?.params)
   //     const { eid, cid } = query
   //     if (eid) {
   //       setState((draft) => {

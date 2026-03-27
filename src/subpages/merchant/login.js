@@ -8,6 +8,7 @@ import { Text, View } from '@tarojs/components'
 import { classNames, validate, showToast } from '@/utils'
 import { SpImage, SpPage } from '@/components'
 import api from '@/api'
+import * as merchantApi from '@/api/merchant'
 import S from '@/spx'
 import { MButton, MInput, MRadio } from './comps'
 import { navigateToAgreement } from './util'
@@ -105,10 +106,10 @@ const Login = () => {
       return
     }
     try {
-      const { token } = await api.merchant.login({ mobile: form.mobile, vcode: form.vcode })
+      const { token } = await merchantApi.login({ mobile: form.mobile, vcode: form.vcode })
       if (token) {
-        S.setAuthToken(token)
-        const { step } = await api.merchant.getStep()
+        S?.setAuthToken(token)
+        const { step } = await merchantApi.getStep()
         const applyUrl = '/subpages/merchant/apply'
         const applyAudit = '/subpages/merchant/audit'
         //已提交全部资料信息

@@ -28,7 +28,7 @@ import './after-sale-detail.scss'
   pointName: sys.pointName
 }))
 export default class TradeDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -190,7 +190,7 @@ export default class TradeDetail extends Component {
   }
 
   async fetch() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     const data = await api.trade.detail(id)
     let sessionFrom = ''
     const pickItem = {
@@ -402,7 +402,7 @@ export default class TradeDetail extends Component {
         icon: 'success'
       })
 
-      const { fullPath } = getCurrentRoute(this.$instance.router)
+      const { fullPath } = getCurrentRoute(this.$instance?.router)
       Taro.redirectTo({
         url: fullPath
       })
@@ -448,11 +448,11 @@ export default class TradeDetail extends Component {
   }
 
   zitiWebsocket = () => {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     const { webSocketIsOpen, restartOpenWebsoect } = this.state
     // websocket 开始
     if (!webSocketIsOpen) {
-      const token = S.getAuthToken()
+      const token = S?.getAuthToken()
       Taro.connectSocket({
         url: process.env.APP_WEBSOCKET,
         header: {
@@ -475,7 +475,7 @@ export default class TradeDetail extends Component {
         })
         task.onMessage((res) => {
           if (res.data === '401001') {
-            S.toast('未登录，请登录后再试')
+            S?.toast('未登录，请登录后再试')
             this.setState(
               {
                 webSocketIsOpen: false
@@ -491,7 +491,7 @@ export default class TradeDetail extends Component {
           } else {
             const result = JSON.parse(res.data)
             if (result.status === 'success') {
-              S.toast('核销成功')
+              S?.toast('核销成功')
               setTimeout(() => {
                 this.fetch()
               }, 700)
@@ -522,7 +522,7 @@ export default class TradeDetail extends Component {
         restartOpenWebsoect: false
       },
       () => {
-        const token = S.getAuthToken()
+        const token = S?.getAuthToken()
         Taro.connectSocket({
           url: process.env.APP_WEBSOCKET,
           header: {

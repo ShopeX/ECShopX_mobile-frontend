@@ -16,8 +16,8 @@ const initialState = {
 function ViewCase() {
   const [state, setState] = useImmer(initialState)
   const { designWorks } = state
-  const $instance = getCurrentInstance()
-  const { design_works } = $instance.router?.params || {}
+  const $instance = getCurrentInstance() || {}
+  const { design_works } = $instance?.router?.params || {}
   useEffect(() => {
     if (design_works) {
       const designWorksList = JSON.parse(design_works)

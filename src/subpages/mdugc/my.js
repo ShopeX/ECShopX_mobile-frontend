@@ -12,7 +12,9 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { pickBy } from '@/utils'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import doc from '@/doc'
+import * as mdugcDoc from '@/doc/mdugc'
 import CompNoteItem from './comps/comp-noteitem'
 import './my.scss'
 import { Popups } from './components'
@@ -86,8 +88,8 @@ function UgcMember(props) {
     listRef.current.reset()
   }, [curFilterIndex])
   const isMember = async () => {
-    const isAuth = S.getAuthToken()
-    const memberData = await S.getMemberInfo()
+    const isAuth = S?.getAuthToken()
+    const memberData = await S?.getMemberInfo()
     console.log(memberData, '------')
     if (!isAuth || !memberData.memberInfo) {
       Taro.showToast({
@@ -142,9 +144,9 @@ function UgcMember(props) {
         searchType: curFilterIndex == 1 ? 'favorite' : 'like'
       }
     }
-    const { list, total_count: total } = await api.mdugc.postlist(params)
+    const { list, total_count: total } = await mdugcApi.postlist(params)
 
-    let nList = pickBy(list, doc.mdugc.UGC_LIST)
+    let nList = pickBy(list, mdugcDoc.UGC_LIST)
 
     const resLeftList = nList.filter((item, index) => {
       if (index % 2 == 0) {
@@ -177,7 +179,7 @@ function UgcMember(props) {
       userInfo,
       follow_status,
       draft_post
-    } = await api.mdugc.followerstat(data)
+    } = await mdugcApi.followerstat(data)
     setState((draft) => {
       draft.popnum[0].num = post_all_nums
       draft.popnum[1].num = likes

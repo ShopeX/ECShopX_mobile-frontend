@@ -46,7 +46,7 @@ const initialState = {
 }
 
 function TradeAfterSaleDetail(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const {
@@ -66,7 +66,7 @@ function TradeAfterSaleDetail(props) {
     connect,
     mobile
   } = state
-  const { aftersales_bn, item_id, order_id, user_id } = $instance.router.params
+  const { aftersales_bn, item_id, order_id, user_id } = $instance?.router?.params
 
   useEffect(() => {
     fetch()
@@ -124,7 +124,7 @@ function TradeAfterSaleDetail(props) {
   }
 
   const onSubmit = async () => {
-    const { id } = $instance.router.params
+    const { id } = $instance?.router?.params
     const checkedItems = info?.items.filter((item) => !!item.checked)
     if (checkedItems.length == 0) {
       return showToast('请选择需要售后的商品')

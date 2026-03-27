@@ -15,7 +15,10 @@ class PRouter {
     const _navigateTo = Taro.navigateTo
     Taro.navigateTo = (params) => {
       const { url } = params
-      params.url = params.url.replace(/^\/pages\/item\/espier-detail/, '/subpages/member/index')
+      params.url = params.url.replace(
+        /^\/(pages\/item|subpages\/item)\/espier-detail/,
+        '/subpages/member/index'
+      )
       _navigateTo(params)
     }
   }

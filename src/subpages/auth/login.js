@@ -24,7 +24,7 @@ import './login.scss'
   (dispatch) => ({ dispatch })
 )
 export default class Login extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -45,7 +45,7 @@ export default class Login extends Component {
   }
 
   componentDidShow() {
-    const { redirect } = this.$instance.router.params
+    const { redirect } = this.$instance?.router?.params
     if (S.getAuthToken()) {
       const url = redirect ? decodeURIComponent(redirect) : '/subpages/member/index'
       window.location.href = url
@@ -117,7 +117,7 @@ export default class Login extends Component {
   async handleSubmit() {
     const { source_id, monitor_id, latest_source_id, latest_monitor_id } =
       Taro.getStorageSync('sourceInfo') // 千人千码参数
-    const { redirect } = this.$instance.router.params
+    const { redirect } = this.$instance?.router?.params
     const { loginType } = this.state
     const { mobile, password, vcode } = this.state.info
     let params = {
@@ -213,12 +213,12 @@ export default class Login extends Component {
   }
 
   handleNavigateReg = async () => {
-    const { redirect } = this.$instance.router.params
+    const { redirect } = this.$instance?.router?.params
     navigationToReg(redirect)
   }
 
   handleForgotPsd = async () => {
-    const { redirect } = this.$instance.router.params
+    const { redirect } = this.$instance?.router?.params
     let url = '/subpages/auth/forgotpwd'
     const { mobile } = this.state.info
     if (redirect) {

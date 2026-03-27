@@ -11,6 +11,7 @@ import { SpPage, SpCheckbox, SpScrollView } from '@/components'
 import { AtButton } from 'taro-ui'
 import { updateSelectGoods } from '@/store/slices/community'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
 import { pickBy } from '@/utils'
 import CompGoodsItem from './comps/comp-goodsitem'
@@ -22,8 +23,8 @@ const initialState = {
 
 function ListIndex(props) {
   const [state, setState] = useImmer(initialState)
-  const $instance = getCurrentInstance()
-  const { chief_id, distributor_id } = $instance.router.params
+  const $instance = getCurrentInstance() || {}
+  const { chief_id, distributor_id } = $instance?.router?.params
   const { list } = state
   const goodsRef = useRef()
 
@@ -34,7 +35,7 @@ function ListIndex(props) {
       chief_id,
       distributor_id
     }
-    const { total_count: total, list: plist } = await api.community.getMemberItems(params)
+    const { total_count: total, list: plist } = await communityApi.getMemberItems(params)
     const _plist = pickBy(plist, doc.community.COMMUNITY_GOODS_ITEM)
     setState((draft) => {
       draft.list = [...list, ..._plist]

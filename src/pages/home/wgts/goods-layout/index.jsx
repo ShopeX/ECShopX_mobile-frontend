@@ -17,6 +17,7 @@ import './index.scss'
  * @param {Array} props.goodsRightList - 右列商品列表（two布局时使用）
  * @param {Function} props.onClickItem - 商品点击回调函数
  * @param {string} props.classNamePrefix - CSS类名前缀，如 'wgt-goods', 'wgt-group' 等
+ * @param {boolean} [props.showPrice=true] - 是否展示价格（积分商品时可传 false，由卡片根据 info.point 展示积分）
  */
 export default function GoodsLayout(props) {
   const {
@@ -25,7 +26,8 @@ export default function GoodsLayout(props) {
     goodsLeftList = [],
     goodsRightList = [],
     onClickItem,
-    classNamePrefix = 'wgt-goods'
+    classNamePrefix = 'wgt-goods',
+    showPrice = true
   } = props
 
   // 一列网格布局
@@ -39,6 +41,7 @@ export default function GoodsLayout(props) {
             })}
             key={item.item_id}
             info={item}
+            showPrice={showPrice}
             onClick={() => onClickItem(item, index + 1)}
           />
         ))}
@@ -55,6 +58,7 @@ export default function GoodsLayout(props) {
             <SpGoodsHeroCard
               key={item.item_id}
               info={item}
+              showPrice={showPrice}
               onClick={() => onClickItem(item, index + 1)}
             />
           ))}
@@ -64,6 +68,7 @@ export default function GoodsLayout(props) {
             <SpGoodsHeroCard
               key={item.item_id}
               info={item}
+              showPrice={showPrice}
               onClick={() => onClickItem(item, index + 1)}
             />
           ))}
@@ -80,6 +85,7 @@ export default function GoodsLayout(props) {
           <SpGoodsHeroCard
             key={item.item_id}
             info={item}
+            showPrice={showPrice}
             onClick={() => onClickItem(item, index + 1)}
           />
         ))}

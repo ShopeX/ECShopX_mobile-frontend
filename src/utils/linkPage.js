@@ -5,6 +5,8 @@
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { stringify } from 'qs'
 import configStore from '@/store'
+import { setShowGuideConsultModal } from '@/store/slices/shop'
+import { getDistributorId } from '.'
 
 const { store } = configStore()
 
@@ -21,7 +23,7 @@ function linkPage(data) {
     content,
     seletedTags = []
   } = data
-  const { id: dtid } = getCurrentInstance().router.params
+  const { id: dtid } = getCurrentInstance()?.router?.params
   if (id === 'homeSearch') {
     Taro.navigateTo({
       url: '/subpages/item/list'
@@ -58,7 +60,7 @@ function linkPage(data) {
       url = `/subpages/game-activity/index?id=${id}`
       break
     case 'goods':
-      url = `/pages/item/espier-detail?id=${id}&dtid=${distributor_id}`
+      url = `/subpages/item/espier-detail?id=${id}&dtid=${distributor_id || getDistributorId()}`
       break
     case 'sale_category':
       url = '/subpages/item/list?cat_id=' + id
@@ -96,7 +98,11 @@ function linkPage(data) {
       if (id == 'purchase') {
         clearPurchaseDtid()
       } else if (id == 'applyChief') {
-        url += `?distributor_id=${dtid || distributor_id}`
+        url += `?distributor_id=${dtid || distributor_id || getDistributorId()}`
+      } else if (id == 'kujiale') {
+        url = '/subpages/case/list'
+      } else if (id == 'nearby_store') {
+        url = '/subpages/store/nearby-list'
       }
       // if (id == 'purchase') {
       //   clearPurchaseDtid()
@@ -140,8 +146,18 @@ function linkPage(data) {
     case 'liverooms':
       url = 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
       break
+    case 'live':
+      url = 'plugin-private://wx2b03c6e691cd7370/pages/live-player-plugin?room_id=' + id
+      break
     case 'store':
       url = `/subpages/store/index?id=${id}`
+      break
+    case 'customer_service':
+      // 企微导购服务 (id: guide_service)：与 FloatSalesperson 一致，弹出联系顾问弹框
+      if (id === 'guide_service') {
+        store.dispatch(setShowGuideConsultModal(true))
+        return
+      }
       break
     case 'custom':
       url = id

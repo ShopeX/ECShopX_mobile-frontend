@@ -6,6 +6,7 @@ import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { pickBy, showToast, classNames } from '@/utils'
@@ -40,7 +41,7 @@ const SendOutGoods = () => {
   })
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const {
       orderInfo,
       total = 1,
@@ -56,7 +57,7 @@ const SendOutGoods = () => {
   }
 
   const handleClickToEdit = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     let params = {
       order_id,
       self_delivery_operator_id: information.selfDeliveryOperatorId,
@@ -71,7 +72,7 @@ const SendOutGoods = () => {
       }
     })
     console.log(params, 'params')
-    await api.delivery.orderDelivery(params)
+    await deliveryApi.orderDelivery(params)
     showToast('发货成功')
     setTimeout(() => {
       Taro.navigateBack({

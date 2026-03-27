@@ -27,7 +27,7 @@ export default class ActivityPanel extends Component {
   }
   // handleClickItem (item) {
   // 	Taro.navigateTo({
-  // 		url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+  // 		url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
   // 	})
   // }
 

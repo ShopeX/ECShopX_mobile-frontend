@@ -7,19 +7,13 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
-import {
-  SpPage,
-  SpImage,
-  SpButton,
-  SpUpload,
-  SpCell,
-  SpPicker,
-  SpInput as AtInput
-} from '@/components'
+import { SpPage, SpImage, SpButton, SpUpload, SpCell, SpInput } from '@/components'
+import { SpPicker } from '@/subpages/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import imgUploader from '@/utils/upload'
 import { classNames, showToast, pickBy } from '@/utils'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/subpages/doc'
 import { updateSelectGoods, updateSelectCommunityZiti } from '@/store/slices/community'
 import dayjs from 'dayjs'
@@ -53,11 +47,11 @@ function Group(props) {
   const { qrcode, activityName, comps, startDate, startTime, endDate, endTime, shareImageUrl } =
     state
   const dispatch = useDispatch()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const pageRef = useRef('')
 
   useEffect(() => {
-    if ($instance.router.params.id) {
+    if ($instance?.router?.params.id) {
       fetchActivity()
     }
     Taro.nextTick(() => {
@@ -66,7 +60,7 @@ function Group(props) {
   }, [])
 
   const fetchActivity = async () => {
-    const res = await api.community.getChiefActivity($instance.router.params.id)
+    const res = await communityApi.getChiefActivity($instance?.router?.params.id)
     console.log('fetchDetail:', pickBy(res, doc.community.COMMUNITY_ACTIVITY_ITEM))
     const { activityIntro, activityName, activityPics, startTime, endTime, shareImageUrl } = pickBy(
       res,
@@ -224,14 +218,14 @@ function Group(props) {
       end_time: `${endDate} ${endTime}`,
       share_image_url: shareImageUrl
     }
-    let cur_id = $instance.router.params.id
+    let cur_id = $instance?.router?.params.id
     let act_id
     // 修改活动
     if (cur_id) {
-      await api.community.modiflyChiefActivity(cur_id, params)
+      await communityApi.modiflyChiefActivity(cur_id, params)
       act_id = cur_id
     } else {
-      const { activity_id } = await api.community.createChiefActivity(params)
+      const { activity_id } = await communityApi.createChiefActivity(params)
       act_id = activity_id
     }
 

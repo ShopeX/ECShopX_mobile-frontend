@@ -13,7 +13,7 @@ import { ParamsItem } from './comps'
 import './item-params.scss'
 
 export default class ItemParams extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)
@@ -28,7 +28,7 @@ export default class ItemParams extends Component {
   }
 
   async fetch() {
-    const { id } = this.$instance.router.params
+    const { id } = this.$instance?.router?.params
     if (id) {
       const info = await api.item.detail(id)
       const { item_params } = info

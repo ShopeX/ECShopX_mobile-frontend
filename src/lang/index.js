@@ -140,7 +140,7 @@ class Lang {
         // 设置默认语言
         globalThis._localStorage.setItem('lang', defaultLang)
       } catch (error) {
-        globalThis._localStorage.setItem('lang', 'en')
+        globalThis._localStorage.setItem('lang', 'zhcn')
         console.error('setLanguagePackage error', error)
       }
     }

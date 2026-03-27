@@ -58,11 +58,11 @@ export default class DistributionDashboard extends Component {
   handleSubmit(e) {
     let { info } = this.state
     if (!info.bank_id) {
-      return S.toast('请选择银行')
+      return S?.toast('请选择银行')
     }
 
     if (!info.card_num || !/^[1-9]\d{9,29}$/.test(info.card_num)) {
-      return S.toast('请输入正确的银行卡号')
+      return S?.toast('请输入正确的银行卡号')
     }
 
     let obj = {

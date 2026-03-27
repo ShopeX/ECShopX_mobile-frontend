@@ -23,7 +23,7 @@ import './espier-evaluation.scss'
 )
 @withPager
 export default class EvaluationDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }
@@ -50,8 +50,8 @@ export default class EvaluationDetail extends Component {
   }
 
   getEvaluationDetail = async () => {
-    let company_id = this.$instance.router.params.company_id
-    let rate_id = this.$instance.router.params.rate_id
+    let company_id = this.$instance?.router?.params.company_id
+    let rate_id = this.$instance?.router?.params.rate_id
     let params = {
       company_id
     }
@@ -86,9 +86,9 @@ export default class EvaluationDetail extends Component {
   }*/
   // 获取评论列表
   getreplyRateList = async (info) => {
-    let company_id = this.$instance.router.params.company_id
-    let rate_id = this.$instance.router.params.rate_id
-    let item_id = this.$instance.router.params.item_id
+    let company_id = this.$instance?.router?.params.company_id
+    let rate_id = this.$instance?.router?.params.rate_id
+    let item_id = this.$instance?.router?.params.item_id
     let params = {
       item_id,
       company_id,
@@ -156,9 +156,9 @@ export default class EvaluationDetail extends Component {
     if (S.getAuthToken()) {
       this.setState({ showCommentPanel: true })
     } else {
-      S.toast('请登录后再评论')
+      S?.toast('请登录后再评论')
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
     }
   }

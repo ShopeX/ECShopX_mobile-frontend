@@ -21,7 +21,7 @@ const initialState = {
   select: null
 }
 function CouponPicker(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   let { couponListVaild, couponListInVaild, select } = state
   const dispatch = useDispatch()
@@ -37,7 +37,7 @@ function CouponPicker(props) {
       goodType,
       coupon = null,
       cxdid
-    } = $instance.router.params
+    } = $instance?.router?.params
     const params = {
       page_no: pageIndex,
       page_size: pageSize,

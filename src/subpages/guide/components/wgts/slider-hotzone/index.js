@@ -48,12 +48,12 @@ export default class WgtSliderHotzone extends Component {
     }
 
     if (item.linkPage === 'cashcoupon') {
-      const toke = S.getAuthToken()
+      const toke = S?.getAuthToken()
       if (!toke) {
-        S.login(this)
+        S?.login(this)
       } else {
         api.member.sendCashCoupon({ stock_id: item.id }).then((res) => {
-          S.toast(res.msg)
+          S?.toast(res.msg)
         })
       }
       return
@@ -69,7 +69,7 @@ export default class WgtSliderHotzone extends Component {
       })
 
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 50)
 
       return

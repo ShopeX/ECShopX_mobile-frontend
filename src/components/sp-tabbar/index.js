@@ -25,7 +25,9 @@ function SpTabbar() {
   const pages = Taro.getCurrentPages()
   useEffect(() => {
     if (pages.length > 0) {
-      let currentPage = pages[pages.length - 1].route
+      const lastPage = pages[pages.length - 1]
+      let currentPage = lastPage?.route
+      if (currentPage == null) return
       currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
       const {
         params: { id: customPageId }
@@ -95,7 +97,7 @@ function SpTabbar() {
   }
 
   return (
-    <View className='sp-tabbar' style={{ backgroundColor: backgroundColor }}>
+    <View className='sp-tabbar' style={{ 'background-color': backgroundColor }}>
       {tabList?.map((item, index) => {
         const iconPath = index == currentIndex ? item.selectedIconPath : item.iconPath
         return (

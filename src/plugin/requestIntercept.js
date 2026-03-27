@@ -12,7 +12,7 @@ export function requestIntercept() {
     let requestParams = chain.requestParams
     const { method, data, url } = requestParams
     // console.log('getCurrentInstance:', getCurrentInstance())
-    if (isObject(getCurrentInstance().router)) {
+    if (isObject(getCurrentInstance()?.router)) {
       const { path } = getCurrentInstance()?.router
       // console.log('getCurrentInstance params:', path)
       if (

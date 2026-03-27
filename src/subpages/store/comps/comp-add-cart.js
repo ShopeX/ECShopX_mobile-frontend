@@ -37,8 +37,8 @@ function CompAddCart(props) {
   const { open = false, onMaskCloses = {}, parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state
-  const $instance = getCurrentInstance()
-  const router = $instance.router
+  const $instance = getCurrentInstance() || {}
+  const router = $instance?.router
   const plus_buy_activity = shopCartCount?.storeDetails?.plus_buy_activity?.[0]
   const exchange_item = plus_buy_activity?.plus_item
     ? pickBy(plus_buy_activity?.plus_item, { ...doc.cart.PLUS_BUY_ITEM })
@@ -117,7 +117,7 @@ function CompAddCart(props) {
   const handleClick = useDebounce(async (item, num) => {
     console.log(`onChangeCartGoodsItem:`, item, num)
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
     getCartList()
   }, 200)

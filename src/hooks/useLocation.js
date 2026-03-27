@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro'
 import api from '@/api'
 import entryLaunch from '@/utils/entryLaunch'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateLocation } from '@/store/slices/user'
+import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import S from '@/spx'
 
 export default (props) => {
@@ -16,25 +16,28 @@ export default (props) => {
   /**
    * 未登录状态 && 授权定位  == 定位
    * 未登录状态  && 不授权定位  == 默认值
+   * 仅当位置相对上次有变化时才请求逆地理（getAreaByJwd）并更新 store
    */
   const updateAddress = async () => {
     if (S.getAuthToken()) {
       await addressLogic()
     } else {
-      const res1 = await fetchLocation()
+      const res1 = await fetchLocation(location?.lng, location?.lat)
+      if (res1 === null) return // 位置未变化，不更新
       if (res1 instanceof Object && res1.lat) {
         dispatch(updateLocation(res1))
       }
     }
   }
 
-  // 获取当前定位
-  const fetchLocation = async () => {
+  // 获取当前定位，仅位置变化时才解析地址
+  const fetchLocation = async (previousLng, previousLat) => {
     try {
       const res = await new Promise((resolve) => {
-        entryLaunch.isOpenPosition((res1) => {
-          resolve(res1)
-        })
+        entryLaunch.isOpenPosition(
+          (res1) => resolve(res1),
+          previousLng != null && previousLat != null ? { previousLng, previousLat } : {}
+        )
       })
       return res
     } catch (e) {
@@ -94,7 +97,7 @@ export default (props) => {
     // })
     // if (newarr.length > 0) {
     //   newarr.forEach((item) => {
-    //     let res = S.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
+    //     let res = S?.calculateDistance(ele.lat, ele.lng, item.lat, item.lng)
     //     newarrs.push(res)
     //   })
     //   const minNumber = Math.min(...newarrs)
@@ -132,7 +135,8 @@ export default (props) => {
   const addressLogic = async () => {
     const { list } = await api.member.addressList()
     const arr = await processingAddress(list)
-    const res = await fetchLocation()
+    const res = await fetchLocation(location?.lng, location?.lat)
+    if (res === null) return // 位置未变化，不更新
     // 开启定位
     if (res instanceof Object && res.lat) {
       if (arr.length == 0) {
@@ -142,9 +146,10 @@ export default (props) => {
         dispatch(updateLocation(res1))
       }
     } else {
+      // 未拿到 GPS：不要把收货地址写进 location，否则首页「定位」会与收货地址混淆
       if (arr.length > 0) {
-        const arr1 = await processingAddress([list.find((obj) => obj.is_def === true) || list[0]])
-        dispatch(updateLocation(arr1[0]))
+        const defAddr = list.find((obj) => obj.is_def === true) || list[0]
+        dispatch(updateChooseAddress(defAddr))
       }
     }
   }

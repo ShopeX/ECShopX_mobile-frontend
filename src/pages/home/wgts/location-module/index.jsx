@@ -7,13 +7,13 @@ import React, {
   useMemo,
   useContext,
   useRef,
-  useEffect,
   useCallback,
   useLayoutEffect
 } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import { classNames, pxToRpx, getElementRectBox } from '@/utils'
+import { classNames, pxToRpx, getElementRectBox, rpxToPx } from '@/utils'
+import { usePageContext } from '@/hooks/usePageContext'
 import throttle from 'lodash/throttle'
 import { getGlobalBaseStyle } from '../helper'
 import LocationModuleNavBar from '../comps/nav-bar'
@@ -36,10 +36,12 @@ import { WgtsContext } from '../wgts-context'
 
 export default function WgtLocationModule(props) {
   const { info, id } = props
-  const { setScrollIntoView, immersive, navBarHeight, scrollTop } = useContext(WgtsContext)
+
+  const { setScrollIntoView, immersive, navBarHeight } = useContext(WgtsContext)
   const [currentIndex, setCurrentIndex] = useState(0)
   const [scrollView, setScrollView] = useState(``)
   const isClickTab = useRef(false)
+  const { scrollTop, setStatusBarBgColorFromSticky } = usePageContext()
 
   // 从 params 中获取配置和数据，兼容两种数据结构
   const params = info?.params || info || {}
@@ -49,20 +51,19 @@ export default function WgtLocationModule(props) {
 
   // 获取导航栏样式
   const navStyle = useMemo(() => {
-    console.log(immersive, navBarHeight, 'immersive,navBarHeight')
     return {
       ...getGlobalBaseStyle(base.outerMargin),
       position: base.navSticky ? 'sticky' : 'relative',
-      top: immersive ? `${navBarHeight}px` : 0
+      top: base.navSticky && immersive ? `${navBarHeight}px` : '0px'
     }
-  }, [base.outerMargin, base.navSticky, immersive, navBarHeight])
+  }, [base.outerMargin, base.navSticky, navBarHeight, immersive])
 
   // 获取导航项区域样式（navitemarea）
   const navItemAreaStyle = useMemo(() => {
     const navitemarea = base.navitemarea || {}
     return {
       ...getGlobalBaseStyle(navitemarea),
-      borderRadius: base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
+      'border-radius': base.navitemradius ? Taro.pxTransform(base.navitemradius) : 0
     }
   }, [base.navitemarea, base.navitemradius])
 
@@ -72,13 +73,36 @@ export default function WgtLocationModule(props) {
     return {
       height: Taro.pxTransform(base.navitemheight || 40),
       color: textColor,
-      backgroundColor: isActive
+      'background-color': isActive
         ? item.navitemactivebg || 'transparent'
         : item.navitembg || 'transparent',
-      paddingLeft: `${Taro.pxTransform(base.navitemmargin || 0)}`,
-      paddingRight: `${Taro.pxTransform(base.navitemmargin || 0)}`
+      'padding-left': `${Taro.pxTransform(base.navitemmargin || 0)}`,
+      'padding-right': `${Taro.pxTransform(base.navitemmargin || 0)}`
     }
   }
+
+  // 计算导航栏高度（rpx），吸顶颜色判断需用
+  const calculateNavBarHeight = useMemo(() => {
+    const outerMargin = base.outerMargin || {}
+    const outerPaddingTop = outerMargin.paddedt || 0
+    const outerPaddingBottom = outerMargin.paddedb || 0
+    const navitemarea = base.navitemarea || {}
+    const navAreaPaddingTop = navitemarea.paddedt || 0
+    const navAreaPaddingBottom = navitemarea.paddedb || 0
+    const navItemHeight = base.navitemheight
+    const totalHeight =
+      outerPaddingTop +
+      outerPaddingBottom +
+      navAreaPaddingTop +
+      navAreaPaddingBottom +
+      navItemHeight
+    if (immersive) {
+      return pxToRpx(navBarHeight) + totalHeight
+    }
+    return totalHeight
+  }, [base, immersive, navBarHeight])
+
+  const statusBarSourceId = useMemo(() => `location-module-${id}`, [id])
 
   // 处理导航项点击
   const handleNavClick = (index) => {
@@ -86,7 +110,8 @@ export default function WgtLocationModule(props) {
     setCurrentIndex(index)
     let viewIndex = index > 0 ? index - 1 : 0
     setScrollView(`nav-item-${viewIndex}-${id}`)
-    setScrollIntoView(`#content-section-${index}-${id}`)
+    // scrollIntoView 传纯 id，不要 # 前缀，否则 H5/小程序 可能匹配不到导致滚回顶部
+    setScrollIntoView(`content-section-${index}-${id}`)
     setTimeout(() => {
       isClickTab.current = false
     }, 500)
@@ -116,8 +141,6 @@ export default function WgtLocationModule(props) {
       if (isClickTab.current) {
         return
       }
-      console.log('scrollTop', scrollTop)
-      const viewportTop = calculateNavBarHeight
       // 获取所有内容区域的位置信息
       const positions = await Promise.all(
         navList.map(async (_, index) => {
@@ -131,48 +154,51 @@ export default function WgtLocationModule(props) {
         })
       )
 
-      // 过滤掉无效的位置信息并按照位置排序
-      const validPositions = positions.filter((pos) => pos !== null).sort((a, b) => a.top - b.top)
-
+      // 过滤掉无效的位置信息（top 需为数字）
+      const validPositions = positions.filter(
+        (pos) => pos != null && typeof pos.top === 'number'
+      )
       if (validPositions.length === 0) return
 
-      // 找到最接近导航栏下方的元素
-      let targetIndex = -1
-      let minDistance = Infinity
+      // 取 top 为负值的 section 中 top 最大的那个（负值里最接近 0，即刚离开视口顶部的那块）作为当前 tab
+      const negativeTops = validPositions.filter((pos) => pos.top < 0)
+      let targetIndex
+      if (negativeTops.length > 0) {
+        const maxNegative = negativeTops.reduce((a, b) =>
+          a.top > b.top ? a : b
+        )
+        targetIndex = maxNegative.index
+      } else {
+        // 没有负值说明都在视口下方，取 top 最小的（最先进入视口的）
+        const firstInView = validPositions.reduce((a, b) =>
+          a.top < b.top ? a : b
+        )
+        targetIndex = firstInView.index
+      }
 
-      validPositions.forEach((pos) => {
-        const elementTop = pos.top
-        const elementBottom = pos.bottom
-
-        // 计算元素与导航栏下方的距离
-        let distance
-
-        if (elementTop <= viewportTop && elementBottom > viewportTop) {
-          // 元素跨越导航栏位置，优先选择
-          distance = 0
-        } else if (elementBottom <= viewportTop) {
-          // 元素在导航栏上方
-          distance = viewportTop - elementBottom
-        } else {
-          // 元素在导航栏下方
-          distance = elementTop - viewportTop
-        }
-
-        // 更新最小距离
-        if (distance < minDistance) {
-          minDistance = distance
-          targetIndex = pos.index
-        }
-      })
-
-      // 只在找到有效索引且不是当前索引时更新
       if (targetIndex >= 0 && targetIndex !== currentIndex && targetIndex < navList.length) {
         setCurrentIndex(targetIndex)
+      }
+
+      // 吸顶颜色：先看首 section 是否已滚过顶（进入吸顶区），再以 sentinel 判断是否仍压在本模块；清空仅看 sentinel，避免上滑闪一下
+      if (base.navSticky && base.statusBarBgColor && typeof setStatusBarBgColorFromSticky === 'function') {
+        const [firstSectionRect, sentinelRect] = await Promise.all([
+          getElementRectBox(`#content-section-0-${id}`).catch(() => null),
+          getElementRectBox(`#location-module-section-sentinel-${id}`).catch(() => null)
+        ])
+        const navBarPx = rpxToPx(calculateNavBarHeight)
+        const inStickyZone = firstSectionRect != null && firstSectionRect.top <= 0
+        const stillOverContent = sentinelRect != null && sentinelRect.top > navBarPx
+        if (inStickyZone && stillOverContent) {
+          setStatusBarBgColorFromSticky(base.statusBarBgColor, statusBarSourceId)
+        } else {
+          setStatusBarBgColorFromSticky(null, statusBarSourceId)
+        }
       }
     } catch (error) {
       console.error('获取元素位置失败', error)
     }
-  }, [calculateNavBarHeight, data, currentIndex])
+  }, [id, navList, currentIndex, base.navSticky, base.statusBarBgColor, calculateNavBarHeight, setStatusBarBgColorFromSticky, statusBarSourceId])
 
   // 创建节流函数 - 优化滚动性能
   const throttledScrollUpdate = useMemo(() => {
@@ -180,41 +206,12 @@ export default function WgtLocationModule(props) {
   }, [handleScrollUpdate])
 
   useLayoutEffect(() => {
-    throttledScrollUpdate()
-  }, [scrollTop])
-
-  // 计算 LocationModuleNavBar 的高度（单位：rpx）
-  // 注意：此函数不包含图片高度，图片高度需要动态获取
-  const calculateNavBarHeight = useMemo(() => {
-    // 外层容器的 padding（outerMargin）
-    const outerMargin = base.outerMargin || {}
-    const outerPaddingTop = outerMargin.paddedt || 0
-    const outerPaddingBottom = outerMargin.paddedb || 0
-
-    // 导航项区域的 padding（navitemarea）
-    const navitemarea = base.navitemarea || {}
-    const navAreaPaddingTop = navitemarea.paddedt || 0
-    const navAreaPaddingBottom = navitemarea.paddedb || 0
-
-    const navItemHeight = base.navitemheight
-
-    const totalHeight = pxToRpx(
-      outerPaddingTop +
-        outerPaddingBottom +
-        navAreaPaddingTop +
-        navAreaPaddingBottom +
-        navItemHeight
-    )
-    console.log(navBarHeight, 'totalHeight', totalHeight)
-
-    if (immersive) {
-      return pxToRpx(navBarHeight) + totalHeight
+    if (base.navSticky && base.statusBarBgColor && throttledScrollUpdate) {
+      throttledScrollUpdate()
+    } else {
+      setStatusBarBgColorFromSticky?.(null, statusBarSourceId)
     }
-    return totalHeight
-  }, [base, immersive, navBarHeight])
-
-  // 打印计算结果（用于调试）
-  console.log('LocationModuleNavBar 高度计算:', calculateNavBarHeight)
+  }, [scrollTop, currentIndex, throttledScrollUpdate, base.navSticky, base.statusBarBgColor, setStatusBarBgColorFromSticky, statusBarSourceId])
 
   return (
     <View className={classNames('wgt wgt-location-module')} id={`wgt-location-module-${id || ''}`}>
@@ -295,6 +292,7 @@ export default function WgtLocationModule(props) {
             })}
         </View>
       </View>
+      <View id={`location-module-section-sentinel-${id}`} />
     </View>
   )
 }

@@ -22,7 +22,7 @@ import './list.scss'
 @withPager
 @withLogin()
 export default class AfterSale extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -41,7 +41,7 @@ export default class AfterSale extends Component {
   }
 
   componentDidMount() {
-    const { status } = this.$instance.router.params
+    const { status } = this.$instance?.router?.params
     const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
@@ -110,7 +110,7 @@ export default class AfterSale extends Component {
   }
 
   detailFilter(nList) {
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     let nFList = JSON.parse(JSON.stringify(nList))
     if (order_id) {
       nFList = nList.filter((item) => item.order_id == order_id)

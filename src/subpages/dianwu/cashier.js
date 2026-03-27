@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance, useDidHide } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View, Text, ScrollView, Camera } from '@tarojs/components'
 import { AtTabs, AtTabsPane, AtButton, AtCurtain } from 'taro-ui'
@@ -67,7 +68,7 @@ function DianWuCashier() {
   const pageRef = useRef()
   const scanIsUseableRef = useRef(true)
   const audioContextRef = useRef()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { member } = useSelector((state) => state.dianwu)
   const dispatch = useDispatch()
@@ -79,14 +80,14 @@ function DianWuCashier() {
     //   useWebAudioImplement: true // 是否使用 WebAudio 作为底层音频驱动，默认关闭。对于短音频、播放频繁的音频建议开启此选项，开启后将获得更优的性能表现。由于开启此选项后也会带来一定的内存增长，因此对于长音频建议关闭此选项
     // })
     // audioContextRef.current.src = `${process.env.APP_IMAGE_CDN}/scan_success.wav`
-    const { distributor_id: dtid } = $instance.router.params
+    const { distributor_id: dtid } = $instance?.router?.params
     setState((draft) => {
       draft.distributor_id = dtid
     })
   }, [])
 
   useEffect(() => {
-    const { distributor_id: dtid } = $instance.router.params
+    const { distributor_id: dtid } = $instance?.router?.params
     getCashierList(dtid)
   }, [member])
 
@@ -106,7 +107,7 @@ function DianWuCashier() {
 
   const handleSearchByKeyword = async (keywords) => {
     Taro.showLoading({ title: '' })
-    const { list: goodsList } = await api.dianwu.goodsItems({
+    const { list: goodsList } = await dianwuApi.goodsItems({
       page: 1,
       pageSize: 100,
       keywords
@@ -125,7 +126,7 @@ function DianWuCashier() {
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      const { list } = await api.dianwu.getMembers({
+      const { list } = await dianwuApi.getMembers({
         user_card_code: result.split('_')[1]
       })
       // console.log(pickBy(list, doc.dianwu.MEMBER_ITEM))
@@ -139,12 +140,12 @@ function DianWuCashier() {
   }
 
   const handleScanGoodsBN = async () => {
-    // 注意：真机scancode扫码完成后回调，taro getCurrentInstance().router = null，无法获取到路由参数
+    // 注意：真机scancode扫码完成后回调，taro getCurrentInstance()?.router = null，无法获取到路由参数
     const { errMsg, result } = await Taro.scanCode()
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      await api.dianwu.scanAddToCart({
+      await dianwuApi.scanAddToCart({
         barcode: result,
         distributor_id
       })
@@ -157,7 +158,7 @@ function DianWuCashier() {
   }
 
   const getCashierList = async (dtid) => {
-    const { valid_cart } = await api.dianwu.getCartDataList({
+    const { valid_cart } = await dianwuApi.getCartDataList({
       user_id: member?.userId,
       distributor_id: dtid || distributor_id
     })
@@ -167,7 +168,7 @@ function DianWuCashier() {
   }
 
   const onChangeInputNumber = useDebounce(async ({ cartId, itemId }, num) => {
-    await api.dianwu.updateCartData({
+    await dianwuApi.updateCartData({
       cart_id: cartId,
       item_id: itemId,
       num,
@@ -187,12 +188,12 @@ function DianWuCashier() {
       confirmText: '确认'
     })
     if (!confirm) return
-    await api.dianwu.deleteCartData(cartId)
+    await dianwuApi.deleteCartData(cartId)
     getCashierList()
   }
 
   const handleAddToCart = async ({ itemId }) => {
-    await api.dianwu.addToCart({
+    await dianwuApi.addToCart({
       item_id: itemId,
       num: 1,
       distributor_id
@@ -207,7 +208,7 @@ function DianWuCashier() {
       scanIsUseableRef.current = false
       audioContextRef.current.play()
       try {
-        await api.dianwu.scanAddToCart({
+        await dianwuApi.scanAddToCart({
           barcode: e.detail.result,
           distributor_id
         })
@@ -225,7 +226,7 @@ function DianWuCashier() {
   // 选择会员
   const handleSelectMember = async () => {
     const [item] = searchMemberResult
-    const userInfo = await api.dianwu.getMemberByUserId({ user_id: item.userId })
+    const userInfo = await dianwuApi.getMemberByUserId({ user_id: item.userId })
     const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
     dispatch(
       selectMember({
@@ -262,7 +263,7 @@ function DianWuCashier() {
     })
     if (confirm) {
       try {
-        await api.dianwu.orderPendding({
+        await dianwuApi.orderPendding({
           user_id: member?.userId,
           distributor_id,
           showError: false
@@ -298,9 +299,9 @@ function DianWuCashier() {
   }
 
   const handleCreateMember = async () => {
-    const res = await api.dianwu.createMember({ mobile })
+    const res = await dianwuApi.createMember({ mobile })
     const newUser = pickBy(res, doc.dianwu.CREATE_MEMBER_ITEM)
-    const userInfo = await api.dianwu.getMemberByUserId({ user_id: newUser.userId })
+    const userInfo = await dianwuApi.getMemberByUserId({ user_id: newUser.userId })
     const { couponNum, point, vipDiscount } = pickBy(userInfo, doc.dianwu.MEMBER_INFO)
     dispatch(
       selectMember({
@@ -323,7 +324,7 @@ function DianWuCashier() {
 
   const handleConfirm = async () => {
     if (validate.isMobileNum(mobile)) {
-      const { list } = await api.dianwu.getMembers({
+      const { list } = await dianwuApi.getMembers({
         mobile
       })
       setState((draft) => {

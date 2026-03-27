@@ -12,10 +12,10 @@ import { setTokenAndRedirect, getToken } from './util'
 import './auth-loading.scss'
 
 const AuthLoading = () => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const {
     params: { code, redi_url }
-  } = $instance.router
+  } = $instance?.router
 
   const { getUserInfo } = useLogin()
 

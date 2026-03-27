@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpSelect, SpImage, SpPrice, SpCheckbox } from '@/components'
@@ -58,15 +59,15 @@ function DianwuChangePrice(props) {
     pointFreightFee,
     receiptType
   } = state
-  const $instance = getCurrentInstance()
-  const { trade_id } = $instance.router.params
+  const $instance = getCurrentInstance() || {}
+  const { trade_id } = $instance?.router?.params
 
   useEffect(() => {
     fetchOrderInfo()
   }, [])
 
   const fetchOrderInfo = async () => {
-    const res = await api.dianwu.getTradeDetail(trade_id)
+    const res = await dianwuApi.getTradeDetail(trade_id)
     const { orderInfo, distributor } = res
     const {
       items: _items,
@@ -87,7 +88,7 @@ function DianwuChangePrice(props) {
 
     const { store_address, store_name } = distributor
 
-    const { username, mobile } = await api.dianwu.getMemberByUserId({ user_id })
+    const { username, mobile } = await dianwuApi.getMemberByUserId({ user_id })
 
     let _buyMember = ''
     let _receiveName = ''
@@ -238,7 +239,7 @@ function DianwuChangePrice(props) {
       ...params,
       order_id: trade_id
     }
-    const res = await api.dianwu.changePrice(params)
+    const res = await dianwuApi.changePrice(params)
     const { items, itemFeeNew, freightFee, totalFee, point_freight_fee } = pickBy(
       res,
       doc.dianwu.ORDER_INFO
@@ -261,7 +262,7 @@ function DianwuChangePrice(props) {
     if (isFreeFreight) {
       params['freight_fee'] = 0
     }
-    await api.dianwu.changePriceConfirm(params)
+    await dianwuApi.changePriceConfirm(params)
     showToast('订单价格修改成功')
     setTimeout(() => {
       Taro.navigateBack()

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/doc'
 import { SpPage, SpButton, SpCell } from '@/components'
 import { View, Picker } from '@tarojs/components'
@@ -34,7 +35,7 @@ const initialState = {
 }
 
 function DianwuTradeCancel(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { info, reason, reasons } = state
 
@@ -46,8 +47,8 @@ function DianwuTradeCancel(props) {
     // if(!reason) {
     //   return showToast('请选择订单取消原因')
     // }
-    // const { trade_id } = $instance.router.params
-    // await api.dianwu.cancelTrade({
+    // const { trade_id } = $instance?.router?.params
+    // await dianwuApi.cancelTrade({
     //   order_id: trade_id,
     //   cancel_reason: reason
     // })

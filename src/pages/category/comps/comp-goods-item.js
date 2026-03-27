@@ -67,7 +67,7 @@ function CompGoodsItem(props) {
         dtid: distributorId
       }
     }
-    const url = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const url = `/subpages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -156,8 +156,8 @@ function CompGoodsItem(props) {
               key={item.tag_id}
               style={styleNames({
                 color: item.font_color,
-                borderColor: item.tag_color,
-                backgroundColor: item.tag_color
+                'border-color': item.tag_color,
+                'background-color': item.tag_color
               })}
             >
               {item.tag_name}

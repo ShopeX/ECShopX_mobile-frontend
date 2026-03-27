@@ -95,10 +95,10 @@ async function entryLaunch(data, isNeedLocate, privacy_time) {
     let guide_p = gu.split('_')
     let guide_code = guide_p[0]
     let store_code = guide_p[1]
-    await S.delete('ba_params', true) //删除缓存的导购信息，新的进行替换
-    await S.delete('qw_chatId', true) //删除缓存的企业微信群id，新的进行替换
-    await S.delete('share_chat', true) //删除缓存的分享群id，新的进行替换
-    await S.delete('entry_source', true) //删除缓存的导购入口来源，新的进行替换
+    await S?.delete('ba_params', true) //删除缓存的导购信息，新的进行替换
+    await S?.delete('qw_chatId', true) //删除缓存的企业微信群id，新的进行替换
+    await S?.delete('share_chat', true) //删除缓存的分享群id，新的进行替换
+    await S?.delete('entry_source', true) //删除缓存的导购入口来源，新的进行替换
     let ba_info = null
     // if (S.getAuthToken()) {
     //   ba_info = await api.user.getGuideInfo({
@@ -108,7 +108,7 @@ async function entryLaunch(data, isNeedLocate, privacy_time) {
     // }
 
     if (share_chatId) {
-      S.set(
+      S?.set(
         'share_chat',
         {
           share_chatId,
@@ -118,7 +118,7 @@ async function entryLaunch(data, isNeedLocate, privacy_time) {
       )
     }
     if (entrySource) {
-      S.set(
+      S?.set(
         'entry_source',
         {
           entrySource,
@@ -127,7 +127,7 @@ async function entryLaunch(data, isNeedLocate, privacy_time) {
         true
       )
     }
-    S.set(
+    S?.set(
       'ba_params',
       {
         //缓存c端的导购信息，c端的导购信息有过期时间7天

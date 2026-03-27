@@ -142,7 +142,7 @@ function PrescriptionPnformation() {
   })
 
   const fetch = async () => {
-    const { order_id, prescription_order_random } = router.params
+    const { order_id, prescription_order_random } = router?.params
     const { orderInfo } = await api.trade.detail(order_id, { prescription_order_random })
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     let list = _orderInfo.items.filter((item) => item.isPrescription == 1)
@@ -155,7 +155,7 @@ function PrescriptionPnformation() {
   }
 
   const handleClickToEdit = async () => {
-    const { order_id, prescription_order_random } = router.params
+    const { order_id, prescription_order_random } = router?.params
 
     //判断确诊疾病是否为空
     const haslistProduct = listProduct.some((item) => {
@@ -285,7 +285,7 @@ function PrescriptionPnformation() {
 
   const onClickItem = ({ itemId, distributorId }) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
+      url: `/subpages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
     })
   }
 

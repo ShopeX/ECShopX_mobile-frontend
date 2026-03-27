@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { AtButton } from 'taro-ui'
 import qs from 'qs'
@@ -45,17 +46,17 @@ function DianwuChangePrice(props) {
     globalPrice,
     globalFreightFee
   } = state
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { member } = useSelector((state) => state.dianwu)
 
   useEffect(() => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     fetchCheckout(params)
   }, [])
 
   const fetchCheckout = async (params) => {
-    const res = await api.dianwu.checkout(params)
+    const res = await dianwuApi.checkout(params)
     const {
       items: _items,
       itemFeeNew,
@@ -98,7 +99,7 @@ function DianwuChangePrice(props) {
   }
 
   const getChangePriceParams = (_items) => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
     const tItems = _items.map((item) => {
@@ -150,7 +151,7 @@ function DianwuChangePrice(props) {
 
   // 一键改价确定
   const handleGlobalChangePrice = async () => {
-    const { checkout } = $instance.router.params
+    const { checkout } = $instance?.router?.params
     const params = qs.parse(decodeURIComponent(checkout))
     let markdown = {}
 

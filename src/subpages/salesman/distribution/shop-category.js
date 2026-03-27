@@ -16,7 +16,7 @@ import './shop-category.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopCategory extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -62,7 +62,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   async fetchInfo() {
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     const query = {
@@ -111,7 +111,7 @@ export default class DistributionShopCategory extends Component {
   async fetch(params) {
     const { page_no: page, page_size: pageSize } = params
     const { defaultId } = this.state
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
 
@@ -183,7 +183,7 @@ export default class DistributionShopCategory extends Component {
       const curTab = this.state.tabList[current]
       const { url, urlRedirect } = curTab
 
-      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance?.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         if (!urlRedirect || (url === '/subpages/member/index' && !S.getAuthToken())) {
           Taro.navigateTo({ url })
@@ -195,7 +195,7 @@ export default class DistributionShopCategory extends Component {
   }
 
   handleClickItem = (item) => {
-    const options = this.$instance.router.params
+    const options = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const distributionShopId = Taro.getStorageSync('distribution_shop_id')
     let id = distributionShopId || userId
@@ -208,7 +208,7 @@ export default class DistributionShopCategory extends Component {
     let url = ''
     if (item.isOutSale) return false
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
+      url = `/subpages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
     }
     if (url) {
       Taro.navigateTo({

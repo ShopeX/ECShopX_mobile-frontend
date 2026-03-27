@@ -20,16 +20,16 @@ const initialState = {
   distributorInfo: null
 }
 function ExChangeCode() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { qrcodeUrl, barcodeUrl, codeContent, distributorInfo } = state
-  const { from = 'espier-detail' } = $instance.router.params
+  const { from = 'espier-detail' } = $instance?.router?.params
   useEffect(() => {
     fetchExChangeCode()
   }, [])
 
   const fetchExChangeCode = async () => {
-    const { user_card_id } = $instance.router.params
+    const { user_card_id } = $instance?.router?.params
     const { qrcode_url, barcode_url, code, distributor_info } = await api.member.getQRcode({
       user_card_id
     })

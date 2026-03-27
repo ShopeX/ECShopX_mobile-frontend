@@ -151,30 +151,30 @@ export const WGTGOODSITEM = {
   memberPreference: 'memberpreference_activity',
   spu_var: 'goods_bn',
   spuName_var: 'item_name',
-  sku_var: ({ spec_items, item_id }) => {
-    return spec_items && spec_items.filter((i) => i.item_id == item_id)[0]?.item_bn
+  sku_var:({spec_items,item_id})=>{
+    return spec_items && spec_items.filter(i=>i.item_id==item_id)[0]?.item_bn
   },
-  skuName_var: ({ spec_items, item_id }) => {
-    const item_spec = spec_items && spec_items.filter((i) => i.item_id == item_id)[0]?.item_spec
-    const result = item_spec?.map((i) => i.spec_value_name).join(' ')
-    return result
+  skuName_var: ({spec_items,item_id})=>{
+   const item_spec = spec_items && spec_items.filter(i=>i.item_id==item_id)[0]?.item_spec
+   const result = item_spec?.map(i=>i.spec_value_name).join(' ')
+   return result
   },
-  firstCategory_var: ({ item_category_main }) => {
+  firstCategory_var:({item_category_main})=>{
     return item_category_main && item_category_main[0]?.category_name
   },
-  secondCategory_var: ({ item_category_main }) => {
+  secondCategory_var:({item_category_main})=>{
     return item_category_main && item_category_main[1]?.category_name
   },
-  thirdCategory_var: ({ item_category_main }) => {
+  thirdCategory_var:({item_category_main})=>{
     return item_category_main && item_category_main[2]?.category_name
   },
   brandName_var: 'goods_brand',
-  productPrice_var: ({ activity_price, price }) => {
-    return (activity_price || price) / 100
+  productPrice_var: ({activity_price,price})=>{
+    return (activity_price || price)/100
   },
   discount_var: ({ discount_rate }) =>
     discount_rate ? String((discount_rate / 10).toFixed(1)) : null,
-  regionauthId: 'regionauth_id'
+  regionauthId:'regionauth_id'
   //   goods_id: "957"
   // item_id: "957"
   // item_name: "清润蓝矿物皂(新老包装)"

@@ -22,14 +22,14 @@ const initialState = {
 }
 
 function CashierResult(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const { cashierPayment } = usePayment()
   const [state, setState] = useImmer(initialState)
   const { tradeInfo, orderId, czOrder } = state
   const dispatch = useDispatch()
   useEffect(() => {
-    const { order_id } = $instance.router.params
+    const { order_id } = $instance?.router?.params
     if (order_id) {
       fetch()
     }
@@ -40,7 +40,7 @@ function CashierResult(props) {
   // })
 
   const fetch = async () => {
-    const { order_id, code } = $instance.router.params
+    const { order_id, code } = $instance?.router?.params
     if (!order_id) {
       return
     }

@@ -29,6 +29,9 @@
   &--left,
   &--right {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
   }
   &--group {
     display: flex;

@@ -26,7 +26,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
   const dispatch = useDispatch()
@@ -43,7 +43,7 @@ function AddressIndex(props) {
   }, [])
 
   const initNavigationBarTitle = () => {
-    return $instance.router?.params?.address_id ? '编辑地址' : '新增地址'
+    return $instance?.router?.params?.address_id ? '编辑地址' : '新增地址'
   }
 
   const fetchAddressList = async () => {
@@ -61,7 +61,7 @@ function AddressIndex(props) {
     })
 
     list.map((a_item) => {
-      if (a_item.address_id === $instance.router?.params?.address_id) {
+      if (a_item.address_id === $instance?.router?.params?.address_id) {
         setState((draft) => {
           draft.info = a_item
           draft.chooseValue = [a_item.province, a_item.city, a_item.county]
@@ -69,7 +69,7 @@ function AddressIndex(props) {
       }
     })
 
-    if ($instance.router?.params?.isWechatAddress) {
+    if ($instance?.router?.params?.isWechatAddress) {
       try {
         const resAddress = await Taro.chooseAddress()
         const query = {
@@ -173,13 +173,12 @@ function AddressIndex(props) {
     Taro.showLoading('正在提交')
 
     try {
-      await api.member.addressCreateOrUpdate(data)
-      if (data.address_id) {
-        showToast('修改成功')
-      } else {
-        showToast('创建成功')
-      }
-      updateChooseAddress(data)
+      const wasUpdate = !!data.address_id
+      const saveRes = await api.member.addressCreateOrUpdate(data)
+      const merged =
+        saveRes && typeof saveRes === 'object' ? { ...data, ...saveRes } : data
+      showToast(wasUpdate ? '修改成功' : '创建成功')
+      updateChooseAddress(merged)
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)

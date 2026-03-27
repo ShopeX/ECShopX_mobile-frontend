@@ -9,7 +9,7 @@ import api from '@/api'
 import './we.scss'
 
 export default class WeappBtn extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
   }
@@ -31,7 +31,7 @@ export default class WeappBtn extends Component {
   }
 
   handleClickPay = async () => {
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     const { orderType = 'normal' } = this.props
 
     const params = {

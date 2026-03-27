@@ -2,19 +2,18 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-.comp-series {
+ .comp-series {
   height: 100%;
   background: #ffffff;
   display: flex;
   justify-content: flex-start;
   box-sizing: border-box;
   &__nav {
-    @include page-scroll($tabs-height + 16px, $tabbar-height);
-    width: 200px;
+    width: 196px;
+    height: 100%;
     text-align: center;
     background: #f5f5f5;
     box-sizing: border-box;
-    top: 170px;
     &-list {
       &__content {
         height: 89px;
@@ -82,15 +81,12 @@
     }
   }
   &__content {
-    @include page-scroll($tabs-height + 16px, $tabbar-height);
-    width: 550px;
+    width: 554px;
+    height: 100%;
     background: #fff;
     box-sizing: border-box;
-    left: 200px;
-    top: 170px;
     .category-content {
-      display: flex;
-      flex-wrap: wrap;
+      min-height: calc(100% - 80px);
       // padding: 24px 0;
       box-sizing: border-box;
       color: #222;
@@ -100,7 +96,7 @@
       }
       .group-title {
         font-size: 30px;
-        padding: 31px 0 24px 0;
+        padding: 20px 0;
         font-weight: bold;
       }
       .content-group {
@@ -111,21 +107,20 @@
       .category__banner {
         display: block;
         width: 100%;
-        height: 250px;
+        // height: 250px;
       }
       &__img {
-        width: 150px;
+        width: 156px;
         height: 230px;
-        margin-bottom: 10px;
+
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        margin-right: 25px;
 
         .cat-img {
-          width: 150px;
-          height: 150px;
+          width: 156px;
+          height: 156px;
         }
         .img-cat-name {
           width: 100%;
@@ -155,7 +150,7 @@
       }
     }
     &_box {
-      padding: 0px 25px;
+      padding: 0px 20px;
     }
   }
 }

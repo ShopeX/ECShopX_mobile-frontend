@@ -14,7 +14,7 @@ import { WgtsContext } from '../wgts-context'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
-const $instance = getCurrentInstance()
+const $instance = getCurrentInstance() || {}
 const initState = {
   curIdx: 0,
   play: false,

@@ -17,7 +17,7 @@ import './landing.scss'
   })
 )
 export default class Landing extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -26,7 +26,7 @@ export default class Landing extends Component {
     }
   }
   async componentDidMount() {
-    const query = await normalizeQuerys(this.$instance.router.params)
+    const query = await normalizeQuerys(this.$instance?.router?.params)
 
     this.props.onUserLanding(query)
 

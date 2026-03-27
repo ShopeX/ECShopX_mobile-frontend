@@ -31,7 +31,7 @@ const initialConfigState = {
     page: 1,
     pageSize: 1000,
     datetype: 2,
-    date: S.getNowDate(),
+    date: S?.getNowDate(),
     distributor_id: '',
     tab: 'all'
   },

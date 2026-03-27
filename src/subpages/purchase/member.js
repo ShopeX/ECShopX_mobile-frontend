@@ -19,6 +19,7 @@ import { useImmer } from 'use-immer'
 import { SpLogin, SpImage, SpPrice, SpPrivacyModal, SpTabbar, SpPage } from '@/components'
 import { CouponModal } from '@/subpages/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import {
   navigateTo,
   getThemeStyle,
@@ -125,7 +126,7 @@ function MemberIndex(props) {
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const { purchaseInfo, whitelist_status } = state
   const dispatch = useDispatch()
-  const isPurchaseHome = router.params?.from == 'purchase_home'
+  const isPurchaseHome = router?.params?.from == 'purchase_home'
 
   useDidShow(() => {
     getMemberCenterData()
@@ -146,7 +147,7 @@ function MemberIndex(props) {
 
   useDidShow(() => {
     if (S.get(MERCHANT_TOKEN, true)) {
-      S.delete(MERCHANT_TOKEN, true)
+      S?.delete(MERCHANT_TOKEN, true)
     }
     if (S.get(SG_TOKEN)) {
       setHeaderBlock()
@@ -219,8 +220,8 @@ function MemberIndex(props) {
       menu = { ...menuRes.list[0].params.data }
     }
     // if (S.getAuthToken() && (VERSION_PLATFORM || VERSION_IN_PURCHASE)) {
-    //   const { result, status } = await api.dianwu.is_admin()
-    //   S.set('DIANWU_CONFIG', result, status)
+    //   const { result, status } = await dianwuApi.is_admin()
+    //   S?.set('DIANWU_CONFIG', result, status)
     //   menu = {
     //     ...menu,
     //     dianwu: status
@@ -262,7 +263,7 @@ function MemberIndex(props) {
 
   const setMemberBackground = async () => {
     let params = {}
-    const activity_id = purchase_share_info?.activity_id || S.get(INVITE_ACTIVITY_ID, true)
+    const activity_id = purchase_share_info?.activity_id || S?.get(INVITE_ACTIVITY_ID, true)
 
     if (activity_id) {
       params = { activity_id }

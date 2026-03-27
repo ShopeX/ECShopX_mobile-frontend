@@ -55,7 +55,7 @@ function PurchaseAuth() {
   const dispatch = useDispatch()
   const codeRef = useRef()
   const { showModal } = useModal()
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
 
   const { invite_code, activity_id, enterprise_id, is_activity } = state
@@ -80,7 +80,7 @@ function PurchaseAuth() {
   useEffect(() => {
     if (invite_code && activity_id) {
       dispatch(updateInviteCode(invite_code))
-      S.set(INVITE_ACTIVITY_ID, activity_id, true)
+      S?.set(INVITE_ACTIVITY_ID, activity_id, true)
       if (S.getAuthToken()) {
         getUserInfo(true)
       }
@@ -379,7 +379,7 @@ function PurchaseAuth() {
         <View
           className='toolbar-item'
           onClick={() => {
-            S.phoneNumber('021-60662088')
+            S?.phoneNumber('021-60662088')
           }}
         >
           <Text className='iconfont icon-lianxi'></Text>

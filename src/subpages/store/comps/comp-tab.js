@@ -25,15 +25,15 @@ function CompTab(props) {
   const { popFrame = {} } = props
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
-  const $instance = getCurrentInstance()
-  const router = $instance.router
+  const $instance = getCurrentInstance() || {}
+  const router = $instance?.router
 
   if (!shopCartCount) {
     return null
   }
 
   const settlement = () => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } =
       shopCartCount.storeDetails
     const query = {

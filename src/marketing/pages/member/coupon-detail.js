@@ -14,7 +14,7 @@ import './coupon-detail.scss'
   colors: colors.current
 }))
 export default class CouponDetail extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -50,8 +50,8 @@ export default class CouponDetail extends Component {
   }
 
   async fetch() {
-    const { card_id, code } = this.$instance.router.params
-    console.log(this.$instance.router.params)
+    const { card_id, code } = this.$instance?.router?.params
+    console.log(this.$instance?.router?.params)
     const params = {
       card_id,
       code

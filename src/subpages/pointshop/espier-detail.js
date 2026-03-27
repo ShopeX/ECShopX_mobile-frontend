@@ -79,7 +79,7 @@ const initialState = {
 }
 
 function PointShopEspierDetail(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const { getUserInfoAuth } = useLogin()
   const pageRef = useRef()
   const { userInfo } = useSelector((state) => state.user)
@@ -109,7 +109,7 @@ function PointShopEspierDetail(props) {
   }, [])
 
   useEffect(() => {
-    const { path } = $instance.router
+    const { path } = $instance?.router
     if (id && path === '/subpages/pointshop/espier-detail') {
       fetch()
     }

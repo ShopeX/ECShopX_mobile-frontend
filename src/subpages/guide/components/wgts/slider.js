@@ -19,7 +19,9 @@ const initialState = {
 
 function WgtSlider(props) {
   const { info } = props
-  const { base, config, data } = info
+  if (!info) return null
+  const { base, config, data: rawData } = info
+  const data = Array.isArray(rawData) ? rawData : []
   const [state, setState] = useImmer(initialState)
   const { currentDot, curIdx, curContent } = state
 
@@ -43,10 +45,6 @@ function WgtSlider(props) {
     setState((draft) => {
       draft.curIdx = current
     })
-  }
-
-  if (!info) {
-    return null
   }
 
   return (

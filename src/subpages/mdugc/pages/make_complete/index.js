@@ -11,6 +11,8 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
+
 import { SearchBar } from '../../components'
 import './index.scss'
 
@@ -117,7 +119,7 @@ export default class make_complete extends Component {
       query.distributor_id = isOpenStore ? store_id : distributor_id
     }
 
-    // const { list, total_count: total } = await api.mdugc.yuyueActivityList(params)
+    // const { list, total_count: total } = await mdugcApi.yuyueActivityList(params)
     const { list, total_count: total } = await api.item.search(query)
     console.log('list, total', list, total)
 

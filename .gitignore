@@ -17,3 +17,5 @@ dist/
 AGENTS.md
 openspec/
 scripts/
+.agent/
+.codex/

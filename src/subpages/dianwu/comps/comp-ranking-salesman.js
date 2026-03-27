@@ -15,7 +15,7 @@ import { useSyncCallback } from '@/hooks'
 import './comp-ranking-salesman.scss'
 
 const initialState = {
-  datas: S.getNowDate(),
+  datas: S?.getNowDate(),
   datasType: 2,
   listHeader: [
     { title: '排名', id: 'ranking' },

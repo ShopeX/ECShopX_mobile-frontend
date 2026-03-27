@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 
 //import '../../font/iconfont.scss'
 import './index.scss'
@@ -55,7 +56,7 @@ export default class make_newslist extends Component {
   }
   // 刷新当前未读消息数
   async componentDidShow() {
-    let { message_info } = await api.mdugc.messagedashboard()
+    let { message_info } = await mdugcApi.messagedashboard()
     if (message_info) {
       this.setState({
         list: message_info
@@ -72,7 +73,7 @@ export default class make_newslist extends Component {
   async onPullDownRefresh() {
     console.log('下拉')
     Taro.startPullDownRefresh()
-    let { message_info } = await api.mdugc.messagedashboard()
+    let { message_info } = await mdugcApi.messagedashboard()
     if (message_info) {
       this.setState(
         {

@@ -10,7 +10,7 @@ function useThemsColor() {
   const sys = useSelector((state) => state.sys)
   const { colorPrimary, colorMarketing, colorAccent, rgb } = sys
 
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
 
   const themeColor = () => {
     const { page, router } = $instance

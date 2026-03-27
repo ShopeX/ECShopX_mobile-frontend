@@ -86,7 +86,7 @@ function TradeDetail(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     let params = {
       isSalesmanPage: 1,
@@ -196,7 +196,7 @@ function TradeDetail(props) {
 
   const onClickItem = ({ itemId, distributorId }) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
+      url: `/subpages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
     })
   }
 

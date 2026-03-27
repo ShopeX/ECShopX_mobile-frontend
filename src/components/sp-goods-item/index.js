@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { useDidShow } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
-import { SpImage, SpPoint, SpPrice, SpVipLabel } from '@/components'
+import { SpImage, SpPoint, SpPrice, SpVipLabel, SpLogin } from '@/components'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import { useLogin } from '@/hooks'
 import qs from 'qs'
@@ -42,10 +42,14 @@ function SpGoodsItem(props) {
     if (loadingRef.current) return
     loadingRef.current = true
     let isPurchase = false
-    if (isWeixin) {
-      isPurchase = $instance.page.route.includes('subpages/purchase')
-    } else {
-      isPurchase = $instance.page.path.includes('subpages/purchase')
+    const pageRoute = $instance?.page?.route
+    const pagePath = $instance?.page?.path
+    if (pageRoute || pagePath) {
+      if (isWeixin) {
+        isPurchase = (pageRoute || '').includes('subpages/purchase')
+      } else {
+        isPurchase = (pagePath || '').includes('subpages/purchase')
+      }
     }
     setIsPurchase(isPurchase)
   }
@@ -86,12 +90,6 @@ function SpGoodsItem(props) {
     }
   }
 
-  const onChangeToolBar = (e) => {
-    e.stopPropagation()
-    console.log('info', info)
-    onAddToCart(info)
-  }
-
   const handleClick = () => {
     const { itemId, distributorId, card_id, code, user_card_id, point } = info
     if (onClick) {
@@ -114,11 +112,10 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${
-      !!point || goodsType == 'point'
-        ? '/subpages/pointshop/espier-detail'
-        : '/pages/item/espier-detail'
-    }?${qs.stringify(query)}`
+    const url = `${!!point || goodsType == 'point'
+      ? '/subpages/pointshop/espier-detail'
+      : '/subpages/item/espier-detail'
+      }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -260,8 +257,12 @@ function SpGoodsItem(props) {
             )}
 
             {showAddCart ? (
-              <View onClick={(e) => onChangeToolBar(e)}>
-                <Text className='iconfont icon-gouwuche2' />
+              <View onClick={(e) => e.stopPropagation()}>
+                <SpLogin onChange={() => onAddToCart(info)}>
+                  <View>
+                    <Text className='iconfont icon-gouwuche2' />
+                  </View>
+                </SpLogin>
               </View>
             ) : (
               ''
@@ -331,9 +332,9 @@ SpGoodsItem.defaultProps = {
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,
-  onChange: () => {},
-  onAddToCart: () => {},
-  onStoreClick: () => {}
+  onChange: () => { },
+  onAddToCart: () => { },
+  onStoreClick: () => { }
 }
 
 export default SpGoodsItem

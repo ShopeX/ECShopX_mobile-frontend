@@ -44,7 +44,7 @@ const initialState = {
 }
 
 function ItemList(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     keywords,
@@ -83,7 +83,7 @@ function ItemList(props) {
   })
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id } = $instance.router.params
+    const { cat_id } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,

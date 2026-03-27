@@ -8,6 +8,7 @@ import { Textarea, View, Image, Text, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { pickBy } from '@/utils'
 import api from '@/api'
+import * as boostApi from '@/api/boost'
 import { SpNavBar, AddressChoose } from '@/components'
 import './index.scss'
 
@@ -21,7 +22,7 @@ import './index.scss'
   })
 )
 export default class Pay extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
     this.state = {
@@ -73,8 +74,8 @@ export default class Pay extends Component {
 
   // 获取数据
   getOrderInfo = async () => {
-    const { bargain_id } = this.$instance.router.params
-    const { bargain_info = {}, user_bargain_info = {} } = await api.boost.getUserBargain({
+    const { bargain_id } = this.$instance?.router?.params
+    const { bargain_info = {}, user_bargain_info = {} } = await boostApi.getUserBargain({
       bargain_id,
       has_order: true
     })
@@ -144,7 +145,7 @@ export default class Pay extends Component {
     }
     let jumpUrl = `/boost/pages/payDetail/index?bargain_id=${goodInfo.bargain_id}`
     try {
-      const res = await api.boost.pay(param)
+      const res = await boostApi.pay(param)
       if (res.appId) {
         await Taro.requestPayment(res)
         Taro.showToast({

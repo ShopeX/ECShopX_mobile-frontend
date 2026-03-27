@@ -12,6 +12,8 @@ import { SpTab, SpScrollView, SpPage, SpCell, SpImage } from '@/components'
 import { pickBy, showToast } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
+import * as communityApi from '@/api/community'
+
 import './boxlist.scss'
 
 // const TAB_LIST = [
@@ -36,8 +38,8 @@ const BoxList = () => {
   const { startDate, startTime, endDate, endTime, activeIndex, list, itemBoxNum, itemPieceNum } =
     state
   const goodsRef = useRef()
-  const $instance = getCurrentInstance()
-  const { activity_id } = $instance.router?.params
+  const $instance = getCurrentInstance() || {}
+  const { activity_id } = $instance?.router?.params
 
   // useEffect(() => {
   //   if (startDate && startTime && endDate && endTime) {
@@ -54,7 +56,7 @@ const BoxList = () => {
     //   params['end_time'] = `${endDate} ${endTime}`
     // }
 
-    const { list, total, item_box_num, item_piece_num } = await api.community.activityOrderItem(
+    const { list, total, item_box_num, item_piece_num } = await communityApi.activityOrderItem(
       activity_id
     )
     setState((draft) => {

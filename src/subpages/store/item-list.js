@@ -36,7 +36,7 @@ const initialState = {
 }
 
 function StoreItemList() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     keywords,
@@ -52,7 +52,7 @@ function StoreItemList() {
     selectType
   } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
-  const { tabbar = 1 } = $instance.router.params
+  const { tabbar = 1 } = $instance?.router?.params
   const goodsRef = useRef()
   const pageRef = useRef()
 
@@ -67,7 +67,7 @@ function StoreItemList() {
   // }, [skuPanelOpen])
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { cat_id, main_cat_id, dtid } = $instance.router.params
+    const { cat_id, main_cat_id, dtid } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,

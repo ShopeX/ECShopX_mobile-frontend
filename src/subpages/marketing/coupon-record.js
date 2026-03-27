@@ -61,7 +61,7 @@ function CouponRecord() {
   return (
     <SpPage scrollToTopBtn className='page-marketing-couponrecord'>
       <SpTagBar list={couponTypes} value={couponType} onChange={onChangeCouponType} />
-      <SpScrollView className='list-scroll' auto={false} ref={couponRef} fetch={fetch}>
+      <SpScrollView className='list-scroll' auto={false} ref={couponRef} fetch={fetch} renderEmpty={<></>}>
         {couponList.map((item, index) => (
           <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
             <SpCoupon info={item}>

@@ -10,6 +10,7 @@ import { SpPage, SpScrollView, SpSearchBar } from '@/components'
 import { SpTagBar, SpSelectModal } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
+import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
 import './activity-list.scss'
@@ -63,7 +64,7 @@ function ActivityIist(props) {
     }
 
     const { list, total_count: total } = await api.user.registrationActivityList(params)
-    const nList = pickBy(list, doc.activity.ACTIVITY_LIST)
+    const nList = pickBy(list, activityDoc.ACTIVITY_LIST)
     setState((draft) => {
       draft.recordList = [...recordList, ...nList]
     })

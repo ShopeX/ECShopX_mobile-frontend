@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
+import * as memberDoc from '@/doc/member'
 import { View, Swiper, SwiperItem, Text } from '@tarojs/components'
 import { SpPage, SpImage, SpHtml } from '@/components'
 import { pickBy } from '@/utils'
@@ -33,9 +34,9 @@ function MemberLevel(props) {
     let list = []
     // 付费会员
     if (vipInfo?.isVip) {
-      list = pickBy(vip_grade_list, doc.member.VIP_GRADE_ITEM)
+      list = pickBy(vip_grade_list, memberDoc.VIP_GRADE_ITEM)
     } else {
-      list = pickBy(member_card_list, doc.member.MEMBER_CARD_ITEM)
+      list = pickBy(member_card_list, memberDoc.MEMBER_CARD_ITEM)
     }
     const grade_index = list.findIndex((item) => item.grade_id == grade_id)
     setState((draft) => {
@@ -63,10 +64,10 @@ function MemberLevel(props) {
       return {}
     }
     return {
-      backgroundImage: `url(${item.grade_background})`,
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat'
+      'background-image': `url(${item.grade_background})`,
+      'background-size': 'cover',
+      'background-position': 'center',
+      'background-repeat': 'no-repeat'
     }
   }
 

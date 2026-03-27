@@ -86,7 +86,7 @@ function Home() {
     Taro.hideShareMenu({
       menus: ['shareAppMessage', 'shareTimeline']
     })
-    const { activity_id, enterprise_id, pages_template_id } = router.params || {}
+    const { activity_id, enterprise_id, pages_template_id } = router?.params || {}
     if (activity_id) {
       dispatch(updatePurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
       dispatch(updatePersistPurchaseShareInfo({ activity_id, enterprise_id, pages_template_id }))
@@ -128,8 +128,8 @@ function Home() {
       const { config, tab_bar } = await api.shop.getShopTemplate({
         distributor_id: curDistributorId ?? getDistributorId(),
         pages_template_id:
-          router.params?.pages_template_id || purchase_share_info?.pages_template_id,
-        e_activity_id: router.params?.activity_id || purchase_share_info?.activity_id
+          router?.params?.pages_template_id || purchase_share_info?.pages_template_id,
+        e_activity_id: router?.params?.activity_id || purchase_share_info?.activity_id
       })
       const tabBar = tab_bar && JSON.parse(tab_bar)
       dispatch(
@@ -151,8 +151,8 @@ function Home() {
   }
 
   const fetchActivity = async () => {
-    const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
-    const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+    const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
+    const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
     const data = await api.purchase.getEmployeeActivitydata({ activity_id, enterprise_id })
     setState((draft) => {
       draft.activityInfo = data
@@ -162,8 +162,8 @@ function Home() {
   useShareAppMessage(async () => {
     return new Promise(async function (resolve, reject) {
       if (isPurchaseShare) {
-        const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
-        const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+        const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
+        const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
         const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
         const params = {
           code: data.invite_code,
@@ -183,8 +183,8 @@ function Home() {
 
   // useShareTimeline(async (res) => {
   //   return new Promise(async function (resolve,reject) {
-  //     const activity_id = router.params?.activity_id || purchase_share_info?.activity_id
-  //     const enterprise_id = router.params?.enterprise_id || purchase_share_info?.enterprise_id
+  //     const activity_id = router?.params?.activity_id || purchase_share_info?.activity_id
+  //     const enterprise_id = router?.params?.enterprise_id || purchase_share_info?.enterprise_id
   //     const data = await api.purchase.getEmployeeInviteCode({ enterprise_id, activity_id })
   //     log.debug(`/pages/purchase/auth?code=${data.invite_code}`)
   //     resolve({

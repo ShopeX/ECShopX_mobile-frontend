@@ -10,6 +10,7 @@ import { View, Switch, Text, Button } from '@tarojs/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import { SpCell, SpPage, SpInput as AtInput } from '@/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import { classNames, isWxWeb, showToast } from '@/utils'
 import S from '@/spx'
 import { useNavigation } from '@/hooks'
@@ -71,7 +72,7 @@ function EditDeliveryman(props) {
   }
 
   const edit = async (operator_id) => {
-    let res = await api.dianwu.getAccountManagement(operator_id)
+    let res = await dianwuApi.getAccountManagement(operator_id)
     let params = {
       staff_type: 'distributor',
       operator_type: 'self_delivery_staff',
@@ -156,10 +157,10 @@ function EditDeliveryman(props) {
       ]
     }
     if (params?.operator_id) {
-      await api.dianwu.patchAccountManagement(params.operator_id, par)
+      await dianwuApi.patchAccountManagement(params.operator_id, par)
       showToast('编辑成功')
     } else {
-      await api.dianwu.accountManagement(par)
+      await dianwuApi.accountManagement(par)
       showToast('添加成功')
     }
 

@@ -23,7 +23,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { selectedId, isPicker, list } = state
   const colors = useSelector((state) => state.sys)
@@ -40,7 +40,7 @@ function AddressIndex(props) {
   }
 
   const fetch = async (isDelete = false) => {
-    const { isPicker, receipt_type = '', city = '' } = $instance.router.params
+    const { isPicker, receipt_type = '', city = '' } = $instance?.router?.params
     if (isPicker) {
       setState((draft) => {
         draft.isPicker = true
@@ -87,7 +87,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S.toast('修改成功')
+        S?.toast('修改成功')
       }
 
       setTimeout(() => {

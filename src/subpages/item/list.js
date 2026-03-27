@@ -3,8 +3,8 @@
  * See LICENSE file for license details.
  */
 import React, { useRef, useEffect, useState } from 'react'
-import { View, Text, ScrollView } from '@tarojs/components'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import throttle from 'lodash/throttle'
@@ -16,14 +16,15 @@ import api from '@/api'
 import {
   pickBy,
   classNames,
-  isWeixin,
   getDistributorId,
-  styleNames,
   entryLaunch,
   VERSION_STANDARD,
   showToast
 } from '@/utils'
 import S from '@/spx'
+
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
+
 import './list.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -54,14 +55,13 @@ const initialState = {
 }
 
 function ItemList() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     keywords,
     leftList,
     rightList,
     selectType,
-    brandList,
     skuPanelOpen,
     brandSelect,
     curFilterIdx,
@@ -69,19 +69,16 @@ function ItemList() {
     tagList,
     curTagIdx,
     info,
-    show,
     fixTop,
-    routerParams,
-    backTopScrollTop
-  } = state
+    routerParams } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
-  const { cat_id, main_cat_id, tag_id, card_id, user_card_id, all } = routerParams || {}
+  const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = routerParams || {}
   const { shopInfo } = useSelector((state) => state.shop)
   const dispatch = useDispatch()
 
   const goodsRef = useRef()
   const pageRef = useRef()
-  // console.log('$instance.router.params', $instance.router?.params)
+  // console.log('$instance?.router?.params', $instance?.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
       dispatch(fetchUserFavs())
@@ -90,7 +87,7 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    entryLaunch.getRouteParams($instance.router.params).then((params) => {
+    entryLaunch.getRouteParams($instance?.router?.params).then((params) => {
       const { cat_id, keywords, main_cat_id, tag_id, card_id, user_card_id, all = false } = params
 
       setState((draft) => {
@@ -130,7 +127,7 @@ function ItemList() {
 
   const fetch = async ({ pageIndex, pageSize }) => {
     // card_id: 兑换券id
-    const { mcid, cid } = $instance.router.params
+    const { mcid, cid } = $instance?.router?.params
     let params = {
       page: pageIndex,
       pageSize,
@@ -179,7 +176,6 @@ function ItemList() {
     const {
       list,
       total_count,
-      item_params_list = [],
       select_tags_list = [],
       brand_list
     } = await api.item.search(params)
@@ -272,30 +268,8 @@ function ItemList() {
     goodsRef.current.reset()
   }
 
-  const onChangeBrand = (val) => {
-    setState((draft) => {
-      draft.brandSelect = val
-    })
-  }
 
-  const onConfirmBrand = async () => {
-    await setState((draft) => {
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
-  const onResetBrand = async () => {
-    await setState((draft) => {
-      draft.brandSelect = []
-      draft.leftList = []
-      draft.rightList = []
-      draft.show = false
-    })
-    goodsRef.current.reset()
-  }
 
   const handleClickStore = (item) => {
     const url = `/subpages/store/index?id=${item.distributor_info.distributor_id}`
@@ -330,9 +304,10 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
+      renderFloat={<FloatSalesperson />}
     >
       <View className='search-wrap'>
-        {VERSION_STANDARD && card_id && (
+        {/* {VERSION_STANDARD && card_id && (
           <View
             className='store-picker'
             onClick={() => {
@@ -344,7 +319,7 @@ function ItemList() {
             <View className='shop-name'>{shopInfo.store_name || '暂无店铺信息'}</View>
             <Text className='iconfont icon-qianwang-01'></Text>
           </View>
-        )}
+        )} */}
         <SpSearchBar
           keyword={keywords}
           placeholder='搜索'

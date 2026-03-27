@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow } from '@tarojs/taro'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
@@ -29,7 +30,7 @@ function CommunityCommission(props) {
 
   const fetch = async () => {
     const { cash_withdrawal_rebate, payed_rebate, rebate_total, total_fee } =
-      await api.community.getChiefCashWithdraw()
+      await communityApi.getChiefCashWithdraw()
 
     setState((draft) => {
       draft.total_fee = total_fee / 100

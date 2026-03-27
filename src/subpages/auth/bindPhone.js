@@ -27,10 +27,10 @@ const initialValue = {
 }
 
 const PageBindPhone = () => {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const {
     params: { unionid, redi_url }
-  } = $instance.router
+  } = $instance?.router
 
   const { getUserInfo } = useLogin()
 

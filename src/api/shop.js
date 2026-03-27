@@ -9,6 +9,11 @@ export function getShop(params = {}) {
   return req.get('/distributor/is_valid', params)
 }
 
+// 获取导购员信息
+export function getSalespersonInfo(params = {}) {
+  return req.get('distributor/salesperson/qrcode', params)
+}
+
 // 获取白名单店铺
 export function checkUserInWhite(params = {}) {
   return req.get('/distributor/checkUserInWhite', params)
@@ -134,6 +139,10 @@ export function getCookiePolicy() {
   return req.get('/company/privacy_setting_ck')
 }
 
+// 获取门店分类列表
+export function getCategoryList(params = {}) {
+  return req.get('/distributor/category/list', params)
+}
 // 按首字母排序获取店铺列表
 export function getShopListByLetter(params = {}) {
   return req.get('/distributor/get_all_distributor', {
@@ -142,7 +151,7 @@ export function getShopListByLetter(params = {}) {
   })
 }
 
-// 获取店铺分类列表
-export function getCategoryList(params = {}) {
-  return req.get('/distributor/get_category_list', params)
-}
+// // 获取店铺分类列表
+// export function getCategoryList(params = {}) {
+//   return req.get('/distributor/get_category_list', params)
+// }

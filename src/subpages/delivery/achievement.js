@@ -12,6 +12,7 @@ import { useImmer } from 'use-immer'
 import { useSyncCallback } from '@/hooks'
 import { useSelector } from 'react-redux'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import S from '@/spx'
 import './achievement.scss'
 
@@ -32,7 +33,7 @@ const initialConfigState = {
     page: 1,
     pageSize: 1000,
     datetype: 2,
-    date: S.getNowDate(),
+    date: S?.getNowDate(),
     distributor_id: '',
     tab: 'all'
   },
@@ -59,7 +60,7 @@ const Achievement = () => {
       datetype: parameter.datetype == 0 ? 'y' : parameter.datetype == 1 ? 'm' : 'd',
       ...deliveryPersonnel
     }
-    const res = await api.delivery.datacubeDeliverystaffdataDetail(params)
+    const res = await deliveryApi.datacubeDeliverystaffdataDetail(params)
     res.forEach((element) => {
       element.self_delivery_fee_count = element.self_delivery_fee_count / 100
       element.total_fee_count = element.total_fee_count / 100
@@ -88,7 +89,7 @@ const Achievement = () => {
   }
 
   // const distributor = async () => {
-  //   const { list } = await api.delivery.getDistributorList({
+  //   const { list } = await deliveryApi.getDistributorList({
   //     page: 1,
   //     page_size: 1000,
   //     self_delivery_operator_id:deliveryPersonnel.self_delivery_operator_id

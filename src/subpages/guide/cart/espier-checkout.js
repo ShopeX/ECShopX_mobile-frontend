@@ -31,7 +31,7 @@ function EspierCheckout(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id } = getCurrentInstance().router.params
+    const { order_id } = getCurrentInstance()?.router?.params
 
     // const track = Taro.getStorageSync('trackParams')
 

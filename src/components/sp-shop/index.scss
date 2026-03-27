@@ -28,7 +28,7 @@
         height: 108px;
         background: #ffffff;
         border-radius: 12px;
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        border: 1PX solid rgba(0, 0, 0, 0.1);
         overflow: hidden;
       }
 
@@ -57,7 +57,7 @@
         height: 56px;
         background: #f8f8f8;
         border-radius: 28px;
-        border: 1px solid #ebebeb;
+        border: 1PX solid #ebebeb;
         box-sizing: border-box;
         display: flex;
         align-items: center;
@@ -74,7 +74,7 @@
         height: 60px;
         background: #f8f8f8;
         border-radius: 12px;
-        border: 1px solid #ebebeb;
+        border: 1PX solid #ebebeb;
         font-family: PingFang SC, PingFang SC;
         font-weight: 500;
         font-size: 26px;
@@ -117,6 +117,7 @@
         aspect-ratio: 1/1;
         overflow: hidden;
         border-radius: 12px;
+
       }
 
       &__sold-out {
@@ -260,12 +261,7 @@
     left: -150%;
     height: 100%;
     width: 150%;
-    background: linear-gradient(
-      90deg,
-      rgba(242, 243, 245, 0) 0%,
-      rgba(255, 255, 255, 0.8) 50%,
-      rgba(242, 243, 245, 0) 100%
-    );
+    background: linear-gradient(90deg, rgba(242, 243, 245, 0) 0%, rgba(255, 255, 255, 0.8) 50%, rgba(242, 243, 245, 0) 100%);
     animation: sp-shop-skeleton-shimmer 1.2s infinite;
   }
 

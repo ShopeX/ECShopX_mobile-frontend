@@ -105,7 +105,7 @@ function SpPoster(props) {
     Taro.showLoading({
       title: '海报生成中...'
     })
-    const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance().page)
+    const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance()?.page)
     let canvasObj
     switch (type) {
       case 'goodsDetial':
@@ -216,7 +216,7 @@ function SpPoster(props) {
                 height: pxHeight,
                 canvasId: eleId
               },
-              Taro.getCurrentInstance().page
+              Taro.getCurrentInstance()?.page
             )
             resolve(tempFilePath)
           } else if (isAlipay) {

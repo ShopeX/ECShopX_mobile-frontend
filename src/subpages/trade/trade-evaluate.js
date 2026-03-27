@@ -28,7 +28,7 @@ function TradeEvaluate(props) {
   }, [])
 
   const fetch = async () => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     const { orderInfo } = await api.trade.detail(order_id)
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     setState((draft) => {
@@ -58,7 +58,7 @@ function TradeEvaluate(props) {
   }
 
   const onRateSubmit = async (anonymous) => {
-    const { order_id } = router.params
+    const { order_id } = router?.params
     if (formList.find((item) => item.star === 0)) {
       showToast('请打分')
       return

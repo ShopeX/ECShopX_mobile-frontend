@@ -19,7 +19,7 @@ const TEXTCOUNT = 255
   colors: colors.current
 }))
 export default class TradeCancel extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)
@@ -48,10 +48,10 @@ export default class TradeCancel extends Component {
   handleSubmit = async () => {
     const { curReasonIdx, reason, otherReason } = this.state
     if (curReasonIdx === 3 && !otherReason) {
-      return S.toast('请输入其他理由')
+      return S?.toast('请输入其他理由')
     }
 
-    const { order_id } = this.$instance.router.params
+    const { order_id } = this.$instance?.router?.params
     const data = {
       order_id,
       cancel_reason: reason[curReasonIdx],
@@ -69,7 +69,7 @@ export default class TradeCancel extends Component {
       orderTime: orderInfo.create_time
     })
     if (res) {
-      S.toast('操作成功')
+      S?.toast('操作成功')
       Taro.navigateBack()
     }
   }

@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux'
 import { pickBy, styleNames, getThemeStyle, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import imgUploader from '@/utils/upload'
 import { AtTextarea, AtActionSheet, AtActionSheetItem, AtButton } from 'taro-ui'
 import { View, Text, Block } from '@tarojs/components'
@@ -86,16 +87,16 @@ function UgcNote(props) {
   }, [])
 
   const getNoteSetting = async () => {
-    const res = await api.mdugc.postsetting({ type: 'video' })
+    const res = await mdugcApi.postsetting({ type: 'video' })
     setState((draft) => {
       draft.videoEnable = true
     })
   }
 
   const getNoteDetail = async () => {
-    const { post_id } = router.params
+    const { post_id } = router?.params
     if (post_id) {
-      const { post_info } = await api.mdugc.postdetail({
+      const { post_info } = await mdugcApi.postdetail({
         post_id
       })
       const { video, video_thumb, images, title, content, topics, goods } = post_info
@@ -150,7 +151,7 @@ function UgcNote(props) {
 
   // 发布笔记|草稿
   const releaseNote = async (type) => {
-    const { md_drafts, post_id } = router.params
+    const { md_drafts, post_id } = router?.params
     if (type == 1) {
       // 保存草稿
       if (
@@ -219,7 +220,7 @@ function UgcNote(props) {
         }
       }
     }
-    const { message } = await api.mdugc.create(params)
+    const { message } = await mdugcApi.create(params)
     Taro.hideLoading()
     showToast(message)
     Taro.disableAlertBeforeUnload()

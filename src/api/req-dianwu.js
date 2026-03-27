@@ -128,10 +128,10 @@ class API {
   handleLogout() {
     this.requestQueue.destroy()
     this.isRefreshingToken = false
-    // S.logout()
+    // S?.logout()
     setTimeout(() => {
-      console.log(getCurrentInstance().router)
-      const { path, params } = getCurrentInstance().router
+      console.log(getCurrentInstance()?.router)
+      const { path, params } = getCurrentInstance()?.router
       delete params.$taroTimestamp
       const fullPath = Object.keys(params).length > 0 ? `${path}?${qs.stringify(params)}` : path
       // let url
@@ -167,7 +167,7 @@ class API {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
 
-    // const token = S.getAuthToken()
+    // const token = S?.getAuthToken()
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     if (token) {
       header['Authorization'] = `Bearer ${token}`
@@ -247,7 +247,7 @@ class API {
 
   async refreshToken() {
     this.isRefreshingToken = true
-    // const token = S.getAuthToken()
+    // const token = S?.getAuthToken()
     const token = Taro.getStorageSync(SG_DIANWU_TOKEN)
     try {
       await this.makeReq(
@@ -267,7 +267,7 @@ class API {
           }
 
           const newToken = res.header.Authorization.split(' ')[1]
-          S.setAuthToken(newToken)
+          S?.setAuthToken(newToken)
         }
       )
     } catch (e) {
@@ -307,7 +307,7 @@ class API {
         res.statusCode === HTTP_STATUS.UNAUTHORIZED &&
         (res.data.data && res.data.data.status_code) === HTTP_STATUS.TOKEN_NEEDS_REFRESH &&
         token
-        // S.getAuthToken()
+        // S?.getAuthToken()
       ) {
         // token失效时重造请求，并刷新token
         if (!this.isRefreshingToken) {

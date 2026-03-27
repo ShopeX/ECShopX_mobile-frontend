@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useCallback } from 'react'
 import Taro, { getCurrentInstance, useRouter, usePullDownRefresh } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
 import { useImmer } from 'use-immer'
 import { SpImage } from '@/components'
 
@@ -85,7 +86,7 @@ function make_newslist(props) {
   }, [])
   // 刷新当前未读消息数
   const initMessage = async () => {
-    let { message_info } = await api.mdugc.messagedashboard()
+    let { message_info } = await mdugcApi.messagedashboard()
     if (message_info) {
       setState((draft) => {
         draft.list = message_info
@@ -97,7 +98,7 @@ function make_newslist(props) {
   usePullDownRefresh(async () => {
     console.log('下拉')
     // Taro.startPullDownRefresh()
-    let { message_info } = await api.mdugc.messagedashboard()
+    let { message_info } = await mdugcApi.messagedashboard()
     if (message_info) {
       await setState((draft) => {
         draft.list = message_info

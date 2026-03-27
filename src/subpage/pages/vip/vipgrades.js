@@ -37,7 +37,7 @@ import './vipgrades.scss'
   })
 )
 export default class VipIndex extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -80,7 +80,7 @@ export default class VipIndex extends Component {
 
   async fetchInfo() {
     const { cur, list } = await api.vip.getList()
-    const { grade_name: name } = this.$instance.router.params
+    const { grade_name: name } = this.$instance?.router?.params
 
     const tabList = pickBy(list, {
       title: ({ grade_name }) => grade_name,
@@ -165,7 +165,7 @@ export default class VipIndex extends Component {
       })
 
       setTimeout(() => {
-        S.login(this)
+        S?.login(this)
       }, 2000)
 
       return
@@ -213,7 +213,7 @@ export default class VipIndex extends Component {
             icon: 'none'
           })
         }
-        S.getMemberInfo()
+        S?.getMemberInfo()
         this.setState({ visible: true })
       } catch (e) {
         Taro.showToast({
@@ -239,7 +239,7 @@ export default class VipIndex extends Component {
           showCancel: false,
           success: function (res) {
             console.log('success')
-            S.getMemberInfo()
+            S?.getMemberInfo()
             // that.fetchCouponCardList()
             this.setState({ visible: true })
             // Taro.navigateBack()

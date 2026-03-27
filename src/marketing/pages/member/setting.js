@@ -29,7 +29,7 @@ export default class MemberSetting extends Component {
   }
 
   handleClickLogout = async () => {
-    S.logout()
+    S?.logout()
     this.props.onFetchFavs([])
     this.props.onUpdateCart([])
     this.props.onUpdateCartCount(0)

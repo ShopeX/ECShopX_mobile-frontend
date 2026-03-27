@@ -23,7 +23,7 @@ function SpLogin(props) {
       updateAddress()
     }
   })
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   /**
    *
    */
@@ -34,7 +34,7 @@ function SpLogin(props) {
     if (isLogin) {
       onChange && onChange(e)
     } else {
-      const { path, params } = $instance.router
+      const { path, params } = $instance?.router
       const _path = `${path.split('?')[0]}?${qs.stringify(params)}`
       let url = `/subpages/auth/login?redirect=${encodeURIComponent(`${_path}`)}`
 

@@ -11,6 +11,7 @@ import { SpTime, SpCustomPicker } from '@/subpages/components'
 import { useSelector, useDispatch } from 'react-redux'
 import { useSyncCallback } from '@/hooks'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import S from '@/spx'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompTabbar from './comps/comp-tabbar'
@@ -33,7 +34,7 @@ const initialConfigState = {
   info: {},
   parameter: {
     datetype: 2,
-    date: S.getNowDate(),
+    date: S?.getNowDate(),
     distributor_id: ''
   },
   selector: []
@@ -61,18 +62,18 @@ const Index = () => {
       ...deliveryPersonnel,
       from: 'api'
     }
-    const res = await api.delivery.datacubeDeliverystaffdata(params)
+    const res = await deliveryApi.datacubeDeliverystaffdata(params)
     Taro.hideLoading()
-    res.self_delivery_fee_count = S.formatMoney(res.self_delivery_fee_count / 100)
-    res.refund_fee_count = S.formatMoney(res.refund_fee_count / 100)
-    res.total_fee_count = S.formatMoney(res.total_fee_count / 100)
+    res.self_delivery_fee_count = S?.formatMoney(res.self_delivery_fee_count / 100)
+    res.refund_fee_count = S?.formatMoney(res.refund_fee_count / 100)
+    res.total_fee_count = S?.formatMoney(res.total_fee_count / 100)
     setState((draft) => {
       draft.info = res
     })
   }
 
   const distributor = async () => {
-    const { list } = await api.delivery.getDistributorList({
+    const { list } = await deliveryApi.getDistributorList({
       page: 1,
       page_size: 1000,
       self_delivery_operator_id: deliveryPersonnel.self_delivery_operator_id

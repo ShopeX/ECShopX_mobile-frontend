@@ -21,7 +21,7 @@ function UgcImageEdit(props) {
   const router = useRouter()
   const [state, setState] = useImmer(initialState)
   const { movearray, imageWidth, imageHeight } = state
-  const { image, index, topics } = router.params
+  const { image, index, topics } = router?.params
   const imageSrc = decodeURIComponent(image)
 
   useEffect(() => {

@@ -6,7 +6,7 @@ import React, { useCallback, memo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Input, Button } from '@tarojs/components'
 import { SpImage } from '@/components'
-import { styleNames, classNames, VERSION_STANDARD } from '@/utils'
+import { styleNames, classNames, VERSION_STANDARD, isWeb } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
 import { useSelector } from 'react-redux'
 
@@ -25,7 +25,11 @@ const CustomNavigationHeader = memo((props) => {
     mantle,
     onNearbyClick,
     onSearchConfirm,
-    nearbyText
+    nearbyText,
+    navigationRSpace,
+    showNavitionLeft,
+    statusBarBgColor,
+    immersiveScrollRevealBgColor
   } = props
 
   const value = pageConfig
@@ -36,18 +40,21 @@ const CustomNavigationHeader = memo((props) => {
   const headerStyle = useCallback(() => {
     const style = {
       height: `${gNavbarH}px`,
-      backgroundSize: '100% 100%',
-      backgroundRepeat: 'no-repeat',
-      backgroundPosition: 'center',
-      paddingTop: `${gStatusBarHeight}px`
+      'background-size': '100% 100%',
+      'background-repeat': 'no-repeat',
+      'background-position': 'center',
+      'padding-top': `${gStatusBarHeight}px`
     }
-    if (value?.navigateBackgroundColor) {
-      style.backgroundColor = value?.navigateBackgroundColor
+    // 吸顶挂件 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
+    const headerBg =
+      statusBarBgColor ?? immersiveScrollRevealBgColor ?? value?.navigateBackgroundColor
+    if (headerBg) {
+      style['background-color'] = headerBg
     }
     if (value?.navigateBackgroundImage) {
-      style.backgroundImage = `url(${value?.navigateBackgroundImage})`
-      style.backgroundSize = 'cover'
-      style.backgroundPosition = 'center'
+      style['background-image'] = `url(${value?.navigateBackgroundImage})`
+      style['background-size'] = 'cover'
+      style['background-position'] = 'center'
     }
     style.transition = 'all 0.15s ease-in'
     return style
@@ -58,12 +65,13 @@ const CustomNavigationHeader = memo((props) => {
     navigateMantle,
     navigateBackgroundColor,
     gNavbarH,
-    gStatusBarHeight
+    gStatusBarHeight,
+    statusBarBgColor,
+    immersiveScrollRevealBgColor
   ])
 
   const containerStyle = useCallback(() => {
     return {
-      textAlign: value?.titlePosition,
       color: value?.titleColor
     }
   }, [value])
@@ -76,8 +84,8 @@ const CustomNavigationHeader = memo((props) => {
     const searchButtonColor = value?.searchButtonColor
     if (!searchButtonColor) return {}
     return {
-      backgroundColor: searchButtonColor.bgColor,
-      color: searchButtonColor.textColor
+      'background-color': searchButtonColor.bgColor,
+      'color': searchButtonColor.textColor
     }
   }, [value?.searchButtonColor])
 
@@ -86,8 +94,8 @@ const CustomNavigationHeader = memo((props) => {
       url: isGoodsShelves()
         ? '/subpages/guide/index'
         : VERSION_IN_PURCHASE
-        ? '/pages/purchase/index'
-        : '/pages/index'
+          ? '/pages/purchase/index'
+          : '/pages/index'
     })
   }, [])
 
@@ -150,7 +158,7 @@ const CustomNavigationHeader = memo((props) => {
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [handleNearbyClick, nearbyText])
+  }, [handleNearbyClick, nearbyText, shopInfo?.name, value?.titleColor])
 
   const renderSearch = useCallback(() => {
     return (
@@ -174,12 +182,10 @@ const CustomNavigationHeader = memo((props) => {
     const navTitle =
       title ||
       value?.wgtName ||
-      getCurrentInstance().page?.config?.navigationBarTitleText ||
+      getCurrentInstance()?.page?.config?.navigationBarTitleText ||
       appName
     return (
-      <View className='title-text'>
-        <Text>{navTitle}</Text>
-      </View>
+        <Text className='title-text'>{navTitle}</Text>
     )
   }, [title, value?.wgtName, appName])
 
@@ -201,36 +207,45 @@ const CustomNavigationHeader = memo((props) => {
     <View className='wgt-page' style={styleNames(headerStyle())} onClick={props.onClickHeader}>
       <View className='wgt-page-content'>
         <View
-          className={classNames('header-container', { 'has-nearby': hasNearby })}
-          style={showHeaderContent ? styleNames(containerStyle()) : {}}
+          className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
+          style={styleNames({ width: `calc(100% - ${navigationRSpace}px)`,...(showHeaderContent ? containerStyle() : {})})}
         >
-          {/* 左侧：返回、首页、功能区三者只显示一个 */}
-          {showHeaderContent && showFunctionArea ? (
-            <>
-              {/* 有功能区时只显示功能区（热区图或附近门店） */}
-              {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
-              {functionAreaType === 'nearby' && renderNearby()}
-            </>
-          ) : (
-            <>
-              {btnReturn && (
-                <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
-                  <SpImage src='fv_back.png' width={36} height={36} />
-                </View>
-              )}
-              {btnHome && !btnReturn && (
-                <View className='nav-left-capsule' onClick={handleHomeClick}>
-                  <SpImage src='fv_home.png' width={36} height={36} />
-                </View>
-              )}
-            </>
+          {showNavitionLeft && (
+          <View
+            className={classNames('header-container-left', { 'is-web': isWeb })}
+            style={styleNames({ width: `${navigationRSpace}px` })}
+          >
+            {/* 左侧：返回、首页、功能区三者只显示一个 */}
+            {showHeaderContent && showFunctionArea ? (
+              <>
+                {/* 有功能区时只显示功能区（热区图或附近门店） */}
+                {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
+                {functionAreaType === 'nearby' && renderNearby()}
+              </>
+            ) : (
+              <>
+                {btnReturn && (
+                  <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
+                    <SpImage src='fv_back.png' width={36} height={36} />
+                  </View>
+                )}
+                {btnHome && !btnReturn && (
+                  <View className='nav-left-capsule' onClick={handleHomeClick}>
+                    <SpImage src='fv_home.png' width={36} height={36} />
+                  </View>
+                )}
+              </>
+            )}
+          </View>
           )}
-          {/* 标题区：搜索 */}
-          {showHeaderContent && titleStyle === '3' && renderSearch()}
-          {/* 标题区：页面名称 */}
-          {showHeaderContent && titleStyle === '1' && renderTitleText()}
-          {/* 标题区：图片 */}
-          {showHeaderContent && titleStyle === '2' && renderTitleImage()}
+          <View className='title-container' style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}>
+            {/* 标题区：搜索 */}
+            {showHeaderContent && titleStyle === '3' && renderSearch()}
+            {/* 标题区：页面名称 */}
+            {showHeaderContent && titleStyle === '1' && renderTitleText()}
+            {/* 标题区：图片 */}
+            {showHeaderContent && titleStyle === '2' && renderTitleImage()}
+          </View>
         </View>
       </View>
     </View>

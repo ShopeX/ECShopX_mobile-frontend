@@ -7,6 +7,8 @@ import { entryLaunch, showToast } from '@/utils'
 import Taro from '@tarojs/taro'
 import { SpPage } from '@/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
+
 import { SG_ROUTER_PARAMS } from '@/consts'
 
 function Payment() {
@@ -21,7 +23,7 @@ function Payment() {
     if (errMsg == 'scanCode:ok') {
       try {
         console.log(`handleClickScanCode:`, result)
-        const { trade_info } = await api.dianwu.orderPayment({
+        const { trade_info } = await dianwuApi.orderPayment({
           order_id,
           auth_code: result
         })

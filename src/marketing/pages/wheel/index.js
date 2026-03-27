@@ -145,12 +145,12 @@ export default class MarketingIndex extends Component {
 
     if (prizeData.prize_type === 'coupon' && prizeData.prize_url) {
       Taro.redirectTo({
-        url: `/pages/item/espier-detail?id=${prizeData.prize_url}`
+        url: `/subpages/item/espier-detail?id=${prizeData.prize_url}`
       })
     }
 
     // Taro.redirectTo({
-    //   url:`/pages/item/espier-detail?id=273`
+    //   url:`/subpages/item/espier-detail?id=273`
     // })
 
     this.setState({

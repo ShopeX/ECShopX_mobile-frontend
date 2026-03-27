@@ -38,7 +38,7 @@ function SpScrollView(props, ref) {
   useEffect(() => {
     let observer = null
     if (isWeixin || isAlipay) {
-      observer = Taro.createIntersectionObserver(Taro.getCurrentInstance().page, {
+      observer = Taro.createIntersectionObserver(Taro.getCurrentInstance()?.page, {
         observeAll: true
       })
       setTimeout(() => {

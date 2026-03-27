@@ -3,11 +3,11 @@
  * See LICENSE file for license details.
  */
 import Taro, { useDidShow, useShareAppMessage, getCurrentInstance } from '@tarojs/taro'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { updateUserInfo, updateCheckChief } from '@/store/slices/user'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import { platformTemplateName } from '@/utils/platform'
-import { View, Text } from '@tarojs/components'
+import { View, Text, ScrollView } from '@tarojs/components'
 import { SG_APP_CONFIG } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
 import HomeWgts from '@/pages/home/comps/home-wgts'
@@ -18,6 +18,7 @@ import req from '@/api/req'
 import { buildSharePath, getMemberLevel } from '@/utils'
 import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
 import api from '@/api'
+import * as communityApi from '@/api/community'
 import {
   navigateTo,
   getThemeStyle,
@@ -43,6 +44,7 @@ import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompMenu from './comps/comp-menu'
 import './index.scss'
+import SpPoweredBy from '@/components/sp-powered-by'
 
 const initialConfigState = {
   banner: {
@@ -109,12 +111,14 @@ const initialState = {
   shareInfo: {},
   footerHeight: 0,
   pageData: null,
-  shareInfo: {}
+  shareInfo: {},
+  bodyHeight: 0
 }
 
 function MemberIndex(props) {
   // console.log('===>getCurrentPages==>', getCurrentPages(), getCurrentInstance())
-  const $instance = getCurrentInstance()
+  const pageRef = useRef(null)
+  const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
   const { isLogin, getUserInfo, isNewUser } = useLogin({
     autoLogin: false,
@@ -142,7 +146,7 @@ function MemberIndex(props) {
       getMemberCenterData()
       setMemberBackground()
       getEmployeeIsOpen()
-      const { redirect } = $instance.router.params
+      const { redirect } = $instance?.router?.params
       if (redirect) {
         Taro.redirectTo({ url: decodeURIComponent(redirect) })
       }
@@ -173,8 +177,8 @@ function MemberIndex(props) {
       })
       const url = `/pageparams/setting?${pathparams}`
       const { config = [], share } = await req.get(url)
-      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config, share)
       const pageData = config.find((wgt) => wgt.name == 'page')
+      console.log('🚀🚀🚀 ~ fetchWgts ~ config:', config, share, pageData)
       setState((draft) => {
         draft.wgts = config
         draft.pageData = pageData
@@ -260,7 +264,7 @@ function MemberIndex(props) {
       const { result, status } = await api.member.is_admin()
       console.log('env:result', result)
       console.log('env:status', status)
-      S.set('DIANWU_CONFIG', result, status)
+      S?.set('DIANWU_CONFIG', result, status)
       menu = {
         ...menu,
         dianwu: status
@@ -384,7 +388,7 @@ function MemberIndex(props) {
       }
     }
     if (key == 'community') {
-      const res = await api.community.checkChief()
+      const res = await communityApi.checkChief()
       dispatch(updateCheckChief(res))
       if (res.status) {
         Taro.navigateTo({ url: link })
@@ -447,8 +451,29 @@ function MemberIndex(props) {
   }
 
   return (
-    <SpPage className='pages-member-index' immersive renderFooter={<SpTabbar />} title='会员中心'>
-      <View className='user-info-card-wrapper min-h-full'>
+    <SpPage
+      ref={pageRef}
+      className='pages-member-index'
+      loading={state.loading}
+      immersive={state.pageData?.base?.isImmersive}
+      showpoweredBy={false}
+      pageConfig={state.pageData?.base || {}}
+      renderFooter={<SpTabbar />}
+      title='会员中心'
+      onReady={({ gNavbarH, footerHeight }) => {
+        setState((draft) => {
+          draft.bodyHeight = `calc(100vh - ${state.pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
+        })
+      }}
+    >
+      <ScrollView
+        scrollY
+        className='user-info-card-wrapper'
+        style={{ height: state.bodyHeight }}
+        onScroll={(e) => {
+          pageRef.current?.handlePageScroll?.({ scrollTop: e.detail.scrollTop })
+        }}
+      >
         <View
           className='header-block'
           style={userInfo?.gradeInfo?.grade_background ? memberBckStyle : {}}
@@ -560,7 +585,9 @@ function MemberIndex(props) {
           isPromoter={userInfo ? userInfo.isPromoter : false}
           onLink={handleClickService}
         />
-      </View>
+        {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          <SpPoweredBy />
+      </ScrollView>
     </SpPage>
   )
 }

@@ -12,6 +12,7 @@ import { SpTagBar, SpSelectModal } from '@/subpages/components'
 import api from '@/api'
 import QRCode from 'qrcode'
 import doc from '@/doc'
+import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import './activity-detail.scss'
 
@@ -68,11 +69,11 @@ function ActivityDetail(props) {
 
   const fetch = async (isVerify) => {
     const res = await api.user.registrationRecordInfo({
-      record_id: router.params.record_id
+      record_id: router?.params.record_id
     })
 
     console.log(res)
-    const _info = pickBy(res, doc.activity.RECORD_DETAIL)
+    const _info = pickBy(res, activityDoc.RECORD_DETAIL)
     if (isVerify) {
       if (_info.status == 'passed') return
       if (_info.status == 'verified' && verifyRef.current) {

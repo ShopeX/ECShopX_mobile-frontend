@@ -5,7 +5,6 @@
 .page-guide-category-index {
   width: 100%;
   background: #ffffff;
-  padding-top: 170px;
   &:before {
     content: '';
     height: 170px;
@@ -17,6 +16,7 @@
   }
   .at-tabs {
     box-sizing: border-box;
+    height: fit-content;
   }
   .at-tabs__header {
     justify-content: start;
@@ -56,10 +56,14 @@
     box-sizing: border-box;
     background: #ffffff;
     // @include page-scroll($tabs-height + 16px, $tabbar-height);
+    position: static !important;
+    height: calc(100% - 92px);
   }
   .category-comps-not {
     box-sizing: border-box;
     background: #ffffff;
     // @include page-scroll(0, $tabbar-height);
+    position: static !important;
+    height: 100%;
   }
 }

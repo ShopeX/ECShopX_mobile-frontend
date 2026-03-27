@@ -358,6 +358,12 @@
     padding: 20px;
     display: flex;
 
+    /* SpLogin 包裹留言框时保持与原 .comment-input 同宽 */
+    > .sp-login {
+      flex-shrink: 0;
+      width: 244px;
+    }
+
     .comment-input {
       width: 244px;
       height: 60px;

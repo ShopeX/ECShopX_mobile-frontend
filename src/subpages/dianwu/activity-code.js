@@ -10,6 +10,7 @@ import { View, ScrollView, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpImage } from '@/components'
 import { SpTagBar, SpSelectModal } from '@/subpages/components'
 import api from '@/api'
+import * as dianwuApi from '@/api/dianwu'
 import QRCode from 'qrcode'
 import doc from '@/doc'
 import { pickBy, showToast } from '@/utils'
@@ -25,12 +26,12 @@ function ActivityCode(props) {
   useEffect(() => {}, [])
 
   const handleScanGoodsBN = async () => {
-    // 注意：真机scancode扫码完成后回调，taro getCurrentInstance().router = null，无法获取到路由参数
+    // 注意：真机scancode扫码完成后回调，taro getCurrentInstance()?.router = null，无法获取到路由参数
     const { errMsg, result } = await Taro.scanCode()
     console.log('handleScanCode:', result)
     if (errMsg == 'scanCode:ok') {
       Taro.showLoading({ title: '' })
-      await api.dianwu.registrationVerify(JSON.parse(result))
+      await dianwuApi.registrationVerify(JSON.parse(result))
       Taro.hideLoading()
       showToast('核销成功')
     } else {

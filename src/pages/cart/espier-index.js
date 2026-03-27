@@ -58,8 +58,8 @@ function CartIndex() {
   })
 
   const dispatch = useDispatch()
-  const $instance = getCurrentInstance()
-  const router = $instance.router
+  const $instance = getCurrentInstance() || {}
+  const router = $instance?.router
 
   const [state, setState] = useImmer(initialState)
   const { current, recommendList, policyModal, cartRemind } = state
@@ -238,14 +238,14 @@ function CartIndex() {
   const onChangeCartGoodsItem = useDebounce(async (item, num) => {
     console.log(`onChangeCartGoodsItem:`, item, num)
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(updateCartItemNum({ shop_id, cart_id, num, type }))
     getCartList()
   }, 200)
 
   const onClickImgAndTitle = async (item) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.shop_id}`
+      url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.shop_id}`
     })
   }
 
@@ -256,7 +256,7 @@ function CartIndex() {
   }
 
   const handleCheckout = (item) => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',

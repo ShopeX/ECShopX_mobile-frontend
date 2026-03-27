@@ -46,7 +46,7 @@ function TradeList(props) {
   const { popUpStatus, deliverySure } = btnHooks()
 
   useEffect(() => {
-    const { status = '' } = router.params
+    const { status = '' } = router?.params
     setState((draft) => {
       draft.status = status
     })

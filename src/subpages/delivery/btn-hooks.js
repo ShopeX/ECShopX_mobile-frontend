@@ -7,6 +7,7 @@ import { useState, useRef, useEffect } from 'react'
 import { pickBy, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 
 const initialConfigState = {
   list: []
@@ -25,11 +26,11 @@ export default (props) => {
         async success(res) {
           if (res.confirm) {
             if (val == 'pack') {
-              await api.delivery.deliverypackagConfirm({ order_id: item.orderId })
+              await deliveryApi.deliverypackagConfirm({ order_id: item.orderId })
               showToast('打包成功')
               resolve(true)
             } else {
-              await api.delivery.cancelDeliverystaff({ order_id: item.orderId })
+              await deliveryApi.cancelDeliverystaff({ order_id: item.orderId })
               showToast('取消配送成功')
               resolve(true)
             }
@@ -85,7 +86,7 @@ export default (props) => {
     return new Promise(async (resolve, reject) => {
       try {
         const params = buildParams(information, list)
-        await api.delivery.orderUpdateDelivery(information.ordersDeliveryId, params)
+        await deliveryApi.orderUpdateDelivery(information.ordersDeliveryId, params)
         showToast('更新配送状态成功')
         resolve(true)
       } catch (error) {

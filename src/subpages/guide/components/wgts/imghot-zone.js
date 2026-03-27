@@ -20,12 +20,12 @@ function WgtImgHotZone(props) {
 
   const handleClickItem = (item) => {
     if (item.linkPage === 'cashcoupon') {
-      const toke = S.getAuthToken()
+      const toke = S?.getAuthToken()
       if (!toke) {
-        S.login()
+        S?.login()
       } else {
         api.member.sendCashCoupon({ stock_id: item.id }).then((res) => {
-          S.toast(res.msg)
+          S?.toast(res.msg)
         })
       }
       return
@@ -45,7 +45,7 @@ function WgtImgHotZone(props) {
       })
 
       setTimeout(() => {
-        S.login()
+        S?.login()
       }, 50)
 
       return

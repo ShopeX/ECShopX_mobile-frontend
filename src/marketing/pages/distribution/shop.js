@@ -16,7 +16,7 @@ import './shop.scss'
   colors: colors.current
 }))
 export default class DistributionShop extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -30,7 +30,7 @@ export default class DistributionShop extends Component {
   }
 
   async fetch() {
-    const { turnover, point, disabled } = this.$instance.router.params
+    const { turnover, point, disabled } = this.$instance?.router?.params
     const { userId } = Taro.getStorageSync('userinfo')
     const param = {
       user_id: userId

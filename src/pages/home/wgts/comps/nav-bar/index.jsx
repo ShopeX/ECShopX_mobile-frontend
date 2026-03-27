@@ -97,7 +97,7 @@ export default function LocationModuleNavBar(props) {
                   {base.navitemborder && isActive && (
                     <View
                       className='wgt-comps__nav-item-border'
-                      style={{ backgroundColor: `${base.navitembordercolor || 'transparent'}` }}
+                      style={{ 'background-color': `${base.navitembordercolor || 'transparent'}` }}
                     />
                   )}
                 </View>

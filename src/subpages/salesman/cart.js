@@ -19,6 +19,7 @@ import {
 } from '@/store/slices/cart'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
+import * as deliveryApi from '@/api/delivery'
 import qs from 'qs'
 import S from '@/spx'
 import CompTabbar from './comps/comp-tabbar'
@@ -33,8 +34,8 @@ function Cart() {
   const [state, setState] = useImmer(initialConfigState)
   const { allChecked, current } = state
   const dispatch = useDispatch()
-  const $instance = getCurrentInstance()
-  const router = $instance.router
+  const $instance = getCurrentInstance() || {}
+  const router = $instance?.router
   const {
     validSalesmanCart = [],
     invalidSalesmanCart = [],
@@ -83,7 +84,7 @@ function Cart() {
   // 商品数量变化
   const onChangeInputNumber = useDebounce(async (num, item) => {
     let { shop_id, cart_id } = item
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     await dispatch(
       updateCartItemNum({ shop_id, cart_id, num, type, isSalesmanPage: 1, ...customerLnformation })
     )
@@ -92,7 +93,7 @@ function Cart() {
 
   //结算
   const balance = (item) => {
-    const { type = 'distributor' } = router.params
+    const { type = 'distributor' } = router?.params
     const { shop_id, is_delivery, is_ziti, shop_name, address, lat, lng, hour, mobile } = item
     const query = {
       cart_type: 'cart',
@@ -121,7 +122,7 @@ function Cart() {
       isSalesmanPage: 1,
       ...customerLnformation
     }
-    await api.delivery.cartdelbat(params)
+    await deliveryApi.cartdelbat(params)
     await getCartList()
   }
 

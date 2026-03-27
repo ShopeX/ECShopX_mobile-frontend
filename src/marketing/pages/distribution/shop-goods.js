@@ -16,7 +16,7 @@ import './shop-goods.scss'
 @withPager
 @withBackToTop
 export default class DistributionShopGoods extends Component {
-  $instance = getCurrentInstance()
+  $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
 
@@ -136,7 +136,7 @@ export default class DistributionShopGoods extends Component {
       const curTab = this.state.tabList[current]
       const { url } = curTab
 
-      const fullPath = getCurrentRoute(this.$instance.router).fullPath.split('?')[0]
+      const fullPath = getCurrentRoute(this.$instance?.router).fullPath.split('?')[0]
       if (url && fullPath !== url) {
         Taro.redirectTo({ url })
       }
@@ -186,7 +186,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds: [...this.state.goodsIds, id]
           },
           () => {
-            S.toast('上架成功')
+            S?.toast('上架成功')
           }
         )
       }
@@ -199,7 +199,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds
           },
           () => {
-            S.toast('下架成功')
+            S?.toast('下架成功')
           }
         )
       }
@@ -214,7 +214,7 @@ export default class DistributionShopGoods extends Component {
       title: info.title,
       imageUrl: info.img,
       path: getDtidIdUrl(
-        `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+        `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
         info.distributor_id
       )
     }

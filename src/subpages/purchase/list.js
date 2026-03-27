@@ -47,7 +47,7 @@ const initialState = {
 }
 
 function ItemList() {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
     keywords,
@@ -70,7 +70,7 @@ function ItemList() {
   const dispatch = useDispatch()
 
   const goodsRef = useRef()
-  // console.log('$instance.router.params', $instance.router?.params)
+  // console.log('$instance?.router?.params', $instance?.router?.params)
   useEffect(() => {
     if (S.getAuthToken()) {
       dispatch(fetchUserFavs())
@@ -79,7 +79,7 @@ function ItemList() {
 
   useEffect(() => {
     // card_id, user_card_id: 兑换券参数
-    entryLaunch.getRouteParams($instance.router.params).then((params) => {
+    entryLaunch.getRouteParams($instance?.router?.params).then((params) => {
       const { cat_id, main_cat_id, tag_id, card_id, user_card_id } = params
 
       setState((draft) => {
@@ -145,7 +145,7 @@ function ItemList() {
   const fetch = async ({ pageIndex, pageSize }) => {
     const { activity_id } = purchase_share_info
     // card_id: 兑换券id
-    // const { cat_id, main_cat_id, tag_id, card_id } = $instance.router.params
+    // const { cat_id, main_cat_id, tag_id, card_id } = $instance?.router?.params
     console.log(shopInfo)
     let params = {
       page: pageIndex,

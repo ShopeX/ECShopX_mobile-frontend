@@ -9,16 +9,19 @@
     display: flex;
     align-items: center;
     overflow: hidden;
+
     .activitybar-hd {
       flex: 1;
       height: 100%;
       padding: 16px 24px;
       box-sizing: border-box;
+
       .activity-name {
         font-size: 28px;
         color: #fff;
       }
     }
+
     .activitybar-ft {
       // width: 222px;
       max-width: 288px;
@@ -31,6 +34,7 @@
       justify-content: center;
       align-items: flex-end;
       padding-left: 10px;
+
       .title {
         color: #000;
         font-size: 24px;
@@ -53,40 +57,49 @@
         text-align: center;
         font-weight: 400;
         padding: 6px 4px;
+
         &::after {
           display: none;
         }
       }
+
       &__separator {
         font-size: 24px;
       }
     }
+
     .sale-price {
       .sp-price__symbol {
         color: #fff;
         font-size: 28px;
       }
+
       .sp-price__int {
         color: #fff;
         font-size: 42px;
       }
+
       .sp-price__decimal {
         color: #fff;
         font-size: 28px;
       }
     }
+
     .discount {
       background-color: #fff;
       color: var(--color-primary);
+
       .discount-price {
         .sp-price__symbol {
           color: var(--color-primary);
           font-size: 28px;
         }
+
         .sp-price__int {
           color: var(--color-primary);
           font-size: 42px;
         }
+
         .sp-price__decimal {
           color: var(--color-primary);
           font-size: 28px;
@@ -94,13 +107,16 @@
       }
     }
   }
+
   .activity-price {
+
     .sp-price__symbol,
     .sp-price__int,
     .sp-price__decimal {
       color: #fff !important;
     }
   }
+
   .activitybar-footer {
     background: #fff;
     padding: 20px;

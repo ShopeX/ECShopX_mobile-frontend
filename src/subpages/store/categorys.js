@@ -34,7 +34,7 @@ const initialState = {
 }
 
 function StoreItemList(props) {
-  const $instance = getCurrentInstance()
+  const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   // const { purchase_share_info = {} } = useSelector((state) => state.purchase)
   const {
@@ -95,7 +95,7 @@ function StoreItemList(props) {
   }
 
   const fetch = async ({ pageIndex, pageSize }) => {
-    const { dis_id = null } = $instance.router.params
+    const { dis_id = null } = $instance?.router?.params
     const params = {
       page: pageIndex,
       pageSize,

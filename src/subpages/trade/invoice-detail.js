@@ -33,7 +33,7 @@ function InvoiceDetail() {
   const { info, confirmInfo, isOpened } = state
   const { invoice_items = [] } = info
   useEffect(() => {
-    entryLaunch.getRouteParams($router.params).then((params) => {
+    entryLaunch.getRouteParams($router?.params).then((params) => {
       if (params?.invoice_id) {
         fetchInvoiceDetail(params?.invoice_id)
       }

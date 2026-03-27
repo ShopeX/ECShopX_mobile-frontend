@@ -16,11 +16,12 @@ import { AtButton, AtCurtain } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import S from '@/spx'
 import api from '@/api'
-import { isWeixin, isAlipay, classNames, showToast, entryLaunch } from '@/utils'
+import { isWeixin, isAlipay, classNames, showToast, entryLaunch, getDistributorId } from '@/utils'
 import { SG_SHARER_UID, SG_TRACK_PARAMS, SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts'
 import { Tracker } from '@/service'
 import { SpPrivacyModal, SpImage, SpCheckbox } from '@/components'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateIsNewUser } from '@/store/slices/user' // 同意隐私后 code 登录失败时置为新用户，弹窗展示手机号授权
 import { useLogin, useLocation } from '@/hooks'
 import './index.scss'
 
@@ -33,6 +34,7 @@ const initialState = {
 
 const SpLogin = forwardRef((props, ref) => {
   const { children, className, visible, onPolicyClose, onChange, onClose } = props
+  const dispatch = useDispatch()
   const { updateAddress } = useLocation()
   const { shopInfo } = useSelector((state) => state.shop)
   const { isNewUser } = useSelector((state) => state.user)
@@ -106,9 +108,6 @@ const SpLogin = forwardRef((props, ref) => {
         params['uid'] = uid
       }
 
-      if (shopInfo.distributor_id) {
-        params['distributor_id'] = shopInfo.distributor_id
-      }
       if (dtid && dtid !== 'undefined') {
         params['distributor_id'] = dtid
       }
@@ -123,6 +122,13 @@ const SpLogin = forwardRef((props, ref) => {
       if (work_userid) {
         params['channel'] = 1
         params['work_userid'] = work_userid
+      }
+      // 若前面未带上店铺 id，用当前 Redux 中的店铺兜底，避免注册请求缺 distributor_id
+      if (params['distributor_id'] == null || params['distributor_id'] === '') {
+        const fallbackId = shopInfo?.distributor_id ?? getDistributorId()
+        if (fallbackId != null && fallbackId !== '') {
+          params['distributor_id'] = fallbackId
+        }
       }
 
       if (source_id) {
@@ -160,11 +166,37 @@ const SpLogin = forwardRef((props, ref) => {
     onPolicyClose && onPolicyClose()
   }, [])
 
-  // 同意隐私协议
-  const handleConfirmModal = useCallback(async () => {
+  /**
+   * 已注册会员 code 登录。
+   * 新用户时 useLogin.login() 会抛错，此处 catch 后必须 throw e 再抛出，
+   * 否则 handleConfirmModal 的 .catch() 不会执行，注册弹窗不会弹起。
+   */
+  const handleUserLogin = async () => {
+    try {
+      await login()
+      setLoginModal(false)
+      onChange && onChange()
+    } catch (e) {
+      console.log('[sp-login] handleUserLogin error:', e)
+      throw e
+    }
+  }
+
+  /**
+   * 用户点击「同意」隐私协议后：
+   * 1. 先关闭隐私弹窗，不先打开登录弹窗（避免弹窗先出再闪变）
+   * 2. 尝试 handleUserLogin()（code 登录）：老用户成功则直接登进；新用户失败会 throw
+   * 3. 失败时在 .catch 中：置 isNewUser=true，再打开登录弹窗，此时弹窗内直接是「手机号授权」走注册
+   */
+  const handleConfirmModal = useCallback(() => {
     setPolicyModal(false)
     handleUserLogin()
-  }, [])
+      .then(() => {})
+      .catch(() => {
+        dispatch(updateIsNewUser(true))
+        setTimeout(() => setLoginModal(true), 0)
+      })
+  }, [dispatch])
 
   // 登录
   const handleClickLogin = async (e) => {
@@ -183,17 +215,6 @@ const SpLogin = forwardRef((props, ref) => {
       onChange && onChange()
     } else {
       setLoginModal(true)
-    }
-  }
-
-  // 已注册会员登录
-  const handleUserLogin = async () => {
-    try {
-      await login()
-      setLoginModal(false)
-      onChange && onChange()
-    } catch (e) {
-      console.log('[sp-login] handleUserLogin error:', e)
     }
   }
 

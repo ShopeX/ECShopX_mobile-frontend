@@ -7,6 +7,13 @@
   box-sizing: border-box;
   width: 100%;
 
+  .wgt-content-partition__section-line {
+    position: absolute;
+    height: 0;
+    width: 0;
+    left: 0;
+    right: 0;
+  }
   &__container {
     width: 100%;
     box-sizing: border-box;
@@ -22,10 +29,12 @@
   &__content {
     box-sizing: border-box;
     width: 100%;
+    position: relative;
   }
 
   &__content-section {
     box-sizing: border-box;
     width: 100%;
+    position: relative;
   }
 }
