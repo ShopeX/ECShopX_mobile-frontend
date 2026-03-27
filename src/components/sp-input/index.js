@@ -17,13 +17,36 @@ function SpInput(props) {
   const containerRef = useRef(null)
 
   const handleInput = async (event) => {
-    console.log('sp-input', event, event.detail.value, props.maxLength)
-    if (props.maxLength && event.detail.value?.length > props.maxLength) {
+    const detail = event.detail || {}
+    let value = detail.value
+    const maxLen = props.maxLength
+
+    // 回车发送：部分端在 input 的 detail 中带 keyCode（与 H5 keydown、原生监听互为补充）
+    if (props.onConfirm) {
+      const keyCode = detail.keyCode
+      const isEnter = keyCode === 13 || keyCode === 'Enter'
+      if (isEnter) {
+        const clean =
+          typeof value === 'string' ? value.replace(/\r\n/g, '').replace(/\r/g, '').replace(/\n/g, '') : value
+        props.onConfirm({
+          detail: {
+            value: clean ?? ''
+          }
+        })
+        await props.onChange(clean ?? '')
+        throttle(() => {
+          setCursor(typeof detail.cursor === 'number' ? detail.cursor : -1)
+        }, 100)
+        return
+      }
+    }
+
+    if (maxLen && value?.length > maxLen) {
       return
     }
-    await props.onChange(event.detail.value)
+    await props.onChange(value)
     throttle(() => {
-      setCursor(event.detail.cursor)
+      setCursor(detail.cursor)
     }, 100)
   }
 
@@ -40,15 +63,16 @@ function SpInput(props) {
     }
   }
 
-  // H5环境下处理回车键，触发onConfirm
+  // H5：回车触发 onConfirm（读 DOM 当前值，避免 iOS 受控 props 滞后）
   const handleKeyDown = (event) => {
     if (isWeb && (event.key === 'Enter' || event.keyCode === 13)) {
       event.preventDefault()
       event.stopPropagation()
       if (props.onConfirm) {
+        const domVal = event.target?.value
         props.onConfirm({
           detail: {
-            value: props.value || ''
+            value: domVal != null ? domVal : props.value || ''
           }
         })
       }
