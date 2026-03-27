@@ -67,7 +67,7 @@ function CompGoodsItem(props) {
         dtid: distributorId
       }
     }
-    const url = `/pages/item/espier-detail?${qs.stringify(query)}`
+    const url = `/subpages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })

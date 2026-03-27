@@ -45,10 +45,13 @@ const initialState = {
   isShow: false
 }
 
+const FALLBACK_PRIMARY = '#d42f29' // 与 store/slices/colors 默认一致，冷启动进分包时 store 可能未初始化
+
 function GoodReservate(props) {
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
+  const primary = colors?.data?.[0]?.primary ?? FALLBACK_PRIMARY
   const dispatch = useDispatch()
   const router = useRouter()
   const {
@@ -496,7 +499,7 @@ function GoodReservate(props) {
               circle
               type='primary'
               className='submit-btn'
-              style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
+              style={`background: ${primary}; border-color: ${primary}`}
               loading={submitLoading}
               onClick={handleReservate}
             >
@@ -534,8 +537,8 @@ function GoodReservate(props) {
             circle
             type='primary'
             className='submit-btn'
-            style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
-            onClick={() => handleCheckboxBtnClick()}
+style={`background: ${primary}; border-color: ${primary}`}
+          onClick={() => handleCheckboxBtnClick()}
           >
             确定
           </AtButton>

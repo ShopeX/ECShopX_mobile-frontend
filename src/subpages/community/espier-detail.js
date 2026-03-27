@@ -261,8 +261,8 @@ function EspierDetail(props) {
           title: data.itemName,
           content: data.brief,
           pic: `${data.img}?time=${new Date().getTime()}`,
-          link: `${process.env.APP_CUSTOM_SERVER}/pages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
-          path: `/pages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
+          link: `${process.env.APP_CUSTOM_SERVER}/subpages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
+          path: `/subpages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
           price: data.price,
           weibo: false,
           miniApp: true

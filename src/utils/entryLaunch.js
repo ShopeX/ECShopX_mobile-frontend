@@ -42,7 +42,7 @@ class EntryLaunch {
     const pageStack = Taro.getCurrentPages()
 
     const resPage = pageStack.find(
-      (item) => item.route == options?.path && _isEqual(options.query, item.$taroParams)
+      (item) => item != null && item.route == options?.path && _isEqual(options.query, item.$taroParams)
     )
 
     // 只返回小程序启动时的参数（包含冷启动和热启动）
@@ -200,17 +200,11 @@ class EntryLaunch {
                 lng: res.longitude,
                 lat: res.latitude
               })
-              S.set('currentLocation', {
-                lng: res.longitude,
-                lat: res.latitude
-              })
             } else {
-              resolve({})
               reject({ message: res.errMsg })
             }
           },
           fail: (error) => {
-            resolve({})
             reject({ message: error })
           }
         })
@@ -490,6 +484,7 @@ class EntryLaunch {
     const paths = customPath || path
     const routePath = {
       '/pages/item/espier-detail': 'activeItemDetail',
+      '/subpages/item/espier-detail': 'activeItemDetail',
       '/pages/custom/custom-page': 'activeCustomPage',
       '/subpage/pages/recommend/detail': 'activeSeedingDetail',
       '/subpages/marketing/coupon-center': 'activeDiscountCoupon',

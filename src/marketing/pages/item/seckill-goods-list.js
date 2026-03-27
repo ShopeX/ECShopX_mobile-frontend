@@ -103,7 +103,7 @@ export default class SeckillGoodsList extends Component {
     const { distributor_id } = item
     const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
+      url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${dtid}`
     })
   }
   async fetch(params) {

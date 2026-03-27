@@ -53,7 +53,7 @@ export default class WgtGoodsScroll extends Component {
     const { distributor_id, goodsId } = item
     // const dtid = distributor_id ? distributor_id : getDistributorId()
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${goodsId}&dtid=${distributor_id || 0}`
+      url: `/subpages/item/espier-detail?id=${goodsId}&dtid=${distributor_id || 0}`
     })
   }
 

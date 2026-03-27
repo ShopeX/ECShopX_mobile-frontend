@@ -92,7 +92,7 @@ function SpGoodsCard(props) {
     }
 
     const url = `${
-      !!point ? '/subpages/pointshop/espier-detail' : '/pages/item/espier-detail'
+      !!point ? '/subpages/pointshop/espier-detail' : '/subpages/item/espier-detail'
     }?${qs.stringify(query)}`
     Taro.navigateTo({
       url

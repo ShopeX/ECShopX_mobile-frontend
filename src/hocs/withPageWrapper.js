@@ -7,7 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { useEffectAsync, useWhiteShop, useModal } from '@/hooks'
 import useModalLogin from '@/hooks/useModalLogin'
-import { updateShopInfo } from '@/store/slices/shop'
+import { updateShopInfo, updateSalesperson } from '@/store/slices/shop'
 import { updateLocation } from '@/store/slices/user'
 import { SG_CHECK_STORE_RULE } from '@/consts'
 import { VERSION_STANDARD, isEmpty, entryLaunch, isWeixin, isWeb } from '@/utils'
@@ -35,13 +35,13 @@ function withPageWrapper(Component) {
       }
     }, [initState])
 
+    // 用户信息/店铺变化时仅后台重新执行进店规则，不隐藏页面，避免注册/登录后页面长时间空白
     useEffect(() => {
       if (state) {
-        setState(false)
-
-        setTimeout(() => {
+        const timer = setTimeout(() => {
           resolveInStoreRule()
-        }, 1000)
+        }, 100)
+        return () => clearTimeout(timer)
       }
     }, [shopInfo, userInfo])
 
@@ -179,6 +179,11 @@ function withPageWrapper(Component) {
       }
       // 开启店铺码进店
       const currentShopInfo = await api.shop.getShop(params)
+      // 获取导购员信息
+      const salespersonInfo = await api.shop.getSalespersonInfo({
+        distributor_id: currentShopInfo.distributor_id
+      })
+      dispatch(updateSalesperson(salespersonInfo))
       // 如果请求的店铺ID和接口返回的店铺ID不一致（店铺可能关闭或禁用），此时需要根据兜底策略来决定跳转到引导页和默认店铺页
       if (
         dtid > 0 &&

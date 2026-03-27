@@ -365,9 +365,13 @@ function MemberUserInfo() {
   }
 
   const onChangeUsername = (e) => {
-    setState((draft) => {
-      draft.formUserInfo.username = e.detail.value
-    })
+    // onNickNameReview 事件使用 e.detail.nickname，onInput 使用 e.detail.value
+    const nickname = e.detail.nickname ?? e.detail.value
+    if (nickname !== undefined) {
+      setState((draft) => {
+        draft.formUserInfo.username = nickname
+      })
+    }
   }
 
   const { agreeTime } = Taro.getStorageSync(SG_POLICY)

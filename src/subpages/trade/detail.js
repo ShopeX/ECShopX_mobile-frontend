@@ -23,6 +23,7 @@ import {
 } from '@/utils'
 import { usePayment } from '@/hooks'
 import S from '@/spx'
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import tradeHooks from './hooks'
 import CompTradeCancel from './comps/comp-tradecancel'
 import CompWriteOffCode from './comps/comp-writeoff-code'
@@ -245,7 +246,7 @@ function TradeDetail(props) {
       })
     } else {
       Taro.navigateTo({
-        url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
+        url: `/subpages/item/espier-detail?id=${itemId}&dtid=${distributorId}&_original=1`
       })
     }
   }
@@ -485,6 +486,7 @@ function TradeDetail(props) {
       loading={loading}
       scrollToTopBtn
       renderFooter={renderActionButton()}
+      renderFloat={<FloatSalesperson />}
     >
       {info && (
         <ScrollView className='trade-detail-scroll' scrollY>

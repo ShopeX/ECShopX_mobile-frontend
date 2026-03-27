@@ -3,5 +3,8 @@
  * See LICENSE file for license details.
  */
 export default {
+  usingComponents: {
+    //'cell': 'plugin://contactPlugin/cell'
+  },
   navigationBarTitleText: '订单详情'
 }

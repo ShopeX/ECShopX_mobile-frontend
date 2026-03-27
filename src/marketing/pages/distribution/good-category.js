@@ -178,7 +178,7 @@ export default class DistributionShopCategory extends Component {
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+            path: `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}`
           })
         }, 10)
       })
@@ -187,7 +187,7 @@ export default class DistributionShopCategory extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`
+      path: `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}`
     }
   }
 

@@ -3,6 +3,9 @@
  * See LICENSE file for license details.
  */
 export default {
+  usingComponents: {
+    //'cell': 'plugin://contactPlugin/cell'
+  },
   // enablePullDownRefresh: true,
   // backgroundTextStyle: 'dark',
   // onReachBottomDistance: 50

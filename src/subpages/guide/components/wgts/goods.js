@@ -145,12 +145,13 @@ export default class WgtGoods extends Component {
       return null
     }
 
-    const { config, base, data } = info
+    const { config, base, data: rawData } = info
+    const data = Array.isArray(rawData) ? rawData : []
     const curContent = (data[curIdx] || {}).content
 
     return (
-      <View className={`wgt ${base.padded ? 'wgt__padded' : null}`}>
-        {base.title && (
+      <View className={`wgt ${base?.padded ? 'wgt__padded' : null}`}>
+        {base?.title && (
           <View className='wgt__header'>
             <View className='wgt__title'>{base.title}</View>
             <View className='wgt__subtitle'>{base.subtitle}</View>

@@ -20,7 +20,7 @@ function SpGoodsHeroCard(props) {
     let query = { id: itemId, dtid: distributorId ?? '' }
     const url = point
       ? `/subpages/pointshop/espier-detail?${qs.stringify(query)}`
-      : `/pages/item/espier-detail?${qs.stringify(query)}`
+      : `/subpages/item/espier-detail?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })

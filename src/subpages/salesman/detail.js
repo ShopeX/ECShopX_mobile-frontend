@@ -196,7 +196,7 @@ function TradeDetail(props) {
 
   const onClickItem = ({ itemId, distributorId }) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
+      url: `/subpages/item/espier-detail?id=${itemId}&dtid=${distributorId}`
     })
   }
 

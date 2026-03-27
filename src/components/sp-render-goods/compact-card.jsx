@@ -37,7 +37,7 @@ function SpGoodsCompactCard(props) {
     }
     const url = point
       ? `/subpages/pointshop/espier-detail?${qs.stringify(query)}`
-      : `/pages/item/espier-detail?${qs.stringify(query)}`
+      : `/subpages/item/espier-detail?${qs.stringify(query)}`
     onChangeRegionauth(info)
     Taro.navigateTo({
       url

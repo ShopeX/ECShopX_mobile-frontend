@@ -22,7 +22,13 @@ function SpChat(props) {
   const [state, setState] = useImmer(initialState)
   const { isWeAppKefu } = state
   const { echat, meiqia } = useSelector((state) => state.sys)
+  const { salespersonInfo } = useSelector((state) => state.shop)
   const $instance = getCurrentInstance() || {}
+
+  // 小程序客服开关：接口 show_float 0=关闭 1=开启，关闭后不展示悬浮客服
+  if (salespersonInfo?.show_float == 0) {
+    return null
+  }
 
   useEffect(() => {
     init()

@@ -11,7 +11,7 @@ export function linkPage(type, data) {
 
   switch (type) {
     case 'goods':
-      url = '/pages/item/espier-detail?id=' + id
+      url = '/subpages/item/espier-detail?id=' + id
       break
     case 'category':
       url = '/subpages/item/list?cat_id=' + id

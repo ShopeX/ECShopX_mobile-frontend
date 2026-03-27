@@ -44,6 +44,7 @@ import { useImmer } from 'use-immer'
 import { useLogin, useNavigation, useLocation, useModal, useEffectAsync } from '@/hooks'
 import doc from '@/doc'
 import withPageWrapper from '@/hocs/withPageWrapper'
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import HomeWgts from './home/comps/home-wgts'
 import { WgtsContext } from './home/wgts/wgts-context'
 import CompAddTip from './home/comps/comp-addtip'
@@ -88,6 +89,7 @@ function Home() {
     useSelector((state) => state.sys)
 
   const showAdv = useSelector((member) => member.user.showAdv)
+  const { shopInfo } = useSelector((state) => state.shop)
   const { location, address } = useSelector((state) => state.user)
   const nearbyText = address?.adrdetail
     ? address?.city || address?.province || ''
@@ -128,11 +130,12 @@ function Home() {
     Taro.eventCenter.trigger('homePageShow')
   })
 
-  // 仅当定位结果真正变化（如城市/区县）时重拉首页配置，避免每次 useDidShow→updateAddress 导致 location 引用变化就整页重载
+  // 定位变化或选择店铺后（distributor_id 变化）重新拉取首页
   useEffect(() => {
-    if (!location || !VERSION_STANDARD) return
-    fetchWgts()
-  }, [location])
+    if (VERSION_STANDARD && (location || shopInfo?.distributor_id)) {
+      fetchWgts()
+    }
+  }, [location, shopInfo?.distributor_id])
 
   useEffect(() => {
     if (skuPanelOpen) {
@@ -316,8 +319,7 @@ function Home() {
       immersive={pageData?.base?.isImmersive}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
-      nearbyText={nearbyText}
-      renderFloat={wgts.length > 0 && <CompFloatMenu />}
+      renderFloat={wgts.length > 0 && <><CompFloatMenu /><FloatSalesperson /></>}
       renderFooter={<SpTabbar />}
       onScrollToTop={() => {
         // 先设置为一个很小的非0值，确保触发滚动变化
@@ -353,30 +355,30 @@ function Home() {
         })}
       >
         <>
-              {filterWgts.length > 0 && (
-                <WgtsContext.Provider
-                  value={{
-                    onAddToCart,
-                    isTab: true,
-                    immersive: pageData?.base?.isImmersive,
-                    isShowHomeHeader: isShowHomeHeader && isWeixin,
-                    navBarHeight: state.navbarHeight,
-                    footerHeight: state.footerHeight,
-                    setScrollIntoView: (view) => {
-                      setState((draft) => {
-                        draft.scrollIntoView = view
-                      })
-                    }
-                  }}
-                >
-                  <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
-                    {/* 猜你喜欢 */}
-                    <SpRecommend className='recommend-block' info={likeList} />
-                  </HomeWgts>
-                </WgtsContext.Provider>
-              )}
-            {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-            <View className='sp-page__powered-by w-full'>
+          {filterWgts.length > 0 && (
+            <WgtsContext.Provider
+              value={{
+                onAddToCart,
+                isTab: true,
+                immersive: pageData?.base?.isImmersive,
+                isShowHomeHeader: isShowHomeHeader && isWeixin,
+                navBarHeight: state.navbarHeight,
+                footerHeight: state.footerHeight,
+                setScrollIntoView: (view) => {
+                  setState((draft) => {
+                    draft.scrollIntoView = view
+                  })
+                }
+              }}
+            >
+              <HomeWgts wgts={filterWgts} onLoad={fetchLikeList} dtid={state.distributor_id}>
+                {/* 猜你喜欢 */}
+                <SpRecommend className='recommend-block' info={likeList} />
+              </HomeWgts>
+            </WgtsContext.Provider>
+          )}
+          {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
+          <View className='sp-page__powered-by w-full'>
             <SpPoweredBy />
           </View>
 

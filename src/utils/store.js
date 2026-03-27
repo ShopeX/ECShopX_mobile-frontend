@@ -56,7 +56,7 @@ export function JumpPageIndex() {
 //跳转到商品详情页
 export function JumpGoodDetail(itemId, distributor_id, activity_id, enterprise_id) {
   Taro.navigateTo({
-    url: `/pages/item/espier-detail?id=${itemId}&dtid=${
+    url: `/subpages/item/espier-detail?id=${itemId}&dtid=${
       distributor_id || 0
     }&activity_id=${activity_id}&enterprise_id=${enterprise_id}`
   })

@@ -40,8 +40,8 @@ export default class WgtHeading extends Component {
       return null
     }
 
-    const { config, base, data } = info
-    const curContent = (data[curIdx] || {}).content
+    const { config, base, data = [] } = info
+    const curContent = ((data || [])[curIdx] || {}).content
     let stringStyle = ''
     if (config) {
       if (config.align) {

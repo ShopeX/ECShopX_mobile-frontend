@@ -29,7 +29,7 @@ export default class WgtStore extends Component {
   }
 
   handleGoodsClick = (item) => {
-    const url = `/pages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
+    const url = `/subpages/item/espier-detail?id=${item.goodsId}&dtid=${item.distributor_id}`
     Taro.navigateTo({
       url
     })

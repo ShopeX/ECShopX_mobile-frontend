@@ -24,7 +24,8 @@ const initialState = {
   contentList: [],
   fixTop: 0,
   hasSeries: false, //是否有多级
-  footerHeight: 0
+  footerHeight: 0,
+  gNavbarH: 0
 }
 
 const CategoryIndex = (props) => {
@@ -117,13 +118,15 @@ const CategoryIndex = (props) => {
   return (
     <SpPage
       className='page-guide-category-index'
-      renderFloat={<BaTabBar height={state.footerHeight} />}
-      onReady={({ footerHeight }) => {
+      renderFooter={<BaTabBar height={state.footerHeight} />}
+      onReady={({ footerHeight, gNavbarH }) => {
         setState((draft) => {
           draft.footerHeight = footerHeight
+          draft.gNavbarH = gNavbarH
         })
       }}
     >
+    <View style={{ height: `calc(100vh - ${state.footerHeight} - ${state.gNavbarH}px)` }}>
       {tabList.length > 1 && (
         <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
           {tabList.map((item, index) => (
@@ -137,6 +140,7 @@ const CategoryIndex = (props) => {
       >
         <CompSeries info={currentList} />
       </View>
+    </View>
     </SpPage>
   )
 }

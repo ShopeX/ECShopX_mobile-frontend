@@ -1,0 +1,356 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+@import '@/style/imports.scss';
+
+.nearby-list-page {
+  background-color: #f3f3f3;
+  min-height: 100vh;
+
+  .sp-page__body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  // 顶部Banner区域
+  .banner-section {
+    background-color: var(--color-primary);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 280px;
+  }
+
+  // 搜索筛选区域
+  .filter-section {
+    background-color: #f3f3f3;
+    padding: 40px 36px 24px;
+  
+    border-radius: 16px 16px 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+
+    .search-row-wrapper {
+      position: relative;
+    }
+
+    .search-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+
+      .search-box {
+        flex: 1;
+        background-color: #fff;
+        border-radius: 16px;
+        padding: 0 24px;
+        height: 72px;
+        display: flex;
+        align-items: center;
+
+        .search-input-wrap {
+          display: flex;
+          align-items: center;
+          flex: 1;
+
+          .search-icon {
+            color: #86909C;
+            font-size: 32px;
+            margin-right: 16px;
+          }
+
+          .search-input {
+            flex: 1;
+            font-size: 24px;
+            color: #333;
+
+            &::placeholder {
+              color: #999;
+            }
+          }
+        }
+      }
+
+      .filter-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 24px;
+        color: #000;
+        white-space: nowrap;
+
+        &.active {
+          color: var(--color-primary);
+
+          .arrow-icon {
+            color: var(--color-primary);
+          }
+        }
+
+        .arrow-icon {
+          font-size: 10px;
+          color: #444;
+        }
+      }
+    }
+
+    .location-row {
+      .location-picker {
+        display: flex;
+        justify-content: space-between;
+        gap: 24px;
+        padding: 0 16px;
+
+        .picker-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          font-size: 24px;
+          color: #000;
+
+          .arrow-icon {
+            font-size: 10px;
+            color: #444;
+          }
+        }
+      }
+    }
+  }
+
+  // 门店列表滚动区域
+  .shop-list-scroll {
+    flex: 1;
+    padding: 0 36px 24px;
+  }
+
+  // 门店卡片
+  .shop-card {
+    background-color: #fff;
+    border-radius: 16px;
+    margin-bottom: 24px;
+    overflow: hidden;
+
+    // 专属门店样式
+    &.shop-card-bindding {
+      background-color: #FFF8F3;
+
+      .action-btns-bindding {
+        .action-btn-item {
+          .action-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+          }
+        }
+      }
+    }
+
+    // 专属门店标签
+    .bindding-tag {
+      display: inline-flex;
+      align-self: flex-start;
+      background-color: var(--color-primary);
+      border-radius: 8px;
+      padding: 4px 8px;
+
+      .bindding-tag-text {
+        font-size: 20px;
+        color: #fff;
+      }
+    }
+
+    .shop-card-content {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    // 门店头部信息
+    .shop-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+
+      .shop-info {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        .shop-name {
+          font-size: 28px;
+          font-weight: 500;
+          color: #222;
+          @include multi-ellipsis(1);
+        }
+
+        .shop-distance {
+          font-size: 24px;
+          color: #666;
+        }
+      }
+
+      .action-btns {
+        display: flex;
+        align-items: flex-end;
+        gap: 16px;
+
+        .action-btn-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          width: 80px;
+
+          .action-icon {
+            font-size: 34px;
+            color: var(--color-primary);
+          }
+
+          .action-text {
+            font-size: 18px;
+            color: #999;
+          }
+        }
+      }
+    }
+
+    // 门店地址
+    .shop-address {
+      .address-text {
+        font-size: 24px;
+        color: #666;
+        line-height: 1.33;
+        @include multi-ellipsis(2);
+      }
+    }
+
+    // 底部操作栏
+    .shop-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .business-hours {
+        flex: 1;
+
+        .hours-text {
+          font-size: 22px;
+          color: #999;
+        }
+      }
+
+      .nav-btn {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+
+        .nav-text {
+          font-size: 20px;
+          color: #666;
+        }
+
+        .nav-icon {
+          font-size: 32px;
+          color: var(--color-primary);
+        }
+      }
+    }
+  }
+
+  // 空状态
+  .empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 100px 0;
+
+    .empty-text {
+      font-size: 28px;
+      color: #999;
+    }
+  }
+
+  // 门店类型下拉面板
+  .store-type-dropdown {
+    position: absolute;
+    top: 100%;
+    left: -36px;
+    right: -36px;
+    width: calc(100% + 72px);
+    background-color: #fff;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+    .dropdown-content {
+      .dropdown-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 32px;
+        border-bottom: 1px solid #F3F4F6;
+
+        .item-text {
+          font-size: 28px;
+          color: #000;
+        }
+
+        .item-radio {
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 2px solid #D1D5DC;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          &.active {
+            background-color: var(--color-primary);
+            border-color: var(--color-primary);
+
+            .iconfont {
+              color: #fff;
+              font-size: 20px;
+            }
+          }
+        }
+      }
+    }
+
+    .dropdown-actions {
+      display: flex;
+      gap: 32px;
+      padding: 32px;
+
+      .action-btn {
+        flex: 1;
+        height: 80px;
+        line-height: 80px;
+        text-align: center;
+        border-radius: 200px;
+        font-size: 28px;
+        font-weight: 500;
+
+        &.reset {
+          background-color: #F3F3F3;
+          color: #000;
+        }
+
+        &.confirm {
+          background-color: var(--color-primary);
+          color: #fff;
+        }
+      }
+    }
+  }
+
+}

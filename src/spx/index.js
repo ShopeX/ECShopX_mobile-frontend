@@ -2,13 +2,13 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
+import Taro from '@tarojs/taro'
 import { isWeixin, isAlipay, log, isGoodsShelves, showToast, isMerchantModule } from '@/utils'
 import { SG_TOKEN, SG_USER_INFO, MERCHANT_TOKEN } from '@/consts/localstorage'
 import dayjs from 'dayjs'
-import qs from 'qs'
 import configStore from '@/store'
+// 按需加载 api，避免 spx→api→req→spx 循环依赖导致冷启动时 S 为 undefined
+const getApi = () => require('@/api').default
 
 const { store } = configStore()
 
@@ -136,7 +136,7 @@ export class Spx {
             desc: '用于完善会员资料',
             success: async (data) => {
               const { userInfo } = data
-              await api.member.updateMemberInfo({
+              await getApi().member.updateMemberInfo({
                 username: userInfo.nickName,
                 avatar: userInfo.avatarUrl
               })
@@ -155,7 +155,7 @@ export class Spx {
 
   // 获取会员信息
   async getMemberInfo() {
-    const userInfo = await api.member.memberInfo()
+    const userInfo = await getApi().member.memberInfo()
     store.dispatch({
       type: 'user/updateUserInfo',
       payload: userInfo
@@ -205,7 +205,7 @@ export class Spx {
   async login(ctx, isRedirect = false) {
     let code, token
     if (isWeixin) {
-      let { update_time } = await api.wx.getPrivacyTime()
+      let { update_time } = await getApi().wx.getPrivacyTime()
       let privacy_time = Taro.getStorageSync('policy_updatetime')
       if (!String(privacy_time) || privacy_time != update_time) {
         return true
@@ -214,7 +214,7 @@ export class Spx {
       const resLogin = (await Taro.login()) || {}
       code = resLogin.code
       try {
-        const tokenLogin = (await api.wx.login({ code })) || {}
+        const tokenLogin = (await getApi().wx.login({ code })) || {}
         token = tokenLogin.token
       } catch (e) {
         return true
@@ -222,7 +222,7 @@ export class Spx {
     } else if (isAlipay) {
       const authLogin = await my.getAuthCode({ scopes: ['auth_base'] })
       code = authLogin.authCode
-      const tokenLogin = await api.alipay.login({ code })
+      const tokenLogin = await getApi().alipay.login({ code })
       token = tokenLogin.token
     }
     if (token) {
@@ -247,14 +247,14 @@ export class Spx {
   async loginQW(ctx) {
     console.log('[loginQW] 企微登录 执行')
     let { code } = await this.getQyLoginCode()
-    const QwUserInfo = await api.user.getQwUserInfo({
+    const QwUserInfo = await getApi().user.getQwUserInfo({
       appname: `${APP_NAME}`,
       code
     })
     let { salesperson_id, distributor_id, session3rd } = QwUserInfo
     this.setAuthToken(session3rd)
     //查询当前导购门店信息是否有效
-    const { status } = await api.guide.is_valid({
+    const { status } = await getApi().guide.is_valid({
       salesperson_id,
       distributor_id
     })
@@ -295,7 +295,7 @@ export class Spx {
     let uvstamp = Taro.getStorageSync('userVisitTime')
     let today = formatDateTime(new Date())
     if (!uvstamp || (uvstamp && new Date(today).getTime() > uvstamp)) {
-      api.user.getuservisit()
+      getApi().user.getuservisit()
       uvstamp = new Date(today).getTime() + 5 * 60 * 1000
       Taro.setStorageSync('userVisitTime', uvstamp)
     }
@@ -341,4 +341,12 @@ export class Spx {
   }
 }
 
-export default new Spx()
+const instance = new Spx()
+// 冷启动从公众号直接打开分包页时，主包未先执行可能导致 import S 未就绪，挂到全局供 req 等使用
+if (typeof global !== 'undefined') {
+  global.__SPX__ = instance
+}
+if (typeof globalThis !== 'undefined') {
+  globalThis.__SPX__ = instance
+}
+export default instance

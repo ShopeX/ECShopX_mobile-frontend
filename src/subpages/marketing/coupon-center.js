@@ -47,6 +47,9 @@ function CouponCenter(props) {
       distributor_id,
       item_id: item_id || itemid
     }
+    if (work_userid) {
+      params.work_userid = work_userid
+    }
     const {
       list,
       pagers: { total: total }

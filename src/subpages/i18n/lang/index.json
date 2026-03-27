@@ -15589,21 +15589,21 @@
 	},
 	"asocrs4": {
 		"zh-cn": "刷新成功",
-		"en": "Refresh successful",
-		"zh-tw": "刷新成功",
-		"ar": "تم التحديث بنجاح"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"t33rz7f": {
 		"zh-cn": "温馨提示：如商户无法识别二维码",
-		"en": "Tips: If the merchant cannot recognize the QR code",
-		"zh-tw": "溫馨提示：如商戶無法識別二維碼",
-		"ar": "نصيحة: إذا لم يتمكن التاجر من التعرف على رمز QR"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"w7ckyf9": {
 		"zh-cn": "您可以尝试刷新重试",
-		"en": "You can try to refresh and retry",
-		"zh-tw": "您可以嘗試刷新重試",
-		"ar": "يمكنك محاولة التحديث والمحاولة مرة أخرى"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"4246vl8": {
 		"zh-cn": "您已订阅到货通知",
@@ -15613,39 +15613,39 @@
 	},
 	"4lzdau5": {
 		"zh-cn": "查看优惠券",
-		"en": "View coupons",
-		"zh-tw": "查看優惠券",
-		"ar": "عرض القسائم"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"xu4bgj5": {
 		"zh-cn": "今日已领完",
-		"en": "Sold out today",
-		"zh-tw": "今日已領完",
-		"ar": "نفدت الكمية اليوم"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"ex5jl3": {
 		"zh-cn": "拼团价",
-		"en": "Group price",
-		"zh-tw": "拼團價",
-		"ar": "سعر المجموعة"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"ad50zh4": {
 		"zh-cn": "今日开抢",
-		"en": "Starts today",
-		"zh-tw": "今日開搶",
-		"ar": "يبدأ اليوم"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"das2ux4": {
 		"zh-cn": "明日开抢",
-		"en": "Starts tomorrow",
-		"zh-tw": "明日開搶",
-		"ar": "يبدأ غداً"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"iccnd3": {
 		"zh-cn": "秒杀价",
-		"en": "Flash sale price",
-		"zh-tw": "秒殺價",
-		"ar": "سعر البيع الخاطف"
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	},
 	"8j96rej": {
 		"zh-cn": "创建 observer 失败 for ",
@@ -15946,5 +15946,23 @@
 		"en": "Send",
 		"zh-tw": "發送",
 		"ar": "إرسال"
+	},
+	"jsuypr5": {
+		"zh-cn": " 门店顾问",
+		"en": "Store consultant",
+		"zh-tw": "門店顧問",
+		"ar": "مستشار المتجر"
+	},
+	"bdvl1wa": {
+		"zh-cn": "“添加我的企业微信，",
+		"en": "\"Add my WeChat Work,",
+		"zh-tw": "「添加我的企業微信，",
+		"ar": "“أضفني على WeChat Work،"
+	},
+	"q3dbmed": {
+		"zh-cn": "让我为你提供专属服务吧。”",
+		"en": "let me provide you with personalized service.\"",
+		"zh-tw": "讓我為你提供專屬服務吧。」",
+		"ar": "دعني أقدم لك خدمة مخصصة.”"
 	}
 }

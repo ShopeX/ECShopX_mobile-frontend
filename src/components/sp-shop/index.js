@@ -90,7 +90,7 @@ function SpShop(props) {
   }
   const handleClickItem = (item) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.itemId}&dtid=${distributor_id}`
+      url: `/subpages/item/espier-detail?id=${item.itemId}&dtid=${distributor_id}`
     })
 
   }

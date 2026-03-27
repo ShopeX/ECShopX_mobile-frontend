@@ -58,6 +58,7 @@ import { useNavigation, useLogin, useLocation } from '@/hooks'
 import withPageWrapper from '@/hocs/withPageWrapper'
 import { ACTIVITY_LIST } from '@/consts'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
+import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
@@ -76,7 +77,7 @@ import {
   WgtHeading,
   WgtHeadline,
   WgtImgHotZone
-} from '../home/wgts'
+} from '@/pages/home/wgts'
 import './espier-detail.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -154,6 +155,10 @@ function EspierDetail(props) {
     backTopScrollTop
   } = state
 
+  // 路由里 dtid=undefined 会变成字符串 "undefined"，需视为无效
+  const isEmptyDtid = (v) =>
+    v == null || v === '' || v === 'undefined' || v === 'null'
+
   useEffect(() => {
     init()
     entryLaunch.postGuideUV()
@@ -177,7 +182,7 @@ function EspierDetail(props) {
 
   useEffect(() => {
     const { path } = $instance?.router
-    if (id && path === '/pages/item/espier-detail') {
+    if (id && path === '/subpages/item/espier-detail') {
       fetch()
     }
     salesmanShare()
@@ -219,7 +224,8 @@ function EspierDetail(props) {
   }, [play])
 
   useEffect(() => {
-    if (dtid) {
+    // 路由 dtid=undefined 会变成字符串 "undefined"，isEmptyDtid 会判为无效
+    if (!isEmptyDtid(dtid)) {
       init(dtid)
       fetch()
     }
@@ -251,7 +257,7 @@ function EspierDetail(props) {
     const { itemName, imgs } = info
     const query = {
       id,
-      dtid
+      dtid: isEmptyDtid(dtid) ? getDistributorId() : dtid || ''
     }
     if (userInfo) {
       query['uid'] = userInfo.user_id
@@ -268,13 +274,14 @@ function EspierDetail(props) {
   const init = async (newDtid) => {
     const routerParams = await entryLaunch.getRouteParams()
     const { type, id, dtid: routerDtid } = routerParams
-    const dtid = newDtid || routerDtid
+    const rawDtid = newDtid ?? routerDtid
+    const dtid = isEmptyDtid(rawDtid) ? null : rawDtid
     setState((draft) => {
       draft.id = id
       draft.type = type
       draft.dtid = dtid
     })
-    if (S.getAuthToken()) {
+    if (S.getAuthToken() && !isEmptyDtid(dtid)) {
       await dispatch(fetchUserFavs({ distributor_id: dtid }))
     }
   }
@@ -355,8 +362,8 @@ function EspierDetail(props) {
           title: data.itemName,
           content: data.brief,
           pic: `${data.img}?time=${new Date().getTime()}`,
-          link: `${process.env.APP_CUSTOM_SERVER}/pages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
-          path: `/pages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
+          link: `${process.env.APP_CUSTOM_SERVER}/subpages/item/espier-detail?id=${data.itemId}&dtid=${data.distributorId}&company_id=${data.companyId}`,
+          path: `/subpages/item/espier-detail?company_id=${data.company_id}&id=${data.v}&dtid=${data.distributor_id}&uid=${userInfo.user_id}`,
           price: data.price,
           weibo: false,
           miniApp: true
@@ -504,7 +511,7 @@ function EspierDetail(props) {
       }}
       renderFloat={
         info && (
-          <View>
+          <View className='page-item-espierdetail__float-container'>
             <SpFloatMenuItem
               onClick={() => {
                 Taro.navigateTo({ url: '/subpages/member/index' })
@@ -517,6 +524,7 @@ function EspierDetail(props) {
                 <Text className='iconfont icon-headphones'></Text>
               </SpFloatMenuItem>
             </SpChat>
+            <FloatSalesperson />
           </View>
         )
       }

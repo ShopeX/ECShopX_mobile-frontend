@@ -288,7 +288,7 @@ export default class DistributionGoods extends Component {
             title: info.title,
             imageUrl: info.img,
             path: getDtidIdUrl(
-              `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+              `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
               info.distributor_id
             )
           })
@@ -300,7 +300,7 @@ export default class DistributionGoods extends Component {
       title: info.title,
       imageUrl: info.img,
       path: getDtidIdUrl(
-        `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
+        `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}`,
         info.distributor_id
       )
     }

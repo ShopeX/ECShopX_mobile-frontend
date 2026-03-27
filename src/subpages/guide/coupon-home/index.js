@@ -27,6 +27,7 @@ import {
   BaNavBar,
   BaCoupon
 } from '@/subpages/guide/components'
+import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './index.scss'
 
 const initialState = {
@@ -92,8 +93,9 @@ function GuideCouponIndex(props) {
 
   const fetch = async () => {
     const { card_id = '', item_id = '' } = $instance?.router?.params
-    const { distributor_id } = userInfo
+    const { distributor_id, work_userid: gu_user_id } = userInfo
     const params = {
+      work_userid: gu_user_id,
       end_date: 1,
       distributor_id,
       card_id,

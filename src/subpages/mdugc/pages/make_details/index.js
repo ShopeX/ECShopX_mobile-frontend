@@ -197,9 +197,9 @@ export default class mdugcdetails extends Component {
     let url
     if (item.item_type === 'pointsmall') {
       //积分商城
-      url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
+      url = `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
     } else {
-      url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+      url = `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     }
     Taro.navigateTo({
       url

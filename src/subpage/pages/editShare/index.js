@@ -78,7 +78,7 @@ export default class EditShare extends Component {
     const host = req.baseURL.replace('/api/h5app/wxapp/', '')
 
     const appid = getAppId()
-    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`pages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
+    const wxappCode = `${host}/wechatAuth/wxapp/qrcode.png?page=${`subpages/item/espier-detail`}&appid=${appid}&company_id=${company_id}&id=${id}&dtid=${dtid}&uid=${userId}`
 
     this.goodInfo = data
     this.setState(

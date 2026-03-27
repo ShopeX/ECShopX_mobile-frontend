@@ -393,13 +393,13 @@ export const browser = (() => {
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ;(function (m, ei, q, i, a, j, s) {
+  ; (function (m, ei, q, i, a, j, s) {
     m[i] =
       m[i] ||
       function () {
-        ;(m[i].a = m[i].a || []).push(arguments)
+        ; (m[i].a = m[i].a || []).push(arguments)
       }
-    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+      ; (j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
     j.async = true
     j.charset = 'UTF-8'
     j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
@@ -489,7 +489,7 @@ function validColor(color) {
  * } data 新增上报数据
  */
 export async function buriedPoint(data) {
-  const params = getCurrentInstance()?.router?.params
+  const params = getCurrentInstance()?.router?.params || {}
   let {
     gu,
     subtask_id = '',

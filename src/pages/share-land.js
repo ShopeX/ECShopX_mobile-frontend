@@ -29,9 +29,13 @@ function ShareIand() {
   const resloveRouterParams = async () => {
     const routeParams = await entryLaunch.getRouteParams(router)
     Taro.setStorageSync(SG_ROUTER_PARAMS, routeParams)
+
     if (routeParams?.gu || routeParams?.gu_user_id) {
       // 导购参数处理
-      Taro.setStorageSync(SG_GUIDE_PARAMS, routeParams)
+      Taro.setStorageSync(SG_GUIDE_PARAMS, {
+        ...routeParams,
+        gu_user_id: routeParams.gu_user_id || routeParams.gu.split('_')[0]
+      })
       Taro.setStorageSync(SG_GUIDE_PARAMS_UPDATETIME, dayjs().unix())
       // if (S.getAuthToken()) {
       //   entryLaunch.postGuideUV() // 导购uv上报
@@ -63,12 +67,12 @@ function ShareIand() {
       'guide_task_gucustom': '/subpages/guide/custom/custom-page', // 导购任务-管理端-导购货架自定义页
       'guide_task_gucoupon': '/subpages/guide/coupon-home/index', // 导购任务-小程序-优惠券转发
       'guide_task_gugoods': '/subpages/guide/item/espier-detail', // 导购任务-小程序-商品转发
-      'guide_task_goods': '/pages/item/espier-detail', // 导购任务-小程序-商品海报
+      'guide_task_goods': '/subpages/item/espier-detail', // 导购任务-小程序-商品海报
 
       // 商城小程序
       'poster_home': '/pages/index', // 小程序-海报分享&页面转发-店务小店
       'poster_shop_home': '/marketing/pages/distribution/shop-home', // 小程序-海报分享&页面转发-店务小店
-      'poster_espier_detail': '/pages/item/espier-detail', // 小程序-海报分享-商品详情
+      'poster_espier_detail': '/subpages/item/espier-detail', // 小程序-海报分享-商品详情
       'poster_espier_checkout': '/pages/cart/espier-checkout', // 小程序-海报分享&页面转发-结算页
       'poster_purchase_auth': '/pages/purchase/auth', // 小程序-海报分享&页面转发-内购邀请
       'poster_trade_detail': '/subpages/trade/detail', // 小程序-海报分享&页面转发-交易详情
@@ -122,9 +126,9 @@ function ShareIand() {
 
   // 处理通用分享场景
   // 1、海报分享 pages/share-land?scene=share_id%3D68f2037ca18f8 通过shareid获取参数
-  // 2、小程序转发 pages/share-land?target_path=pages/item/espier-detail&id=123
-  // 3、其他小程序跳转过来 pages/share-land?target_path=pages/item/espier-detail&id=123
-  // 4、小程序卡片跳转过来 pages/share-land?target_path=pages/item/espier-detail&id=123
+  // 2、小程序转发 pages/share-land?target_path=subpages/item/espier-detail&id=123
+  // 3、其他小程序跳转过来 pages/share-land?target_path=subpages/item/espier-detail&id=123
+  // 4、小程序卡片跳转过来 pages/share-land?target_path=subpages/item/espier-detail&id=123
   const handleGeneralShare = (routeParams) => {
     // routeParams：pa
     const { target_path, ...otherParams } = routeParams

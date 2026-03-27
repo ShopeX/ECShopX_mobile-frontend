@@ -61,10 +61,10 @@ function CartIndex() {
   }
 
   const resolveActiveGroup = () => {
-    const groupsList = validCart.map((item) => {
+    const groupsList = validCart?.map((item) => {
       // used_activity：满减  activity_grouping：满减&满折 gift_activity：满赠  plus_buy_activity:加价购
       const {
-        list,
+        list = [],
         used_activity = [],
         plus_buy_activity = [],
         activity_grouping = [],
@@ -109,8 +109,8 @@ function CartIndex() {
     return groupsList || []
   }
 
-  const reduceTransform = (list, label) => {
-    const newList = list.reduce((acc, val) => {
+  const reduceTransform = (list = [], label) => {
+    const newList = list?.reduce((acc, val) => {
       acc[val[label]] = val
       return acc
     }, {})
@@ -237,7 +237,7 @@ function CartIndex() {
         <View className='valid-cart-block'>
           {groupsList.map((all_item, all_index) => {
             const { cus_plus_item_list = [], activityList = [] } = all_item || {}
-            const allChecked = all_item.cart_total_count == all_item.list.length
+            const allChecked = all_item?.cart_total_count == all_item?.list?.length
             return (
               <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
                 <View className='shop-cart-item-hd'>
@@ -372,13 +372,13 @@ function CartIndex() {
             )
           })}
         </View>
-        {invalidCart.length > 0 && (
+        {invalidCart?.length > 0 && (
           <View className='invalid-cart-block'>
             <View className='shop-cart-item'>
               <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
               <View className='shop-cart-item-bd'>
                 <View className='shop-activity'></View>
-                {invalidCart.map((sitem, sindex) => (
+                {invalidCart?.map((sitem, sindex) => (
                   <View
                     className='cart-item-warp-disabled'
                     key={`cart-item-warp-disabled__${sindex}`}
@@ -397,7 +397,7 @@ function CartIndex() {
         )}
       </View>
 
-      {validCart.length == 0 && invalidCart.length == 0 && (
+      {validCart?.length == 0 && invalidCart?.length == 0 && (
         <SpDefault type='cart' message='购物车内暂无商品～'>
           <AtButton type='primary' circle onClick={navigateTo.bind(this, '../item/list', true)}>
             去添加商品

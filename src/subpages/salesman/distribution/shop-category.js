@@ -208,7 +208,7 @@ export default class DistributionShopCategory extends Component {
     let url = ''
     if (item.isOutSale) return false
     if (goods_id) {
-      url = `/pages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
+      url = `/subpages/item/espier-detail?id=${goods_id || ''}&dtid=${distributor_id}&uid=${id}`
     }
     if (url) {
       Taro.navigateTo({

@@ -408,7 +408,7 @@ export default class DistributionGoods extends Component {
           resolve({
             title: info.title,
             imageUrl: info.img,
-            path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
+            path: `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
           })
         }, 10)
       })
@@ -417,7 +417,7 @@ export default class DistributionGoods extends Component {
     return {
       title: info.title,
       imageUrl: info.img,
-      path: `/pages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
+      path: `/subpages/item/espier-detail?id=${info.item_id}&uid=${userId}&dtid=${info.distributor_id}&qr=Y`
     }
   }
 

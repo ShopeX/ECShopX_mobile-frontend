@@ -245,7 +245,7 @@ function CartIndex() {
 
   const onClickImgAndTitle = async (item) => {
     Taro.navigateTo({
-      url: `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.shop_id}`
+      url: `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.shop_id}`
     })
   }
 

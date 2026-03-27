@@ -17,8 +17,6 @@ const config = {
     'pages/home/landing', // 跳转等待页面
     'pages/floorguide/index', // 楼层引导页面
 
-    'pages/item/espier-detail', // 商品详情页面
-
     'pages/article/index', // 文章页面
     'pages/recommend/list', // 种草列表
     'pages/recommend/detail', // 种草详情
@@ -80,7 +78,8 @@ const config = {
         'category', // 店铺商品分类
         'list', // 选择店铺列表
         'ziti-list', // 自提列表
-        'ziti-picker' // 自提点选择
+        'ziti-picker', // 自提点选择
+        'nearby-list' // 门店列表
       ]
     },
     {
@@ -94,7 +93,8 @@ const config = {
     {
       root: 'subpages/item',
       pages: [
-        'list' // 商品列表页面
+        'list', // 商品列表页面
+        'espier-detail' // 商品详情（由主包迁入分包）
       ]
     },
     {
@@ -505,6 +505,15 @@ if (process.env.TARO_ENV == 'weapp') {
   })
 }
 
+if (process.env.APP_CONTACT_PLUGIN == 'true') {
+  Object.assign(config.plugins, {
+    'contactPlugin': {
+      'usingComponents': true,
+      'version': '1.4.8',
+      'provider': 'wx104a1a20c3f81ec2'
+    }
+  })
+}
 if (process.env.APP_LIVE == 'true') {
   Object.assign(config.plugins, {
     'live-player-plugin': {

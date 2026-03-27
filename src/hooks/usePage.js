@@ -2,9 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import { total } from '@/api/cart'
-import { useState, useEffect, useRef } from 'react'
-import { useAsyncCallback } from '@/hooks'
+import { useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
 
 const initialState = {
@@ -15,6 +13,16 @@ const initialState = {
   reset: false
 }
 
+function buildPageSnapshot(page) {
+  return {
+    pageIndex: page.pageIndex,
+    pageSize: page.pageSize,
+    loading: page.loading,
+    hasMore: page.hasMore,
+    reset: page.reset
+  }
+}
+
 export default (props) => {
   const { fetch, auto = true, pageSize = 10 } = props
   const [page, setPage] = useImmer({
@@ -22,8 +30,35 @@ export default (props) => {
     pageSize
   })
   const totalRef = useRef(0)
+  const pageRef = useRef(page)
+  pageRef.current = page
 
-  const [hasNext, setHasNext] = useState(true)
+  async function excluteFetch() {
+    const snapshot = buildPageSnapshot(pageRef.current)
+    setPage((v) => {
+      v.loading = true
+    })
+    try {
+      const res = await fetch(snapshot)
+      const total = res != null && res.total != null ? Number(res.total) : 0
+      totalRef.current = total
+      setPage((v) => {
+        if (!total || total <= snapshot.pageSize * snapshot.pageIndex) {
+          v.hasMore = false
+        } else {
+          v.hasMore = true
+        }
+        v.loading = false
+        v.reset = false
+      })
+    } catch (e) {
+      console.error('usePage fetch:', e)
+      setPage((v) => {
+        v.loading = false
+        v.reset = false
+      })
+    }
+  }
 
   useEffect(() => {
     if (auto || page.pageIndex > 1) {
@@ -37,36 +72,18 @@ export default (props) => {
     }
   }, [page.reset])
 
-  const excluteFetch = async () => {
-    setPage((v) => {
-      v.loading = true
-    })
-    const { total } = await fetch(page)
-    totalRef.current = total
-    // console.log('excluteFetch:', total, page.pageSize, page.pageIndex)
-    setPage((v) => {
-      if (!total || total <= page.pageSize * page.pageIndex) {
-        v.hasMore = false
-      } else {
-        v.hasMore = true
-      }
-      v.loading = false
-      v.reset = false
-    })
-  }
-
   const nextPage = () => {
-    const curPage = page.pageIndex + 1
-    if (!totalRef.current || curPage > Math.ceil(+totalRef.current / page.pageSize)) {
+    const { pageIndex, pageSize: size } = pageRef.current
+    const curPage = pageIndex + 1
+    if (!totalRef.current || curPage > Math.ceil(+totalRef.current / size)) {
       setPage((v) => {
         v.hasMore = false
       })
       return
-    } else {
-      setPage((v) => {
-        v.pageIndex = curPage
-      })
     }
+    setPage((v) => {
+      v.pageIndex = curPage
+    })
   }
 
   const getTotal = () => {
@@ -77,7 +94,6 @@ export default (props) => {
    * @function 分页重置
    */
   const resetPage = () => {
-    console.log('resetPage')
     totalRef.current = 0
     setPage((draft) => {
       draft.pageIndex = 1

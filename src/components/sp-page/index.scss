@@ -95,7 +95,7 @@
     z-index: $z-index-level-3;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
+    align-items: center;
     flex-direction: column;
     box-sizing: border-box;
     /* 禁止 CSS 穿透：样式隔离，避免页面/父级样式影响浮层内容 */

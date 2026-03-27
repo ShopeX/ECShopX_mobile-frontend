@@ -11,7 +11,7 @@ import React, {
   forwardRef,
   useCallback
 } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import Taro, {
   useRouter,
   useDidShow,
@@ -42,6 +42,8 @@ import {
   VERSION_SHUYUN
 } from '@/utils'
 import context from '@/hooks/usePageContext'
+import { setShowGuideConsultModal } from '@/store/slices/shop'
+import ConsultModal from '@/subpages/store/comps/consult-modal'
 import CustomNavigationHeader from './header'
 import './index.scss'
 
@@ -79,6 +81,7 @@ const SpPage = memo(
     const [state, setState] = useImmer(initialState)
     const wrapRef = useRef(null)
     const scrollTopRef = useRef(0)
+    const dispatch = useDispatch()
     const setStatusBarBgColorFromSticky = useCallback((color, sourceId) => {
       setState((draft) => {
         if (color != null) {
@@ -93,6 +96,7 @@ const SpPage = memo(
     }, [])
     const sys = useSelector((state) => state.sys)
     const { lang } = useSelector((state) => state.user)
+    const { showGuideConsultModal, salespersonInfo } = useSelector((state) => state.shop)
     const isRTL = lang === 'ar'
     const [showToTop, setShowToTop] = useState(false)
     const [isPageVisible, setIsPageVisible] = useState(true) // 页面是否显示
@@ -126,6 +130,13 @@ const SpPage = memo(
         })
       }
     }, [state.lock])
+
+    // 企微导购弹框：无导购二维码时关闭状态，避免一直为 true
+    useEffect(() => {
+      if (showGuideConsultModal && !salespersonInfo?.work_qrcode && !salespersonInfo?.work_qrcode_configid) {
+        dispatch(setShowGuideConsultModal(false))
+      }
+    }, [showGuideConsultModal, salespersonInfo, dispatch])
 
     useEffect(() => {
       if (!isPageVisible) return
@@ -230,12 +241,14 @@ const SpPage = memo(
 
     useDidShow(() => {
       setIsPageVisible(true) // 页面显示时设置为true
-      const { page, router } = getCurrentInstance()
-      const fidx = Object.values(TABBAR_PATH()).findIndex((v) => v == router?.path.split('?')[0])
+      const instance = getCurrentInstance()
+      if (!instance?.router) return
+      const { page, router } = instance
+      const fidx = Object.values(TABBAR_PATH()).findIndex((v) => v == router?.path?.split('?')[0])
       const isTabBarPage = fidx > -1
       setState((draft) => {
         draft.showLeftContainer = !['/subpages/guide/index', '/pages/index'].includes(
-          `/${page?.route}`
+          `/${page?.route ?? ''}`
         )
         draft.isTabBarPage = isTabBarPage
       })
@@ -352,8 +365,8 @@ const SpPage = memo(
             statusBarBgColor={state.statusBarBgColor}
             immersiveScrollRevealBgColor={
               props.immersive &&
-              props.pageConfig?.immersiveScrollBgColor &&
-              state.scrollTop >= 50
+                props.pageConfig?.immersiveScrollBgColor &&
+                state.scrollTop >= 50
                 ? props.pageConfig.immersiveScrollBgColor
                 : null
             }
@@ -369,8 +382,8 @@ const SpPage = memo(
               'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
-                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-                  )
+                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                )
                 : 0
             })}
           >
@@ -422,13 +435,27 @@ const SpPage = memo(
           </View>
         )}
         <CookieConsent />
+        {/* 全局企微导购联系弹框（与 FloatSalesperson 一致，如热区/分类页点击企微导购服务时弹出） */}
+        {showGuideConsultModal && salespersonInfo?.work_qrcode && (
+          <ConsultModal
+            visible={showGuideConsultModal}
+            type='2'
+            data={{
+              qrcodeUrl: salespersonInfo.work_qrcode,
+              salespersonName: salespersonInfo.salesperson_name,
+              salespersonAvatar: salespersonInfo.salesperson_avatar,
+              bgAvatarUrl: salespersonInfo.bg_avatar_url
+            }}
+            onClose={() => dispatch(setShowGuideConsultModal(false))}
+          />
+        )}
       </View>
     )
   })
 )
 
 SpPage.defaultProps = {
-  onReady: () => {},
+  onReady: () => { },
   btnHomeEnable: true,
   className: '',
   children: null,
@@ -453,7 +480,7 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => {},
+  onScrollToTop: () => { },
   nearbyText: '',
   onSearchConfirm: null
 }

@@ -25,7 +25,9 @@ function SpTabbar() {
   const pages = Taro.getCurrentPages()
   useEffect(() => {
     if (pages.length > 0) {
-      let currentPage = pages[pages.length - 1].route
+      const lastPage = pages[pages.length - 1]
+      let currentPage = lastPage?.route
+      if (currentPage == null) return
       currentPage = isWeb ? currentPage.split('?')[0] : `/${currentPage}`
       const {
         params: { id: customPageId }

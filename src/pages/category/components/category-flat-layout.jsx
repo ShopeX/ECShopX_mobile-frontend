@@ -9,7 +9,7 @@ import { View, Text, ScrollView } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import classNames from 'classnames'
 import api from '@/api'
-import { platformTemplateName } from '@/utils'
+import { getDistributorId, platformTemplateName } from '@/utils'
 import { SpImage, SpLoading, SpPoweredBy } from '@/components'
 import {
   WgtShop,
@@ -39,7 +39,9 @@ function CategoryFlatLayout() {
 
   const gettabsList = async () => {
     try {
-      const res = await api.category.get({})
+      const res = await api.category.get({
+        distributor_id: getDistributorId()
+      })
       setState((draft) => {
         draft.categories = res
       })

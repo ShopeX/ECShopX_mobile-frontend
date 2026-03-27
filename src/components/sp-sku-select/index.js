@@ -318,7 +318,7 @@ function SpSkuSelect(props) {
 
   const shopping = async () => {
     const { id, dtid } = await entryLaunch.getRouteParams()
-    const distributor_id = getDistributorId(id || dtid)
+    const distributor_id = getDistributorId(dtid || id)
     let params = {
       distributor_id,
       shop_type: 'distributor'

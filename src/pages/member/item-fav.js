@@ -132,9 +132,9 @@ export default class ItemFav extends Component {
     let detailUrl
     if (item.item_type === 'pointsmall') {
       //积分商城
-      detailUrl = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
+      detailUrl = `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&type=pointitem`
     } else {
-      detailUrl = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
+      detailUrl = `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}`
     }
     const url = (() => {
       let link = null

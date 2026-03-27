@@ -322,7 +322,7 @@ export default class DistributionShopHome extends Component {
   handleClickItem = (item) => {
     if (item.isOutSale) return false
     const { userId } = this.state
-    const url = `/pages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&uid=${userId}`
+    const url = `/subpages/item/espier-detail?id=${item.item_id}&dtid=${item.distributor_id}&uid=${userId}`
     setTimeout(() => {
       Taro.navigateTo({
         url

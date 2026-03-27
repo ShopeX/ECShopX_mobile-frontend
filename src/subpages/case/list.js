@@ -3,16 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, Image, Form, Picker } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { AtTabBar, AtSearchBar, AtButton } from 'taro-ui'
 import SpTabbar from '@/components/sp-tabbar'
-import { autoGetLocation } from '@/utils/wxApi'
 import api from '@/api'
 import SpPage from '@/components/sp-page'
 import SpScrollView from '@/components/sp-scrollview'
-import { classNames, pickBy, entryLaunch } from '@/utils'
-import S from '@/spx'
+import { classNames, pickBy, entryLaunch, isEmpty } from '@/utils'
+import { updateLocation } from '@/store/slices/user'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
 import * as caseDoc from '@/doc/case'
@@ -47,7 +47,7 @@ const tagListConfig = [
 const initialState = {
   footerHeight: 0,
   currentLocation: null,
-  locationData: defaultLocationData,
+  locationData: { cityName: '全国', cityId: 0 }, // 默认选中「全国案例」tab
   locationList: [],
   locationRange: [[], []],
   locationValue: [0, 0],
@@ -84,17 +84,20 @@ const initialState = {
   },
   tabList: [
     {
-      title: '本地案例'
+      title: '全国案例'
     },
     {
-      title: '全国案例'
+      title: '本地案例'
     }
   ]
 }
 
 function CaseList() {
+  const { location } = useSelector((state) => state.user)
+  const { entryStoreByLBS } = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
   const listRef = useRef(null)
+  const dispatch = useDispatch()
 
   const {
     tabList,
@@ -180,7 +183,7 @@ function CaseList() {
       options.tags_params = [...unitIds, ...styleIds]
     }
 
-    if (currentIndex != 1 || locationData.cityId != 0) {
+    if (currentIndex != 0 || locationData.cityId != 0) {
       options.city_id = locationData.cityName
     }
     const res = await api.design.getDesignList(options)
@@ -218,13 +221,9 @@ function CaseList() {
     }
   }
 
-  const getStorageLocation = async () => {
-    const currentLocation = S?.get('currentLocation')
-    if (currentLocation) {
-      const data = await entryLaunch.getAddressByLnglatWebAPI(
-        currentLocation.longitude,
-        currentLocation.latitude
-      )
+  const getStorageLocation = async (locationInfo) => {
+    if (!isEmpty(location) || !isEmpty(locationInfo)) {
+      const data = await entryLaunch.getAddressByLnglatWebAPI(location?.lng || locationInfo?.lng, location?.lat || locationInfo?.lat)
       const { city, error } = data
       if (error) {
         setState((draft) => {
@@ -235,7 +234,7 @@ function CaseList() {
       }
       setState((draft) => {
         draft.locationData = { cityName: city, cityId: '1438' }
-        draft.currentLocation = currentLocation
+        draft.currentLocation = location || locationInfo
       })
       refresh()
     } else {
@@ -247,23 +246,26 @@ function CaseList() {
   }
 
   const handleAutoGetLoaction = () => {
-    autoGetLocation().then((data) => {
-      const { latitude, longitude } = data
-      S?.set('currentLocation', {
-        latitude,
-        longitude
-      })
-      getStorageLocation()
-    })
+    if (entryStoreByLBS) {
+      if (isEmpty(location)) {
+        entryLaunch.isOpenPosition((res) => {
+          if (res.lat) {
+            dispatch(updateLocation(res))
+            getStorageLocation(res)
+          }
+        })
+      } else {
+        getStorageLocation()
+      }
+    }
   }
 
   const handleToggleTab = (value) => {
     setState((draft) => {
       draft.currentIndex = value
     })
+    // value 0 = 全国案例, value 1 = 本地案例
     if (value == 0) {
-      getStorageLocation()
-    } else {
       setState((draft) => {
         draft.locationData = {
           cityName: '全国',
@@ -277,6 +279,8 @@ function CaseList() {
         }
       })
       refresh()
+    } else {
+      getStorageLocation()
     }
   }
 
@@ -365,7 +369,6 @@ function CaseList() {
   }
 
   useEffect(() => {
-    getStorageLocation()
     api.design.getDesignTagsList().then((data) => {
       let house_type, style
       data.forEach((item) => {
@@ -412,6 +415,11 @@ function CaseList() {
       })
     })
     initLocationPicker()
+    // 延迟执行确保 SpScrollView 已挂载、listRef 已就绪，否则 reset() 不会触发首屏加载
+    const timer = setTimeout(() => {
+      refresh()
+    }, 300)
+    return () => clearTimeout(timer)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -433,12 +441,12 @@ function CaseList() {
             current={currentIndex}
           />
           <View className='sp-search'>
-            {currentIndex == 0 && (
+            {currentIndex == 1 && (
               <View onClick={handleAutoGetLoaction}>
                 <Text className='sp-case-list--head-city'>{locationData.cityName}</Text>
               </View>
             )}
-            {currentIndex == 1 && (
+            {currentIndex == 0 && (
               <Picker
                 mode='multiSelector'
                 value={locationValue}
@@ -469,8 +477,8 @@ function CaseList() {
                 {tagListConfig.map((item, index) => {
                   const checkedGroupkey = checked
                     ? checked.find((checkedItem) => {
-                        return tagContentList[item.key].find((iitem) => iitem.id === checkedItem.id)
-                      })
+                      return tagContentList[item.key].find((iitem) => iitem.id === checkedItem.id)
+                    })
                     : null
                   const itemCls = classNames('sp-tag--head-item', {
                     'sp-tag--head-checked': !!checkedGroupkey
