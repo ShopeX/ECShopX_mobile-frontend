@@ -90,9 +90,7 @@ function Home() {
 
   const showAdv = useSelector((member) => member.user.showAdv)
   const { location, address } = useSelector((state) => state.user)
-  /** 导航栏城市：优先跟随 LBS 定位，与「选择商家」页一致；勿用收货地址盖住当前定位 */
-  const nearbyText =
-    location?.city || location?.province || address?.city || ''
+  const nearbyText = address?.city || location?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
   const locationKeyRef = useRef('')

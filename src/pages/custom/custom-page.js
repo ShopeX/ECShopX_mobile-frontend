@@ -43,8 +43,7 @@ function CustomPage(props) {
   const loginRef = useRef()
   const router = useRouter()
   const { location, address } = useSelector((state) => state.user)
-  const nearbyText =
-    location?.city || location?.province || address?.city || ''
+  const nearbyText = address?.city || location?.city || ''
 
   useEffect(() => {
     fetch()
