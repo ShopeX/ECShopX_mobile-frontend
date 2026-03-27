@@ -12,7 +12,7 @@ import './home-header.scss'
 
 function WgtHomeHeader(props) {
   const { children, jump = true, isSetHight } = props
-  const { location = {} } = useSelector((state) => state.user)
+  const { location = {}, address } = useSelector((state) => state.user)
   const { openScanQrcode, entryStoreByLBS, openWechatappLocation } = useSelector(
     (state) => state.sys
   )
@@ -46,7 +46,18 @@ function WgtHomeHeader(props) {
             }
           }}
         >
-          <View className='address'>{location?.address || '北京市北京市昌平区'}</View>
+          <View className='address'>
+            {address?.adrdetail
+              ? [address.province, address.city, address.county, address.adrdetail]
+                  .filter(Boolean)
+                  .join('') ||
+                address.city ||
+                address.province ||
+                '选择地区'
+              : location?.address ||
+                [location?.province, location?.city, location?.district].filter(Boolean).join('') ||
+                '选择地区'}
+          </View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       )}

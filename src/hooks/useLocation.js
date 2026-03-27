@@ -6,7 +6,7 @@ import Taro from '@tarojs/taro'
 import api from '@/api'
 import entryLaunch from '@/utils/entryLaunch'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateLocation } from '@/store/slices/user'
+import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import S from '@/spx'
 
 export default (props) => {
@@ -146,9 +146,10 @@ export default (props) => {
         dispatch(updateLocation(res1))
       }
     } else {
+      // 未拿到 GPS：不要把收货地址写进 location，否则首页「定位」会与收货地址混淆
       if (arr.length > 0) {
-        const arr1 = await processingAddress([list.find((obj) => obj.is_def === true) || list[0]])
-        dispatch(updateLocation(arr1[0]))
+        const defAddr = list.find((obj) => obj.is_def === true) || list[0]
+        dispatch(updateChooseAddress(defAddr))
       }
     }
   }

@@ -86,14 +86,14 @@ function Home() {
 
   const { openRecommend, appName, openScanQrcode, entryStoreByLBS, openWechatappLocation } =
     useSelector((state) => state.sys)
-  const { shopInfo } = useSelector((state) => state.shop)
 
   const showAdv = useSelector((member) => member.user.showAdv)
   const { location, address } = useSelector((state) => state.user)
-  const nearbyText = address?.city || location?.city || ''
+  const nearbyText = address?.adrdetail
+    ? address?.city || address?.province || ''
+    : location?.city || location?.province || address?.city || ''
   const { setNavigationBarTitle } = useNavigation()
   const { updateAddress } = useLocation()
-  const locationKeyRef = useRef('')
   const {
     wgts,
     pageData,
