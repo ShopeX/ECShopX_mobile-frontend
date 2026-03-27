@@ -15679,272 +15679,272 @@
 	},
 	"x6dm12h": {
 		"zh-cn": "该商品暂无库存，您可以订阅到货通知",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "This product is out of stock. You can subscribe for restock notifications.",
+		"zh-tw": "該商品暫無庫存，您可以訂閱到貨通知",
+		"ar": "هذا المنتج غير متوفر حاليًا. يمكنك الاشتراك لتلقي إشعار عند توفره."
 	},
 	"faiu2": {
 		"zh-cn": "在售",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "On sale",
+		"zh-tw": "在售",
+		"ar": "متوفر للبيع"
 	},
 	"ktc7oh6": {
 		"zh-cn": "暂无店铺数据",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "No store data available",
+		"zh-tw": "暫無門店資料",
+		"ar": "لا توجد بيانات متاجر"
 	},
 	"jaxhy84": {
 		"zh-cn": "门店列表",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Store list",
+		"zh-tw": "門店列表",
+		"ar": "قائمة المتاجر"
 	},
 	"lkyyp3": {
 		"zh-cn": "选择省",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Select province",
+		"zh-tw": "選擇省",
+		"ar": "اختر المحافظة"
 	},
 	"lku0y3": {
 		"zh-cn": "选择市",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Select city",
+		"zh-tw": "選擇市",
+		"ar": "اختر المدينة"
 	},
 	"lkrwa3": {
 		"zh-cn": "选择区",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Select district",
+		"zh-tw": "選擇區",
+		"ar": "اختر المنطقة"
 	},
 	"e3mr2": {
 		"zh-cn": "不限",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "All",
+		"zh-tw": "不限",
+		"ar": "الكل"
 	},
 	"avkyen4": {
 		"zh-cn": "全部门店",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "All stores",
+		"zh-tw": "全部門店",
+		"ar": "جميع المتاجر"
 	},
 	"9iip079": {
 		"zh-cn": "门店位置信息不完整",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Incomplete store location information",
+		"zh-tw": "門店位置信息不完整",
+		"ar": "معلومات موقع المتجر غير مكتملة"
 	},
 	"gnkwj76": {
 		"zh-cn": "暂无联系电话",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "No contact number available",
+		"zh-tw": "暫無聯絡電話",
+		"ar": "لا يوجد رقم اتصال"
 	},
 	"i7dtn3": {
 		"zh-cn": "离你 ",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Distance from you ",
+		"zh-tw": "距離您 ",
+		"ar": "يبعد عنك "
 	},
 	"qsft46": {
 		"zh-cn": "搜索门店名称",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Search store name",
+		"zh-tw": "搜尋門店名稱",
+		"ar": "ابحث عن اسم المتجر"
 	},
 	"1iv25h9": {
 		"zh-cn": "搜索暂无匹配的门店",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "No matching stores found",
+		"zh-tw": "搜尋暫無匹配門店",
+		"ar": "لا توجد متاجر مطابقة"
 	},
 	"a8r9964": {
 		"zh-cn": "专属门店",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Exclusive store",
+		"zh-tw": "專屬門店",
+		"ar": "متجر مخصص"
 	},
 	"fd3laa4": {
 		"zh-cn": "电话咨询",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Call for consultation",
+		"zh-tw": "電話諮詢",
+		"ar": "استشارة عبر الهاتف"
 	},
 	"gpql5j4": {
 		"zh-cn": "联系顾问",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Contact consultant",
+		"zh-tw": "聯繫顧問",
+		"ar": "اتصل بالمستشار"
 	},
 	"cqasy3": {
 		"zh-cn": "到这去",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Go there",
+		"zh-tw": "導航前往",
+		"ar": "اذهب إلى هناك"
 	},
 	"64cgiy7": {
 		"zh-cn": "长按识别二维码",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Long press to scan QR code",
+		"zh-tw": "長按識別二維碼",
+		"ar": "اضغط مطولاً لمسح رمز QR"
 	},
 	"e7xrau4": {
 		"zh-cn": "添加导购",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Add sales advisor",
+		"zh-tw": "添加導購",
+		"ar": "إضافة مستشار مبيعات"
 	},
 	"ue5d4uc": {
 		"zh-cn": "长按扫码联系您的专属顾问",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Long press to scan and contact your advisor",
+		"zh-tw": "長按掃碼聯繫您的專屬顧問",
+		"ar": "اضغط مطولاً للمسح والتواصل مع مستشارك"
 	},
 	"cozcb04": {
 		"zh-cn": "您的顾问",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Your consultant",
+		"zh-tw": "您的顧問",
+		"ar": "مستشارك"
 	},
 	"daldz24": {
 		"zh-cn": "晚安家居",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Goodnight Home",
+		"zh-tw": "晚安家居",
+		"ar": "جودنايت هوم"
 	},
 	"dlopzd4": {
 		"zh-cn": "查看案例",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "View cases",
+		"zh-tw": "查看案例",
+		"ar": "عرض الحالات"
 	},
 	"h6pg2": {
 		"zh-cn": "户型",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Layout",
+		"zh-tw": "戶型",
+		"ar": "المخطط"
 	},
 	"qka62": {
 		"zh-cn": "风格",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Style",
+		"zh-tw": "風格",
+		"ar": "النمط"
 	},
 	"qf2l2": {
 		"zh-cn": "面积",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Area",
+		"zh-tw": "面積",
+		"ar": "المساحة"
 	},
 	"1fu8w4": {
 		"zh-cn": "3D方案",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "3D design",
+		"zh-tw": "3D方案",
+		"ar": "تصميم ثلاثي الأبعاد"
 	},
 	"fludt3": {
 		"zh-cn": "杭州市",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Hangzhou",
+		"zh-tw": "杭州市",
+		"ar": "هانغتشو"
 	},
 	"hge52": {
 		"zh-cn": "排序",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Sort",
+		"zh-tw": "排序",
+		"ar": "ترتيب"
 	},
 	"ddqmdj4": {
 		"zh-cn": "本地案例",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Local cases",
+		"zh-tw": "本地案例",
+		"ar": "حالات محلية"
 	},
 	"amvpnc4": {
 		"zh-cn": "全国案例",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Nationwide cases",
+		"zh-tw": "全國案例",
+		"ar": "حالات على مستوى الدولة"
 	},
 	"ebo52": {
 		"zh-cn": "全国",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Nationwide",
+		"zh-tw": "全國",
+		"ar": "على مستوى الدولة"
 	},
 	"d5drqf4": {
 		"zh-cn": "搜索文案",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Search copy",
+		"zh-tw": "搜尋文案",
+		"ar": "نص البحث"
 	},
 	"x89ezg7": {
 		"zh-cn": "底纹词滚动展示",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Scrolling background keywords",
+		"zh-tw": "底紋詞滾動展示",
+		"ar": "عرض كلمات خلفية متحركة"
 	},
 	"ug8hdo8": {
 		"zh-cn": "店铺信息获取失败",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Failed to load store information",
+		"zh-tw": "店鋪資訊取得失敗",
+		"ar": "فشل في تحميل معلومات المتجر"
 	},
 	"l5392": {
 		"zh-cn": "离你",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Distance from you",
+		"zh-tw": "距離您",
+		"ar": "يبعد عنك"
 	},
 	"twov0dh": {
 		"zh-cn": "退款金额由系统计算，商家后台可调整",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Refund amount is calculated by the system and can be adjusted in the merchant backend",
+		"zh-tw": "退款金額由系統計算，商家後台可調整",
+		"ar": "يتم حساب مبلغ الاسترداد بواسطة النظام ويمكن للتاجر تعديله في لوحة التحكم"
 	},
 	"xbsmy75": {
 		"zh-cn": "优惠券赠品",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Coupon gift",
+		"zh-tw": "優惠券贈品",
+		"ar": "هدية القسيمة"
 	},
 	"cq1sp3": {
 		"zh-cn": "券赠品",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Coupon gift",
+		"zh-tw": "券贈品",
+		"ar": "هدية القسيمة"
 	},
 	"pug2tx5": {
 		"zh-cn": "满足门槛：",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Threshold:",
+		"zh-tw": "滿足門檻：",
+		"ar": "الحد الأدنى:"
 	},
 	"34dpi25": {
 		"zh-cn": "赠送数量：",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Quantity:",
+		"zh-tw": "贈送數量：",
+		"ar": "الكمية:"
 	},
 	"n6k3c96": {
 		"zh-cn": "券模板ID：",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Coupon template ID:",
+		"zh-tw": "券模板ID：",
+		"ar": "معرّف قالب القسيمة:"
 	},
 	"bq5dbc5": {
 		"zh-cn": "活动库存：",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Campaign stock:",
+		"zh-tw": "活動庫存：",
+		"ar": "مخزون الحملة:"
 	},
 	"f1ow2": {
 		"zh-cn": "发送",
-		"en": "",
-		"zh-tw": "",
-		"ar": ""
+		"en": "Send",
+		"zh-tw": "發送",
+		"ar": "إرسال"
 	}
 }
