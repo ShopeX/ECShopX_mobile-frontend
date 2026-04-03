@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.4.0...v4.4.1) (2026-04-03)
+
+
+### Features
+
+* i18n coverage, trade/store flows, and home widgets ([a090ef3](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/a090ef3371942073756dffd381aa15387f0ce793))
+
 ## [4.4.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.3.7...v4.4.0) (2026-03-27)
 
 
