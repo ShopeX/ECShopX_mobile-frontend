@@ -12,7 +12,14 @@ import api from '@/api'
 import doc from '@/doc'
 import { useDebounce } from '@/hooks'
 import S from '@/spx'
-import { pickBy, classNames, styleNames, showToast, VERSION_PLATFORM, getDistributorId } from '@/utils'
+import {
+  pickBy,
+  classNames,
+  styleNames,
+  showToast,
+  VERSION_PLATFORM,
+  getDistributorId
+} from '@/utils'
 import CompFirstCategory from './comp-first-category'
 import CompSecondCategory from './comp-second-category'
 import CompThirdCategory from './comp-third-category'
@@ -175,9 +182,13 @@ function CompsCategoryAddCart(props) {
 
   const getCategoryList = async () => {
     // ecsahopex ：商品管理分类   云店/官网/内购：商品销售分类
-    const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {
-      distributor_id: getDistributorId()
-    })
+    const res = await api.category.get(
+      VERSION_PLATFORM
+        ? { is_main_category: 1 }
+        : {
+            distributor_id: getDistributorId()
+          }
+    )
 
     const currentList = pickBy(res, {
       name: 'category_name',
@@ -361,13 +372,13 @@ function CompsCategoryAddCart(props) {
       draft.thirdList =
         _thirdList.length > 0
           ? [
-            {
-              name: '全部',
-              img: '',
-              id: ''
-            },
-            ..._thirdList
-          ]
+              {
+                name: '全部',
+                img: '',
+                id: ''
+              },
+              ..._thirdList
+            ]
           : []
     })
   }

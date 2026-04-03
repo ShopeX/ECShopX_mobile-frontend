@@ -42,7 +42,8 @@ class EntryLaunch {
     const pageStack = Taro.getCurrentPages()
 
     const resPage = pageStack.find(
-      (item) => item != null && item.route == options?.path && _isEqual(options.query, item.$taroParams)
+      (item) =>
+        item != null && item.route == options?.path && _isEqual(options.query, item.$taroParams)
     )
 
     // 只返回小程序启动时的参数（包含冷启动和热启动）
@@ -315,7 +316,9 @@ class EntryLaunch {
    */
   async getAddressByLnglatWebAPI(lng, lat) {
     if (lat == null || lng == null) return { error: '地址解析错误' }
-    const key = `${Number(lng).toFixed(LNGLAT_CACHE_PRECISION)}_${Number(lat).toFixed(LNGLAT_CACHE_PRECISION)}`
+    const key = `${Number(lng).toFixed(LNGLAT_CACHE_PRECISION)}_${Number(lat).toFixed(
+      LNGLAT_CACHE_PRECISION
+    )}`
     const now = Date.now()
     if (
       this._lnglatCache &&

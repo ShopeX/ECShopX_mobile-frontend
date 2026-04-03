@@ -6,7 +6,16 @@
   .btn-wrap {
     padding: 20px;
   }
+  /* taro-ui 默认 .at-tabs 为 height:100%，本页只有头部无 pane，会占满屏；改为随内容高度 */
   .at-tabs {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+
+    &__body {
+      display: none;
+    }
+
     &__item {
       &--active {
         color: var(--color-dianwu-primary);

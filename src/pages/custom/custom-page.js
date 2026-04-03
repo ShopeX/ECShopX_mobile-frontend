@@ -9,7 +9,7 @@ import Taro, {
   useRouter,
   getCurrentInstance,
   useShareAppMessage,
-  useShareTimeline,
+  useShareTimeline
 } from '@tarojs/taro'
 import { ScrollView, View } from '@tarojs/components'
 import qs from 'qs'
@@ -37,7 +37,17 @@ const initialState = {
 function CustomPage(props) {
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const { wgts, loading, shareInfo, skuPanelOpen, selectType, info, isShowTabBar, scrollIntoView, navbarHeight } = state
+  const {
+    wgts,
+    loading,
+    shareInfo,
+    skuPanelOpen,
+    selectType,
+    info,
+    isShowTabBar,
+    scrollIntoView,
+    navbarHeight
+  } = state
   const MSpSkuSelect = React.memo(SpSkuSelect)
   const pageRef = useRef()
   const loginRef = useRef()

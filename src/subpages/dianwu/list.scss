@@ -19,6 +19,10 @@
     padding: 0 20px;
     height: $header-height;
     background-color: #fff;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    flex-shrink: 0;
 
     .sp-search-input {
       width: 100%;
@@ -83,11 +87,9 @@
       background-color: var(--color-dianwu-primary);
     }
   }
+  /* 不在此层做 overflow 滚动：由 SpPage 主体滚动，与 SpScrollView 的视口触底检测一致 */
   .item-list-scroll {
     padding: 20px 0;
-    // @include page-scroll($header-height, $footer-height);
-    height: calc(100% - $header-height);
-    overflow-y: scroll;
     box-sizing: border-box;
   }
   .item-wrap {

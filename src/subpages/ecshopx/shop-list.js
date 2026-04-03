@@ -8,7 +8,17 @@ import { AtDrawer, AtSearchBar } from 'taro-ui'
 import { useEffect, useState, useCallback, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpNewInput, SpSearch, SpNewFilterDrawer, SpSearchBar, SpPage, SpScrollView, SpButton, SpSelect, SearchBar } from '@/components'
+import {
+  SpNewInput,
+  SpSearch,
+  SpNewFilterDrawer,
+  SpSearchBar,
+  SpPage,
+  SpScrollView,
+  SpButton,
+  SpSelect,
+  SearchBar
+} from '@/components'
 import { SpFilterBar, SpShopItem, SpTagBar, SpDrawer } from '@/subpages/components'
 import doc from '@/doc'
 import * as shopDoc from '@/doc/shop'

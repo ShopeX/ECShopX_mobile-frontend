@@ -44,29 +44,33 @@ import './index.scss'
  * />
  */
 
-const SpTag = (props, ref) => {
+const SpTag = React.forwardRef((props, ref) => {
   const { type = 'default', className, style, color, backgroundColor, borderColor } = props
 
   const handleClick = (e) => {
-    props.onClick(e)
+    if (typeof props.onClick === 'function') {
+      props.onClick(e)
+    }
   }
 
   const customStyle = {}
   if (color) customStyle.color = color
   if (backgroundColor) customStyle.backgroundColor = backgroundColor
   if (borderColor) customStyle.borderColor = borderColor
+  const normalizedStyle = style && typeof style === 'object' ? style : {}
+  const label = props.label == null ? '' : String(props.label)
 
   return (
     <View
       ref={ref}
       className={classNames('sp-tag', `sp-tag--${type}`, className)}
-      style={{ ...customStyle, ...style }}
+      style={{ ...customStyle, ...normalizedStyle }}
       onClick={handleClick}
     >
-      <Text className='sp-tag__text'>{props.label}</Text>
+      <Text className='sp-tag__text'>{label}</Text>
     </View>
   )
-}
+})
 
 SpTag.options = {
   addGlobalClass: true

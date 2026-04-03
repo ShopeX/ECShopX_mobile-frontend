@@ -66,6 +66,7 @@ function DianWuCashier() {
     distributor_id
   } = state
   const pageRef = useRef()
+  const getCashierListRef = useRef(null)
   const scanIsUseableRef = useRef(true)
   const audioContextRef = useRef()
   const $instance = getCurrentInstance() || {}
@@ -166,6 +167,7 @@ function DianWuCashier() {
       draft.cartList = pickBy(valid_cart, doc.dianwu.CART_GOODS_ITEM)
     })
   }
+  getCashierListRef.current = getCashierList
 
   const onChangeInputNumber = useDebounce(async ({ cartId, itemId }, num) => {
     await dianwuApi.updateCartData({

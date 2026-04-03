@@ -248,12 +248,35 @@
 
   .collection-modal {
     .total-mount {
-      text-align: center;
       margin: 30px 0;
+      &__row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+      }
+    }
+    .change-price-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-width: 72px;
+      height: 72px;
+      padding: 0 20px;
+      border-radius: 12px;
+      border: 1px solid var(--color-dianwu-primary);
+      box-sizing: border-box;
+      flex-shrink: 0;
       .icon-edit {
         font-size: 40px;
         color: var(--color-dianwu-primary);
-        margin-left: 4px;
+      }
+      &__txt {
+        font-size: 28px;
+        color: var(--color-dianwu-primary);
+        line-height: 1;
       }
     }
     .sp-cell {

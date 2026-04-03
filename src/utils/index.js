@@ -393,13 +393,13 @@ export const browser = (() => {
 
 // 注入美洽客服插件
 export const meiqiaInit = () => {
-  ; (function (m, ei, q, i, a, j, s) {
+  ;(function (m, ei, q, i, a, j, s) {
     m[i] =
       m[i] ||
       function () {
-        ; (m[i].a = m[i].a || []).push(arguments)
+        ;(m[i].a = m[i].a || []).push(arguments)
       }
-      ; (j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
+    ;(j = ei.createElement(q)), (s = ei.getElementsByTagName(q)[0])
     j.async = true
     j.charset = 'UTF-8'
     j.src = 'https://static.meiqia.com/dist/meiqia.js?_=t'
@@ -773,11 +773,59 @@ export const isShowMarketPrice = (mktPrice) => {
   return !isNaN(mktPrice) && mktPrice > 0
 }
 
-export const onEventChannel = (eventName, data) => {
-  const pages = Taro.getCurrentPages()
+/**
+ * 打开方页面与上一页通信的 EventChannel。
+ * Taro 3 小程序需从 getCurrentInstance().page 取，仅用 getCurrentPages 可能得到无 emit 的桩对象。
+ */
+export function getCurrentOpenerEventChannel() {
+  try {
+    const inst = getCurrentInstance?.()
+    const fromPage = inst?.page?.getOpenerEventChannel?.()
+    if (fromPage && typeof fromPage.emit === 'function') {
+      return fromPage
+    }
+  } catch (e) {
+    // ignore
+  }
+  const pages = Taro.getCurrentPages?.() || []
   const current = pages[pages.length - 1]
-  const eventChannel = current.getOpenerEventChannel()
-  eventChannel.emit(eventName, data)
+  const ch = current?.getOpenerEventChannel?.()
+  if (ch && typeof ch.emit === 'function') {
+    return ch
+  }
+  return null
+}
+
+/**
+ * 向 navigateTo 来源页发送事件；原生 Channel 不可用时回退 Taro.eventCenter（需对端 on 同名事件）。
+ * @param {string} eventName
+ * @param {*} [data] 有则 emit(eventName, data)，无则 emit(eventName)
+ */
+export function emitOpenerEvent(eventName, data) {
+  const eventChannel = getCurrentOpenerEventChannel()
+  if (eventChannel) {
+    try {
+      if (arguments.length >= 2) {
+        eventChannel.emit(eventName, data)
+      } else {
+        eventChannel.emit(eventName)
+      }
+      return
+    } catch (e) {
+      // fall through
+    }
+  }
+  if (typeof Taro.eventCenter?.trigger === 'function') {
+    if (arguments.length >= 2) {
+      Taro.eventCenter.trigger(eventName, data)
+    } else {
+      Taro.eventCenter.trigger(eventName)
+    }
+  }
+}
+
+export const onEventChannel = (eventName, data) => {
+  emitOpenerEvent(eventName, data)
 }
 
 // 支付宝小程序取code

@@ -3,11 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import Taro, {
-  useShareAppMessage,
-  useShareTimeline,
-  useDidShow
-} from '@tarojs/taro'
+import Taro, { useShareAppMessage, useShareTimeline, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -319,8 +315,16 @@ function Home() {
       immersive={pageData?.base?.isImmersive}
       showpoweredBy={false}
       pageConfig={pageData?.base || {}}
-      renderFloat={wgts.length > 0 && <><CompFloatMenu /><FloatSalesperson /></>}
+      renderFloat={
+        wgts.length > 0 && (
+          <>
+            <CompFloatMenu />
+            <FloatSalesperson />
+          </>
+        )
+      }
       renderFooter={<SpTabbar />}
+      nearbyText={nearbyText}
       onScrollToTop={() => {
         // 先设置为一个很小的非0值，确保触发滚动变化
         setState((draft) => {
@@ -337,7 +341,9 @@ function Home() {
       navigateMantle={navigateMantle}
       onReady={({ gNavbarH, footerHeight }) => {
         setState((draft) => {
-          draft.bodyHeight = `calc(100vh - ${pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
+          draft.bodyHeight = `calc(100vh - ${
+            pageData?.base?.isImmersive ? 0 : gNavbarH
+          }px - ${footerHeight})`
           draft.navbarHeight = gNavbarH
         })
       }}

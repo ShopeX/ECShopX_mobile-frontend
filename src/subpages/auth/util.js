@@ -44,8 +44,22 @@ async function setTokenAndRedirect(token = '', tokenSetSuccessCallback) {
       : '/subpages/member/index'
     // 清空店铺进店规则检查
     Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
-    debugger
-    window.location.href = `${window.location.origin}${url}`
+    // 站内路径：与小程序一致用 redirectTo（H5 为路由替换，不占「返回」栈）；外链用 location.replace
+    if (/^https?:\/\//i.test(url)) {
+      if (typeof window !== 'undefined') {
+        window.location.replace(url)
+      }
+    } else {
+      const path = url.startsWith('/') ? url : `/${url}`
+      try {
+        await Taro.redirectTo({ url: path })
+      } catch (e) {
+        // 例如目标为 tabBar 页时 redirectTo 会失败，再整页替换
+        if (typeof window !== 'undefined') {
+          window.location.replace(`${window.location.origin}${path}`)
+        }
+      }
+    }
   }
 }
 

@@ -390,9 +390,7 @@ function GoodReservate(props) {
           if (!blockFields.length) return null
           return (
             <View key={blockIdx} className='form-block'>
-              {block.title ? (
-                <View className='form-block__title'>{block.title}</View>
-              ) : null}
+              {block.title ? <View className='form-block__title'>{block.title}</View> : null}
               {blockFields.map((item, idx) => (
                 <SpFormItem label={item.field_title} prop={item.id} key={item.id || idx}>
                   {renderFormItem(item)}
@@ -537,8 +535,8 @@ function GoodReservate(props) {
             circle
             type='primary'
             className='submit-btn'
-style={`background: ${primary}; border-color: ${primary}`}
-          onClick={() => handleCheckboxBtnClick()}
+            style={`background: ${primary}; border-color: ${primary}`}
+            onClick={() => handleCheckboxBtnClick()}
           >
             确定
           </AtButton>

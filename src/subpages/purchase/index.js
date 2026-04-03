@@ -12,7 +12,15 @@ import Taro, {
 } from '@tarojs/taro'
 import { View, Image, ScrollView, Button } from '@tarojs/components'
 import { useSelector, useDispatch } from 'react-redux'
-import { SpPage, SpSearch, SpPrivacyModal, SpTabbar, SpFloatMenus, SpPoster, SpImage } from '@/components'
+import {
+  SpPage,
+  SpSearch,
+  SpPrivacyModal,
+  SpTabbar,
+  SpFloatMenus,
+  SpPoster,
+  SpImage
+} from '@/components'
 import { SharePurchase } from '@/subpages/components'
 import api from '@/api'
 import {

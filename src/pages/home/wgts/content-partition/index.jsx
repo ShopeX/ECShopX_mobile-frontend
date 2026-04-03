@@ -40,15 +40,15 @@ export default function WgtContentPartition(props) {
   // 初始化：找到第一个激活的导航项
   useEffect(() => {
     if (isFirstRender.current) {
-    const activeIndex = navList.findIndex((item) => item.isActive)
-    if (activeIndex >= 0) {
-      setCurrentIndex(activeIndex)
-      setChildren(navList[activeIndex]?.children || [])
-    } else {
-      setCurrentIndex(0)
-      setChildren(navList[0]?.children || [])
-    }
-    isFirstRender.current = false
+      const activeIndex = navList.findIndex((item) => item.isActive)
+      if (activeIndex >= 0) {
+        setCurrentIndex(activeIndex)
+        setChildren(navList[activeIndex]?.children || [])
+      } else {
+        setCurrentIndex(0)
+        setChildren(navList[0]?.children || [])
+      }
+      isFirstRender.current = false
     }
   }, [navList])
 
@@ -181,10 +181,10 @@ export default function WgtContentPartition(props) {
 
   const initContetn = (index) => {
     let viewIndex = index > 0 ? index - 1 : 0
-    setScrollView(`nav-item-${viewIndex}-${id}`)
     setCurrentIndex(index)
     setChildren(navList[index]?.children || [])
     Taro.nextTick(() => {
+      setScrollView(`nav-item-${viewIndex}-${id}`)
       setScrollIntoView(`wgt-content-partition-section-${index}-${id}`)
     })
   }
@@ -194,10 +194,10 @@ export default function WgtContentPartition(props) {
       className={classNames('wgt wgt-content-partition')}
       id={`wgt-content-partition-${id || ''}`}
     >
-    <View
-      id={`wgt-content-partition-sticky-trigger-${id}`}
-      style={{ height: 0, overflow: 'hidden' }}
-    />
+      <View
+        id={`wgt-content-partition-sticky-trigger-${id}`}
+        style={{ height: 0, overflow: 'hidden' }}
+      />
       <View className='wgt-content-partition__container'>
         {/* 导航栏（吸顶时传 observeId 供观察 top 判断吸顶状态，不包一层 View 以免破坏 sticky） */}
         <ContentPartitionNavBar

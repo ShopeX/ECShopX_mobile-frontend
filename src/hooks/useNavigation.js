@@ -17,7 +17,7 @@ export default (props = {}) => {
 
     const { page } = getCurrentInstance() || {}
     const allPages = Taro.getCurrentPages()
-    console.log('allPages:', allPages,page)
+    console.log('allPages:', allPages, page)
     page && (page.config.navigationBarTitleText = title)
   }
 

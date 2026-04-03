@@ -41,4 +41,4 @@ export { default as WgtHotranking } from './hotranking/index'
 export { default as WgtLocationModule } from './location-module/index'
 export { default as WgtContentPartition } from './content-partition/index'
 
-export { WgtCoupon,  WgtCouponCard }
+export { WgtCoupon, WgtCouponCard }

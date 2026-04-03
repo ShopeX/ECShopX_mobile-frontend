@@ -102,15 +102,16 @@ function SpGoodsCell(props) {
           {info?.orderItemType && info?.orderItemType != 'normal' && (
             <View className='goods-type'>{GOODS_TYPE()[info.orderItemType]}</View>
           )}
-          {info.discount_info?.map((sp, idx) => {
-            if (sp.type != 'coupon_discount' && sp.type != 'member_price') {
-              return (
-                <View className='goods-type' key={`goods-type__${idx}`}>
-                  {sp.info}
-                </View>
-              )
-            }
-          })}
+          {Array.isArray(info.discount_info) &&
+            info.discount_info?.map((sp, idx) => {
+              if (sp.type != 'coupon_discount' && sp.type != 'member_price') {
+                return (
+                  <View className='goods-type' key={`goods-type__${idx}`}>
+                    {sp.info}
+                  </View>
+                )
+              }
+            })}
           {cusActivity?.map((el) => {
             let limitTxt = ''
             let limitNum = ''

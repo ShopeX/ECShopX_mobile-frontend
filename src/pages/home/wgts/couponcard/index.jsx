@@ -5,11 +5,7 @@
 import React, { useMemo, useEffect } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
-import {
-  classNames,
-  pickBy,
-  isWeixin,
-  showToast} from '@/utils'
+import { classNames, pickBy, isWeixin, showToast } from '@/utils'
 import { useImmer } from 'use-immer'
 import { SpLogin } from '@/components'
 import api from '@/api'

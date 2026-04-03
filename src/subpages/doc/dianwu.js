@@ -92,6 +92,42 @@ export const CREATE_MEMBER_ITEM = {
   userId: 'user_id'
 }
 
+/** type 为 mark_down 的 discount_fee（分） */
+function markDownFenOne(e) {
+  if (!e || typeof e !== 'object') return 0
+  if (e.type !== 'mark_down' && e.type !== 'markDown') return 0
+  const n = Number(e.discount_fee ?? e.discountFee)
+  return Number.isFinite(n) && n > 0 ? n : 0
+}
+
+/** discount_info / discountInfo：数组、{ mark_down }、或扁平对象 */
+function markDownFenFrom(di) {
+  if (di == null) return 0
+  if (Array.isArray(di)) return di.reduce((s, e) => s + markDownFenOne(e), 0)
+  if (typeof di !== 'object') return 0
+  const inner = di.mark_down ?? di.markDown
+  return inner ? markDownFenOne(inner) : markDownFenOne(di)
+}
+
+/** 店务改价优惠（元）：mark_down 的 discount_fee 分→元；再 tradeInfo / 明细行 / price_adjustment */
+export function dianwuMarkdownAdjustmentYuan(payload, detailRoot) {
+  if (!payload || typeof payload !== 'object') return 0
+  const m = detailRoot && typeof detailRoot === 'object' ? { ...detailRoot, ...payload } : payload
+  let fen = markDownFenFrom(m.discount_info ?? m.discountInfo)
+  if (!fen && detailRoot?.tradeInfo) {
+    fen = markDownFenFrom(detailRoot.tradeInfo.discountInfo ?? detailRoot.tradeInfo.discount_info)
+  }
+  if (!fen) {
+    for (const row of m.items ?? m.order_items ?? []) {
+      fen += markDownFenFrom(row.discount_info ?? row.discountInfo)
+    }
+  }
+  if (!fen) {
+    fen = Number(m.price_adjustment ?? m.priceAdjustment) || 0
+  }
+  return fen > 0 && Number.isFinite(fen) ? fen / 100 : 0
+}
+
 export const CHECKOUT_GOODS_ITEM = {
   couponInfo: 'coupon_info',
   items: ({ items }) => {
@@ -128,6 +164,8 @@ export const CHECKOUT_GOODS_ITEM = {
   couponDiscount: ({ coupon_discount }) => (coupon_discount ? coupon_discount / 100 : 0),
   promotionDiscount: ({ promotion_discount }) =>
     promotion_discount ? promotion_discount / 100 : 0,
+  /** 改价优惠金额（元），见 dianwuMarkdownAdjustmentYuan */
+  priceAdjustment: (res) => dianwuMarkdownAdjustmentYuan(res),
   prescriptionStatus: 'prescription_status'
 }
 

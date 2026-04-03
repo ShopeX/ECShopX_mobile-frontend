@@ -43,7 +43,6 @@ function SpShop(props) {
   }
 
   const getItems = async () => {
-
     try {
       const res = await api.seckill.getWidgetItems({
         data_type: 'distributor',
@@ -92,7 +91,6 @@ function SpShop(props) {
     Taro.navigateTo({
       url: `/subpages/item/espier-detail?id=${item.itemId}&dtid=${distributor_id}`
     })
-
   }
   return (
     <View className='sp-shop' style={style}>
@@ -157,10 +155,7 @@ function SpShop(props) {
         {items.length > 0 && !loading && (
           <ScrollView scrollX className='sp-shop__goods-list' enableFlex>
             {items.map((item) => (
-              <View
-                className='sp-shop__goods-item'
-                onClick={() => handleClickItem(item)}
-              >
+              <View className='sp-shop__goods-item' onClick={() => handleClickItem(item)}>
                 <View className='sp-shop__goods-item-image'>
                   <SpImage src={item.pic} placeholderColor='#f2f3f5' mode='aspectFill' />
                   {item.store === 0 && (
@@ -177,17 +172,29 @@ function SpShop(props) {
                     <View className='sp-shop__goods-item-title-wrapper'>
                       {item.promotionSkill && (
                         <View className='sp-shop__goods-item-title-wrapper-img'>
-                          <SpImage src='fv_activity_seckill.png' mode='heightFix' width={62} height={31} />
+                          <SpImage
+                            src='fv_activity_seckill.png'
+                            mode='heightFix'
+                            width={62}
+                            height={31}
+                          />
                         </View>
                       )}
                       {item.memberPreference?.marketing_name && (
                         <View className='sp-shop__goods-item-title-wrapper-img'>
-                          <SpImage src='fv_member_preference.png' mode='heightFix' width={62} height={31} />
+                          <SpImage
+                            src='fv_member_preference.png'
+                            mode='heightFix'
+                            width={62}
+                            height={31}
+                          />
                         </View>
                       )}
                       <Text
                         className={classNames(
-                          item.tags?.length > 0 || item.discount_rate || item?.couponList?.length > 0
+                          item.tags?.length > 0 ||
+                            item.discount_rate ||
+                            item?.couponList?.length > 0
                             ? 'sp-shop__goods-item-title'
                             : 'sp-shop__goods-item-title-two',
                           {
@@ -203,29 +210,37 @@ function SpShop(props) {
                   {((item.tags && item.tags.length > 0) ||
                     (item?.couponList && item?.couponList?.length > 0) ||
                     item.discount_rate) && (
-                        <View className='sp-shop__goods-item-tags'>
-                        {item.discount_rate && <SpTag label={`${item.discount_rate}折`} type='secondary' />}
-                        {item.tags.slice(0, 3)?.map((tag, index) => (
-                          <SpTag
-                            key={index}
-                            label={tag.tag_name}
-                            type={tag.type || 'primary'}
-                            className='item-three__tag'
-                          />
-                        ))}
-                        {item.couponList?.map((coupon, index) => (
-                          <SpTag
-                            key={index}
-                            label={coupon.discount_rule}
-                            type='warning'
-                            className='sp-shop__goods-item-tag'
-                          />
-                        ))}
-                      </View>
-                    )}
+                    <View className='sp-shop__goods-item-tags'>
+                      {item.discount_rate && (
+                        <SpTag label={`${item.discount_rate}折`} type='secondary' />
+                      )}
+                      {item.tags.slice(0, 3)?.map((tag, index) => (
+                        <SpTag
+                          key={index}
+                          label={tag.tag_name}
+                          type={tag.type || 'primary'}
+                          className='item-three__tag'
+                        />
+                      ))}
+                      {item.couponList?.map((coupon, index) => (
+                        <SpTag
+                          key={index}
+                          label={coupon.discount_rule}
+                          type='warning'
+                          className='sp-shop__goods-item-tag'
+                        />
+                      ))}
+                    </View>
+                  )}
                   <View className='sp-shop__goods-item-price-container'>
                     <View className='sp-shop__goods-item-price-wrapper'>
-                      <SpPrice value={item?.mainPrice} primary color='#1A1A1A' size={30} weight={600} />
+                      <SpPrice
+                        value={item?.mainPrice}
+                        primary
+                        color='#1A1A1A'
+                        size={30}
+                        weight={600}
+                      />
                       {Number(item?.originalPrice || 0) / 100 > Number(item?.mainPrice || 0) && (
                         <View className='sp-shop__goods-item-original-price-wrapper ml-8'>
                           <SpPrice

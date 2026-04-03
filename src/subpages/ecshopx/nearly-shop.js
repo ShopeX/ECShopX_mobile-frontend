@@ -2,18 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useCallback, useRef, useState } from 'react'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import { View, Text, Picker, Input } from '@tarojs/components'
+import React, { useEffect, useRef, useState } from 'react'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { View, Text, Input } from '@tarojs/components'
 import { useSelector, useDispatch, useStore } from 'react-redux'
 import { useImmer } from 'use-immer'
-import { SpPage, SpScrollView, SpLogin, SpAddress } from '@/components'
+import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import api from '@/api'
-import { usePage, useLogin } from '@/hooks'
-import doc from '@/doc'
+import { useLogin } from '@/hooks'
 import * as shopDoc from '@/doc/shop'
-import { entryLaunch, pickBy, classNames, showToast, log, isArray, isObject } from '@/utils'
+import { entryLaunch, pickBy, classNames, log, isObject } from '@/utils'
 import CompShopItem from './comps/comp-shopitem'
 import './nearly-shop.scss'
 
@@ -128,7 +127,8 @@ function NearlyShop(props) {
       pageSize,
       search_type: 2, // 1=搜索商品；2=搜索门店
       sort_type: 1,
-      type
+      type,
+      is_valid: true
     }
     if (type == 0) {
       //经纬度

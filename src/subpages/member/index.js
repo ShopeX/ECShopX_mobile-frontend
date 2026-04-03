@@ -16,7 +16,7 @@ import S from '@/spx'
 import qs from 'qs'
 import req from '@/api/req'
 import { buildSharePath, getMemberLevel } from '@/utils'
-import { SpLogin, SpImage, SpTabbar, SpPage, SpCell } from '@/components'
+import { SpLogin, SpImage, SpTabbar, SpPage, SpCell, SpPoweredBy } from '@/components'
 import api from '@/api'
 import * as communityApi from '@/api/community'
 import {
@@ -44,7 +44,6 @@ import { useLogin, useLocation } from '@/hooks'
 import { updateDeliveryPersonnel } from '@/store/slices/cart'
 import CompMenu from './comps/comp-menu'
 import './index.scss'
-import SpPoweredBy from '@/components/sp-powered-by'
 
 const initialConfigState = {
   banner: {
@@ -462,7 +461,9 @@ function MemberIndex(props) {
       title='会员中心'
       onReady={({ gNavbarH, footerHeight }) => {
         setState((draft) => {
-          draft.bodyHeight = `calc(100vh - ${state.pageData?.base?.isImmersive ? 0 : gNavbarH}px - ${footerHeight})`
+          draft.bodyHeight = `calc(100vh - ${
+            state.pageData?.base?.isImmersive ? 0 : gNavbarH
+          }px - ${footerHeight})`
         })
       }}
     >
@@ -586,7 +587,7 @@ function MemberIndex(props) {
           onLink={handleClickService}
         />
         {/* If you remove or alter Shopex brand identifiers, you must obtain a branding removal license from Shopex.  Contact us at:  http://www.shopex.cn to purchase a branding removal license. */}
-          <SpPoweredBy />
+        <SpPoweredBy />
       </ScrollView>
     </SpPage>
   )
