@@ -126,21 +126,21 @@ const CategoryIndex = (props) => {
         })
       }}
     >
-    <View style={{ height: `calc(100vh - ${state.footerHeight} - ${state.gNavbarH}px)` }}>
-      {tabList.length > 1 && (
-        <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
-          {tabList.map((item, index) => (
-            <AtTabsPane current={activeIndex} index={index} key={item.status}></AtTabsPane>
-          ))}
-        </AtTabs>
-      )}
-      <View
-        id='category-wrap'
-        className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
-      >
-        <CompSeries info={currentList} />
+      <View style={{ height: `calc(100vh - ${state.footerHeight} - ${state.gNavbarH}px)` }}>
+        {tabList.length > 1 && (
+          <AtTabs current={activeIndex} tabList={tabList} onClick={fnSwitchSeries}>
+            {tabList.map((item, index) => (
+              <AtTabsPane current={activeIndex} index={index} key={item.status}></AtTabsPane>
+            ))}
+          </AtTabs>
+        )}
+        <View
+          id='category-wrap'
+          className={`${hasSeries && tabList.length > 1 ? 'category-comps' : 'category-comps-not'}`}
+        >
+          <CompSeries info={currentList} />
+        </View>
       </View>
-    </View>
     </SpPage>
   )
 }

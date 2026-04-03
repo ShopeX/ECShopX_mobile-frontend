@@ -30,7 +30,7 @@ const initList = [
     content: '待评价',
     imgUrl: 'fv_order_daishouhuo.png',
     link: '/subpages/trade/list?status=7',
-    key: 'waitRecevieNum'
+    key: 'waitEvaluateNum'
   },
   {
     content: '售后',
@@ -106,6 +106,7 @@ export default function WgtOrderNavigation(props) {
         imgUrl: apiItem?.imgUrl || item.imgUrl
       }
     })
+    console.log('list', list)
     setOrderList(list)
   }, [info, data])
 

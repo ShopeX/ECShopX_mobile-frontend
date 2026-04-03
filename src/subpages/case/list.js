@@ -223,7 +223,10 @@ function CaseList() {
 
   const getStorageLocation = async (locationInfo) => {
     if (!isEmpty(location) || !isEmpty(locationInfo)) {
-      const data = await entryLaunch.getAddressByLnglatWebAPI(location?.lng || locationInfo?.lng, location?.lat || locationInfo?.lat)
+      const data = await entryLaunch.getAddressByLnglatWebAPI(
+        location?.lng || locationInfo?.lng,
+        location?.lat || locationInfo?.lat
+      )
       const { city, error } = data
       if (error) {
         setState((draft) => {
@@ -477,8 +480,8 @@ function CaseList() {
                 {tagListConfig.map((item, index) => {
                   const checkedGroupkey = checked
                     ? checked.find((checkedItem) => {
-                      return tagContentList[item.key].find((iitem) => iitem.id === checkedItem.id)
-                    })
+                        return tagContentList[item.key].find((iitem) => iitem.id === checkedItem.id)
+                      })
                     : null
                   const itemCls = classNames('sp-tag--head-item', {
                     'sp-tag--head-checked': !!checkedGroupkey

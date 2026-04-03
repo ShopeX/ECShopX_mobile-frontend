@@ -186,6 +186,7 @@ const Slider = (props) => {
             onClick={() => {
               if (item.media_type == 'video') {
                 togglePlay(idx)
+                linkPage(item)
               }
             }}
           >

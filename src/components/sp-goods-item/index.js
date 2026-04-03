@@ -112,10 +112,11 @@ function SpGoodsItem(props) {
       }
     }
 
-    const url = `${!!point || goodsType == 'point'
-      ? '/subpages/pointshop/espier-detail'
-      : '/subpages/item/espier-detail'
-      }?${qs.stringify(query)}`
+    const url = `${
+      !!point || goodsType == 'point'
+        ? '/subpages/pointshop/espier-detail'
+        : '/subpages/item/espier-detail'
+    }?${qs.stringify(query)}`
     Taro.navigateTo({
       url
     })
@@ -332,9 +333,9 @@ SpGoodsItem.defaultProps = {
   mode: 'widthFix',
   goodsType: 'normal',
   lazyLoad: true,
-  onChange: () => { },
-  onAddToCart: () => { },
-  onStoreClick: () => { }
+  onChange: () => {},
+  onAddToCart: () => {},
+  onStoreClick: () => {}
 }
 
 export default SpGoodsItem

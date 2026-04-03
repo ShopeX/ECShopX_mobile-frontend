@@ -132,13 +132,9 @@ function AddressIndex(props) {
     const deletedId = item[ADDRESS_ID]
     const reduxId = address?.[ADDRESS_ID] ?? address?.address_id
     const matchesRedux =
-      deletedId != null &&
-      reduxId != null &&
-      String(reduxId) === String(deletedId)
+      deletedId != null && reduxId != null && String(reduxId) === String(deletedId)
     const matchesSelected =
-      deletedId != null &&
-      selectedId != null &&
-      String(selectedId) === String(deletedId)
+      deletedId != null && selectedId != null && String(selectedId) === String(deletedId)
 
     if (matchesRedux || matchesSelected) {
       updateChooseAddress(null)

@@ -198,12 +198,12 @@ class API {
     }
     const lang = Taro.getStorageSync('lang') || process.env.APP_DEFAULT_LANGUAGE
     if (lang) {
-    const langMap = {
-      zhcn: 'zh-CN',
-      en: 'en-CN',
-      zhtw: 'zh-TW',
-      ar: 'ar-SA'
-    }
+      const langMap = {
+        zhcn: 'zh-CN',
+        en: 'en-CN',
+        zhtw: 'zh-TW',
+        ar: 'ar-SA'
+      }
       query['country_code'] = langMap[lang || process.env.APP_COUNTRY_CODE]
     }
     if (!methodIsGet) {

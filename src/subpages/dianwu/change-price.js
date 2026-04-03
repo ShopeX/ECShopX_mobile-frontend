@@ -31,7 +31,8 @@ const initialState = {
   freightFee: 0, // 运费
   totalFee: 0, // 订单应付金额
   globalPrice: '',
-  globalFreightFee: ''
+  globalFreightFee: '',
+  priceAdjustment: 0
 }
 function DianwuChangePrice(props) {
   const [state, setState] = useImmer(initialState)
@@ -44,7 +45,8 @@ function DianwuChangePrice(props) {
     freightFee,
     totalFee,
     globalPrice,
-    globalFreightFee
+    globalFreightFee,
+    priceAdjustment
   } = state
   const $instance = getCurrentInstance() || {}
   const { member } = useSelector((state) => state.dianwu)
@@ -61,7 +63,8 @@ function DianwuChangePrice(props) {
       items: _items,
       itemFeeNew,
       freightFee,
-      totalFee
+      totalFee,
+      priceAdjustment: _priceAdjustment
     } = pickBy(res, doc.dianwu.CHECKOUT_GOODS_ITEM)
     _items.forEach((item) => {
       item['changePrice'] = ''
@@ -73,6 +76,7 @@ function DianwuChangePrice(props) {
       draft.itemFeeNew = new Big(totalFee).minus(freightFee).toFixed(2)
       draft.freightFee = freightFee
       draft.totalFee = totalFee
+      draft.priceAdjustment = _priceAdjustment || 0
     })
     return res
   }
@@ -270,6 +274,12 @@ function DianwuChangePrice(props) {
           <Text className='label'>商品应付金额</Text>
           <SpPrice value={itemFeeNew} />
         </View>
+        {priceAdjustment > 0 && (
+          <View className='block-hd'>
+            <Text className='label'>改价优惠</Text>
+            <SpPrice value={-priceAdjustment} />
+          </View>
+        )}
         <View className='block-bd'>
           <View className='bd-item'>
             <Text className='label'>一键改价</Text>

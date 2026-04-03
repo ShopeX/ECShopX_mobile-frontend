@@ -59,7 +59,15 @@ function SpImage(props) {
     }
 
     return url
-  }, [props.src, props.isOss, props.width, props.height, props.quality, props.ossMaxWidth, props.ossWebp])
+  }, [
+    props.src,
+    props.isOss,
+    props.width,
+    props.height,
+    props.quality,
+    props.ossMaxWidth,
+    props.ossWebp
+  ])
 
   // 计算容器高度（基于宽高比）
   const containerHeight = useMemo(() => {
@@ -171,9 +179,9 @@ SpImage.defaultProps = {
   ossMaxWidth: 750, // 未传 width/height 时限制最长边（px），避免大图原图
   ossWebp: true, // 输出 WebP 减小体积，设为 false 可关闭
   placeholderColor: 'transparent',
-  onClick: () => { },
-  onError: () => { },
-  onLoad: () => { }
+  onClick: () => {},
+  onError: () => {},
+  onLoad: () => {}
 }
 
 export default React.memo(SpImage)

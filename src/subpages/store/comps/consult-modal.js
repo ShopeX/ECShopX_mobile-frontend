@@ -40,30 +40,23 @@ function ConsultModal({ visible, type, data, onClose }) {
   }
 
   const type2Primary =
-    data.primaryLine != null && data.primaryLine !== ''
-      ? data.primaryLine
-      : data.brandLine || ''
+    data.primaryLine != null && data.primaryLine !== '' ? data.primaryLine : data.brandLine || ''
 
   const type2Secondary =
     data.secondaryLine != null && data.secondaryLine !== ''
       ? data.secondaryLine
       : data.storeName
-        ? `${data.storeName} 门店顾问`
-        : data.salespersonName
-          ? `${data.salespersonName} 门店顾问`
-          : ''
+      ? `${data.storeName} 门店顾问`
+      : data.salespersonName
+      ? `${data.salespersonName} 门店顾问`
+      : ''
 
   const renderQrBlock = (primaryLine, secondaryLine) => (
     <View className='qr-code'>
       <View className='first-tip'>
         <Text>长按识别二维码</Text>
       </View>
-      <Image
-        className='qrcode-image'
-        src={data.qrcodeUrl}
-        mode='aspectFit'
-        showMenuByLongpress
-      />
+      <Image className='qrcode-image' src={data.qrcodeUrl} mode='aspectFit' showMenuByLongpress />
       {primaryLine ? (
         <View className='store-name'>
           <Text>{primaryLine}</Text>

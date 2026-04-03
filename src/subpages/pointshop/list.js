@@ -8,7 +8,20 @@ import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { AtDrawer, AtTabs, AtSearchBar } from 'taro-ui'
-import { GoodsItem, SpGoodsItem, SpSearchBar, SpNavBar, SpLoadMore, TabBar, SpPage, SpScrollView, SpSelect, SpPoint, SpImage, SpInput as AtInput } from '@/components'
+import {
+  GoodsItem,
+  SpGoodsItem,
+  SpSearchBar,
+  SpNavBar,
+  SpLoadMore,
+  TabBar,
+  SpPage,
+  SpScrollView,
+  SpSelect,
+  SpPoint,
+  SpImage,
+  SpInput as AtInput
+} from '@/components'
 import { SpFilterBar, SpTagBar, SpDrawer } from '@/subpages/components'
 import doc from '@/doc'
 import api from '@/api'

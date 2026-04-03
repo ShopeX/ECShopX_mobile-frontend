@@ -85,7 +85,8 @@ const SpPage = memo(
     const setStatusBarBgColorFromSticky = useCallback((color, sourceId) => {
       setState((draft) => {
         if (color != null) {
-          if (draft.statusBarBgColor === color && draft.statusBarBgColorSourceId === sourceId) return
+          if (draft.statusBarBgColor === color && draft.statusBarBgColorSourceId === sourceId)
+            return
           draft.statusBarBgColor = color
           draft.statusBarBgColorSourceId = sourceId
         } else if (draft.statusBarBgColorSourceId === sourceId) {
@@ -133,7 +134,11 @@ const SpPage = memo(
 
     // 企微导购弹框：无导购二维码时关闭状态，避免一直为 true
     useEffect(() => {
-      if (showGuideConsultModal && !salespersonInfo?.work_qrcode && !salespersonInfo?.work_qrcode_configid) {
+      if (
+        showGuideConsultModal &&
+        !salespersonInfo?.work_qrcode &&
+        !salespersonInfo?.work_qrcode_configid
+      ) {
         dispatch(setShowGuideConsultModal(false))
       }
     }, [showGuideConsultModal, salespersonInfo, dispatch])
@@ -364,9 +369,7 @@ const SpPage = memo(
             showNavitionLeft={props.showNavitionLeft}
             statusBarBgColor={state.statusBarBgColor}
             immersiveScrollRevealBgColor={
-              props.immersive &&
-                props.pageConfig?.immersiveScrollBgColor &&
-                state.scrollTop >= 50
+              props.immersive && props.pageConfig?.immersiveScrollBgColor && state.scrollTop >= 50
                 ? props.pageConfig.immersiveScrollBgColor
                 : null
             }
@@ -382,19 +385,22 @@ const SpPage = memo(
               'padding-top': `${!props.immersive && state.customNavigation ? state.gNavbarH : 0}px`,
               'padding-bottom': props.renderFooter
                 ? Taro.pxTransform(
-                  props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
-                )
+                    props.footerHeight + (isIphoneX() ? DEFAULT_SAFE_AREA_HEIGHT : 0)
+                  )
                 : 0
             })}
           >
             <View className='sp-page__body-content'>
               {!props.loading && (
                 <View className='sp-page__body-children'>
-                  <context.Provider value={{
-                    scrollTop: state.scrollTop,
-                    setStatusBarBgColorFromSticky
-                  }}
-                  >{props.children}</context.Provider>
+                  <context.Provider
+                    value={{
+                      scrollTop: state.scrollTop,
+                      setStatusBarBgColorFromSticky
+                    }}
+                  >
+                    {props.children}
+                  </context.Provider>
                 </View>
               )}
               {props.loading && (
@@ -455,7 +461,7 @@ const SpPage = memo(
 )
 
 SpPage.defaultProps = {
-  onReady: () => { },
+  onReady: () => {},
   btnHomeEnable: true,
   className: '',
   children: null,
@@ -480,7 +486,7 @@ SpPage.defaultProps = {
   renderFooter: null,
   renderFloat: null,
   showpoweredBy: true,
-  onScrollToTop: () => { },
+  onScrollToTop: () => {},
   nearbyText: '',
   onSearchConfirm: null
 }

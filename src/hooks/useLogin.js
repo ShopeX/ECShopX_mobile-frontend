@@ -24,7 +24,7 @@ import { SG_POLICY } from '@/consts/localstorage'
 import { INVITE_ACTIVITY_ID, SG_CHECK_STORE_RULE } from '@/consts'
 
 export default (props = {}) => {
-  const { autoLogin = false, policyUpdateHook = () => { }, loginSuccess = () => { } } = props
+  const { autoLogin = false, policyUpdateHook = () => {}, loginSuccess = () => {} } = props
   const [isLogin, setIsLogin] = useState(false)
   const dispatch = useDispatch()
   const { userInfo, isNewUser } = useSelector((state) => state.user)
@@ -250,7 +250,7 @@ export default (props = {}) => {
   /**
    * @function 新用户注册
    */
-  const registerUser = () => { }
+  const registerUser = () => {}
 
   return {
     isLogin,

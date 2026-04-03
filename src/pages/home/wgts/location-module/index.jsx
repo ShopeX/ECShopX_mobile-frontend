@@ -2,14 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, {
-  useState,
-  useMemo,
-  useContext,
-  useRef,
-  useCallback,
-  useLayoutEffect
-} from 'react'
+import React, { useState, useMemo, useContext, useRef, useCallback, useLayoutEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames, pxToRpx, getElementRectBox, rpxToPx } from '@/utils'
@@ -155,24 +148,18 @@ export default function WgtLocationModule(props) {
       )
 
       // 过滤掉无效的位置信息（top 需为数字）
-      const validPositions = positions.filter(
-        (pos) => pos != null && typeof pos.top === 'number'
-      )
+      const validPositions = positions.filter((pos) => pos != null && typeof pos.top === 'number')
       if (validPositions.length === 0) return
 
       // 取 top 为负值的 section 中 top 最大的那个（负值里最接近 0，即刚离开视口顶部的那块）作为当前 tab
       const negativeTops = validPositions.filter((pos) => pos.top < 0)
       let targetIndex
       if (negativeTops.length > 0) {
-        const maxNegative = negativeTops.reduce((a, b) =>
-          a.top > b.top ? a : b
-        )
+        const maxNegative = negativeTops.reduce((a, b) => (a.top > b.top ? a : b))
         targetIndex = maxNegative.index
       } else {
         // 没有负值说明都在视口下方，取 top 最小的（最先进入视口的）
-        const firstInView = validPositions.reduce((a, b) =>
-          a.top < b.top ? a : b
-        )
+        const firstInView = validPositions.reduce((a, b) => (a.top < b.top ? a : b))
         targetIndex = firstInView.index
       }
 
@@ -181,7 +168,11 @@ export default function WgtLocationModule(props) {
       }
 
       // 吸顶颜色：先看首 section 是否已滚过顶（进入吸顶区），再以 sentinel 判断是否仍压在本模块；清空仅看 sentinel，避免上滑闪一下
-      if (base.navSticky && base.statusBarBgColor && typeof setStatusBarBgColorFromSticky === 'function') {
+      if (
+        base.navSticky &&
+        base.statusBarBgColor &&
+        typeof setStatusBarBgColorFromSticky === 'function'
+      ) {
         const [firstSectionRect, sentinelRect] = await Promise.all([
           getElementRectBox(`#content-section-0-${id}`).catch(() => null),
           getElementRectBox(`#location-module-section-sentinel-${id}`).catch(() => null)
@@ -198,7 +189,16 @@ export default function WgtLocationModule(props) {
     } catch (error) {
       console.error('获取元素位置失败', error)
     }
-  }, [id, navList, currentIndex, base.navSticky, base.statusBarBgColor, calculateNavBarHeight, setStatusBarBgColorFromSticky, statusBarSourceId])
+  }, [
+    id,
+    navList,
+    currentIndex,
+    base.navSticky,
+    base.statusBarBgColor,
+    calculateNavBarHeight,
+    setStatusBarBgColorFromSticky,
+    statusBarSourceId
+  ])
 
   // 创建节流函数 - 优化滚动性能
   const throttledScrollUpdate = useMemo(() => {
@@ -211,7 +211,15 @@ export default function WgtLocationModule(props) {
     } else {
       setStatusBarBgColorFromSticky?.(null, statusBarSourceId)
     }
-  }, [scrollTop, currentIndex, throttledScrollUpdate, base.navSticky, base.statusBarBgColor, setStatusBarBgColorFromSticky, statusBarSourceId])
+  }, [
+    scrollTop,
+    currentIndex,
+    throttledScrollUpdate,
+    base.navSticky,
+    base.statusBarBgColor,
+    setStatusBarBgColorFromSticky,
+    statusBarSourceId
+  ])
 
   return (
     <View className={classNames('wgt wgt-location-module')} id={`wgt-location-module-${id || ''}`}>

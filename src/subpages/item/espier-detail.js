@@ -59,6 +59,15 @@ import withPageWrapper from '@/hocs/withPageWrapper'
 import { ACTIVITY_LIST } from '@/consts'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
+import {
+  WgtFilm,
+  WgtSlider,
+  WgtWriting,
+  WgtGoods,
+  WgtHeading,
+  WgtHeadline,
+  WgtImgHotZone
+} from '@/pages/home/wgts'
 import CompActivityBar from './comps/comp-activitybar'
 import CompVipGuide from './comps/comp-vipguide'
 import CompCouponList from './comps/comp-couponlist'
@@ -69,15 +78,6 @@ import CompBuytoolbar from './comps/comp-buytoolbar'
 import CompShare from './comps/comp-share'
 import CompPromation from './comps/comp-promation'
 import CompGroup from './comps/comp-group'
-import {
-  WgtFilm,
-  WgtSlider,
-  WgtWriting,
-  WgtGoods,
-  WgtHeading,
-  WgtHeadline,
-  WgtImgHotZone
-} from '@/pages/home/wgts'
 import './espier-detail.scss'
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
@@ -156,8 +156,7 @@ function EspierDetail(props) {
   } = state
 
   // 路由里 dtid=undefined 会变成字符串 "undefined"，需视为无效
-  const isEmptyDtid = (v) =>
-    v == null || v === '' || v === 'undefined' || v === 'null'
+  const isEmptyDtid = (v) => v == null || v === '' || v === 'undefined' || v === 'null'
 
   useEffect(() => {
     init()

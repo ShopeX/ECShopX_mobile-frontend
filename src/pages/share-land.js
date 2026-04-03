@@ -150,7 +150,7 @@ function ShareIand() {
     if (normalizedPath === '/pages/cart/espier-checkout') {
       filteredParams['launchScene'] = 1
     }
-    
+
     // 构建目标URL
     const queryString = qs.stringify(filteredParams)
     const targetUrl = queryString ? `${normalizedPath}?${queryString}` : normalizedPath

@@ -12,15 +12,8 @@ import { AtButton, AtCountdown, AtFloatLayout } from 'taro-ui'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { SpPage, SpCell, SpPrice, SpTradeItem, SpImage, SpCashier } from '@/components'
 import { ORDER_STATUS_INFO, PAYMENT_TYPE, ORDER_DADA_STATUS, SG_ROUTER_PARAMS } from '@/consts'
-import {
-  pickBy,
-  copyText,
-  showToast,
-  classNames,
-  isArray,
-  VERSION_STANDARD,
-  entryLaunch
-} from '@/utils'
+import dayjs from 'dayjs'
+import { pickBy, copyText, showToast, isArray, VERSION_STANDARD } from '@/utils'
 import { usePayment } from '@/hooks'
 import S from '@/spx'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
@@ -69,6 +62,8 @@ function TradeDetail(props) {
     openingTime
   } = state
   const { priceSetting, pointName } = useSelector((state) => state.sys)
+  const { userInfo } = useSelector((state) => state.user)
+  console.log('userInfo:', userInfo)
 
   const {
     order_page: { market_price: enMarketPrice }
@@ -479,6 +474,7 @@ function TradeDetail(props) {
     }, 0)
     return <SpPrice unit='cent' value={marketPrice} size={28} />
   }, [info?.items])
+  const markDownDiscount = info?.discountInfo?.find((i) => i?.type === 'mark_down')
 
   return (
     <SpPage
@@ -604,34 +600,53 @@ function TradeDetail(props) {
               <View className='block-container ziti-info'>
                 <View>
                   <Text className='label'>自提点:</Text>
-                  <Text className='value'>{info.zitiInfo.name}</Text>
+                  <Text className='value'>
+                    {info?.zitiInfo?.name || distirbutorInfo?.store_name}
+                  </Text>
                 </View>
                 <View>
                   <Text className='label'>自提地址:</Text>
-                  <Text className='value'>{`${info.zitiInfo.province}${info.zitiInfo.city}${info.zitiInfo.area}${info.zitiInfo.address}`}</Text>
+                  {info?.zitiInfo ? (
+                    <Text className='value'>{`${info?.zitiInfo?.province ?? ''}${
+                      info?.zitiInfo?.city ?? ''
+                    }${info?.zitiInfo?.area ?? ''}${info?.zitiInfo?.address ?? ''}`}</Text>
+                  ) : (
+                    <Text className='value'>{distirbutorInfo?.store_address ?? ''}</Text>
+                  )}
                 </View>
                 <View>
                   <Text className='label'>联系电话:</Text>
-                  <Text className='value'>{info.zitiInfo.contract_phone}</Text>
+                  <Text className='value'>
+                    {info?.zitiInfo?.contract_phone ?? distirbutorInfo?.phone ?? ''}
+                  </Text>
                   <Text
                     className='iconfont icon-dianhua'
                     onClick={() => {
-                      const { contract_phone } = info.zitiInfo
-                      handleCallPhone(contract_phone)
+                      handleCallPhone(
+                        info?.zitiInfo?.contract_phone ?? distirbutorInfo?.phone ?? ''
+                      )
                     }}
                   />
                 </View>
                 <View>
                   <Text className='label'>提货人:</Text>
-                  <Text className='value'>{info.receiverName}</Text>
+                  <Text className='value'>{info.receiverName || userInfo?.username || ''}</Text>
                 </View>
                 <View>
                   <Text className='label'>提货时间:</Text>
-                  <Text className='value'>{`${info.zitiInfo.pickup_date} ${info.zitiInfo.pickup_time[0]}-${info.zitiInfo.pickup_time[1]}`}</Text>
+                  {info?.zitiInfo ? (
+                    <Text className='value'>{`${info?.zitiInfo?.pickup_date ?? ''} ${
+                      info?.zitiInfo?.pickup_time?.[0] ?? ''
+                    }-${info?.zitiInfo?.pickup_time?.[1] ?? ''}`}</Text>
+                  ) : (
+                    <Text className='value'>{`${
+                      dayjs(info?.deliveryTime * 1000).format('YYYY-MM-DD HH:mm:ss') ?? ''
+                    }`}</Text>
+                  )}
                 </View>
                 <View>
                   <Text className='label'>提货人手机:</Text>
-                  <Text className='value'>{info.receiverMobile}</Text>
+                  <Text className='value'>{info.receiverMobile || tradeInfo?.mobile || ''}</Text>
                 </View>
               </View>
             )
@@ -758,6 +773,12 @@ function TradeDetail(props) {
                   title='促销'
                   value={<SpPrice value={info?.promotionDiscount} size={28} />}
                 />
+                {markDownDiscount?.discount_fee > 0 && (
+                  <SpCell
+                    title='改价优惠'
+                    value={<SpPrice value={markDownDiscount?.discount_fee} size={28} />}
+                  />
+                )}
                 <SpCell title='优惠券' value={<SpPrice value={info?.couponDiscount} size={28} />} />
                 <SpCell
                   title='支付方式'

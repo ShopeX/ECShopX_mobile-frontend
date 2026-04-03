@@ -47,9 +47,13 @@ const CompsCategoryTile = (props) => {
     if (classify) return
 
     if (!seriesList.length) {
-      const res = await api.category.get(VERSION_PLATFORM ? { is_main_category: 1 } : {
-        distributor_id: getDistributorId()
-      })
+      const res = await api.category.get(
+        VERSION_PLATFORM
+          ? { is_main_category: 1 }
+          : {
+              distributor_id: getDistributorId()
+            }
+      )
       console.log('res', res)
       const currentList = pickBy(res, {
         name: 'category_name',
