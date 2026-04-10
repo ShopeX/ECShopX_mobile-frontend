@@ -42,6 +42,7 @@ function ItemActivity(props) {
     state
   const recordRef = useRef()
   const router = useRouter()
+  const filterActivityId = router.params?.activity_id
 
   // useEffect(() => {
   //   Taro.eventCenter.on('onEventRecordStatusChange', () => {
@@ -78,7 +79,7 @@ function ItemActivity(props) {
       draft.recordList = []
     })
     recordRef.current.reset()
-  }, [status])
+  }, [status, filterActivityId])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const params = {
@@ -86,6 +87,9 @@ function ItemActivity(props) {
       pageSize,
       order_type: 'normal',
       status
+    }
+    if (filterActivityId) {
+      params.activity_id = filterActivityId
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
     const nList = pickBy(list, activityDoc.RECORD_LIST)

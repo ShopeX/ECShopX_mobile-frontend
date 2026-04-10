@@ -4,7 +4,7 @@
  */
 import React, { useMemo } from 'react'
 import Taro from '@tarojs/taro'
-import { View } from '@tarojs/components'
+import { Button, View } from '@tarojs/components'
 import { SpImage, SpLogin } from '@/components'
 import { linkPage, classNames, styleNames, isArray, getDistributorId } from '@/utils'
 import { needLoginPage, needLoginPageType } from '@/consts'
@@ -91,6 +91,17 @@ function WgtImgHotZone(props) {
         ...item,
         distributor_id
       })
+
+      if (item.id === 'customerService') {
+        return (
+          <Button
+            openType='contact'
+            key={item.id || Math.random()}
+            className='wgt-imghot-zone__body_zone opacity-0'
+            style={getZoneStyle(item)}
+          />
+        )
+      }
 
     if (needLogin(item)) {
       return (

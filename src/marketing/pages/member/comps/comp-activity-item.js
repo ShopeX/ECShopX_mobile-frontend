@@ -13,7 +13,13 @@ import classNames from 'classnames'
 import './comp-activity-item.scss'
 
 function CompActivityItem(props) {
-  const { info = {}, isActivity = false, onClick = () => {}, onBtnAction = () => {} } = props
+  const {
+    info = {},
+    isActivity = false,
+    onClick = () => {},
+    onBtnAction = () => {},
+    onViewRecords = () => {}
+  } = props
 
   if (!info) {
     return null
@@ -58,8 +64,6 @@ function CompActivityItem(props) {
     onBtnAction(info, type)
   }
 
-  console.log('info', info)
-
   return (
     <View
       className={classNames('activity-item', { 'has-end': status == 'end' })}
@@ -82,8 +86,21 @@ function CompActivityItem(props) {
             <Text className='activity-item__content-reject-reason'>{reason}</Text>
           </View>
         )}
+  
         <View className='activity-item__content-btns'>
           {isActivity && <View className='activity-item__content-btn activity-btn'>会员免费</View>}
+          <View className='activity-item__content-btn-wrapper'>
+          {isActivity && recordId ? (
+          <View
+            className='activity-item__view-records'
+            onClick={(e) => {
+              e.stopPropagation()
+              onViewRecords(info)
+            }}
+          >
+            查看报名记录
+          </View>
+        ) : null}
           {actionEdit && !isActivity && (
             <View
               className='activity-item__content-btn'
@@ -108,7 +125,7 @@ function CompActivityItem(props) {
               立即报名
             </View>
           )}
-        </View>
+        </View></View>
       </View>
     </View>
   )

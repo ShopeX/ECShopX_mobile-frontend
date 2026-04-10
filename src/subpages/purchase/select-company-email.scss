@@ -5,7 +5,9 @@
 .page-purchase-auth-email {
   height: 100vh;
   background-color: #fff;
-
+  .at-input{
+    margin-left: 0 !important;
+  }
   &.select-component {
     padding: 56px 50px;
     box-sizing: border-box;
