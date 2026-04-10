@@ -4,12 +4,11 @@
  */
 import React, { useEffect, useRef } from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import { View, ScrollView, Button } from '@tarojs/components'
+import Taro, { useDidShow } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { SpPage, SpScrollView, SpSearchBar } from '@/components'
 import { SpTagBar, SpSelectModal } from '@/subpages/components'
 import api from '@/api'
-import doc from '@/doc'
 import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
@@ -37,7 +36,6 @@ function ActivityIist(props) {
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, recordList, isOpened, selectOptions, activityInfo, keyword } = state
   const recordRef = useRef()
-  const router = useRouter()
 
   useDidShow(() => {
     setState((draft) => {
@@ -80,6 +78,14 @@ function ActivityIist(props) {
   const handleItemClick = ({ activityId }) => {
     Taro.navigateTo({
       url: `/marketing/pages/member/activity-info?activity_id=${activityId}`
+    })
+  }
+
+  const handleViewRecords = (item) => {
+    const id = item?.activityId
+    if (id == null || id === '') return
+    Taro.navigateTo({
+      url: `/marketing/pages/member/item-activity?activity_id=${encodeURIComponent(id)}`
     })
   }
 
@@ -191,6 +197,7 @@ function ActivityIist(props) {
                 info={item}
                 onClick={handleItemClick}
                 onBtnAction={onBtnAction}
+                onViewRecords={handleViewRecords}
               />
             </View>
           ))}

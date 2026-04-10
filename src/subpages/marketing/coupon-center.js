@@ -11,7 +11,8 @@ import doc from '@/doc'
 import qs from 'qs'
 import { View, Text } from '@tarojs/components'
 import { pickBy, showToast, isWeixin, entryLaunch } from '@/utils'
-import { SpPage, SpScrollView, SpCoupon } from '@/components'
+import { SpPage, SpScrollView, SpCoupon, SpLogin } from '@/components'
+import { useLogin } from '@/hooks'
 import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './coupon-center.scss'
 
@@ -22,6 +23,7 @@ function CouponCenter(props) {
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
+  const { isLogin } = useLogin({ autoLogin: false })
   const { gu } = Taro.getStorageSync(SG_GUIDE_PARAMS)
   let work_userid = ''
   if (gu) {
@@ -55,7 +57,6 @@ function CouponCenter(props) {
       pagers: { total: total }
     } = await api.member.homeCouponList(params)
 
-    console.log(pickBy(list, doc.coupon.COUPON))
     setState((draft) => {
       draft.couponList = couponList.concat(pickBy(list, doc.coupon.COUPON))
     })
@@ -119,25 +120,39 @@ function CouponCenter(props) {
     }
   }
 
+  const couponBtnLabel = (status) =>
+    ({
+      0: '已领完',
+      1: '立即领取',
+      2: '已领取'
+    })[status]
+
+  const renderCouponBtn = (item, index) => {
+    const label = couponBtnLabel(item.couponStatus)
+    const text = <Text>{label}</Text>
+    // 未登录领取：用 SpLogin 在本页弹窗登录，避免请求 401 被全局重定向到个人中心
+    if (item.couponStatus === 1 && !isLogin) {
+      return (
+        <SpLogin onChange={() => handleClickCouponItem(item, index)}>{text}</SpLogin>
+      )
+    }
+    return text
+  }
+
   return (
     <SpPage className='page-coupon-center' scrollToTopBtn>
       <SpScrollView className='list-scroll' fetch={fetch}>
         {couponList.map((item, index) => (
           <View className='coupon-item-wrap' key={`coupon-item__${index}`}>
-            <SpCoupon info={item} onClick={handleClickCouponItem.bind(this, item, index)}>
-              <Text>
-                {
-                  {
-                    0: '已领完',
-                    1: '立即领取',
-                    2: '已领取'
-                  }[item.couponStatus]
-                }
-                {/* {time > item.send_begin_time && item.getted !== 2 && item.getted !== 1
-                  ? '立即领取'
-                  : ''} */}
-                {/* {item.card_type === 'new_gift' && time < item.send_begin_time ? '未开始' : ''} */}
-              </Text>
+            <SpCoupon
+              info={item}
+              onClick={
+                item.couponStatus === 1 && !isLogin
+                  ? () => {}
+                  : handleClickCouponItem.bind(this, item, index)
+              }
+            >
+              {renderCouponBtn(item, index)}
             </SpCoupon>
           </View>
         ))}

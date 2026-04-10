@@ -80,6 +80,8 @@
       }
     }
 
+
+
     &-btns {
       display: flex;
       justify-content: flex-end;
@@ -107,6 +109,21 @@
       margin-left: 0;
     }
   }
+  .activity-item__content-btn-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .activity-item__view-records {
+    padding: 12px 24px;
+    box-sizing: border-box;
+    background: linear-gradient(to right, #f67f70 0%, #cd352a 100%);
+    border-radius: 32px;
+    font-weight: 600;
+    font-size: 24px;
+    color: #ffffff;
+  }
 
   .sp-scrollview-body {
     background: #f5f5f5;
@@ -119,6 +136,7 @@
       }
 
       &__content {
+
         &-title,
         &-time {
           color: #c7c7c7;
