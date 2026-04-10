@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [4.4.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.4.1...v4.4.2) (2026-04-10)
+
+
+### Features
+
+* activity records link, coupon login flow, hot zone contact, i18n ([3e5ebbb](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/3e5ebbb794c08f40c85db029b5ef4455bc76d7f6))
+
 ### [4.4.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.4.0...v4.4.1) (2026-04-03)
 
 
