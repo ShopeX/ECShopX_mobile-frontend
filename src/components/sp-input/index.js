@@ -9,19 +9,30 @@ import { classNames, isWeb } from '@/utils'
 import throttle from 'lodash/throttle'
 import './index.scss'
 
+const noop = () => {}
+
 function SpInput(props) {
-  const { required, title, type = 'text', confirmType } = props
+  const {
+    required,
+    title,
+    type = 'text',
+    confirmType,
+    onBlur = noop,
+    onFocus = noop,
+    onChange = noop,
+    onConfirm
+  } = props
   const [cursor, setCursor] = useState(-1)
   const inputRef = useRef(null)
   /** 防止 H5 上 keydown 与 Input onConfirm 等对同一次回车重复触发 */
   const lastConfirmAtRef = useRef(0)
 
   const safeOnConfirm = (payload) => {
-    if (!props.onConfirm) return
+    if (!onConfirm) return
     const now = Date.now()
     if (now - lastConfirmAtRef.current < 100) return
     lastConfirmAtRef.current = now
-    props.onConfirm(payload)
+    onConfirm(payload)
   }
 
   const handleInput = async (event) => {
@@ -30,7 +41,7 @@ function SpInput(props) {
     const maxLen = props.maxLength
 
     // 回车发送：小程序等会在 input 的 detail 中带 keyCode；H5 仅用下方 handleKeyDown，避免与 input 事件重复触发
-    if (props.onConfirm) {
+    if (onConfirm) {
       const keyCode = detail.keyCode
       const isEnter = keyCode === 13 || keyCode === 'Enter'
       if (isEnter && !isWeb) {
@@ -43,7 +54,7 @@ function SpInput(props) {
             value: clean ?? ''
           }
         })
-        await props.onChange(clean ?? '')
+        await onChange(clean ?? '')
         throttle(() => {
           setCursor(typeof detail.cursor === 'number' ? detail.cursor : -1)
         }, 100)
@@ -54,7 +65,7 @@ function SpInput(props) {
     if (maxLen && value?.length > maxLen) {
       return
     }
-    await props.onChange(value)
+    await onChange(value)
     throttle(() => {
       setCursor(detail.cursor)
     }, 100)
@@ -63,7 +74,7 @@ function SpInput(props) {
   const handleClear = () => {
     console.log('claer')
     setCursor(-1)
-    props.onChange('')
+    onChange('')
   }
 
   // 处理确认事件（移动端的"完成"按钮和H5的回车键）
@@ -79,7 +90,7 @@ function SpInput(props) {
       const domVal = event.target?.value
       safeOnConfirm({
         detail: {
-          value: domVal != null ? domVal : props.value || ''
+          value: domVal != null ? domVal : props.value ?? ''
         }
       })
     }
@@ -110,8 +121,8 @@ function SpInput(props) {
           className={classNames('at-input__input', props.className)}
           onConfirm={handleConfirm}
           confirmType={confirmType}
-          onBlur={props.onBlur}
-          onFocus={props.onFocus}
+          onBlur={onBlur}
+          onFocus={onFocus}
           nativeProps={isWeb ? { onKeyDown: handleKeyDown } : {}}
         />
         {/* <Input
@@ -144,8 +155,9 @@ SpInput.defaultProps = {
   clear: false,
   placeholder: '',
   maxLength: null,
-  onChange: () => {},
-  onConfirm: () => {}
+  onChange: noop,
+  onBlur: noop,
+  onFocus: noop
 }
 
 export default SpInput

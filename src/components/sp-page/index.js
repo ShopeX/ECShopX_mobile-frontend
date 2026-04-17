@@ -64,7 +64,6 @@ const initialState = {
   mantle: false,
   navigationLSpace: 0,
   navigationRSpace: 0,
-  pageTitle: '',
   pageBackground: {},
   pageTheme: {},
   showLeftContainer: false,
@@ -184,7 +183,6 @@ const SpPage = memo(
         draft.customNavigation = custom_navigation
         draft.cusCurrentPage = pages.length
         draft.ipx = isIphoneX()
-        draft.pageTitle = props.title || instanceRef.current?.page?.config?.navigationBarTitleText
         draft.gNavbarH = _gNavbarH
         draft.gStatusBarHeight = _gStatusBarHeight
         draft.height =

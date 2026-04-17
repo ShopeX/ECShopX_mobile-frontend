@@ -1,0 +1,19 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+@import './forgotpwd.scss';
+
+.page-auth-email-activate.page-auth-forgotpwd {
+  .auth-hd .email-activate-error {
+    display: block;
+    margin-top: 32px;
+    font-size: 28px;
+    line-height: 1.5;
+    color: #ec2e3d;
+  }
+
+  .auth-bd .form-submit {
+    margin-top: 80px;
+  }
+}

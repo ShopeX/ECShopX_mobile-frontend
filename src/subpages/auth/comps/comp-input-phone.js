@@ -68,7 +68,7 @@ const CompInputPhone = (props) => {
         name='mobile'
         maxLength={11}
         type='tel'
-        placeholder='请输入您的手机号码'
+        placeholder={placeholder ?? '请输入您的手机号码'}
         onChange={handleChange}
         value={value}
         {...restProps}

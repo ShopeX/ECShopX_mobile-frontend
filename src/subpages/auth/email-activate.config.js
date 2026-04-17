@@ -3,6 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '店铺列表',
-  navigationStyle: 'custom'
+  navigationBarTitleText: '邮箱激活'
 }

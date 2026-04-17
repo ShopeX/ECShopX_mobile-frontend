@@ -29,15 +29,21 @@ function getToken() {
 function getRedirectUrl() {}
 
 //设置token并跳转
-async function setTokenAndRedirect(token = '', tokenSetSuccessCallback) {
+// options.forceMemberCenter：注册成功等场景固定进会员中心，忽略 redi_url / redirect
+async function setTokenAndRedirect(token = '', tokenSetSuccessCallback, options) {
+  const opts = typeof options === 'object' && options !== null ? options : {}
+  const { forceMemberCenter = false } = opts
+
   const hasToken = setToken(token)
 
   const $instance = this ? this.$instance : getCurrentInstance()
   const router = $instance?.router
   if (hasToken) {
     await tokenSetSuccessCallback?.()
-    const { redi_url, redirect } = router?.params
-    const url = redi_url
+    const { redi_url, redirect } = router?.params || {}
+    const url = forceMemberCenter
+      ? '/subpages/member/index'
+      : redi_url
       ? decodeURIComponent(redi_url)
       : redirect
       ? decodeURIComponent(redirect)
