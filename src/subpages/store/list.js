@@ -145,6 +145,17 @@ function NearlyShop(props) {
           name: keyword
         }
       }
+      // 默认 filterType 为 1，但首页等已用 getAreaByJwd 写入 location 时仍应带经纬度拉附近门店
+      if (location?.lat && location?.lng) {
+        params = {
+          ...params,
+          lat: location.lat,
+          lng: location.lng,
+          province: location.province,
+          city: location.city,
+          area: location.district
+        }
+      }
     } else if (filterType == 2) {
       params = {
         ...params,
@@ -278,7 +289,7 @@ function NearlyShop(props) {
   }
 
   return (
-    <SpPage className='page-store-list' ref={pageRef}>
+    <SpPage className='page-store-list' ref={pageRef} title='店铺列表'>
       <View className='search-block'>
         <View className='search-bar'>
           {/* <View className='region-picker'>

@@ -297,6 +297,7 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
+      title='商品列表'
       renderFloat={<FloatSalesperson />}
     >
       <View className='search-wrap'>

@@ -3,6 +3,7 @@ import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import SpPage from '@/components/sp-page'
 import SpImage from '@/components/sp-image'
+import { SpHtml } from '@/components'
 import { useSelector } from 'react-redux'
 import api from '@/api'
 import { showToast, getMemberLevel, throttle } from '@/utils'
@@ -97,12 +98,13 @@ const SpQrcode = () => {
             <View className='sp-qrcode__privileges'>
               <Text className='sp-qrcode__privileges-title'>等级权益</Text>
               <View className='sp-qrcode__privileges-list'>
-                {userInfo?.gradeInfo?.description.split(/\n\n/)?.map((item, index) => (
+                {/* {userInfo?.gradeInfo?.description.split(/\n\n/)?.map((item, index) => (
                   <View key={index} className='sp-qrcode__privilege-item'>
                     <View className='sp-qrcode__privilege-item-index'>{index + 1}.</View>
                     <View className='sp-qrcode__privilege-item-text'>{item}</View>
                   </View>
-                ))}
+                ))} */}
+                <SpHtml content={userInfo?.gradeInfo?.description} />
               </View>
             </View>
           )}

@@ -4,7 +4,7 @@
  */
 import React, { useCallback, memo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Input, Button } from '@tarojs/components'
+import { View, Text, Button } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { styleNames, classNames, VERSION_STANDARD, isWeb } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
@@ -23,8 +23,6 @@ const CustomNavigationHeader = memo((props) => {
     btnReturn,
     btnHome,
     mantle,
-    onNearbyClick,
-    onSearchConfirm,
     nearbyText,
     navigationRSpace,
     showNavitionLeft,
@@ -32,9 +30,9 @@ const CustomNavigationHeader = memo((props) => {
     immersiveScrollRevealBgColor
   } = props
 
-  const value = pageConfig
-  const titleStyle = value?.titleStyle
-  const showHeaderContent = value && titleStyle !== '0'
+  const titleStyle = pageConfig?.titleStyle
+  const resolvedTitleStyle = titleStyle || '1'
+  const showHeaderContent = resolvedTitleStyle !== '0'
   const { shopInfo } = useSelector((state) => state.shop)
 
   const headerStyle = useCallback(() => {
@@ -47,19 +45,19 @@ const CustomNavigationHeader = memo((props) => {
     }
     // 吸顶挂件 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
     const headerBg =
-      statusBarBgColor ?? immersiveScrollRevealBgColor ?? value?.navigateBackgroundColor
+      statusBarBgColor ?? immersiveScrollRevealBgColor ?? pageConfig?.navigateBackgroundColor
     if (headerBg) {
       style['background-color'] = headerBg
     }
-    if (value?.navigateBackgroundImage) {
-      style['background-image'] = `url(${value?.navigateBackgroundImage})`
+    if (pageConfig?.navigateBackgroundImage) {
+      style['background-image'] = `url(${pageConfig?.navigateBackgroundImage})`
       style['background-size'] = 'cover'
       style['background-position'] = 'center'
     }
     style.transition = 'all 0.15s ease-in'
     return style
   }, [
-    value,
+    pageConfig,
     immersive,
     mantle,
     navigateMantle,
@@ -72,22 +70,24 @@ const CustomNavigationHeader = memo((props) => {
 
   const containerStyle = useCallback(() => {
     return {
-      color: value?.titleColor
+      color: pageConfig?.titleColor
     }
-  }, [value])
+  }, [pageConfig])
 
-  const showFunctionArea = value?.pTitleHotSetting?.type && value.pTitleHotSetting.type !== 'none'
-  const functionAreaType = value?.pTitleHotSetting?.type || 'none'
-  const functionAreaHotzone = value?.pTitleHotSetting?.hotzone || value?.pTitleHotSetting || {}
+  const showFunctionArea =
+    pageConfig?.pTitleHotSetting?.type && pageConfig.pTitleHotSetting.type !== 'none'
+  const functionAreaType = pageConfig?.pTitleHotSetting?.type || 'none'
+  const functionAreaHotzone =
+    pageConfig?.pTitleHotSetting?.hotzone || pageConfig?.pTitleHotSetting || {}
   const hotzoneImgUrl = functionAreaHotzone?.imgUrl
   const searchButtonStyle = useCallback(() => {
-    const searchButtonColor = value?.searchButtonColor
+    const searchButtonColor = pageConfig?.searchButtonColor
     if (!searchButtonColor) return {}
     return {
       'background-color': searchButtonColor.bgColor,
       'color': searchButtonColor.textColor
     }
-  }, [value?.searchButtonColor])
+  }, [pageConfig?.searchButtonColor])
 
   const handleHomeClick = useCallback(() => {
     Taro.reLaunch({
@@ -143,14 +143,14 @@ const CustomNavigationHeader = memo((props) => {
     } else {
       Taro.navigateTo({ url: '/subpages/ecshopx/nearly-shop' })
     }
-  }, [onNearbyClick])
+  }, [])
 
   const renderNearby = useCallback(() => {
     return (
       <View
         className='title-function nearby-function'
         onClick={handleNearbyClick}
-        style={{ color: value?.titleColor }}
+        style={{ color: pageConfig?.titleColor }}
       >
         <Text className='nearby-function-text'>
           {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
@@ -158,7 +158,7 @@ const CustomNavigationHeader = memo((props) => {
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [handleNearbyClick, nearbyText, shopInfo?.name, value?.titleColor])
+  }, [handleNearbyClick, nearbyText, shopInfo?.name, pageConfig?.titleColor])
 
   const renderSearch = useCallback(() => {
     return (
@@ -168,7 +168,7 @@ const CustomNavigationHeader = memo((props) => {
       >
         <View className='search-container'>
           <Text className='iconfont icon-sousuo-01 search-icon' />
-          {value?.showSearchButton && (
+          {pageConfig?.showSearchButton && (
             <View className='search-button' style={styleNames(searchButtonStyle())}>
               <Text>搜索</Text>
             </View>
@@ -176,28 +176,28 @@ const CustomNavigationHeader = memo((props) => {
         </View>
       </View>
     )
-  }, [titleStyle, value?.showSearchButton, onSearchConfirm, searchButtonStyle])
+  }, [pageConfig?.showSearchButton, searchButtonStyle])
 
   const renderTitleText = useCallback(() => {
     const navTitle =
       title ||
-      value?.wgtName ||
+      pageConfig?.wgtName ||
       getCurrentInstance()?.page?.config?.navigationBarTitleText ||
       appName
     return <Text className='title-text'>{navTitle}</Text>
-  }, [title, value?.wgtName, appName])
+  }, [title, pageConfig?.wgtName, appName])
 
   const renderTitleImage = useCallback(() => {
-    if (!value?.titleBackgroundImage) return null
+    if (!pageConfig?.titleBackgroundImage) return null
     return (
       <SpImage
         className='title-image'
-        src={value.titleBackgroundImage}
+        src={pageConfig.titleBackgroundImage}
         mode='heightFix'
         style={{ height: '64rpx' }}
       />
     )
-  }, [value?.titleBackgroundImage])
+  }, [pageConfig?.titleBackgroundImage])
 
   const hasNearby = showFunctionArea && functionAreaType === 'nearby'
 
@@ -244,11 +244,11 @@ const CustomNavigationHeader = memo((props) => {
             style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}
           >
             {/* 标题区：搜索 */}
-            {showHeaderContent && titleStyle === '3' && renderSearch()}
+            {showHeaderContent && resolvedTitleStyle === '3' && renderSearch()}
             {/* 标题区：页面名称 */}
-            {showHeaderContent && titleStyle === '1' && renderTitleText()}
+            {showHeaderContent && resolvedTitleStyle === '1' && renderTitleText()}
             {/* 标题区：图片 */}
-            {showHeaderContent && titleStyle === '2' && renderTitleImage()}
+            {showHeaderContent && resolvedTitleStyle === '2' && renderTitleImage()}
           </View>
         </View>
       </View>

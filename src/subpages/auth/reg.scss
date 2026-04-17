@@ -45,6 +45,39 @@ $border-color: #e2e4ea;
 
   .auth-bd {
     margin-top: 100px;
+
+    .reg-type-tabs {
+      display: flex;
+      margin-bottom: 8px;
+      border-bottom: 1px solid $border-color;
+    }
+
+    .reg-type-tab {
+      flex: 1;
+      text-align: center;
+      padding: 28px 0 24px;
+      font-size: 30px;
+      color: #858b9c;
+      position: relative;
+
+      &--active {
+        color: #111a34;
+        font-weight: 600;
+
+        &::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 0;
+          transform: translateX(-50%);
+          width: 56px;
+          height: 4px;
+          background-color: var(--color-primary);
+          border-radius: 2px;
+        }
+      }
+    }
+
     .form-title {
       font-size: 32px;
       color: #111a34;
@@ -87,6 +120,10 @@ $border-color: #e2e4ea;
     .btn-text-group {
       display: flex;
       justify-content: space-between;
+
+      &--end {
+        justify-content: flex-end;
+      }
     }
     .btn-text {
       margin-top: 30px;

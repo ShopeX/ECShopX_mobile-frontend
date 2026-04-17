@@ -61,6 +61,34 @@ export function forgotPwd(params = {}) {
   return req.post('/member/reset/password', params)
 }
 
+/**
+ * POST /member/email/code（相对 h5app/wxapp，即文档 `/h5app/wxapp/member/email/code`）
+ * purpose=activate：重发激活链接，图形码 type=sign；purpose=login：发登录 6 位码，图形码 type=login
+ */
+export function memberEmailCode(data = {}) {
+  return req.post('/member/email/code', data)
+}
+
+/** POST 邮箱注册，返回 JWT */
+export function memberEmailRegister(data = {}) {
+  return req.post('/member/email/register', data)
+}
+
+/** POST 邮件链接 token 完成邮箱激活（与邮件 query 中 token / company_id 一致） */
+export function memberEmailActivate(data = {}) {
+  return req.post('/member/email/activate', data)
+}
+
+/** POST 申请邮箱重置密码邮件（防枚举统一文案） */
+export function requestEmailPasswordReset(data = {}) {
+  return req.post('/member/email/password/reset-request', data)
+}
+
+/** POST 邮件内 token 设置新密码 */
+export function emailPasswordResetConfirm(data = {}) {
+  return req.post('/member/email/password/reset', data)
+}
+
 export function checkpclogin(data) {
   return req.post('/oauthlogin', data)
 }

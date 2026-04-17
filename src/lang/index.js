@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
+import { syncI18nLanguage } from '@/i18n/instance'
 
 class Lang {
   constructor() {
@@ -10,6 +11,7 @@ class Lang {
   }
 
   init() {
+    const self = this
     // 定义翻译函数
     let $t = function (key, val, nameSpace) {
       // 获取指定命名空间下的语言包
@@ -64,6 +66,43 @@ class Lang {
       })
       // 返回语言对象
       return langObj
+    }
+
+    /**
+     * 必须在首屏即可用：`setLanguagePackage` 在 useLaunch 里异步执行，
+     * 用户在语言包就绪前进「设置 → 切换语言」会导致 Taro.$changeLang 未定义。
+     */
+    Taro.$changeLang = (lang) => {
+      const apply = () => {
+        globalThis._localStorage.setItem('lang', lang)
+        globalThis.$t.locale(globalThis.langMap[lang], 'lang')
+        if (Taro.eventCenter) {
+          Taro.eventCenter.trigger('languageChanged', { lang, langMap: globalThis.langMap[lang] })
+        }
+        Promise.resolve(syncI18nLanguage(lang)).catch(() => {})
+      }
+
+      if (
+        globalThis.langMap &&
+        typeof globalThis.langMap === 'object' &&
+        Object.keys(globalThis.langMap).length > 0
+      ) {
+        apply()
+        return
+      }
+      import('@/subpages/i18n/index')
+        .then(() => {
+          const langJSON = Taro['langJSON']
+          if (!langJSON) {
+            console.error('[Lang] Taro.langJSON missing, cannot switch language')
+            return
+          }
+          self.setLanguagePackage(langJSON)
+          apply()
+        })
+        .catch((e) => {
+          console.error('[Lang] Failed to load language bundle', e)
+        })
     }
   }
 
@@ -146,15 +185,7 @@ class Lang {
     }
     // 根据当前语言设置翻译函数的语言包
     globalThis.$t.locale(globalThis.langMap[lang], 'lang')
-
-    Taro.$changeLang = (lang) => {
-      globalThis._localStorage.setItem('lang', lang)
-      globalThis.$t.locale(globalThis.langMap[lang], 'lang')
-      // 触发语言变化事件，让其他地方能够监听到
-      if (Taro.eventCenter) {
-        Taro.eventCenter.trigger('languageChanged', { lang, langMap: globalThis.langMap[lang] })
-      }
-    }
+    Promise.resolve(syncI18nLanguage(lang)).catch(() => {})
   }
 }
 
