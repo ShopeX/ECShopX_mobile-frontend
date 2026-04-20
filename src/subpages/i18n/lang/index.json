@@ -16468,5 +16468,89 @@
 		"en": "",
 		"zh-tw": "",
 		"ar": ""
+	},
+	"cyab9y7": {
+		"zh-cn": "AI 购物助手",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"unk95e2d": {
+		"zh-cn": "未配置嵌入页（请设 APP_AI_BASE_URL 或 APP_AI_EMBED_PAGE_URL 或 APP_CUSTOM_SERVER / APP_BASE_URL）",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"iuwru34": {
+		"zh-cn": "配置提示",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"lwobas2v": {
+		"zh-cn": "当前嵌入页为 http。小程序 web-view 需 https，或在 .env 设置 APP_AI_WEBVIEW_ALLOW_HTTP=1 后重新编译（仅开发联调）；并勾选开发者工具「不校验合法域名」。",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"pfzkot1e": {
+		"zh-cn": "未配置嵌入页（请设 APP_AI_BASE_URL 或 APP_AI_EMBED_PAGE_URL）",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"u3doz31w": {
+		"zh-cn": "嵌入页为 http 时需在 .env 设置 APP_AI_WEBVIEW_ALLOW_HTTP=1 后重编；正式环境请使用 https。",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"yp98k6": {
+		"zh-cn": "无法打开助手",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"i3trb34": {
+		"zh-cn": "请求失败",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"dcslxp4": {
+		"zh-cn": "暂无回复",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"glehgh4": {
+		"zh-cn": "网络错误",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"b4gky24": {
+		"zh-cn": "商城助手",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"gq5t30e": {
+		"zh-cn": "试试说：搜索 手机、我的订单",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"igkhzw4": {
+		"zh-cn": "输入问题",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
+	},
+	"np3w39p": {
+		"zh-cn": "嵌入页加载失败，请检查 HTTPS、业务域名与网络",
+		"en": "",
+		"zh-tw": "",
+		"ar": ""
 	}
 }
