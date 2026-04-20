@@ -54,11 +54,12 @@
     width: 144px;
     height: 144px;
     border-radius: 50%;
-    border: 2px solid #ebebeb;
+    border: 1PX solid #ebebeb;
     overflow: hidden;
     position: absolute;
     left: 36px;
     top: -36px;
+    box-sizing: border-box;
 
     .avatar-img {
       width: 100%;
