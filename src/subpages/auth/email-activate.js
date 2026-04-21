@@ -23,11 +23,7 @@ function pickActivateErrorMessage(err) {
     return String(err.message).trim()
   }
   const d = err.res?.data
-  return (
-    d?.data?.message ||
-    d?.message ||
-    '激活失败，请稍后重试或重新从邮件打开本链接。'
-  )
+  return d?.data?.message || d?.message || '激活失败，请稍后重试或重新从邮件打开本链接。'
 }
 
 const EmailActivate = () => {
@@ -53,13 +49,16 @@ const EmailActivate = () => {
           /** 与 req 层一致：抑制全局 Toast，由本页展示失败原因 */
           showError: false
         }
-        if (companyIdRaw !== undefined && companyIdRaw !== null && String(companyIdRaw).trim() !== '') {
+        if (
+          companyIdRaw !== undefined &&
+          companyIdRaw !== null &&
+          String(companyIdRaw).trim() !== ''
+        ) {
           payload.company_id = String(companyIdRaw).trim()
         }
         const res = await api.user.memberEmailActivate(payload)
         const msg =
-          (res && (res.message || res.msg)) ||
-          '您的邮箱账号已激活，请使用注册邮箱与密码登录。'
+          (res && (res.message || res.msg)) || '您的邮箱账号已激活，请使用注册邮箱与密码登录。'
         setSuccessHint(msg)
         setPhase('success')
       } catch (e) {
@@ -77,12 +76,7 @@ const EmailActivate = () => {
     })
   }
 
-  const title =
-    phase === 'loading'
-      ? '正在激活'
-      : phase === 'success'
-        ? '激活成功'
-        : '激活失败'
+  const title = phase === 'loading' ? '正在激活' : phase === 'success' ? '激活成功' : '激活失败'
 
   const desc =
     phase === 'loading' ? '正在提交激活信息，请稍候…' : phase === 'success' ? successHint : ''
@@ -95,9 +89,7 @@ const EmailActivate = () => {
     >
       <View className='auth-hd'>
         <View className='title'>{title}</View>
-        {desc ? (
-          <View className='desc'>{desc}</View>
-        ) : null}
+        {desc ? <View className='desc'>{desc}</View> : null}
         {phase === 'error' && errorHint ? (
           <Text className='email-activate-error' selectable>
             {errorHint}

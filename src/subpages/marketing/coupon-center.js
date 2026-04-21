@@ -125,16 +125,14 @@ function CouponCenter(props) {
       0: '已领完',
       1: '立即领取',
       2: '已领取'
-    })[status]
+    }[status])
 
   const renderCouponBtn = (item, index) => {
     const label = couponBtnLabel(item.couponStatus)
     const text = <Text>{label}</Text>
     // 未登录领取：用 SpLogin 在本页弹窗登录，避免请求 401 被全局重定向到个人中心
     if (item.couponStatus === 1 && !isLogin) {
-      return (
-        <SpLogin onChange={() => handleClickCouponItem(item, index)}>{text}</SpLogin>
-      )
+      return <SpLogin onChange={() => handleClickCouponItem(item, index)}>{text}</SpLogin>
     }
     return text
   }

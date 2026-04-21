@@ -4,5 +4,5 @@
  */
 export default {
   navigationBarTitleText: '',
-  navigationStyle: 'custom',
+  navigationStyle: 'custom'
 }

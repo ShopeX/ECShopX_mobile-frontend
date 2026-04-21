@@ -102,6 +102,7 @@ function CompPackageItem(props) {
 
   const onChangeSkuSelect = (specText, curItem) => {
     console.log(specText, curItem)
+    if (!curItem || !curItem.itemId) return
     if (curGoodsType == 0) {
       setState((draft) => {
         draft.mainGoods.specText = specText
@@ -114,7 +115,6 @@ function CompPackageItem(props) {
       })
     } else {
       setState((draft) => {
-        console.log(package_price[curItem.itemId].price)
         draft.makeUpGoods[curMakeUpGoodsIndex].specText = specText
         draft.makeUpGoods[curMakeUpGoodsIndex]['curItem'] = {
           ...curItem,
@@ -140,7 +140,9 @@ function CompPackageItem(props) {
       if (mainGoods.curItem) {
         itemId = mainGoods.curItem.itemId
         // packageTotalPrice += mainGoods.curItem.packagePrice
-        packageTotalPrice += main_package_price[itemId].price / 100
+        packageTotalPrice += main_package_price?.[itemId]?.price
+          ? main_package_price[itemId].price / 100
+          : mainGoods.curItem?.price || 0
       }
     }
     makeUpGoods.forEach((goods) => {
@@ -153,7 +155,9 @@ function CompPackageItem(props) {
           if (goods.curItem) {
             sitemIds.push(goods.curItem.itemId)
             // packageTotalPrice += goods.curItem.packagePrice
-            packageTotalPrice += package_price[goods.curItem.itemId].price / 100
+            packageTotalPrice += package_price?.[goods.curItem.itemId]?.price
+              ? package_price[goods.curItem.itemId].price / 100
+              : goods.curItem?.price || 0
           } else {
             sitemIds.push(null)
           }

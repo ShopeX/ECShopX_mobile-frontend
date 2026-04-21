@@ -123,7 +123,9 @@ const Reg = () => {
       parts.push(`email=${encodeURIComponent(e)}`)
     }
     const url =
-      parts.length > 0 ? `/subpages/auth/forgotpwd-email?${parts.join('&')}` : '/subpages/auth/forgotpwd-email'
+      parts.length > 0
+        ? `/subpages/auth/forgotpwd-email?${parts.join('&')}`
+        : '/subpages/auth/forgotpwd-email'
     Taro.navigateTo({ url })
   }
 
@@ -394,7 +396,11 @@ const Reg = () => {
                 </View>
                 <View className='btn-field'>
                   {imgInfo && (
-                    <Image className='image-vcode' src={imgInfo.imageData} onClick={getImageVcode} />
+                    <Image
+                      className='image-vcode'
+                      src={imgInfo.imageData}
+                      onClick={getImageVcode}
+                    />
                   )}
                 </View>
               </View>
@@ -454,7 +460,11 @@ const Reg = () => {
                 </View>
                 <View className='btn-field'>
                   {imgInfo && (
-                    <Image className='image-vcode' src={imgInfo.imageData} onClick={getImageVcode} />
+                    <Image
+                      className='image-vcode'
+                      src={imgInfo.imageData}
+                      onClick={getImageVcode}
+                    />
                   )}
                 </View>
               </View>

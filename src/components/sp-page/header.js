@@ -74,9 +74,11 @@ const CustomNavigationHeader = memo((props) => {
     }
   }, [pageConfig])
 
-  const showFunctionArea = pageConfig?.pTitleHotSetting?.type && pageConfig.pTitleHotSetting.type !== 'none'
+  const showFunctionArea =
+    pageConfig?.pTitleHotSetting?.type && pageConfig.pTitleHotSetting.type !== 'none'
   const functionAreaType = pageConfig?.pTitleHotSetting?.type || 'none'
-  const functionAreaHotzone = pageConfig?.pTitleHotSetting?.hotzone || pageConfig?.pTitleHotSetting || {}
+  const functionAreaHotzone =
+    pageConfig?.pTitleHotSetting?.hotzone || pageConfig?.pTitleHotSetting || {}
   const hotzoneImgUrl = functionAreaHotzone?.imgUrl
   const searchButtonStyle = useCallback(() => {
     const searchButtonColor = pageConfig?.searchButtonColor

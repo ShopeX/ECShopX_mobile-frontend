@@ -62,8 +62,7 @@ export default class Login extends Component {
   /** 注册成功 redirect 登录页时携带 account_mode、email、mobile；H5 部分环境下 params 在 didShow 才就绪 */
   prefillLoginFromRouter = () => {
     if (this._loginRouterPrefilled) return
-    const params =
-      getCurrentInstance()?.router?.params || this.$instance?.router?.params || {}
+    const params = getCurrentInstance()?.router?.params || this.$instance?.router?.params || {}
     const account_mode = params.account_mode
     const emailParam = params.email
     const mobileParam = params.mobile
@@ -465,8 +464,7 @@ export default class Login extends Component {
       params['latest_monitor_id'] = latest_monitor_id
     }
 
-    const loginPayload =
-      accountMode === 'email' ? { ...params, showError: false } : params
+    const loginPayload = accountMode === 'email' ? { ...params, showError: false } : params
 
     try {
       const { token, error_message } = await api.wx.newloginh5(loginPayload)
@@ -676,11 +674,7 @@ export default class Login extends Component {
       validate.isEmailChannelPassword(info.password)
 
     const isFullEmailOtp =
-      accountMode === 'email' &&
-      codeLogin &&
-      validate.isEmail(emailTrim) &&
-      info.yzm &&
-      info.vcode
+      accountMode === 'email' && codeLogin && validate.isEmail(emailTrim) && info.yzm && info.vcode
 
     const isFull = isFullMobile || isFullEmailPassword || isFullEmailOtp
 
@@ -885,9 +879,7 @@ export default class Login extends Component {
                             : this.handleForgotPsd
                         }
                       >
-                        {showEmailNotActivatedHint
-                          ? $t('3ca883d0.actHint')
-                          : $t('3ca883d0.804890')}
+                        {showEmailNotActivatedHint ? $t('3ca883d0.actHint') : $t('3ca883d0.804890')}
                       </Text>
                     )}
                   </View>

@@ -34,7 +34,9 @@ export function ti(key, values = []) {
     return s
   }
   values.forEach((v, i) => {
-    s = String(s).split('${' + i + '}').join(v != null ? String(v) : '')
+    s = String(s)
+      .split('${' + i + '}')
+      .join(v != null ? String(v) : '')
   })
   return s
 }
