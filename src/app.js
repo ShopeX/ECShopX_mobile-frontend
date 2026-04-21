@@ -46,7 +46,6 @@ import {
 import { useEffectAsync } from '@/hooks'
 import { requestIntercept } from '@/plugin/requestIntercept'
 import dayjs from 'dayjs'
-import AiAssistantFab from '@/components/ai-assistant-fab'
 
 import './app.scss'
 
@@ -325,12 +324,7 @@ function App({ children }) {
     })
   }
 
-  return (
-    <Provider store={store}>
-      {children}
-      <AiAssistantFab />
-    </Provider>
-  )
+  return <Provider store={store}>{children}</Provider>
 }
 
 export default App
