@@ -86,46 +86,50 @@ function CompActivityItem(props) {
             <Text className='activity-item__content-reject-reason'>{reason}</Text>
           </View>
         )}
-  
+
         <View className='activity-item__content-btns'>
           {isActivity && <View className='activity-item__content-btn activity-btn'>会员免费</View>}
           <View className='activity-item__content-btn-wrapper'>
-          {isActivity && recordId ? (
-          <View
-            className='activity-item__view-records'
-            onClick={(e) => {
-              e.stopPropagation()
-              onViewRecords(info)
-            }}
-          >
-            查看报名记录
-          </View>
-        ) : null}
-          {actionEdit && !isActivity && (
-            <View
-              className='activity-item__content-btn'
-              onClick={(e) => handleBtnClick(e, 'reFill')}
-            >
-              重新填写
-            </View>
-          )}
-          {!isActivity && actionApply && (
-            <View className='activity-item__content-btn' onClick={(e) => handleBtnClick(e, 'sign')}>
-              立即报名
-            </View>
-          )}
+            {isActivity && recordId ? (
+              <View
+                className='activity-item__view-records'
+                onClick={(e) => {
+                  e.stopPropagation()
+                  onViewRecords(info)
+                }}
+              >
+                查看报名记录
+              </View>
+            ) : null}
+            {actionEdit && !isActivity && (
+              <View
+                className='activity-item__content-btn'
+                onClick={(e) => handleBtnClick(e, 'reFill')}
+              >
+                重新填写
+              </View>
+            )}
+            {!isActivity && actionApply && (
+              <View
+                className='activity-item__content-btn'
+                onClick={(e) => handleBtnClick(e, 'sign')}
+              >
+                立即报名
+              </View>
+            )}
 
-          {isActivity && (
-            <View
-              className={classNames('activity-item__content-btn', {
-                ' disabled-btn': signDisabled
-              })}
-              onClick={(e) => handleBtnClick(e, 'sign')}
-            >
-              立即报名
-            </View>
-          )}
-        </View></View>
+            {isActivity && (
+              <View
+                className={classNames('activity-item__content-btn', {
+                  ' disabled-btn': signDisabled
+                })}
+                onClick={(e) => handleBtnClick(e, 'sign')}
+              >
+                立即报名
+              </View>
+            )}
+          </View>
+        </View>
       </View>
     </View>
   )
