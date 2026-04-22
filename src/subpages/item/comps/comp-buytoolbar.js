@@ -164,7 +164,7 @@ function CompGoodsBuyToolbar(props) {
       </SpLogin>
       <View
         className='toolbar-item'
-        onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
+        onClick={navigateTo.bind(this, '/pages/cart/espier-index?showBack=1')}
       >
         <Text className='iconfont icon-gouwuche'></Text>
         <Text className='toolbar-item-txt'>购物车</Text>

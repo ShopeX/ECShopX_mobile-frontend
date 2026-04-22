@@ -486,13 +486,14 @@ function MemberIndex(props) {
               <View
                 className='user-avatar'
                 onClick={() => onLoginChange('/subpages/member/user-info')}
-                style={{ width: '72px', height: '72px' }}
               >
                 <SpImage
                   className='avatar-img'
                   src={(userInfo && userInfo.avatar) || 'user_icon.png'}
                   width={144}
                   height={144}
+                  mode='aspectFit'
+                  radius={72}
                 />
               </View>
 

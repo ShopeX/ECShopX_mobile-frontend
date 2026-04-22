@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
-import React, { useEffect, useState, useMemo } from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -12,7 +12,6 @@ import qs from 'qs'
 import api from '@/api'
 import doc from '@/doc'
 import { navigateTo, pickBy, classNames, throttle } from '@/utils'
-import { useTranslation, $t, ti } from '@/i18n'
 import { useLogin, useLocation, useDebounce } from '@/hooks'
 import { fetchCartList, deleteCartItem, updateCartItemNum, updateCount } from '@/store/slices/cart'
 import { updatePurchaseShareInfo, updateInviteCode } from '@/store/slices/purchase'
@@ -45,7 +44,6 @@ const initialState = {
 }
 
 function CartIndex() {
-  useTranslation()
   const { updateAddress } = useLocation()
 
   const { shopInfo = {} } = useSelector((state) => state.shop)
@@ -224,11 +222,11 @@ function CartIndex() {
 
   const onDeleteCartGoodsItem = async ({ cart_id }) => {
     const res = await Taro.showModal({
-      title: $t('61e2d21a.02d981'),
-      content: $t('61e2d21a.a4936e'),
+      title: '提示',
+      content: '将当前商品移出购物车?',
       showCancel: true,
-      cancelText: $t('61e2d21a.625fb2'),
-      confirmText: $t('61e2d21a.e83a25'),
+      cancelText: '取消',
+      confirmText: '确认',
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
@@ -303,9 +301,9 @@ function CartIndex() {
         )}
         {!isLogin && (
           <View className='login-header'>
-            <View className='login-txt'>{$t('f9ef9536.29b36a')}</View>
+            <View className='login-txt'>授权登录后同步购物车的商品</View>
             <SpLogin onChange={() => {}}>
-              <View className='btn-login'>{$t('f9ef9536.d72d86')}</View>
+              <View className='btn-login'>授权登录</View>
             </SpLogin>
           </View>
         )}
@@ -319,7 +317,7 @@ function CartIndex() {
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
                     <View className='shop-cart-item-hd'>
                       <Text className='iconfont icon-shop' />
-                      {all_item.shop_name || $t('f9ef9536.491c0c')}
+                      {all_item.shop_name || '自营'}
                     </View>
                     <View className='shop-cart-item-shadow'>
                       {/** 店铺商品开始 */}
@@ -344,9 +342,7 @@ function CartIndex() {
                                       })
                                     }
                                   >
-                                    <Text className='shop-cart-activity-label'>
-                                      {$t('f9ef9536.1687b1')}
-                                    </Text>
+                                    <Text className='shop-cart-activity-label'>换购</Text>
                                     <Text>{discount_desc.info}</Text>
                                   </View>
                                   <View
@@ -357,7 +353,7 @@ function CartIndex() {
                                       })
                                     }
                                   >
-                                    {$t('f9ef9536.5ba3e7')}
+                                    去选择
                                     <Text className='at-icon at-icon-chevron-right'></Text>
                                   </View>
                                 </View>
@@ -426,7 +422,7 @@ function CartIndex() {
                         <View className='lf'>
                           <SpCheckboxNew
                             checked={allChecked}
-                            label={$t('f9ef9536.66eeac')}
+                            label='全选'
                             onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
                           />
                         </View>
@@ -435,12 +431,12 @@ function CartIndex() {
                         <View className='rg'>
                           <View className='rg-lt'>
                             <View className='total-price-wrap'>
-                              {$t('f9ef9536.7b2864')}
+                              合计：
                               <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
                             </View>
                             {all_item.discount_fee > 0 && (
                               <View className='discount-price-wrap'>
-                                {$t('f9ef9536.1784cf')}
+                                共优惠：
                                 <SpPrice
                                   className='total-pirce'
                                   value={all_item.discount_fee / 100}
@@ -455,7 +451,7 @@ function CartIndex() {
                             disabled={all_item.cart_total_num <= 0}
                             onClick={() => handleCheckout(all_item)}
                           >
-                            {ti('f9ef9536.605bad', [all_item.cart_total_num])}
+                            {`结算(${all_item.cart_total_num})`}
                           </AtButton>
                         </View>
                       </View>
@@ -468,7 +464,7 @@ function CartIndex() {
             {invalidCart.length > 0 && (
               <View className='invalid-cart-block'>
                 <View className='shop-cart-item'>
-                  <View className='shop-cart-item-hd-disabeld'>{$t('f9ef9536.31a812')}</View>
+                  <View className='shop-cart-item-hd-disabeld'>已失效商品</View>
                   <View className='shop-cart-item-bd'>
                     <View className='shop-activity'></View>
                     {invalidCart.map((sitem, sindex) => (
@@ -492,9 +488,9 @@ function CartIndex() {
         )}
 
         {validCart.length == 0 && invalidCart.length == 0 && (
-          <SpDefault type='cart' message={$t('61e2d21a.8bdc0a')}>
+          <SpDefault type='cart' message='购物车内暂无商品～'>
             <AtButton type='primary' circle onClick={navigateTo.bind(this, '/pages/index', true)}>
-              {$t('61e2d21a.aed876')}
+              去选购
             </AtButton>
           </SpDefault>
         )}

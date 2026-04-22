@@ -92,16 +92,16 @@ function WgtImgHotZone(props) {
         distributor_id
       })
 
-      if (item.id === 'customerService') {
-        return (
-          <Button
-            openType='contact'
-            key={item.id || Math.random()}
-            className='wgt-imghot-zone__body_zone opacity-0'
-            style={getZoneStyle(item)}
-          />
-        )
-      }
+    if (item.id === 'customerService') {
+      return (
+        <Button
+          openType='contact'
+          key={item.id || Math.random()}
+          className='wgt-imghot-zone__body_zone opacity-0'
+          style={getZoneStyle(item)}
+        />
+      )
+    }
 
     if (needLogin(item)) {
       return (
