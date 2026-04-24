@@ -9,6 +9,7 @@ import { SpPage, SpInput as AtInput } from '@/components'
 import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
+import { normalizeAuthRedirectParam } from './util'
 import './forgotpwd.scss'
 
 const PageForgotPwdEmail = () => {
@@ -96,7 +97,9 @@ const PageForgotPwdEmail = () => {
                 className='btn-text'
                 onClick={() =>
                   Taro.navigateTo({
-                    url: `/subpages/auth/login?redirect=${encodeURIComponent(rediUrlParam)}`
+                    url: `/subpages/auth/login?redirect=${encodeURIComponent(
+                      normalizeAuthRedirectParam(rediUrlParam)
+                    )}`
                   })
                 }
               >

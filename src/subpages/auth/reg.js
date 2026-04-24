@@ -13,6 +13,7 @@ import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { CompPasswordInput } from './comps'
+import { normalizeAuthRedirectParam } from './util'
 import './reg.scss'
 
 /** query 里邮箱保留 `@`，避免链接或路由层把 `%40` 当字面量带进输入框；其余字符仍按 URI 编码 */
@@ -38,11 +39,13 @@ function buildPostRegisterLoginUrl(accountMode, fields, routerParams) {
     qs.push(`email=${encodeEmailForLoginQuery(fields.email)}`)
   }
   const { redi_url, redirect } = routerParams || {}
-  if (redi_url) {
-    qs.push(`redi_url=${encodeURIComponent(redi_url)}`)
+  const rediPlain = redi_url ? normalizeAuthRedirectParam(redi_url) : ''
+  const redirectPlain = redirect ? normalizeAuthRedirectParam(redirect) : ''
+  if (rediPlain) {
+    qs.push(`redi_url=${encodeURIComponent(rediPlain)}`)
   }
-  if (redirect) {
-    qs.push(`redirect=${encodeURIComponent(redirect)}`)
+  if (redirectPlain) {
+    qs.push(`redirect=${encodeURIComponent(redirectPlain)}`)
   }
   return `/subpages/auth/login?${qs.join('&')}`
 }
@@ -114,7 +117,7 @@ const Reg = () => {
     const redi_url = getCurrentInstance()?.router?.params?.redi_url
     const parts = []
     if (redi_url) {
-      parts.push(`redi_url=${encodeURIComponent(redi_url)}`)
+      parts.push(`redi_url=${encodeURIComponent(normalizeAuthRedirectParam(redi_url))}`)
     }
     const e = email.trim()
     if (e) {
@@ -385,7 +388,7 @@ const Reg = () => {
                     clear
                     name='yzm'
                     value={state.yzm}
-                    placeholder='请输入图形验证码'
+                    placeholder={'请输入图形验证码'}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -406,7 +409,7 @@ const Reg = () => {
                     clear
                     name='vcode'
                     value={state.vcode}
-                    placeholder='请输入验证码'
+                    placeholder={'请输入验证码'}
                     onChange={handleInputChange('vcode')}
                   />
                 </View>
@@ -423,7 +426,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder='请输入密码'
+                    placeholder={'请输入密码'}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />
@@ -449,7 +452,7 @@ const Reg = () => {
                     clear
                     name='email-yzm'
                     value={state.yzm}
-                    placeholder='请输入图形验证码'
+                    placeholder={'请输入图形验证码'}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -467,7 +470,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder='密码需8-20位且同时包含字母与数字'
+                    placeholder={'密码需8-20位且同时包含字母与数字'}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />

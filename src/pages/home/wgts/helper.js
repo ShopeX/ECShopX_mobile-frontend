@@ -122,35 +122,35 @@ export function getGlobalBaseStyle(baseStyle) {
 
   // 处理边距
   if (baseStyle.paddedt !== undefined && baseStyle.paddedt !== null) {
-    style['padding-top'] = Taro.pxTransform(baseStyle.paddedt)
+    style.paddingTop = Taro.pxTransform(baseStyle.paddedt)
   }
 
   if (baseStyle.paddedb !== undefined && baseStyle.paddedb !== null) {
-    style['padding-bottom'] = Taro.pxTransform(baseStyle.paddedb)
+    style.paddingBottom = Taro.pxTransform(baseStyle.paddedb)
   }
 
   if (baseStyle.paddedl !== undefined && baseStyle.paddedl !== null) {
-    style['padding-left'] = Taro.pxTransform(baseStyle.paddedl)
+    style.paddingLeft = Taro.pxTransform(baseStyle.paddedl)
   }
 
   if (baseStyle.paddedr !== undefined && baseStyle.paddedr !== null) {
-    style['padding-right'] = Taro.pxTransform(baseStyle.paddedr)
+    style.paddingRight = Taro.pxTransform(baseStyle.paddedr)
   }
 
   // 处理背景
   const bgType = baseStyle.bgType
   if (bgType === 'color' && baseStyle.bgColor) {
-    style['background-color'] = baseStyle.bgColor
+    style.backgroundColor = baseStyle.bgColor
   } else if (bgType === 'pic' && baseStyle.bgPic) {
-    style['background-image'] = `url(${baseStyle.bgPic})`
-    style['background-size'] = 'cover'
-    style['background-position'] = 'center'
-    style['background-repeat'] = 'no-repeat'
+    style.backgroundImage = `url(${baseStyle.bgPic})`
+    style.backgroundSize = 'cover'
+    style.backgroundPosition = 'center'
+    style.backgroundRepeat = 'no-repeat'
   } else if (bgType === 'gradient' && baseStyle.startColor) {
     // 如果 endColor 为空，使用 startColor 作为结束颜色（单色渐变）
     const endColor = baseStyle.endColor || baseStyle.startColor
-    style['background-image'] = `linear-gradient(${baseStyle.startColor}, ${endColor})`
-    style['background-size'] = 'cover'
+    style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+    style.backgroundSize = 'cover'
   }
 
   return style

@@ -3,6 +3,8 @@
  * See LICENSE file for license details.
  */
 .wgt-goods-card {
+
+
   .wgt-bd {
     .goods-card {
       &:not(:last-child) {
@@ -55,8 +57,8 @@
           height: 64px;
           font-size: 28px;
           color: $color-brand-primary;
-          background: #ffffff;
-          border: 1px solid #dcdfe6;
+          background: #FFFFFF;
+          border: 1PX solid #DCDFE6;
           border-radius: 12px;
         }
 

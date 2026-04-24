@@ -8,7 +8,7 @@ import { updateUserInfo, updateCheckChief } from '@/store/slices/user'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
 import { platformTemplateName } from '@/utils/platform'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { SG_APP_CONFIG } from '@/consts'
+import { SG_APP_CONFIG, DEFAULT_POINT_NAME } from '@/consts'
 import { useSelector, useDispatch } from 'react-redux'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { useImmer } from 'use-immer'
@@ -110,7 +110,6 @@ const initialState = {
   shareInfo: {},
   footerHeight: 0,
   pageData: null,
-  shareInfo: {},
   bodyHeight: 0
 }
 
@@ -136,7 +135,7 @@ function MemberIndex(props) {
   const [policyModal, setPolicyModal] = useState(false)
 
   const { userInfo = {}, vipInfo = {} } = useSelector((state) => state.user)
-  const { pointName } = useSelector((state) => state.sys)
+  const pointName = useSelector((state) => state.sys?.pointName ?? DEFAULT_POINT_NAME())
   log.debug(`store userInfo: ${JSON.stringify(userInfo)}`)
   const dispatch = useDispatch()
 

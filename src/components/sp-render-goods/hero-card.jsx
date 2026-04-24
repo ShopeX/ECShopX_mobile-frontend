@@ -78,13 +78,17 @@ function SpGoodsHeroCard(props) {
             {info.promotion?.map((tag, index) => (
               <SpTag
                 className='tag-wrapper__tag'
-                key={index}
+                key={`promotion-${tag.type || 't'}-${tag.tag_name || index}`}
                 label={tag.tag_name}
                 type={tag.type}
               />
             ))}
             {info.couponList?.map((tag, index) => (
-              <SpTag key={index} label={tag.discount_rule} type='warning'></SpTag>
+              <SpTag
+                key={`coupon-${tag.coupon_id || tag.discount_rule || index}`}
+                label={tag.discount_rule}
+                type='warning'
+              ></SpTag>
             ))}
           </View>
         )}

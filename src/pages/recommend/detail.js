@@ -124,6 +124,7 @@ function GuideRecommendDetail(props) {
     }
   }
 
+
   return (
     <SpPage
       className='pages-recommend-detail'
