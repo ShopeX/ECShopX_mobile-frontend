@@ -13,7 +13,7 @@ import { connect } from 'react-redux'
 import { formatTime, log, isWeixin, entryLaunch } from '@/utils'
 import S from '@/spx'
 // import { Tracker } from '@/service'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtGoodsCard, WgtHeading } from '../../../pages/home/wgts'
 import './detail.scss'
 
 @connect(({ colors }) => ({
@@ -226,10 +226,6 @@ export default class recommendDetail extends Component {
             <Text className={`iconfont icon-31shijian ${info.is_like ? '' : ''}`}> </Text>
             {info.updated_str}
           </View>
-          <View className='recommend-detail-info__time'>
-            <Text className={`iconfont icon-eye ${info.is_like ? '' : ''}`}> </Text>
-            {info.articleFocusNum.count ? info.articleFocusNum.count : 0}关注
-          </View>
         </View>
         <View className='recommend-detail__content' scrollY>
           <View className='wgts-wrap__cont'>
@@ -240,8 +236,8 @@ export default class recommendDetail extends Component {
                   {item.name === 'slider' && <WgtSlider info={item} width={screenWidth} />}
                   {item.name === 'writing' && <WgtWriting info={item} />}
                   {item.name === 'heading' && <WgtHeading info={item} />}
-                  {item.name === 'goods' && (
-                    <WgtGoods onClick={this.handleClickGoods.bind('goods')} info={item} />
+                  {item.name === 'goodsCard' && (
+                    <WgtGoodsCard onClick={this.handleClickGoods.bind(this)} info={item} />
                   )}
                 </View>
               )

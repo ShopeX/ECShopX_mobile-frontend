@@ -92,7 +92,7 @@ function SpDeliver(props, ref) {
   } = state
   const formRef = useRef()
   const $instance = getCurrentInstance() || {}
-  const { cart_type } = $instance?.router?.params || {}
+  const { cart_type, type: checkoutOrderType = 'distributor' } = $instance?.router?.params || {}
   // useEffect(() => {
   //   fetch()
   // }, [])
@@ -435,7 +435,7 @@ function SpDeliver(props, ref) {
             className='ziti-title'
             onClick={() => {
               Taro.navigateTo({
-                url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}`
+                url: `/subpages/store/ziti-picker?distributor_id=${distributor_id}&cart_type=${cart_type}&type=${checkoutOrderType}`
               })
             }}
           >

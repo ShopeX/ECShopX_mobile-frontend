@@ -3,13 +3,12 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
-import doc from '@/doc'
 import { View } from '@tarojs/components'
-import { VERSION_PLATFORM, VERSION_STANDARD } from '@/utils'
+import { VERSION_STANDARD } from '@/utils'
 import { changeZitiAddress } from '@/store/slices/cart'
 import { SpPage, SpCheckboxNew } from '@/components'
 import './ziti-picker.scss'
@@ -24,20 +23,25 @@ function StoreZitiPicker(props) {
   const [state, setState] = useImmer(initialState)
   const { zitiList, zitiId, isDefault } = state
   const dispatch = useDispatch()
-  const { entryStoreByLBS } = useSelector((state) => state.sys)
 
   useEffect(() => {
     fetchZitiList()
   }, [])
 
   const fetchZitiList = async () => {
-    const { distributor_id, zitiId, cart_type } = $instance?.router?.params
+    const {
+      distributor_id,
+      zitiId,
+      cart_type,
+      type: orderType = 'distributor'
+    } = $instance?.router?.params || {}
     let _params = {
       cart_type,
       distributor_id
     }
+    // 与 pages/cart/espier-checkout.js getParamsInfo 中 isNostores 规则一致：云店 distributor 为 0
     if (VERSION_STANDARD) {
-      _params['isNostores'] = entryStoreByLBS ? 0 : 1
+      _params['isNostores'] = orderType == 'distributor' ? 0 : 1
     }
 
     const { list } = await api.cart.getZitiList(_params)

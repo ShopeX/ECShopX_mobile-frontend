@@ -407,7 +407,7 @@ function StoreIndex() {
           className='switchs'
           style={{
             background: `${pageData?.base?.pageBackgroundColor || '#fff'}`,
-            top: `${statusBarHeight + 40}px`
+            top: `0px`
           }}
         >
           <Text

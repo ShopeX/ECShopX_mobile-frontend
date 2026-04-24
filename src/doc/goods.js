@@ -504,6 +504,7 @@ export const WGT_SPEEDKILL_GOODS = {
   distributorId: 'distributor_id',
   pic: ({ pics, main_img }) => main_img || pics[0] || '',
   mainPrice: ({ price, activity_price }) => (activity_price || price) / 100,
+  marketPrice: ({ market_price }) => market_price / 100,
   price: ({ price }) => price / 100, // 销售价
   activityPrice: ({ activity_price }) => activity_price / 100, // 秒杀价、内购价
   sales: 'sales',
@@ -549,7 +550,7 @@ export const WGT_SPEEDKILL_GOODS = {
   productPrice_var: ({ activity_price, price }) => {
     return (activity_price || price) / 100
   },
-  discount_var: ({ discount_rate }) =>
+  discountRate: ({ discount_rate }) =>
     discount_rate ? String((discount_rate / 10).toFixed(1)) : null,
   // 积分商品：data_type=pointsmall_items 时接口返回，用于挂件展示积分不展示价格
   point: ({ point, point_exchange }) =>

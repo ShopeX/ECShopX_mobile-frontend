@@ -2,15 +2,6 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
-### [4.5.1](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.3.7...v4.5.1) (2026-04-22)
-
-
-### Features
-
-* activity records link, coupon login flow, hot zone contact, i18n ([320da55](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/320da55a3f965e5fc3c05360089b1a4ed5773b19))
-* i18n coverage, trade/store flows, and home widgets ([2e8b65b](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/2e8b65b414107b023b67673f79dbc9cbf31619ac))
-* store UI, item subpackage move, location/home updates, and tooling ([6864c46](https://git.ishopex.cn/ecshopx/ecshopx-vshop/commit/6864c466f0b1448c1e6745218238eda8b8ed6893))
-
 ## [4.5.0](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.4.2...v4.5.0) (2026-04-17)
 
 ### [4.4.2](https://git.ishopex.cn/ecshopx/ecshopx-vshop/compare/v4.4.1...v4.4.2) (2026-04-10)

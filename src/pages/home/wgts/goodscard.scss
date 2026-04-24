@@ -1,0 +1,75 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+.wgt-goods-card {
+  .wgt-bd {
+    .goods-card {
+      &:not(:last-child) {
+        margin-bottom: 20px;
+      }
+
+      &__header {
+        display: flex;
+        align-items: center;
+        padding-bottom: 20px;
+      }
+
+      &__info {
+        padding-left: 10px;
+        height: 160px;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        min-width: 0;
+      }
+
+      &__info-title {
+        font-size: 28px;
+        font-weight: 500;
+        color: #333;
+        @include multi-ellipsis(2);
+      }
+
+      &__info-price {
+        margin-top: 8px;
+      }
+
+      &__info-sales {
+        font-size: 24px;
+        color: #666;
+        margin-top: 8px;
+      }
+
+      &__footer {
+        height: 80px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+
+        .goods-card__btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 20px;
+          height: 64px;
+          font-size: 28px;
+          color: $color-brand-primary;
+          background: #ffffff;
+          border: 1px solid #dcdfe6;
+          border-radius: 12px;
+        }
+
+        .goods-card__btn--disabled {
+          color: $color-brand-accent-light;
+        }
+
+        .gap-line {
+          width: 1px;
+          height: 40px;
+          background-color: #e5e5e5;
+        }
+      }
+    }
+  }
+}

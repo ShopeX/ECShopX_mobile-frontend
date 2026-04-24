@@ -13,7 +13,8 @@ import { SpPage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy, log, buildSharePath } from '@/utils'
-import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../components/wgts'
+import { WgtGoodsCard } from '@/pages/home/wgts'
+import { WgtFilm, WgtSlider, WgtWriting, WgtHeading } from '../components/wgts'
 import './detail.scss'
 
 const initialState = {
@@ -78,8 +79,6 @@ function GuideRecommendDetail(props) {
     })
   }
 
-  const handleClickGoods = async () => {}
-
   return (
     <SpPage
       className='guide-recommend-detail'
@@ -95,7 +94,6 @@ function GuideRecommendDetail(props) {
         <View className='article-title'>{title}</View>
         <View className='article-info'>
           <Text className='update-time'>{updated}</Text>
-          <Text className='focus-num'>{`${articleFocusNum}关注`}</Text>
         </View>
       </View>
       <View className='article-bd'>
@@ -106,9 +104,7 @@ function GuideRecommendDetail(props) {
               {item.name === 'slider' && <WgtSlider info={item} />}
               {item.name === 'writing' && <WgtWriting info={item} />}
               {item.name === 'heading' && <WgtHeading info={item} />}
-              {item.name === 'goods' && (
-                <WgtGoods onClick={handleClickGoods.bind(this, 'goods')} info={item} />
-              )}
+              {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
             </View>
           ))}
         </View>
