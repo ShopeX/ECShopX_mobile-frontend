@@ -7,6 +7,7 @@ import Taro from '@tarojs/taro'
 import { View, Text, Input, Button, Image } from '@tarojs/components'
 import React, { useState, useCallback, useEffect, useRef } from 'react'
 import S from '@/spx'
+import { SG_TOKEN } from '@/consts/localstorage'
 import { isWeb, isWeixin, getDistributorId } from '@/utils'
 import { buildAiEmbedPageUrl } from '@/utils/ai-assistant-embed'
 import './index.scss'
@@ -78,14 +79,19 @@ function goLoginForAssistant() {
   const sep = authPage.includes('?') ? '&' : '?'
   const url = `${authPage}${sep}redirect=${encodeURIComponent(redirect)}`
   Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-    Promise.resolve(Taro.redirectTo({ url })).catch(() => {})
+    Promise.resolve(Taro.redirectTo({ url })).catch(() => { })
   })
 }
 
+/**
+ * widget-h5.js 接收登录态有三条信道（任一即可生效）：
+ * 1) window.__AI_ASSISTANT_EMBED__.setEcshopxAuth/clearEcshopxAuth —— 脚本就绪后才存在
+ * 2) window.postMessage({ type: 'ECSHOPX_AUTH', token, companyId, tenantId, distributorId })
+ * 3) window.dispatchEvent(new CustomEvent('ecshopx-ai-auth', { detail: { ... } }))
+ * 三路同发可避免「脚本未挂载好」「同源不同 frame 监听差异」造成的窗口期失败
+ */
 function syncMemberTokenToAssistantWidget() {
   if (typeof window === 'undefined') return
-  const api = window.__AI_ASSISTANT_EMBED__
-  if (!api || typeof api.setEcshopxAuth !== 'function') return
   const token = S.getAuthToken()
   const companyId = process.env.APP_COMPANY_ID
   const tenantId = process.env.APP_AI_TENANT_ID
@@ -98,15 +104,40 @@ function syncMemberTokenToAssistantWidget() {
   } catch {
     /* ignore */
   }
-  if (token) {
-    api.setEcshopxAuth(
-      token,
-      companyId != null && companyId !== '' ? String(companyId) : undefined,
-      tenantId != null && tenantId !== '' ? String(tenantId) : undefined,
-      distributorId
-    )
-  } else {
-    api.clearEcshopxAuth()
+
+  const payload = {
+    type: 'ECSHOPX_AUTH',
+    token: token || '',
+    companyId: companyId != null && companyId !== '' ? String(companyId) : '',
+    tenantId: tenantId != null && tenantId !== '' ? String(tenantId) : '',
+    distributorId: distributorId || ''
+  }
+
+  const api = window.__AI_ASSISTANT_EMBED__
+  if (api) {
+    if (token) {
+      if (typeof api.setEcshopxAuth === 'function') {
+        api.setEcshopxAuth(
+          token,
+          payload.companyId || undefined,
+          payload.tenantId || undefined,
+          payload.distributorId || undefined
+        )
+      }
+    } else if (typeof api.clearEcshopxAuth === 'function') {
+      api.clearEcshopxAuth()
+    }
+  }
+
+  try {
+    window.postMessage(payload, '*')
+  } catch (_) {
+    /* ignore */
+  }
+  try {
+    window.dispatchEvent(new CustomEvent('ecshopx-ai-auth', { detail: payload }))
+  } catch (_) {
+    /* ignore */
   }
 }
 
@@ -225,7 +256,7 @@ function WeappAiAssistantWebviewEntry() {
         setFabPos(c)
         fabPosRef.current = c
       }
-    } catch (_) {}
+    } catch (_) { }
   }, [])
 
   useEffect(() => {
@@ -256,7 +287,7 @@ function WeappAiAssistantWebviewEntry() {
           setFabIconUrl(buildWeappFabAvatarUrl(backend, tid, code))
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }, [])
 
   const lastOpenAtRef = useRef(0)
@@ -336,7 +367,7 @@ function WeappAiAssistantWebviewEntry() {
       }, 450)
       try {
         Taro.setStorageSync(FAB_POS_STORAGE, fabPosRef.current)
-      } catch (_) {}
+      } catch (_) { }
     } else {
       navigateToAssistantPage()
     }
@@ -478,14 +509,25 @@ function H5AssistantWidgetLoader() {
       if (!path) return
       const url = path.startsWith('/') ? path : `/${path}`
       Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-        Promise.resolve(Taro.switchTab({ url })).catch(() => {})
+        Promise.resolve(Taro.switchTab({ url })).catch(() => { })
       })
+    }
+
+    const onStorage = (e) => {
+      if (e.key === SG_TOKEN) onAuth()
+    }
+    const onVisibility = () => {
+      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
+        onAuth()
+      }
     }
 
     Taro.eventCenter.on('login-success', onAuth)
     Taro.eventCenter.on('ecshopx-auth-changed', onAuth)
     window.addEventListener('ai-assistant-miniprogram-nav', onNav)
     window.addEventListener('ai-assistant-nav', onNav)
+    window.addEventListener('storage', onStorage)
+    document.addEventListener('visibilitychange', onVisibility)
 
     loadAssistantWidgetScript()
       .then(() => {
@@ -502,6 +544,8 @@ function H5AssistantWidgetLoader() {
       Taro.eventCenter.off('ecshopx-auth-changed', onAuth)
       window.removeEventListener('ai-assistant-miniprogram-nav', onNav)
       window.removeEventListener('ai-assistant-nav', onNav)
+      window.removeEventListener('storage', onStorage)
+      document.removeEventListener('visibilitychange', onVisibility)
       clearInterval(timer)
     }
   }, [])
