@@ -690,7 +690,7 @@ export default class Login extends Component {
       >
         <View style={{ padding: '0 32px' }}>
           <View className='auth-hd'>
-            <View className='title'>{'欢迎登录'}</View>
+            <View className='title'>欢迎登录</View>
             {/* <View className='desc'>使用已注册的手机号登录</View> */}
           </View>
           <View className='auth-bd'>
@@ -701,7 +701,7 @@ export default class Login extends Component {
                 })}
                 onClick={() => this.handleAccountModeChange('mobile')}
               >
-                {'手机号登录'}
+                手机号登录
               </View>
               <View
                 className={classNames('login-type-tab', {
@@ -709,7 +709,7 @@ export default class Login extends Component {
                 })}
                 onClick={() => this.handleAccountModeChange('email')}
               >
-                {'邮箱登录'}
+                邮箱登录
               </View>
             </View>
             <AtForm className='form'>
@@ -742,7 +742,7 @@ export default class Login extends Component {
                           clear
                           name='yzm'
                           value={info.yzm}
-                          placeholder={'请输入图形验证码'}
+                          placeholder='请输入图形验证码'
                           onChange={this.handleInputChange.bind(this, 'yzm')}
                           placeholderClass='input-placeholder'
                           {...inputProp}
@@ -766,7 +766,7 @@ export default class Login extends Component {
                           clear
                           name='vcode'
                           value={info.vcode}
-                          placeholder={'请输入验证码'}
+                          placeholder='请输入验证码'
                           onChange={this.handleInputChange.bind(this, 'vcode')}
                           placeholderClass='input-placeholder'
                           {...inputProp}
@@ -786,7 +786,7 @@ export default class Login extends Component {
                     </Text>
                     {passwordLogin && (
                       <Text className='btn-text forgot-password' onClick={this.handleForgotPsd}>
-                        {'忘记密码？'}
+                        忘记密码？
                       </Text>
                     )}
                   </View>
@@ -799,7 +799,7 @@ export default class Login extends Component {
                       name='email'
                       type='text'
                       value={info.email}
-                      placeholder={'请输入登录邮箱'}
+                      placeholder='请输入登录邮箱'
                       onChange={this.handleInputChange.bind(this, 'email')}
                       placeholderClass='input-placeholder'
                       {...inputProp}
@@ -809,7 +809,7 @@ export default class Login extends Component {
                     <View className='form-field'>
                       <View className='input-field'>
                         <CompPasswordInput
-                          placeholder={'请输入密码（8-20位，须含字母与数字）'}
+                          placeholder='请输入密码（8-20位，须含字母与数字）'
                           onChange={this.handleInputChange.bind(this, 'password')}
                           {...inputProp}
                           value={info.password}
@@ -824,7 +824,7 @@ export default class Login extends Component {
                           clear
                           name='email-yzm'
                           value={info.yzm}
-                          placeholder={'请输入图形验证码'}
+                          placeholder='请输入图形验证码'
                           onChange={this.handleInputChange.bind(this, 'yzm')}
                           placeholderClass='input-placeholder'
                           {...inputProp}
@@ -848,7 +848,7 @@ export default class Login extends Component {
                           clear
                           name='email-vcode'
                           value={info.vcode}
-                          placeholder={'请输入邮箱验证码'}
+                          placeholder='请输入邮箱验证码'
                           onChange={this.handleInputChange.bind(this, 'vcode')}
                           placeholderClass='input-placeholder'
                           {...inputProp}
@@ -890,7 +890,7 @@ export default class Login extends Component {
                   className='login-button'
                   onClick={this.handleSubmit.bind(this)}
                 >
-                  {'登 录'}
+                  登 录
                 </AtButton>
                 <AtButton
                   circle
@@ -898,7 +898,7 @@ export default class Login extends Component {
                   className='reg-button'
                   onClick={this.handleNavigateReg}
                 >
-                  {'注 册'}
+                  注 册
                 </AtButton>
               </View>
             </AtForm>
@@ -910,29 +910,29 @@ export default class Login extends Component {
 
         <SpFloatLayout
           className='login-resend-activate-modal'
-          title={'重发激活邮件'}
+          title='重发激活邮件'
           open={showResendActivateModal}
           onClose={this.handleCloseResendActivateModal}
           renderFooter={
             <View className='resend-activate-footer'>
               <AtButton circle onClick={this.handleCloseResendActivateModal}>
-                {'取消'}
+                取消
               </AtButton>
               <AtButton circle type='primary' onClick={this.handleConfirmResendActivate}>
-                {'确认'}
+                确认
               </AtButton>
             </View>
           }
         >
           <View className='resend-activate-body'>
-            <Text className='resend-activate-body__text'>{'是否向该邮箱重新发送激活邮件？'}</Text>
+            <Text className='resend-activate-body__text'>是否向该邮箱重新发送激活邮件？</Text>
             <View className='form-field resend-activate-captcha'>
               <View className='input-field'>
                 <AtInput
                   clear
                   name='resend-activate-yzm'
                   value={resendActivateYzm}
-                  placeholder={'请输入图形验证码'}
+                  placeholder='请输入图形验证码'
                   onChange={this.handleResendActivateYzmChange}
                   placeholderClass='input-placeholder'
                 />

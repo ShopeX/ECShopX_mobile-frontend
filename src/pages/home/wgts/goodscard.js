@@ -190,7 +190,10 @@ export default class WgtGoodsCard extends Component {
             const isFav = Boolean(item.favStatus ?? favs?.[item.item_id])
             return (
               <View key={key} className='goods-card' style={styleNames(goodsCardInnerStyle)}>
-                <View className='goods-card__header' onClick={this.handleClickItem.bind(this, item)}>
+                <View
+                  className='goods-card__header'
+                  onClick={this.handleClickItem.bind(this, item)}
+                >
                   <SpImage src={item.img_url} width={160} height={160} isOss />
                   <View className='goods-card__info'>
                     <View className='goods-card__info-title'>{item.item_name}</View>
