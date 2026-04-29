@@ -43,7 +43,7 @@ export default function WgtGoods(props) {
   // 从本地存储刷新浏览记录（供 useDidShow 和 useEffect 复用）
   const refreshHistoryGoods = useCallback(() => {
     if (base.dataType !== 'history') return
-    const count = Math.min(base.dataCount || 10, 10)
+    const count = base.dataCount || 10
     const list = getBrowseHistoryList(count)
     const goods = list.map((item) => pickBy(item, doc.goods.WGT_SPEEDKILL_GOODS))
     setGoodsList(goods)
@@ -64,7 +64,7 @@ export default function WgtGoods(props) {
       setLoading(true)
       try {
         const dataType = base.dataType
-        const count = Math.min(base.dataCount || 10, 10) // 本地浏览记录最多 10 条
+        const count = base.dataCount || 10 // 本地浏览记录最多 10 条
 
         // 浏览记录：从本地存储读取（进入商品详情页时写入，最多 10 条）
         if (dataType === 'history') {
@@ -82,7 +82,7 @@ export default function WgtGoods(props) {
         const _data = await api.seckill.getWidgetItems({
           data_type: dataType,
           data_value: dataValue,
-          data_count: count,
+          num: count,
           distributor_id: distributorId || ''
         })
         if (_data && Array.isArray(_data) && _data.length > 0) {

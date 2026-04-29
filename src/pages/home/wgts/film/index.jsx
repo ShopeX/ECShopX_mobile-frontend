@@ -36,8 +36,6 @@ function WgtFilm(props) {
 
   const objectFit = config.ratio === 'square' ? 'cover' : 'contain'
 
-  const handleClickItem = linkPage
-
   if (!info || !data || data.length === 0 || !data[0].url) {
     return null
   }

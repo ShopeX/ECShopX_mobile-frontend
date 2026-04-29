@@ -36,26 +36,19 @@ function WgtImgHotZone(props) {
     if (isVertical) {
       const pr = base.outerMargin?.paddedr
       style.width = `calc(100% - ${Taro.pxTransform(pr)})`
+      style['padding-left'] = 0
     }
     return style
   }, [base, isVertical])
 
   // 容器样式（图片容器）
   const bodyStyle = useMemo(() => {
-    const style = {
-      width: config.imgWidth ? Taro.pxTransform(config.imgWidth) : '100%'
+    if (!isVertical && config.imgHeight) {
+      return {
+        height: Taro.pxTransform(config.imgHeight)
+      }
     }
-
-    // 纵向布局时，优先使用 base.imgHeight
-    if (isVertical && base.imgHeight) {
-      style.height = Taro.pxTransform(base.imgHeight)
-    } else if (config.imgHeight) {
-      // 横向布局时，使用 config.imgHeight
-      style.height = Taro.pxTransform(config.imgHeight)
-    } else {
-      style.height = 'auto'
-    }
-    return style
+    return null
   }, [config.imgWidth, config.imgHeight, isVertical, base.imgHeight, base.outerMargin])
 
   // 点击处理

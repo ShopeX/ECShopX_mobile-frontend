@@ -50,7 +50,7 @@ export default function WgtGroup(props) {
         const _data = await api.seckill.getWidgetItems({
           data_type: 'group',
           data_value: data.id || '',
-          data_count: base.dataCount,
+          num: base.dataCount,
           distributor_id: distributorId || ''
         })
         if (_data && Array.isArray(_data) && _data.length > 0) {

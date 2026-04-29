@@ -168,7 +168,7 @@ const Login = () => {
 
   return (
     <SpPage className={classNames('page-merchant-login')} navbar={false}>
-      <SpImage src='shangjiaruzhu_bg.png' />
+      <SpImage src='shangjiaruzhu_bg.png' className='login-bg' mode='widthFix' />
       <View className='page-merchant-login-content'>
         <MInput prefix={phonePrefix} placeholder='请输入手机号' onChange={handleChange('mobile')} />
         <MInput

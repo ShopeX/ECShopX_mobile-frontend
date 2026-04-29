@@ -32,7 +32,6 @@ const CustomNavigationHeader = memo((props) => {
 
   const titleStyle = pageConfig?.titleStyle
   const resolvedTitleStyle = titleStyle || '1'
-  const showHeaderContent = resolvedTitleStyle !== '0'
   const { shopInfo } = useSelector((state) => state.shop)
 
   const headerStyle = useCallback(() => {
@@ -208,16 +207,20 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
           style={styleNames({
             width: `calc(100% - ${navigationRSpace}px)`,
-            ...(showHeaderContent ? containerStyle() : {})
+            ...containerStyle()
           })}
         >
           {showNavitionLeft && (
             <View
-              className={classNames('header-container-left', { 'is-web': isWeb })}
-              style={styleNames({ width: `${navigationRSpace}px` })}
+              className={classNames('header-container-left', {
+                'is-web': isWeb && showFunctionArea
+              })}
+              style={styleNames({
+                width: resolvedTitleStyle === '0' ? `100%` : `${navigationRSpace}px`
+              })}
             >
               {/* 左侧：返回、首页、功能区三者只显示一个 */}
-              {showHeaderContent && showFunctionArea ? (
+              {showFunctionArea ? (
                 <>
                   {/* 有功能区时只显示功能区（热区图或附近门店） */}
                   {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
@@ -244,11 +247,11 @@ const CustomNavigationHeader = memo((props) => {
             style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}
           >
             {/* 标题区：搜索 */}
-            {showHeaderContent && resolvedTitleStyle === '3' && renderSearch()}
+            {resolvedTitleStyle === '3' && renderSearch()}
             {/* 标题区：页面名称 */}
-            {showHeaderContent && resolvedTitleStyle === '1' && renderTitleText()}
+            {resolvedTitleStyle === '1' && renderTitleText()}
             {/* 标题区：图片 */}
-            {showHeaderContent && resolvedTitleStyle === '2' && renderTitleImage()}
+            {resolvedTitleStyle === '2' && renderTitleImage()}
           </View>
         </View>
       </View>

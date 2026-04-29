@@ -20,6 +20,8 @@ function linkPage(data) {
     type,
     distributor_id,
     navigation = false,
+    officialAccountRawId,
+    officialArticleLink,
     content,
     seletedTags = []
   } = data
@@ -158,6 +160,42 @@ function linkPage(data) {
         store.dispatch(setShowGuideConsultModal(true))
         return
       }
+      if (id === 'officialProfile') {
+        wx.openOfficialAccountProfile({
+          username: officialAccountRawId,
+          success: (res) => {
+            console.log('res=========', res)
+          },
+          fail: (err) => {
+            console.log('err=========', err)
+          }
+        })
+        return
+      }
+      if (id === 'officialChat') {
+        wx.openOfficialAccountChat({
+          username: officialAccountRawId,
+          success: (res) => {
+            console.log('res=========', res)
+          },
+          fail: (err) => {
+            console.log('err=========', err)
+          }
+        })
+        return
+      }
+      if (id === 'officialArtical') {
+        wx.openOfficialAccountArticle({
+          url: officialArticleLink,
+          success: (res) => {
+            console.log('res=========', res)
+          },
+          fail: (err) => {
+            console.log('err=========', err)
+          }
+        })
+        return
+      }
       break
     case 'custom':
       url = id
@@ -287,6 +325,10 @@ const memberSetting = {
   settings: {
     title: '设置',
     path: '/subpages/member/settings'
+  },
+  itemList: {
+    title: '商品列表',
+    path: '/subpages/item/list'
   }
 }
 

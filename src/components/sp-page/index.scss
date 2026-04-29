@@ -181,8 +181,10 @@
       &.is-web .title-search {
         flex: 1;
         min-width: 0;
-        max-width: 600px;
-        margin: 0 auto;
+        margin-left: 20px;
+      }
+      &.is-web .search-container {
+        max-width: none !important;
       }
       /* Web 端：标题图片整栏水平居中（用 50% + translate 保证不被左侧占位影响） */
       &.is-web .title-image {
@@ -201,17 +203,16 @@
         .title-function.nearby-function {
           width: 100%;
           flex-shrink: 0;
-          text-align: center;
+          text-align: left;
           display: flex;
           align-items: center;
-          justify-content: center;
+          justify-content: flex-start;
 
           .nearby-function-text {
             font-size: 28px;
             overflow: hidden;
             text-overflow: ellipsis;
             white-space: nowrap;
-            flex: 1;
             min-width: 0;
           }
 
@@ -259,7 +260,7 @@
           border-radius: 8px;
           overflow: hidden;
           position: relative;
-          border: 1PX solid #e0e0e0;
+          border: 1px solid #e0e0e0;
           background-color: #fff;
           height: 64px;
 

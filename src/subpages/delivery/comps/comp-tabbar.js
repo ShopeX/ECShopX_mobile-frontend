@@ -79,9 +79,7 @@ function CompTabbar(props) {
   return (
     <AtTabBar
       fixed
-      classNames={classNames({
-        'comp-tabbar': true
-      })}
+      className='comp-tabbar'
       iconSize='20'
       selectedColor='#4980FF'
       tabList={tabList}

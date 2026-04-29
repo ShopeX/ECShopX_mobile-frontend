@@ -25,18 +25,21 @@
   }
 
   .wgt-film__video-inner {
+    height: 100%;
+    position: relative;
     // 作为 aspect-ratio 容器的直接子元素，由 mixin 设为 absolute 填满
     video,
     .flim-video {
       width: 100%;
-      height: 100%;
       display: block;
     }
   }
 
   .flim-video {
-    height: 100%;
     display: block;
     width: 100%;
+  }
+  .taro-video-video {
+    height: auto !important;
   }
 }

@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { isWeb } from '@/utils'
 import Taro from '@tarojs/taro'
 // import { WGTS_NAV_MAP } from '@/consts'
 
@@ -122,37 +123,69 @@ export function getGlobalBaseStyle(baseStyle) {
 
   // 处理边距
   if (baseStyle.paddedt !== undefined && baseStyle.paddedt !== null) {
-    style.paddingTop = Taro.pxTransform(baseStyle.paddedt)
+    if (isWeb) {
+      style['padding-top'] = Taro.pxTransform(baseStyle.paddedt)
+    } else {
+      style.paddingTop = Taro.pxTransform(baseStyle.paddedt)
+    }
   }
 
   if (baseStyle.paddedb !== undefined && baseStyle.paddedb !== null) {
-    style.paddingBottom = Taro.pxTransform(baseStyle.paddedb)
+    if (isWeb) {
+      style['padding-bottom'] = Taro.pxTransform(baseStyle.paddedb)
+    } else {
+      style.paddingBottom = Taro.pxTransform(baseStyle.paddedb)
+    }
   }
 
   if (baseStyle.paddedl !== undefined && baseStyle.paddedl !== null) {
-    style.paddingLeft = Taro.pxTransform(baseStyle.paddedl)
+    if (isWeb) {
+      style['padding-left'] = Taro.pxTransform(baseStyle.paddedl)
+    } else {
+      style.paddingLeft = Taro.pxTransform(baseStyle.paddedl)
+    }
   }
 
   if (baseStyle.paddedr !== undefined && baseStyle.paddedr !== null) {
-    style.paddingRight = Taro.pxTransform(baseStyle.paddedr)
+    if (isWeb) {
+      style['padding-right'] = Taro.pxTransform(baseStyle.paddedr)
+    } else {
+      style.paddingRight = Taro.pxTransform(baseStyle.paddedr)
+    }
   }
 
-  // 处理背景
-  const bgType = baseStyle.bgType
-  if (bgType === 'color' && baseStyle.bgColor) {
-    style.backgroundColor = baseStyle.bgColor
-  } else if (bgType === 'pic' && baseStyle.bgPic) {
-    style.backgroundImage = `url(${baseStyle.bgPic})`
-    style.backgroundSize = 'cover'
-    style.backgroundPosition = 'center'
-    style.backgroundRepeat = 'no-repeat'
-  } else if (bgType === 'gradient' && baseStyle.startColor) {
-    // 如果 endColor 为空，使用 startColor 作为结束颜色（单色渐变）
-    const endColor = baseStyle.endColor || baseStyle.startColor
-    style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
-    style.backgroundSize = 'cover'
+  if (isWeb) {
+    // 处理背景
+    const bgType = baseStyle.bgType
+    if (bgType === 'color' && baseStyle.bgColor) {
+      style['background-color'] = baseStyle.bgColor
+    } else if (bgType === 'pic' && baseStyle.bgPic) {
+      style['background-image'] = `url(${baseStyle.bgPic})`
+      style['background-size'] = '100% 100%'
+      style['background-position'] = 'center'
+      style['background-repeat'] = 'no-repeat'
+    } else if (bgType === 'gradient' && baseStyle.startColor) {
+      // 如果 endColor 为空，使用 startColor 作为结束颜色（单色渐变）
+      const endColor = baseStyle.endColor || baseStyle.startColor
+      style['background-image'] = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+      style['background-size'] = 'cover'
+    }
+  } else {
+    const bgType = baseStyle.bgType
+    if (bgType === 'color' && baseStyle.bgColor) {
+      style.backgroundColor = baseStyle.bgColor
+    } else if (bgType === 'pic' && baseStyle.bgPic) {
+      style.backgroundImage = `url(${baseStyle.bgPic})`
+      style.backgroundSize = '100% 100%'
+      style.backgroundPosition = 'center'
+      style.backgroundRepeat = 'no-repeat'
+    } else if (bgType === 'gradient' && baseStyle.startColor) {
+      // 如果 endColor 为空，使用 startColor 作为结束颜色（单色渐变）
+      const endColor = baseStyle.endColor || baseStyle.startColor
+      style.backgroundImage = `linear-gradient(${baseStyle.startColor}, ${endColor})`
+      style.backgroundSize = 'cover'
+    }
   }
-
   return style
 }
 

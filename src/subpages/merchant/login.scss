@@ -8,6 +8,12 @@ $prefixCls: 'page-merchant-login';
   @include page-scroll(0, 0);
   background-color: white;
 
+  .login-bg {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
   &-content {
     padding: 52px 50px;
 

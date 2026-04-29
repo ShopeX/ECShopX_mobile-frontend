@@ -107,13 +107,18 @@ function SpSkuSelect(props) {
   // }, [open])
 
   const init = () => {
-    const { skuList, specItems } = info
+    const { skuList, specItems, curItem } = info
     console.log('skuList:', skuList)
     console.log('specItems:', specItems)
+    skuDictRef.current = {}
     specItems.forEach((item) => {
       const key = item.specItem.map((spec) => spec.specId).join('_')
       skuDictRef.current[key] = item
     })
+    // 优先使用上一次已选择的规格，避免重新打开后回退到默认规格
+    const matchedSelectedSpecItem = curItem?.itemId
+      ? specItems.find((item) => `${item.itemId}` === `${curItem.itemId}`)
+      : null
     // 默认选中有库存并且前端可销售的sku
     let defaultSpecItem = specItems.find(
       (item) => item.store > 0 && ['onsale'].includes(item.approveStatus)
@@ -124,8 +129,9 @@ function SpSkuSelect(props) {
     }
 
     let selection = Array(skuList.length).fill(null)
-    if (defaultSpecItem) {
-      selection = defaultSpecItem.specItem.map((item) => item.specId)
+    const targetSpecItem = matchedSelectedSpecItem || defaultSpecItem
+    if (targetSpecItem) {
+      selection = targetSpecItem.specItem.map((item) => item.specId)
     }
 
     calcDisabled(selection)

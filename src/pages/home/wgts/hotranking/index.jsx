@@ -48,7 +48,7 @@ export default function WgtHotranking(props) {
         const _data = await api.seckill.getWidgetItems({
           data_type: 'sales',
           data_value: data.id || '',
-          data_count: base.dataCount,
+          num: base.dataCount,
           distributor_id: distributorId || ''
         })
         // 如果 items 已经有数据，直接使用

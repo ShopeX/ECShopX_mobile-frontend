@@ -17,7 +17,8 @@ import {
   WgtClassify,
   WgtImgHotZone,
   WgtSlider,
-  WgtFilm
+  WgtFilm,
+  WgtGoods
 } from '@/pages/home/wgts'
 import './category-flat-layout.scss'
 
@@ -188,6 +189,9 @@ function CategoryFlatLayout() {
                   )}{' '}
                   {/** 轮播 */}
                   {item.name === 'film' && <WgtFilm info={item} id={index + 1} />} {/** 视频 */}
+                  {/** 商品 */}
+                  {item.name === 'goods' && <WgtGoods info={item} id={item.id || idx} />}{' '}
+                  {/** 商品 */}
                 </>
               ))}
               <View className='category-flat-layout__powered-by-wrap'>
