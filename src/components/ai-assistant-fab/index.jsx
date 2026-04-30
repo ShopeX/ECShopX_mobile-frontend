@@ -18,11 +18,12 @@ const AI_BASE =
   AI_BASE_RAW != null && String(AI_BASE_RAW).trim()
     ? String(AI_BASE_RAW).trim().replace(/\/+$/, '')
     : ''
-/** esbuild serve 默认根目录下 dist/widget.js，见 ai-assistant-widget package.json */
-const DEFAULT_WIDGET_SCRIPT = 'http://localhost:8000/dist/widget.js'
-const WIDGET_SCRIPT_URL =
-  process.env.APP_AI_WIDGET_SCRIPT_URL ||
-  (AI_BASE ? `${AI_BASE}/ai-assistant-embed/widget-h5.js` : DEFAULT_WIDGET_SCRIPT)
+/**
+ * 优先用同源静态资源（src/files/ai-assistant-embed/widget-h5.js → 构建后落到 H5 dist 根）
+ * 同源加载可避开 widget 脚本本身的 CORS 拦截；APP_AI_WIDGET_SCRIPT_URL 可显式覆盖（远端调试用）
+ */
+const SAME_ORIGIN_WIDGET_SCRIPT = '/ai-assistant-embed/widget-h5.js'
+const WIDGET_SCRIPT_URL = process.env.APP_AI_WIDGET_SCRIPT_URL || SAME_ORIGIN_WIDGET_SCRIPT
 const ASSISTANT_BACKEND_URL = (
   process.env.APP_AI_ASSISTANT_BACKEND_URL ||
   AI_BASE ||
@@ -81,6 +82,47 @@ function goLoginForAssistant() {
   Promise.resolve(Taro.navigateTo({ url })).catch(() => {
     Promise.resolve(Taro.redirectTo({ url })).catch(() => { })
   })
+}
+
+/**
+ * 兜底补丁：widget-h5.js 内部 ChatPanel.resolveAddCartUrl() 在拿不到 directAddCartUrl
+ * 时会回退到 `${window.location.origin}/api/h5app/wxapp/cart`，本地 dev / 商城与
+ * widget 不同源时必然 404。embed-config 已经返回正确 direct_add_cart_url，但
+ * widget 没把它落到 ChatPanel 实例上 —— 等 widget 修复后可以删掉此补丁。
+ *
+ * 这里直接在 fetch 层把"打到当前 origin 的加购请求"重写到 APP_BASE_URL。
+ */
+function installAssistantAddCartUrlFix() {
+  if (typeof window === 'undefined') return
+  if (window.__ECX_AI_ADD_CART_FIX__) return
+  const baseRaw = (process.env.APP_BASE_URL || '').replace(/\/+$/, '')
+  if (!baseRaw) return
+  const correctCartUrl = `${baseRaw}/cart`
+  const wrongOriginPrefix = `${window.location.origin}/api/h5app/wxapp/cart`
+  if (correctCartUrl === wrongOriginPrefix) return
+
+  const originalFetch = window.fetch
+  if (typeof originalFetch !== 'function') return
+
+  window.fetch = function patchedFetch(input, init) {
+    let urlStr
+    if (typeof input === 'string') urlStr = input
+    else if (input && typeof input.url === 'string') urlStr = input.url
+    if (urlStr && urlStr.startsWith(wrongOriginPrefix)) {
+      const fixed = correctCartUrl + urlStr.slice(wrongOriginPrefix.length)
+      if (typeof input === 'string') {
+        return originalFetch.call(this, fixed, init)
+      }
+      try {
+        const req = new Request(fixed, input)
+        return originalFetch.call(this, req, init)
+      } catch {
+        return originalFetch.call(this, fixed, init)
+      }
+    }
+    return originalFetch.call(this, input, init)
+  }
+  window.__ECX_AI_ADD_CART_FIX__ = true
 }
 
 /**
@@ -170,7 +212,10 @@ function loadAssistantWidgetScript() {
     const s = document.createElement('script')
     s.src = WIDGET_SCRIPT_URL
     s.async = true
-    s.type = 'module'
+    /**
+     * widget-h5.js 是 IIFE 一体包，不依赖 ESM；不加 type=module 可避免脚本加载走 CORS 强校验，
+     * 同源场景天然无影响，跨源场景也无需远端配 CORS 头
+     */
     s.dataset.aiAssistantWidget = '1'
     s.onload = () => resolve()
     s.onerror = () => reject(new Error(`Failed to load ${WIDGET_SCRIPT_URL}`))
@@ -501,6 +546,8 @@ function H5AssistantWidgetLoader() {
   useEffect(() => {
     if (started.current) return
     started.current = true
+
+    installAssistantAddCartUrlFix()
 
     const onAuth = () => syncMemberTokenToAssistantWidget()
 
