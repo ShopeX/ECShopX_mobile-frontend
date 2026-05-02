@@ -128,11 +128,11 @@ function installAssistantAddCartUrlFix() {
 /**
  * widget-h5.js 接收登录态有三条信道（任一即可生效）：
  * 1) window.__AI_ASSISTANT_EMBED__.setEcshopxAuth/clearEcshopxAuth —— 脚本就绪后才存在
- * 2) window.postMessage({ type: 'ECSHOPX_AUTH', token, companyId, tenantId, distributorId })
+ * 2) window.postMessage({ type: 'ECSHOPX_AUTH', token, companyId, tenantId, distributorId, userId })
  * 3) window.dispatchEvent(new CustomEvent('ecshopx-ai-auth', { detail: { ... } }))
  * 三路同发可避免「脚本未挂载好」「同源不同 frame 监听差异」造成的窗口期失败
  */
-function syncMemberTokenToAssistantWidget() {
+async function syncMemberTokenToAssistantWidget() {
   if (typeof window === 'undefined') return
   const token = S.getAuthToken()
   const companyId = process.env.APP_COMPANY_ID
@@ -147,12 +147,26 @@ function syncMemberTokenToAssistantWidget() {
     /* ignore */
   }
 
+  // 获取会员 userId（用于会话归属和用户识别）
+  let userId
+  if (token) {
+    try {
+      const userInfo = await S.getMemberInfo()
+      if (userInfo?.memberInfo?.user_id) {
+        userId = String(userInfo.memberInfo.user_id)
+      }
+    } catch (_) {
+      /* ignore - 静默失败，userId 留空 */
+    }
+  }
+
   const payload = {
     type: 'ECSHOPX_AUTH',
     token: token || '',
     companyId: companyId != null && companyId !== '' ? String(companyId) : '',
     tenantId: tenantId != null && tenantId !== '' ? String(tenantId) : '',
-    distributorId: distributorId || ''
+    distributorId: distributorId || '',
+    userId: userId || undefined
   }
 
   const api = window.__AI_ASSISTANT_EMBED__
@@ -165,6 +179,9 @@ function syncMemberTokenToAssistantWidget() {
           payload.tenantId || undefined,
           payload.distributorId || undefined
         )
+      }
+      if (userId && typeof api.setAssistantUserId === 'function') {
+        api.setAssistantUserId(userId)
       }
     } else if (typeof api.clearEcshopxAuth === 'function') {
       api.clearEcshopxAuth()
@@ -584,7 +601,7 @@ function H5AssistantWidgetLoader() {
         console.warn('[ai-assistant] widget script load failed:', err?.message || err)
       })
 
-    const timer = setInterval(syncMemberTokenToAssistantWidget, 8000)
+    const timer = setInterval(() => { syncMemberTokenToAssistantWidget().catch(() => {}) }, 8000)
 
     return () => {
       Taro.eventCenter.off('login-success', onAuth)
