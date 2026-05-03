@@ -601,7 +601,7 @@ function H5AssistantWidgetLoader() {
         console.warn('[ai-assistant] widget script load failed:', err?.message || err)
       })
 
-    const timer = setInterval(() => { syncMemberTokenToAssistantWidget().catch(() => {}) }, 8000)
+    const timer = setInterval(() => { syncMemberTokenToAssistantWidget().catch(() => {}) }, 600000)
 
     return () => {
       Taro.eventCenter.off('login-success', onAuth)
