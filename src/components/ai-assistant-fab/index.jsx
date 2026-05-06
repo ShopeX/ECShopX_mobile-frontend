@@ -616,6 +616,7 @@ function H5AssistantWidgetLoader() {
 
   return (
     <ai-assistant-widget
+      drag='on'
       backend-url={ASSISTANT_BACKEND_URL}
       tenant-id={process.env.APP_AI_TENANT_ID}
       avatar='auto'
