@@ -16552,5 +16552,17 @@
 		"en": "",
 		"zh-tw": "",
 		"ar": ""
+	},
+	"jcca0h6": {
+		"zh-cn": "未配置嵌入页",
+		"en": "The embedded page is not configured",
+		"zh-tw": "未配置嵌入頁",
+		"ar": "غير مهيئة في صفحة مدمجة"
+	},
+	"11ghx65": {
+		"zh-cn": "AI 助手",
+		"en": "AI Assistant",
+		"zh-tw": "AI 助手",
+		"ar": "مساعد اي"
 	}
 }

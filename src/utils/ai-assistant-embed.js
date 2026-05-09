@@ -119,6 +119,8 @@ export function buildAiAssistantWebviewSrc() {
   if (distributorId) q.set('distributor_id', distributorId)
   if (tenantId) q.set('tenant_id', tenantId)
   q.set('backend', backend)
+  // iframe 嵌入模式：隐藏关闭按钮，关闭即返回上一页
+  q.set('hide_close_btn', '1')
   const sep = base.includes('?') ? '&' : '?'
   return `${base}${sep}${q.toString()}`
 }

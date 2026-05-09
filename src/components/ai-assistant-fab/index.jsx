@@ -558,70 +558,157 @@ function LegacyAssistantFab() {
 }
 
 function H5AssistantWidgetLoader() {
-  const started = useRef(false)
+  const [fabIconUrl, setFabIconUrl] = useState('')
+  const [fabBuiltinEmoji, setFabBuiltinEmoji] = useState('')
+  const [fabPos, setFabPos] = useState({ left: 0, bottom: 120 })
+  const fabPosRef = useRef(fabPos)
+  const suppressTapRef = useRef(false)
+  const dragRef = useRef({
+    active: false,
+    moved: false,
+    startX: 0,
+    startY: 0,
+    origLeft: 0,
+    origBottom: 0
+  })
+  const MOVE_PX_TO_DRAG = 10
+  const lastOpenAtRef = useRef(0)
 
   useEffect(() => {
-    if (started.current) return
-    started.current = true
+    fabPosRef.current = fabPos
+  }, [fabPos])
 
-    installAssistantAddCartUrlFix()
-
-    const onAuth = () => syncMemberTokenToAssistantWidget()
-
-    const onNav = (e) => {
-      const path = e?.detail?.path
-      if (!path) return
-      const url = path.startsWith('/') ? path : `/${path}`
-      Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-        Promise.resolve(Taro.switchTab({ url })).catch(() => { })
+  useEffect(() => {
+    const backend = ASSISTANT_BACKEND_URL
+    const tid =
+      process.env.APP_AI_TENANT_ID != null && process.env.APP_AI_TENANT_ID !== ''
+        ? String(process.env.APP_AI_TENANT_ID)
+        : ''
+    const q = tid ? `?tenant_id=${encodeURIComponent(tid)}` : ''
+    Taro.request({
+      url: `${backend}/api/widget/embed-config${q}`,
+      method: 'GET',
+      header: { Accept: 'application/json' }
+    })
+      .then((res) => {
+        const status = res.statusCode
+        if (status < 200 || status >= 300) return
+        const body = res.data || {}
+        const d = body.data || {}
+        const raw = d.default_avatar != null ? d.default_avatar : d.defaultAvatar
+        const code = raw != null ? String(raw).trim().toLowerCase() : 'fox'
+        if (!code) return
+        if (BUILTIN_AVATAR_CODES.has(code)) {
+          setFabBuiltinEmoji(BUILTIN_FAB_EMOJI[code] || '')
+          setFabIconUrl('')
+        } else {
+          setFabBuiltinEmoji('')
+          setFabIconUrl(buildWeappFabAvatarUrl(backend, tid, code))
+        }
       })
-    }
+      .catch(() => { })
 
-    const onStorage = (e) => {
-      if (e.key === SG_TOKEN) onAuth()
-    }
-    const onVisibility = () => {
-      if (typeof document !== 'undefined' && document.visibilityState === 'visible') {
-        onAuth()
+    // 读取保存的位置
+    try {
+      const saved = Taro.getStorageSync(FAB_POS_STORAGE)
+      if (saved && typeof saved.left === 'number' && typeof saved.bottom === 'number') {
+        setFabPos({ left: saved.left, bottom: saved.bottom })
       }
-    }
+    } catch (_) { }
+  }, [])
 
-    Taro.eventCenter.on('login-success', onAuth)
-    Taro.eventCenter.on('ecshopx-auth-changed', onAuth)
-    window.addEventListener('ai-assistant-miniprogram-nav', onNav)
-    window.addEventListener('ai-assistant-nav', onNav)
-    window.addEventListener('storage', onStorage)
-    document.addEventListener('visibilitychange', onVisibility)
+  const navigateToWebviewPage = useCallback(() => {
+    if (suppressTapRef.current) return
+    const now = Date.now()
+    if (now - lastOpenAtRef.current < 480) return
+    lastOpenAtRef.current = now
 
-    loadAssistantWidgetScript()
-      .then(() => {
-        syncMemberTokenToAssistantWidget()
+    // 跳转到 iframe 页面，保持域名不变
+    const iframePageUrl = '/pages/ai-assistant/index'
+
+    if (typeof window !== 'undefined') {
+      window.location.href = iframePageUrl
+    } else {
+      // 小程序环境
+      Promise.resolve(Taro.navigateTo({ url: iframePageUrl })).catch(() => {
+        Taro.showToast({ title: '无法打开助手', icon: 'none' })
       })
-      .catch((err) => {
-        console.warn('[ai-assistant] widget script load failed:', err?.message || err)
-      })
-
-    const timer = setInterval(() => { syncMemberTokenToAssistantWidget().catch(() => {}) }, 600000)
-
-    return () => {
-      Taro.eventCenter.off('login-success', onAuth)
-      Taro.eventCenter.off('ecshopx-auth-changed', onAuth)
-      window.removeEventListener('ai-assistant-miniprogram-nav', onNav)
-      window.removeEventListener('ai-assistant-nav', onNav)
-      window.removeEventListener('storage', onStorage)
-      document.removeEventListener('visibilitychange', onVisibility)
-      clearInterval(timer)
     }
   }, [])
 
+  const onTouchStart = useCallback((e) => {
+    const t = e.touches[0]
+    const p = fabPosRef.current
+    dragRef.current = {
+      active: true,
+      moved: false,
+      startX: t.clientX,
+      startY: t.clientY,
+      origLeft: p.left,
+      origBottom: p.bottom
+    }
+  }, [])
+
+  const onTouchMove = useCallback((e) => {
+    if (!dragRef.current.active) return
+    const t = e.touches[0]
+    const dx = t.clientX - dragRef.current.startX
+    const dy = t.clientY - dragRef.current.startY
+    if (Math.abs(dx) > MOVE_PX_TO_DRAG || Math.abs(dy) > MOVE_PX_TO_DRAG) {
+      dragRef.current.moved = true
+    }
+    const nextLeft = dragRef.current.origLeft + dx
+    const nextBottom = dragRef.current.origBottom - dy
+    setFabPos({ left: nextLeft, bottom: nextBottom })
+    fabPosRef.current = { left: nextLeft, bottom: nextBottom }
+  }, [])
+
+  const onTouchEnd = useCallback(() => {
+    if (!dragRef.current.active) return
+    const wasMoved = dragRef.current.moved
+    dragRef.current.active = false
+    if (wasMoved) {
+      suppressTapRef.current = true
+      setTimeout(() => {
+        suppressTapRef.current = false
+      }, 450)
+      try {
+        Taro.setStorageSync(FAB_POS_STORAGE, fabPosRef.current)
+      } catch (_) { }
+    } else {
+      navigateToWebviewPage()
+    }
+    dragRef.current.moved = false
+  }, [navigateToWebviewPage])
+
   return (
-    <ai-assistant-widget
-      drag='on'
-      backend-url={ASSISTANT_BACKEND_URL}
-      tenant-id={process.env.APP_AI_TENANT_ID}
-      avatar='auto'
-      position='right'
-    ></ai-assistant-widget>
+    <View className='ai-assistant-weapp-host'>
+      <View
+        className='ai-assistant-root ai-assistant-root--weapp-compact'
+        style={{
+          left: `${fabPos.left}px`,
+          bottom: `${fabPos.bottom}px`,
+          top: 'auto',
+          right: 'auto'
+        }}
+      >
+        <View
+          className='ai-assistant-fab'
+          onTouchStart={onTouchStart}
+          onTouchMove={onTouchMove}
+          onTouchEnd={onTouchEnd}
+          onTouchCancel={onTouchEnd}
+        >
+          {fabIconUrl ? (
+            <Image className='ai-assistant-fab__img' src={fabIconUrl} mode='aspectFill' />
+          ) : fabBuiltinEmoji ? (
+            <Text className='ai-assistant-fab__emoji'>{fabBuiltinEmoji}</Text>
+          ) : (
+            <Text className='ai-assistant-fab__text'>AI</Text>
+          )}
+        </View>
+      </View>
+    </View>
   )
 }
 
@@ -637,18 +724,6 @@ export default function AiAssistantFab() {
     return null
   }
 
-  if (isWeb) {
-    return <H5AssistantWidgetLoader />
-  }
-
-  if (isWeixin) {
-    const useWebview =
-      process.env.APP_AI_MINIPROGRAM_LEGACY !== '1' &&
-      process.env.APP_AI_MINIPROGRAM_LEGACY !== 'true'
-    if (useWebview) {
-      return <WeappAiAssistantWebviewEntry />
-    }
-  }
-
-  return <LegacyAssistantFab />
+  // H5 和小程序统一使用 Widget 组件（悬浮按钮 + 展开面板）
+  return <H5AssistantWidgetLoader />
 }

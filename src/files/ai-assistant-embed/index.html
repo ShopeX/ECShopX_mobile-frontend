@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover" />
+  <title>AI 购物助手</title>
+  <style>
+    .embed-back-btn {
+      position: fixed;
+      top: env(safe-area-inset-top, 12px);
+      left: 12px;
+      z-index: 1000001;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.9);
+      border: none;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 18px;
+      color: #333;
+    }
+    .embed-back-btn:active {
+      opacity: 0.8;
+    }
+  </style>
+  <!-- 勿 defer：须先于 widget-h5 注入 wx，否则首屏点击时 wx.miniProgram 未就绪 -->
+  <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
+</head>
+<body style="margin:0;min-height:100vh;background:#f5f6fa;">
+  <!-- 返回按钮 -->
+  <button class="embed-back-btn" id="embed-back-btn" aria-label="返回商城">←</button>
+
+  <!-- 微信内若整页空白：1) 手机无法解析 ecxjava-h5.test 时请改用电脑局域网 IP 或配 HTTPS 域名；2) 小程序需 APP_AI_WEBVIEW_ALLOW_HTTP=1 + 重编 weapp -->
+  <ai-assistant-widget
+    id="ai-assistant-embed-widget"
+    layout="page"
+    platform="java"
+    avatar="auto"
+    backend-url="http://127.0.0.1:9020"
+    tenant-id="c6bb2814299811f1bef19352e276a9ec"
+  ></ai-assistant-widget>
+  <!-- 必须在 widget-h5.js 之前同步执行：否则 Web Component 会用默认 localhost 拉 embed-config；小程序 web-view 里 localhost 是手机自身，请求永远到不了开发机 -->
+  <script>
+    (function () {
+      var q = new URLSearchParams(window.location.search || '')
+      var backend = (q.get('backend') || 'http://127.0.0.1:9020').replace(/\/$/, '')
+      var tenant = q.get('tenant_id') || 'c6bb2814299811f1bef19352e276a9ec'
+      var el = document.getElementById('ai-assistant-embed-widget')
+      if (el) {
+        el.setAttribute('backend-url', backend)
+        el.setAttribute('tenant-id', tenant)
+      }
+    })()
+  </script>
+  <script type="module" src="./widget-h5.js"></script>
+  <script>
+    (function () {
+      function readQuery() {
+        var q = new URLSearchParams(window.location.search || '')
+        return {
+          token: q.get('token') || '',
+          companyId: q.get('company_id') || '',
+          distributorId: q.get('distributor_id') || '',
+          tenantId: q.get('tenant_id') || '',
+          backend: (q.get('backend') || 'http://localhost:9020').replace(/\/$/, '')
+        }
+      }
+
+      function navigateMiniProgram(path) {
+        if (!path) return
+        var url = path.indexOf('/') === 0 ? path : '/' + path
+        var wxmp = window.wx && wx.miniProgram
+        if (!wxmp) {
+          console.warn('[ai-assistant-embed] wx.miniProgram 不可用（非小程序 web-view 或未加载 jweixin）')
+          return
+        }
+        function failChain(err, step) {
+          console.warn('[ai-assistant-embed] ' + step + ' failed', err || '', url)
+          if (step === 'navigateTo' && typeof wxmp.redirectTo === 'function') {
+            wxmp.redirectTo({ url: url, fail: function (e2) { failChain(e2, 'redirectTo') } })
+            return
+          }
+          if (step === 'redirectTo' && typeof wxmp.switchTab === 'function') {
+            wxmp.switchTab({ url: url, fail: function (e3) { failChain(e3, 'switchTab') } })
+            return
+          }
+        }
+        if (typeof wxmp.navigateTo !== 'function') return
+        wxmp.navigateTo({
+          url: url,
+          fail: function (e) {
+            failChain(e, 'navigateTo')
+          }
+        })
+      }
+
+      window.addEventListener(
+        'ai-assistant-miniprogram-nav',
+        function (e) {
+          var path = e && e.detail && e.detail.path
+          navigateMiniProgram(path)
+        },
+        false
+      )
+
+      var q = readQuery()
+
+      // 返回按钮逻辑
+      function goBack() {
+        // 如果在 iframe 中，通过 postMessage 通知父页面
+        try {
+          if (window.parent && window.parent !== window) {
+            window.parent.postMessage({ type: 'ai-assistant-widget-close' }, '*')
+            return
+          }
+        } catch (e) {
+          console.warn('[ai-assistant-embed] postMessage failed', e)
+        }
+
+        // 如果有 mall_url 参数，返回到指定商城
+        var mallUrl = new URLSearchParams(window.location.search).get('mall_url')
+        if (mallUrl) {
+          window.location.href = mallUrl
+        } else if (window.wx && window.wx.miniProgram) {
+          // 微信小程序 webview 环境
+          window.wx.miniProgram.navigateBack({ delta: 1 })
+        } else if (window.history.length > 1) {
+          // 尝试 history.back
+          window.history.back()
+        } else {
+          // 兜底：尝试返回到 referrer
+          var referrer = document.referrer
+          if (referrer && referrer.indexOf(window.location.hostname) !== -1) {
+            window.location.href = referrer
+          }
+        }
+      }
+
+      var backBtn = document.getElementById('embed-back-btn')
+      if (backBtn) {
+        backBtn.addEventListener('click', goBack)
+      }
+
+      // 监听 widget 关闭事件
+      window.addEventListener('ai-assistant-widget-close', goBack)
+
+      function applyAuth() {
+        var api = window.__AI_ASSISTANT_EMBED__
+        if (!api) return
+        if (q.token && typeof api.setEcshopxAuth === 'function') {
+          api.setEcshopxAuth(
+            q.token,
+            q.companyId || undefined,
+            q.tenantId || undefined,
+            q.distributorId || undefined
+          )
+          return
+        }
+        if (typeof api.clearEcshopxAuth === 'function') {
+          api.clearEcshopxAuth()
+        }
+        if (q.tenantId && typeof api.setAssistantTenantId === 'function') {
+          api.setAssistantTenantId(q.tenantId)
+        }
+      }
+
+      function tryApply() {
+        applyAuth()
+        setTimeout(applyAuth, 200)
+        setTimeout(applyAuth, 800)
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryApply)
+      } else {
+        tryApply()
+      }
+    })()
+  </script>
+</body>
+</html>
