@@ -12,6 +12,7 @@ import api from '@/api'
 import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import CompActivityItem from './comps/comp-activity-item'
+import { useI18nNavigationTitle } from '@/hooks'
 import './activity-list.scss'
 
 const initialState = {
@@ -33,6 +34,7 @@ const initialState = {
   keyword: ''
 }
 function ActivityIist(props) {
+  useI18nNavigationTitle('e4k5914', '活动报名')
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, recordList, isOpened, selectOptions, activityInfo, keyword } = state
   const recordRef = useRef()

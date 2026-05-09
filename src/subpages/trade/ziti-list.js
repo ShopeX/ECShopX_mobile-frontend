@@ -12,6 +12,7 @@ import { SpPage, SpScrollView } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
+import { useI18nNavigationTitle } from '@/hooks'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompTrackType from './comps/comp-trade-type'
 import './ziti-list.scss'
@@ -22,6 +23,7 @@ const initialState = {
   typeVal: '0'
 }
 function TradeZitiList(props) {
+  useI18nNavigationTitle('gt6kd54', '自提订单')
   const [state, setState] = useImmer(initialState)
   const { tradeStatus, status, tradeList, refresherTriggered, typeVal } = state
   const tradeRef = useRef()

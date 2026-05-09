@@ -118,6 +118,7 @@ const initialState = {
 function EspierDetail(props) {
   const $instance = getCurrentInstance() || {}
   const pageRef = useRef()
+  const scrollTopRef = useRef(0)
 
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
@@ -466,6 +467,26 @@ function EspierDetail(props) {
     })
   }
 
+  const syncNavigateMantle = (scrollTop = 0) => {
+    const bannerHeight = imgHeightList[curImgIdx] || defaultImageHeight
+    const nextNavigateMantle = scrollTop > bannerHeight
+    setState((draft) => {
+      draft.navigateMantle = nextNavigateMantle
+    })
+  }
+
+  const handleGoodsScroll = (e) => {
+    const detail = e?.detail || {}
+    console.log('[espier-detail] handleGoodsScroll', detail)
+    scrollTopRef.current = detail.scrollTop || 0
+    pageRef.current?.handlePageScroll(detail)
+    syncNavigateMantle(detail.scrollTop || 0)
+  }
+
+  useEffect(() => {
+    syncNavigateMantle(scrollTopRef.current)
+  }, [curImgIdx, imgHeightList])
+
   const setSwiperCss = (item) => {
     return {
       height: '100%',
@@ -540,7 +561,12 @@ function EspierDetail(props) {
       }
     >
       <View className='page-item-espierdetail__header-bg'></View>
-      <ScrollView scrollY className='page-item-espierdetail-goods-contents' style='height: 100%;'>
+      <ScrollView
+        scrollY
+        className='page-item-espierdetail-goods-contents'
+        style='height: 100vh;'
+        onScroll={handleGoodsScroll}
+      >
         {info && (
           <View className='goods-contents'>
             <View className='goods-pic-container'>
@@ -621,29 +647,6 @@ function EspierDetail(props) {
                     查看案例
                   </View>
                 )}
-              </View>
-
-              <CompVipGuide
-                info={{
-                  ...info.vipgradeGuideTitle,
-                  memberPrice: info.memberPrice
-                }}
-              />
-
-              <CompCouponList
-                info={
-                  info.couponList.list.length > 3
-                    ? info.couponList.list.slice(0, 3)
-                    : info.couponList.list
-                }
-                onClick={handleReceiveCoupon}
-              />
-
-              <View className='goods-name-wrap'>
-                <View className='goods-name'>
-                  <View className='title'>{info.itemName}</View>
-                  <View className='brief'>{info.brief}</View>
-                </View>
                 {(isWeixin || isAPP()) && (
                   // {(
                   <View className='btn-share-wrap'>
@@ -667,6 +670,51 @@ function EspierDetail(props) {
                   </View>
                 )}
               </View>
+
+              <CompVipGuide
+                info={{
+                  ...info.vipgradeGuideTitle,
+                  memberPrice: info.memberPrice
+                }}
+              />
+
+              <CompCouponList
+                info={
+                  info.couponList.list.length > 3
+                    ? info.couponList.list.slice(0, 3)
+                    : info.couponList.list
+                }
+                onClick={handleReceiveCoupon}
+              />
+              
+              {(promotionPackage.length > 0 || promotionActivity.length > 0) && (
+                <SpCell
+                  isLink
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.promotionOpen = true
+                    })
+                  }}
+                >
+                  {promotionPackage.length > 0 && (
+                    <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
+                  )}
+                  {promotionActivity.length > 0 && (
+                    promotionActivity.map((item, index) => (
+                      <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                        {item.conditionRules}
+                      </View>
+                    ))
+                  )}
+                </SpCell>
+              )}
+
+              <View className='goods-name-wrap'>
+                <View className='goods-name'>
+                  <View className='title'>{info.itemName}</View>
+                  <View className='brief'>{info.brief}</View>
+                </View>
+              </View>
               {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
                 <View className='item-pre'>
                   <View className='item-pre-title'>
@@ -683,6 +731,7 @@ function EspierDetail(props) {
                   </View>
                 </View>
               )}
+
               <View className='item-bn-sales'>
                 {/* <View className='item-bn'></View> */}
                 {info.salesSetting && (
@@ -704,48 +753,12 @@ function EspierDetail(props) {
                     })
                   }}
                 >
-                  <SpCell title='规格' isLink>
+                  <SpCell title='已选' isLink>
                     <Text className='cell-value'>{skuText}</Text>
                   </SpCell>
                 </SpLogin>
               </View>
             )}
-
-            <View className='sku-block'>
-              {promotionPackage.length > 0 && (
-                <SpCell
-                  title='组合优惠'
-                  isLink
-                  onClick={() => {
-                    Taro.navigateTo({
-                      url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
-                    })
-                    // setState((draft) => {
-                    //   draft.packageOpen = true
-                    // })
-                  }}
-                >
-                  <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
-                </SpCell>
-              )}
-              {promotionActivity.length > 0 && (
-                <SpCell
-                  title='优惠活动'
-                  isLink
-                  onClick={() => {
-                    setState((draft) => {
-                      draft.promotionOpen = true
-                    })
-                  }}
-                >
-                  {promotionActivity.map((item, index) => (
-                    <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                      {item.promotionTag}
-                    </View>
-                  ))}
-                </SpCell>
-              )}
-            </View>
 
             {/* {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>

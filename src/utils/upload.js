@@ -5,13 +5,20 @@
 import Taro from '@tarojs/taro'
 import req from '@/api/req'
 import S from '@/spx'
+import { SG_TOKEN } from '@/consts/localstorage'
 import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
 // import COS from './cos'
 import { reject } from 'lodash'
 // import * as qiniu from 'qiniu-js'
 
-const getToken = (params) => {
-  return req.get('espier/image_upload_token', params)
+const getToken = (params, uploadOptions = {}) => {
+  const { useMallToken, ...tokenQueryExtra } = uploadOptions
+  const mergedParams = { ...params, ...tokenQueryExtra }
+  return req.get(
+    'espier/image_upload_token',
+    mergedParams,
+    useMallToken ? { useMallToken: true } : {}
+  )
 }
 
 // const uploadURLFromRegionCode = (code) => {
@@ -140,11 +147,17 @@ const upload = {
       throw new Error(e)
     }
   },
-  localUpload: async (item, tokenRes) => {
+  localUpload: async (item, tokenRes, uploadOptions = {}) => {
     const { filetype, domain } = tokenRes
     const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-    let header = {
-      Authorization: `Bearer ${S.getAuthToken()}`
+    console.log(uploadOptions, 'uploadOptions')
+    debugger
+    const bearer = uploadOptions.useMallToken
+      ? Taro.getStorageSync(SG_TOKEN) || S.get(SG_TOKEN, true)
+      : S.getAuthToken()
+    let header = {}
+    if (bearer) {
+      header.Authorization = `Bearer ${bearer}`
     }
     if (isWeixin) {
       header['authorizer-appid'] = getAppId()
@@ -272,7 +285,7 @@ const getUploadFun = (dirver) => {
 }
 
 // 返回对应上传方式
-const uploadImageFn = async (imgFiles, filetype = 'image') => {
+const uploadImageFn = async (imgFiles, filetype = 'image', uploadOptions = {}) => {
   console.log('---imgFiles---', imgFiles)
   const imgs = []
   for (const item of imgFiles) {
@@ -291,22 +304,23 @@ const uploadImageFn = async (imgFiles, filetype = 'image') => {
     }
     try {
       const filename = item.url.slice(item.url.lastIndexOf('/') + 1)
-      const { driver, token } = await getToken({ filetype })
+      const { driver, token } = await getToken({ filetype }, uploadOptions)
       // const { driver, token } = await getToken({ filetype, filename })
       const uploadType = getUploadFun(driver)
       // console.log('----uploadType----', uploadType)
-      let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype })
+      let img = await upload[uploadType](item, { ...token, filetype: item.fileType || filetype }, uploadOptions)
       console.log(uploadType)
       if (filetype == 'videos' && item.thumb) {
         const _thumb = {
           url: item.thumb
         }
         const thumbFileName = _thumb.url.slice(_thumb.url.lastIndexOf('/') + 1)
-        const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName })
+        const thumbRes = await getToken({ filetype: 'image', filename: thumbFileName }, uploadOptions)
         const thumbUploadType = getUploadFun(thumbRes.driver)
         const thumbImg = await upload[thumbUploadType](
           { url: _thumb.url },
-          { ...thumbRes.token, filetype: 'image' }
+          { ...thumbRes.token, filetype: 'image' },
+          uploadOptions
         )
         if (thumbImg) {
           img['thumb'] = thumbImg.url

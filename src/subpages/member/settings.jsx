@@ -38,6 +38,10 @@ const Settings = () => {
     })
   }, [])
 
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: globalThis.$t('162d72a5.e366cc', '设置', 'lang') })
+  }, [])
+
   return (
     <SpPage className='sp-settings'>
       <View className='block-container'>

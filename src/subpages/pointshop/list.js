@@ -33,6 +33,7 @@ import {
   styleNames,
   VERSION_STANDARD
 } from '@/utils'
+import { useI18nNavigationTitle } from '@/hooks'
 import './list.scss'
 
 const initialState = {
@@ -56,6 +57,7 @@ const initialState = {
 }
 
 function PointShopList() {
+  useI18nNavigationTitle('fq31bz4', '积分商城')
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -81,6 +83,31 @@ function PointShopList() {
   const { userInfo } = useSelector((state) => state.user)
   const goodsRef = useRef()
 
+  const getInitConfig = async () => {
+    try {
+      const [{ point: _point }, { screen } = {}] = await Promise.all([
+        api.pointitem.getMypoint(),
+        api.pointitem.getPointitemSetting()
+      ])
+      const { point_openstatus, point_section = [] } = screen || {}
+      setState((draft) => {
+        draft.point = _point ?? 0
+        draft.pointFilter = point_openstatus
+        draft.pointScoreList = (point_section || []).map((item, index) => {
+          return {
+            id: index,
+            name: `${item[0]}~${item[1]}`,
+            value: item
+          }
+        })
+      })
+    } catch (e) {
+      setState((draft) => {
+        draft.point = 0
+      })
+    }
+  }
+
   useEffect(() => {
     setState((draft) => {
       draft.filterList = [
@@ -97,24 +124,9 @@ function PointShopList() {
     }
   }, [leftList])
 
-  const getInitConfig = async () => {
-    const [{ point: _point }, { screen }] = await Promise.all([
-      api.pointitem.getMypoint(),
-      api.pointitem.getPointitemSetting()
-    ])
-    const { point_openstatus, point_section } = screen
-    setState((draft) => {
-      draft.point = _point
-      draft.pointFilter = point_openstatus
-      draft.pointScoreList = point_section.map((item, index) => {
-        return {
-          id: index,
-          name: `${item[0]}~${item[1]}`,
-          value: item
-        }
-      })
-    })
-  }
+  useDidShow(() => {
+    getInitConfig()
+  })
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { dis_id, cat_id, main_cat_id } = $instance?.router?.params

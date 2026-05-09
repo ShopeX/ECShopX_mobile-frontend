@@ -610,6 +610,7 @@ const Apply = () => {
                 {step === 3 && (
                   <View className='certificate-information'>
                     <MImgPicker
+                      useMallToken
                       title={
                         <Text>
                           请根据提示上传<Text className='primary'>营业执照</Text>照片
@@ -620,6 +621,7 @@ const Apply = () => {
                       info={['上传营业执照']}
                     />
                     <MImgPicker
+                      useMallToken
                       mode='idCard'
                       title={
                         <Text>
@@ -635,6 +637,7 @@ const Apply = () => {
                       ]}
                     />
                     <MImgPicker
+                      useMallToken
                       mode='bankCard'
                       required={false}
                       value={state.bank_card_front_url}

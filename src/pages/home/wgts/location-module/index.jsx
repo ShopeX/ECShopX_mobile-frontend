@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState, useMemo, useContext, useRef, useCallback, useLayoutEffect } from 'react'
+import React, { Fragment, useState, useMemo, useContext, useRef, useCallback, useLayoutEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames, pxToRpx, getElementRectBox, rpxToPx } from '@/utils'
@@ -254,8 +254,12 @@ export default function WgtLocationModule(props) {
                   />
                   {item.children.length > 0 &&
                     item.children.map((child, childIndex) => {
+                      const childKey =
+                        child?.id != null && child.id !== ''
+                          ? String(child.id)
+                          : `loc-${id}-${index}-${childIndex}-${child.name || 'wgt'}`
                       return (
-                        <>
+                        <Fragment key={childKey}>
                           {child.name === 'imgHotzone' && (
                             <WgtImgHotZone info={child} id={`${childIndex}_${id}`} />
                           )}
@@ -292,7 +296,7 @@ export default function WgtLocationModule(props) {
                           {child.name === 'classify' && (
                             <WgtClassify info={child} id={`${childIndex}_${id}`} />
                           )}
-                        </>
+                        </Fragment>
                       )
                     })}
                 </View>

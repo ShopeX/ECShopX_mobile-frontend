@@ -26,7 +26,9 @@ const ImgPicker = (props) => {
     mode = 'businessLicense',
     info = [],
     onChange = () => {},
-    value
+    value,
+    /** 默认 true：入驻证照等场景用商城 SG_TOKEN；若接口要求商户身份上传则传 false */
+    useMallToken = true
   } = props
 
   const ismultiple = info.length > 1
@@ -68,6 +70,7 @@ const ImgPicker = (props) => {
                   size='small'
                   onChange={handleChange(index)}
                   uploadSuccess={uploadSuccess(index)}
+                  useMallToken={useMallToken}
                 >
                   <View className='picker-info'>{uploadSuccess(index) ? '重新上传' : item}</View>
                 </SpImagePicker>
@@ -85,6 +88,7 @@ const ImgPicker = (props) => {
               value={uploadSuccess(0)}
               onChange={handleChange(0)}
               uploadSuccess={uploadSuccess(0)}
+              useMallToken={useMallToken}
             >
               <View className='picker-info'>{uploadSuccess(0) ? '重新上传' : info[0]}</View>
             </SpImagePicker>

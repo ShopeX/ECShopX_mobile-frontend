@@ -476,6 +476,7 @@ export const needLoginPageType = [
   'boost_activity',
   'boost_order',
   'coupon_list',
+  'my_coupon',
   'my_collect',
   'tenants',
   'address',

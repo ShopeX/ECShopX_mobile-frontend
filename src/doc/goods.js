@@ -213,7 +213,7 @@ export const ITEM_LIST_POINT_GOODS = {
 export const GOODS_INFO = {
   itemId: 'item_id',
   itemBn: 'item_bn',
-  itemName: 'itemName',
+  itemName: 'item_name',
   brief: 'brief',
   img: 'pics[0]',
   imgs: 'pics',
@@ -351,7 +351,7 @@ export const GOODS_INFO = {
 export const ESPIER_DETAIL_GOODS_INFO = {
   itemId: 'item_id',
   itemBn: 'item_bn',
-  itemName: 'itemName',
+  itemName: 'item_name',
   brief: 'brief',
   img: 'pics[0]',
   imgs: 'pics',
@@ -489,7 +489,7 @@ export const ESPIER_DETAIL_GOODS_INFO = {
 
 export const PACKGOODS_INFO = {
   img: 'pics[0]',
-  itemName: 'itemName',
+  itemName: 'item_name',
   num: '',
   price: ({ price }) => price / 100,
   marketPrice: ({ market_price }) => market_price / 100

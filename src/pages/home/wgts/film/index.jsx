@@ -36,6 +36,7 @@ function WgtFilm(props) {
 
   const objectFit = config.ratio === 'square' ? 'cover' : 'contain'
 
+
   if (!info || !data || data.length === 0 || !data[0].url) {
     return null
   }

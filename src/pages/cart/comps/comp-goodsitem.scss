@@ -2,6 +2,44 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+
+.comp-goodsitem-swipe {
+  position: relative;
+  overflow: hidden;
+  background-color: #fff;
+
+  &__front {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    background-color: #fff;
+    box-sizing: border-box;
+    will-change: transform;
+  }
+
+  &__delete {
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    z-index: 1;
+    width: 120rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff4d4f;
+    box-sizing: border-box;
+  }
+
+  &__delete-text {
+    width: 100%;
+    text-align: center;
+    font-size: 28px;
+    color: #fff;
+    line-height: 1.2;
+  }
+}
+
 .comp-goodsitem {
   display: flex;
   overflow: hidden;
@@ -17,6 +55,7 @@
   &-image {
     width: 220px;
     height: 220px;
+    border-radius: 10px;
   }
   .item-hd {
     display: flex;
@@ -71,6 +110,7 @@
     }
   }
   .item-tags {
+    margin-bottom: 20px;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -80,10 +120,9 @@
       border: 1PX solid var(--color-primary);
       color: var(--color-primary);
       font-size: 22px;
-      border-radius: 8px;
-      padding: 0 6px;
-      height: 32px;
-      line-height: 32px;
+      border-radius: 6px;
+      padding: 6px;
+      line-height: 1;
       margin-right: 10px;
       display: inline-block;
       margin: 0 10px 4px 0;
@@ -97,7 +136,9 @@
   }
   .goods-title {
     @include multi-ellipsis(2);
-    width: 300px;
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
     &__tag {
       /* prettier-ignore */
       border: 1PX solid var(--color-primary);
@@ -135,10 +176,9 @@
     }
   }
   .spec-desc {
-    background-color: #f5f5f5;
     font-size: 24px;
     color: #999;
-    padding: 5px 13px;
+    padding: 10px 0;
     max-width: 300px;
     min-width: 100px;
     display: inline-block;
@@ -150,9 +190,5 @@
     width: 350px;
     display: block;
     @include text-overflow();
-  }
-  .icon-shanchu-01 {
-    font-size: 40px;
-    color: #777;
   }
 }

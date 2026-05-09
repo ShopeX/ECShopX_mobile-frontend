@@ -17,9 +17,11 @@ import {
   hideLoading,
   isAlipay,
   isNavbar,
+  isWeixin,
   redirectUrl,
   requestAlipayminiPayment
 } from '@/utils'
+import { tLang } from '@/utils/i18nLang'
 import CompPaymentPicker from '@/pages/cart/comps/comp-paymentpicker'
 import userIcon from '@/assets/imgs/user-icon.png'
 // import { useDispatch } from 'react-redux'
@@ -60,6 +62,8 @@ export default class VipIndex extends Component {
   }
 
   componentDidMount() {
+    this.applyI18nNavigationTitle()
+    Taro.eventCenter.on('languageChanged', this.handleI18nLanguageChanged)
     console.log(S.getAuthToken())
     const { colors } = this.props
     Taro.setNavigationBarColor({
@@ -76,6 +80,29 @@ export default class VipIndex extends Component {
         this.fetchUserVipInfo()
       }
     )
+  }
+
+  componentWillUnmount() {
+    Taro.eventCenter.off('languageChanged', this.handleI18nLanguageChanged)
+  }
+
+  componentDidShow() {
+    this.applyI18nNavigationTitle()
+  }
+
+  handleI18nLanguageChanged = () => {
+    this.applyI18nNavigationTitle()
+    this.forceUpdate()
+  }
+
+  /** 小程序等环境 SpNavBar 不渲染；custom 导航需 SpPage title 才会随语言刷新 */
+  applyI18nNavigationTitle() {
+    const title = tLang('ac7b354', '会员购买')
+    if (isWeixin) {
+      Taro.setNavigationBarTitle({ title })
+    }
+    const { page } = getCurrentInstance() || {}
+    page && (page.config.navigationBarTitleText = title)
   }
 
   async fetchInfo() {
@@ -325,14 +352,15 @@ export default class VipIndex extends Component {
       adapay: '微信支付',
       alipaymini: '支付宝支付'
     }
+    const navTitle = tLang('ac7b354', '会员购买')
     return (
-      <SpPage>
+      <SpPage title={navTitle}>
         <View
           className={classNames('page-vip-vipgrades', 'vipgrades', {
             'has-navbar': isNavbar()
           })}
         >
-          <SpNavBar title='会员购买' leftIconType='chevron-left' fixed='true' />
+          <SpNavBar title={navTitle} leftIconType='chevron-left' fixed='true' />
           <View className='header' style={'background: ' + colors.data[0].marketing}>
             <View className='header-isauth'>
               <Image

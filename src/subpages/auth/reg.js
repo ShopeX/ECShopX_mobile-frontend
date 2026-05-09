@@ -388,7 +388,7 @@ const Reg = () => {
                     clear
                     name='yzm'
                     value={state.yzm}
-                    placeholder='请输入图形验证码'
+                    placeholder={'请输入图形验证码'}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -409,7 +409,7 @@ const Reg = () => {
                     clear
                     name='vcode'
                     value={state.vcode}
-                    placeholder='请输入验证码'
+                    placeholder={'请输入验证码'}
                     onChange={handleInputChange('vcode')}
                   />
                 </View>
@@ -426,7 +426,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder='请输入密码'
+                    placeholder={'请输入密码'}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />
@@ -452,7 +452,7 @@ const Reg = () => {
                     clear
                     name='email-yzm'
                     value={state.yzm}
-                    placeholder='请输入图形验证码'
+                    placeholder={'请输入图形验证码'}
                     onChange={handleInputChange('yzm')}
                   />
                 </View>
@@ -470,7 +470,7 @@ const Reg = () => {
               <View className='form-field'>
                 <View className='input-field'>
                   <CompPasswordInput
-                    placeholder='密码需8-20位且同时包含字母与数字'
+                    placeholder={'密码需8-20位且同时包含字母与数字'}
                     onChange={handleInputChange('password')}
                     value={state.password}
                   />

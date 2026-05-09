@@ -12,6 +12,7 @@ import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin } from '@/utils'
+import { useI18nNavigationTitle } from '@/hooks'
 import './address.scss'
 
 const ADDRESS_ID = 'address_id'
@@ -23,6 +24,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
+  useI18nNavigationTitle('dcnrsx4', '收货地址')
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.sys)

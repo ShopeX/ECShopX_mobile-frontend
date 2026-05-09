@@ -15,6 +15,7 @@ import {
   VERSION_IN_PURCHASE
 } from '@/utils'
 import log from '@/utils/log'
+import { SG_TOKEN } from '@/consts/localstorage'
 import { HTTP_STATUS } from './consts'
 
 // 惰性获取 spx：req 与 spx 存在循环依赖（spx→api→req→spx），加载时 spxInstance 可能尚未就绪
@@ -187,7 +188,7 @@ class API {
   }
 
   intereptorReq(params) {
-    const { url, data, header = {}, method = 'GET' } = params
+    const { url, data, header = {}, method = 'GET', useMallToken } = params
     const { company_id, appid } = this.options
     const methodIsGet = method.toLowerCase() === 'get'
 
@@ -210,7 +211,10 @@ class API {
       header['content-type'] = header['content-type'] || 'application/x-www-form-urlencoded'
     }
 
-    const token = getS().getAuthToken()
+    // 商户子包内默认走 MERCHANT_TOKEN；useMallToken 时改用商城会员 SG_TOKEN（如入驻页证照走会员上传）
+    const token = useMallToken
+      ? Taro.getStorageSync(SG_TOKEN) || getS().get(SG_TOKEN, true)
+      : getS().getAuthToken()
     if (token) {
       header['Authorization'] = `Bearer ${token}`
     }
@@ -233,6 +237,7 @@ class API {
       method: method.toUpperCase(),
       header: header
     }
+    delete config.useMallToken
 
     // 清理请求参数
     if (methodIsGet) {

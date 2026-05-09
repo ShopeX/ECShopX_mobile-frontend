@@ -4,12 +4,10 @@
  */
 .sp-vip-label {
   display: inline-block;
-  color: #fff;
-  font-size: 22px;
-  padding: 0 8px 0 4px;
-  border-radius: 0 16px 16px 0;
+  font-size: 26px;
+  padding: 0 4px;
   position: relative;
-  margin-left: 16px;
+  margin-right: 10px;
   transform: scale(0.9);
   &::before {
     content: '';
@@ -20,21 +18,12 @@
     border-left: 10px solid transparent;
   }
   &.member {
-    background: linear-gradient(270deg, #ff7089 0%, #ff0000 100%);
-    &::before {
-      border-top: 6px solid #ff0000;
-    }
+    color: #FF0000;
   }
   &.vip {
-    background: linear-gradient(270deg, #fdc300 0%, #ff8400 100%);
-    &::before {
-      border-top: 6px solid #ff8400;
-    }
+    color: #FF8400;
   }
   &.svip {
-    background: linear-gradient(270deg, #fcc0a8 0%, #b96c2e 100%);
-    &::before {
-      border-top: 6px solid #b96c2e;
-    }
+    color: #B96C2E;
   }
 }

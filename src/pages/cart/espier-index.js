@@ -40,7 +40,9 @@ const initialState = {
   current: 0, // 0:普通商品  1:跨境商品
   policyModal: false, // 隐私弹框
   cartRemind: null, //购物车提示
-  footerHeight: 0
+  footerHeight: 0,
+  /** 左滑删除：当前展开删除按钮的商品 cart_id，同时只展开一行 */
+  openSwipeCartId: null
 }
 
 function CartIndex() {
@@ -62,7 +64,13 @@ function CartIndex() {
   const router = $instance?.router
 
   const [state, setState] = useImmer(initialState)
-  const { current, recommendList, policyModal, cartRemind } = state
+  const { current, recommendList, policyModal, cartRemind, openSwipeCartId } = state
+
+  const onSwipeOpenChange = (cartId) => {
+    setState((draft) => {
+      draft.openSwipeCartId = cartId
+    })
+  }
 
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
   const { validCart = [], invalidCart = [] } = useSelector((state) => state.cart)
@@ -231,6 +239,14 @@ function CartIndex() {
     })
     if (!res.confirm) return
     await dispatch(deleteCartItem({ cart_id }))
+    setState((draft) => {
+      if (
+        draft.openSwipeCartId != null &&
+        String(draft.openSwipeCartId) === String(cart_id)
+      ) {
+        draft.openSwipeCartId = null
+      }
+    })
     getCartList()
   }
 
@@ -315,11 +331,10 @@ function CartIndex() {
                 const allChecked = all_item.cart_total_count == all_item.list.length
                 return (
                   <View className='shop-cart-item' key={`shop-cart-item__${all_index}`}>
-                    <View className='shop-cart-item-hd'>
-                      <Text className='iconfont icon-shop' />
-                      {all_item.shop_name || '自营'}
-                    </View>
                     <View className='shop-cart-item-shadow'>
+                      <View className='shop-cart-item-hd'>
+                        {all_item.shop_name || '自营'}
+                      </View>
                       {/** 店铺商品开始 */}
                       {cus_plus_item_list.map((cus_item, cus_index) => {
                         const {
@@ -376,6 +391,9 @@ function CartIndex() {
                                         promotion_tag: c_sitem_item.info
                                       }))
                                     }}
+                                    swipeRowId={c_sitem.cart_id}
+                                    openSwipeCartId={openSwipeCartId}
+                                    onSwipeOpenChange={onSwipeOpenChange}
                                     onDelete={onDeleteCartGoodsItem.bind(this, c_sitem)}
                                     onChange={onChangeCartGoodsItem.bind(this, c_sitem)}
                                     onClickImgAndTitle={onClickImgAndTitle.bind(this, c_sitem)}
@@ -418,41 +436,44 @@ function CartIndex() {
                       })}
                       {/** 店铺商品结束 */}
                       {/** 结算/全选操作开始 */}
+                      
                       <View className='shop-cart-item-ft'>
-                        <View className='lf'>
-                          <SpCheckboxNew
-                            checked={allChecked}
-                            label='全选'
-                            onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
-                          />
-                        </View>
-                      </View>
-                      <View className='shop-cart-item-ft'>
-                        <View className='rg'>
-                          <View className='rg-lt'>
-                            <View className='total-price-wrap'>
-                              合计：
-                              <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
-                            </View>
-                            {all_item.discount_fee > 0 && (
-                              <View className='discount-price-wrap'>
-                                共优惠：
-                                <SpPrice
-                                  className='total-pirce'
-                                  value={all_item.discount_fee / 100}
-                                />
-                              </View>
-                            )}
+                        <View>
+                          <View className='lf'>
+                            <SpCheckboxNew
+                              checked={allChecked}
+                              label='全选'
+                              onChange={onChangeGoodsIsCheck.bind(this, all_item, 'all')}
+                            />
                           </View>
-                          <AtButton
-                            className='btn-calc'
-                            type='primary'
-                            circle
-                            disabled={all_item.cart_total_num <= 0}
-                            onClick={() => handleCheckout(all_item)}
-                          >
-                            {`结算(${all_item.cart_total_num})`}
-                          </AtButton>
+                        </View>
+                        <View>
+                          <View className='rg'>
+                            <View className='rg-lt'>
+                              <View className='total-price-wrap'>
+                                合计：
+                                <SpPrice className='total-pirce' value={all_item.total_fee / 100} />
+                              </View>
+                              {all_item.discount_fee > 0 && (
+                                <View className='discount-price-wrap'>
+                                  共优惠：
+                                  <SpPrice
+                                    className='total-pirce'
+                                    value={all_item.discount_fee / 100}
+                                  />
+                                </View>
+                              )}
+                            </View>
+                            <AtButton
+                              className='btn-calc'
+                              type='primary'
+                              circle
+                              disabled={all_item.cart_total_num <= 0}
+                              onClick={() => handleCheckout(all_item)}
+                            >
+                              {`结算(${all_item.cart_total_num})`}
+                            </AtButton>
+                          </View>
                         </View>
                       </View>
                       {/** 结算/全选操作开始 */}
@@ -476,6 +497,9 @@ function CartIndex() {
                         <CompGoodsItem
                           info={sitem}
                           isShowAddInput={false}
+                          swipeRowId={sitem.cart_id}
+                          openSwipeCartId={openSwipeCartId}
+                          onSwipeOpenChange={onSwipeOpenChange}
                           onDelete={onDeleteCartGoodsItem.bind(this, sitem)}
                         />
                       </View>

@@ -182,6 +182,7 @@
         flex: 1;
         min-width: 0;
         margin-left: 20px;
+
       }
       &.is-web .search-container {
         max-width: none !important;
@@ -233,6 +234,11 @@
       .title-text {
         font-size: 28px;
         color: #333;
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
 
       .title-image {

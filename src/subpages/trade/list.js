@@ -5,25 +5,31 @@
 import React, { useEffect, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { useRouter } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpPage, SpScrollView, SpImage, SpTradeItem } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
+import { tLang } from '@/utils/i18nLang'
 import CompTradeItem from './comps/comp-tradeitem'
 import CompTrackDetail from './comps/comp-track-detail'
 import CompTrackType from './comps/comp-trade-type'
+import { useNavigation } from '@/hooks'
 import './list.scss'
 
+function buildTradeStatusTabs() {
+  return [
+    { tag_name: tLang('avj59v4', '全部订单'), value: '0' },
+    { tag_name: tLang('ehbda3', '待支付'), value: '5' },
+    { tag_name: tLang('ehnue3', '待收货'), value: '1' },
+    { tag_name: tLang('envnc3', '待评价'), value: '7', is_rate: 0 }
+  ]
+}
+
 const initialState = {
-  tradeStatus: [
-    { tag_name: '全部订单', value: '0' },
-    { tag_name: '待支付', value: '5' },
-    { tag_name: '待收货', value: '1' },
-    { tag_name: '待评价', value: '7', is_rate: 0 }
-  ],
+  tradeStatus: buildTradeStatusTabs(),
   typeVal: '0',
   status: '0',
   tradeList: [],
@@ -33,6 +39,7 @@ const initialState = {
   info: null
 }
 function TradeList(props) {
+  const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
   const {
     tradeStatus,
@@ -47,6 +54,26 @@ function TradeList(props) {
   } = state
   const tradeRef = useRef()
   const router = useRouter()
+
+  const syncI18nUi = () => {
+    setNavigationBarTitle(tLang('hymtes4', '订单列表'))
+    setState((draft) => {
+      draft.tradeStatus = buildTradeStatusTabs()
+    })
+  }
+
+  useEffect(() => {
+    syncI18nUi()
+    const onLang = () => syncI18nUi()
+    Taro.eventCenter.on('languageChanged', onLang)
+    return () => {
+      Taro.eventCenter.off('languageChanged', onLang)
+    }
+  }, [])
+
+  useDidShow(() => {
+    syncI18nUi()
+  })
 
   useEffect(() => {
     const { status = 0 } = router?.params
@@ -128,6 +155,8 @@ function TradeList(props) {
     tradeRef.current.reset()
   }
 
+  const emptyOrderMsg = tLang('dnpyou7', '没有查询到订单')
+
   return (
     <SpPage scrollToTopBtn className='page-trade-list'>
       <CompTrackType value={typeVal} onChange={onChangeTradeType} />
@@ -145,7 +174,7 @@ function TradeList(props) {
           auto={false}
           ref={tradeRef}
           fetch={fetch}
-          emptyMsg='没有查询到订单'
+          emptyMsg={emptyOrderMsg}
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

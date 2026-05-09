@@ -185,31 +185,6 @@ function SpGoodsItem(props) {
 
           {!info.point && showPrice && (
             <View className='goods-price'>
-              <View className='gd-price flex flex-align-center'>
-                {isPurchase && (
-                  <>
-                    {info.activityPrice && enPurActivityPrice ? (
-                      <View className='act-price-wrap'>
-                        <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
-                        <SpPrice size={24} value={info.price} noSymbol lineThrough />
-                      </View>
-                    ) : (
-                      enPurActivityPrice && <SpPrice size={36} value={info.price} />
-                    )}
-                  </>
-                )}
-                {!isPurchase && (
-                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
-                )}
-                {info.marketPrice > 0 && enMarketPrice && (
-                  <SpPrice
-                    size={26}
-                    className='mkt-price'
-                    lineThrough
-                    value={info.marketPrice}
-                  ></SpPrice>
-                )}
-              </View>
               {!info.activityPrice && isLogin && !isPurchase && (
                 <View className='more-price'>
                   {info.memberPrice < info.price && enMemberPrice && (
@@ -242,11 +217,36 @@ function SpGoodsItem(props) {
                     )}
                 </View>
               )}
+              <View className='gd-price flex flex-align-center'>
+                {isPurchase && (
+                  <>
+                    {info.activityPrice && enPurActivityPrice ? (
+                      <View className='act-price-wrap'>
+                        <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
+                        <SpPrice size={24} value={info.price} noSymbol lineThrough />
+                      </View>
+                    ) : (
+                      enPurActivityPrice && <SpPrice size={36} value={info.price} />
+                    )}
+                  </>
+                )}
+                {!isPurchase && (info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && (
+                  <SpPrice size={36} value={info.activityPrice || info.price}></SpPrice>
+                )}
+                {(info.memberPrice === info.price || info.vipPrice === info.price || info.svipPrice === info.price) && info.marketPrice > 0 && enMarketPrice && (
+                  <SpPrice
+                    size={26}
+                    className='mkt-price'
+                    lineThrough
+                    value={info.marketPrice}
+                  ></SpPrice>
+                )}
+              </View>
             </View>
           )}
 
           <View className='bd-block-rg'>
-            {showFav && !VERSION_IN_PURCHASE && (
+            {/*showFav && !VERSION_IN_PURCHASE && (
               <View onClick={(e) => handleFavClick(e)}>
                 <Text
                   className={classNames(
@@ -255,12 +255,12 @@ function SpGoodsItem(props) {
                   )}
                 />
               </View>
-            )}
+            )*/}
 
             {showAddCart ? (
               <View onClick={(e) => e.stopPropagation()}>
                 <SpLogin onChange={() => onAddToCart(info)}>
-                  <View>
+                  <View className='add-cart-btn'>
                     <Text className='iconfont icon-gouwuche2' />
                   </View>
                 </SpLogin>

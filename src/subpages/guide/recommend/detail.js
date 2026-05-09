@@ -79,6 +79,7 @@ function GuideRecommendDetail(props) {
     })
   }
 
+
   return (
     <SpPage
       className='guide-recommend-detail'
@@ -104,7 +105,9 @@ function GuideRecommendDetail(props) {
               {item.name === 'slider' && <WgtSlider info={item} />}
               {item.name === 'writing' && <WgtWriting info={item} />}
               {item.name === 'heading' && <WgtHeading info={item} />}
-              {item.name === 'goodsCard' && <WgtGoodsCard info={item} />}
+              {item.name === 'goodsCard' && (
+                <WgtGoodsCard info={item} />
+              )}
             </View>
           ))}
         </View>

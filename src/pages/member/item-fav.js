@@ -9,7 +9,8 @@ import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM } from '@/utils'
+import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM, isWeixin } from '@/utils'
+import { tLang } from '@/utils/i18nLang'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, RecommendItem } from '@/components'
 import StoreFavItem from './comps/store-fav-item'
 
@@ -24,24 +25,50 @@ export default class ItemFav extends Component {
   constructor(props) {
     super(props)
 
-    const tabList = [
-      { title: '商品', status: '0' },
-      { title: '软文', status: '1' }
-    ]
-
-    if (VERSION_PLATFORM) {
-      tabList.push({ title: '店铺', status: '2' })
-    }
-
     this.state = {
       ...this.state,
       curTabIdx: 0,
-      tabList: tabList,
       list: []
     }
   }
 
+  componentDidMount() {
+    this.applyI18nNavigationTitle()
+    Taro.eventCenter.on('languageChanged', this.handleI18nLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    Taro.eventCenter.off('languageChanged', this.handleI18nLanguageChanged)
+  }
+
+  handleI18nLanguageChanged = () => {
+    this.applyI18nNavigationTitle()
+    this.forceUpdate()
+  }
+
+  /** 小程序等环境 SpNavBar 不渲染，须同步原生导航栏标题 */
+  applyI18nNavigationTitle() {
+    const title = tLang('cv51d84', '我的收藏')
+    if (isWeixin) {
+      Taro.setNavigationBarTitle({ title })
+    }
+    const { page } = getCurrentInstance() || {}
+    page && (page.config.navigationBarTitleText = title)
+  }
+
+  buildTabList() {
+    const tabList = [
+      { title: tLang('eywr2', '商品'), status: '0' },
+      { title: tLang('oyd42', '软文'), status: '1' }
+    ]
+    if (VERSION_PLATFORM) {
+      tabList.push({ title: tLang('gwn72', '店铺'), status: '2' })
+    }
+    return tabList
+  }
+
   componentDidShow() {
+    this.applyI18nNavigationTitle()
     this.resetPage()
     this.setState(
       {
@@ -191,11 +218,12 @@ export default class ItemFav extends Component {
   }
 
   render() {
-    const { list, showBackToTop, scrollTop, page, curTabIdx, tabList } = this.state
+    const { list, showBackToTop, scrollTop, page, curTabIdx } = this.state
+    const tabList = this.buildTabList()
     console.log('ItemFav:list', list)
     return (
       <View className='page-goods-fav'>
-        <SpNavBar title='收藏' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={tLang('cv51d84', '我的收藏')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${hasNavbar && 'navbar_padtop'}`}
           current={curTabIdx}
@@ -261,9 +289,9 @@ export default class ItemFav extends Component {
               })}
             </View>
           )}
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{tLang('fbs50s7', '正在加载...')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{tLang('c3uuce5', '暂无数据~')}</SpNote>
           )}
         </ScrollView>
 

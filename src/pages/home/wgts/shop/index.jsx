@@ -30,9 +30,17 @@ function WgtShop(props) {
 
   const SwiperHeight = useMemo(() => {
     const { innerPadding = {} } = base || {}
-    const paddedt = innerPadding?.paddedt ? Taro.pxTransform(innerPadding.paddedt) : '0'
-    const paddedb = innerPadding?.paddedb ? Taro.pxTransform(innerPadding.paddedb) : '0'
-    return `calc(534rpx + ${paddedt} + ${paddedb})`
+    // 勿在 inline style 里写 rpx：H5 浏览器不识别 rpx，height 会失效；用 pxTransform 按端输出 rem/rpx
+    const paddedt =
+      innerPadding?.paddedt != null && innerPadding?.paddedt !== ''
+        ? Taro.pxTransform(innerPadding.paddedt)
+        : '0px'
+    const paddedb =
+      innerPadding?.paddedb != null && innerPadding?.paddedb !== ''
+        ? Taro.pxTransform(innerPadding.paddedb)
+        : '0px'
+    const baseH = Taro.pxTransform(480)
+    return `calc(${baseH} + ${paddedt} + ${paddedb})`
   }, [base])
 
   const handleChange = (e) => {
@@ -65,9 +73,13 @@ function WgtShop(props) {
           >
             {isArray(data) &&
               data?.map((item, index) => {
+                const slideKey =
+                  item?.id != null && item.id !== ''
+                    ? `shop-${id}-${item.id}`
+                    : `shop-${id}-${index}-${item?.distributor_id ?? index}`
                 return (
                   <SwiperItem
-                    key={item.id}
+                    key={slideKey}
                     className={classNames({
                       'wgt-shop__content-swiper-item': data.length > 1
                     })}

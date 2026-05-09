@@ -108,8 +108,8 @@ export default function WgtGoods(props) {
 
   // 处理更多按钮点击
   const handleClickMore = () => {
-    if (base.moreLink && base.moreLink.length > 0) {
-      linkPage(base.moreLink[0])
+    if (base.moreLink) {
+      linkPage(base.moreLink)
     } else if (base.dataType === 'history') {
       Taro.navigateTo({
         url: '/marketing/pages/member/item-history'

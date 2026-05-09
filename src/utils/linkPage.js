@@ -26,6 +26,7 @@ function linkPage(data) {
     seletedTags = []
   } = data
   const { id: dtid } = getCurrentInstance()?.router?.params
+  console.log('id----', id)
   if (id === 'homeSearch') {
     Taro.navigateTo({
       url: '/subpages/item/list'
@@ -275,6 +276,10 @@ const memberSetting = {
   coupon_list: {
     title: '优惠券',
     path: '/subpages/marketing/coupon-center'
+  },
+  my_coupon: {
+    title: '我的优惠券',
+    path: '/subpages/marketing/coupon'
   },
   my_collect: {
     title: '我的收藏',

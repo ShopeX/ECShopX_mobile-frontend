@@ -36,10 +36,10 @@ export default function GoodsLayout(props) {
       <View className={`${classNamePrefix}__one-list`}>
         {goodsList?.map((item, index) => (
           <SpGoodsCompactCard
+            key={`${classNamePrefix}-one-${String(item?.item_id ?? 'x')}-${index}`}
             className={classNames({
               'mb-18': index != goodsList.length - 1
             })}
-            key={item.item_id}
             info={item}
             showPrice={showPrice}
             onClick={() => onClickItem(item, index + 1)}
@@ -56,7 +56,7 @@ export default function GoodsLayout(props) {
         <View className={`${classNamePrefix}__two-list-left`}>
           {goodsLeftList?.map((item, index) => (
             <SpGoodsHeroCard
-              key={item.item_id}
+              key={`${classNamePrefix}-left-${String(item?.item_id ?? 'x')}-${index}`}
               info={item}
               showPrice={showPrice}
               onClick={() => onClickItem(item, index + 1)}
@@ -66,7 +66,7 @@ export default function GoodsLayout(props) {
         <View className={`${classNamePrefix}__two-list-right`}>
           {goodsRightList?.map((item, index) => (
             <SpGoodsHeroCard
-              key={item.item_id}
+              key={`${classNamePrefix}-right-${String(item?.item_id ?? 'x')}-${index}`}
               info={item}
               showPrice={showPrice}
               onClick={() => onClickItem(item, index + 1)}
@@ -83,7 +83,7 @@ export default function GoodsLayout(props) {
       <View className={`${classNamePrefix}__three-list`}>
         {goodsList?.map((item, index) => (
           <SpGoodsHeroCard
-            key={item.item_id}
+            key={`${classNamePrefix}-three-${String(item?.item_id ?? 'x')}-${index}`}
             info={item}
             showPrice={showPrice}
             onClick={() => onClickItem(item, index + 1)}

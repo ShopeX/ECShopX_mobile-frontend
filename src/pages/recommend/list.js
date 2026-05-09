@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Component } from 'react'
+import React, { Component, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Picker } from '@tarojs/components'
 import {
@@ -20,12 +20,14 @@ import {
 } from '@/components'
 import { useImmer } from 'use-immer'
 import { withPager, withBackToTop } from '@/hocs'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import { AtDrawer } from 'taro-ui'
 import api from '@/api'
 import { classNames, pickBy } from '@/utils'
+import { tLang } from '@/utils/i18nLang'
 import doc from '@/doc'
 import S from '@/spx'
+import { useI18nNavigationTitle } from '@/hooks'
 
 import './list.scss'
 
@@ -36,6 +38,9 @@ const initialState = {
 }
 
 function RecommendList() {
+  const lang = useSelector((state) => state.user.lang)
+  const navTitle = useMemo(() => tLang('hxyx2', '文章'), [lang])
+  useI18nNavigationTitle('hxyx2', '文章')
   const [state, setState] = useImmer(initialState)
   const { leftList, rightList } = state
 
@@ -85,6 +90,7 @@ function RecommendList() {
   return (
     <SpPage
       className='page-recommend-list'
+      title={navTitle}
       renderFooter={<SpTabbar height={state.footerHeight} />}
       onReady={({ footerHeight }) => {
         setState((draft) => {

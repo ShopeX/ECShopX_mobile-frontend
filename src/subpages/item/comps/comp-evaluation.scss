@@ -5,14 +5,14 @@
 .comp-evaluation {
   margin: 0 16px;
   background-color: #fff;
-  padding: 0 16px;
   box-shadow: 0px 2px 10px 0px #eae7e0;
+  border-radius: 24px;
   .evaluation-hd {
     display: flex;
     justify-content: space-between;
-    padding: 24px 0;
+    padding: 32px;
     /* prettier-ignore */
-    border-bottom: 1PX solid #ddd;
+    border-bottom: 1PX solid #efefef;
     .extra-more {
       display: flex;
       align-items: center;

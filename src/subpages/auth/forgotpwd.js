@@ -202,7 +202,11 @@ const PageBindPhone = () => {
               />
             </View>
             <View className='btn-field'>
-              <SpTimer defaultMsg='发送验证码' msg='重新发送' onStart={handleTimerStart} />
+              <SpTimer
+                defaultMsg='发送验证码'
+                msg='重新发送'
+                onStart={handleTimerStart}
+              />
             </View>
           </View>
 

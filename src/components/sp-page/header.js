@@ -42,9 +42,12 @@ const CustomNavigationHeader = memo((props) => {
       'background-position': 'center',
       'padding-top': `${gStatusBarHeight}px`
     }
-    // 吸顶挂件 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
+    // 吸顶挂件 > 页面显式控制的导航背景 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
     const headerBg =
-      statusBarBgColor ?? immersiveScrollRevealBgColor ?? pageConfig?.navigateBackgroundColor
+      statusBarBgColor ??
+      (navigateMantle ? navigateBackgroundColor : null) ??
+      immersiveScrollRevealBgColor ??
+      pageConfig?.navigateBackgroundColor
     if (headerBg) {
       style['background-color'] = headerBg
     }
@@ -207,16 +210,17 @@ const CustomNavigationHeader = memo((props) => {
           className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
           style={styleNames({
             width: `calc(100% - ${navigationRSpace}px)`,
-            ...containerStyle()
+            ...(containerStyle())
           })}
         >
           {showNavitionLeft && (
             <View
-              className={classNames('header-container-left', {
-                'is-web': isWeb && showFunctionArea
-              })}
+              className={classNames('header-container-left', { 'is-web': isWeb&&showFunctionArea })}
               style={styleNames({
-                width: resolvedTitleStyle === '0' ? `100%` : `${navigationRSpace}px`
+                width:
+                  resolvedTitleStyle === '0'
+                    ? `100%`
+                    : `${navigationRSpace}px`
               })}
             >
               {/* 左侧：返回、首页、功能区三者只显示一个 */}

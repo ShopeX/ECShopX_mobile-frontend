@@ -24,7 +24,12 @@ export default class myGroupList extends Component {
   }
 
   componentDidMount() {
+    this.updateTitle()
     this.nextPage()
+  }
+
+  updateTitle = () => {
+    Taro.setNavigationBarTitle({ title: globalThis.$t('9503e8f0.75a1d2', '我的拼团', 'lang') })
   }
 
   async fetch(params) {
@@ -69,7 +74,11 @@ export default class myGroupList extends Component {
 
     return (
       <View className={`page-my-group-list ${hasNavbar && 'group-list-top'}`}>
-        <SpNavBar title='我的拼团' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar
+          title={globalThis.$t('9503e8f0.75a1d2', '我的拼团', 'lang')}
+          leftIconType='chevron-left'
+          fixed='true'
+        />
         {list.map((item, idx) => {
           const { remaining_time_obj } = item
           return (

@@ -33,17 +33,12 @@ function WgtImgHotZone(props) {
   // 获取外层样式（包含 outerMargin 和背景配置）
   const outerStyle = useMemo(() => {
     const style = getGlobalBaseStyle(base.outerMargin)
-    if (isVertical) {
-      const pr = base.outerMargin?.paddedr
-      style.width = `calc(100% - ${Taro.pxTransform(pr)})`
-      style['padding-left'] = 0
-    }
     return style
   }, [base, isVertical])
 
   // 容器样式（图片容器）
   const bodyStyle = useMemo(() => {
-    if (!isVertical && config.imgHeight) {
+    if(isVertical&&config.imgHeight){
       return {
         height: Taro.pxTransform(config.imgHeight)
       }
@@ -114,19 +109,22 @@ function WgtImgHotZone(props) {
   return (
     <View
       className={classNames('wgt-imghot-zone', {
-        'wgt-imghot-zone__vertical': isVertical,
-        'wgt-imghot-zone__horizontal': !isVertical
       })}
       id={`wgt-imghot-zone-${id || ''}`}
       style={styleNames(outerStyle)}
     >
       <View className='wgt-imghot-zone__body' style={styleNames(bodyStyle)}>
+        <View className={classNames('wgt-imghot-zone__body-img-wrapper', {
+          'wgt-imghot-zone__body-img-wrapper__vertical': isVertical,
+          'wgt-imghot-zone__body-img-wrapper__horizontal': !isVertical
+        })}>
         <SpImage
           src={config.imgUrl}
           className='wgt-imghot-zone__body-img'
-          mode={isVertical ? 'heightFix' : 'widthFix'}
+          mode={!isVertical ? 'widthFix' : 'heightFix'}
         />
         {isArray(data) && data.length > 0 && data.map(renderHotZone)}
+        </View>
       </View>
     </View>
   )

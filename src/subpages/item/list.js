@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useMemo } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useSelector, useDispatch } from 'react-redux'
@@ -22,6 +22,8 @@ import {
   showToast
 } from '@/utils'
 import S from '@/spx'
+import { tLang } from '@/utils/i18nLang'
+import { useI18nNavigationTitle } from '@/hooks'
 
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
 
@@ -55,6 +57,10 @@ const initialState = {
 }
 
 function ItemList() {
+  const lang = useSelector((state) => state.user.lang)
+  const navTitle = useMemo(() => tLang('b40lv04', '商品列表'), [lang])
+  useI18nNavigationTitle('b40lv04', '商品列表')
+
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const {
@@ -297,7 +303,7 @@ function ItemList() {
         'has-tagbar': tagList.length > 0
       })}
       ref={pageRef}
-      title='商品列表'
+      title={navTitle}
       renderFloat={<FloatSalesperson />}
     >
       <View className='search-wrap'>

@@ -208,7 +208,7 @@ function SpSkuSelect(props) {
 
     const curItem = skuDictRef.current[selection.join('_')]
     const skuText = curItem
-      ? `已选：${curItem.specItem.map((item) => `${item.skuName}:${item.specName}`).join(',')}`
+      ? `${curItem.specItem.map((item) => `${item.specName}`).join(' ')}`
       : '请选择规格'
 
     setState((draft) => {
@@ -569,8 +569,9 @@ function SpSkuSelect(props) {
             <SpPrice value={curItem ? curItem.price : info.price}></SpPrice>
             <SpPrice value={curItem ? curItem.marketPrice : info.marketPrice} lineThrough></SpPrice>
           </View> */}
+          <View className='title'>{info.itemName}</View>
           <SpGoodsPrice info={curItem || info} />
-          <View className='goods-sku-txt'>{skuText}</View>
+          <View className='goods-sku-txt'>已选：{skuText}</View>
           {info.store_setting && (
             <View className='goods-sku-store'>库存：{curItem ? curItem.store : info.store}</View>
           )}

@@ -10,7 +10,8 @@ import { Loading, SpNote, Price, SpNavBar } from '@/components'
 import _mapKeys from 'lodash/mapKeys'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { calcTimer, isNavbar, classNames, getDistributorId } from '@/utils'
+import { calcTimer, isNavbar, classNames, getDistributorId, isWeixin } from '@/utils'
+import { tLang } from '@/utils/i18nLang'
 import './group-list.scss'
 
 @withPager
@@ -31,12 +32,37 @@ export default class GroupList extends Component {
   }
 
   componentDidMount() {
+    this.applyI18nNavigationTitle()
+    Taro.eventCenter.on('languageChanged', this.handleI18nLanguageChanged)
     this.nextPage()
     api.wx.shareSetting({ shareindex: 'group' }).then((res) => {
       this.setState({
         shareInfo: res
       })
     })
+  }
+
+  componentWillUnmount() {
+    Taro.eventCenter.off('languageChanged', this.handleI18nLanguageChanged)
+  }
+
+  componentDidShow() {
+    this.applyI18nNavigationTitle()
+  }
+
+  handleI18nLanguageChanged = () => {
+    this.applyI18nNavigationTitle()
+    this.forceUpdate()
+  }
+
+  /** 小程序等环境 SpNavBar 不渲染，须同步原生导航栏标题 */
+  applyI18nNavigationTitle() {
+    const title = tLang('jdvm414', '限时团购')
+    if (isWeixin) {
+      Taro.setNavigationBarTitle({ title })
+    }
+    const { page } = getCurrentInstance() || {}
+    page && (page.config.navigationBarTitleText = title)
   }
 
   async fetch(params) {
@@ -131,7 +157,7 @@ export default class GroupList extends Component {
           'has-navbar': isNavbar()
         })}
       >
-        <SpNavBar title='团购' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={tLang('jdvm414', '限时团购')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className='group-list__tabs'
           current={curTabIdx}
