@@ -6,7 +6,30 @@ import { View, WebView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect } from 'react'
 import { buildAiAssistantWebviewSrc } from '@/utils/ai-assistant-embed'
+import { isWeb } from '@/utils'
 import './index.scss'
+
+// WebView postMessage 全局监听器（用于 H5 环境）
+if (typeof window !== 'undefined' && isWeb) {
+  window.addEventListener('message', (e) => {
+    const data = e.data
+    if (!data) return
+    
+    // 关闭按钮点击 - 触发 navigateBack
+    if (data.type === 'ai-assistant-widget-close') {
+      Taro.navigateBack().catch(() => {})
+      return
+    }
+    
+    // 导航到其他页面
+    if (data.type === 'AI_ASSISTANT_MINIPROGRAM_NAV' && data.path) {
+      const url = data.path.startsWith('/') ? data.path : '/' + data.path
+      Taro.navigateTo({ url }).catch(() => {
+        Taro.switchTab({ url }).catch(() => {})
+      })
+    }
+  })
+}
 
 export default function AiAssistantIframe() {
   const [src, setSrc] = useState('')

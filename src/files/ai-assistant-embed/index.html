@@ -155,6 +155,24 @@
       // 监听 widget 关闭事件
       window.addEventListener('ai-assistant-widget-close', goBack)
 
+      // 暴露全局关闭函数供 widget 直接调用（H5 iframe 模式）
+      window.__AI_ASSISTANT_EMBED_CLOSE__ = goBack
+
+      // 直接监听 postMessage（H5 WebView 环境需要这个）
+      window.addEventListener('message', function(e) {
+        console.log('[ai-assistant-embed] 收到 postMessage:', e.data)
+        if (e.data && e.data.type === 'ai-assistant-widget-close') {
+          console.log('[ai-assistant-embed] 收到关闭消息，准备 goBack')
+          goBack()
+        }
+      })
+
+      // 同时监听 widget 关闭事件
+      window.addEventListener('ai-assistant-widget-close', function() {
+        console.log('[ai-assistant-embed] 收到 ai-assistant-widget-close 事件')
+        goBack()
+      })
+
       function applyAuth() {
         var api = window.__AI_ASSISTANT_EMBED__
         if (!api) return
