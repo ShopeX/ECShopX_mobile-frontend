@@ -31,8 +31,8 @@
   <script src="https://res.wx.qq.com/open/js/jweixin-1.6.0.js"></script>
 </head>
 <body style="margin:0;min-height:100vh;background:#f5f6fa;">
-  <!-- 返回按钮 -->
-  <button class="embed-back-btn" id="embed-back-btn" aria-label="返回商城">←</button>
+  <!-- 返回按钮：仅在小程序 web-view 环境显示，H5 iframe 模式下由父页面控制返回 -->
+  <button class="embed-back-btn" id="embed-back-btn" aria-label="返回商城" style="display:none">←</button>
 
   <!-- 微信内若整页空白：1) 手机无法解析 ecxjava-h5.test 时请改用电脑局域网 IP 或配 HTTPS 域名；2) 小程序需 APP_AI_WEBVIEW_ALLOW_HTTP=1 + 重编 weapp -->
   <ai-assistant-widget
@@ -49,10 +49,14 @@
       var q = new URLSearchParams(window.location.search || '')
       var backend = (q.get('backend') || 'http://127.0.0.1:9020').replace(/\/$/, '')
       var tenant = q.get('tenant_id') || 'c6bb2814299811f1bef19352e276a9ec'
+      var hideCloseBtn = q.get('hide_close_btn')
       var el = document.getElementById('ai-assistant-embed-widget')
       if (el) {
         el.setAttribute('backend-url', backend)
         el.setAttribute('tenant-id', tenant)
+        if (hideCloseBtn === '1' || hideCloseBtn === 'true') {
+          el.setAttribute('hide-close-btn', 'true')
+        }
       }
     })()
   </script>
@@ -141,7 +145,10 @@
       }
 
       var backBtn = document.getElementById('embed-back-btn')
-      if (backBtn) {
+      // H5 iframe 模式：隐藏返回按钮，由父页面控制
+      if (backBtn && window.parent && window.parent !== window) {
+        backBtn.style.display = 'none'
+      } else if (backBtn) {
         backBtn.addEventListener('click', goBack)
       }
 
