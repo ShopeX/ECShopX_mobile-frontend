@@ -144,7 +144,7 @@ function H5AssistantWidgetLoader() {
     origLeft: 0,
     origBottom: 0
   })
-  const MOVE_PX_TO_DRAG = 10
+  const MOVE_PX_TO_DRAG = 5
   const lastOpenAtRef = useRef(0)
 
   useEffect(() => {
@@ -213,6 +213,8 @@ function H5AssistantWidgetLoader() {
   }, [])
 
   const onTouchStart = useCallback((e) => {
+    // 立即设置 dragging 状态，禁用过渡动画，确保跟手
+    setDragging(true)
     const t = e.touches[0]
     const p = fabPosRef.current
     dragRef.current = {
