@@ -80,7 +80,7 @@ function goLoginForAssistant() {
   const sep = authPage.includes('?') ? '&' : '?'
   const url = `${authPage}${sep}redirect=${encodeURIComponent(redirect)}`
   Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-    Promise.resolve(Taro.redirectTo({ url })).catch(() => { })
+    Promise.resolve(Taro.redirectTo({ url })).catch(() => {})
   })
 }
 
@@ -274,15 +274,32 @@ function buildWeappFabAvatarUrl(backendRoot, tenantId, code) {
   return `${root}/api/widget/avatar-asset?${q.toString()}`
 }
 
-function readInitialFabPos() {
+function getFabSystemInfo() {
   try {
-    const sys = Taro.getSystemInfoSync()
-    const w = sys.windowWidth
-    const safeB = sys.safeAreaInsets?.bottom || 0
-    return clampFabPos(w - FAB_PX - 12, 100 + safeB, sys)
+    return Taro.getSystemInfoSync()
   } catch {
-    return { left: 12, bottom: 120 }
+    if (typeof window === 'undefined') return null
+    return {
+      windowWidth: window.innerWidth,
+      windowHeight: window.innerHeight,
+      safeAreaInsets: { bottom: 0 }
+    }
   }
+}
+
+function readInitialFabPos() {
+  const sys = getFabSystemInfo()
+  if (!sys) return { left: 12, bottom: 120 }
+  const w = sys.windowWidth
+  const safeB = sys.safeAreaInsets?.bottom || 0
+  return clampFabPos(w - FAB_PX - 12, 100 + safeB, sys)
+}
+
+function normalizeSavedFabPos(saved, sys) {
+  if (!saved || typeof saved.left !== 'number' || typeof saved.bottom !== 'number') return null
+  if (!sys) return saved
+  const migratedLeft = saved.left <= 0 ? readInitialFabPos().left : saved.left
+  return clampFabPos(migratedLeft, saved.bottom, sys)
 }
 
 function WeappAiAssistantWebviewEntry() {
@@ -313,12 +330,12 @@ function WeappAiAssistantWebviewEntry() {
     sysRef.current = sys
     try {
       const saved = Taro.getStorageSync(FAB_POS_STORAGE)
-      if (saved && typeof saved.left === 'number' && typeof saved.bottom === 'number') {
-        const c = clampFabPos(saved.left, saved.bottom, sys)
-        setFabPos(c)
-        fabPosRef.current = c
+      const savedPos = normalizeSavedFabPos(saved, sys)
+      if (savedPos) {
+        setFabPos(savedPos)
+        fabPosRef.current = savedPos
       }
-    } catch (_) { }
+    } catch (_) {}
   }, [])
 
   useEffect(() => {
@@ -349,7 +366,7 @@ function WeappAiAssistantWebviewEntry() {
           setFabIconUrl(buildWeappFabAvatarUrl(backend, tid, code))
         }
       })
-      .catch(() => { })
+      .catch(() => {})
   }, [])
 
   const lastOpenAtRef = useRef(0)
@@ -429,7 +446,7 @@ function WeappAiAssistantWebviewEntry() {
       }, 450)
       try {
         Taro.setStorageSync(FAB_POS_STORAGE, fabPosRef.current)
-      } catch (_) { }
+      } catch (_) {}
     } else {
       navigateToAssistantPage()
     }
@@ -560,7 +577,7 @@ function LegacyAssistantFab() {
 function H5AssistantWidgetLoader() {
   const [fabIconUrl, setFabIconUrl] = useState('')
   const [fabBuiltinEmoji, setFabBuiltinEmoji] = useState('')
-  const [fabPos, setFabPos] = useState({ left: 0, bottom: 120 })
+  const [fabPos, setFabPos] = useState(readInitialFabPos)
   const fabPosRef = useRef(fabPos)
   const suppressTapRef = useRef(false)
   const dragRef = useRef({
@@ -606,15 +623,18 @@ function H5AssistantWidgetLoader() {
           setFabIconUrl(buildWeappFabAvatarUrl(backend, tid, code))
         }
       })
-      .catch(() => { })
+      .catch(() => {})
 
     // 读取保存的位置
+    const sys = getFabSystemInfo()
     try {
       const saved = Taro.getStorageSync(FAB_POS_STORAGE)
-      if (saved && typeof saved.left === 'number' && typeof saved.bottom === 'number') {
-        setFabPos({ left: saved.left, bottom: saved.bottom })
+      const savedPos = normalizeSavedFabPos(saved, sys)
+      if (savedPos) {
+        setFabPos(savedPos)
+        fabPosRef.current = savedPos
       }
-    } catch (_) { }
+    } catch (_) {}
   }, [])
 
   const navigateToWebviewPage = useCallback(() => {
@@ -659,8 +679,12 @@ function H5AssistantWidgetLoader() {
     }
     const nextLeft = dragRef.current.origLeft + dx
     const nextBottom = dragRef.current.origBottom - dy
-    setFabPos({ left: nextLeft, bottom: nextBottom })
-    fabPosRef.current = { left: nextLeft, bottom: nextBottom }
+    const sys = getFabSystemInfo()
+    const nextPos = sys
+      ? clampFabPos(nextLeft, nextBottom, sys)
+      : { left: nextLeft, bottom: nextBottom }
+    setFabPos(nextPos)
+    fabPosRef.current = nextPos
   }, [])
 
   const onTouchEnd = useCallback(() => {
@@ -674,7 +698,7 @@ function H5AssistantWidgetLoader() {
       }, 450)
       try {
         Taro.setStorageSync(FAB_POS_STORAGE, fabPosRef.current)
-      } catch (_) { }
+      } catch (_) {}
     } else {
       navigateToWebviewPage()
     }
@@ -698,6 +722,7 @@ function H5AssistantWidgetLoader() {
           onTouchMove={onTouchMove}
           onTouchEnd={onTouchEnd}
           onTouchCancel={onTouchEnd}
+          onClick={navigateToWebviewPage}
         >
           {fabIconUrl ? (
             <Image className='ai-assistant-fab__img' src={fabIconUrl} mode='aspectFill' />
