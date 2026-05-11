@@ -120,7 +120,8 @@ export function buildAiAssistantWebviewSrc() {
   if (tenantId) q.set('tenant_id', tenantId)
   q.set('backend', backend)
   // iframe 嵌入模式：隐藏关闭按钮，关闭即返回上一页
-  q.set('layout', 'page') // iframe 嵌入模式：使用 page 布局，关闭时触发 postMessage 返回上一页
+  q.set('layout', 'page') // iframe 嵌入模式：使用 page 布局
+  q.set('page-soft-close', 'true') // 软关闭：隐藏面板并显示「继续对话」按钮，不触发小程序返回
   const sep = base.includes('?') ? '&' : '?'
   return `${base}${sep}${q.toString()}`
 }

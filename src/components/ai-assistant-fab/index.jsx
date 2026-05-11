@@ -264,6 +264,14 @@ function clampFabPos(left, bottom, sys) {
   }
 }
 
+function snapFabPosToEdge(left, bottom, sys) {
+  if (!sys) return { left, bottom }
+  const clamped = clampFabPos(left, bottom, sys)
+  const maxL = sys.windowWidth - FAB_PX - FAB_PAD
+  const nextLeft = clamped.left + FAB_PX / 2 < sys.windowWidth / 2 ? FAB_PAD : maxL
+  return clampFabPos(nextLeft, clamped.bottom, sys)
+}
+
 function buildWeappFabAvatarUrl(backendRoot, tenantId, code) {
   const root = String(backendRoot || '').replace(/\/$/, '')
   if (!root || !code) return ''
@@ -699,8 +707,12 @@ function H5AssistantWidgetLoader() {
       setTimeout(() => {
         suppressTapRef.current = false
       }, 450)
+      const sys = getFabSystemInfo()
+      const snappedPos = snapFabPosToEdge(fabPosRef.current.left, fabPosRef.current.bottom, sys)
+      setFabPos(snappedPos)
+      fabPosRef.current = snappedPos
       try {
-        Taro.setStorageSync(FAB_POS_STORAGE, fabPosRef.current)
+        Taro.setStorageSync(FAB_POS_STORAGE, snappedPos)
       } catch (_) {}
     } else {
       navigateToWebviewPage()
