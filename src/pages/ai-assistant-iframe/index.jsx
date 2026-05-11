@@ -4,12 +4,24 @@
  */
 import { View, WebView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useState, useEffect } from 'react'
-import { buildAiAssistantWebviewSrc } from '@/utils/ai-assistant-embed'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { buildAiAssistantWebviewSrc, postAiAssistantAuthToEmbed } from '@/utils/ai-assistant-embed'
 import './index.scss'
 
 export default function AiAssistantIframe() {
   const [src, setSrc] = useState('')
+  const webviewRef = useRef(null)
+
+  const syncAuthToEmbed = useCallback(() => {
+    const frame = webviewRef.current
+    const targetWindow = frame?.contentWindow || frame?.iframe?.contentWindow
+    if (!targetWindow || !src) return
+    try {
+      postAiAssistantAuthToEmbed(targetWindow, new URL(src).origin)
+    } catch {
+      /* ignore */
+    }
+  }, [src])
 
   useEffect(() => {
     const fullSrc = buildAiAssistantWebviewSrc()
@@ -22,17 +34,13 @@ export default function AiAssistantIframe() {
       }, 1500)
     }
 
-    // 监听 iframe 发来的消息
     const handleMessage = (event) => {
-      // iframe 通过 window.postMessage 发消息
       const data = event.data
       if (!data || typeof data !== 'object') return
 
-      // 关闭按钮点击
       if (data.type === 'ai-assistant-widget-close') {
         Taro.navigateBack()
       }
-      // 导航到其他页面
       if (data.type === 'AI_ASSISTANT_MINIPROGRAM_NAV') {
         const path = data.path
         if (path) {
@@ -52,9 +60,19 @@ export default function AiAssistantIframe() {
     }
   }, [])
 
+  useEffect(() => {
+    if (!src) return undefined
+    const timer = setInterval(syncAuthToEmbed, 800)
+    Taro.eventCenter.on('ecshopx-auth-changed', syncAuthToEmbed)
+    return () => {
+      clearInterval(timer)
+      Taro.eventCenter.off('ecshopx-auth-changed', syncAuthToEmbed)
+    }
+  }, [src, syncAuthToEmbed])
+
   return (
     <View className='ai-iframe-page'>
-      <WebView src={src} className='ai-iframe-webview' />
+      <WebView ref={webviewRef} src={src} className='ai-iframe-webview' onLoad={syncAuthToEmbed} />
     </View>
   )
 }

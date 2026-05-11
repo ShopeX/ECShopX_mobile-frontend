@@ -85,10 +85,7 @@ export function buildAiEmbedPageUrl() {
 /**
  * @returns {string} 完整 web-view src，失败时返回 ''
  */
-export function buildAiAssistantWebviewSrc() {
-  const base = buildAiEmbedPageUrl()
-  if (!base) return ''
-
+export function buildAiAssistantAuthPayload() {
   const token = S.getAuthToken() || ''
   const companyId =
     process.env.APP_COMPANY_ID != null && process.env.APP_COMPANY_ID !== ''
@@ -107,6 +104,30 @@ export function buildAiAssistantWebviewSrc() {
     process.env.APP_AI_TENANT_ID != null && process.env.APP_AI_TENANT_ID !== ''
       ? String(process.env.APP_AI_TENANT_ID)
       : ''
+
+  return {
+    type: 'ECSHOPX_AUTH',
+    token,
+    companyId,
+    tenantId,
+    distributorId
+  }
+}
+
+export function postAiAssistantAuthToEmbed(targetWindow, targetOrigin) {
+  if (!targetWindow || typeof targetWindow.postMessage !== 'function' || !targetOrigin) return
+  try {
+    targetWindow.postMessage(buildAiAssistantAuthPayload(), targetOrigin)
+  } catch {
+    /* ignore */
+  }
+}
+
+export function buildAiAssistantWebviewSrc() {
+  const base = buildAiEmbedPageUrl()
+  if (!base) return ''
+
+  const { token, companyId, distributorId, tenantId } = buildAiAssistantAuthPayload()
   const backend = String(
     process.env.APP_AI_ASSISTANT_BACKEND_URL ||
       resolveAiAssistantBaseUrl() ||

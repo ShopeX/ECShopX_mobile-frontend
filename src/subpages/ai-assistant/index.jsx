@@ -4,12 +4,24 @@
  */
 import { View, WebView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { useState, useEffect } from 'react'
-import { buildAiAssistantWebviewSrc } from '@/utils/ai-assistant-embed'
+import { useState, useEffect, useRef, useCallback } from 'react'
+import { buildAiAssistantWebviewSrc, postAiAssistantAuthToEmbed } from '@/utils/ai-assistant-embed'
 import './index.scss'
 
 export default function AiAssistantIframe() {
   const [src, setSrc] = useState('')
+  const webviewRef = useRef(null)
+
+  const syncAuthToEmbed = useCallback(() => {
+    const frame = webviewRef.current
+    const targetWindow = frame?.contentWindow || frame?.iframe?.contentWindow
+    if (!targetWindow || !src) return
+    try {
+      postAiAssistantAuthToEmbed(targetWindow, new URL(src).origin)
+    } catch {
+      /* ignore */
+    }
+  }, [src])
 
   useEffect(() => {
     const fullSrc = buildAiAssistantWebviewSrc()
@@ -22,6 +34,16 @@ export default function AiAssistantIframe() {
       }, 1500)
     }
   }, [])
+
+  useEffect(() => {
+    if (!src) return undefined
+    const timer = setInterval(syncAuthToEmbed, 800)
+    Taro.eventCenter.on('ecshopx-auth-changed', syncAuthToEmbed)
+    return () => {
+      clearInterval(timer)
+      Taro.eventCenter.off('ecshopx-auth-changed', syncAuthToEmbed)
+    }
+  }, [src, syncAuthToEmbed])
 
   // WebView 的 postMessage 事件处理（通过 onMessage 属性）
   const handleMessage = (e) => {
@@ -55,7 +77,13 @@ export default function AiAssistantIframe() {
 
   return (
     <View className='ai-iframe-page'>
-      <WebView src={src} className='ai-iframe-webview' onMessage={handleMessage} />
+      <WebView
+        ref={webviewRef}
+        src={src}
+        className='ai-iframe-webview'
+        onLoad={syncAuthToEmbed}
+        onMessage={handleMessage}
+      />
     </View>
   )
 }
