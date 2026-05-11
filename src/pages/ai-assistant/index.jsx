@@ -57,7 +57,14 @@ export default function AiAssistantIframe() {
   useEffect(() => {
     const fullSrc = buildAiAssistantWebviewSrc()
     if (fullSrc) {
-      setSrc(fullSrc)
+      try {
+        const u = new URL(fullSrc)
+        u.searchParams.set('timestamp', String(Date.now()))
+        setSrc(u.href)
+      } catch {
+        const sep = fullSrc.includes('?') ? '&' : '?'
+        setSrc(`${fullSrc}${sep}timestamp=${Date.now()}`)
+      }
     } else {
       Taro.showToast({ title: '未配置嵌入页', icon: 'none' })
       setTimeout(() => {
@@ -105,6 +112,8 @@ export default function AiAssistantIframe() {
       }
     }
   }
+
+  console.log('src', src)
 
   return (
     <View className='ai-iframe-page'>
