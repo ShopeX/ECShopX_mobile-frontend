@@ -34,6 +34,11 @@ const config = {
     'pages/reset-password' // 邮箱重置密码（邮件内链接 /reset-password）
   ],
   subPackages: [
+    // AI 助手（全屏 WebView 嵌入页）
+    {
+      root: 'subpages/ai-assistant',
+      pages: ['index']
+    },
     // 内购
     {
       root: 'subpages/purchase',

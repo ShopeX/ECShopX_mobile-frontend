@@ -30,6 +30,7 @@ export async function navigateToStoreByDistributorId(distributor_id) {
       Taro.setStorageSync('curStore', shopInfo)
       Taro.setStorageSync(SG_CHECK_STORE_RULE, 0)
       Taro.setStorageSync(SG_ROUTER_PARAMS, {})
+      Taro.eventCenter.trigger('ecshopx-auth-changed')
       Taro.reLaunch({ url: '/pages/index' })
     } catch (e) {
       Taro.showToast({ title: e?.message || '店铺信息获取失败', icon: 'none' })

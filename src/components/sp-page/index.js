@@ -44,6 +44,7 @@ import {
 import context from '@/hooks/usePageContext'
 import { setShowGuideConsultModal } from '@/store/slices/shop'
 import ConsultModal from '@/subpages/store/comps/consult-modal'
+import AiAssistantFab from '@/components/ai-assistant-fab'
 import CustomNavigationHeader from './header'
 import './index.scss'
 
@@ -454,6 +455,8 @@ const SpPage = memo(
             onClose={() => dispatch(setShowGuideConsultModal(false))}
           />
         )}
+
+        <AiAssistantFab />
       </View>
     )
   })

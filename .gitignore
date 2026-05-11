@@ -19,3 +19,4 @@ openspec/
 scripts/
 .agent/
 .codex/
+.gstack/

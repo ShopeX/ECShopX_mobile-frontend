@@ -46,10 +46,13 @@ export class Spx {
       this.set(SG_TOKEN, token)
       Taro.setStorageSync(SG_TOKEN, token)
     }
+    Taro.eventCenter.trigger('ecshopx-auth-changed')
   }
 
   clearAuthToken() {
     Taro.removeStorageSync(SG_TOKEN)
+    this.delete(SG_TOKEN, true)
+    Taro.eventCenter.trigger('ecshopx-auth-changed')
   }
 
   logout() {
@@ -64,6 +67,7 @@ export class Spx {
       })
       this.delete(SG_TOKEN, true)
     }
+    Taro.eventCenter.trigger('ecshopx-auth-changed')
   }
 
   get(key, forceLocal) {
