@@ -82,7 +82,7 @@
   justify-content: center;
 }
 
-/* 小程序：仅包裹侧吸钮；全屏 H5 挂件在 pages/ai-assistant-webview 独立页 web-view 内 */
+/* 小程序：侧吸 FAB；全屏助手在 subpages/ai-assistant/index */
 .ai-assistant-weapp-host {
   position: relative;
   z-index: 999999;

@@ -1,11 +1,12 @@
 /**
- * AI 助手 iframe 页面
- * 通过 iframe 加载嵌入页，保持域名不变
+ * AI 助手全屏 WebView 页（分包 subpages/ai-assistant/index）
+ * 加载嵌入页 URL，与 FAB 跳转路径一致
  */
 import { View, WebView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useState, useEffect, useRef, useCallback } from 'react'
 import { buildAiAssistantWebviewSrc, postAiAssistantAuthToEmbed } from '@/utils/ai-assistant-embed'
+import { isWeb } from '@/utils'
 import './index.scss'
 
 export default function AiAssistantIframe() {
@@ -24,9 +25,46 @@ export default function AiAssistantIframe() {
   }, [src])
 
   useEffect(() => {
+    // H5 环境：添加全局 message 监听器
+    const handleGlobalMessage = (e) => {
+      const data = e.data
+      if (!data) return
+
+      if (data.type === 'ai-assistant-widget-close') {
+        Taro.navigateBack().catch(() => {})
+        return
+      }
+
+      if (data.type === 'AI_ASSISTANT_MINIPROGRAM_NAV' && data.path) {
+        const url = data.path.startsWith('/') ? data.path : '/' + data.path
+        Taro.navigateTo({ url }).catch(() => {
+          Taro.switchTab({ url }).catch(() => {})
+        })
+      }
+    }
+
+    if (typeof window !== 'undefined' && isWeb) {
+      window.addEventListener('message', handleGlobalMessage)
+    }
+
+    return () => {
+      if (typeof window !== 'undefined' && isWeb) {
+        window.removeEventListener('message', handleGlobalMessage)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
     const fullSrc = buildAiAssistantWebviewSrc()
     if (fullSrc) {
-      setSrc(fullSrc)
+      try {
+        const u = new URL(fullSrc)
+        u.searchParams.set('timestamp', String(Date.now()))
+        setSrc(u.href)
+      } catch {
+        const sep = fullSrc.includes('?') ? '&' : '?'
+        setSrc(`${fullSrc}${sep}timestamp=${Date.now()}`)
+      }
     } else {
       Taro.showToast({ title: '未配置嵌入页', icon: 'none' })
       setTimeout(() => {
@@ -36,7 +74,7 @@ export default function AiAssistantIframe() {
   }, [])
 
   useEffect(() => {
-    if (!src) return undefined
+    if (!src || typeof window === 'undefined' || !isWeb) return undefined
     const timer = setInterval(syncAuthToEmbed, 800)
     Taro.eventCenter.on('ecshopx-auth-changed', syncAuthToEmbed)
     return () => {
@@ -74,6 +112,8 @@ export default function AiAssistantIframe() {
       }
     }
   }
+
+  console.log('src', src)
 
   return (
     <View className='ai-iframe-page'>

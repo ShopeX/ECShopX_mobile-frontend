@@ -1,5 +1,5 @@
 /**
- * 侧吸可拖拽 FAB：拉 embed-config 头像，点击进 /pages/ai-assistant（H5 location）或小程序 navigateTo。
+ * 侧吸可拖拽 FAB：拉 embed-config 头像，点击进 /subpages/ai-assistant/index（H5 location / 小程序 navigateTo）。
  */
 import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
@@ -24,22 +24,22 @@ function useHideAssistantFabOnFullPage(enabled) {
   useEffect(() => {
     if (!enabled) return undefined
 
-    const isAssistantWebviewPage = () => {
+    const isAssistantEmbedPage = () => {
       if (isWeb) {
         const hash = (window.location.hash || '').replace(/^#\/?/, '')
         const path = window.location.pathname || ''
-        return `${path} ${hash}`.includes('ai-assistant-webview')
+        return `${path} ${hash}`.includes('subpages/ai-assistant/index')
       }
       try {
         const pages = Taro.getCurrentPages()
         const route = pages[pages.length - 1]?.route || ''
-        return route.includes('ai-assistant-webview')
+        return route.includes('subpages/ai-assistant/index')
       } catch {
         return false
       }
     }
 
-    const tick = () => setHidden(isAssistantWebviewPage())
+    const tick = () => setHidden(isAssistantEmbedPage())
     tick()
     const interval = setInterval(tick, 350)
 
@@ -200,7 +200,7 @@ function H5AssistantWidgetLoader() {
     lastOpenAtRef.current = now
 
     // 跳转到 iframe 页面，保持域名不变
-    const iframePageUrl = '/pages/ai-assistant/index'
+    const iframePageUrl = '/subpages/ai-assistant/index'
 
     // 用 isWeb 区分构建目标；勿用 typeof window（小程序开发者工具里也可能存在 window）
     if (isWeb) {
