@@ -1,32 +1,9 @@
 /**
- * AI 助手嵌入页 URL（小程序 web-view / 同页覆盖层共用）
+ * AI 助手嵌入页 URL（小程序 WebView 组件 / H5 同源页共用）
  */
 import Taro from '@tarojs/taro'
 import S from '@/spx'
 import { getDistributorId } from '@/utils'
-
-export function handleAiAssistantWebviewMessage(e) {
-  const arr = e.detail && e.detail.data
-  if (!Array.isArray(arr)) return
-  arr.forEach((item) => {
-    if (item && item.type === 'AI_ASSISTANT_MINIPROGRAM_NAV' && item.path) {
-      const url = item.path.startsWith('/') ? item.path : `/${item.path}`
-      Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-        Promise.resolve(Taro.switchTab({ url })).catch(() => {})
-      })
-    }
-  })
-}
-
-export function handleAiAssistantWebviewError(e) {
-  const detail = e && e.detail
-  console.warn('[ai-assistant-webview] web-view error', detail)
-  Taro.showToast({
-    title: '嵌入页加载失败，请检查 HTTPS、业务域名与网络',
-    icon: 'none',
-    duration: 3200
-  })
-}
 
 /** @returns {string} 助手后端根 URL，无尾斜杠；未配置时返回 '' */
 function resolveAiAssistantBaseUrl() {

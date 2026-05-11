@@ -23,29 +23,33 @@
   &.ai-assistant-root--weapp-dragging {
     transition: none;
   }
-
-  .ai-assistant-fab {
-    position: relative;
-    width: 52px;
-    height: 52px;
-    border-radius: 26px;
-    overflow: hidden;
-    padding: 0;
-    box-sizing: border-box;
-  }
-
-  .ai-assistant-fab__img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border-radius: 26px;
-    background: #fff;
-  }
 }
 
-.ai-assistant--web {
-  /* H5 由 portal 挂到 body，保持同一锚点布局 */
+/* 小程序：后代选择器顶格写；嵌套在父块内时部分基础库/开发者工具下组件 wxss 命中不稳定 */
+.ai-assistant-root--weapp-compact .ai-assistant-fab {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  overflow: hidden;
+  padding: 0;
+  box-sizing: border-box;
+  right: auto;
+  bottom: auto;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
+  touch-action: none;
+  border: 3PX solid #fff;
 }
+
+.ai-assistant-root--weapp-compact .ai-assistant-fab__img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: 50%;
+  background: #fff;
+}
+
+/* H5：根节点会带 .ai-assistant--web，由 portal 挂到 body，锚点布局在 JSX 侧处理 */
 
 .ai-assistant-fab {
   position: absolute;
@@ -62,13 +66,6 @@
   pointer-events: auto;
 }
 
-.ai-assistant-root--weapp-compact .ai-assistant-fab {
-  right: auto;
-  bottom: auto;
-  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.35);
-  touch-action: none;
-}
-
 .ai-assistant-fab__text {
   color: #fff;
   font-size: 15px;
@@ -78,9 +75,14 @@
 .ai-assistant-fab__emoji {
   font-size: 28px;
   line-height: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* 小程序：仅包裹侧吸钮；全屏 H5 挂件在 pages/ai-assistant-webview 独立页 web-view 内 */
+/* 小程序：侧吸 FAB；全屏助手在 subpages/ai-assistant/index */
 .ai-assistant-weapp-host {
   position: relative;
   z-index: 999999;

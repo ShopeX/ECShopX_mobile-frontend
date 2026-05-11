@@ -1,29 +1,17 @@
 /**
- * H5（npm run build:h5）：在浏览器里动态加载 widget.js，全局漂浮 Web Component，与任意页面叠加。
- * 微信（npm run build:weapp）：侧吸可拖拽按钮 → navigateTo 独立页；独立页内全屏 web-view 加载
- * src/files/ai-assistant-embed（widget-h5.js），与 H5 交互形态不同，由微信能力决定。
+ * 侧吸可拖拽 FAB：拉 embed-config 头像，点击进 /subpages/ai-assistant/index（H5 location / 小程序 navigateTo）。
  */
 import Taro from '@tarojs/taro'
-import { View, Text, Input, Button, Image } from '@tarojs/components'
+import { View, Text, Image } from '@tarojs/components'
 import React, { useState, useCallback, useEffect, useRef } from 'react'
-import S from '@/spx'
-import { SG_TOKEN } from '@/consts/localstorage'
-import { isWeb, isWeixin, getDistributorId } from '@/utils'
-import { buildAiEmbedPageUrl } from '@/utils/ai-assistant-embed'
+import { isWeb } from '@/utils'
 import './index.scss'
 
-const base = (process.env.APP_BASE_URL || '').replace(/\/?$/, '/')
 const AI_BASE_RAW = process.env.APP_AI_BASE_URL
 const AI_BASE =
   AI_BASE_RAW != null && String(AI_BASE_RAW).trim()
     ? String(AI_BASE_RAW).trim().replace(/\/+$/, '')
     : ''
-/**
- * 优先用同源静态资源（src/files/ai-assistant-embed/widget-h5.js → 构建后落到 H5 dist 根）
- * 同源加载可避开 widget 脚本本身的 CORS 拦截；APP_AI_WIDGET_SCRIPT_URL 可显式覆盖（远端调试用）
- */
-const SAME_ORIGIN_WIDGET_SCRIPT = '/ai-assistant-embed/widget-h5.js'
-const WIDGET_SCRIPT_URL = process.env.APP_AI_WIDGET_SCRIPT_URL || SAME_ORIGIN_WIDGET_SCRIPT
 const ASSISTANT_BACKEND_URL = (
   process.env.APP_AI_ASSISTANT_BACKEND_URL ||
   AI_BASE ||
@@ -36,26 +24,26 @@ function useHideAssistantFabOnFullPage(enabled) {
   useEffect(() => {
     if (!enabled) return undefined
 
-    const isAssistantWebviewPage = () => {
-      if (typeof window !== 'undefined' && isWeb) {
+    const isAssistantEmbedPage = () => {
+      if (isWeb) {
         const hash = (window.location.hash || '').replace(/^#\/?/, '')
         const path = window.location.pathname || ''
-        return `${path} ${hash}`.includes('ai-assistant-webview')
+        return `${path} ${hash}`.includes('subpages/ai-assistant/index')
       }
       try {
         const pages = Taro.getCurrentPages()
         const route = pages[pages.length - 1]?.route || ''
-        return route.includes('ai-assistant-webview')
+        return route.includes('subpages/ai-assistant/index')
       } catch {
         return false
       }
     }
 
-    const tick = () => setHidden(isAssistantWebviewPage())
+    const tick = () => setHidden(isAssistantEmbedPage())
     tick()
     const interval = setInterval(tick, 350)
 
-    if (typeof window !== 'undefined' && isWeb) {
+    if (isWeb) {
       window.addEventListener('popstate', tick)
       window.addEventListener('hashchange', tick)
       return () => {
@@ -69,175 +57,6 @@ function useHideAssistantFabOnFullPage(enabled) {
   }, [enabled])
 
   return hidden
-}
-
-function goLoginForAssistant() {
-  const authPage = process.env.APP_AUTH_PAGE || '/subpages/auth/login'
-  let redirect = '/pages/index'
-  if (typeof window !== 'undefined') {
-    redirect = `${window.location.pathname || ''}${window.location.search || ''}` || redirect
-  }
-  const sep = authPage.includes('?') ? '&' : '?'
-  const url = `${authPage}${sep}redirect=${encodeURIComponent(redirect)}`
-  Promise.resolve(Taro.navigateTo({ url })).catch(() => {
-    Promise.resolve(Taro.redirectTo({ url })).catch(() => {})
-  })
-}
-
-/**
- * 兜底补丁：widget-h5.js 内部 ChatPanel.resolveAddCartUrl() 在拿不到 directAddCartUrl
- * 时会回退到 `${window.location.origin}/api/h5app/wxapp/cart`，本地 dev / 商城与
- * widget 不同源时必然 404。embed-config 已经返回正确 direct_add_cart_url，但
- * widget 没把它落到 ChatPanel 实例上 —— 等 widget 修复后可以删掉此补丁。
- *
- * 这里直接在 fetch 层把"打到当前 origin 的加购请求"重写到 APP_BASE_URL。
- */
-function installAssistantAddCartUrlFix() {
-  if (typeof window === 'undefined') return
-  if (window.__ECX_AI_ADD_CART_FIX__) return
-  const baseRaw = (process.env.APP_BASE_URL || '').replace(/\/+$/, '')
-  if (!baseRaw) return
-  const correctCartUrl = `${baseRaw}/cart`
-  const wrongOriginPrefix = `${window.location.origin}/api/h5app/wxapp/cart`
-  if (correctCartUrl === wrongOriginPrefix) return
-
-  const originalFetch = window.fetch
-  if (typeof originalFetch !== 'function') return
-
-  window.fetch = function patchedFetch(input, init) {
-    let urlStr
-    if (typeof input === 'string') urlStr = input
-    else if (input && typeof input.url === 'string') urlStr = input.url
-    if (urlStr && urlStr.startsWith(wrongOriginPrefix)) {
-      const fixed = correctCartUrl + urlStr.slice(wrongOriginPrefix.length)
-      if (typeof input === 'string') {
-        return originalFetch.call(this, fixed, init)
-      }
-      try {
-        const req = new Request(fixed, input)
-        return originalFetch.call(this, req, init)
-      } catch {
-        return originalFetch.call(this, fixed, init)
-      }
-    }
-    return originalFetch.call(this, input, init)
-  }
-  window.__ECX_AI_ADD_CART_FIX__ = true
-}
-
-/**
- * widget-h5.js 接收登录态有三条信道（任一即可生效）：
- * 1) window.__AI_ASSISTANT_EMBED__.setEcshopxAuth/clearEcshopxAuth —— 脚本就绪后才存在
- * 2) window.postMessage({ type: 'ECSHOPX_AUTH', token, companyId, tenantId, distributorId, userId })
- * 3) window.dispatchEvent(new CustomEvent('ecshopx-ai-auth', { detail: { ... } }))
- * 三路同发可避免「脚本未挂载好」「同源不同 frame 监听差异」造成的窗口期失败
- */
-async function syncMemberTokenToAssistantWidget() {
-  if (typeof window === 'undefined') return
-  const token = S.getAuthToken()
-  const companyId = process.env.APP_COMPANY_ID
-  const tenantId = process.env.APP_AI_TENANT_ID
-  let distributorId
-  try {
-    const d = getDistributorId()
-    if (d != null && String(d).trim() !== '') {
-      distributorId = String(d).trim()
-    }
-  } catch {
-    /* ignore */
-  }
-
-  // 获取会员 userId（用于会话归属和用户识别）
-  let userId
-  if (token) {
-    try {
-      const userInfo = await S.getMemberInfo()
-      if (userInfo?.memberInfo?.user_id) {
-        userId = String(userInfo.memberInfo.user_id)
-      }
-    } catch (_) {
-      /* ignore - 静默失败，userId 留空 */
-    }
-  }
-
-  const payload = {
-    type: 'ECSHOPX_AUTH',
-    token: token || '',
-    companyId: companyId != null && companyId !== '' ? String(companyId) : '',
-    tenantId: tenantId != null && tenantId !== '' ? String(tenantId) : '',
-    distributorId: distributorId || '',
-    userId: userId || undefined
-  }
-
-  const api = window.__AI_ASSISTANT_EMBED__
-  if (api) {
-    if (token) {
-      if (typeof api.setEcshopxAuth === 'function') {
-        api.setEcshopxAuth(
-          token,
-          payload.companyId || undefined,
-          payload.tenantId || undefined,
-          payload.distributorId || undefined
-        )
-      }
-      if (userId && typeof api.setAssistantUserId === 'function') {
-        api.setAssistantUserId(userId)
-      }
-    } else if (typeof api.clearEcshopxAuth === 'function') {
-      api.clearEcshopxAuth()
-    }
-  }
-
-  try {
-    window.postMessage(payload, '*')
-  } catch (_) {
-    /* ignore */
-  }
-  try {
-    window.dispatchEvent(new CustomEvent('ecshopx-ai-auth', { detail: payload }))
-  } catch (_) {
-    /* ignore */
-  }
-}
-
-function loadAssistantWidgetScript() {
-  return new Promise((resolve, reject) => {
-    if (typeof document === 'undefined') {
-      resolve()
-      return
-    }
-    const existing = document.querySelector('script[data-ai-assistant-widget="1"]')
-    if (existing) {
-      if (window.__AI_ASSISTANT_EMBED__) {
-        resolve()
-        return
-      }
-      existing.addEventListener('load', () => resolve(), { once: true })
-      existing.addEventListener('error', () => reject(new Error('widget script load error')), {
-        once: true
-      })
-      return
-    }
-
-    /** auto：不写死 fox，与 embed-config 的 widget_default_avatar 一致，悬浮钮与展开面板同一形象 */
-    window.__AI_ASSISTANT_CONFIG__ = {
-      backendUrl: ASSISTANT_BACKEND_URL,
-      platform: 'java',
-      avatar: 'auto'
-    }
-
-    const s = document.createElement('script')
-    s.src = WIDGET_SCRIPT_URL
-    s.async = true
-    /**
-     * widget-h5.js 是 IIFE 一体包，不依赖 ESM；不加 type=module 可避免脚本加载走 CORS 强校验，
-     * 同源场景天然无影响，跨源场景也无需远端配 CORS 头
-     */
-    s.dataset.aiAssistantWidget = '1'
-    s.onload = () => resolve()
-    s.onerror = () => reject(new Error(`Failed to load ${WIDGET_SCRIPT_URL}`))
-    document.head.appendChild(s)
-  })
 }
 
 const BUILTIN_AVATAR_CODES = new Set(['fox', 'robot', 'cat'])
@@ -310,6 +129,7 @@ function normalizeSavedFabPos(saved, sys) {
   return clampFabPos(migratedLeft, saved.bottom, sys)
 }
 
+<<<<<<< HEAD
 function WeappAiAssistantWebviewEntry() {
   const [fabIconUrl, setFabIconUrl] = useState('')
   const [fabBuiltinEmoji, setFabBuiltinEmoji] = useState('')
@@ -584,6 +404,8 @@ function LegacyAssistantFab() {
   )
 }
 
+=======
+>>>>>>> 02d3c10247295ee486ac083a34122c88004ae460
 function H5AssistantWidgetLoader() {
   const [fabIconUrl, setFabIconUrl] = useState('')
   const [fabBuiltinEmoji, setFabBuiltinEmoji] = useState('')
@@ -655,12 +477,12 @@ function H5AssistantWidgetLoader() {
     lastOpenAtRef.current = now
 
     // 跳转到 iframe 页面，保持域名不变
-    const iframePageUrl = '/pages/ai-assistant/index'
+    const iframePageUrl = '/subpages/ai-assistant/index'
 
-    if (typeof window !== 'undefined') {
+    // 用 isWeb 区分构建目标；勿用 typeof window（小程序开发者工具里也可能存在 window）
+    if (isWeb) {
       window.location.href = iframePageUrl
     } else {
-      // 小程序环境
       Promise.resolve(Taro.navigateTo({ url: iframePageUrl })).catch(() => {
         Taro.showToast({ title: '无法打开助手', icon: 'none' })
       })
@@ -760,7 +582,7 @@ function H5AssistantWidgetLoader() {
   )
 }
 
-export default function AiAssistantFab() {
+function AiAssistantFab() {
   const aiEnabled = process.env.APP_AI_ASSISTANT === '1' || process.env.APP_AI_ASSISTANT === 'true'
   const hideOnFullPage = useHideAssistantFabOnFullPage(aiEnabled)
 
@@ -772,6 +594,11 @@ export default function AiAssistantFab() {
     return null
   }
 
-  // H5 和小程序统一使用 Widget 组件（悬浮按钮 + 展开面板）
   return <H5AssistantWidgetLoader />
 }
+
+AiAssistantFab.options = {
+  addGlobalClass: true
+}
+
+export default AiAssistantFab

@@ -31,16 +31,13 @@ const config = {
     'pages/cart/prescription-information', //补充处方信息
     'pages/cart/add-personnel', // 添加用药人员
     'pages/share-land', //太阳码统一落地页
-    'pages/reset-password', // 邮箱重置密码（邮件内链接 /reset-password）
-    'pages/ai-assistant/index' // AI 助手 iframe 页面
+    'pages/reset-password' // 邮箱重置密码（邮件内链接 /reset-password）
   ],
   subPackages: [
-    // AI 助手
+    // AI 助手（全屏 WebView 嵌入页）
     {
       root: 'subpages/ai-assistant',
-      pages: [
-        'index' // AI 助手 iframe 页面（备用）
-      ]
+      pages: ['index']
     },
     // 内购
     {
