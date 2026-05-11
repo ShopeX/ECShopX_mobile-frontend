@@ -292,7 +292,7 @@ function readInitialFabPos() {
   if (!sys) return { left: 12, bottom: 120 }
   const w = sys.windowWidth
   const safeB = sys.safeAreaInsets?.bottom || 0
-  return clampFabPos(w - FAB_PX - 12, 100 + safeB, sys)
+  return clampFabPos(w - FAB_PX - FAB_PAD, 100 + safeB, sys)
 }
 
 function normalizeSavedFabPos(saved, sys) {
@@ -578,6 +578,7 @@ function H5AssistantWidgetLoader() {
   const [fabIconUrl, setFabIconUrl] = useState('')
   const [fabBuiltinEmoji, setFabBuiltinEmoji] = useState('')
   const [fabPos, setFabPos] = useState(readInitialFabPos)
+  const [dragging, setDragging] = useState(false)
   const fabPosRef = useRef(fabPos)
   const suppressTapRef = useRef(false)
   const dragRef = useRef({
@@ -676,6 +677,7 @@ function H5AssistantWidgetLoader() {
     const dy = t.clientY - dragRef.current.startY
     if (Math.abs(dx) > MOVE_PX_TO_DRAG || Math.abs(dy) > MOVE_PX_TO_DRAG) {
       dragRef.current.moved = true
+      setDragging(true)
     }
     const nextLeft = dragRef.current.origLeft + dx
     const nextBottom = dragRef.current.origBottom - dy
@@ -691,6 +693,7 @@ function H5AssistantWidgetLoader() {
     if (!dragRef.current.active) return
     const wasMoved = dragRef.current.moved
     dragRef.current.active = false
+    setDragging(false)
     if (wasMoved) {
       suppressTapRef.current = true
       setTimeout(() => {
@@ -708,12 +711,16 @@ function H5AssistantWidgetLoader() {
   return (
     <View className='ai-assistant-weapp-host'>
       <View
-        className='ai-assistant-root ai-assistant-root--weapp-compact'
+        className={`ai-assistant-root ai-assistant-root--weapp-compact${
+          dragging ? ' ai-assistant-root--weapp-dragging' : ''
+        }`}
         style={{
           left: `${fabPos.left}px`,
           bottom: `${fabPos.bottom}px`,
           top: 'auto',
-          right: 'auto'
+          right: 'auto',
+          width: `${FAB_PX}px`,
+          height: `${FAB_PX}px`
         }}
       >
         <View
