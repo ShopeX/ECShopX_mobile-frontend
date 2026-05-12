@@ -1,4 +1,4 @@
-.ai-assistant-root {
+.sp-ai-assistant-root {
   position: fixed;
   left: 0;
   top: 0;
@@ -7,9 +7,8 @@
   z-index: 999999;
   pointer-events: none;
 }
-
 /* 微信：紧凑 fixed；left/bottom 由内联 style 控制（与 H5 挂件 drag.ts 一致） */
-.ai-assistant-root--weapp-compact {
+.sp-ai-assistant-root--weapp-compact {
   position: fixed;
   top: auto;
   right: auto;
@@ -20,13 +19,13 @@
   box-sizing: border-box;
   transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1), bottom 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 
-  &.ai-assistant-root--weapp-dragging {
+  &.sp-ai-assistant-root--weapp-dragging {
     transition: none;
   }
 }
 
 /* 小程序：后代选择器顶格写；嵌套在父块内时部分基础库/开发者工具下组件 wxss 命中不稳定 */
-.ai-assistant-root--weapp-compact .ai-assistant-fab {
+.sp-ai-assistant-root--weapp-compact .sp-ai-assistant-fab {
   position: relative;
   width: 100%;
   height: 100%;
@@ -41,7 +40,7 @@
   border: 3PX solid #fff;
 }
 
-.ai-assistant-root--weapp-compact .ai-assistant-fab__img {
+.sp-ai-assistant-root--weapp-compact .sp-ai-assistant-fab__img {
   width: 100%;
   height: 100%;
   display: block;
@@ -49,9 +48,9 @@
   background: #fff;
 }
 
-/* H5：根节点会带 .ai-assistant--web，由 portal 挂到 body，锚点布局在 JSX 侧处理 */
+/* H5：根节点可带 .sp-ai-assistant--web，由 portal 挂到 body，锚点布局在 JSX 侧处理 */
 
-.ai-assistant-fab {
+.sp-ai-assistant-fab {
   position: absolute;
   right: 24rpx;
   bottom: 180rpx;
@@ -66,13 +65,13 @@
   pointer-events: auto;
 }
 
-.ai-assistant-fab__text {
+.sp-ai-assistant-fab__text {
   color: #fff;
   font-size: 15px;
   font-weight: 700;
 }
 
-.ai-assistant-fab__emoji {
+.sp-ai-assistant-fab__emoji {
   font-size: 28px;
   line-height: 1;
   width: 100%;
@@ -83,17 +82,17 @@
 }
 
 /* 小程序：侧吸 FAB；全屏助手在 subpages/ai-assistant/index */
-.ai-assistant-weapp-host {
+.sp-ai-assistant-weapp-host {
   position: relative;
   z-index: 999999;
   pointer-events: none;
 }
 
-.ai-assistant-weapp-host .ai-assistant-root--weapp-compact {
+.sp-ai-assistant-weapp-host .sp-ai-assistant-root--weapp-compact {
   pointer-events: auto;
 }
 
-.ai-assistant-panel {
+.sp-ai-assistant-panel {
   position: absolute;
   right: 24rpx;
   bottom: 250rpx;
@@ -107,7 +106,7 @@
   overflow: hidden;
 }
 
-.ai-assistant-panel__head {
+.sp-ai-assistant-panel__head {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -116,12 +115,12 @@
   font-weight: 600;
 }
 
-.ai-assistant-close {
+.sp-ai-assistant-close {
   color: #64748b;
   font-size: 13px;
 }
 
-.ai-assistant-messages {
+.sp-ai-assistant-messages {
   flex: 1;
   min-height: 160px;
   max-height: 260px;
@@ -129,12 +128,12 @@
   padding: 10px;
 }
 
-.ai-assistant-hint {
+.sp-ai-assistant-hint {
   color: #94a3b8;
   font-size: 13px;
 }
 
-.ai-assistant-bubble {
+.sp-ai-assistant-bubble {
   margin-bottom: 8px;
   padding: 8px 10px;
   border-radius: 10px;
@@ -142,17 +141,17 @@
   line-height: 1.45;
 }
 
-.ai-assistant-bubble--user {
+.sp-ai-assistant-bubble--user {
   background: #e0e7ff;
   margin-left: 24px;
 }
 
-.ai-assistant-bubble--assistant {
+.sp-ai-assistant-bubble--assistant {
   background: #f1f5f9;
   margin-right: 16px;
 }
 
-.ai-assistant-input-row {
+.sp-ai-assistant-input-row {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -160,7 +159,7 @@
   border-top: 1px solid #eee;
 }
 
-.ai-assistant-input {
+.sp-ai-assistant-input {
   flex: 1;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
@@ -168,6 +167,7 @@
   font-size: 14px;
 }
 
-.ai-assistant-send {
+.sp-ai-assistant-send {
   flex-shrink: 0;
 }
+
