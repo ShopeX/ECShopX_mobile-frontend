@@ -190,7 +190,7 @@ Authorization: Bearer <jwt>
 
 为避免来回扯皮，下面是 vshop 这一侧的接入实现和验证证据。
 
-### 注入代码 (src/components/ai-assistant-fab/index.jsx)
+### 注入代码 (src/components/sp-ai-assistant-fab/index.jsx)
 
 ```js
 const syncMemberTokenToAssistantWidget = () => {

@@ -105,11 +105,7 @@ export function buildAiAssistantWebviewSrc() {
   if (!base) return ''
 
   const { token, companyId, distributorId, tenantId } = buildAiAssistantAuthPayload()
-  const backend = String(
-    process.env.APP_AI_ASSISTANT_BACKEND_URL ||
-      resolveAiAssistantBaseUrl() ||
-      'http://localhost:9020'
-  ).replace(/\/$/, '')
+  const backend = String(process.env.APP_AI_ASSISTANT_BACKEND_URL || resolveAiAssistantBaseUrl()).replace(/\/$/, '')
 
   const q = new URLSearchParams()
   if (token) q.set('token', token)

@@ -14,8 +14,7 @@ const AI_BASE =
     : ''
 const ASSISTANT_BACKEND_URL = (
   process.env.APP_AI_ASSISTANT_BACKEND_URL ||
-  AI_BASE ||
-  'http://localhost:9020'
+  AI_BASE
 ).replace(/\/$/, '')
 
 function useHideAssistantFabOnFullPage(enabled) {
@@ -306,7 +305,7 @@ function H5AssistantWidgetLoader() {
 }
 
 function AiAssistantFab() {
-  const aiEnabled = process.env.APP_AI_ASSISTANT === '1' || process.env.APP_AI_ASSISTANT === 'true'
+  const aiEnabled = process.env.APP_AI_ASSISTANT == 1 || process.env.APP_AI_ASSISTANT == true
   const hideOnFullPage = useHideAssistantFabOnFullPage(aiEnabled)
 
   if (!aiEnabled) {
