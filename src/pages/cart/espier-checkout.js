@@ -57,6 +57,18 @@ import CompPointUse from './comps/comp-pointuse'
 
 import './espier-checkout.scss'
 
+/** 同城配：比较收货城市与店铺城市（去空白、去末尾「市」减少格式差异） */
+function normalizeCheckoutCity(name) {
+  if (name == null || name === '') return ''
+  return String(name).trim().replace(/市\s*$/u, '')
+}
+
+function getShopCityFromShopInfo(shopInfo) {
+  if (!shopInfo || typeof shopInfo !== 'object') return ''
+  const raw = shopInfo.city != null && String(shopInfo.city).trim() !== '' ? shopInfo.city : shopInfo.regions?.[1]
+  return raw != null ? String(raw) : ''
+}
+
 function CartCheckout(props) {
   const $instance = getCurrentInstance() || {}
   const { updateAddress } = useLocation()
@@ -223,6 +235,23 @@ function CartCheckout(props) {
         await deliverRef.current.validateZitiInfo()
       } else {
         showToast('请选择自提地址')
+        return
+      }
+    }
+
+    // 同城配（达达 / 商户自配）：收货城市须与 Redux 当前店铺所在城市一致
+    if (receiptType === 'dada' || receiptType === 'merchant') {
+      if (!isObjectsValue(address)) {
+        showToast('请选择收货地址')
+        return
+      }
+      const shopCityRaw = getShopCityFromShopInfo(shop?.shopInfo)
+      if (shopCityRaw) {
+        const addrCity = address.city
+        if (normalizeCheckoutCity(shopCityRaw) !== normalizeCheckoutCity(addrCity)) {
+          showToast('当前地址无法配送，请修改')
+          return
+        }
       }
     }
 
