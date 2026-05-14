@@ -2,20 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Taro from '@tarojs/taro'
 import { AtButton, AtProgress } from 'taro-ui'
-import { View, Text, Button } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice, SpInputNumber } from '@/components'
-import { useImmer } from 'use-immer'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-goodsitembuy.scss'
 
-const initialState = {
-  num: 1,
-  // limitNum: 10,
-  max: 9
-}
 const CompGoodsItemBuy = (props) => {
+  useTranslation()
   const {
     info = {},
     onChange = () => {},
@@ -27,8 +23,6 @@ const CompGoodsItemBuy = (props) => {
     hideInputNumber = false,
     onChangeSku = () => {}
   } = props
-  // const [state, setState] = useImmer(initialState)
-  // const { num } = state
   const { buyNum, minDeliveryNum } = info
 
   const onNumChange = (num) => {
@@ -63,7 +57,9 @@ const CompGoodsItemBuy = (props) => {
         {minDeliveryNum > 0 && (
           <View className='activity-progress'>
             <AtProgress percent={progressValue} isHidePercent />
-            <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
+            <Text className='progress-txt'>
+              {diff <= 0 ? $t('ac202ef8.d74a92') : ti('ac202ef8.d50b61', [diff])}
+            </Text>
           </View>
         )}
       </View>
@@ -73,7 +69,7 @@ const CompGoodsItemBuy = (props) => {
           {info.nospec && <SpInputNumber value={info.num} min={0} onChange={onNumChange} />}
           {!info.nospec && (
             <AtButton circle type='primary' onClick={onChangeSku}>
-              选择规格
+              {$t('ac202ef8.a0f99d')}
             </AtButton>
           )}
         </View>

@@ -3,15 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtModal, AtButton } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import { Loading } from '@/components'
 import { SpHtmlContent } from '@/subpages/components'
 import api from '@/api'
 import './index.scss'
 
-export default class MarketingIndex extends Component {
+class MarketingIndex extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -191,7 +193,7 @@ export default class MarketingIndex extends Component {
           <View className='wheel-title'>{info.turntable_title}</View>
 
           <View className='wheel-msg'>
-            <View>当前用户抽奖次数{Number(info.surplus_times) + loginNum}</View>
+            <View>{ti('a896c525.c61d0f', [Number(info.surplus_times) + loginNum])}</View>
             {/* <View>
               当前活动一天可抽奖 {Number(info.max_times_day)} 次，
               剩余抽奖次数{Number(info.max_times_day) - Number(info.today_times)}
@@ -265,9 +267,11 @@ export default class MarketingIndex extends Component {
 
             <View className='wheel-prize__modal-con'>
               <View className='wheel-prize__modal-con__text'>
-                您获得 {prizeData.prize_describe}
+                {ti('a896c525.2eece0', [prizeData.prize_describe])}
               </View>
-              <AtButton onClick={this.handleClickGetPrize.bind(this)}>确定</AtButton>
+              <AtButton onClick={this.handleClickGetPrize.bind(this)}>
+                {$t('a896c525.38cf16')}
+              </AtButton>
             </View>
           </View>
         </AtModal>
@@ -283,14 +287,14 @@ export default class MarketingIndex extends Component {
             <Image style='width:100%;' src={require('../../assets/wheel_modal_regret.png')} />
 
             <View className='wheel-prize__modal-con'>
-              <View className='wheel-prize__modal-con__text'>很遗憾您没有中奖</View>
+              <View className='wheel-prize__modal-con__text'>{$t('a896c525.861a60')}</View>
               <AtButton
                 className='button-regret'
                 onClick={() => {
                   this.setState({ showRegret: false })
                 }}
               >
-                继续努力
+                {$t('a896c525.7fdb7c')}
               </AtButton>
             </View>
           </View>
@@ -299,3 +303,5 @@ export default class MarketingIndex extends Component {
     )
   }
 }
+
+export default withTranslation()(MarketingIndex)

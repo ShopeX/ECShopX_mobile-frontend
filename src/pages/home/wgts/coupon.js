@@ -12,6 +12,7 @@ import { View, ScrollView, Text } from '@tarojs/components'
 import { SpImage, SpCouponPackage, SpLogin } from '@/components'
 import { classNames, styleNames, isWeixin, showToast } from '@/utils'
 import S from '@/spx'
+import { useTranslation, $t } from '@/i18n'
 import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import './coupon.scss'
 
@@ -21,6 +22,7 @@ const initialState = {
   pendingClaim: null // { type: 'coupon'|'pkg', item }
 }
 function WgtCoupon(props) {
+  useTranslation()
   const { base, data, voucher_package } = props.info
   const [state, setState] = useImmer(initialState)
   const { visibleCouponPkg, showLoginModal, pendingClaim } = state
@@ -92,7 +94,7 @@ function WgtCoupon(props) {
   // 券包领取
   const doClaimPkg = async (item) => {
     await api.vip.getReceiveCardPackage({ package_id: item.package_id })
-    showToast('券包领取成功')
+    showToast($t('e82b4bf3.5ccc9d'))
     setState((draft) => {
       draft.visibleCouponPkg = true
     })
@@ -106,7 +108,7 @@ function WgtCoupon(props) {
       params.work_userid = work_userid
     }
     await api.member.homeCouponGet(params)
-    showToast('优惠券领取成功')
+    showToast($t('e82b4bf3.ed4e1b'))
   }
 
   const len = data.length + (voucher_package?.length ?? 0)
@@ -161,13 +163,13 @@ function WgtCoupon(props) {
                 {item.type == 'discount' && (
                   <View class='coupon-amount'>
                     <Text class='value'>{item.amount}</Text>
-                    <Text class='symbol'>折</Text>
+                    <Text class='symbol'>{$t('e82b4bf3.96c015')}</Text>
                   </View>
                 )}
                 {item.type == 'new_gift' && (
                   <View class='coupon-amount'>
                     <Text class='value'>{item.amount / 100}</Text>
-                    <Text class='symbol'>元</Text>
+                    <Text class='symbol'>{$t('e82b4bf3.c16655')}</Text>
                   </View>
                 )}
                 <View class='coupon-desc'>
@@ -178,7 +180,7 @@ function WgtCoupon(props) {
             )}
             {!item.imgUrl && (
               <View class='coupon-ft'>
-                <View class='btn'>领取</View>
+                <View class='btn'>{$t('e82b4bf3.9c1b27')}</View>
               </View>
             )}
           </View>
@@ -196,7 +198,7 @@ function WgtCoupon(props) {
             {!item.imgUrl && (
               <View class='coupon-bd'>
                 <View class='coupon-amount'>
-                  <Text class='package-value'>券包</Text>
+                  <Text class='package-value'>{$t('e82b4bf3.7fac13')}</Text>
                 </View>
                 <View class='coupon-desc'>
                   <Text class='name'>{item.title}</Text>
@@ -206,7 +208,7 @@ function WgtCoupon(props) {
             )}
             {!item.imgUrl && (
               <View class='coupon-ft'>
-                <View class='btn'>领取</View>
+                <View class='btn'>{$t('e82b4bf3.9c1b27')}</View>
               </View>
             )}
           </View>

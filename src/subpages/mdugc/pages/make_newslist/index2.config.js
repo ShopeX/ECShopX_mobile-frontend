@@ -3,7 +3,7 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '消息通知',
+  navigationBarTitleText: '',
   enablePullDownRefresh: true,
   backgroundTextStyle: 'dark'
 }

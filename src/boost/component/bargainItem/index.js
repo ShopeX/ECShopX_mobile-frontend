@@ -5,6 +5,7 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Text, Button, Progress } from '@tarojs/components'
+import { $t, ti } from '@/i18n'
 import './index.scss'
 
 export default class BargainItem extends Component {
@@ -32,7 +33,7 @@ export default class BargainItem extends Component {
           <View className='title'>{info.item_name}</View>
           <View className='price'>
             <Text className='text'>¥{info.mkt_price}</Text>
-            <Text className='text diff'>砍价立减：¥{info.diff_price}</Text>
+            <Text className='text diff'>{ti('9c045dc0.e713eb', [info.diff_price])}</Text>
           </View>
           {/* <View className='progress'>
             <Progress percent={20} activeColor='#a2564c' backgroundColor='#f0eeed' strokeWidth={6} active />
@@ -44,7 +45,7 @@ export default class BargainItem extends Component {
         </View>
         <View className='act'>
           <Button size='mini' className='btn' onClick={this.handleItem.bind(this)}>
-            查看详情
+            {$t('9c045dc0.5b48db')}
           </Button>
         </View>
       </View>

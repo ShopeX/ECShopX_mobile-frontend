@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import PickerDateTime from './picker-datetime'
 import './index.scss'
 
@@ -16,6 +17,7 @@ const initialState = {
   value: ''
 }
 function SpPicker(props) {
+  useTranslation()
   const { mode } = props
   const [state, setState] = useImmer(initialState)
   const { value, visible } = state
@@ -56,9 +58,9 @@ function SpPicker(props) {
         })}
       >
         <View className='sp-picker-hd' catchtouchmove>
-          <Text onTap={onPickerCancel}>取消</Text>
+          <Text onTap={onPickerCancel}>{$t('f349d574.625fb2')}</Text>
           {/* {this.props.children} */}
-          <Text onTap={pickerConfirm}>确定</Text>
+          <Text onTap={pickerConfirm}>{$t('f349d574.38cf16')}</Text>
         </View>
         <View className='sp-picker-bd'>
           {mode == 'datetime' && (

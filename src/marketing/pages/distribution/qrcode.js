@@ -6,15 +6,14 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
-import { SpPage } from '@/components'
+import { withTranslation } from 'react-i18next'
+import { SpNavBar, SpPage } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import userIcon from '@/assets/imgs/user-icon.png'
 import './qrcode.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class DistributionQrcode extends Component {
+class DistributionQrcode extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -34,7 +33,7 @@ export default class DistributionQrcode extends Component {
   }
 
   async fetch() {
-    const { username, avatar, userId } = Taro.getStorageSync('userinfo')
+    const { username, avatar } = Taro.getStorageSync('userinfo')
     let { isOpenShop, status } = this.$instance?.router?.params
     isOpenShop = JSON.parse(isOpenShop)
     status = JSON.parse(status)
@@ -60,19 +59,24 @@ export default class DistributionQrcode extends Component {
         className='page-distribution-qrcode'
         style={'background: ' + colors.data[0].marketing}
       >
+        <SpNavBar title={$t('91ef1ae8.22b03c')} leftIconType='chevron-left' />
         <View className='page-distribution-qrcode-content h-full w-full'>
           <View className='qrcode-bg'>
-            <View className='title'>邀请卡</View>
+            <View className='title'>{$t('91ef1ae8.634a7a')}</View>
             <Image className='avatar' src={info.avatar || userIcon} mode='aspectFit' />
             <View className='name'>{info.username}</View>
-            <View className='welcome-words'>邀你一起加入，推广赢奖励</View>
+            <View className='welcome-words'>{$t('91ef1ae8.b3fd8b')}</View>
             <View className='qrcode'>
               <Image src={info.qrcode} mode='aspectFit' />
             </View>
-            <View className='tips'>微信扫一扫或长按识别</View>
+            <View className='tips'>{$t('91ef1ae8.e28e53')}</View>
           </View>
         </View>
       </SpPage>
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(DistributionQrcode))

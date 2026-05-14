@@ -3,14 +3,12 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { usePullDownRefresh, useRouter, useDidShow } from '@tarojs/taro'
-import api from '@/api'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import * as dianwuApi from '@/api/dianwu'
-import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
-import { SpImage, SpPage, SpScrollView } from '@/components'
+import { SpScrollView } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-delivery.scss'
 
 const initialState = {
@@ -18,6 +16,7 @@ const initialState = {
 }
 
 function CompDelivery(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
@@ -80,31 +79,37 @@ function CompDelivery(props) {
                     }}
                   >
                     <Text className='iconfont icon-bianji1'></Text>
-                    编辑
+                    {$t('f0fe14d2.95b351')}
                   </View>
                 </View>
                 <View>
                   <View className='information'>
-                    <Text className='information-tltle'>手机号</Text>
+                    <Text className='information-tltle'>{$t('f0fe14d2.8098e2')}</Text>
                     <Text>{item.mobile}</Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>编码</Text>
+                    <Text className='information-tltle'>{$t('f0fe14d2.cc6c35')}</Text>
                     <Text>{item.staff_no}</Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>每单配送费</Text>
+                    <Text className='information-tltle'>{$t('f0fe14d2.478b34')}</Text>
                     <Text>
                       {item.payment_fee / 100}
-                      {item.payment_method === 'order' ? '元/每单' : '%/每单'}
+                      {item.payment_method === 'order'
+                        ? $t('f0fe14d2.034575')
+                        : $t('f0fe14d2.b48464')}
                     </Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>配送员属性</Text>
-                    <Text>{item.staff_attribute === 'full_time' ? '全职' : '兼职'}</Text>
+                    <Text className='information-tltle'>{$t('f0fe14d2.95a141')}</Text>
+                    <Text>
+                      {item.staff_attribute === 'part_time'
+                        ? $t('f0fe14d2.7c4f46')
+                        : $t('f0fe14d2.63f85b')}
+                    </Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>创建时间</Text>
+                    <Text className='information-tltle'>{$t('f0fe14d2.eca37c')}</Text>
                     <Text>{item.created}</Text>
                   </View>
                 </View>
@@ -121,7 +126,7 @@ function CompDelivery(props) {
           })
         }}
       >
-        <View>创建配送员</View>
+        <View>{$t('f0fe14d2.17e501')}</View>
       </View>
     </View>
   )

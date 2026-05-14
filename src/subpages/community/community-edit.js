@@ -11,6 +11,7 @@ import { AtButton } from 'taro-ui'
 import { SpPage, SpCell, SpInput as AtInput } from '@/components'
 import { SpPickerAddress } from '@/subpages/components'
 import { showToast, pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
@@ -22,6 +23,7 @@ const initialState = {
   address: ''
 }
 function CommunityEdit(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { ziti_name, address, areaValue, province, city, area } = state
   const $instance = getCurrentInstance() || {}
@@ -29,12 +31,12 @@ function CommunityEdit(props) {
   useEffect(() => {
     if (id) {
       Taro.setNavigationBarTitle({
-        title: '编辑自提点'
+        title: $t('b3e42938.f36bc9')
       })
       fetchZitiList()
     } else {
       Taro.setNavigationBarTitle({
-        title: '添加自提点'
+        title: $t('b3e42938.1f6bf1')
       })
     }
   }, [])
@@ -52,13 +54,13 @@ function CommunityEdit(props) {
 
   const handleConfirm = async () => {
     if (!ziti_name) {
-      return showToast('请填写自提名称')
+      return showToast($t('b3e42938.9ca628'))
     }
     if (areaValue && areaValue.length == 0) {
-      return showToast('请选择省市区')
+      return showToast($t('b3e42938.075488'))
     }
     if (!address) {
-      return showToast('请填写自提地址')
+      return showToast($t('b3e42938.4ff10b'))
     }
     const params = {
       ziti_name,
@@ -69,11 +71,11 @@ function CommunityEdit(props) {
     }
     if (id) {
       await communityApi.modifyActivityZiti(id, params)
-      showToast('修改成功')
+      showToast($t('b3e42938.69be67'))
       Taro.navigateBack()
     } else {
       await communityApi.createActivityZiti(params)
-      showToast('添加成功')
+      showToast($t('b3e42938.3fdaea'))
       Taro.navigateBack()
     }
   }
@@ -96,30 +98,30 @@ function CommunityEdit(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleConfirm}>
-            确定
+            {$t('934ffec2.38cf16')}
           </AtButton>
         </View>
       }
     >
-      <SpCell border title='自提名称'>
+      <SpCell border title={$t('b3e42938.e3ada0')}>
         <AtInput
           name='ziti_name'
           value={ziti_name}
-          placeholder='请填写自提名称'
+          placeholder={$t('b3e42938.9ca628')}
           onChange={onInputChange.bind(this, 'ziti_name')}
         />
       </SpCell>
-      <SpCell border title='所在区域'>
+      <SpCell border title={$t('b3e42938.c09adb')}>
         {/* {JSON.stringify(areaValue)} */}
         {(areaValue.length > 0 || !id) && (
           <SpPickerAddress value={areaValue} onChange={onAddressChange} />
         )}
       </SpCell>
-      <SpCell border title='自提地址'>
+      <SpCell border title={$t('b3e42938.818380')}>
         <AtInput
           name='address'
           value={address}
-          placeholder='请填写详细自提地址'
+          placeholder={$t('b3e42938.14b8c6')}
           onChange={onInputChange.bind(this, 'address')}
         />
       </SpCell>

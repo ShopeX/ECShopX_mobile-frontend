@@ -2,11 +2,11 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import { AtButton } from 'taro-ui'
-import { useSelector } from 'react-redux'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
+import { $t, useTranslation } from '@/i18n'
 import { View, Text } from '@tarojs/components'
 import './comp-selectpackage.scss'
 
@@ -14,13 +14,17 @@ const initialState = {
   selectValue: false
 }
 
-const list = [
-  { label: '不需要', value: false },
-  { label: '需要', value: true }
-]
-
 function CompSelectPackage(props) {
+  const { i18n } = useTranslation()
   const { value, isOpened = false, info, onChange = () => {}, onClose = () => {} } = props
+
+  const list = useMemo(
+    () => [
+      { label: $t('edc703ce.8755a5'), value: false },
+      { label: $t('edc703ce.df16ff'), value: true }
+    ],
+    [i18n.language]
+  )
 
   const [state, setState] = useImmer(initialState)
 
@@ -64,7 +68,7 @@ function CompSelectPackage(props) {
       onClose={onCloseFloatLayout}
       renderFooter={
         <AtButton circle type='primary' onClick={onConfirm}>
-          确定
+          {$t('250b375e.38cf16')}
         </AtButton>
       }
     >
@@ -79,7 +83,10 @@ function CompSelectPackage(props) {
             </SpCheckbox>
           </View>
         ))}
-        <View className='package-desc'>包装说明：{info.packDes}</View>
+        <View className='package-desc'>
+          {$t('655dda5a.66d5ec')}
+          {info.packDes}
+        </View>
       </View>
 
       {/* <View className='payment-picker'>

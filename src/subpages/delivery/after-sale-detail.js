@@ -3,26 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
-import { AtButton, AtTextarea } from 'taro-ui'
-import {
-  SpPage,
-  SpCell,
-  SpCheckbox,
-  SpImage,
-  SpChat,
-  SpFloatLayout,
-  SpUpload,
-  SpPrice,
-  SpHtml
-} from '@/components'
-import { View, Text, Picker, ScrollView } from '@tarojs/components'
-import { pickBy, showToast, isNumber, copyText } from '@/utils'
-import { AFTER_SALE_TYPE, REFUND_FEE_TYPE, AFTER_SALE_STATUS_TEXT } from '@/consts'
+import { AtButton } from 'taro-ui'
+import { SpPage, SpCell, SpImage, SpChat, SpPrice } from '@/components'
+import { View, Text, ScrollView } from '@tarojs/components'
+import { pickBy, showToast, copyText } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
 import './after-sale-detail.scss'
 
 const initialState = {
@@ -34,10 +24,6 @@ const initialState = {
   refundType: 2,
   description: '',
   pic: '',
-  refundTypeList: [
-    { title: '自行快递寄回', desc: '自行联系快递，填写物流单号', value: 1 },
-    { title: '到店退货', desc: '前往线下门店退货', value: 2 }
-  ],
   refundStore: '', // 退货门店
   connect: '', // 联系人
   mobile: '', // 联系电话
@@ -46,18 +32,17 @@ const initialState = {
 }
 
 function TradeAfterSaleDetail(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const pageRef = useRef()
   const {
     info,
-    tabList,
     reasonIndex,
     reasons,
     refundFee,
     refundPoint,
     refundType,
-    refundTypeList,
     description,
     pic,
     openRefundType,
@@ -67,6 +52,10 @@ function TradeAfterSaleDetail(props) {
     mobile
   } = state
   const { aftersales_bn, item_id, order_id, user_id } = $instance?.router?.params
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('0e6f1f83.70536c') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -106,14 +95,14 @@ function TradeAfterSaleDetail(props) {
 
   const onCancelApply = async () => {
     const { confirm } = await Taro.showModal({
-      content: '请确定是否撤销申请？',
-      cancelText: '取消',
-      confirmText: '确定'
+      content: $t('0e6f1f83.b20b3f'),
+      cancelText: $t('0e6f1f83.625fb2'),
+      confirmText: $t('0e6f1f83.38cf16')
     })
     if (confirm) {
       Taro.showLoading()
       await api.aftersales.close({ aftersales_bn, user_id })
-      showToast('撤销申请成功')
+      showToast($t('0e6f1f83.272e83'))
       Taro.hideLoading()
       fetch()
       Taro.eventCenter.trigger('onEventAfterSalesCancel')
@@ -127,11 +116,11 @@ function TradeAfterSaleDetail(props) {
     const { id } = $instance?.router?.params
     const checkedItems = info?.items.filter((item) => !!item.checked)
     if (checkedItems.length == 0) {
-      return showToast('请选择需要售后的商品')
+      return showToast($t('0e6f1f83.d83f4b'))
     }
 
     if (!reasons?.[reasonIndex]) {
-      return showToast('请选择售后原因')
+      return showToast($t('0e6f1f83.d030d6'))
     }
     const reason = reasons?.[reasonIndex]
     let params = {
@@ -157,7 +146,7 @@ function TradeAfterSaleDetail(props) {
       }
     }
     await api.aftersales.apply(params)
-    showToast('提交成功')
+    showToast($t('0e6f1f83.23b62e'))
     setTimeout(() => {
       Taro.redirectTo({
         url: `/subpage/pages/trade/detail?id=${id}`
@@ -173,12 +162,12 @@ function TradeAfterSaleDetail(props) {
         <View className='btn-wrap'>
           {(info?.progress == 0 || info?.progress == 1) && (
             <AtButton circle onClick={onCancelApply}>
-              撤销申请
+              {$t('0e6f1f83.eaffc1')}
             </AtButton>
           )}
           {/* <AtButton circle onClick={onSubmit}>修改申请</AtButton> */}
           <SpChat>
-            <AtButton circle>联系客服</AtButton>
+            <AtButton circle>{$t('0e6f1f83.b66060')}</AtButton>
           </SpChat>
         </View>
       }
@@ -188,13 +177,15 @@ function TradeAfterSaleDetail(props) {
           <View className='after-progress'>
             {info?.progressMsg}
             {info?.refuseReason && (
-              <View className='distributor-remark'>商家备注：{info.refuseReason}</View>
+              <View className='distributor-remark'>
+                {ti('0e6f1f83.7ae9e8', [info.refuseReason])}
+              </View>
             )}
           </View>
 
           {info?.returnType == 'logistics' && info?.hasAftersalesAddress && (
             <View className='after-address'>
-              <SpCell title='回寄信息:'>
+              <SpCell title={$t('0e6f1f83.35b68f')}>
                 <>
                   <View className='contact-mobile'>
                     <Text className='contact'>{info?.afterSalesContact}</Text>
@@ -210,7 +201,7 @@ function TradeAfterSaleDetail(props) {
                       )
                     }}
                   >
-                    复制
+                    {$t('0e6f1f83.79d3ab')}
                   </View>
                 </>
               </SpCell>
@@ -227,7 +218,7 @@ function TradeAfterSaleDetail(props) {
                         })
                       }}
                     >
-                      填写物流信息
+                      {$t('0e6f1f83.f33f84')}
                     </AtButton>
                   </View>
                 </View>
@@ -265,31 +256,36 @@ function TradeAfterSaleDetail(props) {
 
           <View className='refund-detail'>
             <View className='refund-amount'>
-              <SpCell title='退款金额' value={<SpPrice value={info?.refundFee} />}></SpCell>
+              <SpCell
+                title={$t('0e6f1f83.a0cd4c')}
+                value={<SpPrice value={info?.refundFee} />}
+              ></SpCell>
             </View>
             <View className='refund-point'>
-              <SpCell title='退积分' value={info?.refundPoint}></SpCell>
+              <SpCell title={$t('0e6f1f83.401595')} value={info?.refundPoint}></SpCell>
             </View>
           </View>
 
           <View className='refund-type'>
-            <SpCell title='退货方式'>{getRefundType()}</SpCell>
+            <SpCell title={$t('0e6f1f83.b85b43')}>{getRefundType()}</SpCell>
             {info?.returnType == 'offline' && info?.hasAftersalesAddress && (
-              <SpCell title='退货门店'>
+              <SpCell title={$t('0e6f1f83.611301')}>
                 <>
                   <View className='store-name'>{info?.afterSalesName}</View>
                   <View className='store-address'>{info?.afterSalesAddress}</View>
                   <View className='store-connect'>{info?.afterSalesMobile}</View>
-                  <View className='store-time'>{`营业时间 ${info?.aftersalesHours}`}</View>
+                  <View className='store-time'>
+                    {ti('0e6f1f83.6b4b35', [info?.aftersalesHours])}
+                  </View>
                 </>
               </SpCell>
             )}
           </View>
 
           <View className='after-sales-type'>
-            <SpCell title='售后类型'>{getAfterSalesType()}</SpCell>
-            <SpCell title='退款原因'>{info?.reason}</SpCell>
-            <SpCell title='退款凭证'>
+            <SpCell title={$t('0e6f1f83.d4e4ff')}>{getAfterSalesType()}</SpCell>
+            <SpCell title={$t('0e6f1f83.220bc2')}>{info?.reason}</SpCell>
+            <SpCell title={$t('0e6f1f83.6bc7d6')}>
               <>
                 <View>{info?.description}</View>
                 <View className='evidence-pic'>
@@ -308,9 +304,9 @@ function TradeAfterSaleDetail(props) {
           </View>
 
           <View className='after-sales-trade'>
-            <SpCell title='订单编号'>{info?.orderId}</SpCell>
-            <SpCell title='申请时间'>{info?.createTime}</SpCell>
-            <SpCell title='退款编号'>
+            <SpCell title={$t('0e6f1f83.3e8657')}>{info?.orderId}</SpCell>
+            <SpCell title={$t('0e6f1f83.5ba072')}>{info?.createTime}</SpCell>
+            <SpCell title={$t('0e6f1f83.5c9115')}>
               {info?.afterSalesBn}
               <View
                 className='btn-copy'
@@ -320,7 +316,7 @@ function TradeAfterSaleDetail(props) {
                   copyText(info?.afterSalesBn)
                 }}
               >
-                复制
+                {$t('0e6f1f83.79d3ab')}
               </View>
             </SpCell>
           </View>

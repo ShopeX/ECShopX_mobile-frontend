@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
@@ -23,14 +23,15 @@ import {
   SpInput as AtInput
 } from '@/components'
 import { View, Text, Picker, ScrollView } from '@tarojs/components'
-import { AFTER_SALE_TYPE, REFUND_FEE_TYPE } from '@/consts'
+import { AFTER_SALE_TYPE } from '@/consts'
 import { pickBy, showToast, classNames, VERSION_STANDARD, VERSION_PLATFORM } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './after-sale.scss'
 
 const initialState = {
   info: null,
   curTabIdx: 0,
-  tabList: AFTER_SALE_TYPE(),
+  fetchDone: false,
   reasonIndex: '',
   reasons: [],
   refundFee: 0,
@@ -41,7 +42,7 @@ const initialState = {
   // 用于云店后台交易设置-到店退货关闭时判断
   offlineAftersalesIsOpen: false,
   offlineAftersales: false,
-  refundTypeList: REFUND_FEE_TYPE(),
+  hideOfflineReturnOption: false,
   refundStore: '', // 退货门店
   contact: '', // 联系人
   mobile: '', // 联系电话
@@ -60,13 +61,12 @@ function TradeAfterSale(props) {
   const {
     info,
     curTabIdx,
-    tabList,
+    fetchDone,
     reasonIndex,
     reasons,
     refundFee,
     refundPoint,
     refundType,
-    refundTypeList,
     description,
     pic,
     openRefundType,
@@ -76,9 +76,42 @@ function TradeAfterSale(props) {
     mobile,
     afterSaleDesc,
     offlineAftersalesIsOpen,
-    offlineAftersales
+    offlineAftersales,
+    hideOfflineReturnOption
   } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
+  const { i18n } = useTranslation()
+
+  const tabList = useMemo(
+    () =>
+      AFTER_SALE_TYPE().map((item) => ({
+        ...item,
+        title: item.type === 'ONLY_REFUND' ? $t('a956013f.6b8821') : $t('a956013f.cc0193')
+      })),
+    [i18n.language]
+  )
+
+  const refundTypeListBase = useMemo(
+    () => [
+      { title: $t('a956013f.ed91f2'), desc: $t('a956013f.64435c'), value: 'logistics' },
+      { title: $t('a956013f.11b600'), desc: $t('a956013f.6bd56e'), value: 'offline' }
+    ],
+    [i18n.language]
+  )
+
+  const refundTypeList = useMemo(() => {
+    if (!fetchDone) {
+      return refundTypeListBase
+    }
+    if (hideOfflineReturnOption) {
+      return refundTypeListBase.filter((item) => item.value != 'offline')
+    }
+    return refundTypeListBase
+  }, [fetchDone, refundTypeListBase, hideOfflineReturnOption])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('a956013f.45eb0c') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -124,13 +157,13 @@ function TradeAfterSale(props) {
         intro,
         is_open
       }
-      if (
+      draft.hideOfflineReturnOption =
         (VERSION_STANDARD && !offline_aftersales_is_open) ||
         (VERSION_PLATFORM && offline_aftersales == 0)
-      ) {
-        draft.refundTypeList = REFUND_FEE_TYPE().filter((item) => item.value != 'offline')
+      if (draft.hideOfflineReturnOption) {
         draft.refundType = 'logistics'
       }
+      draft.fetchDone = true
     })
   }
 
@@ -183,11 +216,11 @@ function TradeAfterSale(props) {
     const { id } = $instance?.router?.params
     const checkedItems = info?.items.filter((item) => !!item.checked)
     if (checkedItems.length == 0) {
-      return showToast('请选择需要售后的商品')
+      return showToast($t('a956013f.d83f4b'))
     }
 
     if (!reasons?.[reasonIndex]) {
-      return showToast('请选择售后原因')
+      return showToast($t('a956013f.d030d6'))
     }
     const aftersales_type = tabList[curTabIdx].type
     const reason = reasons?.[reasonIndex]
@@ -215,13 +248,13 @@ function TradeAfterSale(props) {
       // 到店退货
       if (refundType == 'offline') {
         if (!refundStore) {
-          return showToast('请选择退货门店')
+          return showToast($t('a956013f.504d95'))
         }
         if (!contact) {
-          return showToast('请输入联系人姓名')
+          return showToast($t('a956013f.e30625'))
         }
         if (!mobile) {
-          return showToast('请输入联系人电话')
+          return showToast($t('a956013f.0e606b'))
         }
         params = {
           ...params,
@@ -233,7 +266,7 @@ function TradeAfterSale(props) {
       }
     }
     await api.aftersales.apply(params)
-    showToast('提交成功')
+    showToast($t('a956013f.23b62e'))
     Taro.eventCenter.trigger('onEventOrderStatusChange')
     Taro.eventCenter.trigger('onEventAfterSalesApply')
     setTimeout(() => {
@@ -248,7 +281,7 @@ function TradeAfterSale(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={onSubmit}>
-            提交
+            {$t('a956013f.939d53')}
           </AtButton>
         </View>
       }
@@ -294,7 +327,7 @@ function TradeAfterSale(props) {
                         </View>
                       </View>
                       <View className='goods-info-ft'>
-                        <Text>退款数量</Text>
+                        <Text>{$t('a956013f.3a1664')}</Text>
                         <SpInputNumber
                           disabled={!item.leftAftersalesNum}
                           value={item.refundNum}
@@ -321,21 +354,21 @@ function TradeAfterSale(props) {
               }}
             >
               <SpCell
-                title='退款原因'
+                title={$t('a956013f.220bc2')}
                 isLink
-                value={<Text>{`${reasons?.[reasonIndex] || '请选择取消原因'}`}</Text>}
+                value={<Text>{`${reasons?.[reasonIndex] || $t('a956013f.cf234c')}`}</Text>}
               ></SpCell>
             </Picker>
           </View>
 
           <View className='refund-detail'>
             <View className='refund-amount'>
-              <SpCell title='退款金额' value={getRealRefundFee()} />
+              <SpCell title={$t('a956013f.a0cd4c')} value={getRealRefundFee()} />
             </View>
 
             <View className='refund-point'>
               {/* <SpCell title='退积分' value={info?.point} /> */}
-              <SpCell title='退积分' value={getRealRefundPoint()} />
+              <SpCell title={$t('a956013f.401595')} value={getRealRefundPoint()} />
             </View>
           </View>
 
@@ -343,7 +376,7 @@ function TradeAfterSale(props) {
             <View className='return-goods-type'>
               <SpCell
                 border
-                title='退货方式'
+                title={$t('a956013f.b85b43')}
                 value={getRefundTypeName()}
                 isLink
                 onClick={() => {
@@ -359,7 +392,7 @@ function TradeAfterSale(props) {
                   <>
                     <SpCell
                       border
-                      title='退货门店'
+                      title={$t('a956013f.611301')}
                       isLink
                       value={
                         <Text
@@ -367,7 +400,7 @@ function TradeAfterSale(props) {
                             'placeholder': !refundStore
                           })}
                         >
-                          {refundStore ? refundStore.name : '请选择退货门店'}
+                          {refundStore ? refundStore.name : $t('a956013f.504d95')}
                         </Text>
                       }
                       onClick={() => {
@@ -378,12 +411,12 @@ function TradeAfterSale(props) {
                     />
                     <SpCell
                       border
-                      title='联系人'
+                      title={$t('a956013f.52409d')}
                       value={
                         <AtInput
                           name='contact'
                           value={contact}
-                          placeholder='请填写联系人姓名'
+                          placeholder={$t('a956013f.12761a')}
                           onChange={(e) => {
                             setState((draft) => {
                               draft.contact = e
@@ -393,12 +426,12 @@ function TradeAfterSale(props) {
                       }
                     ></SpCell>
                     <SpCell
-                      title='联系电话'
+                      title={$t('a956013f.09a1f6')}
                       value={
                         <AtInput
                           name='mobile'
                           value={mobile}
-                          placeholder='请填写联系人电话'
+                          placeholder={$t('a956013f.a5e898')}
                           onChange={(e) => {
                             setState((draft) => {
                               draft.mobile = e
@@ -413,14 +446,14 @@ function TradeAfterSale(props) {
           )}
 
           <View className='desc-container'>
-            <View className='title'>补充描述</View>
+            <View className='title'>{$t('a956013f.f55683')}</View>
             <View className='desc-content'>
               <Text className='iconfont icon-bianji1'></Text>
               <AtTextarea
                 type='textarea'
                 name='description'
                 value={description}
-                placeholder='请输入您的补充描述（选填）'
+                placeholder={$t('a956013f.4ab433')}
                 maxLength={200}
                 onChange={(e) => {
                   setState((draft) => {
@@ -443,7 +476,8 @@ function TradeAfterSale(props) {
           {afterSaleDesc.is_open && (
             <View className='after-sale-desc'>
               <View className='desc-title'>
-                <Text className='iconfont icon-xinxi'></Text>售后提醒
+                <Text className='iconfont icon-xinxi'></Text>
+                {$t('a956013f.be1476')}
               </View>
               <SpHtml content={afterSaleDesc.intro} />
             </View>
@@ -452,7 +486,7 @@ function TradeAfterSale(props) {
       </ScrollView>
 
       <SpFloatLayout
-        title='选择退货方式'
+        title={$t('a956013f.5add21')}
         className='refund-type'
         open={openRefundType}
         onClose={() => {
@@ -471,7 +505,7 @@ function TradeAfterSale(props) {
               })
             }}
           >
-            确定
+            {$t('a956013f.38cf16')}
           </AtButton>
         }
       >

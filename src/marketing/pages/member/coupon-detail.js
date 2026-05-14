@@ -3,17 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Input } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { $t } from '@/i18n'
 import api from '@/api'
 // import { classNames, pickBy } from '@/utils'
 import './coupon-detail.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class CouponDetail extends Component {
+class CouponDetail extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -51,7 +50,6 @@ export default class CouponDetail extends Component {
 
   async fetch() {
     const { card_id, code } = this.$instance?.router?.params
-    console.log(this.$instance?.router?.params)
     const params = {
       card_id,
       code
@@ -90,7 +88,6 @@ export default class CouponDetail extends Component {
   }
 
   storeTap = (item, index) => {
-    console.log(item)
     this.setState({
       curindex: index,
       curStore: item.companyName,
@@ -103,7 +100,6 @@ export default class CouponDetail extends Component {
   }
 
   handletouchtart = (event) => {
-    console.log(event)
     this.setState({
       beginX: event.touches[0].pageX,
       beginY: event.touches[0].pageY
@@ -122,8 +118,8 @@ export default class CouponDetail extends Component {
     if (lastX < beginX) return
     if (showCodeInput && !params.verify_code) {
       Taro.showModal({
-        title: '提示',
-        content: '请输入验证码'
+        title: $t('61e2d21a.02d981'),
+        content: $t('3ca883d0.d0c06a')
       })
       return false
     }
@@ -136,7 +132,7 @@ export default class CouponDetail extends Component {
         const res = await api.member.userUsedCard(params)
         if (res.error) {
           Taro.showModal({
-            title: '提示',
+            title: $t('61e2d21a.02d981'),
             content: res.error.message
           })
           return false
@@ -180,7 +176,16 @@ export default class CouponDetail extends Component {
 
   render() {
     const { colors } = this.props
-    const { cardInfo, curStore, curBranchStore, showCodeInput, curindex, show } = this.state
+    const {
+      cardInfo,
+      curStore,
+      curBranchStore,
+      showCodeInput,
+      curindex,
+      show,
+      storeList,
+      storeDialogShow
+    } = this.state
 
     return (
       <View>
@@ -190,7 +195,7 @@ export default class CouponDetail extends Component {
               <View className='sweep-coupon-box'>
                 <View className='content-padded card-header'>
                   <View className='qrcode'>
-                    <View className='qrcode-num'>该卡券不适用线下消费</View>
+                    <View className='qrcode-num'>{$t('1c525225.6e77e7')}</View>
                   </View>
                 </View>
               </View>
@@ -199,10 +204,10 @@ export default class CouponDetail extends Component {
             {cardInfo.use_scenes == 'SELF' && (
               <View className='store-box'>
                 <View className='view-flex' onClick={this.chooseStore.bind(this)}>
-                  <View className='view-flex-item'>选择门店</View>
+                  <View className='view-flex-item'>{$t('1c525225.86c570')}</View>
                   <View className='view-flex-item content-right cur-store'>
                     {curBranchStore}
-                    <View className="arrow-right {{storeDialogShow ? 'down' : ''}}"></View>
+                    <View className={`arrow-right${storeDialogShow ? ' down' : ''}`}></View>
                   </View>
                 </View>
                 <View className={`store-list ${storeDialogShow ? 'act' : ''}`}>
@@ -236,22 +241,22 @@ export default class CouponDetail extends Component {
                   style={`background: radial-gradient(circle at bottom, transparent 3px, ${colors.data[0].primary} 3px); background-size: 20rpx 100%;`}
                 >
                   <View className='hr'>
-                    <View className='card-title'>商户名称</View>
+                    <View className='card-title'>{$t('1c525225.e6f169')}</View>
                     <View className='card-val'>{curStore}</View>
                   </View>
                   <View className='hr'>
-                    <View className='card-title'>分店名称</View>
+                    <View className='card-title'>{$t('1c525225.d16b08')}</View>
                     <View className='card-val'>{curBranchStore}</View>
                   </View>
                   {showCodeInput && (
                     <View>
-                      <View className='card-title'>验证码</View>
+                      <View className='card-title'>{$t('1c525225.983f59')}</View>
                       <View className='card-val'>
                         <Input
                           type='number'
                           focus
                           onInput={this.inputBlur.bind(this)}
-                          placeholder='请输入验证码'
+                          placeholder={$t('3ca883d0.d0c06a')}
                           maxlength='4'
                           confirm-type='done'
                         />
@@ -270,9 +275,9 @@ export default class CouponDetail extends Component {
                   onTouchMove={this.handletouchmove.bind(this)}
                   onTouchEnd={this.handletouchend.bind(this)}
                 >
-                  <View className='gray remind-txt'>划开副券确认使用</View>
+                  <View className='gray remind-txt'>{$t('1c525225.a48820')}</View>
                   <View className='view-flex'>
-                    <View className='view-flex-item red'>仅限商户操作</View>
+                    <View className='view-flex-item red'>{$t('1c525225.fd7607')}</View>
                     <View className='view-flex-item content-right'>
                       {/* <Image src={require('../images/code.png')} /> */}
                     </View>
@@ -286,3 +291,7 @@ export default class CouponDetail extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(CouponDetail))

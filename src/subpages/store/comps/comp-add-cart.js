@@ -16,7 +16,8 @@ import doc from '@/doc'
 import { View, Text, ScrollView, Image } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon, SpPrice, SpCheckboxNew, SpFloatLayout } from '@/components'
 import { pickBy, showToast, classNames, entryLaunch, getDistributorId } from '@/utils'
-import { useNavigation, useDebounce } from '@/hooks'
+import { useDebounce } from '@/hooks'
+import { useTranslation, $t, ti } from '@/i18n'
 import {
   updateShopCartCount,
   fetchCartList,
@@ -32,8 +33,9 @@ const initialState = {
 }
 
 function CompAddCart(props) {
+  useTranslation()
   const { shopCartCount } = useSelector((state) => state.cart)
-  const { openRecommend, colorPrimary } = useSelector((state) => state.sys)
+  const { colorPrimary } = useSelector((state) => state.sys)
   const { open = false, onMaskCloses = {}, parameter = {} } = props
   const [state, setState] = useImmer(initialState)
   const { hideClose } = state
@@ -70,12 +72,11 @@ function CompAddCart(props) {
     const { id, dtid } = await parameter()
     const distributor_id = getDistributorId(id || dtid)
     const res = await Taro.showModal({
-      title: '提示',
-      content: '将当前商品移出购物车?',
+      title: $t('1820dfec.02d981'),
+      content: $t('1820dfec.a4936e'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确认',
+      cancelText: $t('1820dfec.625fb2'),
+      confirmText: $t('1820dfec.e83a25'),
       confirmColor: colorPrimary
     })
     if (!res.confirm) return
@@ -130,16 +131,16 @@ function CompAddCart(props) {
           <View className='selec-atll-num'>
             <SpCheckboxNew
               checked={allChecked}
-              label='全选'
+              label={$t('1820dfec.66eeac')}
               onChange={onChangeGoodsIsCheck.bind(this, shopCartCount.storeDetails, 'all')}
             />
             <Text className='selec-atll-num-commodity'>
-              （共{shopCartCount.storeDetails?.list?.length}件商品）
+              {ti('1820dfec.8f68b8', [shopCartCount.storeDetails?.list?.length])}
             </Text>
           </View>
           <View onClick={() => onDelete()}>
             <Text className='iconfont icon-shanchu-01' />
-            <Text className='empty-cart'>清空购物车</Text>
+            <Text className='empty-cart'>{$t('1820dfec.3c6714')}</Text>
           </View>
         </View>
         {/** 换购开始 */}
@@ -154,7 +155,7 @@ function CompAddCart(props) {
                   })
                 }
               >
-                <Text className='shop-cart-activity-label'>换购</Text>
+                <Text className='shop-cart-activity-label'>{$t('1820dfec.1687b1')}</Text>
                 <Text>{plus_buy_activity?.discount_desc?.info}</Text>
               </View>
               <View
@@ -165,7 +166,7 @@ function CompAddCart(props) {
                   })
                 }
               >
-                去选择
+                {$t('1820dfec.5ba3e7')}
                 <Text className='at-icon at-icon-chevron-right'></Text>
               </View>
             </View>
@@ -222,7 +223,7 @@ function CompAddCart(props) {
               />
               <View className='exchange-purchase-details'>
                 <View className='details-title'>
-                  <Text className='details-title-jiagou'>加购价</Text>
+                  <Text className='details-title-jiagou'>{$t('1820dfec.d1eca1')}</Text>
                   <Text>{exchange_item?.item_name}</Text>
                 </View>
                 <View className='exchange-purchase-desc'>{exchange_item?.item_spec_desc}</View>

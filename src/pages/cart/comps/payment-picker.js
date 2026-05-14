@@ -9,6 +9,7 @@ import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import { isWeixin } from '@/utils'
 import getPaymentList from '@/utils/payment'
+import { $t, ti, i18n } from '@/i18n'
 import './payment-picker.scss'
 
 @connect(({ colors, sys }) => ({
@@ -109,7 +110,7 @@ export default class PaymentPicker extends Component {
       <AtFloatLayout isOpened={isOpened} onClose={this.handleCancel}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <Text>支付方式</Text>
+            <Text>{$t('250b375e.0c9d2b')}</Text>
             <View className='iconfont icon-close' onClick={this.handleCancel}></View>
           </View>
           <View className='payment-picker__bd'>
@@ -121,11 +122,11 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>{`${pointName}支付`}</Text>
+                  <Text className='payment-item__title'>{ti('f74b9eea.717604', [pointName])}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['point']
                       ? disabledPayment['point']
-                      : `使用${pointName}支付`}
+                      : ti('f74b9eea.381488', [pointName])}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -169,11 +170,11 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'delivery')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__title'>{$t('f74b9eea.2d2ccd')}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['delivery']
                       ? disabledPayment.message
-                      : '货到付款'}
+                      : $t('f74b9eea.2d2ccd')}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -195,7 +196,9 @@ export default class PaymentPicker extends Component {
                 >
                   <View className='payment-item__bd'>
                     <Text className='payment-item__title'>{item.pay_type_name}</Text>
-                    <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                    <Text className='payment-item__desc'>
+                      {ti('f74b9eea.7f2392', [item.pay_type_name])}
+                    </Text>
                   </View>
                   <View className='payment-item__ft'>
                     {/* <View>{localType === item.pay_type_code?'test':'test2'}</View>  */}
@@ -212,7 +215,7 @@ export default class PaymentPicker extends Component {
             loading={loading}
             onClick={this.handleChange.bind(this, localType)}
           >
-            确定
+            {$t('f74b9eea.38cf16')}
           </Button>
         </View>
       </AtFloatLayout>

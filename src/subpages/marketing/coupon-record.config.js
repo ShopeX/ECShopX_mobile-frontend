@@ -3,5 +3,5 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '优惠券使用记录'
+  navigationBarTitleText: ''
 }

@@ -8,9 +8,11 @@ import { useState, useCallback, useEffect } from 'react'
 import api from '@/api'
 import { SpShopCoupon, SpShopFullReduction } from '@/components'
 import { useLogin } from '@/hooks'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-header.scss'
 
 function CompHeader(props) {
+  useTranslation()
   const {
     info,
     couponList = [],
@@ -41,7 +43,7 @@ function CompHeader(props) {
     if (!isLogin) {
       return Taro.showToast({
         icon: 'none',
-        title: '请先授权'
+        title: $t('e02eaf53.3a34e2')
       })
     }
     let data = {}
@@ -55,7 +57,7 @@ function CompHeader(props) {
     if (Object.keys(data).length > 0) {
       Taro.showToast({
         icon: 'none',
-        title: flag ? '关注成功' : '取消关注成功'
+        title: flag ? $t('e02eaf53.60fa97') : $t('e02eaf53.208992')
       })
     }
     setFav(flag)
@@ -74,25 +76,25 @@ function CompHeader(props) {
         <View className='top-middle'>
           <View className='store-name'>{name}</View>
           <View className='store-avgSstar-block'>
-            <Text className='store-avgSstar'>评分:{scoreList.avg_star}</Text>
+            <Text className='store-avgSstar'>{ti('e02eaf53.81b07d', [scoreList.avg_star])}</Text>
             {brandShow && (
               <View className='brand-produce' onClick={brandInfo}>
-                {'品牌介绍 >'}
+                {$t('e02eaf53.8cd226')}
               </View>
             )}
-            {showSale && <View className='sale_count'>月销：{sales_count}</View>}
+            {showSale && <View className='sale_count'>{ti('e02eaf53.297c82', [sales_count])}</View>}
           </View>
         </View>
         {showFav && (
           <View className='attention' onClick={handleFocus(!fav)}>
-            {fav ? '取消关注' : '+关注'}
+            {fav ? $t('e02eaf53.92bdc8') : $t('e02eaf53.9b5b8a')}
           </View>
         )}
       </View>
       {/* {优惠券} */}
       {couponList.length > 0 && (
         <View className='coupon-block' onClick={handleCouponClick}>
-          <Text className='get-coupon'>领券</Text>
+          <Text className='get-coupon'>{$t('e02eaf53.563933')}</Text>
           {couponList.slice(0, 3).map((item, index) => (
             <SpShopCoupon
               info={item}

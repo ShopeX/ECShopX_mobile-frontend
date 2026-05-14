@@ -8,6 +8,7 @@ import { Textarea, View, Image, Canvas, Button } from '@tarojs/components'
 import { AtModal, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
 import req from '@/api/req'
+import { $t, ti } from '@/i18n'
 import { getAppId, isAlipay } from '@/utils'
 import { connect } from 'react-redux'
 import './index.scss'
@@ -16,18 +17,6 @@ import './index.scss'
 const canvsW_H = 200
 // 小程序码宽高
 const wxCodeW_H = 70
-
-const steps = [
-  {
-    title: '打开微信'
-  },
-  {
-    title: '粘贴文案/上传图片'
-  },
-  {
-    title: '发送朋友圈'
-  }
-]
 
 @connect(({ colors }) => ({
   colors: colors.current
@@ -61,15 +50,15 @@ export default class EditShare extends Component {
     const data = await api.item.getShareSetting(id)
     const insertData = [
       {
-        name: '商品名称',
+        name: $t('7456dcd3.1fd1d5'),
         value: data.item_name
       },
       {
-        name: '商品简介',
+        name: $t('070e8579.a0534b'),
         value: data.brief
       },
       {
-        name: '销售价',
+        name: $t('070e8579.e29575'),
         value: (data.price / 100).toFixed(2)
       }
     ]
@@ -201,7 +190,7 @@ export default class EditShare extends Component {
       for (let i = 0; i < length; i++) {
         await Taro.saveImageToPhotosAlbum({ filePath: showPoster[i] })
         Taro.showLoading({
-          title: `保存进度：${i + 1}/${length}`
+          title: ti('070e8579.3443e9', [i + 1, length])
         })
       }
       Taro.hideLoading()
@@ -221,8 +210,8 @@ export default class EditShare extends Component {
           },
           fail: () => {
             Taro.showModal({
-              title: '提示',
-              content: '请打开保存到相册权限',
+              title: $t('61e2d21a.02d981'),
+              content: $t('070e8579.55b0dc'),
               success: async (resConfirm) => {
                 if (resConfirm.confirm) {
                   await Taro.openSetting()
@@ -230,7 +219,7 @@ export default class EditShare extends Component {
                   if (setting.authSetting['scope.writePhotosAlbum']) {
                     saveToPhone()
                   } else {
-                    Taro.showToast({ title: '保存失败', icon: 'none' })
+                    Taro.showToast({ title: $t('aa8f96fc.6de920'), icon: 'none' })
                   }
                 }
               }
@@ -250,6 +239,11 @@ export default class EditShare extends Component {
   render() {
     const { insertData, info, selectPics, showPoster, showSuccess } = this.state
     const { colors } = this.props
+    const steps = [
+      { title: $t('070e8579.da6089') },
+      { title: $t('070e8579.3c6407') },
+      { title: $t('070e8579.4c1299') }
+    ]
 
     return (
       <View className='editShare'>
@@ -258,11 +252,11 @@ export default class EditShare extends Component {
             value={info}
             className='textarea'
             maxlength='-1'
-            placeholder='我想要分享'
+            placeholder={$t('070e8579.2edcc2')}
             onInput={this.inputInfo.bind(this)}
           ></Textarea>
           <View className='textData'>
-            <View className='title'>插入数据</View>
+            <View className='title'>{$t('070e8579.131d2c')}</View>
             <View className='insertData'>
               {insertData.map((item, index) => (
                 <View
@@ -295,14 +289,14 @@ export default class EditShare extends Component {
             style={`background: ${colors.data[0].accent}`}
             onClick={this.resetShare.bind(this)}
           >
-            重置
+            {$t('986be21d.4b9c32')}
           </View>
           <View
             className='btn'
             style={`background: ${colors.data[0].primary}`}
             onClick={this.saveShare.bind(this)}
           >
-            保存
+            {$t('20b64b82.be5fbb')}
           </View>
         </View>
         {selectPics.map((item, index) => (
@@ -319,15 +313,15 @@ export default class EditShare extends Component {
           <AtModalContent>
             <View className='tip'>
               <View className='iconfont icon-check'></View>
-              文字内容已经复制到剪切板
+              {$t('070e8579.d83a8e')}
             </View>
             <View className='tip'>
               <View className='iconfont icon-check'></View>
-              图片已保存到相册
+              {$t('070e8579.1292d3')}
             </View>
             <View className='sharetip'>
               <View className='line'></View>
-              <View className='text'>去朋友圈分享</View>
+              <View className='text'>{$t('070e8579.484299')}</View>
               <View className='line'></View>
             </View>
             <View className='steps'>
@@ -343,7 +337,7 @@ export default class EditShare extends Component {
           </AtModalContent>
           <AtModalAction>
             <Button className='btn' onClick={this.closeModal.bind(this)}>
-              我知道了
+              {$t('b232790d.fe0337')}
             </Button>
           </AtModalAction>
         </AtModal>

@@ -2,79 +2,230 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+
+/* 企业购 · 商品列表（对齐设计稿：浅灰底、搜索区、分段排序、双列白卡片） */
+
+$page-bg: #f5f6f8;
+$card-radius: 16px;
+$card-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.1);
+$horizontal-padding: 32px;
+
+/* 固定顶栏高度：企业条（组件默认样式）+ 列表页 SpSearchBar 区，与 DOM 对齐可微调 */
+$purchase-list-fixed-offset: 250px;
+$purchase-list-fixed-store-extra: 52px;
+
 .page-item-list {
-  // background: $color-bg-gray;
-  &.has-navbar {
-    .search-wrap {
-      top: $navigate-height;
-    }
+  .sp-page__body-children {
+    background: $page-bg;
   }
-  .item-list-head {
-    background: #fff;
-    margin-top: $searchbar-height + 32;
-    // position: fixed;
-    // left: 0;
-    // top: 0;
-    // /*  #ifdef  h5  */
-    // top: $navigate-height;
-    // /*  #endif  */
-    // z-index: 999;
-    // width: 100%;
-  }
-  .search-wrap {
-    padding: 16px 28px;
+
+
+  /*
+   * 列表页顶栏容器：只负责 fixed / 店铺行 / 搜索外包层。
+   * 不覆盖 .sp-purchase-enterprise-bar 内部样式，企业条完全走组件自带 UI。
+   */
+  .purchase-list-top-fixed {
     position: fixed;
     left: 0;
     right: 0;
     top: 0;
-    background: #fff;
     z-index: 1000;
+    background: #fff;
+    box-sizing: border-box;
+  }
+
+  .purchase-list-top-fixed__store {
     display: flex;
     align-items: center;
-    .store-picker {
+    justify-content: space-between;
+    padding: 12px $horizontal-padding;
+    border-bottom: 1px solid #f3f4f6;
+    box-sizing: border-box;
+
+    .shop-name {
+      font-size: 26px;
+      color: #374151;
+      flex: 1;
+      min-width: 0;
+      @include text-overflow();
+    }
+
+    .icon-qianwang-01 {
+      flex-shrink: 0;
+      margin-left: 8px;
+      font-size: 24px;
+      color: #aaa;
+    }
+  }
+
+  /* 与组件内 .sp-purchase-enterprise-bar__search 分区节奏一致（仅本页 SpSearchBar 外包层） */
+  .purchase-list-top-fixed__search {
+    border-top: 1px solid #F3F4F6;
+    padding: 24px $horizontal-padding 20px;
+    box-sizing: border-box;
+    background: #fff;
+
+    .sp-search-bar {
+      width: 100%;
+      height: auto;
+      min-height: 64px;
+    }
+
+    .at-search-bar {
+      background: #f5f6f8 !important;
+      border-radius: 999px !important;
+      border: none !important;
+      min-height: 64px;
+      padding-left: 24px !important;
+      padding-right: 16px !important;
+      box-sizing: border-box;
+    }
+
+    .at-search-bar__placeholder-wrap {
+      padding: 0 !important;
+    }
+
+    .at-search-bar::after {
+      border: none !important;
+    }
+
+    .search-input {
+      width: 100%;
+    }
+
+    .at-icon-search {
+      font-size: 36px;
+    }
+  }
+
+  /* 标签 + 排序：顶在固定区下方 */
+  .item-list-head {
+    background: #fff;
+    margin-top: $purchase-list-fixed-offset;
+    border-bottom: none;
+  }
+
+  &.page-item-list--with-store .item-list-head {
+    margin-top: $purchase-list-fixed-offset + $purchase-list-fixed-store-extra;
+  }
+
+  .sp-tag-bar.tag-list {
+    padding: 12px $horizontal-padding 4px;
+    background: #fff;
+
+    .tag-item {
+      margin: 0 16px 0 0;
+      padding: 8px 0;
+      font-size: 26px;
+      color: #6a7282;
+
+      &.active {
+        font-size: 28px;
+        font-weight: 600;
+        color: #111827;
+      }
+    }
+  }
+
+  /*
+   * 排序条（稿 58-589 / Figma）：白底横条、底部分割线、四段文案、选中粗体黑字、右侧筛选图标
+   */
+  .sp-filter-bar.purchase-sort-bar {
+    align-items: stretch;
+    justify-content: flex-start;
+    height: auto;
+    min-height: 88px;
+    padding: 0;
+    background: #fff;
+    border-bottom: 1px solid #f3f4f6;
+    box-sizing: border-box;
+
+    /* Figma：文案按内容宽度排布，项间距固定；右侧筛选区单独占位，不与文案等分 */
+    .filter-bar-body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      align-items: center;
+      justify-content: flex-start;
+      column-gap: 32px;
+      background: transparent;
+      padding: 12px 32px 12px;
+      box-sizing: border-box;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .sp-filter-bar__item {
+      flex: 0 0 auto;
+      height: auto;
+      line-height: normal;
       display: flex;
       align-items: center;
-      margin-right: 16px;
-      .shop-name {
-        margin-right: 6px;
+      justify-content: center;
+      padding: 0;
+      text-align: center;
+      background: transparent;
+
+      &.active {
+        background: transparent;
+
+        .sp-filter-bar__item-text {
+          color: #000000;
+          position: static;
+          top: 0;
+        }
+
+        .iconfont {
+          color: #000000;
+        }
       }
     }
-    .search-input {
-      flex: 1;
+
+    .sp-filter-bar__item-text {
+      display: inline-block;
+      max-width: 100%;
+      box-sizing: border-box;
+      font-size: 28px;
+      font-weight: 500;
+      color: #6A7282;
+      line-height: 1.25;
+      text-align: center;
+      white-space: nowrap;
     }
-  }
-  .sp-filter-bar {
-    &__item {
-      background: #f5f5f5;
-      &:first-child {
-        border-top-left-radius: 40px;
-      }
-      &:last-child {
-        border-top-right-radius: 40px;
-      }
+
+    .sp-filter-bar__extra {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 20px 0 4px;
     }
   }
 
-  &.has-tagbar {
-    .item-list-scroll {
-      // /*  #ifdef h5 */
-      // @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height * 2+10, 0);
-      // /*  #endif  */
+  .purchase-sort-bar__filter-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 100%;
+    min-height: 64px;
+
+    .icon-shaixuan-01 {
+      font-size: 40px;
+      color: #0A0A0A;
+      line-height: 1;
     }
   }
 
-  .item-list-scroll {
-    // @include page-scroll($tabs-height + $navigate-height + 10, 0);
-    // /*  #ifdef  h5  */
-    // @include page-scroll($searchbar-height + $navigate-height + 16 * 2 + $tabs-height + 10, 0);
-    // /*  #endif  */
-  }
   .filter-btn {
     font-size: 28px;
     color: var(--color-primary);
     position: relative;
     text-align: text;
     float: right;
+
     &:before {
       content: '';
       display: block;
@@ -85,74 +236,73 @@
       position: absolute;
       left: -30px;
     }
+
     .icon-filter {
       font-size: 30px;
     }
   }
 
-  .goods-list {
-    display: flex;
-    justify-content: space-between;
-    padding: 0 16px;
-    .goods-list-wrap {
-      width: 345px;
-      margin-bottom: 28px;
-    }
-    .left-container {
-      width: 350px;
-    }
-    .right-container {
-      width: 350px;
-      // padding-left: 20px;
-    }
-    .goods-item-wrap {
-      margin-bottom: 20px;
-      // box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
-      border-radius: 2px;
-    }
-    .sp-goods-item {
-      border-radius: 16px;
-      overflow: hidden;
-    }
+  /* 列表滚动区贴灰底 */
+  .item-list-scroll {
+    background: $page-bg;
+    /* 底部固定操作栏占位 */
+    padding-bottom: 220px;
+    box-sizing: border-box;
   }
 
-  // .goods-tabs {
-  //   background: #fff;
-  //   .sp-filter-bar__item {
-  //     border-radius: 0;
-  //     background: #f5f5f5;
-  //     &:first-child {
-  //       border-radius: 50px 0 0 0;
-  //     }
-  //     &:last-child {
-  //       border-radius: 0 50px 0 0;
-  //     }
-  //   }
-  // }
+  .purchase-goods-total-wrap {
+    width: 100%;
+    box-sizing: border-box;
+    background: $page-bg;
+  }
 
-  // .tag-block {
-  //   padding: 0 20px 16px;
-  //   display: flex;
-  //   align-items: center;
-  //   background: #fff;
-  //   .tag-container {
-  //     flex: 1;
-  //   }
-  //   .filter-btn {
-  //     width: 100px;
-  //     display: flex;
-  //     align-items: center;
-  //     .filter-text {
-  //       color: var(--color-primary);
-  //     }
-  //     .icon-shaixuan-01 {
-  //       color: var(--color-primary);
-  //       font-size: 32px;
-  //       position: relative;
-  //       top: 2px;
-  //     }
-  //   }
-  // }
+  .purchase-goods-total-wrap__divider {
+    height: 1px;
+    width: 100%;
+    background: #e8e8e8;
+  }
+
+  .purchase-goods-total-wrap__label {
+    display: block;
+    padding: 20px 32px 12px;
+    box-sizing: border-box;
+    font-size: 24px;
+    line-height: 1.4;
+    color: #8c939f;
+    text-align: left;
+  }
+
+  /* 双列瀑布：等分 + 间距，卡片投影与活动列表商品卡一致 */
+  .goods-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 12px 32px 40px;
+    box-sizing: border-box;
+    gap: 22px 16px;
+
+    .left-container,
+    .right-container {
+      flex: 1;
+      width: 0;
+      min-width: 0;
+    }
+
+    .goods-item-wrap {
+      margin-bottom: 16px;
+      border-radius: $card-radius;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: $card-shadow;
+    }
+
+    .sp-goods-item {
+      border-radius: $card-radius;
+      overflow: hidden;
+      box-shadow: none;
+    }
+  }
 
   .brand-title {
     font-size: 32px;

@@ -3,40 +3,16 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import React, { useEffect, useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { PURCHASE_TABBAR_PATH, PURCHASE_TABBAR_ICON } from '@/consts'
-import { classNames, getCurrentRoute, paramsSplice } from '@/utils'
+import { classNames, getCurrentRoute } from '@/utils'
 import { intercept as routerIntercept } from '@/plugin/routeIntercept'
 import './comp-tabbar.scss'
 
-const TABBAR_LIST = [
-  {
-    title: '首页',
-    iconType: 'shouye',
-    url: 'subpages/purchase/index'
-  },
-  {
-    title: '分类',
-    iconType: 'fenlei',
-    url: 'subpages/purchase/category'
-  },
-  {
-    title: '购物车',
-    iconType: 'gwche',
-    url: 'subpages/purchase/espier-index'
-  },
-  {
-    title: '我的',
-    iconType: 'huiyuan',
-    url: 'subpages/purchase/member'
-  }
-]
-
 function CompTabbar(props) {
-  const { tabbar, purchase_share_info = {} } = useSelector((state) => state.purchase)
+  const { tabbar } = useSelector((state) => state.purchase)
   const { cartCount = 0 } = useSelector((state) => state.purchase)
   const { backgroundColor } = tabbar?.config || {}
 
@@ -73,19 +49,14 @@ function CompTabbar(props) {
     })
   }
 
-  console.log('comp-tabbar currentIndex:', currentIndex)
-
   const handleTabbarClick = async (index) => {
     const tabItem = tabList[index]
-    console.log(tabItem, 'tabItem')
     const { path } = getCurrentRoute()
     if (path != tabItem.url) {
       Taro.redirectTo({ url: `${tabItem.url}` })
       // Taro.redirectTo({ url: `/${tabItem.url}?${paramsSplice(purchase_share_info)}` })
     }
   }
-
-  console.log(tabbar, 'tabbar')
 
   return (
     <AtTabBar

@@ -3,10 +3,12 @@
  * See LICENSE file for license details.
  */
 import { View } from '@tarojs/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-bottomTip.scss'
 
 function CompsBanner() {
-  return <View className='end-text'>* 本功能仅供企业内部人员使用，不对外开放</View>
+  useTranslation()
+  return <View className='end-text'>{$t('eedb793d.1b355b')}</View>
 }
 
 CompsBanner.options = {

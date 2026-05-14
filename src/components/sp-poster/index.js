@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, Canvas } from '@tarojs/components'
 import { useAsyncCallback } from '@/hooks'
+import { $t, useTranslation } from '@/i18n'
 import { classNames, authSetting, showToast, isWeixin, isAlipay } from '@/utils'
 import GoodsDetailPosterWx from './dw-goodsdetail'
 import GoodsDetailPosterAli from './dw-goodsdetail.alipay'
@@ -61,6 +62,7 @@ const initialState = {
 }
 
 function SpPoster(props) {
+  useTranslation()
   const { info, type, onClose = () => {} } = props
   const { userInfo } = useSelector((state) => state.user)
   const { userInfo: guideInfo } = useSelector((state) => state.guide)
@@ -103,7 +105,7 @@ function SpPoster(props) {
 
   const handleCreatePoster = async () => {
     Taro.showLoading({
-      title: '海报生成中...'
+      title: $t('aa8f96fc.51ec7e')
     })
     const ctx = Taro.createCanvasContext(eleId, Taro.getCurrentInstance()?.page)
     let canvasObj
@@ -243,7 +245,7 @@ function SpPoster(props) {
         savePoster()
       },
       () => {
-        showToast('请设置允许保存到相册')
+        showToast($t('aa8f96fc.74e102'))
       }
     )
   }
@@ -252,11 +254,11 @@ function SpPoster(props) {
     Taro.saveImageToPhotosAlbum({
       filePath: poster,
       success: (res) => {
-        showToast('保存成功')
+        showToast($t('aa8f96fc.3b1083'))
       },
       fail: (res) => {
         console.log(res)
-        showToast('保存失败')
+        showToast($t('aa8f96fc.6de920'))
       }
     })
   }
@@ -273,7 +275,7 @@ function SpPoster(props) {
             <Text className='iconfont icon-guanbi' onClick={onClose}></Text>
             <View className='poster-save' onClick={saveToAlbum}>
               <Text className='iconfont icon-download'></Text>
-              保存图片
+              {$t('aa8f96fc.306ad8')}
             </View>
           </View>
         </View>

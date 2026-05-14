@@ -10,6 +10,7 @@ import { SpNavBar } from '@/components'
 import S from '@/spx'
 import entry from '@/utils/entry'
 import entryLaunchFun from '@/utils/entryLaunch'
+import { $t } from '@/i18n'
 import { formatGood } from '../../utils'
 import GroupGood from '../../component/grouoGood'
 import LoadingMore from '../../component/loadingMore'
@@ -56,10 +57,6 @@ export default class GroupByIndex extends Component {
 
   componentDidShow() {
     this.init()
-  }
-
-  config = {
-    navigationBarTitleText: '团购'
   }
 
   // 获取定位
@@ -161,7 +158,7 @@ export default class GroupByIndex extends Component {
   }
   // 获取活动数据
   getActiveData = async (isRefrsh = false) => {
-    Taro.showLoading({ title: '正在加载中', mask: true })
+    Taro.showLoading({ title: $t('3e36d276.c40ee4'), mask: true })
     const { current, category, param, list } = this.state
     // 原列表数据
     const oldList = isRefrsh ? [] : list[0].good
@@ -278,17 +275,17 @@ export default class GroupByIndex extends Component {
 
     return (
       <View className='groupByHome'>
-        <SpNavBar
-          title={this.config.navigationBarTitleText}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title={$t('3e36d276.f47464')} leftIconType='chevron-left' fixed='true' />
         <View className='header' onClick={this.goCommunity}>
           {userInfo.avatar && <Image className='avatar' src={userInfo.avatar}></Image>}
           <View className='info'>
-            <View className='name'>{userInfo.username || '当前社区：'}</View>
+            <View className='name'>{userInfo.username || $t('3e36d276.2770b5')}</View>
             <View className={`address ${!userInfo.username && 'noLogin'}`}>
-              {!userInfo.username ? <View className='icon icon-periscope'></View> : '提货:'}
+              {!userInfo.username ? (
+                <View className='icon icon-periscope'></View>
+              ) : (
+                $t('3e36d276.b83403')
+              )}
               {current.city + current.area}({current.community_name})
             </View>
           </View>

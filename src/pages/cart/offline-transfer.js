@@ -5,12 +5,13 @@
 import React, { useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpCell, SpPage, SpUpload, SpImage, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { showToast, formatDateTime, classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 
 import './offline-transfer.scss'
 
@@ -37,12 +38,19 @@ const initialState = {
 }
 
 function OfflineTransfer() {
-  const $instance = getCurrentInstance() || {}
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((_state) => _state.colors.current)
   const { params } = useRouter()
 
   const { info, accountList, submitLoading, totalFee, setting, accountId } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('42f8732e.de6ae5') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('42f8732e.de6ae5') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
 
   useEffect(() => {
     if (params.order_id) {
@@ -149,13 +157,13 @@ function OfflineTransfer() {
     }
 
     if (!accountId) {
-      return showToast('请选择收款账户')
+      return showToast($t('1fdf726d.a1934f'))
     }
 
     data.bank_account_id = accountId
 
     if (!data.voucher_pic.length) {
-      return showToast('请上传凭证')
+      return showToast($t('1fdf726d.c43fb3'))
     }
 
     if (params.isDianwu) {
@@ -166,7 +174,7 @@ function OfflineTransfer() {
 
     console.log('参数', data)
 
-    Taro.showLoading('正在提交')
+    Taro.showLoading({ title: $t('1fdf726d.415038') })
     setState((draft) => {
       draft.submitLoading = true
     })
@@ -175,14 +183,14 @@ function OfflineTransfer() {
         await api.trade.updateVoucher(data)
         Taro.hideLoading({
           success: () => {
-            showToast('修改成功')
+            showToast($t('1fdf726d.69be67'))
           }
         })
       } else {
         await api.trade.uploadVoucher(data)
         Taro.hideLoading({
           success: () => {
-            showToast('上传成功')
+            showToast($t('1fdf726d.a7699b'))
           }
         })
       }
@@ -277,7 +285,7 @@ function OfflineTransfer() {
               })}
               onClick={handleSubmit}
             >
-              提交凭证
+              {$t('1fdf726d.c73bbf')}
             </AtButton>
           </View>
         )
@@ -287,7 +295,7 @@ function OfflineTransfer() {
         <View className='scroll-view-body'>
           <View className='page-offline-transfer__form'>
             <View className='head-box '>
-              <View className='head-box-title'>收款账号</View>
+              <View className='head-box-title'>{$t('1fdf726d.31eab8')}</View>
               <View className='head-box-subtitle'>{setting?.pay_tips}</View>
             </View>
             {accountList.length > 0 && accountList.map((item, idx) => accountItemRender(item, idx))}
@@ -295,7 +303,7 @@ function OfflineTransfer() {
 
           <View className='page-offline-transfer__form'>
             <View className='head-box'>
-              <View className='head-box-title'>付款信息</View>
+              <View className='head-box-title'>{$t('1fdf726d.71a8a2')}</View>
               <View className='head-box-subtitle'>{setting?.pay_desc}</View>
             </View>
             {/* <SpCell className='offline-item border-bottom required' title='付款用户名'>
@@ -324,7 +332,7 @@ function OfflineTransfer() {
               />
             </SpCell> */}
 
-            <SpCell className='offline-item border-bottom' title='订单编号'>
+            <SpCell className='offline-item border-bottom' title={$t('1fdf726d.3e8657')}>
               {/* <AtInput
                 name='order_id'
                 value={info?.order_id}
@@ -335,16 +343,16 @@ function OfflineTransfer() {
               {info?.order_id}
             </SpCell>
 
-            <SpCell className='offline-item border-bottom' title='交易流水号'>
+            <SpCell className='offline-item border-bottom' title={$t('1fdf726d.fa68e9')}>
               <AtInput
                 name='pay_sn'
                 value={info?.pay_sn}
-                placeholder='请输入交易流水号'
+                placeholder={$t('1fdf726d.ec95cb')}
                 onChange={(e) => handleChange('pay_sn', e)}
               />
             </SpCell>
 
-            <SpCell className='offline-item border-bottom' title='转账金额'>
+            <SpCell className='offline-item border-bottom' title={$t('1fdf726d.48852f')}>
               {/* <AtInput
                 name='totalFee'
                 value={(totalFee / 100).toFixed(2)}
@@ -356,10 +364,10 @@ function OfflineTransfer() {
             </SpCell>
             <SpCell
               className='offline-item border-bottom offline-voucher-pc required'
-              title='上传凭证图片'
+              title={$t('1fdf726d.715493')}
             >
               <View>
-                <View className='pic-tips'>支持png、jpg、gif、jpeg格式</View>
+                <View className='pic-tips'>{$t('1fdf726d.f66358')}</View>
 
                 {!params.onlyView && (
                   <SpUpload
@@ -386,11 +394,11 @@ function OfflineTransfer() {
               </View>
             </SpCell>
 
-            <SpCell className='offline-item' title='转账备注'>
+            <SpCell className='offline-item' title={$t('1fdf726d.df3ee5')}>
               <AtInput
                 name='transfer_remark'
                 value={info?.transfer_remark}
-                placeholder='请输入转账备注'
+                placeholder={$t('1fdf726d.5469cc')}
                 onChange={(e) => handleChange('transfer_remark', e)}
               />
             </SpCell>
@@ -399,15 +407,15 @@ function OfflineTransfer() {
           {info?.check_status && (
             <View className='page-offline-transfer__form'>
               <View className='head-box'>
-                <View className='head-box-title'>审核信息</View>
+                <View className='head-box-title'>{$t('1fdf726d.bef73d')}</View>
               </View>
-              <SpCell className='offline-item border-bottom' title='审核状态'>
-                {info?.check_status == 2 ? '审核拒绝' : '审核通过'}
+              <SpCell className='offline-item border-bottom' title={$t('1fdf726d.b6d0e9')}>
+                {info?.check_status == 2 ? $t('1fdf726d.146bb2') : $t('1fdf726d.871a30')}
               </SpCell>
-              <SpCell className='offline-item border-bottom' title='审核备注'>
+              <SpCell className='offline-item border-bottom' title={$t('1fdf726d.200d69')}>
                 {info?.remark}
               </SpCell>
-              <SpCell className='offline-item' title='审核时间'>
+              <SpCell className='offline-item' title={$t('1fdf726d.e6f070')}>
                 {formatDateTime(info?.update_time * 1000)}
               </SpCell>
             </View>

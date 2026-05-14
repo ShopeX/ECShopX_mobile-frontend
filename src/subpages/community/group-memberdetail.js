@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
@@ -10,10 +10,10 @@ import { SpPage, SpImage, SpPrice, SpFloatLayout, SpInputNumber } from '@/compon
 import { AtButton, AtCountdown, AtProgress } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import doc from '@/subpages/doc'
-import api from '@/api'
 import * as communityApi from '@/api/community'
 import { isArray, navigateTo, calcTimer, pickBy, showToast } from '@/utils'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '@/pages/home/wgts'
+import { useTranslation, $t, ti } from '@/i18n'
 import CompGoodsItemBuy from './comps/comp-goodsitembuy'
 import CompGroupLogList from './comps/comp-grouploglist'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
@@ -31,11 +31,22 @@ const initialState = {
 }
 
 function GroupLeaderDetail(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
   const [state, setState] = useImmer(initialState)
 
   const { info, timer, loading, chiefInfo, items, isOpened, activeIndex } = state
+
+  const countDownFormat = useMemo(
+    () => ({
+      day: $t('934ffec2.249aba'),
+      hours: ':',
+      minutes: ':',
+      seconds: ''
+    }),
+    [i18n.language]
+  )
 
   useEffect(() => {
     fetch()
@@ -84,7 +95,7 @@ function GroupLeaderDetail(props) {
       }
     })
     if (tempItems.length == 0) {
-      return showToast('请选择购买商品')
+      return showToast($t('934ffec2.47d83d'))
     }
     const goodsItems = JSON.stringify(tempItems)
     Taro.navigateTo({
@@ -133,7 +144,7 @@ function GroupLeaderDetail(props) {
             )}
           >
             <Text className='icon iconfont icon-dingdan' />
-            <Text className='toolbar-item-txt'>订单</Text>
+            <Text className='toolbar-item-txt'>{$t('934ffec2.4c117f')}</Text>
           </View>
           {/* <View
             className='toolbar-item'
@@ -151,7 +162,7 @@ function GroupLeaderDetail(props) {
             >
               <View className='btn-buy'>
                 {/* <SpPrice value={0} /> */}
-                <Text>跟团购买</Text>
+                <Text>{$t('934ffec2.a0ee54')}</Text>
               </View>
             </AtButton>
           </View>
@@ -177,13 +188,13 @@ function GroupLeaderDetail(props) {
             </View> */}
             <Button className='right-item' openType='share'>
               <Text className='iconfont icon-fenxiang-01'></Text>
-              <Text className='right-item-txt'>分享</Text>
+              <Text className='right-item-txt'>{$t('934ffec2.c31f48')}</Text>
             </Button>
           </View>
         </View>
         {chiefInfo?.chief_desc && (
           <View className='leader'>
-            <View className='title'>团长介绍</View>
+            <View className='title'>{$t('934ffec2.653256')}</View>
             <View className='des'>
               {chiefInfo.chief_desc}
               <Text className='icon iconfont icon-arrowRight'></Text>
@@ -193,17 +204,19 @@ function GroupLeaderDetail(props) {
 
         <View className='warning'>
           <Text className='icon iconfont icon-gouwuche'></Text>
-          请先加好友或进群，确认邻居身份后再下单
+          {$t('934ffec2.598baf')}
         </View>
 
         {info?.showCondition && (
           <View className='condition-wrap'>
             <View className='condition'>
               <View className='condition-label'>
-                <Text>成团金额</Text>
-                <Text>{`${
-                  info.diffCondition <= 0 ? '已满足成团金额' : `还差${info.diffCondition}元成团`
-                }`}</Text>
+                <Text>{$t('934ffec2.bc4708')}</Text>
+                <Text>
+                  {info.diffCondition <= 0
+                    ? $t('934ffec2.9cbc7c')
+                    : ti('934ffec2.cf413c', [info.diffCondition])}
+                </Text>
               </View>
               <AtProgress percent={info.progressValue} isHidePercent />
             </View>
@@ -238,15 +251,15 @@ function GroupLeaderDetail(props) {
           <View className='group-hd'>
             <View className='group-name'>
               <Text className='group-title'>{info?.activityName}</Text>
-              <Text className='group-type'>自提</Text>
+              <Text className='group-type'>{$t('934ffec2.b30d27')}</Text>
             </View>
             <View className='activity-status'>{info?.activityStatusMsg}</View>
           </View>
 
           <View className='group-info'>
             <View className='left'>
-              <View className='title'>本团</View>
-              <View className='title'>商品</View>
+              <View className='title'>{$t('934ffec2.20894b')}</View>
+              <View className='title'>{$t('934ffec2.9897d8')}</View>
             </View>
             <View className='right'>
               <ScrollView className='scroll-goods' scrollX>
@@ -269,13 +282,15 @@ function GroupLeaderDetail(props) {
           <View className='goods-group-info'>
             <View className='list'>
               <View className='time'>
-                {info?.save_time && <View className='date'>{info?.save_time} 发布</View>}
+                {info?.save_time && (
+                  <View className='date'>{ti('934ffec2.3c7da9', [info?.save_time])}</View>
+                )}
                 {info?.save_time && timer.ss && <View className='i' />}
                 {timer?.ss && (
                   <>
                     <View className='countdown'>
                       <AtCountdown
-                        format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                        format={countDownFormat}
                         isShowDay={timer.dd > 0}
                         day={timer.dd}
                         hours={timer.hh}
@@ -284,7 +299,7 @@ function GroupLeaderDetail(props) {
                         onTimeUp={countDownEnd}
                       />
                     </View>
-                    后结束
+                    {$t('934ffec2.23a300')}
                   </>
                 )}
               </View>
@@ -293,7 +308,9 @@ function GroupLeaderDetail(props) {
               <View className='time'>
                 {/* <Text className=''>9人查看</Text> */}
                 {/* <Text className='i'></Text> */}
-                {info?.order_num && <Text className=''>{info?.order_num}人跟团</Text>}
+                {info?.order_num && (
+                  <Text className=''>{ti('934ffec2.165340', [info?.order_num])}</Text>
+                )}
               </View>
             </View>
           </View>
@@ -301,7 +318,7 @@ function GroupLeaderDetail(props) {
 
         <View className='goods-desc'>
           <View className='desc-hd'>
-            <Text className='desc-title'>宝贝详情</Text>
+            <Text className='desc-title'>{$t('934ffec2.002e0a')}</Text>
           </View>
           <CompWgts info={info?.activityIntro} />
         </View>
@@ -316,7 +333,7 @@ function GroupLeaderDetail(props) {
                 })
               }}
             >
-              查看平台所有商品
+              {$t('934ffec2.d53c0d')}
             </View>
           )}
           {items?.map((goods, index) => (
@@ -331,7 +348,7 @@ function GroupLeaderDetail(props) {
         {/* 跟团记录 */}
         {info?.orders.length > 0 && (
           <View className='joinlog'>
-            <View className='title'>跟团记录</View>
+            <View className='title'>{$t('934ffec2.c13dcb')}</View>
             <CompGroupLogList list={info?.orders} />
           </View>
         )}
@@ -351,7 +368,7 @@ function GroupLeaderDetail(props) {
               })
             }}
           >
-            确定
+            {$t('934ffec2.38cf16')}
           </AtButton>
         }
       >

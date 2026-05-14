@@ -7,6 +7,8 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { copyText } from '@/utils'
+import { $t, ti } from '@/i18n'
+import S from '@/spx'
 import InputNumber from '@/components/input-number'
 import SpCheckbox from '@/components/checkbox'
 import { SpOrderItem } from '@/components'
@@ -59,7 +61,7 @@ export default class AfterDetailItem extends Component {
   }
   handleCodeCopy = (val) => {
     copyText(val)
-    S?.toast('复制成功')
+    S?.toast($t('523123e1.20a495'))
   }
   handleSelectionChange(item_id, checked) {
     //选择要申请售后的商品
@@ -102,15 +104,15 @@ export default class AfterDetailItem extends Component {
           info[showType].map((item, idx) => (
             <View className='detail-item-good' key={`${idx}1`}>
               <View className='detail-item__fix'>
-                <Text className='detail-item__title'>第{idx + 1}件商品</Text>
+                <Text className='detail-item__title'>{ti('523123e1.193df8', [idx + 1])}</Text>
                 {info.delivery_code ? null : item.delivery_code ? (
                   <View className='detail-item__code'>
-                    <Text className='code'>物流单号：{item.delivery_code}</Text>
+                    <Text className='code'>{ti('523123e1.5a58a0', [item.delivery_code])}</Text>
                     <Text
                       className='btn'
                       onClick={this.handleCodeCopy.bind(this, item.delivery_code)}
                     >
-                      复制
+                      {$t('523123e1.79d3ab')}
                     </Text>
                   </View>
                 ) : null}
@@ -148,7 +150,7 @@ export default class AfterDetailItem extends Component {
                               className='delivery-btn'
                               onClick={this.handleLookDelivery.bind(this, item)}
                             >
-                              查看物流
+                              {$t('523123e1.edf4b2')}
                             </AtButton>
                           ))}
                     {item.left_aftersales_num > 0 && (

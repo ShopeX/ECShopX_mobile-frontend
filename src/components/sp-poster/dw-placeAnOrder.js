@@ -4,6 +4,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
@@ -44,9 +45,9 @@ class StoreCode {
     let newNetailInfo = JSON.parse(JSON.stringify(detailInfo))
     //处理数据
     newNetailInfo.unshift({
-      itemName: '商品',
-      num: '数量',
-      price: '单价'
+      itemName: $t('f0680d92.9897d8'),
+      num: $t('f0680d92.0bf60b'),
+      price: $t('f0680d92.da4abd')
     })
 
     const drawOptions = {
@@ -191,7 +192,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '原价：¥ ' + totalInfo.market_fee / 100
+        text: ti('73034d49.fc1ee4', [totalInfo.market_fee / 100])
       },
       drawOptions
     )
@@ -202,7 +203,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '总价：¥ ' + totalInfo.item_fee_new / 100
+        text: ti('73034d49.aa7a41', [totalInfo.item_fee_new / 100])
       },
       drawOptions
     )
@@ -213,7 +214,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '运费：¥ ' + totalInfo.freight_fee / 100
+        text: ti('73034d49.bee3ad', [totalInfo.freight_fee / 100])
       },
       drawOptions
     )
@@ -224,7 +225,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '促销：¥ ' + totalInfo.promotion_discount / 100
+        text: ti('73034d49.a58889', [totalInfo.promotion_discount / 100])
       },
       drawOptions
     )
@@ -235,7 +236,7 @@ class StoreCode {
         fontSize: 30,
         w: canvasWidth,
         color: '#666',
-        text: '优惠券：¥ ' + totalInfo.coupon_discount / 100
+        text: ti('73034d49.e26767', [totalInfo.coupon_discount / 100])
       },
       drawOptions
     )

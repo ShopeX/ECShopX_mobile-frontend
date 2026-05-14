@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import S from '@/spx'
 import { classNames, styleNames, showToast, pxToUnitRpx } from '@/utils'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 
 import { getGlobalBaseStyle } from './helper'
 import './goodscard.scss'
@@ -57,7 +58,7 @@ export default class WgtGoodsCard extends Component {
     // try {
     if (item.itemStatus === false) {
       showToast({
-        title: '该商品已下架',
+        title: $t('edc703ce.f0010a'),
         icon: 'none'
       })
       return
@@ -83,14 +84,14 @@ export default class WgtGoodsCard extends Component {
     if (!S.getAuthToken()) {
       Taro.showToast({
         icon: 'none',
-        title: '请登录'
+        title: $t('ab76db66.7d1eb0')
       })
       return
     }
 
     if (item_data.itemStatus === false) {
       showToast({
-        title: '该商品已下架',
+        title: $t('edc703ce.f0010a'),
         icon: 'none'
       })
       return
@@ -104,14 +105,14 @@ export default class WgtGoodsCard extends Component {
 
         this.props.onAddFav(item_data)
         Taro.showToast({
-          title: '已加入收藏',
+          title: $t('21544271.151286'),
           icon: 'none'
         })
       } else {
         await api.member.delFav(item_data.item_id)
         this.props.onDelFav(item_data)
         Taro.showToast({
-          title: '已移出收藏',
+          title: $t('21544271.b46077'),
           icon: 'none'
         })
       }
@@ -129,7 +130,7 @@ export default class WgtGoodsCard extends Component {
           shop_type: 'distributor'
         })
         Taro.showToast({
-          title: '成功加入购物车',
+          title: $t('ab76db66.ab91e4'),
           icon: 'success'
         })
         this.fetchCartcount()
@@ -198,7 +199,7 @@ export default class WgtGoodsCard extends Component {
                       <SpPrice unit='cent' value={item.price} size={28} primary noDecimal />
                     </View>
                     {item.sales > 0 && (
-                      <View className='goods-card__info-sales'>销量：{item.sales}</View>
+                      <View className='goods-card__info-sales'>{ti('a8427e1f.47df99', [item.sales])}</View>
                     )}
                   </View>
                 </View>
@@ -209,7 +210,7 @@ export default class WgtGoodsCard extends Component {
                     })}
                     onClick={this.handleClickOperate.bind(this, item, 'collect')}
                   >
-                    {isFav ? '移除心愿' : '加入心愿'}
+                    {isFav ? $t('ab76db66.e2acff') : $t('ab76db66.56d0b8')}
                   </View>
                   <View className='gap-line' />
                   <View
@@ -218,7 +219,7 @@ export default class WgtGoodsCard extends Component {
                     })}
                     onClick={this.handleClickOperate.bind(this, item, 'buy')}
                   >
-                    加入购买
+                    {$t('ab76db66.2971f7')}
                   </View>
                 </View>
               </View>

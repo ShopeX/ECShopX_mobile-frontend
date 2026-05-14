@@ -13,6 +13,8 @@ import { Tracker } from '@/service'
 import api from '@/api'
 import entry from '@/utils/entry'
 import { floor } from 'lodash'
+import { $t, ti, i18n } from '@/i18n'
+import { guidePromotionTagLabel } from '@/subpages/guide/utils/guide-promotion-tag'
 import './index.scss'
 
 @connect(({ colors, guide }) => ({
@@ -29,7 +31,7 @@ export default class GoodsBuyPanel extends Component {
     isOpened: false,
     type: 'fastbuy',
     orderType: 'normal',
-    fastBuyText: '立即购买',
+    fastBuyText: '',
     busy: false,
     onClose: () => {},
     onChange: () => {},
@@ -58,6 +60,8 @@ export default class GoodsBuyPanel extends Component {
   }
 
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     const { info } = this.props
     const { spec_items, promotion_activity, activity_info = null, activity_type } = info
 
@@ -104,6 +108,12 @@ export default class GoodsBuyPanel extends Component {
     }
   }
 
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     const { isOpened } = nextProps
     if (isOpened !== this.state.isActive) {
@@ -125,11 +135,11 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (!curSku) {
-      return `请选择`
+      return $t('edc703ce.708c9d')
     }
 
     propsText = curSku.propsText
-    return `已选 “${propsText}”`
+    return ti('46dc5ce5.00c340', [propsText])
   }
 
   calcDisabled(selection) {
@@ -296,7 +306,7 @@ export default class GoodsBuyPanel extends Component {
           // shop_type: isDrug ? "drug" : "distributor"
         })
         Taro.showToast({
-          title: '成功加入购物车',
+          title: $t('46dc5ce5.ab91e4'),
           icon: 'success'
         })
       } catch (e) {
@@ -472,19 +482,20 @@ export default class GoodsBuyPanel extends Component {
                 <Text className='goods-sku__props'>{info.item_name}</Text>
               ) : (
                 <Text className='goods-sku__props'>
-                  <Text>{curSkus ? `已选择 ${curSkus.propsText}` : '请选择规格'}</Text>
+                  <Text>
+                    {curSkus ? ti('46dc5ce5.e14c99', [curSkus.propsText]) : $t('46dc5ce5.4fd966')}
+                  </Text>
                 </Text>
               )}
               {curSku && (
                 <View className='goods-sku__limit'>
                   <Text className='goods-sku__stock'>
-                    库存{curSku.store}
-                    {info.unit}
+                    {ti('46dc5ce5.feacb9', [curSku.store, info.unit])}
                   </Text>
                   {activity && curLimit ? (
                     <Text>
-                      {ruleDay ? <Text>每{ruleDay}天</Text> : null}
-                      <Text>限购{activity.rule.limit}件</Text>
+                      {ruleDay ? <Text>{ti('46dc5ce5.38855b', [ruleDay])}</Text> : null}
+                      <Text>{ti('7d82f6d2.ffad24', [activity.rule.limit])}</Text>
                     </Text>
                   ) : null}
                 </View>
@@ -497,7 +508,9 @@ export default class GoodsBuyPanel extends Component {
                 (item) =>
                   item.items[curSkus.item_id] && (
                     <View key={item.items[curSkus.item_id]} className='promotions__item'>
-                      <Text className='promotions__item-tag'>{item.promotion_tag}</Text>
+                      <Text className='promotions__item-tag'>
+                        {guidePromotionTagLabel(item.promotion_tag)}
+                      </Text>
                       <Text className='promotions__item-title'>{item.condition_rules}</Text>
                     </View>
                   )
@@ -560,7 +573,7 @@ export default class GoodsBuyPanel extends Component {
                     onClick={this.handleBuyClick.bind(this, 'cart', curSkus, quantity)}
                     disabled={Boolean(!curSkus)}
                   >
-                    {isDrug ? '加入药品清单' : '为顾客下单'}
+                    {isDrug ? $t('46dc5ce5.568f80') : $t('46dc5ce5.f37f4b')}
                   </Button>
                 )}
               {type === 'fastbuy' &&
@@ -575,7 +588,7 @@ export default class GoodsBuyPanel extends Component {
                     onClick={this.handleBuyClick.bind(this, 'fastbuy', curSkus, quantity)}
                     disabled={Boolean(!curSkus)}
                   >
-                    {fastBuyText}
+                    {fastBuyText || $t('47ac6066.5fd2f9')}
                   </Button>
                 )}
               {type === 'pick' &&
@@ -590,17 +603,17 @@ export default class GoodsBuyPanel extends Component {
                     onClick={this.handleBuyClick.bind(this, 'pick', curSkus, quantity)}
                     disabled={Boolean(!curSkus)}
                   >
-                    确定
+                    {$t('b232790d.38cf16')}
                   </Button>
                 )}
               {!hasStore && (
                 <Button disabled className='goods-buy-panel__btn btn-fast-buy'>
-                  当前商品无货
+                  {$t('46dc5ce5.b6559b')}
                 </Button>
               )}
               {curSkus && curSkus.approve_status !== 'onsale' && (
                 <Button disabled className='goods-buy-panel__btn btn-fast-buy'>
-                  暂不可售
+                  {$t('46dc5ce5.0c48ed')}
                 </Button>
               )}
             </View>

@@ -3,47 +3,30 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, CouponItem } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
-import { classNames, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './reservation-list.scss'
 
-@withPager
-export default class ReservationList extends Component {
+class ReservationList extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
       ...this.state,
       curTabIdx: 0,
-      tabList: [
-        { title: '未过期', status: '1' },
-        { title: '已过期', status: '2' }
-      ],
       list: [],
       curId: null
     }
   }
 
   componentDidMount() {
-    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === '1')
-
-    if (tabIdx >= 0) {
-      this.setState(
-        {
-          curTabIdx: tabIdx
-        },
-        () => {
-          this.nextPage()
-        }
-      )
-    } else {
-      this.nextPage()
-    }
+    this.nextPage()
   }
 
   async fetch(params) {
@@ -114,7 +97,11 @@ export default class ReservationList extends Component {
   }
 
   render() {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { curTabIdx } = this.state
+    const tabList = [
+      { title: $t('d839699a.3ea1b6'), status: '1' },
+      { title: $t('d839699a.4d5ccd'), status: '2' }
+    ]
 
     return (
       <View className='reservation-list'>
@@ -133,41 +120,41 @@ export default class ReservationList extends Component {
           <View className='reservation-list__list'>
             <View className='reservation-list__item'>
               <View className='reservation-list__item_title'>
-                <Text>门店名字</Text>
-                <Text>预约状态</Text>
+                <Text>{$t('d839699a.652488')}</Text>
+                <Text>{$t('d839699a.bb9f29')}</Text>
               </View>
               <View className='reservation-list__item_content'>
                 <View className='content_data'>
-                  <Text>预约时间</Text>
-                  <Text>周五11：30</Text>
+                  <Text>{$t('d839699a.652e09')}</Text>
+                  <Text>{$t('d839699a.4343fa')}</Text>
                 </View>
                 <View className='content_data'>
-                  <Text>预约服务</Text>
-                  <Text>美妆</Text>
+                  <Text>{$t('d839699a.97ad14')}</Text>
+                  <Text>{$t('d839699a.1b39e3')}</Text>
                 </View>
               </View>
-              <Text className='reservation-list__item_btn'>查看详情</Text>
+              <Text className='reservation-list__item_btn'>{$t('d839699a.5b48db')}</Text>
             </View>
             <View className='reservation-list__item'>
               <View className='reservation-list__item_title'>
-                <Text>门店名字</Text>
-                <Text>预约状态</Text>
+                <Text>{$t('d839699a.652488')}</Text>
+                <Text>{$t('d839699a.bb9f29')}</Text>
               </View>
               <View className='reservation-list__item_content'>
                 <View className='content_data'>
-                  <Text>预约时间</Text>
-                  <Text>周五11：30</Text>
+                  <Text>{$t('d839699a.652e09')}</Text>
+                  <Text>{$t('d839699a.4343fa')}</Text>
                 </View>
                 <View className='content_data'>
-                  <Text>预约服务</Text>
-                  <Text>美妆</Text>
+                  <Text>{$t('d839699a.97ad14')}</Text>
+                  <Text>{$t('d839699a.1b39e3')}</Text>
                 </View>
               </View>
               <Text
                 className='reservation-list__item_btn'
                 onClick={this.handleClickDetail.bind(this)}
               >
-                查看详情
+                {$t('d839699a.5b48db')}
               </Text>
             </View>
             {/* {
@@ -193,3 +180,5 @@ export default class ReservationList extends Component {
     )
   }
 }
+
+export default withPager(withTranslation()(ReservationList))

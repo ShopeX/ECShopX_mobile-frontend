@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
+import { useTranslation, $t, ti } from '@/i18n'
 import { useSelector } from 'react-redux'
 import Taro, { useRouter, useShareAppMessage } from '@tarojs/taro'
 import { View, Text, Video, Swiper, SwiperItem } from '@tarojs/components'
@@ -32,7 +33,7 @@ const initialState = {
   commentList: [],
   commentTotal: 0,
   comment: '',
-  commentPlaceholder: '留言评论...',
+  commentPlaceholder: '',
   showCommentInput: false,
   parentCommentId: '',
   play: false,
@@ -40,6 +41,7 @@ const initialState = {
 }
 
 function UgcNoteDetail(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const {
     info,
@@ -62,6 +64,10 @@ function UgcNoteDetail(props) {
   useEffect(() => {
     getPostDetail()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('72f0cb98.72eb43') })
+  }, [i18n.language])
 
   useEffect(() => {
     let video
@@ -168,9 +174,9 @@ function UgcNoteDetail(props) {
       follower_user_id: userInfo.user_id
     })
     if (action == 'unfollow') {
-      showToast('取消关注')
+      showToast($t('72f0cb98.92bdc8'))
     } else {
-      showToast('关注成功')
+      showToast($t('72f0cb98.60fa97'))
     }
 
     setState((draft) => {
@@ -185,9 +191,9 @@ function UgcNoteDetail(props) {
       post_id
     })
     if (action == 'unlike') {
-      showToast('取消点赞')
+      showToast($t('72f0cb98.967daf'))
     } else {
-      showToast('点赞成功')
+      showToast($t('72f0cb98.319b56'))
     }
     setState((draft) => {
       draft.info['likes'] = likes
@@ -201,9 +207,9 @@ function UgcNoteDetail(props) {
       post_id
     })
     if (action == 'unfavorite') {
-      showToast('取消收藏')
+      showToast($t('72f0cb98.f22cec'))
     } else {
-      showToast('收藏成功')
+      showToast($t('72f0cb98.f3a7e4'))
     }
     setState((draft) => {
       draft.info['favoriteNums'] = likes
@@ -216,14 +222,14 @@ function UgcNoteDetail(props) {
     setState((draft) => {
       draft.showCommentInput = true
       draft.parentCommentId = ''
-      draft.commentPlaceholder = '请输入评论'
+      draft.commentPlaceholder = $t('72f0cb98.246173')
     })
   }
 
   // 点赞评论（入口已由 SpLogin 包裹，此处兜底防未登录）
   const handleCommentLike = async (comment_id, pindex, index) => {
     if (!userInfo?.user_id) {
-      showToast('请先登录')
+      showToast($t('72f0cb98.8d2433'))
       return
     }
     const { action, likes } = await mdugcApi.commentlike({
@@ -250,7 +256,7 @@ function UgcNoteDetail(props) {
   // 提交回复（需已登录；未登录时应在输入前经 SpLogin）
   const onSubmitComment = async (e) => {
     if (!S.getAuthToken() || !userInfo?.user_id) {
-      showToast('请先登录')
+      showToast($t('72f0cb98.8d2433'))
       setState((draft) => {
         draft.showCommentInput = false
       })
@@ -275,6 +281,7 @@ function UgcNoteDetail(props) {
     setState((draft) => {
       draft.comment = ''
       draft.showCommentInput = false
+      draft.commentPlaceholder = $t('72f0cb98.a94cd1')
     })
   }
 
@@ -288,14 +295,14 @@ function UgcNoteDetail(props) {
 
   const onDeleteNote = async () => {
     const { confirm } = await Taro.showModal({
-      title: '确定删除笔记？',
+      title: $t('72f0cb98.d07d0e'),
       content: ''
     })
     if (confirm) {
       await mdugcApi.postdelete({
         post_id: [info.postId]
       })
-      showToast('删除成功')
+      showToast($t('72f0cb98.0007d1'))
       Taro.eventCenter.trigger('onEventRefreshFromNote')
       setTimeout(() => {
         Taro.navigateBack()
@@ -333,7 +340,7 @@ function UgcNoteDetail(props) {
           <SpLogin onChange={handleCommitReply}>
             <View className='comment-input'>
               <Text className='iconfont icon-bianji1'></Text>
-              <Text className='placeholder'>留言评论...</Text>
+              <Text className='placeholder'>{$t('72f0cb98.a94cd1')}</Text>
             </View>
           </SpLogin>
           <View className='btn-action-list'>
@@ -425,7 +432,7 @@ function UgcNoteDetail(props) {
                 }}
               >
                 {!play && <SpImage className='play-icon' src='play2.png' width={50} height={50} />}
-                {play ? '退出视频' : '播放视频'}
+                {play ? $t('72f0cb98.85f859') : $t('72f0cb98.c27cf5')}
               </View>
             )}
           </View>
@@ -441,7 +448,7 @@ function UgcNoteDetail(props) {
                 })}
                 onChange={handleFollower}
               >
-                {info.followStatus ? '已关注' : '+关注'}
+                {info.followStatus ? $t('72f0cb98.f4f380') : $t('72f0cb98.9b5b8a')}
               </SpLogin>
             )}
           </View>
@@ -482,7 +489,7 @@ function UgcNoteDetail(props) {
               info={{
                 name: 'floorImg',
                 base: {
-                  title: '推荐商品',
+                  title: $t('72f0cb98.479ddf'),
                   subtitle: '',
                   padded: true,
                   WordColor: '#222',
@@ -508,16 +515,16 @@ function UgcNoteDetail(props) {
               <View className='comment-empty'>
                 <Text className='iconfont icon-pinglun'></Text>
                 <View className='empty-text'>
-                  <Text className='t1'>还没有评论哦，</Text>
+                  <Text className='t1'>{$t('72f0cb98.594583')}</Text>
                   <SpLogin onChange={handleCommitReply}>
-                    <Text className='t2'>点击评论</Text>
+                    <Text className='t2'>{$t('72f0cb98.fdd3ac')}</Text>
                   </SpLogin>
                 </View>
               </View>
             }
           >
             <View className='comment-body'>
-              <View className='comment-num'>{`共${commentTotal}条评论`}</View>
+              <View className='comment-num'>{ti('72f0cb98.5dc6f9', [commentTotal])}</View>
               {commentList.map((item, index) => (
                 <View className='comment-item' key={`comment-item__${index}`}>
                   <View className='item-hd'>
@@ -532,7 +539,7 @@ function UgcNoteDetail(props) {
                             setState((draft) => {
                               draft.showCommentInput = true
                               draft.parentCommentId = item.commentId
-                              draft.commentPlaceholder = `回复 @${item.username}`
+                              draft.commentPlaceholder = ti('72f0cb98.679ca1', [item.username])
                             })
                           }}
                         >

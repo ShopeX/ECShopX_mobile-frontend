@@ -3,14 +3,23 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Navigator, Button, Picker } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Navigator, Button, Picker } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { isArray } from '@/utils'
 import { SpPage, SpInput as AtInput } from '@/components'
+import { $t, ti } from '@/i18n'
 import api from '@/api'
 import './withdraw.scss'
 
-export default class DistributionWithdraw extends Component {
+const PAY_TYPE_I18N = {
+  alipay: '175b20c3.ccd097',
+  wechat: '175b20c3.a53f1a',
+  hfpay: '175b20c3.bffe28',
+  bankcard: '175b20c3.774267'
+}
+
+class DistributionWithdraw extends Component {
   constructor(props) {
     super(props)
 
@@ -21,15 +30,22 @@ export default class DistributionWithdraw extends Component {
       curIdx: 'alipay',
       payList: [],
       alipay_account: '',
-      // accountInfo: {},
-      bank_code: null,
-      payText: {
-        'alipay': '支付宝',
-        'wechat': '微信(<=800)',
-        'hfpay': '微信支付',
-        'bankcard': '银行卡'
-      }
+      bank_code: null
     }
+  }
+
+  componentDidMount() {
+    this.syncNavTitle()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('175b20c3.db7971') })
   }
 
   componentDidShow() {
@@ -43,8 +59,8 @@ export default class DistributionWithdraw extends Component {
     const { cert_status, card_id } = await api.distribution.adapayCert({ is_data_masking: '0' })
     if (isArray(cert_status) || cert_status.audit_state != 'E') {
       Taro.showModal({
-        content: '未实名认证不可提现，快去认证叭',
-        confirmText: '实名认证',
+        content: $t('175b20c3.a27707'),
+        confirmText: $t('175b20c3.5197d0'),
         confirmColor: '#1aad19',
         success: (res) => {
           if (res.confirm) {
@@ -59,17 +75,6 @@ export default class DistributionWithdraw extends Component {
     }
   }
 
-  // async getUserInfo () {
-  //   let userInfo = this.get('userInfo')
-  //   const token = this.getAuthToken()
-  //   if (!userInfo && token) {
-  //     userInfo = await api.user.info()
-  //     this.set('userInfo', userInfo)
-  //   }
-
-  //   return userInfo
-  // }
-
   async fetch() {
     const { cashWithdrawalRebate } = await api.distribution.statistics()
     let res = await api.member.getNewTradePaymentList()
@@ -81,15 +86,12 @@ export default class DistributionWithdraw extends Component {
       })
     })
 
-    // if (cashWithdrawalRebate) {
     this.setState({
       cashWithdrawalRebate,
       payList
     })
-    // }
 
     const { alipay_account, config } = await api.distribution.info()
-    //const dataInfo = await api.distribution.info()
 
     if (alipay_account) {
       this.setState({
@@ -101,9 +103,6 @@ export default class DistributionWithdraw extends Component {
         limit_rebate: config.limit_rebate
       })
     }
-    // this.setState({
-    //   accountInfo:dataInfo
-    // })
   }
 
   handleWithdrawAll = () => {
@@ -118,16 +117,15 @@ export default class DistributionWithdraw extends Component {
     const query = {
       money: amount * 100,
       pay_type: curIdx
-      //money:(amount/100).toFixed(2)
     }
 
-    if (!this.state.bank_code && this.state.payText[curIdx] == '银行卡') {
+    if (!this.state.bank_code && curIdx === 'bankcard') {
       this.ongetCertInfo()
       return
     }
 
     const { confirm } = await Taro.showModal({
-      title: '确定提现？',
+      title: $t('175b20c3.77ffa4'),
       content: ''
     })
     if (confirm) {
@@ -164,9 +162,11 @@ export default class DistributionWithdraw extends Component {
       curIdx,
       payList,
       alipay_account,
-      bank_code,
-      payText
+      bank_code
     } = this.state
+
+    const payTypeLabel = (code) => $t(PAY_TYPE_I18N[code] || PAY_TYPE_I18N.alipay)
+
     return (
       <SpPage
         className='page-distribution-withdraw'
@@ -178,7 +178,7 @@ export default class DistributionWithdraw extends Component {
               onClick={this.goWithdraw}
               disabled={curIdx == 'wechat' && amount > 800}
             >
-              提现
+              {$t('175b20c3.db7971')}
             </Button>
           </View>
         }
@@ -186,11 +186,11 @@ export default class DistributionWithdraw extends Component {
         <View className='min-h-full'>
           <View className='withdraw'>
             <View className='withdraw-title'>
-              <View className='title'>可提现金额（元）</View>
+              <View className='title'>{$t('175b20c3.70f8f2')}</View>
               <View className='content'>{cashWithdrawalRebate / 100}</View>
             </View>
             <View className='withdraw-body'>
-              <View style={{ color: '#666666' }}>提现金额</View>
+              <View style={{ color: '#666666' }}>{$t('175b20c3.292a28')}</View>
               <View className='withdraw-flex'>
                 <AtInput
                   className='withdraw-body-input'
@@ -201,7 +201,7 @@ export default class DistributionWithdraw extends Component {
                   clear
                 />
                 <View className='withdraw-body-btn' onClick={this.handleWithdrawAll}>
-                  全部提现
+                  {$t('175b20c3.5eb161')}
                 </View>
               </View>
             </View>
@@ -218,8 +218,8 @@ export default class DistributionWithdraw extends Component {
                   <View className='pay-type-picker'></View>
                 </Picker>
               )}
-              <View className='label'>提现方式</View>
-              <View className='list-item-txt content-right'>{payText[curIdx]}</View>
+              <View className='label'>{$t('175b20c3.e5bd6e')}</View>
+              <View className='list-item-txt content-right'>{payTypeLabel(curIdx)}</View>
               <View className='iconfont item-icon-go icon-arrowRight'></View>
             </View>
             {curIdx === 'alipay' && (
@@ -227,30 +227,32 @@ export default class DistributionWithdraw extends Component {
                 url='/marketing/pages/distribution/withdrawals-acount'
                 className='list-item'
               >
-                <View className='label'>提现账户</View>
+                <View className='label'>{$t('175b20c3.24f1fc')}</View>
                 <View className='list-item-txt content-right'>
-                  {alipay_account ? alipay_account : '去设置'}
+                  {alipay_account ? alipay_account : $t('175b20c3.241141')}
                 </View>
                 <View className='iconfont item-icon-go icon-arrowRight'></View>
               </Navigator>
             )}
             {curIdx == 'bankcard' && bank_code && (
               <View className='list-item'>
-                <View className='label'>银行卡</View>
+                <View className='label'>{$t('175b20c3.774267')}</View>
                 <View className='list-item-txt content-right'>{bank_code}</View>
               </View>
             )}
           </View>
           <View className='g-ul'>
             {curIdx == 'wechat' && (
-              <View className='g-ul-li'>每月只能提取2次，每次需大于等于{limit_rebate}元</View>
+              <View className='g-ul-li'>{ti('175b20c3.003548', [limit_rebate])}</View>
             )}
-            <View className='g-ul-li'>提现至银行卡需实名认证</View>
-            <View className='g-ul-li'>提现申请审核通过后1个工作日后到账，节假日顺延</View>
-            <View className='g-ul-li'>修改银行卡信息请前往实名认证信息进行修改</View>
+            <View className='g-ul-li'>{$t('175b20c3.12dbb6')}</View>
+            <View className='g-ul-li'>{$t('175b20c3.b3b4c6')}</View>
+            <View className='g-ul-li'>{$t('175b20c3.06099f')}</View>
           </View>
         </View>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(DistributionWithdraw)

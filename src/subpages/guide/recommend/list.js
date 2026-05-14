@@ -20,6 +20,7 @@ import {
 import { pickBy, styleNames } from '@/utils'
 import { useQwLogin } from '@/hooks'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import doc from '@/doc'
 import './list.scss'
 
@@ -30,12 +31,17 @@ const initialState = {
   fixTop: 0
 }
 function GuideRecommendList(props) {
+  const { i18n } = useTranslation()
   const { isLogin, login } = useQwLogin({
     autoLogin: true
   })
   const [state, setState] = useImmer(initialState)
   const { leftList, rightList, keywords, fixTop } = state
   const scrollRef = useRef()
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('496c7666.643cd0') })
+  }, [i18n.language])
+
   useEffect(() => {}, [])
 
   useDidShow(() => {
@@ -135,7 +141,7 @@ function GuideRecommendList(props) {
       <View id='search-wrap' className='search-wrap'>
         <SpSearchBar
           keyword={keywords}
-          placeholder='搜索'
+          placeholder={$t('ddb371f2.e5f71f')}
           onChange={handleOnChange}
           onClear={handleOnClear}
           onCancel={handleSearchOff}

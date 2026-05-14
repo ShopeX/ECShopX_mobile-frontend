@@ -25,6 +25,7 @@ import {
 } from '@/utils'
 import { Tracker } from '@/service'
 import S from '@/spx'
+import { $t } from '@/i18n'
 import TradeItem from './comps/new-item'
 import './list.scss'
 
@@ -42,9 +43,9 @@ export default class TradeList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '全部订单', status: '0' },
-        { title: '待支付', status: '5' },
-        { title: '待收货', status: '1' }
+        { title: $t('2800cb77.dbb4d8'), status: '0' },
+        { title: $t('2800cb77.9246fe'), status: '5' },
+        { title: $t('2800cb77.4933ca'), status: '1' }
       ],
       // 是否显示待评价
       evaluate: 1,
@@ -58,7 +59,7 @@ export default class TradeList extends Component {
     const { status = 0, evaluate = 1 } = this.$instance?.router?.params
     const _tabList = JSON.parse(JSON.stringify(this.state.tabList))
     if (evaluate == 1) {
-      _tabList.push({ title: '待评价', status: '7', is_rate: 0 })
+      _tabList.push({ title: $t('2800cb77.a48b28'), status: '7', is_rate: 0 })
     }
     const tabIdx = _tabList.findIndex((tab) => tab.status === status)
     if (tabIdx >= 0) {
@@ -99,7 +100,7 @@ export default class TradeList extends Component {
     Tracker.dispatch('PAGE_PULL_DOWN_REFRESH')
 
     Taro.showLoading({
-      title: '加载中',
+      title: $t('10293ac1.f013ea'),
       icon: 'none'
     })
     this.resetPage(() => {
@@ -345,7 +346,7 @@ export default class TradeList extends Component {
         })}
         style={styleNames(getThemeStyle())}
       >
-        <SpNavBar title='订单列表' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('8e4ed6da.07166e')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${colors.data?.[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
@@ -361,8 +362,8 @@ export default class TradeList extends Component {
         {!isLogin && (
           <View className='login-btn'>
             <SpLogin onChange={this.onLoginChange.bind(this)}>
-              <View className='btn-login'>去登录</View>
-              <View className='btn-login-tip'>登录才能查看订单信息</View>
+              <View className='btn-login'>{$t('0a944391.b4b851')}</View>
+              <View className='btn-login-tip'>{$t('0a944391.c889d5')}</View>
             </SpLogin>
           </View>
         )}
@@ -392,10 +393,10 @@ export default class TradeList extends Component {
                 />
               )
             })}
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
               <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_order.png`}>
-                您还没有商城订单呦~
+                {$t('0a944391.7d082d')}
               </SpNote>
             )}
             {!!curItemActionsId && <View className='layer' onClick={this.hideLayer} />}

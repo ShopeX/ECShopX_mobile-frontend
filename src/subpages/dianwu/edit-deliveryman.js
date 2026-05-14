@@ -2,18 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import { View, Switch, Text, Button } from '@tarojs/components'
-import { AtButton, AtTextarea } from 'taro-ui'
-import { SpCell, SpPage, SpAddress, SpInput as AtInput } from '@/components'
-import api from '@/api'
+import Taro, { useRouter } from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { SpPage, SpInput as AtInput } from '@/components'
 import * as dianwuApi from '@/api/dianwu'
-import { classNames, isWxWeb, showToast } from '@/utils'
-import S from '@/spx'
+import { classNames, showToast } from '@/utils'
 import { useNavigation } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import './edit-deliveryman.scss'
 
 const initialState = {
@@ -29,51 +26,56 @@ const initialState = {
     username: '',
     password: ''
   },
-  property: [
-    {
-      label: 'part_time',
-      name: '兼职'
-    },
-    {
-      label: 'full_time',
-      name: '全职'
-    }
-  ],
-  manner: [
-    {
-      label: 'order',
-      name: '按单笔订单'
-    },
-    {
-      label: 'amount',
-      name: '按订单金额比例'
-    }
-  ],
   propertyIndex: 0,
-  mannerIndex: 0,
-  paymentTitle: '（元/每单）'
+  mannerIndex: 0
 }
 
 function EditDeliveryman(props) {
+  useTranslation()
+  const property = useMemo(
+    () => [
+      { label: 'part_time', name: $t('1c364c1c.7c4f46') },
+      { label: 'full_time', name: $t('1c364c1c.63f85b') }
+    ],
+    [i18n.language]
+  )
+
+  const manner = useMemo(
+    () => [
+      { label: 'order', name: $t('1c364c1c.ed776f') },
+      { label: 'amount', name: $t('1c364c1c.705abf') }
+    ],
+    [i18n.language]
+  )
+
   const [state, setState] = useImmer(initialState)
-  const { isOpened, parent, property, manner, propertyIndex, mannerIndex, paymentTitle } = state
+  const { parent, propertyIndex, mannerIndex } = state
   const { params } = useRouter()
   const { setNavigationBarTitle } = useNavigation()
+
+  const paymentTitle = useMemo(
+    () => (mannerIndex == 0 ? $t('1c364c1c.f1ebde') : $t('1c364c1c.a8e75e')),
+    [mannerIndex, i18n.language]
+  )
 
   useEffect(() => {
     if (params?.operator_id) {
       edit(params?.operator_id)
     }
-    setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
-  const initNavigationBarTitle = () => {
-    return params.operator_id ? '编辑配送员' : '创建配送员'
-  }
+  useEffect(() => {
+    const syncTitle = () => {
+      setNavigationBarTitle(params.operator_id ? $t('1c364c1c.eee2bb') : $t('1c364c1c.17e501'))
+    }
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [params?.operator_id, setNavigationBarTitle])
 
   const edit = async (operator_id) => {
     let res = await dianwuApi.getAccountManagement(operator_id)
-    let params = {
+    let nextParams = {
       staff_type: 'distributor',
       operator_type: 'self_delivery_staff',
       staff_no: res.staff_no,
@@ -85,10 +87,9 @@ function EditDeliveryman(props) {
       password: ''
     }
     setState((draft) => {
-      draft.parent = params
+      draft.parent = nextParams
       draft.propertyIndex = res.staff_attribute == 'part_time' ? 0 : 1
       draft.mannerIndex = res.payment_method == 'order' ? 0 : 1
-      draft.paymentTitle = res.payment_method == 'order' ? '（元/每单）' : '（%/每单）'
     })
   }
 
@@ -104,7 +105,6 @@ function EditDeliveryman(props) {
   const propertySwitch = (val, index) => {
     if (val) {
       setState((draft) => {
-        draft.paymentTitle = index == 0 ? '（元/每单）' : '（%/每单）'
         draft.parent.payment_method = manner[index].label
         draft.mannerIndex = index
       })
@@ -118,16 +118,16 @@ function EditDeliveryman(props) {
 
   const preserve = async () => {
     const validations = [
-      { field: 'staff_no', regex: /.+/, message: '请输入配送员编码' },
-      { field: 'payment_fee', regex: /^\d+(\.\d+)?$/, message: '结算费用只能输入数字' },
-      { field: 'mobile', regex: /^\d{11}$/, message: '请输入有效的配送员手机号' },
-      { field: 'username', regex: /.+/, message: '请输入配送员姓名' }
+      { field: 'staff_no', regex: /.+/, messageKey: '1c364c1c.0f86ab' },
+      { field: 'payment_fee', regex: /^\d+(\.\d+)?$/, messageKey: '1c364c1c.d17490' },
+      { field: 'mobile', regex: /^\d{11}$/, messageKey: '1c364c1c.8b9c10' },
+      { field: 'username', regex: /.+/, messageKey: '1c364c1c.c6c579' }
     ]
     if (parent.password)
       validations.push({
         field: 'password',
         regex: /^[0-9a-zA-Z]\w{5,17}$/,
-        message: '登录密码只能输入数字和字母并且长度为6-18位'
+        messageKey: '1c364c1c.a1f081'
       })
 
     let requiredFields = []
@@ -140,9 +140,13 @@ function EditDeliveryman(props) {
     for (const field of requiredFields) {
       if (parent[field] === '') {
         showToast(
-          `请输入${
-            field === 'payment_fee' ? '结算费用' : field === 'mobile' ? '配送员手机号' : '登录密码'
-          }`
+          $t(
+            field === 'payment_fee'
+              ? '1c364c1c.c981a8'
+              : field === 'mobile'
+              ? '1c364c1c.f0a58a'
+              : '1c364c1c.209f2b'
+          )
         )
         return
       }
@@ -150,11 +154,11 @@ function EditDeliveryman(props) {
 
     for (const validation of validations) {
       if (!validation.regex.test(parent[validation.field])) {
-        showToast(validation.message)
+        showToast($t(validation.messageKey))
         return
       }
     }
-    Taro.showLoading('正在提交')
+    Taro.showLoading({ title: $t('1c364c1c.415038') })
     let par = {
       ...parent,
       staff_attribute: propertyIndex == 0 ? 'part_time' : 'full_time',
@@ -168,10 +172,10 @@ function EditDeliveryman(props) {
     }
     if (params?.operator_id) {
       await dianwuApi.patchAccountManagement(params.operator_id, par)
-      showToast('编辑成功')
+      showToast($t('1c364c1c.3bb47b'))
     } else {
       await dianwuApi.accountManagement(par)
-      showToast('添加成功')
+      showToast($t('1c364c1c.3fdaea'))
     }
 
     Taro.hideLoading()
@@ -185,15 +189,15 @@ function EditDeliveryman(props) {
       <View className='page-address-edit-content'>
         <AtInput
           name='staff_no'
-          title='配送员编码'
+          title={$t('1c364c1c.530880')}
           type='text'
-          placeholder='请输入配送员编码'
+          placeholder={$t('1c364c1c.0f86ab')}
           value={parent.staff_no}
           onChange={(e) => handleChange('staff_no', e)}
         />
         {/* staff_attribute */}
         <View className='attribute'>
-          <Text>配送员属性</Text>
+          <Text>{$t('1c364c1c.95a141')}</Text>
           {property.map((item, index) => {
             return (
               <View
@@ -208,7 +212,7 @@ function EditDeliveryman(props) {
         </View>
         {/* payment_method */}
         <View className='attribute'>
-          <Text>配送员结算方式</Text>
+          <Text>{$t('1c364c1c.77d561')}</Text>
           {manner.map((item, index) => {
             return (
               <View
@@ -223,42 +227,45 @@ function EditDeliveryman(props) {
         </View>
         <AtInput
           name='payment_fee'
-          title='结算费用'
+          title={$t('1c364c1c.60a4ae')}
           type='number'
           maxLength='5'
-          placeholder='请输入结算费用'
+          placeholder={$t('1c364c1c.c981a8')}
           value={parent.payment_fee}
           onChange={(e) => handleChange('payment_fee', e)}
         >
-          <View className='remarks'>{paymentTitle}（费用包含运费）</View>
+          <View className='remarks'>
+            {paymentTitle}
+            {$t('1c364c1c.326fec')}
+          </View>
         </AtInput>
         <AtInput
           name='mobile'
-          title='配送员手机号'
+          title={$t('1c364c1c.ec9c94')}
           type='phone'
           maxLength='11'
-          placeholder='请输入配送员手机号'
+          placeholder={$t('1c364c1c.f0a58a')}
           value={parent.mobile}
           onChange={(e) => handleChange('mobile', e)}
         />
         <AtInput
           name='username'
-          title='配送员姓名'
+          title={$t('1c364c1c.9b3489')}
           type='text'
-          placeholder='请输入配送员姓名'
+          placeholder={$t('1c364c1c.c6c579')}
           value={parent.username}
           onChange={(e) => handleChange('username', e)}
         />
         <AtInput
           name='password'
-          title='登录密码'
+          title={$t('1c364c1c.2646b8')}
           type='text'
           value={parent.password}
           onChange={(e) => handleChange('password', e)}
         />
       </View>
       <View className='page-address-edit-scroll-establish' onClick={preserve}>
-        <View>保 存</View>
+        <View>{$t('1c364c1c.56df61')}</View>
       </View>
     </SpPage>
   )

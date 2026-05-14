@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '收银台',
+  navigationBarTitleText: '',
   navigationStyle: 'custom'
 }

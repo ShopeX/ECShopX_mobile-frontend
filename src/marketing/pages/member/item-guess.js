@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote } from '@/components'
 import api from '@/api'
@@ -13,7 +15,7 @@ import './item-guess.scss'
 
 @withPager
 @withBackToTop
-export default class ItemGuess extends Component {
+class ItemGuess extends Component {
   constructor(props) {
     super(props)
 
@@ -92,9 +94,9 @@ export default class ItemGuess extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('f1d3181c.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('f1d3181c.ba1de9')}</SpNote>
           )}
         </ScrollView>
 
@@ -103,3 +105,5 @@ export default class ItemGuess extends Component {
     )
   }
 }
+
+export default withTranslation()(ItemGuess)

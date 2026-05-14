@@ -5,17 +5,19 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
-import { Loading, SpImg, SpNote, SpNavBar, SpPage } from '@/components'
+import { Loading, SpNote, SpNavBar } from '@/components'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { AtTabBar } from 'taro-ui'
 import S from '@/spx'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './shop-category.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionShopCategory extends Component {
+class DistributionShopCategory extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -26,14 +28,14 @@ export default class DistributionShopCategory extends Component {
       currentIndex: 0,
       tabList: [
         {
-          title: '小店首页',
+          title: '',
           iconType: 'home',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/shop-home',
           urlRedirect: true
         },
         {
-          title: '分类',
+          title: '',
           iconType: 'category',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/shop-category',
@@ -87,14 +89,14 @@ export default class DistributionShopCategory extends Component {
         hasSeries: false,
         tabList: [
           {
-            title: '小店首页',
+            title: '',
             iconType: 'home',
             iconPrefixClass: 'iconfont icon',
             url: `/marketing/pages/distribution/shop-home?featuredshop=${options.featuredshop}`,
             urlRedirect: true
           },
           {
-            title: '分类',
+            title: '',
             iconType: 'category',
             iconPrefixClass: 'iconfont icon',
             url: `/marketing/pages/distribution/shop-category?featuredshop=${options.featuredshop}`,
@@ -219,87 +221,93 @@ export default class DistributionShopCategory extends Component {
     const { list, hasSeries, tabList, localCurrent, contentList, currentIndex, page, scrollTop } =
       this.state
     const isHaveLeft = list.length > 0
+    const displayTabList = tabList.map((item, index) => ({
+      ...item,
+      title: index === 0 ? $t('e6f782b6.b8286c') : $t('e6f782b6.d0771a')
+    }))
     return (
-      <SpPage
-        className='page-category-index'
-        renderFooter={
-          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
-        }
-      >
-        <View className='h-full'>
-          <View
-            className={`${
-              hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
-            }`}
-          >
-            <View className='category-list'>
-              {isHaveLeft > 0 && (
-                <ScrollView className='category-list__nav' scrollY>
-                  <View className='category-nav'>
-                    {list.map((item, index) => (
+      <View className='page-category-index'>
+        <SpNavBar title={$t('e6f782b6.d0771a')} leftIconType='chevron-left' fixed='true' />
+        <View
+          className={`${
+            hasSeries && tabList.length !== 0 ? 'category-comps' : 'category-comps-not'
+          }`}
+        >
+          <View className='category-list'>
+            {isHaveLeft > 0 && (
+              <ScrollView className='category-list__nav' scrollY>
+                <View className='category-nav'>
+                  {list.map((item, index) => (
+                    <View
+                      className={classNames(
+                        'category-nav__content',
+                        currentIndex == index ? 'category-nav__content-checked' : null
+                      )}
+                      key={`${item.name}${index}`}
+                      onClick={this.handleClickCategoryNav.bind(this, index, item)}
+                    >
+                      {item.hot && <Text className='hot-tag'></Text>}
+                      {item.name}
+                    </View>
+                  ))}
+                </View>
+              </ScrollView>
+            )}
+            {/*右*/}
+            <View className={`shop-category__wrap ${!isHaveLeft && 'all'}`}>
+              <ScrollView
+                className='category-list__scroll'
+                scrollY
+                scrollTop={scrollTop}
+                scrollWithAnimation
+                onScroll={this.handleScroll}
+                onScrollToLower={this.nextPage}
+              >
+                <View className='grid-goods'>
+                  {contentList.length > 0 &&
+                    contentList.map((item) => (
                       <View
-                        className={classNames(
-                          'category-nav__content',
-                          currentIndex == index ? 'category-nav__content-checked' : null
-                        )}
-                        key={`${item.name}${index}`}
-                        onClick={this.handleClickCategoryNav.bind(this, index, item)}
+                        className={`goodItem ${item.isOutSale && 'outSale'}`}
+                        key={item.item_id}
+                        onClick={this.handleClickItem.bind(this, item)}
                       >
-                        {item.hot && <Text className='hot-tag'></Text>}
-                        {item.name}
-                      </View>
-                    ))}
-                  </View>
-                </ScrollView>
-              )}
-              {/*右*/}
-              <View className={`shop-category__wrap ${!isHaveLeft && 'all'}`}>
-                <ScrollView
-                  className='category-list__scroll'
-                  scrollY
-                  scrollTop={scrollTop}
-                  scrollWithAnimation
-                  onScroll={this.handleScroll}
-                  onScrollToLower={this.nextPage}
-                >
-                  <View className='grid-goods'>
-                    {contentList.length > 0 &&
-                      contentList.map((item) => (
-                        <View
-                          className={`goodItem ${item.isOutSale && 'outSale'}`}
-                          key={item.item_id}
-                          onClick={this.handleClickItem.bind(this, item)}
-                        >
-                          <View className='left'>
-                            {/* <SpImg
+                        <View className='left'>
+                          {/* <SpImg
                             lazyLoad
                             width='400'
                             mode='aspectFill'
                             img-class='goodImg'
                             src={item.img}
                           /> */}
-                            <Image src={item.img} lazyLoad className='goodImg' />
-                          </View>
-                          <View className='right'>
-                            <View className='goodName'>{item.title}</View>
-                            <View className='goodPrice'>
-                              <Text className='symbol'>¥</Text>
-                              {item.price}
-                            </View>
+                          <Image src={item.img} lazyLoad className='goodImg' />
+                        </View>
+                        <View className='right'>
+                          <View className='goodName'>{item.title}</View>
+                          <View className='goodPrice'>
+                            <Text className='symbol'>¥</Text>
+                            {item.price}
                           </View>
                         </View>
-                      ))}
-                  </View>
-                  {page.isLoading ? <Loading>正在加载...</Loading> : null}
-                  {!page.isLoading && !page.hasNext && !contentList.length && (
-                    <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-                  )}
-                </ScrollView>
-              </View>
+                      </View>
+                    ))}
+                </View>
+                {page.isLoading ? <Loading>{$t('e6f782b6.bd0271')}</Loading> : null}
+                {!page.isLoading && !page.hasNext && !contentList.length && (
+                  <SpNote img='trades_empty.png'>{$t('e6f782b6.ba1de9')}</SpNote>
+                )}
+              </ScrollView>
             </View>
           </View>
         </View>
-      </SpPage>
+        <AtTabBar
+          fixed
+          tabList={displayTabList}
+          onClick={this.handleClick}
+          current={localCurrent}
+        />
+      </View>
     )
   }
 }
+
+export default withTranslation()(DistributionShopCategory)

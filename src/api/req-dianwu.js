@@ -16,6 +16,7 @@ import {
 } from '@/utils'
 import { SG_DIANWU_TOKEN } from '@/consts'
 import log from '@/utils/log'
+import { $t } from '@/i18n'
 import { HTTP_STATUS } from './consts'
 
 function addQuery(url, query) {
@@ -107,7 +108,7 @@ class API {
   }
 
   errorToast(data) {
-    let errMsg = data.message || (data.data && data.data.message) || '操作失败，请稍后重试'
+    let errMsg = data.message || (data.data && data.data.message) || $t('91bbb78b.fb5ded')
 
     if (errMsg.length > 11) {
       errMsg = errMsg.substring(0, 11) + '\n' + errMsg.substring(11)
@@ -227,7 +228,7 @@ class API {
         if (showError) {
           this.errorToast(data)
         }
-        return Promise.reject(this.reqError(res, '帐号已被禁用'))
+        return Promise.reject(this.reqError(res, $t('91bbb78b.e1c4be')))
       }
 
       this.handleLogout()
@@ -235,11 +236,11 @@ class API {
     }
 
     if (statusCode === HTTP_STATUS.NOT_FOUND) {
-      return Promise.reject(this.reqError(res, '请求资源不存在'))
+      return Promise.reject(this.reqError(res, $t('91bbb78b.31e795')))
     }
 
     if (statusCode === HTTP_STATUS.BAD_GATEWAY) {
-      return Promise.reject(this.reqError(res, '服务端出现了问题'))
+      return Promise.reject(this.reqError(res, $t('91bbb78b.7481a1')))
     }
 
     return Promise.reject(this.reqError(res, `API error: ${statusCode}`))

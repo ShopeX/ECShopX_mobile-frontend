@@ -9,5 +9,5 @@ export default {
   navigationStyle: 'custom',
   transparentTitle: 'auto',
   titlePenetrate: 'YES',
-  navigationBarTitleText: ''
+  navigationBarTitleText: '企业购'
 }

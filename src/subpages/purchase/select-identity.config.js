@@ -3,5 +3,7 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarBackgroundColor: '#fff'
+  navigationBarBackgroundColor: '#fff',
+  navigationBarTitleText: '企业购',
+  navigationStyle: 'custom',
 }

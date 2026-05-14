@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager } from '@/hocs'
@@ -12,7 +14,7 @@ import { pickBy } from '@/utils'
 import './item-activity.scss'
 
 @withPager
-export default class ItemActivity extends Component {
+class ItemActivityOld extends Component {
   constructor(props) {
     super(props)
 
@@ -23,7 +25,18 @@ export default class ItemActivity extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('f275bcec.dba0ff') })
   }
 
   async fetch(params) {
@@ -33,7 +46,6 @@ export default class ItemActivity extends Component {
       pageSize
     }
     const { list, total_count: total } = await api.user.registrationRecordList(params)
-    console.log(list, total, 22)
 
     const nList = pickBy(list, {
       activity_id: 'activity_id',
@@ -62,7 +74,7 @@ export default class ItemActivity extends Component {
 
     return (
       <View className='reservation-list'>
-        <SpNavBar title='活动预约' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('f275bcec.dba0ff')} leftIconType='chevron-left' fixed='true' />
         <ScrollView scrollY className='reservation-list__scroll' onScrollToLower={this.nextPage}>
           <View className='reservation-list__list'>
             {list.map((item) => {
@@ -72,20 +84,18 @@ export default class ItemActivity extends Component {
                   <View className='reservation-list__item_title'>
                     <Text></Text>
                     <Text>
-                      {item.status === 'rejected'
-                        ? '本次活动太火爆了，很遗憾名额已满，请您持续关注！'
-                        : ''}
-                      {item.status === 'pending' ? '待审核' : ''}
-                      {item.status === 'passed' ? '通过' : ''}
+                      {item.status === 'rejected' ? $t('f275bcec.d43954') : ''}
+                      {item.status === 'pending' ? $t('1d9cdff5.5cb424') : ''}
+                      {item.status === 'passed' ? $t('f275bcec.23c1f3') : ''}
                     </Text>
                   </View>
                   <View className='reservation-list__item_content'>
                     <View className='content_data'>
-                      <Text>活动名称</Text>
+                      <Text>{$t('e32a7439.39834b')}</Text>
                       <Text>{item.activity_name}</Text>
                     </View>
                     <View className='content_data'>
-                      <Text>活动时间</Text>
+                      <Text>{$t('f275bcec.c799f5')}</Text>
                       <Text>
                         {item.start_date} ~ {item.end_date}
                       </Text>
@@ -95,15 +105,15 @@ export default class ItemActivity extends Component {
                     className='reservation-list__item_btn'
                     onClick={this.handleClickDetail.bind(this, item.record_id)}
                   >
-                    查看详情
+                    {$t('f275bcec.5b48db')}
                   </Text>
                 </View>
               )
             })}
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('f1d3181c.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
               <SpNote isUrl img={`${process.env.APP_IMAGE_CDN}/empty_activity.png`}>
-                您还未报名任何活动哦，快去报名吧!
+                {$t('f275bcec.71c9c6')}
               </SpNote>
             )}
           </View>
@@ -112,3 +122,5 @@ export default class ItemActivity extends Component {
     )
   }
 }
+
+export default withTranslation()(ItemActivityOld)

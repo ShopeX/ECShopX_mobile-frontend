@@ -3,14 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { SpNavBar, SpPage } from '@/components'
-import { withLogin } from '@/hocs'
 import userIcon from '@/assets/imgs/user-icon.png'
 import api from '@/api'
 import './member-code.scss'
 
-export default class MemberCode extends Component {
+class MemberCode extends Component {
   constructor(props) {
     super(props)
 
@@ -20,7 +22,18 @@ export default class MemberCode extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('8978f7db.b41508') })
   }
 
   async fetch() {
@@ -52,7 +65,7 @@ export default class MemberCode extends Component {
     return (
       <SpPage>
         <View className='member-code-wrap'>
-          <SpNavBar title='我的二维码' leftIconType='chevron-left' />
+          <SpNavBar title={$t('c63b7c0f.4a86cd')} leftIconType='chevron-left' />
           <View className='member-code'>
             <View className='avatar'>
               <Image className='avatar-img' src={avatar || userIcon} mode='aspectFill' />
@@ -61,10 +74,12 @@ export default class MemberCode extends Component {
             <Image className='member-code-bar' mode='aspectFill' src={info.barcode_url} />
             <Image className='member-code-qr' mode='aspectFit' src={info.qrcode_url} />
             <View>{info.userCardCode}</View>
-            <View className='muted'>使用时，出示此码</View>
+            <View className='muted'>{$t('8978f7db.42a49a')}</View>
           </View>
         </View>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(MemberCode)

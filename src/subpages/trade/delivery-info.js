@@ -12,6 +12,8 @@ import { SpPage, SpImage } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
 import { classNames } from '@/utils'
+import { useTranslation, $t, ti, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './delivery-info.scss'
 
 const initialState = {
@@ -37,8 +39,8 @@ function TradeDeliveryInfo(props) {
       const data = await api.trade.deliveryLists({ order_id })
       setState((draft) => {
         draft.packageList = data.list
-        draft.deliveryCorpName = data.list[curIndex]?.delivery_corp_name || '未发货'
-        draft.deliveryCode = data.list[curIndex]?.delivery_code || '暂无物流信息'
+        draft.deliveryCorpName = data.list[curIndex]?.delivery_corp_name || $t('10a38f38.4f56d4')
+        draft.deliveryCode = data.list[curIndex]?.delivery_code || $t('10a38f38.9ef69f')
       })
       getLogisticsInfo(data.list[curIndex]?.delivery_id, 0)
     }
@@ -69,8 +71,8 @@ function TradeDeliveryInfo(props) {
   const onChangePackage = ({ delivery_id }, index) => {
     setState((draft) => {
       draft.curIndex = index
-      draft.deliveryCorpName = packageList[index]?.delivery_corp_name || '未发货'
-      draft.deliveryCode = packageList[index]?.delivery_code || '暂无物流信息'
+      draft.deliveryCorpName = packageList[index]?.delivery_corp_name || $t('10a38f38.4f56d4')
+      draft.deliveryCode = packageList[index]?.delivery_code || $t('10a38f38.9ef69f')
     })
 
     getLogisticsInfo(delivery_id)
@@ -99,8 +101,8 @@ function TradeDeliveryInfo(props) {
                   >
                     <View className='package-info-wrap'>
                       <View className='package-info'>
-                        <View className='t1'>{`包裹${index + 1}`}</View>
-                        <View className='t2'>{`共${item.items.length}件`}</View>
+                        <View className='t1'>{ti('10a38f38.fe20ce', [index + 1])}</View>
+                        <View className='t2'>{ti('10a38f38.17d01f', [item.items.length])}</View>
                       </View>
                       {item.items.map((goods, goodsids) => (
                         <SpImage

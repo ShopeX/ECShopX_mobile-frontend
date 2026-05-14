@@ -7,6 +7,7 @@ import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
 import { useImmer } from 'use-immer'
 import { SpInput as AtInput } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-password-input.scss'
 
 const initialValue = {

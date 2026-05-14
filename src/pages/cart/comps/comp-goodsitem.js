@@ -9,6 +9,7 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage } from '@/components'
 import { VERSION_IN_PURCHASE } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import './comp-goodsitem.scss'
 
@@ -25,9 +26,10 @@ function getDeleteBtnWidthPx() {
 }
 
 const initialState = {
-  localNum: 0
+  localNum: null
 }
 function CompGoodsItem(props) {
+  useTranslation()
   const {
     info,
     children,
@@ -38,6 +40,7 @@ function CompGoodsItem(props) {
     onDelete = () => {},
     onChange = () => {},
     onClickImgAndTitle = () => {},
+    inputMax,
     /** 当前行标识（如 cart_id），与购物车页 openSwipeCartId 联动，实现同时只展开一行删除 */
     swipeRowId,
     openSwipeCartId,
@@ -153,11 +156,23 @@ function CompGoodsItem(props) {
     return null
   }
 
-  const onChangeInputNumber = (e) => {
+  const onChangeInputNumber = async (e) => {
+    const prevNum = info.num
     setState((draft) => {
       draft.localNum = e
     })
-    onChange(e)
+    try {
+      const result = await onChange(e)
+      if (result === false) {
+        setState((draft) => {
+          draft.localNum = prevNum
+        })
+      }
+    } catch (error) {
+      setState((draft) => {
+        draft.localNum = prevNum
+      })
+    }
   }
 
   const { price, activity_price, member_price, package_price } = info
@@ -177,11 +192,17 @@ function CompGoodsItem(props) {
   if (info?.limitedBuy?.marketing_type == 'limited_buy') {
     limitNum = info?.limitedBuy?.rule.limit
     if (info?.limitedBuy?.rule.day == 0) {
-      limitTxt = `限购${limitNum}件`
+      limitTxt = ti('7d82f6d2.ffad24', [limitNum])
     } else {
-      limitTxt = `每${info?.limitedBuy?.rule.day}天，限购${limitNum}件`
+      limitTxt = ti('7d82f6d2.43357c', [info?.limitedBuy?.rule.day, limitNum])
     }
   }
+  const inputMaxNum =
+    inputMax != null && inputMax !== ''
+      ? inputMax
+      : info?.limitedBuy
+        ? info?.limitedBuy?.limit_buy
+        : info.store
 
   const rowBody = (
     <View className='comp-goodsitem'>
@@ -197,9 +218,9 @@ function CompGoodsItem(props) {
       <View className='comp-goodsitem-bd'>
         <View className='item-hd'>
           <View className='goods-title'>
-            {info.is_plus_buy && <Text className='goods-title__tag'>加价购</Text>}
+            {info.is_plus_buy && <Text className='goods-title__tag'>{$t('25211a55.54e654')}</Text>}
             {info?.is_medicine == 1 && info?.is_prescription == 1 && (
-              <Text className='prescription-drug'>处方药</Text>
+              <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
             )}
             {info.item_name}
           </View>
@@ -222,7 +243,7 @@ function CompGoodsItem(props) {
               {vipInfo?.isVip ? vipInfo?.grade_name : userInfo?.gradeInfo?.grade_name}
             </View>
           )}
-          {goodType == 'packages' && <View className='item-tag'>组合商品</View>}
+          {goodType == 'packages' && <View className='item-tag'>{$t('7d82f6d2.159f49')}</View>}
           {limitTxt && <View className='item-tag'>{limitTxt}</View>}
         </View>
 
@@ -239,8 +260,8 @@ function CompGoodsItem(props) {
                         unit='cent'
                         value={info.sale_price}
                         size={24}
-                        noSymbol
                         lineThrough
+                        symbol='¥'
                       />
                     </View>
                   ) : (
@@ -249,14 +270,11 @@ function CompGoodsItem(props) {
                 </>
               )}
               {!isPurchase && <SpPrice value={_price / 100} />}
-              {info.market_price > 0 && enMarketPrice && (
-                <SpPrice className='mkt-price' lineThrough value={info.market_price / 100} />
-              )}
             </View>
             {isShowAddInput ? (
               <SpInputNumber
-                value={info.num}
-                max={parseInt(info?.limitedBuy ? info?.limitedBuy?.limit_buy : info.store)}
+                value={localNum ?? info.num}
+                max={parseInt(inputMaxNum, 10)}
                 min={Number(info.start_num) > 0 ? Number(info.start_num) : 1}
                 onChange={onChangeInputNumber}
               />
@@ -288,7 +306,7 @@ function CompGoodsItem(props) {
             {rowBody}
           </View>
           <View className='comp-goodsitem-swipe__delete' onClick={handleSwipeDelete}>
-            <Text className='comp-goodsitem-swipe__delete-text'>删除</Text>
+            <Text className='comp-goodsitem-swipe__delete-text'>{$t('fb7ff6e1.2f4aad')}</Text>
           </View>
         </View>
       ) : (

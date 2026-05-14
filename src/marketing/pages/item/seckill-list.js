@@ -3,17 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, ScrollView, Text, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote } from '@/components'
+import { $t } from '@/i18n'
 import { AtCountdown, AtTabs, AtTabsPane } from 'taro-ui'
 import api from '@/api'
 import './seckill-list.scss'
 
-@withPager
-@withBackToTop
-export default class SeckillList extends Component {
+class SeckillList extends Component {
   constructor(props) {
     super(props)
 
@@ -21,8 +21,8 @@ export default class SeckillList extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '进行中', status: 'valid' },
-        { title: '未开始', status: 'notice' }
+        { title: '', status: 'valid' },
+        { title: '', status: 'notice' }
       ],
       query: null,
       list: [],
@@ -136,15 +136,19 @@ export default class SeckillList extends Component {
 
   render() {
     const { list, curTabIdx, tabList, showBackToTop, scrollTop, page, timeCountDown } = this.state
+    const tabListForUi = tabList.map((tab, index) => ({
+      ...tab,
+      title: index === 0 ? $t('da5ae518.fb852f') : $t('da5ae518.dd4e55')
+    }))
     return (
       <View className='page-seckill-list'>
         <AtTabs
           className='seckill__tabs'
           current={curTabIdx}
-          tabList={tabList}
+          tabList={tabListForUi}
           onClick={this.handleClickTab}
         >
-          {tabList.map((panes, pIdx) => (
+          {tabListForUi.map((panes, pIdx) => (
             <AtTabsPane current={curTabIdx} key={panes.status} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
@@ -165,7 +169,7 @@ export default class SeckillList extends Component {
                   onClick={this.handleClickItem.bind(this, item.seckill_id)}
                 >
                   <View className='seckill-list__title'>
-                    离结束还有：
+                    {$t('7248c726.b00f14')}
                     <AtCountdown
                       isShowDay
                       day={timeCountDown[index].dd}
@@ -193,9 +197,9 @@ export default class SeckillList extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('56af9ff8.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('56af9ff8.ba1de9')}</SpNote>
           )}
         </ScrollView>
 
@@ -204,3 +208,5 @@ export default class SeckillList extends Component {
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(SeckillList)))

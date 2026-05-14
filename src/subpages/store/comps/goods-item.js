@@ -12,10 +12,12 @@ import { addCart, updateCount } from '@/store/slices/cart'
 import qs from 'qs'
 import S from '@/spx'
 import { classNames, showToast, styleNames, VERSION_PLATFORM } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { PROMOTION_TAG } from '@/consts'
 import './goods-item.scss'
 
 function GoodsItem(props) {
+  useTranslation()
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const {
@@ -33,7 +35,7 @@ function GoodsItem(props) {
   const handleFavClick = async (e) => {
     e.stopPropagation()
     if (!S.getAuthToken()) {
-      showToast('请先登录')
+      showToast($t('f9ec4419.8d2433'))
       return
     }
 
@@ -45,7 +47,7 @@ function GoodsItem(props) {
       await dispatch(deleteUserFav(itemId))
     }
     await dispatch(fetchUserFavs())
-    showToast(fav ? '已移出收藏' : '已加入收藏')
+    showToast(fav ? $t('f9ec4419.b46077') : $t('f9ec4419.151286'))
   }
 
   const handleClick = () => {
@@ -75,7 +77,7 @@ function GoodsItem(props) {
     }
     const { nospec, distributorId, itemId } = info
     if (!nospec) {
-      showToast('请选择规格')
+      showToast($t('f9ec4419.4fd966'))
       return
     }
     Taro.showLoading()
@@ -89,13 +91,13 @@ function GoodsItem(props) {
     )
     dispatch(updateCount({ shop_type: 'distributor' }))
     Taro.hideLoading()
-    showToast('成功加入购物车')
+    showToast($t('f9ec4419.ab91e4'))
   }
 
   const onChangeToolBar = (id, e) => {
     e?.stopPropagation()
     if (!S.getAuthToken()) {
-      showToast('请登录')
+      showToast($t('f9ec4419.7d1eb0'))
       return
     }
     onAddToCart(id)
@@ -158,7 +160,9 @@ function GoodsItem(props) {
               {item.tag_name}
             </Text>
           ))}
-        {info.ky_item_type == 'direct' && <Text className='promotion-tag-direct'>直供品</Text>}
+        {info.ky_item_type == 'direct' && (
+          <Text className='promotion-tag-direct'>{$t('f9ec4419.90d145')}</Text>
+        )}
 
         {/* <View className='goods-info-box'>
           <View className='goods-store'>
@@ -245,7 +249,8 @@ function GoodsItem(props) {
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}
             <Text className='goods__store-entry'>
-              进店<Text className='iconfont icon-arrowRight'></Text>
+              {$t('f9ec4419.8873f7')}
+              <Text className='iconfont icon-arrowRight'></Text>
             </Text>
           </View>
         )}

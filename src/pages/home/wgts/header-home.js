@@ -3,14 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 import { getQueryVariable } from '@/utils'
+import { $t } from '@/i18n'
 
 import './header-home.scss'
 
-export default class HeaderHome extends Component {
+class HeaderHome extends Component {
   static defaultProps = {
     storeName: null,
     isOpenScanQrcode: 2
@@ -76,7 +78,7 @@ export default class HeaderHome extends Component {
             onClick={this.handlePickStore.bind(this)}
           >
             <View className='iconfont icon-periscope'></View>
-            <View className='shop-name'>{store.addressdetail || '选择地址'}</View>
+            <View className='shop-name'>{store.addressdetail || $t('032208d0.09365b')}</View>
             <View className='icon-arrowDown'></View>
           </View>
           {/* ) : (
@@ -93,3 +95,5 @@ export default class HeaderHome extends Component {
     )
   }
 }
+
+export default withTranslation()(HeaderHome)

@@ -6,21 +6,25 @@ import React, { useState, memo } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const SpNewCoupon = (props) => {
+  useTranslation()
   const {
-    receiveText = {
-      unreceiveText: '领取',
-      receiveText: '已领'
-    },
+    receiveText: receiveTextOverride,
     isReceive = false,
     text = '',
     className,
     hasStatus = true
   } = props
 
-  //设置领取和未领取的文字
+  const receiveText = {
+    unreceiveText: $t('16739fc3.9c1b27'),
+    receiveText: $t('16739fc3.289794'),
+    ...(receiveTextOverride || {})
+  }
+
   const statusText = isReceive ? receiveText.receiveText : receiveText.unreceiveText
 
   return (

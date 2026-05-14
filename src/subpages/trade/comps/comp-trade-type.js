@@ -2,16 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { useRouter } from '@tarojs/taro'
-import { View, Text, ScrollView } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import { useRouter } from '@tarojs/taro'
+import { View } from '@tarojs/components'
 import { SpTagBar } from '@/subpages/components'
-import { classNames, formatDateTime, VERSION_IN_PURCHASE } from '@/utils'
+import { VERSION_IN_PURCHASE } from '@/utils'
+import { useTranslation, $t, i18n } from '@/i18n'
 import './comp-trade-type.scss'
 
 function CompTrackType(props) {
+  useTranslation()
   const { value, onChange = () => {} } = props
   const router = useRouter()
   const { isOpen: isPurchaseOpen } = useSelector((state) => state.purchase)
@@ -21,12 +22,12 @@ function CompTrackType(props) {
     //内购+商城 开启内购模块则展示
     if (!VERSION_IN_PURCHASE && isPurchaseOpen) {
       return [
-        { tag_name: '商城', value: '0' },
-        { tag_name: '内购', value: '1' }
+        { tag_name: $t('166085a9.2c7b38'), value: '0' },
+        { tag_name: $t('166085a9.d0465c'), value: '1' }
       ]
     }
     return []
-  }, [router, isPurchaseOpen])
+  }, [router, isPurchaseOpen, i18n.language])
 
   if (!list.length) return null
 

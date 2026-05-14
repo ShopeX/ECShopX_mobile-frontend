@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { $t } from '@/i18n'
 import SAPPPay from './MappPay'
 import SAPPShare from './MappShare'
 import log, { showToast } from './utils'
@@ -202,7 +203,7 @@ class MAPP {
           // 首页，首次按键，提示‘再按一次退出应用’
           if (!this._back_first) {
             this._back_first = new Date().getTime()
-            showToast('再按一次退出应用')
+            showToast($t('51f1c57b.05cea0'))
             setTimeout(() => {
               this._back_first = null
             }, 2000)
@@ -312,7 +313,7 @@ class MAPP {
         plus.android.invoke(clip, 'setText', content)
         break
     }
-    showToast('复制成功')
+    showToast($t('523123e1.20a495'))
   }
 
   showToast() {

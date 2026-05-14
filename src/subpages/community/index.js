@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useState } from 'react'
+import React, { useRef, useState, useMemo } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
@@ -13,60 +13,11 @@ import { pickBy } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
+import { useTranslation, $t } from '@/i18n'
 
 import './index.scss'
 
-import CompTabbar from './comps/comp-tabbar'
 import CompGroupItem from './comps/comp-groupitem'
-
-const CHIEFMENUS = [
-  {
-    key: 'order',
-    name: '订单管理',
-    icon: 'm_menu_order.png',
-    link: '/subpages/community/order-manage'
-  },
-  {
-    key: 'active',
-    name: '我的活动',
-    icon: 'm_menu_activity.png',
-    link: '/subpages/community/activity'
-  },
-  {
-    key: 'start',
-    name: '一键开团',
-    icon: 'm_menu_group.png',
-    link: '/subpages/community/group'
-  },
-  {
-    key: 'yongjin',
-    name: '团长佣金',
-    icon: 'm_menu_yongjin.png',
-    link: '/subpages/community/commission'
-  }
-  // {
-  //   key: 'goods',
-  //   name: '商品核销',
-  //   icon: 'm_menu_qrcode.png',
-  //   link: ''
-  // }
-]
-
-const MENUS = [
-  {
-    key: 'order',
-    name: '我的订单',
-    icon: 'm_menu_order.png',
-    link: '/subpages/community/order'
-  }
-]
-
-const tabList = [
-  { title: '全部', type: 'all' },
-  { title: '未开始', type: 'waiting' },
-  { title: '进行中', type: 'running' },
-  { title: '已结束', type: 'end' }
-]
 
 const initialState = {
   curTabIdx: 0,
@@ -76,11 +27,64 @@ const initialState = {
 }
 
 const Index = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { chiefInfo, checkIsChief } = useSelector((state) => state.user)
   const { curTabIdx, searchValue, activityList, tabType } = state
   const [isShowSearch, setIsShowSearch] = useState(false)
   const activityRef = useRef()
+
+  const chiefMenus = useMemo(
+    () => [
+      {
+        key: 'order',
+        name: $t('da5ae518.afcd11'),
+        icon: 'm_menu_order.png',
+        link: '/subpages/community/order-manage'
+      },
+      {
+        key: 'active',
+        name: $t('da5ae518.ff279c'),
+        icon: 'm_menu_activity.png',
+        link: '/subpages/community/activity'
+      },
+      {
+        key: 'start',
+        name: $t('da5ae518.fe500e'),
+        icon: 'm_menu_group.png',
+        link: '/subpages/community/group'
+      },
+      {
+        key: 'yongjin',
+        name: $t('da5ae518.42f819'),
+        icon: 'm_menu_yongjin.png',
+        link: '/subpages/community/commission'
+      }
+    ],
+    [i18n.language]
+  )
+
+  const memberMenus = useMemo(
+    () => [
+      {
+        key: 'order',
+        name: $t('da5ae518.a73872'),
+        icon: 'm_menu_order.png',
+        link: '/subpages/community/order'
+      }
+    ],
+    [i18n.language]
+  )
+
+  const tabList = useMemo(
+    () => [
+      { title: $t('da5ae518.a8b0c2'), type: 'all' },
+      { title: $t('da5ae518.dd4e55'), type: 'waiting' },
+      { title: $t('da5ae518.fb852f'), type: 'running' },
+      { title: $t('da5ae518.047fab'), type: 'end' }
+    ],
+    [i18n.language]
+  )
 
   console.log(checkIsChief, chiefInfo, '---state.user----')
 
@@ -191,9 +195,9 @@ const Index = () => {
         </View>
 
         <View className='card-block'>
-          <View className='card-block-hd'>团长功能</View>
+          <View className='card-block-hd'>{$t('da5ae518.042cdc')}</View>
           <View className='card-block-bd menu-list'>
-            {CHIEFMENUS.map((item, index) => (
+            {chiefMenus.map((item, index) => (
               <View
                 className='menu-item'
                 onClick={() => onMenusClick(item)}
@@ -207,9 +211,9 @@ const Index = () => {
         </View>
 
         <View className='card-block'>
-          <View className='card-block-hd'>团员功能</View>
+          <View className='card-block-hd'>{$t('da5ae518.ec9bb3')}</View>
           <View className='card-block-bd menu-list'>
-            {MENUS.map((item, index) => (
+            {memberMenus.map((item, index) => (
               <View
                 className='menu-item'
                 onClick={() => onMenusClick(item)}
@@ -227,7 +231,7 @@ const Index = () => {
             <SpSearchBar
               showDailog={false}
               keyword={searchValue}
-              placeholder='根据活动名查询'
+              placeholder={$t('da5ae518.ea7c9d')}
               onFocus={handleOnFocus}
               onChange={onSearchChange}
               onClear={handleOnClear}

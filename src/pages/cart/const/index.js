@@ -50,7 +50,7 @@ export const initialState = {
   openBuilding: false,
   multiValue: [],
   multiIndex: [0, 0],
-  streetCommunityTxt: '请选择',
+  streetCommunityTxt: '',
   street: null, // 街道
   community: null, // 社区
   buildingNumber: '', // 楼号
@@ -70,22 +70,18 @@ export const initialState = {
 export const deliveryList = [
   {
     type: 'logistics',
-    name: '普通快递',
     key: 'is_delivery'
   },
   {
     type: 'dada',
-    name: '同城配',
     key: 'is_dada'
   },
   {
     type: 'merchant',
-    name: '同城配',
     key: 'is_self_delivery' //自配送也展示同城配文字，自配送和达达只展示一个
   },
   {
     type: 'ziti',
-    name: '到店自提',
     key: 'is_ziti'
   }
 ]

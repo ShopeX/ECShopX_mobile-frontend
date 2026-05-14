@@ -4,6 +4,7 @@
  */
 import React, { Component } from 'react'
 import { View, Text } from '@tarojs/components'
+import { $t } from '@/i18n'
 
 import './license.scss'
 
@@ -14,55 +15,55 @@ export default class HomeLicense extends Component {
     return (
       <View className='page-home-license'>
         <View className='dl'>
-          <Text className='dt'>企业名称</Text>
+          <Text className='dt'>{$t('3ac62ef1.f47e27')}</Text>
           <Text className='dd'>爱茉莉太平洋贸易有限公司</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>统一社会信用码/注册号</Text>
+          <Text className='dt'>{$t('3ac62ef1.787be2')}</Text>
           <Text className='dd'>91310000748086078E</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>法定代表人</Text>
+          <Text className='dt'>{$t('3ac62ef1.f2f589')}</Text>
           <Text className='dd'>AHN SAE HONG</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>住所</Text>
+          <Text className='dt'>{$t('3ac62ef1.7ba697')}</Text>
           <Text className='dd'>上海市嘉定区马陆镇博学南路768号</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>注册资本</Text>
+          <Text className='dt'>{$t('3ac62ef1.2b6eea')}</Text>
           <Text className='dd'>1000.000000万美元</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>企业状态</Text>
+          <Text className='dt'>{$t('3ac62ef1.f19340')}</Text>
           <Text className='dd'>确立</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>公司类型</Text>
+          <Text className='dt'>{$t('3ac62ef1.3a242c')}</Text>
           <Text className='dd'>有限责任公司（台港澳法人独资）</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>成立日期</Text>
+          <Text className='dt'>{$t('3ac62ef1.590847')}</Text>
           <Text className='dd'>2003年03月21日</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>营业期限</Text>
+          <Text className='dt'>{$t('3ac62ef1.c857f2')}</Text>
           <Text className='dd'>2003年03月21日至2033年03月20日</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>登记机关</Text>
+          <Text className='dt'>{$t('3ac62ef1.735d55')}</Text>
           <Text className='dd'>上海市工商局</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>受理机关</Text>
+          <Text className='dt'>{$t('3ac62ef1.95322e')}</Text>
           <Text className='dd'>上海市工商局</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>股东/发起人</Text>
+          <Text className='dt'>{$t('3ac62ef1.eb5a25')}</Text>
           <Text className='dd'>AMOREPACIFIC GLOBAL OPERATIONS LIMITED</Text>
         </View>
         <View className='dl'>
-          <Text className='dt'>经营范围</Text>
+          <Text className='dt'>{$t('3ac62ef1.04228b')}</Text>
           <Text className='dd'>
             受母公司委托向境内外的关联企业提供投资经营决
             策服务，资金运作和财务管理，研究开发和技术支

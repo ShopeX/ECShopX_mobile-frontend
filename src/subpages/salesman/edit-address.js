@@ -10,9 +10,9 @@ import { View, Switch, Text, Button, ScrollView } from '@tarojs/components'
 import { AtButton, AtTextarea } from 'taro-ui'
 import { SpCell, SpPage, SpAddress, SpInput as AtInput } from '@/components'
 import api from '@/api'
-import { isWxWeb, showToast } from '@/utils'
-import S from '@/spx'
-import { useNavigation } from '@/hooks'
+import { showToast } from '@/utils'
+import { useTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './edit-address.scss'
 
 const initialState = {
@@ -26,6 +26,7 @@ const initialState = {
 }
 
 function AddressIndex(props) {
+  const { t, i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.colors.current)
@@ -40,6 +41,10 @@ function AddressIndex(props) {
   useEffect(() => {
     fetchAddressList()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('692ba07e.c11209') })
+  }, [i18n.language])
 
   const fetchAddressList = async () => {
     const areaData = await api.member.areaList()
@@ -110,11 +115,11 @@ function AddressIndex(props) {
     }
 
     if (!data.username) {
-      return showToast('请输入收件人')
+      return showToast(t('692ba07e.710e25'))
     }
 
     if (!data.telephone) {
-      return showToast('请输入手机号')
+      return showToast(t('692ba07e.6e4f4b'))
     }
 
     data.province = chooseValue[0]
@@ -122,17 +127,17 @@ function AddressIndex(props) {
     data.county = chooseValue[2]
 
     if (!data.adrdetail) {
-      return showToast('请输入详细地址')
+      return showToast(t('692ba07e.80d685'))
     }
 
-    Taro.showLoading('正在提交')
+    Taro.showLoading({ title: t('74b954b7.415038') })
 
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {
-        showToast('修改成功')
+        showToast(t('692ba07e.69be67'))
       } else {
-        showToast('创建成功')
+        showToast(t('692ba07e.04a691'))
       }
       updateChooseAddress(data)
       setTimeout(() => {
@@ -159,7 +164,7 @@ function AddressIndex(props) {
             style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
             onClick={handleSubmit}
           >
-            +保存并使用
+            {t('692ba07e.4456c5')}
           </AtButton>
         </View>
       }
@@ -167,48 +172,48 @@ function AddressIndex(props) {
       <ScrollView className='scroll-view-container'>
         <View className='scroll-view-body'>
           <View className='page-address-edit__form'>
-            <SpCell className='logistics-no border-bottom' title='收件人'>
+            <SpCell className='logistics-no border-bottom' title={t('692ba07e.fb5bf1')}>
               <AtInput
                 name='username'
                 value={info?.username}
-                placeholder='收件人姓名'
+                placeholder={t('692ba07e.709073')}
                 onChange={(e) => handleChange('username', e)}
               />
             </SpCell>
 
-            <SpCell className='logistics-no border-bottom' title='手机号码'>
+            <SpCell className='logistics-no border-bottom' title={t('692ba07e.92448a')}>
               <AtInput
                 name='telephone'
                 maxLength={11}
                 value={info?.telephone}
-                placeholder='收件人手机号'
+                placeholder={t('692ba07e.9130fc')}
                 onChange={(e) => handleChange('telephone', e)}
               />
             </SpCell>
 
             <SpCell
               className='logistics-no province border-bottom'
-              title='所在区域'
+              title={t('692ba07e.c09adb')}
               isLink
               arrow
               onClick={onPickerClick}
             >
               <View className='picker'>
                 {chooseValue?.join('') === '' ? (
-                  <Text>选择省/市/区</Text>
+                  <Text>{t('692ba07e.4a0039')}</Text>
                 ) : (
                   <Text style={{ color: '#222' }}>{chooseValue?.join('/')}</Text>
                 )}
               </View>
             </SpCell>
 
-            <SpCell className='logistics-no detail-address' title='详细地址'>
+            <SpCell className='logistics-no detail-address' title={t('692ba07e.61a0ec')}>
               <AtTextarea
                 count={false}
                 // name='adrdetail'
                 value={info?.adrdetail}
                 maxLength={100}
-                placeholder='请填写详细地址（街道、门牌）'
+                placeholder={t('692ba07e.79a1f5')}
                 onChange={handleChange.bind(this, 'adrdetail')}
               />
             </SpCell>
@@ -227,7 +232,7 @@ function AddressIndex(props) {
           </View>
 
           <SpCell
-            title='设为默认收货地址'
+            title={t('692ba07e.6dc908')}
             iisLink
             className='default_address'
             value={

@@ -2,17 +2,21 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { useState, useEffect, useCallback } from '@tarojs/taro'
+import Taro, { useState, useEffect, useCallback, useMemo } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
 import { SpNavBar, SpNewInput, SpNewFilterbar, SpNewFilterDrawer, SpLoadMore } from '@/components'
 import { SpNewShopItem } from '@/subpages/components'
 import { classNames, isNavbar } from '@/utils'
 import api from '@/api'
 import { usePage, useFirstMount } from '@/hooks'
-import { FILTER_DATA, FILTER_DRAWER_DATA, DEFAULT_SORT_VALUE, fillFilterTag } from '../consts/index'
+import { useTranslation, $t } from '@/i18n'
+import {
+  buildFilterData,
+  buildFilterDrawerData,
+  DEFAULT_SORT_VALUE,
+  fillFilterTag
+} from '../consts/index'
 import './index.scss'
-
-const NavbarTitle = '搜索'
 
 function getLog() {
   return Taro.getStorageSync('searchLog') || []
@@ -32,11 +36,15 @@ const lnglat = Taro.getStorageSync('lnglat') || {}
 console.log('===lnglat===', lnglat)
 
 const NearbyShopSearch = (props) => {
+  const { i18n } = useTranslation()
   const [filterValue, setFilterValue] = useState(DEFAULT_SORT_VALUE)
 
   const [filterVisible, setFilterVisible] = useState(false)
 
   const [dataList, setDataList] = useState([])
+
+  const filterData = useMemo(() => buildFilterData($t), [i18n.language])
+  const filterDrawerData = useMemo(() => buildFilterDrawerData($t), [i18n.language])
 
   //物流
   const [logistics, setLogistics] = useState({
@@ -51,6 +59,8 @@ const NearbyShopSearch = (props) => {
   //是否搜索
   const [searchAction, setSearchAction] = useState(false)
 
+  const [searchKeyword, setSearchKeyword] = useState('')
+
   //标签id
   const [tag, setTag] = useState('')
 
@@ -64,13 +74,13 @@ const NearbyShopSearch = (props) => {
   const handleConfirm = useCallback((item) => {
     const logs = setLog(item)
     setSeachLog(logs)
+    setSearchKeyword(item || '')
     setSearchAction(true)
   }, [])
 
-  const handleClickInput = useCallback(() => {
-    Taro.navigateTo({
-      url: '/subpages/ecshopx/nearby-shop-search/index'
-    })
+  const handleClearLog = useCallback(() => {
+    Taro.removeStorageSync('searchLog')
+    setSeachLog([])
   }, [])
 
   const handleDrawer = useCallback(
@@ -110,32 +120,30 @@ const NearbyShopSearch = (props) => {
       lat: lnglat.latitude,
       //是否展示积分
       show_score: 1,
-      sort_type: filterValue
+      sort_type: filterValue,
+      show_items: 1,
+      name: searchKeyword
     }
     const { list, total_count, tagList } = await api.shop.list(params)
 
-    setDataList([...dataList, ...list])
-    setTotal(total_count)
-    fillFilterTag(tagList)
+    setDataList((prev) => [...prev, ...list])
+    fillFilterTag(tagList, filterDrawerData)
+    return { total: total_count }
   }
 
-  const { loading, hasNext, total, setTotal, nextPage, resetPage } = usePage({
+  const { page, nextPage, resetPage, getTotal } = usePage({
     fetch
   })
 
   useEffect(() => {
-    if (mounted) {
-      resetPage()
-      setDataList([])
-    }
-  }, [filterValue])
+    Taro.setNavigationBarTitle({ title: $t('bd3973c8.e5f71f') })
+  }, [i18n.language])
 
   useEffect(() => {
-    if (mounted) {
-      resetPage()
-      setDataList([])
-    }
-  }, [tag, logistics])
+    if (!mounted || !searchAction) return
+    resetPage()
+    setDataList([])
+  }, [searchKeyword, filterValue, tag, logistics])
 
   return (
     <View
@@ -143,22 +151,27 @@ const NearbyShopSearch = (props) => {
         'has-navbar': isNavbar()
       })}
     >
-      <SpNavBar title={NavbarTitle} leftIconType='chevron-left' fixed='true' />
+      <SpNavBar title={$t('bd3973c8.e5f71f')} leftIconType='chevron-left' fixed='true' />
 
       <View className='sp-page-nearbyshopsearch-input'>
-        <SpNewInput onConfirm={handleConfirm} />
+        <SpNewInput placeholder={$t('6a820a3d.e5dd3b')} onConfirm={handleConfirm} />
       </View>
 
       {!searchAction ? (
         <View className='sp-page-nearbyshopsearch-search'>
           <View className='sp-page-nearbyshopsearch-search-title'>
-            <View className='left'>最近搜索</View>
-            <View className='right'>清除搜索历史</View>
+            <View className='left'>{$t('7fa435fc.e8cb95')}</View>
+            <View className='right' onClick={handleClearLog}>
+              {$t('7fa435fc.4bf6fd')}
+            </View>
           </View>
           <View className='sp-page-nearbyshopsearch-search-content'>
             {searchLog.map((item, index) => {
               return (
-                <View className={classNames('sp-filter-block', { 'checked': index === 1 })}>
+                <View
+                  key={`search-log-${index}-${item}`}
+                  className={classNames('sp-filter-block', { checked: index === 1 })}
+                >
                   {item}
                 </View>
               )
@@ -170,7 +183,7 @@ const NearbyShopSearch = (props) => {
           <SpNewFilterbar
             bgWhite={false}
             borderRadius
-            filterData={FILTER_DATA}
+            filterData={filterData}
             value={filterValue}
             onClickLabel={handleClickFilterLabel}
             onClickFilter={handleDrawer(true)}
@@ -183,15 +196,20 @@ const NearbyShopSearch = (props) => {
             onScrollToLower={nextPage}
           >
             {dataList.map((item, index) => (
-              <SpNewShopItem inSearch className={classNames('in-shop-search')} info={item} />
+              <SpNewShopItem
+                key={`nearby-search-${item.distributor_id ?? index}`}
+                inSearch
+                className={classNames('in-shop-search')}
+                info={item}
+              />
             ))}
             {/* 分页loading */}
-            <SpLoadMore loading={loading} hasNext={hasNext} total={total} />
+            <SpLoadMore loading={page.loading} hasNext={page.hasMore} total={getTotal()} />
           </ScrollView>
 
           <SpNewFilterDrawer
             visible={filterVisible}
-            filterData={FILTER_DRAWER_DATA}
+            filterData={filterDrawerData}
             onCloseDrawer={handleDrawer(false)}
           />
         </View>
@@ -203,6 +221,5 @@ const NearbyShopSearch = (props) => {
 export default NearbyShopSearch
 
 NearbyShopSearch.config = {
-  // navigationStyle: 'custom'
-  navigationBarTitleText: NavbarTitle
+  navigationBarTitleText: ''
 }

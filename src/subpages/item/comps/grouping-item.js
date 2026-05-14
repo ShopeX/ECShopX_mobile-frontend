@@ -2,68 +2,73 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { Component } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { View, Image, Text } from '@tarojs/components'
 import { AtCountdown } from 'taro-ui'
 import { calcTimer } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import './grouping-item.scss'
 
-export default class GroupingItem extends Component {
-  static options = {
-    addGlobalClass: true
-  }
+function GroupingItem(props) {
+  const { i18n } = useTranslation()
+  const { info, total, onClick } = props
+  const [remaining_time, setRemainingTime] = useState(null)
 
-  static defaultProps = {
-    info: {},
-    onClick: () => {}
-  }
+  const countdownFormat = useMemo(
+    () => ({
+      day: $t('12b6c337.249aba'),
+      hours: ':',
+      minutes: ':',
+      seconds: ''
+    }),
+    [i18n.language]
+  )
 
-  constructor(props) {
-    super(props)
+  useEffect(() => {
+    const rt = calcTimer(info.over_time)
+    console.log(rt)
+    setRemainingTime(rt)
+  }, [info.over_time])
 
-    this.state = {
-      remaining_time: null
-    }
-  }
+  if (!remaining_time) return null
 
-  componentDidMount() {
-    const { info } = this.props
-    const remaining_time = calcTimer(info.over_time)
-    console.log(remaining_time)
-    this.setState({
-      remaining_time
-    })
-  }
-
-  render() {
-    const { info, total, onClick } = this.props
-    const { remaining_time } = this.state
-
-    if (!remaining_time) return null
-
-    return (
-      <View className='grouping-item view-flex view-flex-middle' onClick={onClick}>
-        <Image className='group-sponsor-avatar' src={info.member_info.headimgurl} />
-        <View className='view-flex-item'>
-          <View className='name'>{info.member_info.nickname}的团</View>
-          <View>
-            还差<Text className='group-num'>{total - info.join_person_num}</Text>人成团
-          </View>
-          <View className='text-muted'>
-            剩余
-            <AtCountdown
-              isShowDay
-              format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
-              day={remaining_time.dd}
-              hours={remaining_time.hh}
-              minutes={remaining_time.mm}
-              seconds={remaining_time.ss}
-            />
-          </View>
+  return (
+    <View className='grouping-item view-flex view-flex-middle' onClick={onClick}>
+      <Image className='group-sponsor-avatar' src={info.member_info.headimgurl} />
+      <View className='view-flex-item'>
+        <View className='name'>
+          {ti('12b6c337.38dff1', [info.member_info.nickname || $t('12b6c337.1a75c1')])}
         </View>
-        <View className='group-join'>去参团</View>
+        <View>
+          {$t('12b6c337.a1b490')}
+          <Text className='group-num'>{total - info.join_person_num}</Text>
+          {$t('12b6c337.fe1360')}
+        </View>
+        <View className='text-muted'>
+          {$t('12b6c337.43b510')}
+          <AtCountdown
+            isShowDay
+            format={countdownFormat}
+            day={remaining_time.dd}
+            hours={remaining_time.hh}
+            minutes={remaining_time.mm}
+            seconds={remaining_time.ss}
+          />
+        </View>
       </View>
-    )
-  }
+      <View className='group-join'>{$t('12b6c337.2fd665')}</View>
+    </View>
+  )
 }
+
+GroupingItem.options = {
+  addGlobalClass: true
+}
+
+GroupingItem.defaultProps = {
+  info: {},
+  onClick: () => {}
+}
+
+export default GroupingItem

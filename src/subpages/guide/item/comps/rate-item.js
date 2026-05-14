@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames, formatTime } from '@/utils'
+import { $t } from '@/i18n'
 import './rate-item.scss'
 
 export default class RateItem extends Component {
@@ -30,7 +31,7 @@ export default class RateItem extends Component {
         </View>
         <View className='rate-item__bd'>
           <View className='rate-item__content'>
-            {info.reply_content ? info.reply_content : '无评价'}
+            {info.reply_content ? info.reply_content : $t('0aece431.a91347')}
           </View>
           {info.rate_pic && info.rate_pic.length > 0 ? (
             <View className='rate-item__imgs'>

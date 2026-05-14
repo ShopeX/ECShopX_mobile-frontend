@@ -2,15 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-evaluation.scss'
 
 function CompEvaluation(props) {
+  useTranslation()
   const { className, list = [], itemId } = props
 
   const onViewMore = () => {
@@ -26,25 +27,25 @@ function CompEvaluation(props) {
   return (
     <View className={classNames('comp-evaluation', className)}>
       <View className='evaluation-hd'>
-        <View className='title'>{`评价（${list.length}）`}</View>
+        <View className='title'>{ti('b1ac6d7a.0c834e', [list.length])}</View>
         {list.length > 0 && (
           <View className='extra-more' onClick={onViewMore}>
-            查看全部
+            {$t('b1ac6d7a.0467cc')}
             <Text className='iconfont icon-qianwang-01'></Text>
           </View>
         )}
       </View>
       <View className='evaluation-bd'>
-        {list.map((item) => (
-          <View className='evaluation-item-wrap'>
+        {list.map((item, idx) => (
+          <View className='evaluation-item-wrap' key={idx}>
             <View className='item-hd'>
               <SpImage src={item.avatar} className='evaluation-icon' width={50} height={50} />
-              <Text className='evaluation-name'>{item.username || '匿名用户'}</Text>
+              <Text className='evaluation-name'>{item.username || $t('b1ac6d7a.708229')}</Text>
             </View>
             <View className='evaluation-content'>{item.content}</View>
           </View>
         ))}
-        {list.length == 0 && <View className='default-msg'>暂无商品评论</View>}
+        {list.length == 0 && <View className='default-msg'>{$t('b1ac6d7a.5a8497')}</View>}
       </View>
     </View>
   )

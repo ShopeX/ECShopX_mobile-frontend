@@ -3,19 +3,15 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
-import { connect } from 'react-redux'
+import Taro from '@tarojs/taro'
+import { View, Image, Text } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
 import { SpCell } from '@/components'
-import api from '@/api'
-import { pickBy, classNames } from '@/utils'
 import './brand-result.scss'
 
-@withPager
-@withBackToTop
-export default class BrandResult extends Component {
+class BrandResult extends Component {
   constructor(props) {
     super(props)
 
@@ -46,18 +42,20 @@ export default class BrandResult extends Component {
             className='brand-result__title_img'
             src='/assets/imgs/pay_fail.png'
           ></Image>
-          <Text className='brand-result__title_status'>预约成功</Text>
-          <Text className='brand-result__title_tip'>到店出示二维码即可享受服务</Text>
+          <Text className='brand-result__title_status'>{$t('91ab6c28.ff1d1f')}</Text>
+          <Text className='brand-result__title_tip'>{$t('91ab6c28.dfdd63')}</Text>
         </View>
         <View className='brand-result__info'>
-          <SpCell title='预约门店' isLink value={brand_store}></SpCell>
-          <SpCell title='预约时间' value={brand_time}></SpCell>
+          <SpCell title={$t('91ab6c28.ef35a1')} isLink value={brand_store}></SpCell>
+          <SpCell title={$t('91ab6c28.652e09')} value={brand_time}></SpCell>
         </View>
         <View className='brand-result__btn' onClick={this.handleClickRecord.bind(this)}>
-          我的预约记录
+          {$t('91ab6c28.007ce5')}
         </View>
-        <View className='brand-result__btn cancel_btn'>取消预约</View>
+        <View className='brand-result__btn cancel_btn'>{$t('91ab6c28.5c0f6a')}</View>
       </View>
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(BrandResult)))

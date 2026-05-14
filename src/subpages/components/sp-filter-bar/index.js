@@ -28,6 +28,13 @@ export default class SpFilterBar extends Component {
     }
   }
 
+  componentDidUpdate(prevProps) {
+    const { current } = this.props
+    if (typeof current === 'number' && current !== prevProps.current) {
+      this.setState({ curIdx: current })
+    }
+  }
+
   handleClickItem(idx, type = '') {
     const item = this.props.list[idx]
     let sortOrder = null

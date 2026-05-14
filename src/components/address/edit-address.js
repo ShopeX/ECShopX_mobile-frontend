@@ -3,17 +3,19 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Switch, Text, Picker } from '@tarojs/components'
 import { AtForm, AtButton } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { SpCell, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
-import { pickBy, log } from '@/utils'
+import { pickBy } from '@/utils'
 import S from '@/spx'
 
 import './edit-address.scss'
 
-export default class EditAddress extends Component {
+class EditAddress extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -204,11 +206,11 @@ export default class EditAddress extends Component {
     }
 
     if (!data.username) {
-      return S?.toast('请输入收件人')
+      return S?.toast($t('13d74bee.710e25'))
     }
 
     if (!data.telephone) {
-      return S?.toast('请输入手机号')
+      return S?.toast($t('13d74bee.6e4f4b'))
     }
 
     if (!data.province) {
@@ -218,14 +220,14 @@ export default class EditAddress extends Component {
     }
 
     if (!data.adrdetail) {
-      return S?.toast('请输入详细地址')
+      return S?.toast($t('13d74bee.80d685'))
     }
     try {
       await api.member.addressCreateOrUpdate(data)
       if (data.address_id) {
-        S?.toast('修改成功')
+        S?.toast($t('13d74bee.69be67'))
       } else {
-        S?.toast('创建成功')
+        S?.toast($t('13d74bee.04a691'))
       }
       setTimeout(() => {
         Taro.navigateBack()
@@ -237,7 +239,7 @@ export default class EditAddress extends Component {
 
   handleDelete = async (address_id) => {
     await api.member.addressDelete(address_id)
-    S?.toast('删除成功')
+    S?.toast($t('13d74bee.0007d1'))
     setTimeout(() => {
       Taro.navigateBack()
     }, 700)
@@ -255,13 +257,13 @@ export default class EditAddress extends Component {
         <AtForm onSubmit={this.handleSubmit}>
           <View className='sec address-edit__form'>
             <AtInput
-              title='收件人姓名'
+              title={$t('13d74bee.709073')}
               name='username'
               value={info.username}
               onChange={this.handleChange.bind(this, 'username')}
             />
             <AtInput
-              title='手机号码'
+              title={$t('13d74bee.92448a')}
               name='telephone'
               maxLength={11}
               value={info.telephone}
@@ -275,7 +277,7 @@ export default class EditAddress extends Component {
               range={areaList}
             >
               <View className='picker'>
-                <View className='picker__title'>所在区域</View>
+                <View className='picker__title'>{$t('13d74bee.c09adb')}</View>
                 {info.address_id ? (
                   `${info.province}${info.city}${info.county}`
                 ) : (
@@ -293,13 +295,13 @@ export default class EditAddress extends Component {
             </Picker>
 
             <AtInput
-              title='详细地址'
+              title={$t('13d74bee.61a0ec')}
               name='adrdetail'
               value={info.adrdetail}
               onChange={this.handleChange.bind(this, 'adrdetail')}
             />
             <AtInput
-              title='邮政编码'
+              title={$t('13d74bee.b4a39e')}
               name='postalCode'
               value={info.postalCode}
               onChange={this.handleChange.bind(this, 'postalCode')}
@@ -307,7 +309,7 @@ export default class EditAddress extends Component {
           </View>
 
           <View className='sec'>
-            <SpCell title='设为默认地址'>
+            <SpCell title={$t('13d74bee.e47491')}>
               <Switch checked={info.is_def} onChange={this.handleDefChange.bind(this)} />
             </SpCell>
           </View>
@@ -315,15 +317,17 @@ export default class EditAddress extends Component {
           <View className='btns'>
             {process.env.TARO_ENV === 'weapp' ? (
               <AtButton type='primary' formType='submit'>
-                提交
+                {$t('13d74bee.939d53')}
               </AtButton>
             ) : (
               <AtButton type='primary' onClick={this.handleSubmit} formType='submit'>
-                提交
+                {$t('13d74bee.939d53')}
               </AtButton>
             )}
             {info.address_id && (
-              <AtButton onClick={this.handleDelete.bind(this, info.address_id)}>删除</AtButton>
+              <AtButton onClick={this.handleDelete.bind(this, info.address_id)}>
+                {$t('13d74bee.2f4aad')}
+              </AtButton>
             )}
           </View>
         </AtForm>
@@ -333,3 +337,5 @@ export default class EditAddress extends Component {
     )
   }
 }
+
+export default withTranslation()(EditAddress)

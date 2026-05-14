@@ -8,6 +8,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
 import { AtSearchBar, AtForm } from 'taro-ui'
+import { $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -20,7 +21,8 @@ const initialState = {
 function SpCategorySearch(props) {
   const [state, setState] = useImmer(initialState)
   const { showBar, showSearchDailog, isShowAction, historyList, keyword } = state
-  const { placeholder = '搜索', onConfirm = () => {} } = props
+  const { placeholder: placeholderProp, onConfirm = () => {} } = props
+  const placeholder = placeholderProp ?? $t('d668d0e3.e5f71f')
   useEffect(() => {
     console.log(showBar, '----')
     setState((draft) => {
@@ -125,7 +127,7 @@ function SpCategorySearch(props) {
             className='sp-category-search__bar'
             value={keyword}
             placeholder={placeholder}
-            actionName='取消'
+            actionName={$t('61e2d21a.625fb2')}
             showActionButton={isShowAction}
             onClear={handleClear}
             onChange={handleChangeSearch}
@@ -139,9 +141,9 @@ function SpCategorySearch(props) {
             )}
           >
             <View className='sp-category-search__history-title'>
-              <Text className='title'>最近搜索{showBar}</Text>
+              <Text className='title'>{$t('7fa435fc.e8cb95')}</Text>
               <Text className='icon-trashCan icon-del clear-history' onClick={handleClickDelete}>
-                清除搜索历史
+                {$t('7fa435fc.4bf6fd')}
               </Text>
             </View>
             <View className='sp-category-search__history-list'>

@@ -3,10 +3,11 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import { connect } from 'redux'
+import { connect } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 
+import { $t } from '@/i18n'
 import { PrivacyConfirmModal } from '@/components'
 import api from '@/api'
 
@@ -72,9 +73,9 @@ export default class StoreListItem extends Component {
     return (
       <View className='cus-no-position'>
         {this.props.children}
-        <View className='position-title'>未授权位置信息，请授权定位</View>
+        <View className='position-title'>{$t('78efcce9.99e8fb')}</View>
         <View className='position-btn' onClick={this.handleClick}>
-          直接授权定位
+          {$t('78efcce9.795789')}
         </View>
         {/* 隐私弹窗 */}
         <PrivacyConfirmModal

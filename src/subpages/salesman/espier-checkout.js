@@ -46,6 +46,7 @@ import api from '@/api'
 import doc from '@/doc'
 import qs from 'qs'
 import S from '@/spx'
+import { $t, ti, useTranslation } from '@/i18n'
 import { initialState } from './const'
 import CompDelivers from './comps/comp-delivers'
 import CompSelectPackage from './comps/comp-selectpackage'
@@ -53,6 +54,7 @@ import CompPointUse from './comps/comp-pointuse'
 import './espier-checkout.scss'
 
 function CartCheckout(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { isLogin, isNewUser, getUserInfoAuth } = useLogin({
     autoLogin: true
@@ -129,6 +131,11 @@ function CartCheckout(props) {
     goodType = routerParams.goodType
   } = $instance?.router?.params || {}
   console.log('$instance?.router?.params:', $instance?.router)
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('edc703ce.337fd5') })
+  }, [i18n.language])
+
   useEffect(() => {
     if (isLogin) {
       getTradeSetting()
@@ -191,7 +198,7 @@ function CartCheckout(props) {
       if (zitiAddress) {
         await deliverRef.current.validateZitiInfo()
       } else {
-        showToast('请选择自提地址')
+        showToast($t('edc703ce.cb8251'))
       }
     }
 
@@ -205,7 +212,7 @@ function CartCheckout(props) {
       ...customerLnformation
     })
     if (!isValid) {
-      showToast('该商品已下架')
+      showToast($t('edc703ce.f0010a'))
       setState((draft) => {
         draft.submitLoading = false
       })
@@ -213,7 +220,7 @@ function CartCheckout(props) {
     }
 
     if (!payType) {
-      showToast('请选择支付方式')
+      showToast($t('edc703ce.a49dc0'))
       setState((draft) => {
         draft.submitLoading = false
       })
@@ -256,10 +263,10 @@ function CartCheckout(props) {
       // 验证余额额度是否可用
       if (userInfo.deposit < totalInfo.total_fee / 100) {
         const { confirm } = await Taro.showModal({
-          content: '余额额度不足，请充值',
-          cancelText: '取消',
+          content: $t('edc703ce.de4d2f'),
+          cancelText: $t('61e2d21a.625fb2'),
           confirmColor: colorPrimary,
-          confirmText: '去充值'
+          confirmText: $t('edc703ce.e4ff95')
         })
         if (confirm) {
           Taro.navigateTo({
@@ -273,11 +280,11 @@ function CartCheckout(props) {
       }
 
       const { confirm } = await Taro.showModal({
-        title: '余额支付',
-        content: `确认使用余额支付吗？`,
-        cancelText: '取消',
+        title: $t('edc703ce.89ac23'),
+        content: $t('edc703ce.d9e16c'),
+        cancelText: $t('61e2d21a.625fb2'),
         confirmColor: colorPrimary,
-        confirmText: '确认'
+        confirmText: $t('61e2d21a.e83a25')
       })
       if (!confirm) {
         setState((draft) => {
@@ -288,7 +295,7 @@ function CartCheckout(props) {
     }
 
     Taro.showLoading({
-      title: '正在提交',
+      title: $t('edc703ce.415038'),
       mask: true
     })
 
@@ -465,7 +472,7 @@ function CartCheckout(props) {
     let multiValue = []
     let multiIndex = [0, 0]
     let streetCommunityList = []
-    let streetCommunityTxt = '请选择'
+    let streetCommunityTxt = $t('edc703ce.708c9d')
     let street = null
     let community = null
 
@@ -493,7 +500,7 @@ function CartCheckout(props) {
       multiValue[0] = streetCommunityList.map((item) => item.label)
       multiValue[1] = streetCommunityList[multiIndex[0]].children.map((item) => item.label)
     } else {
-      showToast('暂无街道、社区配置')
+      showToast($t('edc703ce.a5544d'))
     }
 
     return {
@@ -624,7 +631,7 @@ function CartCheckout(props) {
     }
 
     if (real_use_point && real_use_point < point_use) {
-      showToast(`${pointName}有调整`)
+      showToast(ti('edc703ce.ee9ca4', [pointName]))
     }
 
     Taro.hideLoading()
@@ -677,7 +684,7 @@ function CartCheckout(props) {
     if (extraTips) {
       Taro.showModal({
         content: extraTips,
-        confirmText: '知道了',
+        confirmText: $t('edc703ce.ce2695'),
         showCancel: false
       })
     }
@@ -803,7 +810,7 @@ function CartCheckout(props) {
   const bindMultiPickerChange = (e) => {
     const [a, b] = e.detail.value
     if (streetCommunityList[a].children == 0) {
-      return showToast('居委不能为空')
+      return showToast($t('edc703ce.a4c155'))
     }
     setState((draft) => {
       draft.multiIndex = [a, b]
@@ -817,7 +824,7 @@ function CartCheckout(props) {
     if (payChannel == 'offline_pay') {
       return paymentName
     } else {
-      return payChannel ? PAYMENT_TYPE()[payChannel] : '请选择'
+      return payChannel ? PAYMENT_TYPE()[payChannel] : $t('edc703ce.708c9d')
     }
   }
 
@@ -854,7 +861,7 @@ function CartCheckout(props) {
     return (
       <View className='checkout-toolbar'>
         <View className='checkout-toolbar__total'>
-          {`共${totalInfo.items_count}件商品　总计:`}
+          {ti('edc703ce.90715c', [totalInfo.items_count])}
           <SpPrice unit='cent' className='primary-price' value={totalInfo.total_fee} />
         </View>
         <AtButton
@@ -864,7 +871,7 @@ function CartCheckout(props) {
           disabled={orderSubmitDisabled()}
           onClick={onSubmitPayChange}
         >
-          提交订单
+          {$t('edc703ce.c3898c')}
         </AtButton>
       </View>
     )
@@ -876,7 +883,10 @@ function CartCheckout(props) {
         <View className='cart-checkout__group'>
           <View className='cart-group__cont'>
             <View className='sp-order-item__idx'>
-              商品清单 <Text style={{ color: '#222' }}>（{totalInfo.items_count}）</Text>
+              {$t('edc703ce.08ea4e')}{' '}
+              <Text style={{ color: '#222' }}>
+                {ti('edc703ce.a20466', [totalInfo.items_count])}
+              </Text>
             </View>
             <View className='goods-list'>
               {detailInfo.map((item, idx) => (
@@ -890,7 +900,7 @@ function CartCheckout(props) {
             <SpCell className='trade-remark' border={false}>
               <AtInput
                 className='trade-remark__input'
-                placeholder='给商家留言：选填（50字以内）'
+                placeholder={$t('edc703ce.0e9ca2')}
                 onChange={handleRemarkChange}
                 value={remark}
                 maxLength={50}
@@ -917,7 +927,7 @@ function CartCheckout(props) {
       <ScrollView className='scroll-view-container' scrollY>
         {isObjectsValue(shoppingGuideData) && (
           <View className='shopping-guide__header'>
-            此订单商品来自“{shoppingGuideData.store_name}”导购“ {shoppingGuideData.name}”的推荐
+            {ti('edc703ce.a4919d', [shoppingGuideData.store_name, shoppingGuideData.name])}
           </View>
         )}
 
@@ -935,7 +945,7 @@ function CartCheckout(props) {
         {/* 街道、社区信息填写 */}
         {openStreet && (
           <View className='cart-checkout__stree'>
-            <SpCell isLink title='街道居委'>
+            <SpCell isLink title={$t('edc703ce.6e548b')}>
               <Picker
                 mode='multiSelector'
                 onChange={bindMultiPickerChange}
@@ -943,43 +953,44 @@ function CartCheckout(props) {
                 value={multiIndex}
                 range={multiValue}
               >
-                <View className='picker-value'>{streetCommunityTxt}</View>
+                <View className='picker-value'>{streetCommunityTxt || $t('edc703ce.708c9d')}</View>
               </Picker>
             </SpCell>
             <View className='cart-checkout__stree-desc'>
-              <Text className='required'>*</Text>疫情期间按小区统一配送！
+              <Text className='required'>*</Text>
+              {$t('edc703ce.555eaa')}
             </View>
           </View>
         )}
 
         {openBuilding && (
           <View className='cart-checkout__building'>
-            <SpCell border title='楼号'>
+            <SpCell border title={$t('edc703ce.372624')}>
               <AtInput
                 name='buildingNumber'
-                placeholder='请输入楼号'
+                placeholder={$t('edc703ce.116ba7')}
                 value={buildingNumber}
                 onChange={onChangeBuildInput.bind(this, 'buildingNumber')}
               >
-                楼/栋
+                {$t('edc703ce.ddc3a9')}
               </AtInput>
             </SpCell>
 
-            <SpCell border title='房号'>
+            <SpCell border title={$t('edc703ce.be5014')}>
               <AtInput
                 name='houseNumber'
-                placeholder='请输入房号'
+                placeholder={$t('edc703ce.e56a75')}
                 value={houseNumber}
                 onChange={onChangeBuildInput.bind(this, 'houseNumber')}
               >
-                号/室
+                {$t('edc703ce.ca2e65')}
               </AtInput>
             </SpCell>
           </View>
         )}
 
         <View className='cart-checkout__info'>
-          <View className='cart-checkout__info_guide'>下单顾客：</View>
+          <View className='cart-checkout__info_guide'>{$t('edc703ce.32db61')}</View>
           <View className='cart-checkout__info_guides'>
             <Text>{customerSalesman.username}</Text>
             <Text>{customerSalesman.mobile}</Text>
@@ -992,15 +1003,15 @@ function CartCheckout(props) {
           <SpCell
             isLink
             className='cart-checkout__coupons'
-            title='优惠券'
+            title={$t('250b375e.2f3635')}
             onClick={handleCouponsClick}
-            value={couponText || '请选择'}
+            value={couponText || $t('edc703ce.708c9d')}
           />
         )}
         {isWeixin && !bargain_id && totalInfo.invoice_status && (
           <SpCell
             isLink
-            title='开发票'
+            title={$t('edc703ce.63dd82')}
             className='cart-checkout__invoice'
             onClick={handleInvoiceClick}
             value={
@@ -1011,7 +1022,7 @@ function CartCheckout(props) {
                     className='iconfont icon-close invoice-close'
                   />
                 )}
-                {invoiceTitle || '否'}
+                {invoiceTitle || $t('edc703ce.c9744f')}
               </View>
             }
           />
@@ -1027,7 +1038,11 @@ function CartCheckout(props) {
                 draft.isPackageOpend = true
               })
             }}
-            value={<View className='invoice-title'>{isNeedPackage ? '需要' : '不需要'}</View>}
+            value={
+              <View className='invoice-title'>
+                {isNeedPackage ? $t('edc703ce.df16ff') : $t('edc703ce.8755a5')}
+              </View>
+            }
           />
         )}
 
@@ -1037,7 +1052,7 @@ function CartCheckout(props) {
             <SpCell
               isLink
               className='cart-checkout__invoice'
-              title={`${pointName}抵扣`}
+              title={ti('edc703ce.74dcf4', [pointName])}
               onClick={() => {
                 setState((draft) => {
                   draft.isPointOpenModal = true
@@ -1046,8 +1061,8 @@ function CartCheckout(props) {
               value={
                 <View className='invoice-title'>
                   {pointInfo.point_use > 0
-                    ? `已使用${pointInfo.real_use_point}${pointName}`
-                    : `使用${pointName}`}
+                    ? ti('edc703ce.c47d8f', [pointInfo.real_use_point, pointName])
+                    : ti('edc703ce.7f2392', [pointName])}
                 </View>
               }
             />
@@ -1058,14 +1073,14 @@ function CartCheckout(props) {
             <SpCell
               isLink
               className='cart-checkout__pay'
-              title='支付方式'
+              title={$t('250b375e.0c9d2b')}
               onClick={handlePaymentShow}
               value={
                 <View>
                   {totalInfo.deduction && (
                     <Text>
                       {totalInfo.remainpt}
-                      {`${pointName}可用`}
+                      {ti('edc703ce.dfb3e1', [pointName])}
                     </Text>
                   )}
                   <Text className='invoice-title'>{getPayChannelLabel()}</Text>
@@ -1074,9 +1089,10 @@ function CartCheckout(props) {
             />
             {totalInfo.deduction && (
               <View>
-                可用{totalInfo.point}
-                {pointName}，抵扣 <SpPrice unit='cent' value={totalInfo.deduction} />
-                包含运费 <SpPrice unit='cent' value={totalInfo.freight_fee} />
+                {ti('9c730348.c72db2', [totalInfo.point, pointName])}
+                <SpPrice unit='cent' value={totalInfo.deduction} />
+                {$t('9c730348.5e162f')}
+                <SpPrice unit='cent' value={totalInfo.freight_fee} />
               </View>
             )}
           </View>
@@ -1085,27 +1101,27 @@ function CartCheckout(props) {
         <View className='cart-checkout__total'>
           <SpCell
             className='trade-sub__item'
-            title='原价：'
+            title={$t('edc703ce.80193b')}
             value={<SpPrice unit='cent' value={totalInfo.market_fee} />}
           />
           <SpCell
             className='trade-sub__item'
-            title='总价：'
+            title={$t('edc703ce.f07c73')}
             value={<SpPrice unit='cent' value={totalInfo.item_fee_new} />}
           />
           <SpCell
             className='trade-sub__item'
-            title='运费：'
+            title={$t('edc703ce.94a6a5')}
             value={<SpPrice unit='cent' value={totalInfo.freight_fee} />}
           />
           <SpCell
             className='trade-sub__item'
-            title='促销：'
+            title={$t('edc703ce.ea537d')}
             value={<SpPrice unit='cent' primary value={0 - totalInfo.promotion_discount} />}
           />
           <SpCell
             className='trade-sub__item'
-            title='优惠券：'
+            title={$t('edc703ce.692cfd')}
             value={<SpPrice unit='cent' primary value={0 - totalInfo.coupon_discount} />}
           />
           {/* <SpCell className='trade-sub__item' title='优惠金额：'>
@@ -1115,7 +1131,7 @@ function CartCheckout(props) {
             pointInfo.is_open_deduct_point && (
               <SpCell
                 className='trade-sub__item'
-                title={`${pointName}抵扣：`}
+                title={ti('edc703ce.7d6716', [pointName])}
                 value={<SpPrice unit='cent' primary value={0 - totalInfo.point_fee} />}
               />
             )}

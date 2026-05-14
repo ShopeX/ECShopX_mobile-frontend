@@ -36,6 +36,7 @@ import {
 } from '@/utils'
 import { useImmer } from 'use-immer'
 import { useNavigation } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import _toString from 'lodash/toString'
 import HomeWgts from '@/pages/home/comps/home-wgts'
 import { WgtsContext } from '@/pages/home/wgts/wgts-context'
@@ -66,6 +67,7 @@ const initState = {
 }
 
 function StoreIndex() {
+  useTranslation()
   const [state, setState] = useImmer(initState)
   const [likeList, setLikeList] = useImmer([])
   const { openRecommend, colorPrimary } = useSelector((state) => state.sys)
@@ -227,7 +229,7 @@ function StoreIndex() {
   const addPurchases = async (id) => {
     let data
     Taro.showLoading({
-      title: '加载中'
+      title: $t('17670153.f013ea')
     })
     const { dtid } = await parameter()
     const itemDetail = await api.item.detail(id, {
@@ -321,7 +323,7 @@ function StoreIndex() {
         draft.open = true
       })
     } else {
-      showToast('购物车暂无数据，请先加购')
+      showToast($t('17670153.a590f1'))
     }
   }
 
@@ -340,7 +342,7 @@ function StoreIndex() {
     <SpPage
       className='page-store-index'
       isDefault={isDefault}
-      defaultMsg='该店铺已注销，在别的店铺看看吧'
+      defaultMsg={$t('17670153.03b176')}
       loading={loading}
       scrollToTopBtn
       ref={pageRef}
@@ -413,13 +415,13 @@ function StoreIndex() {
             className={classNames(productSwitching ? 'switchings' : 'switching')}
             onClick={() => tabbarSwitching(true)}
           >
-            首页
+            {$t('17670153.db1c89')}
           </Text>
           <Text
             className={classNames('switched', productSwitching ? 'switching' : 'switchings')}
             onClick={() => tabbarSwitching(false)}
           >
-            商品分类
+            {$t('17670153.c3ece5')}
           </Text>
         </View>
 

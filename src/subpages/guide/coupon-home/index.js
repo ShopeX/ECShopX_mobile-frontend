@@ -28,6 +28,7 @@ import {
   BaCoupon
 } from '@/subpages/guide/components'
 import { SG_GUIDE_PARAMS } from '@/consts/localstorage'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -35,6 +36,7 @@ const initialState = {
   footerHeight: 0
 }
 function GuideCouponIndex(props) {
+  const { i18n } = useTranslation()
   const { isLogin, login } = useQwLogin({
     autoLogin: true
   })
@@ -55,6 +57,10 @@ function GuideCouponIndex(props) {
       couponRef.current.reset()
     }
   }, [isLogin])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('1370bbc3.643cd0') })
+  }, [i18n.language])
 
   useDidShow(() => {
     Taro.hideShareMenu({

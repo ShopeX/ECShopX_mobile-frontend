@@ -3,15 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import { withTranslation } from 'react-i18next'
+import Taro from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { Loading, SpNavBar } from '@/components'
 import { AtAvatar, AtButton } from 'taro-ui'
+import { $t } from '@/i18n'
 import api from '@/api'
 import ComplaintRecordItem from './comps/complaint-record-item'
 import './complaint-record.scss'
 
-export default class ComplaintRecord extends Component {
+class ComplaintRecord extends Component {
   constructor(props) {
     super(props)
 
@@ -33,8 +35,6 @@ export default class ComplaintRecord extends Component {
    * */
   async getSalesperson() {
     let info = await api.member.getSalesperson()
-
-    console.log('res', info)
 
     this.setState({ info })
   }
@@ -76,7 +76,7 @@ export default class ComplaintRecord extends Component {
 
     return (
       <View className='page-complaint-record'>
-        <SpNavBar title='投诉记录' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('13af5909.c21f36')} leftIconType='chevron-left' fixed='true' />
         <View className='pege-header'>
           <View className='pege-header__avatar'>
             <AtAvatar image={info.avatar} size='normal' circle />
@@ -97,7 +97,7 @@ export default class ComplaintRecord extends Component {
                 type='primary'
                 size='small'
               >
-                投诉
+                {$t('13af5909.e19d1d')}
               </AtButton>
             </View>
           </View>
@@ -132,3 +132,5 @@ export default class ComplaintRecord extends Component {
     )
   }
 }
+
+export default withTranslation()(ComplaintRecord)

@@ -11,6 +11,7 @@ import { SpImage } from '@/components'
 import api from '@/api'
 import { classNames, styleNames, navigateTo } from '@/utils'
 import { useLogin } from '@/hooks'
+import { $t, ti, useTranslation } from '@/i18n'
 
 import './index.scss'
 
@@ -21,7 +22,8 @@ const initState = {
 }
 
 function SpPrivacyModal(props) {
-  const { login, updatePolicyTime, getUserInfoAuth } = useLogin()
+  useTranslation()
+  const { updatePolicyTime } = useLogin()
   const { open = false, reject, onCancel = () => {}, onConfirm = () => {} } = props
   const [info, setInfo] = useImmer(initState)
   useEffect(() => {
@@ -60,49 +62,53 @@ function SpPrivacyModal(props) {
     <View className={classNames('sp-float-privacy', { 'sp-float-privacy__active': open })}>
       <View className='sp-float-privacy__overlay'></View>
       <View className='sp-float-privacy__wrap'>
-        <View className='privacy-hd'>个人隐私保护指引</View>
+        <View className='privacy-hd'>{$t('ed40c676.5a98bd')}</View>
         {!reject && (
           <View className='privacy-bd'>
-            为了更好的保障你的个人信息安全及权利行使，并允许我们在必要场景下，合理使用你的个人信息，并充分保障你的合法权，请仔细阅读并理解
-            <Text
-              className='privacy-txt'
-              onClick={handleClickPrivacy.bind(this, 'member_register')}
-            >
-              《{info?.member_register}》
+            <Text>
+              {$t('a6c07484.27b596')}
+              <Text
+                className='privacy-txt'
+                onClick={handleClickPrivacy.bind(this, 'member_register')}
+              >
+                《{info?.member_register}》
+              </Text>
+              {$t('a6c07484.ab20cc')}
+              <Text className='privacy-txt' onClick={handleClickPrivacy.bind(this, 'privacy')}>
+                《{info.privacy}》
+              </Text>
+              {$t('a6c07484.ccd6fb')}
             </Text>
-            和
-            <Text className='privacy-txt' onClick={handleClickPrivacy.bind(this, 'privacy')}>
-              《{info.privacy}》
-            </Text>
-            的内容。
           </View>
         )}
         {reject && (
           <View className='privacy-bd'>
-            你拒绝了{info?.member_register}和{info.privacy}，我们将无法为您提供相应的服务。请同意
-            <Text
-              className='privacy-txt'
-              onClick={handleClickPrivacy.bind(this, 'member_register')}
-            >
-              《{info?.member_register}》
+            <Text>
+              {ti('a6c07484.13ba83', [info?.member_register || '', info?.privacy || ''])}
+              <Text
+                className='privacy-txt'
+                onClick={handleClickPrivacy.bind(this, 'member_register')}
+              >
+                《{info?.member_register}》
+              </Text>
+              {$t('a6c07484.ab20cc')}
+              <Text className='privacy-txt' onClick={handleClickPrivacy.bind(this, 'privacy')}>
+                《{info.privacy}》
+              </Text>
+              {$t('a6c07484.70ec5c')}
             </Text>
-            和
-            <Text className='privacy-txt' onClick={handleClickPrivacy.bind(this, 'privacy')}>
-              《{info.privacy}》
-            </Text>
-            以便我们为你提供更优质的服务！如果你拒绝可自行退出。
           </View>
         )}
         {!reject && (
           <View className='privacy-ft'>
             <View className='btn-wrap'>
               <AtButton onClick={handleCancel} className='close'>
-                拒绝
+                {$t('7c40f12d.7173f8')}
               </AtButton>
             </View>
             <View className='btn-wrap'>
               <AtButton className='allow' onClick={handleConfirm}>
-                允许
+                {$t('7c40f12d.e6a5c3')}
               </AtButton>
             </View>
           </View>
@@ -111,7 +117,7 @@ function SpPrivacyModal(props) {
           <View className='privacy-ft'>
             <View className='btn-wrap'>
               <AtButton className='allow' onClick={handleConfirm}>
-                同意并继续
+                {$t('a6c07484.4f7259')}
               </AtButton>
             </View>
           </View>

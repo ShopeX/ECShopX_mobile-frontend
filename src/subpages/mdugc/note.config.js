@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '编辑笔记'
+  navigationBarTitleText: ''
   // navigationStyle: 'custom'
 }

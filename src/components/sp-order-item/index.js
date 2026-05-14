@@ -7,9 +7,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image } from '@tarojs/components'
 import { SpPage, SpPrice, SpImage, SpPoint } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 function SpOrderItem(props) {
+  useTranslation()
   const {
     payType = '',
     showExtra = true,
@@ -38,7 +40,9 @@ function SpOrderItem(props) {
       return (
         <View className='sp-order-item__extra'>
           <Text className='sp-order-item__desc'>{info.goods_props}</Text>
-          {info.num && <Text className='sp-order-item__num'>数量：{info.num}</Text>}
+          {info.num && (
+            <Text className='sp-order-item__num'>{ti('08059c3f.43ebc8', [info.num])}</Text>
+          )}
           {info.item_spec_desc && (
             <Text className='sp-order-item__desc'>{info.item_spec_desc}</Text>
           )}
@@ -60,12 +64,14 @@ function SpOrderItem(props) {
         {/* {isShowPointTag && <SpPoint />} */}
         <View className='sp-order-item__title'>
           {info.order_item_type === 'plus_buy' && (
-            <Text className='sp-order-item__title-tag'>换购</Text>
+            <Text className='sp-order-item__title-tag'>{$t('08059c3f.1687b1')}</Text>
           )}
           {info.order_item_type === 'gift' && (
-            <Text className='sp-order-item__title-tag'>赠品</Text>
+            <Text className='sp-order-item__title-tag'>{$t('08059c3f.d017cc')}</Text>
           )}
-          {info.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
+          {info.isPrescription == 1 && (
+            <Text className='prescription-drug'>{$t('08059c3f.e8b7e1')}</Text>
+          )}
           {info.title}
         </View>
         {showDesc && info.item_spec_desc && (
@@ -91,7 +97,9 @@ function SpOrderItem(props) {
               {isPurchase && (
                 <View className='sp-order-item__pruchase'>
                   <View className='sp-order-item__pruchase-price'>
-                    <Text className='sp-order-item__pruchase-price-label'>优惠后</Text>
+                    <Text className='sp-order-item__pruchase-price-label'>
+                      {$t('08059c3f.3da735')}
+                    </Text>
                     <SpPrice value={info.price}></SpPrice>
                   </View>
                   <View className='sp-order-item__pruchase-sprice'>¥{info.salePrice}</View>

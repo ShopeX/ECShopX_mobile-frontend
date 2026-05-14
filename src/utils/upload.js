@@ -7,6 +7,7 @@ import req from '@/api/req'
 import S from '@/spx'
 import { SG_TOKEN } from '@/consts/localstorage'
 import { isAlipay, getAppId, exceedLimit, isWeixin, isWeb } from '@/utils'
+import { $t } from '@/i18n'
 // import COS from './cos'
 import { reject } from 'lodash'
 // import * as qiniu from 'qiniu-js'
@@ -297,7 +298,7 @@ const uploadImageFn = async (imgFiles, filetype = 'image', uploadOptions = {}) =
     }
     if (exceedLimit(item.file)) {
       Taro.showToast({
-        title: '文件大小超出最大限制，请压缩后再上传',
+        title: $t('8af87c0c.805896'),
         icon: 'none'
       })
       break

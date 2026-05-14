@@ -9,11 +9,13 @@ import { connect } from 'react-redux'
 import { AtFloatLayout } from 'taro-ui'
 import { SpCheckbox } from '@/components'
 import api from '@/api'
-import { customName } from '@/utils/point'
+import { DEFAULT_POINT_NAME } from '@/consts'
+import { $t, ti, i18n } from '@/i18n'
 import './payment-picker.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
+@connect(({ colors, sys }) => ({
+  colors: colors.current,
+  pointName: sys.pointName
 }))
 export default class PaymentPicker extends Component {
   static defaultProps = {
@@ -31,7 +33,15 @@ export default class PaymentPicker extends Component {
     }
   }
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     this.fatch()
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.type !== this.props.type) {
@@ -87,7 +97,8 @@ export default class PaymentPicker extends Component {
       colors,
       isShowPoint = true,
       isShowBalance = true,
-      isShowDelivery = true
+      isShowDelivery = true,
+      pointName
     } = this.props
     const { localType, typeList } = this.state
 
@@ -95,7 +106,7 @@ export default class PaymentPicker extends Component {
       <AtFloatLayout isOpened={isOpened}>
         <View className='payment-picker'>
           <View className='payment-picker__hd'>
-            <Text>支付方式</Text>
+            <Text>{$t('250b375e.0c9d2b')}</Text>
             <View className='at-icon at-icon-close' onClick={this.handleCancel}></View>
           </View>
           <View className='payment-picker__bd'>
@@ -107,11 +118,13 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>{customName('积分支付')}</Text>
+                  <Text className='payment-item__title'>
+                    {ti('f74b9eea.717604', [pointName || DEFAULT_POINT_NAME()])}
+                  </Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['point']
                       ? disabledPayment['point']
-                      : customName('使用积分支付')}
+                      : ti('f74b9eea.381488', [pointName || DEFAULT_POINT_NAME()])}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -131,11 +144,11 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'deposit')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>余额支付</Text>
+                  <Text className='payment-item__title'>{$t('f74b9eea.89ac23')}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['deposit']
                       ? disabledPayment['deposit']
-                      : '使用余额支付'}
+                      : $t('f74b9eea.e2b46a')}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -155,11 +168,11 @@ export default class PaymentPicker extends Component {
                 onClick={this.handlePaymentChange.bind(this, 'delivery')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__title'>{$t('f74b9eea.2d2ccd')}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['delivery']
                       ? disabledPayment.message
-                      : '货到付款'}
+                      : $t('f74b9eea.2d2ccd')}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -172,15 +185,18 @@ export default class PaymentPicker extends Component {
               </View>
             )}
 
-            {typeList.map((item) => {
+            {typeList.map((item, index) => {
               return (
                 <View
+                  key={index}
                   className='payment-item no-border'
                   onClick={this.handlePaymentChange.bind(this, item.pay_type_code)}
                 >
                   <View className='payment-item__bd'>
                     <Text className='payment-item__title'>{item.pay_type_name}</Text>
-                    <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                    <Text className='payment-item__desc'>
+                      {ti('f74b9eea.7f2392', [item.pay_type_name])}
+                    </Text>
                   </View>
                   <View className='payment-item__ft'>
                     <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox>
@@ -196,7 +212,7 @@ export default class PaymentPicker extends Component {
             loading={loading}
             onClick={this.handleChange.bind(this, localType)}
           >
-            确定
+            {$t('f74b9eea.38cf16')}
           </Button>
         </View>
       </AtFloatLayout>

@@ -5,14 +5,23 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import { View, Text, Image } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { SpTime, SpCustomPicker } from '@/subpages/components'
 import { classNames } from '@/utils'
 import { useSyncCallback } from '@/hooks'
+import { useTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './comp-ranking.scss'
+
+const RANK_TYPE_KEYS = {
+  all: '8a819f4f.7ec9b5',
+  lv1: '8a819f4f.f5f0ad',
+  lv2: '8a819f4f.5a4b1d'
+}
+
+const SELECTOR_DEF = [{ value: 'all' }, { value: 'lv1' }, { value: 'lv2' }]
 
 const initialState = {
   list: [],
@@ -20,18 +29,14 @@ const initialState = {
   total_count: 0,
   datas: '',
   datasType: 0,
-  customName: '全部业绩排行',
   customValue: 'all',
-  selector: [
-    { label: '全部业绩排行', value: 'all' },
-    { label: '直推业绩排行', value: 'lv1' },
-    { label: '间推业绩排行', value: 'lv2' }
-  ]
+  selector: SELECTOR_DEF
 }
 
 function CompRanking(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { list, total_count, datas, datasType, valList, customName, customValue, selector } = state
+  const { list, total_count, datas, datasType, valList, customValue, selector } = state
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
 
@@ -93,11 +98,15 @@ function CompRanking(props) {
 
   const cancel = (index, val) => {
     setState((draft) => {
-      draft.customName = val.label
       draft.customValue = val.value
     })
     console.log(index, val)
   }
+
+  const selectorForUi = selector.map((row) => ({
+    ...row,
+    label: $t(RANK_TYPE_KEYS[row.value])
+  }))
 
   return (
     <View className='page-dianwu-comp-ranking'>
@@ -105,16 +114,21 @@ function CompRanking(props) {
         <View className='comp-ranking-table'>
           <SpTime onTimeChange={onTimeChange} />
           <View className='comp-ranking-table-custom'>
-            <SpCustomPicker customStatus id={customValue} cancel={cancel} selector={selector} />
+            <SpCustomPicker
+              customStatus
+              id={customValue}
+              cancel={cancel}
+              selector={selectorForUi}
+            />
           </View>
         </View>
         <View className='comp-ranking-list'>
           <View className='comp-ranking-list-item comp-ranking-list-title'>
-            <Text>排名</Text>
-            <Text>业务员</Text>
-            <Text>订单额(元)</Text>
-            <Text>业务订单量(单)</Text>
-            <Text>业务费用(元)</Text>
+            <Text>{$t('8a819f4f.a4dc00')}</Text>
+            <Text>{$t('8a819f4f.808d6c')}</Text>
+            <Text>{$t('8a819f4f.eac5dc')}</Text>
+            <Text>{$t('8a819f4f.c5bcdc')}</Text>
+            <Text>{$t('8a819f4f.23db6c')}</Text>
           </View>
           {list.map((item, index) => {
             return (
@@ -143,14 +157,14 @@ function CompRanking(props) {
                 })
               }}
             >
-              <Text>展开更多</Text>
+              <Text>{$t('8a819f4f.311f6d')}</Text>
               <Text className='iconfont icon-arrowDown'></Text>
             </View>
           )}
         </View>
       </View>
 
-      {total_count - list.length <= 0 && <View className='end'>--没有更多数据了--</View>}
+      {total_count - list.length <= 0 && <View className='end'>{$t('8a819f4f.a25652')}</View>}
     </View>
   )
 }

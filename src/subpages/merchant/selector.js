@@ -12,8 +12,9 @@ import { useSelector, useDispatch } from 'react-redux'
 import { updateMerchantType, updateBusinessScope, updateBank } from '@/store/slices/merchant'
 import { useImmer } from 'use-immer'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { MNavBar, MCell } from './comps'
-import { MERCHANT_TYPE, BANG_NAME, PLACEHOLDER_SELECTOR, BUSINESS_SCOPE } from './consts'
+import { MERCHANT_TYPE, BANG_NAME, PLACEHOLDER_SELECTOR_KEY, BUSINESS_SCOPE } from './consts'
 import { setMerchant, splitMatch } from './util'
 import './selector.scss'
 
@@ -25,6 +26,7 @@ const initialState = {
 }
 
 const Selector = () => {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const dispatch = useDispatch()
   const selectsRef = useRef()
@@ -133,7 +135,7 @@ const Selector = () => {
   const renderEmpty = (
     <View className='render-empty'>
       <SpImage src='empty_goods.png' />
-      <View className='title'>暂无可选项～</View>
+      <View className='title'>{$t('93c6df11.e06442')}</View>
     </View>
   )
   const { list, name, searchingName } = state
@@ -162,7 +164,7 @@ const Selector = () => {
         <SpSearchBar
           keyword={name}
           className='sp-page-selector-input'
-          placeholder={PLACEHOLDER_SELECTOR[type]}
+          placeholder={$t(PLACEHOLDER_SELECTOR_KEY[type])}
           onConfirm={handleConfirm}
           onCancel={handleSearchOff}
           onClear={handleOnClear}

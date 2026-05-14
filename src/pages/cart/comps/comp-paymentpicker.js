@@ -10,10 +10,12 @@ import { isWeixin, VERSION_STANDARD } from '@/utils'
 import getPaymentList from '@/utils/payment'
 import { SpCheckbox, SpCell, SpFloatLayout } from '@/components'
 import { View, Text, Button } from '@tarojs/components'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import './comp-paymentpicker.scss'
 
 function CompPaymentPicker(props) {
+  useTranslation()
   const {
     type = '',
     distributor_id,
@@ -22,12 +24,14 @@ function CompPaymentPicker(props) {
     isPointitemGood = false,
     isShowBalance = true,
     disabledPayment = null,
-    title = '支付方式',
+    title: titleProp,
     isOpened = false,
     onChange = () => {},
     onClose = () => {},
     onInitDefaultPayType = () => {}
   } = props
+
+  const title = titleProp ?? $t('250b375e.0c9d2b')
 
   const { colorPrimary, pointName } = useSelector((state) => state.sys)
 
@@ -96,7 +100,7 @@ function CompPaymentPicker(props) {
             className='at-button--primary'
             onClick={handleChange.bind(this, localType)}
           >
-            确定
+            {$t('349e8d9f.38cf16')}
           </AtButton>
         }
       >
@@ -113,11 +117,11 @@ function CompPaymentPicker(props) {
                 onClick={handlePaymentChange.bind(this, 'point')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>{`${pointName}支付`}</Text>
+                  <Text className='payment-item__title'>{ti('349e8d9f.717604', [pointName])}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['point']
                       ? disabledPayment['point']
-                      : `使用${pointName}支付`}
+                      : ti('349e8d9f.381488', [pointName])}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -161,11 +165,11 @@ function CompPaymentPicker(props) {
                 onClick={handlePaymentChange.bind(this, 'delivery')}
               >
                 <View className='payment-item__bd'>
-                  <Text className='payment-item__title'>货到付款</Text>
+                  <Text className='payment-item__title'>{$t('349e8d9f.2d2ccd')}</Text>
                   <Text className='payment-item__desc'>
                     {disabledPayment && disabledPayment['delivery']
                       ? disabledPayment.message
-                      : '货到付款'}
+                      : $t('349e8d9f.2d2ccd')}
                   </Text>
                 </View>
                 <View className='payment-item__ft'>
@@ -187,7 +191,9 @@ function CompPaymentPicker(props) {
                 >
                   <View className='payment-item__bd'>
                     <Text className='payment-item__title'>{item.pay_type_name}</Text>
-                    <Text className='payment-item__desc'>使用{item.pay_type_name}</Text>
+                    <Text className='payment-item__desc'>
+                      {ti('349e8d9f.7f2392', [item.pay_type_name])}
+                    </Text>
                   </View>
                   <View className='payment-item__ft'>
                     <SpCheckbox checked={localType === item.pay_type_code}></SpCheckbox>

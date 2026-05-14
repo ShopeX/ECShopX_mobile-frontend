@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Button } from '@tarojs/components'
 import { REFUND_STATUS } from '@/consts'
@@ -10,9 +11,23 @@ import { formatTime, isWeb } from '@/utils'
 import { Loading, SpHtml } from '@/components'
 import { FloatMenuMeiQia } from '@/subpages/components'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import './refund-detail.scss'
 
-export default class TradeRefundDetail extends Component {
+const REFUND_DETAIL_STATUS_KEYS = [
+  'a2ba615a.d89d86',
+  'a2ba615a.b276ad',
+  'a2ba615a.6b28d0',
+  'a2ba615a.df5eee',
+  'a2ba615a.529daf',
+  'a2ba615a.771b8b',
+  'a2ba615a.714e43',
+  'a2ba615a.1c0852',
+  'a2ba615a.74759b',
+  'a2ba615a.73ce8f'
+]
+
+class TradeRefundDetail extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -103,21 +118,7 @@ export default class TradeRefundDetail extends Component {
     const meiqia = Taro.getStorageSync('meiqia')
     const echat = Taro.getStorageSync('echat')
 
-    // 状态
-    const statusList = [
-      '等待商家处理',
-      '商家接受申请，等待消费者回寄',
-      '消费者回寄，等待商家收货确认',
-      '售后已驳回',
-      '售后已处理',
-      '退款驳回',
-      '退款已处理',
-      '售后关闭',
-      '商家确认收货',
-      '退款处理中'
-    ]
-
-    const status = progress >= 0 && progress <= 9 ? statusList[progress] : ''
+    const status = progress >= 0 && progress <= 9 ? $t(REFUND_DETAIL_STATUS_KEYS[progress]) : ''
 
     if (!info) {
       return <Loading />
@@ -133,21 +134,21 @@ export default class TradeRefundDetail extends Component {
               {info.aftersales_address.aftersales_address ? (
                 <View className='contact'>
                   <View className='site'>
-                    寄回地址: {info.aftersales_address.aftersales_address}
+                    {ti('a2ba615a.00fe37', [info.aftersales_address.aftersales_address])}
                   </View>
                   <View className='copy' onClick={this.onCopy}>
                     {' '}
-                    复制
+                    {$t('a2ba615a.79d3ab')}
                   </View>
                 </View>
               ) : (
-                <View className='address'>寄回地址: 请联系客服</View>
+                <View className='address'>{$t('a2ba615a.516643')}</View>
               )}
 
               {info.aftersales_address.aftersales_address && (
                 <View className='contact'>
-                  <View>收件人: {info.aftersales_address.aftersales_contact}</View>
-                  <View>联系方式: {info.aftersales_address.aftersales_mobile}</View>
+                  <View>{ti('a2ba615a.0773f6', [info.aftersales_address.aftersales_contact])}</View>
+                  <View>{ti('a2ba615a.b5e3f6', [info.aftersales_address.aftersales_mobile])}</View>
                 </View>
               )}
             </View>
@@ -155,10 +156,10 @@ export default class TradeRefundDetail extends Component {
         </View>
         <View className='refund-detail'>
           {progress == 0 ? (
-            <Text className='refund-detail__title'>您已成功发起售后申请，请耐心等待商家处理</Text>
+            <Text className='refund-detail__title'>{$t('a2ba615a.538bb2')}</Text>
           ) : null}
           {progress == 7 ? (
-            <Text className='refund-detail__title'>您已成功撤销本次退款申请</Text>
+            <Text className='refund-detail__title'>{$t('a2ba615a.c93711')}</Text>
           ) : null}
           <Text className='refund-detail__descr'>{info.description || ''}</Text>
           {progress == 0 ? (
@@ -168,7 +169,7 @@ export default class TradeRefundDetail extends Component {
                 className='refund-detail__btn refund-detail__cancel'
                 onClick={this.handleBtnClick.bind(this, 'cancel')}
               >
-                撤销申请
+                {$t('a2ba615a.eaffc1')}
               </Text>
             </View>
           ) : null}
@@ -186,13 +187,13 @@ export default class TradeRefundDetail extends Component {
                 className='refund-detail__btn'
                 onClick={this.handleBtnClick.bind(this, 'refund_send')}
               >
-                填写物流信息
+                {$t('a2ba615a.f33f84')}
               </Text>
               <Text
                 className='refund-detail__btn refund-detail__cancel'
                 onClick={this.handleBtnClick.bind(this, 'cancel')}
               >
-                撤销申请
+                {$t('a2ba615a.eaffc1')}
               </Text>
             </View>
           ) : null}
@@ -212,34 +213,41 @@ export default class TradeRefundDetail extends Component {
         </View>*/}
         <View className='refund-detail-info'>
           <View className='info-name'>
-            退款原因：<Text className='info-value'>{info.reason}</Text>
+            {$t('a2ba615a.b2b6cd')}
+            <Text className='info-value'>{info.reason}</Text>
           </View>
           <View className='info-name'>
-            申请时间：<Text className='info-value'>{info.creat_time_str}</Text>
+            {$t('a2ba615a.402d96')}
+            <Text className='info-value'>{info.creat_time_str}</Text>
           </View>
           <View className='info-name'>
-            退款编号：<Text className='info-value'>{info.aftersales_bn}</Text>
+            {$t('a2ba615a.fa26c2')}
+            <Text className='info-value'>{info.aftersales_bn}</Text>
           </View>
           {info.refuse_reason && (
             <View className='info-name'>
-              驳回原因：<Text className='info-value'>{info.refuse_reason}</Text>
+              {$t('a2ba615a.2ece94')}
+              <Text className='info-value'>{info.refuse_reason}</Text>
             </View>
           )}
           {progress === 1 ? (
             <View>
               {aftersalesAddress.contact ? (
                 <View className='info-name'>
-                  售后联系人：<Text className='info-value'>{aftersalesAddress.contact}</Text>
+                  {$t('a2ba615a.4cce06')}
+                  <Text className='info-value'>{aftersalesAddress.contact}</Text>
                 </View>
               ) : null}
               {aftersalesAddress.mobile ? (
                 <View className='info-name'>
-                  售后电话：<Text className='info-value'>{aftersalesAddress.mobile}</Text>
+                  {$t('a2ba615a.829cd2')}
+                  <Text className='info-value'>{aftersalesAddress.mobile}</Text>
                 </View>
               ) : null}
               {aftersalesAddress.address ? (
                 <View className='info-name'>
-                  售后地址：<Text className='info-value'>{aftersalesAddress.address}</Text>
+                  {$t('a2ba615a.df89a7')}
+                  <Text className='info-value'>{aftersalesAddress.address}</Text>
                 </View>
               ) : null}
             </View>
@@ -247,7 +255,7 @@ export default class TradeRefundDetail extends Component {
         </View>
         {remind && remind.is_open && (
           <View className='remind-wrap'>
-            <Text className='biao-icon biao-icon-tishi'> 售后提醒</Text>
+            <Text className='biao-icon biao-icon-tishi'> {$t('a2ba615a.be1476')}</Text>
 
             <View className='remind-text'>
               <SpHtml className='goods-detail__content' content={remind.intro} />
@@ -260,11 +268,11 @@ export default class TradeRefundDetail extends Component {
             info={{ orderId: info.order_id }}
             isFloat={false}
           >
-            <Button className='refund-detail-btn'>联系客服</Button>
+            <Button className='refund-detail-btn'>{$t('a2ba615a.b66060')}</Button>
           </FloatMenuMeiQia>
         ) : (
           <Button openType='contact' className='refund-detail-btn'>
-            联系客服
+            {$t('a2ba615a.b66060')}
           </Button>
         )}
         {/*
@@ -339,3 +347,5 @@ export default class TradeRefundDetail extends Component {
     )
   }
 }
+
+export default withTranslation()(TradeRefundDetail)

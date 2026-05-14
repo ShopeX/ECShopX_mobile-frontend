@@ -3,30 +3,39 @@
  * See LICENSE file for license details.
  */
 import { useSelector } from 'react-redux'
-import React, { useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { usePullDownRefresh, useRouter } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { SpPage, SpScrollView, SpImage } from '@/components'
 import { SpTagBar } from '@/subpages/components'
-import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { useTranslation, $t } from '@/i18n'
 
 import './follow-fans.scss'
 
+const TAG_META = [
+  { tag_id: 1, tag_type: 'follower' },
+  { tag_id: 2, tag_type: 'user' }
+]
+
 const initialState = {
-  filterList: [
-    { tag_id: 1, tag_name: '关注', tag_type: 'follower' },
-    { tag_id: 2, tag_name: '粉丝', tag_type: 'user' }
-  ],
   curFilterIndex: -1,
   followlist: [],
   type: ''
 }
 
 function UgcFollowFans() {
+  const { i18n } = useTranslation()
+  const filterList = useMemo(
+    () => [
+      { ...TAG_META[0], tag_name: $t('85509bfd.4c0a3a') },
+      { ...TAG_META[1], tag_name: $t('85509bfd.1c173c') }
+    ],
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
-  const { filterList, curFilterIndex, followlist, type } = state
+  const { curFilterIndex, followlist, type } = state
   const { userInfo = {} } = useSelector((state) => state.user)
   const { params } = useRouter()
   const user_id = params.user_id ? params.user_id : userInfo.user_id
@@ -67,14 +76,17 @@ function UgcFollowFans() {
     return { total: total || 0 }
   }
 
-  const onChangeFilter = useCallback((index) => {
-    console.log(index)
-    setState((draft) => {
-      draft.type = filterList[index].tag_type
-      draft.curFilterIndex = index
-      draft.followlist = []
-    })
-  })
+  const onChangeFilter = useCallback(
+    (index) => {
+      console.log(index)
+      setState((draft) => {
+        draft.type = filterList[index].tag_type
+        draft.curFilterIndex = index
+        draft.followlist = []
+      })
+    },
+    [filterList, setState]
+  )
 
   // 关注|取消关注
   const followercreate = async (e, i) => {
@@ -91,7 +103,7 @@ function UgcFollowFans() {
       item.mutal_follow = 0
       Taro.showToast({
         icon: 'none',
-        title: '取消关注'
+        title: $t('85509bfd.92bdc8')
       })
     } else if (res.action == 'follow') {
       console.log(item.mutal_follow)
@@ -99,7 +111,7 @@ function UgcFollowFans() {
       item.mutal_follow = 1
       Taro.showToast({
         icon: 'none',
-        title: '关注成功'
+        title: $t('85509bfd.60fa97')
       })
     }
     setState((draft) => {
@@ -135,12 +147,12 @@ function UgcFollowFans() {
               <View className='item-ft' onClick={(e) => followercreate(e, index)}>
                 {item.mutal_follow == 0 ? (
                   type == 'user' ? (
-                    <View className='item-ft__r active'>+关注</View>
+                    <View className='item-ft__r active'>{$t('85509bfd.9b5b8a')}</View>
                   ) : (
-                    <View className='item-ft__r'>已关注</View>
+                    <View className='item-ft__r'>{$t('85509bfd.f4f380')}</View>
                   )
                 ) : (
-                  <View className='item-ft__r'>互相关注</View>
+                  <View className='item-ft__r'>{$t('85509bfd.4856be')}</View>
                 )}
               </View>
             </View>

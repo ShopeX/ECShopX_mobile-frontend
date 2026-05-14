@@ -4,6 +4,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
+import { $t } from '@/i18n'
 import { getExtConfigData } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
@@ -136,7 +137,7 @@ class GuideGoodsDetailPoster {
         y: this.canvasImgHeight + 88,
         fontSize: 22,
         color: '#999',
-        text: '推荐一个好物给你'
+        text: $t('f0680d92.b1e080')
       },
       drawOptions
     )
@@ -203,7 +204,7 @@ class GuideGoodsDetailPoster {
         fontSize: 18,
         // width: this.canvasImgWidth - 60 - this.miniCodeHeight,
         color: '#999',
-        text: '长按或扫描查看'
+        text: $t('f0680d92.61e823')
       },
       drawOptions
     )

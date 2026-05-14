@@ -4,6 +4,7 @@
  */
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit'
 import { showToast } from '@/utils'
+import { $t } from '@/i18n'
 import api from '@/api'
 
 const initialState = {
@@ -16,11 +17,15 @@ const initialState = {
   cartCount: 0,
   hasValidIdentity: true,
   curEnterpriseId: null,
+  curEnterpriseName: '',
   priceDisplayConfig: {},
   isDiscountDescriptionEnabled: false,
   discountDescription: '',
   curDistributorId: null,
-  persist_purchase_share_info: {} //持久化存储最近一次活动，用于内购会员中心额度和分享
+  curEnterpriseLogo: '',
+  persist_purchase_share_info: {}, //持久化存储最近一次活动，用于内购会员中心额度和分享
+  curActivityInfo: {}, //当前活动信息 
+  isPasscodeLogin: false, //是否是口令通道登录
 }
 
 export const fetchCartList = createAsyncThunk('purchase/fetchCartList', async (params) => {
@@ -33,7 +38,7 @@ export const fetchCartList = createAsyncThunk('purchase/fetchCartList', async (p
 
 export const addCart = createAsyncThunk('purchase/addCart', async (params) => {
   await api.purchase.addPurchaseCart(params)
-  showToast('成功加入购物车')
+  showToast($t('95f75a3d.ab91e4'))
 })
 
 export const deleteCartItem = createAsyncThunk('purchase/deleteCartItem', async (params) => {
@@ -54,9 +59,6 @@ const purchaseSlice = createSlice({
   name: 'purchase',
   initialState,
   reducers: {
-    updatePurchaseTabbar: (state, { payload }) => {
-      state.tabbar = payload.tabbar
-    },
     updatePurchaseShareInfo: (state, { payload = {} }) => {
       state.purchase_share_info = payload
     },
@@ -78,6 +80,9 @@ const purchaseSlice = createSlice({
     updateEnterpriseId: (state, { payload = '' }) => {
       state.curEnterpriseId = payload
     },
+    updateCurEnterpriseName: (state, { payload = '' }) => {
+      state.curEnterpriseName = payload
+    },
     updateActivityInfo: (state, { payload }) => {
       const { priceDisplayConfig, isDiscountDescriptionEnabled, discountDescription } = payload
       state.priceDisplayConfig = priceDisplayConfig
@@ -89,6 +94,15 @@ const purchaseSlice = createSlice({
     },
     updateIsOpenPurchase: (state, { payload = false }) => {
       state.isOpen = payload
+    },
+    updateEnterpriselogo: (state, { payload = '' }) => {
+      state.curEnterpriseLogo = payload
+    },
+    updateCurActivityInfo: (state, { payload = {} }) => {
+      state.curActivityInfo = payload
+    },
+    updateIsPasscodeLogin: (state, { payload = false }) => {
+      state.isPasscodeLogin = payload
     }
   },
   extraReducers: (builder) => {
@@ -106,7 +120,6 @@ const purchaseSlice = createSlice({
 })
 
 export const {
-  updatePurchaseTabbar,
   updatePurchaseShareInfo,
   updateInviteCode,
   purchaseClearCart,
@@ -115,7 +128,11 @@ export const {
   updateActivityInfo,
   updateCurDistributorId,
   updateIsOpenPurchase,
-  updatePersistPurchaseShareInfo
+  updatePersistPurchaseShareInfo,
+  updateCurEnterpriseName,
+  updateEnterpriselogo,
+  updateCurActivityInfo,
+  updateIsPasscodeLogin
 } = purchaseSlice.actions
 
 export default purchaseSlice.reducer

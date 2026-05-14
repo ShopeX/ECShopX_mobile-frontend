@@ -14,8 +14,20 @@ import S from '@/spx'
 
 import { classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE, isWeixin } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
+import { $t } from '@/i18n'
 
 import './index.scss'
+
+const PROMOTION_TAG_KEY = {
+  single_group: '2bb1a4ab.f47464',
+  full_minus: '2bb1a4ab.94b1fd',
+  full_discount: '2bb1a4ab.1c120b',
+  full_gift: '2bb1a4ab.8e2405',
+  normal: '2bb1a4ab.55c758',
+  limited_time_sale: '2bb1a4ab.a0aaca',
+  plus_price_buy: '2bb1a4ab.54e654',
+  member_preference: '2bb1a4ab.ef977e'
+}
 
 const $instance = Taro.getCurrentInstance()
 
@@ -86,7 +98,7 @@ function SpGoodsItem(props) {
     await dispatch(fetchUserFavs())
     console.log('fav', fav)
     if (S.getAuthToken()) {
-      showToast(fav ? '已移出收藏' : '已加入收藏')
+      showToast(fav ? $t('21544271.b46077') : $t('21544271.151286'))
     }
   }
 
@@ -154,7 +166,9 @@ function SpGoodsItem(props) {
 
         <View className='goods-info'>
           <View className='goods-title'>
-            {info?.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
+            {info?.isPrescription == 1 && (
+              <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
+            )}
             {info.itemName}
           </View>
           <View className='goods-desc'>{info.brief}</View>
@@ -165,7 +179,9 @@ function SpGoodsItem(props) {
           <View className='promotions'>
             {info.promotion.map((item, index) => (
               <Text className='promotion-tag' key={`promotion-tag__${index}`}>
-                {PROMOTION_TAG()[item.tag_type]}
+                {PROMOTION_TAG_KEY[item.tag_type]
+                  ? $t(PROMOTION_TAG_KEY[item.tag_type])
+                  : PROMOTION_TAG()[item.tag_type]}
               </Text>
             ))}
           </View>
@@ -190,7 +206,7 @@ function SpGoodsItem(props) {
                   {info.memberPrice < info.price && enMemberPrice && (
                     <View className='vip-price'>
                       <SpPrice value={info.memberPrice} />
-                      <SpVipLabel content='会员价' type='member' />
+                      <SpVipLabel content={$t('d59e9e9d.8fdd6f')} type='member' />
                     </View>
                   )}
 
@@ -223,7 +239,7 @@ function SpGoodsItem(props) {
                     {info.activityPrice && enPurActivityPrice ? (
                       <View className='act-price-wrap'>
                         <SpPrice value={info.activityPrice} className='act-price' symbol='¥' />
-                        <SpPrice size={24} value={info.price} noSymbol lineThrough />
+                        <SpPrice size={24} value={info.price} lineThrough symbol='¥' />
                       </View>
                     ) : (
                       enPurActivityPrice && <SpPrice size={36} value={info.price} />
@@ -269,7 +285,11 @@ function SpGoodsItem(props) {
               ''
             )}
 
-            {info.point && info.point > 0 ? <View className='btn-exchange'>兑换</View> : ''}
+            {info.point && info.point > 0 ? (
+              <View className='btn-exchange'>{$t('af2f86f4.774e17')}</View>
+            ) : (
+              ''
+            )}
           </View>
         </View>
 

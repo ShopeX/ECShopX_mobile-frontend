@@ -2,24 +2,21 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { getCurrentInstance, useRouter } from '@tarojs/taro'
-import React, { useCallback, useState, useEffect, useRef } from 'react'
-import { useImmer } from 'use-immer'
-import { View, Text, ScrollView, Image, Input, Picker } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
+import Taro, { useRouter } from '@tarojs/taro'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { View, Text } from '@tarojs/components'
 import { useLogin, useModal } from '@/hooks'
 import api from '@/api'
-import { classNames, showToast, VERSION_IN_PURCHASE, getDistributorId, isWeb } from '@/utils'
+import { classNames, showToast, getDistributorId, isWeb } from '@/utils'
 import qs from 'qs'
 import { updateEnterpriseId, updateCurDistributorId } from '@/store/slices/purchase'
-import { SpForm, SpFormItem, SpPage, SpPrivacyModal, SpInput as AtInput } from '@/components'
-import { SpTimer } from '@/subpages/components'
-import CompBottomTip from './comps/comp-bottomTip'
+import { SpPage, SpPrivacyModal, SpInput, SpImage, SpPurchaseEnterpriseBar } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './select-company-email.scss'
 
-function PurchaseAuthEmail(props) {
-  const router = useRouter()
+function PurchaseAuthEmail() {
+  const { i18n } = useTranslation()
   const { isNewUser, login } = useLogin({
     autoLogin: true,
     policyUpdateHook: (isUpdate) => {
@@ -27,158 +24,197 @@ function PurchaseAuthEmail(props) {
     }
   })
   const [policyModal, setPolicyModal] = useState(false)
+  const [email, setEmail] = useState('')
+  const [vcode, setVcode] = useState('')
+  const [countdown, setCountdown] = useState(0)
+  const [enterpriseName, setEnterpriseName] = useState('')
+  const [activityBg, setActivityBg] = useState('')
+  const sendCodeLockRef = useRef(false)
   const { showModal } = useModal()
   const dispatch = useDispatch()
+  const { params } = useRouter()
+  const { appName } = useSelector((state) => state.sys)
+  const { enterprise_id, enterprise_name, activity_id, is_activity = '', pages_template_id = '' } = params
 
-  const [state, setState] = useImmer({
-    form: {
-      email: '',
-      vcode: ''
-    },
-    rules: {
-      email: [
-        { required: true, message: '邮箱地址不能为空' },
-        { validate: 'email', message: '请输入正确的邮箱' },
-        {
-          validate: async (value) => {
-            const { enterprise_id } = router?.params
-            try {
-              const params = {
-                email: value
-              }
-              if (!enterprise_id) {
-                //不是扫码进来，接口要传当前店铺ID
-                params.distributor_id = getDistributorId()
-              }
-              const { status } = await api.purchase.getEmailCode(params)
-              showToast(status ? '发送成功' : '发送失败')
-            } catch (error) {
-              return Promise.reject(error.message)
-            }
-          }
-        }
-      ],
-      vcode: [{ required: true, message: '请输入验证码' }]
+  const disabled = useMemo(() => !email.trim() || !vcode.trim(), [email, vcode])
+  const sendDisabled = countdown > 0
+
+  const normalizeInputValue = (value) => {
+    if (value && typeof value === 'object') {
+      return value.detail?.value ?? value.target?.value ?? ''
     }
-  })
-  const { form, rules } = state
-  const formRef = useRef()
-  const {
-    enterprise_id,
-    enterprise_name,
-    enterprise_sn,
-    activity_id,
-    is_activity = ''
-  } = router?.params
+    return value ?? ''
+  }
 
-  const onInputChange = (key, value) => {
-    setState((draft) => {
-      draft.form[key] = value
-    })
+  const handleEmailChange = (value) => {
+    setEmail(String(normalizeInputValue(value)))
+  }
+
+  const handleVcodeChange = (value) => {
+    setVcode(String(normalizeInputValue(value)))
+  }
+
+  useEffect(() => {
+    if (countdown <= 0) return
+    const timer = setTimeout(() => {
+      setCountdown((prev) => Math.max(0, prev - 1))
+    }, 1000)
+    return () => clearTimeout(timer)
+  }, [countdown])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('cedd18d3.5f934d') })
+  }, [i18n.language])
+
+  useEffect(() => {
+    syncEnterpriseName()
+  }, [enterprise_id, enterprise_name, params?.enterprise_id, params?.enterprise_name])
+
+  const syncEnterpriseName = async () => {
+    try {
+      const list = await api.purchase.getUserEnterprises({
+        disabled: 0,
+        distributor_id: getDistributorId()
+      })
+      const found = (list || []).find(
+        (item) => String(item?.id ?? item?.enterprise_id) === String(enterprise_id)
+      )
+      setEnterpriseName(found?.name || '')
+      setActivityBg(found?.logo || '')
+    } catch (e) {
+      setEnterpriseName('')
+      setActivityBg('')
+    }
+  }
+
+  const handleSendCode = async () => {
+    if (sendDisabled || sendCodeLockRef.current) return
+    const nextEmail = email.trim()
+    if (!nextEmail) {
+      showToast($t('44e64c13.b457cd'))
+      return
+    }
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailReg.test(nextEmail)) {
+      showToast($t('97e3aca2.09f253'))
+      return
+    }
+    sendCodeLockRef.current = true
+    try {
+      const sendParams = { email: nextEmail, enterprise_id }
+      const { status } = await api.purchase.getEmailCode(sendParams)
+      if (status) {
+        showToast($t('e1d26b67.9db9a7'))
+        setCountdown(60)
+      } else {
+        showToast($t('1d9cdff5.9ca6a3'))
+      }
+    } catch (e) {
+      showToast(e?.message || $t('1d9cdff5.9ca6a3'))
+    } finally {
+      sendCodeLockRef.current = false
+    }
   }
 
   const onFormSubmit = async () => {
-    // 有商城校验白名单，账号绑定并登录，无商城检验白名单通过手机号授权
-    const { email, vcode } = form
-    await formRef.current.onSubmitAsync(['vcode'])
-    // if (isNewUser) {
-    //   // 无商城逻辑（需要调整一个页面去授权手机号）
-    //   Taro.navigateTo({
-    //     url: `/subpages/purchase/select-company-phone?${qs.stringify({
-    //       enterprise_sn,
-    //       enterprise_name,
-    //       enterprise_id,
-    //       email,
-    //       vcode
-    //     })}`
-    //   })
-    //   return
-    // }
+    if (disabled) return
 
-    const params = {
+    const nextEmail = email.trim()
+    const nextVcode = vcode.trim()
+    const emailReg = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailReg.test(nextEmail)) {
+      showToast($t('97e3aca2.09f253'))
+      return
+    }
+
+    const authParams = {
       enterprise_id,
-      email,
-      vcode,
+      email: nextEmail,
+      vcode: nextVcode,
       showError: false,
       auth_type: 'email'
     }
 
     try {
-      const checkParams = { ...params }
+      const checkParams = { ...authParams }
       if (!enterprise_id) {
-        //不是扫码进来，check接口要传当前店铺ID
         checkParams.distributor_id = getDistributorId()
       }
       if (activity_id) {
         checkParams.activity_id = activity_id
       }
       const { list } = await api.purchase.employeeCheck(checkParams)
-      //一个邮箱后缀只有一个企业
-      params.enterprise_id = list[0].enterprise_id
+      if (!list?.length) {
+        showToast($t('f695264d.0f85e7'))
+        return
+      }
+
+      let resolvedEnterpriseId = enterprise_id
+      let resolvedEnterpriseName
+
+      if (list.length > 1) {
+        const matched = list.find((row) => String(row?.enterprise_id) === String(enterprise_id))
+        if (matched) {
+          resolvedEnterpriseId = matched.enterprise_id
+          resolvedEnterpriseName = matched.enterprise_name
+        } else {
+          resolvedEnterpriseId = list[0].enterprise_id
+          resolvedEnterpriseName = list[0].enterprise_name
+        }
+      } else {
+        resolvedEnterpriseId = list[0].enterprise_id
+        resolvedEnterpriseName = list[0].enterprise_name
+      }
+
+      authParams.enterprise_id = resolvedEnterpriseId
 
       if (isNewUser && !isWeb) {
         Taro.navigateTo({
           url: `/subpages/purchase/select-company-phone?${qs.stringify({
-            ...params,
-            enterprise_name: list[0].enterprise_name
+            ...authParams,
+            enterprise_name: resolvedEnterpriseName
           })}`
         })
         return
       }
 
-      await api.purchase.setEmployeeAuth(params)
-      await getQrCodeDtid()
-      dispatch(updateEnterpriseId(params.enterprise_id))
-      showToast('验证成功')
+      await api.purchase.setEmployeeAuth(authParams)
+      await getQrCodeDtid(authParams.enterprise_id)
+      dispatch(updateEnterpriseId(authParams.enterprise_id))
+      showToast($t('ace75665.45001d'))
 
       setTimeout(() => {
         Taro.reLaunch({
-          url: `/pages/purchase/index?is_redirt=1${
-            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
-          }`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${authParams.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
         })
       }, 700)
     } catch (e) {
       if (e.message.indexOf('重复绑定') > -1) {
-        dispatch(updateEnterpriseId(params.enterprise_id))
-        await getQrCodeDtid()
+        dispatch(updateEnterpriseId(authParams.enterprise_id))
+        await getQrCodeDtid(authParams.enterprise_id)
         await showModal({
-          title: '验证失败',
+          title: $t('e441b11e.e8c3ea'),
           content: e.message,
           showCancel: false,
-          confirmText: '我知道了',
+          confirmText: $t('20b64b82.fe0337'),
           contentAlign: 'center'
         })
         Taro.reLaunch({
-          url: `/pages/purchase/index?is_redirt=1${
-            is_activity && activity_id ? `&activity_id=${activity_id}` : ''
-          }`
+          url: `/subpages/purchase/index?activity_id=${activity_id || ''}&enterprise_id=${authParams.enterprise_id || enterprise_id || ''}&pages_template_id=${pages_template_id || ''}`
         })
       } else {
-        formRef.current.setMessage({ prop: 'vcode', message: e.message })
+        showToast(e.message)
       }
     }
   }
 
-  const getQrCodeDtid = async () => {
-    if (!enterprise_id) return
-    // 如果扫码进来存在企业ID则需要绑定拿到店铺ID
-    const { distributor_id } = await api.purchase.getPurchaseDistributor({ enterprise_id })
-    //后续身份切换需要用
+  const getQrCodeDtid = async (eid) => {
+    const id = eid ?? enterprise_id ?? params?.enterprise_id
+    if (!id) return
+    const { distributor_id } = await api.purchase.getPurchaseDistributor({ enterprise_id: id })
     dispatch(updateCurDistributorId(distributor_id))
   }
 
-  // 获取验证码
-  const getSmsCode = async (resolve) => {
-    try {
-      await formRef.current.onSubmitAsync(['email'])
-      resolve()
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  // 同意隐私协议
   const onResolvePolicy = async () => {
     setPolicyModal(false)
     if (!isNewUser) {
@@ -191,57 +227,66 @@ function PurchaseAuthEmail(props) {
   }
 
   return (
-    <SpPage className='page-purchase-auth-email select-component'>
-      <View className='select-component-title'>企业邮箱登录</View>
-      <View className='select-component-prompt'>使用企业邮箱登录验证</View>
-      <View className='selecte-box'>
-        <SpForm ref={formRef} className='login-form' formData={form} rules={rules}>
-          <SpFormItem prop='email'>
-            <AtInput
-              clear
-              focus
-              name='email'
-              value={form.email}
-              className='email-input'
-              placeholder='请输入邮箱账号'
-              onChange={onInputChange.bind(this, 'email')}
-            />
-          </SpFormItem>
+    <SpPage className='purchase-email-auth'>
+      <SpImage src={activityBg} className='purchase-email-auth__cover-img' mode='widthFix' />
 
-          <SpFormItem prop='vcode'>
-            <View className='code-box'>
-              <AtInput
-                clear
-                focus
-                name='vcode'
-                className='code-box-input'
-                value={form.vcode}
-                placeholder='请输入验证码'
-                onChange={onInputChange.bind(this, 'vcode')}
+      <SpPurchaseEnterpriseBar
+        name={enterpriseName || appName || $t('c2581d4c.6fb7d0')}
+        showMore={false}
+        showSearch={false}
+      />
+
+      <View className='purchase-email-auth__form-wrap'>
+        <View className='purchase-email-auth__form-card'>
+          <Text className='purchase-email-auth__form-title'>{$t('cedd18d3.5f934d')}</Text>
+
+          <View className='purchase-email-auth__field'>
+            <Text className='purchase-email-auth__field-label'>{$t('39274850.7148d5')}</Text>
+            <SpInput
+              className='purchase-email-auth__field-sp-input'
+              placeholder={$t('44e64c13.b457cd')}
+              placeholderClass='purchase-email-auth__field-input-ph'
+              value={email}
+              onChange={handleEmailChange}
+            />
+          </View>
+
+          <View className='purchase-email-auth__field'>
+            <Text className='purchase-email-auth__field-label'>{$t('f695264d.e3cf0a')}</Text>
+            <View className='purchase-email-auth__code-row'>
+              <SpInput
+                className='purchase-email-auth__code-sp-input'
+                placeholder={$t('f695264d.a5ae49')}
+                placeholderClass='purchase-email-auth__field-input-ph'
+                value={vcode}
+                onChange={handleVcodeChange}
               />
-              <SpTimer
-                className={classNames({ 'unuse': !form.email })}
-                onStart={getSmsCode}
-                onStop={() => {}}
-                defaultMsg='获取验证码'
-                msg='重新获取'
-              ></SpTimer>
+              <View
+                className={classNames('purchase-email-auth__code-send', {
+                  'purchase-email-auth__code-send--disabled': sendDisabled
+                })}
+                onClick={handleSendCode}
+              >
+                <Text className='purchase-email-auth__code-send-text'>
+                  {sendDisabled ? ti('ecf05285.41b9b5', [countdown]) : $t('0eb8dfea.c5c358')}
+                </Text>
+              </View>
             </View>
-          </SpFormItem>
-        </SpForm>
+          </View>
+
+          <View className='purchase-email-auth__footer'>
+            <View
+              className={`purchase-email-auth__confirm${
+                disabled ? ' purchase-email-auth__confirm--disabled' : ''
+              }`}
+              onClick={onFormSubmit}
+            >
+              <Text className='purchase-email-auth__confirm-text'>{$t('c2581d4c.e83a25')}</Text>
+            </View>
+          </View>
+        </View>
       </View>
 
-      <AtButton
-        circle
-        className='btns-staff'
-        disabled={!(form.email && form.vcode)}
-        onClick={onFormSubmit}
-      >
-        登录
-      </AtButton>
-      <CompBottomTip />
-
-      {/* 隐私协议 */}
       <SpPrivacyModal open={policyModal} onCancel={onRejectPolicy} onConfirm={onResolvePolicy} />
     </SpPage>
   )
@@ -252,5 +297,3 @@ PurchaseAuthEmail.options = {
 }
 
 export default PurchaseAuthEmail
-
-// 邮箱登录

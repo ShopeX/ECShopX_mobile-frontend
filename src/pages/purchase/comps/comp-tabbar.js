@@ -9,29 +9,31 @@ import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
 import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
 import { updateCartSalesman, updateSalesmanCount } from '@/store/slices/cart'
+import { useTranslation, $t } from '@/i18n'
 import './comp-tabbar.scss'
 
 const TABBAR_LIST = [
   {
-    title: '活动',
+    titleKey: 'f321c16f.36c6f5',
     iconType: 'dianpushouye',
-    url: '/pages/purchase/index'
+    url: '/subpages/purchase/activity-list'
   },
   {
-    title: '身份切换',
+    titleKey: 'f321c16f.2e1148',
     key: 'identity',
     iconType: 'dianpushangpinlist',
     url: '/subpages/purchase/select-identity',
     text: true
   },
   {
-    title: '我的',
+    titleKey: 'f321c16f.07b181',
     iconType: 'dianpufenlei',
     url: '/subpages/purchase/member?from=purchase_home'
   }
 ]
 
 function CompTabbar(props) {
+  useTranslation()
   const dispatch = useDispatch()
   const { colorPrimary } = useSelector((state) => state.sys)
   const { cartSalesman = 0 } = useSelector((state) => state.cart)
@@ -54,9 +56,10 @@ function CompTabbar(props) {
   // }
 
   const tabList = tabbarList.map((item) => {
+    const title = $t(item.titleKey)
     return {
-      title: item.title,
-      name: item.title,
+      title,
+      name: title,
       iconType: item.iconType,
       selectedIconType: `${item.iconType}-fill`,
       iconPrefixClass: 'iconfont icon',

@@ -3,17 +3,25 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
-import api from '@/api'
-import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
+import { useTranslation, $t, i18n } from '@/i18n'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpImage, SpPrice, SpInput as AtInput } from '@/components'
 import './collection.scss'
 
 function DianwuCollection(props) {
+  useTranslation()
+
+  useEffect(() => {
+    const syncNavTitle = () => {
+      Taro.setNavigationBarTitle({ title: $t('da843e7a.2eee29') })
+    }
+    syncNavTitle()
+    i18n.on('languageChanged', syncNavTitle)
+    return () => i18n.off('languageChanged', syncNavTitle)
+  }, [])
+
   return (
     <SpPage className='page-dianwu-collection'>
       <View className='block-hd'>
@@ -33,18 +41,19 @@ function DianwuCollection(props) {
 
       {/* 现金收款 */}
       <View className='cash-collection'>
-        <View className='title'>应收款</View>
+        <View className='title'>{$t('da843e7a.ba5d3e')}</View>
         <View className='cash-amount'>
           <SpPrice size={50} value={1450} />
         </View>
         <View className='coll-form'>
-          <View className='label'>实收现金</View>
+          <View className='label'>{$t('da843e7a.ae617d')}</View>
           <View className='field-input'>
             <Text className='append'>¥</Text>
             <AtInput className='cash-value'></AtInput>
           </View>
           <View className='label'>
-            应找零<Text className='sub-txt'>（自动计算找零，非填入项）</Text>
+            {$t('da843e7a.7125e7')}
+            <Text className='sub-txt'>{$t('da843e7a.d7bba4')}</Text>
           </View>
           <View className='field-change'>
             <Text className='append'>¥</Text>
@@ -53,10 +62,10 @@ function DianwuCollection(props) {
         </View>
         <View className='btn-confirm-wrap'>
           <AtButton className='btn-confirm' circle>
-            完成收款
+            {$t('da843e7a.9c59c7')}
           </AtButton>
         </View>
-        <View className='pending'>挂单</View>
+        <View className='pending'>{$t('da843e7a.ee5b0a')}</View>
       </View>
     </SpPage>
   )

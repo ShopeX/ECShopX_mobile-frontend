@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { $t } from '@/i18n'
 import { DEFAULT_THEME, DEFAULT_POINT_NAME } from '@/consts'
 import { hex2rgb } from '@/utils'
 
@@ -34,21 +35,21 @@ const initialState = {
         name: 'home',
         pagePath: '/pages/index',
         selectedIconPath: 'home',
-        text: '首页'
+        text: $t('1734e75c.db1c89')
       },
       {
         iconPath: '',
         name: 'category',
         pagePath: '/pages/category/index',
         selectedIconPath: 'category',
-        text: '分类'
+        text: $t('e6f782b6.d0771a')
       },
       {
         iconPath: '',
         name: 'cart',
         pagePath: '/pages/cart/espier-index',
         selectedIconPath: 'cart',
-        text: '购物车',
+        text: $t('a2d3a891.c017be'),
         max: 99
       },
       {
@@ -56,7 +57,7 @@ const initialState = {
         name: 'member',
         pagePath: '/subpages/member/index',
         selectedIconPath: 'member',
-        text: '我的'
+        text: $t('e4bfc1bd.07b181')
       }
     ]
   },

@@ -8,6 +8,7 @@ import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { AtBadge } from 'taro-ui'
 import { FormIdCollector } from '@/components'
+import { $t } from '@/i18n'
 import './buy-toolbar.scss'
 
 @connect(({ colors }) => ({
@@ -45,10 +46,10 @@ export default class GoodsBuyToolbar extends Component {
     const isDrug = special_type === 'drug'
     const fastBuyText =
       type === 'normal' || type === 'limited_time_sale'
-        ? '立即购买'
+        ? $t('5f4e23d1.5fd2f9')
         : type === 'seckill'
-        ? '立即抢购'
-        : '我要开团'
+        ? $t('5f4e23d1.d8a40b')
+        : $t('5f4e23d1.ccb0dd')
 
     return (
       <View className='goods-buy-toolbar'>
@@ -60,7 +61,7 @@ export default class GoodsBuyToolbar extends Component {
                   className={`goods-buy-toolbar__btn btn-add-cart ${isDrug && 'drug-btn'}`}
                   style={'background: ' + colors.data[0].accent}
                 >
-                  {isDrug ? '加入药品清单' : '添加至购物车'}
+                  {isDrug ? $t('5f4e23d1.568f80') : $t('5f4e23d1.94d929')}
                 </View>
               </FormIdCollector>
             )}
@@ -71,13 +72,13 @@ export default class GoodsBuyToolbar extends Component {
                 }`}
                 style={'background: ' + colors.data[0].primary}
               >
-                分享给顾客
+                {$t('5f4e23d1.e6bd60')}
               </View>
             </FormIdCollector>
           </View>
         ) : (
           <View className='goods-buy-toolbar__btns'>
-            <View className='goods-buy-toolbar__btn disabled'>暂不可售</View>
+            <View className='goods-buy-toolbar__btn disabled'>{$t('5f4e23d1.0c48ed')}</View>
           </View>
         )}
       </View>

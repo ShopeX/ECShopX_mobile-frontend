@@ -9,6 +9,7 @@ import { Loading, SpPage } from '@/components'
 import api from '@/api'
 import S from '@/spx'
 import { normalizeQuerys, getAppId } from '@/utils'
+import { $t, ti } from '@/i18n'
 
 import './index.scss'
 
@@ -23,7 +24,7 @@ export default class AuthLogin extends Component {
 
   componentDidMount() {
     if (!S.getAuthToken()) {
-      S?.toast('请先登录')
+      S?.toast($t('10293ac1.8d2433'))
       setTimeout(() => {
         S?.login(this)
       }, 2000)
@@ -70,18 +71,18 @@ export default class AuthLogin extends Component {
     const appid = getAppId()
     try {
       Taro.showLoading({
-        title: '授权中'
+        title: $t('d21cb6e4.93da6c')
       })
       const { status } = await api.user.codeAuthConfirm({
         code,
         token,
-        appid: extConfig.appid,
+        appid,
         status: 1
       })
       if (status) {
         Taro.hideLoading()
         Taro.showToast({
-          title: '授权成功',
+          title: $t('d21cb6e4.68f38c'),
           mask: true
         })
       }
@@ -114,14 +115,14 @@ export default class AuthLogin extends Component {
     return (
       <SpPage className='authLogin' loading={!showAuth}>
         <View className='min-h-full'>
-          <View className='welcome'>尊敬的{user.username}</View>
-          <View className='content'>您即将在门店大屏登录并在门店进行购物，请您确认是否登录</View>
+          <View className='welcome'>{ti('d21cb6e4.a7603f', [user.username])}</View>
+          <View className='content'>{$t('d21cb6e4.b94b2e')}</View>
           <View className='btnGroup'>
             <View className='comfirm' onClick={this.comfimLogin.bind(this)}>
-              确认
+              {$t('61e2d21a.e83a25')}
             </View>
             <View className='cancel' onClick={this.cancel.bind(this)}>
-              取消
+              {$t('61e2d21a.625fb2')}
             </View>
           </View>
         </View>

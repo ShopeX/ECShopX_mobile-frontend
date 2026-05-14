@@ -7,6 +7,8 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtFloatLayout } from 'taro-ui'
 import { SpLoading, SpImg } from '@/components'
+import { $t, ti, i18n } from '@/i18n'
+import { guidePromotionTagLabel } from '@/subpages/guide/utils/guide-promotion-tag'
 import './activity-panel.scss'
 
 export default class ActivityPanel extends Component {
@@ -18,6 +20,17 @@ export default class ActivityPanel extends Component {
     info: null,
     onClose: () => {},
     onClick: () => {}
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   handlePlusprice = (marketing_id) => {
@@ -40,12 +53,14 @@ export default class ActivityPanel extends Component {
     return (
       <View>
         <View className='goods-sec-specs' onClick={onClick}>
-          <View className='goods-sec-label'>优惠</View>
+          <View className='goods-sec-label'>{$t('2bb1a4ab.f06ebf')}</View>
           <View className='goods-sec-specs__activity'>
             {info.map((item) => {
               return (
                 <View key={item.marketing_id} className='goods-sec-specs__activity-item'>
-                  <Text className='goods-sec-specs__activity-label'>{item.promotion_tag}</Text>
+                  <Text className='goods-sec-specs__activity-label'>
+                    {guidePromotionTagLabel(item.promotion_tag)}
+                  </Text>
                   <Text className='promotion-text'>{item.marketing_name}</Text>
                 </View>
               )
@@ -54,17 +69,27 @@ export default class ActivityPanel extends Component {
           <View className='goods-sec-specs__activity-icon at-icon at-icon-chevron-right'></View>
         </View>
 
-        <AtFloatLayout scrollY isOpened={isOpen} onClose={onClose} title='促销优惠' scrollX={false}>
+        <AtFloatLayout
+          scrollY
+          isOpened={isOpen}
+          onClose={onClose}
+          title={$t('2bb1a4ab.7d9bcd')}
+          scrollX={false}
+        >
           <View className='goods-sec-specs'>
             <View className='goods-sec-specs__activity'>
               {info.map((item) => (
                 <View key={item.marketing_id} className='goods-sec-specs__activity-item'>
                   {item.join_limit > 0 ? (
-                    <View className='promotion-title'>以下优惠可参与{item.join_limit}次</View>
+                    <View className='promotion-title'>
+                      {ti('2bb1a4ab.78035a', [item.join_limit])}
+                    </View>
                   ) : null}
                   <View className='goods-sec-specs__activity-header'>
                     <View className='goods-sec-specs__activity-header-title'>
-                      <Text className='goods-sec-specs__activity-label'>{item.promotion_tag}</Text>
+                      <Text className='goods-sec-specs__activity-label'>
+                        {guidePromotionTagLabel(item.promotion_tag)}
+                      </Text>
                       <Text className='promotion-text'>{item.marketing_name}</Text>
                     </View>
                     {/* {
@@ -99,9 +124,11 @@ export default class ActivityPanel extends Component {
                   )}
 
                   <View className='promotion-rule-content'>
-                    <Text className='promotion-rule-content__text'>有效期至{item.end_date}</Text>
                     <Text className='promotion-rule-content__text'>
-                      活动规则：{item.condition_rules}
+                      {ti('2bb1a4ab.cbb1cf', [item.end_date])}
+                    </Text>
+                    <Text className='promotion-rule-content__text'>
+                      {ti('2bb1a4ab.569e6d', [item.condition_rules])}
                     </Text>
                   </View>
                   <View>
@@ -110,7 +137,7 @@ export default class ActivityPanel extends Component {
                         {item.gifts.map((g_item) => {
                           return (
                             <View className='promotion-goods'>
-                              <Text className='promotion-goods__tag'>【赠品】</Text>
+                              <Text className='promotion-goods__tag'>{$t('2bb1a4ab.fccea5')}</Text>
                               <Text className='promotion-goods__name'>
                                 {g_item.gift.item_name}{' '}
                               </Text>

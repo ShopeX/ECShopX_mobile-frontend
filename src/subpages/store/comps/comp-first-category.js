@@ -5,6 +5,7 @@
 import React, { useEffect } from 'react'
 import { View, ScrollView, Image, Text } from '@tarojs/components'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t } from '@/i18n'
 import './comp-first-category.scss'
 
 const initialState = {
@@ -58,7 +59,7 @@ function CompFirstCategory(props) {
         <View className='comp-first-category-content'>{CompItem()}</View>
       </ScrollView>
       <View onClick={onShowClick} className='comp-first-category-filter'>
-        <Text>全部</Text>
+        <Text>{$t('4b32b321.a8b0c2')}</Text>
         <Text className='at-icon at-icon-list'></Text>
       </View>
       <View

@@ -2,13 +2,14 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useAsyncCallback } from '@/hooks'
 
 import { View, PickerView, PickerViewColumn } from '@tarojs/components'
 import dayjs from 'dayjs'
 import customParseFormat from 'dayjs/plugin/customParseFormat'
 import 'dayjs/locale/zh-cn'
+import { useTranslation, $t, ti } from '@/i18n'
 import format from './format'
 import './picker-datetime.scss'
 
@@ -19,48 +20,65 @@ const initialState = {
   value: [],
   markMultiDateTime: false
 }
+
+const EMPTY_UNITS = [
+  { mode: 'year', unit: '' },
+  { mode: 'month', unit: '' },
+  { mode: 'day', unit: '' },
+  { mode: 'hour', unit: '' },
+  { mode: 'minute', unit: '' }
+]
+
 function PickerDateTime(props) {
+  const { i18n } = useTranslation()
   const { start } = props
-  const dateTime = [
-    { mode: 'year', unit: '年' },
-    { mode: 'month', unit: '月' },
-    { mode: 'day', unit: '日' },
-    { mode: 'hour', unit: '时' },
-    { mode: 'minute', unit: '分' }
-  ]
+
+  const dateTime = useMemo(() => {
+    const zh = (i18n.language || '').toLowerCase().startsWith('zh')
+    if (!zh) {
+      return EMPTY_UNITS
+    }
+    return [
+      { mode: 'year', unit: $t('5e8ac5b7.465260') },
+      { mode: 'month', unit: $t('5e8ac5b7.e42b99') },
+      { mode: 'day', unit: $t('5e8ac5b7.3edddd') },
+      { mode: 'hour', unit: $t('5e8ac5b7.609b5f') },
+      { mode: 'minute', unit: $t('5e8ac5b7.daf783') }
+    ]
+  }, [i18n.language])
+
   const [state, setState] = useAsyncCallback(initialState)
   const { source, value } = state
   useEffect(() => {
-    // const { dateTime, start } = this.props
     let markMultiDateTime = false
-    if (dateTime && Array.isArray(dateTime)) {
-      dateTime.map((dateTimeItem) => {
-        //判断一维数组还是二维数组，分别对应单组选择和两组选择
-        if (Array.isArray(dateTimeItem)) {
-          markMultiDateTime = true
-          // 取得格式化计算之后的结果
-          const source1 = dateTimeItem && format(dateTimeItem, dayjs(start))
-          setState((draft) => {
-            draft.source = [...source, source1]
-            draft.value = [...value, source1.value]
-            draft.markMultiDateTime = markMultiDateTime
-          })
-          // this.setState((state) => ({ ...state, value: [...state.value, source.value] }))
-        }
-      })
-      if (!markMultiDateTime) {
-        const source2 = dateTime && format(dateTime, dayjs(start))
-        setState((draft) => {
-          draft.source = [...source, source2]
-          draft.value = [...value, source2.value]
-          draft.markMultiDateTime = markMultiDateTime
-        })
-      }
-      // setState(draft => {
-
-      // this.setState((state) => ({ ...state, markMultiDateTime }))
+    const nextSource = []
+    const nextValue = []
+    if (!dateTime || !Array.isArray(dateTime)) {
+      return
     }
-  }, [])
+    dateTime.forEach((dateTimeItem) => {
+      if (Array.isArray(dateTimeItem)) {
+        markMultiDateTime = true
+        const source1 = dateTimeItem && format(dateTimeItem, dayjs(start))
+        if (source1) {
+          nextSource.push(source1)
+          nextValue.push(source1.value)
+        }
+      }
+    })
+    if (!markMultiDateTime) {
+      const source2 = format(dateTime, dayjs(start))
+      if (source2) {
+        nextSource.push(source2)
+        nextValue.push(source2.value)
+      }
+    }
+    setState((draft) => {
+      draft.source = nextSource
+      draft.value = nextValue
+      draft.markMultiDateTime = markMultiDateTime
+    })
+  }, [dateTime, start])
 
   const onChange = (e, index) => {
     // const _value = [...value]
@@ -116,8 +134,11 @@ function PickerDateTime(props) {
       for (let j = 0; j < source[i].item.length; j++) {
         // source[i].item[j]为每一列的数据组成的数组,value[i][j]为对应这列数组的选中值
         const select = source[i].item[j][value[i][j]]
-        // 对'今天'这个值进行特殊处理，其他直接返回当前的选择字符串
-        time += (select === '今天' ? dayjs().format('M月D日') : select) + '-'
+        const todayLabel = $t('db02f988.800dfd')
+        time +=
+          (select === todayLabel
+            ? ti('db02f988.b5ed77', [dayjs().month() + 1, dayjs().date()])
+            : select) + '-'
         // 对于二维数组取i、j；对于一维数组取j
         const item = markMultiDateTime ? dateTime[i][j] : dateTime[j]
         token += (item.format || getToken(item.mode)) + '-'
@@ -127,15 +148,18 @@ function PickerDateTime(props) {
     return markMultiDateTime ? res : res[0]
   }
 
-  // 标准格式化选择器
   const getToken = (mode) => {
+    const zh = (i18n.language || '').toLowerCase().startsWith('zh')
+    if (!zh) {
+      return { year: 'YYYY', month: 'M', day: 'D', hour: 'H', minute: 'm', second: 's' }[mode]
+    }
     return {
-      year: 'YYYY年',
-      month: 'M月',
-      day: 'D日',
-      hour: 'H时',
-      minute: 'm分',
-      second: 's秒'
+      year: `YYYY${$t('5e8ac5b7.465260')}`,
+      month: `M${$t('5e8ac5b7.e42b99')}`,
+      day: `D${$t('5e8ac5b7.3edddd')}`,
+      hour: `H${$t('5e8ac5b7.609b5f')}`,
+      minute: `m${$t('5e8ac5b7.daf783')}`,
+      second: `s${$t('5e8ac5b7.0c1fec')}`
     }[mode]
   }
 

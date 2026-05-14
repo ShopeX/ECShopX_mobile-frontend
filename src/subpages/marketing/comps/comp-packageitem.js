@@ -3,14 +3,13 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { useImmer } from 'use-immer'
 import { SpCheckboxNew, SpGoodsCell, SpSkuSelect } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import './comp-packageitem.scss'
 
 const initialState = {
@@ -27,6 +26,7 @@ const initialState = {
 
 const MSpSkuSelect = React.memo(SpSkuSelect)
 function CompPackageItem(props) {
+  useTranslation()
   const { info, onChange } = props
   const [state, setState] = useImmer(initialState)
   const {
@@ -170,9 +170,9 @@ function CompPackageItem(props) {
   console.log('makeUpGoods:', makeUpGoods)
   return (
     <View className='comp-packageitem'>
-      <View className='main-goods'>主商品</View>
+      <View className='main-goods'>{$t('d95e19a2.91b4c9')}</View>
       <SpGoodsCell info={mainGoods} onSelectSku={onSelectSku.bind(this, 0, null)} />
-      <View className='select-goods'>可选商品</View>
+      <View className='select-goods'>{$t('6c0659eb.809ab0')}</View>
       {makeUpGoods.map((item, index) => (
         <View className='makeup-goods-item' key={`makeup-goods-item__${index}`}>
           <SpCheckboxNew

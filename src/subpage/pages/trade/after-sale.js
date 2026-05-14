@@ -9,6 +9,7 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar } from '@/components'
 import { pickBy, log, getBrowserEnv, classNames, isNavbar, VERSION_PLATFORM } from '@/utils'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import { connect } from 'react-redux'
 import { withLogin, withPager } from '@/hocs'
 import { AFTER_SALE_STATUS } from '@/consts'
@@ -29,20 +30,22 @@ export default class AfterSale extends Component {
     this.state = {
       ...this.state,
       curTabIdx: 0,
-      tabList: [
-        { title: '待处理', status: '0' },
-        { title: '处理中', status: '1' },
-        { title: '已处理', status: '2' },
-        { title: '已驳回', status: '3' },
-        { title: '已关闭', status: '4' }
-      ],
       list: []
     }
   }
 
+  getTabList = () => [
+    { title: $t('7c005828.047109'), status: '0' },
+    { title: $t('7c005828.5d459d'), status: '1' },
+    { title: $t('7c005828.5ad605'), status: '2' },
+    { title: $t('7c005828.dbf36d'), status: '3' },
+    { title: $t('7c005828.9c5850'), status: '4' }
+  ]
+
   componentDidMount() {
     const { status } = this.$instance?.router?.params
-    const tabIdx = this.state.tabList.findIndex((tab) => tab.status === status)
+    const tabList = this.getTabList()
+    const tabIdx = tabList.findIndex((tab) => tab.status === status)
 
     if (tabIdx >= 0) {
       this.setState(
@@ -59,7 +62,8 @@ export default class AfterSale extends Component {
   }
 
   async fetch(params) {
-    const { tabList, curTabIdx } = this.state
+    const { curTabIdx } = this.state
+    const tabList = this.getTabList()
 
     params = _mapKeys(
       {
@@ -151,7 +155,8 @@ export default class AfterSale extends Component {
   }
 
   render() {
-    const { curTabIdx, tabList, list, page } = this.state
+    const { curTabIdx, list, page } = this.state
+    const tabList = this.getTabList()
 
     const { colors } = this.props
 
@@ -161,7 +166,7 @@ export default class AfterSale extends Component {
           'has-navbar': isNavbar()
         })}
       >
-        <SpNavBar title='售后订单列表' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('7540fb22.3c494a')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${colors.data[0].primary ? 'customTabsStyle' : ''}`}
           current={curTabIdx}
@@ -188,7 +193,10 @@ export default class AfterSale extends Component {
                   customHeader
                   renderHeader={
                     <View className='trade-item__hd-cont trade-cont'>
-                      <Text className='trade-item__shop'>退款单号：{item.id}&#12288;</Text>
+                      <Text className='trade-item__shop'>
+                        {ti('16726e8e.7024d4', [item.id])}
+                        {'\u3000'}
+                      </Text>
                       <Text className='more'>{item.status_desc}</Text>
                     </View>
                   }
@@ -199,9 +207,9 @@ export default class AfterSale extends Component {
                 />
               )
             })}
-          {page.isLoading && <Loading>正在加载...</Loading>}
+          {page.isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据</SpNote>
+            <SpNote img='trades_empty.png'>{$t('884cd041.21efd8')}</SpNote>
           )}
         </ScrollView>
       </View>

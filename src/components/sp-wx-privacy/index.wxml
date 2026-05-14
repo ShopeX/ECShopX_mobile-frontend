@@ -8,9 +8,9 @@
       <text class="privacy__title">{{title}}</text>
     </view>
     <view class="privacy__bd">
-      <text class="privacy__tips">为了向您提供更好的服务，我们须向您收集相关的个人信息，了解</text>
+      <text class="privacy__tips">{{privacyTips1}}</text>
       <text class="privacy__tips privacy-contract" bindtap="openPrivacyContract">{{urlTitle}}</text>
-      <text class="privacy__tips">详细信息。如您同意，请点击“同意”开始接受我们的服务。</text>
+      <text class="privacy__tips">{{privacyTips2}}</text>
     </view>
     <view class="privacy__ft">
       <button
@@ -18,14 +18,14 @@
         type="default"
         class="disagree-btn"
         bindtap="handleDisagree"
-      >拒绝</button>
+      >{{btnReject}}</button>
       <button
         id="agree-btn"
         type="default"
         open-type="agreePrivacyAuthorization"
         class="agree-btn"
         bindagreeprivacyauthorization="handleAgree"
-      >同意</button>
+      >{{btnAgree}}</button>
     </view>
   </view>
 </view>

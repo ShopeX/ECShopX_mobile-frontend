@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image, Button, Text } from '@tarojs/components'
 import api from '@/api'
 import { connect } from 'react-redux'
+import i18n, { $t } from '@/i18n'
 
 import './index.scss'
 
@@ -24,6 +25,15 @@ export default class PrivacyConfirmModal extends Component {
 
   componentDidMount() {
     this.fetch()
+    i18n.on('languageChanged', this.handleLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this.handleLanguageChanged)
+  }
+
+  handleLanguageChanged = () => {
+    this.forceUpdate()
   }
 
   handleClickAgreement = (type) => {
@@ -65,30 +75,28 @@ export default class PrivacyConfirmModal extends Component {
               <View className='container'>
                 <View className='top'>
                   <Image src={`${process.env.APP_IMAGE_CDN}/privacy_tips.png`} className='tips' />
-                  <View className='texts'>个人隐私保护指引</View>
+                  <View className='texts'>{$t('ed40c676.5a98bd')}</View>
                 </View>
                 <View className='content'>
-                  <Text>
-                    请您务必谨慎阅读，充分理解“用户协议”和“隐私政策”各条款。包括但不限于：为了向您提供更好的服务，我们须向您收集相关的个人信息。您可以在“个人信息”中查看、变更、删除、个人授权信息。您可阅读
-                  </Text>
+                  <Text>{$t('c1881067.fe728a')}</Text>
                   <Text
                     style={`color: ${colors.data[0].primary}`}
                     onClick={this.handleClickAgreement.bind(this, 'member_register')}
                   >
                     《{(info || { protocol: {} }).protocol.member_register}》
                   </Text>
-                  <Text>、</Text>
+                  <Text>{$t('ed40c676.b50566')}</Text>
                   <Text
                     style={`color: ${colors.data[0].primary}`}
                     onClick={this.handleClickAgreement.bind(this, 'privacy')}
                   >
                     《{(info || { protocol: {} }).protocol.privacy}》
                   </Text>
-                  <Text>了解详细信息。如您同意，请点击”同意“开始接受我们的服务。</Text>
+                  <Text>{$t('ed40c676.4d67be')}</Text>
                 </View>
                 <View className='bottom-box'>
                   <Button className='cancel' onClick={() => onChange('reject')}>
-                    拒绝
+                    {$t('7c40f12d.7173f8')}
                   </Button>
                   {isPhone ? (
                     <Button
@@ -97,7 +105,7 @@ export default class PrivacyConfirmModal extends Component {
                       openType='getPhoneNumber'
                       onGetPhoneNumber={this.wexinBindPhone}
                     >
-                      同意
+                      {$t('ed40c676.e61f2c')}
                     </Button>
                   ) : (
                     <Button
@@ -105,13 +113,10 @@ export default class PrivacyConfirmModal extends Component {
                       onClick={() => onChange('agree')}
                       className='agree'
                     >
-                      同意
+                      {$t('ed40c676.e61f2c')}
                     </Button>
                   )}
 
-                  {/* <Button onClick={() => onChange('agree')}>
-                    <View className='agree'>同意</View>
-                  </Button> */}
                 </View>
               </View>
             </View>

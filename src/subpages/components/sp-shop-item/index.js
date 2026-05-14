@@ -8,9 +8,11 @@ import { useMemo, useState, useCallback, useEffect } from 'react'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
 import { SpImage, SpShopCoupon, SpShopFullReduction, SpNewPrice } from '@/components'
 import api from '@/api'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 function SpShopItem(props) {
+  useTranslation()
   const { className, info, jumpToBusiness, goodCount = 3, showGoods = false } = props
   if (!info) {
     return null
@@ -27,7 +29,11 @@ function SpShopItem(props) {
     selfDeliveryRule,
     is_self_delivery
   } = info
-  const rate = !!(scoreList || {}).avg_star ? <Text>评分：{(scoreList || {}).avg_star}</Text> : ''
+  const rate = !!(scoreList || {}).avg_star ? (
+    <Text>{ti('80644ace.780021', [(scoreList || {}).avg_star])}</Text>
+  ) : (
+    ''
+  )
   const [unfold, setUnfold] = useState(false)
   const [showActivity, setShowActivity] = useState(false)
   const showMore = (e) => {
@@ -53,11 +59,11 @@ function SpShopItem(props) {
           </View>
           <View className='item-bd-sb'>
             <View className='score'>
-              {rate} 月销：{salesCount}
+              {rate} {ti('80644ace.297c82', [salesCount])}
             </View>
-            {is_dada == 1 && <View className='express'>达达配送</View>}
+            {is_dada == 1 && <View className='express'>{$t('80644ace.b18f7d')}</View>}
             {selfDeliveryRule?.is_open && is_self_delivery && (
-              <View className='expressed'>商家自配</View>
+              <View className='expressed'>{$t('80644ace.c9f382')}</View>
             )}
           </View>
           <View className='item-bd-bd' onClick={showMore}>

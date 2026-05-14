@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react'
 import Taro, {
   getCurrentInstance,
   useShareAppMessage,
@@ -23,14 +23,11 @@ import { pickBy, showToast, navigateTo } from '@/utils'
 import doc from '@/doc'
 import * as mdugcDoc from '@/doc/mdugc'
 import S from '@/spx'
+import { useTranslation, $t } from '@/i18n'
 import CompNoteItem from './comps/comp-noteitem'
 import './list.scss'
 
 const initialState = {
-  filterList: [
-    { tag_id: 1, tag_name: '最热' },
-    { tag_id: 2, tag_name: '最新' }
-  ],
   curFilterIndex: 0,
   leftList: [],
   rightList: [],
@@ -38,23 +35,26 @@ const initialState = {
 }
 
 function UgcTopicList() {
+  const { i18n } = useTranslation()
+  const filterList = useMemo(
+    () => [
+      { tag_id: 1, tag_name: $t('3b00fce9.4d2d97') },
+      { tag_id: 2, tag_name: $t('3b00fce9.8818d4') }
+    ],
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
-  const {
-    keyword,
-    tagsList,
-    curTagIndex,
-    filterList,
-    curFilterIndex,
-    leftList,
-    rightList,
-    topicName
-  } = state
+  const { curFilterIndex, leftList, rightList, topicName } = state
   const listRef = useRef()
   const router = useRouter()
 
   useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('3b00fce9.b00a65') })
+  }, [i18n.language])
+
+  useEffect(() => {
     listRef.current.reset()
-  }, [curTagIndex])
+  }, [curFilterIndex])
 
   // 列表
   const fetch = async ({ pageIndex, pageSize }) => {

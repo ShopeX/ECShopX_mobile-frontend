@@ -10,6 +10,7 @@ import { AtButton, AtImagePicker } from 'taro-ui'
 import { SpInput as AtInput } from '@/components'
 import S from '@/spx'
 import req from '@/api/req'
+import { $t } from '@/i18n'
 
 import './drug-info.scss'
 
@@ -105,7 +106,7 @@ export default class DrugInfo extends Component {
     }
 
     if (data.length > 3) {
-      S?.toast('最多上传3张图片')
+      S?.toast($t('4fa8a55b.cfddcb'))
     }
     const imgFiles = data.slice(0, 3)
     let promises = []
@@ -158,21 +159,21 @@ export default class DrugInfo extends Component {
     return (
       <View class='drug-info'>
         <AtInput
-          title='用药人姓名'
+          title={$t('cb825098.d78d18')}
           className='trade-remark__input'
           value={info.drug_buyer_name}
           onChange={this.handleInfoChange.bind(this, 'drug_buyer_name')}
         />
         <AtInput
-          title='用药人身份证'
+          title={$t('61ba4416.2e72fa')}
           className='trade-remark__input'
-          placeholder='请输入有效的身份证号'
+          placeholder={$t('61ba4416.ebe7b8')}
           value={info.drug_buyer_id_card}
           onChange={this.handleInfoChange.bind(this, 'drug_buyer_id_card')}
         />
         <View className='drug-describe'>
           <View className='drug-describe__img'>
-            <Text className='drug-describe__text'>上传处方单</Text>
+            <Text className='drug-describe__text'>{$t('61ba4416.ff8a17')}</Text>
             <View className='drug-describe__imgupload'>
               <AtImagePicker
                 mode='aspectFill'
@@ -189,7 +190,7 @@ export default class DrugInfo extends Component {
           </View>
         </View>
         <AtButton type='primary' onClick={this.handleSubmitClick.bind(this)}>
-          确定
+          {$t('349e8d9f.38cf16')}
         </AtButton>
       </View>
     )

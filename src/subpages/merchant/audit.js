@@ -2,22 +2,22 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { useRouter } from '@tarojs/taro'
-import { ScrollView, View, Text } from '@tarojs/components'
-import { useState, useEffect } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
+import { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import { SpPage, SpImage, Loading } from '@/components'
-import { classNames, copyText, showToast } from '@/utils'
+import { classNames, copyText } from '@/utils'
 import { AtButton } from 'taro-ui'
-import api from '@/api'
 import * as merchantApi from '@/api/merchant'
+import { useTranslation, $t, ti } from '@/i18n'
 import {
   AUDITING,
   AUDIT_SUCCESS,
   AUDIT_FAIL,
   AUDIT_UNKNOWN,
   AUDIT_MAP_IMG,
-  AUDIT_MAP_TITLE
+  AUDIT_STATUS_TITLE_KEY
 } from './consts'
 import { MButton, MNavBar } from './comps'
 import './audit.scss'
@@ -30,12 +30,17 @@ const initialState = {
 }
 
 const Audit = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { status, memo, mobile, password } = state
 
   useEffect(() => {
     getAuditStatus()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('53023079.3589d9') })
+  }, [i18n.language])
 
   const getAuditStatus = async () => {
     const { audit_status, audit_memo, mobile, password } = await merchantApi.getAuditstatus()
@@ -56,7 +61,7 @@ const Audit = () => {
 
   const onCopyLoginInfo = () => {
     copyText(
-      `地址：${process.env.APP_MERCHANT_URL}/merchant/login\n账号：${mobile}\n密码：${password}`
+      ti('53023079.0b49bc', [`${process.env.APP_MERCHANT_URL}/merchant/login`, mobile, password])
     )
   }
 
@@ -81,34 +86,34 @@ const Audit = () => {
         <SpImage src={AUDIT_MAP_IMG[status]} className='status-img' />
       )}
 
-      <View className='status-title'>{[AUDIT_MAP_TITLE[status]]}</View>
+      {status !== AUDIT_UNKNOWN && (
+        <View className='status-title'>{$t(AUDIT_STATUS_TITLE_KEY[status])}</View>
+      )}
 
       <View className='status-info'>
-        {status == AUDITING && <View className='text'>预计会在1～5个工作日完成审核</View>}
+        {status == AUDITING && <View className='text'>{$t('b4dfc303.418885')}</View>}
 
         {status == AUDIT_SUCCESS && (
           <View>
-            <View className='text success'>
-              您的入驻申请已通过审核，请使用下方的信息登录商户后台继续操作
-            </View>
+            <View className='text success'>{$t('53023079.11a9cf')}</View>
             <View className='block'>
               <View className='block-item'>
-                <View className='item-label'>地址：</View>
+                <View className='item-label'>{$t('53023079.df3833')}</View>
                 <View className='item-field'>{`${process.env.APP_MERCHANT_URL}/merchant/login`}</View>
               </View>
               <View className='block-item'>
-                <View className='item-label'>账号：</View>
+                <View className='item-label'>{$t('53023079.d7a47e')}</View>
                 <View className='item-field'>{mobile}</View>
               </View>
               <View className='block-item'>
-                <View className='item-label'>密码：</View>
+                <View className='item-label'>{$t('53023079.9b55a2')}</View>
                 <View className='item-field'>{password}</View>
                 <AtButton circle size='small' onClick={onResetPsd}>
-                  重新获取
+                  {$t('029ca60d.017c89')}
                 </AtButton>
               </View>
               <AtButton className='btn-copy' circle type='primary' onClick={onCopyLoginInfo}>
-                复制登录信息
+                {$t('53023079.1c2fd6')}
               </AtButton>
             </View>
           </View>
@@ -116,7 +121,7 @@ const Audit = () => {
 
         {status == AUDIT_FAIL && (
           <View className='block'>
-            <View className='text'>审批意见：</View>
+            <View className='text'>{$t('53023079.f5c361')}</View>
             <View className='text'>{memo}</View>
           </View>
         )}
@@ -124,7 +129,7 @@ const Audit = () => {
 
       {status == AUDIT_FAIL && (
         <View className='status-form'>
-          <MButton onClick={handleReset}>重新填写</MButton>
+          <MButton onClick={handleReset}>{$t('53023079.a5c7b5')}</MButton>
         </View>
       )}
     </SpPage>

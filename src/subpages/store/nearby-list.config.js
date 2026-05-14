@@ -6,5 +6,5 @@ export default {
   usingComponents: {
     //'cell': 'plugin://contactPlugin/cell'
   },
-  navigationBarTitleText: '门店列表'
+  navigationBarTitleText: ''
 }

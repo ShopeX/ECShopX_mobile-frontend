@@ -2,14 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
-import { View, Text, Image } from '@tarojs/components'
+import { View } from '@tarojs/components'
 import { SpImage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 function BaStore(props) {
+  useTranslation()
   const {
     guideInfo = {
       avatar: null,
@@ -23,7 +24,7 @@ function BaStore(props) {
     <View className='ba-store'>
       <SpImage className='ba-avatar' src={guideInfo?.avatar || 'user_icon.png'} />
       <View className='ba-store-bd'>
-        <View className='guide-name'>{guideInfo.salesperson_name || '未知'}</View>
+        <View className='guide-name'>{guideInfo.salesperson_name || $t('794b92c4.1622dc')}</View>
         {storeInfo && <View className='store-name'>{storeInfo.store_name}</View>}
       </View>
     </View>

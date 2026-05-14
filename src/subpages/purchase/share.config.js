@@ -3,5 +3,8 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '内购'
+  navigationStyle: 'custom',
+  transparentTitle: 'auto',
+  titlePenetrate: 'YES',
+  navigationBarTitleText: '分享亲友'
 }

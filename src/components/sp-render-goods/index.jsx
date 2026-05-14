@@ -8,12 +8,14 @@ import qs from 'qs'
 import api from '@/api'
 import S from '@/spx'
 
+import { $t, ti, useTranslation } from '@/i18n'
 import { isObject, classNames, showToast, VERSION_PLATFORM, VERSION_IN_PURCHASE } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
 
 import './index.scss'
 
 function SpGoodsCard(props) {
+  useTranslation()
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const { priceSetting } = useSelector((state) => state.sys)
@@ -60,7 +62,7 @@ function SpGoodsCard(props) {
     await dispatch(fetchUserFavs())
     console.log('fav', fav)
     if (S.getAuthToken()) {
-      showToast(fav ? '已移出收藏' : '已加入收藏')
+      showToast($t(fav ? '21544271.b46077' : '21544271.151286'))
     }
   }
 
@@ -116,7 +118,9 @@ function SpGoodsCard(props) {
       <View className='goods-item__bd'>
         <View className='goods-info'>
           <View className='goods-title'>
-            {info?.isPrescription == 1 && <Text className='prescription-drug'>处方药</Text>}
+            {info?.isPrescription == 1 && (
+              <Text className='prescription-drug'>{$t('7d82f6d2.e8b7e1')}</Text>
+            )}
             {info.itemName}
           </View>
           <View className='goods-desc'>{info.brief}</View>
@@ -151,7 +155,7 @@ function SpGoodsCard(props) {
                     <SpPrice size={36} value={info.price}></SpPrice>
                     {info.activityPrice && enPurActivityPrice && (
                       <View className='act-price'>
-                        活动价¥{info.activityPrice.toFixed(2)}
+                        {ti('19720c27.7c6e7f', [info.activityPrice.toFixed(2)])}
                         {/* <SpPrice className='mkt-price' size={36} noDecimal value={info.activityPrice}></SpPrice> */}
                       </View>
                     )}
@@ -174,7 +178,7 @@ function SpGoodsCard(props) {
                   {info.memberPrice < info.price && enMemberPrice && (
                     <View className='vip-price'>
                       <SpPrice value={info.memberPrice} />
-                      <SpVipLabel content='会员价' type='member' />
+                      <SpVipLabel content={$t('d59e9e9d.8fdd6f')} type='member' />
                     </View>
                   )}
 
@@ -220,7 +224,7 @@ function SpGoodsCard(props) {
               </View>
             )}
 
-            {info.point && <View className='btn-exchange'>兑换</View>}
+            {info.point && <View className='btn-exchange'>{$t('af2f86f4.774e17')}</View>}
           </View>
         </View>
 

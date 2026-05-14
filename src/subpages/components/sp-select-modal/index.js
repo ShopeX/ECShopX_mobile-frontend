@@ -6,10 +6,12 @@ import React, { useEffect, useState } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtRadio, AtButton } from 'taro-ui'
 import './index.scss'
 
 function SpSelectModal(props) {
+  useTranslation()
   const { isOpened, options, onClose, title, onConfirm } = props
   const [value, setValue] = useState(null)
   useEffect(() => {
@@ -22,7 +24,7 @@ function SpSelectModal(props) {
     if (!value) {
       Taro.showToast({
         icon: 'none',
-        title: '请选择'
+        title: $t('9ca5f9c8.708c9d')
       })
       return
     }
@@ -37,14 +39,14 @@ function SpSelectModal(props) {
   return (
     <View className={classNames('sp-select-modal', props.className)}>
       <AtModal isOpened={isOpened} onClose={onClose}>
-        <AtModalHeader>{title}</AtModalHeader>
+        <AtModalHeader>{title || $t('9ca5f9c8.708c9d')}</AtModalHeader>
         <AtModalContent>
           <AtRadio options={options} value={value} onClick={handleChange} />
         </AtModalContent>
         <AtModalAction>
-          <AtButton onClick={onClose}>取消</AtButton>{' '}
+          <AtButton onClick={onClose}>{$t('9ca5f9c8.625fb2')}</AtButton>{' '}
           <AtButton className='confirm-btn' onClick={handleConfirm}>
-            确定
+            {$t('9ca5f9c8.38cf16')}
           </AtButton>
         </AtModalAction>
       </AtModal>
@@ -58,7 +60,7 @@ SpSelectModal.options = {
 
 SpSelectModal.defaultProps = {
   className: '',
-  title: '请选择',
+  title: '',
   options: [],
   isOpened: false,
   onClose: () => {},

@@ -4,6 +4,7 @@
  */
 import Taro from '@tarojs/taro'
 import React, { useEffect } from 'react'
+import { useTranslation, $t } from '@/i18n'
 import { useImmer } from 'use-immer'
 import { View, Text, Picker } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
@@ -19,6 +20,7 @@ const initialState = {
 }
 
 function SelectCompany() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { enterpriseInfo, enterpriseName, enterpriseList } = state
 
@@ -26,6 +28,10 @@ function SelectCompany() {
     //请求获取企业信息
     getEnterpriseList()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('8cad8bc2.0067d7') })
+  }, [i18n.language])
 
   const getEnterpriseList = async () => {
     const data = await api.purchase.getEnterprisesList({ page: 1, pageSize: 20 })
@@ -62,7 +68,7 @@ function SelectCompany() {
 
   return (
     <SpPage className='select-component'>
-      <View className='select-component-title'>选择企业</View>
+      <View className='select-component-title'>{$t('8cad8bc2.0067d7')}</View>
       <Picker
         range={enterpriseList}
         rangeKey='name'
@@ -70,12 +76,12 @@ function SelectCompany() {
         className='pick-company'
       >
         <View className='select-component-enterprise_sn'>
-          {enterpriseName || '选择企业后继续登录'}
+          {enterpriseName || $t('8a53f199.54f6b2')}
         </View>
         <Text className='iconfont icon-zhankai selecticon'></Text>
       </Picker>
       <AtButton circle className='btns-staff' onClick={onValidateChange} disabled={!enterpriseName}>
-        继续验证
+        {$t('5aa49cf0.d81d88')}
       </AtButton>
       <CompBottomTip />
     </SpPage>

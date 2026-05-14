@@ -3,18 +3,17 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Image, Navigator, Button } from '@tarojs/components'
+import Taro from '@tarojs/taro'
+import { View, Text, Image, Navigator } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import { SpNavBar } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
 import './index.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class Index extends Component {
+class VerifiedCardIndex extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -27,7 +26,18 @@ export default class Index extends Component {
       frontColor: '#ffffff',
       backgroundColor: colors.data[0].marketing
     })
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('ed048328.3a5bf1') })
   }
 
   handleClick = () => {
@@ -38,7 +48,7 @@ export default class Index extends Component {
       })
     } else {
       Taro.showToast({
-        title: '请先实名认证',
+        title: $t('ed048328.ed231b'),
         icon: 'none',
         duration: 2000
       })
@@ -87,10 +97,11 @@ export default class Index extends Component {
   render() {
     const { colors } = this.props
     const { info } = this.state
+    const cardTail = String(info.card_num || '').slice(-4)
 
     return (
       <View className='page-distribution-index'>
-        <SpNavBar title='实名认证以及绑定银行卡' leftIconType='chevron-left' />
+        <SpNavBar title={$t('ed048328.3a5bf1')} leftIconType='chevron-left' />
         <View className='header' style={'background: ' + colors.data[0].marketing}>
           <View className='view-flex view-flex-middle'>
             <Image className='header-avatar' src={info.avatar} mode='aspectFill' />
@@ -112,32 +123,29 @@ export default class Index extends Component {
             open-type='navigateTo'
             url='/marketing/pages/verified-card/verified'
           >
-            {/* <View className='item-icon icon-weChart'></View> */}
             <View className='list-item-txt'>
-              实名认证
+              {$t('ed048328.5197d0')}
               <View className='text-primary'>
-                {info.user_name ? `(已认证为"${info.user_name}")` : ''}
+                {info.user_name ? ti('ed048328.a518d2', [info.user_name]) : ''}
               </View>
             </View>
             <View className='icon-arrowRight item-icon-go'></View>
           </Navigator>
           <View className='list-item' onClick={this.handleClick}>
-            {/* <View className='item-icon icon-qrcode1'></View> */}
             <View className='list-item-txt'>
-              绑定银行卡
+              {$t('ed048328.005e9c')}
               <View className='text-primary'>
-                {info.bank_name ? `(${info.bank_name}(*${info.card_num.substr(-1, 4)}))` : ''}
+                {info.bank_name ? ti('ed048328.4bf185', [info.bank_name, cardTail]) : ''}
               </View>
             </View>
             <View className='icon-arrowRight item-icon-go'></View>
           </View>
-          {/* <Navigator className='list-item' open-type='navigateTo' url={`/marketing/pages/verified-card/card`}>
-                        <View className='item-icon icon-weChart'></View>
-                        <View className='list-item-txt'>绑定银行卡<View className='text-primary'>{'(农业银行(*8888))'}</View></View>
-                        <View className='icon-arrowRight item-icon-go'></View>
-                    </Navigator> */}
         </View>
       </View>
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(VerifiedCardIndex))

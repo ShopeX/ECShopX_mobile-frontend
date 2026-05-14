@@ -3,18 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
-import { connect } from 'react-redux'
+import Taro from '@tarojs/taro'
+import { View, Image, Text } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
-import api from '@/api'
-import { pickBy, classNames } from '@/utils'
 import './brand-list.scss'
 
-@withPager
-@withBackToTop
-export default class BrandList extends Component {
+class BrandList extends Component {
   constructor(props) {
     super(props)
 
@@ -22,15 +18,15 @@ export default class BrandList extends Component {
       list: [
         {
           id: 1,
-          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会12'
+          name: 'Brand demo 1'
         },
         {
           id: 2,
-          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会123'
+          name: 'Brand demo 2'
         },
         {
           id: 3,
-          name: '讽德诵功的国际化刚刚好复健科低功耗的看过的看过后的看法更好地将更好地积分开个会213'
+          name: 'Brand demo 3'
         }
       ]
     }
@@ -62,6 +58,8 @@ export default class BrandList extends Component {
     })
   }
 
+  showIntroduction = () => {}
+
   reservate = (e) => {
     // e.stopPropagation()
     Taro.navigateTo({
@@ -91,7 +89,7 @@ export default class BrandList extends Component {
                 />
               </View>
               <Text className='brand-item__btn' onClick={this.reservate.bind(this, 1)}>
-                立即预约
+                {$t('1501f117.3ed720')}
               </Text>
               <View
                 className='brand-item__introduction'
@@ -107,3 +105,5 @@ export default class BrandList extends Component {
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(BrandList)))

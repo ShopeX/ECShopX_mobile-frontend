@@ -2,19 +2,18 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useImmer } from 'use-immer'
-import { useSelector } from 'react-redux'
-import { View, Text, Image } from '@tarojs/components'
-import { SpPrice, SpInputNumber, SpImage, SpCheckboxNew } from '@/components'
-import { VERSION_IN_PURCHASE } from '@/utils'
-import { AtButton } from 'taro-ui'
+import { View, Text } from '@tarojs/components'
+import { SpImage, SpCheckboxNew } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
   allChecked: true
 }
 function CompGoodsInvalidItems(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { allChecked } = state
 
@@ -59,7 +58,7 @@ function CompGoodsInvalidItems(props) {
                     <Text className='names'>{item.item_name}</Text>
                     <Text className='iconfont icon-shanchu-01' onClick={() => deletes(item)} />
                   </View>
-                  <View className='reason'>所在地区该商品无法配送</View>
+                  <View className='reason'>{$t('1dc7bf5c.cea8ba')}</View>
                 </View>
               </View>
             )

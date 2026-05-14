@@ -9,7 +9,8 @@ import { AtList, AtListItem } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import { SpTab, SpScrollView, SpPage, SpCell, SpImage } from '@/components'
-import { pickBy, showToast } from '@/utils'
+import { pickBy } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
@@ -34,6 +35,7 @@ const initState = {
 }
 
 const BoxList = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initState)
   const { startDate, startTime, endDate, endTime, activeIndex, list, itemBoxNum, itemPieceNum } =
     state
@@ -78,7 +80,7 @@ const BoxList = () => {
   return (
     <SpPage
       className='page-good-boxlist'
-      renderFooter={<View className='box-num'>{`总箱数：${itemBoxNum}箱`}</View>}
+      renderFooter={<View className='box-num'>{ti('7e996f43.fcc4dd', [itemBoxNum])}</View>}
     >
       {/* <View className='tab-container'>
         <SpTab dataSource={TAB_LIST} onChange={handleChangeTab} />
@@ -146,11 +148,13 @@ const BoxList = () => {
               <View className='item-bd'>
                 <View className='item-info'>
                   <View className='item-name'>{item.name}</View>
-                  <View className='item-sku'>{`${item.unitScale}件成箱`}</View>
+                  <View className='item-sku'>{ti('7e996f43.48a79b', [item.unitScale])}</View>
                 </View>
                 <View className='item-no-num'>
                   <View className='item-no'>{item.itemBn}</View>
-                  <View className='item-num'>{`${item.itemBoxNum}箱${item.itemPieceNum}件`}</View>
+                  <View className='item-num'>
+                    {ti('7e996f43.d689df', [item.itemBoxNum, item.itemPieceNum])}
+                  </View>
                 </View>
               </View>
             </View>

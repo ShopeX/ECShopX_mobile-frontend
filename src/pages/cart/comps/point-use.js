@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { AtFloatLayout, AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import { SpCheckbox, SpInput as AtInput } from '@/components'
 import { DEFAULT_POINT_NAME } from '@/consts'
+import { $t, ti, i18n } from '@/i18n'
 import './point-use.scss'
 
 @connect(({ sys, colors }) => ({
@@ -29,6 +30,18 @@ export default class PointUse extends Component {
       localType: props.type
     }
   }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
+  }
+
   componentWillReceiveProps = (nextProps) => {
     if (nextProps.type !== this.props.type) {
       this.setState({
@@ -108,21 +121,21 @@ export default class PointUse extends Component {
             <View className='point-use__hd'>
               <Text>{pointName}</Text>
               <Text className='rule-title' onClick={this.handleRuleOpen}>
-                使用规则
+                {$t('b232790d.1ebbd6')}
               </Text>
               <View className='iconfont icon-close' onClick={this.handleCancel}></View>
             </View>
             <View className='point-use__bd'>
               <View className='point-item'>
-                <View className='point-item__title'>{`用户可用${pointName}：`}</View>
+                <View className='point-item__title'>{ti('b232790d.21e511', [pointName])}</View>
                 <View className='point-item__desc'>{info.user_point}</View>
               </View>
               <View className='point-item border'>
-                <View className='point-item__title'>{`本单最大可用${pointName}：`}</View>
+                <View className='point-item__title'>{ti('b232790d.85cbb1', [pointName])}</View>
                 <View className='point-item__desc'>{info.max_point}</View>
               </View>
               <View className='point-item'>
-                <View className='point-item__title'>{`请输入抵扣${pointName}`}</View>
+                <View className='point-item__title'>{ti('b232790d.39033b', [pointName])}</View>
                 <View className='point-item__desc'>
                   <AtInput
                     type='number'
@@ -148,7 +161,7 @@ export default class PointUse extends Component {
                       checked={localType === 'point'}
                       onChange={this.handleUseFullAmount}
                     >
-                      全额抵扣
+                      {$t('b232790d.a23745')}
                     </SpCheckbox>
                   </View>
                 </View>
@@ -161,24 +174,25 @@ export default class PointUse extends Component {
               loading={loading}
               onClick={this.handleChange.bind(this, point, localType)}
             >
-              确定
+              {$t('b232790d.38cf16')}
             </Button>
           </View>
         </AtFloatLayout>
         <AtModal isOpened={isOpenRule}>
-          <AtModalHeader>积分使用规则</AtModalHeader>
+          <AtModalHeader>{$t('b232790d.117486')}</AtModalHeader>
           <AtModalContent>
-            <View>使用条件</View>
+            <View>{$t('b232790d.2f99a3')}</View>
             <View>
-              {`1.${DEFAULT_POINT_NAME()}支付不得超出订单应付总金额的 ${
+              {ti('b232790d.1daa7a', [
+                DEFAULT_POINT_NAME(),
                 deduct_point_rule.deduct_proportion_limit
-              }%；`}
+              ])}
             </View>
-            <View>使用数量</View>
-            <View>{`2.${deduct_point_rule.deduct_point} ${pointName}抵 1 元；`}</View>
+            <View>{$t('b232790d.9b017d')}</View>
+            <View>{ti('b232790d.73401f', [deduct_point_rule.deduct_point, pointName])}</View>
           </AtModalContent>
           <AtModalAction>
-            <Button onClick={this.handleRuleClose}>我知道了</Button>
+            <Button onClick={this.handleRuleClose}>{$t('b232790d.fe0337')}</Button>
           </AtModalAction>
         </AtModal>
       </View>

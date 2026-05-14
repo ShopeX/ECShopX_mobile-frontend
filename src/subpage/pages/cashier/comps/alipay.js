@@ -17,6 +17,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import api from '@/api'
+import { $t } from '@/i18n'
 import { SYMBOL } from '../util'
 import './alipay.scss'
 
@@ -70,7 +71,7 @@ export default class AlipayBtn extends Component {
     return (
       <View>
         <View className='alipay-btn' onClick={this.handleClickPayment.bind(this)}>
-          支付宝支付
+          {$t('36c99ee5.e3b206')}
         </View>
       </View>
     )

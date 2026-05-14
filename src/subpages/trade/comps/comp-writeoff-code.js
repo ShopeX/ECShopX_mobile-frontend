@@ -3,14 +3,13 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
-import { SpFloatLayout, SpImage } from '@/components'
+import { SpFloatLayout } from '@/components'
 import api from '@/api'
-import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import './comp-writeoff-code.scss'
 
 const initialState = {
@@ -18,6 +17,7 @@ const initialState = {
   pickup_code: ''
 }
 function CompWriteOffCode(props) {
+  useTranslation()
   const { isOpened, onClose, onConfirm } = props
   const [state, setState] = useImmer(initialState)
   const { qrcode, pickup_code } = state
@@ -56,13 +56,13 @@ function CompWriteOffCode(props) {
 
   return (
     <SpFloatLayout
-      title='核销码'
+      title={$t('86c5463e.1d50e1')}
       className='comp-wirteoff-code'
       open={isOpened}
       onClose={handleCloseFloatLayout}
       renderFooter={
         <AtButton circle type='primary' onClick={handleCloseFloatLayout}>
-          关闭
+          {$t('86c5463e.b15d91')}
         </AtButton>
       }
     >
@@ -71,7 +71,7 @@ function CompWriteOffCode(props) {
           <Image className='qrcode-image' src={qrcode} mode='widthFix' />
         </View>
         <View className='pickup-code'>{pickup_code}</View>
-        <View className='wirte-off-desc'>提货时请出告知店员提货验证码</View>
+        <View className='wirte-off-desc'>{$t('86c5463e.af2026')}</View>
       </View>
     </SpFloatLayout>
   )

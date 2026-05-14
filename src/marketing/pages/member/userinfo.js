@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { Input, View, Picker, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import { SpPage, SpNavBar, SpCheckbox } from '@/components'
 import { SpFloatPrivacy } from '@/subpages/components'
 import api from '@/api'
@@ -15,16 +17,7 @@ import userIcon from '@/assets/imgs/user-icon.png'
 import imgUploader from '@/utils/upload'
 import './userinfo.scss'
 
-@connect(
-  ({ colors, user }) => ({
-    colors: colors.current,
-    memberData: user.userInfo
-  }),
-  (dispatch) => ({
-    setMemberInfo: (memberInfo) => dispatch({ type: 'member/init', payload: memberInfo })
-  })
-)
-export default class UserInfo extends Component {
+class UserInfo extends Component {
   constructor(props) {
     super(props)
 
@@ -51,7 +44,18 @@ export default class UserInfo extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.getFormItem()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('3c569e24.eab129') })
   }
 
   // 上传头像
@@ -249,7 +253,7 @@ export default class UserInfo extends Component {
       await api.member.setMemberInfo({
         ...userInfo
       })
-      showToast('修改成功')
+      showToast($t('692ba07e.69be67'))
 
       await S?.getMemberInfo()
 
@@ -260,7 +264,7 @@ export default class UserInfo extends Component {
       //   ...memberInfo
       // });
     } catch (e) {
-      showToast(`请完善${e}`)
+      showToast(ti('e72cabe9.cc914a', [e]))
     }
     // } else {
     //   this.setState({
@@ -303,10 +307,10 @@ export default class UserInfo extends Component {
 
     return (
       <SpPage className={`page-member-setting ${isWxWeb && 'page-member-setting-nopadding'}`}>
-        <SpNavBar title='用户信息' />
+        <SpNavBar title={$t('e72cabe9.6e3541')} />
         <View className='baseInfo'>
           <View className='item'>
-            <View className='left'>我的头像</View>
+            <View className='left'>{$t('e72cabe9.882a6a')}</View>
             <View className='right'>
               <Image
                 src={userInfo.avatar || userIcon}
@@ -318,7 +322,7 @@ export default class UserInfo extends Component {
           </View>
 
           <View className='item' onClick={this.editPhone.bind(this)}>
-            <View className='left'>我的手机号</View>
+            <View className='left'>{$t('e72cabe9.f18135')}</View>
             <View className='right'>{userInfo.mobile}</View>
           </View>
 
@@ -355,7 +359,7 @@ export default class UserInfo extends Component {
 
         {/* 基础信息 */}
         <View className='basicInfo'>
-          <View className='title'>基础信息</View>
+          <View className='title'>{$t('e72cabe9.6ea1fe')}</View>
           {formItems.map((item) => (
             <View key={item.key} className='item'>
               <View className='left'>{item.name}</View>
@@ -427,7 +431,7 @@ export default class UserInfo extends Component {
             style={`background: ${colors.data[0].primary}`}
             onClick={this.saveInfo.bind(this)}
           >
-            保存
+            {$t('20b64b82.be5fbb')}
           </View>
         </View>
 
@@ -436,14 +440,14 @@ export default class UserInfo extends Component {
             <View className='checkBoxPanel' onClick={(e) => e.stopPropagation()}>
               <View className='panel-btns'>
                 <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>
-                  取消
+                  {$t('61e2d21a.625fb2')}
                 </View>
                 <View
                   className='panel-btn require-btn'
                   // style={`color: ${colors.data[0].primary}`}
                   onClick={this.btnClick.bind(this, 'require')}
                 >
-                  确定
+                  {$t('b232790d.38cf16')}
                 </View>
               </View>
               <View className='checkBoxPanel-content'>
@@ -483,3 +487,13 @@ export default class UserInfo extends Component {
     )
   }
 }
+
+export default connect(
+  ({ colors, user }) => ({
+    colors: colors.current,
+    memberData: user.userInfo
+  }),
+  (dispatch) => ({
+    setMemberInfo: (memberInfo) => dispatch({ type: 'member/init', payload: memberInfo })
+  })
+)(withTranslation()(UserInfo))

@@ -5,21 +5,17 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, SpNote, GoodsItem, SpNavBar } from '@/components'
 import { AtCountdown } from 'taro-ui'
-import { connect } from 'react-redux'
 import api from '@/api'
-import { pickBy, validColor, isString, getDistributorId } from '@/utils'
+import { pickBy, validColor, isString } from '@/utils'
 import NormalBackground from '../../assets/plusprice-head.png'
 import './plusprice.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-@withBackToTop
-export default class DetailPluspriceList extends Component {
+class DetailPluspriceList extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -37,17 +33,18 @@ export default class DetailPluspriceList extends Component {
   }
 
   componentDidMount() {
-    console.log('---componentDidMount---')
-    // const { marketing_id } = getCurrentInstance()?.params
-    // this.setState({
-    //   query: {
-    //     marketing_id: marketing_id
-    //   }
-    // }, () => {
-    //   this.nextPage()
-    // })
-
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('c4d2fddd.d1ca1e') })
   }
 
   setNavBar = (navbar_color) => {
@@ -61,17 +58,6 @@ export default class DetailPluspriceList extends Component {
       }
     })
   }
-
-  // onShareAppMessage () {
-  //   const res = this.state.shareInfo
-  //   const { userId } = Taro.getStorageSync('userinfo')
-  //   const query = userId ? `?uid=${userId}` : ''
-  //   return {
-  //     title: res.title,
-  //     imageUrl: res.imageUrl,
-  //     path: `/pages/item/seckill-goods-list${query}`
-  //   }
-  // }
 
   calcTimer(totalSec) {
     let remainingSec = totalSec
@@ -142,7 +128,6 @@ export default class DetailPluspriceList extends Component {
   }
 
   render() {
-    const { colors } = this.props
     const {
       list,
       showBackToTop,
@@ -153,7 +138,7 @@ export default class DetailPluspriceList extends Component {
       isSetBackground,
       timeBackgroundColor
     } = this.state
-    if (!promotion_activity.marketing_name) return <Loading />
+    if (!promotion_activity.marketing_name) return <Loading>{$t('f1d3181c.bd0271')}</Loading>
     return (
       <View
         className='page-plusprice'
@@ -162,7 +147,7 @@ export default class DetailPluspriceList extends Component {
           'background-size': isSetBackground ? 'cover' : 'contain'
         }}
       >
-        <SpNavBar title='微商城' />
+        <SpNavBar title={$t('c4d2fddd.d1ca1e')} />
         <View className='plusprice-goods__info'>
           <View className='title'> {promotion_activity.marketing_name} </View>
           <View
@@ -170,10 +155,15 @@ export default class DetailPluspriceList extends Component {
             style={{ 'background-color': timeBackgroundColor ? timeBackgroundColor : '#FC682D' }}
           >
             <View>
-              <Text className='time-text'>距结束</Text>
+              <Text className='time-text'>{$t('6f27b25d.85423b')}</Text>
               {timer && (
                 <AtCountdown
-                  format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                  format={{
+                    day: $t('12b6c337.249aba'),
+                    hours: ':',
+                    minutes: ':',
+                    seconds: ''
+                  }}
                   isShowDay
                   day={timer.dd}
                   hours={timer.hh}
@@ -217,9 +207,9 @@ export default class DetailPluspriceList extends Component {
             </View>
           )}
 
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('f1d3181c.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('f1d3181c.ba1de9')}</SpNote>
           )}
         </ScrollView>
 
@@ -229,3 +219,5 @@ export default class DetailPluspriceList extends Component {
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(DetailPluspriceList)))

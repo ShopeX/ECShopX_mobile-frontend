@@ -2,6 +2,8 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import i18n, { $t } from '@/i18n'
+
 let privacyHandler
 let privacyResolves = new Set()
 let closeOtherPagePopUpHooks = new Set()
@@ -23,17 +25,36 @@ const closeOtherPagePopUp = (closePopUp) => {
   })
 }
 
+const getPrivacyTextData = () => ({
+  title: $t('42a6f4da.9184c0'),
+  privacyTips1: $t('42a6f4da.6671f3'),
+  privacyTips2: $t('42a6f4da.e72805'),
+  urlTitle: $t('42a6f4da.67c249'),
+  btnReject: $t('7c40f12d.7173f8'),
+  btnAgree: $t('ed40c676.e61f2c')
+})
+
 Component({
   options: {
     addGlobalClass: true
   },
   data: {
-    title: '用户隐私保护提示',
-    urlTitle: '《用户隐私保护指引》',
+    title: '',
+    privacyTips1: '',
+    privacyTips2: '',
+    urlTitle: '',
+    btnReject: '',
+    btnAgree: '',
     innerShow: false
   },
   lifetimes: {
     attached: function () {
+      this.updateI18nText = () => {
+        this.setData(getPrivacyTextData())
+      }
+      this.updateI18nText()
+      i18n.on('languageChanged', this.updateI18nText)
+
       const closePopUp = () => {
         this.disPopUp()
       }
@@ -63,6 +84,9 @@ Component({
       })
     },
     detached: function () {
+      if (this.updateI18nText) {
+        i18n.off('languageChanged', this.updateI18nText)
+      }
       closeOtherPagePopUpHooks.delete(this.closePopUp)
     }
   },

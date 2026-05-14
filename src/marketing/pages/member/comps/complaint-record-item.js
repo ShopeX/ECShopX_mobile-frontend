@@ -3,12 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import { View, Image } from '@tarojs/components'
 import { AtAvatar, AtTextarea } from 'taro-ui'
+import { $t } from '@/i18n'
 import { formatDateTime } from '@/utils'
 import './complaint-record-item.scss'
 
-export default class ComplaintRecordItem extends Component {
+class ComplaintRecordItem extends Component {
   static defaultProps = {
     isOpened: false
   }
@@ -28,8 +30,6 @@ export default class ComplaintRecordItem extends Component {
 
     let replyList = info.reply_content ? JSON.parse(info.reply_content) : []
 
-    console.log('render', info)
-
     return (
       <View className='complaint-record-item'>
         <View className='item-header'>
@@ -43,7 +43,7 @@ export default class ComplaintRecordItem extends Component {
         </View>
 
         <View className='item-info'>
-          <View>投诉理由：</View>
+          <View>{$t('7aa17a4c.82aa92')}</View>
           <View className='item-info__con'>
             <View className='triangle-box'>
               <View className='triangle'>
@@ -76,7 +76,7 @@ export default class ComplaintRecordItem extends Component {
         {replyList.map((item, idx) => {
           return (
             <View key={`${idx}1`} className='item-reply'>
-              <View className='item-reply__title'>商家回复：</View>
+              <View className='item-reply__title'>{$t('131d822a.a94dbd')}</View>
 
               <View className='item-reply__con'>
                 <View className='item-reply__con-text'>
@@ -104,3 +104,5 @@ export default class ComplaintRecordItem extends Component {
     )
   }
 }
+
+export default withTranslation()(ComplaintRecordItem)

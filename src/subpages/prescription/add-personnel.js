@@ -6,15 +6,17 @@ import React, { useEffect } from 'react'
 import { View, Text, Picker } from '@tarojs/components'
 import { SpCell, SpPage, SpCheckbox, SpInput as AtInput } from '@/components'
 import { useImmer } from 'use-immer'
-import { relationship } from '@/consts'
 import { AtButton } from 'taro-ui'
 import { showToast, validate } from '@/utils'
-import Taro, { useRouter, getCurrentInstance } from '@tarojs/taro'
+import Taro, { useRouter } from '@tarojs/taro'
 import api from '@/api'
 import { useNavigation } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
+import { P_MALE, P_FEMALE } from './i18n-keys'
+import { getRelationshipOptions } from './relationship-options'
 import './add-personnel.scss'
 
-const initialState = {
+const initialStateBase = {
   info: {
     user_family_name: '',
     user_family_id_card: '',
@@ -23,27 +25,32 @@ const initialState = {
     user_family_gender: '',
     relationship: 0
   },
-  selector: relationship(),
   handlechecked: null
 }
 
 function AddPersonnel() {
-  const $instance = getCurrentInstance() || {}
-  const [state, setState] = useImmer(initialState)
+  const { i18n } = useTranslation()
+  const [state, setState] = useImmer(() => ({
+    ...initialStateBase,
+    selector: getRelationshipOptions($t)
+  }))
   const { setNavigationBarTitle } = useNavigation()
 
   const { info, selector, handlechecked } = state
   const router = useRouter()
 
+  const navTitle = () => (router?.params?.id ? $t('3bb83dc0.1b62dc') : $t('3bb83dc0.ae3786'))
+
   useEffect(() => {
     medicationPersonnel()
-    setNavigationBarTitle(initNavigationBarTitle())
   }, [])
 
-  const initNavigationBarTitle = () => {
-    const { id } = router?.params
-    return id ? '编辑用药人' : '添加用药人'
-  }
+  useEffect(() => {
+    setNavigationBarTitle(navTitle())
+    setState((draft) => {
+      draft.selector = getRelationshipOptions($t)
+    })
+  }, [i18n.language, router?.params?.id])
 
   const medicationPersonnel = async () => {
     const { id } = router?.params
@@ -58,30 +65,31 @@ function AddPersonnel() {
   }
   const handleClickToEdit = async () => {
     if (info.user_family_name == '') {
-      showToast('请填写姓名')
+      showToast($t('3bb83dc0.629b2e'))
       return
     }
     if (info.user_family_id_card == '') {
-      showToast('请填写身份证号')
+      showToast($t('3bb83dc0.64e8f2'))
       return
     }
     if (!/^\d{17}[\dXx]$/.test(info.user_family_id_card)) {
-      showToast('请填写正确的身份证号')
+      showToast($t('3bb83dc0.947a89'))
+      return
     }
     if (info.user_family_phone == '') {
-      showToast('请填写手机号码')
+      showToast($t('3bb83dc0.395447'))
       return
     }
     if (!validate.isMobileNum(info.user_family_phone)) {
-      showToast('请填写正确手机号码')
+      showToast($t('3bb83dc0.e9a2ae'))
       return
     }
     if (info.user_family_gender == '') {
-      showToast('请选择用药人性别')
+      showToast($t('3bb83dc0.694f88'))
       return
     }
     if (!selector?.[info.relationship]?.key) {
-      showToast('请选择与您关系')
+      showToast($t('3bb83dc0.87e6d5'))
       return
     }
     let params = {
@@ -93,7 +101,7 @@ function AddPersonnel() {
     } else {
       await api.prescriptionDrug.medicationPersonnel(params)
     }
-    showToast(`${router?.params.id ? '编辑' : '添加'}成功`)
+    showToast(router?.params.id ? $t('3bb83dc0.3bb47b') : $t('3bb83dc0.3fdaea'))
     setTimeout(() => {
       Taro.navigateBack()
     }, 300)
@@ -120,29 +128,23 @@ function AddPersonnel() {
   }
 
   const calculateAgeByIdCard = (idCard) => {
-    // 检查身份证号码长度是否为18位
     if (!/^\d{17}[\dXx]$/.test(idCard)) {
-      throw new Error('无效的身份证号码')
+      throw new Error('invalid id')
     }
 
-    // 提取出生日期部分
     const birthDateStr = idCard.substring(6, 14)
     const year = parseInt(birthDateStr.substring(0, 4), 10)
     const month = parseInt(birthDateStr.substring(4, 6), 10)
     const day = parseInt(birthDateStr.substring(6, 8), 10)
 
-    // 创建出生日期对象
-    const birthDate = new Date(year, month - 1, day) // 月份在Date对象中是从0开始的，所以要减1
+    const birthDate = new Date(year, month - 1, day)
 
-    // 获取当前日期
     const today = new Date()
 
-    // 计算年龄
     let age = today.getFullYear() - birthDate.getFullYear()
     const monthDiff = today.getMonth() - birthDate.getMonth()
     const dayDiff = today.getDate() - birthDate.getDate()
 
-    // 如果还没到生日，年龄要减1
     if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
       age--
     }
@@ -155,76 +157,67 @@ function AddPersonnel() {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleClickToEdit}>
-            保存
+            {$t('3bb83dc0.be5fbb')}
           </AtButton>
         </View>
       }
     >
       <View className='prompt'>
         <Text className='iconfont icon-bg-security'></Text>
-        基于国家互联网诊疗规定，请如实填写下列信息，改信息仅用于为您直接提供
-        服务的药师，药师在线续方，所有信息严格保密
+        {$t('3bb83dc0.7f87d4')}
       </View>
 
       <View className='scroll-view-container'>
         <View className='scroll-view-body'>
           <View className='page-address-edit__form'>
-            <SpCell className='logistics-no border-bottom' certainly title='用药人姓名'>
+            <SpCell className='logistics-no border-bottom' certainly title={$t('3bb83dc0.d78d18')}>
               <AtInput
                 name='user_family_name'
                 value={info?.user_family_name}
                 cursor={info?.user_family_name?.length}
-                placeholder='请填写正确姓名'
+                placeholder={$t('3bb83dc0.0197ac')}
                 onChange={(e) => handleChange('user_family_name', e)}
               />
             </SpCell>
 
-            <SpCell className='logistics-no border-bottom' certainly title='身份证号'>
+            <SpCell className='logistics-no border-bottom' certainly title={$t('3bb83dc0.32ffa2')}>
               <AtInput
                 name='user_family_id_card'
                 value={info?.user_family_id_card}
                 cursor={info?.user_family_id_card?.length}
-                placeholder='请填写正确身份证号'
+                placeholder={$t('3bb83dc0.cf8361')}
                 onChange={(e) => handleChange('user_family_id_card', e)}
               />
             </SpCell>
 
-            <SpCell className='logistics-no border-bottom' certainly title='手机号码'>
+            <SpCell className='logistics-no border-bottom' certainly title={$t('3bb83dc0.92448a')}>
               <AtInput
                 name='user_family_phone'
                 maxLength={11}
                 value={info?.user_family_phone}
                 cursor={info?.user_family_phone?.length}
-                placeholder='请填写正确手机号'
+                placeholder={$t('3bb83dc0.46d2f3')}
                 onChange={(e) => handleChange('user_family_phone', e)}
               />
             </SpCell>
 
-            <SpCell className='logistics-no border-bottom' certainly title='用药人年龄'>
-              {/* <AtInput
-                name='user_family_age'
-                maxLength={11}
-                value={info?.user_family_age}
-                cursor={info?.user_family_age?.length}
-                placeholder='根据证件号自动识别'
-                onChange={(e) => handleChange('user_family_age', e)}
-              /> */}
+            <SpCell className='logistics-no border-bottom' certainly title={$t('3bb83dc0.51591a')}>
               <View className='ages'>
-                {info?.user_family_age ? info?.user_family_age : '根据证件号自动识别'}
+                {info?.user_family_age ? info?.user_family_age : $t('3bb83dc0.9731fb')}
               </View>
             </SpCell>
 
-            <SpCell className='logistics-no border-bottom' certainly title='用药人性别'>
+            <SpCell className='logistics-no border-bottom' certainly title={$t('3bb83dc0.297968')}>
               <View className='gender'>
                 <SpCheckbox
                   checked={handlechecked == 1}
-                  label='男'
+                  label={$t(P_MALE)}
                   onChange={handleChange.bind(this, 'user_family_gender', 1)}
                 />
 
                 <SpCheckbox
                   checked={handlechecked == 2}
-                  label='女'
+                  label={$t(P_FEMALE)}
                   className='genders'
                   onChange={handleChange.bind(this, 'user_family_gender', 2)}
                 />
@@ -234,7 +227,7 @@ function AddPersonnel() {
             <Picker mode='selector' range={selector} rangeKey='value' onChange={pickerChange}>
               <SpCell
                 className='logistics-no province border-bottom'
-                title='与您关系'
+                title={$t('3bb83dc0.3f28e7')}
                 isLink
                 arrow
                 certainly

@@ -8,6 +8,7 @@ import { connect } from 'react-redux'
 import { View } from '@tarojs/components'
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction } from 'taro-ui'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import './point-deposit.scss'
 
 @connect(({ sys }) => ({
@@ -77,17 +78,19 @@ export default class PointDepositBtn extends Component {
     return (
       <View className='point-deposit-index'>
         <View className='pay-mode' onClick={this.handleClickPayment.bind(this, payType)}>
-          {payType === 'deposit' ? '预存款支付' : `${this.props.pointName}支付`}
+          {payType === 'deposit'
+            ? $t('2b6e9b14.460dcb')
+            : ti('2b6e9b14.717604', [this.props.pointName])}
         </View>
 
         <AtModal
           isOpened={isOpened}
-          cancelText='取消'
-          confirmText='确认'
+          cancelText={$t('61e2d21a.625fb2')}
+          confirmText={$t('61e2d21a.e83a25')}
           onClose={this.handleClosePay}
           onCancel={this.handleClosePay}
           onConfirm={this.handleConfirmPay}
-          content='请确认是否支付此订单'
+          content={$t('2b6e9b14.29a03f')}
         />
       </View>
     )

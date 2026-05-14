@@ -7,6 +7,7 @@ import { View, Image } from '@tarojs/components'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import SpPage from '@/components/sp-page'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t } from '@/i18n'
 import './view-case.scss'
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
 }
 
 function ViewCase() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { designWorks } = state
   const $instance = getCurrentInstance() || {}
@@ -26,6 +28,11 @@ function ViewCase() {
       })
     }
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('4ede271e.6a93e0') })
+  }, [i18n.language])
+
   const handleNavtoDetail = (item) => {
     const { design_id, plan_id } = item
     Taro.navigateTo({

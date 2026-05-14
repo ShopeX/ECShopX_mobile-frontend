@@ -3,52 +3,42 @@
  * See LICENSE file for license details.
  */
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import React, { useState } from 'react'
-import { View, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
+import React, { useMemo } from 'react'
+import { View } from '@tarojs/components'
 import { AtTabBar } from 'taro-ui'
 import { SG_DIANWU_TOKEN } from '@/consts'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-tabbar.scss'
 
-const TABBAR_LIST = [
-  {
-    title: '收银台',
-    iconType: 'dianpushouye',
-    url: '/subpages/dianwu/cashier'
-  },
-  {
-    title: '商品查询',
-    iconType: 'dianpushangpinlist',
-    url: '/subpages/dianwu/list'
-  },
-  {
-    title: '取单',
-    iconType: 'dianpufenlei',
-    url: '/subpages/dianwu/pending-checkout'
-  }
+const TABBAR_URLS = [
+  '/subpages/dianwu/cashier',
+  '/subpages/dianwu/list',
+  '/subpages/dianwu/pending-checkout'
 ]
 
-function CompTabbar(props) {
-  const $instance = getCurrentInstance() || {}
-  const { colorPrimary } = useSelector((state) => state.sys)
+const TABBAR_ICON_TYPES = ['dianpushouye', 'dianpushangpinlist', 'dianpufenlei']
 
-  const tabList = TABBAR_LIST.map((item) => {
-    return {
-      title: item.title,
-      name: item.title,
-      iconType: item.iconType,
-      selectedIconType: `${item.iconType}-fill`,
+function CompTabbar(props) {
+  const { i18n } = useTranslation()
+  const $instance = getCurrentInstance() || {}
+
+  const tabList = useMemo(() => {
+    const titles = [$t('95c9ab49.5cbddd'), $t('95c9ab49.b21fcc'), $t('47860443.b10acb')]
+    return TABBAR_URLS.map((url, idx) => ({
+      title: titles[idx],
+      name: titles[idx],
+      iconType: TABBAR_ICON_TYPES[idx],
+      selectedIconType: `${TABBAR_ICON_TYPES[idx]}-fill`,
       iconPrefixClass: 'iconfont icon',
-      url: item.url
-    }
-  })
+      url
+    }))
+  }, [i18n.language])
 
   let currentIndex = 0
   const pages = Taro.getCurrentPages()
   if (pages.length > 0) {
     const currentPage = pages[pages.length - 1].route
-    currentIndex = TABBAR_LIST.findIndex((tab) => tab.url == `/${currentPage}`)
+    currentIndex = TABBAR_URLS.findIndex((tabUrl) => tabUrl == `/${currentPage}`)
   }
 
   console.log('comp-tabbar currentIndex:', currentIndex)

@@ -10,14 +10,16 @@ import { SpToast, Loading, FilterBar, SpNote, SpNavBar, SpSearchBar, SpPage } fr
 import S from '@/spx'
 import { getDtidIdUrl } from '@/utils/helper'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import { pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import DistributionGoodsItem from './comps/goods-item'
 import './goods.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionGoods extends Component {
+class DistributionGoods extends Component {
   $instance = getCurrentInstance() || {}
   spPageRef = React.createRef()
   constructor(props) {
@@ -28,17 +30,17 @@ export default class DistributionGoods extends Component {
       shareInfo: {},
       info: {},
       curFilterIdx: 0,
-      filterList: [{ title: '综合' }, { title: '销量' }, { title: '价格', sort: -1 }],
+      filterList: [{ title: '' }, { title: '' }, { title: '', sort: -1 }],
       tabList: [
         {
-          title: '推广商品',
+          title: '',
           iconType: 'home',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/goods',
           urlRedirect: true
         },
         {
-          title: '分类',
+          title: '',
           iconType: 'category',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/good-category',
@@ -78,6 +80,17 @@ export default class DistributionGoods extends Component {
         this.nextPage()
       }
     )
+    this.syncNavTitle()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('155381a3.7f8121') })
   }
 
   async fetch(params) {
@@ -101,7 +114,7 @@ export default class DistributionGoods extends Component {
       }
       item.attribute_values.unshift({
         attribute_value_id: 'all',
-        attribute_value_name: '全部',
+        attribute_value_name: $t('155381a3.a8b0c2'),
         isChooseParams: true
       })
     })
@@ -254,7 +267,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S?.toast('上架成功')
+            S?.toast($t('155381a3.e241a8'))
           }
         )
       }
@@ -268,7 +281,7 @@ export default class DistributionGoods extends Component {
             scrollTop: this.state.top
           },
           () => {
-            S?.toast('下架成功')
+            S?.toast($t('155381a3.0c6d64'))
           }
         )
       }
@@ -381,7 +394,15 @@ export default class DistributionGoods extends Component {
         ref={this.spPageRef}
         className='page-distribution-shop'
         renderFooter={
-          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+          <AtTabBar
+            fixed
+            tabList={tabList.map((item, index) => ({
+              ...item,
+              title: index === 0 ? $t('155381a3.7f8121') : $t('155381a3.d0771a')
+            }))}
+            onClick={this.handleClick}
+            current={localCurrent}
+          />
         }
       >
         <SpSearchBar
@@ -397,7 +418,11 @@ export default class DistributionGoods extends Component {
           className='goods-list__tabs'
           custom
           current={curFilterIdx}
-          list={filterList}
+          list={[
+            { ...filterList[0], title: $t('155381a3.88e7de') },
+            { ...filterList[1], title: $t('155381a3.44e7eb') },
+            { ...filterList[2], title: $t('155381a3.0e9fd9') }
+          ]}
           onChange={this.handleFilterChange}
         ></FilterBar>
 
@@ -424,9 +449,9 @@ export default class DistributionGoods extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('155381a3.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('155381a3.ba1de9')}</SpNote>
           )}
         </ScrollView>
         <SpToast />
@@ -434,3 +459,5 @@ export default class DistributionGoods extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionGoods)

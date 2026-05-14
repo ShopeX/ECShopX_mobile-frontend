@@ -3,11 +3,12 @@
  * See LICENSE file for license details.
  */
 import Taro, { useDidShow } from '@tarojs/taro'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { classNames, formatTime } from '@/utils'
 import { SpPage, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { $t, useTranslation } from '@/i18n'
 import CompShopList from './comps/comp-shop-list'
 import './selectShop.scss'
 
@@ -15,17 +16,26 @@ const initialConfigState = {
   codeStatus: false,
   address: {},
   basis: {},
-  searchConditionList: [
-    { label: '手机号', value: 'mobile' },
-    { label: '店铺名称', value: 'name' }
-  ],
   list: []
 }
 
 const SelectShop = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
 
-  const { searchConditionList, codeStatus, basis, address, list } = state
+  const searchConditionList = useMemo(
+    () => [
+      { label: $t('9696edd5.8098e2'), value: 'mobile' },
+      { label: $t('9696edd5.0d4934'), value: 'name' }
+    ],
+    [i18n.language]
+  )
+
+  const { basis, address, list } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('e24b8d0f.f4d5b6') })
+  }, [i18n.language])
   const goodsRef = useRef()
 
   useEffect(() => {
@@ -68,7 +78,7 @@ const SelectShop = () => {
   return (
     <SpPage className={classNames('page-selectShop')}>
       <SpSearchInput
-        placeholder='输入内容'
+        placeholder={$t('9696edd5.ec47d2')}
         // isShowArea
         isShowSearchCondition
         searchConditionList={searchConditionList}

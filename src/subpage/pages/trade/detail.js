@@ -31,6 +31,7 @@ import { transformTextByPoint } from '@/utils/helper'
 import { PAYTYPE, PAYMENT_TYPE } from '@/consts'
 import api from '@/api'
 import S from '@/spx'
+import { $t, ti } from '@/i18n'
 import { usePayment } from '@/hooks'
 import dayjs from 'dayjs'
 import DetailItem from './comps/detail-item'
@@ -292,17 +293,18 @@ export default class TradeDetail extends Component {
     const infoStatus = (info.status || '').toLowerCase()
     if (info.auto_cancel_seconds <= 0 && info.order_status_des === 'NOTPAY') {
       info.status = 'TRADE_CLOSED'
-      info.order_status_msg = '已取消'
+      info.order_status_msg = $t('1d9cdff5.2111cc')
     }
     info.status_img = `ico_${infoStatus === 'trade_success' ? 'wait_rate' : infoStatus}.png`
 
-    sessionFrom += '{'
-    if (Taro.getStorageSync('userinfo')) {
-      sessionFrom += `"nickName": "${Taro.getStorageSync('userinfo').username}", `
+    const sessionFromObj = {}
+    const userinfo = Taro.getStorageSync('userinfo')
+    if (userinfo) {
+      sessionFromObj.nickName = userinfo.username
     }
-    sessionFrom += `"商品": "${info.orders[0].title}"`
-    sessionFrom += `"订单号": "${info.orders[0].order_id}"`
-    sessionFrom += '}'
+    sessionFromObj[$t('934ffec2.9897d8')] = info.orders[0].title
+    sessionFromObj[$t('ba44cd64.1e8dc2')] = String(info.orders[0].order_id)
+    sessionFrom = JSON.stringify(sessionFromObj)
     this.setState({
       info,
       sessionFrom,
@@ -321,10 +323,11 @@ export default class TradeDetail extends Component {
 
   handleCopy = async () => {
     const { info } = this.state
-    const msg = `收货人：${info.receiver_name} ${info.receiver_mobile}
-收货地址：${info.receiver_state}${info.receiver_city}${info.receiver_district}${info.receiver_address}
-订单编号：${info.tid}
-创建时间：${info.created_time_str}
+    const addr = `${info.receiver_state}${info.receiver_city}${info.receiver_district}${info.receiver_address}`
+    const msg = `${ti('1d9cdff5.5b020e', [info.receiver_name, info.receiver_mobile])}
+${ti('1d9cdff5.a94325', [addr])}
+${ti('1d9cdff5.4eb0df', [info.tid])}
+${ti('1d9cdff5.968975', [info.created_time_str])}
 `
     await copyText(msg)
   }
@@ -419,7 +422,7 @@ export default class TradeDetail extends Component {
 
     if (type === 'confirm') {
       const { confirm } = await Taro.showModal({
-        title: '确认收货？',
+        title: $t('250b375e.c4c6f2'),
         content: ''
       })
       if (confirm) {
@@ -497,7 +500,7 @@ export default class TradeDetail extends Component {
   handleClickCopy = (val) => {
     copyText(val)
     Taro.showToast({
-      title: '复制成功',
+      title: $t('523123e1.20a495'),
       icon: 'none'
     })
   }
@@ -542,7 +545,7 @@ export default class TradeDetail extends Component {
         task.onMessage((res) => {
           if (res.data === '401001') {
             Taro.showToast({
-              title: '未登录，请登录后再试',
+              title: $t('1d9cdff5.92ca0a'),
               icon: 'none'
             })
             this.setState(
@@ -561,7 +564,7 @@ export default class TradeDetail extends Component {
             const result = JSON.parse(res.data)
             if (result.status === 'success') {
               Taro.showToast({
-                title: '核销成功',
+                title: $t('1d9cdff5.065407'),
                 icon: 'none'
               })
               setTimeout(() => {
@@ -617,13 +620,13 @@ export default class TradeDetail extends Component {
   // 发送验证码
   sendCode = async () => {
     Taro.showLoading({
-      title: '发送中',
+      title: $t('1d9cdff5.702513'),
       mask: true
     })
     const { info } = this.state
     const res = await api.trade.sendCode(info.tid)
     Taro.showToast({
-      title: `${res.status ? '发送成功' : '发送失败'}`,
+      title: res.status ? $t('1d9cdff5.9db9a7') : $t('1d9cdff5.9ca6a3'),
       icon: 'none'
     })
   }
@@ -645,7 +648,7 @@ export default class TradeDetail extends Component {
   copyOrderId = (orderid) => {
     copyText(orderid)
     Taro.showToast({
-      title: '复制成功',
+      title: $t('523123e1.20a495'),
       icon: 'none'
     })
   }
@@ -726,7 +729,7 @@ export default class TradeDetail extends Component {
         })}
         style={styleNames(getThemeStyle())}
       >
-        <SpNavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('3d2de2c2.8054f7')} leftIconType='chevron-left' fixed='true' />
 
         {info.is_logistics && (
           <View className='custabs'>
@@ -735,14 +738,14 @@ export default class TradeDetail extends Component {
               style={`color: ${scrollIntoView === 'order-0' ? colors.data[0].primary : '#000'}`}
               onClick={this.scrollInto.bind(this, 'order-0')}
             >
-              线上订单
+              {$t('1d9cdff5.93befa')}
             </View>
             <View
               className='offline'
               style={`color: ${scrollIntoView === 'order-1' ? colors.data[0].primary : '#000'}`}
               onClick={this.scrollInto.bind(this, 'order-1')}
             >
-              线下订单
+              {$t('1d9cdff5.2e70e9')}
             </View>
           </View>
         )}
@@ -750,12 +753,17 @@ export default class TradeDetail extends Component {
         <ScrollView scroll-y className='scroll-view' scrollIntoView={scrollIntoView}>
           <View className='trade-detail-header' id='order-0'>
             <View className='trade-detail-waitdeliver'>
-              {info.is_logistics && <View className='oneline'>线上订单</View>}
+              {info.is_logistics && <View className='oneline'>{$t('1d9cdff5.93befa')}</View>}
               {info.status === 'WAIT_BUYER_PAY' && (
                 <View>
-                  该订单将为您保留
+                  {$t('1d9cdff5.1a9a7f')}
                   <AtCountdown
-                    format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                    format={{
+                      day: $t('934ffec2.249aba'),
+                      hours: ':',
+                      minutes: ':',
+                      seconds: ''
+                    }}
                     day={timer.dd}
                     hours={timer.hh}
                     minutes={timer.mm}
@@ -763,13 +771,13 @@ export default class TradeDetail extends Component {
                     isShowDay={timer.dd > 0}
                     onTimeUp={this.countDownEnd.bind(this)}
                   />
-                  分钟
+                  {$t('1d9cdff5.3a17b7')}
                 </View>
               )}
               {supplement && (
                 <View className='trade-detail-header-name' onClick={this.onSupplement.bind(this)}>
                   <Text className='iconfont icon-bianji1'></Text>
-                  前往补充
+                  {$t('5afb28b8.01f467')}
                 </View>
               )}
 
@@ -792,9 +800,9 @@ export default class TradeDetail extends Component {
                     </View>
                     {(!info.dada || !info.dada.id) && (
                       <Text className='delivery-infos__text'>
-                        {info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
-                        {info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null}
-                        {info.status === 'TRADE_CLOSED' ? '订单已取消' : null}
+                        {info.status === 'WAIT_SELLER_SEND_GOODS' ? $t('1d9cdff5.e4258c') : null}
+                        {info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? $t('1d9cdff5.823574') : null}
+                        {info.status === 'TRADE_CLOSED' ? $t('1d9cdff5.5af500') : null}
                       </Text>
                     )}
                   </View>
@@ -813,13 +821,13 @@ export default class TradeDetail extends Component {
                     mode='aspectFill'
                     className='avatar'
                   />
-                  <View>骑手：{info.dada.dm_name} </View>
+                  <View>{ti('250b375e.635684', [info.dada.dm_name])} </View>
                   <View
                     className='iconfont icon-dianhua'
                     onClick={this.callDada.bind(this, info.dada.dm_mobile)}
                   ></View>
                 </View>
-                <View className='tip'>本单由达达同城为您服务</View>
+                <View className='tip'>{$t('250b375e.2c785f')}</View>
               </View>
             )}
           {info.receipt_type === 'ziti' && !info.is_logistics && (
@@ -840,7 +848,7 @@ export default class TradeDetail extends Component {
                         >
                           发送提货码
                         </View> */}
-                      <View className='sendCodeTips'>提货时请出告知店员提货验证码</View>
+                      <View className='sendCodeTips'>{$t('1d9cdff5.af2026')}</View>
                     </View>
                   )}
                 </View>
@@ -851,7 +859,7 @@ export default class TradeDetail extends Component {
             <View className='information'>
               <View className='title'>
                 <Text className='title-num'>1</Text>
-                <Text className='title-text'>填写信息</Text>
+                <Text className='title-text'>{$t('cb825098.5b6e02')}</Text>
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
@@ -863,13 +871,15 @@ export default class TradeDetail extends Component {
                   2
                 </Text>
                 <Text className={squareRoot || info.prescriptionStatus == 2 ? 'title-text' : ''}>
-                  医生开方
+                  {$t('cb825098.6b871f')}
                 </Text>
               </View>
               <View className='titled'>-----</View>
               <View className='titled'>
                 <Text className={info.prescriptionStatus == 2 ? 'title-num' : 'titled-num'}>3</Text>
-                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>支付订单</Text>
+                <Text className={info.prescriptionStatus == 2 ? 'title-text' : ''}>
+                  {$t('cb825098.6536f5')}
+                </Text>
               </View>
             </View>
           )}
@@ -885,11 +895,10 @@ export default class TradeDetail extends Component {
                   <View className='storeName'>{ziti.store_name}</View>
                   <View className='storeAddress'>{ziti.store_address}</View>
                   <View className='storeHour'>
-                    <Text className='title'>营业时间：</Text>
-                    {ziti.hour}
+                    <Text className='title'>{ti('1d9cdff5.94aee2', [ziti.hour])}</Text>
                   </View>
                   <View className='storeMobile'>
-                    <Text className='title'>门店电话：</Text>
+                    <Text className='title'>{$t('250b375e.4e69c9')}</Text>
                     {ziti.phone}
                     <View
                       className='iconfont icon-dianhua'
@@ -902,25 +911,32 @@ export default class TradeDetail extends Component {
 
             {info.receipt_type === 'ziti' && info.ziti_info && (
               <View className='ziti-container'>
-                <View className='ziti-name'>自提点：{info.ziti_info.name}</View>
+                <View className='ziti-name'>{ti('9a75e14c.e830ab', [info.ziti_info.name])}</View>
                 <View className='ziti-address'>
-                  自提地址：
+                  {$t('250b375e.047df3')}
                   {`${info.ziti_info.province}${info.ziti_info.city}${info.ziti_info.area}${info.ziti_info.address}`}
                 </View>
                 <View className='ziti-address'>
-                  联系电话：{`${info.ziti_info.contract_phone}`}
+                  {$t('9c730348.7d33dc')}
+                  {`${info.ziti_info.contract_phone}`}
                   <Text
                     className='iconfont icon-dianhua'
                     onClick={this.callDada.bind(this, info.ziti_info.contract_phone)}
                   ></Text>
                 </View>
                 <View className='ziti-info'>
-                  <View className='ziti-receive-name'>提货人：{info.receiver_name}</View>
+                  <View className='ziti-receive-name'>
+                    {$t('250b375e.6f1246')}
+                    {info.receiver_name}
+                  </View>
                   <View className='ziti-receive-time'>
-                    提货时间：
+                    {$t('250b375e.a7e362')}
                     {`${info.ziti_info.pickup_date} ${info.ziti_info.pickup_time[0]}-${info.ziti_info.pickup_time[1]}`}
                   </View>
-                  <View className='ziti-receive-mobile'>提货人手机：{info.receiver_mobile}</View>
+                  <View className='ziti-receive-mobile'>
+                    {$t('250b375e.2f0256')}
+                    {info.receiver_mobile}
+                  </View>
                 </View>
               </View>
             )}
@@ -956,7 +972,7 @@ export default class TradeDetail extends Component {
                         })
                       }}
                     >
-                      <View className='btn'>修改地址</View>
+                      <View className='btn'>{$t('5afb28b8.18e8bd')}</View>
                     </View>
                   )}
               </View>
@@ -968,11 +984,11 @@ export default class TradeDetail extends Component {
               <SpNewShopItem info={distributor} canJump inOrderDetail hasLogo={false} />
             )}
             <View className='line'>
-              <View className='left'>订单号：</View>
+              <View className='left'>{$t('5afb28b8.a1e65c')}</View>
               <View className='right'>
                 {info.tid}
                 <Text className='fuzhi' onClick={this.copyOrderId.bind(this, info.tid)}>
-                  复制
+                  {$t('523123e1.79d3ab')}
                 </Text>
               </View>
             </View>
@@ -992,7 +1008,7 @@ export default class TradeDetail extends Component {
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                     onClick={this.handleClickBtn.bind(this, 'confirm')}
                   >
-                    确认收货
+                    {$t('8116735b.775b01')}
                   </View>
                 )}
             </View>
@@ -1001,9 +1017,9 @@ export default class TradeDetail extends Component {
             <View className='screenZiti' id='order-1'>
               <View className='trade-detail-header' style={`background: ${colors.data[0].primary}`}>
                 <View className='trade-detail-waitdeliver column'>
-                  <View className='line'>线下订单</View>
-                  <View className='line'>销售门店：{ziti.store_name}</View>
-                  <View className='line'>购买者：{info.mobile}</View>
+                  <View className='line'>{$t('1d9cdff5.2e70e9')}</View>
+                  <View className='line'>{ti('1d9cdff5.fbade9', [ziti.store_name])}</View>
+                  <View className='line'>{ti('1d9cdff5.d2f9d1', [info.mobile])}</View>
                 </View>
               </View>
               <View className='trade-detail-goods'>
@@ -1036,7 +1052,7 @@ export default class TradeDetail extends Component {
               (info.receipt_type !== 'dada' || (info.dada && info.dada.dada_status === 0)) && (
                 <View className='cancel__btn'>
                   <View className='btn' onClick={this.handleClickBtn.bind(this, 'cancel')}>
-                    取消订单
+                    {$t('8116735b.b21b5e')}
                   </View>
                 </View>
               )}
@@ -1044,7 +1060,7 @@ export default class TradeDetail extends Component {
 
           {info?.salespersonInfo?.user_id && (
             <View className='shopping'>
-              <View className='shopping_guide'>业务员信息:</View>
+              <View className='shopping_guide'>{$t('71426282.a3716d')}</View>
               <View className='shopping_guides'>
                 <Text>{info?.salespersonInfo?.name}</Text>
                 <Text>{info?.salespersonInfo?.mobile}</Text>
@@ -1054,10 +1070,10 @@ export default class TradeDetail extends Component {
 
           {info?.prescriptionStatus > 0 && !supplement && (
             <View className='block-container order-info'>
-              <View className='block-container-label'>处方信息</View>
+              <View className='block-container-label'>{$t('5afb28b8.bf3412')}</View>
               {info?.diagnosisData?.doctor_name && (
                 <SpCell
-                  title='开方医生'
+                  title={$t('5afb28b8.ce19e6')}
                   value={(() => {
                     return <View>{info?.diagnosisData?.doctor_name}</View>
                   })()}
@@ -1065,7 +1081,7 @@ export default class TradeDetail extends Component {
               )}
               {info?.diagnosisData?.location_url && (
                 <SpCell
-                  title='开方记录'
+                  title={$t('5afb28b8.25255b')}
                   value={(() => {
                     return (
                       <View
@@ -1077,7 +1093,7 @@ export default class TradeDetail extends Component {
                           })
                         }}
                       >
-                        查看 <Text className='iconfont icon-qianwang-01' />
+                        {$t('5afb28b8.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -1085,7 +1101,7 @@ export default class TradeDetail extends Component {
               )}
               {info?.prescriptionData?.audit_apothecary_name && (
                 <SpCell
-                  title='审方药师'
+                  title={$t('5afb28b8.d51303')}
                   value={(() => {
                     return <View>{info?.prescriptionData?.audit_apothecary_name}</View>
                   })()}
@@ -1093,14 +1109,14 @@ export default class TradeDetail extends Component {
               )}
               {info?.prescriptionData?.dst_file_path && (
                 <SpCell
-                  title='电子处方'
+                  title={$t('5afb28b8.49e410')}
                   value={(() => {
                     return (
                       <View
                         className='block-container-link'
                         onClick={this.dstFilePath.bind(this, info?.prescriptionData?.dst_file_path)}
                       >
-                        查看 <Text className='iconfont icon-qianwang-01' />
+                        {$t('5afb28b8.607e7a')} <Text className='iconfont icon-qianwang-01' />
                       </View>
                     )
                   })()}
@@ -1111,66 +1127,66 @@ export default class TradeDetail extends Component {
 
           {info.remark && (
             <View className='trade-detail-remark'>
-              <View className='trade-detail-remark__header'>订单备注</View>
+              <View className='trade-detail-remark__header'>{$t('2b4b2b4f.bb84d6')}</View>
               <View className='trade-detail-remark__body'>{info.remark}</View>
             </View>
           )}
           <View className='trade-detail-info'>
             <View className='line'>
-              <View className='left'>下单时间</View>
+              <View className='left'>{$t('250b375e.2240cc')}</View>
               <View className='right'>{info.created_time_str}</View>
             </View>
             {tradeInfo && tradeInfo.tradeState === 'SUCCESS' && (
               <View className='line'>
-                <View className='left'>支付时间</View>
+                <View className='left'>{$t('5afb28b8.05c5dc')}</View>
                 <View className='right'>{tradeInfo.payDate}</View>
               </View>
             )}
             {info.status === 'TRADE_CLOSED' && (
               <View className='line'>
-                <View className='left'>取消时间</View>
+                <View className='left'>{$t('5afb28b8.6c04a0')}</View>
                 <View className='right'>{info.update_time_str}</View>
               </View>
             )}
             {info.dada && info.dada.pickup_time > 0 && (
               <View className='line'>
-                <View className='left'>取货时间</View>
+                <View className='left'>{$t('5afb28b8.b432c1')}</View>
                 <View className='right'>{formatDateTime(Number(info.dada.pickup_time))}</View>
               </View>
             )}
             {info.dada && info.dada.delivered_time > 0 && (
               <View className='line'>
-                <View className='left'>送达时间</View>
+                <View className='left'>{$t('9c730348.0fc40e')}</View>
                 <View className='right'>{formatDateTime(Number(info.dada.delivered_time))}</View>
               </View>
             )}
             {info.dada && (info.dada.dada_status === 10 || info.dada.dada_status === 4) && (
               <View className='line'>
-                <View className='left'>配送时长</View>
+                <View className='left'>{$t('5afb28b8.17c3af')}</View>
                 <View className='right red'>{info.dada.delivery_length}</View>
               </View>
             )}
             {info.invoice_content && (
               <View className='line'>
-                <View className='left'>发票信息</View>
+                <View className='left'>{$t('250b375e.714483')}</View>
                 <View className='right'>{info.invoice_content}</View>
               </View>
             )}
             {enMarketPrice && info.market_fee > 0 && (
               <View className='line'>
-                <View className='left'>商品总金额</View>
+                <View className='left'>{$t('5afb28b8.a03deb')}</View>
                 <View className='right'>{`¥${info.market_fee}`}</View>
               </View>
             )}
 
             <View className='line'>
-              <View className='left'>实付</View>
+              <View className='left'>{$t('250b375e.c8b8ba')}</View>
               <View className='right'>
                 {transformTextByPoint(this.isPointitemGood(), info.item_fee_new, info.item_point)}
               </View>
             </View>
             <View className='line'>
-              <View className='left'>运费</View>
+              <View className='left'>{$t('250b375e.9a935b')}</View>
               <View className='right'>
                 {info.freight_type !== 'point'
                   ? `¥${info.freight_fee}`
@@ -1178,16 +1194,16 @@ export default class TradeDetail extends Component {
               </View>
             </View>
             <View className='line'>
-              <View className='left'>促销</View>
+              <View className='left'>{$t('250b375e.252caa')}</View>
               <View className='right'>{`- ¥${info.promotion_discount}`}</View>
             </View>
             <View className='line'>
-              <View className='left'>优惠券</View>
+              <View className='left'>{$t('250b375e.2f3635')}</View>
               <View className='right'>{`- ¥${info.coupon_discount}`}</View>
             </View>
             {info.type == '1' && (
               <View className='line'>
-                <View className='left'>税费</View>
+                <View className='left'>{$t('5afb28b8.638e32')}</View>
                 <View className='right'>{`¥${info.total_tax}`}</View>
               </View>
             )}
@@ -1199,21 +1215,21 @@ export default class TradeDetail extends Component {
             )} */}
             {info.point_use > 0 && (
               <View className='line'>
-                <View className='left'>{`${this.props.pointName}支付`}</View>
+                <View className='left'>{ti('349e8d9f.717604', [this.props.pointName])}</View>
                 <View className='right'>
-                  {`${info.point_use} ${this.props.pointName}，抵扣: ¥${info.point_fee}`}
+                  {ti('5afb28b8.a93960', [info.point_use, this.props.pointName, info.point_fee])}
                 </View>
               </View>
             )}
             {isDeposit && (
               <View className='line'>
-                <View className='left'>支付</View>
-                <View className='right'>{`¥${info.payment} 余额支付`}</View>
+                <View className='left'>{$t('5afb28b8.26b59f')}</View>
+                <View className='right'>{ti('5afb28b8.0a7329', [info.payment])}</View>
               </View>
             )}
             {!isDhPoint && !isDeposit && !NOT_PAY && (
               <View className='line'>
-                <View className='left'>支付</View>
+                <View className='left'>{$t('5afb28b8.26b59f')}</View>
                 <View className='right'>
                   {`¥${info.payment} ${
                     info.order_class !== 'excard' ? this.computedPayType() : ''
@@ -1223,19 +1239,21 @@ export default class TradeDetail extends Component {
             )}
 
             <View className='line'>
-              <View className='left'>实付</View>
+              <View className='left'>{$t('250b375e.c8b8ba')}</View>
               <View className='right'>{`${
-                this.isPointitemGood() ? info.point + '积分' : `¥${info.totalpayment}`
+                this.isPointitemGood()
+                  ? ti('bb18b49a.511b20', [info.point])
+                  : `¥${info.totalpayment}`
               }`}</View>
             </View>
 
             {info.delivery_code && (
               <View className='line'>
-                <View className='left'>物流单号</View>
+                <View className='left'>{$t('3d2b7bcd.0bb075')}</View>
                 <View className='right'>
                   <Text className='info-text'>{info.delivery_code}</Text>
                   <Text className='info-text-btn' onClick={this.handleClickDelivery.bind(this)}>
-                    查看物流
+                    {$t('523123e1.edf4b2')}
                   </Text>
                   <Text
                     className='iconfont icon-fuzhi info-text-btn'
@@ -1247,7 +1265,7 @@ export default class TradeDetail extends Component {
           </View>
           {cancelData.cancel_id && (
             <View className='cancelData'>
-              <View className='title'>取消理由：</View>
+              <View className='title'>{$t('5afb28b8.5eeea8')}</View>
               <View className='reason'>{cancelData.cancel_reason}</View>
             </View>
           )}
@@ -1267,7 +1285,7 @@ export default class TradeDetail extends Component {
                     loading={payLoading}
                     onClick={this.handleClickBtn.bind(this, 'pay')}
                   >
-                    立即支付
+                    {$t('16726e8e.747349')}
                   </Button>
                 )
             }
@@ -1293,7 +1311,7 @@ export default class TradeDetail extends Component {
                   }`}
                   onClick={this.handleClickBtn.bind(this, 'aftersales')}
                 >
-                  申请售后
+                  {$t('1d9cdff5.45eb0c')}
                 </View>
               )
             }
@@ -1332,7 +1350,7 @@ export default class TradeDetail extends Component {
                     style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
                     onClick={this.handleClickBtn.bind(this, 'confirm')}
                   >
-                    确认收货
+                    {$t('8116735b.775b01')}
                   </View>
                 )
             }
@@ -1356,11 +1374,11 @@ export default class TradeDetail extends Component {
                         info={{ orderId: info.order_id }}
                         isFloat={false}
                       >
-                        联系客服
+                        {$t('a2ba615a.b66060')}
                       </FloatMenuMeiQia>
                     ) : (
                       <Button openType='contact' className='contact'>
-                        联系客服
+                        {$t('a2ba615a.b66060')}
                       </Button>
                     )}
                   </View>
@@ -1383,11 +1401,11 @@ export default class TradeDetail extends Component {
         )}
 
         <AtFloatLayout
-          title='电子处方'
+          title={$t('5afb28b8.49e410')}
           isOpened={prescriptionStatus}
           onClose={this.handleClose.bind(this)}
         >
-          <View className='long-press'>长按可保存处方图片</View>
+          <View className='long-press'>{$t('5afb28b8.afeae3')}</View>
           <SpImage
             src={prescriptionUrl}
             onClick={() => {

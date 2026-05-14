@@ -11,7 +11,8 @@ import { SpPage, SpScrollView, SpAddress } from '@/components'
 import { updateLocation, updateChooseAddress } from '@/store/slices/user'
 import { updateShopInfo } from '@/store/slices/shop'
 import api from '@/api'
-import { useLogin } from '@/hooks'
+import { useLogin, useNavigation } from '@/hooks'
+import { useTranslation, $t, i18n } from '@/i18n'
 import { SG_ROUTER_PARAMS, SG_CHECK_STORE_RULE } from '@/consts/localstorage'
 import doc from '@/doc'
 import * as shopDoc from '@/doc/shop'
@@ -42,6 +43,8 @@ const initialState = {
 }
 
 function NearlyShop(props) {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const { isLogin } = useLogin({
     autoLogin: false,
     policyUpdateHook: (isUpdate) => {
@@ -70,6 +73,13 @@ function NearlyShop(props) {
   const shopRef = useRef()
   const pageRef = useRef()
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('5cfe28e8.a4d703'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
 
   useEffect(() => {
     fetchDefaultShop()

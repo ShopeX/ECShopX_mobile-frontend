@@ -3,85 +3,87 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import { useState, useRef, useEffect } from 'react'
-import { useImmer } from 'use-immer'
-import api from '@/api'
+import { useMemo } from 'react'
+import { useTranslation, $t } from '@/i18n'
 
-export default (props) => {
-  const [state, setState] = useImmer(props)
+export default () => {
+  const { i18n } = useTranslation()
 
-  const tradeActionBtns = {
-    CANCEL: {
-      title: '取消订单',
-      key: 'cancel',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpage/pages/trade/cancel?order_id=${orderId}`
-        })
+  const tradeActionBtns = useMemo(
+    () => ({
+      CANCEL: {
+        title: $t('cb889b1e.b21b5e'),
+        key: 'cancel',
+        btnStatus: 'normal',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpage/pages/trade/cancel?order_id=${orderId}`
+          })
+        }
+      },
+      DETAIL: {
+        title: $t('cb889b1e.8054f7'),
+        key: 'detail',
+        btnStatus: 'active',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpages/trade/detail?order_id=${orderId}`
+          })
+        }
+      },
+      AFTER_SALES: {
+        title: $t('cb889b1e.45eb0c'),
+        key: 'after_sales',
+        btnStatus: 'normal',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpages/delivery/after-sale?id=${orderId}`
+          })
+        }
+      },
+      AFTER_DETAIL: {
+        title: $t('cb889b1e.70536c'),
+        key: 'after_detail',
+        btnStatus: 'normal',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpages/trade/after-sale-list?order_id=${orderId}`
+          })
+        }
+      },
+      SEND_OUT_GOODS: {
+        title: $t('cb889b1e.045315'),
+        key: 'send_out_goods',
+        btnStatus: 'active',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpages/delivery/send-out-goods?order_id=${orderId}`
+          })
+        }
+      },
+      PACK: {
+        title: $t('cb889b1e.5a9f36'),
+        key: 'pack',
+        btnStatus: 'active',
+        action: ({ orderId }) => {
+          Taro.navigateTo({
+            url: `/subpages/trade/after-sale-list?order_id=${orderId}`
+          })
+        }
+      },
+      CANCEL_DELIVERY: {
+        title: $t('cb889b1e.204fe4'),
+        key: 'cancel_delivery',
+        btnStatus: 'normal'
+      },
+      UPDATE_DELIVERY: {
+        title: $t('cb889b1e.997b79'),
+        key: 'update_delivery',
+        btnStatus: 'active'
       }
-    },
-    DETAIL: {
-      title: '订单详情',
-      key: 'detail',
-      btnStatus: 'active',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/detail?order_id=${orderId}`
-        })
-      }
-    },
-    AFTER_SALES: {
-      title: '申请售后',
-      key: 'after_sales',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/delivery/after-sale?id=${orderId}`
-        })
-      }
-    },
-    AFTER_DETAIL: {
-      title: '售后详情',
-      key: 'after_detail',
-      btnStatus: 'normal',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
-        })
-      }
-    },
-    SEND_OUT_GOODS: {
-      title: '发货',
-      key: 'send_out_goods',
-      btnStatus: 'active',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/delivery/send-out-goods?order_id=${orderId}`
-        })
-      }
-    },
-    PACK: {
-      title: '打包',
-      key: 'pack',
-      btnStatus: 'active',
-      action: ({ orderId }) => {
-        Taro.navigateTo({
-          url: `/subpages/trade/after-sale-list?order_id=${orderId}`
-        })
-      }
-    },
-    CANCEL_DELIVERY: {
-      title: '取消配送',
-      key: 'cancel_delivery',
-      btnStatus: 'normal'
-    },
-    UPDATE_DELIVERY: {
-      title: '更新配送状态',
-      key: 'update_delivery',
-      btnStatus: 'active'
-    }
-  }
+    }),
+    [i18n.language]
+  )
 
   // 一级是 订单状态 order_status
   // 二级是配送状态  self_delivery_status

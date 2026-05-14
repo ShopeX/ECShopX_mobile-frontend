@@ -10,6 +10,7 @@ import api from '@/api'
 import * as boostApi from '@/api/boost'
 import { connect } from 'react-redux'
 import { debounce, pickBy, formatDateTime } from '@/utils'
+import { $t, ti } from '@/i18n'
 import LoadingMore from '../../component/loadingMore'
 import './index.scss'
 
@@ -39,7 +40,7 @@ export default class Order extends Component {
   }
 
   getList = async (isRefrsh = false) => {
-    Taro.showLoading({ title: '正在加载中', mask: true })
+    Taro.showLoading({ title: $t('caa4df97.c40ee4'), mask: true })
     const { param, list } = this.state
     const data = await boostApi.getOrderList(param)
     const total_count = data.total_count
@@ -125,13 +126,13 @@ export default class Order extends Component {
             <View className='item' key={item.bargain_id}>
               <View className='head'>
                 <View className='text'>{item.create_time}</View>
-                <View className='text'>订单号：{item.order_id}</View>
+                <View className='text'>{ti('caa4df97.44263f', [item.order_id])}</View>
               </View>
               <View className='info'>
                 <Image src={item.items[0].pic} mode='aspectFill' className='img' />
                 <View className='detail'>
                   <View className='title'>{item.items[0].item_name}</View>
-                  <View className='price'>支付金额: ¥{item.total_fee}</View>
+                  <View className='price'>{ti('caa4df97.50763b', [item.total_fee])}</View>
                 </View>
               </View>
               <View className='foot'>
@@ -140,7 +141,7 @@ export default class Order extends Component {
                   style='background: var(--color-primary)'
                   onClick={this.handleItem.bind(this, item)}
                 >
-                  订单详情
+                  {$t('2715dbf7.8054f7')}
                 </View>
               </View>
             </View>

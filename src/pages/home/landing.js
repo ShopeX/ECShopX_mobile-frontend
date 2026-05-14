@@ -3,20 +3,16 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { connect } from 'react-redux'
 import { normalizeQuerys } from '@/utils'
+import { $t } from '@/i18n'
 
 import './landing.scss'
 
-@connect(
-  () => ({}),
-  (dispatch) => ({
-    onUserLanding: (land_params) => dispatch({ type: 'user/landing', payload: land_params })
-  })
-)
-export default class Landing extends Component {
+class Landing extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -42,8 +38,15 @@ export default class Landing extends Component {
   render() {
     return (
       <View className='page-member-integral'>
-        <View>跳转中...</View>
+        <View>{$t('033e746d.4d484f')}</View>
       </View>
     )
   }
 }
+
+export default connect(
+  () => ({}),
+  (dispatch) => ({
+    onUserLanding: (land_params) => dispatch({ type: 'user/landing', payload: land_params })
+  })
+)(withTranslation()(Landing))

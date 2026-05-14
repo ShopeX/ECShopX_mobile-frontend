@@ -1,0 +1,4 @@
+interface:
+  display_name: "i18n Translate"
+  short_description: "Translate Chinese UI strings to i18n keys with hashed prefixes"
+  default_prompt: "Scan src for Chinese UI strings, generate hashed i18n keys, replace with (), and update zh-CN/en/ar locales."

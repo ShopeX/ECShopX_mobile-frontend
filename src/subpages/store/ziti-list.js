@@ -18,6 +18,7 @@ import api from '@/api'
 import { withPager, withBackToTop } from '@/hocs'
 import entry from '@/utils/entry'
 import { pickBy } from '@/utils'
+import { i18n } from '@/i18n'
 import { connect } from 'react-redux'
 import StoreListItem from './comps/list-item'
 import './ziti-list.scss'
@@ -52,6 +53,16 @@ export default class StoreZitiList extends Component {
   }
 
   componentDidMount() {
+    const syncTitle = () => {
+      Taro.setNavigationBarTitle({ title: i18n.t('bb8d4f7c.0ede8b') })
+    }
+    syncTitle()
+    this._onI18n = () => {
+      syncTitle()
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onI18n)
+
     const lnglat = Taro.getStorageSync('lnglat')
     const cityInfo = Taro.getStorageSync('selectShop')
     let query = {}
@@ -85,6 +96,13 @@ export default class StoreZitiList extends Component {
       this.handleGetLocation()
     }
   }
+
+  componentWillUnmount() {
+    if (this._onI18n) {
+      i18n.off('languageChanged', this._onI18n)
+    }
+  }
+
   async fetch(params) {
     const entryStoreByLBS = this.props.entryStoreByLBS
     const { page_no: page, page_size: pageSize } = params
@@ -396,7 +414,7 @@ export default class StoreZitiList extends Component {
     const selected = list.filter((v) => v.is_checked)
     if (!selected.length) {
       Taro.showToast({
-        title: '请选择店铺～',
+        title: i18n.t('0233b1ea.436b22'),
         icon: 'none'
       })
       return
@@ -438,7 +456,7 @@ export default class StoreZitiList extends Component {
             <View className='content view-flex'>
               <View className='view-flex-item'>
                 {loading ? (
-                  <Text className='loading'>定位中...</Text>
+                  <Text className='loading'>{i18n.t('0233b1ea.2c4006')}</Text>
                 ) : (
                   <Text>
                     <Text className='icon-periscope'></Text>
@@ -456,7 +474,7 @@ export default class StoreZitiList extends Component {
                         {current.regions[2]}{' '}
                       </Text>
                     ) : (
-                      '定位失败'
+                      i18n.t('0233b1ea.9831ba')
                     )}
                   </Text>
                 )}
@@ -499,14 +517,14 @@ export default class StoreZitiList extends Component {
             {list.length && (
               <View className='store-list_footer'>
                 <View className='sure-button' onClick={this.handleChangeStore.bind(this)}>
-                  确定
+                  {i18n.t('0233b1ea.38cf16')}
                 </View>
               </View>
             )}
           </View>
-          {page.isLoading ? <SpLoading>正在加载...</SpLoading> : null}
+          {page.isLoading ? <SpLoading>{i18n.t('0233b1ea.bd0271')}</SpLoading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{i18n.t('0233b1ea.ba1de9')}</SpNote>
           )}
         </ScrollView>
 

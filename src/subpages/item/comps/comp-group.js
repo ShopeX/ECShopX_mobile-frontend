@@ -2,17 +2,26 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useMemo } from 'react'
 import Taro from '@tarojs/taro'
 import { AtButton, AtCountdown } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-group.scss'
 
 function CompGroup(props) {
+  const { i18n } = useTranslation()
+  const countdownFormat = useMemo(
+    () => ({
+      day: $t('31564471.249aba'),
+      hours: ':',
+      minutes: ':',
+      seconds: ''
+    }),
+    [i18n.language]
+  )
   const { info } = props
-  console.log()
   if (!info || !info.groupsList) {
     return null
   }
@@ -31,7 +40,7 @@ function CompGroup(props) {
   return (
     <View className='comp-group'>
       <View className='comp-group-hd'>
-        正在进行中的团，可参与拼单
+        {$t('12b6c337.2ea5bf')}
         {/* <View>查看全部<Text className='iconfont icon-qianwang-01'></Text></View> */}
       </View>
       <View className='comp-group-bd'>
@@ -41,24 +50,22 @@ function CompGroup(props) {
               <SpImage src={item.member_info.headimgurl} width={80} height={80} />
             </View>
             <View className='group-item-bd'>
-              <View className='group-title'>{`${item.member_info.nickname || '匿名'}的团`}</View>
+              <View className='group-title'>
+                {ti('12b6c337.38dff1', [item.member_info.nickname || $t('12b6c337.1a75c1')])}
+              </View>
               <View className='group-info'>
-                还差
+                {$t('12b6c337.a1b490')}
                 <Text className='group-num'>{activityInfo.person_num - item.join_person_num}</Text>
-                人成团
+                {$t('12b6c337.fe1360')}
               </View>
               <View className='group-time'>
-                剩余
-                <AtCountdown
-                  format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
-                  isShowDay
-                  seconds={item.over_time}
-                />
+                {$t('12b6c337.43b510')}
+                <AtCountdown format={countdownFormat} isShowDay seconds={item.over_time} />
               </View>
             </View>
             <View className='group-item-ft' onClick={handleJoinGroup.bind(this, item.team_id)}>
               <AtButton circle size='small' type='primary'>
-                去参团
+                {$t('12b6c337.2fd665')}
               </AtButton>
             </View>
           </View>

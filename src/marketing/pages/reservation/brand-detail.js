@@ -3,19 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
-import { connect } from 'react-redux'
+import Taro from '@tarojs/taro'
+import { View, Text, Picker } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
-import { AtDrawer } from 'taro-ui'
-import { SpCell } from '@/components'
-import api from '@/api'
-import { pickBy, classNames } from '@/utils'
 import './brand-detail.scss'
 
-@withPager
-@withBackToTop
-export default class BrandDetail extends Component {
+class BrandDetail extends Component {
   constructor(props) {
     super(props)
 
@@ -84,6 +79,8 @@ export default class BrandDetail extends Component {
       brand_store
     } = this.state
 
+    const placeholder = $t('65338650.708c9d')
+
     return (
       <View className='brand-detail'>
         <View className='brand-detail__normal brand-detail__brand'>
@@ -93,9 +90,9 @@ export default class BrandDetail extends Component {
             onChange={this.handleCell.bind(this, 'store')}
           >
             <View className='picker'>
-              <View className='picker__title'>当前门店</View>
+              <View className='picker__title'>{$t('65338650.9d4b91')}</View>
               <View className='pick-value'>
-                <Text>{brand_store !== '' ? brand_store : '请选择'}</Text>
+                <Text>{brand_store !== '' ? brand_store : placeholder}</Text>
                 <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
@@ -106,9 +103,9 @@ export default class BrandDetail extends Component {
             onChange={this.handleCell.bind(this, 'brand')}
           >
             <View className='picker'>
-              <View className='picker__title'>预约品牌</View>
+              <View className='picker__title'>{$t('65338650.d403a9')}</View>
               <View className='pick-value'>
-                <Text>{brand_name !== '' ? brand_name : '请选择'}</Text>
+                <Text>{brand_name !== '' ? brand_name : placeholder}</Text>
                 <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
@@ -119,9 +116,9 @@ export default class BrandDetail extends Component {
             onChange={this.handleCell.bind(this, 'service')}
           >
             <View className='picker'>
-              <View className='picker__title'>预约服务</View>
+              <View className='picker__title'>{$t('65338650.97ad14')}</View>
               <View className='pick-value'>
-                <Text>{brand_service !== '' ? brand_service : '请选择'}</Text>
+                <Text>{brand_service !== '' ? brand_service : placeholder}</Text>
                 <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
@@ -134,18 +131,20 @@ export default class BrandDetail extends Component {
             onChange={this.handleCell.bind(this, 'time')}
           >
             <View className='picker'>
-              <View className='picker__title'>预约时间</View>
+              <View className='picker__title'>{$t('65338650.652e09')}</View>
               <View className='pick-value'>
-                <Text>{brand_time !== '' ? brand_time : '请选择'}</Text>
+                <Text>{brand_time !== '' ? brand_time : placeholder}</Text>
                 <View className='sp-cell__ft-icon iconfont at-icon at-icon-chevron-right'></View>
               </View>
             </View>
           </Picker>
         </View>
         <View className='brand-detail__btn' onClick={this.handleReservate.bind(this)}>
-          确定预约
+          {$t('65338650.8ef63c')}
         </View>
       </View>
     )
   }
 }
+
+export default withPager(withBackToTop(withTranslation()(BrandDetail)))

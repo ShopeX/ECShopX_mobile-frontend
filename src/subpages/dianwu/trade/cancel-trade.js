@@ -2,57 +2,43 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
-import * as dianwuApi from '@/api/dianwu'
-import doc from '@/doc'
 import { SpPage, SpButton, SpCell } from '@/components'
-import { View, Picker } from '@tarojs/components'
-import { showToast } from '@/utils'
+import { View, Text, Picker } from '@tarojs/components'
+import { useTranslation, $t } from '@/i18n'
+import { useNavigation } from '@/hooks'
+import { REFUND_REASON_KEYS } from '../const/refund-reason-options'
 import CompTradeInfo from './../comps/comp-trade-info'
 import './cancel-trade.scss'
 
 const initialState = {
   info: null,
-  reason: '',
-  reasons: [
-    '客户现在不想购买',
-    '客户商品价格较贵',
-    '客户价格波动',
-    '客户商品缺货',
-    '客户重复下单',
-    '客户订单商品选择有误',
-    '客户支付方式选择有误',
-    '客户收货信息填写有误',
-    '客户发票信息填写有误',
-    '客户无法支付订单',
-    '客户长时间未付款',
-    '客户其他原因'
-  ]
+  reason: ''
 }
 
 function DianwuTradeCancel(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
-  const { info, reason, reasons } = state
+  const { info, reason } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('97e9afa9.b21b5e'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
+
+  const reasonPickerRange = useMemo(() => REFUND_REASON_KEYS.map((k) => $t(k)), [i18n.language])
 
   const onCancel = () => {
     Taro.navigateBack()
   }
 
   const onConfirm = async () => {
-    // if(!reason) {
-    //   return showToast('请选择订单取消原因')
-    // }
-    // const { trade_id } = $instance?.router?.params
-    // await dianwuApi.cancelTrade({
-    //   order_id: trade_id,
-    //   cancel_reason: reason
-    // })
-    // showToast('订单取消成功')
     const { order_status } = info
     let type = 1
     if (order_status == 'NOTPAY') {
@@ -61,21 +47,23 @@ function DianwuTradeCancel(props) {
       type = 2
     }
     Taro.redirectTo({ url: `/subpages/dianwu/trade/result?type=${type}` })
-    // setTimeout(() => {
-    //   Taro.navigateBack()
-    // }, 2000)
   }
+
+  const reasonDisplayText =
+    reason !== '' && reason !== undefined && reason !== null
+      ? $t(REFUND_REASON_KEYS[Number(reason)])
+      : $t('c3455657.cf234c')
 
   return (
     <SpPage
       className='page-dianwu-cancel-trade'
       renderFooter={
         <View className='btn-wrap'>
-          <SpButton confirmText='提交' onReset={onCancel} onConfirm={onConfirm} />
+          <SpButton confirmText={$t('c3455657.939d53')} onReset={onCancel} onConfirm={onConfirm} />
         </View>
       }
     >
-      <View className='trade-tip'>订单取消后，消费者将无法对订单进行支付操作。</View>
+      <View className='trade-tip'>{$t('e273d524.b11ce9')}</View>
 
       <CompTradeInfo
         onFetch={(data) => {
@@ -86,19 +74,19 @@ function DianwuTradeCancel(props) {
       />
 
       <View className='picker-reason'>
-        <View className='title'>取消原因</View>
+        <View className='title'>{$t('e273d524.4a3df6')}</View>
         <Picker
           mode='selector'
-          range={reasons}
+          range={reasonPickerRange}
           onChange={(e) => {
             setState((draft) => {
               draft.reason = e.detail.value
             })
           }}
         >
-          <SpCell className='reason-container' isLink>{`${
-            reasons?.[reason] || '请选择取消原因'
-          }`}</SpCell>
+          <SpCell className='reason-container' isLink>
+            <Text>{reasonDisplayText}</Text>
+          </SpCell>
         </Picker>
       </View>
     </SpPage>

@@ -80,6 +80,7 @@ import SpTimePicker from './sp-time-picker'
 import SpInput from './sp-input'
 import SpDeliver from './sp-deliver'
 import SpSearchOne from './sp-search-one'
+import SpPurchaseEnterpriseBar from './sp-purchase-enterprise-bar'
 
 import SpShop from './sp-shop'
 import SpClassifyHorizontal from './sp-classify-horizontal'
@@ -166,6 +167,7 @@ export {
   SpInput,
   SpDeliver,
   SpSearchOne,
+  SpPurchaseEnterpriseBar,
   SpShop,
   SpClassifyHorizontal,
   SpClassifyVertical,

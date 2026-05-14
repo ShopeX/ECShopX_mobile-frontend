@@ -14,6 +14,7 @@ import { usePayment } from '@/hooks'
 import { SpPrice, SpCell } from '@/components'
 import dayjs from 'dayjs'
 import { isWxWeb, isWeixin } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './cashier-weapp.scss'
 
 const initialState = {
@@ -24,6 +25,7 @@ const initialState = {
   orderInfo: {}
 }
 function CashierWeApp(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   // const { params, orderInfo } = $instance?.router?.params
   // const _params = JSON.parse(decodeURIComponent(params))
@@ -33,6 +35,13 @@ function CashierWeApp(props) {
 
   const { cashierPayment } = usePayment()
   const { source } = $instance?.router?.params
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('30644393.9cfc7d') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('30644393.9cfc7d') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
+
   useEffect(() => {
     const { order_id, source } = $instance?.router?.params
     if (order_id) {
@@ -95,17 +104,17 @@ function CashierWeApp(props) {
     <View className='cashier-weapp'>
       <View className='cashier-hd'>
         <Text className='iconfont icon-weixinzhifu'></Text>
-        <Text className='title'>微信付款</Text>
+        <Text className='title'>{$t('30644393.9cfc7d')}</Text>
       </View>
       <View className='pay-price'>
         <SpPrice value={price} size={60} />
       </View>
       <View className='trade-info'>
-        <SpCell title='下单时间' value={create_time} />
-        <SpCell title='订单号' value={order_id} />
+        <SpCell title={$t('30644393.2240cc')} value={create_time} />
+        <SpCell title={$t('30644393.1e8dc2')} value={order_id} />
       </View>
       <View className='btn-wrap'>
-        <AtButton onClick={handlePay}>立即支付</AtButton>
+        <AtButton onClick={handlePay}>{$t('30644393.747349')}</AtButton>
       </View>
     </View>
   )

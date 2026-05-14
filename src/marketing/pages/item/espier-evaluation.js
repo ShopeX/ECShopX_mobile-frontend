@@ -5,8 +5,10 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { Loading, SpNavBar } from '@/components'
 import { FloatMenus, FloatMenuItem, GoodsEvaluation, GoodsComment } from '@/subpages/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import { withBackToTop, withPager } from '@/hocs'
 import { normalizeQuerys } from '@/utils'
@@ -15,7 +17,7 @@ import './espier-evaluation.scss'
 
 @withPager
 @withBackToTop
-export default class Evaluation extends Component {
+class Evaluation extends Component {
   $instance = getCurrentInstance() || {}
   static options = {
     addGlobalClass: true
@@ -198,3 +200,5 @@ export default class Evaluation extends Component {
     )
   }
 }
+
+export default withTranslation()(Evaluation)

@@ -8,6 +8,7 @@ import { View, Image, Text } from '@tarojs/components'
 import { classNames, JumpStoreIndex, JumpGoodDetail } from '@/utils'
 import { SpNewCoupon, SpNewPrice } from '@/components'
 import api from '@/api'
+import { useTranslation, $t, ti } from '@/i18n'
 import { DistributionLabel } from './comps'
 import './index.scss'
 
@@ -15,6 +16,7 @@ const NoImageSRC =
   'https://shopex-ecshopx.oss-cn-beijing.aliyuncs.com/ecshopx-vshop/shop_default_logo.png'
 
 const SpNewShopItem = (props) => {
+  useTranslation()
   const {
     className = '',
     info = {
@@ -85,7 +87,7 @@ const SpNewShopItem = (props) => {
   }, [expand])
 
   const rate = !!(info.scoreList || {}).avg_star ? (
-    <Text>评分：{(info.scoreList || {}).avg_star}</Text>
+    <Text>{ti('eab5ccfb.780021', [(info.scoreList || {}).avg_star])}</Text>
   ) : (
     ''
   )
@@ -126,7 +128,7 @@ const SpNewShopItem = (props) => {
     if (Object.keys(data).length > 0) {
       Taro.showToast({
         icon: 'none',
-        title: flag ? '关注成功' : '取消关注成功'
+        title: flag ? $t('eab5ccfb.60fa97') : $t('eab5ccfb.208992')
       })
     }
     setFav(flag)
@@ -159,11 +161,11 @@ const SpNewShopItem = (props) => {
           <View className='right'>
             <View className='button'>
               {fav ? (
-                <View onClick={handleFocus(false)}>取消关注</View>
+                <View onClick={handleFocus(false)}>{$t('eab5ccfb.92bdc8')}</View>
               ) : (
                 <View className='text' onClick={handleFocus(true)}>
                   <Text className='iconfont icon-plus'></Text>
-                  <Text>关注</Text>
+                  <Text>{$t('eab5ccfb.4c0a3a')}</Text>
                 </View>
               )}
             </View>
@@ -190,10 +192,10 @@ const SpNewShopItem = (props) => {
             <View className='linetwo'>
               <View className='info'>
                 {rate}
-                <Text class='sale'>月销：{info.sales_count}</Text>
+                <Text class='sale'>{ti('eab5ccfb.297c82', [info.sales_count])}</Text>
               </View>
               <View className='distribute'>
-                {info.is_dada && <DistributionLabel>达达配送</DistributionLabel>}
+                {info.is_dada && <DistributionLabel>{$t('eab5ccfb.b18f7d')}</DistributionLabel>}
               </View>
             </View>
           </View>

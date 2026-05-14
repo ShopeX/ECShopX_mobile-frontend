@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState } from 'react'
+import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useShareAppMessage, useDidShow, getCurrentInstance } from '@tarojs/taro'
@@ -13,6 +13,7 @@ import { calcTimer, pickBy, log, isArray, buildSharePath } from '@/utils'
 import doc from '@/subpages/doc'
 import api from '@/api'
 import * as communityApi from '@/api/community'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import CompGroupTabbar from './comps/comp-groupbar'
 import CompGroupNeighbour from './comps/comp-groupneighbour'
@@ -29,6 +30,7 @@ const initialState = {
   shareImageUrl: ''
 }
 function GroupLeaderDetail(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const { activity_id } = $instance?.router?.params
 
@@ -82,6 +84,16 @@ function GroupLeaderDetail(props) {
     fetchDetial()
   }
 
+  const countDownFormat = useMemo(
+    () => ({
+      day: $t('934ffec2.249aba'),
+      hours: ':',
+      minutes: ':',
+      seconds: ''
+    }),
+    [i18n.language]
+  )
+
   return (
     <SpPage
       className='page-community-group-leaderdetail'
@@ -118,7 +130,7 @@ function GroupLeaderDetail(props) {
 
             <Button className='right-item' openType='share'>
               <Text className='iconfont icon-fenxiang-01'></Text>
-              <Text className='right-item-txt'>分享</Text>
+              <Text className='right-item-txt'>{$t('934ffec2.c31f48')}</Text>
             </Button>
           </View>
           <CompGroupNeighbour info={detail?.ziti} />
@@ -126,20 +138,22 @@ function GroupLeaderDetail(props) {
             <View className='head'>
               <View>
                 <Text className='name'>{detail?.activityName}</Text>
-                <Text className='type'>顾客自提</Text>
+                <Text className='type'>{$t('934ffec2.b30d27')}</Text>
               </View>
               <View className='activity-status'>{detail?.activityStatusMsg}</View>
             </View>
             <View className='goods-group-info'>
               <View className='list'>
                 <View className='time'>
-                  {detail?.save_time && <View className='date'>{detail?.save_time} 发布</View>}
+                  {detail?.save_time && (
+                    <View className='date'>{ti('934ffec2.3c7da9', [detail.save_time])}</View>
+                  )}
                   {detail?.save_time && timer.ss && <View className='i' />}
                   {timer?.ss && (
                     <>
                       <View className='countdown'>
                         <AtCountdown
-                          format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                          format={countDownFormat}
                           isShowDay={timer.dd > 0}
                           day={timer.dd}
                           hours={timer.hh}
@@ -148,7 +162,7 @@ function GroupLeaderDetail(props) {
                           onTimeUp={countDownEnd}
                         />
                       </View>
-                      后结束
+                      {$t('934ffec2.23a300')}
                     </>
                   )}
                 </View>
@@ -158,7 +172,7 @@ function GroupLeaderDetail(props) {
                   <View className='time'>
                     {/* <Text className=''>9人查看</Text> */}
                     {/* <Text className='i'></Text> */}
-                    <Text className=''>{detail?.order_num}人跟团</Text>
+                    <Text className=''>{ti('934ffec2.165340', [detail?.order_num])}</Text>
                   </View>
                 </View>
               )}
@@ -166,19 +180,19 @@ function GroupLeaderDetail(props) {
 
             <View className='warning'>
               <Text className='icon iconfont icon-gouwuche'></Text>
-              请先加好友或进群，确认邻居身份后再下单
+              {$t('934ffec2.598baf')}
             </View>
 
             {detail?.showCondition && (
               <View className='condition-wrap'>
                 <View className='condition'>
                   <View className='condition-label'>
-                    <Text>成团金额</Text>
-                    <Text>{`${
-                      detail.diffCondition <= 0
-                        ? '已满足成团金额'
-                        : `还差${detail.diffCondition}元成团`
-                    }`}</Text>
+                    <Text>{$t('934ffec2.bc4708')}</Text>
+                    <Text>
+                      {detail.diffCondition <= 0
+                        ? $t('934ffec2.9cbc7c')
+                        : ti('934ffec2.cf413c', [detail.diffCondition])}
+                    </Text>
                   </View>
                   <AtProgress percent={detail.progressValue} isHidePercent />
                 </View>
@@ -223,7 +237,7 @@ function GroupLeaderDetail(props) {
         </View>
         {detail?.orders.length > 0 && (
           <View className='joinlog'>
-            <View className='title'>跟团记录</View>
+            <View className='title'>{$t('934ffec2.c13dcb')}</View>
             <CompGroupLogList list={detail?.orders} isLeader />
           </View>
         )}

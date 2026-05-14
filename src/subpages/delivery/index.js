@@ -2,9 +2,11 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { Text, View } from '@tarojs/components'
+import { useEffect, useMemo } from 'react'
 import { useImmer } from 'use-immer'
+import { useTranslation, $t } from '@/i18n'
 import { classNames } from '@/utils'
 import { SpPage } from '@/components'
 import { SpTime, SpCustomPicker } from '@/subpages/components'
@@ -18,17 +20,6 @@ import CompTabbar from './comps/comp-tabbar'
 import './index.scss'
 
 const initialConfigState = {
-  funcList: [
-    { name: '订单管理', icon: 'icon-dingdanguanli', path: '/subpages/delivery/list' },
-    { name: '售后跟进', icon: 'icon-daikexiadan', path: '/subpages/delivery/after-sale-list' },
-    {
-      name: '配送统计',
-      icon: 'icon-yewuyuantuiguang',
-      path: '/subpages/delivery/achievement'
-    },
-    { name: '服务商家', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/selectShop' }
-    // { name: '详情', icon: 'icon-shangjialiebiao', path: '/subpages/delivery/detail' }
-  ],
   codeStatus: false,
   information: { name: 'cx' },
   info: {},
@@ -41,10 +32,37 @@ const initialConfigState = {
 }
 
 const Index = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
-  const { codeStatus, information, funcList, info, parameter, selector } = state
+  const { codeStatus, information, info, parameter, selector } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
   const dispatch = useDispatch()
+
+  const funcList = useMemo(
+    () => [
+      { name: $t('ac21eb4c.afcd11'), icon: 'icon-dingdanguanli', path: '/subpages/delivery/list' },
+      {
+        name: $t('ac21eb4c.7fd78c'),
+        icon: 'icon-daikexiadan',
+        path: '/subpages/delivery/after-sale-list'
+      },
+      {
+        name: $t('ac21eb4c.a5aedc'),
+        icon: 'icon-yewuyuantuiguang',
+        path: '/subpages/delivery/achievement'
+      },
+      {
+        name: $t('ac21eb4c.1398bf'),
+        icon: 'icon-shangjialiebiao',
+        path: '/subpages/delivery/selectShop'
+      }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('ac21eb4c.78f717') })
+  }, [i18n.language])
 
   useDidShow(() => {
     fetch()
@@ -53,7 +71,7 @@ const Index = () => {
 
   const fetch = async () => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('ac21eb4c.f013ea'),
       icon: 'none'
     })
     let params = {
@@ -84,7 +102,7 @@ const Index = () => {
     })
     list.unshift({
       value: '',
-      label: '全部店铺',
+      label: $t('ac21eb4c.77678b'),
       distributor_id: ''
     })
     setState((draft) => {
@@ -141,7 +159,7 @@ const Index = () => {
       <View className='sales-header'>
         <View className='sales-header-left'>
           <Text className='iconfont icon-yewuyuan sales-header-icon'></Text>
-          <View className='sales-header-title'>配送员端</View>
+          <View className='sales-header-title'>{$t('ac21eb4c.b0bfcb')}</View>
         </View>
         {/* <View className='sales-header-left rigth' onClick={handleCardClick}>
           <Text className='iconfont icon-quanbu'></Text>
@@ -153,7 +171,7 @@ const Index = () => {
           <View className='sales-content-panel-item'>
             <View className='panel-header'>
               <Text className='iconfont icon-gaikuang panel-header-icon'></Text>
-              <View className='panel-header-title'>实时概况</View>
+              <View className='panel-header-title'>{$t('ac21eb4c.2ce929')}</View>
             </View>
             <View className='panel-headers'>
               {selector && (
@@ -175,7 +193,7 @@ const Index = () => {
             <View className='panel-content-top'>
               <View className='panel-content-top-title'>
                 <View className='real-monet'>
-                  <View className='panel-title  mb-0'>配送订单额（元）</View>
+                  <View className='panel-title  mb-0'>{$t('ac21eb4c.a14418')}</View>
                   <Text className='iconfont icon-xianshi View-icon'></Text>
                 </View>
                 <View
@@ -186,18 +204,18 @@ const Index = () => {
                     })
                   }}
                 >
-                  查看数据总览&nbsp; &gt;
+                  {$t('ac21eb4c.d5c881')}&nbsp; &gt;
                 </View>
               </View>
               <View className='panel-num mt-12'>{info.total_fee_count}</View>
             </View>
             <View className='panel-content-btm'>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>配送订单量（单）</View>
+                <View className='panel-title'>{$t('ac21eb4c.3760bd')}</View>
                 <View className='panel-num'>{info.order_count}</View>
               </View>
               <View className='panel-content-btm-item'>
-                <View className='panel-title'>配送费用（元）</View>
+                <View className='panel-title'>{$t('ac21eb4c.d05d08')}</View>
                 <View className='panel-num'>{info.self_delivery_fee_count}</View>
               </View>
               {/* <View className='panel-content-btm-item'>
@@ -213,7 +231,7 @@ const Index = () => {
         </View>
 
         <View className='sales-content-func'>
-          <View className='func-title'>常用功能</View>
+          <View className='func-title'>{$t('ac21eb4c.55fb04')}</View>
           <View className='func-content'>
             {funcList.map((item, index) => (
               <View

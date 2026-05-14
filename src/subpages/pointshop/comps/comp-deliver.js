@@ -20,8 +20,15 @@ import { enumdays } from '@/consts'
 import { classNames, VERSION_STANDARD } from '@/utils'
 import dayjs from 'dayjs'
 import api from '@/api'
+import { $t, ti, useTranslation } from '@/i18n'
 import { deliveryList as deliveryListFn } from '../const'
 import './comp-deliver.scss'
+
+const DELIVERY_TAB_I18N = {
+  logistics: '9c730348.249bfe',
+  dada: '9c730348.583dcd',
+  ziti: '97e6d964.b30d27'
+}
 
 const initialState = {
   distributorInfo: null,
@@ -32,11 +39,6 @@ const initialState = {
     pickerName: '',
     pickerPhone: ''
   },
-  rules: {
-    pickerTime: [{ required: true, message: '提货时间不能为空' }],
-    pickerName: [{ required: true, message: '提货人姓名不能为空' }],
-    pickerPhone: [{ required: true, message: '提货人手机号不能为空' }]
-  },
   weekdays: [],
   timeSlots: [],
   pickerIndex: 0,
@@ -44,6 +46,15 @@ const initialState = {
 }
 
 function CompDeliver(props, ref) {
+  const { i18n } = useTranslation()
+  const rules = useMemo(
+    () => ({
+      pickerTime: [{ required: true, message: $t('9c730348.383384') }],
+      pickerName: [{ required: true, message: $t('9c730348.c6a058') }],
+      pickerPhone: [{ required: true, message: $t('9c730348.5ce936') }]
+    }),
+    [i18n.language]
+  )
   const {
     address = {},
     distributor_id,
@@ -64,7 +75,6 @@ function CompDeliver(props, ref) {
     receiptType,
     showTimePicker,
     form,
-    rules,
     weekdays,
     timeSlots,
     pickerIndex,
@@ -101,7 +111,7 @@ function CompDeliver(props, ref) {
 
   const deliveryList = useMemo(() => {
     return deliveryListFn()
-  }, [])
+  }, [i18n.language])
 
   const getShopInfo = async () => {
     let _distributorInfo
@@ -209,7 +219,7 @@ function CompDeliver(props, ref) {
   const getPickerTime = () => {
     const { pickerTime } = form
     if (!pickerTime) {
-      return '请选择提货时间'
+      return $t('9c730348.d0710a')
     } else {
       const { date, time } = pickerTime
       return `${date} ${time.join('-')}`
@@ -266,7 +276,7 @@ function CompDeliver(props, ref) {
                   className={`switch-item ${receiptType === item.type ? 'active' : ''}`}
                   onClick={handleSwitchExpress.bind(this, item.type)}
                 >
-                  {item.name}
+                  {$t(DELIVERY_TAB_I18N[item.type])}
                 </View>
               )
             }
@@ -279,7 +289,7 @@ function CompDeliver(props, ref) {
       {receiptType === 'dada' && (
         <View className='store-module'>
           <AddressChoose isAddress={address} onCustomChosse={handleChooseAddress} />
-          <View className='store'>配送门店: {distributorInfo.name}</View>
+          <View className='store'>{ti('9c730348.5b67ab', [distributorInfo.name])}</View>
         </View>
       )}
       {/** 自提 */}
@@ -293,23 +303,31 @@ function CompDeliver(props, ref) {
               })
             }}
           >
-            {zitiAddress?.name || '选择自提地址'}
+            {zitiAddress?.name || $t('9c730348.be2b36')}
             <Text className='iconfont icon-arrowRight'></Text>
           </View>
           {zitiAddress && (
             <View className='address-connect'>
               <View className='ziti-address'>
-                提货地址：
+                {$t('9c730348.ef0bc7')}
                 {`${zitiAddress?.province}${zitiAddress?.city}${zitiAddress?.area}${zitiAddress?.address}`}
               </View>
-              <View className='ziti-connect'>联系电话：{zitiAddress?.contract_phone}</View>
+              <View className='ziti-connect'>
+                {$t('9c730348.7d33dc')}
+                {zitiAddress?.contract_phone}
+              </View>
             </View>
           )}
 
           {zitiAddress && (
             <View className='ziti-info'>
               <SpForm ref={formRef} className='applychief-form' formData={form} rules={rules}>
-                <SpFormItem label='提货时间' prop='pickerTime' type='line' labelWidth='70px'>
+                <SpFormItem
+                  label={$t('9c730348.2aa50d')}
+                  prop='pickerTime'
+                  type='line'
+                  labelWidth='70px'
+                >
                   <SpCell
                     className='picker-time'
                     isLink
@@ -328,21 +346,31 @@ function CompDeliver(props, ref) {
                     </Text>
                   </SpCell>
                 </SpFormItem>
-                <SpFormItem label='提货人' prop='pickerName' type='line' labelWidth='70px'>
+                <SpFormItem
+                  label={$t('9c730348.d5403f')}
+                  prop='pickerName'
+                  type='line'
+                  labelWidth='70px'
+                >
                   <AtInput
                     name='pickerName'
                     value={form.pickerName}
-                    placeholder='请输入提货人姓名'
+                    placeholder={$t('9c730348.afa2e0')}
                     cursor={form.pickerName.length}
                     onChange={onInputChange.bind(this, 'pickerName')}
                   />
                 </SpFormItem>
-                <SpFormItem label='手机号码' prop='pickerPhone' type='line' labelWidth='70px'>
+                <SpFormItem
+                  label={$t('692ba07e.92448a')}
+                  prop='pickerPhone'
+                  type='line'
+                  labelWidth='70px'
+                >
                   <AtInput
                     name='pickerPhone'
                     value={form.pickerPhone}
                     cursor={form.pickerPhone.length}
-                    placeholder='请输入提货人手机号码'
+                    placeholder={$t('9c730348.c1fcd7')}
                     onChange={onInputChange.bind(this, 'pickerPhone')}
                   />
                 </SpFormItem>

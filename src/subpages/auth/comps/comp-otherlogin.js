@@ -7,9 +7,11 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { isWxWeb } from '@/utils'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './comp-otherlogin.scss'
 
 const CompOtherLogin = () => {
+  useTranslation()
   const handleClickWexin = async () => {
     const $instance = getCurrentInstance() || {}
     //跳转
@@ -32,7 +34,7 @@ const CompOtherLogin = () => {
 
   return (
     <View className='comp-other-login'>
-      <View className='text'>其它方式登录</View>
+      <View className='text'>{$t('8c3959b3.c4a461')}</View>
       <View className='loginway'>
         <View className='wechat' onClick={handleClickWexin}>
           <Text className='iconfont icon-weixin'></Text>

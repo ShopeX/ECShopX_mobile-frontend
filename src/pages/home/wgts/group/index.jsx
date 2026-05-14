@@ -10,12 +10,14 @@ import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/ut
 import doc from '@/doc'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
+import { useTranslation, $t } from '@/i18n'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
 import GoodsLayout from '../goods-layout'
 import './index.scss'
 
 export default function WgtGroup(props) {
+  useTranslation()
   const { info, id } = props
   const [goodsList, setGoodsList] = useState([])
   const [goodsLeftList, setGoodsLeftList] = useState([])
@@ -132,7 +134,7 @@ export default function WgtGroup(props) {
                 onClick={handleClickMore}
                 style={styleNames({ color: base.moreBtn?.color })}
               >
-                <Text>查看更多</Text>
+                <Text>{$t('568eb830.90ef7c')}</Text>
                 <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
               </View>
             )}
@@ -157,7 +159,7 @@ export default function WgtGroup(props) {
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
-                        <Text>已售罄</Text>
+                        <Text>{$t('568eb830.b12876')}</Text>
                       </View>
                     </View>
                   )}
@@ -173,7 +175,9 @@ export default function WgtGroup(props) {
                     {item.itemName || item.title}
                   </View>
                   <View className='wgt-group__activity-item-price'>
-                    <Text className='wgt-group__activity-item-price__activity_name'>拼团价</Text>
+                    <Text className='wgt-group__activity-item-price__activity_name'>
+                      {$t('568eb830.35a576')}
+                    </Text>
                     <Text className='wgt-group__activity-item-price__unit'>￥</Text>
                     <Text className='wgt-group__activity-item-price__text'>
                       {item.mainPrice ||

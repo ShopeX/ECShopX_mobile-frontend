@@ -2,35 +2,34 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import React from 'react'
 import { AtButton } from 'taro-ui'
 import { View } from '@tarojs/components'
-import { SpPrice, SpFloatLayout } from '@/components'
+import { SpFloatLayout } from '@/components'
 import classNames from 'classnames'
+import { useTranslation, $t } from '@/i18n'
 import './comp-select-company.scss'
 
 function CompSelectCompany(props) {
+  useTranslation()
   const {
     isOpened,
     list = [],
     curIndex,
     onClose = () => {},
     onConfirm = () => {},
-    handleItemClick = () => {},
-    children
+    handleItemClick = () => {}
   } = props
 
   return (
     <SpFloatLayout
-      title='选择企业'
+      title={$t('8cad8bc2.0067d7')}
       className='comp-select-company'
       open={isOpened}
       onClose={onClose}
       renderFooter={
         <AtButton circle type='primary' onClick={onConfirm}>
-          确定
+          {$t('8cad8bc2.38cf16')}
         </AtButton>
       }
     >

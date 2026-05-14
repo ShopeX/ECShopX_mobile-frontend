@@ -9,61 +9,73 @@ export const SALE_MINUS_SORT = 3
 export const DISTANCE_PLUS_SORT = 1
 export const DISTANCE_MINUS_SORT = 2
 
-export const FILTER_DATA = [
-  { value: TIME_SORT, tag_name: '综合排序' },
-  { tag_name: '销量', plusValue: SALE_PLUS_SORT, minusValue: SALE_MINUS_SORT },
-  { tag_name: '距离', plusValue: DISTANCE_PLUS_SORT, minusValue: DISTANCE_MINUS_SORT }
-]
-
 export const DEFAULT_SORT_VALUE = DISTANCE_PLUS_SORT
 
-export const FILTER_DRAWER_DATA = [
-  {
-    value: 'tag',
-    label: '商家标签',
-    children: []
-  },
-  {
-    value: 'logistics',
-    label: '商家服务',
-    children: [
-      {
-        value: 'ziti',
-        label: '自提'
-      },
-      {
-        value: 'delivery',
-        label: '快递'
-      },
-      {
-        value: 'dada',
-        label: '同城配'
-      }
-    ]
-  }
-]
+/** 构建排序筛选条数据（配合 $t） */
+export function buildFilterData($t) {
+  return [
+    { value: TIME_SORT, tag_name: $t('20466c3f.ac1a9c') },
+    { tag_name: $t('f1d3181c.44e7eb'), plusValue: SALE_PLUS_SORT, minusValue: SALE_MINUS_SORT },
+    {
+      tag_name: $t('20466c3f.3ec2bb'),
+      plusValue: DISTANCE_PLUS_SORT,
+      minusValue: DISTANCE_MINUS_SORT
+    }
+  ]
+}
 
-//填充标签
-export function fillFilterTag(tagList) {
-  FILTER_DRAWER_DATA[0].children = tagList.map((item) => ({
+/** 构建抽屉筛选项（配合 $t）；第一项 children 由 fillFilterTag 填充 */
+export function buildFilterDrawerData($t) {
+  return [
+    {
+      value: 'tag',
+      label: $t('20466c3f.f223b6'),
+      children: []
+    },
+    {
+      value: 'logistics',
+      label: $t('20466c3f.2b8cb8'),
+      children: [
+        {
+          value: 'ziti',
+          label: $t('934ffec2.b30d27')
+        },
+        {
+          value: 'delivery',
+          label: $t('20466c3f.705d54')
+        },
+        {
+          value: 'dada',
+          label: $t('20466c3f.583dcd')
+        }
+      ]
+    }
+  ]
+}
+
+//填充标签（写入 drawerData 第一项的 children）
+export function fillFilterTag(tagList, drawerData) {
+  if (!drawerData || !drawerData[0]) return
+  drawerData[0].children = tagList.map((item) => ({
     value: item.tag_id,
     label: item.tag_name
   }))
 }
 
-export const SEARCH_DATA = ['可乐', '香氛蜡烛', '收纳', '坚果零食', '酸奶', '外框左右空24px']
-
-export const BUSINESS_LIST_SERVICES = [
-  {
-    id: 'ziti',
-    name: '自提'
-  },
-  {
-    id: 'delivery',
-    name: '快递'
-  },
-  {
-    id: 'dada',
-    name: '同城配'
-  }
+/** 热搜示例词 i18n 键（配合 $t） */
+export const SEARCH_DATA_KEYS = [
+  '20466c3f.661a96',
+  '20466c3f.197bb8',
+  '20466c3f.2de328',
+  '20466c3f.5e039f',
+  '20466c3f.546545',
+  '20466c3f.0fe3a5'
 ]
+
+export function buildBusinessListServices($t) {
+  return [
+    { id: 'ziti', name: $t('934ffec2.b30d27') },
+    { id: 'delivery', name: $t('20466c3f.705d54') },
+    { id: 'dada', name: $t('20466c3f.583dcd') }
+  ]
+}

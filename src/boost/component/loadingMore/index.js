@@ -14,6 +14,7 @@
  */
 import React, { Component } from 'react'
 import { View } from '@tarojs/components'
+import { $t } from '@/i18n'
 import './index.scss'
 
 export default class LoadingMore extends Component {
@@ -42,8 +43,8 @@ export default class LoadingMore extends Component {
             <View className='div'></View>
           </View>
         )}
-        {isEmpty && !isLoading && <View className='empty'>暂无数据</View>}
-        {isEnd && !isEmpty && !isLoading && <View className='isEnd'>-- 我也是有底线的 --</View>}
+        {isEmpty && !isLoading && <View className='empty'>{$t('e46c7606.21efd8')}</View>}
+        {isEnd && !isEmpty && !isLoading && <View className='isEnd'>{$t('e46c7606.a19d66')}</View>}
       </View>
     )
   }

@@ -1,0 +1,86 @@
+.comp-purchase-nav {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  padding-left: 20px;
+  /* 避免中间标题与左侧「首页 + 客服」叠在同一绝对区域（英文客服更长时尤其明显） */
+  min-width: 0;
+}
+
+.comp-purchase-nav__left {
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comp-purchase-nav__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.comp-purchase-nav__service {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  min-width: auto;
+  height: 64px;
+  line-height: 64px;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  color: #0A0A0A;
+  gap: 8px;
+}
+
+.comp-purchase-nav__service::after {
+  border: none;
+}
+
+.comp-purchase-nav__service-icon {
+  font-size: 38px;
+  margin-right: 6px;
+}
+
+.comp-purchase-nav__service-text {
+  font-size: 28px;
+  font-weight: 500;
+  color: #0A0A0A;
+  line-height: 1;
+  max-width: 160px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.comp-purchase-nav__title-wrap {
+  flex: 1;
+  min-width: 0;
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.comp-purchase-nav__title {
+  max-width: 100%;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+  color: #0A0A0A;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -3,35 +3,32 @@
  * See LICENSE file for license details.
  */
 import Taro from '@tarojs/taro'
-import React, { useEffect, useState } from 'react'
-import { View, Image } from '@tarojs/components'
+import { useEffect, useMemo } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { AtTabBar } from 'taro-ui'
-import { classNames, entryLaunch, getCurrentRoute, getDistributorId, isWeb } from '@/utils'
-import { updateCartSalesman, updateSalesmanCount } from '@/store/slices/cart'
+import { classNames, getCurrentRoute, isWeb } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
+import { updateSalesmanCount } from '@/store/slices/cart'
 import './comp-tabbar.scss'
 
-const TABBAR_LIST = [
-  {
-    title: '首页',
-    iconType: 'dianpushouye',
-    url: '/subpages/delivery/index'
-  },
-  // {
-  //   title: '购物车',
-  //   iconType: 'dianpushangpinlist',
-  //   url: '/subpages/delivery/cart',
-  //   text: true
-  // },
-  {
-    title: '我的信息',
-    iconType: 'dianpufenlei',
-    url: '/subpages/delivery/my'
-  }
-]
-
 function CompTabbar(props) {
+  const { i18n } = useTranslation()
   const dispatch = useDispatch()
+  const TABBAR_LIST = useMemo(
+    () => [
+      {
+        title: $t('dc7a114e.db1c89'),
+        iconType: 'dianpushouye',
+        url: '/subpages/delivery/index'
+      },
+      {
+        title: $t('dc7a114e.041759'),
+        iconType: 'dianpufenlei',
+        url: '/subpages/delivery/my'
+      }
+    ],
+    [i18n.language]
+  )
   const { colorPrimary } = useSelector((state) => state.sys)
   const { cartSalesman = 0 } = useSelector((state) => state.cart)
 

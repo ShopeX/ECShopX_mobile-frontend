@@ -8,9 +8,11 @@ import { AtButton, AtCurtain } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpImage, SpCheckbox } from '@/components'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './login-curtain.scss'
 
 function LoginCurtain(props) {
+  useTranslation()
   const {
     isOpened,
     onClose,
@@ -59,14 +61,14 @@ function LoginCurtain(props) {
           <SpImage circle src={state.icon} width={120} height={120} />
           <View className='nick-name'>{state.nickname}</View>
         </View>
-        <View className='login-modal__bd'>登录手机号，查看全部订单和优惠券</View>
+        <View className='login-modal__bd'>{$t('7f1268bc.c4c389')}</View>
         <View className='agreement-content'>
           <SpCheckbox checked={agreeMentChecked} onChange={onChangePayment} />
           <View className='agreement-list'>
             <Text className='agreement-name' onClick={() => handleClickPrivacy('member_register')}>
               《{state.registerName}》
             </Text>
-            和
+            <Text>{$t('7f1268bc.ab20cc')}</Text>
             <Text className='agreement-name' onClick={() => handleClickPrivacy('privacy')}>
               《{state.privacyName}》
             </Text>
@@ -80,12 +82,12 @@ function LoginCurtain(props) {
               openType='getPhoneNumber'
               onGetPhoneNumber={handleBindPhone}
             >
-              登录
+              {$t('7f1268bc.402d19')}
             </AtButton>
           )}
           {!isNewUser && (
             <AtButton type='primary' disabled={!agreeMentChecked} onClick={handleUserLogin}>
-              登录
+              {$t('7f1268bc.402d19')}
             </AtButton>
           )}
         </View>

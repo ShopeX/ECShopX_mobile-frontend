@@ -3,6 +3,6 @@
  * See LICENSE file for license details.
  */
 export default {
-  navigationBarTitleText: '名片',
+  navigationBarTitleText: '',
   navigationBarBackgroundColor: '#BFD3FF'
 }

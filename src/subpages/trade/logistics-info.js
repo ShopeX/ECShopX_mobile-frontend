@@ -12,6 +12,8 @@ import { View, Picker, Text } from '@tarojs/components'
 import { LOGISTICS_CODE } from '@/consts'
 import { SpPage, SpCell, SpInput as AtInput, SpToast } from '@/components'
 import { showToast, copyText } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './logistics-info.scss'
 
 const initialState = {
@@ -21,10 +23,19 @@ const initialState = {
   afterInfo: null
 }
 function TradeLogisticsInfo(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { logi_no, expressList, corpIndex, afterInfo } = state
   const { item_id, order_id, aftersales_bn, type = 'single' } = $instance?.router?.params
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('a9f390ef.f33f84'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
 
   useEffect(() => {
     const aftersInfo = Taro.getStorageSync('moreAftersalesBn') || null
@@ -47,11 +58,11 @@ function TradeLogisticsInfo(props) {
     const aftersInfo = Taro.getStorageSync('moreAftersalesBn') || null
     const corp_code = expressList[corpIndex]?.code
     if (!corp_code) {
-      showToast('请填写物流公司')
+      showToast($t('3d2b7bcd.08faf4'))
       return
     }
     if (!logi_no) {
-      showToast('请填写物流单号')
+      showToast($t('3d2b7bcd.6a74f5'))
       return
     }
     try {
@@ -64,7 +75,7 @@ function TradeLogisticsInfo(props) {
         showError: false,
         aftersales_data: aftersInfo?.aftersalesBn
       })
-      showToast('操作成功')
+      showToast($t('3d2b7bcd.33130f'))
       setTimeout(() => {
         Taro.navigateBack({
           delta: 2
@@ -94,14 +105,14 @@ function TradeLogisticsInfo(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={onSubmit}>
-            提交
+            {$t('3d2b7bcd.939d53')}
           </AtButton>
         </View>
       }
     >
       {type == 'more' && (
         <View className='after-address'>
-          <SpCell title='回寄信息:'>
+          <SpCell title={$t('3d2b7bcd.35b68f')}>
             <>
               <View className='contact-mobile'>
                 <Text className='contact'>{afterInfo?.address?.aftersales_contact}</Text>
@@ -117,7 +128,7 @@ function TradeLogisticsInfo(props) {
                   )
                 }}
               >
-                复制
+                {$t('3d2b7bcd.79d3ab')}
               </View>
             </>
           </SpCell>
@@ -126,7 +137,7 @@ function TradeLogisticsInfo(props) {
       )}
       <SpCell
         className='logistics-company'
-        title='物流公司'
+        title={$t('3d2b7bcd.eb6d92')}
         isLink
         value={
           <Picker mode='selector' range={expressList} rangeKey='name' onChange={onChangeExpress}>
@@ -137,12 +148,12 @@ function TradeLogisticsInfo(props) {
 
       <SpCell
         className='logistics-no'
-        title='物流单号'
+        title={$t('3d2b7bcd.0bb075')}
         value={
           <AtInput
             name='logi_no'
             value={logi_no}
-            placeholder='请填写物流单号'
+            placeholder={$t('3d2b7bcd.6a74f5')}
             onChange={(e) => {
               setState((draft) => {
                 draft.logi_no = e

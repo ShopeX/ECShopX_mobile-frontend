@@ -6,6 +6,7 @@ import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const initialState = {
@@ -19,6 +20,7 @@ const initialState = {
  */
 
 function Table(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { listHeader, listData } = props
   const { newList } = state
@@ -69,7 +71,9 @@ function Table(props) {
         </View>
       </ScrollView>
 
-      <View className='nodata'>{listData.length <= 0 ? '-- 暂无数据 --' : '-- 到底啦 --'}</View>
+      <View className='nodata'>
+        {listData.length <= 0 ? $t('d5a1d810.bd1fba') : $t('d5a1d810.4d6c05')}
+      </View>
     </View>
   )
 }

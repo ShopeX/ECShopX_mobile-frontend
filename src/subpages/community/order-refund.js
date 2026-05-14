@@ -2,63 +2,56 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useCallback, useRef, useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import React, { useEffect, useRef } from 'react'
+import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpPage, SpCheckboxNew, SpFloatLayout, SpPrice, SpInput as AtInput } from '@/components'
-import { pickBy, classNames, showToast } from '@/utils'
-import { useSelector } from 'react-redux'
+import { showToast } from '@/utils'
 import { useImmer } from 'use-immer'
-import doc from '@/doc'
-import api from '@/api'
+import { useTranslation, $t, ti } from '@/i18n'
 import './order-refund.scss'
+
+const REFUND_TYPE_DEFAULT = '0f40df51.9c78cd'
+
+const REFUND_REASON_KEYS = [
+  '0f40df51.8803f2',
+  '0f40df51.892e70',
+  '0f40df51.c52533',
+  '0f40df51.f031c6',
+  '0f40df51.edae56',
+  '0f40df51.c440cd',
+  '0f40df51.0d98c7'
+]
 
 const initialState = {
   isReasonOpened: false,
   isTypeOpen: false,
-  refundReason: '请选择',
-  refundType: '我要退款（无需退货）',
+  refundReason: '',
+  refundType: REFUND_TYPE_DEFAULT,
   reasonTitle: '',
-  typeTitle: '',
-  selectValue: false
+  typeTitle: ''
 }
 
-const refundReasonList = [
-  '多拍、错拍、不想要',
-  '没时间去拿',
-  '大小尺寸与商品描述不符',
-  '团长未发货',
-  '团长缺货',
-  '质量问题',
-  '其他'
-]
-
-const refundTypeList = ['我要退款（无需退货）']
-
 const checkList = [
-  { goodId: 1, label: '橙子', price: 220, num: 1, is_checked: true },
-  { goodId: 2, label: '橘子', price: 110, num: 2, is_checked: false },
-  { goodId: 3, label: '苹果', price: 330, num: 33, is_checked: true },
-  { goodId: 4, label: '苹果', price: 330, num: 33, is_checked: true },
-  { goodId: 5, label: '苹果', price: 330, num: 33, is_checked: true },
-  { goodId: 6, label: '苹果', price: 330, num: 33, is_checked: true }
+  { goodId: 1, labelKey: '0f40df51.f24b6a', price: 220, num: 1, is_checked: true },
+  { goodId: 2, labelKey: '0f40df51.813075', price: 110, num: 2, is_checked: false },
+  { goodId: 3, labelKey: '0f40df51.e6803e', price: 330, num: 33, is_checked: true },
+  { goodId: 4, labelKey: '0f40df51.e6803e', price: 330, num: 33, is_checked: true },
+  { goodId: 5, labelKey: '0f40df51.e6803e', price: 330, num: 33, is_checked: true },
+  { goodId: 6, labelKey: '0f40df51.e6803e', price: 330, num: 33, is_checked: true }
 ]
 
 function OrderRefund(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { colorPrimary } = useSelector((state) => state.sys)
   const pageRef = useRef()
 
-  const {
-    isReasonOpened,
-    isTypeOpen,
-    refundReason,
-    refundType,
-    reasonTitle,
-    typeTitle,
-    selectValue
-  } = state
+  const { isReasonOpened, isTypeOpen, refundReason, refundType, reasonTitle, typeTitle } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('6d738d62.dac519') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -84,14 +77,14 @@ function OrderRefund(props) {
   const onReasonOpenChange = () => {
     setState((draft) => {
       draft.isReasonOpened = true
-      draft.reasonTitle = '请选择申请原因'
+      draft.reasonTitle = $t('0f40df51.a4f920')
     })
   }
 
   const onTypeOpenChange = () => {
     setState((draft) => {
       draft.isTypeOpen = true
-      draft.typeTitle = '请选择申请类型'
+      draft.typeTitle = $t('0f40df51.c9e269')
     })
   }
 
@@ -128,29 +121,23 @@ function OrderRefund(props) {
   }
   const onBlurChange = async (res, idx, value) => {
     let isMax = Number(value) > Number(res.price)
-    if (isMax) showToast('输入退款金额超出范围')
+    if (isMax) showToast($t('0f40df51.1bbafe'))
     checkList[idx] = {
       ...checkList[idx],
       newprice: isMax ? res.price : value,
       is_checked: value ? true : false
     }
-    await setState((draft) => {
-      draft.checkList = [...checkList]
-    })
   }
 
   const onRefundChange = async (res, idx, value) => {
     if (Number(value) > Number(res.price)) return
     checkList[idx] = { ...checkList[idx], newprice: value }
-    await setState((draft) => {
-      draft.checkList = [...checkList]
-    })
   }
 
   const handleCheckout = (list) => {
     console.log(list)
-    if (refundReason == '请选择') {
-      showToast('请选择退款原因')
+    if (!refundReason) {
+      showToast($t('0f40df51.9318de'))
       return
     }
     console.log(refundType, refundReason, checkList)
@@ -165,17 +152,17 @@ function OrderRefund(props) {
         <View className='left'>
           <SpCheckboxNew
             checked
-            label='全选'
+            label={$t('0f40df51.66eeac')}
             onChange={(e) => onChangeCheck(checkList, 'all', e)}
           />
         </View>
         <View className='right'>
           <View className='total-price'>
-            共退款：
+            {$t('0f40df51.d9e22d')}
             <SpPrice primary size={36} unit='cent' value={100} />
           </View>
           <AtButton circle type='primary' onClick={() => handleCheckout(checkList)}>
-            提交申请
+            {$t('0f40df51.0830b4')}
           </AtButton>
         </View>
       </View>
@@ -187,34 +174,34 @@ function OrderRefund(props) {
   return (
     <SpPage ref={pageRef} className='page-order-refund' renderFooter={renderFooter()}>
       <View className='refund-apply-type'>
-        <Text className='label'>申请类型</Text>
+        <Text className='label'>{$t('0f40df51.719e1b')}</Text>
         <View className='desc' onClick={onTypeOpenChange}>
-          <Text>{refundType}</Text>
+          <Text>{$t(refundType)}</Text>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       </View>
       <View className='refund-apply-reason'>
-        <Text className='label'>申请原因</Text>
+        <Text className='label'>{$t('0f40df51.6a4658')}</Text>
         <View className='desc' onClick={onReasonOpenChange}>
-          <Text>{refundReason}</Text>
+          <Text>{refundReason ? $t(refundReason) : $t('0f40df51.708c9d')}</Text>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       </View>
       <View className='refund-apply-goods'>
-        <View className='title'>退款商品</View>
+        <View className='title'>{$t('0f40df51.67148e')}</View>
         {checkList.map((item, idx) => (
-          <>
-            <View className='goods-info' key={idx}>
+          <View key={item.goodId}>
+            <View className='goods-info'>
               <SpCheckboxNew
                 checked={item.is_checked}
                 onChange={(e) => onChangeCheck(item, 'single', e)}
               >
-                {item.label}
-                <Text className='nums'>(共{item.num}件)</Text>
+                {$t(item.labelKey)}
+                <Text className='nums'>{ti('0f40df51.bcf451', [item.num])}</Text>
               </SpCheckboxNew>
             </View>
             <View className='refund-money'>
-              <View>退款金额</View>
+              <View>{$t('0f40df51.a0cd4c')}</View>
               <View className='refund-box'>
                 <Text className='symol'>¥</Text>
                 <AtInput
@@ -226,29 +213,30 @@ function OrderRefund(props) {
                   onBlur={(e) => onBlurChange(item, idx, e)}
                   border={false}
                 />
-                <View className='more'>最多可退¥{item.price}</View>
+                <View className='more'>{ti('0f40df51.bf995c', [item.price])}</View>
               </View>
             </View>
-          </>
+          </View>
         ))}
       </View>
       <SpFloatLayout open={isReasonOpened} title={reasonTitle} onClose={onHandleCancel}>
-        {refundReasonList.map((item, idx) => (
+        {REFUND_REASON_KEYS.map((key) => (
           <View
-            onClick={() => onChangeClick(item, 'reason')}
+            onClick={() => onChangeClick(key, 'reason')}
             className='refund-reason-list'
-            key={idx}
+            key={key}
           >
-            {item}
+            {$t(key)}
           </View>
         ))}
       </SpFloatLayout>
       <SpFloatLayout open={isTypeOpen} title={typeTitle} onClose={onHandleCancel}>
-        {refundTypeList.map((item, idx) => (
-          <View onClick={() => onChangeClick(item, 'type')} className='refund-type-list' key={idx}>
-            {item}
-          </View>
-        ))}
+        <View
+          onClick={() => onChangeClick(REFUND_TYPE_DEFAULT, 'type')}
+          className='refund-type-list'
+        >
+          {$t(REFUND_TYPE_DEFAULT)}
+        </View>
       </SpFloatLayout>
     </SpPage>
   )

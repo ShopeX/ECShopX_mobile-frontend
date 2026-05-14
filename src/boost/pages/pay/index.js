@@ -10,6 +10,7 @@ import { pickBy } from '@/utils'
 import api from '@/api'
 import * as boostApi from '@/api/boost'
 import { SpNavBar, AddressChoose } from '@/components'
+import { $t, ti } from '@/i18n'
 import './index.scss'
 
 @connect(
@@ -117,7 +118,7 @@ export default class Pay extends Component {
     const { cur_address, goodInfo, remark } = this.state
     if (!cur_address) {
       Taro.showToast({
-        title: '请选择地址',
+        title: $t('b1a8838b.598b07'),
         icon: 'none',
         mask: true
       })
@@ -149,16 +150,16 @@ export default class Pay extends Component {
       if (res.appId) {
         await Taro.requestPayment(res)
         Taro.showToast({
-          title: '支付成功',
+          title: $t('16726e8e.eb5dc9'),
           mask: true
         })
         jumpUrl += `&order_id=${res.trade_info.order_id}`
       }
     } catch (e) {
       if (!e.res) {
-        let errMsg = '支付失败'
+        let errMsg = $t('16726e8e.4548cc')
         if (e.errMsg === 'requestPayment:fail cancel') {
-          errMsg = '取消支付'
+          errMsg = $t('46e15238.cc30f5')
         }
         Taro.showToast({
           title: errMsg,
@@ -180,17 +181,13 @@ export default class Pay extends Component {
     const { cur_address, remark, goodInfo, purchasePrice, isLoading } = this.state
     return (
       <View className='pay'>
-        <SpNavBar
-          title={this.config.navigationBarTitleText}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title={$t('68994107.760124')} leftIconType='chevron-left' fixed='true' />
         <AddressChoose isAddress={cur_address} />
         <View className='remark'>
-          <View className='title'>备注</View>
+          <View className='title'>{$t('46e15238.2432b5')}</View>
           <Textarea
             style='width:100%;min-height: 50px'
-            placeholder='例如颜色尺寸等'
+            placeholder={$t('46e15238.fa8ab3')}
             value={remark}
             onInput={this.remarkInput.bind(this)}
             autoHeight
@@ -201,17 +198,19 @@ export default class Pay extends Component {
           <View className='info'>
             <View className='name'>{goodInfo.item_name}</View>
             <View className='price'>
-              <Text>¥{goodInfo.mkt_price}/件</Text>
+              <Text>{ti('46e15238.81a148', [goodInfo.mkt_price])}</Text>
               <Text>x1</Text>
             </View>
           </View>
         </View>
         <View className='sum'>
-          商品总价<Text>¥{purchasePrice}</Text>
+          {$t('46e15238.5fd62d')}
+          <Text>¥{purchasePrice}</Text>
         </View>
         <View className='actBtn'>
           <View className='price'>
-            实付款: <Text>¥{purchasePrice}</Text>
+            {$t('46e15238.8ff13e')}
+            <Text>¥{purchasePrice}</Text>
           </View>
           <Button
             className='btn'
@@ -219,7 +218,7 @@ export default class Pay extends Component {
             loading={isLoading}
             onClick={this.handlePay.bind(this)}
           >
-            立即付款
+            {$t('46e15238.3dda49')}
           </Button>
         </View>
       </View>

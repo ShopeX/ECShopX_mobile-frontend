@@ -5,13 +5,12 @@
 import React, { Component } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import { classNames } from '@/utils'
 import './index.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class CouponItem extends Component {
+class CouponItem extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -69,7 +68,7 @@ export default class CouponItem extends Component {
   handleType(e) {
     let type = [
       {
-        tag: '兑换券',
+        tag: $t('d9bcdef5.8bc752'),
         bg: 'linear-gradient(122deg, #F4C486 0%, #D4A570 100%)',
         fc: '#AC8050',
         invalidBg: 'linear-gradient(122deg, #D8D8D8 0%, #A9A9A9 100%)',
@@ -77,7 +76,7 @@ export default class CouponItem extends Component {
         opacity: '0.4'
       },
       {
-        tag: '满减券',
+        tag: $t('d9bcdef5.f23195'),
         bg: 'linear-gradient(299deg, #679BDD 0%, #9AC5FF 100%)',
         fc: '#4979B7',
         invalidBg: 'linear-gradient(122deg, #D8D8D8 0%, #A9A9A9 100%)',
@@ -85,7 +84,7 @@ export default class CouponItem extends Component {
         opacity: '0.4'
       },
       {
-        tag: '折扣券',
+        tag: $t('d9bcdef5.9268f9'),
         bg: 'linear-gradient(126deg, #CCC0EF 0%, #7E6FA9 100%)',
         fc: '#64578D',
         invalidBg: 'linear-gradient(122deg, #D8D8D8 0%, #A9A9A9 100%)',
@@ -181,7 +180,9 @@ export default class CouponItem extends Component {
                     {obj.tag}
                   </View>
                   <View className='name'>
-                    {showDtName && <Text>{this.getDistributorName() || '平台自营'}：</Text>}
+                    {showDtName && (
+                      <Text>{this.getDistributorName() || $t('d9bcdef5.349e44')}：</Text>
+                    )}
                     <Text>{info.title}</Text>
                   </View>
                 </View>
@@ -195,16 +196,14 @@ export default class CouponItem extends Component {
               </View>
               {info.end_date && (
                 <View className='coupon-item___time'>
-                  <Text>
-                    有效期{begin_date} - {end_date}
-                  </Text>
+                  <Text>{ti('d9bcdef5.e59b67', [begin_date, end_date])}</Text>
                 </View>
               )}
               {/* <View className='radius-view radius-right-top'> </View>
                 <View className='radius-view radius-right-bottom'> </View> */}
               <View className='coupon-item__content__bf'>
                 <View className='coupon-item__content__bottom' onClick={this.changeExpand}>
-                  <View className='text'>详细信息</View>
+                  <View className='text'>{$t('d9bcdef5.4bcc9a')}</View>
                   <Image
                     className='arrow'
                     src={`${process.env.APP_IMAGE_CDN}${
@@ -231,7 +230,7 @@ export default class CouponItem extends Component {
                   ￥<Text className='coupon-item___number_text'>{info.reduce_cost / 100}</Text>
                 </View>
                 <View className='coupon-item___info' style={{ marginBottom: '10rpx' }}>
-                  满{info.least_cost > 0 ? info.least_cost / 100 : 0.01}可用
+                  {ti('d9bcdef5.47e317', [info.least_cost > 0 ? info.least_cost / 100 : 0.01])}
                 </View>
                 <View
                   className={`${!isExist && 'coupon-item___status'}`}
@@ -260,7 +259,7 @@ export default class CouponItem extends Component {
                     : '/coupon_dh.png'
                 })`}
               >
-                <View className='coupon-item___number'>兑换券</View>
+                <View className='coupon-item___number'>{$t('d9bcdef5.8bc752')}</View>
                 {/* <View className='radius-view radius-left-top'> </View>
                     <View className='radius-view radius-left-bottom'> </View> */}
               </View>
@@ -277,7 +276,7 @@ export default class CouponItem extends Component {
                     : '/coupon_dh.png'
                 })`}
               >
-                <View className='coupon-item___number'>兑换券</View>
+                <View className='coupon-item___number'>{$t('d9bcdef5.8bc752')}</View>
                 <View
                   className={`${!isExist && 'coupon-item___status'}`}
                   style={`color: ${
@@ -311,10 +310,11 @@ export default class CouponItem extends Component {
                 })`}
               >
                 <View className='coupon-item___number'>
-                  <Text className='coupon-item___number_text'>{(100 - info.discount) / 10}</Text>折
+                  <Text className='coupon-item___number_text'>{(100 - info.discount) / 10}</Text>
+                  {$t('d9bcdef5.96c015')}
                 </View>
                 <View className='coupon-item___info' style={{ marginBottom: '10rpx' }}>
-                  满{info.least_cost > 0 ? info.least_cost / 100 : 0.01}可用
+                  {ti('d9bcdef5.47e317', [info.least_cost > 0 ? info.least_cost / 100 : 0.01])}
                 </View>
                 <View
                   className={`${!isExist && 'coupon-item___status'}`}
@@ -340,7 +340,7 @@ export default class CouponItem extends Component {
                 style={isDisabled ? `background: #d7d7d7` : `background: var(--color-primary)`}
               >
                 <View className='coupon-item___number'>
-                  <Text className='coupon-item___number_text'>会员折扣</Text>
+                  <Text className='coupon-item___number_text'>{$t('d9bcdef5.eababe')}</Text>
                 </View>
                 {/* <View className='radius-view radius-left-top'> </View>
                   <View className='radius-view radius-left-bottom'> </View> */}
@@ -354,17 +354,17 @@ export default class CouponItem extends Component {
             content.map((item, index) => {
               return <View key={index}>{item}</View>
             })}
-          {info.use_bound !== '0' && info.use_bound == '1' && (
-            <View>此优惠券仅适合指定商品使用。</View>
-          )}
+          {info.use_bound !== '0' && info.use_bound == '1' && <View>{$t('d9bcdef5.6c6b37')}</View>}
           {info.use_bound !== '0' && (info.use_bound == '2' || info.use_bound == '3') && (
-            <View>此优惠券仅适合指定分类商品使用。</View>
+            <View>{$t('d9bcdef5.d57101')}</View>
           )}
-          {info.use_bound !== '0' && info.use_bound == '4' && (
-            <View>此优惠券仅适合指定品牌商品使用。</View>
-          )}
+          {info.use_bound !== '0' && info.use_bound == '4' && <View>{$t('d9bcdef5.23c0e1')}</View>}
         </View>
       </View>
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(CouponItem))

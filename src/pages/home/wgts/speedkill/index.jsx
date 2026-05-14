@@ -10,12 +10,14 @@ import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/ut
 import doc from '@/doc'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
+import { useTranslation, $t, ti } from '@/i18n'
 import GoodsLayout from '../goods-layout'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
 import './index.scss'
 
 export default function WgtSpeedkill(props) {
+  useTranslation()
   const { info, id } = props
   const [goodsList, setGoodsList] = useState([])
   const [goodsLeftList, setGoodsLeftList] = useState([])
@@ -107,21 +109,25 @@ export default function WgtSpeedkill(props) {
       if (startDay === today)
         return (
           <View className='-title-limitedTime-text'>
-            <Text className='sp-shelves-goods__header-title-limitedTime-text-title'>今日开抢</Text>
+            <Text className='sp-shelves-goods__header-title-limitedTime-text-title'>
+              {$t('597601cb.4739d2')}
+            </Text>
             <Text className='sp-shelves-goods__header-title-limitedTime-text-time'>{timeStr}</Text>
           </View>
         )
       if (startDay === tomorrow)
         return (
           <View className='sp-shelves-goods__header-title-limitedTime-text'>
-            <Text className='sp-shelves-goods__header-title-limitedTime-text-title'>明日开抢</Text>
+            <Text className='sp-shelves-goods__header-title-limitedTime-text-title'>
+              {$t('597601cb.b151a1')}
+            </Text>
             <Text className='sp-shelves-goods__header-title-limitedTime-text-time'>{timeStr}</Text>
           </View>
         )
       return (
         <View className='sp-shelves-goods__header-title-limitedTime-text'>
           <Text className='sp-shelves-goods__header-title-limitedTime-text-title'>
-            {startDate.getMonth() + 1}月{startDate.getDate()}日
+            {ti('597601cb.b5ed77', [startDate.getMonth() + 1, startDate.getDate()])}
           </Text>
           <Text className='sp-shelves-goods__header-title-limitedTime-text-time'>{timeStr}</Text>
         </View>
@@ -204,7 +210,7 @@ export default function WgtSpeedkill(props) {
                 onClick={handleClickMore}
                 style={styleNames({ color: base.moreBtn?.color || base.moreBtnColor })}
               >
-                <Text>查看更多</Text>
+                <Text>{$t('597601cb.90ef7c')}</Text>
                 <AtIcon
                   value='chevron-right'
                   size={14}
@@ -233,7 +239,7 @@ export default function WgtSpeedkill(props) {
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
-                        <Text>已售罄</Text>
+                        <Text>{$t('597601cb.b12876')}</Text>
                       </View>
                     </View>
                   )}
@@ -244,7 +250,7 @@ export default function WgtSpeedkill(props) {
                   </View>
                   <View className='wgt-speedkill__activity-item-price'>
                     <Text className='wgt-speedkill__activity-item-price__activity_name'>
-                      秒杀价
+                      {$t('597601cb.c0a30e')}
                     </Text>
                     <Text className='wgt-speedkill__activity-item-price__unit'>￥</Text>
                     <Text className='wgt-speedkill__activity-item-price__text'>

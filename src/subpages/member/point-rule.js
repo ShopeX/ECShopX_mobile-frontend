@@ -3,6 +3,7 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
+import { useTranslation, $t } from '@/i18n'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
@@ -17,12 +18,17 @@ const initialState = {
   content: ''
 }
 function PointRule(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { content } = state
 
   useEffect(() => {
     fetchPointRules()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('8c36a9ea.09d011') })
+  }, [i18n.language])
 
   const fetchPointRules = async () => {
     const { rule_desc } = await api.pointitem.getPointSetting()

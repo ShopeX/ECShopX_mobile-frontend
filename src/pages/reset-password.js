@@ -11,9 +11,11 @@ import { classNames, validate, showToast } from '@/utils'
 import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { CompPasswordInput } from '@/subpages/auth/comps'
+import { useTranslation, $t } from '@/i18n'
 import '@/subpages/auth/forgotpwd.scss'
 
 const PageResetPassword = () => {
+  useTranslation()
   const $instance = getCurrentInstance() || {}
   const { token: tokenParam } = $instance?.router?.params || {}
 
@@ -23,11 +25,11 @@ const PageResetPassword = () => {
 
   const handleSubmit = async () => {
     if (!validate.isRequired(tokenParam)) {
-      showToast('链接无效或已过期')
+      showToast($t('b910652f.5819af'))
       return
     }
     if (!validate.isEmailChannelPassword(password)) {
-      return showToast('密码需8-20位且同时包含字母与数字')
+      return showToast($t('b910652f.96246d'))
     }
     const passMsg = validate.validatePass2(password, passwordConfirm)
     if (passMsg) {
@@ -37,7 +39,7 @@ const PageResetPassword = () => {
     setSubmitting(true)
     try {
       await api.user.emailPasswordResetConfirm({ token: tokenParam, password })
-      showToast('密码已重置', () => {
+      showToast($t('b910652f.2f1f1d'), () => {
         Taro.redirectTo({ url: '/subpages/auth/login' })
       })
     } catch (e) {
@@ -59,15 +61,15 @@ const PageResetPassword = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>设置新密码</View>
-        <View className='desc'>请设置您的登录密码</View>
+        <View className='title'>{$t('b910652f.9c04e9')}</View>
+        <View className='desc'>{$t('b910652f.e2fd7c')}</View>
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
           <View className='form-field'>
             <View className='input-field'>
               <CompPasswordInput
-                placeholder='密码需8-20位且同时包含字母与数字'
+                placeholder={$t('b910652f.96246d')}
                 onChange={setPassword}
                 value={password}
               />
@@ -76,7 +78,7 @@ const PageResetPassword = () => {
           <View className='form-field'>
             <View className='input-field'>
               <CompPasswordInput
-                placeholder='请再次输入新密码'
+                placeholder={$t('b910652f.d98a14')}
                 onChange={setPasswordConfirm}
                 value={passwordConfirm}
               />
@@ -91,7 +93,7 @@ const PageResetPassword = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              确认
+              {$t('c2581d4c.e83a25')}
             </AtButton>
           </View>
         </AtForm>

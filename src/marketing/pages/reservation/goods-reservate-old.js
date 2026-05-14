@@ -4,23 +4,19 @@
  */
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Image, Text, ScrollView, Picker } from '@tarojs/components'
+import { View, Image, Text, Picker } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { AtCheckbox, AtFloatLayout, AtTextarea } from 'taro-ui'
 import { SpToast, SpCheckbox, SpInput as AtInput } from '@/components'
 import api from '@/api'
-import { pickBy, classNames, showToast } from '@/utils'
+import { pickBy, showToast } from '@/utils'
 import _cloneDeep from 'lodash/cloneDeep'
-import S from '@/spx'
 import './goods-reservate.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-@withPager
-@withBackToTop
-export default class GoodsReservate extends Component {
+class GoodsReservate extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -48,7 +44,7 @@ export default class GoodsReservate extends Component {
       activity_id: this.$instance?.router?.params.activity_id
     })
     if (!activity_info) {
-      showToast('您已经超出活动次数')
+      showToast($t('eb4eccff.eb69dc'))
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
@@ -219,7 +215,7 @@ export default class GoodsReservate extends Component {
 
   handleReservate = async () => {
     if (this.count === 1) {
-      return showToast('请勿重复提交')
+      return showToast($t('eb4eccff.a67084'))
     }
 
     let _this = this
@@ -267,7 +263,7 @@ export default class GoodsReservate extends Component {
         new_subdata.formdata.content = JSON.parse(new_subdata.formdata.content)
       }
       this.count = 0
-      showToast('提交成功')
+      showToast($t('eb4eccff.23b62e'))
       setTimeout(() => {
         Taro.navigateBack()
       }, 700)
@@ -375,7 +371,9 @@ export default class GoodsReservate extends Component {
                                     {i_data.answer ? (
                                       <Text className='picker__title_value'>{i_data.answer}</Text>
                                     ) : (
-                                      <Text className='picker__title_value gray'>请选择</Text>
+                                      <Text className='picker__title_value gray'>
+                                        {$t('eb4eccff.708c9d')}
+                                      </Text>
                                     )}
                                   </View>
                                   <View className='pick-value'>
@@ -403,7 +401,9 @@ export default class GoodsReservate extends Component {
                                     {i_data.answer ? (
                                       <Text className='picker__title_value'>{i_data.answer}</Text>
                                     ) : (
-                                      <Text className='picker__title_value gray'>请选择</Text>
+                                      <Text className='picker__title_value gray'>
+                                        {$t('eb4eccff.708c9d')}
+                                      </Text>
                                     )}
                                   </View>
                                   <View className='pick-value'>
@@ -430,7 +430,9 @@ export default class GoodsReservate extends Component {
                                       {areaList[2][multiIndex[2]]}
                                     </Text>
                                   ) : (
-                                    <Text className='picker__text gray'>请选择</Text>
+                                    <Text className='picker__text gray'>
+                                      {$t('eb4eccff.708c9d')}
+                                    </Text>
                                   )}
                                 </View>
                               </Picker>
@@ -441,7 +443,7 @@ export default class GoodsReservate extends Component {
                                 name={i_data.field_name}
                                 title={i_data.field_title}
                                 type='number'
-                                placeholder={`请输入${i_data.field_title}`}
+                                placeholder={ti('eb4eccff.72ba91', [i_data.field_title])}
                                 value={i_data.answer}
                                 onChange={this.handleCell.bind(this, i_data.field_name)}
                               />
@@ -452,7 +454,7 @@ export default class GoodsReservate extends Component {
                                 name={i_data.field_name}
                                 title={i_data.field_title}
                                 type='text'
-                                placeholder={`请输入${i_data.field_title}`}
+                                placeholder={ti('eb4eccff.72ba91', [i_data.field_title])}
                                 value={i_data.answer}
                                 onChange={this.handleCell.bind(this, i_data.field_name)}
                               />
@@ -485,18 +487,16 @@ export default class GoodsReservate extends Component {
 
         {isHasActivityInfo ? (
           <View className='goods-reservate__statement'>
-            <Text className='goods-reservate__statement_title'>声明：</Text>
+            <Text className='goods-reservate__statement_title'>{$t('eb4eccff.60ad57')}</Text>
             <Text>*{formdata.bottom_title}</Text>
           </View>
         ) : (
           <View className='success-view'>
             <View className='success-view__content'>
-              <View className='success-view__title'>您已报名成功</View>
-              <View>
-                您已报名成功，我们将对所有报名用户进行筛选，报名结果将在2个工作日内通过短信及微信服务消息通知您，请注意查收！
-              </View>
+              <View className='success-view__title'>{$t('eb4eccff.0e766d')}</View>
+              <View>{$t('eb4eccff.d5bc50')}</View>
               <View className='success-view__btn' onClick={this.handleback.bind(this)}>
-                我知道了
+                {$t('eb4eccff.fe0337')}
               </View>
             </View>
           </View>
@@ -507,7 +507,7 @@ export default class GoodsReservate extends Component {
             onClick={this.handleReservate.bind(this)}
             style={`background: ${colors.data[0].primary}`}
           >
-            提交
+            {$t('eb4eccff.939d53')}
           </View>
         ) : null}
         {isShowSubTips ? (
@@ -518,12 +518,10 @@ export default class GoodsReservate extends Component {
                 mode='widthFix'
                 className='success-view__img'
               ></Image>
-              <View className='success-view__title'>您已报名成功</View>
-              <View>
-                您已报名成功，我们将对所有报名用户进行筛选，报名结果将在2个工作日内通过短信及微信服务消息通知您，请注意查收！
-              </View>
+              <View className='success-view__title'>{$t('eb4eccff.0e766d')}</View>
+              <View>{$t('eb4eccff.d5bc50')}</View>
               <View className='success-view__btn' onClick={this.handleToList.bind(this)}>
-                我知道了
+                {$t('eb4eccff.fe0337')}
               </View>
             </View>
           </View>
@@ -536,10 +534,10 @@ export default class GoodsReservate extends Component {
           />
           <View className='panel-btns'>
             <View className='panel-btn cancel-btn' onClick={this.btnClick.bind(this, 'cancel')}>
-              取消
+              {$t('eb4eccff.625fb2')}
             </View>
             <View className='panel-btn require-btn' onClick={this.btnClick.bind(this, 'require')}>
-              确定
+              {$t('eb4eccff.38cf16')}
             </View>
           </View>
         </AtFloatLayout>
@@ -548,3 +546,7 @@ export default class GoodsReservate extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withPager(withBackToTop(withTranslation()(GoodsReservate))))

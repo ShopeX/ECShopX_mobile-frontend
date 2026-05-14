@@ -12,6 +12,7 @@ import { AtForm, AtButton } from 'taro-ui'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import { useSelector } from 'react-redux'
+import { useTranslation, $t } from '@/i18n'
 import { CompPasswordInput } from './comps'
 import { normalizeAuthRedirectParam } from './util'
 import './forgotpwd.scss'
@@ -30,6 +31,7 @@ const initialValue = {
 }
 
 const PageBindPhone = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const {
     params: { phone, redi_url }
@@ -87,11 +89,11 @@ const PageBindPhone = () => {
 
   const handleTimerStart = async (resolve) => {
     if (!validate.isMobileNum(username)) {
-      showToast('请输入正确的手机号')
+      showToast($t('0dbd2dc3.a32ab5'))
       return
     }
     if (!validate.isRequired(yzm)) {
-      showToast('请输入图形验证码')
+      showToast($t('0dbd2dc3.e70066'))
       return
     }
 
@@ -106,7 +108,7 @@ const PageBindPhone = () => {
         yzm: yzm,
         token: imgInfo.imageToken
       })
-      showToast('验证码已发送')
+      showToast($t('0dbd2dc3.4d7fb5'))
       resolve()
     } catch (e) {
       getImageVcode()
@@ -115,7 +117,7 @@ const PageBindPhone = () => {
 
   const handleSubmit = async () => {
     if (!validate.isPassword(password)) {
-      return showToast('密码格式不正确')
+      return showToast($t('0dbd2dc3.eac67a'))
     }
     try {
       await api.user.forgotPwd({
@@ -123,7 +125,7 @@ const PageBindPhone = () => {
         password,
         vcode
       })
-      showToast('设置密码成功', () => {
+      showToast($t('0dbd2dc3.00f316'), () => {
         Taro.navigateBack()
       })
     } catch (e) {
@@ -134,6 +136,10 @@ const PageBindPhone = () => {
   useEffect(() => {
     getImageVcode()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('77431c25.0974fb') })
+  }, [i18n.language])
 
   useEffect(() => {
     if (phone) {
@@ -153,7 +159,7 @@ const PageBindPhone = () => {
       })}
     >
       <View className='auth-hd'>
-        <View className='title'>忘记密码</View>
+        <View className='title'>{$t('0dbd2dc3.0974fb')}</View>
       </View>
       <View className='auth-bd'>
         <AtForm className='form'>
@@ -164,7 +170,7 @@ const PageBindPhone = () => {
               maxLength={11}
               type='tel'
               value={username}
-              placeholder='请输入您的手机号码'
+              placeholder={$t('0dbd2dc3.787a47')}
               onChange={handleInputChange('username')}
             />
           </View>
@@ -176,7 +182,7 @@ const PageBindPhone = () => {
                 clear
                 name='yzm'
                 value={yzm}
-                placeholder='请输入图形验证码'
+                placeholder={$t('0dbd2dc3.e70066')}
                 onChange={handleInputChange('yzm')}
               />
             </View>
@@ -197,7 +203,7 @@ const PageBindPhone = () => {
                 clear
                 name='vcode'
                 value={vcode}
-                placeholder='请输入验证码'
+                placeholder={$t('0dbd2dc3.d0c06a')}
                 onChange={handleInputChange('vcode')}
               />
             </View>
@@ -223,7 +229,7 @@ const PageBindPhone = () => {
               className='login-button'
               onClick={handleSubmit}
             >
-              完成
+              {$t('0dbd2dc3.769d88')}
             </AtButton>
           </View>
         </AtForm>

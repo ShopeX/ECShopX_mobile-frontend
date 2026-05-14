@@ -8,11 +8,20 @@ import { SpPage, SpLoading } from '@/components'
 import { classNames, tokenParseH5 } from '@/utils'
 import api from '@/api'
 import { useLogin } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import { setTokenAndRedirect, getToken } from './util'
 import './auth-loading.scss'
 
 const AuthLoading = () => {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('fd477850.88bdcf') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('fd477850.88bdcf') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
   const {
     params: { code, redi_url }
   } = $instance?.router
@@ -53,7 +62,7 @@ const AuthLoading = () => {
 
   return (
     <SpPage className={classNames('page-auth-loading')}>
-      <SpLoading>加载中...</SpLoading>
+      <SpLoading>{$t('bf3f9cd5.26b5bd')}</SpLoading>
     </SpPage>
   )
 }

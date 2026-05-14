@@ -7,6 +7,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Icon } from '@tarojs/components'
 import { toggleTouchMove } from '@/utils/dom'
 import { getQueryVariable } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import './search-home.scss'
 
 export default class WgtSearchHome extends Component {
@@ -24,8 +25,16 @@ export default class WgtSearchHome extends Component {
     }
   }
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     if (process.env.TARO_ENV === 'h5') {
       toggleTouchMove(this.refs.container)
+    }
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
   }
 
@@ -75,15 +84,17 @@ export default class WgtSearchHome extends Component {
               onClick={this.searchTap.bind(this)}
             >
               <Icon className='iconfont search-icon' type='search' size='14' color='#999999'></Icon>
-              <View>输入商品名称</View>
+              <View>{$t('8c900a41.c205b4')}</View>
             </View>
           </View>
-          {/* {
-              Taro.getEnv() !== 'WEB' && config.scanCode == 1 && process.env.APP_PLATFORM !== 'standard' && <View className='scancode' onClick={this.handleScanCode.bind(this)}>
+          {Taro.getEnv() !== 'WEB' &&
+            config.scanCode == 1 &&
+            process.env.APP_PLATFORM !== 'standard' && (
+              <View className='scancode' onClick={this.handleScanCode.bind(this)}>
                 <View className='iconfont icon-scan'></View>
-                <View>扫码</View>
+                <View>{$t('8c900a41.5f2a94')}</View>
               </View>
-            }             */}
+            )}
         </View>
       </View>
     )

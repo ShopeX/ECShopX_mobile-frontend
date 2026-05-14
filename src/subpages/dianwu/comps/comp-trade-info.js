@@ -3,15 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { View } from '@tarojs/components'
 import { SpCell } from '@/components'
 import { pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-trade-info.scss'
 
 const initialState = {
@@ -24,6 +23,7 @@ const initialState = {
 }
 
 function CompTradeInfo(props) {
+  useTranslation()
   const { onFetch = () => {} } = props
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
@@ -92,11 +92,15 @@ function CompTradeInfo(props) {
 
   return (
     <View className='comp-trade-info'>
-      <SpCell title='订单ID'>{tradeId}</SpCell>
-      <SpCell title='买家'>{buyMember}</SpCell>
-      <SpCell title={`${receiptType == 'ziti' ? '提货人' : '收货人'}`}>{receiveName}</SpCell>
-      <SpCell title={`${receiptType == 'ziti' ? '提货地址' : '收货地址'}`}>{receiveAddress}</SpCell>
-      {receiveDate && <SpCell title='提货时间'>{receiveDate}</SpCell>}
+      <SpCell title={$t('19bf4265.6e87f7')}>{tradeId}</SpCell>
+      <SpCell title={$t('19bf4265.74948e')}>{buyMember}</SpCell>
+      <SpCell title={receiptType == 'ziti' ? $t('19bf4265.d5403f') : $t('19bf4265.6aea70')}>
+        {receiveName}
+      </SpCell>
+      <SpCell title={receiptType == 'ziti' ? $t('19bf4265.f0c36d') : $t('19bf4265.748ea9')}>
+        {receiveAddress}
+      </SpCell>
+      {receiveDate && <SpCell title={$t('19bf4265.2aa50d')}>{receiveDate}</SpCell>}
     </View>
   )
 }

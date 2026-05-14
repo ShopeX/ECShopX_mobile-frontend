@@ -2,19 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import Taro from '@tarojs/taro'
-import { View, Text } from '@tarojs/components'
-import { SpButton } from '@/components'
-import { classNames, navigateTo, showToast, isWeb } from '@/utils'
-import { addCart } from '@/store/slices/cart'
+import React from 'react'
+import { View } from '@tarojs/components'
+import { classNames } from '@/utils'
 import { BUY_TOOL_BTNS, ACTIVITY_LIST } from '@/consts'
-import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
-import api from '@/api'
+import { useTranslation } from '@/i18n'
+import { guideBuyBtnLabel } from '@/subpages/guide/utils/guide-buy-btn-label'
 import './comp-buytoolbar.scss'
 
 function CompGoodsBuyToolbar(props) {
+  useTranslation()
   const {
     onAddCart = () => {},
     onFastBuy = () => {},
@@ -22,9 +19,6 @@ function CompGoodsBuyToolbar(props) {
     onChange = () => {},
     onSubscribe = () => {}
   } = props
-  const { cartCount = 0 } = useSelector((state) => state.cart)
-  const { favs = [] } = useSelector((state) => state.user)
-  const dispatch = useDispatch()
   const btns = []
 
   if (!info) {
@@ -78,17 +72,8 @@ function CompGoodsBuyToolbar(props) {
     onChange(key)
   }
 
-  const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
   return (
     <View className='comp-goodsbuytoolbar'>
-      {/* <View
-        className='toolbar-item'
-        onClick={navigateTo.bind(this, '/pages/cart/espier-index?tabbar=0')}
-      >
-        <Text className='iconfont icon-gouwuche'></Text>
-        <Text className='toolbar-item-txt'>购物车</Text>
-        {cartCount > 0 && <Text className='cart-count'>{cartCount}</Text>}
-      </View> */}
       <View
         className={classNames('toolbar-btns', {
           'mutiplte-btn': btns.length > 1
@@ -101,7 +86,7 @@ function CompGoodsBuyToolbar(props) {
                 className={classNames('btn-item', `btn-${item.btnStatus}`)}
                 key={`btn-item__${index}`}
               >
-                {item.title}
+                {guideBuyBtnLabel(item)}
               </View>
             )
           } else {
@@ -111,7 +96,7 @@ function CompGoodsBuyToolbar(props) {
                 onClick={handleClickBtn.bind(this, item)}
                 key={`btn-item__${index}`}
               >
-                <View className='btn-item-txt'>{item.title}</View>
+                <View className='btn-item-txt'>{guideBuyBtnLabel(item)}</View>
               </View>
             )
           }

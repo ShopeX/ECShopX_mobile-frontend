@@ -7,13 +7,13 @@ import { View, Image, Button, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { SpImage, SpLogin } from '@/components'
 import { classNames, styleNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './comp-helpcenter.scss'
 
 const MENUS = [
   // { key: 'share', name: '我要分享', icon: 'icon-fenxiang-01' },
   {
     key: 'address',
-    name: '地址管理',
     icon: 'icon-dizhiguanli-01',
     link: '/marketing/pages/member/address'
   }
@@ -32,6 +32,7 @@ const MENUS = [
 ]
 
 function CompHelpCenter(props) {
+  useTranslation()
   const { onLink = () => {} } = props
   return (
     <View className='comp-help-center'>
@@ -50,7 +51,7 @@ function CompHelpCenter(props) {
           {/* {item.key !== 'share' && ( */}
           <View className='item-wrap'>
             <Text className={classNames('iconfont', item.icon)}></Text>
-            <Text className='menu-name'>{item.name}</Text>
+            <Text className='menu-name'>{$t('cb93ea29.bca1ea')}</Text>
           </View>
           {/* )} */}
         </SpLogin>

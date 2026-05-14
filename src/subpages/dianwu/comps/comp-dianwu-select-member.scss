@@ -1,0 +1,110 @@
+/**
+ * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
+ * See LICENSE file for license details.
+ */
+.comp-dianwu-select-member {
+  .search-user {
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    &-hd {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 30px;
+      .title {
+        padding-top: 20px;
+        font-size: 32px;
+        color: #666;
+      }
+      .scan-member {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-size: 24px;
+        color: var(--color-dianwu-primary);
+      }
+      .icon-saoma {
+        font-size: 90px;
+      }
+    }
+    &-bd {
+      padding: 30px 30px;
+      .form-field {
+        height: 80px;
+        background: #f5f5f5;
+        border-radius: 8px;
+        /* prettier-ignore */
+        border: 1PX solid #d7d7d7;
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        .at-input {
+          background-color: transparent;
+          color: #333;
+          flex: 1;
+          margin-bottom: 0;
+          &:after {
+            border-color: transparent;
+          }
+          &__input {
+            font-size: 28px;
+            color: #333;
+            padding-left: 24px;
+          }
+        }
+      }
+      .search-result {
+        padding: 10px 20px;
+        border: 1px solid #efefef;
+        border-radius: 6px;
+        color: var(--color-dianwu-primary);
+        font-size: 24px;
+      }
+    }
+    &-ft {
+      display: flex;
+      justify-content: flex-end;
+      padding: 20px;
+      .btn-cancel {
+        height: 78px;
+        border-radius: 40px;
+        text-align: center;
+        font-size: 32px;
+        font-weight: 500;
+        /* prettier-ignore */
+        border: 1PX solid #cdcdcd;
+        color: #333;
+        line-height: 78px;
+        padding: 0 40px;
+      }
+      .btn-confirm {
+        height: 80px;
+        font-weight: 500;
+        /* prettier-ignore */
+        border: 1PX solid var(--color-dianwu-primary);
+        background: var(--color-dianwu-primary);
+        color: #ffffff;
+        border-radius: 40px;
+        line-height: 80px;
+        padding: 0 40px;
+        margin: 0 0 0 30px;
+      }
+    }
+  }
+}
+
+.comp-dianwu-select-member-trigger-checkout {
+  margin: 20px 20px 0;
+  height: 88px;
+  line-height: 88px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 500;
+  color: var(--color-dianwu-primary);
+  background: #e8f0fc;
+  /* prettier-ignore */
+  border: 1PX solid var(--color-dianwu-primary);
+  border-radius: 999px;
+  box-sizing: border-box;
+}

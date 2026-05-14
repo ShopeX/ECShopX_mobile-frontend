@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { $t, ti } from '@/i18n'
 import log, { showToast } from './utils'
 
 class MAPPPay {
@@ -32,7 +33,7 @@ class MAPPPay {
           resolve(result)
         },
         (e) => {
-          showToast('获取支付通道失败：' + e.message)
+          showToast(ti('18e3b4b3.5d9c92', [e.message]))
           reject(e)
         }
       )
@@ -53,10 +54,10 @@ class MAPPPay {
         let txt = null
         switch (payid) {
           case 'alipay':
-            txt = '检测到系统未安装“支付宝快捷支付服务”，无法完成支付操作，是否立即安装？'
+            txt = $t('18e3b4b3.8dc97f')
             break
           default:
-            txt = '系统未安装“' + channel.description + '”服务，无法完成支付，是否立即安装？'
+            txt = ti('18e3b4b3.94c89e', [channel.description])
             break
         }
         plus.nativeUI.confirm(
@@ -81,7 +82,7 @@ class MAPPPay {
             // 排除用户中途取消
             if (e.message.indexOf('User canceled') > -1 || e.message.indexOf('62001') > -1) {
             } else {
-              showToast('支付失败：' + e.message)
+              showToast(ti('18e3b4b3.9ebf1b', [e.message]))
             }
             reject(e)
           }

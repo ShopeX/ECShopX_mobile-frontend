@@ -5,6 +5,7 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 
 import './consult-modal.scss'
 
@@ -16,6 +17,7 @@ import './consult-modal.scss'
  * @param {function} onClose - 关闭弹框回调
  */
 function ConsultModal({ visible, type, data, onClose }) {
+  useTranslation()
   const [animEnter, setAnimEnter] = useState(false)
 
   useEffect(() => {
@@ -46,15 +48,15 @@ function ConsultModal({ visible, type, data, onClose }) {
     data.secondaryLine != null && data.secondaryLine !== ''
       ? data.secondaryLine
       : data.storeName
-      ? `${data.storeName} 门店顾问`
+      ? ti('621878cb.04bcd0', [data.storeName])
       : data.salespersonName
-      ? `${data.salespersonName} 门店顾问`
+      ? ti('621878cb.04bcd0', [data.salespersonName])
       : ''
 
   const renderQrBlock = (primaryLine, secondaryLine) => (
     <View className='qr-code'>
       <View className='first-tip'>
-        <Text>长按识别二维码</Text>
+        <Text>{$t('621878cb.41ea9b')}</Text>
       </View>
       <Image className='qrcode-image' src={data.qrcodeUrl} mode='aspectFit' showMenuByLongpress />
       {primaryLine ? (
@@ -87,20 +89,20 @@ function ConsultModal({ visible, type, data, onClose }) {
           {type === '1' ? (
             <>
               <View className='inner-text'>
-                <Text>“添加我的企业微信，</Text>
+                <Text>{$t('621878cb.c99618')}</Text>
               </View>
               <View className='inner-text'>
-                <Text>让我为你提供专属服务吧。”</Text>
+                <Text>{$t('621878cb.61bc2f')}</Text>
               </View>
               {renderQrBlock(data.storeName || '', '')}
             </>
           ) : (
             <>
               <View className='inner-text'>
-                <Text>“添加我的企业微信，</Text>
+                <Text>{$t('621878cb.c99618')}</Text>
               </View>
               <View className='inner-text'>
-                <Text>让我为你提供专属服务吧。”</Text>
+                <Text>{$t('621878cb.61bc2f')}</Text>
               </View>
               {renderQrBlock(type2Primary, type2Secondary)}
             </>

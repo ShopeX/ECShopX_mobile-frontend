@@ -15,10 +15,12 @@ import { useLogin } from '@/hooks'
 
 import { classNames, showToast, styleNames, VERSION_PLATFORM } from '@/utils'
 import { PROMOTION_TAG } from '@/consts'
+import { useTranslation, $t } from '@/i18n'
 
 import './comp-goods-item.scss'
 
 function CompGoodsItem(props) {
+  useTranslation()
   const dispatch = useDispatch()
   const { favs = [] } = useSelector((state) => state.user)
   const {
@@ -39,7 +41,7 @@ function CompGoodsItem(props) {
   const handleFavClick = async (e) => {
     e.stopPropagation()
     if (!S.getAuthToken()) {
-      showToast('请先登录')
+      showToast($t('2c84d7ff.8d2433'))
       return
     }
 
@@ -51,7 +53,7 @@ function CompGoodsItem(props) {
       await dispatch(deleteUserFav(itemId))
     }
     await dispatch(fetchUserFavs())
-    showToast(fav ? '已移出收藏' : '已加入收藏')
+    showToast(fav ? $t('2c84d7ff.b46077') : $t('2c84d7ff.151286'))
   }
 
   const handleClick = () => {
@@ -81,7 +83,7 @@ function CompGoodsItem(props) {
     }
     const { nospec, distributorId, itemId } = info
     if (!nospec) {
-      showToast('请选择规格')
+      showToast($t('2c84d7ff.4fd966'))
       return
     }
     Taro.showLoading()
@@ -95,7 +97,7 @@ function CompGoodsItem(props) {
     )
     dispatch(updateCount({ shop_type: 'distributor' }))
     Taro.hideLoading()
-    showToast('成功加入购物车')
+    showToast($t('2c84d7ff.ab91e4'))
   }
 
   const onChangeToolBar = (e) => {
@@ -142,7 +144,7 @@ function CompGoodsItem(props) {
         <View className='goods-info' onClick={handleClick.bind(this)}>
           <View className='goods-title'>
             {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
-              <Text className='prescription-drug'>处方药</Text>
+              <Text className='prescription-drug'>{$t('2c84d7ff.e8b7e1')}</Text>
             )}
             {info.itemName}
           </View>
@@ -163,7 +165,9 @@ function CompGoodsItem(props) {
               {item.tag_name}
             </Text>
           ))}
-        {info.ky_item_type == 'direct' && <Text className='promotion-tag-direct'>直供品</Text>}
+        {info.ky_item_type == 'direct' && (
+          <Text className='promotion-tag-direct'>{$t('2c84d7ff.90d145')}</Text>
+        )}
 
         {/* <View className='goods-info-box'>
           <View className='goods-store'>
@@ -235,7 +239,8 @@ function CompGoodsItem(props) {
           <View className='goods__store' onClick={() => onStoreClick(info)}>
             {info.distributor_info.name}{' '}
             <Text className='goods__store-entry'>
-              进店<Text className='iconfont icon-arrowRight'></Text>
+              {$t('2c84d7ff.8873f7')}
+              <Text className='iconfont icon-arrowRight'></Text>
             </Text>
           </View>
         )}

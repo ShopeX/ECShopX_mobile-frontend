@@ -6,13 +6,15 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { AtButton, AtAvatar } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import S from '@/spx'
 import api from '@/api'
 import { Loading } from '@/components'
 import { normalizeQuerys } from '@/utils'
 import './shopping-guide-card.scss'
 
-export default class ShoppingGuideCard extends Component {
+class ShoppingGuideCard extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -24,10 +26,6 @@ export default class ShoppingGuideCard extends Component {
   }
 
   async componentWillMount() {
-    Taro.setNavigationBarTitle({
-      title: '导购名片'
-    })
-
     let token = S?.getAuthToken()
 
     this.setState({
@@ -45,12 +43,25 @@ export default class ShoppingGuideCard extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     let token = S?.getAuthToken()
 
     this.fetch(token)
     if (!token) return
 
     this.getShop()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({
+      title: $t('729955ba.5bf219')
+    })
   }
 
   async fetch(token) {
@@ -97,7 +108,7 @@ export default class ShoppingGuideCard extends Component {
    * */
   async handleClickBindShoppingGuide() {
     Taro.showLoading({
-      title: '绑定中',
+      title: $t('729955ba.74d51f'),
       mask: true
     })
 
@@ -112,7 +123,7 @@ export default class ShoppingGuideCard extends Component {
       Taro.hideLoading()
 
       Taro.showToast({
-        title: '绑定失败',
+        title: $t('729955ba.76be59'),
         icon: 'none',
         duration: 2000
       })
@@ -131,13 +142,13 @@ export default class ShoppingGuideCard extends Component {
       () => {
         if (data.success) {
           Taro.showToast({
-            title: '绑定成功',
+            title: $t('729955ba.1974fe'),
             icon: 'success',
             duration: 2000
           })
         } else {
           Taro.showToast({
-            title: '绑定失败',
+            title: $t('729955ba.76be59'),
             icon: 'none',
             duration: 2000
           })
@@ -190,7 +201,7 @@ export default class ShoppingGuideCard extends Component {
     const { info, token } = this.state
 
     if (!info) {
-      return <Loading />
+      return <Loading>{$t('f1d3181c.bd0271')}</Loading>
     }
 
     return (
@@ -198,7 +209,7 @@ export default class ShoppingGuideCard extends Component {
         <View className='page-header flex'>
           <View className='page-header__info'>
             <View className='page-header__info-name'>
-              {info.name} <Text>导购</Text>
+              {info.name} <Text>{$t('729955ba.c60b43')}</Text>
             </View>
             <View className='page-header__info-shop'>{info.store_name}</View>
             {/* <View className='page-header__info-address'>
@@ -212,11 +223,11 @@ export default class ShoppingGuideCard extends Component {
 
         <View className='page-button'>
           {!token ? (
-            <AtButton onClick={this.handleClickTo.bind(this)}>去授权</AtButton>
+            <AtButton onClick={this.handleClickTo.bind(this)}>{$t('729955ba.4a1c90')}</AtButton>
           ) : info.is_friend == 0 ? (
             <AtButton className='page-button__button'>
               <View className='page-cell'>
-                <Text className='button-text'>加好友</Text>
+                <Text className='button-text'>{$t('729955ba.f4cbe0')}</Text>
                 <cell
                   onStartmessage={this.handleClickStartmessage.bind(this)}
                   onCompletemessage={this.handleClickCompletemessage.bind(this)}
@@ -226,11 +237,15 @@ export default class ShoppingGuideCard extends Component {
             </AtButton>
           ) : null}
           {info.is_bind == 0 ? (
-            <AtButton onClick={this.handleClickBindShoppingGuide.bind(this)}>绑定导购</AtButton>
+            <AtButton onClick={this.handleClickBindShoppingGuide.bind(this)}>
+              {$t('729955ba.e2093f')}
+            </AtButton>
           ) : null}
-          <AtButton onClick={this.handleClickIndex.bind(this)}>去购物</AtButton>
+          <AtButton onClick={this.handleClickIndex.bind(this)}>{$t('729955ba.b9474c')}</AtButton>
         </View>
       </View>
     )
   }
 }
+
+export default withTranslation()(ShoppingGuideCard)

@@ -4,6 +4,7 @@
  */
 import Taro, { Component } from '@tarojs/taro'
 import api from '@/api'
+import { $t } from '@/i18n'
 import { getExtConfigData, isAlipay } from '@/utils'
 import { drawText, drawImage, drawBlock } from './helper'
 
@@ -139,7 +140,7 @@ class GoodsDetailPoster {
         y: 688,
         fontSize: 22,
         color: '#999',
-        text: '推荐一个好物给你'
+        text: $t('e7f09fef.b1e080')
       },
       drawOptions
     )

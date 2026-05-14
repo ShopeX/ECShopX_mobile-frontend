@@ -6,14 +6,16 @@ import Taro from '@tarojs/taro'
 import { useState, useRef, useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 
 export default (props) => {
+  useTranslation()
   const [state, setState] = useImmer(props)
   const callbackRef = useRef()
 
   const tradeActionBtns = {
     CANCEL: {
-      title: '取消订单',
+      title: $t('60f21b16.b21b5e'),
       key: 'cancel',
       btnStatus: 'normal',
       action: ({ orderId }) => {
@@ -23,7 +25,7 @@ export default (props) => {
       }
     },
     PAY: {
-      title: '立即支付',
+      title: $t('60f21b16.747349'),
       key: 'pay',
       btnStatus: 'active',
       action: ({ orderId }) => {
@@ -33,7 +35,7 @@ export default (props) => {
       }
     },
     DETAIL: {
-      title: '订单详情',
+      title: $t('60f21b16.8054f7'),
       key: 'detail',
       btnStatus: 'active',
       action: ({ orderId }) => {
@@ -43,7 +45,7 @@ export default (props) => {
       }
     },
     LOGISTICS: {
-      title: '查看物流',
+      title: $t('60f21b16.edf4b2'),
       key: 'logistics',
       btnStatus: 'normal',
       action: ({ orderId, isAllDelivery, ordersDeliveryId, deliveryCorpName, deliveryCode }) => {
@@ -63,7 +65,7 @@ export default (props) => {
       }
     },
     AFTER_SALES: {
-      title: '申请售后',
+      title: $t('60f21b16.45eb0c'),
       key: 'after_sales',
       btnStatus: 'normal',
       action: ({ orderId }) => {
@@ -73,12 +75,12 @@ export default (props) => {
       }
     },
     CONFIRM: {
-      title: '确认收货',
+      title: $t('60f21b16.775b01'),
       key: 'confirm',
       btnStatus: 'normal'
     },
     AFTER_DETAIL: {
-      title: '售后详情',
+      title: $t('60f21b16.70536c'),
       key: 'after_detail',
       btnStatus: 'normal',
       action: ({ orderId, orderClass }) => {
@@ -92,7 +94,7 @@ export default (props) => {
       }
     },
     EVALUATE: {
-      title: '评价',
+      title: $t('60f21b16.606120'),
       key: 'evaluate',
       btnStatus: 'normal',
       action: ({ orderId }) => {
@@ -102,7 +104,7 @@ export default (props) => {
       }
     },
     WRITE_OFF: {
-      title: '核销',
+      title: $t('60f21b16.e7d31e'),
       key: 'writeOff',
       btnStatus: 'normal',
       action: ({ orderId }) => {
@@ -112,7 +114,7 @@ export default (props) => {
       }
     },
     CHANGE_OFFLINE: {
-      title: '修改付款凭证',
+      title: $t('60f21b16.990d86'),
       key: 'changeOffline',
       btnStatus: 'normal',
       action: ({ orderId }) => {
@@ -122,12 +124,12 @@ export default (props) => {
       }
     },
     TRACK: {
-      title: '订单追踪',
+      title: $t('60f21b16.15c09f'),
       key: 'track',
       btnStatus: 'normal'
     },
     INVOICE_APPLY: {
-      title: '申请开票',
+      title: $t('60f21b16.a5f23f'),
       key: 'invoice_apply',
       btnStatus: 'normal',
       action: ({ orderId, invoice_amount }) => {
@@ -138,7 +140,7 @@ export default (props) => {
       }
     },
     INVOICE_DETAIL: {
-      title: '发票详情',
+      title: $t('60f21b16.7e7830'),
       key: 'invoice_detail',
       btnStatus: 'normal',
       action: ({ invoiceId }) => {

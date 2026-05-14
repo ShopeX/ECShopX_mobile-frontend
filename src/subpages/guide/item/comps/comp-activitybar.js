@@ -2,16 +2,35 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import Taro from '@tarojs/taro'
+import React from 'react'
 import { AtCountdown } from 'taro-ui'
 import { View } from '@tarojs/components'
-import { SpPrice } from '@/components'
-import { ACTIVITY_LIST, ACTIVITY_STATUS } from '@/consts'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-activitybar.scss'
 
+const ACTIVITY_TITLE_I18N = {
+  group: '02f831a3.0dc5dc',
+  seckill: '02f831a3.55c758',
+  limited_time_sale: '02f831a3.a0aaca'
+}
+
+const ACTIVITY_STATUS_I18N = {
+  seckill: {
+    in_the_notice: '02f831a3.f20d70',
+    in_sale: '02f831a3.77c458'
+  },
+  limited_time_sale: {
+    in_the_notice: '02f831a3.f20d70',
+    in_sale: '02f831a3.77c458'
+  },
+  group: {
+    nostart: '02f831a3.f20d70',
+    noend: '02f831a3.77c458'
+  }
+}
+
 function CompActivityBar(props) {
+  useTranslation()
   const { info, type, onTimeUp = () => {}, children } = props
   if (!info) {
     return null
@@ -26,21 +45,25 @@ function CompActivityBar(props) {
   }
 
   if (type == 'group') {
-    activityDesc = `(${person_num}人团)`
+    activityDesc = ti('02f831a3.053d4a', [person_num])
   }
+
+  const statusKey = type == 'group' ? show_status : status
+  const titleKey = ACTIVITY_TITLE_I18N[type]
+  const countdownTitleKey = ACTIVITY_STATUS_I18N[type]?.[statusKey]
 
   return (
     <View className='comp-activitybar'>
       <View className='activitybar-hd'>
-        <View className='activity-name'>{`${ACTIVITY_LIST()[type]} ${activityDesc}`}</View>
+        <View className='activity-name'>
+          {[titleKey && $t(titleKey), activityDesc].filter(Boolean).join(' ')}
+        </View>
         <View className='goods-price'>{children}</View>
       </View>
       <View className='activitybar-ft'>
-        <View className='title'>
-          {ACTIVITY_STATUS()[type][type == 'group' ? show_status : status]}
-        </View>
+        <View className='title'>{countdownTitleKey ? $t(countdownTitleKey) : ''}</View>
         <AtCountdown
-          format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+          format={{ day: $t('02f831a3.249aba'), hours: ':', minutes: ':', seconds: '' }}
           isCard
           isShowDay
           seconds={TIME}

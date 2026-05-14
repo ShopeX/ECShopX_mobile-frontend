@@ -5,14 +5,14 @@
 import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { SpImage } from '@/components'
 import { SpTime } from '@/subpages/components'
 import { classNames } from '@/utils'
 import S from '@/spx'
 import { useSyncCallback } from '@/hooks'
+import { useTranslation, $t } from '@/i18n'
 import './comp-ranking.scss'
 
 const initialState = {
@@ -24,6 +24,7 @@ const initialState = {
 }
 
 function CompRanking(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { list, total_count, datas, datasType, valList } = state
   const { params } = useRouter()
@@ -91,11 +92,11 @@ function CompRanking(props) {
         <SpTime onTimeChange={onTimeChange} selects={datasType} nowTimeDa={datas} />
         <View className='comp-ranking-list'>
           <View className='comp-ranking-list-item comp-ranking-list-title'>
-            <Text>排名</Text>
-            <Text>配送员</Text>
-            <Text>订单额(元)</Text>
-            <Text>配送单量(单)</Text>
-            <Text>配送费(元)</Text>
+            <Text>{$t('7944ece1.a4dc00')}</Text>
+            <Text>{$t('7944ece1.b7765e')}</Text>
+            <Text>{$t('7944ece1.eac5dc')}</Text>
+            <Text>{$t('7944ece1.4514fb')}</Text>
+            <Text>{$t('7944ece1.461a79')}</Text>
           </View>
           {list.map((item, index) => {
             return (
@@ -124,14 +125,14 @@ function CompRanking(props) {
                 })
               }}
             >
-              <Text>展开更多</Text>
+              <Text>{$t('7944ece1.311f6d')}</Text>
               <Text className='iconfont icon-arrowDown'></Text>
             </View>
           )}
         </View>
       </View>
 
-      {total_count - list.length <= 0 && <View className='end'>--没有更多数据了--</View>}
+      {total_count - list.length <= 0 && <View className='end'>{$t('7944ece1.a25652')}</View>}
     </View>
   )
 }

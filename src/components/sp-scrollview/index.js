@@ -10,10 +10,12 @@ import api from '@/api'
 import { usePage } from '@/hooks'
 
 import { isObject, classNames, isWeixin, isAlipay, isWeb } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 
 import './index.scss'
 
 function SpScrollView(props, ref) {
+  useTranslation()
   const {
     className,
     children,
@@ -114,17 +116,21 @@ function SpScrollView(props, ref) {
       <View className='sp-scrollview-body'>{children}</View>
       {/* 使用固定容器包裹状态提示，保持 DOM 结构稳定，避免滚动位置重置 */}
       <View className='sp-scrollview-footer'>
-        {page.hasMore && <SpLoading>正在加载...</SpLoading>}
+        {page.hasMore && <SpLoading>{$t('eb9a3a24.bd0271')}</SpLoading>}
         {!page.hasMore &&
           getTotal() == 0 &&
-          (renderEmpty ? renderEmpty : <SpNote img='empty_activity.png' title='没有查询到数据' />)}
+          (renderEmpty ? (
+            renderEmpty
+          ) : (
+            <SpNote img='empty_activity.png' title={$t('eb9a3a24.f1f45e')} />
+          ))}
         {!page.loading &&
           !page.hasMore &&
           getTotal() > 0 &&
           (renderMore ? (
             renderMore()
           ) : (
-            <SpNote className='no-more' title='--没有更多数据了--'></SpNote>
+            <SpNote className='no-more' title={$t('eb9a3a24.a25652')}></SpNote>
           ))}
       </View>
       <View className={classNames('scrollview-bottom', `scrollview-${vid}`)}></View>

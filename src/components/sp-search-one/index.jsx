@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useState, useRef } from 'react'
+import React, { useEffect, useState, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Swiper, SwiperItem, Text } from '@tarojs/components'
@@ -10,9 +10,18 @@ import { useImmer } from 'use-immer'
 import { SpImage, SpInput as AtInput } from '@/components'
 import { classNames } from '@/utils'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 function SpSearchOne(props) {
+  const { i18n } = useTranslation()
+  const resolvedPlaceholder = useMemo(
+    () =>
+      props.placeholder !== undefined && props.placeholder !== null
+        ? props.placeholder
+        : $t('78eb15d3.e5f71f'),
+    [props.placeholder, i18n.language]
+  )
   const [state, setState] = useImmer({
     currentIndex: 0,
     focus: false,
@@ -56,8 +65,8 @@ function SpSearchOne(props) {
   const handleSearch = () => {
     if (props.btnOnSearch && props.inputEnabled) {
       props.onSearch(
-        inputValue || props.placeholder,
-        !inputValue && props.placeholder && props.placeholderObj ? props.placeholderObj : null
+        inputValue || resolvedPlaceholder,
+        !inputValue && resolvedPlaceholder && props.placeholderObj ? props.placeholderObj : null
       )
     } else {
       if (props.inputSearch) {
@@ -94,7 +103,7 @@ function SpSearchOne(props) {
         {!props.inputEnabled && (
           <View className='sp-search-one__placeholder ml-6' onClick={handlePlaceholderClick}>
             <View className='placeholder-text text-28'>
-              <Text className='omit-text'>{props.placeholder}</Text>
+              <Text className='omit-text'>{resolvedPlaceholder}</Text>
             </View>
           </View>
         )}
@@ -103,7 +112,7 @@ function SpSearchOne(props) {
           <AtInput
             className='sp-search-one__input ml-6'
             type='text'
-            placeholder={props.placeholder}
+            placeholder={resolvedPlaceholder}
             value={inputValue}
             onChange={handleInput}
             autoFocus={props.autoFocus}
@@ -139,7 +148,7 @@ function SpSearchOne(props) {
           className='sp-search-one__search-btn'
           onClick={props.btnOnSearch ? handleSearch : handlePlaceholderClick}
         >
-          <Text className='sp-search-one__search-text'>搜索</Text>
+          <Text className='sp-search-one__search-text'>{$t('78eb15d3.e5f71f')}</Text>
         </View>
       )}
     </View>
@@ -149,7 +158,6 @@ function SpSearchOne(props) {
 SpSearchOne.defaultProps = {
   backgroundColor: '#f8f8f8',
   inputEnabled: false,
-  placeholder: '搜索',
   placeholderObj: null,
   searchBtn: false,
   btnOnSearch: false,

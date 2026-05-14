@@ -13,6 +13,7 @@ import { pickBy, browser, getDistributorId } from '@/utils'
 import { withLogin } from '@/hocs'
 import getPaymentList from '@/utils/payment'
 import { PAYTYPE } from '@/consts'
+import { $t, ti } from '@/i18n'
 import { AlipayPay, WeH5Pay, WePay } from './comps'
 import { deleteForm } from './util'
 import './index.scss'
@@ -97,20 +98,27 @@ export default class Cashier extends Component {
         <AtNavBar
           fixed
           color='#000'
-          title='收银台'
+          title={$t('7187dbd0.5cbddd')}
           leftIconType='chevron-left'
           onClickLeftIcon={this.handleClickBack}
         />
         <View className='cashier-money'>
           {info.order_type !== 'recharge' ? (
-            <View className='cashier-money__tip'>订单提交成功，请选择支付方式</View>
+            <View className='cashier-money__tip'>{$t('6b28f89b.a88c1e')}</View>
           ) : null}
           <View className='cashier-money__content'>
-            <View className='cashier-money__content-title'>订单编号： {info.order_id}</View>
-            <View className='cashier-money__content-title'>订单名称：{info.title}</View>
             <View className='cashier-money__content-title'>
-              应付总额
-              {info.pay_type === 'point' ? `（${this.props.pointName}）` : '（元）'}
+              {$t('45ab5834.148237')} {info.order_id}
+            </View>
+            <View className='cashier-money__content-title'>
+              {$t('6b28f89b.8fd90d')}
+              {info.title}
+            </View>
+            <View className='cashier-money__content-title'>
+              {$t('6b28f89b.1a8469')}
+              {info.pay_type === 'point'
+                ? ti('6b28f89b.a20466', [this.props.pointName])
+                : $t('6b28f89b.952e02')}
             </View>
             <View className='cashier-money__content-number'>
               {info.pay_type === 'point' ? info.point : info.total_fee}

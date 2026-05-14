@@ -3,13 +3,12 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect, useRef } from 'react'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
-import Taro, { usePullDownRefresh, useRouter, useDidShow } from '@tarojs/taro'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
 import api from '@/api'
-import doc from '@/doc'
 import { View, Text } from '@tarojs/components'
-import { SpImage, SpPage, SpScrollView } from '@/components'
+import { SpScrollView } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-delivery-salesman.scss'
 
 const initialState = {
@@ -17,6 +16,7 @@ const initialState = {
 }
 
 function CompDeliverySalesman(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { params } = useRouter()
   const { selectorCheckedIndex, deliverylnformation, refreshData } = props
@@ -79,12 +79,12 @@ function CompDeliverySalesman(props) {
                     }}
                   >
                     <Text className='iconfont icon-bianji1'></Text>
-                    编辑
+                    {$t('1b835d14.95b351')}
                   </View>
                 </View>
                 <View>
                   <View className='information'>
-                    <Text className='information-tltle'>手机号</Text>
+                    <Text className='information-tltle'>{$t('1b835d14.8098e2')}</Text>
                     <Text>{item.mobile}</Text>
                   </View>
                   {/* <View className='information'>
@@ -99,16 +99,19 @@ function CompDeliverySalesman(props) {
                     </Text>
                   </View> */}
                   <View className='information'>
-                    <Text className='information-tltle'>业务员属性</Text>
-                    {/* <Text>{item.staff_attribute === 'full_time' ? '全职' : '兼职'}</Text> */}
-                    <Text>全职</Text>
+                    <Text className='information-tltle'>{$t('1b835d14.b6fd31')}</Text>
+                    <Text>
+                      {item.staff_attribute === 'part_time'
+                        ? $t('1b835d14.7c4f46')
+                        : $t('1b835d14.63f85b')}
+                    </Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>是否开启</Text>
-                    <Text>{item.is_valid ? '开启' : '关闭'}</Text>
+                    <Text className='information-tltle'>{$t('1b835d14.780afe')}</Text>
+                    <Text>{item.is_valid ? $t('1b835d14.cc42dd') : $t('1b835d14.b15d91')}</Text>
                   </View>
                   <View className='information'>
-                    <Text className='information-tltle'>创建时间</Text>
+                    <Text className='information-tltle'>{$t('1b835d14.eca37c')}</Text>
                     <Text>{item.created}</Text>
                   </View>
                 </View>
@@ -125,7 +128,7 @@ function CompDeliverySalesman(props) {
           })
         }}
       >
-        <View>创建业务员</View>
+        <View>{$t('1b835d14.96692c')}</View>
       </View>
     </View>
   )

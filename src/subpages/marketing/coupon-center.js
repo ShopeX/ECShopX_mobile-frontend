@@ -3,12 +3,11 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import { useTranslation, $t } from '@/i18n'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import api from '@/api'
 import doc from '@/doc'
-import qs from 'qs'
 import { View, Text } from '@tarojs/components'
 import { pickBy, showToast, isWeixin, entryLaunch } from '@/utils'
 import { SpPage, SpScrollView, SpCoupon, SpLogin } from '@/components'
@@ -20,6 +19,7 @@ const initialState = {
   couponList: []
 }
 function CouponCenter(props) {
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const { couponList } = state
@@ -33,6 +33,10 @@ function CouponCenter(props) {
     entryLaunch.postGuideUV()
     entryLaunch.postGuideTask()
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('da22a25b.9c356b') })
+  }, [i18n.language])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const {
@@ -67,7 +71,7 @@ function CouponCenter(props) {
 
   const handleClickCouponItem = async (item, index) => {
     if (item.couponStatus == 0) {
-      showToast('优惠券已领完')
+      showToast($t('357159b6.ca9852'))
     } else if (item.couponStatus == 1) {
       if (isWeixin) {
         const templeparams = {
@@ -92,7 +96,7 @@ function CouponCenter(props) {
         getCoupon(item, index)
       }
     } else {
-      showToast('优惠券领取机会已用完')
+      showToast($t('357159b6.cd2b19'))
     }
   }
 
@@ -114,9 +118,9 @@ function CouponCenter(props) {
           draft.couponList[index].couponStatus = 2
         })
       }
-      showToast('优惠券领取成功')
+      showToast($t('357159b6.ed4e1b'))
     } else {
-      showToast('优惠券领取失败')
+      showToast($t('357159b6.643aa4'))
     }
   }
 

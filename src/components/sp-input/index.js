@@ -113,6 +113,7 @@ function SpInput(props) {
           clear={props.clear}
           value={props.value}
           type={type}
+          adjustPosition={props.adjustPosition}
           maxLength={props.maxLength}
           placeholder={props.placeholder}
           cursor={cursor}
@@ -124,6 +125,7 @@ function SpInput(props) {
           onBlur={onBlur}
           onFocus={onFocus}
           nativeProps={isWeb ? { onKeyDown: handleKeyDown } : {}}
+          cursorSpacing={props.cursorSpacing}
         />
         {/* <Input
           type={type}
@@ -155,7 +157,10 @@ SpInput.defaultProps = {
   clear: false,
   placeholder: '',
   maxLength: null,
-  onChange: noop,
+  adjustPosition: true,
+  cursorSpacing: 50,
+  onChange: () => {},
+  onConfirm: () => {},
   onBlur: noop,
   onFocus: noop
 }

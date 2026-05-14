@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { withPager, withBackToTop } from '@/hocs'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote } from '@/components'
 import api from '@/api'
@@ -13,7 +15,7 @@ import './item-history.scss'
 
 @withPager
 @withBackToTop
-export default class ItemHistory extends Component {
+class ItemHistory extends Component {
   constructor(props) {
     super(props)
 
@@ -24,7 +26,18 @@ export default class ItemHistory extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('9ecb5bf8.5ac95e') })
   }
 
   async fetch(params) {
@@ -69,7 +82,7 @@ export default class ItemHistory extends Component {
     return (
       <View className='page-goods-list page-goods-history'>
         <View className='goods-list__toolbar'>
-          <SpNavBar leftIconType='chevron-left' fixed='true' />
+          <SpNavBar title={$t('9ecb5bf8.5ac95e')} leftIconType='chevron-left' fixed='true' />
         </View>
 
         <ScrollView
@@ -91,9 +104,9 @@ export default class ItemHistory extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('f1d3181c.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('f1d3181c.ba1de9')}</SpNote>
           )}
         </ScrollView>
 
@@ -102,3 +115,5 @@ export default class ItemHistory extends Component {
     )
   }
 }
+
+export default withTranslation()(ItemHistory)

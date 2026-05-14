@@ -2,15 +2,16 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import Taro from '@tarojs/taro'
 import { AtProgress } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-goodsitem.scss'
 
 function CompGoodsItem(props) {
+  useTranslation()
   const { info, showProgress = false } = props
   if (!info) {
     return
@@ -40,20 +41,22 @@ function CompGoodsItem(props) {
       </View>
       <View className='item-bd'>
         <View className='goods-name'>{itemName}</View>
-        {!nospec && <View className='spec-label'>多规格</View>}
+        {!nospec && <View className='spec-label'>{$t('2b7a222c.5d60de')}</View>}
         <View className='goods-spec'>{itemSpecDesc}</View>
-        <View className='goods-store'>{`库存：${store}`}</View>
+        <View className='goods-store'>{ti('2b7a222c.e203b0', [store])}</View>
         <View className='goods-price'>
           <SpPrice primary value={price} />
         </View>
         {showProgress && minDeliveryNum > 0 && (
           <View className='activity-progress'>
             <AtProgress percent={progressValue} isHidePercent />
-            <Text className='progress-txt'>{diff <= 0 ? '已满足起送' : `还差${diff}件起送`}</Text>
+            <Text className='progress-txt'>
+              {diff <= 0 ? $t('2b7a222c.d74a92') : ti('2b7a222c.d50b61', [diff])}
+            </Text>
           </View>
         )}
         {!showProgress && minDeliveryNum > 0 && (
-          <View className='delivery-num'>{`${minDeliveryNum}件起送`}</View>
+          <View className='delivery-num'>{ti('2b7a222c.596cf6', [minDeliveryNum])}</View>
         )}
       </View>
     </View>

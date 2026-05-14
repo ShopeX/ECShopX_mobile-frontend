@@ -2,17 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
+import React from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
 import { SpFloatLayout } from '@/components'
 import { SpTimeLineItem } from '@/subpages/components'
 import { formatDateTime } from '@/utils'
+import { $t, ti, useTranslation } from '@/i18n'
 import './comp-track-detail.scss'
 
 function CompTrackDetail(props) {
+  useTranslation()
   const {
     isOpened = false,
     selfDeliveryOperatorName,
@@ -44,14 +44,16 @@ function CompTrackDetail(props) {
     <View className='comp-tradedetail'>
       <SpFloatLayout
         className='tradedetail-floatlayout'
-        title='订单跟踪'
+        title={$t('250b375e.01fe4f')}
         open={isOpened}
         onClose={onClose}
       >
         <View className='opreator'>
-          <View className='opreator-name'>配送员：{selfDeliveryOperatorName || '-'}</View>
+          <View className='opreator-name'>
+            {ti('250b375e.da3446', [selfDeliveryOperatorName || '-'])}
+          </View>
           <View className='opreator-mobile' onClick={handleCallOpreator}>
-            拨打电话
+            {$t('250b375e.b0ccf0')}
           </View>
         </View>
         <ScrollView scrollY>

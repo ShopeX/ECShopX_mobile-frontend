@@ -1,0 +1,13 @@
+---
+description: UI样式使用设计稿原始px，不做除2换算
+alwaysApply: true
+---
+
+# UI PX Policy
+
+- 本项目所有 UI 样式开发默认使用设计稿原始 `px` 数值。
+- 禁止进行 `/2`、`*0.5`、`rpx折算` 等人工换算，除非用户明确要求。
+- 适用于 `css`、`scss`、`less`、`style` 中的尺寸相关属性：`width`、`height`、`padding`、`margin`、`font-size`、`line-height`、`border-radius`、`gap`、`position` 偏移和 `box-shadow` 数值。
+- 当设计稿与历史代码冲突时，优先按当前设计稿原始 `px` 落地。
+- 与用户沟通样式调整时，明确说明“本次按设计稿原始 px 实现，不做除以 2”。
+

@@ -11,6 +11,7 @@ import { pickBy, calcTimer } from '@/utils'
 import { AtCountdown, AtIcon } from 'taro-ui'
 import api from '@/api'
 import * as boostApi from '@/api/boost'
+import { $t, ti } from '@/i18n'
 import { connect } from 'react-redux'
 // import config from './index.config.js'
 import { WgtFilm, WgtSlider, WgtWriting, WgtGoods, WgtHeading } from '../../../pages/home/wgts'
@@ -128,7 +129,7 @@ export default class Detail extends Component {
   showRule = () => {
     const { info } = this.state
     Taro.showModal({
-      title: '活动',
+      title: $t('55b7258d.36c6f5'),
       content: info.bargain_rules,
       showCancel: false
     })
@@ -197,7 +198,7 @@ export default class Detail extends Component {
     context.setFontSize(14)
     context.setFillStyle('#333333')
     context.setTextAlign('center')
-    context.fillText(`我是${userInfo.nickname}邀请您一起帮我砍价`, 187, 480)
+    context.fillText(ti('55b7258d.6172b4', [userInfo.nickname || '']), 187, 480)
     context.save()
     context.setFillStyle('#a2564c')
     context.fillText(info.item_name, 187, 504)
@@ -220,7 +221,7 @@ export default class Detail extends Component {
   // 显示海报
   showPoster = () => {
     Taro.showLoading({
-      title: '海报生成中',
+      title: $t('55b7258d.bc7149'),
       mask: true
     })
     if (this.posterImg) {
@@ -240,7 +241,7 @@ export default class Detail extends Component {
       .catch(() => {
         Taro.hideLoading()
         Taro.showToast({
-          title: '生成海报错误',
+          title: $t('55b7258d.804dc0'),
           icon: 'none',
           mask: true
         })
@@ -286,7 +287,7 @@ export default class Detail extends Component {
       })
       if (res) {
         Taro.showToast({
-          title: '发起成功',
+          title: $t('55b7258d.84a76a'),
           icon: 'none',
           mask: true,
           duration: 1500
@@ -331,7 +332,7 @@ export default class Detail extends Component {
         </View>
         <View className='rule'>
           <View className='actBtn' onClick={this.showRule.bind(this)}>
-            活动规则
+            {$t('55b7258d.02a217')}
           </View>
         </View>
         <View className='main'>
@@ -342,10 +343,15 @@ export default class Detail extends Component {
               <View className='price'>¥{info.mkt_price}</View>
               {!info.isOver && info.timeDown && (
                 <View className='timedown'>
-                  <View className='tip'>活动仅剩:</View>
+                  <View className='tip'>{$t('55b7258d.f56023')}</View>
                   <AtCountdown
                     className='countdown__time'
-                    format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                    format={{
+                      day: $t('55b7258d.249aba'),
+                      hours: ':',
+                      minutes: ':',
+                      seconds: ''
+                    }}
                     isShowDay
                     day={info.timeDown.dd}
                     hours={info.timeDown.hh}
@@ -362,18 +368,19 @@ export default class Detail extends Component {
               {cutPercent !== 1 && !isDisabled && (
                 <View className='share'>
                   <Button openType='share' className='item'>
-                    邀请好友助力
+                    {$t('55b7258d.965d98')}
                   </Button>
                   <View className='item' onClick={this.showPoster.bind(this)}>
-                    朋友圈海报
+                    {$t('55b7258d.7668df')}
                   </View>
                 </View>
               )}
               <View className='boost'>
                 <Image src={userInfo.headimgurl} class='avatar'></Image>
                 <View className='content'>
-                  我正在邀请好友助力领取
-                  <Text class='strong-txt'>{info.item_name}</Text>的折价优惠！
+                  {$t('55b7258d.26346b')}
+                  <Text class='strong-txt'>{info.item_name}</Text>
+                  {$t('55b7258d.78f63f')}
                   <View className='progress'>
                     <Progress
                       percent={cutPercent * 100}
@@ -390,7 +397,7 @@ export default class Detail extends Component {
                 </View>
               </View>
               <View className='boostMain'>
-                <View className='title'>好友助力榜</View>
+                <View className='title'>{$t('55b7258d.0c9d05')}</View>
                 {boostList.length > 0 ? (
                   <View className='boostList'>
                     {boostList.map((item, index) => (
@@ -401,16 +408,18 @@ export default class Detail extends Component {
                         <View className='right'>
                           <View className='name'>{item.nickname}</View>
                           <View>
-                            {item.cutdown_num >= 0 ? `减掉` : '增加'} ¥
-                            {(item.cutdown_num / 100).toFixed(2)}
+                            {item.cutdown_num >= 0 ? $t('55b7258d.d2879e') : $t('55b7258d.491411')}{' '}
+                            ¥{(item.cutdown_num / 100).toFixed(2)}
                           </View>
                         </View>
-                        {item.cutdown_num < 0 && <View className='tag'>帮了倒忙</View>}
+                        {item.cutdown_num < 0 && (
+                          <View className='tag'>{$t('55b7258d.4ea589')}</View>
+                        )}
                       </View>
                     ))}
                   </View>
                 ) : (
-                  <View className='boostList noHelp'>暂无好友相助~</View>
+                  <View className='boostList noHelp'>{$t('55b7258d.359fdc')}</View>
                 )}
               </View>
             </View>
@@ -418,7 +427,7 @@ export default class Detail extends Component {
           {info.item_intro && (
             <View className='goodDetail'>
               <View className='h5'>
-                <Text className='text'>商品详情</Text>
+                <Text className='text'>{$t('55b7258d.b4f5db')}</Text>
               </View>
               {!Array.isArray(info.item_intro) ? (
                 <SpHtmlContent content={info.item_intro} className='richText' />
@@ -447,13 +456,13 @@ export default class Detail extends Component {
         >
           {isDisabled ? (
             <Text>
-              {info.isOver ? '已过期' : ''}
-              {info.isSaleOut ? '已售罄' : ''}
-              {orderInfo.order_status === 'DONE' ? '已购买' : ''}
-              {orderInfo.order_status === 'CANCEL' ? '已参与' : ''}
+              {info.isOver ? $t('55b7258d.4d5ccd') : ''}
+              {info.isSaleOut ? $t('55b7258d.b12876') : ''}
+              {orderInfo.order_status === 'DONE' ? $t('55b7258d.6ad54f') : ''}
+              {orderInfo.order_status === 'CANCEL' ? $t('55b7258d.0ce4f5') : ''}
             </Text>
           ) : (
-            <Text>{isJoin ? `¥${purchasePrice} 优惠购买` : '发起助力'}</Text>
+            <Text>{isJoin ? ti('55b7258d.370456', [purchasePrice]) : $t('55b7258d.0265b2')}</Text>
           )}
         </Button>
         {/* 海报 */}

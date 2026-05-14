@@ -7,10 +7,12 @@ import Taro from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { useSelector } from 'react-redux'
 import { isWeixin, classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 
 import './home-header-shop.scss'
 
 function WgtHomeHeaderShop(props) {
+  useTranslation()
   const { children, isSetHight } = props
   const { openScanQrcode, entryStoreByLBS } = useSelector((state) => state.sys)
   const {
@@ -29,7 +31,7 @@ function WgtHomeHeaderShop(props) {
     <View className={classNames('home-header-shop', !isSetHight && 'cus-home-header')}>
       {entryStoreByLBS && (
         <View className='shop-left' onClick={handlePickStore}>
-          <View className='shop-name'>{store_name || '暂无店铺信息'}</View>
+          <View className='shop-name'>{store_name || $t('e3bdb7a0.895d7d')}</View>
           <Text className='iconfont icon-qianwang-01'></Text>
         </View>
       )}

@@ -3,28 +3,40 @@
  * See LICENSE file for license details.
  */
 .page-comp-deliver {
-  background: #fff;
-  padding: 10px 0px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  padding: 44px 32px 0px;
+
+  .switch-box {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    padding-bottom: 40px;
+  }
+
   .switch-tab {
     display: flex;
-    align-items: flex-end;
-    background: #f5f5f5;
-    border-radius: 12px;
     font-size: 24px;
+    height: 110px;
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #F5F5F5;
     .switch-item {
-      // padding: 0px 30px;
+      flex: 1;
+      text-align: center;
+      height: 100%;
+      line-height: 100%;
+      color: #4A5565;
+      border-radius: 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex: 1;
-      height: 70px;
-      font-size: 26px;
-      color: #666;
-      border-radius: 10px 10px 0 0;
-      background: #f8f8f8;
-      .iconfont {
-        font-size: 42px;
-        margin-right: 10px;
+      gap: 8px;
+      .switch-item__ico{
+        font-size: 48px;
       }
       &.active {
         height: 90px;
@@ -39,95 +51,166 @@
       }
     }
   }
+
+  /* 选择收货地址卡片：Figma 58:480 */
+  .address-picker {
+    background: #ffffff;
+    border-radius: 32px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    margin-bottom: 20px;
+
+    .address {
+      align-items: center;
+      padding: 40px 32px;
+      box-sizing: border-box;
+    }
+
+    .address-picker__bd {
+      align-items: center;
+      gap: 20px;
+    }
+
+    .address-receive {
+      flex: 1;
+      min-width: 0;
+      color: #0a0a0a;
+    }
+
+    .info-trade {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .address-area {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: #0a0a0a;
+      padding: 0;
+      margin: 0;
+
+      .def {
+        margin-right: 12px;
+        vertical-align: middle;
+      }
+    }
+
+    .address-detail {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: #0a0a0a;
+      padding: 0 !important;
+      margin: 0;
+    }
+
+    .user-info-trade {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 24px;
+      line-height: 1.33;
+      color: #0a0a0a;
+      font-weight: 600;
+
+      .name {
+        font-weight: 700;
+      }
+    }
+
+    .icon-arrowRight,
+    .sp-cell__ft-icon.icon-arrowRight {
+      flex-shrink: 0;
+      font-size: 28px;
+      color: #999999;
+      margin: 0;
+    }
+
+    .address-info__bd {
+      margin: 0 auto;
+      width: auto;
+      max-width: 100%;
+      border-width: 2px;
+      font-size: 26px;
+      border: none;
+      height: auto;
+      line-height: normal;
+    }
+  }
+
+  /* 到店自提：与 .address-picker 同款卡片与层级 */
   .address-module {
-    background: #fff;
-    padding: 30px;
-    border-radius: 20px;
+    background: #ffffff;
+    border-radius: 32px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    box-sizing: border-box;
+    padding: 40px 32px;
+    margin-bottom: 20px;
     .ziti-title {
       display: flex;
+      flex-direction: row;
+      align-items: center;
       justify-content: space-between;
-      align-items: center;
-      &-left {
-        color: #222;
-        font-size: 34px;
-        font-weight: 500;
-      }
-      &-right {
-        display: flex;
-        align-self: center;
-        .icon-arrowRight {
-          font-size: 36px;
-          color: rgba(170, 170, 170, 0.8);
-        }
-      }
-    }
-    .address-connect {
-      margin-top: 18px;
-    }
-    .ziti-connect-container {
-      display: flex;
-      align-items: center;
-    }
-    .ziti-address {
-      display: flex;
-      align-items: center;
-      padding-bottom: 20px;
-      font-size: 26px;
-      color: #8d8d8d;
-      .iconfont {
-        margin-right: 10px;
-        font-size: 32px;
-      }
-    }
-    .ziti-connect {
-      padding-right: 20px;
-      border-right: 1px solid #eaeaea;
-      font-size: 26px;
-      line-height: 1;
-      color: #666;
-    }
-    .ziti-time {
-      padding-left: 20px;
-      font-size: 26px;
-      line-height: 1;
-      color: #666;
-    }
-    .address-title {
-      font-size: 32px;
-      font-weight: 600;
-      padding: 12px 0;
-    }
-    .address-detail {
-      display: flex;
-      font-size: 26px;
-      color: #666;
-      padding: 12px 0;
-      .address {
-        flex: 1;
-      }
-      .iconfont {
+      gap: 20px;
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: #0a0a0a;
+      margin: 0;
+      padding: 0;
+
+      .icon-arrowRight,
+      .iconfont.icon-arrowRight {
         flex-shrink: 0;
-        margin: 0 10px;
-        font-size: 42px;
-        color: #666;
+        font-size: 28px;
+        color: #999999;
+        margin: 0;
       }
     }
-    .other-info {
-      margin-top: 10px;
-      .text-muted {
-        font-size: 24px;
-        color: #999;
-        padding: 5px 0;
-        &.light {
-          color: #d92128;
-        }
-        .phone {
-          color: #444;
+
+    .address-connect {
+      margin-top: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .ziti-address {
+      font-size: 24px;
+      font-weight: 400;
+      line-height: 1.33;
+      color: #0a0a0a;
+    }
+
+    .ziti-connect {
+      font-size: 24px;
+      line-height: 1.33;
+      color: #0a0a0a;
+      font-weight: 600;
+    }
+
+    .ziti-info {
+      margin-top: 32px;
+
+      .picker-time {
+        min-height: 80px;
+        line-height: 1.4;
+        border-radius: 12px;
+        /* prettier-ignore */
+        border: 1PX solid #e5e7eb;
+        padding: 16px 24px;
+        box-sizing: border-box;
+
+        .sp-cell__bd {
+          justify-content: flex-start;
+          padding: 0;
         }
       }
-    }
-    .icon-edit {
-      color: #d0021b !important;
     }
   }
   .dada {

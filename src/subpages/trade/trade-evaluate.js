@@ -12,6 +12,8 @@ import { useImmer } from 'use-immer'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy, showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './trade-evaluate.scss'
 
 const initialState = {
@@ -19,9 +21,18 @@ const initialState = {
   formList: []
 }
 function TradeEvaluate(props) {
+  const { i18n } = useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const router = useRouter()
   const [state, setState] = useImmer(initialState)
   const { info, formList } = state
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('47f9ed7e.a073aa'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle, i18n])
 
   useEffect(() => {
     fetch()
@@ -60,12 +71,12 @@ function TradeEvaluate(props) {
   const onRateSubmit = async (anonymous) => {
     const { order_id } = router?.params
     if (formList.find((item) => item.star === 0)) {
-      showToast('请打分')
+      showToast($t('df47be63.d7b5b0'))
       return
     }
 
     if (formList.find((item) => item.content === '')) {
-      showToast('请填写评价')
+      showToast($t('df47be63.d16324'))
       return
     }
     const params = {
@@ -86,8 +97,8 @@ function TradeEvaluate(props) {
       renderFooter={
         <View className='btn-wraps'>
           <SpButton
-            resetText='匿名评价'
-            confirmText='发表评价'
+            resetText={$t('df47be63.b15e37')}
+            confirmText={$t('df47be63.da0f48')}
             onConfirm={() => onRateSubmit(false)}
             onReset={() => onRateSubmit(true)}
           />
@@ -102,7 +113,7 @@ function TradeEvaluate(props) {
               <View className='goods-name'>{goods.itemName}</View>
             </View>
             <View className='goods-rate'>
-              <View className='label'>商品评价</View>
+              <View className='label'>{$t('df47be63.d58254')}</View>
               <AtRate
                 size='18'
                 margin='20'
@@ -115,7 +126,7 @@ function TradeEvaluate(props) {
             <View className='goods-textarea'>
               <AtTextarea
                 type='textarea'
-                placeholder='快分享您的使用心得吧...'
+                placeholder={$t('df47be63.f481db')}
                 value={formList[index].content}
                 count={false}
                 onChange={(e) => {
@@ -127,7 +138,7 @@ function TradeEvaluate(props) {
               <SpUpload
                 value={formList[index].pics}
                 max={3}
-                placeholder='添加图片'
+                placeholder={$t('df47be63.b89fb3')}
                 onChange={(val) => {
                   setState((draft) => {
                     draft.formList[index].pics = val

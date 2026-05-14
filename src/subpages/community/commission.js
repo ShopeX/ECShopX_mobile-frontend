@@ -8,10 +8,10 @@ import { useImmer } from 'use-immer'
 import Taro, { useDidShow } from '@tarojs/taro'
 import api from '@/api'
 import * as communityApi from '@/api/community'
-import doc from '@/doc'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
 import { SpPage, SpPrice, SpImage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './commission.scss'
 
 const initialState = {
@@ -21,8 +21,13 @@ const initialState = {
   payed_rebate: 0
 }
 function CommunityCommission(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { total_fee, rebate_total, cash_withdrawal_rebate, payed_rebate } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('603b57d2.42f819') })
+  }, [i18n.language])
 
   useDidShow(() => {
     fetch()
@@ -44,16 +49,16 @@ function CommunityCommission(props) {
     <SpPage className='page-community-commission'>
       <View className='commission-hd'>
         <View className='total-amount'>
-          <Text className='label'>活动总额(元)</Text>
+          <Text className='label'>{$t('ac195c85.4b131f')}</Text>
           <SpPrice value={total_fee} size={40} />
         </View>
         <View className='comminssion-price'>
-          <Text className='label'>活动佣金(元)</Text>
+          <Text className='label'>{$t('ac195c85.944012')}</Text>
           <SpPrice value={rebate_total} size={40} />
         </View>
       </View>
       <View className='commission-bd'>
-        <View className='label'>可提现金额(元)</View>
+        <View className='label'>{$t('ac195c85.7e1a7b')}</View>
         <SpPrice value={cash_withdrawal_rebate} size={52} />
         <AtButton
           circle
@@ -65,12 +70,12 @@ function CommunityCommission(props) {
             })
           }}
         >
-          申请提现
+          {$t('ac195c85.37fec4')}
         </AtButton>
         <View className='withdraw-recode'>
           <SpImage src='withdraw.png' width={70} height={70} />
           <View className='recode-info'>
-            <View className='title'>累计提取金额(元)</View>
+            <View className='title'>{$t('ac195c85.a839df')}</View>
             <SpPrice className='recode-money' value={payed_rebate}></SpPrice>
           </View>
           <View
@@ -81,7 +86,8 @@ function CommunityCommission(props) {
               })
             }}
           >
-            提现记录<Text className='iconfont icon-qianwang-01'></Text>
+            {$t('ac195c85.103053')}
+            <Text className='iconfont icon-qianwang-01'></Text>
           </View>
         </View>
       </View>

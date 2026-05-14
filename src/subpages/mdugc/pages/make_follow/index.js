@@ -4,12 +4,13 @@
  */
 import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
-import { View, Text, Image, ScrollView } from '@tarojs/components'
+import { View, Image, ScrollView } from '@tarojs/components'
 import { SpNote, BackToTop, Loading } from '@/components'
 import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import { connect } from 'react-redux'
-import api from '@/api'
+import * as mdugcApi from '@/api/mdugc'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 @connect(({ member }) => ({
@@ -24,6 +25,21 @@ export default class make_follow extends Component {
       ...this.state,
       list: [],
       val: '' //搜索框
+    }
+  }
+
+  componentDidMount() {
+    Taro.setNavigationBarTitle({ title: $t('a21cae9c.ec1990') })
+    this._onFollowLang = () => {
+      Taro.setNavigationBarTitle({ title: $t('a21cae9c.ec1990') })
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onFollowLang)
+  }
+
+  componentWillUnmount() {
+    if (this._onFollowLang) {
+      i18n.off('languageChanged', this._onFollowLang)
     }
   }
 
@@ -46,7 +62,7 @@ export default class make_follow extends Component {
     )
   }
   config = {
-    navigationBarTitleText: '新增关注'
+    navigationBarTitleText: ''
   }
   // 列表
   async fetch(params) {
@@ -89,13 +105,13 @@ export default class make_follow extends Component {
       list[i].mutal_follow = 0
       Taro.showToast({
         icon: 'none',
-        title: '取消关注'
+        title: $t('a21cae9c.92bdc8')
       })
     } else if (res.action == 'follow') {
       list[i].mutal_follow = 1
       Taro.showToast({
         icon: 'none',
-        title: '关注成功'
+        title: $t('a21cae9c.60fa97')
       })
     }
     this.setState({
@@ -166,14 +182,14 @@ export default class make_follow extends Component {
                         className='follow_list__scroll_scrolls_item_r active'
                         onClick={this.followercreate.bind(this, i)}
                       >
-                        互相关注
+                        {$t('a21cae9c.4856be')}
                       </View>
                     ) : (
                       <View
                         className='follow_list__scroll_scrolls_item_r'
                         onClick={this.followercreate.bind(this, i)}
                       >
-                        回粉
+                        {$t('a21cae9c.e7a01b')}
                       </View>
                     )}
                                                  {' '}
@@ -181,9 +197,9 @@ export default class make_follow extends Component {
                 )
               })}
             </View>
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('a21cae9c.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+              <SpNote img='trades_empty.png'>{$t('a21cae9c.1feb58')}</SpNote>
             )}
           </ScrollView>
         </View>

@@ -6,6 +6,7 @@ import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { stringify } from 'qs'
 import configStore from '@/store'
 import { setShowGuideConsultModal } from '@/store/slices/shop'
+import { $t } from '@/i18n'
 import { getDistributorId } from '.'
 
 const { store } = configStore()
@@ -236,45 +237,45 @@ function clearPurchaseDtid() {
 
 const memberSetting = {
   vipgrades: {
-    title: '会员开通',
+    title: $t('ece5ca3e.f035ca'),
     path: '/subpage/pages/vip/vipgrades'
   },
   applyChief: {
-    title: '社区团长申请',
+    title: $t('ece5ca3e.38d966'),
     path: '/subpages/community/apply-chief'
   },
   recharge: {
-    title: '储值卡',
+    title: $t('ece5ca3e.1200d5'),
     path: '/others/pages/recharge/index'
   },
   purchase: {
-    title: '内购',
-    path: '/subpages/purchase/select-identity?is_redirt=1'
+    title: $t('d0465c10.36d204'),
+    path: '/subpages/purchase/select-identity'
   },
   pointShop: {
-    title: '积分商城',
+    title: $t('cc8689c4.a13364'),
     path: '/subpages/pointshop/list'
   },
   registActivity: {
-    title: '报名活动', // 我的活动
+    title: $t('ece5ca3e.7fb92b'), // 我的活动
     path: '/marketing/pages/member/activity-list'
   },
   group: {
-    title: '我的拼团',
+    title: $t('9503e8f0.75a1d2'),
     path: '/marketing/pages/member/group-list'
   },
   boost_activity: {
     // 平台版本隐藏助力活动和助力订单
-    title: '助力活动',
+    title: $t('ece5ca3e.5c34aa'),
     path: '/boost/pages/home/index'
   },
   boost_order: {
     // 平台版本隐藏助力活动和助力订单
-    title: '助力订单',
+    title: $t('ece5ca3e.94b1e6'),
     path: '/boost/pages/order/index'
   },
   coupon_list: {
-    title: '优惠券',
+    title: $t('250b375e.2f3635'),
     path: '/subpages/marketing/coupon-center'
   },
   my_coupon: {
@@ -282,53 +283,53 @@ const memberSetting = {
     path: '/subpages/marketing/coupon'
   },
   my_collect: {
-    title: '我的收藏',
+    title: $t('ece5ca3e.975ff6'),
     path: '/pages/member/item-fav'
   },
   tenants: {
     // 云店版本不显示
-    title: '商家入驻',
+    title: $t('ece5ca3e.1107a8'),
     path: '/subpages/merchant/login'
   },
   address: {
-    title: '地址管理',
+    title: $t('cb93ea29.bca1ea'),
     path: '/marketing/pages/member/address'
   },
   groups_list: {
-    title: '限时团购',
+    title: $t('ece5ca3e.f38e72'),
     path: '/marketing/pages/item/group-list'
   },
   hottopic: {
-    title: '种草列表',
+    title: $t('ece5ca3e.26b2d6'),
     path: '/pages/recommend/list'
   },
   zitiOrder: {
-    title: '自提订单',
+    title: $t('d5036137.9c9137'),
     path: '/subpages/trade/ziti-list'
   },
   community_group_enable: {
     // H5不支持
-    title: '社区团购',
+    title: $t('ece5ca3e.b7c829'),
     path: '/subpages/community/index'
   },
   storelist: {
-    title: '店铺列表',
+    title: $t('5cfe28e8.a4d703'),
     path: '/marketing/pages/service/store-list'
   },
   floorguide: {
-    title: '楼层引导',
+    title: $t('ece5ca3e.a5c567'),
     path: '/pages/floorguide/index'
   },
   grouppurchase: {
-    title: '团购',
+    title: $t('0b8348a9.f47464'),
     path: '/groupBy/pages/home/index'
   },
   levelMemberVip: {
-    title: '会员等级',
+    title: $t('ece5ca3e.6c1583'),
     path: '/subpage/pages/vip/vipgrades'
   },
   settings: {
-    title: '设置',
+    title: $t('162d72a5.e366cc'),
     path: '/subpages/member/settings'
   },
   itemList: {

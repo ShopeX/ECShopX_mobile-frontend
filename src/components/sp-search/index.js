@@ -2,16 +2,26 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useState } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
-import { View, Text, Icon } from '@tarojs/components'
+import React, { useMemo } from 'react'
+import Taro from '@tarojs/taro'
+import { View, Text } from '@tarojs/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 function SpSearch(props) {
+  const { i18n } = useTranslation()
   const { info, onClick } = props
   const { padded } = info?.base || {}
-  const { placeholder = '搜索', fixTop = false } = info.config
+  const fixTop = info?.config?.fixTop ?? false
+  const placeholderRaw = info?.config?.placeholder
+  const placeholder = useMemo(
+    () =>
+      placeholderRaw !== undefined && placeholderRaw !== null && placeholderRaw !== ''
+        ? placeholderRaw
+        : $t('78eb15d3.e5f71f'),
+    [placeholderRaw, i18n.language]
+  )
 
   const handleClick = () => {
     if (onClick) {

@@ -2,7 +2,6 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
@@ -12,9 +11,34 @@ import { addCart } from '@/store/slices/cart'
 import { ACTIVITY_LIST, BUY_TOOL_BTNS } from '@/consts'
 import { fetchUserFavs, addUserFav, deleteUserFav } from '@/store/slices/user'
 import api from '@/api'
+import { useTranslation, $t } from '@/i18n'
 import './comp-buytoolbar.scss'
 
+/** BUY_TOOL_BTNS 的 `key` → i18n 文案键（与 consts 中文一致） */
+const BUY_TOOLBAR_TITLE_I18N = {
+  notice: '91cdd6e0.46a6b2',
+  subscribe: '91cdd6e0.6a26cf',
+  addcart: '91cdd6e0.62d369',
+  fastbuy: '4d1e9bfe.5fd2f9',
+  gift: '91cdd6e0.235979',
+  activity_will_start: '91cdd6e0.689272',
+  activity_fast_buy: '4d1e9bfe.d8a40b',
+  activity_buy: '4d1e9bfe.5fd2f9',
+  activity_group_buy: '4d1e9bfe.ccb0dd',
+  exchange: '4d1e9bfe.525bb2',
+  exchange_point: '4d1e9bfe.525bb2',
+  only_show: '91cdd6e0.820df2',
+  nostore: '91cdd6e0.7cfe76',
+  share: '91cdd6e0.e2829e'
+}
+
+function buyToolbarBtnTitle(item) {
+  const k = BUY_TOOLBAR_TITLE_I18N[item.key]
+  return k ? $t(k) : item.title
+}
+
 function CompGoodsBuyToolbar(props) {
+  useTranslation()
   console.log('BUY_TOOL_BTNS', BUY_TOOL_BTNS)
   const {
     onAddCart = () => {},
@@ -98,7 +122,7 @@ function CompGoodsBuyToolbar(props) {
       if (subscribe) return false
 
       if (isWeb) {
-        showToast('请在小程序完成商品到货通知')
+        showToast($t('21544271.a793a0'))
         return
       }
 
@@ -111,7 +135,7 @@ function CompGoodsBuyToolbar(props) {
         tmplIds: template_id,
         success: () => {
           onSubscribe()
-          showToast('订阅成功')
+          showToast($t('21544271.9f91d7'))
         },
         fail: () => {
           onSubscribe()
@@ -145,7 +169,7 @@ function CompGoodsBuyToolbar(props) {
       await dispatch(deleteUserFav(itemId))
     }
     await dispatch(fetchUserFavs())
-    showToast(fav ? '已移出收藏' : '已加入收藏')
+    showToast(fav ? $t('4d1e9bfe.b46077') : $t('4d1e9bfe.151286'))
   }
 
   const isFaved = favs.findIndex((item) => item.item_id == info.itemId) > -1
@@ -159,7 +183,7 @@ function CompGoodsBuyToolbar(props) {
               isFaved ? 'icon-shoucanghover-01' : 'icon-shoucang-01'
             )}
           ></Text>
-          <Text className='toolbar-item-txt'>收藏</Text>
+          <Text className='toolbar-item-txt'>{$t('21544271.ae336c')}</Text>
         </View>
       </SpLogin>
       <View
@@ -167,7 +191,7 @@ function CompGoodsBuyToolbar(props) {
         onClick={navigateTo.bind(this, '/pages/cart/espier-index?showBack=1')}
       >
         <Text className='iconfont icon-gouwuche'></Text>
-        <Text className='toolbar-item-txt'>购物车</Text>
+        <Text className='toolbar-item-txt'>{$t('21544271.c017be')}</Text>
         {cartCount > 0 && <Text className='cart-count'>{cartCount}</Text>}
       </View>
       <View
@@ -182,7 +206,7 @@ function CompGoodsBuyToolbar(props) {
                 className={classNames('btn-item', `btn-${item.btnStatus}`)}
                 key={`btn-item__${index}`}
               >
-                {item.title}
+                {buyToolbarBtnTitle(item)}
               </View>
             )
           } else {
@@ -192,7 +216,7 @@ function CompGoodsBuyToolbar(props) {
                 onChange={onChangeLogin.bind(this, item)}
                 key={`btn-item__${index}`}
               >
-                <View className='btn-item-txt'>{item.title}</View>
+                <View className='btn-item-txt'>{buyToolbarBtnTitle(item)}</View>
               </SpLogin>
             )
           }

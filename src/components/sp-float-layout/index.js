@@ -17,6 +17,7 @@ function SpFloatLayout(props) {
     className,
     hideClose = false,
     renderFooter,
+    beforeScroll,
     open = false,
     onClose = () => {}
   } = props
@@ -36,10 +37,15 @@ function SpFloatLayout(props) {
             <Text className='layout-title'>{title}</Text>
           </View>
         )}
+        {beforeScroll}
         <ScrollView className='sp-float-layout-bd' scrollY>
           {children}
         </ScrollView>
-        {renderFooter && <View className='sp-float-layout-ft'>{renderFooter}</View>}
+        {renderFooter && (
+          <View className='sp-float-layout-ft'>
+            {typeof renderFooter === 'function' ? renderFooter() : renderFooter}
+          </View>
+        )}
       </View>
     </View>
   )

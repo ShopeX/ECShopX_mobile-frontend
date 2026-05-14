@@ -3,24 +3,16 @@
  * See LICENSE file for license details.
  */
 import Taro, { useDidShow } from '@tarojs/taro'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { classNames, pickBy } from '@/utils'
 import { SpPage, SpTabs, SpSearchInput, SpScrollView } from '@/components'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { $t, useTranslation } from '@/i18n'
 import CompCustomerList from './comps/comp-customer-list'
 import './selectCustomer.scss'
 
 const initialConfigState = {
-  tabList: [
-    { title: '已购买', num: 0, type: 'buy' },
-    { title: '未购买', num: 0, type: 'not_buy' }
-  ],
-  searchConditionList: [
-    { label: '会员名称', value: 'userName' },
-    { label: '店铺名称', value: 'shopName' },
-    { label: '手机号', value: 'mobile' }
-  ],
   curTabIdx: 0,
   keywords: '',
   lists: [],
@@ -28,9 +20,31 @@ const initialConfigState = {
 }
 
 const SelectCustomer = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
 
-  const { curTabIdx, tabList, keywords, lists, searchConditionList, parameter } = state
+  const tabList = useMemo(
+    () => [
+      { title: $t('43d09756.6ad54f'), num: 0, type: 'buy' },
+      { title: $t('43d09756.29a2da'), num: 0, type: 'not_buy' }
+    ],
+    [i18n.language]
+  )
+
+  const searchConditionList = useMemo(
+    () => [
+      { label: $t('90aaacd7.5b0f22'), value: 'userName' },
+      { label: $t('90aaacd7.0d4934'), value: 'shopName' },
+      { label: $t('90aaacd7.8098e2'), value: 'mobile' }
+    ],
+    [i18n.language]
+  )
+
+  const { curTabIdx, keywords, lists, parameter } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('eab159ba.d736b9') })
+  }, [i18n.language])
   const goodsRef = useRef()
 
   useEffect(() => {
@@ -96,7 +110,7 @@ const SelectCustomer = () => {
   return (
     <SpPage className={classNames('page-SelectCustomer')}>
       <SpSearchInput
-        placeholder='输入内容'
+        placeholder={$t('9696edd5.ec47d2')}
         // isShowArea
         isShowSearchCondition
         searchConditionList={searchConditionList}

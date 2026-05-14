@@ -2,10 +2,53 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+
+/* 企业购首页：页面壳层（与 Figma「企业购」稿对齐时，主要改此文件色值与间距） */
+
+$page-bg: #eef1f7;
+
 .page-purchase-index {
+  /* 与 SpPage 内容区衔接，避免默认白底断层 */
+  .sp-page__body-children {
+    background: $page-bg;
+  }
+
+  .purchase-page__scroll {
+    box-sizing: border-box;
+    height: 100%;
+    background: $page-bg;
+    /* 底部固定操作栏占位（高度与主包活动列表一致） */
+    padding-bottom: 220px;
+  }
+
   .home-body {
     height: 100%;
   }
+
+  .purchase-page {
+    box-sizing: border-box;
+    min-height: 100%;
+    padding-bottom: 24px;
+  }
+
+  /* 顶区留白：分割线与企业条样式在 SpPurchaseEnterpriseBar 内 */
+  .purchase-page__head {
+    margin-bottom: 16px;
+  }
+
+  /* 平台顶栏（地区 / 扫码）与下方企业抬头区分 */
+  .purchase-page__toolbar {
+    margin: 0 16px 12px;
+    padding: 0 4px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(21, 34, 56, 0.06);
+  }
+
+  .purchase-page__toolbar .home-header {
+    border-radius: 16px;
+  }
+
   .float-share {
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +63,7 @@
     box-shadow: 0px 8px 15px 0px #fac2d0;
     border-radius: 50%;
     margin-bottom: 12px;
-    // height: 112px;
+
     .share-btn {
       width: 112px;
       height: 112px;

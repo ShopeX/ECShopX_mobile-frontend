@@ -18,8 +18,8 @@
  **/
 import showdown from './showdown.js'
 import HtmlToJson from './html2json.js'
-import { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
+import { $t } from '@/i18n'
 /**
  * 配置及公有属性
  **/
@@ -34,13 +34,10 @@ Taro.getSystemInfo({
 /**
  * 主函数入口区
  **/
-function wxParse(
-  bindName = 'wxParseData',
-  type = 'html',
-  data = '<div class="color:red;">数据不能为空</div>',
-  target,
-  imagePadding
-) {
+function wxParse(bindName = 'wxParseData', type = 'html', data, target, imagePadding) {
+  if (data === undefined || data === null || data === '') {
+    data = `<div class="color:red;">${$t('d357a879.e80eba')}</div>`
+  }
   var that = target
   var transData = {} //存放转化后的数据
   if (type == 'html') {

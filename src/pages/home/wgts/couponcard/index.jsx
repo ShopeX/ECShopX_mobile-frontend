@@ -10,11 +10,13 @@ import { useImmer } from 'use-immer'
 import { SpLogin } from '@/components'
 import api from '@/api'
 import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import { getGlobalBaseStyle } from '../helper'
 import './index.scss'
 
 const $instance = getCurrentInstance() || {}
 function WgtCouponCard(props) {
+  useTranslation()
   const [state, setState] = useImmer({
     couponCardList: []
   })
@@ -114,11 +116,11 @@ function WgtCouponCard(props) {
         card_id: cardId
       })
       if (!status) return
-      showToast('优惠券领取成功')
+      showToast($t('412e74e0.ed4e1b'))
       getCouponCardList()
     } catch (error) {
       console.log('error', error)
-      showToast('优惠券领取失败')
+      showToast($t('412e74e0.643aa4'))
       getCouponCardList()
     }
   }
@@ -135,14 +137,14 @@ function WgtCouponCard(props) {
         return (
           <SpLogin onChange={() => handleReceiveCoupon(item, index)}>
             <View className='wgt-couponcard-item-btn' style={receiveBtnStyle}>
-              立即领取
+              {$t('412e74e0.d67527')}
             </View>
           </SpLogin>
         )
       } else {
         return (
           <View className='wgt-couponcard-item-btn-look' onClick={() => useCoupon(item, index)}>
-            查看优惠券
+            {$t('412e74e0.c43e87')}
           </View>
         )
       }
@@ -153,7 +155,7 @@ function WgtCouponCard(props) {
       } else {
         return (
           <View className='wgt-couponcard-item-btn-look wgt-couponcard-item-btn-disable'>
-            {item.stockNum <= 0 ? '已领完' : '今日已领完'}
+            {item.stockNum <= 0 ? $t('412e74e0.c6055e') : $t('412e74e0.6ed748')}
           </View>
         )
       }
@@ -163,7 +165,7 @@ function WgtCouponCard(props) {
       } else {
         return (
           <View className='wgt-couponcard-item-btn-look wgt-couponcard-item-btn-disable'>
-            已领完
+            {$t('412e74e0.c6055e')}
           </View>
         )
       }
@@ -203,7 +205,7 @@ function WgtCouponCard(props) {
                   </View>
                   {item.type == 'discount' && (
                     <View className='coupon-unit' style={{ color: amountColor }}>
-                      折
+                      {$t('412e74e0.96c015')}
                     </View>
                   )}
                 </View>

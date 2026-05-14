@@ -6,11 +6,13 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Text, Image, Button } from '@tarojs/components'
 // import { AtButton } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import { classNames } from '@/utils'
 // import api from '@/api'
 import './goods-item.scss'
 
-export default class DistributionGoodsItem extends Component {
+class DistributionGoodsItem extends Component {
   static defaultProps = {
     onClick: () => {},
     onShare: () => {}
@@ -50,18 +52,20 @@ export default class DistributionGoodsItem extends Component {
               </View>
               {integral ? (
                 <View className='goods-item__promoter-price'>
-                  预计收益：
+                  {$t('0af7b49a.c1c74e')}
                   <Text className='cur'>
                     ¥{info.commission_type === 'money' ? info.promoter_price : '0.00'}
                   </Text>
                 </View>
               ) : (
                 <View className='goods-item__promoter-price'>
-                  预计收益：
+                  {$t('0af7b49a.c1c74e')}
                   {info.commission_type === 'money' ? (
                     <Text className='cur'>¥{info.promoter_price}</Text>
                   ) : (
-                    <Text className='cur'>{info.promoter_point} 积分</Text>
+                    <Text className='cur'>
+                      {info.promoter_point} {$t('0af7b49a.9f68a8')}
+                    </Text>
                   )}
                 </View>
               )}
@@ -73,7 +77,11 @@ export default class DistributionGoodsItem extends Component {
                     className={classNames('goods-item__release-btn', isRelease ? 'released' : null)}
                     onClick={onClick}
                   >
-                    {isRelease ? <Text>从小店下架</Text> : <Text>上架到小店</Text>}
+                    {isRelease ? (
+                      <Text>{$t('0af7b49a.12910e')}</Text>
+                    ) : (
+                      <Text>{$t('0af7b49a.39177b')}</Text>
+                    )}
                   </View>
                 )}
               </View>
@@ -95,3 +103,5 @@ export default class DistributionGoodsItem extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionGoodsItem)

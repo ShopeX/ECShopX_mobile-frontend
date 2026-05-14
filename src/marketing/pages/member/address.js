@@ -8,11 +8,11 @@ import Taro, { getCurrentInstance, getCurrentPages, useDidShow } from '@tarojs/t
 import { View, Text, ScrollView } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import { useDispatch, useSelector } from 'react-redux'
-import { SpToast, SpCell, SpNavBar, SpPage } from '@/components'
+import { SpCell, SpPage } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import S from '@/spx'
 import api from '@/api'
 import { classNames, isWeixin } from '@/utils'
-import { useI18nNavigationTitle } from '@/hooks'
 import './address.scss'
 
 const ADDRESS_ID = 'address_id'
@@ -24,12 +24,16 @@ const initialState = {
 }
 
 function AddressIndex(props) {
-  useI18nNavigationTitle('dcnrsx4', '收货地址')
+  const { i18n } = useTranslation()
   const $instance = getCurrentInstance() || {}
   const [state, setState] = useImmer(initialState)
   const colors = useSelector((state) => state.sys)
   const { address } = useSelector((state) => state.user)
   const dispatch = useDispatch()
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('ec018d31.748ea9') })
+  }, [i18n.language])
 
   useEffect(() => {
     fetch()
@@ -92,7 +96,7 @@ function AddressIndex(props) {
     try {
       await api.member.addressCreateOrUpdate(nItem)
       if (item?.address_id) {
-        S?.toast('修改成功')
+        S?.toast($t('ec018d31.69be67'))
       }
 
       setTimeout(() => {
@@ -117,19 +121,19 @@ function AddressIndex(props) {
 
   const handleDelete = async (e, item) => {
     const res = await Taro.showModal({
-      title: '提示',
-      content: `确定要删除该地址吗?`,
+      title: $t('61e2d21a.02d981'),
+      content: $t('6836084a.ea471e'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确定',
+      cancel: $t('61e2d21a.625fb2'),
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('settings.confirm'),
       confirmColor: colors.colorPrimary
     })
     if (!res.confirm) return
 
     const { selectedId } = state
     await api.member.addressDelete(item.address_id)
-    S?.toast('删除成功')
+    S?.toast($t('72f0cb98.0007d1'))
 
     const deletedId = item[ADDRESS_ID]
     const reduxId = address?.[ADDRESS_ID] ?? address?.address_id
@@ -179,14 +183,19 @@ function AddressIndex(props) {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleClickToEdit}>
-            +新增地址
+            {$t('ec018d31.71bbae')}
           </AtButton>
         </View>
       }
     >
       <ScrollView className='scroll-view-container' scrollY>
         {isWeixin && (
-          <SpCell isLink className='address-harvest' title='获取微信收货地址' onClick={wxAddress} />
+          <SpCell
+            isLink
+            className='address-harvest'
+            title={$t('6836084a.c15248')}
+            onClick={wxAddress}
+          />
         )}
 
         <View className='member-address-list'>
@@ -237,25 +246,27 @@ function AddressIndex(props) {
                           })}
                         />
                         <Text className='default-text'>
-                          {item.is_def ? '已设为默认' : '设为默认'}
+                          {item.is_def ? $t('ec018d31.fc66a2') : $t('ec018d31.1af3ec')}
                         </Text>
                       </View>
                     )}
 
                     {isPicker && (
                       <View className='address-item__footer_default'>
-                        {item.is_def && <Text className='picker-default-text'>默认</Text>}
+                        {item.is_def && (
+                          <Text className='picker-default-text'>{$t('ec018d31.18c634')}</Text>
+                        )}
                       </View>
                     )}
 
                     <View className='address-item__footer_edit'>
                       <View className='footer-text' onClick={(e) => handleDelete(e, item)}>
                         <Text className='iconfont icon-trashCan footer-icon' />
-                        <Text>删除</Text>
+                        <Text>{$t('fb7ff6e1.2f4aad')}</Text>
                       </View>
                       <View className='footer-text' onClick={(e) => handleClickToEdit(e, item)}>
                         <Text className='iconfont icon-edit footer-icon' />
-                        <Text>编辑</Text>
+                        <Text>{$t('d9f41fea.95b351')}</Text>
                       </View>
                     </View>
                   </View>

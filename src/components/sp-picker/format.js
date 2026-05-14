@@ -2,6 +2,8 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import { $t, ti } from '@/i18n'
+
 // 输出的结果包含item为显示的可选项，value为默认显示值
 // res为返回的结果，time为返回的默认时间
 // 整个代码流程为：
@@ -93,7 +95,7 @@ const timeFormat = (time, dayjs) => {
     // 利用dayjs[convertDay(mode)]来动态实现dayjs.date()或dayjs.year()的方法，用computedTime来实现可选择项的生成
     const computedTime = dayjs.add(i, mode)
     if (humanity && mode === 'day') {
-      timeItem = `${computedTime.month() + 1}月${computedTime.date()}日`
+      timeItem = ti('db02f988.b5ed77', [computedTime.month() + 1, computedTime.date()])
       if (i < 3) {
         // 今天明天后天这三天明确显示出来
         timeItem = (i === 0 ? '' : timeItem + ' ') + convertDate(i)
@@ -109,13 +111,21 @@ const timeFormat = (time, dayjs) => {
   return res
 }
 
-const convertWeek = (item) => {
-  return { 0: '周日', 1: '周一', 2: '周二', 3: '周三', 4: '周四', 5: '周五', 6: '周六' }[item]
-}
+const WEEK_I18N_KEYS = [
+  'db02f988.562d74',
+  'db02f988.1603b0',
+  'db02f988.b5a6a0',
+  'db02f988.e60725',
+  'db02f988.170fc8',
+  'db02f988.eb79ce',
+  'db02f988.245751'
+]
 
-const convertDate = (item) => {
-  return { 0: '今天', 1: '明天', 2: '后天' }[item]
-}
+const convertWeek = (item) => $t(WEEK_I18N_KEYS[item])
+
+const DATE_I18N_KEYS = ['db02f988.800dfd', 'db02f988.8bcbd7', 'db02f988.1dead9']
+
+const convertDate = (item) => $t(DATE_I18N_KEYS[item])
 
 // dayjs的get分为day of week和date of month，故需要将day转换为date使用
 const convertDay = (item) => {

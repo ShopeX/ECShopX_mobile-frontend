@@ -17,7 +17,7 @@ import useSyncCallback from './useSyncCallback'
 import useLocation from './useLocation'
 import useThemsColor from './themeColor'
 import useEffectAsync from './useEffectAsync'
-import useI18nNavigationTitle from './useI18nNavigationTitle'
+import useFirstMount from './useFirstMount'
 
 export default {}
 
@@ -37,5 +37,5 @@ export {
   useLocation,
   useThemsColor,
   useEffectAsync,
-  useI18nNavigationTitle
+  useFirstMount
 }

@@ -9,11 +9,14 @@ import { SpImage } from '@/components'
 import { styleNames, classNames, VERSION_STANDARD, isWeb } from '@/utils'
 import { VERSION_IN_PURCHASE, isGoodsShelves, linkPage } from '@/utils'
 import { useSelector } from 'react-redux'
+import { $t, useTranslation } from '@/i18n'
 
 const CustomNavigationHeader = memo((props) => {
+  const { i18n } = useTranslation()
   const {
     pageConfig = {},
     title,
+    renderNavigation,
     appName,
     immersive,
     navigateMantle,
@@ -32,6 +35,7 @@ const CustomNavigationHeader = memo((props) => {
 
   const titleStyle = pageConfig?.titleStyle
   const resolvedTitleStyle = titleStyle || '1'
+  const showHeaderContent = resolvedTitleStyle !== '0'
   const { shopInfo } = useSelector((state) => state.shop)
 
   const headerStyle = useCallback(() => {
@@ -42,12 +46,9 @@ const CustomNavigationHeader = memo((props) => {
       'background-position': 'center',
       'padding-top': `${gStatusBarHeight}px`
     }
-    // 吸顶挂件 > 页面显式控制的导航背景 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
+    // 吸顶挂件 > 沉浸式滚动 50px 后显示的导航背景 > 默认导航背景
     const headerBg =
-      statusBarBgColor ??
-      (navigateMantle ? navigateBackgroundColor : null) ??
-      immersiveScrollRevealBgColor ??
-      pageConfig?.navigateBackgroundColor
+      statusBarBgColor ?? immersiveScrollRevealBgColor ?? pageConfig?.navigateBackgroundColor
     if (headerBg) {
       style['background-color'] = headerBg
     }
@@ -96,7 +97,7 @@ const CustomNavigationHeader = memo((props) => {
       url: isGoodsShelves()
         ? '/subpages/guide/index'
         : VERSION_IN_PURCHASE
-        ? '/pages/purchase/index'
+        ? '/subpages/purchase/activity-list'
         : '/pages/index'
     })
   }, [])
@@ -155,12 +156,12 @@ const CustomNavigationHeader = memo((props) => {
         style={{ color: pageConfig?.titleColor }}
       >
         <Text className='nearby-function-text'>
-          {VERSION_STANDARD ? shopInfo?.name || '总店' : nearbyText || '选择地区'}
+          {VERSION_STANDARD ? shopInfo?.name || $t('cb50ec48.0d7757') : nearbyText || $t('cb50ec48.e9a36d')}
         </Text>
         <Text className='nearby-function-icon iconfont icon-arrowDown' />
       </View>
     )
-  }, [handleNearbyClick, nearbyText, shopInfo?.name, pageConfig?.titleColor])
+  }, [handleNearbyClick, nearbyText, shopInfo?.name, pageConfig?.titleColor, i18n.language])
 
   const renderSearch = useCallback(() => {
     return (
@@ -172,20 +173,16 @@ const CustomNavigationHeader = memo((props) => {
           <Text className='iconfont icon-sousuo-01 search-icon' />
           {pageConfig?.showSearchButton && (
             <View className='search-button' style={styleNames(searchButtonStyle())}>
-              <Text>搜索</Text>
+              <Text>{$t('35994bc0.e5f71f')}</Text>
             </View>
           )}
         </View>
       </View>
     )
-  }, [pageConfig?.showSearchButton, searchButtonStyle])
+  }, [pageConfig?.showSearchButton, searchButtonStyle, i18n.language])
 
   const renderTitleText = useCallback(() => {
-    const navTitle =
-      title ||
-      pageConfig?.wgtName ||
-      getCurrentInstance()?.page?.config?.navigationBarTitleText ||
-      appName
+    const navTitle = title || appName
     return <Text className='title-text'>{navTitle}</Text>
   }, [title, pageConfig?.wgtName, appName])
 
@@ -203,61 +200,79 @@ const CustomNavigationHeader = memo((props) => {
 
   const hasNearby = showFunctionArea && functionAreaType === 'nearby'
 
+  const navTitle =
+    title ||
+    pageConfig?.wgtName ||
+    getCurrentInstance()?.page?.config?.navigationBarTitleText ||
+    appName
+
+  const customNav =
+    typeof renderNavigation === 'function'
+      ? renderNavigation({
+          title: navTitle,
+          btnReturn,
+          btnHome,
+          onBack: () => Taro.navigateBack(),
+          onHome: handleHomeClick,
+          navigationRSpace,
+          gNavbarH,
+          gStatusBarHeight,
+          pageConfig
+        })
+      : null
+
   return (
     <View className='wgt-page' style={styleNames(headerStyle())} onClick={props.onClickHeader}>
       <View className='wgt-page-content'>
-        <View
-          className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
-          style={styleNames({
-            width: `calc(100% - ${navigationRSpace}px)`,
-            ...(containerStyle())
-          })}
-        >
-          {showNavitionLeft && (
-            <View
-              className={classNames('header-container-left', { 'is-web': isWeb&&showFunctionArea })}
-              style={styleNames({
-                width:
-                  resolvedTitleStyle === '0'
-                    ? `100%`
-                    : `${navigationRSpace}px`
-              })}
-            >
-              {/* 左侧：返回、首页、功能区三者只显示一个 */}
-              {showFunctionArea ? (
-                <>
-                  {/* 有功能区时只显示功能区（热区图或附近门店） */}
-                  {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
-                  {functionAreaType === 'nearby' && renderNearby()}
-                </>
-              ) : (
-                <>
-                  {btnReturn && (
-                    <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
-                      <SpImage src='fv_back.png' width={36} height={36} />
-                    </View>
-                  )}
-                  {btnHome && !btnReturn && (
-                    <View className='nav-left-capsule' onClick={handleHomeClick}>
-                      <SpImage src='fv_home.png' width={36} height={36} />
-                    </View>
-                  )}
-                </>
-              )}
-            </View>
-          )}
+        {customNav || (
           <View
-            className='title-container'
-            style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}
+            className={classNames('header-container', { 'has-nearby': hasNearby, 'is-web': isWeb })}
+            style={styleNames({
+              width: `calc(100% - ${navigationRSpace}px)`,
+              ...(showHeaderContent ? containerStyle() : {})
+            })}
           >
+            {showNavitionLeft && (
+              <View
+                className={classNames('header-container-left', { 'is-web': isWeb })}
+                style={styleNames({ width: `${navigationRSpace}px` })}
+              >
+                {/* 左侧：返回、首页、功能区三者只显示一个 */}
+                {showHeaderContent && showFunctionArea ? (
+                  <>
+                    {/* 有功能区时只显示功能区（热区图或附近门店） */}
+                    {functionAreaType === 'hotzone' && hotzoneImgUrl && renderHotZone()}
+                    {functionAreaType === 'nearby' && renderNearby()}
+                  </>
+                ) : (
+                  <>
+                    {btnReturn && (
+                      <View className='nav-left-capsule' onClick={() => Taro.navigateBack()}>
+                        <SpImage src='fv_back.png' width={36} height={36} />
+                      </View>
+                    )}
+                    {btnHome && !btnReturn && (
+                      <View className='nav-left-capsule' onClick={handleHomeClick}>
+                        <SpImage src='fv_home.png' width={36} height={36} />
+                      </View>
+                    )}
+                  </>
+                )}
+              </View>
+            )}
+            <View
+              className='title-container'
+              style={styleNames({ paddingLeft: !showNavitionLeft ? `20rpx` : `0` })}
+            >
             {/* 标题区：搜索 */}
-            {resolvedTitleStyle === '3' && renderSearch()}
+            {showHeaderContent && resolvedTitleStyle === '3' && renderSearch()}
             {/* 标题区：页面名称 */}
-            {resolvedTitleStyle === '1' && renderTitleText()}
+            {showHeaderContent && resolvedTitleStyle === '1' && renderTitleText()}
             {/* 标题区：图片 */}
-            {resolvedTitleStyle === '2' && renderTitleImage()}
+            {showHeaderContent && resolvedTitleStyle === '2' && renderTitleImage()}
+            </View>
           </View>
-        </View>
+        )}
       </View>
     </View>
   )

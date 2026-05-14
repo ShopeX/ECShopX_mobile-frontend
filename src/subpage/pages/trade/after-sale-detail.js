@@ -19,6 +19,7 @@ import {
 } from '@/utils'
 // import { Tracker } from '@/service'
 import api from '@/api'
+import { $t, ti } from '@/i18n'
 import S from '@/spx'
 import AfterDetailItem from './comps/after-detail-item'
 import './after-sale-detail.scss'
@@ -318,17 +319,18 @@ export default class TradeDetail extends Component {
     const infoStatus = (info.status || '').toLowerCase()
     if (info.auto_cancel_seconds <= 0 && info.order_status_des === 'NOTPAY') {
       info.status = 'TRADE_CLOSED'
-      info.order_status_msg = '已取消'
+      info.order_status_msg = $t('1d9cdff5.2111cc')
     }
     info.status_img = `ico_${infoStatus === 'trade_success' ? 'wait_rate' : infoStatus}.png`
 
-    sessionFrom += '{'
-    if (Taro.getStorageSync('userinfo')) {
-      sessionFrom += `"nickName": "${Taro.getStorageSync('userinfo').username}", `
+    const sessionFromObj = {}
+    const userinfo = Taro.getStorageSync('userinfo')
+    if (userinfo) {
+      sessionFromObj.nickName = userinfo.username
     }
-    sessionFrom += `"商品": "${info.orders[0].title}"`
-    sessionFrom += `"订单号": "${info.orders[0].order_id}"`
-    sessionFrom += '}'
+    sessionFromObj[$t('934ffec2.9897d8')] = info.orders[0].title
+    sessionFromObj[$t('ba44cd64.1e8dc2')] = String(info.orders[0].order_id)
+    sessionFrom = JSON.stringify(sessionFromObj)
     const _this = this
     this.setState({
       info: _this.getParamsAboutItem(info, true),
@@ -339,10 +341,11 @@ export default class TradeDetail extends Component {
 
   handleCopy = async () => {
     const { info } = this.state
-    const msg = `收货人：${info.receiver_name} ${info.receiver_mobile}
-收货地址：${info.receiver_state}${info.receiver_city}${info.receiver_district}${info.receiver_address}
-订单编号：${info.tid}
-创建时间：${info.created_time_str}
+    const addr = `${info.receiver_state}${info.receiver_city}${info.receiver_district}${info.receiver_address}`
+    const msg = `${ti('1d9cdff5.5b020e', [info.receiver_name, info.receiver_mobile])}
+${ti('1d9cdff5.a94325', [addr])}
+${ti('1d9cdff5.4eb0df', [info.tid])}
+${ti('1d9cdff5.968975', [info.created_time_str])}
 `
     await copyText(msg)
   }
@@ -380,7 +383,7 @@ export default class TradeDetail extends Component {
       payErr = e
       if (e.errMsg.indexOf('cancel') < 0) {
         Taro.showToast({
-          title: e.err_desc || e.errMsg || '支付失败',
+          title: e.err_desc || e.errMsg || $t('1d9cdff5.4548cc'),
           icon: 'none'
         })
       } else {
@@ -394,7 +397,7 @@ export default class TradeDetail extends Component {
 
     if (!payErr) {
       await Taro.showToast({
-        title: '支付成功',
+        title: $t('1d9cdff5.eb5dc9'),
         icon: 'success'
       })
 
@@ -416,7 +419,7 @@ export default class TradeDetail extends Component {
         const log_selected = this.selectionGoods(info.log_orders)
         if (log_selected.length && selected.length) {
           Taro.showToast({
-            title: '线上、线下订单商品只能选择一种进行售后',
+            title: $t('1d9cdff5.8ede8c'),
             icon: 'none'
           })
           return
@@ -427,7 +430,7 @@ export default class TradeDetail extends Component {
       }
       if (!selected.length) {
         Taro.showToast({
-          title: '请选择商品～',
+          title: $t('1d9cdff5.f52bf3'),
           icon: 'none'
         })
         return
@@ -471,7 +474,7 @@ export default class TradeDetail extends Component {
         })
         task.onMessage((res) => {
           if (res.data === '401001') {
-            S?.toast('未登录，请登录后再试')
+            S?.toast($t('1d9cdff5.92ca0a'))
             this.setState(
               {
                 webSocketIsOpen: false
@@ -487,7 +490,7 @@ export default class TradeDetail extends Component {
           } else {
             const result = JSON.parse(res.data)
             if (result.status === 'success') {
-              S?.toast('核销成功')
+              S?.toast($t('1d9cdff5.065407'))
               setTimeout(() => {
                 this.fetch()
               }, 700)
@@ -540,11 +543,11 @@ export default class TradeDetail extends Component {
 
   // 发送验证码
   sendCode = async () => {
-    Taro.showLoading('发送中')
+    Taro.showLoading({ title: $t('1d9cdff5.702513') })
     const { info } = this.state
     const res = await api.trade.sendCode(info.tid)
     Taro.showToast({
-      title: `${res.status ? '发送成功' : '发送失败'}`,
+      title: res.status ? $t('1d9cdff5.9db9a7') : $t('1d9cdff5.9ca6a3'),
       icon: 'none'
     })
   }
@@ -565,7 +568,7 @@ export default class TradeDetail extends Component {
 
     return (
       <View className={classNames(`trade-detail ${info.is_logistics && 'islog'}`)}>
-        <SpNavBar title='售后详情' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('1d9cdff5.70536c')} leftIconType='chevron-left' fixed='true' />
         {info.is_logistics && (
           <View className='custabs'>
             <View
@@ -573,14 +576,14 @@ export default class TradeDetail extends Component {
               style={`color: ${scrollIntoView === 'order-0' ? colors.data[0].primary : '#000'}`}
               onClick={this.scrollInto.bind(this, 'order-0')}
             >
-              线上订单
+              {$t('1d9cdff5.93befa')}
             </View>
             <View
               className='offline'
               style={`color: ${scrollIntoView === 'order-1' ? colors.data[0].primary : '#000'}`}
               onClick={this.scrollInto.bind(this, 'order-1')}
             >
-              线下订单
+              {$t('1d9cdff5.2e70e9')}
             </View>
           </View>
         )}
@@ -592,27 +595,36 @@ export default class TradeDetail extends Component {
           >
             {info.order_class === 'drug' ? (
               <View className='trade-detail-waitdeliver'>
-                {info.is_logistics && <View className='oneline'>线上订单</View>}
+                {info.is_logistics && <View className='oneline'>{$t('1d9cdff5.93befa')}</View>}
                 {info.order_status_des === 'CANCEL' ? (
                   <View>
-                    <View>订单状态：</View>
-                    <View>已拒绝</View>
+                    <View>{$t('1d9cdff5.5287da')}</View>
+                    <View>{$t('1d9cdff5.81233d')}</View>
                   </View>
                 ) : (
                   <View>
-                    <View>订单状态：</View>
-                    <View>{info.ziti_status === 'APPROVE' ? '审核通过' : '待审核'}</View>
+                    <View>{$t('1d9cdff5.5287da')}</View>
+                    <View>
+                      {info.ziti_status === 'APPROVE'
+                        ? $t('1d9cdff5.871a30')
+                        : $t('1d9cdff5.5cb424')}
+                    </View>
                   </View>
                 )}
               </View>
             ) : (
               <View className='trade-detail-waitdeliver'>
-                {info.is_logistics && <View className='oneline'>线上订单</View>}
+                {info.is_logistics && <View className='oneline'>{$t('1d9cdff5.93befa')}</View>}
                 {info.status === 'WAIT_BUYER_PAY' && (
                   <View>
-                    该订单将为您保留
+                    {$t('1d9cdff5.1a9a7f')}
                     <AtCountdown
-                      format={{ day: '天', hours: ':', minutes: ':', seconds: '' }}
+                      format={{
+                        day: $t('934ffec2.249aba'),
+                        hours: ':',
+                        minutes: ':',
+                        seconds: ''
+                      }}
                       day={timer.dd}
                       hours={timer.hh}
                       minutes={timer.mm}
@@ -620,7 +632,7 @@ export default class TradeDetail extends Component {
                       isShowDay={timer.dd > 0}
                       onTimeUp={this.countDownEnd.bind(this)}
                     />
-                    分钟
+                    {$t('1d9cdff5.3a17b7')}
                   </View>
                 )}
                 {info.status !== 'WAIT_BUYER_PAY' && (
@@ -632,9 +644,11 @@ export default class TradeDetail extends Component {
                           {info.order_status_msg}
                         </Text>
                         <Text className='delivery-infos__text'>
-                          {info.status === 'WAIT_SELLER_SEND_GOODS' ? '正在审核订单' : null}
-                          {info.status === 'WAIT_BUYER_CONFIRM_GOODS' ? '正在派送中' : null}
-                          {info.status === 'TRADE_CLOSED' ? '订单已取消' : null}
+                          {info.status === 'WAIT_SELLER_SEND_GOODS' ? $t('1d9cdff5.e4258c') : null}
+                          {info.status === 'WAIT_BUYER_CONFIRM_GOODS'
+                            ? $t('1d9cdff5.823574')
+                            : null}
+                          {info.status === 'TRADE_CLOSED' ? $t('1d9cdff5.5af500') : null}
                           {/* {info.status === "TRADE_SUCCESS" && info.receipt_type !== 'ziti'
                               ? `物流单号：${info.delivery_code}`
                               : null} */}
@@ -657,23 +671,23 @@ export default class TradeDetail extends Component {
                   {info.pickupcode_status && (
                     <View>
                       <View className='sendCode' onClick={this.sendCode.bind(this)}>
-                        发送提货码
+                        {$t('1d9cdff5.1de70e')}
                       </View>
-                      <View className='sendCodeTips'>提货时请出告知店员提货验证码</View>
+                      <View className='sendCodeTips'>{$t('1d9cdff5.af2026')}</View>
                     </View>
                   )}
                 </View>
               )}
               <View className='ziti-text'>
                 <View className='ziti-text-name'>{ziti.store_name}</View>
-                <View>营业时间：{ziti.hour}</View>
+                <View>{ti('1d9cdff5.94aee2', [ziti.hour])}</View>
                 <View>{ziti.store_address}</View>
               </View>
             </View>
           ) : (
             <View className='trade-detail-address'>
               <View className='address-receive'>
-                <Text>收货地址：</Text>
+                <Text>{$t('1d9cdff5.e512d6')}</Text>
                 <View className='info-trade'>
                   <View className='user-info-trade'>
                     <Text>{info.receiver_name}</Text>
@@ -700,9 +714,9 @@ export default class TradeDetail extends Component {
             <View className='screenZiti' id='order-1'>
               <View className='trade-detail-header' style={`background: ${colors.data[0].primary}`}>
                 <View className='trade-detail-waitdeliver column'>
-                  <View className='line'>线下订单</View>
-                  <View className='line'>销售门店：{ziti.store_name}</View>
-                  <View className='line'>购买者：{info.mobile}</View>
+                  <View className='line'>{$t('1d9cdff5.2e70e9')}</View>
+                  <View className='line'>{ti('1d9cdff5.fbade9', [ziti.store_name])}</View>
+                  <View className='line'>{ti('1d9cdff5.d2f9d1', [info.mobile])}</View>
                 </View>
               </View>
               <View className='trade-detail-goods'>
@@ -735,7 +749,7 @@ export default class TradeDetail extends Component {
               style={`background: ${colors.data[0].primary}; border-color: ${colors.data[0].primary}`}
               onClick={this.handleClickBtn.bind(this, 'REFUND')}
             >
-              申请售后
+              {$t('1d9cdff5.45eb0c')}
             </Button>
           </View>
         )}

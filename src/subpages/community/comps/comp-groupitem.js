@@ -2,13 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { ScrollView, View, Text, Button } from '@tarojs/components'
 import { SpImage, SpPrice } from '@/components'
 import { classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-groupitem.scss'
 
 function CompGroupItem(props) {
+  useTranslation()
   const { info = {}, onClick = () => {} } = props
 
   return (
@@ -38,18 +40,18 @@ function CompGroupItem(props) {
           </Text>
           <Button className='right-item' openType='share'>
             <Text className='iconfont icon-fenxiang-01' />
-            <Text className='right-item-txt'>分享</Text>
+            <Text className='right-item-txt'>{$t('934ffec2.c31f48')}</Text>
           </Button>
         </View>
       </View>
       <View className='group-item-ft'>
         <View style={{ marginBottom: 5 }} className='cus-font'>
-          <Text style={{ marginRight: 10 }}>实际收入</Text>
+          <Text style={{ marginRight: 10 }}>{$t('2a15be9d.5b39df')}</Text>
           <SpPrice value={info.totalFee} size={26} unit='cent' primary />
         </View>
         <View className='cus-font'>
-          <Text style={{ marginRight: 15 }}>已跟团 {info.userNum || 0}人次</Text>
-          <Text>已跟团数量 {info.orderNum || 0}</Text>
+          <Text style={{ marginRight: 15 }}>{ti('2a15be9d.dd7354', [info.userNum || 0])}</Text>
+          <Text>{ti('2a15be9d.ccff04', [info.orderNum || 0])}</Text>
           {/* <Text>查看 5人</Text> */}
         </View>
       </View>

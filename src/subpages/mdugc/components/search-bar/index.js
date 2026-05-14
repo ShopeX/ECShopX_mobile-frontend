@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Form, Text, Image } from '@tarojs/components'
 import { AtSearchBar } from 'taro-ui'
+import { $t, i18n } from '@/i18n'
 import './index.scss'
 
 export default class SearchBar extends Component {
@@ -13,6 +14,17 @@ export default class SearchBar extends Component {
     super(props)
 
     this.state = {}
+  }
+
+  componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   handleChangeSearch = (value) => {
@@ -36,7 +48,7 @@ export default class SearchBar extends Component {
           <AtSearchBar
             className={bgc ? 'search-inputugc__bar' : 'search-inputugc__bar search-inputugc__bgc'}
             value={keyword}
-            placeholder={!_placeholder ? '请输入关键词' : _placeholder}
+            placeholder={_placeholder || $t('377a1681.cd11be')}
             onClear={this.handleClear.bind(this)}
             maxLength={maxLength ? maxLength : 140}
             onChange={this.handleChangeSearch.bind(this)}

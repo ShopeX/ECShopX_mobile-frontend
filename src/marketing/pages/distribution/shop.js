@@ -6,16 +6,15 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, Navigator, Button } from '@tarojs/components'
 import { connect } from 'react-redux'
+import { withTranslation } from 'react-i18next'
 import api from '@/api'
 import { SpPage } from '@/components'
+import { $t, ti } from '@/i18n'
 import { log } from '@/utils'
 // import { Tracker } from '@/service'
 import './shop.scss'
 
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class DistributionShop extends Component {
+class DistributionShop extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -26,7 +25,18 @@ export default class DistributionShop extends Component {
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.fetch()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('d13c0ad1.c41892') })
   }
 
   async fetch() {
@@ -94,7 +104,7 @@ export default class DistributionShop extends Component {
     const { info } = this.state
     log.debug(`/marketing/pages/distribution/shop-home?uid=${userId}`)
     return {
-      title: info.share_title || info.shop_name || `${username}的小店`,
+      title: info.share_title || info.shop_name || ti('882f13f0.2b0a44', [username]),
       imageUrl: info.applets_share_img || info.shop_pic,
       path: `/marketing/pages/distribution/shop-home?uid=${userId}`
     }
@@ -106,75 +116,77 @@ export default class DistributionShop extends Component {
 
     return (
       <SpPage className='page-distribution-shop'>
-        <View className='min-h-full'>
-          <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
-            <View className='shop-info'>
-              <View className='img-content'>
-                <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
-              </View>
-              <View>
-                <View className='shop-name'>
-                  {info.shop_name || `${info.username}的小店(未设置名称)`}
-                </View>
-                <View className='shop-desc'>{info.brief || '店主很懒什么都没留下'}</View>
-              </View>
+        <View className='shop-banner' style={'background: ' + colors.data[0].marketing}>
+          <View className='shop-info'>
+            <View className='img-content'>
+              <Image className='shopkeeper-avatar' src={info.headimgurl} mode='aspectFill' />
             </View>
-            <Navigator className='shop-setting' url='/marketing/pages/distribution/shop-setting'>
-              <Text class='iconfont icon-settings'></Text>
-            </Navigator>
-          </View>
-          {info.shop_pic && (
             <View>
-              <Image className='banner-img' src={info.shop_pic} mode='widthFix' />
-            </View>
-          )}
-          <View className='section content-center'>
-            <View className='content-padded-b shop-achievement'>
-              <View className='achievement-label'>小店任务返佣额 </View>
-              <View className='achievement-amount'>
-                <Text className='amount-cur'>¥</Text> {info.turnover / 100}
+              <View className='shop-name'>
+                {info.shop_name || ti('882f13f0.d5323b', [info.username])}
               </View>
+              <View className='shop-desc'>{info.brief || $t('882f13f0.ea2cd0')}</View>
             </View>
-            {/* <View className='content-padded-b shop-achievement'>
+          </View>
+          <Navigator className='shop-setting' url='/marketing/pages/distribution/shop-setting'>
+            <Text className='iconfont icon-settings'></Text>
+          </Navigator>
+        </View>
+        {info.shop_pic && (
+          <View>
+            <Image className='banner-img' src={info.shop_pic} mode='widthFix' />
+          </View>
+        )}
+        <View className='section content-center'>
+          <View className='content-padded-b shop-achievement'>
+            <View className='achievement-label'>{$t('882f13f0.69f826')} </View>
+            <View className='achievement-amount'>
+              <Text className='amount-cur'>¥</Text> {info.turnover ? info.turnover / 100 : 0}
+            </View>
+          </View>
+          {/* <View className='content-padded-b shop-achievement'>
             <View className='achievement-label'>小店返佣积分</View>
             <View className='achievement-amount'>{info.point || 0} <Text className='amount-cur'>分</Text> </View>
           </View> */}
+        </View>
+        <View className='shop-block'>
+          <View
+            className=' shop-nav-item width'
+            onClick={this.handleClick.bind(this, 'achievement')}
+          >
+            <View className='iconfont icon-chart iconsize'></View>
+            <View>{$t('882f13f0.074734')}</View>
           </View>
-          <View className='shop-block'>
-            <View
-              className=' shop-nav-item width'
-              onClick={this.handleClick.bind(this, 'achievement')}
-            >
-              <View className='iconfont icon-chart iconsize'></View>
-              <View>我的业绩</View>
-            </View>
-            <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'goods')}>
-              <View className='iconfont icon-errorList iconsize'></View>
-              <View>任务商品</View>
-            </View>
-            <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'trade')}>
-              <View className='iconfont icon-list1 iconsize'></View>
-              <View>小店订单</View>
-            </View>
-            {info.disabled == 0 && (
-              <View className='shop-nav-item width'>
-                <Button openType='share' className='share-btn'>
-                  <View className='iconfont icon-share2 iconsize'></View>
-                  <View>分享小店</View>
-                </Button>
-              </View>
-            )}
+          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'goods')}>
+            <View className='iconfont icon-errorList iconsize'></View>
+            <View>{$t('882f13f0.60d5e6')}</View>
+          </View>
+          <View className=' shop-nav-item width' onClick={this.handleClick.bind(this, 'trade')}>
+            <View className='iconfont icon-list1 iconsize'></View>
+            <View>{$t('882f13f0.ef5b0e')}</View>
           </View>
           {info.disabled == 0 && (
-            <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
-              <View className='main'>
-                <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
-                <View className='title'>预览小店</View>
-              </View>
+            <View className='shop-nav-item width'>
+              <Button openType='share' className='share-btn'>
+                <View className='iconfont icon-share2 iconsize'></View>
+                <View>{$t('882f13f0.386dcc')}</View>
+              </Button>
             </View>
           )}
         </View>
+        {info.disabled == 0 && (
+          <View className='preview' onClick={this.handleClick.bind(this, 'miniShop')}>
+            <View className='main'>
+              <Image className='img' mode='aspectFill' src={require('../../assets/shop.png')} />
+              <View className='title'>{$t('882f13f0.a6b082')}</View>
+            </View>
+          </View>
+        )}
       </SpPage>
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(DistributionShop))

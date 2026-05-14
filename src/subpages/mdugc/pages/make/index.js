@@ -22,8 +22,18 @@ import { pickBy } from '@/utils'
 import { AtTextarea, AtImagePicker, AtActionSheet, AtActionSheetItem } from 'taro-ui'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, i18n } from '@/i18n'
 import { TagsBar, NavBar, Popups } from '../../components'
 import './index.scss'
+
+const UPLOAD_TYPE_KEYS = {
+  video: '7c40f12d.57e40c',
+  img: '7c40f12d.b89fb3',
+  camera_i: '7c40f12d.bed9ec',
+  album_i: '7c40f12d.83c39a',
+  camera_v: '7c40f12d.998b46',
+  album_v: '7c40f12d.83c39a'
+}
 
 @connect(({ member }) => ({
   memberData: member.member
@@ -66,49 +76,42 @@ export default class Make extends Component {
       isPopups: false,
       videoenable: 0,
       elastic: {
-        title: '使用您的摄像头，将会上传你摄录的照片及视频',
-        closetext: '拒绝',
-        showtext: '允许',
+        title: '',
+        closetext: '',
+        showtext: '',
         type: 0
       },
       isGrant: false, //是否授权
       isOpened: false, //是否显示上传按钮
       uploadtype: [],
-      upload_choice: [
-        {
-          text: '添加视频',
-          type: 'video'
-        },
-        {
-          text: '添加图片',
-          type: 'img'
-        }
-      ],
-      upload_img: [
-        {
-          text: '拍照',
-          type: 'camera_i'
-        },
-        {
-          text: '从相册选择',
-          type: 'album_i'
-        }
-      ],
-      upload_video: [
-        {
-          text: '拍摄',
-          type: 'camera_v'
-        },
-        {
-          text: '从相册选择',
-          type: 'album_v'
-        }
-      ]
+      upload_choice: [{ type: 'video' }, { type: 'img' }],
+      upload_img: [{ type: 'camera_i' }, { type: 'album_i' }],
+      upload_video: [{ type: 'camera_v' }, { type: 'album_v' }]
     }
   }
 
   config = {
     navigationStyle: 'custom'
+  }
+
+  uploadTypeLabel = (type) => $t(UPLOAD_TYPE_KEYS[type] || type)
+
+  componentWillUnmount() {
+    if (this._onMakeIndexLang) {
+      i18n.off('languageChanged', this._onMakeIndexLang)
+    }
+  }
+
+  syncAlertBeforeUnload = () => {
+    wx.enableAlertBeforeUnload({
+      message: $t('7c40f12d.47df9d'),
+      success: function (res) {
+        console.log('成功：', res)
+      },
+      fail: function (err) {
+        console.log('失败：', err)
+      }
+    })
   }
 
   async componentDidMount() {
@@ -128,9 +131,16 @@ export default class Make extends Component {
       videoenable: res['video.enable']
     })
 
+    this.syncAlertBeforeUnload()
+    this._onMakeIndexLang = () => {
+      this.syncAlertBeforeUnload()
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onMakeIndexLang)
+
     if (post_id) {
       Taro.showLoading({
-        title: '加载中',
+        title: $t('7c40f12d.f013ea'),
         mask: true
       })
       let { file_video, file_img, file_text, file_commodity, file_word } = this.state
@@ -221,15 +231,7 @@ export default class Make extends Component {
   componentDidShow() {
     let { file_word, file_commodity } = this.state
     console.log('触发')
-    wx.enableAlertBeforeUnload({
-      message: '返回上一页将不会保存该编辑页内容',
-      success: function (res) {
-        console.log('成功：', res)
-      },
-      fail: function (err) {
-        console.log('失败：', err)
-      }
-    })
+    this.syncAlertBeforeUnload()
     // Taro.setNavigationBarColor({
     //   frontColor: '#000000',
     //   backgroundColor: '#ffffff',
@@ -257,7 +259,7 @@ export default class Make extends Component {
       } else {
         Taro.showToast({
           icon: 'none',
-          title: '该话题已选择！'
+          title: $t('7c40f12d.ef1a80')
         })
       }
 
@@ -281,7 +283,7 @@ export default class Make extends Component {
       } else {
         Taro.showToast({
           icon: 'none',
-          title: '该商品已选择！'
+          title: $t('7c40f12d.f9b3b6')
         })
       }
       this.setState({
@@ -311,13 +313,13 @@ export default class Make extends Component {
           } else {
             Taro.showToast({
               icon: 'none',
-              title: '视频格式应为mp4！'
+              title: $t('7c40f12d.95b1a6')
             })
           }
         } else {
           Taro.showToast({
             icon: 'none',
-            title: '视频不能大于50mb，请压缩后重试！'
+            title: $t('7c40f12d.4346e4')
           })
         }
       }
@@ -325,7 +327,7 @@ export default class Make extends Component {
   }
   addvideos = async (item) => {
     Taro.showLoading({
-      title: '加载中',
+      title: $t('7c40f12d.f013ea'),
       mask: true
     })
     let { file_video } = this.state
@@ -388,7 +390,7 @@ export default class Make extends Component {
             tempFilePaths.slice(-4) == '.gif'
           ) {
             Taro.showLoading({
-              title: '加载中',
+              title: $t('7c40f12d.f013ea'),
               mask: true
             })
 
@@ -428,13 +430,13 @@ export default class Make extends Component {
           } else {
             Taro.showToast({
               icon: 'none',
-              title: '图片格式仅支持jpgpnggif'
+              title: $t('7c40f12d.a59af5')
             })
           }
         } else {
           Taro.showToast({
             icon: 'none',
-            title: '图片不能大于5mb，请压缩后重试!'
+            title: $t('7c40f12d.d5cb51')
           })
         }
       }
@@ -579,7 +581,7 @@ export default class Make extends Component {
       } else {
         Taro.showToast({
           icon: 'none',
-          title: '笔记不能为空!'
+          title: $t('7c40f12d.5936db')
         })
       }
     } else {
@@ -587,31 +589,31 @@ export default class Make extends Component {
       if (videoenable != 1 && file_img.length == 0) {
         Taro.showToast({
           icon: 'none',
-          title: '请上传图片!'
+          title: $t('7c40f12d.8f2b3e')
         })
         idx = 0
       } else if (videoenable == 1 && file_img.length == 0 && !file_video.cover) {
         Taro.showToast({
           icon: 'none',
-          title: '请上传视频或图片!'
+          title: $t('7c40f12d.364c2c')
         })
         idx = 0
       } else if (!file_text.title) {
         Taro.showToast({
           icon: 'none',
-          title: '请填写标题!'
+          title: $t('7c40f12d.553a20')
         })
         idx = 0
       } else if (!file_text.attextarea) {
         Taro.showToast({
           icon: 'none',
-          title: '请填写内容文字!'
+          title: $t('7c40f12d.e76f05')
         })
         idx = 0
       } else if (emoji.test(file_text.title)) {
         Taro.showToast({
           icon: 'none',
-          title: '请删除标题中表情!'
+          title: $t('7c40f12d.155392')
         })
         idx = 0
       }
@@ -631,7 +633,7 @@ export default class Make extends Component {
       return
     }
     Taro.showLoading({
-      title: '加载中',
+      title: $t('7c40f12d.f013ea'),
       mask: true
     })
     // 封面/视频
@@ -777,7 +779,7 @@ export default class Make extends Component {
     const that = this
     let { elastic } = this.state
     Taro.showLoading({
-      title: '加载中',
+      title: $t('7c40f12d.f013ea'),
       mask: true
     })
     wx.getSetting({
@@ -798,9 +800,9 @@ export default class Make extends Component {
               //用户拒绝授权，然后就引导授权（这里的话如果用户拒绝，不会立马弹出引导授权界面，坑就是上边所说的官网原因）
               console.log('用户无授权')
               elastic = {
-                title: '使用您的摄像头，将会上传你摄录的照片及视频',
-                closetext: '拒绝',
-                showtext: '允许',
+                title: $t('7c40f12d.149938'),
+                closetext: $t('7c40f12d.7173f8'),
+                showtext: $t('7c40f12d.e6a5c3'),
                 type: 0
               }
               that.setState({
@@ -826,9 +828,9 @@ export default class Make extends Component {
     var isselect = wx.getStorageSync('isselect')
     if (!isselect) {
       elastic = {
-        title: '使用你的相册，将会读取你相册中的照片及视频',
-        closetext: '拒绝',
-        showtext: '允许',
+        title: $t('7c40f12d.8411e6'),
+        closetext: $t('7c40f12d.7173f8'),
+        showtext: $t('7c40f12d.e6a5c3'),
         type: 1
       }
       this.setState({
@@ -950,7 +952,7 @@ export default class Make extends Component {
           iconTheme='#000'
           onBack={this.onugcBack.bind(this)}
           back
-          renderCenter={<View className='trace-rowAlignCenter'>编辑</View>}
+          renderCenter={<View className='trace-rowAlignCenter'>{$t('7c40f12d.95b351')}</View>}
         />
         <View className='makeindexs'>
           <View className='makeindex_upload'>
@@ -1008,7 +1010,7 @@ export default class Make extends Component {
                         className='makeindex_upload_edit'
                         onClick={this.editimg.bind(this, idx)}
                       >
-                        编辑
+                        {$t('7c40f12d.95b351')}
                       </View>
                     </View>
                     {file_video.video_idx == idx && file_video.url ? (
@@ -1053,7 +1055,7 @@ export default class Make extends Component {
               <AtInput
                 title=''
                 type='text'
-                placeholder='标题'
+                placeholder={$t('7c40f12d.32c65d')}
                 maxLength='20'
                 value={file_text.title}
                 onChange={this.handleChangetext.bind(this)}
@@ -1065,12 +1067,12 @@ export default class Make extends Component {
                 onChange={this.handleChangeattextarea.bind(this)}
                 maxLength={1000}
                 height={300}
-                placeholder='文本'
+                placeholder={$t('7c40f12d.97d076')}
               />
             </View>
           </View>
           <View className='makeindex_word'>
-            <View className='makeindex_word_title'>添加话题</View>
+            <View className='makeindex_word_title'>{$t('7c40f12d.81a65b')}</View>
             <View className='makeindex_word_scroll'>
               <View className='makeindex_word_scroll_left'>
                 {file_word.length && (
@@ -1090,7 +1092,7 @@ export default class Make extends Component {
             </View>
           </View>
           <View className='makeindex_commodity'>
-            <View className='makeindex_commodity_title'>推荐商品</View>
+            <View className='makeindex_commodity_title'>{$t('7c40f12d.479ddf')}</View>
             <View className='makeindex_commodity_list'>
               {file_commodity.map((item, idx) => {
                 return (
@@ -1124,36 +1126,41 @@ export default class Make extends Component {
           <View className='makeindex_footer'>
             <View className='makeindex_footer_draft' onClick={this.oncreate.bind(this, true)}>
               <View className='icon-caogao'></View>
-              <View className='makeindex_footer_draft_text'>保存草稿</View>
+              <View className='makeindex_footer_draft_text'>{$t('7c40f12d.4d7ea6')}</View>
             </View>
             <View className='makeindex_footer_release' onClick={this.oncreate.bind(this, false)}>
-              发布笔记
+              {$t('7c40f12d.5486d9')}
             </View>
           </View>
         </View>
         {isPopups ? (
           <Popups
-            title='是否退出当前编辑'
-            text='退出内容将不可保存哦'
-            closetext='确认退出'
-            showtext='继续编辑'
+            title={$t('7c40f12d.eb15bf')}
+            text={$t('7c40f12d.4363ca')}
+            closetext={$t('7c40f12d.43f296')}
+            showtext={$t('7c40f12d.20ce8e')}
             Last={this.onLast.bind(this)}
           ></Popups>
         ) : null}
         {isGrant ? (
           <Popups
-            title='MassimoDutti  申请'
+            title={$t('7c40f12d.b54850')}
             text={elastic.title}
             closetext={elastic.closetext}
             showtext={elastic.showtext}
             Last={this.ongrant.bind(this)}
           ></Popups>
         ) : null}
-        <AtActionSheet isOpened={isOpened} cancelText='关闭' title='' onClose={this.closesheet}>
+        <AtActionSheet
+          isOpened={isOpened}
+          cancelText={$t('7c40f12d.b15d91')}
+          title=''
+          onClose={this.closesheet}
+        >
           {uploadtype.map((item) => {
             return (
               <AtActionSheetItem onClick={this.onupload.bind(this, item.type)}>
-                {item.text}
+                {this.uploadTypeLabel(item.type)}
               </AtActionSheetItem>
             )
           })}

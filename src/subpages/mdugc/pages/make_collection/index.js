@@ -10,6 +10,7 @@ import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
 import * as mdugcApi from '@/api/mdugc'
+import { $t, i18n } from '@/i18n'
 
 import './index.scss'
 
@@ -34,9 +35,21 @@ export default class make_collection extends Component {
       let { type } = await mdugcApi.messagesetTohasRead(data)
     }
     this.nextPage()
+    Taro.setNavigationBarTitle({ title: $t('8a8e947d.5918ce') })
+    this._onMakeCollectionLang = () => {
+      Taro.setNavigationBarTitle({ title: $t('8a8e947d.5918ce') })
+      this.forceUpdate()
+    }
+    i18n.on('languageChanged', this._onMakeCollectionLang)
   }
   config = {
-    navigationBarTitleText: '收到的收藏'
+    navigationBarTitleText: ''
+  }
+
+  componentWillUnmount() {
+    if (this._onMakeCollectionLang) {
+      i18n.off('languageChanged', this._onMakeCollectionLang)
+    }
   }
   // 列表
   async fetch(params) {
@@ -124,9 +137,9 @@ export default class make_collection extends Component {
                 )
               })}
             </View>
-            {page.isLoading && <Loading>正在加载...</Loading>}
+            {page.isLoading && <Loading>{$t('8a8e947d.bd0271')}</Loading>}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>列表页为空!</SpNote>
+              <SpNote img='trades_empty.png'>{$t('8a8e947d.1feb58')}</SpNote>
             )}
           </ScrollView>
         </View>

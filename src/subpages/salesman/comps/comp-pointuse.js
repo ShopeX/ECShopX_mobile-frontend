@@ -7,6 +7,7 @@ import { useImmer } from 'use-immer'
 import { AtModal, AtModalHeader, AtModalContent, AtModalAction, AtButton } from 'taro-ui'
 import { useSelector } from 'react-redux'
 import { SpNumberKeyBoard, SpFloatLayout } from '@/components'
+import { $t, ti, useTranslation } from '@/i18n'
 import { View, Text, Button } from '@tarojs/components'
 import './comp-pointuse.scss'
 
@@ -15,6 +16,7 @@ const initialState = {
 }
 
 function CompPointUse(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { info, isOpened, onClose, onChange } = props
   const { pointName } = useSelector((state) => state.sys)
@@ -30,7 +32,9 @@ function CompPointUse(props) {
     <View className='comp-pointuse'>
       <SpFloatLayout className='point-float-layout' open={isOpened} hideClose>
         <View className='point-hd'>
-          <View className='point-info'>{`可用${pointName}：${info.user_point}，本单可用${pointName}：${info.max_point}`}</View>
+          <View className='point-info'>
+            {ti('b37d087a.c00678', [pointName, info.user_point, info.max_point])}
+          </View>
           <Text
             className='point-rule'
             onClick={() => {
@@ -39,7 +43,7 @@ function CompPointUse(props) {
               })
             }}
           >
-            使用规则
+            {$t('b37d087a.1ebbd6')}
           </Text>
         </View>
         <SpNumberKeyBoard
@@ -51,14 +55,14 @@ function CompPointUse(props) {
       </SpFloatLayout>
 
       <AtModal isOpened={isOpenRule}>
-        <AtModalHeader>积分使用规则</AtModalHeader>
+        <AtModalHeader>{ti('b37d087a.ee9ad7', [pointName])}</AtModalHeader>
         <AtModalContent>
-          <View>使用条件</View>
+          <View>{$t('b37d087a.2f99a3')}</View>
           <View>
-            {`1. ${pointName}支付不得超出订单应付总金额的${deduct_point_rule.deduct_proportion_limit}%；`}
+            {ti('b37d087a.21434c', [pointName, deduct_point_rule.deduct_proportion_limit ?? ''])}
           </View>
-          <View>使用数量</View>
-          <View>{`2. ${deduct_point_rule.deduct_point}${pointName}抵1元；`}</View>
+          <View>{$t('b37d087a.9b017d')}</View>
+          <View>{ti('b37d087a.2ead76', [pointName, deduct_point_rule.deduct_point ?? ''])}</View>
         </AtModalContent>
         <AtModalAction>
           <Button
@@ -68,7 +72,7 @@ function CompPointUse(props) {
               })
             }}
           >
-            我知道了
+            {$t('edc703ce.ce2695')}
           </Button>
         </AtModalAction>
       </AtModal>

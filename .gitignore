@@ -12,7 +12,6 @@ dist/
 .swc
 .vscode
 .env.local
-.cursor/
 .claude/
 AGENTS.md
 openspec/
@@ -20,3 +19,4 @@ scripts/
 .agent/
 .codex/
 .gstack/
+.cursor/commit-summary

@@ -8,13 +8,15 @@ import { View, ScrollView, Image, Text, Button } from '@tarojs/components'
 import { Loading, SpNote, SpPage } from '@/components'
 import { classNames, pickBy, getCurrentRoute, isAlipay } from '@/utils'
 import { AtTabBar } from 'taro-ui'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './shop-category.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionShopCategory extends Component {
+class DistributionShopCategory extends Component {
   $instance = getCurrentInstance() || {}
   spPageRef = React.createRef()
   constructor(props) {
@@ -26,14 +28,14 @@ export default class DistributionShopCategory extends Component {
       currentIndex: 0,
       tabList: [
         {
-          title: '推广商品',
+          title: '',
           iconType: 'home',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/goods',
           urlRedirect: true
         },
         {
-          title: '分类',
+          title: '',
           iconType: 'category',
           iconPrefixClass: 'iconfont icon',
           url: '/marketing/pages/distribution/good-category',
@@ -65,6 +67,17 @@ export default class DistributionShopCategory extends Component {
       tabList
     })
     this.fetchInfo()
+    this.syncNavTitle()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('3a61607d.d0771a') })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -243,7 +256,7 @@ export default class DistributionShopCategory extends Component {
           () => {
             Taro.showToast({
               icon: 'none',
-              title: '上架成功'
+              title: $t('3a61607d.e241a8')
             })
           }
         )
@@ -259,7 +272,7 @@ export default class DistributionShopCategory extends Component {
           () => {
             Taro.showToast({
               icon: 'none',
-              title: '下架成功'
+              title: $t('3a61607d.0c6d64')
             })
           }
         )
@@ -285,7 +298,15 @@ export default class DistributionShopCategory extends Component {
         ref={this.spPageRef}
         className='page-category-index good-category'
         renderFooter={
-          <AtTabBar fixed tabList={tabList} onClick={this.handleClick} current={localCurrent} />
+          <AtTabBar
+            fixed
+            tabList={tabList.map((item, index) => ({
+              ...item,
+              title: index === 0 ? $t('3a61607d.7f8121') : $t('3a61607d.d0771a')
+            }))}
+            onClick={this.handleClick}
+            current={localCurrent}
+          />
         }
       >
         <View
@@ -346,7 +367,11 @@ export default class DistributionShopCategory extends Component {
                                     )}
                                     onClick={this.handleClickItem.bind(this, item.item_id)}
                                   >
-                                    {isRelease ? <Text>从小店下架</Text> : <Text>上架到小店</Text>}
+                                    {isRelease ? (
+                                      <Text>{$t('3a61607d.12910e')}</Text>
+                                    ) : (
+                                      <Text>{$t('3a61607d.39177b')}</Text>
+                                    )}
                                   </View>
                                 )}
                               </View>
@@ -366,9 +391,9 @@ export default class DistributionShopCategory extends Component {
                     })) ||
                     null}
                 </View>
-                {page.isLoading ? <Loading>正在加载...</Loading> : null}
+                {page.isLoading ? <Loading>{$t('3a61607d.bd0271')}</Loading> : null}
                 {!page.isLoading && !page.hasNext && !contentList.length && (
-                  <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+                  <SpNote img='trades_empty.png'>{$t('3a61607d.ba1de9')}</SpNote>
                 )}
               </ScrollView>
             </View>
@@ -378,3 +403,5 @@ export default class DistributionShopCategory extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionShopCategory)

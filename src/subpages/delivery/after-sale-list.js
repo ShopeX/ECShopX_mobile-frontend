@@ -2,38 +2,46 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { useSelector } from 'react-redux'
-import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import Taro, { useDidShow } from '@tarojs/taro'
 import { View, ScrollView } from '@tarojs/components'
-import { AtButton } from 'taro-ui'
 import { useImmer } from 'use-immer'
 import { SpPage, SpScrollView } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import api from '@/api'
 import doc from '@/doc'
 import { pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import CompAfterTradeItem from './comps/comp-aftertrade-item'
 import './after-sale-list.scss'
 
 const initialState = {
-  tradeStatus: [
-    { tag_name: '待处理', value: '0' },
-    { tag_name: '处理中', value: '1' },
-    { tag_name: '已处理', value: '2' },
-    { tag_name: '已驳回', value: '3' },
-    { tag_name: '已关闭', value: '4' }
-  ],
   status: '0',
   tradeList: [],
   refresherTriggered: false
 }
 function TradeAfterSaleList(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { tradeStatus, status, tradeList, refresherTriggered } = state
+  const { status, tradeList, refresherTriggered } = state
   const { deliveryPersonnel } = useSelector((state) => state.cart)
   const tradeRef = useRef()
-  const router = useRouter()
+
+  const tradeStatus = useMemo(
+    () => [
+      { tag_name: $t('5e73a6ff.047109'), value: '0' },
+      { tag_name: $t('5e73a6ff.5d459d'), value: '1' },
+      { tag_name: $t('5e73a6ff.5ad605'), value: '2' },
+      { tag_name: $t('5e73a6ff.dbf36d'), value: '3' },
+      { tag_name: $t('5e73a6ff.9c5850'), value: '4' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('5e73a6ff.75bfab') })
+  }, [i18n.language])
 
   useEffect(() => {
     // 撤销售后事件
@@ -111,7 +119,7 @@ function TradeAfterSaleList(props) {
           auto={false}
           ref={tradeRef}
           fetch={fetch}
-          emptyMsg='没有查询到售后单'
+          emptyMsg={$t('5e73a6ff.8e0d26')}
         >
           {tradeList.map((item, index) => (
             <View className='trade-item-wrap' key={index}>

@@ -2,110 +2,103 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import Taro, { useRouter, useDidShow } from '@tarojs/taro'
-import { View, ScrollView, Text, Picker, WebView } from '@tarojs/components'
+import { View, ScrollView, Text, Picker } from '@tarojs/components'
 import api from '@/api'
 import doc from '@/doc'
 import { SpImage, SpPage, SpCheckbox, SpTradeItem, SpCell } from '@/components'
 import { useImmer } from 'use-immer'
-import { relationship } from '@/consts'
-import { AtTag, AtList, AtListItem, AtTextarea, AtButton } from 'taro-ui'
+import { AtTag, AtTextarea, AtButton } from 'taro-ui'
 import { classNames, isWeixin, showToast, pickBy } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
+import { P_YES, P_NO, P_SELECT, P_MALE, P_FEMALE } from '@/subpages/prescription/i18n-keys'
+import { getRelationshipOptions } from '@/subpages/prescription/relationship-options'
 import CompMedicationPersonnel from './comps/comp-medication-personnel'
-
 import './prescription-information.scss'
 
-const initialState = {
-  notesList: [
+const PRESCRIPTION_ORDER_RANDOM = '1223344'
+
+function buildNotesList($t) {
+  const yes = $t(P_YES)
+  const no = $t(P_NO)
+  const pls = $t(P_SELECT)
+  return [
     {
-      title: '是否使用过此类药物',
+      title: $t('cb825098.bbc0ed'),
       selector: [
-        {
-          key: 0,
-          value: '否'
-        },
-        {
-          key: 1,
-          value: '是'
-        }
+        { key: 0, value: no },
+        { key: 1, value: yes }
       ],
-      selectorChecked: '请选择',
+      selectorChecked: pls,
       key: 'before_ai_result_used_medicine',
       value: null
     },
     {
-      title: '肝肾功能是否有异常',
+      title: $t('cb825098.c57c4d'),
       selector: [
-        {
-          key: 0,
-          value: '否'
-        },
-        {
-          key: 1,
-          value: '是'
-        }
+        { key: 0, value: no },
+        { key: 1, value: yes }
       ],
-      selectorChecked: '请选择',
+      selectorChecked: pls,
       key: 'before_ai_result_body_abnormal',
       value: null
     },
     {
-      title: '用药人是否孕妇',
+      title: $t('cb825098.ff5917'),
       selector: [
-        {
-          key: 0,
-          value: '否'
-        },
-        {
-          key: 1,
-          value: '是'
-        }
+        { key: 0, value: no },
+        { key: 1, value: yes }
       ],
-      selectorChecked: '请选择',
+      selectorChecked: pls,
       key: 'is_pregnant_woman',
       value: null
     },
     {
-      title: '用药人是否哺乳期',
+      title: $t('cb825098.b436e8'),
       selector: [
-        {
-          key: 0,
-          value: '否'
-        },
-        {
-          key: 1,
-          value: '是'
-        }
+        { key: 0, value: no },
+        { key: 1, value: yes }
       ],
-      selectorChecked: '请选择',
+      selectorChecked: pls,
       key: 'is_lactation',
       value: null
     },
     {
-      title: '是否有药物过敏史',
+      title: $t('cb825098.88f3a1'),
       selector: [
-        {
-          key: 0,
-          value: '否'
-        },
-        {
-          key: 1,
-          value: '是'
-        }
+        { key: 0, value: no },
+        { key: 1, value: yes }
       ],
-      selectorChecked: '请选择',
+      selectorChecked: pls,
       key: 'before_ai_result_allergy_history',
       value: null
     }
-  ],
+  ]
+}
+
+function syncNotesListI18n(prev, $t) {
+  if (!prev?.length) return buildNotesList($t)
+  const tmpl = buildNotesList($t)
+  return tmpl.map((t, i) => {
+    const value = prev[i]?.value ?? null
+    const yes = $t(P_YES)
+    const no = $t(P_NO)
+    const pls = $t(P_SELECT)
+    let selectorChecked = pls
+    if (value === 1) selectorChecked = yes
+    if (value === 0) selectorChecked = no
+    return { ...t, value, selectorChecked }
+  })
+}
+
+const initialStateBase = {
   isOpened: false,
   param: {
     page: 1,
     pageSize: 10
   },
   medicationList: [],
-  selector: relationship(),
   risk: false,
   listProduct: [],
   before_ai_result_allergy_history: '',
@@ -114,7 +107,12 @@ const initialState = {
 }
 
 function PrescriptionPnformation() {
-  const [state, setState] = useImmer(initialState)
+  const { i18n } = useTranslation()
+  const [state, setState] = useImmer(() => ({
+    ...initialStateBase,
+    notesList: buildNotesList($t),
+    selector: getRelationshipOptions($t)
+  }))
 
   const {
     notesList,
@@ -131,12 +129,20 @@ function PrescriptionPnformation() {
 
   const router = useRouter()
 
-  // useDidShow(() => {
-  //   //获取列表
-  //   medicationPersonnel()
-  // }, [])
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('33ac3f13.a904ff') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('33ac3f13.a904ff') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
 
-  //获取列表
+  useEffect(() => {
+    setState((draft) => {
+      draft.notesList = syncNotesListI18n(draft.notesList, $t)
+      draft.selector = getRelationshipOptions($t)
+    })
+  }, [i18n.language])
+
   useDidShow(() => {
     medicationPersonnel()
     fetch()
@@ -144,7 +150,9 @@ function PrescriptionPnformation() {
 
   const fetch = async () => {
     const { order_id } = router?.params
-    const { orderInfo } = await api.trade.detail(order_id, { prescription_order_random: '1223344' })
+    const { orderInfo } = await api.trade.detail(order_id, {
+      prescription_order_random: PRESCRIPTION_ORDER_RANDOM
+    })
     const _orderInfo = pickBy(orderInfo, doc.trade.TRADE_ITEM)
     let list = _orderInfo.items.filter((item) => item.isPrescription == 1)
     console.log(list, 'lllllllllfetch')
@@ -158,13 +166,12 @@ function PrescriptionPnformation() {
   const handleClickToEdit = async () => {
     const { order_id } = router?.params
 
-    //判断确诊疾病是否为空
     const haslistProduct = listProduct.some((item) => {
       const medicineSymptomSetNew = item.medicineSymptomSetNew
       console.log(medicineSymptomSetNew, 'medicineSymptomSetNew')
 
       if (medicineSymptomSetNew == undefined || medicineSymptomSetNew.length === 0) {
-        showToast(`${item.itemName}请选择线下已确诊的疾病`)
+        showToast(ti('cb825098.b7c22b', [item.itemName]))
         return true
       }
       return false
@@ -174,16 +181,14 @@ function PrescriptionPnformation() {
       return
     }
 
-    //判断自身情况
     const hasEmptyValue = notesList.some((item) => {
       if (item.value === null) {
-        showToast(`请选择${item.title}`)
+        showToast(ti('cb825098.a5db4e', [item.title]))
         return true
       }
       return false
     })
 
-    // 如果有空的 value，则不执行下面的代码
     if (hasEmptyValue) {
       return
     }
@@ -195,7 +200,7 @@ function PrescriptionPnformation() {
       souce_from: isWeixin ? 0 : 2,
       before_ai_result_symptom: [],
       distributor_id: orderInfo.distributorId,
-      prescription_order_random: '1223344'
+      prescription_order_random: PRESCRIPTION_ORDER_RANDOM
     }
     listProduct.forEach((item) => {
       param.before_ai_result_symptom.push({
@@ -208,13 +213,13 @@ function PrescriptionPnformation() {
     })
 
     if (!param.medication_personnel_id) {
-      showToast(`请填写用药人`)
+      showToast($t('cb825098.6e20d1'))
       return
     }
 
     if (param.before_ai_result_allergy_history == 1) {
       if (before_ai_result_allergy_history == '') {
-        showToast(`请填写药物过敏说明`)
+        showToast($t('cb825098.bcb6c9'))
         return
       }
     }
@@ -222,7 +227,7 @@ function PrescriptionPnformation() {
       param.before_ai_result_allergy_history == 1 ? before_ai_result_allergy_history : ''
 
     let res = await api.prescriptionDrug.prescriptionDiagnosis(param)
-    showToast(`提交成功`)
+    showToast($t('cb825098.23b62e'))
     const webviewSrc = encodeURIComponent(res.url)
     Taro.redirectTo({
       url: `/pages/webview?url=${webviewSrc}`
@@ -260,7 +265,11 @@ function PrescriptionPnformation() {
 
   const listChangge = (val) => {
     let res = JSON.parse(JSON.stringify(val))
-    res[medicationIindex].isShow = true
+    if (res[medicationIindex] !== undefined && res[medicationIindex] !== null) {
+      res[medicationIindex].isShow = true
+    } else if (val.length > 0) {
+      res[0].isShow = true
+    }
     setState((draft) => {
       draft.medicationList = res
     })
@@ -287,9 +296,7 @@ function PrescriptionPnformation() {
     let listProduct1 = JSON.parse(JSON.stringify(listProduct))
     listProduct1[index].medicineSymptomSet[index1].show =
       !listProduct1[index].medicineSymptomSet[index1].show
-    // 筛选出 show 为 true 的元素
     let filteredItems = listProduct1[index].medicineSymptomSet.filter((item) => item.show === true)
-    //提取这些元素的 value
     listProduct1[index].medicineSymptomSetNew = filteredItems.map((item) => item.value)
     setState((draft) => {
       draft.listProduct = listProduct1
@@ -302,7 +309,7 @@ function PrescriptionPnformation() {
       renderFooter={
         <View className='btn-wrap'>
           <AtButton circle type='primary' onClick={handleClickToEdit} disabled={!risk}>
-            提交并开药
+            {$t('cb825098.cbd0c0')}
           </AtButton>
         </View>
       }
@@ -310,34 +317,34 @@ function PrescriptionPnformation() {
       <View className='information'>
         <View className='title'>
           <Text className='title-num'>1</Text>
-          <Text className='title-text'>填写信息</Text>
+          <Text className='title-text'>{$t('cb825098.5b6e02')}</Text>
         </View>
         <View className='titled'>-----</View>
         <View className='titled'>
           <Text className='titled-num'>2</Text>
-          <Text>医生开方</Text>
+          <Text>{$t('cb825098.6b871f')}</Text>
         </View>
         <View className='titled'>-----</View>
         <View className='titled'>
           <Text className='titled-num'>3</Text>
-          <Text>支付订单</Text>
+          <Text>{$t('cb825098.6536f5')}</Text>
         </View>
       </View>
 
-      <View className='prompt'>您的信息用于处方药购买，平台会严格保密，请放心填写</View>
+      <View className='prompt'>{$t('cb825098.c6cf51')}</View>
 
       <View className='medication'>
         <View className='personnel'>
           <View className='personnel-title'>
             <Text className='sp-cell__xin'>* </Text>
-            用药人
+            {$t('cb825098.529711')}
           </View>
           <View className='personnel-name' onClick={colsePersonnel}>
             <Text className='iconfont icon-bianji1'></Text>
-            添加/修改
+            {$t('cb825098.e4707e')}
           </View>
         </View>
-        <View className='prompt'>请选择实际用药人，医生可能会电话联系用药人了解病情</View>
+        <View className='prompt'>{$t('cb825098.35550d')}</View>
         <ScrollView scrollX>
           <View className='relationship'>
             {medicationList.map((item, index) => {
@@ -365,7 +372,8 @@ function PrescriptionPnformation() {
                   <View className='relationship-wrap-right'>
                     <View className='name'>{item.user_family_name}</View>
                     <View className='age'>
-                      {item.user_family_gender == 1 ? '男' : '女'} {item.user_family_age}
+                      {item.user_family_gender == 1 ? $t(P_MALE) : $t(P_FEMALE)}{' '}
+                      {item.user_family_age}
                     </View>
                   </View>
                   <View className='label'>{selector[item.relationship].value}</View>
@@ -374,24 +382,20 @@ function PrescriptionPnformation() {
             })}
           </View>
         </ScrollView>
-        {/* <View className='prompt'>* 用药人体重为50.0kg，如有变化请及时修改已便医生诊断</View> */}
       </View>
 
       <View className='medication1'>
         <View className='personnel'>
           <Text>
             {' '}
-            <Text className='sp-cell__xin'>* </Text>请选择线下已确诊疾病
+            <Text className='sp-cell__xin'>* </Text>
+            {$t('cb825098.04e88e')}
           </Text>
-          <Text className='personnel-title'>（每个药品至少选择一种）</Text>
+          <Text className='personnel-title'>{$t('cb825098.3b964f')}</Text>
         </View>
         {listProduct.map((item, index) => {
           return (
             <View className='medicine' key={index}>
-              {/* <View className='medicine-top'>
-                  <SpImage src={item.pic} width={90} />
-                  <View className='medicine-top-right'>{item.item_name}</View>
-                </View> */}
               <SpTradeItem
                 info={{
                   ...item
@@ -429,13 +433,6 @@ function PrescriptionPnformation() {
               key={index}
               onChange={(e) => pickerChange(e, index)}
             >
-              {/* <AtList>
-                  <AtListItem
-                  iconInfo = {'iconfont icon-arrow-up'}
-                    title={item.title}
-                    extraText={item.selectorChecked}
-                  />
-                </AtList> */}
               <SpCell
                 className='logistics-no province border-bottom'
                 title={item.title}
@@ -451,12 +448,13 @@ function PrescriptionPnformation() {
         {notesList[4].value == 1 && (
           <View className='notes-textarea'>
             <Text className='allergy'>
-              <Text className='sp-cell__xin'>* </Text>药物过敏说明：
+              <Text className='sp-cell__xin'>* </Text>
+              {$t('cb825098.920b94')}
             </Text>
             <AtTextarea
               value={before_ai_result_allergy_history}
               maxLength={200}
-              placeholder='请填写药物过敏说明...'
+              placeholder={$t('cb825098.dd0a37')}
               onChange={(e) => {
                 setState((draft) => {
                   draft.before_ai_result_allergy_history = e
@@ -477,8 +475,7 @@ function PrescriptionPnformation() {
           }}
         />
         <View className='informed-notice'>
-          确认已在线下就诊，使用过所购买药品且无过敏或不良反应，当前病情稳定
-          ，确认监护人已知晓病情及购药行为。我已阅读并同意
+          {$t('cb825098.fd6744')}
           <Text
             className='informed-title'
             onClick={() => {
@@ -487,7 +484,7 @@ function PrescriptionPnformation() {
               })
             }}
           >
-            《互联网诊疗风险告知及知情同意书》
+            {$t('cb825098.a64c98')}
           </Text>
         </View>
       </View>

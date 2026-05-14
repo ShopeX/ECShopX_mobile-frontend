@@ -9,6 +9,7 @@ import { debounce } from '@/utils'
 import api from '@/api'
 import entry from '@/utils/entry'
 import entryLaunchFun from '@/utils/entryLaunch'
+import { $t } from '@/i18n'
 import LoadingMore from '../../component/loadingMore'
 
 import './index.scss'
@@ -35,10 +36,6 @@ export default class Community extends Component {
 
   async componentDidMount() {
     this.init()
-  }
-
-  config = {
-    navigationBarTitleText: '社区列表'
   }
 
   // 搜索框输入
@@ -101,7 +98,7 @@ export default class Community extends Component {
   // 获取社区列表
   getCommunity = async (isRefresh = false) => {
     const { param, list: oldList, lbs } = this.state
-    isRefresh && Taro.showLoading({ title: '正在加载...', mask: true })
+    isRefresh && Taro.showLoading({ title: $t('1a305f8e.bd0271'), mask: true })
     api.groupBy.activityCommunityList({ ...param, ...lbs }).then((res) => {
       const { total_count, list } = res
       this.setState({
@@ -177,11 +174,7 @@ export default class Community extends Component {
     const { list, isLoading, isEnd, isRefresh, scrollTop, current } = this.state
     return (
       <View className='community'>
-        <SpNavBar
-          title={this.config.navigationBarTitleText}
-          leftIconType='chevron-left'
-          fixed='true'
-        />
+        <SpNavBar title={$t('1a305f8e.147861')} leftIconType='chevron-left' fixed='true' />
         <View className='header'>
           {/* 搜索 */}
           <View className='search'>
@@ -189,7 +182,7 @@ export default class Community extends Component {
               <View className='iconfont icon-search'></View>
               <Input
                 type='text'
-                placeholder='请输入社区名称'
+                placeholder={$t('1a305f8e.6545f0')}
                 confirmType='search'
                 onInput={this.searchInput}
                 onConfirm={this.handleRefresh}
@@ -197,7 +190,7 @@ export default class Community extends Component {
             </View>
           </View>
           <View className='myZiti'>
-            <View className='title'>我的当前自提点</View>
+            <View className='title'>{$t('1a305f8e.c332d0')}</View>
             <View className='myCommunity' onClick={() => Taro.navigateBack()}>
               <View className='location'>{current.community_name}</View>
               <View className='distance'>
@@ -207,8 +200,8 @@ export default class Community extends Component {
             </View>
           </View>
           <View className='nearBy'>
-            <View>附近自提点</View>
-            <View onClick={this.init.bind(this)}>重新定位</View>
+            <View>{$t('1a305f8e.20508d')}</View>
+            <View onClick={this.init.bind(this)}>{$t('1a305f8e.b915af')}</View>
           </View>
         </View>
         <ScrollView

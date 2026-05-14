@@ -10,6 +10,7 @@ import { pickBy, classNames, styleNames, showToast } from '@/utils'
 import api from '@/api'
 import { useImmer } from 'use-immer'
 import doc from '@/doc'
+import { useTranslation, $t } from '@/i18n'
 import BaSkuSelect from '../ba-sku-select'
 import './goods-grid.scss'
 
@@ -22,6 +23,7 @@ const initialState = {
 const MBaSkuSelect = React.memo(BaSkuSelect)
 
 function WgtGoodsGrid(props) {
+  useTranslation()
   const { info } = props
   if (!info) {
     return null
@@ -84,7 +86,7 @@ function WgtGoodsGrid(props) {
             <Text className='wgt-subtitle'>{base.subtitle}</Text>
           </View>
           <View className='all-goods' onClick={handleClickMore}>
-            全部商品
+            {$t('8cac8565.794a4e')}
           </View>
         </View>
       )}

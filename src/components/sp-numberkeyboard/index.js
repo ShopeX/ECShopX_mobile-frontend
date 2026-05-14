@@ -8,6 +8,7 @@ import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { classNames, isNumber } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './index.scss'
 
 const ret = /^(?!0+(?:\.0+)?$)(?:[1-9]\d*|0)(?:\.\d{1,2})?$/
@@ -16,6 +17,7 @@ const initialState = {
 }
 
 function SpNumberKeyBoard(props) {
+  useTranslation()
   const {
     maxValue = 0,
     value = 0,
@@ -119,7 +121,7 @@ function SpNumberKeyBoard(props) {
         </View>
         <View className='col'>
           <View className='keyboard word' onClick={handleClickItem.bind(this, 'clear')}>
-            清除
+            {$t('2591b4ef.4403fc')}
           </View>
         </View>
       </View>
@@ -138,13 +140,13 @@ function SpNumberKeyBoard(props) {
           </View>
           <View className='row'>
             <View className='keyboard word' onClick={handleClickItem.bind(this, 'all')}>
-              全部使用
+              {$t('2591b4ef.bf0c90')}
             </View>
             <View className='keyboard' onClick={handleClickItem.bind(this, 0)}>
               0
             </View>
             <View className='keyboard word' onClick={handleClickItem.bind(this, 'close')}>
-              关闭
+              {$t('2591b4ef.b15d91')}
             </View>
           </View>
         </View>
@@ -154,7 +156,7 @@ function SpNumberKeyBoard(props) {
           })}
         >
           <View className='keyboard word' onClick={handleClickItem.bind(this, 'ok')}>
-            确定
+            {$t('2591b4ef.38cf16')}
           </View>
         </View>
       </View>

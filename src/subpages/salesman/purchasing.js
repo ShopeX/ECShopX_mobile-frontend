@@ -2,8 +2,8 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro, { getCurrentInstance, useRouter, useDidShow } from '@tarojs/taro'
-import React, { useEffect, useState, useCallback, useRef } from 'react'
+import Taro, { useRouter, useDidShow } from '@tarojs/taro'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { Text, View } from '@tarojs/components'
 import { classNames, pickBy, showToast } from '@/utils'
 import { SpImage, SpPage, SpTabs, SpSearchInput, SpSkuSelect, SpScrollView } from '@/components'
@@ -15,6 +15,7 @@ import { useImmer } from 'use-immer'
 import api from '@/api'
 import S from '@/spx'
 import doc from '@/doc'
+import { $t, useTranslation } from '@/i18n'
 import CompPurchasingList from './comps/comp-purchasing-list'
 import CompCar from './comps/comp-car'
 import './purchasing.scss'
@@ -26,18 +27,18 @@ const initialConfigState = {
   navFilterList: [
     {
       key: 'tag_id',
-      name: '标签',
-      label: '标签',
+      name: '',
+      label: '',
       activeIndex: null,
       option: []
     },
     {
       key: 'category',
-      name: '分类',
-      label: '分类',
+      name: '',
+      label: '',
       activeIndex: null,
       option: [
-        { category_name: '全部', category_id: 'all' }
+        { category_name: '', category_id: 'all' }
         // {
         //   category_name: '男装',
         //   category_id: '1',
@@ -54,12 +55,12 @@ const initialConfigState = {
     },
     {
       key: 'store_status',
-      label: '状态',
-      name: '状态',
+      label: '',
+      name: '',
       activeIndex: null,
       option: [
-        { label: '有货', value: 1 },
-        { label: '无货', value: 0 }
+        { label: '', value: 1 },
+        { label: '', value: 0 }
       ]
     }
   ],
@@ -72,20 +73,16 @@ const initialConfigState = {
   skuPanelOpen: false,
   info: null,
   selectType: 'picker',
-  searchConditionList: [
-    { label: '商品名称', value: 'title' },
-    { label: '货号', value: 'item_bn' }
-  ],
   parameter: {}
 }
 
 const Purchasing = () => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
   const {
     skuPanelOpen,
     info,
     selectType,
-    searchConditionList,
     parameter,
     codeStatus,
     navFilterList,
@@ -101,6 +98,45 @@ const Purchasing = () => {
   const { params } = useRouter()
   const goodsRef = useRef()
   const pageRef = useRef()
+
+  const searchConditionList = useMemo(
+    () => [
+      { label: $t('7456dcd3.1fd1d5'), value: 'title' },
+      { label: $t('7456dcd3.9b979b'), value: 'item_bn' }
+    ],
+    [i18n.language]
+  )
+
+  const navFilterListForView = useMemo(() => {
+    if (!navFilterList?.length) return navFilterList
+    return navFilterList.map((nav) => {
+      if (nav.key === 'tag_id') {
+        return { ...nav, name: $t('f1d3181c.14d342'), label: $t('f1d3181c.14d342') }
+      }
+      if (nav.key === 'category') {
+        const option = (nav.option || []).map((o, j) =>
+          j === 0 && o.category_id === 'all' ? { ...o, category_name: $t('f1d3181c.a8b0c2') } : o
+        )
+        return { ...nav, name: $t('f1d3181c.d0771a'), label: $t('f1d3181c.d0771a'), option }
+      }
+      if (nav.key === 'store_status' && nav.option?.length >= 2) {
+        return {
+          ...nav,
+          name: $t('f1d3181c.3fea7c'),
+          label: $t('f1d3181c.3fea7c'),
+          option: [
+            { ...nav.option[0], label: $t('f1d3181c.72c0c7') },
+            { ...nav.option[1], label: $t('f1d3181c.7cfe76') }
+          ]
+        }
+      }
+      return nav
+    })
+  }, [navFilterList, i18n.language])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('99704808.dc04fa') })
+  }, [i18n.language])
 
   useEffect(() => {
     setState((draft) => {
@@ -285,12 +321,12 @@ const Purchasing = () => {
         <SpSearchInput
           isShowSearchCondition
           searchConditionList={searchConditionList}
-          placeholder='输入内容'
+          placeholder={$t('9696edd5.ec47d2')}
           onConfirm={(val) => {
             onConfirms(val)
           }}
         />
-        <SpNavFilter info={navFilterList} onChange={handleFilterChange} />
+        <SpNavFilter info={navFilterListForView} onChange={handleFilterChange} />
       </View>
 
       <SpScrollView auto={false} ref={goodsRef} fetch={fetch}>

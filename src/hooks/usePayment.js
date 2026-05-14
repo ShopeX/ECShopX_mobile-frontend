@@ -12,6 +12,7 @@ import { updateUserInfo } from '@/store/slices/user'
 import configStore from '@/store'
 import { isWeixin, isWeb, isWxWeb, requestAlipayminiPayment, isAPP, showToast } from '@/utils'
 import api from '@/api'
+import { $t } from '@/i18n'
 
 const { store } = configStore()
 
@@ -315,7 +316,7 @@ export default (props = {}) => {
       env_version: 'release'
     })
     if (!openlink) {
-      return showToast('小程序URL Scheme生成失败')
+      return showToast($t('3fa1eb08.83284a'))
     }
     console.log('url_link:', openlink)
     Taro.redirectTo({ url: `${cashierResultUrl}?order_id=${order_id}` })

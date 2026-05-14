@@ -2,6 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
+import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View } from '@tarojs/components'
 import { useSelector } from 'react-redux'
@@ -10,6 +11,7 @@ import doc from '@/doc'
 import { SpScrollView, SpNote, SpPage } from '@/components'
 import api from '@/api'
 import { pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './limit-list.scss'
 
 const initialState = {
@@ -17,12 +19,17 @@ const initialState = {
 }
 
 function LimitList(props) {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { persist_purchase_share_info: purchase_share_info = {} } = useSelector(
     (state) => state.purchase
   )
 
   const { listData } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('bbe3fed8.4d4689') })
+  }, [i18n.language])
 
   const fetch = async ({ pageIndex, pageSize }) => {
     const { list, total_count } = await api.purchase.getEmployeeActivityList({
@@ -50,15 +57,15 @@ function LimitList(props) {
         <View className='list-item__time'> {`${employeeBeginTime} - ${employeeEndTime}`}</View>
         <View className='list-item__content'>
           <View className='list-item__content-item'>
-            <View className='list-item__content-item-key'>总额度</View>
+            <View className='list-item__content-item-key'>{$t('2d09f91d.4d1507')}</View>
             <View className='list-item__content-item-val'>{limitFee}</View>
           </View>
           <View className='list-item__content-item'>
-            <View className='list-item__content-item-key'>已使用额度</View>
+            <View className='list-item__content-item-key'>{$t('3bfb8e27.159198')}</View>
             <View className='list-item__content-item-val'>{aggregateFee}</View>
           </View>
           <View className='list-item__content-item'>
-            <View className='list-item__content-item-key'>剩余额度</View>
+            <View className='list-item__content-item-key'>{$t('10c783c7.9aa89b')}</View>
             <View className='list-item__content-item-val'>{leftFee}</View>
           </View>
         </View>
@@ -72,7 +79,7 @@ function LimitList(props) {
       <SpScrollView
         auto='true'
         fetch={fetch}
-        renderEmpty={<SpNote img='empty_activity.png' title='没有查询到数据' />}
+        renderEmpty={<SpNote img='empty_activity.png' title={$t('c575112f.f1f45e')} />}
       >
         <View className='scroll-view-container'>
           {listData.map((item, idx) => limitNode(item, idx))}

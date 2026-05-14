@@ -56,6 +56,7 @@ import S from '@/spx'
 import { Tracker } from '@/service'
 import { useNavigation, useLogin, useLocation } from '@/hooks'
 import withPageWrapper from '@/hocs/withPageWrapper'
+import { useTranslation, $t, ti } from '@/i18n'
 import { ACTIVITY_LIST } from '@/consts'
 import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 import FloatSalesperson from '@/subpages/store/comps/float-salesperson'
@@ -116,9 +117,9 @@ const initialState = {
 }
 
 function EspierDetail(props) {
+  useTranslation()
   const $instance = getCurrentInstance() || {}
   const pageRef = useRef()
-  const scrollTopRef = useRef(0)
 
   const { userInfo } = useSelector((state) => state.user)
   const { colorPrimary, openRecommend } = useSelector((state) => state.sys)
@@ -467,26 +468,6 @@ function EspierDetail(props) {
     })
   }
 
-  const syncNavigateMantle = (scrollTop = 0) => {
-    const bannerHeight = imgHeightList[curImgIdx] || defaultImageHeight
-    const nextNavigateMantle = scrollTop > bannerHeight
-    setState((draft) => {
-      draft.navigateMantle = nextNavigateMantle
-    })
-  }
-
-  const handleGoodsScroll = (e) => {
-    const detail = e?.detail || {}
-    console.log('[espier-detail] handleGoodsScroll', detail)
-    scrollTopRef.current = detail.scrollTop || 0
-    pageRef.current?.handlePageScroll(detail)
-    syncNavigateMantle(detail.scrollTop || 0)
-  }
-
-  useEffect(() => {
-    syncNavigateMantle(scrollTopRef.current)
-  }, [curImgIdx, imgHeightList])
-
   const setSwiperCss = (item) => {
     return {
       height: '100%',
@@ -500,9 +481,9 @@ function EspierDetail(props) {
 
   let sessionFrom = {}
   if (info) {
-    sessionFrom['商品'] = info.itemName
+    sessionFrom[$t('934ffec2.9897d8')] = info.itemName
     if (userInfo) {
-      sessionFrom['昵称'] = userInfo.username
+      sessionFrom[$t('20b64b82.23eb0e')] = userInfo.username
     }
   }
 
@@ -561,12 +542,7 @@ function EspierDetail(props) {
       }
     >
       <View className='page-item-espierdetail__header-bg'></View>
-      <ScrollView
-        scrollY
-        className='page-item-espierdetail-goods-contents'
-        style='height: 100vh;'
-        onScroll={handleGoodsScroll}
-      >
+      <ScrollView scrollY className='page-item-espierdetail-goods-contents' style='height: 100%;'>
         {info && (
           <View className='goods-contents'>
             <View className='goods-pic-container'>
@@ -615,7 +591,7 @@ function EspierDetail(props) {
                   {!play && (
                     <SpImage className='play-icon' src='play2.png' width={50} height={50} />
                   )}
-                  {play ? '退出视频' : '播放视频'}
+                  {play ? $t('a8427e1f.85f859') : $t('a8427e1f.c27cf5')}
                 </View>
               )}
             </View>
@@ -644,29 +620,7 @@ function EspierDetail(props) {
                 )}
                 {info.designWorks && info.designWorks.length > 0 && (
                   <View className='goods-info-case' onClick={goToCaseView}>
-                    查看案例
-                  </View>
-                )}
-                {(isWeixin || isAPP()) && (
-                  // {(
-                  <View className='btn-share-wrap'>
-                    <View
-                      onClick={async () => {
-                        if (isAPP()) {
-                          Taro.SAPPShare.open()
-                        } else {
-                          // await getUserInfoAuth()
-                          setState((draft) => {
-                            draft.sharePanelOpen = true
-                          })
-                        }
-                      }}
-                    >
-                      <View className='btn-share'>
-                        <Text className='iconfont icon-fenxiang-01'></Text>
-                        <Text className='share-txt'>分享</Text>
-                      </View>
-                    </View>
+                    {$t('ca46254d.08a4a0')}
                   </View>
                 )}
               </View>
@@ -686,43 +640,43 @@ function EspierDetail(props) {
                 }
                 onClick={handleReceiveCoupon}
               />
-              
-              {(promotionPackage.length > 0 || promotionActivity.length > 0) && (
-                <SpCell
-                  isLink
-                  onClick={() => {
-                    setState((draft) => {
-                      draft.promotionOpen = true
-                    })
-                  }}
-                >
-                  {promotionPackage.length > 0 && (
-                    <Text className='cell-value'>{`共${promotionPackage.length}种组合随意搭配`}</Text>
-                  )}
-                  {promotionActivity.length > 0 && (
-                    promotionActivity.map((item, index) => (
-                      <View className='promotion-tag' key={`promotion-tag__${index}`}>
-                        {item.conditionRules}
-                      </View>
-                    ))
-                  )}
-                </SpCell>
-              )}
 
               <View className='goods-name-wrap'>
                 <View className='goods-name'>
                   <View className='title'>{info.itemName}</View>
                   <View className='brief'>{info.brief}</View>
                 </View>
+                {(isWeixin || isAPP()) && (
+                  // {(
+                  <View className='btn-share-wrap'>
+                    <View
+                      onClick={async () => {
+                        if (isAPP()) {
+                          Taro.SAPPShare.open()
+                        } else {
+                          // await getUserInfoAuth()
+                          setState((draft) => {
+                            draft.sharePanelOpen = true
+                          })
+                        }
+                      }}
+                    >
+                      <View className='btn-share'>
+                        <Text className='iconfont icon-fenxiang-01'></Text>
+                        <Text className='share-txt'>{$t('934ffec2.c31f48')}</Text>
+                      </View>
+                    </View>
+                  </View>
+                )}
               </View>
               {info.isMedicine == 1 && info?.medicineData?.is_prescription == 1 && (
                 <View className='item-pre'>
                   <View className='item-pre-title'>
-                    <Text className='medicine'>处方药</Text>
-                    <Text>处方药须凭处方在药师指导下购买和使用</Text>
+                    <Text className='medicine'>{$t('7d82f6d2.e8b7e1')}</Text>
+                    <Text>{$t('3fe32003.40410d')}</Text>
                   </View>
                   <View className='item-pre-content'>
-                    <View className='title'>用药提示</View>
+                    <View className='title'>{$t('88396cb9.2d4b03')}</View>
                     <View className='content'>
                       {/* <Text>功能主治：</Text> */}
                       {/* <Text className='content-title'>根据法规要求，请咨询药师了解处方药详细信息</Text> */}
@@ -731,13 +685,14 @@ function EspierDetail(props) {
                   </View>
                 </View>
               )}
-
               <View className='item-bn-sales'>
                 {/* <View className='item-bn'></View> */}
                 {info.salesSetting && (
-                  <View className='item-sales'>{`销量：${info.sales || 0}`}</View>
+                  <View className='item-sales'>{ti('a8427e1f.47df99', [info.sales || 0])}</View>
                 )}
-                {info.store_setting && <View className='kc'>库存：{info.store}</View>}
+                {info.store_setting && (
+                  <View className='kc'>{ti('a8427e1f.e203b0', [info.store])}</View>
+                )}
               </View>
             </View>
 
@@ -753,12 +708,50 @@ function EspierDetail(props) {
                     })
                   }}
                 >
-                  <SpCell title='已选' isLink>
+                  <SpCell title={$t('a8427e1f.ea887b')} isLink>
                     <Text className='cell-value'>{skuText}</Text>
                   </SpCell>
                 </SpLogin>
               </View>
             )}
+
+            <View className='sku-block'>
+              {promotionPackage.length > 0 && (
+                <SpCell
+                  title={$t('6c0659eb.f4fb0d')}
+                  isLink
+                  onClick={() => {
+                    Taro.navigateTo({
+                      url: `/subpages/marketing/package-list?id=${info.itemId}&distributor_id=${info.distributorId}`
+                    })
+                    // setState((draft) => {
+                    //   draft.packageOpen = true
+                    // })
+                  }}
+                >
+                  <Text className='cell-value'>
+                    {ti('6578cf7b.0fe3d0', [promotionPackage.length])}
+                  </Text>
+                </SpCell>
+              )}
+              {promotionActivity.length > 0 && (
+                <SpCell
+                  title={$t('dc155244.cd5666')}
+                  isLink
+                  onClick={() => {
+                    setState((draft) => {
+                      draft.promotionOpen = true
+                    })
+                  }}
+                >
+                  {promotionActivity.map((item, index) => (
+                    <View className='promotion-tag' key={`promotion-tag__${index}`}>
+                      {item.promotionTag}
+                    </View>
+                  ))}
+                </SpCell>
+              )}
+            </View>
 
             {/* {info.itemParams.length > 0 && <View className='goods-params'>
             <View className='params-hd'>商品参数</View>
@@ -774,7 +767,7 @@ function EspierDetail(props) {
 
             {info.itemParams.length > 0 && (
               <View className='goods-params-flat'>
-                <View className='parameter'>参数</View>
+                <View className='parameter'>{$t('ca46254d.3d0a2d')}</View>
                 <View className='parameter-content'>
                   {info.itemParams.map((item, index) => {
                     return (
@@ -801,7 +794,7 @@ function EspierDetail(props) {
 
             <View className='goods-desc'>
               <View className='desc-hd'>
-                <Text className='desc-title'>宝贝详情</Text>
+                <Text className='desc-title'>{$t('a8427e1f.002e0a')}</Text>
               </View>
               {isArray(info.intro) ? (
                 <View>
@@ -908,7 +901,7 @@ function EspierDetail(props) {
         />
       )}
 
-      <AtFloatLayout isOpened={isParameter} title='商品参数' onClose={handleClose}>
+      <AtFloatLayout isOpened={isParameter} title={$t('a8427e1f.8686bb')} onClose={handleClose}>
         <View className='product-parameter'>
           <View className='product-parameter-all'>
             {info?.itemParams?.map((item, index) => {
@@ -921,7 +914,7 @@ function EspierDetail(props) {
             })}
           </View>
           <AtButton type='primary' circle onClick={handleClose}>
-            确认
+            {$t('61e2d21a.e83a25')}
           </AtButton>
         </View>
       </AtFloatLayout>

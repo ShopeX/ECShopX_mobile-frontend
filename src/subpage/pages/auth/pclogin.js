@@ -8,6 +8,7 @@ import { View, Text } from '@tarojs/components'
 import { AtButton } from 'taro-ui'
 import api from '@/api'
 import { getAppId, getExtConfigData } from '@/utils'
+import { $t, ti } from '@/i18n'
 import './pclogin.scss'
 
 function parseUrlStr(urlStr) {
@@ -96,14 +97,14 @@ export default class PcAuth extends Component {
       <View className='page-wxauth'>
         <View className='sec-auth'>
           <View className='icon-pc icon-style'></View>
-          <View className='auth-title'>{extConfig.wxa_name}登录确认</View>
-          <Text className='auth-hint'>请不要扫描来源不明的二维码</Text>
+          <View className='auth-title'>{ti('002036dc.70542d', [extConfig.wxa_name || ''])}</View>
+          <Text className='auth-hint'>{$t('002036dc.382862')}</Text>
           <View className='auth-btns'>
             <AtButton type='primary' onClick={this.handleLogin.bind(this, 1)}>
-              确认登录
+              {$t('002036dc.3053ae')}
             </AtButton>
             <AtButton className='back-btn' onClick={this.handleLogin.bind(this, 0)}>
-              取消登录
+              {$t('002036dc.dc7c4f')}
             </AtButton>
           </View>
         </View>

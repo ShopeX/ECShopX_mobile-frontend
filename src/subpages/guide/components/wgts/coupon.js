@@ -6,6 +6,7 @@ import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { classNames, styleNames } from '@/utils'
+import { $t, i18n } from '@/i18n'
 import './coupon.scss'
 
 // TODO: 用户信息验证
@@ -28,6 +29,8 @@ export default class WgtCoupon extends Component {
     }
   }
   componentDidMount() {
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
     let query = Taro.createSelectorQuery().in(this.$scope)
     let _this = this
     query
@@ -38,6 +41,12 @@ export default class WgtCoupon extends Component {
         })
       })
       .exec()
+  }
+
+  componentWillUnmount() {
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
+    }
   }
 
   navigateTo(url) {
@@ -109,13 +118,13 @@ export default class WgtCoupon extends Component {
         )}
         <View>
           <View className='coupon-title'>
-            <Text>先领券</Text>
+            <Text>{$t('4255417b.26df3f')}</Text>
             <Image
               className='coupon-title__img'
               mode='widthFix'
               src='/assets/imgs/like-coupon.png'
             ></Image>
-            <Text>更优惠</Text>
+            <Text>{$t('4255417b.92c3dd')}</Text>
           </View>
           <View
             className={classNames(

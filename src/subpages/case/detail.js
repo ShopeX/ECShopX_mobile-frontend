@@ -7,6 +7,7 @@ import SpPage from '@/components/sp-page'
 import { pickBy } from '@/utils'
 import doc from '@/doc'
 import * as caseDoc from '@/doc/case'
+import { useTranslation, $t } from '@/i18n'
 import './detail.scss'
 
 const initialState = {
@@ -14,6 +15,7 @@ const initialState = {
 }
 
 function CaseDetail() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
   const { detail } = state
   const $instance = getCurrentInstance() || {}
@@ -70,6 +72,10 @@ function CaseDetail() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('4ede271e.6a93e0') })
+  }, [i18n.language])
+
   return (
     <View className='case-detail'>
       <SpPage>
@@ -83,7 +89,7 @@ function CaseDetail() {
               {detail?.design_pano_url && (
                 <View className='case-detail-design-3d' onClick={handleTo3DPage}>
                   <Text className='iconfont icon-3Dzhanshi'></Text>
-                  <Text className='sp-size--sm'>3D方案</Text>
+                  <Text className='sp-size--sm'>{$t('acf9d08f.57bca6')}</Text>
                 </View>
               )}
             </View>

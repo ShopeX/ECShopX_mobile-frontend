@@ -15,6 +15,7 @@ import { Tracker } from '@/service'
 import api from '@/api'
 import floor from 'lodash/floor'
 import entry from '@/utils/entry'
+import { $t, ti } from '@/i18n'
 import './index.scss'
 
 @connect(({ colors, sys }) => ({
@@ -31,7 +32,7 @@ export default class GoodsBuyPanel extends Component {
     isOpened: false,
     type: 'fastbuy',
     orderType: 'normal',
-    fastBuyText: '立即购买',
+    fastBuyText: '',
     busy: false,
     onClose: () => {},
     onChange: () => {},
@@ -145,11 +146,11 @@ export default class GoodsBuyPanel extends Component {
     }
 
     if (!curSku) {
-      return `请选择`
+      return $t('e7ecd058.708c9d')
     }
 
     propsText = curSku.propsText
-    return `已选 “${propsText}”`
+    return ti('46dc5ce5.00c340', [propsText])
   }
 
   calcDisabled(selection) {
@@ -321,7 +322,7 @@ export default class GoodsBuyPanel extends Component {
           shop_type: isDrug ? 'drug' : 'distributor'
         })
         Taro.showToast({
-          title: '成功加入购物车',
+          title: $t('46dc5ce5.ab91e4'),
           icon: 'success'
         })
       } catch (e) {
@@ -567,21 +568,22 @@ export default class GoodsBuyPanel extends Component {
                 <Text className='goods-sku__props'>{info.item_name}</Text>
               ) : (
                 <Text className='goods-sku__props'>
-                  <Text>{curSkus ? `已选择 ${curSkus.propsText}` : '请选择规格'}</Text>
+                  <Text>
+                    {curSkus ? ti('46dc5ce5.e14c99', [curSkus.propsText]) : $t('46dc5ce5.4fd966')}
+                  </Text>
                 </Text>
               )}
               {curSku ? (
                 <View className='goods-sku__limit'>
                   {info.store_setting && (
                     <Text className='goods-sku__stock'>
-                      库存{curSku.store}
-                      {info.unit}
+                      {ti('46dc5ce5.feacb9', [curSku.store, info.unit])}
                     </Text>
                   )}
                   {activity && curLimit ? (
                     <Text>
-                      {ruleDay ? <Text>每{ruleDay}天</Text> : null}
-                      <Text>限购{activity.rule.limit}件</Text>
+                      {ruleDay ? <Text>{ti('46dc5ce5.38855b', [ruleDay])}</Text> : null}
+                      <Text>{ti('7d82f6d2.ffad24', [activity.rule.limit])}</Text>
                     </Text>
                   ) : null}
                 </View>
@@ -589,8 +591,7 @@ export default class GoodsBuyPanel extends Component {
                 <View className='goods-sku__limit'>
                   {info.store_setting && (
                     <Text className='goods-sku__stock'>
-                      库存：{info.store}
-                      {info.unit}
+                      {ti('46dc5ce5.feacb9', [info.store, info.unit])}
                     </Text>
                   )}
                 </View>
@@ -667,7 +668,7 @@ export default class GoodsBuyPanel extends Component {
                       style={`background: ${colors.data[0].accent}`}
                       disabled={Boolean(!curSkus)}
                     >
-                      {isDrug ? '加入药品清单' : '加入购物车'}
+                      {isDrug ? $t('46dc5ce5.568f80') : $t('6c0659eb.62d369')}
                     </Button>
                   </View>
                 )}
@@ -683,7 +684,7 @@ export default class GoodsBuyPanel extends Component {
                       style={`background: ${colors.data[0].primary}`}
                       disabled={Boolean(!curSkus)}
                     >
-                      {fastBuyText}
+                      {fastBuyText || $t('47ac6066.5fd2f9')}
                     </Button>
                   </View>
                 )}
@@ -699,17 +700,17 @@ export default class GoodsBuyPanel extends Component {
                     onClick={this.handleBuyClick.bind(this, 'pick', curSkus, quantity)}
                     disabled={Boolean(!curSkus)}
                   >
-                    确定
+                    {$t('settings.confirm')}
                   </Button>
                 )}
               {!hasStore && (
                 <Button disabled className='goods-buy-panel__btn btn-fast-buy'>
-                  当前商品无货
+                  {$t('46dc5ce5.b6559b')}
                 </Button>
               )}
               {curSkus && curSkus.approve_status !== 'onsale' && (
                 <Button disabled className='goods-buy-panel__btn btn-fast-buy'>
-                  暂不可售
+                  {$t('46dc5ce5.0c48ed')}
                 </Button>
               )}
             </View>

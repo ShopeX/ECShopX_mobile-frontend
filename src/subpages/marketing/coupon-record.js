@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro from '@tarojs/taro'
@@ -12,21 +12,31 @@ import { View, Text } from '@tarojs/components'
 import { SpPage, SpScrollView, SpCoupon, SpButton, SpNote } from '@/components'
 import { SpTagBar } from '@/subpages/components'
 import { pickBy } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './coupon-record.scss'
 
 const initialState = {
-  couponTypes: [
-    { tag_name: '已使用', value: '2' },
-    { tag_name: '已过期', value: '3' }
-  ],
   couponType: '2',
   couponList: [],
   isDefault: false
 }
 function CouponRecord() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { couponTypes, couponType, couponList, isDefault } = state
+  const { couponType, couponList, isDefault } = state
   const couponRef = useRef()
+
+  const couponTypes = useMemo(
+    () => [
+      { tag_name: $t('2ffc1635.b59b00'), value: '2' },
+      { tag_name: $t('2ffc1635.4d5ccd'), value: '3' }
+    ],
+    [i18n.language]
+  )
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('2d319bee.a396a9') })
+  }, [i18n.language])
 
   useEffect(() => {
     couponRef.current.reset()
@@ -74,8 +84,8 @@ function CouponRecord() {
               <Text>
                 {
                   {
-                    'used': '已使用',
-                    'overdue': '已过期'
+                    used: $t('2ffc1635.b59b00'),
+                    overdue: $t('2ffc1635.4d5ccd')
                   }[item.tagClass]
                 }
               </Text>
@@ -85,10 +95,10 @@ function CouponRecord() {
 
         {isDefault && (
           <View className='default-view'>
-            <SpNote img='empty_marketing.png' title='没有优惠券~' />
+            <SpNote img='empty_marketing.png' title={$t('2ffc1635.a371ef')} />
             <SpButton
-              resetText='首页'
-              confirmText='领券中心'
+              resetText={$t('2ffc1635.db1c89')}
+              confirmText={$t('2ffc1635.9c356b')}
               onConfirm={() => {
                 Taro.navigateTo({ url: '/subpages/marketing/coupon-center' })
               }}

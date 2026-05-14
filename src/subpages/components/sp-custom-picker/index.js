@@ -2,11 +2,10 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect } from 'react'
 import { useImmer } from 'use-immer'
-import Taro from '@tarojs/taro'
-import { View, Text, Image, Picker } from '@tarojs/components'
-import { SpImage } from '@/components'
+import { View, Text, Picker } from '@tarojs/components'
+import { useTranslation, $t, i18n } from '@/i18n'
 import './index.scss'
 
 /**
@@ -17,16 +16,30 @@ import './index.scss'
  *
  */
 
-const initialState = {
-  selectorChecked: '全部店铺',
-  value: '0',
-  customName: ''
-}
-
 function CustomPicker(props) {
-  const [state, setState] = useImmer(initialState)
-  const { selector, customStatus = false, cancel = () => {}, id = '' } = props
+  useTranslation()
+  const { selector: selectorIn = [], customStatus = false, cancel = () => {}, id = '' } = props
+  const selector =
+    selectorIn.length > 0 ? selectorIn : [{ label: $t('4daf1c1e.8098e2'), value: 'phone' }]
+
+  const [state, setState] = useImmer({
+    selectorChecked: selector[0].label,
+    value: '0',
+    customName: ''
+  })
   const { selectorChecked, value, customName } = state
+
+  useEffect(() => {
+    const onLang = () => {
+      if (selectorIn.length === 0) {
+        setState((draft) => {
+          draft.selectorChecked = $t('4daf1c1e.8098e2')
+        })
+      }
+    }
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [selectorIn.length, setState])
 
   useEffect(() => {
     if (customStatus) {
@@ -68,7 +81,7 @@ CustomPicker.options = {
 }
 
 CustomPicker.defaultProps = {
-  selector: [{ label: '手机号', value: 'phone' }]
+  selector: []
 }
 
 export default CustomPicker

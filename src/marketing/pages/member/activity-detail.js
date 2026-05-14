@@ -2,16 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { useDidShow, useRouter } from '@tarojs/taro'
 import { View, ScrollView, Text } from '@tarojs/components'
+import { useTranslation } from 'react-i18next'
 import { SpPage, SpScrollView, SpImage } from '@/components'
 import { SpTagBar, SpSelectModal } from '@/subpages/components'
+import { $t, ti } from '@/i18n'
 import api from '@/api'
 import QRCode from 'qrcode'
-import doc from '@/doc'
 import * as activityDoc from '@/doc/activity'
 import { pickBy } from '@/utils'
 import './activity-detail.scss'
@@ -19,18 +20,23 @@ import './activity-detail.scss'
 const initialState = {
   info: {},
   isOpened: false,
-  selectOptions: [
-    { label: '编辑报名信息', value: '0' },
-    { label: '代他人报名', value: '1' }
-  ],
   qrcode: ''
 }
 function ActivityDetail(props) {
+  const { i18n } = useTranslation()
   const colors = useSelector((state) => state.sys)
   const [state, setState] = useImmer(initialState)
-  const { info, isOpened, selectOptions, qrcode } = state
+  const { info, isOpened, qrcode } = state
   const router = useRouter()
   const verifyRef = useRef()
+
+  const selectOptions = useMemo(
+    () => [
+      { label: $t('c012603a.1f8f1b'), value: '0' },
+      { label: $t('c012603a.78206f'), value: '1' }
+    ],
+    [i18n.language]
+  )
 
   const statusMap = {
     'pending': 'daishenhe1',
@@ -39,6 +45,10 @@ function ActivityDetail(props) {
     'verified': 'yihexiao',
     'canceled': 'yiquxiao'
   }
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('c012603a.41c54a') })
+  }, [i18n.language])
 
   useDidShow(() => {
     fetch()
@@ -113,12 +123,12 @@ function ActivityDetail(props) {
 
   const handleCancel = async () => {
     const res = await Taro.showModal({
-      title: '提示',
-      content: `确定要取消吗?`,
+      title: $t('61e2d21a.02d981'),
+      content: $t('c012603a.f8b026'),
       showCancel: true,
-      cancel: '取消',
-      cancelText: '取消',
-      confirmText: '确定',
+      cancel: $t('61e2d21a.625fb2'),
+      cancelText: $t('61e2d21a.625fb2'),
+      confirmText: $t('settings.confirm'),
       confirmColor: colors.colorPrimary
     })
     if (res.confirm) {
@@ -142,7 +152,6 @@ function ActivityDetail(props) {
     const { activityId, recordId } = info
     let url = `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
     if (value == '0') {
-      // 编辑
       url += `&record_id=${recordId}`
     }
     Taro.navigateTo({
@@ -155,7 +164,7 @@ function ActivityDetail(props) {
     await api.user.joinActivity({ activity_id: activityId })
     Taro.showToast({
       icon: 'none',
-      title: '报名成功'
+      title: $t('c012603a.b90d81')
     })
     setTimeout(() => {
       Taro.navigateTo({
@@ -168,27 +177,22 @@ function ActivityDetail(props) {
     const { activityId, recordId, status, hasTemp } = info
     switch (type) {
       case 'reFill':
-        //重新填写
         Taro.navigateTo({
           url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}&record_id=${recordId}`
         })
         break
       case 'sign':
-        //立即报名
         if (hasTemp) {
-          //有模板
           if (['passed', 'canceled', 'verified'].includes(status)) {
             Taro.navigateTo({
               url: `/marketing/pages/reservation/goods-reservate?activity_id=${activityId}`
             })
           } else {
-            //有编辑
             setState((draft) => {
               draft.isOpened = true
             })
           }
         } else {
-          // 没有模板
           registrationSubmitFetch(info)
         }
 
@@ -207,7 +211,7 @@ function ActivityDetail(props) {
       <View className='activity-detail__footer'>
         {actionCancel && (
           <View className='activity-detail__footer-btn' onClick={handleCancel}>
-            取消报名
+            {$t('c012603a.caca39')}
           </View>
         )}
         {actionEdit && (
@@ -215,7 +219,7 @@ function ActivityDetail(props) {
             className='activity-detail__footer-btn refill-btn'
             onClick={() => onBtnAction('reFill')}
           >
-            重新填写
+            {$t('c012603a.a5c7b5')}
           </View>
         )}
         {actionApply && (
@@ -223,7 +227,7 @@ function ActivityDetail(props) {
             className='activity-detail__footer-btn refill-btn'
             onClick={() => onBtnAction('sign')}
           >
-            立即报名
+            {$t('c012603a.1e6c87')}
           </View>
         )}
       </View>
@@ -248,7 +252,9 @@ function ActivityDetail(props) {
             )}
           </View>
           {info?.recordNo && (
-            <View className='activity-detail__header-right'>报名序号：{info.recordNo}</View>
+            <View className='activity-detail__header-right'>
+              {ti('c012603a.e6bb26', [info.recordNo])}
+            </View>
           )}
         </View>
 
@@ -256,18 +262,18 @@ function ActivityDetail(props) {
           <View className='activity-detail__info-title'>{info.activityName}</View>
           <View className='activity-detail__info-time'>{info?.intro}</View>
           <View className='activity-detail__info-area'>
-            <View className='activity-detail__info-area-label'>活动地点：</View>
+            <View className='activity-detail__info-area-label'>{$t('c012603a.adb1b6')}</View>
             <View className='activity-detail__info-area-content'>{info?.activityPlace}</View>
           </View>
           <View className='activity-detail__info-area  no-margin'>
-            <View className='activity-detail__info-area-label'>详细地址：</View>
+            <View className='activity-detail__info-area-label'>{$t('c012603a.75c1f8')}</View>
             <View className='activity-detail__info-area-content'>{info?.activityAddress}</View>
           </View>
 
           {qrcode && info?.status == 'passed' && (
             <View className='activity-detail__info-code'>
               <View className='activity-detail__info-code-box'>
-                <View className='activity-detail__info-code-title'>请凭二维码进行签到</View>
+                <View className='activity-detail__info-code-title'>{$t('c012603a.0a029e')}</View>
                 <View className='activity-detail__info-code-img'>
                   <SpImage src={qrcode} width={270} />
                 </View>
@@ -279,14 +285,13 @@ function ActivityDetail(props) {
 
         <View className='activity-detail__form'>
           <View className='activity-detail__form-item'>
-            <View className='activity-detail__form-item-label'>手机号</View>
+            <View className='activity-detail__form-item-label'>{$t('c012603a.8098e2')}</View>
             <View className='activity-detail__form-item-value'>{info?.mobile}</View>
           </View>
           <View className='activity-detail__form-item'>
-            <View className='activity-detail__form-item-label'>获取积分</View>
+            <View className='activity-detail__form-item-label'>{$t('c012603a.c07abe')}</View>
             <View className='activity-detail__form-item-value'>{info?.getPoints}</View>
           </View>
-          {/* 动态表单 */}
           {info?.formData?.length > 0 &&
             info.formData.map((item, idx) => (
               <View className='activity-detail__form-item' key={idx}>

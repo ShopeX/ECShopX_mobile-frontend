@@ -12,6 +12,7 @@ import { View, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon } from '@/components'
 import { pickBy, showToast, classNames } from '@/utils'
 import S from '@/spx'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-shopbrand.scss'
 
 const initialState = {
@@ -21,6 +22,7 @@ const initialState = {
   extend: false
 }
 function CompShopBrand(props) {
+  useTranslation()
   const { dtid = 0, storeInfo = {} } = props
   const [state, setState] = useImmer(initialState)
   const { fav, couponList, extend } = state
@@ -90,7 +92,9 @@ function CompShopBrand(props) {
           <View className='store-name'>{storeInfo?.name}</View>
           <View className='store-score-desc'>
             {storeInfo?.scoreList?.avg_star > 0 && (
-              <View className='store-score'>{`评分: ${scoreList.avg_star}`}</View>
+              <View className='store-score'>
+                {ti('d00fb172.43febe', [storeInfo.scoreList.avg_star])}
+              </View>
             )}
             <View
               className='store-desc'
@@ -100,14 +104,14 @@ function CompShopBrand(props) {
                 })
               }}
             >
-              品牌介绍
+              {$t('d00fb172.add0b7')}
               <Text className='iconfont icon-qianwang-01'></Text>
             </View>
           </View>
         </View>
 
         <SpLogin className='btn-attention' onChange={handleFocus}>
-          {fav ? '取消关注' : '+关注'}
+          {fav ? $t('d00fb172.92bdc8') : $t('d00fb172.9b5b8a')}
         </SpLogin>
       </View>
       <View className='coupon-list'>
@@ -147,7 +151,7 @@ function CompShopBrand(props) {
               })
             }}
           >
-            <Text>{`${storeInfo?.marketingActivityList.length}种优惠`}</Text>
+            <Text>{ti('d00fb172.2ed17b', [storeInfo?.marketingActivityList.length])}</Text>
             <Text
               className={classNames('iconfont', {
                 'icon-arrowDown': !extend,

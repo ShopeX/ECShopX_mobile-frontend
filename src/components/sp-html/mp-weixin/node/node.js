@@ -1,4 +1,6 @@
-'use strict'
+import { $t } from '@/i18n'
+
+;('use strict')
 function t(t, e, i) {
   return (
     e in t
@@ -66,7 +68,7 @@ Component({
               wx.setClipboardData({
                 data: r,
                 success: function () {
-                  return wx.showToast({ title: '链接已复制' })
+                  return wx.showToast({ title: $t('f0dcacd6.4b7d63') })
                 }
               })
             : wx.navigateTo({

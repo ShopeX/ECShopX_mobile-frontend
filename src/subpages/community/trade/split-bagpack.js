@@ -11,11 +11,9 @@ import { Loading, SpToast, SpNavBar, SpImg } from '@/components'
 import { FloatMenuMeiQia } from '@/subpages/components'
 import { pickBy, formatTime, resolveOrderStatus } from '@/utils'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
+import { $t, ti } from '@/i18n'
 import './split-bagpack.scss'
-
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
 
 // function resolveTradeOrders (info) {
 //   return info.orders.map(order => {
@@ -29,7 +27,7 @@ import './split-bagpack.scss'
 //     }
 //   })
 // }
-export default class TradeDetail extends Component {
+class TradeDetail extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -73,21 +71,21 @@ export default class TradeDetail extends Component {
 
     return (
       <View className='wuliu-detail'>
-        <SpNavBar title='订单详情' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('403c9269.8054f7')} leftIconType='chevron-left' fixed='true' />
 
         <View className='wuliu-detail'>
-          <View className='title-status'>您有{delivery_num}个包裹已发出</View>
+          <View className='title-status'>{ti('403c9269.c2a38c', [delivery_num])}</View>
           {list.map((item) => (
             <View className='wuliu-detail-item'>
               <View className='wuliu-status'>
                 {item.status_msg == '已发货' && (
                   <Text className='iconfont biao-icon biao-icon-yifahuo'>
-                    <Text className='icon-text'>已发货</Text>
+                    <Text className='icon-text'>{$t('403c9269.355409')}</Text>
                   </Text>
                 )}
                 {item.status_msg == '未发货' && (
                   <Text className='iconfont biao-icon biao-icon-daifahuo'>
-                    <Text className='icon-text'>待发货</Text>
+                    <Text className='icon-text'>{$t('403c9269.d8476e')}</Text>
                   </Text>
                 )}
                 <Text className='wuliu-order' onClick={this.handleClickDelivery.bind(this, item)}>
@@ -110,7 +108,7 @@ export default class TradeDetail extends Component {
                   ))}
                 </ScrollView>
               </View>
-              <View className='ft-tips'>共{item.items_num}件商品</View>
+              <View className='ft-tips'>{ti('403c9269.59594a', [item.items_num])}</View>
             </View>
           ))}
           {/* <DetailItem info={info} /> */}
@@ -120,3 +118,7 @@ export default class TradeDetail extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(TradeDetail))

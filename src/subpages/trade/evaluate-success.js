@@ -3,24 +3,30 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useImmer } from 'use-immer'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { AtButton } from 'taro-ui'
 import { View, Text } from '@tarojs/components'
-import { SpPage, SpButton, SpLoading } from '@/components'
-import { usePayment } from '@/hooks'
-import { isArray } from '@/utils'
-import api from '@/api'
-import { updateCount } from '@/store/slices/cart'
+import { SpPage } from '@/components'
+import { useTranslation, $t, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import './evaluate-success.scss'
 
 function EvaluateSuccess(props) {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
+
+  useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('5093d6d0.606120'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
+
   return (
     <SpPage className='page-evaluate-success'>
       <View className='evaluate-result'>
         <Text className='iconfont icon-roundcheckfill'></Text>
-        <Text className='evaluate-txt'>评价成功</Text>
+        <Text className='evaluate-txt'>{$t('7bacdf29.b67e3a')}</Text>
       </View>
 
       <View className='btn-block'>
@@ -31,7 +37,7 @@ function EvaluateSuccess(props) {
               Taro.redirectTo({ url: '/pages/index' })
             }}
           >
-            返回首页
+            {$t('7bacdf29.5a1367')}
           </AtButton>
         </View>
       </View>

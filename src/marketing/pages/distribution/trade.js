@@ -3,18 +3,20 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import { getCurrentInstance } from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, Image, ScrollView } from '@tarojs/components'
 import { AtTabs, AtTabsPane } from 'taro-ui'
-import { Loading, SpNote, SpNavBar, SpPage } from '@/components'
+import { withTranslation } from 'react-i18next'
+import { Loading, SpNote, SpPage } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
-import { hasNavbar, pickBy } from '@/utils'
+import { pickBy } from '@/utils'
 import { withPager, withBackToTop } from '@/hocs'
 import './trade.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionTrade extends Component {
+class DistributionTrade extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -23,15 +25,26 @@ export default class DistributionTrade extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '未确认', num: '0' },
-        { title: '已确认', num: '0' }
+        { title: '', num: '0' },
+        { title: '', num: '0' }
       ],
       list: []
     }
   }
 
   componentDidMount() {
+    this.syncNavTitle()
     this.nextPage()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('9696edd5.4c117f') })
   }
 
   async fetch(params) {
@@ -41,7 +54,8 @@ export default class DistributionTrade extends Component {
     const query = {
       brokerage_source: type,
       page,
-      pageSize
+      pageSize,
+      isSalesmanPage: 1
     }
 
     const { close, noClose } = await api.distribution.commission(query)
@@ -88,19 +102,22 @@ export default class DistributionTrade extends Component {
   }
 
   render() {
-    const { list, page, tabList, curFilterIdx, scrollTop, curTabIdx } = this.state
-    console.log(list)
+    const { list, page, tabList, scrollTop, curTabIdx } = this.state
+    const tabListForUi = tabList.map((tab, index) => ({
+      ...tab,
+      title: index === 0 ? $t('9696edd5.fc8ee8') : $t('9696edd5.4113e7')
+    }))
 
     return (
       <SpPage className='page-distribution-trade'>
         <AtTabs
           className='trade-list__tabs'
           current={curTabIdx}
-          tabList={tabList}
+          tabList={tabListForUi}
           onClick={this.handleClickTab}
         >
-          {tabList.map((panes, pIdx) => (
-            <AtTabsPane current={curTabIdx} key={pIdx.title} index={pIdx}></AtTabsPane>
+          {tabListForUi.map((panes, pIdx) => (
+            <AtTabsPane current={curTabIdx} key={panes.title} index={pIdx}></AtTabsPane>
           ))}
         </AtTabs>
         <ScrollView
@@ -110,16 +127,16 @@ export default class DistributionTrade extends Component {
           onScrollToLower={this.nextPage}
         >
           <View className='section list'>
-            {list.map((item) => {
+            {list.map((item, index) => {
               return (
-                <View className='list-item'>
+                <View className='list-item' key={item.order_id || index}>
                   <View className='list-item-txt'>
                     <View className='order-no'>
-                      <Text className='key'>单号：</Text>
+                      <Text className='key'>{$t('9696edd5.b93075')}</Text>
                       {item.order_id}
                     </View>
                     <View className='order-no'>
-                      <Text className='key'>佣金：</Text>
+                      <Text className='key'>{$t('9696edd5.ed7c5b')}</Text>
                       <Text className='mark'>
                         {item.commission_type === 'money' ? (
                           <Text className='cur'>
@@ -128,7 +145,10 @@ export default class DistributionTrade extends Component {
                         ) : (
                           <Text className='cur'>
                             {' '}
-                            <Text className='commission'>{item.rebate_point}积分</Text>
+                            <Text className='commission'>
+                              {item.rebate_point}
+                              {$t('9696edd5.9f68a8')}
+                            </Text>
                           </Text>
                         )}
                       </Text>
@@ -144,12 +164,14 @@ export default class DistributionTrade extends Component {
               )
             })}
           </View>
-          {page.isLoading ? <Loading>正在加载...</Loading> : null}
+          {page.isLoading ? <Loading>{$t('9696edd5.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('9696edd5.ba1de9')}</SpNote>
           )}
         </ScrollView>
       </SpPage>
     )
   }
 }
+
+export default withTranslation()(DistributionTrade)

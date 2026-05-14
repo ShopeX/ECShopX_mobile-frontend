@@ -9,12 +9,14 @@ import { AtTabs, AtTabsPane } from 'taro-ui'
 import { Loading, SpNote, SpNavBar, SpTabs, SpSearchInput, SpPage } from '@/components'
 import api from '@/api'
 import { hasNavbar, pickBy } from '@/utils'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import './trade.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionTrade extends Component {
+class DistributionTrade extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -23,14 +25,14 @@ export default class DistributionTrade extends Component {
       ...this.state,
       curTabIdx: 0,
       tabList: [
-        { title: '未确认', num: '0' },
-        { title: '已确认', num: '0' }
+        { title: '', num: '0' },
+        { title: '', num: '0' }
       ],
       list: [],
       searchConditionList: [
-        { label: '订单号', value: 'order_id' },
-        { label: '店铺名称', value: 'shopName' },
-        { label: '手机号', value: 'mobile' }
+        { label: '', value: 'order_id' },
+        { label: '', value: 'shopName' },
+        { label: '', value: 'mobile' }
       ],
       parameter: {}
     }
@@ -114,19 +116,29 @@ export default class DistributionTrade extends Component {
     const { list, page, tabList, curFilterIdx, scrollTop, curTabIdx, searchConditionList } =
       this.state
 
+    const displayTabList = tabList.map((tab, index) => ({
+      ...tab,
+      title: index === 0 ? $t('9696edd5.fc8ee8') : $t('9696edd5.4113e7')
+    }))
+    const displaySearchConditionList = searchConditionList.map((row, index) => ({
+      ...row,
+      label:
+        [$t('9696edd5.1e8dc2'), $t('9696edd5.0d4934'), $t('9696edd5.8098e2')][index] || row.label
+    }))
+
     return (
       <SpPage scrollToTopBtn>
         <View className='page-distribution-trade'>
-          <SpNavBar title='订单' leftIconType='chevron-left' />
+          <SpNavBar title={$t('9696edd5.4c117f')} leftIconType='chevron-left' />
           <SpSearchInput
-            placeholder='输入内容'
+            placeholder={$t('9696edd5.ec47d2')}
             isShowSearchCondition
-            searchConditionList={searchConditionList}
+            searchConditionList={displaySearchConditionList}
             onConfirm={this.handleConfirm.bind(this)}
           />
           <SpTabs
             current={curTabIdx}
-            tablist={tabList}
+            tablist={displayTabList}
             onChange={(e) => {
               this.handleClickTab(e)
             }}
@@ -153,19 +165,19 @@ export default class DistributionTrade extends Component {
                   <View className='list-item' key={index}>
                     <View className='list-item-txt'>
                       <View className='order-no'>
-                        <Text className='key'>单号：</Text>
+                        <Text className='key'>{$t('9696edd5.b93075')}</Text>
                         {item.order_id}
                       </View>
                       <View className='order-no'>
-                        <Text className='key'>来源店铺：</Text>
+                        <Text className='key'>{$t('9696edd5.a35c80')}</Text>
                         {item.store_name}
                       </View>
                       <View className='order-no'>
-                        <Text className='key'>类型打标：</Text>
+                        <Text className='key'>{$t('9696edd5.49b875')}</Text>
                         {item.promote_type}
                       </View>
                       <View className='order-no'>
-                        <Text className='key'>佣金：</Text>
+                        <Text className='key'>{$t('9696edd5.ed7c5b')}</Text>
                         <Text className='mark'>
                           {item.commission_type === 'money' ? (
                             <Text className='cur'>
@@ -174,7 +186,10 @@ export default class DistributionTrade extends Component {
                           ) : (
                             <Text className='cur'>
                               {' '}
-                              <Text className='commission'>{item.rebate_point}积分</Text>
+                              <Text className='commission'>
+                                {item.rebate_point}
+                                {$t('9696edd5.9f68a8')}
+                              </Text>
                             </Text>
                           )}
                         </Text>
@@ -190,9 +205,9 @@ export default class DistributionTrade extends Component {
                 )
               })}
             </View>
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
+            {page.isLoading ? <Loading>{$t('9696edd5.bd0271')}</Loading> : null}
             {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
+              <SpNote img='trades_empty.png'>{$t('9696edd5.ba1de9')}</SpNote>
             )}
           </ScrollView>
         </View>
@@ -200,3 +215,5 @@ export default class DistributionTrade extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionTrade)

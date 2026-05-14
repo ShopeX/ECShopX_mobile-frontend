@@ -10,12 +10,14 @@ import { classNames, styleNames, linkPage, pickBy, getDistributorId } from '@/ut
 import doc from '@/doc'
 import api from '@/api'
 import { AtIcon } from 'taro-ui'
+import { useTranslation, $t } from '@/i18n'
 import GoodsLayout from '../goods-layout'
 import { getGlobalBaseStyle } from '../helper'
 import { WgtsContext } from '../wgts-context'
 import './index.scss'
 
 export default function WgtHotranking(props) {
+  useTranslation()
   const { info, id } = props
   const [goodsList, setGoodsList] = useState([])
   const [goodsLeftList, setGoodsLeftList] = useState([])
@@ -132,7 +134,7 @@ export default function WgtHotranking(props) {
                 onClick={handleClickMore}
                 style={styleNames({ color: base.moreBtn?.color })}
               >
-                <Text>查看更多</Text>
+                <Text>{$t('47b99a9a.90ef7c')}</Text>
                 <AtIcon value='chevron-right' size={14} color={base.moreBtn?.color} />
               </View>
             )}
@@ -159,7 +161,7 @@ export default function WgtHotranking(props) {
                   {item.store <= 0 && (
                     <View className='soldout-mask'>
                       <View className='soldout-mask-text'>
-                        <Text>已售罄</Text>
+                        <Text>{$t('47b99a9a.b12876')}</Text>
                       </View>
                     </View>
                   )}

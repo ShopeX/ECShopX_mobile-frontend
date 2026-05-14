@@ -11,6 +11,7 @@ import { View, Text } from '@tarojs/components'
 import { SpImage, SpLogin, SpShopCoupon, SpPrice } from '@/components'
 import { pickBy, showToast, classNames } from '@/utils'
 import S from '@/spx'
+import { useTranslation, $t } from '@/i18n'
 import qs from 'qs'
 import './comp-tab.scss'
 
@@ -20,6 +21,7 @@ const initialState = {
   extend: false
 }
 function CompTab(props) {
+  useTranslation()
   const { shopCartCount } = useSelector((state) => state.cart)
 
   const { popFrame = {} } = props
@@ -75,7 +77,7 @@ function CompTab(props) {
           disabled={!shopCartCount.total_fee}
           onClick={() => settlement()}
         >
-          去结算
+          {$t('165a82af.01e5a3')}
         </AtButton>
       )}
     </View>

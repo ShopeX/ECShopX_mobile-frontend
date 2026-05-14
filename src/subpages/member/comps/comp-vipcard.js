@@ -5,9 +5,11 @@
 import Taro from '@tarojs/taro'
 import { View, Image, Text } from '@tarojs/components'
 import { styleNames, classNames } from '@/utils'
+import { useTranslation, $t, ti } from '@/i18n'
 import './comp-vipcard.scss'
 
 function CompVipCard(props) {
+  useTranslation()
   const { info, onLink, userInfo, memberConfig } = props
   console.log('vip-info==', info, userInfo, memberConfig)
   const { isVip, vipType, endTime } = info
@@ -17,15 +19,17 @@ function CompVipCard(props) {
     <View className='block normal-account'>
       <View className='lf-con'>
         <View className='vip-title'>
-          开通VIP会员<Text className='iconfont icon-qianwang-01'></Text>
+          {$t('9fc03a5c.615f4f')}
+          <Text className='iconfont icon-qianwang-01'></Text>
         </View>
-        <View className='vip-desc'>即刻享受最高1折会员优惠</View>
+        <View className='vip-desc'>{$t('9fc03a5c.1e9f41')}</View>
       </View>
       <View className='rg-con'>
         <View className='vip-xf'>
-          续费<Text className='iconfont icon-qianwang-01'></Text>
+          {$t('9fc03a5c.5f92b4')}
+          <Text className='iconfont icon-qianwang-01'></Text>
         </View>
-        <View className='xs-price'>限时特价</View>
+        <View className='xs-price'>{$t('9fc03a5c.3b4502')}</View>
       </View>
     </View>
   )
@@ -34,10 +38,11 @@ function CompVipCard(props) {
       <View className='top-block'>
         <Text className='card-no'>NO.{user_card_code}</Text>
         <View className='vip-card'>
-          VIP会员卡<Text className='iconfont icon-qianwang-01 icon'></Text>
+          {$t('9fc03a5c.64f674')}
+          <Text className='iconfont icon-qianwang-01 icon'></Text>
         </View>
       </View>
-      <View className='expire-time'>{endTime}到期</View>
+      <View className='expire-time'>{ti('9fc03a5c.b83126', [endTime])}</View>
     </View>
   )
   const renderBackgroundImage = () => {

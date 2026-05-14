@@ -2,14 +2,13 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux'
 import Taro from '@tarojs/taro'
 import { View, Text, ScrollView } from '@tarojs/components'
-import { SpPrice, SpLogin } from '@/components'
+import { useTranslation, $t } from '@/i18n'
 import './comp-couponlist.scss'
 
 function CompCouponList(props) {
+  useTranslation()
   const { info, onClick = () => {} } = props
   console.log(info)
   const onChangeLogin = () => {
@@ -34,7 +33,8 @@ function CompCouponList(props) {
         </ScrollView>
       </View>
       <View className='couponlist-ft' onClick={onClick}>
-        领券<Text className='iconfont icon-qianwang-01'></Text>
+        {$t('50b5c4f8.563933')}
+        <Text className='iconfont icon-qianwang-01'></Text>
       </View>
     </View>
   )

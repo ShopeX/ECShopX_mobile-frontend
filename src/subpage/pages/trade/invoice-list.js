@@ -10,6 +10,7 @@ import { Loading, SpNote, SpNavBar } from '@/components'
 import api from '@/api'
 import { withPager, withLogin } from '@/hocs'
 import { log, pickBy, resolveOrderStatus, authSetting } from '@/utils'
+import { $t } from '@/i18n'
 import TradeItem from './comps/item'
 import './invoice-list.scss'
 
@@ -97,7 +98,7 @@ export default class InvoiceList extends Component {
 
   handleClickBtn = async (type) => {
     if (type === 'add-card') {
-      const showErr = (title = '下载失败') => {
+      const showErr = (title = $t('06d0681d.65e200')) => {
         return Taro.showToast({
           icon: 'none',
           title
@@ -116,7 +117,7 @@ export default class InvoiceList extends Component {
             })
             Taro.showToast({
               icon: 'success',
-              title: '成功保存照片'
+              title: $t('06d0681d.987ef0')
             })
           } catch (e) {
             console.log(e)
@@ -136,7 +137,7 @@ export default class InvoiceList extends Component {
 
     return (
       <View className='page-trade-list page-invoice-list'>
-        <SpNavBar title='发票管理' leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('06d0681d.37ec4f')} leftIconType='chevron-left' fixed='true' />
 
         <ScrollView scrollY className='trade-list__scroll' onScrollToLower={this.nextPage}>
           {list.map((item) => {
@@ -150,7 +151,7 @@ export default class InvoiceList extends Component {
                 onClickBtn={this.handleClickItemBtn}
                 renderFooter={
                   <View className='trade-item__ft'>
-                    <Text className='trade-item__status'>已开票</Text>
+                    <Text className='trade-item__status'>{$t('f7fffd22.ca4355')}</Text>
                   </View>
                 }
               />
@@ -162,9 +163,9 @@ export default class InvoiceList extends Component {
                         size='small'
                         onClick={this.handleClickBtn.bind(this, 'add-card')}
                       >下载</AtButton>*/}
-          {page.isLoading && <Loading>正在加载...</Loading>}
+          {page.isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>赶快去添加吧~</SpNote>
+            <SpNote img='trades_empty.png'>{$t('708ca93b.8a4368')}</SpNote>
           )}
         </ScrollView>
       </View>

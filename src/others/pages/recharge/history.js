@@ -8,7 +8,8 @@ import { View, Text } from '@tarojs/components'
 import { SpNavBar, Loading, SpNote } from '@/components'
 import { connect } from 'react-redux'
 import { formatTime } from '@/utils'
-// import { Tracker } from '@/service'
+import { Tracker } from '@/service'
+import { $t } from '@/i18n'
 import api from '@/api'
 
 import './history.scss'
@@ -21,6 +22,7 @@ export default class History extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      navTitle: '',
       list: [],
       isLoading: false,
       isEnd: false,
@@ -35,11 +37,11 @@ export default class History extends Component {
 
   componentDidMount() {
     const { type = 0 } = this.$instance?.router?.params
-    const title = type === '1' ? '消费记录' : '充值记录'
+    const title = type === '1' ? $t('dd9e86e1.58cd6d') : $t('dd9e86e1.415b28')
     Taro.setNavigationBarTitle({
       title
     })
-    this.config.navigationBarTitleText = title
+    this.setState({ navTitle: title })
     this.init(true)
   }
 
@@ -97,17 +99,17 @@ export default class History extends Component {
   }
 
   render() {
-    const { list, isLoading, isEmpty } = this.state
+    const { list, isLoading, isEmpty, navTitle } = this.state
     const { colors } = this.props
     return (
       <View className='history'>
-        <SpNavBar title={this.config.navigationBarTitleText} leftIconType='chevron-left' />
+        <SpNavBar title={navTitle} leftIconType='chevron-left' />
         {list.map((item) => (
           <View className='item' key={item.depositTradeId} onClick={this.showDetail.bind(this)}>
             <View className='left'>
               <View className='title'>
                 {item.tradeType === 'recharge_gift' && (
-                  <Text style={`color: ${colors.data[0].primary}`}>(赠送)</Text>
+                  <Text style={`color: ${colors.data[0].primary}`}>{$t('dd9e86e1.bd79ff')}</Text>
                 )}
                 {item.detail}
               </View>
@@ -122,8 +124,8 @@ export default class History extends Component {
             </View>
           </View>
         ))}
-        {isLoading && <Loading>正在加载...</Loading>}
-        {isEmpty && !isLoading && <SpNote img='trades_empty.png'>无数据~</SpNote>}
+        {isLoading && <Loading>{$t('10293ac1.bd0271')}</Loading>}
+        {isEmpty && !isLoading && <SpNote img='trades_empty.png'>{$t('dd9e86e1.844a39')}</SpNote>}
       </View>
     )
   }

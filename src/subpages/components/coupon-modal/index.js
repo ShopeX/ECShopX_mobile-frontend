@@ -7,6 +7,7 @@ import { View, ScrollView } from '@tarojs/components'
 import { CouponItem } from '@/components'
 import { AtModal } from 'taro-ui'
 import { withPager } from '@/hocs'
+import { i18n } from '@/i18n'
 import './index.scss'
 
 export default class CouponModal extends PureComponent {
@@ -18,6 +19,15 @@ export default class CouponModal extends PureComponent {
     addGlobalClass: true
   }
 
+  componentDidMount() {
+    this._onI18n = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onI18n)
+  }
+
+  componentWillUnmount() {
+    i18n.off('languageChanged', this._onI18n)
+  }
+
   render() {
     const { list, visible, onChange } = this.props
 
@@ -25,7 +35,7 @@ export default class CouponModal extends PureComponent {
       <View className='coupon-modal'>
         <AtModal isOpened={visible} closeOnClickOverlay={false}>
           <View className='title'>
-            福利专享券
+            {i18n.t('5c587fb1.95d600')}
             <View
               className='iconfont icon-close poster-close-btn'
               onClick={() => onChange(false, 'close')}
@@ -42,7 +52,7 @@ export default class CouponModal extends PureComponent {
                         style={{ fontSize: '22rpx' }}
                         onClick={this.handleClickNews.bind(this, item, idx)}
                       >
-                        待领取
+                        {i18n.t('5c587fb1.26a7c3')}
                         {/* {item.getted === 1 ? '已领取' : ''}
                         {item.getted === 2 ? '已领完' : ''}
                         {(time > parseInt(new Date(item.begin_date).getTime() / 1000) && item.getted !== 2 && item.getted !== 1) ? '待领取' : ''}
@@ -54,7 +64,7 @@ export default class CouponModal extends PureComponent {
             </View>
           </ScrollView>
           <View onClick={() => onChange(false, 'jump')} className='button'>
-            放入券包
+            {i18n.t('5c587fb1.0d6abd')}
           </View>
         </AtModal>
       </View>

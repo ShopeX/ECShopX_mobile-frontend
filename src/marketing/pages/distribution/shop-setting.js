@@ -5,11 +5,13 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Image } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { SpCell, SpPage } from '@/components'
+import { $t } from '@/i18n'
 import api from '@/api'
 import './shop-setting.scss'
 
-export default class DistributionShopSetting extends Component {
+class DistributionShopSetting extends Component {
   constructor(props) {
     super(props)
 
@@ -50,20 +52,24 @@ export default class DistributionShopSetting extends Component {
       <SpPage className='page-distribution-shop-setting'>
         <View className='min-h-full'>
           <SpCell
-            title='小店名称'
+            title={$t('dd89651c.798f95')}
             value={info.shop_name}
             onClick={this.handleClick.bind(this, 'shop_name')}
             border
             isLink
           />
           <SpCell
-            title='小店描述'
+            title={$t('dd89651c.41479a')}
             value={info.brief}
             onClick={this.handleClick.bind(this, 'brief')}
             border
             isLink
           />
-          <SpCell title='小店店招' onClick={this.handleClick.bind(this, 'shop_pic')} isLink>
+          <SpCell
+            title={$t('dd89651c.537de8')}
+            onClick={this.handleClick.bind(this, 'shop_pic')}
+            isLink
+          >
             <Image
               className='shop-sign'
               src={info.shop_pic || 'https://fakeimg.pl/320x100/EFEFEF/CCC/?font=lobster'}
@@ -75,3 +81,5 @@ export default class DistributionShopSetting extends Component {
     )
   }
 }
+
+export default withTranslation()(DistributionShopSetting)

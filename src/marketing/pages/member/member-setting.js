@@ -3,8 +3,10 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
-import Taro, { getCurrentInstance } from '@tarojs/taro'
+import Taro from '@tarojs/taro'
 import { View, Button } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import req from '@/api/req'
 import { SpPage, SpCell, SpNavBar } from '@/components'
 import S from '@/spx'
@@ -13,18 +15,7 @@ import { connect } from 'react-redux'
 import DestoryConfirm from './comps/destory-comfirm-modal'
 import './member-setting.scss'
 
-@connect(
-  () => ({}),
-  (dispatch) => ({
-    onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
-    onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count }),
-    onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
-  })
-)
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class SettingIndex extends Component {
+class SettingIndex extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -36,8 +27,22 @@ export default class SettingIndex extends Component {
     }
   }
 
+  componentDidMount() {
+    this.syncNavTitle()
+  }
+
   componentDidShow() {
     this.fetchRedirect()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('162d72a5.e366cc') })
   }
 
   // 获取积分个人信息跳转
@@ -58,19 +63,16 @@ export default class SettingIndex extends Component {
     this.props.onFetchFavs([])
     this.props.onUpdateCart([])
     this.props.onUpdateCartCount(0)
-    console.log(process.env.TARO_ENV, '=======process.env.TARO_ENV ')
-    console.log(Taro.getEnv(), '======= Taro.getEnv() ')
-    console.log(process.env.APP_HOME_PAGE)
     if (process.env.TARO_ENV === 'h5' && Taro.getEnv() !== 'SAPP') {
       // eslint-disable-next-line
       Taro.showToast({
-        title: '退出登录成功',
+        title: $t('20b64b82.499f05'),
         icon: 'none'
       })
       goToPage(process.env.APP_HOME_PAGE)
     } else {
       Taro.showToast({
-        title: '退出登录成功',
+        title: $t('20b64b82.499f05'),
         icon: 'none'
       })
       Taro.redirectTo({
@@ -82,7 +84,7 @@ export default class SettingIndex extends Component {
   handleClickWxOAuth = (url, isLogin = false) => {
     if (!S.getAuthToken() && isLogin) {
       Taro.showToast({
-        title: '请登录',
+        title: $t('ab76db66.7d1eb0'),
         icon: 'none'
       })
       return false
@@ -94,7 +96,7 @@ export default class SettingIndex extends Component {
     const { redirectInfo } = this.state
     if (!S.getAuthToken()) {
       Taro.showToast({
-        title: '请登录',
+        title: $t('ab76db66.7d1eb0'),
         icon: 'none'
       })
       return false
@@ -114,9 +116,9 @@ export default class SettingIndex extends Component {
       if (!res.status) {
         this.setState({
           visible: true,
-          title: '注销账号',
+          title: $t('20b64b82.ec41af'),
           content: res.msg,
-          confirmBtnContent: '我知道了'
+          confirmBtnContent: $t('20b64b82.fe0337')
         })
       } else {
         this.handleClickWxOAuth(`/marketing/pages/member/destroy-member?phone=${res.msg}`, true)
@@ -137,11 +139,15 @@ export default class SettingIndex extends Component {
     const { colors } = this.props
     return (
       <SpPage className='member-setting'>
-        <SpNavBar title='设置' />
+        <SpNavBar title={$t('162d72a5.e366cc')} />
         <View className='member-setting-section'>
-          <SpCell title='个人信息' isLink onClick={this.handleClickInfo.bind(this)}></SpCell>
           <SpCell
-            title='地址管理'
+            title={$t('3c569e24.eab129')}
+            isLink
+            onClick={this.handleClickInfo.bind(this)}
+          ></SpCell>
+          <SpCell
+            title={$t('cb93ea29.bca1ea')}
             isLink
             onClick={this.handleClickWxOAuth.bind(this, '/marketing/pages/member/address', true)}
           ></SpCell>
@@ -153,7 +159,7 @@ export default class SettingIndex extends Component {
                   style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
                   onClick={this.handleClickLogout}
                 >
-                  退出登录
+                  {$t('20b64b82.44efd1')}
                 </Button>
               )}
 
@@ -162,7 +168,7 @@ export default class SettingIndex extends Component {
                 style={`color: ${colors.data[0].primary}; border: 1px solid ${colors.data[0].primary}`}
                 onClick={this.handleCancelMenber.bind(this)}
               >
-                注销账号
+                {$t('20b64b82.ec41af')}
               </Button>
             </View>
           )}
@@ -178,3 +184,16 @@ export default class SettingIndex extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(
+  connect(
+    () => ({}),
+    (dispatch) => ({
+      onUpdateCart: (list) => dispatch({ type: 'cart/update', payload: list }),
+      onUpdateCartCount: (count) => dispatch({ type: 'cart/updateCartNum', payload: count }),
+      onFetchFavs: (favs) => dispatch({ type: 'member/favs', payload: favs })
+    })
+  )(withTranslation()(SettingIndex))
+)

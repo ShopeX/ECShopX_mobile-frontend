@@ -3,5 +3,8 @@
  * See LICENSE file for license details.
  */
 export default {
+  navigationStyle: 'custom',
+  transparentTitle: 'auto',
+  titlePenetrate: 'YES',
   navigationBarTitleText: '商品列表'
 }

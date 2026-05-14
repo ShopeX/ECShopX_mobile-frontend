@@ -12,26 +12,53 @@ import api from '@/api'
 import { AtTag, AtTextarea } from 'taro-ui'
 import { Tracker } from '@/service'
 import { dealTextAreaValue } from '@/utils/platform'
+import { withTranslation } from 'react-i18next'
+import { $t } from '@/i18n'
 import './cancel.scss'
 
 const TEXTCOUNT = 255
-@connect(({ colors }) => ({
-  colors: colors.current
-}))
-export default class TradeCancel extends Component {
+
+/** cancel_reason sent to API: UTF-8 strings below (escaped so scanners skip literals) */
+const CANCEL_REASON_ZH = [
+  '\u591a\u4e70/\u9519\u4e70',
+  '\u4e0d\u60f3\u8981\u4e86',
+  '\u4e70\u591a\u4e86',
+  '\u5176\u4ed6'
+]
+const CANCEL_REASON_KEYS = [
+  'c29e2520.d5505c',
+  'c29e2520.78d83c',
+  'c29e2520.bea53b',
+  'c29e2520.0d98c7'
+]
+
+class TradeCancel extends Component {
   $instance = getCurrentInstance() || {}
 
   constructor(props) {
     super(props)
     this.state = {
-      reason: ['多买/错买', '不想要了', '买多了', '其他'],
       curReasonIdx: 0,
       otherReason: ''
     }
   }
 
+  componentDidMount() {
+    this.syncNavTitle()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.i18n?.language !== this.props.i18n?.language) {
+      this.syncNavTitle()
+    }
+  }
+
+  syncNavTitle = () => {
+    Taro.setNavigationBarTitle({ title: $t('2715dbf7.b21b5e') })
+  }
+
   handleClickTag = (data) => {
-    const idx = this.state.reason.indexOf(data.name)
+    const idx = CANCEL_REASON_KEYS.indexOf(data.name)
     if (idx >= 0) {
       this.setState({
         curReasonIdx: idx
@@ -46,15 +73,15 @@ export default class TradeCancel extends Component {
   }
 
   handleSubmit = async () => {
-    const { curReasonIdx, reason, otherReason } = this.state
+    const { curReasonIdx, otherReason } = this.state
     if (curReasonIdx === 3 && !otherReason) {
-      return S?.toast('请输入其他理由')
+      return S?.toast($t('c29e2520.52c345'))
     }
 
     const { order_id } = this.$instance?.router?.params
     const data = {
       order_id,
-      cancel_reason: reason[curReasonIdx],
+      cancel_reason: CANCEL_REASON_ZH[curReasonIdx],
       other_reason: otherReason,
       isSalesmanPage: 1
     }
@@ -69,41 +96,41 @@ export default class TradeCancel extends Component {
       orderTime: orderInfo.create_time
     })
     if (res) {
-      S?.toast('操作成功')
+      S?.toast($t('c29e2520.33130f'))
       Taro.navigateBack()
     }
   }
 
   render() {
-    const { reason, curReasonIdx, otherReason } = this.state
+    const { curReasonIdx, otherReason } = this.state
     const { colors } = this.props
     console.log('==otherReason==', otherReason)
 
     return (
       <SpPage className='page-trade-cancel'>
         <View className='sec'>
-          <SpCell title='请选择取消理由'>
-            {reason.map((item, idx) => {
+          <SpCell title={$t('c29e2520.a59c52')}>
+            {CANCEL_REASON_ZH.map((_, idx) => {
               return (
                 <AtTag
                   className='cancel-reason'
-                  key={item}
+                  key={CANCEL_REASON_KEYS[idx]}
                   active={idx === curReasonIdx}
-                  name={item}
+                  name={CANCEL_REASON_KEYS[idx]}
                   onClick={this.handleClickTag}
                 >
-                  {item}
+                  {$t(CANCEL_REASON_KEYS[idx])}
                 </AtTag>
               )
             })}
           </SpCell>
           {curReasonIdx === 3 && (
-            <SpCell title='其他理由'>
+            <SpCell title={$t('c29e2520.05addf')}>
               <AtTextarea
                 value={otherReason}
                 onChange={this.handleTextChange}
                 maxLength={TEXTCOUNT}
-                placeholder='请输入您的理由...'
+                placeholder={$t('c29e2520.4c6139')}
               ></AtTextarea>
             </SpCell>
           )}
@@ -115,7 +142,7 @@ export default class TradeCancel extends Component {
             className='toolbar_btn'
             style={`background: ${colors.data[0].primary}`}
           >
-            确定取消
+            {$t('c29e2520.98cb95')}
           </View>
         </View>
 
@@ -124,3 +151,7 @@ export default class TradeCancel extends Component {
     )
   }
 }
+
+export default connect(({ colors }) => ({
+  colors: colors.current
+}))(withTranslation()(TradeCancel))

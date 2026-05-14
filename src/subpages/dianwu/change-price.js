@@ -2,28 +2,23 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React, { useEffect, useMemo } from 'react'
 import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
-import api from '@/api'
 import * as dianwuApi from '@/api/dianwu'
 import doc from '@/subpages/doc'
 import { AtButton } from 'taro-ui'
 import qs from 'qs'
-import { useAsyncCallback } from '@/hooks'
-import { SpPage, SpCell, SpSelect, SpImage, SpPrice, SpCheckbox } from '@/components'
+import { SpPage, SpSelect, SpImage, SpPrice, SpCheckbox } from '@/components'
 import { View, Text, ScrollView } from '@tarojs/components'
 import { classNames, pickBy, validate, onEventChannel, showToast } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import Big from 'big.js'
 import CompInput from './comps/comp-input'
 import './change-price.scss'
 
 const initialState = {
-  changeTypeList: [
-    { id: 1, name: '直接改价' },
-    { id: 2, name: '折扣改价' }
-  ],
   items: [],
   changeType: [1],
   showTip: false,
@@ -35,9 +30,16 @@ const initialState = {
   priceAdjustment: 0
 }
 function DianwuChangePrice(props) {
+  const { i18n } = useTranslation()
+  const changeTypeList = useMemo(
+    () => [
+      { id: 1, name: $t('9760d213.5aea83') },
+      { id: 2, name: $t('9760d213.88dd0b') }
+    ],
+    [i18n.language]
+  )
   const [state, setState] = useImmer(initialState)
   const {
-    changeTypeList,
     items,
     changeType,
     showTip,
@@ -56,6 +58,10 @@ function DianwuChangePrice(props) {
     const params = qs.parse(decodeURIComponent(checkout))
     fetchCheckout(params)
   }, [])
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('3e8c19b5.749681') })
+  }, [i18n.language])
 
   const fetchCheckout = async (params) => {
     const res = await dianwuApi.checkout(params)
@@ -135,7 +141,7 @@ function DianwuChangePrice(props) {
   const onConfirmChangePrice = async () => {
     const params = getChangePriceParams(items)
     const res = await fetchCheckout(params)
-    showToast('价格修改成功')
+    showToast($t('9760d213.fea488'))
     onEventChannel('onEventChangePrice', { res, markdown: params.markdown })
     setTimeout(() => {
       Taro.navigateBack()
@@ -179,7 +185,7 @@ function DianwuChangePrice(props) {
       })}
       renderFooter={
         <AtButton circle type='primary' onClick={onConfirmChangePrice}>
-          确认改价
+          {$t('9760d213.b83e53')}
         </AtButton>
       }
     >
@@ -188,21 +194,21 @@ function DianwuChangePrice(props) {
           <SpImage src={member?.avatar || 'user_icon.png'} width={80} height={80} />
           <View className='user-info'>
             <View className='info-hd'>
-              <Text className='name'>{member?.username || '匿名'}</Text>
+              <Text className='name'>{member?.username || $t('9760d213.1a75c1')}</Text>
               <Text className='mobile'>{member?.mobile}</Text>
             </View>
             <View className='info-bd'>
               <View className='filed-item'>
-                <Text className='label'>积分:</Text>
+                <Text className='label'>{$t('9760d213.5498d6')}</Text>
                 <Text className='value'>{member?.point || 0}</Text>
               </View>
               <View className='filed-item'>
-                <Text className='label'>券:</Text>
+                <Text className='label'>{$t('9760d213.0c9cbf')}</Text>
                 <Text className='value'>{member?.couponNum || 0}</Text>
               </View>
               {member?.vipDiscount < 10 && (
                 <View className='filed-item'>
-                  <Text className='label'>会员折扣:</Text>
+                  <Text className='label'>{$t('9760d213.287fa3')}</Text>
                   <Text className='value'>{member?.vipDiscount || 0}</Text>
                 </View>
               )}
@@ -211,7 +217,7 @@ function DianwuChangePrice(props) {
         </View>
         <View className='goods-block bottom-line'>
           <View className='block-hd'>
-            <View className='hd-title'>改价方式</View>
+            <View className='hd-title'>{$t('9760d213.3a1bbf')}</View>
             <SpSelect
               info={changeTypeList}
               value={changeType}
@@ -230,14 +236,19 @@ function DianwuChangePrice(props) {
                 </View>
                 <View className='item-bd'>
                   <View className='item-title'>{item.name}</View>
-                  {item.itemSpecDesc && <View className='item-sku'>规格：{item.itemSpecDesc}</View>}
+                  {item.itemSpecDesc && (
+                    <View className='item-sku'>
+                      {$t('9760d213.69c069')}
+                      {item.itemSpecDesc}
+                    </View>
+                  )}
                   <View className='item-price'>{itemPriceFormat(item)}</View>
                   <View className='change-price-block'>
                     <Text className='label'>
                       {
                         {
-                          1: '直接改价',
-                          2: '改价折扣'
+                          1: $t('9760d213.5aea83'),
+                          2: $t('9760d213.bcf174')
                         }[changeType[0]]
                       }
                     </Text>
@@ -271,7 +282,7 @@ function DianwuChangePrice(props) {
 
       <View className='change-price-dialog'>
         <View className='block-hd'>
-          <Text className='label'>商品应付金额</Text>
+          <Text className='label'>{$t('9760d213.269dbc')}</Text>
           <SpPrice value={itemFeeNew} />
         </View>
         {priceAdjustment > 0 && (
@@ -282,7 +293,7 @@ function DianwuChangePrice(props) {
         )}
         <View className='block-bd'>
           <View className='bd-item'>
-            <Text className='label'>一键改价</Text>
+            <Text className='label'>{$t('9760d213.40b3ba')}</Text>
             <CompInput
               value={globalPrice}
               name='global-price'
@@ -291,12 +302,12 @@ function DianwuChangePrice(props) {
             />
             <View className='bd-item-ft'>
               <AtButton className='btn-change' circle onClick={handleGlobalChangePrice}>
-                确定
+                {$t('9760d213.38cf16')}
               </AtButton>
             </View>
           </View>
           {/* <View className='bd-item'>
-            <Text className='label'>运费</Text>
+            <Text className='label'>{$t('9760d213.9a935b')}</Text>
             <CompInput
               value={globalFreightFee}
               name='freight-price'
@@ -307,12 +318,12 @@ function DianwuChangePrice(props) {
                 })
               }}
             />
-            <View className='bd-item-ft'>{<SpCheckbox>免运费</SpCheckbox>}</View>
+            <View className='bd-item-ft'>{<SpCheckbox>{$t('9760d213.b00a4f')}</SpCheckbox>}</View>
           </View> */}
         </View>
         <View className='block-ft'>
           <View className='label'>
-            订单应付金额
+            {$t('9760d213.cfcd5e')}
             <Text
               className='iconfont icon-xinxi'
               onClick={() => {
@@ -332,11 +343,9 @@ function DianwuChangePrice(props) {
         </View>
         {showTip && (
           <View className='dialog-tip'>
-            <View className='tip-txt'>订单应付金额 = 商品应付金额 + 运费。</View>
-            <View className='tip-txt'>
-              一键改价后的金额为商品总价，该金额会按商品单价的金额比例分摊到每个商品，不会分摊到优惠和运费。
-            </View>
-            <View className='tip-txt'>订单应付金额不能小于等于0。</View>
+            <View className='tip-txt'>{$t('9760d213.e0a13b')}</View>
+            <View className='tip-txt'>{$t('9760d213.4983fd')}</View>
+            <View className='tip-txt'>{$t('9760d213.56e179')}</View>
           </View>
         )}
       </View>

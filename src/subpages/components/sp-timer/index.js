@@ -4,10 +4,11 @@
  */
 import React, { Component } from 'react'
 import { Text } from '@tarojs/components'
+import { withTranslation } from 'react-i18next'
 import { classNames } from '@/utils'
 import './index.scss'
 
-export default class SpTimer extends Component {
+class SpTimer extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -87,7 +88,7 @@ export default class SpTimer extends Component {
 
   render() {
     const { countDur, sent, finish } = this.state
-    const { timerMsg, className, style = '' } = this.props
+    const { timerMsg, className, style = '', t } = this.props
 
     //发送中
     const is_sending = sent && !finish
@@ -97,8 +98,8 @@ export default class SpTimer extends Component {
       (is_sending
         ? `${countDur}s`
         : finish
-        ? this.props.msg || '重新发送'
-        : this.props.defaultMsg || '发送验证码')
+        ? this.props.msg || t('0eb8dfea.89b213')
+        : this.props.defaultMsg || t('0eb8dfea.c5c358'))
 
     return (
       <Text
@@ -111,3 +112,5 @@ export default class SpTimer extends Component {
     )
   }
 }
+
+export default withTranslation()(SpTimer)

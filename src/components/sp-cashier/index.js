@@ -21,15 +21,8 @@ import {
   isAlipay
 } from '@/utils'
 import doc from '@/doc'
+import { $t, ti } from '@/i18n'
 import './index.scss'
-
-const paymentList = [
-  {
-    paymentChannel: 'deposit',
-    paymentCode: 'deposit',
-    paymentName: '余额支付'
-  }
-]
 
 const initialState = {
   list: [],
@@ -116,7 +109,13 @@ function SpCashier(props) {
     }
     let _list = list
     if (process.env.NODE_ENV === 'development') {
-      _list = list.concat(paymentList)
+      _list = list.concat([
+        {
+          paymentChannel: 'deposit',
+          paymentCode: 'deposit',
+          paymentName: $t('349e8d9f.89ac23')
+        }
+      ])
     }
 
     setState((draft) => {
@@ -143,7 +142,13 @@ function SpCashier(props) {
     console.log('fetchAppPaymentList:', res)
     const list = pickBy(res, doc.payment.APP_PAYMENT_ITEM)
     if (process.env.NODE_ENV === 'development') {
-      list.concat(paymentList)
+      list.concat([
+        {
+          paymentChannel: 'deposit',
+          paymentCode: 'deposit',
+          paymentName: $t('349e8d9f.89ac23')
+        }
+      ])
     }
     setState((draft) => {
       draft.list = list
@@ -174,21 +179,20 @@ function SpCashier(props) {
 
   const renderPaymentName = ({ paymentCode, paymentName }) => {
     if (paymentCode == 'deposit') {
-      return `${paymentName} (余额: ${userInfo.deposit || 0})`
-    } else {
-      return paymentName
+      return ti('bfaace51.fb4ba9', [paymentName, userInfo.deposit || 0])
     }
+    return paymentName
   }
 
   return (
     <SpFloatLayout
-      title='支付方式'
+      title={$t('cd0f027b.0c9d2b')}
       className='sp-cashier'
       open={isOpened}
       onClose={onCloseFloatLayout}
       renderFooter={
         <AtButton circle type='primary' onClick={onConfirm}>
-          确定
+          {$t('settings.confirm')}
         </AtButton>
       }
     >

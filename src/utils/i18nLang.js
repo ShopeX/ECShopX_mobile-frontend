@@ -1,11 +1,14 @@
 /**
- * 与 `subpages/i18n/lang/index.json` 键一致，namespace 为 `lang`（见 `src/lang/index.js`）
+ * 与 `subpages/i18n/locales/*.json` 扁平键一致，走 i18next（见 `src/i18n/instance.js`）。
  * @param {string} key
- * @param {string} zhFallback
+ * @param {string} zhFallback 缺 key 或未加载 bundle 时的回退（通常为中文）
  */
+import i18n from '@/i18n/instance'
+
 export function tLang(key, zhFallback) {
-  if (typeof globalThis !== 'undefined' && typeof globalThis.$t === 'function') {
-    return globalThis.$t(key, zhFallback, 'lang')
+  if (key == null || key === '') {
+    return zhFallback != null ? String(zhFallback) : ''
   }
-  return zhFallback
+  const fb = zhFallback != null ? String(zhFallback) : ''
+  return i18n.t(key, { defaultValue: fb })
 }

@@ -5,17 +5,19 @@
 import React, { Component } from 'react'
 import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { View, Text, ScrollView, Image, Button } from '@tarojs/components'
-import { SpToast, Loading, SpNote, SpSearchBar, SpPage } from '@/components'
+import { SpToast, Loading, SpNote, SpSearchBar } from '@/components'
 import S from '@/spx'
 import api from '@/api'
+import { withTranslation } from 'react-i18next'
 import { withPager, withBackToTop } from '@/hocs'
+import { $t } from '@/i18n'
 import { classNames, pickBy, getCurrentRoute } from '@/utils'
 import { getDtidIdUrl } from '@/utils/helper'
 import './shop-goods.scss'
 
 @withPager
 @withBackToTop
-export default class DistributionShopGoods extends Component {
+class DistributionShopGoods extends Component {
   $instance = getCurrentInstance() || {}
   constructor(props) {
     super(props)
@@ -55,7 +57,8 @@ export default class DistributionShopGoods extends Component {
     const query = {
       ...this.state.query,
       page,
-      pageSize
+      pageSize,
+      isSalesmanPage: 1
     }
 
     const { list, total_count: total } = await api.item.search(query)
@@ -155,7 +158,8 @@ export default class DistributionShopGoods extends Component {
           goods_id: id,
           item_type: 'normal',
           pageSize: 50,
-          page: 1
+          page: 1,
+          isSalesmanPage: 1
         }
         const res = await api.item.search(query)
         const details = pickBy(res.list, {
@@ -186,7 +190,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds: [...this.state.goodsIds, id]
           },
           () => {
-            S?.toast('上架成功')
+            S?.toast($t('70a266ab.e241a8'))
           }
         )
       }
@@ -199,7 +203,7 @@ export default class DistributionShopGoods extends Component {
             goodsIds
           },
           () => {
-            S?.toast('下架成功')
+            S?.toast($t('70a266ab.0c6d64'))
           }
         )
       }
@@ -224,141 +228,141 @@ export default class DistributionShopGoods extends Component {
     const { list, goodsIds, page, scrollTop, query } = this.state
 
     return (
-      <SpPage className='page-distribution-shop'>
-        <View className='h-full'>
-          <View className='searchBar'>
-            <SpSearchBar
-              showDailog={false}
-              keyword={query ? query.keywords : ''}
-              onFocus={() => false}
-              onCancel={() => {}}
-              onChange={this.handleSearchChange}
-              onClear={this.handleConfirm.bind(this)}
-              onConfirm={this.handleConfirm.bind(this)}
-            />
-          </View>
-          <ScrollView
-            className='goods-list__scroll'
-            scrollY
-            scrollTop={scrollTop}
-            scrollWithAnimation
-            onScroll={this.handleScroll}
-            onScrollToLower={this.nextPage}
-          >
-            <View className='goods-list'>
-              {list.map((item, index) => {
-                const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
-                return (
-                  <View className='shop-goods-item' key={item.goods_id}>
-                    <View className='shop-goods'>
-                      <View className='shop-goods__caption'>
-                        <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
-                        <View className='view-flex-item'>
-                          <View className='shop-goods__title'>{item.title}</View>
-                          <View className='shop-goods__desc'>{item.desc}</View>
-                          <View className='shop-goods__price'>
-                            <Text className='cur'>¥</Text> {item.price}
-                          </View>
-                        </View>
-                        <View className='shop-goods__task'>
-                          <View className='shop-goods__task-label'>任务模式</View>
-                          {item.rebate_type === 'total_num' && (
-                            <View className='shop-goods__task-type'>按售出总量</View>
-                          )}
-                          {item.rebate_type === 'total_money' && (
-                            <View className='shop-goods__task-type'>按总销售金额</View>
-                          )}
+      <View className='page-distribution-shop'>
+        <View className='searchBar'>
+          <SpSearchBar
+            showDailog={false}
+            keyword={query ? query.keywords : ''}
+            onFocus={() => false}
+            onCancel={() => {}}
+            onChange={this.handleSearchChange}
+            onClear={this.handleConfirm.bind(this)}
+            onConfirm={this.handleConfirm.bind(this)}
+          />
+        </View>
+        <ScrollView
+          className='goods-list__scroll'
+          scrollY
+          scrollTop={scrollTop}
+          scrollWithAnimation
+          onScroll={this.handleScroll}
+          onScrollToLower={this.nextPage}
+        >
+          <View className='goods-list'>
+            {list.map((item, index) => {
+              const isRelease = goodsIds.findIndex((n) => item.goods_id == n) !== -1
+              return (
+                <View className='shop-goods-item' key={item.goods_id}>
+                  <View className='shop-goods'>
+                    <View className='shop-goods__caption'>
+                      <Image className='shop-goods__thumbnail' src={item.img} mode='aspectFill' />
+                      <View className='view-flex-item'>
+                        <View className='shop-goods__title'>{item.title}</View>
+                        <View className='shop-goods__desc'>{item.desc}</View>
+                        <View className='shop-goods__price'>
+                          <Text className='cur'>¥</Text> {item.price}
                         </View>
                       </View>
-                      {!item.view_detail ? (
-                        <View
-                          className='shop-goods__detail'
-                          onClick={this.handleViewDetail.bind(this, index, item.goods_id)}
-                        >
-                          <Text className='icon-search'></Text> 查看指标明细
+                      <View className='shop-goods__task'>
+                        <View className='shop-goods__task-label'>{$t('70a266ab.7f9693')}</View>
+                        {item.rebate_type === 'total_num' && (
+                          <View className='shop-goods__task-type'>{$t('70a266ab.cdce69')}</View>
+                        )}
+                        {item.rebate_type === 'total_money' && (
+                          <View className='shop-goods__task-type'>{$t('70a266ab.d49314')}</View>
+                        )}
+                      </View>
+                    </View>
+                    {!item.view_detail ? (
+                      <View
+                        className='shop-goods__detail'
+                        onClick={this.handleViewDetail.bind(this, index, item.goods_id)}
+                      >
+                        <Text className='icon-search'></Text> {$t('70a266ab.716d9b')}
+                      </View>
+                    ) : (
+                      <View className='shop-goods__detail'>
+                        <View className='content-bottom-padded view-flex'>
+                          <View className='view-flex-item2'>{$t('70a266ab.ea887b')}</View>
+                          <View className='view-flex-item'>{$t('70a266ab.7e6875')}</View>
+                          <View className='view-flex-item'>{$t('70a266ab.f41af7')}</View>
                         </View>
-                      ) : (
-                        <View className='shop-goods__detail'>
-                          <View className='content-bottom-padded view-flex'>
-                            <View className='view-flex-item2'>规格</View>
-                            <View className='view-flex-item'>指标</View>
-                            <View className='view-flex-item'>奖金</View>
-                          </View>
-                          {item.details &&
-                            item.details.map((detail, dindex) => (
-                              <View class='shop-goods__detail-item' key={`detail4${dindex}`}>
-                                <View className='shop-goods__detail-skus view-flex-item2'>
-                                  {detail.item_spec ? (
-                                    detail.item_spec &&
-                                    detail.item_spec.map((sku, sindex) => (
-                                      <View className='sku-item' key={`sku${sindex}`}>
-                                        {sku.spec_image_url && (
-                                          <Image
-                                            className='sku-img'
-                                            src={sku.spec_image_url}
-                                            mode='aspectFill'
-                                          />
-                                        )}
-                                        {sku.spec_custom_value_name || sku.spec_value_name}
-                                      </View>
-                                    ))
-                                  ) : (
-                                    <Text>单规格</Text>
-                                  )}
-                                </View>
-                                {detail.task && (
-                                  <View className='view-flex-item2'>
-                                    {detail.task.map((task, tindex) => (
-                                      <View className='view-flex' key={`task${tindex}`}>
-                                        <View className='view-flex-item'>{task.filter}</View>
-                                        <View className='view-flex-item'>
-                                          {task.money && <Text>¥</Text>}
-                                          {task.money}
-                                        </View>
-                                      </View>
-                                    ))}
-                                  </View>
+                        {item.details &&
+                          item.details.map((detail, dindex) => (
+                            <View className='shop-goods__detail-item' key={`detail4${dindex}`}>
+                              <View className='shop-goods__detail-skus view-flex-item2'>
+                                {detail.item_spec ? (
+                                  detail.item_spec &&
+                                  detail.item_spec.map((sku, sindex) => (
+                                    <View className='sku-item' key={`sku${sindex}`}>
+                                      {sku.spec_image_url && (
+                                        <Image
+                                          className='sku-img'
+                                          src={sku.spec_image_url}
+                                          mode='aspectFill'
+                                        />
+                                      )}
+                                      {sku.spec_custom_value_name || sku.spec_value_name}
+                                    </View>
+                                  ))
+                                ) : (
+                                  <Text>{$t('70a266ab.048df4')}</Text>
                                 )}
                               </View>
-                            ))}
-                        </View>
+                              {detail.task && (
+                                <View className='view-flex-item2'>
+                                  {detail.task.map((task, tindex) => (
+                                    <View className='view-flex' key={`task${tindex}`}>
+                                      <View className='view-flex-item'>{task.filter}</View>
+                                      <View className='view-flex-item'>
+                                        {task.money && <Text>¥</Text>}
+                                        {task.money}
+                                      </View>
+                                    </View>
+                                  ))}
+                                </View>
+                              )}
+                            </View>
+                          ))}
+                      </View>
+                    )}
+                  </View>
+                  <View className='shop-goods__footer'>
+                    <View
+                      className={classNames(
+                        'shop-goods__footer-item',
+                        !isRelease ? 'unreleased' : null
+                      )}
+                      onClick={this.handleItemRelease.bind(this, item.item_id)}
+                    >
+                      {isRelease ? (
+                        <Text className='icon-moveDown'> {$t('70a266ab.12910e')}</Text>
+                      ) : (
+                        <Text className='icon-moveUp'> {$t('70a266ab.39177b')}</Text>
                       )}
                     </View>
-                    <View className='shop-goods__footer'>
-                      <View
-                        className={classNames(
-                          'shop-goods__footer-item',
-                          !isRelease ? 'unreleased' : null
-                        )}
-                        onClick={this.handleItemRelease.bind(this, item.item_id)}
-                      >
-                        {isRelease ? (
-                          <Text className='icon-moveDown'> 从小店下架</Text>
-                        ) : (
-                          <Text className='icon-moveUp'> 上架到小店</Text>
-                        )}
-                      </View>
-                      <Button
-                        className='shop-goods__footer-item'
-                        dataInfo={item}
-                        openType='share'
-                        size='small'
-                      >
-                        <Text className='icon-share2'> 分享给好友</Text>
-                      </Button>
-                    </View>
+                    <Button
+                      className='shop-goods__footer-item'
+                      data-info={item}
+                      openType='share'
+                      size='small'
+                    >
+                      <Text className='icon-share2'> {$t('70a266ab.2f8efe')}</Text>
+                    </Button>
                   </View>
-                )
-              })}
-            </View>
-            {page.isLoading ? <Loading>正在加载...</Loading> : null}
-            {!page.isLoading && !page.hasNext && !list.length && (
-              <SpNote img='trades_empty.png'>暂无数据~</SpNote>
-            )}
-          </ScrollView>
-        </View>
+                </View>
+              )
+            })}
+          </View>
+          {page.isLoading ? <Loading>{$t('70a266ab.bd0271')}</Loading> : null}
+          {!page.isLoading && !page.hasNext && !list.length && (
+            <SpNote img='trades_empty.png'>{$t('70a266ab.ba1de9')}</SpNote>
+          )}
+        </ScrollView>
         <SpToast />
-      </SpPage>
+      </View>
     )
   }
 }
+
+export default withTranslation()(DistributionShopGoods)

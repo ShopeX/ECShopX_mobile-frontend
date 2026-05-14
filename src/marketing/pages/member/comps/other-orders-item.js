@@ -3,10 +3,12 @@
  * See LICENSE file for license details.
  */
 import React, { Component } from 'react'
+import { withTranslation } from 'react-i18next'
 import { View, Button } from '@tarojs/components'
+import { $t, ti } from '@/i18n'
 import './other-orders-item.scss'
 
-export default class OtherOrdersItem extends Component {
+class OtherOrdersItem extends Component {
   static options = {
     addGlobalClass: true
   }
@@ -27,15 +29,17 @@ export default class OtherOrdersItem extends Component {
     return (
       <View className='other-orders-item' onClick={onClick}>
         <View className='flex item-info'>
-          <View>订单号：{info.order_id}</View>
-          <View>交易金额：￥{info.n_total_fee}</View>
+          <View>{ti('8116735b.44263f', [info.order_id])}</View>
+          <View>{ti('85e2d31f.fd312f', [info.n_total_fee])}</View>
         </View>
         <View className='align-right'>
           <Button className='d-button' circle size='mini' onClick={onClick}>
-            订单详情
+            {$t('8116735b.8054f7')}
           </Button>
         </View>
       </View>
     )
   }
 }
+
+export default withTranslation()(OtherOrdersItem)

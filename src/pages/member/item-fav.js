@@ -9,9 +9,9 @@ import { connect } from 'react-redux'
 import { AtTabs, AtTabsPane } from 'taro-ui'
 import { withPager, withBackToTop } from '@/hocs'
 import api from '@/api'
-import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM, isWeixin } from '@/utils'
-import { tLang } from '@/utils/i18nLang'
+import { pickBy, hasNavbar, isWxWeb, VERSION_PLATFORM } from '@/utils'
 import { BackToTop, Loading, GoodsItem, SpNavBar, SpNote, RecommendItem } from '@/components'
+import { $t, i18n } from '@/i18n'
 import StoreFavItem from './comps/store-fav-item'
 
 import './item-fav.scss'
@@ -33,42 +33,29 @@ export default class ItemFav extends Component {
   }
 
   componentDidMount() {
-    this.applyI18nNavigationTitle()
-    Taro.eventCenter.on('languageChanged', this.handleI18nLanguageChanged)
+    this._onLanguageChanged = () => this.forceUpdate()
+    i18n.on('languageChanged', this._onLanguageChanged)
   }
 
   componentWillUnmount() {
-    Taro.eventCenter.off('languageChanged', this.handleI18nLanguageChanged)
-  }
-
-  handleI18nLanguageChanged = () => {
-    this.applyI18nNavigationTitle()
-    this.forceUpdate()
-  }
-
-  /** 小程序等环境 SpNavBar 不渲染，须同步原生导航栏标题 */
-  applyI18nNavigationTitle() {
-    const title = tLang('cv51d84', '我的收藏')
-    if (isWeixin) {
-      Taro.setNavigationBarTitle({ title })
+    if (this._onLanguageChanged) {
+      i18n.off('languageChanged', this._onLanguageChanged)
     }
-    const { page } = getCurrentInstance() || {}
-    page && (page.config.navigationBarTitleText = title)
   }
 
-  buildTabList() {
+  getTabList() {
     const tabList = [
-      { title: tLang('eywr2', '商品'), status: '0' },
-      { title: tLang('oyd42', '软文'), status: '1' }
+      { title: $t('ee4c0c5d.9897d8'), status: '0' },
+      { title: $t('ee4c0c5d.e8f87a'), status: '1' }
     ]
     if (VERSION_PLATFORM) {
-      tabList.push({ title: tLang('gwn72', '店铺'), status: '2' })
+      tabList.push({ title: $t('ee4c0c5d.295713'), status: '2' })
     }
     return tabList
   }
 
   componentDidShow() {
-    this.applyI18nNavigationTitle()
+    Taro.setNavigationBarTitle({ title: $t('ee4c0c5d.ae336c') })
     this.resetPage()
     this.setState(
       {
@@ -219,11 +206,11 @@ export default class ItemFav extends Component {
 
   render() {
     const { list, showBackToTop, scrollTop, page, curTabIdx } = this.state
-    const tabList = this.buildTabList()
+    const tabList = this.getTabList()
     console.log('ItemFav:list', list)
     return (
       <View className='page-goods-fav'>
-        <SpNavBar title={tLang('cv51d84', '我的收藏')} leftIconType='chevron-left' fixed='true' />
+        <SpNavBar title={$t('ee4c0c5d.ae336c')} leftIconType='chevron-left' fixed='true' />
         <AtTabs
           className={`trade-list__tabs ${hasNavbar && 'navbar_padtop'}`}
           current={curTabIdx}
@@ -289,9 +276,9 @@ export default class ItemFav extends Component {
               })}
             </View>
           )}
-          {page.isLoading ? <Loading>{tLang('fbs50s7', '正在加载...')}</Loading> : null}
+          {page.isLoading ? <Loading>{$t('ee4c0c5d.bd0271')}</Loading> : null}
           {!page.isLoading && !page.hasNext && !list.length && (
-            <SpNote img='trades_empty.png'>{tLang('c3uuce5', '暂无数据~')}</SpNote>
+            <SpNote img='trades_empty.png'>{$t('ee4c0c5d.ba1de9')}</SpNote>
           )}
         </ScrollView>
 

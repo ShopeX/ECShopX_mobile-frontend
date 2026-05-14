@@ -7,14 +7,16 @@ import { useImmer } from 'use-immer'
 import Taro, { useRouter } from '@tarojs/taro'
 import { View, Text } from '@tarojs/components'
 import { SpImage, SpPoster } from '@/components'
+import { $t, useTranslation } from '@/i18n'
 import './comp-shop-list.scss'
 
 const initialState = {
   codeStatus: false,
-  information: { name: 'cx', distributor_name: 'cx的店铺' }
+  information: { name: '', distributor_name: '' }
 }
 
 function CompShopList(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const { codeStatus, information } = state
   const { item } = props
@@ -51,9 +53,13 @@ function CompShopList(props) {
             <SpImage src={item.logo} />
             <View className='details'>
               <View className='customer'>{item.name}</View>
-              <View className='source'>电话：{item.mobile}</View>
               <View className='source'>
-                地址：{`${item.province}${item.city}${item.area}${item.address}`}{' '}
+                {$t('4f27f925.c6b4d7')}
+                {item.mobile}
+              </View>
+              <View className='source'>
+                {$t('4f27f925.df3833')}
+                {`${item.province}${item.city}${item.area}${item.address}`}{' '}
               </View>
               <View className='address'>
                 <Text>{item.updated}</Text>
@@ -62,7 +68,7 @@ function CompShopList(props) {
             </View>
           </View>
           <View className='comp-customer-list-scroll-store-code' onClick={() => storeCode(item)}>
-            <Text>查看店铺码</Text>
+            <Text>{$t('4f27f925.af562e')}</Text>
             <Text className='iconfont icon-qianwang-01'></Text>
           </View>
         </View>

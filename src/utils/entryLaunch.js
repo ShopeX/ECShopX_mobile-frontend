@@ -13,6 +13,7 @@ import { SG_ROUTER_PARAMS, SG_GUIDE_PARAMS } from '@/consts/localstorage'
 
 import MapLoader from '@/utils/lbs'
 import S from '@/spx'
+import { $t } from '@/i18n'
 
 const $instance = getCurrentInstance() || {}
 const { store } = configStore()
@@ -223,7 +224,7 @@ class EntryLaunch {
             })
           },
           fail: (res) => {
-            reject({ message: '定位失败' + JSON.stringify(res) })
+            reject({ message: $t('0233b1ea.9831ba') + JSON.stringify(res) })
           }
         })
       })
@@ -247,7 +248,7 @@ class EntryLaunch {
             { timeout: 8000 }
           )
         } catch (error) {
-          reject({ message: '定位失败' })
+          reject({ message: $t('0233b1ea.9831ba') })
         }
       })
     }
@@ -282,13 +283,13 @@ class EntryLaunch {
         }
       } else {
         return {
-          error: '地址解析错误'
+          error: $t('9a2a8fcc.38e932')
         }
       }
     } catch (error) {
       console.error('getLnglatByAddress error:', error)
       return {
-        error: '地址解析错误'
+        error: $t('9a2a8fcc.38e932')
       }
     }
   }
@@ -315,7 +316,7 @@ class EntryLaunch {
    * @params lat Number 纬度
    */
   async getAddressByLnglatWebAPI(lng, lat) {
-    if (lat == null || lng == null) return { error: '地址解析错误' }
+    if (lat == null || lng == null) return { error: $t('9a2a8fcc.38e932') }
     const key = `${Number(lng).toFixed(LNGLAT_CACHE_PRECISION)}_${Number(lat).toFixed(
       LNGLAT_CACHE_PRECISION
     )}`
@@ -345,11 +346,11 @@ class EntryLaunch {
         this._lnglatCache = { key, at: now, data }
         return data
       } else {
-        return { error: '地址解析错误' }
+        return { error: $t('9a2a8fcc.38e932') }
       }
     } catch (error) {
       console.error('getAddressByLnglatWebAPI error:', error)
-      return { error: '地址解析错误' }
+      return { error: $t('9a2a8fcc.38e932') }
     }
   }
 
@@ -402,8 +403,8 @@ class EntryLaunch {
           },
           fail: () => {
             Taro.showModal({
-              title: '提示',
-              content: '请打开定位权限',
+              title: $t('61e2d21a.02d981'),
+              content: $t('9a2a8fcc.4681f3'),
               success: async (resConfirm) => {
                 if (resConfirm.confirm) {
                   await Taro.openSetting()
@@ -420,7 +421,7 @@ class EntryLaunch {
                     }
                     if (callback) callback(res)
                   } else {
-                    Taro.showToast({ title: '获取定位权限失败', icon: 'none' })
+                    Taro.showToast({ title: $t('9a2a8fcc.e9a580'), icon: 'none' })
                   }
                 } else {
                   if (callback) callback(false)

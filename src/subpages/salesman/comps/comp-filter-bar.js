@@ -2,21 +2,15 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import Taro from '@tarojs/taro'
-import { useEffect, useState } from 'react'
-import { Text, View, Input } from '@tarojs/components'
-import { classNames, validate, showToast } from '@/utils'
+import { useMemo } from 'react'
+import { View, Input } from '@tarojs/components'
+import { classNames } from '@/utils'
 import { SpAddress } from '@/components'
 import { useImmer } from 'use-immer'
-import api from '@/api'
-import S from '@/spx'
+import { $t, useTranslation } from '@/i18n'
 import './comp-filter-bar.scss'
 
 const initialConfigState = {
-  searchConditionList: [
-    { label: '手机号', value: 'phone' },
-    { label: '客户名称', value: 'custonmerName' }
-  ],
   selectArea: [],
   searchCondition: 'phone',
   searchValue: '',
@@ -26,16 +20,18 @@ const initialConfigState = {
 }
 
 const Index = (props) => {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialConfigState)
 
-  const {
-    selectArea,
-    searchValue,
-    searchCondition,
-    isSpAddressOpened,
-    searchConditionVis,
-    searchConditionList
-  } = state
+  const searchConditionList = useMemo(
+    () => [
+      { label: $t('9696edd5.8098e2'), value: 'phone' },
+      { label: $t('5663b3fe.83b0d2'), value: 'custonmerName' }
+    ],
+    [i18n.language]
+  )
+
+  const { selectArea, searchValue, searchCondition, isSpAddressOpened, searchConditionVis } = state
 
   const { searchChange } = props
 
@@ -75,7 +71,7 @@ const Index = (props) => {
           })
         }}
       >
-        <View className='area-val'>{selectArea.join('') || '请选择区域'}</View>
+        <View className='area-val'>{selectArea.join('') || $t('5663b3fe.f26489')}</View>
         <View className='iconfont icon-arrowDown area-icon'></View>
       </View>
       <View className='search'>
@@ -92,7 +88,7 @@ const Index = (props) => {
         </View>
         <Input
           className='search-input'
-          placeholder='请输入'
+          placeholder={$t('5663b3fe.02cc4f')}
           confirmType='search'
           value={searchValue}
           onInput={onInputChange}

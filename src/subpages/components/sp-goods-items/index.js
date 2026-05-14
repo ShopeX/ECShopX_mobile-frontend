@@ -2,17 +2,17 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  */
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useImmer } from 'use-immer'
-import { useSelector } from 'react-redux'
-import { View, Text, Image } from '@tarojs/components'
+import { View, Text } from '@tarojs/components'
 import { SpPrice, SpInputNumber, SpImage, SpCheckboxNew } from '@/components'
-import { VERSION_IN_PURCHASE } from '@/utils'
 import { AtButton } from 'taro-ui'
+import { useTranslation, $t, ti } from '@/i18n'
 import './index.scss'
 
 const initialState = {}
 function CompGoodsItem(props) {
+  useTranslation()
   const [state, setState] = useImmer(initialState)
   const {} = state
 
@@ -29,11 +29,10 @@ function CompGoodsItem(props) {
 
   return (
     <View>
-      {console.log(lists, 'llllist------')}
       <View className='comp-goodsitems'>
         <View className='comp-goodsitems-checkbox'>
           <Text className='iconfont icon-shop' />
-          {lists.shop_name || '自营'}
+          {lists.shop_name || $t('37ee5484.491c0c')}
         </View>
         <View className='comp-goodsitems-item'>
           {lists.list.map((item, index) => {
@@ -85,19 +84,19 @@ function CompGoodsItem(props) {
             <View className='lf'>
               <SpCheckboxNew
                 checked={allChecked}
-                label='全选'
+                label={$t('37ee5484.66eeac')}
                 onChange={() => onSelectAll(lists, 'all', allChecked)}
               />
             </View>
             <View className='rg'>
               <View>
                 <View className='total-price-wrap'>
-                  合计：
+                  {$t('37ee5484.7b2864')}
                   <SpPrice className='total-pirce' value={lists.total_fee / 100} />
                 </View>
                 {lists.discount_fee > 0 && (
                   <View className='discount-price-wrap'>
-                    共优惠：
+                    {$t('37ee5484.1784cf')}
                     <SpPrice className='total-pirce' value={lists.discount_fee / 100} />
                   </View>
                 )}
@@ -109,7 +108,7 @@ function CompGoodsItem(props) {
                 disabled={lists.cart_total_num <= 0}
                 onClick={() => balance(lists)}
               >
-                结算({lists.cart_total_num})
+                {ti('37ee5484.605bad', [lists.cart_total_num])}
               </AtButton>
             </View>
           </View>

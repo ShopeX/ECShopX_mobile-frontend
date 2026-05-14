@@ -5,13 +5,20 @@
 import React, { useEffect } from 'react'
 import Taro from '@tarojs/taro'
 import { View, Form, Button, Image } from '@tarojs/components'
-import { useSelector } from 'react-redux'
 import { useImmer } from 'use-immer'
 import S from '@/spx'
 import { SpPage, SpNavBar, SpToast, SpInput as AtInput } from '@/components'
 import api from '@/api'
 import { isArray } from '@/utils'
+import { useTranslation, $t } from '@/i18n'
 import './certification.scss'
+
+const AUDIT = {
+  UNVERIFIED: 'unverified',
+  PENDING: 'pending',
+  FAILED: 'failed',
+  VERIFIED: 'verified'
+}
 
 const initialState = {
   info: {},
@@ -20,10 +27,17 @@ const initialState = {
   audit_state: null
 }
 
-function Certification(props) {
+function Certification() {
+  const { i18n } = useTranslation()
   const [state, setState] = useImmer(initialState)
-  const { location = {}, address } = useSelector((state) => state.user)
   const { info, isDisabled, isEdit, audit_state } = state
+
+  useEffect(() => {
+    Taro.setNavigationBarTitle({ title: $t('99c3c114.cbaa04') })
+    const onLang = () => Taro.setNavigationBarTitle({ title: $t('99c3c114.cbaa04') })
+    i18n.on('languageChanged', onLang)
+    return () => i18n.off('languageChanged', onLang)
+  }, [i18n])
 
   useEffect(() => {
     fetch()
@@ -35,25 +49,25 @@ function Certification(props) {
     let status = null
     let disabled = true
     if (isArray(cert_status)) {
-      status = '未认证'
+      status = AUDIT.UNVERIFIED
       disabled = true
     } else if (cert_status.audit_state == 'A') {
-      status = '审核中'
+      status = AUDIT.PENDING
       disabled = true
     } else if (
       cert_status.audit_state == 'B' ||
       cert_status.audit_state == 'C' ||
       cert_status.audit_state == 'D'
     ) {
-      status = '认证失败'
+      status = AUDIT.FAILED
       disabled = false
     } else if (cert_status.audit_state == 'E') {
-      status = '已认证'
+      status = AUDIT.VERIFIED
       disabled = false
     }
     setState((draft) => {
       draft.info = info
-      draft.isEdit = status == '未认证'
+      draft.isEdit = status === AUDIT.UNVERIFIED
       draft.audit_state = status
       draft.isDisabled = disabled
     })
@@ -71,16 +85,16 @@ function Certification(props) {
   const handleSubmit = (e) => {
     const { value } = e.detail
     if (!value.card_name) {
-      return S?.toast('请输入姓名')
+      return S?.toast($t('b4dfc303.8093e3'))
     }
     if (!value.tel_no || !/1\d{10}/.test(value.tel_no)) {
-      return S?.toast('请输入正确的手机号')
+      return S?.toast($t('b4dfc303.a32ab5'))
     }
     if (!value.card_id || !/^[1-9]\d{9,29}$/.test(value.card_id)) {
-      return S?.toast('请输入正确的结算卡号')
+      return S?.toast($t('b4dfc303.f1f5f1'))
     }
     if (!value.cert_id || !/^(\d{18,18}|\d{15,15}|\d{17,17}X)$/.test(value.cert_id)) {
-      return S?.toast('请输入正确的证件号码')
+      return S?.toast($t('b4dfc303.bb56f1'))
     }
     if (isEdit) {
       onSumbitChange()
@@ -89,14 +103,14 @@ function Certification(props) {
 
   const handleEdit = async () => {
     const info = await api.distribution.adapayCert({ is_data_masking: '0' })
-    if (audit_state == '认证失败') {
+    if (audit_state === AUDIT.FAILED) {
       setState((draft) => {
         draft.isEdit = true
         draft.info = info
       })
-    } else if (audit_state === '已认证') {
+    } else if (audit_state === AUDIT.VERIFIED) {
       Taro.showModal({
-        content: '认证信息编辑后需重新提交审核，审核完成前无法进行提现操作，请确认是否要编辑信息',
+        content: $t('b4dfc303.03c385'),
         success: (res) => {
           if (res.confirm) {
             setState((draft) => {
@@ -113,14 +127,14 @@ function Certification(props) {
     let urls = ''
     let obj = { ...info }
     delete obj.cert_status
-    if (audit_state == '未认证') {
+    if (audit_state === AUDIT.UNVERIFIED) {
       urls = api.distribution.adapayCreateCert
     } else {
       urls = api.distribution.adapayUpdateCert
     }
     urls(obj).then(() => {
       Taro.showToast({
-        title: '提交成功等待审核',
+        title: $t('b4dfc303.48c17b'),
         icon: 'success',
         duration: 2000
       })
@@ -131,25 +145,25 @@ function Certification(props) {
   let imgUrl = ''
   let title = ''
   let subTitle = ''
-  if (audit_state == '审核中') {
-    title = '已提交审核，请耐心等待～'
-    subTitle = '预计会在1-5个工作如完成审核'
+  if (audit_state === AUDIT.PENDING) {
+    title = $t('b4dfc303.0236d1')
+    subTitle = $t('b4dfc303.418885')
     imgUrl = `${process.env.APP_IMAGE_CDN}/waitting_info.png`
-  } else if (audit_state == '认证失败') {
-    title = '认证失败'
-    subTitle = info.cert_status.audit_desc || '未匹配到该银行卡，请稍后再试'
+  } else if (audit_state === AUDIT.FAILED) {
+    title = $t('b4dfc303.b11996')
+    subTitle = info.cert_status?.audit_desc || $t('b4dfc303.35ee77')
     imgUrl = `${process.env.APP_IMAGE_CDN}/error_info.png`
-  } else if (audit_state == '已认证') {
-    title = '您已实名认证！'
+  } else if (audit_state === AUDIT.VERIFIED) {
+    title = $t('b4dfc303.244402')
     imgUrl = `${process.env.APP_IMAGE_CDN}/success_info.png`
   } else {
-    title = '请完善信息后，进行认证～'
+    title = $t('b4dfc303.cf2559')
     imgUrl = `${process.env.APP_IMAGE_CDN}/certification_info.png`
   }
 
   return (
     <SpPage className='page-ecshopx-certification'>
-      <SpNavBar title='认证信息' leftIconType='chevron-left' />
+      <SpNavBar title={$t('b4dfc303.cbaa04')} leftIconType='chevron-left' />
       <View className='page'>
         <View className='header-box'>
           <View className='header'>
@@ -163,32 +177,32 @@ function Certification(props) {
         <Form onSubmit={handleSubmit}>
           <View className='page-certification-form'>
             <AtInput
-              title='姓名'
+              title={$t('b4dfc303.60d045')}
               type='text'
               // clear={isEdit}
               required
               name='card_name'
               editable={isEdit}
-              placeholder='请输入开户人姓名'
+              placeholder={$t('b4dfc303.fb1b19')}
               value={info.card_name}
               onChange={handleInputChange('card_name')}
             />
             <AtInput
-              title='手机号'
+              title={$t('b4dfc303.8098e2')}
               type='phone'
               // clear={isEdit}
               required
               name='tel_no'
               editable={isEdit}
               maxLength={11}
-              placeholder='请输入银行预留手机号'
+              placeholder={$t('b4dfc303.a938d7')}
               value={info.tel_no}
               onChange={handleInputChange('tel_no')}
             />
             <AtInput
-              title='结算卡号'
+              title={$t('b4dfc303.c2133e')}
               type='number'
-              placeholder='请输入开户结算卡号'
+              placeholder={$t('b4dfc303.8cf6f9')}
               // clear={isEdit}
               name='card_id'
               required
@@ -197,13 +211,13 @@ function Certification(props) {
               onChange={handleInputChange('card_id')}
             />
             <AtInput
-              title='证件号码'
+              title={$t('b4dfc303.f2474f')}
               type='idcard'
               name='cert_id'
               // clear={isEdit}
               required
               editable={isEdit}
-              placeholder='请输入开户人证件号码'
+              placeholder={$t('b4dfc303.73c23b')}
               value={info.cert_id}
               maxLength={18}
               onChange={handleInputChange('cert_id')}
@@ -218,7 +232,7 @@ function Certification(props) {
                 disabled={isDisabled}
                 style={isDisabled ? { background: '#CCC' } : { background: '#3593FF' }}
               >
-                提交
+                {$t('b4dfc303.939d53')}
               </Button>
             )}
             {process.env.TARO_ENV === 'weapp' && !isEdit && (
@@ -229,7 +243,7 @@ function Certification(props) {
                 onClick={handleEdit}
                 style={isDisabled ? { background: '#CCC' } : { background: '#3593FF' }}
               >
-                编辑
+                {$t('b4dfc303.95b351')}
               </Button>
             )}
             {process.env.TARO_ENV !== 'weapp' && (
@@ -241,7 +255,7 @@ function Certification(props) {
                 formType='submit'
                 style={isDisabled ? { background: '#CCC' } : { background: '#3593FF' }}
               >
-                提交
+                {$t('b4dfc303.939d53')}
               </Button>
             )}
             <SpToast />

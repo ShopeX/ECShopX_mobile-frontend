@@ -3,12 +3,14 @@
  * See LICENSE file for license details.
  */
 import React, { useEffect } from 'react'
-import Taro, { getCurrentInstance, useDidShow } from '@tarojs/taro'
+import Taro, { getCurrentInstance } from '@tarojs/taro'
 import { ScrollView, View, RichText } from '@tarojs/components'
 import { SpPage, SpLoading } from '@/components'
 import { classNames, isWeixin } from '@/utils'
 import { useImmer } from 'use-immer'
 import api from '@/api'
+import { useTranslation, $t, i18n } from '@/i18n'
+import { useNavigation } from '@/hooks'
 import CompHeader from './comps/comp-header'
 import './brand-info.scss'
 
@@ -18,6 +20,8 @@ const initialState = {
 }
 
 const PageBrandInfo = () => {
+  useTranslation()
+  const { setNavigationBarTitle } = useNavigation()
   const [state, setState] = useImmer(initialState)
 
   const $instance = getCurrentInstance() || {}
@@ -63,6 +67,13 @@ const PageBrandInfo = () => {
   }
 
   useEffect(() => {
+    const syncTitle = () => setNavigationBarTitle($t('715f837e.add0b7'))
+    syncTitle()
+    i18n.on('languageChanged', syncTitle)
+    return () => i18n.off('languageChanged', syncTitle)
+  }, [setNavigationBarTitle])
+
+  useEffect(() => {
     getDetail()
     storeFav(distributor_id)
   }, [])
@@ -92,7 +103,7 @@ const PageBrandInfo = () => {
           <CompHeader info={storeInfo} brand={false} fav={fav} showSale />
         </View>
         <View className='margin padding brand'>
-          <View className='title'>品牌简介</View>
+          <View className='title'>{$t('47c054d7.a737e6')}</View>
           <View className='content'>
             {isWeixin ? (
               <RichText nodes={changeInt} type='node' />
@@ -103,7 +114,7 @@ const PageBrandInfo = () => {
         </View>
         <View className='margin good'>
           <View className='title' onClick={() => Taro.navigateBack()}>
-            去看看全部商品
+            {$t('47c054d7.0382eb')}
           </View>
         </View>
       </ScrollView>
