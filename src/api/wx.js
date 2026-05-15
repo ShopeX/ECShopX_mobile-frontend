@@ -10,8 +10,12 @@ export function getOpenid({ code }) {
   return req.get('/oauth/getopenid', { code })
 }
 
-export function getredirecturl({ url }) {
-  return req.get('/oauth/getredirecturl', { url })
+export async function getredirecturl({ url }) {
+  const data = await req.get('/oauth/getredirecturl', { url })
+  /* 调试：getredirecturl 已返回，调用方赋值 window.location 前暂停，可查看 data / redirect_url */
+  // eslint-disable-next-line no-debugger
+  debugger
+  return data
 }
 
 export function info(data) {

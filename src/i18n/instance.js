@@ -2,7 +2,7 @@
  * Copyright © ShopeX （http://www.shopex.cn）. All rights reserved.
  * See LICENSE file for license details.
  *
- * i18next 单例：语言资源通过 subpages/i18n/resources 分包异步加载。
+ * i18next 单例：weapp 经 subpages/i18n/resources 分包异步加载；H5 主包同步 require 同目录 resources。
  */
 /* eslint-disable import/no-named-as-default-member -- i18next 默认导出即实例，需调用 .use / .changeLanguage */
 import i18n from 'i18next'
@@ -126,7 +126,27 @@ function loadLocalePackage() {
     })
   }
 
-  return Promise.reject(new Error('i18n subPackage resource loading is only enabled for weapp'))
+  // H5：语言包由 webpack 打进主包，同步 require 即可（weapp 依赖分包异步加载，勿在此 require 以免主包膨胀）
+  if (process.env.TARO_ENV === 'h5') {
+    const Taro = getTaro()
+    try {
+      const resources = require('../subpages/i18n/resources')
+      if (Taro && resources && (resources.zhcn || resources.en || resources.ar)) {
+        Taro.__i18nResources = {
+          ...(Taro.__i18nResources || {}),
+          ...resources
+        }
+        return Promise.resolve()
+      }
+      return Promise.reject(new Error('i18n H5 resources empty'))
+    } catch (e) {
+      return Promise.reject(e)
+    }
+  }
+
+  return Promise.reject(
+    new Error(`i18n resource loading unsupported for TARO_ENV=${process.env.TARO_ENV}`)
+  )
 }
 
 if (!i18n.isInitialized) {
